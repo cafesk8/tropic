@@ -51,3 +51,11 @@ services:
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
     Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderFacade: '@Shopsys\ShopBundle\Model\Order\OrderFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderRepository: '@Shopsys\ShopBundle\Model\Order\OrderRepository'
+
+    Shopsys\FrameworkBundle\Model\Payment\PaymentFacade: '@Shopsys\ShopBundle\Model\Payment\PaymentFacade'
+
+    Shopsys\FrameworkBundle\Model\Payment\PaymentRepository: '@Shopsys\ShopBundle\Model\Payment\PaymentRepository'

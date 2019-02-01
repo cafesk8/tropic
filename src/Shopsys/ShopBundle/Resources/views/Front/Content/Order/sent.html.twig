@@ -30,4 +30,8 @@
         </div>
     </div>
 
+    {% if goPayData is defined and goPayData|length != 0 %}
+        {% include '@ShopsysShop/Front/Inline/Payment/goPayPayment.html.twig' %}
+    {% endif %}
+
 {% endblock %}

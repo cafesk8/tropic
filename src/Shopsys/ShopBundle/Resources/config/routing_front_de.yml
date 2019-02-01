@@ -30,6 +30,14 @@ front_order_index:
     path: /order/
     defaults: { _controller: ShopsysShopBundle:Front\Order:index }
 
+front_order_paid:
+    path: /order-paid/{urlHash}
+    defaults: { _controller: ShopsysShopBundle:Front\Order:paid }
+
+front_order_not_paid:
+    path: /order-not-paid/{urlHash}
+    defaults: { _controller: ShopsysShopBundle:Front\Order:notPaid }
+
 front_order_sent:
     path: /order-confirm/
     defaults: { _controller: ShopsysShopBundle:Front\Order:sent }

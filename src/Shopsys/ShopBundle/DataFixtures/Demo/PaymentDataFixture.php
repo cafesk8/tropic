@@ -5,10 +5,12 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentData;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
+use Shopsys\ShopBundle\Model\Payment\Payment;
 
 class PaymentDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
@@ -42,6 +44,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
     public function load(ObjectManager $manager)
     {
         $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_BASIC;
         $paymentData->name = [
             'cs' => 'Kreditní kartou',
             'sk' => 'Kreditní kartou',
@@ -68,6 +71,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         ]);
 
         $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_BASIC;
         $paymentData->name = [
             'cs' => 'Dobírka',
             'sk' => 'Dobírka',
@@ -81,6 +85,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->createPayment(self::PAYMENT_CASH_ON_DELIVERY, $paymentData, [TransportDataFixture::TRANSPORT_CZECH_POST]);
 
         $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_BASIC;
         $paymentData->name = [
             'cs' => 'Hotově',
             'sk' => 'Hotově',
@@ -93,6 +98,41 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         ];
         $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $this->createPayment(self::PAYMENT_CASH, $paymentData, [TransportDataFixture::TRANSPORT_PERSONAL]);
+
+        $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_GOPAY;
+        $paymentData->name = [
+            'cs' => 'GoPay - Platba kartou',
+            'sk' => 'GoPay - Platba kartou',
+            'de' => 'GoPay - Pay by card',
+        ];
+        $paymentData->czkRounding = false;
+        $paymentData->pricesByCurrencyId = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
+        ];
+        $paymentData->goPayPaymentMethod = $this->getReference(GoPayDataFixture::PAYMENT_CARD_METHOD);
+        $paymentData->prices = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
+        ];
+        $paymentData->description = [
+            'cs' => '',
+            'sk' => '',
+            'de' => '',
+        ];
+        $paymentData->instructions = [
+            'cs' => '<b>Zvolili jste platbu GoPay, bude Vám zobrazena platební brána.</b>',
+            'sk' => '',
+            'de' => '',
+        ];
+        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
+        $paymentData->hidden = false;
+        $this->createPayment(Payment::TYPE_GOPAY, $paymentData, [
+            TransportDataFixture::TRANSPORT_PERSONAL,
+            TransportDataFixture::TRANSPORT_PPL,
+        ]);
     }
 
     /**

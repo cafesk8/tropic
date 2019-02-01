@@ -6,8 +6,10 @@ use Shopsys\FrameworkBundle\Form\SingleCheckboxChoiceType;
 use Shopsys\FrameworkBundle\Model\Order\OrderData;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
+use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,13 +30,31 @@ class TransportAndPaymentFormType extends AbstractType
     private $paymentFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     */
+    private $currencyFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade
+     */
+    private $goPayBankSwiftFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      */
-    public function __construct(TransportFacade $transportFacade, PaymentFacade $paymentFacade)
-    {
+    public function __construct(
+        TransportFacade $transportFacade,
+        PaymentFacade $paymentFacade,
+        CurrencyFacade $currencyFacade,
+        GoPayBankSwiftFacade $goPayBankSwiftFacade
+    ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
+        $this->currencyFacade = $currencyFacade;
+        $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
     }
 
     /**
@@ -45,6 +65,7 @@ class TransportAndPaymentFormType extends AbstractType
     {
         $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
         $transports = $this->transportFacade->getVisibleByDomainId($options['domain_id'], $payments);
+        $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);
 
         $builder
             ->add('transport', SingleCheckboxChoiceType::class, [
@@ -64,6 +85,11 @@ class TransportAndPaymentFormType extends AbstractType
                     new Constraints\NotNull(['message' => 'Please choose payment type']),
                 ],
                 'invalid_message' => 'Please choose payment type',
+            ])
+            ->add('goPayBankSwift', SingleCheckboxChoiceType::class, [
+                'choices' => $this->goPayBankSwiftFacade->getAllByCurrencyId($currency->getId()),
+                'choice_label' => 'name',
+                'choice_value' => 'id',
             ])
             ->add('save', SubmitType::class);
     }

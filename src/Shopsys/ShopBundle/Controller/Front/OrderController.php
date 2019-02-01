@@ -9,16 +9,24 @@ use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
+use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\Watcher\TransportAndPaymentWatcher;
+use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
+use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
+use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
+use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
+use Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain;
+use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
@@ -30,6 +38,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class OrderController extends FrontBaseController
 {
     const SESSION_CREATED_ORDER = 'created_order_id';
+    const SESSION_GOPAY_CHOOSEN_SWIFT = 'gopay_choosen_swift';
 
     /**
      * @var \Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory
@@ -112,6 +121,16 @@ class OrderController extends FrontBaseController
     private $newsletterFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade
+     */
+    private $goPayBankSwiftFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain
+     */
+    private $goPayFacadeOnCurrentDomain;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -128,6 +147,8 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade $orderMailFacade
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
      * @param \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade $newsletterFacade
+     * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
+     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -145,7 +166,9 @@ class OrderController extends FrontBaseController
         TransportAndPaymentWatcher $transportAndPaymentWatcher,
         OrderMailFacade $orderMailFacade,
         LegalConditionsFacade $legalConditionsFacade,
-        NewsletterFacade $newsletterFacade
+        NewsletterFacade $newsletterFacade,
+        GoPayBankSwiftFacade $goPayBankSwiftFacade,
+        GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -163,6 +186,8 @@ class OrderController extends FrontBaseController
         $this->orderMailFacade = $orderMailFacade;
         $this->legalConditionsFacade = $legalConditionsFacade;
         $this->newsletterFacade = $newsletterFacade;
+        $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
+        $this->goPayFacadeOnCurrentDomain = $goPayFacadeOnCurrentDomain;
     }
 
     public function indexAction()
@@ -186,6 +211,7 @@ class OrderController extends FrontBaseController
         $frontOrderFormData->domainId = $domainId;
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
         $frontOrderFormData->currency = $currency;
+        $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($currency->getId());
 
         $orderFlow = $this->domainAwareOrderFlowFactory->create();
         if ($orderFlow->isBackToCartTransition()) {
@@ -221,7 +247,11 @@ class OrderController extends FrontBaseController
                     $this->newsletterFacade->addSubscribedEmail($frontOrderFormData->email, $this->domain->getId());
                 }
 
+                $this->setGoPayBankSwiftSession($frontOrderFormData->payment, $frontOrderFormData->goPayBankSwift);
+
                 $orderFlow->reset();
+
+                $this->session->set(self::SESSION_CREATED_ORDER, $order->getId());
 
                 try {
                     $this->sendMail($order);
@@ -261,6 +291,8 @@ class OrderController extends FrontBaseController
             ),
             'termsAndConditionsArticle' => $this->legalConditionsFacade->findTermsAndConditions($this->domain->getId()),
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
+            'goPayBankSwifts' => $goPayBankSwifts,
+            'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
         ]);
     }
 
@@ -347,10 +379,106 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        $order = $this->orderFacade->getById($orderId);
+        $goPayData = null;
+
+        if ($order->getPayment()->isGoPay() && $order->getGoPayId() === null) {
+            $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
+
+            try {
+                $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
+
+                $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
+            } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+            }
+        }
+
+        $this->session->remove(self::SESSION_GOPAY_CHOOSEN_SWIFT);
+
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
             'pageContent' => $this->orderFacade->getOrderSentPageContent($orderId),
-            'order' => $this->orderFacade->getById($orderId),
+            'order' => $order,
+            'goPayData' => $goPayData,
         ]);
+    }
+
+    /**
+     * @param string $urlHash
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function paidAction(string $urlHash): Response
+    {
+        try {
+            $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
+        } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
+
+            return $this->redirectToRoute('front_cart');
+        }
+
+        if ($order->getPayment()->isGoPay()) {
+            $this->checkOrderGoPayStatus($order);
+
+            if ($this->goPayFacadeOnCurrentDomain->isOrderGoPayUnpaid($order)) {
+                return $this->redirectToRoute('front_order_not_paid', ['urlHash' => $urlHash]);
+            }
+        }
+
+        return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
+            'pageContent' => $this->orderFacade->getOrderSentPageContent($order->getId()),
+            'order' => $order,
+        ]);
+    }
+
+    /**
+     * @param string $urlHash
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function notPaidAction(string $urlHash): Response
+    {
+        try {
+            $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
+        } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
+
+            return $this->redirectToRoute('front_cart');
+        }
+
+        return $this->render('@ShopsysShop/Front/Content/Order/notPaid.html.twig', [
+            'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
+            'urlHash' => $urlHash,
+            'order' => $order,
+        ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     */
+    private function checkOrderGoPayStatus(Order $order): void
+    {
+        try {
+            $this->goPayFacadeOnCurrentDomain->checkOrderGoPayStatus($order);
+        } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment $payment
+     * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift|null $goPayBankSwift
+     */
+    private function setGoPayBankSwiftSession(Payment $payment, ?GoPayBankSwift $goPayBankSwift): void
+    {
+        if ($payment->isGoPay()) {
+            if ($goPayBankSwift !== null) {
+                $goPayBankSwiftCode = $goPayBankSwift->getSwift();
+            } else {
+                $goPayBankSwiftCode = null;
+            }
+
+            $this->session->set(self::SESSION_GOPAY_CHOOSEN_SWIFT, $goPayBankSwiftCode);
+        }
     }
 
     public function termsAndConditionsAction()

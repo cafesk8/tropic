@@ -16,6 +16,7 @@
 
         $transportInputs.change(Shopsys.order.updateContinueButton);
         $paymentInputs.change(Shopsys.order.updateContinueButton);
+        $paymentInputs.filter(':checked').change();
         Shopsys.order.updateContinueButton();
     };
 
@@ -124,21 +125,35 @@
         var $this = $(this);
         var checked = $this.prop('checked');
         var checkedId = $this.data('id');
+        var $goPayListBanks = $('.js-gopay-list-banks');
 
         if (checked) {
             // uncheckOtherPayments
+            var isSelectedGoPayBankTransfer = false;
             $('.js-order-payment-input:checked').each(function (i, checkbox) {
                 var $checkbox = $(checkbox);
                 var id = $checkbox.data('id');
                 if (id !== checkedId) {
                     $checkbox.prop('checked', false);
                     $(this).closest('label.box-chooser__item').removeClass('box-chooser__item--active');
+                } else if ($checkbox.hasClass('js-gopay-bank-transfer-input')) {
+                    isSelectedGoPayBankTransfer = true;
                 }
             });
+
+            if (!isSelectedGoPayBankTransfer) {
+                $('.js-order-gopay-bank-swift-input:checked').each(function (i, checkbox) {
+                    $(this).prop('checked', false);
+                });
+                $goPayListBanks.slideUp();
+            } else {
+                $goPayListBanks.slideDown();
+            }
 
             $this.closest('label.box-chooser__item').addClass('box-chooser__item--active');
         } else {
             $this.closest('label.box-chooser__item').removeClass('box-chooser__item--active');
+            $goPayListBanks.slideUp();
         }
 
         Shopsys.order.updateTransports();

@@ -23,3 +23,23 @@ parameters:
         - "127.0.0.1"
     env(REDIS_PREFIX): ''
     env(ELASTIC_SEARCH_INDEX_PREFIX): ''
+
+    gopay.config:
+        cs:
+            goid: 8111408481
+            clientId: 1437261089
+            clientSecret: acdDPRSW
+            language: CS
+        sk:
+            goid: 8111408481
+            clientId: 1437261089
+            clientSecret: acdDPRSW
+            language: SK
+        de:
+            goid: 8111408481
+            clientId: 1437261089
+            clientSecret: acdDPRSW
+            language: DE
+        isProductionMode: false
+        scope: payment-all
+        timeout: 30

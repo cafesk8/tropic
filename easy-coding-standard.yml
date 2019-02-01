@@ -24,6 +24,7 @@ parameters:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductVisibilityRepositoryTest.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/MultidomainOrderDataFixture.phpFixture.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/OrderDataFixture.php'
+            - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
 
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:
             - '*/tests/ShopBundle/Functional/EntityExtension/EntityExtensionTest.php'
@@ -34,6 +35,7 @@ parameters:
 
         Shopsys\CodingStandards\Sniffs\ForbiddenDumpSniff:
             - '*/tests/ShopBundle/Functional/Model/Cart/CartFacadeTest.php'
+            - '*/src/Shopsys/ShopBundle/Model/GoPay/Exception/GoPayPaymentDownloadException.php'
 
         Shopsys\CodingStandards\Sniffs\ForbiddenDoctrineInheritanceSniff:
             - '*/src/Shopsys/ShopBundle/*'

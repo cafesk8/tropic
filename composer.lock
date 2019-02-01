@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f6586bb402a586c9cf0ac36e20e04df",
+    "content-hash": "c4116add21f2d479d1c2d0acff41123b",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -2759,6 +2759,57 @@
             "time": "2019-02-06T21:40:58+00:00"
         },
         {
+            "name": "gopay/payments-sdk-php",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gopaycommunity/gopay-php-api.git",
+                "reference": "4195dc2185fe6f0a8f578cac9a05431fd77f6e71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gopaycommunity/gopay-php-api/zipball/4195dc2185fe6f0a8f578cac9a05431fd77f6e71",
+                "reference": "4195dc2185fe6f0a8f578cac9a05431fd77f6e71",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^5.3.1|^6.2.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "hamcrest/hamcrest-php": "*",
+                "phpunit/phpunit": "<6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GoPay\\": "src/"
+                },
+                "files": [
+                    "factory.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "GoPay",
+                    "homepage": "https://github.com/gopaycommunity/gopay-php-api/contributors"
+                }
+            ],
+            "description": "GoPay's PHP SDK for Payments REST API",
+            "keywords": [
+                "api",
+                "gopay",
+                "payments",
+                "rest",
+                "sdk"
+            ],
+            "time": "2018-12-14T09:45:45+00:00"
+        },
+        {
             "name": "guzzlehttp/guzzle",
             "version": "6.3.3",
             "source": {
@@ -3962,6 +4013,60 @@
             ],
             "description": "An adapter decorator to enable meta-data caching.",
             "time": "2018-07-09T20:51:04+00:00"
+        },
+        {
+            "name": "league/iso3166",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/iso3166.git",
+                "reference": "5e8f504eea3f13e45fa397da86313371b3eb20d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/iso3166/zipball/5e8f504eea3f13e45fa397da86313371b3eb20d5",
+                "reference": "5e8f504eea3f13e45fa397da86313371b3eb20d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.12",
+                "phpunit/phpunit": "^5.7.11 || ^6.0 || ^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\ISO3166\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com"
+                }
+            ],
+            "description": "ISO 3166-1 PHP Library",
+            "homepage": "https://github.com/thephpleague/iso3166",
+            "keywords": [
+                "3166",
+                "3166-1",
+                "ISO 3166",
+                "countries",
+                "iso",
+                "library"
+            ],
+            "time": "2019-03-14T08:34:44+00:00"
         },
         {
             "name": "litipk/php-bignumbers",

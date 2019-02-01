@@ -96,6 +96,11 @@ front_newsletter_send:
     methods: [POST]
     condition: "request.isXmlHttpRequest()"
 
+front_order_gopay_status_notify:
+    path: /order/gopay-status-notify/{orderId}
+    defaults: { _controller: ShopsysShopBundle:Front\GoPay:gopayStatusNotify }
+    methods: [GET]
+
 front_order_preview:
     path: /order/preview/
     defaults: { _controller: ShopsysShopBundle:Front\Order:preview }

@@ -44,6 +44,9 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData = new PaymentData();
         $this->fillFromPayment($paymentData, $payment);
 
+        $paymentData->type = $payment->getType();
+        $paymentData->goPayPaymentMethod = $payment->getGoPayPaymentMethod();
+
         return $paymentData;
     }
 }
