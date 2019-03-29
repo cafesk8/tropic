@@ -1,9 +1,12 @@
 domains:
     -   id: 1
-        name: shopsys
-        locale: en
+        name: "Bushman CZ"
+        locale: cs
 
     -   id: 2
-        name: 2.shopsys
-        locale: cs
-        styles_directory: domain2
+        name: "Bushman SK"
+        locale: sk
+
+    -   id: 3
+        name: "Bushman DE"
+        locale: de
