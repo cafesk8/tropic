@@ -6,14 +6,6 @@
     },
     "analysis": {
       "filter": {
-        "czech_stop": {
-          "type": "stop",
-          "stopwords": "_czech_"
-        },
-        "czech_stemmer": {
-          "type": "stemmer",
-          "language": "czech"
-        },
         "edge_ngram": {
           "type": "edgeNGram",
           "min_gram": 2,
@@ -44,8 +36,6 @@
           "tokenizer": "standard",
           "filter": [
             "lowercase",
-            "czech_stemmer",
-            "czech_stop",
             "asciifolding"
           ]
         },
