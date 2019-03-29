@@ -10,12 +10,34 @@ use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class LocalizationListenerTest extends TransactionFunctionalTestCase
 {
-    public function testProductDetailOnFirstDomainHasEnglishLocale()
+    public function testProductDetailOnFirstDomainHasCzechLocale()
     {
         /** @var \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter $router */
         $router = $this->getContainer()->get(CurrentDomainRouter::class);
-        $productUrl = $router->generate('front_product_detail', ['id' => 3], UrlGeneratorInterface::ABSOLUTE_URL);
+        $productUrl = $router->generate('front_product_detail', ['id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
 
+        $crawler = $this->getClient()->request('GET', $productUrl);
+
+        $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("Katalogové číslo")')->count()
+        );
+    }
+
+    /**
+     * @group multidomain
+     */
+    public function testProductDetailOnSecondDomainHasSlovakLocale()
+    {
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+
+        $domain->switchDomainById(2);
+
+        /** @var \Symfony\Component\Routing\RouterInterface $router */
+        $router = $this->getContainer()->get(DomainRouterFactory::class)->getRouter(2);
+        $productUrl = $router->generate('front_product_detail', ['id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->getClient()->request('GET', $productUrl);
 
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
@@ -28,22 +50,22 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
     /**
      * @group multidomain
      */
-    public function testProductDetailOnSecondDomainHasCzechLocale()
+    public function testProductDetailOnThirthDomainHasEnglishLocale()
     {
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
 
-        $domain->switchDomainById(2);
+        $domain->switchDomainById(3);
 
         /** @var \Symfony\Component\Routing\RouterInterface $router */
-        $router = $this->getContainer()->get(DomainRouterFactory::class)->getRouter(2);
-        $productUrl = $router->generate('front_product_detail', ['id' => 3], UrlGeneratorInterface::ABSOLUTE_URL);
+        $router = $this->getContainer()->get(DomainRouterFactory::class)->getRouter(3);
+        $productUrl = $router->generate('front_product_detail', ['id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
         $crawler = $this->getClient()->request('GET', $productUrl);
 
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Katalogové číslo")')->count()
+            $crawler->filter('html:contains("Catalogue number")')->count()
         );
     }
 }

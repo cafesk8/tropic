@@ -28,7 +28,7 @@ class ProductRenameRedirectPreviousUrlTest extends TransactionFunctionalTestCase
 
         /** @var \Shopsys\FrameworkBundle\Model\Product\Product $product */
         $productData = $productDataFactory->createFromProduct($product);
-        $productData->name['en'] = 'rename';
+        $productData->name['cs'] = 'rename';
 
         $productFacade->edit(self::TESTED_PRODUCT_ID, $productData);
 
