@@ -44,7 +44,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData = $this->transportDataFactory->create();
         $transportData->name = [
             'cs' => 'Česká pošta - balík do ruky',
-            'en' => 'Czech post',
+            'sk' => 'Česká pošta - balík do ruky',
+            'de' => 'Czech post',
         ];
         $transportData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('99.95'),
@@ -56,7 +57,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData = $this->transportDataFactory->create();
         $transportData->name = [
             'cs' => 'PPL',
-            'en' => 'PPL',
+            'sk' => 'PPL',
+            'de' => 'PPL',
         ];
         $transportData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('199.95'),
@@ -68,7 +70,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData = $this->transportDataFactory->create();
         $transportData->name = [
             'cs' => 'Osobní převzetí',
-            'en' => 'Personal collection',
+            'sk' => 'Osobní převzetí',
+            'de' => 'Personal collection',
         ];
         $transportData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
@@ -76,11 +79,13 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         ];
         $transportData->description = [
             'cs' => 'Uvítá Vás milý personál!',
-            'en' => 'You will be welcomed by friendly staff!',
+            'sk' => 'Uvítá Vás milý personál!',
+            'de' => 'You will be welcomed by friendly staff!',
         ];
         $transportData->instructions = [
             'cs' => 'Těšíme se na Vaši návštěvu.',
-            'en' => 'We are looking forward to your visit.',
+            'sk' => 'Těšíme se na Vaši návštěvu.',
+            'de' => 'We are looking forward to your visit.',
         ];
         $transportData->vat = $this->getReference(VatDataFixture::VAT_ZERO);
         $this->createTransport(self::TRANSPORT_PERSONAL, $transportData);

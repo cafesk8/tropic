@@ -248,13 +248,16 @@ class ProductDataFixtureLoader
      */
     public function updateProductDataFromCsvRowForSecondDomain(ProductData $productData, array $row)
     {
-        $domainId = 2;
-        $productData->descriptions[$domainId] = $row[$this->getDescriptionColumnForDomain($domainId)];
-        $productData->shortDescriptions[$domainId] = $row[$this->getShortDescriptionColumnForDomain($domainId)];
-        $productData->name['cs'] = $row[self::COLUMN_NAME_CS];
-        $this->setProductDataPricesFromCsv($row, $productData, $domainId);
-        $productData->categoriesByDomainId[$domainId] =
-            $this->getValuesByKeyString($row[self::COLUMN_CATEGORIES_2], $this->categories);
+        $domainIds = [2, 3];
+        foreach ($domainIds as $domainId) {
+            $locale = $this->domain->getDomainConfigById($domainId)->getLocale();
+            $productData->descriptions[$domainId] = $row[$this->getDescriptionColumnForDomain($domainId)];
+            $productData->shortDescriptions[$domainId] = $row[$this->getShortDescriptionColumnForDomain($domainId)];
+            $productData->name[$locale] = $row[self::COLUMN_NAME_EN];
+            $this->setProductDataPricesFromCsv($row, $productData, $domainId);
+            $productData->categoriesByDomainId[$domainId] =
+                $this->getValuesByKeyString($row[self::COLUMN_CATEGORIES_2], $this->categories);
+        }
     }
 
     /**
@@ -268,7 +271,9 @@ class ProductDataFixtureLoader
         switch ($locale) {
             case 'cs':
                 return self::COLUMN_SHORT_DESCRIPTION_CS;
-            case 'en':
+            case 'sk':
+                return self::COLUMN_SHORT_DESCRIPTION_CS;
+            case 'de':
                 return self::COLUMN_SHORT_DESCRIPTION_EN;
             default:
                 throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnsupportedLocaleException($locale);
@@ -286,7 +291,9 @@ class ProductDataFixtureLoader
         switch ($locale) {
             case 'cs':
                 return self::COLUMN_DESCRIPTION_CS;
-            case 'en':
+            case 'sk':
+                return self::COLUMN_DESCRIPTION_CS;
+            case 'de':
                 return self::COLUMN_DESCRIPTION_EN;
             default:
                 throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnsupportedLocaleException($locale);
@@ -336,7 +343,7 @@ class ProductDataFixtureLoader
     {
         if ($domainId === 1) {
             $manualPricesColumn = $row[self::COLUMN_MANUAL_PRICES_DOMAIN_1];
-        } elseif ($domainId === 2) {
+        } elseif ($domainId >= 2) {
             $manualPricesColumn = $row[self::COLUMN_MANUAL_PRICES_DOMAIN_2];
         }
         $manualPricesFromCsv = $this->getProductManualPricesIndexedByPricingGroupFromString($manualPricesColumn);
@@ -376,7 +383,9 @@ class ProductDataFixtureLoader
         switch ($this->domain->getDomainConfigById($domainId)->getLocale()) {
             case 'cs':
                 return self::COLUMN_NAME_CS;
-            case 'en':
+            case 'sk':
+                return self::COLUMN_NAME_CS;
+            case 'de':
                 return self::COLUMN_NAME_EN;
             default:
                 throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnsupportedLocaleException($this->domain->getDomainConfigById($domainId)->getLocale());

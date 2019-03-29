@@ -34,14 +34,14 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
         $cookies = $this->getReference(ArticleDataFixture::ARTICLE_COOKIES_1);
         /* @var $cookies \Shopsys\FrameworkBundle\Model\Article\Article */
 
-        $personalDataDisplaySiteContent = 'By entering an email below, you can view your personal information that we register in our online store. 
-        An email with a link will be sent to you after entering your email address, to verify your identity. 
-        Clicking on the link will take you to a page listing all the personal details we have connected to your email address.';
+        $personalDataDisplaySiteContent = 'Zadáním e-mailu níže si můžete nechat zobrazit vaše osobní údaje, která evidujeme v našem internetovém obchodu.
+         Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem. 
+         Klikem na odkaz se dostanete na stránku s přehledem těchto osobních údajů - půjde o všechny údaje evidované k dané e-mailové adrese.';
 
-        $personalDataExportSiteContent = 'By entering an email below, you can download your personal and other information (for example, order history)
-         from our online store. An email with a link will be sent to you after entering your email address, to verify your identity. 
-         Clicking on the link will take you to a page where you’ll be able to download these informations in readable format - it will be the data 
-         registered to given email address on this online store domain.';
+        $personalDataExportSiteContent = 'Zadáním e-mailu níže si můžete stáhnout své osobní a jiné informace (například historii objednávek)
+         z našeho internetového obchodu. Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem.
+         Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací ve strojově čitelném formátu - půjde o údaje
+         evidované k dané e-mailové adrese na této doméně internetového obchodu.';
 
         $this->setting->setForDomain(Setting::COOKIES_ARTICLE_ID, $cookies->getId(), Domain::FIRST_DOMAIN_ID);
         $this->setting->setForDomain(Setting::TERMS_AND_CONDITIONS_ARTICLE_ID, $termsAndConditions->getId(), Domain::FIRST_DOMAIN_ID);

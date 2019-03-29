@@ -183,7 +183,13 @@ class UserDataFixtureLoader
         $billingAddressData->street = $row[self::COLUMN_STREET];
         $billingAddressData->city = $row[self::COLUMN_CITY];
         $billingAddressData->postcode = $row[self::COLUMN_POSTCODE];
-        $billingAddressData->country = $this->getCountryByNameAndDomain($row[self::COLUMN_COUNTRY], $domainId);
+        $countryName = $row[self::COLUMN_COUNTRY];
+        if ($countryName === 'Czech republic') {
+            $countryName = 'Česká republika';
+        } elseif ($countryName === 'Slovakia') {
+            $countryName = 'Slovenská republika';
+        }
+        $billingAddressData->country = $this->getCountryByNameAndDomain($countryName, $domainId);
         if ($row[self::COLUMN_DELIVERY_ADDRESS_FILLED] === 'true') {
             $deliveryAddressData = $this->deliveryAddressDataFactory->create();
             $deliveryAddressData->addressFilled = true;
@@ -194,7 +200,13 @@ class UserDataFixtureLoader
             $deliveryAddressData->postcode = $row[self::COLUMN_DELIVERY_POSTCODE];
             $deliveryAddressData->street = $row[self::COLUMN_DELIVERY_STREET];
             $deliveryAddressData->telephone = $row[self::COLUMN_DELIVERY_TELEPHONE];
-            $deliveryAddressData->country = $this->getCountryByNameAndDomain($row[self::COLUMN_DELIVERY_COUNTRY], $domainId);
+            $countryName = $row[self::COLUMN_DELIVERY_COUNTRY];
+            if ($countryName === 'Czech republic') {
+                $countryName = 'Česká republika';
+            } elseif ($countryName === 'Slovakia') {
+                $countryName = 'Slovenská republika';
+            }
+            $deliveryAddressData->country = $this->getCountryByNameAndDomain($countryName, $domainId);
             $customerData->deliveryAddressData = $deliveryAddressData;
         } else {
             $customerData->deliveryAddressData = $this->deliveryAddressDataFactory->create();

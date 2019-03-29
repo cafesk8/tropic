@@ -68,6 +68,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Elektro',
+            'sk' => 'Elektro',
             'en' => 'Electronics',
         ];
         $categoryData->descriptions = array_merge(
@@ -83,7 +84,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Televize, audio',
-            'en' => 'TV, audio',
+            'sk' => 'Televize, audio',
+            'de' => 'TV, audio',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -97,7 +99,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Fotoaparáty',
-            'en' => 'Cameras & Photo',
+            'sk' => 'Fotoaparáty',
+            'de' => 'Cameras & Photo',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -110,7 +113,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Tiskárny',
-            'en' => 'Printers',
+            'sk' => 'Tiskárny',
+            'de' => 'Printers',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -123,7 +127,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Počítače & příslušenství',
-            'en' => 'Personal Computers & accessories',
+            'sk' => 'Počítače & příslušenství',
+            'de' => 'Personal Computers & accessories',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -138,7 +143,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Mobilní telefony',
-            'en' => 'Mobile Phones',
+            'sk' => 'Mobilní telefony',
+            'de' => 'Mobile Phones',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -153,7 +159,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Kávovary',
-            'en' => 'Coffee Machines',
+            'sk' => 'Kávovary',
+            'de' => 'Coffee Machines',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -169,7 +176,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Knihy',
-            'en' => 'Books',
+            'sk' => 'Knihy',
+            'de' => 'Books',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -185,7 +193,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Hračky a další',
-            'en' => 'Toys',
+            'sk' => 'Hračky a další',
+            'de' => 'Toys',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -199,7 +208,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Zahradní náčiní',
-            'en' => 'Garden tools',
+            'sk' => 'Zahradní náčiní',
+            'de' => 'Garden tools',
         ];
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
@@ -212,7 +222,8 @@ class CategoryDataFixture extends AbstractReferenceFixture
 
         $categoryData->name = [
             'cs' => 'Jídlo',
-            'en' => 'Food',
+            'sk' => 'Jídlo',
+            'de' => 'Food',
         ];
         $categoryData->descriptions = array_merge(
             $this->createDomainKeyedArray(),
