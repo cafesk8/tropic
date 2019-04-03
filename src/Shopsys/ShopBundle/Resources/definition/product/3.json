@@ -6,13 +6,13 @@
     },
     "analysis": {
       "filter": {
-        "english_stop": {
+        "german_stop": {
           "type": "stop",
-          "stopwords": "_english_"
+          "stopwords": "_german_"
         },
-        "english_stemmer": {
+        "german_stemmer": {
           "type": "stemmer",
-          "language": "english"
+          "language": "german"
         },
         "edge_ngram": {
           "type": "edgeNGram",
@@ -44,8 +44,8 @@
           "tokenizer": "standard",
           "filter": [
             "lowercase",
-            "english_stemmer",
-            "english_stop",
+            "german_stemmer",
+            "german_stop",
             "asciifolding"
           ]
         },
