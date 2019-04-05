@@ -67,3 +67,8 @@ services:
     Shopsys\ShopBundle\Form\Admin\ParameterFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\Parameter\ParameterFormType}
+
+    Shopsys\FrameworkBundle\Form\WysiwygTypeExtension:
+        class: Shopsys\ShopBundle\Form\WysiwygTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Ivory\CKEditorBundle\Form\Type\CKEditorType }
