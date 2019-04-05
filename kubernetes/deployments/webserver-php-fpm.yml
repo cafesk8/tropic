@@ -5,6 +5,7 @@ metadata:
     labels:
         app: webserver-php-fpm
 spec:
+    progressDeadlineSeconds: 300
     replicas: 1
     strategy:
         rollingUpdate:
@@ -55,30 +56,12 @@ spec:
                 -   name: parameters
                     mountPath: /var/www/html/app/config/parameters.yml
                     subPath: parameters.yml
-            -   name: initialize-database
-                image: ~
-                securityContext:
-                    runAsUser: 33
-                command: ["sh", "-c", "cd /var/www/html && ./phing db-create dirs-create db-demo product-search-recreate-structure product-search-export-products grunt error-pages-generate warmup"]
-                volumeMounts:
-                -   name: source-codes
-                    mountPath: /var/www/html
-                -   name: domains-urls
-                    mountPath: /var/www/html/app/config/domains_urls.yml
-                    subPath: domains_urls.yml
-                -   name: parameters
-                    mountPath: /var/www/html/app/config/parameters.yml
-                    subPath: parameters.yml
-                env:
-                -   name: GOOGLE_CLOUD_STORAGE_BUCKET_NAME
-                    value: ~
-                -   name: GOOGLE_CLOUD_PROJECT_ID
-                    value: ~
             containers:
             -   image: ~
                 name: php-fpm
                 securityContext:
                     runAsUser: 33
+                imagePullPolicy: Always
                 workingDir: /var/www/html
                 volumeMounts:
                 -   name: source-codes
@@ -90,9 +73,17 @@ spec:
                     mountPath: /var/www/html/app/config/parameters.yml
                     subPath: parameters.yml
                 env:
-                -   name: GOOGLE_CLOUD_STORAGE_BUCKET_NAME
+                -   name: S3_API_HOST
                     value: ~
-                -   name: GOOGLE_CLOUD_PROJECT_ID
+                -   name: S3_API_USERNAME
+                    value: ~
+                -   name: S3_API_PASSWORD
+                    value: ~
+                -   name: S3_API_BUCKET_NAME
+                    value: ~
+                -   name: REDIS_PREFIX
+                    value: ~
+                -   name: ELASTIC_SEARCH_INDEX_PREFIX
                     value: ~
             -   image: nginx:1.13.10-alpine
                 name: webserver
@@ -109,3 +100,5 @@ spec:
                         exec:
                             command:
                             -   nginx -s quit
+            imagePullSecrets:
+            -   name: dockerhub

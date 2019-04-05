@@ -18,6 +18,14 @@ services:
         resource: '../../**/*{Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
         exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
+    Predis\Client:
+        arguments:
+            -   host: 'redis'
+                scheme: 'redis'
+
+    NinjaMutex\Lock\LockInterface:
+        class: NinjaMutex\Lock\PredisRedisLock
+
     League\Flysystem\MountManager:
         arguments:
             -
@@ -126,6 +134,15 @@ services:
         arguments:
             - "%shopsys.performance_data.order.total_count%"
             - "%shopsys.performance_data.order.item_count_per_order%"
+
+    Shopsys\ShopBundle\Component\FileSystem\FileSystemFactoryDecorator:
+        decorates: Shopsys\FrameworkBundle\Component\Filesystem\MainFilesystemFactory
+        arguments:
+            $inner: '@Shopsys\ShopBundle\Component\FileSystem\FilesystemFactoryDecorator.inner'
+            $s3ApiHost: '%env(S3_API_HOST)%'
+            $s3ApiUsername: '%env(S3_API_USERNAME)%'
+            $s3ApiPassword: '%env(S3_API_PASSWORD)%'
+            $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
 
     Shopsys\ShopBundle\DataFixtures\Performance\ProductDataFixture:
         arguments:

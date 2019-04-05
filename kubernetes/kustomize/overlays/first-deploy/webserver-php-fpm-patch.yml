@@ -1,0 +1,28 @@
+-   op: add
+    path: /spec/template/spec/initContainers/-
+    value:
+        name: init-application
+        image: ~
+        command: ["sh", "-c", "cd /tmp/source-codes && ./phing clean dirs-create db-import-basic-structure create-domains-data db-migrations product-search-recreate-structure product-search-export-products grunt error-pages-generate warmup"]
+        volumeMounts:
+        -   name: source-codes
+            mountPath: /tmp/source-codes
+        -   name: domains-urls
+            mountPath: /var/www/html/app/config/domains_urls.yml
+            subPath: domains_urls.yml
+        -   name: parameters
+            mountPath: /var/www/html/app/config/parameters.yml
+            subPath: parameters.yml
+        env:
+        -   name: S3_API_HOST
+            value: ~
+        -   name: S3_API_USERNAME
+            value: ~
+        -   name: S3_API_PASSWORD
+            value: ~
+        -   name: S3_API_BUCKET_NAME
+            value: ~
+        -   name: REDIS_PREFIX
+            value: ~
+        -   name: ELASTIC_SEARCH_INDEX_PREFIX
+            value: ~

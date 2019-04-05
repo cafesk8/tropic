@@ -1,0 +1,87 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+    name: cron-executor
+spec:
+    schedule: "1/5 * * * *"
+    jobTemplate:
+        spec:
+            template:
+                spec:
+                    volumes:
+                    -   name: source-codes
+                        emptyDir: {}
+                    -   name: domains-urls
+                        configMap:
+                            name: domains-urls
+                    -   name: parameters
+                        configMap:
+                            name: parameters
+                    initContainers:
+                    -   name: copy-source-codes-to-volume
+                        image: ~
+                        command: ["sh", "-c", "cp -r /var/www/html/. /tmp/source-codes"]
+                        volumeMounts:
+                        -   name: source-codes
+                            mountPath: /tmp/source-codes
+                    -   name: upgrade-application
+                        image: ~
+                        command: ["sh", "-c", "cd /tmp/source-codes && ./phing grunt"]
+                        volumeMounts:
+                        -   name: source-codes
+                            mountPath: /tmp/source-codes
+                        -   name: domains-urls
+                            mountPath: /var/www/html/app/config/domains_urls.yml
+                            subPath: domains_urls.yml
+                        -   name: parameters
+                            mountPath: /var/www/html/app/config/parameters.yml
+                            subPath: parameters.yml
+                        env:
+                        -   name: S3_API_HOST
+                            value: ~
+                        -   name: S3_API_USERNAME
+                            value: ~
+                        -   name: S3_API_PASSWORD
+                            value: ~
+                        -   name: S3_API_BUCKET_NAME
+                            value: ~
+                        -   name: REDIS_PREFIX
+                            value: ~
+                        -   name: ELASTIC_SEARCH_INDEX_PREFIX
+                            value: ~
+                    containers:
+                    -   name: cron-executor
+                        image: ~
+                        args:
+                        -   /bin/sh
+                        -   -c
+                        -   ./phing cron
+                        securityContext:
+                            runAsUser: 33
+                        imagePullPolicy: Always
+                        workingDir: /var/www/html
+                        volumeMounts:
+                        -   name: source-codes
+                            mountPath: /var/www/html
+                        -   name: domains-urls
+                            mountPath: /var/www/html/app/config/domains_urls.yml
+                            subPath: domains_urls.yml
+                        -   name: parameters
+                            mountPath: /var/www/html/app/config/parameters.yml
+                            subPath: parameters.yml
+                        env:
+                        -   name: S3_API_HOST
+                            value: ~
+                        -   name: S3_API_USERNAME
+                            value: ~
+                        -   name: S3_API_PASSWORD
+                            value: ~
+                        -   name: S3_API_BUCKET_NAME
+                            value: ~
+                        -   name: REDIS_PREFIX
+                            value: ~
+                        -   name: ELASTIC_SEARCH_INDEX_PREFIX
+                            value: ~
+                    restartPolicy: Never
+                    imagePullSecrets:
+                    -   name: dockerhub
