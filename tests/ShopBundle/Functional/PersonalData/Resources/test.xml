@@ -34,7 +34,7 @@
     <customer_orders>
       <order>
         <variable_symbol>1523596513</variable_symbol>
-        <order_create_date>2018-04-13T00:00:00+00:00</order_create_date>
+        <order_create_date>2018-04-13T00:00:00+02:00</order_create_date>
         <order_canceled>0</order_canceled>
         <order_addresses>
           <address>
