@@ -137,3 +137,12 @@
             height: 200
             crop: false
             occurrence: 'Front-end: Brand page'
+
+-   name: store
+    class: Shopsys\ShopBundle\Model\Store\Store
+    sizes:
+        -   name: ~
+            width: 400
+            height: 250
+            crop: true
+            occurrence: 'Front-end: Store detail'

@@ -124,6 +124,9 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+msgid "Create new store"
+msgstr ""
+
 msgid "Creation date"
 msgstr ""
 
@@ -142,6 +145,9 @@ msgstr ""
 msgid "Delivery data"
 msgstr ""
 
+msgid "Description"
+msgstr ""
+
 msgid "Detail"
 msgstr ""
 
@@ -151,7 +157,13 @@ msgstr ""
 msgid "Displaying"
 msgstr ""
 
+msgid "Do you really want to remove this store?"
+msgstr ""
+
 msgid "Do you want to receive the newest information about our shop? Subscribe to our e-mail newsletter."
+msgstr ""
+
+msgid "Domain"
 msgstr ""
 
 msgid "Download"
@@ -170,6 +182,9 @@ msgid "E-mail with a link to the page with your personal data was sent to your e
 msgstr ""
 
 msgid "EAN"
+msgstr ""
+
+msgid "Editing store"
 msgstr ""
 
 msgid "Empty cart"
@@ -205,6 +220,7 @@ msgstr ""
 msgid "Go to cart"
 msgstr ""
 
+<<<<<<< HEAD
 msgid "GoPay"
 msgstr ""
 
@@ -215,6 +231,9 @@ msgid "GoPay payment method"
 msgstr ""
 
 msgid "GoPay payment status"
+=======
+msgid "Google Maps link"
+>>>>>>> bc758aa7e... admin: added new section for managing stores
 msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
@@ -295,6 +314,9 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgid "New store"
+msgstr ""
+
 msgid "No"
 msgstr ""
 
@@ -308,6 +330,9 @@ msgid "No products found for this brand"
 msgstr ""
 
 msgid "No results matching filter"
+msgstr ""
+
+msgid "No stores found."
 msgstr ""
 
 msgid "Note"
@@ -328,6 +353,9 @@ msgstr ""
 msgid "Oops! Error occurred."
 msgstr ""
 
+msgid "Opening hours"
+msgstr ""
+
 msgid "Operation failed"
 msgstr ""
 
@@ -346,10 +374,14 @@ msgstr "Order"
 msgid "Order completed"
 msgstr ""
 
+<<<<<<< HEAD
 msgid "Order could not be paid"
 msgstr ""
 
 msgid "Order has been created but there were problems during payment"
+=======
+msgid "Order in list"
+>>>>>>> bc758aa7e... admin: added new section for managing stores
 msgstr ""
 
 msgid "Order not found"
@@ -514,6 +546,9 @@ msgstr ""
 msgid "Selected product no longer available or doesn't exist."
 msgstr ""
 
+msgid "Selected store doesn't exist"
+msgstr ""
+
 msgid "Send"
 msgstr ""
 
@@ -545,6 +580,27 @@ msgid "Special offers"
 msgstr ""
 
 msgid "Status"
+msgstr ""
+
+msgid "Store <strong><a href=\"{{ url }}\">{{ name }}</a></strong> modified"
+msgstr ""
+
+msgid "Store <strong><a href=\"{{ url }}\">{{ name }}</a></strong> successfully created"
+msgstr ""
+
+msgid "Store <strong>{{ name }}</strong> has been removed"
+msgstr ""
+
+msgid "Store detail"
+msgstr ""
+
+msgid "Store doesn't exist"
+msgstr ""
+
+msgid "Stores"
+msgstr ""
+
+msgid "Stores overview"
 msgstr ""
 
 msgid "Street"
@@ -704,6 +760,9 @@ msgid "products"
 msgstr ""
 
 msgid "records"
+msgstr ""
+
+msgid "stores"
 msgstr ""
 
 msgid "{0} No product found | {1} 1 product found | [2,Inf] %totalProductCount% product found"

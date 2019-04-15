@@ -19,14 +19,23 @@ msgstr "Jméno nesmí být delší než {{ limit }} znaků"
 msgid "First name of contact person cannot be longer then {{ limit }} characters"
 msgstr "Jméno kontaktní osoby nesmí být delší než {{ limit }} znaků"
 
+msgid "Google Maps link cannot be longer than {{ limit }} characters"
+msgstr "Link na Google mapy nesmí být delší než {{ limit }} znaků"
+
 msgid "Identification number cannot be longer then {{ limit }} characters"
 msgstr "IČ nesmí být delší než {{ limit }} znaků"
+
+msgid "Image can be only in JPG, GIF or PNG format"
+msgstr "Obrázek může být pouze ve formátu JPG, GIF a PNG"
 
 msgid "Last name cannot be longer than {{ limit }} characters"
 msgstr "Příjmení nesmí být delší než {{ limit }} znaků"
 
 msgid "Last name of contact person cannot be longer than {{ limit }} characters"
 msgstr "Příjmení kontaktní osoby nesmí být delší než {{ limit }} znaků"
+
+msgid "Opening hours cannot be longer than {{ limit }} characters"
+msgstr "Otevírací doba nesmí být delší než {{ limit }} znaků"
 
 msgid "Password cannot be longer then {{ limit }} characters"
 msgstr "Heslo musí mít minimálně {{ limit }} znaků"
@@ -85,6 +94,9 @@ msgstr "Vyplňte prosím příjmení"
 msgid "Please enter last name of contact person"
 msgstr "Vyplňte prosím příjmení kontaktní osoby"
 
+msgid "Please enter name of a store"
+msgstr "Vyplňte prosím jméno prodejny"
+
 msgid "Please enter password"
 msgstr "Vyplňte prosím heslo"
 
@@ -109,11 +121,17 @@ msgstr "Zadejte prosím platné množství"
 msgid "Please enter zip code"
 msgstr "Vyplňte prosím PSČ"
 
+msgid "Position in list cannot be longer than {{ limit }} characters"
+msgstr "Pořadí na výpise nesmí být delší než {{ limit }} znaků"
+
 msgid "Price must be greater or equal to zero"
 msgstr "Cena musí být větší nebo rovna nule"
 
 msgid "Quantity must be greater than {{ compared_value }}"
 msgstr "Množství musí být větší než {{ compared_value }}"
+
+msgid "Store name cannot be longer than {{ limit }} characters"
+msgstr "Název obchodu nesmí být delší než {{ limit }} znaků"
 
 msgid "Street name cannot be longer than {{ limit }} characters"
 msgstr "Název ulice nesmí být delší než {{ limit }} znaků"
@@ -126,6 +144,9 @@ msgstr "Telefon nesmí být delší než {{ limit }} znaků"
 
 msgid "This e-mail is already registered"
 msgstr "Tento e-mail je již registrován"
+
+msgid "Uploaded image is to large ({{ size }} {{ suffix }}). Maximum size of an image is {{ limit }} {{ suffix }}."
+msgstr "Nahraný obrázek je příliš veliký ({{ size }} {{ suffix }}). Maximální velikost obrázku je {{ limit }} {{ suffix }}."
 
 msgid "You have to agree with privacy policy"
 msgstr "Musíte souhlasit se zpracováním osobních údajů"

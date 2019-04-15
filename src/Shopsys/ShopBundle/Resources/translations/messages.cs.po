@@ -124,6 +124,9 @@ msgstr "Pokračovat v objednávce"
 msgid "Country"
 msgstr "Stát"
 
+msgid "Create new store"
+msgstr "Vytvořit novou prodejnu"
+
 msgid "Creation date"
 msgstr "Datum vytvoření"
 
@@ -142,6 +145,9 @@ msgstr "Dodací adresa"
 msgid "Delivery data"
 msgstr "Dodací údaje"
 
+msgid "Description"
+msgstr "Popis"
+
 msgid "Detail"
 msgstr "Detail"
 
@@ -151,8 +157,14 @@ msgstr "Sleva"
 msgid "Displaying"
 msgstr "Zobrazuji"
 
+msgid "Do you really want to remove this store?"
+msgstr "Opravdu si přejete odstranit tuto prodejnu?"
+
 msgid "Do you want to receive the newest information about our shop? Subscribe to our e-mail newsletter."
 msgstr "Chcete dostávat nejnovější informace z našeho obchodu? Přihlašte se do našeho e-mailového zpravodaje."
+
+msgid "Domain"
+msgstr "Doména"
 
 msgid "Download"
 msgstr "Stáhnout"
@@ -171,6 +183,9 @@ msgstr "E-mail s odkazem na stránku s údaji o osobních údajích byl odeslán
 
 msgid "EAN"
 msgstr "EAN"
+
+msgid "Editing store"
+msgstr ""
 
 msgid "Empty cart"
 msgstr "Prázdný nákupní košík"
@@ -204,6 +219,9 @@ msgstr "Celé jméno"
 
 msgid "Go to cart"
 msgstr "Přejít do košíku"
+
+msgid "Google Maps link"
+msgstr "Google Maps link"
 
 msgid "GoPay"
 msgstr "GoPay"
@@ -295,6 +313,9 @@ msgstr "Mé objednávky"
 msgid "Name"
 msgstr "Název"
 
+msgid "New store"
+msgstr "Nová prodejna"
+
 msgid "No"
 msgstr "Ne"
 
@@ -309,6 +330,9 @@ msgstr "Pro tuto značku nebyly nalezeny žádné produkty"
 
 msgid "No results matching filter"
 msgstr "Filtru neodpovídají žádné výsledky"
+
+msgid "No stores found."
+msgstr "Nebyly nalezeny žádné prodejny."
 
 msgid "Note"
 msgstr "Poznámka"
@@ -327,6 +351,9 @@ msgstr "Internetový obchod"
 
 msgid "Oops! Error occurred."
 msgstr "Jejda! Nastala chyba."
+
+msgid "Opening hours"
+msgstr "Otevírací doba"
 
 msgid "Operation failed"
 msgstr "Operace se nezdařila"
@@ -351,6 +378,9 @@ msgstr "Objednávku se nepodařio zaplatit"
 
 msgid "Order has been created but there were problems during payment"
 msgstr "Objednávka byla dokončena a odeslána, ale nastaly potíže během placení"
+
+msgid "Order in list"
+msgstr "Pořadí na výpise"
 
 msgid "Order not found"
 msgstr "Objednávka nebyla nalezena"
@@ -433,6 +463,9 @@ msgstr "Prosím zkontrolujte, zda jste správně zadali množství veškerých p
 msgid "Popular categories"
 msgstr "Rozcestník kategorií"
 
+msgid "Position in list"
+msgstr "Pozice na výpise"
+
 msgid "Postcode"
 msgstr "PSČ"
 
@@ -514,6 +547,9 @@ msgstr "Vyhledávání"
 msgid "Selected product no longer available or doesn't exist."
 msgstr "Zvolené zboží již není v nabídce nebo neexistuje."
 
+msgid "Selected store doesn't exist"
+msgstr "Vybraná prodejna neexistuje"
+
 msgid "Send"
 msgstr "Odeslat"
 
@@ -546,6 +582,27 @@ msgstr "Akční zboží"
 
 msgid "Status"
 msgstr "Stav"
+
+msgid "Store <strong><a href=\"{{ url }}\">{{ name }}</a></strong> modified"
+msgstr "Prodejna <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byla upravena"
+
+msgid "Store <strong><a href=\"{{ url }}\">{{ name }}</a></strong> successfully created"
+msgstr "Prodejna <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byla úspěšně vytvořena"
+
+msgid "Store <strong>{{ name }}</strong> has been removed"
+msgstr "Prodejna <strong>{{ name }}</strong> byla odstraněna"
+
+msgid "Store detail"
+msgstr "Detail prodejny"
+
+msgid "Store doesn't exist"
+msgstr "Prodejna neexistuje"
+
+msgid "Stores"
+msgstr "Prodejny"
+
+msgid "Stores overview"
+msgstr "Přehled prodejen"
 
 msgid "Street"
 msgstr "Ulice"
@@ -705,6 +762,9 @@ msgstr "zboží"
 
 msgid "records"
 msgstr "záznamů"
+
+msgid "stores"
+msgstr "prodejen"
 
 msgid "{0} No product found | {1} 1 product found | [2,Inf] %totalProductCount% product found"
 msgstr "{0} Nebyl nalezen žádný produkt | {1} Celkem nalezen 1 produkt | [2,4] Celkem nalezeny %totalProductCount% produkty | [5,Inf] Celkem nalezeno %totalProductCount% produktů"
