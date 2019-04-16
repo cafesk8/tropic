@@ -48,6 +48,14 @@ class StoreFacade
     }
 
     /**
+     * @return \Shopsys\ShopBundle\Model\Store\Store[]
+     */
+    public function getAll(): array
+    {
+        return $this->storeRepository->getAll();
+    }
+
+    /**
      * @param int $storeId
      * @return \Shopsys\ShopBundle\Model\Store\Store|null
      */

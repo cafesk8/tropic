@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Store\StoreData;
 use Shopsys\ShopBundle\Model\Store\StoreDataFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
@@ -16,10 +17,6 @@ class StoreDataFixture extends AbstractReferenceFixture
     public const REFERENCE_STORE_OSTRAVA_AVION = 'store_ostrava_avion';
     public const REFERENCE_STORE_BRATISLAVA_AUPARK = 'store_bratislava_aupark';
     public const REFERENCE_STORE_NEMARKT = 'store_neumarkt';
-
-    private const CZECH_DOMAIN = 1;
-    private const SLOVAK_DOMAIN = 2;
-    private const GERMAN_DOMAIN = 3;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Store\StoreFacade
@@ -62,7 +59,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $storeData = $this->storeDataFactory->create();
 
         $storeData->description = $description;
-        $storeData->domainId = self::CZECH_DOMAIN;
+        $storeData->domainId = DomainHelper::CZECH_DOMAIN;
         $storeData->name = 'Brno Futurum';
         $storeData->city = 'Brno';
         $storeData->street = 'Vídeňská 100';
@@ -71,7 +68,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $this->createStore($storeData, self::REFERENCE_STORE_BRNO_FUTURUM);
 
         $storeData->description = $description;
-        $storeData->domainId = self::CZECH_DOMAIN;
+        $storeData->domainId = DomainHelper::CZECH_DOMAIN;
         $storeData->name = 'Ostrava Avion';
         $storeData->city = 'Ostrava';
         $storeData->street = 'Rudná 114';
@@ -80,7 +77,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $this->createStore($storeData, self::REFERENCE_STORE_OSTRAVA_AVION);
 
         $storeData->description = $description;
-        $storeData->domainId = self::SLOVAK_DOMAIN;
+        $storeData->domainId = DomainHelper::SLOVAK_DOMAIN;
         $storeData->name = 'SC AUPARK';
         $storeData->city = 'Bratislava';
         $storeData->street = 'Einsteinova 3541/18';
@@ -89,7 +86,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $this->createStore($storeData, self::REFERENCE_STORE_BRATISLAVA_AUPARK);
 
         $storeData->description = $description;
-        $storeData->domainId = self::GERMAN_DOMAIN;
+        $storeData->domainId = DomainHelper::GERMAN_DOMAIN;
         $storeData->name = 'Bushman Germany GmbH';
         $storeData->city = 'Neumarkt';
         $storeData->street = 'Sachsenstraße 2';

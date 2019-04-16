@@ -106,6 +106,9 @@ msgstr ""
 msgid "Please enter quantity"
 msgstr ""
 
+msgid "Please enter stock in correct format (positive number >= 0)"
+msgstr ""
+
 msgid "Please enter street"
 msgstr ""
 

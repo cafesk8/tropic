@@ -66,4 +66,12 @@ class StoreRepository
             ->where('s.domainId = :domainId')
             ->setParameter('domainId', $domainId);
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Store\Store[]
+     */
+    public function getAll(): array
+    {
+        return $this->getStoreRepository()->findAll();
+    }
 }

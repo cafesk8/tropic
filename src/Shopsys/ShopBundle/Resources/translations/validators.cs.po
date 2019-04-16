@@ -106,6 +106,9 @@ msgstr "Prosím zadejte cenu v platném formátu (kladné číslo s desetinnou �
 msgid "Please enter quantity"
 msgstr "Vyplňte prosím množství"
 
+msgid "Please enter stock in correct format (positive number >= 0)"
+msgstr "Vyplňte prosím skladovou zásobu ve správném formátu (kladné číslo >= 0)"
+
 msgid "Please enter street"
 msgstr "Vyplňte prosím ulici"
 

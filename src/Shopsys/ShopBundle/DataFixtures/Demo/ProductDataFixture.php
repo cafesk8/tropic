@@ -70,6 +70,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $productsByCatnum = [];
         foreach ($csvRows as $row) {
             $productData = $this->productDataFixtureLoader->createProductDataFromRowForFirstDomain($row);
+            $this->addFakeStoreStocks($productData);
             $product = $this->createProduct(self::PRODUCT_PREFIX . $productNo, $productData);
 
             if ($product->getCatnum() !== null) {
@@ -125,5 +126,19 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     public function getDependencies()
     {
         return ProductDataFixtureReferenceInjector::getDependenciesForFirstDomain();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     */
+    private function addFakeStoreStocks(ProductData $productData)
+    {
+        $fakeStoreData = [];
+
+        for ($i = 1; $i <= 4; $i++) {
+            $fakeStoreData[$i] = rand(0, 125);
+        }
+
+        $productData->stockQuantityByStoreId = $fakeStoreData;
     }
 }

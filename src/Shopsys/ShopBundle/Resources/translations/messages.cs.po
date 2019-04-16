@@ -185,7 +185,7 @@ msgid "EAN"
 msgstr "EAN"
 
 msgid "Editing store"
-msgstr ""
+msgstr "Editace prodejny"
 
 msgid "Empty cart"
 msgstr "Prázdný nákupní košík"
@@ -583,6 +583,12 @@ msgstr "Akční zboží"
 msgid "Status"
 msgstr "Stav"
 
+msgid "Stock in stores"
+msgstr "Skladové zásoby na prodejnách"
+
+msgid "Store"
+msgstr "Prodejna"
+
 msgid "Store <strong><a href=\"{{ url }}\">{{ name }}</a></strong> modified"
 msgstr "Prodejna <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byla upravena"
 
@@ -756,6 +762,9 @@ msgstr "z"
 
 msgid "from %price%"
 msgstr "od %price%"
+
+msgid "on stock"
+msgstr "na skladě"
 
 msgid "products"
 msgstr "zboží"

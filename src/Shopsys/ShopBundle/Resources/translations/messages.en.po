@@ -582,6 +582,12 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
+msgid "Stock in stores"
+msgstr ""
+
+msgid "Store"
+msgstr ""
+
 msgid "Store <strong><a href=\"{{ url }}\">{{ name }}</a></strong> modified"
 msgstr ""
 
@@ -754,6 +760,9 @@ msgid "from"
 msgstr ""
 
 msgid "from %price%"
+msgstr ""
+
+msgid "on stock"
 msgstr ""
 
 msgid "products"
