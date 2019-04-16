@@ -10,16 +10,16 @@ monolog:
                 - ^/
         nested:
             type: stream
-            path: "%shopsys.log_stream%"
+            path: "%shopsys.log_stream%/nested"
             level: debug
         cron:
             type: stream
-            path: "%shopsys.log_stream%"
+            path: "%shopsys.log_stream%/cron"
             channels: cron
             level: debug
         slow:
             type: stream
-            path: "%shopsys.log_stream%"
+            path: "%shopsys.log_stream%/slow"
             channels: slow
             level: debug
         # display cron.DEBUG messages in console for -v, -vv and -vvv verbosities
