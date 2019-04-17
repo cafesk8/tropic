@@ -10,8 +10,8 @@
 
     <target name="checks" depends="db-check-mapping,standards,tests" description="Checks ORM mapping, coding standards and runs unit, DB and smoke tests."/>
     <target name="checks-diff" depends="db-check-mapping,standards-diff,tests" description="Checks ORM mapping, coding standards on changed files and runs unit, DB and smoke tests."/>
-    <target name="checks-ci" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke,tests-acceptance" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
-    <target name="checks-ci-diff" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke,tests-acceptance" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
+    <target name="checks-ci" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
+    <target name="checks-ci-diff" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
 
     <target name="standards" depends="phplint,ecs,phpstan,twig-lint,yaml-lint,eslint-check" description="Checks coding standards."/>
     <target name="standards-diff" depends="phplint-diff,ecs-diff,phpstan,twig-lint-diff,yaml-lint,eslint-check-diff" description="Checks coding standards on changed files."/>
