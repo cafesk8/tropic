@@ -1,14 +1,14 @@
 firstName;lastName;email;password;company;companyName;companyNumber;companyTaxNumber;street;city;postcode;telephone;country;deliveryAddressFilled;dCity;dCompanyName;dFirstName;dLastName;dPostcode;dStreet;dTelephone;dCountry;domainId
-JaromÌr;J·gr;no-reply@shopsys.com;user123;true;Shopsys;123456;;Hlubinsk·;Ostrava;70200;605000123;»esk· republika;false;;;;;;;;;1
-Jana;AnovËÌnov·;no-reply.2@shopsys.com;no-reply.2;false;;;;;Aû;;;»esk· republika;false;;;;;;;;;2
-Igor;Anpilogov;no-reply.3@shopsys.com;no-reply.3;false;;;;;Budiöov nad Budiöovkou;;;»esk· republika;false;;;;;;;;;1
-Ida;Anpilogova;no-reply.4@shopsys.com;no-reply.4;false;;;;;Praha;;;»esk· republika;false;;;;;;;;;2
-Hana;Anrejsov·;no-reply.5@shopsys.com;no-reply.5;false;;;;;Brno;;;»esk· republika;false;;;;;;;;;1
-Petr;Anrig;no-reply.6@shopsys.com;no-reply.6;false;;;;;JesenÌk;;;»esk· republika;true;Opava;;;;70000;Ostravsk·;;»esk· republika;2
-Silva;Anrigov·;no-reply.7@shopsys.com;no-reply.7;false;;;;;Ostrava;;;»esk· republika;false;;;;;;;;;2
-Derick;Ansah;no-reply.8@shopsys.com;no-reply.8;false;;;;;Opava;;;»esk· republika;false;;;;;;;;;2
-Alexandr;Ton;no-reply.9@shopsys.com;no-reply.9;false;;;;Na Strzi 3;BohumÌn;69084;;»esk· republika;false;;;;;;;;;1
-Pavel;NedvÏd;no-reply.10@shopsys.com;no-reply.10;false;;;;TurÌnsk· 5;TurÌn;12345;606060606;»esk· republika;true;Bahamy;;;;99999;Bahamsk· 99;;»esk· republika;1
-Rostislav;VÌtek;vitek@shopsys.com;user123;true;Shopsys;123456;123456;Hlubinsk·;Ostrava;70200;605000123;»esk· republika;true;Ostrava;Rockpoint;Eva;Wallicov·;70030;Rudn·;123456789;»esk· republika;1
-Johny;English;no-reply@shopsys.com;user123;true;Shopsys;123456;;Hlubinsk·;Ostrava;70200;603123456;»esk· republika;false;London;;;;;;;;2
-ºubomÌr;Nov·k;No-reply.11@shopsys.com;test123;false;;;;BrnÏnsk·;Bratislava;1010;;Slovensk· republika;true;Bratislava;;;;10100;Ostravsk· 55/65A;758686320;Slovensk· republika;1
+Jarom√≠r;J√°gr;no-reply@shopsys.com;user123;true;Shopsys;123456;;Hlubinsk√°;Ostrava;70200;605000123;Czech republic;false;;;;;;;;;1
+Jana;Anovƒç√≠nov√°;no-reply.2@shopsys.com;no-reply.2;false;;;;;A≈æ;;;Czech republic;false;;;;;;;;;2
+Igor;Anpilogov;no-reply.3@shopsys.com;no-reply.3;false;;;;;Budi≈°ov nad Budi≈°ovkou;;;Czech republic;false;;;;;;;;;1
+Ida;Anpilogova;no-reply.4@shopsys.com;no-reply.4;false;;;;;Praha;;;Czech republic;false;;;;;;;;;2
+Hana;Anrejsov√°;no-reply.5@shopsys.com;no-reply.5;false;;;;;Brno;;;Czech republic;false;;;;;;;;;1
+Petr;Anrig;no-reply.6@shopsys.com;no-reply.6;false;;;;;Jesen√≠k;;;Czech republic;true;Opava;;;;70000;Ostravsk√°;;Czech republic;2
+Silva;Anrigov√°;no-reply.7@shopsys.com;no-reply.7;false;;;;;Ostrava;;;Czech republic;false;;;;;;;;;2
+Derick;Ansah;no-reply.8@shopsys.com;no-reply.8;false;;;;;Opava;;;Czech republic;false;;;;;;;;;2
+Alexandr;Ton;no-reply.9@shopsys.com;no-reply.9;false;;;;Na Strzi 3;Bohum√≠n;69084;;Czech republic;false;;;;;;;;;1
+Pavel;Nedvƒõd;no-reply.10@shopsys.com;no-reply.10;false;;;;Tur√≠nsk√° 5;Tur√≠n;12345;606060606;Czech republic;true;Bahamy;;;;99999;Bahamsk√° 99;;Czech republic;1
+Rostislav;V√≠tek;vitek@shopsys.com;user123;true;Shopsys;123456;123456;Hlubinsk√°;Ostrava;70200;605000123;Czech republic;true;Ostrava;Rockpoint;Eva;Wallicov√°;70030;Rudn√°;123456789;Czech republic;1
+Johny;English;no-reply@shopsys.com;user123;true;Shopsys;123456;;Hlubinsk√°;Ostrava;70200;603123456;Czech republic;false;London;;;;;;;;2
+ƒΩubom√≠r;Nov√°k;No-reply.11@shopsys.com;test123;false;;;;Brnƒõnsk√°;Bratislava;1010;;Slovakia;true;Bratislava;;;;10100;Ostravsk√° 55/65A;758686320;Slovakia;1
