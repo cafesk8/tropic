@@ -108,6 +108,6 @@ class OrderPage extends AbstractPage
 
     public function acceptLegalConditions()
     {
-        $this->tester->checkOptionByLabel('I agree with terms and conditions and privacy policy.');
+        $this->tester->checkOptionByLabel('Souhlasím s obchodními podmínkami a zpracováním osobních údajů.');
     }
 }

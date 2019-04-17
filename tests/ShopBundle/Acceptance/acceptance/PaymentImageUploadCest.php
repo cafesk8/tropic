@@ -11,7 +11,7 @@ class PaymentImageUploadCest
     const IMAGE_UPLOAD_FIELD_ID = 'payment_form_image_image_file';
     const SAVE_BUTTON_NAME = 'payment_form[save]';
 
-    const EXPECTED_SUCCESS_MESSAGE = 'Payment Credit card modified';
+    const EXPECTED_SUCCESS_MESSAGE = 'Byla upravena platba Kreditní kartou';
 
     const TEST_IMAGE_NAME = 'paymentTestImage.png';
 

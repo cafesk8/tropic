@@ -23,21 +23,21 @@ class OrderCest
     ) {
         $me->wantTo('have my payment and transport remembered by order');
 
-        $me->amOnPage('/tv-audio/');
+        $me->amOnPage('/televize-audio/');
         $productListPage->addProductToCartByName('Defender 2.0 SPK-480');
-        $me->clickByText('Go to cart');
-        $me->clickByText('Order');
+        $me->clickByText('Přejít do košíku');
+        $me->clickByText('Objednat');
 
-        $orderPage->assertTransportIsNotSelected('Czech post');
-        $orderPage->selectTransport('Czech post');
-        $orderPage->assertPaymentIsNotSelected('Cash on delivery');
-        $orderPage->selectPayment('Cash on delivery');
+        $orderPage->assertTransportIsNotSelected('Česká pošta - balík do ruky');
+        $orderPage->selectTransport('Česká pošta - balík do ruky');
+        $orderPage->assertPaymentIsNotSelected('Dobírka');
+        $orderPage->selectPayment('Dobírka');
         $me->waitForAjax();
-        $me->clickByText('Continue in order');
-        $me->clickByText('Back to shipping and payment selection');
+        $me->clickByText('Pokračovat v objednávce');
+        $me->clickByText('Zpět na výběr dopravy a platby');
 
-        $orderPage->assertTransportIsSelected('Czech post');
-        $orderPage->assertPaymentIsSelected('Cash on delivery');
+        $orderPage->assertTransportIsSelected('Česká pošta - balík do ruky');
+        $orderPage->assertPaymentIsSelected('Dobírka');
     }
 
     /**
@@ -52,21 +52,21 @@ class OrderCest
     ) {
         $me->wantTo('have my payment and transport remembered by order');
 
-        $me->amOnPage('/tv-audio/');
+        $me->amOnPage('/televize-audio/');
         $productListPage->addProductToCartByName('Defender 2.0 SPK-480');
-        $me->clickByText('Go to cart');
-        $me->clickByText('Order');
+        $me->clickByText('Přejít do košíku');
+        $me->clickByText('Objednat');
 
-        $orderPage->assertTransportIsNotSelected('Czech post');
-        $orderPage->selectTransport('Czech post');
-        $orderPage->assertPaymentIsNotSelected('Cash on delivery');
-        $orderPage->selectPayment('Cash on delivery');
+        $orderPage->assertTransportIsNotSelected('Česká pošta - balík do ruky');
+        $orderPage->selectTransport('Česká pošta - balík do ruky');
+        $orderPage->assertPaymentIsNotSelected('Dobírka');
+        $orderPage->selectPayment('Dobírka');
         $me->waitForAjax();
-        $me->clickByText('Continue in order');
-        $me->amOnPage('/order/');
+        $me->clickByText('Pokračovat v objednávce');
+        $me->amOnPage('/objednavka/');
 
-        $orderPage->assertTransportIsSelected('Czech post');
-        $orderPage->assertPaymentIsSelected('Cash on delivery');
+        $orderPage->assertTransportIsSelected('Česká pošta - balík do ruky');
+        $orderPage->assertPaymentIsSelected('Dobírka');
     }
 
     /**
@@ -78,19 +78,19 @@ class OrderCest
     {
         $me->wantTo('have my first name remembered by order');
 
-        $me->amOnPage('/tv-audio/');
+        $me->amOnPage('/televize-audio/');
         $productListPage->addProductToCartByName('Defender 2.0 SPK-480');
-        $me->clickByText('Go to cart');
-        $me->clickByText('Order');
-        $orderPage->selectTransport('Czech post');
-        $orderPage->selectPayment('Cash on delivery');
+        $me->clickByText('Přejít do košíku');
+        $me->clickByText('Objednat');
+        $orderPage->selectTransport('Česká pošta - balík do ruky');
+        $orderPage->selectPayment('Dobírka');
         $me->waitForAjax();
-        $me->clickByText('Continue in order');
+        $me->clickByText('Pokračovat v objednávce');
 
         $orderPage->fillFirstName('Jan');
-        $me->clickByText('Back to shipping and payment selection');
-        $me->amOnPage('/order/');
-        $me->clickByText('Continue in order');
+        $me->clickByText('Zpět na výběr dopravy a platby');
+        $me->amOnPage('/objednavka/');
+        $me->clickByText('Pokračovat v objednávce');
 
         $orderPage->assertFirstNameIsFilled('Jan');
     }
@@ -134,22 +134,22 @@ class OrderCest
         OrderPage $orderPage,
         AcceptanceTester $me
     ) {
-        $me->amOnPage('/tv-audio/');
+        $me->amOnPage('/televize-audio/');
         $productListPage->addProductToCartByName('Defender 2.0 SPK-480');
-        $me->clickByText('Go to cart');
-        $me->clickByText('Order');
+        $me->clickByText('Přejít do košíku');
+        $me->clickByText('Objednat');
 
-        $orderPage->selectTransport('Czech post');
-        $orderPage->selectPayment('Cash on delivery');
+        $orderPage->selectTransport('Česká pošta - balík do ruky');
+        $orderPage->selectPayment('Dobírka');
         $me->waitForAjax();
-        $me->clickByText('Continue in order');
+        $me->clickByText('Pokračovat v objednávce');
 
         $orderPage->fillPersonalInfo('Karel', 'Novák', 'no-reply@shopsys.com', '123456789');
         $orderPage->fillBillingAddress('Koksární 10', 'Ostrava', '702 00');
         $orderPage->acceptLegalConditions();
 
-        $me->clickByText('Finish the order');
+        $me->clickByText('Dokončit objednávku');
 
-        $me->see('Order sent');
+        $me->see('Objednávka byla odeslána');
     }
 }
