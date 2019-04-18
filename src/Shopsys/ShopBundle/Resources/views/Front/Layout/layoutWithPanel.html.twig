@@ -9,7 +9,9 @@
 
             {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
 
-            {% block main_content %}{% endblock %}
+            {% block main_content %}
+                {% block last_visited_products %}{% endblock %}
+            {% endblock %}
         </div>
 
         <div class="web__main__panel dont-print">

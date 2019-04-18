@@ -59,3 +59,7 @@ services:
     Shopsys\FrameworkBundle\Model\Payment\PaymentFacade: '@Shopsys\ShopBundle\Model\Payment\PaymentFacade'
 
     Shopsys\FrameworkBundle\Model\Payment\PaymentRepository: '@Shopsys\ShopBundle\Model\Payment\PaymentRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductFacade: '@Shopsys\ShopBundle\Model\Product\ProductFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductRepository: '@Shopsys\ShopBundle\Model\Product\ProductRepository'

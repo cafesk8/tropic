@@ -62,3 +62,68 @@
         {% endfor %}
     </ul>
 {% endmacro %}
+
+{% macro horizontalList(products, listCssClass, productHeadingTagName) %}
+    <div class="js-horizontal-gallery list-products-slider">
+        <span class="js-horizontal-gallery-prev list-products-slider__arrow list-products-slider__arrow--prev">
+            <i class="svg svg-arrow-thin">šipka doleva</i>
+        </span>
+        <div class="list-products-slider__in">
+            {% set domain = getDomain() %}
+
+            <div class="list-products-slider__list js-horizontal-gallery-slides horizontal-product-list {{ listCssClass|default('') }}">
+                {% for product in products %}
+
+                <div class="list-products-slider__item horizontal-product-list__item">
+                    <div class="list-products-slider__item__in">
+                        <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products-slider__item__block">
+                            <div class="list-products-slider__item__image dont-print">
+                                <div class="list-products-slider__item__image__in">
+                                    {{ image(product, { size: 'list', alt: product.name }) }}
+                                </div>
+                            </div>
+
+                            <div class="list-products-slider__item__info">
+
+                                <{{ productHeadingTagName|default('h2') }} class="list-products-slider__item__info__title">
+                                    {{ product.name|striptags|raw }}
+                                </{{ productHeadingTagName|default('h2') }}>
+
+                                <div class="list-products-slider__item__info__availability">
+                                    {{ product.calculatedAvailability.getName }}
+                                </div>
+
+                                {% set productSellingPrice = getProductSellingPrice(product) %}
+
+                                {% if productSellingPrice is not null %}
+                                    <div class="list-products__item__info__price">
+                                        <div class="list-products__item__info__price__item list-products__item__info__price__item--main">
+                                            {% if productSellingPrice.priceFrom %}
+                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                            {% else %}
+                                                {{ productSellingPrice.priceWithVat|price }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="list-products__item__info__price__item">
+                                            {% if productSellingPrice.priceFrom %}
+                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
+                                            {% else %}
+                                                {{ productSellingPrice.priceWithoutVat|price }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <span class="js-horizontal-gallery-next list-products-slider__arrow list-products-slider__arrow--next">
+            <i class="svg svg-arrow-thin">šipka doprava</i>
+        </span>
+    </div>
+
+{% endmacro %}

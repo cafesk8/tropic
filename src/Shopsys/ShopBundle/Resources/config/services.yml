@@ -112,3 +112,11 @@ services:
 
     Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade:
         public: true
+
+    Shopsys\FrameworkBundle\Model\Product\ProductFacade: '@Shopsys\ShopBundle\Model\Product\ProductFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductRepository: '@Shopsys\ShopBundle\Model\Product\ProductRepository'
+
+    Shopsys\ShopBundle\Model\Product\LastVisitedProducts\ProductDetailVisitListener:
+        tags:
+            - { name: kernel.event_subscriber }

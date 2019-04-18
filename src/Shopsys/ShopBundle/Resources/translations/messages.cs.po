@@ -259,6 +259,9 @@ msgstr "Položky"
 msgid "Last name"
 msgstr "Příjmení"
 
+msgid "Last viewed products"
+msgstr "Naposledy navštívené produkty"
+
 msgid "Link to password reset sent to e-mail <strong>{{ email }}</strong>."
 msgstr "Odkaz pro vyresetování hesla byl zaslán na e-mail <strong>{{ email }}</strong>."
 

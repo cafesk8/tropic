@@ -1,0 +1,7 @@
+{% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
+
+{% if products|length > 0 %}
+    <h2>{{ 'Last viewed products'|trans }}</h2>
+
+    {{ productList.horizontalList(products, null, 'h3', true) }}
+{% endif %}

@@ -259,6 +259,9 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
+msgid "Last viewed products"
+msgstr ""
+
 msgid "Link to password reset sent to e-mail <strong>{{ email }}</strong>."
 msgstr ""
 

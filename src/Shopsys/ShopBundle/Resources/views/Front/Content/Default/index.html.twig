@@ -41,4 +41,9 @@
         </div>
     {% endif %}
 
+    {% block last_visited_products %}
+        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
+    {% endblock %}
+
+
 {% endblock %}

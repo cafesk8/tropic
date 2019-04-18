@@ -1,0 +1,197 @@
+@list-products-slider-item-padding: 5px;
+@list-products-slider-item-gap: 15px;
+@list-products-slider-item-inner-gap: 10px;
+@list-products-slider-item-image-height: 138px;
+@list-products-slider-item-title-line-height: 16px;
+@list-products-slider-item-code-line-height: 14px;
+@list-products-slider-item-code-number-of-lines: 1;
+
+@list-products-slider-spinner-size: 18px;
+
+@list-products-slider-arrow-size: 42px;
+@list-products-slider-gap: 20px;
+
+@btn-arrow-size: 32px;
+
+.list-products-slider {
+  position: relative;
+
+  .slick-list {
+    overflow: hidden;
+    margin: 0 (@list-products-slider-arrow-size + @list-products-slider-gap);
+  }
+
+  .slick-track {
+    margin-left: -@list-products-slider-item-gap;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    .is-no-flex & {
+      display: block;
+      .clearfix();
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    width: @list-products-slider-arrow-size;
+    height: @list-products-slider-arrow-size;
+    line-height: @list-products-slider-arrow-size;
+    margin-top: -@list-products-slider-arrow-size/2;
+    text-align: center;
+
+    color: @color-link;
+    border-radius: @radius;
+    cursor: pointer;
+
+    &.slick-disabled {
+      opacity: 0.5;
+    }
+
+    .svg {
+      position: relative;
+      top: -1px;
+    }
+
+    &--prev {
+      left: 0;
+
+      .svg {
+        transform: rotate(-90deg);
+      }
+    }
+
+    &--next {
+      right: 0;
+
+      .svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: @margin-gap;
+    padding-left: @list-products-slider-item-gap;
+
+    .is-no-flex & {
+      display: block;
+      float: left;
+    }
+
+    &__in {
+      padding: @list-products-slider-item-padding;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .is-no-flex & {
+        display: block;
+      }
+    }
+
+    &__block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      text-decoration: none;
+      color: @color-base;
+
+      .is-no-flex & {
+        display: block;
+      }
+
+      &:hover {
+        text-decoration: none;
+        color: @color-base;
+      }
+    }
+
+    &__image {
+      margin-bottom: @list-products-slider-item-inner-gap;
+
+      &__in {
+        height: @list-products-slider-item-image-height;
+        position: relative;
+
+        img {
+          .center-image();
+        }
+      }
+    }
+
+    &__info {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: @list-products-slider-item-inner-gap;
+
+      .is-no-flex & {
+        display: block;
+      }
+
+      &__title {
+        flex: 1;
+        line-height: @list-products-slider-item-title-line-height;
+        margin: 0 0 10px;
+
+        font-size: 0.8667rem;
+        font-weight: normal;
+        color: @color-base;
+      }
+
+      &__price {
+        position: relative;
+
+        &__item {
+          display: block;
+
+          font-size: 10px;
+          color: @color-price;
+
+          &--main {
+            font-size: 15px;
+            font-weight: bold;
+            color: @color-price-main;
+          }
+        }
+
+        &__spinner {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+
+          background: rgba(255,255,255, 0.5);
+
+          .svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: @list-products-slider-spinner-size;
+            height: @list-products-slider-spinner-size;
+            margin-top: -@list-products-slider-spinner-size/2;
+            margin-left: -@list-products-slider-spinner-size/2;
+
+            animation: spin 2s linear infinite;
+            font-size: @list-products-slider-spinner-size;
+            color: @color-add;
+          }
+        }
+      }
+
+      &__availability {
+        margin-bottom: 14px;
+      }
+    }
+  }
+}
