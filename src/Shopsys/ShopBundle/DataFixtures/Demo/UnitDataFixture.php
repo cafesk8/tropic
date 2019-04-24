@@ -51,10 +51,10 @@ class UnitDataFixture extends AbstractReferenceFixture
     {
         $unitData = $this->unitDataFactory->create();
 
-        $unitData->name = ['cs' => 'm³', 'en' => 'm³'];
+        $unitData->name = ['cs' => 'm³', 'en' => 'm³', 'de' => 'm³', 'sk' => 'm³'];
         $this->createUnit($unitData, self::UNIT_CUBIC_METERS);
 
-        $unitData->name = ['cs' => 'ks', 'en' => 'pcs'];
+        $unitData->name = ['cs' => 'ks', 'en' => 'pcs', 'de' => 'St.', 'sk' => 'ks'];
         $this->createUnit($unitData, self::UNIT_PIECES);
 
         $this->setPiecesAsDefaultUnit();
