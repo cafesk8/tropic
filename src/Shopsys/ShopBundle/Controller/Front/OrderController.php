@@ -30,6 +30,7 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
+use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -131,6 +132,11 @@ class OrderController extends FrontBaseController
     private $goPayFacadeOnCurrentDomain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\PayPal\PayPalFacade
+     */
+    private $payPalFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -149,6 +155,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade $newsletterFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
+     * @param \Shopsys\ShopBundle\Model\PayPal\PayPalFacade $payPalFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -168,7 +175,8 @@ class OrderController extends FrontBaseController
         LegalConditionsFacade $legalConditionsFacade,
         NewsletterFacade $newsletterFacade,
         GoPayBankSwiftFacade $goPayBankSwiftFacade,
-        GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
+        GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain,
+        PayPalFacade $payPalFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -188,6 +196,7 @@ class OrderController extends FrontBaseController
         $this->newsletterFacade = $newsletterFacade;
         $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
         $this->goPayFacadeOnCurrentDomain = $goPayFacadeOnCurrentDomain;
+        $this->payPalFacade = $payPalFacade;
     }
 
     public function indexAction()
@@ -379,6 +388,7 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = $this->orderFacade->getById($orderId);
         $goPayData = null;
 
@@ -396,10 +406,22 @@ class OrderController extends FrontBaseController
 
         $this->session->remove(self::SESSION_GOPAY_CHOOSEN_SWIFT);
 
+        $payPalApprovalLink = null;
+
+        if ($order->getPayment()->isPayPal() && $order->getPayPalId() === null) {
+            try {
+                $payPalPayment = $this->payPalFacade->sendPayment($order);
+                $payPalApprovalLink = $payPalPayment->getApprovalLink();
+            } catch (\PayPal\Exception\PayPalConnectionException $e) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Connection to PayPal gateway failed.'));
+            }
+        }
+
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
             'pageContent' => $this->orderFacade->getOrderSentPageContent($orderId),
             'order' => $order,
             'goPayData' => $goPayData,
+            'payPalApprovalLink' => $payPalApprovalLink,
         ]);
     }
 
@@ -421,6 +443,14 @@ class OrderController extends FrontBaseController
             $this->checkOrderGoPayStatus($order);
 
             if ($this->goPayFacadeOnCurrentDomain->isOrderGoPayUnpaid($order)) {
+                return $this->redirectToRoute('front_order_not_paid', ['urlHash' => $urlHash]);
+            }
+        }
+
+        if ($order->getPayment()->isPayPal()) {
+            $this->payPalFacade->executePayment($order);
+
+            if (!$this->payPalFacade->isOrderPaid($order)) {
                 return $this->redirectToRoute('front_order_not_paid', ['urlHash' => $urlHash]);
             }
         }

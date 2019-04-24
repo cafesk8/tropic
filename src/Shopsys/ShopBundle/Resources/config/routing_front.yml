@@ -141,3 +141,8 @@ front_login_window_form:
     path: /login/form
     defaults: { _controller: ShopsysShopBundle:Front\Login:windowForm }
     methods: [POST]
+
+front_order_paypal_status_notify:
+    path: /order/paypal-status-notify/{orderId}
+    defaults: { _controller: ShopsysShopBundle:Front\PayPal:payPalStatusNotify }
+    methods: [GET]

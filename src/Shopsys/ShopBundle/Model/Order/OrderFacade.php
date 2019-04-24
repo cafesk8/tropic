@@ -56,11 +56,30 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param string $payPalStatus
+     */
+    public function setPayPalStatus(Order $order, string $payPalStatus): void
+    {
+        $order->setPayPalStatus($payPalStatus);
+        $this->em->flush($order);
+    }
+
+    /**
      * @param \DateTime $fromDate
      * @return \Shopsys\ShopBundle\Model\Order\Order[]
      */
     public function getAllUnpaidGoPayOrders(\DateTime $fromDate): array
     {
         return $this->orderRepository->getAllUnpaidGoPayOrders($fromDate);
+    }
+
+    /**
+     * @param \DateTime $fromDate
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getAllUnpaidPayPalOrders(\DateTime $fromDate): array
+    {
+        return $this->orderRepository->getAllUnpaidPayPalOrders($fromDate);
     }
 }

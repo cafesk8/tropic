@@ -397,6 +397,11 @@ class RouteConfigCustomization
                 $config->addExtraRequestDataSet('Check personal data XML export with right hash')
                     ->setParameter('hash', $personalDataAccessRequest->getHash())
                     ->setExpectedStatusCode(200);
+            })
+            ->customizeByRouteName(['front_order_paypal_status_notify'], function (RouteConfig $config) {
+                $debugNote = 'Order with PayPal payment notify action is redirected.';
+                $config->changeDefaultRequestDataSet($debugNote)
+                    ->setExpectedStatusCode(302);
             });
     }
 

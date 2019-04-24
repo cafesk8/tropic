@@ -34,4 +34,8 @@
         {% include '@ShopsysShop/Front/Inline/Payment/goPayPayment.html.twig' %}
     {% endif %}
 
+    {% if payPalApprovalLink is defined and payPalApprovalLink is not null %}
+        {% include '@ShopsysShop/Front/Inline/Payment/payPalPayment.html.twig' %}
+    {% endif %}
+
 {% endblock %}

@@ -38,5 +38,7 @@ class OrderDataFactory extends BaseOrderDataFactory
 
         $orderData->goPayId = $order->getGoPayId();
         $orderData->goPayStatus = $order->getGoPayStatus();
+        $orderData->payPalId = $order->getPayPalId();
+        $orderData->payPalStatus = $order->getPayPalStatus();
     }
 }

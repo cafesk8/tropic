@@ -115,6 +115,9 @@ msgstr ""
 msgid "Connection to GoPay gateway failed."
 msgstr ""
 
+msgid "Connection to PayPal gateway failed."
+msgstr ""
+
 msgid "Contact us"
 msgstr ""
 
@@ -421,6 +424,12 @@ msgid "Password must be at least six characters and can't be the same as entered
 msgstr ""
 
 msgid "Password successfully changed"
+msgstr ""
+
+msgid "PayPal ID"
+msgstr ""
+
+msgid "PayPal payment status"
 msgstr ""
 
 msgid "Payment"

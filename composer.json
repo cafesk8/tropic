@@ -89,7 +89,8 @@
         "twig/twig": "^2.4.8",
         "vasek-purchart/console-errors-bundle": "^1.0.1",
         "gopay/payments-sdk-php": "^1.4",
-        "league/iso3166": "^2.1"
+        "league/iso3166": "^2.1",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "ext-pgsql": "*",

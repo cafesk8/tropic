@@ -16,6 +16,16 @@ class OrderData extends BaseOrderData
      */
     public $goPayStatus;
 
+    /**
+     * @var string|null
+     */
+    public $payPalId;
+
+    /**
+     * @var string|null
+     */
+    public $payPalStatus;
+
     public function __construct()
     {
         parent::__construct();

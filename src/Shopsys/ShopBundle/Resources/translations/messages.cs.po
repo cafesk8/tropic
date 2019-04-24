@@ -115,6 +115,9 @@ msgstr "IČ"
 msgid "Connection to GoPay gateway failed."
 msgstr "Připojení k bráně GoPay selhalo."
 
+msgid "Connection to PayPal gateway failed."
+msgstr "Připojení k bráně PayPal selhalo."
+
 msgid "Contact us"
 msgstr "Napište nám"
 
@@ -420,6 +423,12 @@ msgstr "Heslo musí mít alespoň šest znaků a nesmí být shodné se zadaným
 
 msgid "Password successfully changed"
 msgstr "Heslo bylo úspěšně změněno"
+
+msgid "PayPal ID"
+msgstr "PayPal ID"
+
+msgid "PayPal payment status"
+msgstr "Status platby PayPal"
 
 msgid "Payment"
 msgstr "Platba"

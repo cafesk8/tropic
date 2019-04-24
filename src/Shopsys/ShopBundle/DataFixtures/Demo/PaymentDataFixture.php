@@ -133,6 +133,41 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,
         ]);
+
+        $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_PAY_PAL;
+        $paymentData->name = [
+            'cs' => 'PayPal',
+            'sk' => 'PayPal',
+            'de' => 'PayPal',
+        ];
+        $paymentData->czkRounding = false;
+        $paymentData->pricesByCurrencyId = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
+        ];
+        $paymentData->prices = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
+        ];
+        $paymentData->description = [
+            'cs' => '',
+            'sk' => '',
+            'de' => '',
+        ];
+        $paymentData->instructions = [
+            'cs' => '<b>Zvolili jste platbu PayPal, budete přesměrováni na platební bránu.</b>',
+            'sk' => '',
+            'de' => '',
+        ];
+        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
+        $paymentData->hidden = false;
+        $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
+            TransportDataFixture::TRANSPORT_PERSONAL,
+            TransportDataFixture::TRANSPORT_PPL,
+            TransportDataFixture::TRANSPORT_CZECH_POST,
+        ]);
     }
 
     /**

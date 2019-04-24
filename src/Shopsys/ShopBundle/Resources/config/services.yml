@@ -120,3 +120,8 @@ services:
     Shopsys\ShopBundle\Model\Product\LastVisitedProducts\ProductDetailVisitListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    Shopsys\ShopBundle\Model\PayPal\PayPalClient:
+        arguments:
+            - '%payPalClientId%'
+            - '%payPalClientSecret%'

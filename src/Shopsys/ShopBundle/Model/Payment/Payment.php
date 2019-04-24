@@ -15,6 +15,7 @@ class Payment extends BasePayment
 {
     public const TYPE_BASIC = 'basic';
     public const TYPE_GOPAY = 'goPay';
+    public const TYPE_PAY_PAL = 'payPal';
 
     /**
      * @var string
@@ -59,6 +60,14 @@ class Payment extends BasePayment
     public function isGoPay(): bool
     {
         return $this->type === self::TYPE_GOPAY;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPayPal(): bool
+    {
+        return $this->type === self::TYPE_PAY_PAL;
     }
 
     /**

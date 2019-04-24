@@ -38,4 +38,29 @@
         <br><br>
     {% endif %}
 
+    {% if order.payment is not null and order.payment.isPayPal() is same as (true) %}
+
+        <br><br>
+        <h2>PayPal</h2>
+
+        <div class="form-line">
+            <label class="form-line__label">{{ 'PayPal payment status'|trans }}:</label>
+            <div class="form-line__side">
+                <div class="form-line__item form-line__item--text">
+                    {{ order.payPalStatus }}
+                </div>
+            </div>
+        </div>
+        <div class="form-line">
+            <label class="form-line__label">{{ 'PayPal ID'|trans }}:</label>
+            <div class="form-line__side">
+                <div class="form-line__item form-line__item--text">
+                    {{ order.payPalId|default('~') }}
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+    {% endif %}
+
 {% endblock %}

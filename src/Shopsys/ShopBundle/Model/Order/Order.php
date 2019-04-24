@@ -39,7 +39,21 @@ class Order extends BaseOrder
     private $goPayFik;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $payPalId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $payPalStatus;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
      * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
@@ -54,6 +68,8 @@ class Order extends BaseOrder
 
         $this->goPayId = $orderData->goPayId;
         $this->goPayStatus = $orderData->goPayStatus;
+        $this->payPalId = $orderData->payPalId;
+        $this->payPalStatus = $orderData->payPalStatus;
     }
 
     /**
@@ -73,6 +89,8 @@ class Order extends BaseOrder
 
         $this->goPayId = $orderData->goPayId;
         $this->goPayStatus = $orderData->goPayStatus;
+        $this->payPalId = $orderData->payPalId;
+        $this->payPalStatus = $orderData->payPalStatus;
 
         return $orderEditResult;
     }
@@ -123,5 +141,37 @@ class Order extends BaseOrder
     public function setGoPayFik(?string $goPayFik)
     {
         $this->goPayFik = $goPayFik;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPayPalId(): ?string
+    {
+        return $this->payPalId;
+    }
+
+    /**
+     * @param string|null $payPalId
+     */
+    public function setPayPalId(?string $payPalId): void
+    {
+        $this->payPalId = $payPalId;
+    }
+
+    /**
+     * @param string|null $payPalStatus
+     */
+    public function setPayPalStatus(?string $payPalStatus): void
+    {
+        $this->payPalStatus = $payPalStatus;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPayPalStatus(): ?string
+    {
+        return $this->payPalStatus;
     }
 }

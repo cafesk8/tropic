@@ -316,3 +316,6 @@
 20190503153037:
     class: Shopsys\ShopBundle\Migrations\Version20190503153037
     skip: false
+20190426111214:
+    class: Shopsys\ShopBundle\Migrations\Version20190426111214
+    skip: false
