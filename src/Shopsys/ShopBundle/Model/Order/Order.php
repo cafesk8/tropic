@@ -51,6 +51,9 @@ class Order extends BaseOrder
         ?User $user = null
     ) {
         parent::__construct($orderData, $orderNumber, $urlHash, $user);
+
+        $this->goPayId = $orderData->goPayId;
+        $this->goPayStatus = $orderData->goPayStatus;
     }
 
     /**
@@ -66,16 +69,18 @@ class Order extends BaseOrder
         OrderItemFactoryInterface $orderItemFactory,
         OrderPriceCalculation $orderPriceCalculation
     ): OrderEditResult {
-        return parent::edit($orderData, $orderItemPriceCalculation, $orderItemFactory, $orderPriceCalculation);
+        $orderEditResult = parent::edit($orderData, $orderItemPriceCalculation, $orderItemFactory, $orderPriceCalculation);
 
         $this->goPayId = $orderData->goPayId;
         $this->goPayStatus = $orderData->goPayStatus;
+
+        return $orderEditResult;
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getGoPayId(): ?int
+    public function getGoPayId(): ?string
     {
         return $this->goPayId;
     }
