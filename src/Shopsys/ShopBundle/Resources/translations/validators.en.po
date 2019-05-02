@@ -19,13 +19,22 @@ msgstr ""
 msgid "First name of contact person cannot be longer then {{ limit }} characters"
 msgstr ""
 
+msgid "Google Maps link cannot be longer than {{ limit }} characters"
+msgstr ""
+
 msgid "Identification number cannot be longer then {{ limit }} characters"
+msgstr ""
+
+msgid "Image can be only in JPG, GIF or PNG format"
 msgstr ""
 
 msgid "Last name cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Last name of contact person cannot be longer than {{ limit }} characters"
+msgstr ""
+
+msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Password cannot be longer then {{ limit }} characters"
@@ -85,6 +94,9 @@ msgstr ""
 msgid "Please enter last name of contact person"
 msgstr ""
 
+msgid "Please enter name of a store"
+msgstr ""
+
 msgid "Please enter password"
 msgstr ""
 
@@ -92,6 +104,9 @@ msgid "Please enter price in correct format (positive number with decimal separa
 msgstr ""
 
 msgid "Please enter quantity"
+msgstr ""
+
+msgid "Please enter stock in correct format (positive number >= 0)"
 msgstr ""
 
 msgid "Please enter street"
@@ -109,10 +124,16 @@ msgstr ""
 msgid "Please enter zip code"
 msgstr ""
 
+msgid "Position in list cannot be longer than {{ limit }} characters"
+msgstr ""
+
 msgid "Price must be greater or equal to zero"
 msgstr ""
 
 msgid "Quantity must be greater than {{ compared_value }}"
+msgstr ""
+
+msgid "Store name cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Street name cannot be longer than {{ limit }} characters"
@@ -125,6 +146,9 @@ msgid "Telephone number cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "This e-mail is already registered"
+msgstr ""
+
+msgid "Uploaded image is to large ({{ size }} {{ suffix }}). Maximum size of an image is {{ limit }} {{ suffix }}."
 msgstr ""
 
 msgid "You have to agree with privacy policy"
