@@ -27,7 +27,7 @@ class ProductRepository extends BaseProductRepository
 
     /**
      * @param int $transferNumber
-     * @return \Shopsys\ShopBundle\Model\Product\Product|null
+     * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
      */
     public function findByTransferNumber(int $transferNumber): ?Product
     {

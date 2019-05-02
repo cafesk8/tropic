@@ -15,4 +15,9 @@ class ProductData extends BaseProductData
      * @var int|null
      */
     public $transferNumber = null;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     */
+    public $distinguishingParameter;
 }

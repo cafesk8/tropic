@@ -156,3 +156,6 @@ services:
         arguments:
             - '%payPalClientId%'
             - '%payPalClientSecret%'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade:
+        class: Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade

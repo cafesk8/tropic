@@ -54,5 +54,6 @@ class ProductDataFactory extends BaseProductDataFactory
         }
 
         $productData->transferNumber = $product->getTransferNumber();
+        $productData->distinguishingParameter = $product->getDistinguishingParameter();
     }
 }

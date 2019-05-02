@@ -131,7 +131,7 @@ class ProductParametersFixtureLoader
      * @param string[] $parameterNamesByLocale
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
      */
-    protected function findParameterByNamesOrCreateNew(array $parameterNamesByLocale)
+    public function findParameterByNamesOrCreateNew(array $parameterNamesByLocale)
     {
         $cacheId = json_encode($parameterNamesByLocale);
 

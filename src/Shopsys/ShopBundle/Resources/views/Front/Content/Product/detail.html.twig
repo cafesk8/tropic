@@ -97,6 +97,23 @@
                         {% endif %}
                     </div>
                 {% endif %}
+                <dl class="box-detail__info__params">
+                    {% if product.isMainVariant %}
+                        <dt></dt>
+                        <dd>
+                            <table>
+                                <tr>
+                                    {% for variant in variants %}
+                                        {% set distinguishingParameterValue = variantDistinguishingParameterValue(variant) %}
+                                        {% if distinguishingParameterValue is not null %}
+                                            <td>{{ distinguishingParameterValue.text }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                        </dd>
+                    {% endif %}
+                </dl>
 
                 {% spaceless %}
                     <dl class="box-detail__info__params">
@@ -143,66 +160,6 @@
                 {% endspaceless %}
             </div>
         </div>
-
-        {% if product.isMainVariant %}
-            <table {% if getProductSellingPrice(product) is not null %}itemprop="offers"
-                itemscope
-                itemtype="http://schema.org/AggregateOffer" {% endif %}
-                class="table-variants"
-            >
-                <thead>
-                    <tr class="table-variants__row">
-                        <th class="table-variants__cell table-variants__cell--image"></th>
-                        <th class="table-variants__cell table-variants__cell--name">{{ 'Name'|trans }}</th>
-                        <th class="table-variants__cell table-variants__cell--price">
-                            {{ 'Price including VAT'|trans }}
-                            {% if getProductSellingPrice(product) is not null %}
-                                <meta itemprop="priceCurrency"
-                                    content="{{ currencyCode(domain.id) }}"
-                                >
-                                <meta itemprop="lowPrice"
-                                    content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
-                                >
-                                <link itemprop="availability"
-                                    href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                >
-                            {% endif %}
-                        </th>
-                        <th class="table-variants__cell table-variants__cell--action"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for variant in variants %}
-                        <tr class="table-variants__row">
-                            <td class="table-variants__cell table-variants__cell--image">
-                                <div class="table-variants__cell__image">
-                                    {% if imageExists(variant) %}
-                                        <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
-                                            {{ image(variant, { size: 'thumbnail' }) }}
-                                        </a>
-                                    {% else %}
-                                        {{ noimage() }}
-                                    {% endif %}
-                                </div>
-                            </td>
-                            <td class="table-variants__cell table-variants__cell--name">
-                                {% if variant.variantAlias is not null %}
-                                    {{ variant.variantAlias }}
-                                {% else %}
-                                    {{ variant.name }}
-                                {% endif %}
-                            </td>
-                            <td class="table-variants__cell table-variants__cell--price">
-                                {{ getProductSellingPrice(variant).priceWithVat|price }}
-                            </td>
-                            <td class="table-variants__cell table-variants__cell--action">
-                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: variant})) }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
 
         {% set productParameterValues = getProductParameterValues(product) %}
         {% if product.getDescription(domain.id)

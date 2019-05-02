@@ -34,12 +34,18 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     protected $productVariantFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader
+     */
+    private $productParametersFixtureLoader;
+
+    /**
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader $productDataFixtureLoader
      * @param \Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector $referenceInjector
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureCsvReader $productDataFixtureCsvReader
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade $productVariantFacade
+     * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader $productParametersFixtureLoader
      */
     public function __construct(
         ProductDataFixtureLoader $productDataFixtureLoader,
@@ -47,7 +53,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         PersistentReferenceFacade $persistentReferenceFacade,
         ProductDataFixtureCsvReader $productDataFixtureCsvReader,
         ProductFacade $productFacade,
-        ProductVariantFacade $productVariantFacade
+        ProductVariantFacade $productVariantFacade,
+        ProductParametersFixtureLoader $productParametersFixtureLoader
     ) {
         $this->productDataFixtureLoader = $productDataFixtureLoader;
         $this->referenceInjector = $referenceInjector;
@@ -55,6 +62,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->productDataFixtureCsvReader = $productDataFixtureCsvReader;
         $this->productFacade = $productFacade;
         $this->productVariantFacade = $productVariantFacade;
+        $this->productParametersFixtureLoader = $productParametersFixtureLoader;
     }
 
     /**
@@ -104,15 +112,22 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $csvRows = $this->productDataFixtureCsvReader->getProductDataFixtureCsvRows();
         $variantCatnumsByMainVariantCatnum = $this->productDataFixtureLoader->getVariantCatnumsIndexedByMainVariantCatnum($csvRows);
 
+        $parameter = $this->productParametersFixtureLoader->findParameterByNamesOrCreateNew([
+            'cs' => 'Velikost',
+            'sk' => 'Velikosť',
+            'de' => 'Size',
+        ]);
+
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
+            /* @var $mainProduct \Shopsys\ShopBundle\Model\Product\Product */
             $mainProduct = $productsByCatnum[$mainVariantCatnum];
-            /* @var $mainProduct \Shopsys\FrameworkBundle\Model\Product\Product */
 
             $variants = [];
             foreach ($variantsCatnums as $variantCatnum) {
                 $variants[] = $productsByCatnum[$variantCatnum];
             }
 
+            $mainProduct->setDistinguishingParameter($parameter);
             $mainVariant = $this->productVariantFacade->createVariant($mainProduct, $variants);
             $this->addReference(self::PRODUCT_PREFIX . $productNo, $mainVariant);
             $productNo++;
