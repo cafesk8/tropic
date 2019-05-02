@@ -9,6 +9,7 @@ parameters:
     skip:
         ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff:
             - '*/src/Shopsys/ShopBundle/DataFixtures/*/*DataFixture.php'
+            - '*/src/Shopsys/ShopBundle/Migrations/Version*.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/ProductDataFixtureLoader.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
             - '*/src/Shopsys/ShopBundle/Form/Admin/StoreFormType.php'
@@ -43,3 +44,8 @@ parameters:
         Shopsys\CodingStandards\Sniffs\ForbiddenDoctrineInheritanceSniff:
             - '*/src/Shopsys/ShopBundle/*'
             - '*/tests/ShopBundle/*'
+
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+            - '*/src/Shopsys/ShopBundle/Model/Blog/Category/BlogCategoryDomain.php'
+            - '*/src/Shopsys/ShopBundle/Model/Blog/Article/BlogArticleDomain.php'
+            - '*/src/Shopsys/ShopBundle/Model/Blog/Article/BlogArticleBlogCategoryDomain.php'

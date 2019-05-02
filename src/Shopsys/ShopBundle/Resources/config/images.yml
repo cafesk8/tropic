@@ -141,3 +141,26 @@
             height: 250
             crop: true
             occurrence: 'Front-end: Store detail'
+
+-   name:  blogCategory
+    class: Shopsys\ShopBundle\Model\Blog\Category\BlogCategory
+    sizes:
+        -   name: ~
+            width: 400
+            height: 250
+            crop: true
+            occurrence: 'Front-end: Blog category detail'
+
+-   name:  blogArticle
+    class: Shopsys\ShopBundle\Model\Blog\Article\BlogArticle
+    sizes:
+        -   name: ~
+            width: 400
+            height: 250
+            crop: true
+            occurrence: 'Front-end: Blog article detail'
+        -   name: list
+            width: 400
+            height: 250
+            crop: true
+            occurrence: 'Front-end: Blog article list'

@@ -22,10 +22,19 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
+msgid "All domains"
+msgstr ""
+
 msgid "Amount"
 msgstr ""
 
+msgid "Ancestor category"
+msgstr ""
+
 msgid "Apply"
+msgstr ""
+
+msgid "Assign to category"
 msgstr ""
 
 msgid "Attention! You are administrator logged in as the customer."
@@ -62,6 +71,39 @@ msgid "Billing address"
 msgstr ""
 
 msgid "Billing data"
+msgstr ""
+
+msgid "Blog"
+msgstr ""
+
+msgid "Blog article"
+msgstr ""
+
+msgid "Blog article <strong><a href=\"{{ url }}\">{{ name }}</a></strong> created"
+msgstr ""
+
+msgid "Blog article <strong><a href=\"{{ url }}\">{{ name }}</a></strong> was modified"
+msgstr ""
+
+msgid "Blog article <strong>{{ name }}</strong> deleted"
+msgstr ""
+
+msgid "Blog articles"
+msgstr ""
+
+msgid "Blog categories"
+msgstr ""
+
+msgid "Blog category"
+msgstr ""
+
+msgid "Blog category <strong><a href=\"{{ url }}\">{{ name }}</a></strong> created"
+msgstr ""
+
+msgid "Blog category <strong><a href=\"{{ url }}\">{{ name }}</a></strong> was modified"
+msgstr ""
+
+msgid "Blog category <strong>{{ name }}</strong> deleted"
 msgstr ""
 
 msgid "Brand"
@@ -127,7 +169,16 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+msgid "Create new blog article"
+msgstr ""
+
+msgid "Create new blog category"
+msgstr ""
+
 msgid "Create new store"
+msgstr ""
+
+msgid "Created at"
 msgstr ""
 
 msgid "Creation date"
@@ -157,7 +208,16 @@ msgstr ""
 msgid "Discount"
 msgstr ""
 
+msgid "Display on"
+msgstr ""
+
 msgid "Displaying"
+msgstr ""
+
+msgid "Do you really want to delete this blog category?"
+msgstr ""
+
+msgid "Do you really want to remove this blog article?"
 msgstr ""
 
 msgid "Do you really want to remove this store?"
@@ -185,6 +245,18 @@ msgid "E-mail with a link to the page with your personal data was sent to your e
 msgstr ""
 
 msgid "EAN"
+msgstr ""
+
+msgid "Editing blog article"
+msgstr ""
+
+msgid "Editing blog article - %name%"
+msgstr ""
+
+msgid "Editing blog category"
+msgstr ""
+
+msgid "Editing blog category - %name%"
 msgstr ""
 
 msgid "Editing store"
@@ -223,7 +295,6 @@ msgstr ""
 msgid "Go to cart"
 msgstr ""
 
-<<<<<<< HEAD
 msgid "GoPay"
 msgstr ""
 
@@ -234,9 +305,12 @@ msgid "GoPay payment method"
 msgstr ""
 
 msgid "GoPay payment status"
-=======
+msgstr ""
+
 msgid "Google Maps link"
->>>>>>> bc758aa7e... admin: added new section for managing stores
+msgstr ""
+
+msgid "Heading (H1)"
 msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
@@ -272,7 +346,13 @@ msgstr ""
 msgid "I want to subscribe to the newsletter"
 msgstr ""
 
+msgid "ID"
+msgstr ""
+
 msgid "Image"
+msgstr ""
+
+msgid "In a particular domain tab it is not possible to adjust the order and plunge of blog categories. Please go to the blog category detail or to overview of blog categories of all domains"
 msgstr ""
 
 msgid "Items"
@@ -305,6 +385,9 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
+msgid "Meta description"
+msgstr ""
+
 msgid "More bestsellers"
 msgstr ""
 
@@ -317,10 +400,19 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgid "New blog article"
+msgstr ""
+
+msgid "New blog category"
+msgstr ""
+
 msgid "New store"
 msgstr ""
 
 msgid "No"
+msgstr ""
+
+msgid "No blog articles found."
 msgstr ""
 
 msgid "No order so far."
@@ -377,14 +469,13 @@ msgstr "Order"
 msgid "Order completed"
 msgstr ""
 
-<<<<<<< HEAD
 msgid "Order could not be paid"
 msgstr ""
 
 msgid "Order has been created but there were problems during payment"
-=======
+msgstr ""
+
 msgid "Order in list"
->>>>>>> bc758aa7e... admin: added new section for managing stores
 msgstr ""
 
 msgid "Order not found"
@@ -394,6 +485,9 @@ msgid "Order not found."
 msgstr ""
 
 msgid "Order number"
+msgstr ""
+
+msgid "Order saved."
 msgstr ""
 
 msgid "Order sent"
@@ -406,6 +500,9 @@ msgid "Our customers who bought this bought also"
 msgstr ""
 
 msgid "Page not found!"
+msgstr ""
+
+msgid "Page title"
 msgstr ""
 
 msgid "Page you are looking for either no longer exists or you entered wrong address."
@@ -540,6 +637,9 @@ msgstr ""
 msgid "Save changes"
 msgstr ""
 
+msgid "Save changes in order"
+msgstr ""
+
 msgid "Search [verb]"
 msgstr "Search"
 
@@ -552,6 +652,12 @@ msgstr ""
 msgid "Searching"
 msgstr ""
 
+msgid "Selected blog article doesn't exist."
+msgstr ""
+
+msgid "Selected blog category doesn't exist."
+msgstr ""
+
 msgid "Selected product no longer available or doesn't exist."
 msgstr ""
 
@@ -561,10 +667,16 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
+msgid "Seo"
+msgstr ""
+
 msgid "Serial number"
 msgstr ""
 
 msgid "Set new password"
+msgstr ""
+
+msgid "Settings"
 msgstr ""
 
 msgid "Shipping"
@@ -648,10 +760,16 @@ msgstr ""
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
 msgstr ""
 
+msgid "There was an error while saving. The order isn't saved."
+msgstr ""
+
 msgid "There were problems during payment of created order with number %orderNumber%."
 msgstr ""
 
 msgid "This account doesn't exist or password is incorrect"
+msgstr ""
+
+msgid "This blog category contains no blog articles."
 msgstr ""
 
 msgid "This category contains no products."
@@ -690,6 +808,9 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+msgid "URL addresses"
+msgstr ""
+
 msgid "Uh-oh, uh-oh. And specially <strong>\"%status_code% %status_text%\"</strong>, as if it was on purpose!"
 msgstr ""
 
@@ -711,6 +832,9 @@ msgstr ""
 msgid "Unit price including VAT"
 msgstr ""
 
+msgid "Upload image"
+msgstr ""
+
 msgid "User not found."
 msgstr ""
 
@@ -730,6 +854,9 @@ msgid "We will remember your login on this computer for 30 days."
 msgstr ""
 
 msgid "Yes"
+msgstr ""
+
+msgid "You can upload following formats: PNG, JPG, GIF"
 msgstr ""
 
 msgid "You have been successfully registered."
@@ -760,6 +887,9 @@ msgid "Your data had been successfully updated"
 msgstr ""
 
 msgid "Your discount"
+msgstr ""
+
+msgid "blogArticles"
 msgstr ""
 
 msgid "excluding VAT"

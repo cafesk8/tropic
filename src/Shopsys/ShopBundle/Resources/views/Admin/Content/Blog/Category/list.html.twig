@@ -1,0 +1,87 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+{% import _self as self %}
+
+{% block title %}- {{ 'Blog categories'|trans }}{% endblock %}
+{% block h1 %}{{ 'Blog categories'|trans }}{% endblock %}
+{% block btn %}
+    <a href="{{ url('admin_blogcategory_new') }}" class="btn btn--plus wrap-bar__btn">
+        <i class="btn__icon">+</i>
+        {{ 'Create new blog category'|trans }}
+    </a>
+{% endblock %}
+
+{% block main_content %}
+    {{ render(controller('ShopsysShopBundle:Admin/BlogCategory:listDomainTabs')) }}
+
+    {% macro blogCategoryTreeItem(blogCategoriesWithPreloadedChildren, isFirstLevel) %}
+        {% import _self as self %}
+        <ul class="js-category-tree-items js-protect-root {{ isFirstLevel ? 'form-tree__content' : '' }}">
+            {% for blogCategoryWithPreloadedChildren in blogCategoriesWithPreloadedChildren %}
+                <li class="js-category-tree-item form-tree__item" id="js-category-tree-{{ blogCategoryWithPreloadedChildren.blogCategory.id }}">
+                    <div class="js-category-tree-item-line form-tree__item__drag">
+                        <span class="form-tree__item__icon form-tree__item__icon--level sprite sprite-level"></span>
+                        <span class="js-category-tree-item-line  js-category-tree-item-handle form-tree__item__name">{{ blogCategoryWithPreloadedChildren.blogCategory.name }}</span>
+                        <span class="js-category-tree-item-icons form-tree__item__controls">
+                            <a href="{{ url('admin_blogcategory_edit', {id: blogCategoryWithPreloadedChildren.blogCategory.id}) }}" class="form-tree__item__control">
+                                <i class="svg svg-pencil"></i>
+                            </a>
+                            {% set csrfTokenId = constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_ID_PREFIX') ~ 'admin_blogcategory_delete' %}
+                            {% set blogCategoryDeleteUrl = url('admin_blogcategory_delete', {
+                                id: blogCategoryWithPreloadedChildren.blogCategory.id,
+                                (constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_REQUEST_PARAMETER')): csrf_token(csrfTokenId)
+                            }) %}
+                            {% if blogCategoryWithPreloadedChildren.blogCategory.level is not same as(1) %}
+                                <a
+                                    href="{{ blogCategoryDeleteUrl }}"
+                                    onclick="
+                                            Shopsys.window({
+                                            content: '{{ 'Do you really want to delete this blog category?'|trans|e('js') }}',
+                                            buttonCancel: true,
+                                            buttonContinue: true,
+                                            textContinue: '{{ 'Yes'|trans|e('js') }}',
+                                            urlContinue: '{{ blogCategoryDeleteUrl|e('js') }}'
+                                            });
+                                            return false;"
+                                    class="form-tree__item__control"
+                                >
+                                    <i class="svg svg-trash"></i>
+                                </a>
+                            {% endif %}
+                        </span>
+                    </div>
+                    {{ self.blogCategoryTreeItem(blogCategoryWithPreloadedChildren.children, false) }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endmacro %}
+
+    {% if isForAllDomains %}
+        <div class="form-line">
+            <div id="js-category-tree-sorting" class="form-tree form-tree--open form-tree--dragable">
+                {{ self.blogCategoryTreeItem(blogCategoriesWithPreloadedChildren, true) }}
+            </div>
+        </div>
+
+        {% embed '@ShopsysFramework/Admin/Inline/FixedBar/fixedBar.html.twig' %}
+            {% block fixed_bar_content %}
+                <button
+                        class="btn btn--disabled"
+                        id="js-category-tree-sorting-save-button"
+                        data-category-save-order-url="{{ url('admin_blogcategory_saveorder') }}"
+                        type="button"
+                >
+                    {{ 'Save changes in order'|trans }}
+                </button>
+            {% endblock %}
+        {% endembed %}
+    {% else %}
+        <div class="form-line">
+            <div class="form-tree form-tree--open form-tree--dragable">
+                {{ self.blogCategoryTreeItem(blogCategoriesWithPreloadedChildren, true) }}
+            </div>
+        </div>
+        <div>
+            {{ 'In a particular domain tab it is not possible to adjust the order and plunge of blog categories. Please go to the blog category detail or to overview of blog categories of all domains'|trans }}
+        </div>
+    {% endif %}
+{% endblock %}

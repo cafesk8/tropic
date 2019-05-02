@@ -1,0 +1,14 @@
+{% if blogCategories|length > 0 %}
+    <h2>
+        {{ 'Blog categories'|trans }}
+    </h2>
+    <ul>
+        {% for blogCategory in blogCategories %}
+            <li>
+                <a href="{{ url('front_blogcategory_detail', { id: blogCategory.id }) }}">
+                    {{ blogCategory.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

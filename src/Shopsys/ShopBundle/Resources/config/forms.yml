@@ -50,3 +50,8 @@ services:
     Shopsys\ShopBundle\Form\Admin\ProductsTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\ProductsType}
+
+    Twig_Extensions_Extension_Text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

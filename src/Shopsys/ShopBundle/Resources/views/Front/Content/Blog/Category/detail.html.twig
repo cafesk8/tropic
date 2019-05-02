@@ -1,0 +1,72 @@
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
+{% import '@ShopsysShop/Front/Inline/Paginator/paginator.html.twig' as paginator %}
+
+{% set domain = getDomain() %}
+
+{% block title %}
+    {{- blogCategory.getSeoTitle(domain.id)|default(blogCategory.name) -}}
+{% endblock %}
+
+{% block meta_description %}
+    {{- blogCategory.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
+{% endblock %}
+
+{% block breadcrumb %}
+    {% if isMainPage is defined and isMainPage is same as(false) %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block main_content %}
+    {% set entityName = 'blogArticles'|trans %}
+
+    {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', { currentBlogCategory: blogCategory })) }}
+
+    <h1>
+        {% if blogCategory.getSeoH1(domain.id) is not null %}
+            {{ blogCategory.getSeoH1(domain.id) }}
+        {% else %}
+            {{ blogCategory.name }}
+        {% endif %}
+    </h1>
+
+    {% if imageExists(blogCategory) %}
+        {{ image(blogCategory, { itemprop: 'image' }) }}
+    {% else %}
+        {{ noimage({ alt: blogCategory.name }) }}
+    {% endif %}
+
+    <div>
+        {{ blogCategory.description|raw }}
+    </div>
+
+    {% if blogArticlePaginationResult.results|length > 0 %}
+        <div class="js-blog-list-with-paginator">
+            <ul class="js-list">
+                {% for blogArticle in blogArticlePaginationResult.results %}
+                    <li>
+                        <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}">
+                            <h2>{{ blogArticle.name }}</h2>
+
+                        <div class="dont-print">
+                            {{ image(blogArticle, { size: 'list', alt: blogArticle.name }) }}
+                        </div>
+
+                        {{ blogArticle.description|truncate(100)|striptags|raw }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="text-center margin-bottom-20">
+                {{ paginator.loadMoreButton(blogArticlePaginationResult) }}
+            </div>
+
+            {{ paginator.paginatorNavigation(blogArticlePaginationResult, entityName) }}
+        </div>
+    {% else %}
+        <div class="in-message in-message--info margin-bottom-20">
+            {{ 'This blog category contains no blog articles.'|trans }}
+        </div>
+    {% endif %}
+{% endblock %}

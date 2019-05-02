@@ -6,5 +6,8 @@
                 <span class="in-badge js-not-implemented-yet">12</span>
             </li>
         {% endfor %}
+        <li class="list-menu__item">
+            <a class="list-menu__item__link underline" href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}">{{ 'Blog'|trans }}</a>
+        </li>
     </ul>
 </div>

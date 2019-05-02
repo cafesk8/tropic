@@ -18,6 +18,8 @@ twig:
         - '@ShopsysFramework/Admin/Form/productParameterValue.html.twig'
         - '@ShopsysFramework/Admin/Form/productCalculatedPrices.html.twig'
         - '@ShopsysShop/Admin/Form/storeStockFields.html.twig'
+        - '@ShopsysShop/Admin/Form/blogCategoriesType.html.twig'
+        - '@ShopsysShop/Admin/Form/blogCategoryCheckboxType.html.twig'
     strict_variables: true
     globals:
         globalMultipleFormSetting: '@Shopsys\FrameworkBundle\Component\Form\MultipleFormSetting'

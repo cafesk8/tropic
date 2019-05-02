@@ -22,11 +22,20 @@ msgstr "Vložit do košíku"
 msgid "Address"
 msgstr "Adresa"
 
+msgid "All domains"
+msgstr "Všechny domény"
+
 msgid "Amount"
 msgstr "Množství"
 
+msgid "Ancestor category"
+msgstr "Nadřazená kategorie"
+
 msgid "Apply"
 msgstr "Uplatnit"
+
+msgid "Assign to category"
+msgstr "Přiřadit do kategorie"
 
 msgid "Attention! You are administrator logged in as the customer."
 msgstr "Pozor! Jste jako administrátor přihlášen za zákazníka."
@@ -63,6 +72,39 @@ msgstr "Fakturační adresa"
 
 msgid "Billing data"
 msgstr "Fakturační údaje"
+
+msgid "Blog"
+msgstr "Blog"
+
+msgid "Blog article"
+msgstr "Článek blogu"
+
+msgid "Blog article <strong><a href=\"{{ url }}\">{{ name }}</a></strong> created"
+msgstr "Článek blogu <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byl vytvořen"
+
+msgid "Blog article <strong><a href=\"{{ url }}\">{{ name }}</a></strong> was modified"
+msgstr "Článek blogu <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byl upraven"
+
+msgid "Blog article <strong>{{ name }}</strong> deleted"
+msgstr "Článek blogu <strong>{{ name }}</strong> byl smazán"
+
+msgid "Blog articles"
+msgstr "Články blogu"
+
+msgid "Blog categories"
+msgstr "Rubriky blogu"
+
+msgid "Blog category"
+msgstr "Rubrika blogu"
+
+msgid "Blog category <strong><a href=\"{{ url }}\">{{ name }}</a></strong> created"
+msgstr "Rubrika blogu <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byla vytvořena"
+
+msgid "Blog category <strong><a href=\"{{ url }}\">{{ name }}</a></strong> was modified"
+msgstr "Rubrika blogu <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byla upravena"
+
+msgid "Blog category <strong>{{ name }}</strong> deleted"
+msgstr "Rubrika blogu <strong>{{ name }}</strong> byla smazána"
 
 msgid "Brand"
 msgstr "Značka"
@@ -127,8 +169,17 @@ msgstr "Pokračovat v objednávce"
 msgid "Country"
 msgstr "Stát"
 
+msgid "Create new blog article"
+msgstr "Vytvořit nový článek blogu"
+
+msgid "Create new blog category"
+msgstr "Vytvořit novou rubriku blogu"
+
 msgid "Create new store"
 msgstr "Vytvořit novou prodejnu"
+
+msgid "Created at"
+msgstr "Datum vytvoření"
 
 msgid "Creation date"
 msgstr "Datum vytvoření"
@@ -157,8 +208,17 @@ msgstr "Detail"
 msgid "Discount"
 msgstr "Sleva"
 
+msgid "Display on"
+msgstr "Zobrazit na"
+
 msgid "Displaying"
 msgstr "Zobrazuji"
+
+msgid "Do you really want to delete this blog category?"
+msgstr "Opravdu si přejete smazat tuto rubriku blogu?"
+
+msgid "Do you really want to remove this blog article?"
+msgstr "Opravdu si přejete odstranit tento článek blogu?"
 
 msgid "Do you really want to remove this store?"
 msgstr "Opravdu si přejete odstranit tuto prodejnu?"
@@ -186,6 +246,18 @@ msgstr "E-mail s odkazem na stránku s údaji o osobních údajích byl odeslán
 
 msgid "EAN"
 msgstr "EAN"
+
+msgid "Editing blog article"
+msgstr "Editace článku blogu"
+
+msgid "Editing blog article - %name%"
+msgstr "Editace článku blogu - %name%"
+
+msgid "Editing blog category"
+msgstr "Editace rubriky blogu"
+
+msgid "Editing blog category - %name%"
+msgstr "Editace rubriky blogu - %name%"
 
 msgid "Editing store"
 msgstr "Editace prodejny"
@@ -223,9 +295,6 @@ msgstr "Celé jméno"
 msgid "Go to cart"
 msgstr "Přejít do košíku"
 
-msgid "Google Maps link"
-msgstr "Google Maps link"
-
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -237,6 +306,12 @@ msgstr "Platební metoda GoPay"
 
 msgid "GoPay payment status"
 msgstr "Status platby GoPay"
+
+msgid "Google Maps link"
+msgstr "Google Maps link"
+
+msgid "Heading (H1)"
+msgstr "Nadpis (H1)"
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Souhlasím s <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">obchodními podmínkami</a> a <a href=\"%privacyPolicyUrl%\" target=\"_blank\">zpracováním osobních údajů</a>."
@@ -271,8 +346,14 @@ msgstr "Zboží chci doručit na jinou adresu než fakturační"
 msgid "I want to subscribe to the newsletter"
 msgstr "Chci se přihlásit k odběru newsletteru"
 
+msgid "ID"
+msgstr "ID"
+
 msgid "Image"
 msgstr "Obrázek"
+
+msgid "In a particular domain tab it is not possible to adjust the order and plunge of blog categories. Please go to the blog category detail or to overview of blog categories of all domains"
+msgstr "Na konkrétní záložce domény není možné upravovat pořadí a zanoření rubrik blogu. Prosím přejděte na detail kategorie nebo na přehled kategorií na všech doménách"
 
 msgid "Items"
 msgstr "Položky"
@@ -304,6 +385,9 @@ msgstr "Menu"
 msgid "Message"
 msgstr "Vzkaz"
 
+msgid "Meta description"
+msgstr "Meta description"
+
 msgid "More bestsellers"
 msgstr "Další nejprodávanější"
 
@@ -316,11 +400,20 @@ msgstr "Mé objednávky"
 msgid "Name"
 msgstr "Název"
 
+msgid "New blog article"
+msgstr "Nový článek blogu"
+
+msgid "New blog category"
+msgstr "Nová rubrika blogu"
+
 msgid "New store"
 msgstr "Nová prodejna"
 
 msgid "No"
 msgstr "Ne"
+
+msgid "No blog articles found."
+msgstr "Nebyly nalezeny žádné články blogu."
 
 msgid "No order so far."
 msgstr "Dosud nemáte žádnou objednávku."
@@ -394,6 +487,9 @@ msgstr "Objednávka nebyla nalezena."
 msgid "Order number"
 msgstr "Číslo objednávky"
 
+msgid "Order saved."
+msgstr "Pořadí uloženo."
+
 msgid "Order sent"
 msgstr "Objednávka byla odeslána"
 
@@ -405,6 +501,9 @@ msgstr "Naši zákaznící k tomuto produktu nejčastěji nakupují"
 
 msgid "Page not found!"
 msgstr "Stránka nenalezena!"
+
+msgid "Page title"
+msgstr "Nadpis stránky"
 
 msgid "Page you are looking for either no longer exists or you entered wrong address."
 msgstr "Stránka, kterou hledáte buďto již neexistuje, nebo jste zadali špatnou adresu."
@@ -541,6 +640,9 @@ msgstr "Zaokrouhlení"
 msgid "Save changes"
 msgstr "Uložit změny"
 
+msgid "Save changes in order"
+msgstr "Uložit změny pořadí"
+
 msgid "Search [verb]"
 msgstr "Vyhledat"
 
@@ -553,6 +655,12 @@ msgstr "Výsledky hledání \"%searchText%\""
 msgid "Searching"
 msgstr "Vyhledávání"
 
+msgid "Selected blog article doesn't exist."
+msgstr "Vybraný článek blogu neexistuje."
+
+msgid "Selected blog category doesn't exist."
+msgstr "Vybraná rubrika blogu neexistuje."
+
 msgid "Selected product no longer available or doesn't exist."
 msgstr "Zvolené zboží již není v nabídce nebo neexistuje."
 
@@ -562,11 +670,17 @@ msgstr "Vybraná prodejna neexistuje"
 msgid "Send"
 msgstr "Odeslat"
 
+msgid "Seo"
+msgstr "Seo"
+
 msgid "Serial number"
 msgstr "Výrobní číslo"
 
 msgid "Set new password"
 msgstr "Nastavit nové heslo"
+
+msgid "Settings"
+msgstr "Nastavení"
 
 msgid "Shipping"
 msgstr "Doprava"
@@ -649,11 +763,17 @@ msgstr "V průběhu objednávkového procesu byla změněna cena platby {{ payme
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
 msgstr "V průběhu objednávkového procesu byla změněna cena dopravy {{ transportName }}. Prosím, překontrolujte si objednávku."
 
+msgid "There was an error while saving. The order isn't saved."
+msgstr "Během ukládání došlo k chybě. Pořadí nebylo uloženo."
+
 msgid "There were problems during payment of created order with number %orderNumber%."
 msgstr "Během placení dokončené a odeslané objednávky č. %orderNumber% došlo k potížím."
 
 msgid "This account doesn't exist or password is incorrect"
 msgstr "Zadali jste špatné uživatelské jméno nebo heslo"
+
+msgid "This blog category contains no blog articles."
+msgstr "Tato rubrika blogu neobsahuje žádné články blogu."
 
 msgid "This category contains no products."
 msgstr "Tato kategorie neobsahuje žádné produkty"
@@ -691,6 +811,9 @@ msgstr "Zkuste použít vyhledávání na webu"
 msgid "Type"
 msgstr "Typ"
 
+msgid "URL addresses"
+msgstr "URL adresy"
+
 msgid "Uh-oh, uh-oh. And specially <strong>\"%status_code% %status_text%\"</strong>, as if it was on purpose!"
 msgstr "To je nemilé, to je nemilé. A zrovna <strong>\"%status_code% %status_text%\"</strong>, to je jak naschvál!"
 
@@ -712,6 +835,9 @@ msgstr "Nepodařilo se odeslat některé e-maily, pro ověření objednávky ná
 msgid "Unit price including VAT"
 msgstr "Jednotková cena s DPH"
 
+msgid "Upload image"
+msgstr "Nahrát obrázek"
+
 msgid "User not found."
 msgstr "Uživatel nebyl nalezen."
 
@@ -732,6 +858,9 @@ msgstr "Zapamatujeme si vaše přihlášení na tomto počítači po dobu 30 dn�
 
 msgid "Yes"
 msgstr "Ano"
+
+msgid "You can upload following formats: PNG, JPG, GIF"
+msgstr "Můžete nahrát obrázek v těchto formátech: PNG, JPG, GIf"
 
 msgid "You have been successfully registered."
 msgstr "Byli jste úspěšně zaregistrováni"
@@ -762,6 +891,9 @@ msgstr "Vaše údaje byly úspěšně zaktualizovány"
 
 msgid "Your discount"
 msgstr "Vaše sleva"
+
+msgid "blogArticles"
+msgstr "články blogu"
 
 msgid "excluding VAT"
 msgstr "bez DPH"

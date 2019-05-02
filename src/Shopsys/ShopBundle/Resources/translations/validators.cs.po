@@ -22,6 +22,9 @@ msgstr "Jméno kontaktní osoby nesmí být delší než {{ limit }} znaků"
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr "Link na Google mapy nesmí být delší než {{ limit }} znaků"
 
+msgid "Heading (H1) cannot be longer than {{ limit }} characters"
+msgstr "Nadpis (H1) nesmí být delší než {{ limit }} znaků"
+
 msgid "Identification number cannot be longer then {{ limit }} characters"
 msgstr "IČ nesmí být delší než {{ limit }} znaků"
 
@@ -33,6 +36,9 @@ msgstr "Příjmení nesmí být delší než {{ limit }} znaků"
 
 msgid "Last name of contact person cannot be longer than {{ limit }} characters"
 msgstr "Příjmení kontaktní osoby nesmí být delší než {{ limit }} znaků"
+
+msgid "Name cannot be longer than {{ limit }} characters"
+msgstr "Název nesmí být delší než {{ limit }} znaků"
 
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Otevírací doba nesmí být delší než {{ limit }} znaků"
@@ -93,6 +99,9 @@ msgstr "Vyplňte prosím příjmení"
 
 msgid "Please enter last name of contact person"
 msgstr "Vyplňte prosím příjmení kontaktní osoby"
+
+msgid "Please enter name"
+msgstr "Vyplňte prosím název"
 
 msgid "Please enter name of a store"
 msgstr "Vyplňte prosím jméno prodejny"

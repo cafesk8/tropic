@@ -15,7 +15,7 @@ services:
         tags: ['controller.service_arguments']
 
     Shopsys\ShopBundle\:
-        resource: '../../**/*{Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
+        resource: '../../**/*{BreadcrumbGenerator,Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,RecalculationScheduler,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
         exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
     Predis\Client:
@@ -220,3 +220,17 @@ services:
     Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation: '@Shopsys\ShopBundle\Model\Transport\TransportVisibilityCalculation'
 
     Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade: '@Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade'
+
+    Shopsys\FrameworkBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory: '@Shopsys\ShopBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory'
+
+    Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDetailFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
+    Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryDetailFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
+    Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

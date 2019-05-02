@@ -22,6 +22,9 @@ msgstr ""
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr ""
 
+msgid "Heading (H1) cannot be longer than {{ limit }} characters"
+msgstr ""
+
 msgid "Identification number cannot be longer then {{ limit }} characters"
 msgstr ""
 
@@ -32,6 +35,9 @@ msgid "Last name cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Last name of contact person cannot be longer than {{ limit }} characters"
+msgstr ""
+
+msgid "Name cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Opening hours cannot be longer than {{ limit }} characters"
@@ -92,6 +98,9 @@ msgid "Please enter last name"
 msgstr ""
 
 msgid "Please enter last name of contact person"
+msgstr ""
+
+msgid "Please enter name"
 msgstr ""
 
 msgid "Please enter name of a store"
