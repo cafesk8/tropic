@@ -91,7 +91,14 @@
             </div>
 
             <div class="header__top__right">
-                {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                <span class="all-categories">
+                    <span class="all-categories__link">
+                        {{ 'Všechny kategorie'|trans }}
+                    </span>
+                    <span class="all-categories__categories-links">
+                        {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                    </span>
+                </span>
 
                 <ul class="menu-iconic">
                     {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
