@@ -94,26 +94,6 @@ class CategoryController extends FrontBaseController
         ]);
     }
 
-    /**
-     * @param int $parentCategoryId
-     */
-    public function branchAction($parentCategoryId)
-    {
-        $parentCategory = $this->categoryFacade->getById($parentCategoryId);
-
-        $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleChildrenForParent(
-            $parentCategory,
-            $this->domain->getCurrentDomainConfig()
-        );
-
-        return $this->render('@ShopsysShop/Front/Content/Category/panel.html.twig', [
-            'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
-            'isFirstLevel' => false,
-            'openCategories' => [],
-            'currentCategory' => null,
-        ]);
-    }
-
     public function topAction()
     {
         return $this->render('@ShopsysShop/Front/Content/Category/top.html.twig', [

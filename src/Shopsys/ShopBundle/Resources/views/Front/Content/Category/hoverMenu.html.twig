@@ -6,17 +6,13 @@
                 <a href="{{ url('front_product_list', { id: categoriyWithLazyLoadedVisibleChildren.category.id }) }}" class="list-menu__item__link list-menu__item__link--level-{{ categoriyWithLazyLoadedVisibleChildren.category.level }} {% if isCurrentCategory %}current{% endif %}">
                     {{ categoriyWithLazyLoadedVisibleChildren.category.name }}
                     {% if categoriyWithLazyLoadedVisibleChildren.hasChildren %}
-                        <i class="list-menu__item__control svg svg-arrow js-category-collapse-control {% if categoriyWithLazyLoadedVisibleChildren.category in openCategories %}open{% endif %}" data-url="{{ url('front_category_branch', { parentCategoryId: categoriyWithLazyLoadedVisibleChildren.category.id }) }}"></i>
+                        <i class="list-menu__item__control svg svg-arrow"></i>
                     {% endif %}
                 </a>
-                {% if categoriyWithLazyLoadedVisibleChildren.category in openCategories %}
-                    {% set categoriesWithLazyLoadedVisibleChildren = categoriyWithLazyLoadedVisibleChildren.children %}
-                    {% set isFirstLevel = false %}
+                {% set categoriesWithLazyLoadedVisibleChildren = categoriyWithLazyLoadedVisibleChildren.children %}
+                {% set isFirstLevel = false %}
 
-                    {% include _self %}
-                {% else %}
-                    <div class="display-none js-category-list-placeholder"></div>
-                {% endif %}
+                {% include _self %}
             </li>
         {% endfor %}
     </ul>
