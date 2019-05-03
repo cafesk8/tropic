@@ -7,6 +7,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\ShopBundle\Model\Category\CurrentCategoryResolver;
+use Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade;
 use Symfony\Component\HttpFoundation\Request;
 
 class CategoryController extends FrontBaseController
@@ -37,24 +38,32 @@ class CategoryController extends FrontBaseController
     private $currentCustomer;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade
+     */
+    private $horizontalCategoryFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Category\CurrentCategoryResolver $currentCategoryResolver
      * @param \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade $topCategoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade $horizontalCategoryFacade
      */
     public function __construct(
         Domain $domain,
         CategoryFacade $categoryFacade,
         CurrentCategoryResolver $currentCategoryResolver,
         TopCategoryFacade $topCategoryFacade,
-        CurrentCustomer $currentCustomer
+        CurrentCustomer $currentCustomer,
+        HorizontalCategoryFacade $horizontalCategoryFacade
     ) {
         $this->domain = $domain;
         $this->categoryFacade = $categoryFacade;
         $this->currentCategoryResolver = $currentCategoryResolver;
         $this->topCategoryFacade = $topCategoryFacade;
         $this->currentCustomer = $currentCustomer;
+        $this->horizontalCategoryFacade = $horizontalCategoryFacade;
     }
 
     /**
@@ -131,6 +140,18 @@ class CategoryController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Category/categoryList.html.twig', [
             'categories' => $categories,
             'listableProductCountsIndexedByCategoryId' => $listableProductCountsIndexedByCategoryId,
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function horizontalMenuAction()
+    {
+        $categories = $this->horizontalCategoryFacade->getCategoriesForHorizontalMenuOnCurrentDomain();
+
+        return $this->render('@ShopsysShop/Front/Inline/Category/horizontalMenu.html.twig', [
+            'categories' => $categories,
         ]);
     }
 }

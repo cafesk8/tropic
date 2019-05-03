@@ -12,8 +12,8 @@ class Version20190503153037 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $this->sql('ALTER TABLE categories ADD show_in_horizontal_menu BOOLEAN NOT NULL DEFAULT FALSE');
-        $this->sql('ALTER TABLE categories ALTER show_in_horizontal_menu DROP DEFAULT');
+        $this->sql('ALTER TABLE categories ADD displayed_in_horizontal_menu BOOLEAN NOT NULL DEFAULT FALSE');
+        $this->sql('ALTER TABLE categories ALTER displayed_in_horizontal_menu DROP DEFAULT');
     }
 
     /**
