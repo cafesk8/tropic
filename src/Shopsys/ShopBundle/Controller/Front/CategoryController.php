@@ -6,9 +6,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
-use Shopsys\ShopBundle\Model\Category\CurrentCategoryResolver;
 use Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade;
-use Symfony\Component\HttpFoundation\Request;
 
 class CategoryController extends FrontBaseController
 {
@@ -21,11 +19,6 @@ class CategoryController extends FrontBaseController
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
     private $domain;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Category\CurrentCategoryResolver
-     */
-    private $currentCategoryResolver;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade
@@ -45,7 +38,6 @@ class CategoryController extends FrontBaseController
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\ShopBundle\Model\Category\CurrentCategoryResolver $currentCategoryResolver
      * @param \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade $topCategoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade $horizontalCategoryFacade
@@ -53,14 +45,12 @@ class CategoryController extends FrontBaseController
     public function __construct(
         Domain $domain,
         CategoryFacade $categoryFacade,
-        CurrentCategoryResolver $currentCategoryResolver,
         TopCategoryFacade $topCategoryFacade,
         CurrentCustomer $currentCustomer,
         HorizontalCategoryFacade $horizontalCategoryFacade
     ) {
         $this->domain = $domain;
         $this->categoryFacade = $categoryFacade;
-        $this->currentCategoryResolver = $currentCategoryResolver;
         $this->topCategoryFacade = $topCategoryFacade;
         $this->currentCustomer = $currentCustomer;
         $this->horizontalCategoryFacade = $horizontalCategoryFacade;
@@ -69,28 +59,15 @@ class CategoryController extends FrontBaseController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function hoverMenuAction(Request $request)
+    public function hoverMenuAction()
     {
         $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleChildrenForParent(
             $this->categoryFacade->getRootCategory(),
             $this->domain->getCurrentDomainConfig()
         );
-        $currentCategory = $this->currentCategoryResolver->findCurrentCategoryByRequest($request, $this->domain->getId());
-
-        if ($currentCategory !== null) {
-            $openCategories = $this->categoryFacade->getVisibleCategoriesInPathFromRootOnDomain(
-                $currentCategory,
-                $this->domain->getId()
-            );
-        } else {
-            $openCategories = [];
-        }
 
         return $this->render('@ShopsysShop/Front/Content/Category/hoverMenu.html.twig', [
             'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
-            'isFirstLevel' => true,
-            'openCategories' => $openCategories,
-            'currentCategory' => $currentCategory,
         ]);
     }
 
