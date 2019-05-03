@@ -91,6 +91,8 @@
             </div>
 
             <div class="header__top__right">
+                {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+
                 <ul class="menu-iconic">
                     {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                         <li class="menu-iconic__item">

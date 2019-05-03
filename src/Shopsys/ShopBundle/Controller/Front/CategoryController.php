@@ -69,7 +69,7 @@ class CategoryController extends FrontBaseController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function panelAction(Request $request)
+    public function hoverMenuAction(Request $request)
     {
         $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleChildrenForParent(
             $this->categoryFacade->getRootCategory(),
@@ -86,7 +86,7 @@ class CategoryController extends FrontBaseController
             $openCategories = [];
         }
 
-        return $this->render('@ShopsysShop/Front/Content/Category/panel.html.twig', [
+        return $this->render('@ShopsysShop/Front/Content/Category/hoverMenu.html.twig', [
             'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
             'isFirstLevel' => true,
             'openCategories' => $openCategories,

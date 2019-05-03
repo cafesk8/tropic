@@ -12,8 +12,4 @@
             {% block main_content %}{% endblock %}
         </div>
     </div>
-
-    <div class="display-none display-block-tablet">
-        {{ render(controller('ShopsysShopBundle:Front/Category:panel', { request: app.request } )) }}
-    </div>
 {% endblock %}
