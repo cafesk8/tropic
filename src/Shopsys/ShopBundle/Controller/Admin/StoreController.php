@@ -120,7 +120,7 @@ class StoreController extends AdminBaseController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $storeData = $form->getData();
 
             $this->storeFacade->edit($store, $storeData);
