@@ -24,6 +24,14 @@
                 <div class="web__container">
                     {{ block('header') }}
                 </div>
+                {% block infoRow %}
+                    {% if isInfoRowVisible() %}
+                        <div class="web__container info-row" id="js-info-row" data-now="{{ 'now'|date(constant('Shopsys\\ShopBundle\\Component\\InfoRow\\InfoRowFacade::COOKIE_CLOSED_AT_FORMAT')) }}">
+                            {{ getInfoRowText() }}
+                            <button type="button" class="info-row__close-button js-info-row__close" >{{ 'Zavřít'|trans }}</button>
+                        </div>
+                    {% endif %}
+                {% endblock %}
             </div>
             <div class="web__container">
                 {% block content %}{% endblock %}

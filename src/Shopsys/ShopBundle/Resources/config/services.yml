@@ -3,6 +3,7 @@ imports:
     - { resource: forms.yml }
     - { resource: services/commands.yml }
     - { resource: services/data_fixtures.yml }
+    - { resource: services/twig.yml }
 
 services:
     _defaults:
@@ -15,8 +16,9 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
-    Shopsys\ShopBundle\Model\:
-        resource: '../../Model/**/*{Facade,Factory,Repository,Mapper,OnCurrentDomain}.php'
+    Shopsys\ShopBundle\:
+        resource: '../../**/*{Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,OnCurrentDomain}.php'
+        exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
     League\Flysystem\MountManager:
         arguments:

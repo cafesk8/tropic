@@ -14,7 +14,10 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [ConfigureMenuEvent::SIDE_MENU_SETTINGS => 'configureSettingsMenu'];
+        return [
+            ConfigureMenuEvent::SIDE_MENU_SETTINGS => 'configureSettingsMenu',
+            ConfigureMenuEvent::SIDE_MENU_MARKETING => 'configureMarketingMenu',
+        ];
     }
 
     /**
@@ -28,5 +31,18 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $storeMenu->addChild('store_list', ['route' => 'admin_store_list', 'label' => t('Stores')]);
         $storeMenu->addChild('new', ['route' => 'admin_store_new', 'label' => t('New store'), 'display' => false]);
         $storeMenu->addChild('edit', ['route' => 'admin_store_edit', 'label' => t('Editing store'), 'display' => false]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\ConfigureMenuEvent $event
+     */
+    public function configureMarketingMenu(ConfigureMenuEvent $event): void
+    {
+        $marketingMenu = $event->getMenu();
+
+        $marketingMenu->addChild('stores', [
+            'route' => 'admin_inforow_detail',
+            'label' => t('Informační řádek'),
+        ]);
     }
 }
