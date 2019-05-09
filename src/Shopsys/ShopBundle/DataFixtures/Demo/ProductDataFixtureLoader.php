@@ -22,7 +22,7 @@ class ProductDataFixtureLoader
     const COLUMN_SHORT_DESCRIPTION_CS = 7;
     const COLUMN_SHORT_DESCRIPTION_EN = 8;
     const COLUMN_MANUAL_PRICES_DOMAIN_1 = 9;
-    const COLUMN_MANUAL_PRICES_DOMAIN_2 = 10;
+    const COLUMN_MANUAL_PRICES_MULTIDOMAIN = 10;
     const COLUMN_VAT = 11;
     const COLUMN_SELLING_FROM = 12;
     const COLUMN_SELLING_TO = 13;
@@ -36,6 +36,7 @@ class ProductDataFixtureLoader
     const COLUMN_SELLING_DENIED = 21;
     const COLUMN_BRAND = 22;
     const COLUMN_MAIN_VARIANT_CATNUM = 23;
+    const CSV_MULTIDOMAIN_ID_VARIABLE = '{domainId}';
 
     /**
      * @var \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader
@@ -142,10 +143,10 @@ class ProductDataFixtureLoader
      * @param array $row
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductData
      */
-    public function createProductDataFromRowForFirstDomain($row)
+    public function createProductDataFromRow($row)
     {
         $productData = $this->productDataFactory->create();
-        $this->updateProductDataFromCsvRowForFirstDomain($productData, $row);
+        $this->updateProductDataFromCsvRow($productData, $row);
 
         return $productData;
     }
@@ -170,17 +171,22 @@ class ProductDataFixtureLoader
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
      * @param array $row
      */
-    protected function updateProductDataFromCsvRowForFirstDomain(ProductData $productData, array $row)
+    protected function updateProductDataFromCsvRow(ProductData $productData, array $row)
     {
-        $domainId = 1;
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $locale = $this->domain->getDomainConfigById($domainId)->getLocale();
+            $productData->descriptions[$domainId] = $row[$this->getDescriptionColumnForDomain($domainId)];
+            $productData->shortDescriptions[$domainId] = $row[$this->getShortDescriptionColumnForDomain($domainId)];
+            $productData->name[$locale] = $row[$this->getCsvProductColumnNameByDomainId($domainId)];
+            $categoryString = $domainId === 1 ? $row[self::COLUMN_CATEGORIES_1] : $row[self::COLUMN_CATEGORIES_2];
+            $productData->categoriesByDomainId[$domainId] =
+                $this->getValuesByKeyString($categoryString, $this->categories);
+        }
 
-        $productData->name[$this->domain->getDomainConfigById($domainId)->getLocale()] = $row[$this->getCsvProductColumnNameByDomainId($domainId)];
         $productData->catnum = $row[self::COLUMN_CATNUM];
         $productData->partno = $row[self::COLUMN_PARTNO];
         $productData->ean = $row[self::COLUMN_EAN];
-        $productData->descriptions[$domainId] = $row[$this->getDescriptionColumnForDomain($domainId)];
-        $productData->shortDescriptions[$domainId] = $row[$this->getShortDescriptionColumnForDomain($domainId)];
-        $this->setProductDataPricesFromCsv($row, $productData, $domainId);
+        $this->setProductDataPricesFromCsv($row, $productData);
         switch ($row[self::COLUMN_VAT]) {
             case 'high':
                 $productData->vat = $this->vats['high'];
@@ -221,10 +227,6 @@ class ProductDataFixtureLoader
         $productData->parameters = $this->productParametersFixtureLoader->getProductParameterValuesDataFromString(
             $row[self::COLUMN_PARAMETERS]
         );
-        foreach ($this->domain->getAllIds() as $domainId) {
-            $productData->categoriesByDomainId[$domainId] =
-                $this->getValuesByKeyString($row[self::COLUMN_CATEGORIES_1], $this->categories);
-        }
         $productData->flags = $this->getValuesByKeyString($row[self::COLUMN_FLAGS], $this->flags);
         $productData->sellingDenied = $row[self::COLUMN_SELLING_DENIED];
 
@@ -240,24 +242,6 @@ class ProductDataFixtureLoader
     public function getCatnumFromRow($row)
     {
         return $row[self::COLUMN_CATNUM];
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
-     * @param array $row
-     */
-    public function updateProductDataFromCsvRowForSecondDomain(ProductData $productData, array $row)
-    {
-        $domainIds = [2, 3];
-        foreach ($domainIds as $domainId) {
-            $locale = $this->domain->getDomainConfigById($domainId)->getLocale();
-            $productData->descriptions[$domainId] = $row[$this->getDescriptionColumnForDomain($domainId)];
-            $productData->shortDescriptions[$domainId] = $row[$this->getShortDescriptionColumnForDomain($domainId)];
-            $productData->name[$locale] = $row[self::COLUMN_NAME_EN];
-            $this->setProductDataPricesFromCsv($row, $productData, $domainId);
-            $productData->categoriesByDomainId[$domainId] =
-                $this->getValuesByKeyString($row[self::COLUMN_CATEGORIES_2], $this->categories);
-        }
     }
 
     /**
@@ -308,9 +292,23 @@ class ProductDataFixtureLoader
     {
         $productManualPricesByPricingGroup = [];
         $rowData = explode(';', $string);
+
         foreach ($rowData as $pricingGroupAndPrice) {
-            list($pricingGroup, $price) = explode('=', $pricingGroupAndPrice);
-            $productManualPricesByPricingGroup[$pricingGroup] = Money::create($price);
+            list($pricingGroupReferenceName, $price) = explode('=', $pricingGroupAndPrice);
+            if (strpos($pricingGroupReferenceName, self::CSV_MULTIDOMAIN_ID_VARIABLE) !== false) {
+                foreach ($this->domain->getAllIds() as $domainId) {
+                    $pricingGroupReferenceNameForDomain = str_replace(self::CSV_MULTIDOMAIN_ID_VARIABLE, $domainId, $pricingGroupReferenceName);
+                    $productManualPricesByPricingGroup[$pricingGroupReferenceNameForDomain] = Money::create($price);
+                }
+            }
+        }
+
+        // This second foreach (It has higher priority) overrides dynamic pricing groups from previous foreach
+        foreach ($rowData as $pricingGroupAndPrice) {
+            list($pricingGroupReferenceName, $price) = explode('=', $pricingGroupAndPrice);
+            if (strpos($pricingGroupReferenceName, self::CSV_MULTIDOMAIN_ID_VARIABLE) === false) {
+                $productManualPricesByPricingGroup[$pricingGroupReferenceName] = Money::create($price);
+            }
         }
 
         return $productManualPricesByPricingGroup;
@@ -339,13 +337,9 @@ class ProductDataFixtureLoader
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
      * @param int $domainId
      */
-    protected function setProductDataPricesFromCsv(array $row, ProductData $productData, $domainId)
+    protected function setProductDataPricesFromCsv(array $row, ProductData $productData)
     {
-        if ($domainId === 1) {
-            $manualPricesColumn = $row[self::COLUMN_MANUAL_PRICES_DOMAIN_1];
-        } elseif ($domainId >= 2) {
-            $manualPricesColumn = $row[self::COLUMN_MANUAL_PRICES_DOMAIN_2];
-        }
+        $manualPricesColumn = $row[self::COLUMN_MANUAL_PRICES_DOMAIN_1] . ';' . $row[self::COLUMN_MANUAL_PRICES_MULTIDOMAIN];
         $manualPricesFromCsv = $this->getProductManualPricesIndexedByPricingGroupFromString($manualPricesColumn);
         foreach ($manualPricesFromCsv as $pricingGroup => $manualPrice) {
             $pricingGroup = $this->pricingGroups[$pricingGroup];

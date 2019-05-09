@@ -184,8 +184,7 @@ class ProductDataFixture
                 $row = reset($csvRows);
                 $this->demoDataIterationCounter++;
             }
-            $productData = $this->productDataFixtureLoader->createProductDataFromRowForFirstDomain($row);
-            $this->productDataFixtureLoader->updateProductDataFromCsvRowForSecondDomain($productData, $row);
+            $productData = $this->productDataFixtureLoader->createProductDataFromRow($row);
             $this->makeProductDataUnique($productData);
             $this->setRandomPerformanceCategoriesToProductData($productData);
             $product = $this->productFacade->create($productData);
@@ -298,8 +297,7 @@ class ProductDataFixture
 
         $this->productDataReferenceInjector->loadReferences(
             $this->productDataFixtureLoader,
-            $this->persistentReferenceFacade,
-            2
+            $this->persistentReferenceFacade
         );
     }
 

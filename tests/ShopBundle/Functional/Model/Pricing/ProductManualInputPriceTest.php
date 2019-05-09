@@ -2,6 +2,7 @@
 
 namespace Tests\ShopBundle\Functional\Model\Pricing;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
@@ -40,7 +41,7 @@ class ProductManualInputPriceTest extends TransactionFunctionalTestCase
         $vatData->percent = 21;
         $vat = new Vat($vatData);
 
-        $pricingGroup = $this->getReference(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN_1);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         $productData = $producDataFactory->create();
         $productData->vat = $vat;
@@ -74,7 +75,7 @@ class ProductManualInputPriceTest extends TransactionFunctionalTestCase
         $vatData->percent = 21;
         $vat = new Vat($vatData);
 
-        $pricingGroup = $this->getReference(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN_1);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         $productData = $productDataFactory->create();
         $productData->vat = $vat;

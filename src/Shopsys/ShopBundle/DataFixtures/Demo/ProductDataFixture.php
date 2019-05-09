@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
@@ -63,13 +62,13 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     public function load(ObjectManager $manager)
     {
-        $this->referenceInjector->loadReferences($this->productDataFixtureLoader, $this->persistentReferenceFacade, Domain::FIRST_DOMAIN_ID);
+        $this->referenceInjector->loadReferences($this->productDataFixtureLoader, $this->persistentReferenceFacade);
 
         $csvRows = $this->productDataFixtureCsvReader->getProductDataFixtureCsvRows();
         $productNo = 1;
         $productsByCatnum = [];
         foreach ($csvRows as $row) {
-            $productData = $this->productDataFixtureLoader->createProductDataFromRowForFirstDomain($row);
+            $productData = $this->productDataFixtureLoader->createProductDataFromRow($row);
             $this->addFakeStoreStocks($productData);
             $product = $this->createProduct(self::PRODUCT_PREFIX . $productNo, $productData);
 
