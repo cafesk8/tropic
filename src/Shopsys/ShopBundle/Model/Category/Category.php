@@ -28,7 +28,7 @@ class Category extends BaseCategory
      *
      * @ORM\Column(type="boolean")
      */
-    protected $preListingCategory;
+    private $preListingCategory;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
