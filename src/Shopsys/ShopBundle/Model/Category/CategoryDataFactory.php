@@ -30,4 +30,15 @@ class CategoryDataFactory extends BaseCategoryDataFactory
 
         return $categoryData;
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
+     */
+    protected function fillFromCategory(BaseCategoryData $categoryData, BaseCategory $category)
+    {
+        parent::fillFromCategory($categoryData, $category);
+
+        $categoryData->displayedInHorizontalMenu = $category->isDisplayedInHorizontalMenu();
+    }
 }

@@ -1,0 +1,18 @@
+{% set isFirstLevel = isFirstLevel is not defined ? true: isFirstLevel %}
+
+{% if categoriesWithLazyLoadedVisibleChildren|length > 0 %}
+    <ul class="list-menu dont-print {% if isFirstLevel %}list-menu--root{% endif %}" {% if isFirstLevel %}id="js-categories"{% endif %}>
+        {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
+            {% set category = categoryWithLazyLoadedVisibleChildren.category %}
+            <li class="list-menu__item">
+                <a href="{{ url('front_product_list', { id: category.id }) }}" class="list-menu__item__link list-menu__item__link--level-{{ category.level }}">
+                    {{ category.name }}
+                </a>
+                {% set categoriesWithLazyLoadedVisibleChildren = categoryWithLazyLoadedVisibleChildren.children %}
+
+                {% set isFirstLevel = false %}
+                {% include _self %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

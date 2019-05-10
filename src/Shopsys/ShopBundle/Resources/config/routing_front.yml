@@ -18,16 +18,6 @@ front_cart_delete:
     requirements:
         cartItemId: \d+
 
-front_category_branch:
-    path: /categoryPanel/{parentCategoryId}/
-    defaults: { _controller: ShopsysShopBundle:Front\Category:branch }
-    condition: "request.isXmlHttpRequest()"
-
-front_category_panel:
-    path: /categoryPanel/
-    defaults: { _controller: ShopsysShopBundle:Front\Category:panel }
-    condition: "request.isXmlHttpRequest()"
-
 front_contact_form_send:
     path: /contactForm/
     defaults: { _controller: ShopsysShopBundle:Front\ContactForm:send }

@@ -64,6 +64,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
          */
         $rootCategory = $this->categoryFacade->getRootCategory();
         $categoryData = $this->categoryDataFactory->create();
+        /** @var $categoryData \Shopsys\ShopBundle\Model\Category\CategoryData */
         $emptyDescriptionsForAllDomains = $this->createDomainKeyedArray();
 
         $categoryData->name = [
@@ -79,6 +80,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                     . 'and home office activities (e.g., desktop computers, printers, paper shredders, etc.).',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_ELECTRONICS);
 
@@ -94,6 +96,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . '(black-and-white), or in color, and in two or three dimensions',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $categoryData->parent = $this->getReference(self::CATEGORY_ELECTRONICS);
         $this->createCategory($categoryData, self::CATEGORY_TV);
 
@@ -109,6 +112,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'transmitted to another location, or both.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 
         $categoryData->name = [
@@ -123,6 +127,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'or similar physical media.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PRINTERS);
 
         $categoryData->name = [
@@ -139,6 +144,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'usually at the same time.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PC);
 
         $categoryData->name = [
@@ -155,6 +161,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'and replays such signals simultaneously in audible form to its user.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PHONES);
 
         $categoryData->name = [
@@ -172,6 +179,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'boiling point, and directed into the funnel.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_COFFEE);
 
         $categoryData->name = [
@@ -188,6 +196,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'or e-book.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_BOOKS);
 
@@ -204,6 +213,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'used to make toys enjoyable to all ages. ',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = true;
         $this->createCategory($categoryData, self::CATEGORY_TOYS);
 
         $categoryData->name = [
@@ -218,6 +228,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'made for agriculture and horticulture. Garden tools can also be hand tools and power tools.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_GARDEN_TOOLS);
 
         $categoryData->name = [
@@ -234,6 +245,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
                     . 'or stimulate growth.',
             ]
         );
+        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_FOOD);
     }
 
