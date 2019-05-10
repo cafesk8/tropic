@@ -18,9 +18,17 @@ class Category extends BaseCategory
 {
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $displayedInHorizontalMenu;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $preListingCategory;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
@@ -30,6 +38,7 @@ class Category extends BaseCategory
         parent::__construct($categoryData);
 
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
+        $this->preListingCategory = $categoryData->preListingCategory;
     }
 
     /**
@@ -40,6 +49,7 @@ class Category extends BaseCategory
         parent::edit($categoryData);
 
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
+        $this->preListingCategory = $categoryData->preListingCategory;
     }
 
     /**
@@ -48,5 +58,13 @@ class Category extends BaseCategory
     public function isDisplayedInHorizontalMenu(): bool
     {
         return $this->displayedInHorizontalMenu;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreListingCategory(): bool
+    {
+        return $this->preListingCategory;
     }
 }

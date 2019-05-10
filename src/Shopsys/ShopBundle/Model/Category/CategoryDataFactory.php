@@ -16,6 +16,7 @@ class CategoryDataFactory extends BaseCategoryDataFactory
     {
         $categoryData = new CategoryData();
         $this->fillFromCategory($categoryData, $category);
+        $categoryData->preListingCategory = $category->isPreListingCategory();
 
         return $categoryData;
     }

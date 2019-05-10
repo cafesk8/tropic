@@ -16,10 +16,16 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->get('settings')
+        $builderSettingsGroup = $builder->get('settings');
+
+        $builderSettingsGroup
             ->add('displayedInHorizontalMenu', YesNoType::class, [
                 'required' => false,
                 'label' => t('V hlavním menu'),
+            ])
+            ->add('preListingCategory', YesNoType::class, [
+                'required' => false,
+                'label' => t('Předvýpis kategorií'),
             ]);
     }
 
