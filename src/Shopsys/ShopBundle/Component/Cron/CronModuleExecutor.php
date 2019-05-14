@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Cron;
 
+use Shopsys\ShopBundle\Component\Transfer\TransferIteratedCronModuleInterface;
+
 class CronModuleExecutor extends \Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor
 {
     /**
@@ -11,12 +13,20 @@ class CronModuleExecutor extends \Shopsys\FrameworkBundle\Component\Cron\CronMod
      */
     public function runModule($cronModuleService, $suspended)
     {
-        // skip if needed
+        if ($cronModuleService instanceof TransferIteratedCronModuleInterface && $cronModuleService->isSkipped() === true) {
+            return parent::RUN_STATUS_OK;
+        }
 
-        // do something on START
+        if ($cronModuleService instanceof TransferIteratedCronModuleInterface) {
+            $cronModuleService->start();
+        }
 
-        return parent::runModule($cronModuleService, $suspended);
+        $runModuleStatus = parent::runModule($cronModuleService, $suspended);
 
-        // do something on END
+        if ($cronModuleService instanceof TransferIteratedCronModuleInterface) {
+            $cronModuleService->end();
+        }
+
+        return $runModuleStatus;
     }
 }
