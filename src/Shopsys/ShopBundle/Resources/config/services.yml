@@ -24,6 +24,11 @@ services:
                 local: '@local_filesystem'
                 main: '@main_filesystem'
 
+    Shopsys\FrameworkBundle\Component\Cron\CronFacade:
+        class: Shopsys\ShopBundle\Component\Cron\CronFacade
+        arguments:
+            - '@monolog.logger.cron'
+
     Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory: ~
 
     Shopsys\FrameworkBundle\Model\Order\OrderFlowFactoryInterface: '@Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory'
