@@ -19,7 +19,7 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
-    private $em;
+    protected $em;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
