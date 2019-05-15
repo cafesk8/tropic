@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
 
 /**
@@ -37,6 +38,14 @@ class Product extends BaseProduct
      * @ORM\Column(type="integer", nullable=true, unique=true)
      */
     private $transferNumber;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null
+     *
+     * @ORM\ManyToOne(targetEntity="\Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup", cascade={"persist"})
+     * @ORM\JoinColumn(name="maint_variant_group_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    protected $mainVariantGroup;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
@@ -73,6 +82,14 @@ class Product extends BaseProduct
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null
+     */
+    public function getMainVariantGroup(): ?MainVariantGroup
+    {
+        return $this->mainVariantGroup;
     }
 
     /**
@@ -124,5 +141,13 @@ class Product extends BaseProduct
     public function setDistinguishingParameter(Parameter $parameter): void
     {
         $this->distinguishingParameter = $parameter;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null $mainVariantGroup
+     */
+    public function setMainVariantGroup(?MainVariantGroup $mainVariantGroup): void
+    {
+        $this->mainVariantGroup = $mainVariantGroup;
     }
 }
