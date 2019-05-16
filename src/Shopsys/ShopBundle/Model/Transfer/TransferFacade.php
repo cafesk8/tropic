@@ -62,4 +62,13 @@ class TransferFacade
 
         return $transfer->isEnabled();
     }
+
+    /**
+     * @param string $identifier
+     * @return \Shopsys\ShopBundle\Model\Transfer\Transfer
+     */
+    public function getByIdentifier(string $identifier): Transfer
+    {
+        return $this->transferRepository->getByIdentifier($identifier);
+    }
 }

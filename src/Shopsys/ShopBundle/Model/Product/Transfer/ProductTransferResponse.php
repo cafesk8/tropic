@@ -9,6 +9,7 @@ use Shopsys\ShopBundle\Component\Rest\RestResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
+use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 
 class ProductTransferResponse implements TransferResponseInterface
 {
@@ -23,15 +24,23 @@ class ProductTransferResponse implements TransferResponseInterface
     private $transferConfig;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
+     */
+    private $transferFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Rest\RestClientFactory $restClientFactory
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferConfig $transferConfig
+     * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      */
     public function __construct(
         RestClientFactory $restClientFactory,
-        TransferConfig $transferConfig
+        TransferConfig $transferConfig,
+        TransferFacade $transferFacade
     ) {
         $this->restClientFactory = $restClientFactory;
         $this->transferConfig = $transferConfig;
+        $this->transferFacade = $transferFacade;
     }
 
     /**
@@ -60,6 +69,14 @@ class ProductTransferResponse implements TransferResponseInterface
             $this->transferConfig->getPassword()
         );
 
-        return $restClient->get('/api/Eshop/Articles');
+        $transfer = $this->transferFacade->getByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
+
+        if ($transfer->getLastStartAt() === null) {
+            $restResponse = $restClient->get('/api/Eshop/Articles');
+        } else {
+            $restResponse = $restClient->get('/api/Eshop/ChangedArticles');
+        }
+
+        return $restResponse;
     }
 }
