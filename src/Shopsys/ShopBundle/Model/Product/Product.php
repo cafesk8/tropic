@@ -42,7 +42,7 @@ class Product extends BaseProduct
     /**
      * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null
      *
-     * @ORM\ManyToOne(targetEntity="\Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="\Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup", inversedBy="products", cascade={"persist"})
      * @ORM\JoinColumn(name="maint_variant_group_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $mainVariantGroup;

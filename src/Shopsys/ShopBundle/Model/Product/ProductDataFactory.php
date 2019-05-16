@@ -28,6 +28,10 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData = new ProductData();
         $this->fillFromProduct($productData, $product);
 
+        if ($product->getMainVariantGroup() !== null) {
+            $productData->productsInGroup = $product->getMainVariantGroup()->getProducts();
+        }
+
         return $productData;
     }
 
