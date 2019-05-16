@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
@@ -36,24 +37,32 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $productFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade
+     */
+    private $productVisibilityFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponse $productTransferResponse
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferValidator $productTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         ProductTransferResponse $productTransferResponse,
         ProductTransferMapper $productTransferMapper,
         ProductTransferValidator $productTransferValidator,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        ProductVisibilityFacade $productVisibilityFacade
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->productTransferResponse = $productTransferResponse;
         $this->productTransferMapper = $productTransferMapper;
         $this->productTransferValidator = $productTransferValidator;
         $this->productFacade = $productFacade;
+        $this->productVisibilityFacade = $productVisibilityFacade;
     }
 
     /**
@@ -105,5 +114,12 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     protected function isNextIterationNeeded(): bool
     {
         return false;
+    }
+
+    public function end(): void
+    {
+        $this->logger->addInfo('Recalculate products visibility');
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
+        parent::end();
     }
 }
