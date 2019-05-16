@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 
@@ -33,14 +34,20 @@ class ProductTransferMapper
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemData $productTransferResponseItemData
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
      * @return \Shopsys\ShopBundle\Model\Product\ProductData
      */
     public function mapTransferDataToProductData(
-        ProductTransferResponseItemData $productTransferResponseItemData
+        ProductTransferResponseItemData $productTransferResponseItemData,
+        ?Product $product
     ): ProductData {
-        $productData = $this->productDataFactory->create();
+        if ($product === null) {
+            $productData = $this->productDataFactory->create();
+            $productData->transferNumber = $productTransferResponseItemData->getNumber();
+        } else {
+            $productData = $this->productDataFactory->createFromProduct($product);
+        }
 
-        $productData->transferNumber = $productTransferResponseItemData->getNumber();
         $productData->name['cs'] = $productTransferResponseItemData->getName();
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();

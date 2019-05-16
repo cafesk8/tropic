@@ -76,11 +76,14 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
         $product = $this->productFacade->findByTransferNumber($itemData->getNumber());
 
-        $productData = $this->productTransferMapper->mapTransferDataToProductData($itemData);
+        $productData = $this->productTransferMapper->mapTransferDataToProductData($itemData, $product);
 
         if ($product === null) {
             $this->productFacade->create($productData);
             $this->logger->addInfo(sprintf('Product with transfer number %s was created', $itemData->getNumber()));
+        } else {
+            $this->productFacade->edit($product->getId(), $productData);
+            $this->logger->addInfo(sprintf('Product with transfer number %s was edited', $itemData->getNumber()));
         }
     }
 
