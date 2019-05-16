@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
+use ArrayAccess;
+use IteratorAggregate;
+use Shopsys\ShopBundle\Component\DataObject\ReadObjectAsArrayTrait;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 
-class ProductTransferResponseItemData implements TransferResponseItemDataInterface
+class ProductTransferResponseItemData implements TransferResponseItemDataInterface, ArrayAccess, IteratorAggregate
 {
+    use ReadObjectAsArrayTrait;
+
     /**
      * @var int
      */

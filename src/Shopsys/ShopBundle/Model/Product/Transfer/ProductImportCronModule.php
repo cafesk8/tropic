@@ -26,6 +26,11 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $productTransferMapper;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferValidator
+     */
+    private $productTransferValidator;
+
+    /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
@@ -34,17 +39,20 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponse $productTransferResponse
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferValidator $productTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         ProductTransferResponse $productTransferResponse,
         ProductTransferMapper $productTransferMapper,
+        ProductTransferValidator $productTransferValidator,
         ProductFacade $productFacade
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->productTransferResponse = $productTransferResponse;
         $this->productTransferMapper = $productTransferMapper;
+        $this->productTransferValidator = $productTransferValidator;
         $this->productFacade = $productFacade;
     }
 
@@ -75,6 +83,8 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
                 ProductTransferResponseItemData::class
             );
         }
+
+        $this->productTransferValidator->validate($itemData);
 
         $product = $this->productFacade->findByTransferNumber($itemData->getNumber());
 
