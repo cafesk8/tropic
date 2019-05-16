@@ -29,6 +29,13 @@ class Product extends BaseProduct
     protected $storeStocks;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true, unique=true)
+     */
+    private $transferNumber;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -38,6 +45,7 @@ class Product extends BaseProduct
         parent::__construct($productData, $productCategoryDomainFactory, $variants);
 
         $this->storeStocks = new ArrayCollection();
+        $this->transferNumber = $productData->transferNumber;
     }
 
     /**
@@ -72,5 +80,13 @@ class Product extends BaseProduct
     public function addStoreStock(ProductStoreStock $storeStock): void
     {
         $this->storeStocks->add($storeStock);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTransferNumber(): ?int
+    {
+        return $this->transferNumber;
     }
 }

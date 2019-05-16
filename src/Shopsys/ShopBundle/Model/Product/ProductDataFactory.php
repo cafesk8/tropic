@@ -52,5 +52,7 @@ class ProductDataFactory extends BaseProductDataFactory
         foreach ($product->getStoreStocks() as $storeStock) {
             $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = $storeStock->getStockQuantity();
         }
+
+        $productData->transferNumber = $product->getTransferNumber();
     }
 }
