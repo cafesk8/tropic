@@ -199,4 +199,13 @@ class ProductFacade extends BaseProductFacade
 
         $this->em->flush();
     }
+
+    /**
+     * @param int $transferNumber
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
+     */
+    public function findByTransferNumber(int $transferNumber): ?Product
+    {
+        return $this->productRepository->findByTransferNumber($transferNumber);
+    }
 }

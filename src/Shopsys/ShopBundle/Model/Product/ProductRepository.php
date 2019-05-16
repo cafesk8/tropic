@@ -24,4 +24,13 @@ class ProductRepository extends BaseProductRepository
 
         return $queryBuilder->getQuery()->execute();
     }
+
+    /**
+     * @param int $transferNumber
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
+     */
+    public function findByTransferNumber(int $transferNumber): ?Product
+    {
+        return $this->getProductRepository()->findOneBy(['transferNumber' => $transferNumber]);
+    }
 }
