@@ -56,6 +56,7 @@ class MainVariantGroupFormType extends AbstractType
                         'label' => t('Produkty'),
                         'allow_main_variants' => true,
                         'allow_variants' => false,
+                        'is_main_variant_group' => true,
                         'constraints' => [
                             new Constraints\NotBlank(),
                         ],

@@ -46,3 +46,7 @@ services:
     Shopsys\ShopBundle\Form\Admin\VariantFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\VariantFormType}
+
+    Shopsys\ShopBundle\Form\Admin\ProductsTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\ProductsType}

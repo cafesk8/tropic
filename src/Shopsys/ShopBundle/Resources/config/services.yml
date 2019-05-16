@@ -24,6 +24,9 @@ services:
                 local: '@local_filesystem'
                 main: '@main_filesystem'
 
+    Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController:
+        class: Shopsys\ShopBundle\Controller\Admin\ProductPickerController
+
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:
