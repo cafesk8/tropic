@@ -23,4 +23,21 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
         return null;
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     */
+    public function findMainVariantGroupDistinguishingParameterValue(Product $product): ?ParameterValue
+    {
+        $productParameterValues = $this->getProductParameterValues($product);
+
+        foreach ($productParameterValues as $productParameterValue) {
+            if ($productParameterValue->getParameter() === $product->getMainVariantGroup()->getDistinguishingParameter()) {
+                return $productParameterValue->getValue();
+            }
+        }
+
+        return null;
+    }
 }

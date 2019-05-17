@@ -67,6 +67,7 @@ class Product extends BaseProduct
         $this->storeStocks = new ArrayCollection();
         $this->transferNumber = $productData->transferNumber;
         $this->distinguishingParameter = $productData->distinguishingParameter;
+        $this->mainVariantGroup = $productData->mainVariantGroup;
     }
 
     /**

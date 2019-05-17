@@ -28,10 +28,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData = new ProductData();
         $this->fillFromProduct($productData, $product);
 
-        if ($product->getMainVariantGroup() !== null) {
-            $productData->productsInGroup = $product->getMainVariantGroup()->getProducts();
-        }
-
         return $productData;
     }
 
@@ -57,7 +53,12 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = $storeStock->getStockQuantity();
         }
 
+        if ($product->getMainVariantGroup() !== null) {
+            $productData->productsInGroup = $product->getMainVariantGroup()->getProducts();
+        }
+
         $productData->transferNumber = $product->getTransferNumber();
         $productData->distinguishingParameter = $product->getDistinguishingParameter();
+        $productData->mainVariantGroup = $product->getMainVariantGroup();
     }
 }

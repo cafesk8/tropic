@@ -97,8 +97,25 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                <dl class="box-detail__info__params">
-                    {% if product.isMainVariant %}
+                {% if product.mainVariantGroup is not null %}
+                    <dl class="box-detail__info__params">
+                        <dt></dt>
+                        <dd>
+                            <table>
+                                <tr>
+                                    {% for mainVariantGroupProduct in product.mainVariantGroup.products %}
+                                        {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
+                                        {% if mainVariantGroupDistinguishingParameterValue is not null %}
+                                            <td>{{ mainVariantGroupDistinguishingParameterValue.text }}</td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                        </dd>
+                    </dl>
+                {% endif %}
+                {% if product.isMainVariant %}
+                    <dl class="box-detail__info__params">
                         <dt></dt>
                         <dd>
                             <table>
@@ -112,8 +129,8 @@
                                 </tr>
                             </table>
                         </dd>
-                    {% endif %}
-                </dl>
+                    </dl>
+                {% endif %}
 
                 {% spaceless %}
                     <dl class="box-detail__info__params">

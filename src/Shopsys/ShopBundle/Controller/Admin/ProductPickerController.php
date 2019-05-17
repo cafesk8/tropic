@@ -33,4 +33,26 @@ class ProductPickerController extends BaseProductPickerController
             ]
         );
     }
+
+    /**
+     * @Route("/product-picker/pick-single/{parentInstanceId}/", defaults={"parentInstanceId"="__instance_id__"})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $parentInstanceId
+     */
+    public function pickSingleAction(Request $request, $parentInstanceId)
+    {
+        return $this->getPickerResponse(
+            $request,
+            [
+                'isMultiple' => false,
+            ],
+            [
+                'isMultiple' => false,
+                'parentInstanceId' => $parentInstanceId,
+                'allowMainVariants' => $request->query->getBoolean('allowMainVariants', true),
+                'allowVariants' => $request->query->getBoolean('allowVariants', true),
+                'isMainVariantGroup' => $request->query->getBoolean('isMainVariantGroup', false),
+            ]
+        );
+    }
 }

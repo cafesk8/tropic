@@ -7,9 +7,10 @@ namespace Shopsys\ShopBundle\Twig;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ProductExtension extends \Twig_Extension
+class ProductExtension extends AbstractExtension
 {
     /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
@@ -31,9 +32,13 @@ class ProductExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction(
+            new TwigFunction(
                 'variantDistinguishingParameterValue',
                 [$this, 'getVariantDistinguishingParameterValue']
+            ),
+            new TwigFunction(
+                'mainVariantGroupDistinguishingParameterValue',
+                [$this, 'findMainVariantGroupDistinguishingParameterValue']
             ),
         ];
     }
@@ -45,5 +50,14 @@ class ProductExtension extends \Twig_Extension
     public function getVariantDistinguishingParameterValue(Product $product): ?ParameterValue
     {
         return $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     */
+    public function findMainVariantGroupDistinguishingParameterValue(Product $product): ?ParameterValue
+    {
+        return $this->productCachedAttributesFacade->findMainVariantGroupDistinguishingParameterValue($product);
     }
 }
