@@ -15,7 +15,7 @@ services:
         tags: ['controller.service_arguments']
 
     Shopsys\ShopBundle\:
-        resource: '../../**/*{TransferResponse,Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
+        resource: '../../**/*{Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
         exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
     League\Flysystem\MountManager:
@@ -28,6 +28,15 @@ services:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:
             - '@monolog.logger.cron'
+
+    Shopsys\ShopBundle\Component\Rest\RestClient:
+        class: Shopsys\ShopBundle\Component\Rest\RestClient
+        factory: 'Shopsys\ShopBundle\Component\Rest\RestClientFactory:create'
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_username%'
+            - '%transfer_password%'
+            - '%transfer_enabled%'
 
     Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:

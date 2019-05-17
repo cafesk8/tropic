@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
+use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
@@ -17,9 +18,9 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     const TRANSFER_IDENTIFIER = 'import_products';
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponse
+     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
      */
-    private $productTransferResponse;
+    private $restClient;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper
@@ -43,7 +44,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
-     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponse $productTransferResponse
+     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferValidator $productTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
@@ -51,14 +52,14 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
-        ProductTransferResponse $productTransferResponse,
+        RestClient $restClient,
         ProductTransferMapper $productTransferMapper,
         ProductTransferValidator $productTransferValidator,
         ProductFacade $productFacade,
         ProductVisibilityFacade $productVisibilityFacade
     ) {
         parent::__construct($transferCronModuleDependency);
-        $this->productTransferResponse = $productTransferResponse;
+        $this->restClient = $restClient;
         $this->productTransferMapper = $productTransferMapper;
         $this->productTransferValidator = $productTransferValidator;
         $this->productFacade = $productFacade;
@@ -78,7 +79,20 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      */
     protected function getTransferResponse(): TransferResponse
     {
-        return $this->productTransferResponse->getResponse();
+        $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
+
+        if ($transfer->getLastStartAt() === null) {
+            $restResponse = $this->restClient->get('/api/Eshop/Articles');
+        } else {
+            $restResponse = $this->restClient->get('/api/Eshop/ChangedArticles');
+        }
+
+        $transferDataItems = [];
+        foreach ($restResponse->getData() as $restData) {
+            $transferDataItems[] = new ProductTransferResponseItemData($restData);
+        }
+
+        return new TransferResponse($restResponse->getCode(), $transferDataItems);
     }
 
     /**

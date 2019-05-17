@@ -22,6 +22,11 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     protected $em;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
+     */
+    protected $transferFacade;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
@@ -30,11 +35,6 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
      * @var \Symfony\Component\Validator\Validator\ValidatorInterface
      */
     private $validator;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
-     */
-    private $transferFacade;
 
     /**
      * @var \Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory
@@ -57,9 +57,9 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     public function __construct(TransferCronModuleDependency $transferCronModuleDependency)
     {
         $this->em = $transferCronModuleDependency->getEntityManager();
+        $this->transferFacade = $transferCronModuleDependency->getTransferFacade();
         $this->sqlLoggerFacade = $transferCronModuleDependency->getSqlLoggerFacade();
         $this->validator = $transferCronModuleDependency->getValidator();
-        $this->transferFacade = $transferCronModuleDependency->getTransferFacade();
         $this->transferLoggerFactory = $transferCronModuleDependency->getTransferLoggerFactory();
         $this->transferConfig = $transferCronModuleDependency->getTransferConfig();
     }
