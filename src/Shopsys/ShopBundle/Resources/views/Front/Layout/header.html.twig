@@ -51,16 +51,17 @@
     <div class="web__container">
         <header class="header">
             <div class="header__menu dont-print">
-                {{ render(controller('ShopsysShopBundle:Front/Article:menu')) }}
                 {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
-                <span class="all-categories">
+                <div class="all-categories">
                     <span class="all-categories__title">
                         {{ 'Všechny kategorie'|trans }}
                     </span>
+                    <span class="all-categories__arrow"></span>
+
                     <span class="all-categories__categories-links">
                         {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
                     </span>
-                </span>
+                </div>
             </div>
 
             <div class="header__logo">

@@ -1,43 +1,72 @@
-@header-all-categories-link-width: 160px;
+@header-all-categories-link-width: 180px;
 @header-all-categories-link-height: @menu-height;
+@header-all-categories-arrow-size: @arrow-size;
+@header-all-categories-submenu-top: 20px;
+@header-all-categories-submenu-width: 999px;
 
 .all-categories {
     width: @header-all-categories-link-width;
     position: relative;
     cursor: pointer;
 
+    border-top-left-radius: @radius;
+    border-top-right-radius: @radius;
+
+    &:hover {
+        margin-top: -7px;
+        margin-bottom: -@header-all-categories-submenu-top;
+        padding-top: 7px;
+        padding-bottom: @header-all-categories-submenu-top;
+        background: @color-gray;
+    }
+
     &__title {
         position: relative;
         display: block;
         height: @header-all-categories-link-height;
         line-height: @header-all-categories-link-height;
+        padding: 0 20px;
 
         color: @color-brown-light-2;
         font-size: 13px;
+        letter-spacing: -0.5px;
         text-transform: uppercase;
     }
 
     &__arrow {
         .svg;
         .svg-arrow;
-
         position: absolute;
-        right: -20px;
-        top: 7px;
-    }
+        right: 16px;
+        top: calc(~"50% - @{header-all-categories-arrow-size}/2");
 
-    &:hover {
-        background: @color-gray;
+        border-top-right-radius: @radius;
+        border-top-left-radius: @radius;
+        font-size: @header-all-categories-arrow-size;
+
+        .all-categories:hover & {
+            top: calc(~"50% - @{header-all-categories-arrow-size}/2 - 7px");
+        }
     }
 
     &__categories-links {
         display: none;
         position: absolute;
-        z-index: 500;
-        right: 0;
+        width: 100%;
+        left: -100px;
+        top: @header-all-categories-link-height + @header-all-categories-submenu-top + 5px;
+        padding: 40px 50px;
+        z-index: @z-index-menu;
+
+        background: @color-gray;
+        border-radius: @radius;
+
+        @media @query-vl {
+            width: @header-all-categories-submenu-width;
+        }
 
         .all-categories:hover & {
-            display: block;
+            display: flex;
         }
     }
 }
