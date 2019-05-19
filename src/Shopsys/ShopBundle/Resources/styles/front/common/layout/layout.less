@@ -48,7 +48,15 @@ img {
     }
 
     &__container {
-        padding: 0 @web-padding;
+        padding: 0;
+
+        &--small-padding {
+            padding: 0 @web-padding;
+        }
+
+        &--big-padding {
+            padding: 0 @web-padding-big;
+        }
 
         @media @query-xl {
             width: @web-width;
