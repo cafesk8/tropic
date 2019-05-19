@@ -21,9 +21,7 @@
     <div class="web__in">
         <div class="web__line">
             <div class="web__header">
-                <div class="web__container">
-                    {{ block('header') }}
-                </div>
+                {{ block('header') }}
                 {% block infoRow %}
                     {% if isInfoRowVisible() %}
                         <div class="web__container info-row" id="js-info-row" data-now="{{ 'now'|date(constant('Shopsys\\ShopBundle\\Component\\InfoRow\\InfoRowFacade::COOKIE_CLOSED_AT_FORMAT')) }}">
