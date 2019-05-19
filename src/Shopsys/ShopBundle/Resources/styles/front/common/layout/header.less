@@ -28,6 +28,16 @@
     }
 }
 
+// Middle part of header with search input and info
+.header__menu {
+    width: 100%;
+    order: 1;
+
+    @media @query-vl {
+        width: 100%/3;
+    }
+}
+
 // Left part of header with logo
 .header__logo {
     width: 100%;
@@ -52,16 +62,6 @@
         order: 3;
         text-align: right;
     }
-
-    &__search {
-        .svg {
-            line-height: @header-search-icon-size;
-            transform: rotate(90deg);
-
-            font-size: @header-search-icon-size;
-        }
-    }
-}
 
 // Mobile part of header visible on small resolution
 .header__mobile {

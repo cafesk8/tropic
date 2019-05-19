@@ -50,134 +50,75 @@
     </div>
     <div class="web__container">
         <header class="header">
-            <div class="header__logo">
-                {% block logo %}
-                    <a class="logo" href="{{ url('front_homepage') }}">
-                        <img src="{{ asset('assets/frontend/images/logo.svg') }}" alt="{{ 'Online shop'|trans }}">
-                    </a>
-                </li>
-                <li class="top-bar__menu__item">
-                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
-                        {{ 'Naše hodnoty'|trans }}
-                    </a>
-                </li>
-                <li class="top-bar__menu__item">
-                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
-                        {{ 'Blog'|trans }}
-                    </a>
-                </li>
-                <li class="top-bar__menu__item">
-                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
-                        {{ 'O nás'|trans }}
-                    </a>
-                </li>
-                <li class="top-bar__menu__item">
-                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
-                        {{ 'Prodejny'|trans }}
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="top-bar__menu top-bar__menu--right">
-                <li class="top-bar__menu__item">
-                    <span href="#" class="top-bar__menu__item__text">
-                        <strong class="top-bar__menu__item__text top-bar__menu__item__text__spacer">{{ 'Buď bushman a měj zdarma'|trans }}:</strong>
-                        {{ 'Poštovné'|trans }}
-                        <span class="top-bar__menu__item__text__spacer">—</span>
-                        {{ 'Výměnu'|trans }}
-                        <span class="top-bar__menu__item__text__spacer">—</span>
-                        {{ 'Záruku 25 let'|trans }}
-                            </span>
-                </li>
-            </ul>
-                    </div>
-            </div>
-    <div class="web__container">
-        <header class="header">
             <div class="header__menu dont-print">
+                {{ render(controller('ShopsysShopBundle:Front/Article:menu')) }}
                 {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
-                <div class="all-categories">
-                    <span class="all-categories__title">
+                <span class="all-categories">
+                    <span class="all-categories__link">
                         {{ 'Všechny kategorie'|trans }}
                     </span>
-                    <span class="all-categories__arrow"></span>
-
                     <span class="all-categories__categories-links">
                         {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
                     </span>
-                </div>
+                </span>
             </div>
 
             <div class="header__logo">
                 {% block logo %}
                 <a class="logo" href="{{ url('front_homepage') }}">
-                    <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
-                        </a>
+                    <img src="{{ asset('assets/frontend/images/logo.svg') }}" alt="{{ 'Online shop'|trans }}">
+                </a>
                 {% endblock %}
-                    </div>
+            </div>
 
             <div class="header__right dont-print">
-
-                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-dropdown">
-                    <div class="box-dropdown__select">
-                        <i class="svg svg-search"></i>
-                    </div>
-                </div>
-
-                <div class="box-dropdown js-dropdown">
-                    <div class="box-dropdown__select">
-                        {{ 'Váš účet'|trans }}
-                        <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
-                        <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
-            </div>
-                    <ul class="js-dropdown-options box-dropdown__options">
-                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                <ul class="menu-iconic">
+                    {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
-                                    <i class="svg svg-user"></i>
-                                    <span>
-                                        {{ app.user.firstName }} {{ app.user.lastName }}
-                                    </span>
-                                </a>
-                                <ul class="menu-iconic__sub">
-                                    <li class="menu-iconic__sub__item">
-                                        <a href="{{ url('front_customer_edit') }}" class="menu-iconic__sub__item__link">{{ 'Personal data'|trans }}</a>
-                                    </li>
-                                    <li class="menu-iconic__sub__item">
-                                        <a href="{{ url('front_customer_orders') }}" class="menu-iconic__sub__item__link">{{ 'My orders'|trans }}</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
+                                <i class="svg svg-user"></i>
+                                <span>
+                                    {{ app.user.firstName }} {{ app.user.lastName }}
+                                </span>
+                            </a>
+                            <ul class="menu-iconic__sub">
+                                <li class="menu-iconic__sub__item">
+                                    <a href="{{ url('front_customer_edit') }}" class="menu-iconic__sub__item__link">{{ 'Personal data'|trans }}</a>
+                                </li>
+                                <li class="menu-iconic__sub__item">
+                                    <a href="{{ url('front_customer_orders') }}" class="menu-iconic__sub__item__link">{{ 'My orders'|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="js-logout-link-desktop menu-iconic__item__link">
-                                    <span>
-                                        {{ 'Log out'|trans }}
-                                    </span>
-                                </a>
-                            </li>
-                        {% else %}
+                            <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="js-logout-link-desktop menu-iconic__item__link">
+                                <span>
+                                    {{ 'Log out'|trans }}
+                                </span>
+                            </a>
+                        </li>
+                    {% else %}
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a
-                                    href="{{ url('front_login') }}"
-                                    data-url="{{ url('front_login_window_form') }}"
-                                    class="js-login-link-desktop js-login-button menu-iconic__item__link"
-                                >
-                                    <i class="svg svg-user"></i>
-                                    <span>
-                                        {{ 'Log in'|trans }}
-                                    </span>
-                                </a>
-                            </li>
+                            <a
+                                href="{{ url('front_login') }}"
+                                data-url="{{ url('front_login_window_form') }}"
+                                class="js-login-link-desktop js-login-button menu-iconic__item__link"
+                            >
+                                <i class="svg svg-user"></i>
+                                <span>
+                                    {{ 'Log in'|trans }}
+                                </span>
+                            </a>
+                        </li>
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_registration_register') }}" class="js-registration-link-desktop menu-iconic__item__link">
-                                    <span>
-                                        {{ 'Registration'|trans }}
-                                    </span>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
+                            <a href="{{ url('front_registration_register') }}" class="js-registration-link-desktop menu-iconic__item__link">
+                                <span>
+                                    {{ 'Registration'|trans }}
+                                </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
 
                 {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}
             </div>
