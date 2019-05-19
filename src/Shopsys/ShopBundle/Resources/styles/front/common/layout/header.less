@@ -1,18 +1,17 @@
 @header-cart-width: 38px;
+@header-height: 35px;
+@header-height-gap: 30px;
 @header-mobile-button-size: 28px;
 @header-mobile-button-info-size: 16px;
 @header-mobile-button-dropdown-position: @web-header-mobile-dropdown-position;
 
 .header {
-    padding-bottom: 10px;
     position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-
-    @media @query-lg {
-        padding-bottom: 20px;
-    }
+    min-height: @header-height;
+    padding: @header-height-gap 0;
 }
 
 // Middle part of header with search input and info
@@ -20,6 +19,7 @@
     width: 100%;
     order: 1;
     align-items: center;
+    display: flex;
 
     @media @query-vl {
         flex-direction: row;
@@ -35,15 +35,14 @@
         flex: 1;
         width: 100%/3;
         order: 2;
-        width: auto;
+        text-align: center;
     }
 }
-
-
 
 // Right part of header with user and cart info
 .header__right {
     width: @header-cart-width;
+    display: flex;
 
     @media @query-vl {
         flex: 1;

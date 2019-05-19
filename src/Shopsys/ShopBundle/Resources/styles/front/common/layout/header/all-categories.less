@@ -4,18 +4,30 @@
 .all-categories {
     width: @header-all-categories-link-width;
     position: relative;
+    cursor: pointer;
 
     &__title {
         position: relative;
-        display: inline-block;
+        display: block;
         height: @header-all-categories-link-height;
         line-height: @header-all-categories-link-height;
-        top: 5px;
 
         color: @color-brown-light-2;
-        cursor: pointer;
         font-size: 13px;
         text-transform: uppercase;
+    }
+
+    &__arrow {
+        .svg;
+        .svg-arrow;
+
+        position: absolute;
+        right: -20px;
+        top: 7px;
+    }
+
+    &:hover {
+        background: @color-gray;
     }
 
     &__categories-links {
