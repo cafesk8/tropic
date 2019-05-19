@@ -3,6 +3,51 @@
     {% set shopInfoPhoneNumber = getShopInfoPhoneNumber() %}
     {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
     {% set shopInfoEmail = getShopInfoEmail() %}
+    <div class="top-bar">
+        <div class="top-bar__in">
+
+            <ul class="top-bar__menu">
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Bushman club'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Naše hodnoty'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Blog'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'O nás'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Prodejny'|trans }}
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="top-bar__menu top-bar__menu--right">
+                <li class="top-bar__menu__item">
+                    <span href="#" class="top-bar__menu__item__text">
+                        <strong class="top-bar__menu__item__text top-bar__menu__item__text__spacer">{{ 'Buď bushman a měj zdarma'|trans }}:</strong>
+                        {{ 'Poštovné'|trans }}
+                        <span class="top-bar__menu__item__text__spacer">—</span>
+                        {{ 'Výměnu'|trans }}
+                        <span class="top-bar__menu__item__text__spacer">—</span>
+                        {{ 'Záruku 25 let'|trans }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="web__container">
         <header class="header">
             <div class="header__logo">
