@@ -1,18 +1,29 @@
+@menu-item-gap: 42px;
+@menu-height: 40px;
+
 .menu {
     .reset-ul();
-
+    height: @menu-height;
+    width: calc(~"100% - @{header-all-categories-link-width}");
+    display: inline;
     font-size: 0;
 
     &__item {
         display: inline-block;
         vertical-align: middle;
+        margin-right: @menu-item-gap;
 
         font-size: @font-size;
 
         &__link {
             display: block;
-            padding: 5px;
-            margin-left: 5px;
+            line-height: 21px;
+
+            color: @color-base;
+            font-size: 19px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
         }
     }
 }
