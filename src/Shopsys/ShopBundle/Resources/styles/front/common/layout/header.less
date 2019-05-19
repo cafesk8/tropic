@@ -15,66 +15,39 @@
     }
 }
 
+// Middle part of header with search input and info
+.header__menu {
+    width: 100%;
+    order: 1;
+
+    @media @query-vl {
+        width: 100%/3;
+    }
+}
+
 // Left part of header with logo
 .header__logo {
     width: 100%;
-    padding: 10px;
-
-    @media @query-lg {
-        flex: 1;
-        order: 1;
-        width: auto;
-        padding-right: 20px;
-    }
-}
-
-// Middle part of header with search input and info
-.header__middle {
-    width: 100%;
-    margin: 10px 0;
-    order: 2;
-
-    @media @query-lg {
-        order: 2;
-        width: 280px;
-        margin: 0;
-    }
 
     @media @query-vl {
-        width: 440px;
+        flex: 1;
+        width: 100%/3;
+        order: 2;
+        width: auto;
     }
 }
 
-// Right part of header with cart info
-.header__cart {
+
+
+// Right part of header with user and cart info
+.header__right {
     width: @header-cart-width;
 
-    @media @query-lg {
-        padding-left: 20px;
+    @media @query-vl {
         flex: 1;
+        width: 100%/3;
         order: 3;
         text-align: right;
-    }
-}
-
-// Top line of header
-.header__top {
-    display: none;
-
-    @media @query-lg {
-        order: -1;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 10px;
-
-        &__left {
-            flex: 1;
-        }
-
-        &__right {
-            flex: 1;
-        }
     }
 }
 
