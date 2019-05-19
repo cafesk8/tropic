@@ -1,0 +1,31 @@
+@header-all-categories-link-width: 160px;
+@header-all-categories-link-height: @menu-height;
+
+.all-categories {
+    width: @header-all-categories-link-width;
+    position: relative;
+
+    &__title {
+        position: relative;
+        display: inline-block;
+        height: @header-all-categories-link-height;
+        line-height: @header-all-categories-link-height;
+        top: 5px;
+
+        color: @color-brown-light-2;
+        cursor: pointer;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+
+    &__categories-links {
+        display: none;
+        position: absolute;
+        z-index: 500;
+        right: 0;
+
+        .all-categories:hover & {
+            display: block;
+        }
+    }
+}
