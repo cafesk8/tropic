@@ -50,6 +50,50 @@
     </div>
     <div class="web__container">
         <header class="header">
+            <div class="header__logo">
+                {% block logo %}
+                    <a class="logo" href="{{ url('front_homepage') }}">
+                        <img src="{{ asset('assets/frontend/images/logo.svg') }}" alt="{{ 'Online shop'|trans }}">
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Naše hodnoty'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Blog'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'O nás'|trans }}
+                    </a>
+                </li>
+                <li class="top-bar__menu__item">
+                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
+                        {{ 'Prodejny'|trans }}
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="top-bar__menu top-bar__menu--right">
+                <li class="top-bar__menu__item">
+                    <span href="#" class="top-bar__menu__item__text">
+                        <strong class="top-bar__menu__item__text top-bar__menu__item__text__spacer">{{ 'Buď bushman a měj zdarma'|trans }}:</strong>
+                        {{ 'Poštovné'|trans }}
+                        <span class="top-bar__menu__item__text__spacer">—</span>
+                        {{ 'Výměnu'|trans }}
+                        <span class="top-bar__menu__item__text__spacer">—</span>
+                        {{ 'Záruku 25 let'|trans }}
+                            </span>
+                </li>
+            </ul>
+                    </div>
+            </div>
+    <div class="web__container">
+        <header class="header">
             <div class="header__menu dont-print">
                 {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
                 <div class="all-categories">
@@ -68,9 +112,9 @@
                 {% block logo %}
                 <a class="logo" href="{{ url('front_homepage') }}">
                     <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
-                </a>
+                        </a>
                 {% endblock %}
-            </div>
+                    </div>
 
             <div class="header__right dont-print">
 
@@ -85,7 +129,7 @@
                         {{ 'Váš účet'|trans }}
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
-                    </div>
+            </div>
                     <ul class="js-dropdown-options box-dropdown__options">
                         {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                             <li class="box-dropdown__options__item js-dropdown-item'">
