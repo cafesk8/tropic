@@ -73,53 +73,67 @@
             </div>
 
             <div class="header__right dont-print">
-                <ul class="menu-iconic">
-                    {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+
+                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-dropdown">
+                    <div class="box-dropdown__select">
+                        <i class="svg svg-search"></i>
+                    </div>
+                </div>
+
+                <div class="box-dropdown js-dropdown">
+                    <div class="box-dropdown__select">
+                        {{ 'Váš účet'|trans }}
+                        <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
+                        <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
+                    </div>
+                    <ul class="js-dropdown-options box-dropdown__options">
+                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                            <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
-                                <i class="svg svg-user"></i>
-                                <span>
-                                    {{ app.user.firstName }} {{ app.user.lastName }}
-                                </span>
-                            </a>
-                            <ul class="menu-iconic__sub">
-                                <li class="menu-iconic__sub__item">
-                                    <a href="{{ url('front_customer_edit') }}" class="menu-iconic__sub__item__link">{{ 'Personal data'|trans }}</a>
-                                </li>
-                                <li class="menu-iconic__sub__item">
-                                    <a href="{{ url('front_customer_orders') }}" class="menu-iconic__sub__item__link">{{ 'My orders'|trans }}</a>
-                                </li>
-                            </ul>
-                        </li>
+                                <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
+                                    <i class="svg svg-user"></i>
+                                    <span>
+                                        {{ app.user.firstName }} {{ app.user.lastName }}
+                                    </span>
+                                </a>
+                                <ul class="menu-iconic__sub">
+                                    <li class="menu-iconic__sub__item">
+                                        <a href="{{ url('front_customer_edit') }}" class="menu-iconic__sub__item__link">{{ 'Personal data'|trans }}</a>
+                                    </li>
+                                    <li class="menu-iconic__sub__item">
+                                        <a href="{{ url('front_customer_orders') }}" class="menu-iconic__sub__item__link">{{ 'My orders'|trans }}</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                            <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="js-logout-link-desktop menu-iconic__item__link">
-                                <span>
-                                    {{ 'Log out'|trans }}
-                                </span>
-                            </a>
-                        </li>
-                    {% else %}
+                                <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="js-logout-link-desktop menu-iconic__item__link">
+                                    <span>
+                                        {{ 'Log out'|trans }}
+                                    </span>
+                                </a>
+                            </li>
+                        {% else %}
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                            <a
-                                href="{{ url('front_login') }}"
-                                data-url="{{ url('front_login_window_form') }}"
-                                class="js-login-link-desktop js-login-button menu-iconic__item__link"
-                            >
-                                <i class="svg svg-user"></i>
-                                <span>
-                                    {{ 'Log in'|trans }}
-                                </span>
-                            </a>
-                        </li>
+                                <a
+                                    href="{{ url('front_login') }}"
+                                    data-url="{{ url('front_login_window_form') }}"
+                                    class="js-login-link-desktop js-login-button menu-iconic__item__link"
+                                >
+                                    <i class="svg svg-user"></i>
+                                    <span>
+                                        {{ 'Log in'|trans }}
+                                    </span>
+                                </a>
+                            </li>
                             <li class="box-dropdown__options__item js-dropdown-item'">
-                            <a href="{{ url('front_registration_register') }}" class="js-registration-link-desktop menu-iconic__item__link">
-                                <span>
-                                    {{ 'Registration'|trans }}
-                                </span>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
+                                <a href="{{ url('front_registration_register') }}" class="js-registration-link-desktop menu-iconic__item__link">
+                                    <span>
+                                        {{ 'Registration'|trans }}
+                                    </span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
 
                 {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}
             </div>
