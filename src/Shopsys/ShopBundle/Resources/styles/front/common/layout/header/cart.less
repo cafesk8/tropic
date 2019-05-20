@@ -1,5 +1,6 @@
-@cart-icon-width: 30px;
+@cart-icon-width: 24px;
 @cart-icon-gap: 10px;
+@cart-nubmer-size: 14px;
 
 .cart {
     display: none;
@@ -10,26 +11,31 @@
         .clearfix();
         text-align: left;
 
-        &__block {
-            display: block;
+        &__icon {
+            position: relative;
+            width: @cart-icon-width;
+            float: left;
+            text-align: left;
 
-            text-decoration: none;
+            &__count {
+                position: absolute;
+                display: block;
+                height: @cart-nubmer-size;
+                line-height: @cart-nubmer-size;
+                width: @cart-nubmer-size;
+                top: -2px;
+                right: -5px;
+                text-align: center;
 
-            &:hover {
-                text-decoration: none;
+                color: @color-f;
+                font-size: 11px;
+                border-radius: 50%;
+                background-color: @color-green;
             }
         }
 
-        &__icon {
-            width: @cart-icon-width;
-            float: left;
-            text-align: center;
-
-            font-size: 20px;
-        }
-
         &__info {
-            margin-left: @cart-icon-width + @cart-icon-gap;
+            margin-left: @cart-icon-gap;
         }
     }
 }

@@ -1,0 +1,127 @@
+@box-dropdown-bg: @color-gray;
+@box-dropdown-bg-hover: darken(@box-dropdown-bg, 5%);
+
+@box-dropdown-padding-horizontal: 16px;
+@box-dropdown-padding-vertical: 10px;
+@box-dropdown-padding-vertical-small: 9px;
+@box-dropdown-font-size: 15px;
+@box-dropdown-arrow-size: 16px;
+
+@box-dropdown-item-bg: @color-f;
+@box-dropdown-item-bg-hover: @color-f;
+@box-dropdown-item-font-size: 13px;
+@box-dropdown-item-font-color: @color-base;
+
+.box-dropdown {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    margin: 0 5px;
+
+    &--no-right-gap {
+        margin-right: 0;
+    }
+
+    &__select {
+        padding: @box-dropdown-padding-vertical 40px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
+
+        border-radius: @radius;
+        background: @box-dropdown-bg;
+        color: @color-base;
+        font-weight: bold;
+        font-size: @box-dropdown-font-size;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        .box-dropdown--without-arrow & {
+            padding-right: @box-dropdown-padding-horizontal;
+        }
+
+        .box-dropdown--small-padding & {
+            padding: @box-dropdown-padding-vertical-small @box-dropdown-padding-horizontal;
+        }
+
+        &:hover {
+            background: @box-dropdown-bg-hover;
+        }
+
+        .open & {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &__arrow {
+            position: absolute;
+            display: inline-block;
+            width: @box-dropdown-arrow-size;
+            height: @box-dropdown-arrow-size;
+            top: 12px;
+            right: 13px;
+
+            &--down {
+                .svg;
+                .svg-arrow;
+
+                .open & {
+                    display: none;
+                }
+            }
+
+            &--up {
+                .svg;
+                .svg-arrow;
+
+                transform: rotate(180deg);
+                display: none;
+
+                .open & {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    &__options {
+        .reset-ul();
+        display: none;
+
+        .open & {
+            display: block;
+            position: absolute;
+            width: 150px;
+            top: 100%;
+            right: 0;
+            z-index: @z-index-menu;
+
+            border: 2px solid @color-gray;
+        }
+
+        &__item {
+            display: block;
+            background: @box-dropdown-item-bg;
+            padding: @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
+
+            &:hover {
+                background: @box-dropdown-item-bg-hover;
+            }
+
+            &:first-child {
+                border-top-right-radius: @radius;
+                border-top-left-radius: @radius;
+            }
+
+            &:last-child {
+                border-bottom-right-radius: @radius;
+                border-bottom-left-radius: @radius;
+            }
+
+            &__link {
+                white-space: nowrap;
+
+                color: @box-dropdown-item-font-color;
+                font-size: @box-dropdown-item-font-size;
+                font-weight: 500;
+            }
+        }
+    }
+}
