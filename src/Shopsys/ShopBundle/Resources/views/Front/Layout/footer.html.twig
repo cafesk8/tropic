@@ -1,10 +1,73 @@
 <div class="footer">
-    <div class="web__line web__line--grey clearfix dont-print">
+    {# TODO KOD: temporary #}
+    <div class="footer__bottom__articles">
+        {{ getShopInfoPhoneNumber() }}
+        {{ getShopInfoEmail() }}
+        {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+    </div>
+
+    <div class="web__line">
         <div class="web__container">
-            {{ render(controller('ShopsysShopBundle:Front/Newsletter:subscription')) }}
+            <ul class="list-languages js-not-implemented-yet">
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/it.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Italia'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/nl.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Netherland'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/at.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Osterreich'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/pl.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Polska'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/hu.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Magyarorság'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/gb.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Great britain'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/ru.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Russia'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/de.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Deutchland'|trans }}
+                    </a>
+                </li>
+                <li class="list-languages__item">
+                    <img class="list-languages__item__image" src="https://lipis.github.io/flag-icon-css/flags/4x3/sk.svg">
+                    <a class="list-languages__item__link underline" href="#">
+                        {{ 'Slovakia'|trans }}
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-    <div class="web__line web__line--split dont-print">
+
+    <div class="web__line dont-print">
         <div class="web__container footer__top">
             {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'footer'})) }}
         </div>
@@ -12,13 +75,14 @@
     <div class="web__line">
         <footer class="web__container footer__bottom">
             <div class="footer__bottom__copyright dont-print">
-                Made with passion by <a href="http://www.shopsys-framework.com/">Shopsys Framework</a>
+                {{ 'Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena.'|trans }}
             </div>
-
-            <div class="footer__bottom__articles">
-                {{ getShopInfoPhoneNumber() }}
-                {{ getShopInfoEmail() }}
-                {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+            <div class="footer__bottom__copyright__info dont-print">
+                {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen evidovat'|trans }}<br>
+                {{ 'přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
+            </div>
+            <div class="footer__bottom__copyright__shopsys dont-print">
+                {{ 'Eshop na míru od'|trans }} <img class="footer__bottom__copyright__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
             </div>
         </footer>
     </div>
