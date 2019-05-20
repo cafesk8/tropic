@@ -10,4 +10,9 @@ class CategoryData extends BaseCategoryData
      * @var bool
      */
     public $displayedInHorizontalMenu = false;
+
+    /**
+     * @var bool
+     */
+    public $preListingCategory = false;
 }

@@ -72,6 +72,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Elektro',
             'en' => 'Electronics',
         ];
+        $categoryData->preListingCategory = true;
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
             [
@@ -89,6 +90,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Televize, audio',
             'de' => 'TV, audio',
         ];
+        $categoryData->preListingCategory = false;
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
             [

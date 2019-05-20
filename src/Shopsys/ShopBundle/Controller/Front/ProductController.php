@@ -139,6 +139,7 @@ class ProductController extends FrontBaseController
      */
     public function listByCategoryAction(Request $request, $id)
     {
+        /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
         $category = $this->categoryFacade->getVisibleOnDomainById($this->domain->getId(), $id);
 
         $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
@@ -185,6 +186,10 @@ class ProductController extends FrontBaseController
             'visibleChildren' => $this->categoryFacade->getAllVisibleChildrenByCategoryAndDomainId($category, $this->domain->getId()),
             'priceRange' => $productFilterConfig->getPriceRange(),
         ];
+
+        if ($category->isPreListingCategory()) {
+            return $this->render('@ShopsysShop/Front/Content/Product/preListingCategoryList.html.twig', $viewParameters);
+        }
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('@ShopsysShop/Front/Content/Product/ajaxList.html.twig', $viewParameters);
