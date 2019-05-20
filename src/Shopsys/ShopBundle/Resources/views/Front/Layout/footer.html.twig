@@ -1,9 +1,48 @@
 <div class="footer">
-    {# TODO KOD: temporary #}
-    <div class="footer__bottom__articles">
-        {{ getShopInfoPhoneNumber() }}
-        {{ getShopInfoEmail() }}
-        {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+    <div class="web__line dont-print">
+        <div class="web__container">
+            {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'footer'})) }}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--gray web__container--big-padding">
+            <div class="footer-top">
+                <div class="footer-top__info">
+                    <ul class="footer-top__socials">
+                        <li class="footer-top__socials__item">
+                            <a class="footer-top__socials__item__link">
+                                <img class="footer-top__socials__item__icon" src="{{ asset('assets/frontend/images/ico_facebook.svg') }}" alt="{{ 'Facebook'|trans }}">
+                                <span class="footer-top__socials__item__text">
+                                    {{ 'Facebook'|trans }}
+                                </span>
+                            </a>
+                        </li>
+                        <li class="footer-top__socials__item">
+                            <a class="footer-top__socials__item__link">
+                                <img  class="footer-top__socials__item__icon" src="{{ asset('assets/frontend/images/ico_instagram.svg') }}" alt="{{ 'Instagram'|trans }}">
+                                <span class="footer-top__socials__item__text">
+                                    {{ 'Instagram'|trans }}
+                                </span>
+                            </a>
+                        </li>
+                        <li class="footer-top__socials__item">
+                            <a class="footer-top__socials__item__link">
+                                <img class="footer-top__socials__item__icon" src="{{ asset('assets/frontend/images/ico_youtube.svg') }}" alt="{{ 'Youtube'|trans }}">
+                                <span class="footer-top__socials__item__text">
+                                    {{ 'Youtube'|trans }}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    {{ getShopInfoPhoneNumber() }}
+                    {{ getShopInfoEmail() }}
+                </div>
+                <div class="footer-top__links">
+                    {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="web__line">
@@ -67,22 +106,17 @@
         </div>
     </div>
 
-    <div class="web__line dont-print">
-        <div class="web__container footer__top">
-            {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'footer'})) }}
-        </div>
-    </div>
     <div class="web__line">
-        <footer class="web__container footer__bottom">
-            <div class="footer__bottom__copyright dont-print">
+        <footer class="web__container footer-bottom">
+            <div class="footer-bottom__copyright dont-print">
                 {{ 'Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena.'|trans }}
             </div>
-            <div class="footer__bottom__copyright__info dont-print">
+            <div class="footer-bottom__copyright__info dont-print">
                 {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen evidovat'|trans }}<br>
                 {{ 'přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
             </div>
-            <div class="footer__bottom__copyright__shopsys dont-print">
-                {{ 'Eshop na míru od'|trans }} <img class="footer__bottom__copyright__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+            <div class="footer-bottom__copyright__shopsys dont-print">
+                {{ 'Eshop na míru od'|trans }} <img class="footer-bottom__copyright__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
             </div>
         </footer>
     </div>
