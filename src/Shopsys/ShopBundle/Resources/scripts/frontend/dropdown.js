@@ -11,9 +11,11 @@
     Shopsys.DropDown.bindDropDown = function () {
         $(this).click(function (event) {
             Shopsys.DropDown.hideAllSubmenus();
-            $(this).toggleClass('open');
 
-            event.stopPropagation();
+            if ($(this).data('type') != 'link') {
+                $(this).toggleClass('open');
+                event.stopPropagation();
+            }
         });
 
         $(document).on('click', function () {
@@ -22,7 +24,7 @@
     };
 
     Shopsys.DropDown.hideAllSubmenus = function () {
-        $('.js-dropdown').each(function() {
+        $('.js-dropdown').each(function () {
             $(this).removeClass('open');
         });
     };
