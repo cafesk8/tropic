@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="23px" viewBox="0 0 33 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 54.1 (76490) - https://sketchapp.com -->
+    <title>455F87F9-8E77-48BD-9ADE-73D98D7F298A</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M32.310375,3.59152419 C31.930875,2.17776613 30.8128125,1.06449194 29.392875,0.68666129 C26.8194375,0 16.5,0 16.5,0 C16.5,0 6.1805625,0 3.607125,0.68666129 C2.187375,1.06449194 1.069125,2.17776613 0.689625,3.59152419 C0,6.15379839 0,11.5 0,11.5 C0,11.5 0,16.8460161 0.689625,19.4086613 C1.069125,20.8222339 2.187375,21.9355081 3.607125,22.3135242 C6.1805625,23 16.5,23 16.5,23 C16.5,23 26.8194375,23 29.392875,22.3135242 C30.8128125,21.9355081 31.930875,20.8222339 32.310375,19.4086613 C33,16.8460161 33,11.5 33,11.5 C33,11.5 33,6.15379839 32.310375,3.59152419" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Bsh_Uvodni-stranka" transform="translate(-555.000000, -4862.000000)">
+            <g id="Paticka" transform="translate(80.000000, 4705.000000)">
+                <g id="Socialni" transform="translate(130.000000, 133.000000)">
+                    <g id="Youtube">
+                        <g transform="translate(345.000000, 24.000000)">
+                            <g id="ico_youtube">
+                                <g id="Fill-1">
+                                    <use fill="#D9252A" xlink:href="#path-1"></use>
+                                    <use fill="#433E3E" xlink:href="#path-1"></use>
+                                </g>
+                                <polyline id="Fill-4" fill="#FFFFFE" points="13.125 16.3539274 21.75 11.5001855 13.125 6.64607258 13.125 16.3539274"></polyline>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
