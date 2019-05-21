@@ -12,7 +12,7 @@
                     <ul class="footer-top__socials">
                         <li class="footer-top__socials__item">
                             <a class="footer-top__socials__item__link">
-                                <img class="footer-top__socials__item__icon" src="{{ asset('assets/frontend/images/ico_facebook.svg') }}" alt="{{ 'Facebook'|trans }}">
+                                <i class="footer-top__socials__item__icon svg svg-facebook"></i>
                                 <span class="footer-top__socials__item__text">
                                     {{ 'Facebook'|trans }}
                                 </span>
@@ -20,7 +20,7 @@
                         </li>
                         <li class="footer-top__socials__item">
                             <a class="footer-top__socials__item__link">
-                                <img  class="footer-top__socials__item__icon" src="{{ asset('assets/frontend/images/ico_instagram.svg') }}" alt="{{ 'Instagram'|trans }}">
+                                <i class="footer-top__socials__item__icon svg svg-instagram"></i>
                                 <span class="footer-top__socials__item__text">
                                     {{ 'Instagram'|trans }}
                                 </span>
@@ -28,15 +28,33 @@
                         </li>
                         <li class="footer-top__socials__item">
                             <a class="footer-top__socials__item__link">
-                                <img class="footer-top__socials__item__icon" src="{{ asset('assets/frontend/images/ico_youtube.svg') }}" alt="{{ 'Youtube'|trans }}">
+                                <i class="footer-top__socials__item__icon footer-top__socials__item__icon--youtube svg svg-youtube"></i>
                                 <span class="footer-top__socials__item__text">
                                     {{ 'Youtube'|trans }}
                                 </span>
                             </a>
                         </li>
                     </ul>
-                    {{ getShopInfoPhoneNumber() }}
-                    {{ getShopInfoEmail() }}
+                    <div class="footer-top__contact">
+                        <div class="footer-top__contact__block">
+                            <div class="footer-top__contact__text">
+                                <i class="svg svg-phone"></i>
+                                {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                            </div>
+                            <div class="footer-top__contact__info">
+                                {{ 'Pondělí až čtvrtek 9—17 hod, v pátek 9—12 hod.'|trans }}
+                            </div>
+                        </div>
+                        <div class="footer-top__contact__block">
+                            <div class="footer-top__contact__text">
+                                <i class="svg svg-mail"></i>
+                                <a class="footer-top__contact__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
+                            </div>
+                            <div class="footer-top__contact__info">
+                                {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="footer-top__links">
                     {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}

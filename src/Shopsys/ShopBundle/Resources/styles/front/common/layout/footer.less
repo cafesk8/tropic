@@ -30,8 +30,16 @@
             color: @color-brown;
             text-align: center;
 
+            &:last-child {
+                border-right: 0;
+            }
+
             &__link {
+                display: flex;
+                justify-content: center;
                 color: @color-brown;
+                height: @footer-top-social-height;
+                line-height: @footer-top-social-height;
 
                 font-size: @font-size;
                 font-weight: bold;
@@ -40,9 +48,55 @@
                 text-decoration: none;
             }
 
-            &:last-child {
-                border-right: 0;
+            &__icon {
+                align-self: center;
+                margin-right: 12px;
+
+                font-size: 30px;
+                color: @color-brown;
+
+                &--youtube {
+                    padding-top: 3px;
+                    font-size: 35px;
+                }
             }
+        }
+    }
+
+    &__contact {
+        margin-top: 55px;
+
+        &__block {
+            margin-bottom: 40px;
+        }
+
+        &__text {
+            line-height: 30px;
+
+            color: @color-base;
+            font-size: 19px;
+            font-weight: bold;
+
+            .svg {
+                position: relative;
+                bottom: -10px;
+                margin-right: 12px;
+
+                font-size: 30px;
+            }
+
+            &__link {
+                color: @color-base;
+                text-decoration: none;
+            }
+        }
+
+        &__info {
+            margin-top: 10px;
+            line-height: 30px;
+
+            font-size: @font-size;
+            color: @color-brown;
         }
     }
 
