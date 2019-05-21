@@ -57,7 +57,24 @@
                     </div>
                 </div>
                 <div class="footer-top__links">
-                    {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+                    <div class="footer-top__links__column">
+                        <div class="footer-top__links__title">
+                            {{ 'O nás'|trans }}
+                        </div>
+                        {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+                    </div>
+                    <div class="footer-top__links__column">
+                        <div class="footer-top__links__title">
+                            {{ 'Naše služby'|trans }}
+                        </div>
+                        {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+                    </div>
+                    <div class="footer-top__links__column">
+                        <div class="footer-top__links__title">
+                            {{ 'O nákupu'|trans }}
+                        </div>
+                        {{ render(controller('ShopsysShopBundle:Front/Article:footer')) }}
+                    </div>
                 </div>
             </div>
         </div>
