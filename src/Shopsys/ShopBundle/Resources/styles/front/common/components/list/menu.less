@@ -3,6 +3,7 @@
 @list-menu-columns-count: 4;
 @list-menu-columns-gap: 18px;
 @list-menu-item-height: 38px;
+@list-menu-item-bottom-gap: 10px;
 
 // global settings
 .list-menu {
@@ -27,10 +28,14 @@
     }
 
     &__item {
+        display: inline-block;
         line-height: @list-menu-item-height + 2px;
         height: @list-menu-item-height;
         padding-right: @list-menu-columns-gap;
+        margin-bottom: @list-menu-item-bottom-gap;
         width: 100%;
+
+        white-space: nowrap;
 
         &__link {
             position: relative;
