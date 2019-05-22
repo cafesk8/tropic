@@ -1,8 +1,9 @@
-<div class="list-menu">
+<div class="list-menu js-not-implemented-yet">
     <ul class="list-menu__column dont-print">
         {% for article in articles %}
             <li class="list-menu__item">
                 <a class="list-menu__item__link underline" href="{{ url('front_article_detail', { id: article.id }) }}">{{ article.name }}</a>
+                <span class="in-badge">12</span>
             </li>
         {% endfor %}
     </ul>
