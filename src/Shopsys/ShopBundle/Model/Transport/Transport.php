@@ -13,11 +13,19 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 class Transport extends BaseTransport
 {
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $balikobot;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
     {
         parent::__construct($transportData);
+        $this->balikobot = $transportData->balikobot;
     }
 
     /**
@@ -26,5 +34,14 @@ class Transport extends BaseTransport
     public function edit(BaseTransportData $transportData)
     {
         parent::edit($transportData);
+        $this->balikobot = $transportData->balikobot;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBalikobot(): bool
+    {
+        return $this->balikobot;
     }
 }

@@ -6,8 +6,14 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 
 class TransportData extends BaseTransportData
 {
+    /**
+     * @var bool
+     */
+    public $balikobot;
+
     public function __construct()
     {
         parent::__construct();
+        $this->balikobot = false;
     }
 }
