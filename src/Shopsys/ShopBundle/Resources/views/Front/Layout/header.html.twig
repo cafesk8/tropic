@@ -58,8 +58,58 @@
                     </span>
                     <span class="all-categories__arrow"></span>
 
-                    <span class="all-categories__categories-links">
-                        {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                    <span class="all-categories__content">
+                        <div class="all-categories__content__left">
+                            <ul class="list-menu__column-single">
+                                <li class="list-menu__title">
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Pro opravdové muže'|trans }}
+                                    </a>
+                                </li>
+                                <li class="list-menu__title">
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Bushman Classic'|trans }}
+                                    </a>
+                                </li>
+                                <li class="list-menu__title">
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Nová kolekce'|trans }}
+                                    </a>
+                                </li>
+                                <li class="list-menu__title">
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Tipy na dárky'|trans }}
+                                    </a>
+                                </li>
+                                <li class="list-menu__title">
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Výprodej/Black friday'|trans }}
+                                    </a>
+                                </li>
+                                <li class="list-menu__title">
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Pro firmy'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="list-menu__column-single list-menu__column-single--with-icon">
+                                <li class="list-menu__title">
+                                    <i class="svg svg-mail"></i>
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Dárkové certifikáty'|trans }}
+                                    </a>
+                                </li>
+                                <li class="list-menu__title">
+                                    <i class="svg svg-mail"></i>
+                                    <a href="#" class="list-menu__item__link underline">
+                                        {{ 'Outlet'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="all-categories__content__right">
+                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                        </div>
                     </span>
                 </div>
             </div>

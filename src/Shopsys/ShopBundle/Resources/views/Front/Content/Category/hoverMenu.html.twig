@@ -7,12 +7,15 @@
             <ul class="list-menu__column">
                 {% if category.level == 1 %}
                     <li class="list-menu__title">
-                        {{ category.name }}
+                        <a href="{{ url('front_product_list', { id: category.id }) }}"
+                        class="list-menu__title__link underline">
+                            {{ category.name }}
+                        </a>
                     </li>
                 {% endif %}
                 <li class="list-menu__item">
                     <a href="{{ url('front_product_list', { id: category.id }) }}"
-                    class="list-menu__item__link list-menu__item__link--level-{{ category.level }} underline">
+                    class="list-menu__item__link list-menu__item__link--level-{{ category.level }}">
                         {{ category.name }}
                     </a>
                     {% set categoriesWithLazyLoadedVisibleChildren = categoryWithLazyLoadedVisibleChildren.children %}
