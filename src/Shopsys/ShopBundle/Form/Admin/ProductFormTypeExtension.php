@@ -101,7 +101,20 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'label' => t('Propojené produkty'),
         ]);
 
+        $allParameters = $this->parameterFacade->getAll();
+
         $builderMainVariantGroup
+            ->add('distinguishingParameterForMainVariantGroup', ChoiceType::class, [
+                'required' => false,
+                'label' => t('Hlavní rozlišující parametr'),
+                'choices' => $allParameters,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('Zvolte parametr'),
+                'constraints' => [
+                    new Constraints\NotBlank(),
+                ],
+            ])
             ->add(
                 $builder
                     ->create('productsInGroup', ProductsType::class, [

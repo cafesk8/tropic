@@ -66,6 +66,14 @@ class MainVariantGroup
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null $distinguishingParameter
+     */
+    public function setDistinguishingParameter(?Parameter $distinguishingParameter): void
+    {
+        $this->distinguishingParameter = $distinguishingParameter;
+    }
+
+    /**
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProducts(): array

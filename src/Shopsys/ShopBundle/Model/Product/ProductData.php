@@ -27,6 +27,11 @@ class ProductData extends BaseProductData
     public $mainVariantGroup;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     */
+    public $distinguishingParameterForMainVariantGroup;
+
+    /**
      * @var \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public $productsInGroup;

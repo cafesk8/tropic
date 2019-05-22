@@ -174,7 +174,7 @@ class ProductFacade extends BaseProductFacade
         $product = parent::edit($productId, $productData);
 
         $this->updateProductStoreStocks($productData, $product);
-        $this->updateMainVariantGroupProducts($productData, $product);
+        $this->updateMainVariantGroup($productData, $product);
 
         return $product;
     }
@@ -205,7 +205,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */
-    private function updateMainVariantGroupProducts(ProductData $productData, Product $product): void
+    private function updateMainVariantGroup(ProductData $productData, Product $product): void
     {
         $mainVariantGroup = $product->getMainVariantGroup();
 
@@ -213,6 +213,7 @@ class ProductFacade extends BaseProductFacade
             return;
         }
 
+        $mainVariantGroup->setDistinguishingParameter($productData->distinguishingParameterForMainVariantGroup);
         $mainVariantGroup->addProducts($productData->productsInGroup);
         $this->em->flush();
     }
