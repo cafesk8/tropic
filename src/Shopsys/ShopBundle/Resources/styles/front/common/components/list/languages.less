@@ -10,6 +10,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     widht: 100%;
+    margin: 30px 0 0 0;
 
     @media @query-vl {
         margin: @list-languages-gap auto @list-languages-bottom-gap auto;
@@ -18,10 +19,11 @@
 
     &__item {
         display: flex;
-        margin-bottom: @list-languages-item-bottom-gap;
+        margin-bottom: @list-languages-item-bottom-gap/2;
         width: calc(~"@{calc-base}/2");
 
         @media @query-vl {
+            margin-bottom: @list-languages-item-bottom-gap;
             width: calc(~"@{calc-base}/5");
 
             &:nth-child(n+6){

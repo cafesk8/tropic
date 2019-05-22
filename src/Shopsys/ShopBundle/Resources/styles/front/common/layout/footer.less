@@ -2,44 +2,67 @@
 @footer-top-social-height: 66px;
 @footer-top-info-width: 46%;
 
-
 .footer-top {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 45px 0 64px 0;
 
+    @media @query-vl {
+        flex-direction: row;
+    }
+
     &__info {
-        width: @footer-top-info-width;
+        width: 100%;
+
+        @media @query-vl {
+            width: @footer-top-info-width;
+        }
     }
 
     &__socials {
         .reset-ul();
         display: flex;
-        width: calc(~"@{calc-base} - @{footer-top-social-gap}");
-        height: @footer-top-social-height;
+        width: 100%;
         margin-right: @footer-top-social-gap;
+        flex-direction: column;
 
         background-color: @color-f;
         border-radius: @radius;
 
+        @media @query-vl {
+            width: calc(~"100% - @{footer-top-social-gap}");
+        }
+
+        @media @query-xl {
+            height: @footer-top-social-height;
+            flex-direction: row;
+        }
+
         &__item {
             display: flex;
-            width: calc(~"@{calc-base}/3");
+            width: 100%;
             justify-content: center;
             align-items: center;
             text-align: center;
 
-            border-right: 1px solid @color-gray;
+            border-bottom: 1px solid @color-gray;
             color: @color-brown;
+
+            @media @query-xl {
+                width: calc(~"@{calc-base}/3");
+
+                border-right: 1px solid @color-gray;
+            }
 
             &:last-child {
                 border-right: 0;
+                border-bottom: 0;
             }
 
             &__link {
                 display: flex;
+                flex-direction: row;
                 justify-content: center;
-                height: @footer-top-social-height;
                 line-height: @footer-top-social-height;
 
                 font-size: @font-size;
@@ -47,6 +70,11 @@
                 color: @color-base;
                 text-transform: uppercase;
                 text-decoration: none;
+
+                @media @query-xl {
+                    height: @footer-top-social-height;
+                    flex-direction: row;
+                }
             }
 
             &__icon {
@@ -105,10 +133,18 @@
     &__links {
         width: calc(~"@{calc-base} - @{footer-top-info-width}");
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+
+        @media @query-vl {
+            flex-direction: row;
+        }
 
         &__column {
-            width: calc(~"@{calc-base}/3");
+            width: 100%;
+
+            @media @query-vl {
+                width: calc(~"@{calc-base}/3");
+            }
         }
 
         &__title {
