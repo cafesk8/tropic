@@ -5,7 +5,8 @@
 @box-dropdown-padding-vertical: 10px;
 @box-dropdown-padding-vertical-small: 9px;
 @box-dropdown-font-size: 15px;
-@box-dropdown-arrow-size: 16px;
+@box-dropdown-arrow-size: @arrow-size;
+@box-dropdown-arrow-color: @color-brown-light-2;
 
 @box-dropdown-item-bg: @color-f;
 @box-dropdown-item-bg-hover: @color-f;
@@ -58,12 +59,15 @@
             display: inline-block;
             width: @box-dropdown-arrow-size;
             height: @box-dropdown-arrow-size;
-            top: 12px;
-            right: 13px;
+            top: 18px;
+            right: 15px;
+
+            color: @box-dropdown-arrow-color;
+            font-size: @box-dropdown-arrow-size;
 
             &--down {
                 .svg;
-                .svg-arrow;
+                .svg-triangle;
 
                 .open & {
                     display: none;
@@ -72,7 +76,7 @@
 
             &--up {
                 .svg;
-                .svg-arrow;
+                .svg-triangle;
 
                 transform: rotate(180deg);
                 display: none;
