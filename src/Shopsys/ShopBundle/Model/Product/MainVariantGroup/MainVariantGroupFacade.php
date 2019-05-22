@@ -59,4 +59,13 @@ class MainVariantGroupFacade
     {
         return $this->mainVariantGroupRepository->getProductsForMainVariantGroup($product);
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[]
+     */
+    public function getByDistinguishingParameter(Parameter $parameter): array
+    {
+        return $this->mainVariantGroupRepository->getByDistinguishingParameter($parameter);
+    }
 }

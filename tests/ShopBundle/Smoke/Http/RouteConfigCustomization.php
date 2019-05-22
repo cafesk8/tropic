@@ -233,6 +233,12 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->setParameter('id', $vat->getId())
                     ->setParameter('newId', $newVat->getId());
+            })
+            ->customizeByRouteName('admin_parameter_delete', function (RouteConfig $config, RouteInfo $info) {
+                $debugNote = sprintf('Route "%s" should always just redirect.', $info->getRouteName());
+                $config->changeDefaultRequestDataSet($debugNote)
+                    ->setParameter('id', 2)
+                    ->setExpectedStatusCode(302);
             });
     }
 

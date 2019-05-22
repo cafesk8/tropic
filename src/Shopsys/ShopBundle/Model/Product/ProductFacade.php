@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInter
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
@@ -177,6 +178,15 @@ class ProductFacade extends BaseProductFacade
         $this->updateMainVariantGroup($productData, $product);
 
         return $product;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsWithDistinguishingParameter(Parameter $parameter): array
+    {
+        return $this->productRepository->getProductsWithDistinguishingParameter($parameter);
     }
 
     /**

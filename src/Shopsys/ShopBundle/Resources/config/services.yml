@@ -27,6 +27,9 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductPickerController
 
+    Shopsys\FrameworkBundle\Controller\Admin\ParameterController:
+        class: Shopsys\ShopBundle\Controller\Admin\ParameterController
+
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:
@@ -168,3 +171,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade: '@Shopsys\ShopBundle\Model\Product\ProductVariantFacade'
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacade: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade'
