@@ -16,5 +16,6 @@ class TransportDataFactory extends BaseTransportDataFactory
     {
         parent::fillFromTransport($transportData, $transport);
         $transportData->balikobot = $transport->isBalikobot();
+        $transportData->balikobotShipper = $transport->getBalikobotShipper();
     }
 }

@@ -20,12 +20,20 @@ class Transport extends BaseTransport
     protected $balikobot;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $balikobotShipper;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
     {
         parent::__construct($transportData);
         $this->balikobot = $transportData->balikobot;
+        $this->balikobotShipper = $transportData->balikobotShipper;
     }
 
     /**
@@ -35,6 +43,7 @@ class Transport extends BaseTransport
     {
         parent::edit($transportData);
         $this->balikobot = $transportData->balikobot;
+        $this->balikobotShipper = $transportData->balikobotShipper;
     }
 
     /**
@@ -43,5 +52,13 @@ class Transport extends BaseTransport
     public function isBalikobot(): bool
     {
         return $this->balikobot;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBalikobotShipper(): ?string
+    {
+        return $this->balikobotShipper;
     }
 }

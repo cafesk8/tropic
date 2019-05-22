@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
