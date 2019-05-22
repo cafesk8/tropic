@@ -2,8 +2,8 @@
 
 namespace Tests\ShopBundle\Functional\Model\Product;
 
-use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
+use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 
 class ProductOnCurrentDomainElasticFacadeTest extends ProductOnCurrentDomainFacadeTest
 {

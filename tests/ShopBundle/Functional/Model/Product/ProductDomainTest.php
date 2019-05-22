@@ -3,9 +3,9 @@
 namespace Tests\ShopBundle\Functional\Model\Product;
 
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\ProductFactory;
 use Shopsys\ShopBundle\DataFixtures\Demo\AvailabilityDataFixture;
 use Shopsys\ShopBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\ProductFactory;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class ProductDomainTest extends TransactionFunctionalTestCase
