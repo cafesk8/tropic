@@ -47,15 +47,19 @@ img {
     }
 
     &__container {
-        padding: 0;
+        padding: 0 10px;
 
-        &--small-padding {
-            padding: 0 @web-padding;
+        @media @query-lg {
+
+            &--small-padding {
+                padding: 0 @web-padding;
+            }
+
+            &--big-padding {
+                padding: 0 @web-padding-big;
+            }
         }
 
-        &--big-padding {
-            padding: 0 @web-padding-big;
-        }
 
         &--gray {
             background: @color-gray;
