@@ -5,6 +5,14 @@
 .cart {
     display: none;
 
+    &__icon {
+        width: 20px;
+    }
+
+    &__info {
+        display: none;
+    }
+
     @media @query-lg {
         display: inline-block;
         position: relative;
@@ -13,7 +21,6 @@
 
         &__icon {
             position: relative;
-            width: @cart-icon-width;
             float: left;
             text-align: left;
 
@@ -35,6 +42,7 @@
         }
 
         &__info {
+            display: inline-block;
             margin-left: @cart-icon-gap;
         }
     }

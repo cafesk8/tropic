@@ -5,10 +5,13 @@
     .reset-ul();
     height: @menu-height;
     line-height: @menu-height;
-    width: calc(~"100% - @{header-all-categories-link-width}");
     display: inline;
-    
+
     font-size: 0;
+
+    @media @query-vl {
+        width: calc(~"100% - @{header-all-categories-link-width}");
+    }
 
     &__item {
         display: inline-block;
