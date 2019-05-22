@@ -7,6 +7,7 @@
 @box-dropdown-font-size: 15px;
 @box-dropdown-arrow-size: @arrow-size;
 @box-dropdown-arrow-color: @color-brown-light-2;
+@box-dropdown-open-bottom-gap: 10px;
 
 @box-dropdown-item-bg: @color-f;
 @box-dropdown-item-bg-hover: @color-f;
@@ -26,6 +27,7 @@
 
     &__select {
         display: block;
+        position: relative;
         padding: @box-dropdown-padding-vertical 40px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
 
         border-radius: @radius;
@@ -47,11 +49,32 @@
 
         &:hover {
             background: @box-dropdown-bg-hover;
+
+            &:after {
+                background-color: @box-dropdown-bg-hover;
+            }
         }
 
         .open & {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
+        }
+
+        &:after {
+            display: none;
+            content: '';
+            position: absolute;
+            height: @box-dropdown-open-bottom-gap;
+            width: 100%;
+            top: 100%;
+            right: 0;
+            z-index: @z-index-menu;
+
+            background-color: @box-dropdown-bg;
+
+            .open & {
+                display: block;
+            }
         }
 
         &__arrow {
@@ -95,12 +118,13 @@
         .open & {
             display: block;
             position: absolute;
-            width: 150px;
-            top: 100%;
+            top: 100% + @box-dropdown-open-bottom-gap;
             right: 0;
             z-index: @z-index-menu;
 
-            border: 2px solid @color-gray;
+            border: 3px solid @color-gray;
+            border-radius: @radius;
+            border-top-right-radius: 0;
         }
 
         &__item {
@@ -114,7 +138,6 @@
             }
 
             &:first-child {
-                border-top-right-radius: @radius;
                 border-top-left-radius: @radius;
             }
 
