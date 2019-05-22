@@ -174,8 +174,38 @@
                                 </div>
                                 <div class="box-login__buttons">
                                     <input type="submit" name="login-button" class="btn box-login__buttons__login" value="{{ 'Přihlásit se'|trans }}">
-                                    <a href="#" class="box-login__buttons__lost underline" >{{ 'Zapomenuté heslo?'|trans }}</a>
-
+                                    <a href="{{ url('front_registration_reset_password') }}" class="box-login__buttons__lost underline" >{{ 'Zapomenuté heslo?'|trans }}</a>
+                                </div>
+                            </div>
+                            <div class="box-login__social">
+                                <div class="box-login__social__title">
+                                    {{ 'Chcete se stát Bushmanem?'|trans }}
+                                    <a href="{{ url('front_registration_register') }}" class="box-login__social__title__link underline">{{ 'Registrujte se'|trans }}</a>
+                                </div>
+                                <div class="box-login__social__button">
+                                    <div class="box-login__social__facebook">
+                                        <div class="box-login__social__facebook__icon">
+                                            <i class="svg svg-facebook"></i>
+                                        </div>
+                                        <div  class="box-login__social__facebook__text">
+                                            {{ 'Přihlásit se přes facebook'|trans }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-login__social__or">
+                                    <div class="box-login__social__or__text">
+                                        {{ 'nebo'|trans }}
+                                    </div>
+                                </div>
+                                <div class="box-login__social__button">
+                                    <div class="box-login__social__google">
+                                        <div class="box-login__social__google__icon">
+                                            <i class="svg svg-google"></i>
+                                        </div>
+                                        <div  class="box-login__social__google__text">
+                                            {{ 'Přihlásit se přes Google'|trans }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         {% endif %}

@@ -1,9 +1,14 @@
 @box-login-button-height: 50px;
 @box-login-width: 400px;
+@box-login-padding: 40px;
+
+@box-login-facebook-bg: #3d57a1;
+@box-login-google-bg: #6657fc;
+@box-login-button-icon-size: 50px;
 
 .box-login {
     display: block;
-    padding: 40px;
+    padding: @box-login-padding;
 
     background: @color-gray;
 
@@ -63,6 +68,124 @@
             font-weight: bold;
             text-decoration: none;
             text-transform: uppercase;
+        }
+    }
+}
+
+.box-login__social {
+    padding: @box-login-padding;
+
+    background: @color-f;
+
+    &__title {
+        text-align: center;
+        margin-bottom: @box-login-padding;
+
+        &__link {
+            color: @color-base;
+            font-size: @font-size;
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+    }
+
+    &__or {
+        position: relative;
+        height: 41px;
+        line-height: 41px;
+        text-align: center;
+
+        &__text {
+            position: relative;
+            display: inline;
+            padding: 0 8px;
+            z-index: 1;
+
+            color: @color-base;
+            background: @color-f;
+        }
+
+        &:before {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            content: '';
+            height: 1px;
+            width: 100%;
+            z-index: 0;
+
+            background: @color-gray;
+        }
+    }
+
+    &__facebook {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: @box-login-button-height;
+        line-height: @box-login-button-height;
+
+        background-color: @box-login-facebook-bg;
+        border: 1px solid @box-login-facebook-bg;
+
+        &__text {
+            width: calc(~"@{calc-base} -  @{box-login-button-icon-size}");
+            text-align: center;
+
+            color: @color-f;
+            font-size: @font-size;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        &__icon {
+            width: @box-login-button-icon-size;
+            line-height: @box-login-button-height;
+            text-align: center;
+            padding-top: 4px;
+
+            background: #314783;
+
+            .svg {
+                font-size: 20px;
+
+                color: @color-f;
+            }
+        }
+    }
+
+    &__google {
+        display: flex;
+        flex-direction: row;
+        height: @box-login-button-height;
+        line-height: @box-login-button-height;
+
+        background-color: @box-login-google-bg;
+        border: 1px solid @box-login-google-bg;
+
+        &__text {
+            width: calc(~"@{calc-base} -  @{box-login-button-icon-size}");
+            text-align: center;
+
+            color: @color-f;
+            font-size: @font-size;
+            font-weight: bold;
+        }
+
+        &__icon {
+            width: @box-login-button-icon-size;
+            line-height: @box-login-button-height;
+            text-align: center;
+            padding-top: 4px;
+
+            background: @color-f;
+
+            .svg {
+                font-size: 20px;
+
+                color: @color-base;
+            }
         }
     }
 }
