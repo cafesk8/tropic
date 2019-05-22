@@ -2,8 +2,9 @@
 @input-textarea-height: @input-height * 3;
 @input-width: 210px;
 @input-padding-horizontal: 10px;
+@input-font-size: 16px;
 
-@input-border-color: @color-border;
+@input-border-color: #cccbcb;
 @input-error-border-color: @color-red;
 @input-background: @color-f;
 @input-disabled-background: #eff1f2;
@@ -16,8 +17,19 @@
     padding: 0 @input-padding-horizontal;
 
     border: 1px solid @input-border-color;
-    color: @color-base;
+    color: @color-brown-light;
+    font-size: @input-font-size;
     background: @input-background;
+
+    &--big {
+        height: 60px;
+        padding-top: 20px;
+
+    }
+
+    & + .input--big {
+        border-top: 0;
+    }
 
     &--textarea {
         height: @input-textarea-height;

@@ -136,7 +136,7 @@
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
                     </div>
-                    <ul class="js-dropdown-options box-dropdown__options">
+                    <div class="js-dropdown-options box-dropdown__options">
                         {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                             <li class="box-dropdown__options__item js-dropdown-item'">
                                 <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
@@ -162,27 +162,24 @@
                                 </a>
                             </li>
                         {% else %}
-                            <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a
-                                    href="{{ url('front_login') }}"
-                                    data-url="{{ url('front_login_window_form') }}"
-                                    class="js-login-link-desktop js-login-button menu-iconic__item__link"
-                                >
-                                    <i class="svg svg-user"></i>
-                                    <span>
-                                        {{ 'Log in'|trans }}
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_registration_register') }}" class="js-registration-link-desktop menu-iconic__item__link">
-                                    <span>
-                                        {{ 'Registration'|trans }}
-                                    </span>
-                                </a>
-                            </li>
+                            <div class="box-login">
+                                <div class="box-login__title">
+                                    {{ 'Jste bushman? Přihlaste se'|trans }}
+                                </div>
+                                <div class="box-login__item">
+                                    <input type="text" class="input input--big" name="username">
+                                </div>
+                                <div class="box-login__item">
+                                    <input type="password" class="input input--big" name="password">
+                                </div>
+                                <div class="box-login__buttons">
+                                    <input type="submit" name="login-button" class="btn box-login__buttons__login" value="{{ 'Přihlásit se'|trans }}">
+                                    <a href="#" class="box-login__buttons__lost underline" >{{ 'Zapomenuté heslo?'|trans }}</a>
+
+                                </div>
+                            </div>
                         {% endif %}
-                    </ul>
+                    </div>
                 </div>
 
                 {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}

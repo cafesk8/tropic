@@ -12,8 +12,8 @@
     flex-wrap: wrap;
     align-items: center;
     min-height: @header-height;
-    padding: @header-height-gap 0;
-}
+        padding: @header-height-gap 0;
+    }
 
 // Middle part of header with search input and info
 .header__menu {
@@ -25,7 +25,7 @@
     @media @query-vl {
         flex-direction: row;
         width: calc(~"@{calc-base}/3");
-}
+    }
 
 // Middle part of header with search input and info
 .header__menu {
@@ -37,7 +37,7 @@
     @media @query-vl {
         flex-direction: row;
         width: 100%/3;
-    }
+}
 }
 
 // Left part of header with logo
@@ -62,7 +62,6 @@
         flex: 1;
         width: calc(~"@{calc-base}/3");
         order: 3;
-        text-align: right;
     }
 
     &__search {
