@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Product\MainVariantGroup;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 
 class MainVariantGroupFacade
 {
@@ -15,11 +16,18 @@ class MainVariantGroupFacade
     private $entityManager;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupRepository
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    private $mainVariantGroupRepository;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupRepository $mainVariantGroupRepository
+     */
+    public function __construct(EntityManagerInterface $entityManager, MainVariantGroupRepository $mainVariantGroupRepository)
     {
         $this->entityManager = $entityManager;
+        $this->mainVariantGroupRepository = $mainVariantGroupRepository;
     }
 
     /**
@@ -41,5 +49,14 @@ class MainVariantGroupFacade
         $this->entityManager->flush();
 
         return $mainVariantGroup;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsForMainVariantGroup(Product $product): array
+    {
+        return $this->mainVariantGroupRepository->getProductsForMainVariantGroup($product);
     }
 }

@@ -33,8 +33,8 @@ class ProductExtension extends AbstractExtension
     {
         return [
             new TwigFunction(
-                'variantDistinguishingParameterValue',
-                [$this, 'getVariantDistinguishingParameterValue']
+                'distinguishingParameterValuesForProducts',
+                [$this, 'findDistinguishingParameterValuesForProducts']
             ),
             new TwigFunction(
                 'mainVariantGroupDistinguishingParameterValue',
@@ -44,12 +44,12 @@ class ProductExtension extends AbstractExtension
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @return string[]
      */
-    public function getVariantDistinguishingParameterValue(Product $product): ?ParameterValue
+    public function findDistinguishingParameterValuesForProducts(array $products): array
     {
-        return $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
+        return $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($products);
     }
 
     /**

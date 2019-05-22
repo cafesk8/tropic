@@ -166,3 +166,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\ProductFactory: '@Shopsys\ShopBundle\Model\Product\ProductFactory'
 
     Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade: '@Shopsys\ShopBundle\Model\Product\ProductVariantFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacade: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainFacade'

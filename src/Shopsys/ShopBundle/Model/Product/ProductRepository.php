@@ -26,6 +26,22 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $mainVariants
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     */
+    public function getAllSellableVariantsForMainVariants(array $mainVariants, $domainId, PricingGroup $pricingGroup): array
+    {
+        $queryBuilder = $this->getAllSellableQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->andWhere('p.mainVariant IN (:mainVariants)')
+            ->setParameter('mainVariants', $mainVariants);
+
+        return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
      * @param int $transferNumber
      * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
      */
