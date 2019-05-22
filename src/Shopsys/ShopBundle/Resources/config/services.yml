@@ -33,6 +33,10 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductController
 
+    Shopsys\ShopBundle\Component\Balikobot\BalikobotClient:
+        arguments:
+            - '%balikobot%'
+
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:

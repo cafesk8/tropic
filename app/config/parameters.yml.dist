@@ -51,3 +51,8 @@ parameters:
     transfer_host: 'http://webappa7.azurewebsites.net'
     transfer_username: 'bushmantest_vo'
     transfer_password: 'BusLpk*155heslo'
+
+    # testing credentials
+    balikobot:
+        username: testtestcztest
+        apiKey: wqhYdkvv
