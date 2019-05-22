@@ -32,4 +32,23 @@ class ShipperFacade
     {
         $this->client = $client;
     }
+
+    /**
+     * @return string[]
+     */
+    public function getShipperNamesIndexedById(): array
+    {
+        return [
+            self::SHIPPER_CESKA_POSTA => t('Česká pošta'),
+            self::SHIPPER_DPD => t('DPD'),
+            self::SHIPPER_GEIS => t('GEIS'),
+            self::SHIPPER_GLS => t('GLS'),
+            self::SHIPPER_INTIME => t('IN TIME'),
+            self::SHIPPER_POSTA_BEZ_HRANIC => t('Pošta bez hranic'),
+            self::SHIPPER_PPL => t('PPL'),
+            self::SHIPPER_TOPTRANS => t('TOPTRANS'),
+            self::SHIPPER_ULOZENKA => t('Uloženka'),
+            self::SHIPPER_ZASILKOVNA => t('Zásilkovna'),
+        ];
+    }
 }

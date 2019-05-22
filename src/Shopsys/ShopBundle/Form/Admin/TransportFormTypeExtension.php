@@ -12,6 +12,7 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -117,6 +118,17 @@ class TransportFormTypeExtension extends AbstractTypeExtension
         ]);
         $builderBalikobotGroup->add('balikobot', YesNoType::class, [
             'label' => t('Použít'),
+        ]);
+        $builderBalikobotGroup->add('balikobotShipper', ChoiceType::class, [
+            'required' => false,
+            'label' => t('Dopravce'),
+            'choices' => array_flip($this->shipperFacade->getShipperNamesIndexedById()),
+            'constraints' => [
+                new Constraints\NotBlank([
+                    'message' => 'Musíte vybrat dopravce',
+                    'groups' => [self::VALIDATION_GROUP_BALIKOBOT],
+                ]),
+            ],
         ]);
 
         return $builderBalikobotGroup;
