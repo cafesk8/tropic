@@ -1,20 +1,21 @@
 // Default button
 @btn-height: @form-item-height;
-@btn-padding-vertical: 11px;
-@btn-padding-horizontal: 15px;
-@btn-color: @color-base;
-@btn-color-hover: @color-base;
+@btn-padding-vertical: 0;
+@btn-padding-horizontal: 24px;
+@btn-color: @color-f;
+@btn-color-hover: @color-f;
 @btn-bg: @color-d;
 @btn-bg-hover: darken(@btn-bg, 5%);
 
 .btn {
     width: auto;
     min-height: @btn-height;
-    padding: @btn-padding-vertical @btn-padding-horizontal;
-    line-height: @btn-height - 2 * @btn-padding-vertical;
+    padding: 0 @btn-padding-horizontal;
+    line-height: @btn-height;
     vertical-align:middle;
     display: inline-block;
     transition: @transition background, @transition color;
+    text-transform: uppercase;
     text-align: center;
 
     border: 0;
@@ -23,7 +24,7 @@
     cursor: pointer;
     font-weight: bold;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 14px;
     outline: 0;
 
     &:hover {
