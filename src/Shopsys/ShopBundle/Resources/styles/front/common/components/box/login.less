@@ -1,6 +1,8 @@
 @box-login-button-height: 50px;
-@box-login-width: 400px;
+@box-login-width: 420px;
+@box-login-width-mobile: 220px;
 @box-login-padding: 40px;
+@box-login-padding-mobile: 20px;
 
 @box-login-facebook-bg: #3d57a1;
 @box-login-google-bg: #6657fc;
@@ -8,12 +10,14 @@
 
 .box-login {
     display: block;
-    padding: @box-login-padding;
+    width: @box-login-width-mobile;
+    padding: @box-login-padding-mobile;
 
     background: @color-gray;
 
-    @media @query-vl {
+    @media @query-md {
         width: @box-login-width;
+        padding: @box-login-padding;
     }
 
     &__title {
@@ -46,8 +50,15 @@
     }
 
     &__buttons {
+        flex-direction: column;
         margin-top: 20px;
         width: 100%;
+        text-align: center;
+
+        @media @query-md {
+            flex-direction: row;
+            text-align: left;
+        }
 
         &__login {
             height: @box-login-button-height;
@@ -61,21 +72,29 @@
 
         &__lost {
             height: @box-login-button-height;
-            margin-left: 30px;
+            line-height: @box-login-button-height;
 
             color: @color-base;
             font-size: @font-size;
             font-weight: bold;
             text-decoration: none;
             text-transform: uppercase;
+
+            @media @query-md {
+                margin-left: 30px;
+            }
         }
     }
 }
 
 .box-login__social {
-    padding: @box-login-padding;
+    padding: @box-login-padding-mobile;
 
     background: @color-f;
+
+    @media @query-md {
+        padding: @box-login-padding;
+    }
 
     &__title {
         text-align: center;
@@ -124,19 +143,30 @@
         flex-direction: row;
         width: 100%;
         height: @box-login-button-height;
-        line-height: @box-login-button-height;
+        line-height: 20px;
 
         background-color: @box-login-facebook-bg;
         border: 1px solid @box-login-facebook-bg;
 
+        @media @query-md {
+            line-height: @box-login-button-height;
+        }
+
         &__text {
             width: calc(~"@{calc-base} -  @{box-login-button-icon-size}");
             text-align: center;
+            padding-top: 5px;
 
             color: @color-f;
-            font-size: @font-size;
+            font-size: @font-size-small;
             font-weight: bold;
-            text-transform: uppercase;
+
+            @media @query-md {
+                padding-top: 0;
+
+                font-size: @font-size;
+                text-transform: uppercase;
+            }
         }
 
         &__icon {
@@ -159,18 +189,28 @@
         display: flex;
         flex-direction: row;
         height: @box-login-button-height;
-        line-height: @box-login-button-height;
+        line-height: 20px;
 
         background-color: @box-login-google-bg;
         border: 1px solid @box-login-google-bg;
 
+        @media @query-md {
+            line-height: @box-login-button-height;
+        }
+
         &__text {
             width: calc(~"@{calc-base} -  @{box-login-button-icon-size}");
             text-align: center;
+            padding: 5px 10px;
 
             color: @color-f;
-            font-size: @font-size;
+            font-size: @font-size-small;
             font-weight: bold;
+
+            @media @query-md {
+                padding: 0;
+                font-size: @font-size;
+            }
         }
 
         &__icon {
