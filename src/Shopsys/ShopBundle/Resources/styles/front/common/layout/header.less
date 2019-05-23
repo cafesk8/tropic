@@ -12,8 +12,12 @@
     flex-wrap: wrap;
     align-items: center;
     min-height: @header-height;
+    padding: @header-height-gap/2 0;
+
+    @media @query-vl {
         padding: @header-height-gap 0;
     }
+}
 
 // Middle part of header with search input and info
 .header__menu {
@@ -21,48 +25,42 @@
     order: 1;
     align-items: center;
     display: flex;
+    flex-direction: column;
+
+    margin-top: 10px;
+
     @media @query-vl {
         flex-direction: row;
         width: calc(~"@{calc-base}/3");
+        margin-top: 0;
     }
-
-// Middle part of header with search input and info
-.header__menu {
-    width: 100%;
-    order: 1;
-    align-items: center;
-    display: flex;
-
-    @media @query-vl {
-        flex-direction: row;
-        width: 100%/3;
-}
 }
 
 // Left part of header with logo
 .header__logo {
     width: 100%;
+    text-align: center;
 
     @media @query-vl {
         flex: 1;
         width: calc(~"@{calc-base}/3");
         order: 2;
-        text-align: center;
     }
 }
 
 // Right part of header with user and cart info
 .header__right {
-    width: @header-cart-width;
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    margin-top: 10px;
 
     @media @query-vl {
         flex: 1;
         width: calc(~"@{calc-base}/3");
         order: 3;
         justify-content: flex-end;
-        margin-top: 0;
+        margin-top: 0px;
     }
 
     &__search {
@@ -71,102 +69,6 @@
             transform: rotate(90deg);
 
             font-size: @header-search-icon-size;
-        }
-    }
-}
-
-// Mobile part of header visible on small resolution
-.header__mobile {
-    width: 80%;
-    width: calc(~"@{calc-base} - @{header-cart-width}");
-    text-align: right;
-
-    @media @query-lg {
-        display: none;
-    }
-}
-
-// Mobile buttons from header with dropdowns
-.header__mobile-button {
-    display: inline-block;
-    min-width: @header-mobile-button-size;
-    height: @header-mobile-button-size;
-    line-height: @header-mobile-button-size;
-    margin: 0 5px;
-    text-align: center;
-
-    outline: 0;
-    cursor: pointer;
-
-    &--menu {
-        float: left;
-        margin-left: 0;
-
-        .svg {
-            margin-right: 5px;
-            vertical-align: baseline;
-
-            font-size: 11px;
-        }
-    }
-
-    &__in {
-        padding: 0 10px;
-        display: block;
-        position: relative;
-        transition: @transition color;
-
-        color: @color-base;
-        text-decoration: none;
-        font-size: 16px;
-
-        .header__mobile-button--menu & {
-            background: @color-light;
-            font-size: 14px;
-        }
-
-        &.active {
-            color: @color-primary;
-            text-decoration: none;
-
-            .header__mobile-button--menu & {
-                color: @color-f;
-                background: @color-primary;
-            }
-        }
-
-        &__info {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            width: @header-mobile-button-info-size;
-            height: @header-mobile-button-info-size;
-            line-height: @header-mobile-button-info-size;
-
-            border-radius: 50%;
-            color: @color-f;
-            background: @color-red;
-            font-size: 12px;
-        }
-    }
-
-    &__menu {
-        display: none;
-        position: absolute;
-        top: @header-mobile-button-dropdown-position;
-        left: -@web-padding;
-        right: -@web-padding;
-
-        background: @color-f;
-        border-top: 1px solid @color-border;
-        box-shadow: 0 10px 15px rgba(0,0,0, 0.2);
-
-        a {
-            display: block;
-            padding: 3px 10px;
-
-            border-bottom: 1px solid @color-border;
-            text-decoration: none;
         }
     }
 }
