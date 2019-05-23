@@ -125,7 +125,32 @@
             border: 3px solid @color-gray;
             border-radius: @radius;
             border-top-right-radius: 0;
+
+            &.box-dropdown__options--mobile-move-small {
+                right: -20px;
+
+                @media @query-md {
+                    right: 0;
+                }
+            }
+
+            &.box-dropdown__options--mobile-move-medium {
+                right: -40px;
+
+                @media @query-md {
+                    right: 0;
+                }
+            }
+
+            &.box-dropdown__options--mobile-move-big {
+                right: -60px;
+
+                @media @query-md {
+                    right: 0;
+                }
+            }
         }
+
 
         &__item {
             display: block;
