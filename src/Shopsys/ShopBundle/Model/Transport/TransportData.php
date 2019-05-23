@@ -16,6 +16,11 @@ class TransportData extends BaseTransportData
      */
     public $balikobotShipper;
 
+    /**
+     * @var string|null
+     */
+    public $balikobotShipperService;
+
     public function __construct()
     {
         parent::__construct();

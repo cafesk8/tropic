@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Balikobot\Shipper;
 
-use Shopsys\ShopBundle\Component\Balikobot\BalikobotClient;
-
 class ShipperFacade
 {
     const
@@ -15,23 +13,10 @@ class ShipperFacade
         SHIPPER_GLS = 'gls',
         SHIPPER_INTIME = 'intime',
         SHIPPER_POSTA_BEZ_HRANIC = 'pbh',
-        SHIPPER_PPL = 'PPL',
+        SHIPPER_PPL = 'ppl',
         SHIPPER_TOPTRANS = 'toptrans',
         SHIPPER_ULOZENKA = 'ulozenka',
         SHIPPER_ZASILKOVNA = 'zasilkovna';
-
-    /**
-     * @var \Shopsys\ShopBundle\Component\Balikobot\BalikobotClient
-     */
-    private $client;
-
-    /**
-     * @param \Shopsys\ShopBundle\Component\Balikobot\BalikobotClient $client
-     */
-    public function __construct(BalikobotClient $client)
-    {
-        $this->client = $client;
-    }
 
     /**
      * @return string[]
@@ -50,5 +35,18 @@ class ShipperFacade
             self::SHIPPER_ULOZENKA => t('Uloženka'),
             self::SHIPPER_ZASILKOVNA => t('Zásilkovna'),
         ];
+    }
+
+    /**
+     * @param string $shipper
+     * @return bool
+     */
+    public function isShipperAllowed(string $shipper): bool
+    {
+        if (array_key_exists($shipper, $this->getShipperNamesIndexedById()) === false) {
+            return false;
+        }
+
+        return true;
     }
 }
