@@ -1,0 +1,43 @@
+@in-free-transport-pipe-height: 4px;
+@in-free-transport-pipe-background: #807d7d;
+
+.in-free-transport {
+    &__title {
+        display: block;
+        margin-bottom: 13px;
+        text-align: center;
+
+        font-size: @font-size;
+        color: @color-brown;
+
+        &__price {
+            font-weight: bold;
+        }
+
+        &__important {
+            font-weight: bold;
+            color: @color-green;
+        }
+    }
+
+    &__pipe {
+        height: @in-free-transport-pipe-height;
+
+        background: @in-free-transport-pipe-background;
+
+        .in-free-transport--bottom-gap & {
+            margin-bottom: 35px;
+        }
+
+        &__line {
+            display: block;
+            width: 0;
+            height: @in-free-transport-pipe-height;
+            position: relative;
+            transition: width 2.5s @transition;
+            overflow: inherit !important; //remove blink icon before start animate
+
+            background: @color-green;
+        }
+    }
+}
