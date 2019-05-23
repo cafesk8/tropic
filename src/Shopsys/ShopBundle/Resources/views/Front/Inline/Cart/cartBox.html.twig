@@ -1,11 +1,9 @@
 <div id="js-cart-box" data-reload-url="{{ url('front_cart_box') }}">
 
     <div class="box-dropdown box-dropdown--no-right-gap js-dropdown
-        {% if cart is null %}box-dropdown--without-arrow {% endif %}"
-         data-type="link"
-        >
+        {% if cart is null %}box-dropdown--without-arrow {% endif %}">
 
-        <a class="box-dropdown__select" href="{{ url('front_cart') }}">
+        <span class="box-dropdown__select">
             <div class="cart__icon">
                 <i class="svg svg-cart"></i>
                 {% if cart is not null %}
@@ -25,6 +23,9 @@
                 <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
                 <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
             {% endif %}
-        </a>
+        </span>
+        <div class="box-dropdown__options js-dropdown-options">
+            
+        </div>
     </div>
 </div>
