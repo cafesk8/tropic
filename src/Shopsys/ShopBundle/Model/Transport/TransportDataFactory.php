@@ -31,5 +31,6 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->balikobot = $transport->isBalikobot();
         $transportData->balikobotShipper = $transport->getBalikobotShipper();
         $transportData->balikobotShipperService = $transport->getBalikobotShipperService();
+        $transportData->pickupPlace = $transport->isPickupPlace();
     }
 }

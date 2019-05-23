@@ -34,6 +34,13 @@ class Transport extends BaseTransport
     protected $balikobotShipperService;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $pickupPlace;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -42,6 +49,7 @@ class Transport extends BaseTransport
         $this->balikobot = $transportData->balikobot;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
+        $this->pickupPlace = $transportData->pickupPlace;
     }
 
     /**
@@ -53,6 +61,7 @@ class Transport extends BaseTransport
         $this->balikobot = $transportData->balikobot;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
+        $this->pickupPlace = $transportData->pickupPlace;
     }
 
     /**
@@ -77,5 +86,13 @@ class Transport extends BaseTransport
     public function getBalikobotShipperService(): ?string
     {
         return $this->balikobotShipperService;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPickupPlace(): bool
+    {
+        return $this->pickupPlace;
     }
 }
