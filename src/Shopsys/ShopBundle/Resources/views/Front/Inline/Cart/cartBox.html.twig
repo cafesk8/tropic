@@ -24,8 +24,89 @@
                 <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
             {% endif %}
         </span>
-        <div class="box-dropdown__options js-dropdown-options">
-            
+        <div class="box-dropdown__options js-dropdown-options js-not-implemented-yet">
+            <div class="cart-detail__wrap">
+                <ul class="cart-detail">
+                    <li class="cart-detail__item">
+                        <div class="cart-detail__item__image">
+                            <img src="https://placeimg.com/71/71/any" alt="Product name">
+                        </div>
+                        <div class="cart-detail__item__content">
+                            <a class="cart-detail__item__content__title" href="#" title="Product name">Košile Indiana</a>
+                            <span class="cart-detail__item__content__price"> 1699 Kč
+                                <span class="cart-detail__item__content__price cart-detail__item__content__price--old">3099 Kč</span>
+                            </span>
+                            <span class="cart-detail__item__content__size"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
+                        </div>
+                        <div class="cart-detail__item__pieces">
+                            1 ks
+                        </div>
+                        <a href="#" class="cart-detail__item__remove">
+                            <i class="svg svg-remove"></i>
+                        </a>
+                    </li>
+                    <li class="cart-detail__item">
+                        <div class="cart-detail__item__image">
+                            <img src="https://placeimg.com/71/71/any" alt="Product name">
+                        </div>
+                        <div class="cart-detail__item__content">
+                            <a class="cart-detail__item__content__title" href="#" title="Product name">Košile Indiana</a>
+                            <span class="cart-detail__item__content__price"> 1699 Kč
+                                <span class="cart-detail__item__content__price cart-detail__item__content__price--old">3099 Kč</span>
+                            </span>
+                            <span class="cart-detail__item__content__size"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
+                        </div>
+                        <div class="cart-detail__item__pieces">
+                            1 ks
+                        </div>
+                        <a href="#" class="cart-detail__item__remove">
+                            <i class="svg svg-remove"></i>
+                        </a>
+                    </li>
+                    <li class="cart-detail__item">
+                        <div class="cart-detail__item__image">
+                            <img src="https://placeimg.com/71/71/any" alt="Product name">
+                        </div>
+                        <div class="cart-detail__item__content">
+                            <a class="cart-detail__item__content__title" href="#" title="Product name">Košile Indiana</a>
+                            <span class="cart-detail__item__content__price"> 1699 Kč
+                                <span class="cart-detail__item__content__price cart-detail__item__content__price--old">3099 Kč</span>
+                            </span>
+                            <span class="cart-detail__item__content__size"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
+                        </div>
+                        <div class="cart-detail__item__pieces">
+                            1 ks
+                        </div>
+                        <a href="#" class="cart-detail__item__remove">
+                            <i class="svg svg-remove"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="cart-detail__total">
+                    <div class="cart-detail__total__text">
+                        {{ 'Celkem'|trans }}
+                    </div>
+                    <div class="cart-detail__total__price">
+                        7 597 Kč
+                    </div>
+                </div>
+            </div>
+            <div class="cart-detail__bottom">
+                <div class="cart-detail__bottom__transport">
+                    <div class="in-free-transport js-not-implemented-yet">
+                        <div class="in-free-transport__title">
+                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">256 Kč</span>&nbsp;{{ 'a'|trans }}<br>
+                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                        </div>
+                        <div class="in-free-transport__pipe">
+                            <div class="in-free-transport__pipe__line" style="width: 56%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-detail__bottom__button">
+                    <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
