@@ -270,7 +270,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $finder = new Finder();
         $finder->files()->in($origin);
         foreach ($finder as $file) {
-            $filepath = $file->getPathname();
+            $filepath = TransformString::removeDriveLetterFromPath($file->getPathname());
 
             if ($this->localFilesystem->exists($filepath)) {
                 $newFilepath = $target . $file->getRelativePathname();
