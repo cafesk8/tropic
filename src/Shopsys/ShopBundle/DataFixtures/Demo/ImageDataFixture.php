@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
