@@ -1,0 +1,44 @@
+@box-promo-image-height: 432px;
+
+.box-promo-image {
+    position: relative;
+    height: @box-promo-image-height;
+    padding: 78px 115px;
+
+    background-color: @color-gray;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    &__title {
+        display: inline;
+
+        &__text {
+            display: inline-block;
+            max-width: 240px;
+            line-height: 42px;
+            margin-bottom: 28px;
+
+            color: @color-f;
+            font-size: 30px;
+            font-weight: bold;
+        }
+    }
+
+    &__description {
+        position: relative;
+        margin-bottom: 27px;
+
+        color: @color-f;
+        font-size: 18px;
+        line-height: 30px;
+    }
+
+    &__button {
+        position: relative;
+    }
+}

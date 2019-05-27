@@ -178,6 +178,27 @@
         </div>
     </div>
 
+    <div class="web__line">
+        <div class="web__container">
+            <div class="box-promo-image js-not-implemented-yet">
+                <img src="https://placeimg.com/1440/432/any/grayscale" alt="{{ 'Vážím si všech 80 000 bushmanů'|trans }}">
+                <div class="box-promo-image__title double-lined-hard">
+                    <span class="box-promo-image__title__text">
+                        {{ 'Vážím si všech'|trans }} 80&nbsp;000 {{ 'bushmanů'|trans }}
+                    </span>
+                </div>
+                <div class="box-promo-image__description">
+                    {{ 'Jsem Jindra, otec všech bushmanů. Je potřeba, aby'|trans }}<br>
+                    {{ 'tento text přesně vystihnul atmosféru nové strategie.'|trans }}<br>
+                    {{ 'Celá část je vývzou pro registraci nových členů.'|trans }}
+                </div>
+                <div class="box-promo-image__button">
+                    <a href="#" class="btn btn--secondary">{{ 'Chci se stát bushmanem'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
 
     {% if topProducts is not empty %}
