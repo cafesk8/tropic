@@ -180,3 +180,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@Shopsys\ShopBundle\Model\Transport\TransportFacade'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportRepository: '@Shopsys\ShopBundle\Model\Transport\TransportRepository'

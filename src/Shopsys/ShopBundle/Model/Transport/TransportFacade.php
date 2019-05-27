@@ -27,8 +27,13 @@ class TransportFacade extends BaseTransportFacade
     private $pickupFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transport\TransportRepository
+     */
+    protected $transportRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportRepository $transportRepository
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentRepository $paymentRepository
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation $transportVisibilityCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -62,7 +67,7 @@ class TransportFacade extends BaseTransportFacade
      */
     public function create(TransportData $transportData): Transport
     {
-        if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, (string)$transportData->balikobotShipperService)) {
+        if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
         } else {
             $transportData->pickupPlace = false;
@@ -77,12 +82,20 @@ class TransportFacade extends BaseTransportFacade
      */
     public function edit(Transport $transport, TransportData $transportData): void
     {
-        if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, (string)$transportData->balikobotShipperService)) {
+        if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
         } else {
             $transportData->pickupPlace = false;
         }
 
         parent::edit($transport, $transportData);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
+     */
+    public function getAllPickupTransports(): array
+    {
+        return $this->transportRepository->getAllPickupTransports();
     }
 }

@@ -43,6 +43,12 @@ class ShipperServiceFacade
 
         $data = $this->client->request(self::SERVICES_REQUEST, $shipper);
 
-        return $data['service_types'];
+        $responseData = [];
+
+        foreach ($data['service_types'] as $id => $service) {
+            $responseData[(string)$id] = $service;
+        }
+
+        return $responseData;
     }
 }
