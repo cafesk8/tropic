@@ -1,10 +1,17 @@
 @search-button-width: 80px;
 @search-form-height: @input-height;
+@search-width: 650px;
+@search-padding: 26px 42px;
+@search-input-height: 48px;
 
 .search {
     position: relative;
+    padding: @search-padding;
+
+    background: @color-gray;
 
     &__form {
+        width: @search-width;
         display: flex;
 
         .is-no-flex & {
@@ -22,12 +29,19 @@
             }
 
             .input {
-                padding-left: 30px;
                 width: 100%;
+                height: @search-input-height;
+                line-height: 32px;
+
+                font-size: 24px;
+                color: @color-base;
+                border: none;
+                border-bottom: 1px solid @color-base;
             }
         }
 
         &__button {
+            display: none;
             flex: 0 @search-button-width;
             height: @search-form-height;
             line-height: @search-form-height;
@@ -36,88 +50,6 @@
             .is-no-flex & {
                 width: @search-button-width;
             }
-        }
-
-        &__icon {
-            position: absolute;
-            top: 9px;
-            left: 10px;
-            transition: @transition color;
-
-            color: @color-inactive;
-
-            .search__input:focus + & {
-                color: @color-primary;
-            }
-        }
-    }
-
-
-    &__hint {
-        .reset-ul();
-        position: absolute;
-        top: 34px;
-        left: 0;
-        width: 100%;
-        z-index: 10;
-
-        border: 1px solid @color-border;
-        border-top: 0px;
-        background: @color-f;
-        border-radius: 0 0 @radius @radius;
-
-        &__item {
-            border-top: 1px dashed @color-border;
-
-            &__link {
-                display: flex;
-                align-items: center;
-                width: 100%;
-                padding: 10px;
-                .clearfix();
-
-                text-decoration: none;
-
-                &:hover {
-                    text-decoration: none;
-                }
-            }
-
-            &--info {
-                padding: 10px 0;
-                text-align: center;
-
-                font-size: 12px;
-                border: none;
-            }
-
-            &:last-child {
-                border-radius: 0 0 @radius @radius;
-            }
-        }
-
-        &__image {
-            position: relative;
-            height: 30px;
-            flex: 0 30px;
-
-            img {
-                .center-image();
-            }
-
-            .svg {
-                position: relative;
-                top: -2px;
-                margin-bottom: -2px;
-
-                font-size: 20px;
-                color: @color-base;
-            }
-        }
-
-        &__name {
-            padding-left: 10px;
-            flex: 1;
         }
     }
 }
