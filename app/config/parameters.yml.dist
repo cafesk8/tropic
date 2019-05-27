@@ -48,6 +48,6 @@ parameters:
     payPalClientSecret: EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL
 
     transfer_enabled: true
-    transfer_host: ''
-    transfer_username: ''
-    transfer_password: ''
+    transfer_host: 'http://webappa7.azurewebsites.net'
+    transfer_username: 'bushmantest_vo'
+    transfer_password: 'BusLpk*155heslo'
