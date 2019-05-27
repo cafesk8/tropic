@@ -114,6 +114,70 @@
         </div>
     </div>
 
+    <div class="web__line">
+        <div class="web__container">
+            <div class="box-special-offer">
+                <div class="box-special-offer__colored">
+                    <span class="box-special-offer__colored__title-small">
+                        {{ 'Legendární kapsáče jsou zpět'|trans }}
+                    </span>
+
+                    <span class="box-special-offer__colored__title">
+                        {{ 'Silnější než kdy předtím...'|trans }}
+                    </span>
+                    <a href="#" class="box-special-offer__colored__button btn">{{ 'Prohlédnout'|trans }}</a>
+                </div>
+                <div class="box-special-offer__grayscale">
+                    <img class="box-special-offer__grayscale__image" src="{{ asset('assets/frontend/images/design/special-offer.png') }}" alt="{{ 'Special offer'|trans }}">
+
+                    <div class="box-special-offer__grayscale__title">
+                        <span class="box-special-offer__grayscale__title__text double-lined">
+                            {{ 'Jindra má na sobě'}}
+                        </span>
+                    </div>
+                    <ul class="box-special-offer__products">
+                        <li class="box-special-offer__products__item">
+                            <div class="box-special-offer__products__item__image">
+                                <img src="https://placeimg.com/101/101/any" alt="Product name">
+                            </div>
+                            <div class="box-special-offer__products__item__content">
+                                <a class="box-special-offer__products__item__content__title" href="#" title="Product name">Košile Indiana</a>
+                                <span class="box-special-offer__products__item__content__price"> 1699 Kč
+                                    <span class="box-special-offer__products__item__content__price box-special-offer__products__item__content__price--old">3099 Kč</span>
+                                </span>
+                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-bage--outline">M</span> {{ 'skladem'|trans }} </span>
+                            </div>
+                        </li>
+                        <li class="box-special-offer__products__item">
+                            <div class="box-special-offer__products__item__image">
+                                <img src="https://placeimg.com/101/101/any" alt="Product name">
+                            </div>
+                            <div class="box-special-offer__products__item__content">
+                                <a class="box-special-offer__products__item__content__title" href="#" title="Product name">Košile Indiana</a>
+                                <span class="box-special-offer__products__item__content__price"> 1699 Kč
+                                    <span class="box-special-offer__products__item__content__price box-special-offer__products__item__content__price--old">3099 Kč</span>
+                                </span>
+                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-bage--outline">M</span> {{ 'skladem'|trans }} </span>
+                            </div>
+                        </li>
+                        <li class="box-special-offer__products__item">
+                            <div class="box-special-offer__products__item__image">
+                                <img src="https://placeimg.com/101/101/any" alt="Product name">
+                            </div>
+                            <div class="box-special-offer__products__item__content">
+                                <a class="box-special-offer__products__item__content__title" href="#" title="Product name">Košile Indiana</a>
+                                <span class="box-special-offer__products__item__content__price"> 1699 Kč
+                                    <span class="box-special-offer__products__item__content__price box-special-offer__products__item__content__price--old">3099 Kč</span>
+                                </span>
+                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-bage--outline">M</span> {{ 'skladem'|trans }} </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
 
     {% if topProducts is not empty %}
