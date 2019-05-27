@@ -166,7 +166,8 @@ class FilterQueryTest extends TransactionFunctionalTestCase
     {
         /** @var \Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory */
         $filterQueryFactory = $this->getContainer()->get(FilterQueryFactory::class);
-        $filter = $filterQueryFactory->create(self::ELASTICSEARCH_INDEX);
+        $elasticSearchPrefix = $this->getContainer()->getParameter('env(ELASTIC_SEARCH_INDEX_PREFIX)');
+        $filter = $filterQueryFactory->create($elasticSearchPrefix . self::ELASTICSEARCH_INDEX);
 
         return $filter->filterOnlySellable();
     }
