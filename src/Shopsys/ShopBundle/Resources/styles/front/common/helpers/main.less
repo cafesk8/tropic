@@ -28,7 +28,7 @@
         width: 100%;
         left: 0;
         bottom: -7px;
-        
+
         background-color: @color-orange;
         transition: bottom @transition;
     }
@@ -37,5 +37,33 @@
         &:before {
             bottom: -3px;
         }
+    }
+}
+
+.double-lined {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        height: 2px;
+        width: 100%;
+        left: 0;
+        bottom: 27px;
+
+        background-color: @color-orange;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        display: block;
+        height: 2px;
+        width: 100%;
+        left: 0;
+        bottom: -7px;
+
+        background-color: @color-orange;
     }
 }
