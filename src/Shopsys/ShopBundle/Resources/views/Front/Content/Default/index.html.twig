@@ -83,6 +83,37 @@
         </div>
     {% endif %}
 
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <ul class="list-benefits">
+                <li class="list-benefits__item">
+                    <span class="list-benefits__item__icon">
+                        <i class="svg svg-drops"></i>
+                    </span>
+                    <span class="list-benefits__item__text">
+                        {{ 'Naši bundu budou nosit ještě vaše děti'|trans }}
+                    </span>
+                </li>
+                <li class="list-benefits__item">
+                    <span class="list-benefits__item__icon">
+                        <i class="svg svg-box"></i>
+                    </span>
+                    <span class="list-benefits__item__text">
+                        {{ 'Vše co nabízíme, máme skladem'|trans }}
+                    </span>
+                </li>
+                <li class="list-benefits__item">
+                    <span class="list-benefits__item__icon">
+                        <i class="svg svg-hand"></i>
+                    </span>
+                    <span class="list-benefits__item__text">
+                        {{ 'Neměň se, my se taky neměníme'|trans }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
 
     {% if topProducts is not empty %}
