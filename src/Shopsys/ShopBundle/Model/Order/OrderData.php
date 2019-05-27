@@ -26,8 +26,13 @@ class OrderData extends BaseOrderData
      */
     public $payPalStatus;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    /**
+     * @var \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace|null
+     */
+    public $pickupPlace;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Transport\Transport|null
+     */
+    public $transport;
 }

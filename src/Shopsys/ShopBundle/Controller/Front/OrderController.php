@@ -302,6 +302,7 @@ class OrderController extends FrontBaseController
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
             'goPayBankSwifts' => $goPayBankSwifts,
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
+            'pickupPlace' => $orderData->pickupPlace,
         ]);
     }
 

@@ -174,4 +174,12 @@ class PickupPlace
     {
         return $this->countryCode;
     }
+
+    /**
+     * @return string
+     */
+    public function getFullAddress(): string
+    {
+        return $this->street . ', ' . $this->postCode . ' ' . $this->city;
+    }
 }

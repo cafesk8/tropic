@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Transport\PickupPlace;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 
 class PickupPlaceFacade
 {
@@ -19,13 +20,20 @@ class PickupPlaceFacade
     private $pickupPlaceRepository;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transport\TransportFacade
+     */
+    private $transportFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceRepository $pickupPlaceRepository
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      */
-    public function __construct(EntityManagerInterface $entityManager, PickupPlaceRepository $pickupPlaceRepository)
+    public function __construct(EntityManagerInterface $entityManager, PickupPlaceRepository $pickupPlaceRepository, TransportFacade $transportFacade)
     {
         $this->entityManager = $entityManager;
         $this->pickupPlaceRepository = $pickupPlaceRepository;
+        $this->transportFacade = $transportFacade;
     }
 
     /**
@@ -109,5 +117,35 @@ class PickupPlaceFacade
     {
         $pickupPlace->edit($pickupPlaceData);
         $this->entityManager->flush($pickupPlace);
+    }
+
+    /**
+     * @param int $id
+     * @return \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace
+     */
+    public function getById($id): PickupPlace
+    {
+        return $this->pickupPlaceRepository->getById($id);
+    }
+
+    /**
+     * @param string|null $searchQuery
+     * @param int $transportId
+     * @return \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace[]
+     */
+    public function findActiveBySearchQueryAndTransportId(?string $searchQuery, int $transportId): array
+    {
+        $transport = $this->transportFacade->getById($transportId);
+        return $this->pickupPlaceRepository->findActiveBySearchQueryAndTransportType($searchQuery, $transport);
+    }
+
+    /**
+     * @param int $transportId
+     * @return \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace[]
+     */
+    public function getAllForTransportId(int $transportId): array
+    {
+        $transport = $this->transportFacade->getById($transportId);
+        return $this->pickupPlaceRepository->getAllForTransport($transport);
     }
 }

@@ -1,19 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\Model\Order;
 
+use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderData as BaseFrontOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataMapper as BaseOrderDataMapper;
+use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
 class OrderDataMapper extends BaseOrderDataMapper
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface $orderDataFactory
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
      */
-    public function __construct(OrderDataFactoryInterface $orderDataFactory)
+    private $countryFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface $orderDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     */
+    public function __construct(OrderDataFactoryInterface $orderDataFactory, CountryFacade $countryFacade)
     {
         parent::__construct($orderDataFactory);
+        $this->countryFacade = $countryFacade;
     }
 
     /**
@@ -25,6 +36,44 @@ class OrderDataMapper extends BaseOrderDataMapper
         /** @var \Shopsys\ShopBundle\Model\Order\OrderData $orderData */
         $orderData = parent::getOrderDataFromFrontOrderData($frontOrderData);
 
+        $orderData->pickupPlace = $orderData->transport !== null && $orderData->transport->isPickupPlace() ?
+            $frontOrderData->pickupPlace : null;
+
+        if ($orderData->pickupPlace !== null) {
+            $this->setOrderDeliveryAddressDataByPickUpPlace($orderData, $frontOrderData, $orderData->pickupPlace);
+        }
+
         return $orderData;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\FrontOrderData $frontOrderData
+     * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace $pickupPlace
+     */
+    private function setOrderDeliveryAddressDataByPickUpPlace(OrderData $orderData, FrontOrderData $frontOrderData, PickupPlace $pickupPlace): void
+    {
+        $orderData->deliveryFirstName = $frontOrderData->firstName;
+        $orderData->deliveryLastName = $frontOrderData->lastName;
+
+        $frontOrderData->deliveryAddressSameAsBillingAddress = false;
+        $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
+
+        $frontOrderData->deliveryCompanyName = $pickupPlace->getName();
+        $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
+
+        $orderData->deliveryTelephone = null;
+
+        $frontOrderData->deliveryStreet = $pickupPlace->getStreet();
+        $orderData->deliveryStreet = $frontOrderData->deliveryStreet;
+
+        $frontOrderData->deliveryCity = $pickupPlace->getCity();
+        $orderData->deliveryCity = $frontOrderData->deliveryCity;
+
+        $frontOrderData->deliveryPostcode = $pickupPlace->getPostCode();
+        $orderData->deliveryPostcode = $frontOrderData->deliveryPostcode;
+
+        $frontOrderData->deliveryCountry = $this->countryFacade->getByCode($pickupPlace->getCountryCode());
+        $orderData->deliveryCountry = $frontOrderData->deliveryCountry;
     }
 }

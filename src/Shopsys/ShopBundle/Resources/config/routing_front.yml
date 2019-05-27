@@ -146,3 +146,14 @@ front_order_paypal_status_notify:
     path: /order/paypal-status-notify/{orderId}
     defaults: { _controller: ShopsysShopBundle:Front\PayPal:payPalStatusNotify }
     methods: [GET]
+
+front_pickup_place_search:
+    path: /pickup-place/search/
+    defaults: { _controller: ShopsysShopBundle:Front\PickupPlace:search }
+    condition: "request.isXmlHttpRequest()"
+
+front_pickup_place_autocomplete:
+    path: /pickup-place/autocomplete/
+    defaults: { _controller: ShopsysShopBundle:Front\PickupPlace:autocomplete }
+    methods: [POST]
+    condition: "request.isXmlHttpRequest()"

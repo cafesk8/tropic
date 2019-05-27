@@ -1,0 +1,28 @@
+<div class="js-pickup-place-search" data-pickup-place-autocomplete-url="{{ url('front_pickup_place_autocomplete') }}">
+    <div>
+        <h3>{{ 'Vyberte pobočku'|trans }}</h3>
+    </div>
+    <div>
+        <div>
+            <strong>
+                {{ 'Zadejte město nebo PSČ:'|trans }}:
+            </strong>
+            <div class="box-pickup-place__control">
+                <input
+                        type="text"
+                        placeholder="{{ 'např. Praha'|trans }}"
+                        class="js-pickup-place-city-post-code-autocomplete-input input"
+                        autocomplete="off"
+                />
+                <button class="btn btn--primary" type="button">
+                    {{ 'Vyhledat'|trans }}
+                </button>
+            </div>
+        </div>
+        <div class="js-pickup-place-autocomplete-results box-pickup-place__results {% if pickupPlaces|length > 0 %}display-block{% endif %}">
+            {% if pickupPlaces|length > 0 %}
+                {% include '@ShopsysShop/Front/Inline/PickupPlace/autocompleteResult.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+</div>

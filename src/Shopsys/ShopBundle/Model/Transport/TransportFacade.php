@@ -77,7 +77,7 @@ class TransportFacade extends BaseTransportFacade
      */
     public function create(TransportData $transportData): Transport
     {
-        $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ?: (string)$transportData->balikobotShipperService;
+        $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
         if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
             $transportData->initialDownload = true;
@@ -97,7 +97,7 @@ class TransportFacade extends BaseTransportFacade
      */
     public function edit(Transport $transport, TransportData $transportData): void
     {
-        $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ?: (string)$transportData->balikobotShipperService;
+        $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
         if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
 
