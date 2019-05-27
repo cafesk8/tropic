@@ -26,10 +26,16 @@ class TransportData extends BaseTransportData
      */
     public $pickupPlace;
 
+    /**
+     * @var bool
+     */
+    public $initialDownload;
+
     public function __construct()
     {
         parent::__construct();
         $this->balikobot = false;
         $this->pickupPlace = false;
+        $this->initialDownload = false;
     }
 }

@@ -182,3 +182,5 @@ services:
     Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@Shopsys\ShopBundle\Model\Transport\TransportFacade'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportRepository: '@Shopsys\ShopBundle\Model\Transport\TransportRepository'
+
+    Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade: '@Shopsys\ShopBundle\Component\Cron\CronModuleFacade'

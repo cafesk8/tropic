@@ -19,4 +19,17 @@ class TransportRepository extends BaseTransportRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
+     */
+    public function getTransportsForInitialDownload(): array
+    {
+        return $this->getQueryBuilderForAll()
+            ->andWhere('t.balikobot = true')
+            ->andWhere('t.pickupPlace = true')
+            ->andWhere('t.initialDownload = true')
+            ->getQuery()
+            ->getResult();
+    }
 }
