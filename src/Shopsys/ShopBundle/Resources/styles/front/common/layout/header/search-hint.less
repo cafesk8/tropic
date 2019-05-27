@@ -2,6 +2,7 @@
 @search-hint-category-image-size: 20px;
 @search-hint-articles-image-size: 20px;
 @search-hint-divider-size: 55px;
+@search-hint-font-size-medium: 16px;
 
 .search-hint {
     display: flex;
@@ -50,7 +51,7 @@
             padding-left: 12px;
 
             color: @color-brown;
-            font-size: 16px;
+            font-size: @search-hint-font-size-medium;
 
             .highlight {
                 color: @color-base;
@@ -90,7 +91,7 @@
             padding-left: 12px;
 
             color: @color-brown;
-            font-size: 16px;
+            font-size: @search-hint-font-size-medium;
 
             .highlight {
                 color: @color-base;
@@ -102,8 +103,8 @@
 
             .svg {
                 line-height: 15px;
-                transform: rotate(0deg);
                 padding-top: 2px;
+                transform: rotate(0deg);
 
                 color: @color-orange;
                 font-size: 19px;
