@@ -7,25 +7,27 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 512 508"
-   version="1.1"
-   id="svg11"
-   sodipodi:docname="folder.svg"
    width="512"
-   height="508"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="folder.svg"
+   inkscape:version="0.92.4 (33fec40, 2019-01-16)">
   <metadata
-     id="metadata15">
+     id="metadata18">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title>632C9BC9-AB1A-4072-A9F7-C6A6A7B87C64</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <defs
+     id="defs16" />
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -35,40 +37,45 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1536"
-     inkscape:window-height="801"
-     id="namedview13"
+     inkscape:window-width="1920"
+     inkscape:window-height="987"
+     id="namedview14"
      showgrid="false"
-     inkscape:zoom="0.65186406"
-     inkscape:cx="122.43211"
-     inkscape:cy="213.04399"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:zoom="0.49166667"
+     inkscape:cx="-443.38525"
+     inkscape:cy="329.95297"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg11" />
-  <defs
-     id="defs7">
-    <linearGradient
-       id="a"
-       x1="117.78"
-       x2="17.207001"
-       y1="43.276001"
-       y2="106.49"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(4.4444286,0,0,4.4444286,-28.443433,-40.477203)">
-      <stop
-         stop-color="#dbdbdb"
-         offset="0"
-         id="stop2" />
-      <stop
-         stop-color="#757575"
-         offset="1"
-         id="stop4" />
-    </linearGradient>
-  </defs>
-  <path
-     d="M 38.916327,77.020185 C 20.723059,77.020185 6,91.743685 6,109.93651 v 288.26564 c 0,18.19282 14.723503,32.77767 32.916327,32.77767 H 473.08367 C 491.27694,430.97981 506,416.39497 506,398.20215 V 168.26963 c 0,-18.19327 -14.72395,-32.66566 -32.91633,-32.77766 H 208.97794 v -25.55546 c 0,-18.193265 -14.58439,-32.916325 -32.77766,-32.916325 z"
-     id="path9"
-     inkscape:connector-curvature="0"
-     style="fill:url(#a);stroke-width:4.44442844" />
+     inkscape:current-layer="svg12" />
+  <!-- Generator: sketchtool 54.1 (76490) - https://sketchapp.com -->
+  <title
+     id="title2">632C9BC9-AB1A-4072-A9F7-C6A6A7B87C64</title>
+  <desc
+     id="desc4">Created with sketchtool.</desc>
+  <g
+     id="Page-1"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1"
+     transform="matrix(26.947368,0,0,26.947368,4.0000002e-6,53.89474)">
+    <g
+       id="Bsh_Hledani"
+       transform="translate(-698,-371)"
+       style="fill:#e79c00;fill-rule:nonzero">
+      <g
+         id="Svetle"
+         transform="translate(658,62)">
+        <g
+           id="Vysledky"
+           transform="translate(40,152)">
+          <g
+             id="Kategorie">
+            <path
+               d="m 17.086651,158.88596 c 0.533961,0 0.986337,0.18275 1.357143,0.54825 C 18.8146,159.79971 19,160.24561 19,160.77193 v 9.3421 c 0,0.52632 -0.1854,0.97222 -0.556206,1.33772 C 18.072988,171.81725 17.620612,172 17.086651,172 H 1.913349 C 1.3793884,172 0.927012,171.81725 0.55620609,171.45175 0.18540018,171.08625 0,170.64035 0,170.11403 v -11.22807 c 0,-0.52631 0.18540018,-0.97222 0.55620609,-1.33771 C 0.927012,157.18275 1.3793884,157 1.913349,157 h 5.6955503 l 1.8688525,1.88596 z m 0,11.22807 v -9.3421 H 1.913349 v 9.3421 z"
+               id="ico_folder-copy-5"
+               inkscape:connector-curvature="0" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>
