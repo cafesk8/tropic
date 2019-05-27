@@ -35,9 +35,9 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $this->assertContains(3, $ids);
     }
 
-    public function testGetFlagFilterChoicesForSearchPhone(): void
+    public function testGetFlagFilterChoicesForSearchApple(): void
     {
-        $flagFilterChoices = $this->getChoicesForSearchText('phone');
+        $flagFilterChoices = $this->getChoicesForSearchText('apple');
 
         $this->assertCount(3, $flagFilterChoices);
 
@@ -53,11 +53,11 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $this->assertContains(3, $ids);
     }
 
-    public function testGetFlagFilterChoicesForBook(): void
+    public function testGetFlagFilterChoicesForKniha(): void
     {
-        $flagFilterChoices = $this->getChoicesForSearchText('book');
+        $flagFilterChoices = $this->getChoicesForSearchText('Kniha');
 
-        $this->assertCount(2, $flagFilterChoices);
+        $this->assertCount(1, $flagFilterChoices);
 
         $ids = array_map(
             static function (Flag $flag) {
@@ -67,7 +67,6 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         );
 
         $this->assertContains(1, $ids);
-        $this->assertContains(2, $ids);
     }
 
     /**
@@ -98,7 +97,7 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
         $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
-        return $repository->getFlagFilterChoicesForSearch(1, $pricingGroup, 'en', $searchText);
+        return $repository->getFlagFilterChoicesForSearch(1, $pricingGroup, 'cs', $searchText);
     }
 
     /**

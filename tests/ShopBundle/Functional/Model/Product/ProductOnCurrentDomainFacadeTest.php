@@ -107,8 +107,8 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
         $parameterFilterData = $this->createParameterFilterData(
-            ['en' => 'Print resolution'],
-            [['en' => '4800x1200']]
+            ['cs' => 'Rozlišení tisku'],
+            [['cs' => '4800x1200']]
         );
 
         $productFilterData = new ProductFilterData();
@@ -124,10 +124,10 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
         $parameterFilterData = $this->createParameterFilterData(
-            ['en' => 'Print resolution'],
+            ['cs' => 'Rozlišení tisku'],
             [
-                ['en' => '4800x1200'],
-                ['en' => '2400x600'],
+                ['cs' => '4800x1200'],
+                ['cs' => '2400x600'],
             ]
         );
         $productFilterData = new ProductFilterData();
@@ -142,14 +142,14 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
         $parameterFilterData1 = $this->createParameterFilterData(
-            ['en' => 'Print resolution'],
+            ['cs' => 'Rozlišení tisku'],
             [
-                ['en' => '4800x1200'],
-                ['en' => '2400x600'],
+                ['cs' => '4800x1200'],
+                ['cs' => '2400x600'],
             ]
         );
         $parameterFilterData2 = $this->createParameterFilterData(
-            ['en' => 'LCD'],
+            ['cs' => 'LCD'],
             []
         );
 
@@ -165,12 +165,12 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
         $parameterFilterData1 = $this->createParameterFilterData(
-            ['en' => 'Print resolution'],
-            [['en' => '2400x600']]
+            ['cs' => 'Rozlišení tisku'],
+            [['cs' => '2400x600']]
         );
         $parameterFilterData2 = $this->createParameterFilterData(
-            ['en' => 'LCD'],
-            [['en' => 'Yes']]
+            ['cs' => 'LCD'],
+            [['cs' => 'Ano']]
         );
         $productFilterData = new ProductFilterData();
         $productFilterData->parameters = [$parameterFilterData1, $parameterFilterData2];

@@ -29,7 +29,7 @@ class FilterQueryTest extends TransactionFunctionalTestCase
             ->filterByFlags([3])
             ->applyDefaultOrdering();
 
-        $this->assertIdWithFilter($filter, [1, 5, 50, 16, 33, 39, 70, 40, 45]);
+        $this->assertIdWithFilter($filter, [1, 5, 16, 33, 70, 39, 40, 45, 50]);
     }
 
     public function testFlagBrand(): void
@@ -58,7 +58,7 @@ class FilterQueryTest extends TransactionFunctionalTestCase
 
     public function testParameters(): void
     {
-        $parameters = [50 => [109, 115], 49 => [105, 121], 10 => [107]];
+        $parameters = [50 => [108, 114], 49 => [104, 120], 10 => [106]];
 
         $filter = $this->createFilter()
             ->filterByParameters($parameters);
@@ -75,13 +75,13 @@ class FilterQueryTest extends TransactionFunctionalTestCase
             ->filterByCategory([9])
             ->applyDefaultOrdering();
 
-        $this->assertIdWithFilter($filter, [72, 25, 27, 29, 28, 26, 50, 33, 39, 40], 'top');
+        $this->assertIdWithFilter($filter, [25, 26, 27, 28, 29, 33, 39, 40, 72, 50], 'top');
 
         $nameAscFilter = $filter->applyOrdering(ProductListOrderingConfig::ORDER_BY_NAME_ASC, $pricingGroup);
-        $this->assertIdWithFilter($nameAscFilter, [72, 25, 27, 29, 28, 26, 50, 33, 39, 40], 'name asc');
+        $this->assertIdWithFilter($nameAscFilter, [25, 26, 27, 28, 29, 33, 39, 40, 72, 50], 'name asc');
 
         $nameDescFilter = $filter->applyOrdering(ProductListOrderingConfig::ORDER_BY_NAME_DESC, $pricingGroup);
-        $this->assertIdWithFilter($nameDescFilter, [40, 39, 33, 50, 26, 28, 29, 27, 25, 72], 'name desc');
+        $this->assertIdWithFilter($nameDescFilter, [50, 72, 40, 39, 33, 29, 28, 27, 26, 25], 'name desc');
 
         $priceAscFilter = $filter->applyOrdering(ProductListOrderingConfig::ORDER_BY_PRICE_ASC, $pricingGroup);
         $this->assertIdWithFilter($priceAscFilter, [40, 33, 50, 39, 29, 25, 26, 27, 28, 72], 'price asc');
@@ -94,8 +94,8 @@ class FilterQueryTest extends TransactionFunctionalTestCase
     {
         $filter = $this->createFilter();
 
-        $kittyFilter = $filter->search('kitty');
-        $this->assertIdWithFilter($kittyFilter, [1, 102, 101]);
+        $kittyFilter = $filter->search('apple');
+        $this->assertIdWithFilter($kittyFilter, [5, 9, 144, 40, 25, 30]);
 
         $mg3550Filer = $filter->search('mg3550');
         $this->assertIdWithFilter($mg3550Filer, [9, 144, 10, 145]);
@@ -107,21 +107,21 @@ class FilterQueryTest extends TransactionFunctionalTestCase
             ->filterByCategory([9])
             ->applyDefaultOrdering();
 
-        $this->assertIdWithFilter($filter, [72, 25, 27, 29, 28, 26, 50, 33, 39, 40]);
+        $this->assertIdWithFilter($filter, [25, 26, 27, 28, 29, 33, 39, 40, 72, 50]);
 
         $limit5Filter = $filter->setLimit(5);
-        $this->assertIdWithFilter($limit5Filter, [72, 25, 27, 29, 28]);
+        $this->assertIdWithFilter($limit5Filter, [25, 26, 27, 28, 29]);
 
         $limit1Filter = $filter->setLimit(1);
-        $this->assertIdWithFilter($limit1Filter, [72]);
+        $this->assertIdWithFilter($limit1Filter, [25]);
 
         $limit4Page2Filter = $filter->setLimit(4)
             ->setPage(2);
-        $this->assertIdWithFilter($limit4Page2Filter, [28, 26, 50, 33]);
+        $this->assertIdWithFilter($limit4Page2Filter, [29, 33, 39, 40]);
 
         $limit4Page3Filter = $filter->setLimit(4)
             ->setPage(3);
-        $this->assertIdWithFilter($limit4Page3Filter, [39, 40]);
+        $this->assertIdWithFilter($limit4Page3Filter, [72, 50]);
 
         $limit4Page4Filter = $filter->setLimit(4)
             ->setPage(4);

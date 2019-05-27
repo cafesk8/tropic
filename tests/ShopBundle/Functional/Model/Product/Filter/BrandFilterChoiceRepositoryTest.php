@@ -37,11 +37,11 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $this->assertContains(5, $ids);
     }
 
-    public function testGetBrandFilterChoicesForSearchPhone(): void
+    public function testGetBrandFilterChoicesForSearchTelefon(): void
     {
-        $brandFilterChoices = $this->getChoicesForSearchText('phone');
+        $brandFilterChoices = $this->getChoicesForSearchText('telefon');
 
-        $this->assertCount(7, $brandFilterChoices);
+        $this->assertCount(13, $brandFilterChoices);
 
         $ids = array_map(
             static function (Brand $brand) {
@@ -50,13 +50,19 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
             $brandFilterChoices
         );
 
+        $this->assertContains(6, $ids);
         $this->assertContains(1, $ids);
         $this->assertContains(2, $ids);
-        $this->assertContains(15, $ids);
+        $this->assertContains(23, $ids);
         $this->assertContains(3, $ids);
+        $this->assertContains(24, $ids);
+        $this->assertContains(22, $ids);
+        $this->assertContains(21, $ids);
         $this->assertContains(4, $ids);
         $this->assertContains(20, $ids);
         $this->assertContains(19, $ids);
+        $this->assertContains(5, $ids);
+        $this->assertContains(8, $ids);
     }
 
     public function testGetBrandFilterChoicesForSearch47(): void
@@ -96,7 +102,7 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
         $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
-        return $repository->getBrandFilterChoicesForSearch(1, $pricingGroup, 'en', $searchText);
+        return $repository->getBrandFilterChoicesForSearch(1, $pricingGroup, 'cs', $searchText);
     }
 
     /**

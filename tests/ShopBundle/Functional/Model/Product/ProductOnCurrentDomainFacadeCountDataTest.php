@@ -53,10 +53,23 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider categoryTestCasesProvider
      */
-    public function testCategory(Category $category, ProductFilterData $filterData, ProductFilterCountData $expectedCountData): void
-    {
-        $filterConfig = $this->productFilterConfigFactory->createForCategory($this->domain->getId(), $this->domain->getLocale(), $category);
-        $countData = $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory($category->getId(), $filterConfig, $filterData);
+    public function testCategory(
+        Category $category,
+        ProductFilterData $filterData,
+        ProductFilterCountData $expectedCountData
+    ): void {
+        $filterConfig =
+            $this->productFilterConfigFactory->createForCategory(
+                $this->domain->getId(),
+                $this->domain->getLocale(),
+                $category
+            );
+        $countData =
+            $this->productOnCurrentDomainFacade->getProductFilterCountDataInCategory(
+                $category->getId(),
+                $filterConfig,
+                $filterData
+            );
 
         $this->assertEquals($expectedCountData, $this->removeEmptyParameters($countData));
     }
@@ -84,10 +97,22 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider searchTestCasesProvider
      */
-    public function testSearch(string $searchText, ProductFilterData $filterData, ProductFilterCountData $expectedCountData): void
-    {
-        $filterConfig = $this->productFilterConfigFactory->createForSearch($this->domain->getId(), $this->domain->getLocale(), $searchText);
-        $countData = $this->productOnCurrentDomainFacade->getProductFilterCountDataForSearch($searchText, $filterConfig, $filterData);
+    public function testSearch(
+        string $searchText,
+        ProductFilterData $filterData,
+        ProductFilterCountData $expectedCountData
+    ): void {
+        $filterConfig =
+            $this->productFilterConfigFactory->createForSearch(
+                $this->domain->getId(),
+                $this->domain->getLocale(),
+                $searchText
+            );
+        $countData = $this->productOnCurrentDomainFacade->getProductFilterCountDataForSearch(
+            $searchText,
+            $filterConfig,
+            $filterData
+        );
 
         $this->assertEquals($expectedCountData, $this->removeEmptyParameters($countData));
     }
@@ -127,37 +152,37 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 10,
+                7 => 10,
             ],
             11 => [
-                58 => 8,
-                124 => 2,
+                57 => 8,
+                123 => 2,
             ],
             30 => [
-                8 => 5,
-                12 => 5,
+                7 => 5,
+                11 => 5,
             ],
             29 => [
-                54 => 7,
-                189 => 3,
+                53 => 7,
+                188 => 3,
             ],
             31 => [
-                56 => 3,
-                97 => 7,
+                55 => 3,
+                96 => 7,
             ],
             28 => [
-                52 => 10,
+                51 => 10,
             ],
             4 => [
-                8 => 10,
+                7 => 10,
             ],
             10 => [
-                60 => 1,
-                62 => 9,
+                61 => 8,
+                59 => 2,
             ],
             33 => [
-                8 => 8,
-                12 => 2,
+                7 => 8,
+                11 => 2,
             ],
         ];
 
@@ -188,35 +213,34 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 2,
+                7 => 2,
             ],
             11 => [
-                58 => 2,
+                57 => 2,
             ],
             30 => [
-                8 => 1,
-                12 => 1,
+                7 => 1,
+                11 => 1,
             ],
             29 => [
-                54 => 1,
-                189 => 1,
+                53 => 1,
+                188 => 1,
             ],
             31 => [
-                56 => 1,
-                97 => 1,
+                55 => 1,
+                96 => 1,
             ],
             28 => [
-                52 => 2,
+                51 => 2,
             ],
             4 => [
-                8 => 2,
+                7 => 2,
             ],
             10 => [
-                60 => 1,
-                62 => 1,
+                59 => 2,
             ],
             33 => [
-                8 => 2,
+                7 => 2,
             ],
         ];
 
@@ -246,35 +270,35 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 6,
+                7 => 6,
             ],
             11 => [
-                58 => 6,
+                57 => 6,
             ],
             30 => [
-                8 => 3,
-                12 => 3,
+                7 => 3,
+                11 => 3,
             ],
             29 => [
-                54 => 3,
-                189 => 3,
+                53 => 3,
+                188 => 3,
             ],
             31 => [
-                56 => 2,
-                97 => 4,
+                55 => 2,
+                96 => 4,
             ],
             28 => [
-                52 => 6,
+                51 => 6,
             ],
             4 => [
-                8 => 6,
+                7 => 6,
             ],
             10 => [
-                60 => 1,
-                62 => 5,
+                59 => 2,
+                61 => 4,
             ],
             33 => [
-                8 => 6,
+                7 => 6,
             ],
         ];
 
@@ -301,35 +325,35 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $countData->countInStock = 4;
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 4,
+                7 => 4,
             ],
             11 => [
-                58 => 4,
+                57 => 4,
             ],
             30 => [
-                8 => 2,
-                12 => 2,
+                7 => 2,
+                11 => 2,
             ],
             29 => [
-                54 => 3,
-                189 => 1,
+                53 => 3,
+                188 => 1,
             ],
             31 => [
-                56 => 2,
-                97 => 2,
+                55 => 2,
+                96 => 2,
             ],
             28 => [
-                52 => 4,
+                51 => 4,
             ],
             4 => [
-                8 => 4,
+                7 => 4,
             ],
             10 => [
-                60 => 1,
-                62 => 3,
+                59 => 2,
+                61 => 2,
             ],
             33 => [
-                8 => 4,
+                7 => 4,
             ],
         ];
 
@@ -362,35 +386,35 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 6,
+                7 => 6,
             ],
             11 => [
-                58 => 6,
+                57 => 6,
             ],
             30 => [
-                8 => 3,
-                12 => 3,
+                7 => 3,
+                11 => 3,
             ],
             29 => [
-                54 => 4,
-                189 => 2,
+                53 => 4,
+                188 => 2,
             ],
             31 => [
-                56 => 1,
-                97 => 5,
+                55 => 1,
+                96 => 5,
             ],
             28 => [
-                52 => 6,
+                51 => 6,
             ],
             4 => [
-                8 => 6,
+                7 => 6,
             ],
             10 => [
-                60 => 1,
-                62 => 5,
+                59 => 2,
+                61 => 4,
             ],
             33 => [
-                8 => 6,
+                7 => 6,
             ],
         ];
 
@@ -421,34 +445,34 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
         $countData->countByParameterIdAndValueId = [
             17 => [
-                8 => 1,
+                7 => 1,
             ],
             11 => [
-                24 => 1,
+                122 => 1,
             ],
             19 => [
-                12 => 1,
+                11 => 1,
             ],
             12 => [
-                12 => 1,
+                11 => 1,
             ],
             18 => [
-                12 => 1,
+                11 => 1,
             ],
             14 => [
-                28 => 1,
+                27 => 1,
             ],
             16 => [
-                32 => 1,
+                31 => 1,
             ],
             15 => [
-                30 => 1,
+                29 => 1,
             ],
             13 => [
-                26 => 1,
+                25 => 1,
             ],
             10 => [
-                22 => 1,
+                21 => 1,
             ],
         ];
 
@@ -469,55 +493,52 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->brands[] = $this->getReference(BrandDataFixture::BRAND_CANON);
         $filterData->flags[] = $this->getReference(FlagDataFixture::FLAG_NEW_PRODUCT);
         $filterData->parameters[] = $this->createParameterFilterData(
-            ['en' => 'Dimensions'],
-            [['en' => '449x304x152 mm']]
+            ['cs' => 'Rozměry'],
+            [['cs' => '449x304x152 mm']]
         );
         $filterData->parameters[] = $this->createParameterFilterData(
-            ['en' => 'Print resolution'],
-            [['en' => '2400x600'], ['en' => '4800x1200']]
+            ['cs' => 'Rozlišení tisku'],
+            [['cs' => '2400x600'], ['cs' => '4800x1200']]
         );
         $filterData->parameters[] = $this->createParameterFilterData(
-            ['en' => 'Weight'],
-            [['en' => '3.5 kg']]
+            ['cs' => 'Hmotnost'],
+            [['cs' => '3.5 kg']]
         );
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 2;
+        $countData->countInStock = 1;
         $countData->countByBrandId = [
             14 => 1,
         ];
         $countData->countByFlagId = [];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 2,
+                7 => 1,
             ],
             11 => [
-                58 => 2,
+                57 => 1,
             ],
             30 => [
-                8 => 1,
-                12 => 1,
+                7 => 1,
             ],
             29 => [
-                54 => 1,
-                189 => 1,
+                53 => 1,
             ],
             31 => [
-                56 => 1,
-                97 => 1,
+                55 => 1,
             ],
             28 => [
-                52 => 2,
+                51 => 1,
             ],
             4 => [
-                8 => 2,
+                7 => 1,
             ],
             10 => [
-                60 => 1,
-                62 => 2,
+                59 => 2,
+                61 => 1,
             ],
             33 => [
-                8 => 2,
+                7 => 1,
             ],
         ];
 
@@ -536,60 +557,59 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
         $filterData = new ProductFilterData();
         $filterData->parameters[] = $this->createParameterFilterData(
-            ['en' => 'Dimensions'],
-            [['en' => '449x304x152 mm']]
+            ['cs' => 'Rozměry'],
+            [['cs' => '449x304x152 mm']]
         );
         $filterData->parameters[] = $this->createParameterFilterData(
-            ['en' => 'Print resolution'],
-            [['en' => '2400x600'], ['en' => '4800x1200']]
+            ['cs' => 'Rozlišení tisku'],
+            [['cs' => '2400x600'], ['cs' => '4800x1200']]
         );
         $filterData->parameters[] = $this->createParameterFilterData(
-            ['en' => 'Weight'],
-            [['en' => '3.5 kg']]
+            ['cs' => 'Hmotnost'],
+            [['cs' => '3.5 kg']]
         );
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 7;
+        $countData->countInStock = 6;
         $countData->countByBrandId = [
             14 => 2,
-            2 => 5,
+            2 => 4,
         ];
         $countData->countByFlagId = [
-            1 => 3,
-            2 => 1,
+            1 => 2,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                8 => 7,
+                7 => 6,
             ],
             11 => [
-                58 => 7,
-                124 => 2,
+                57 => 6,
+                123 => 2,
             ],
             30 => [
-                8 => 3,
-                12 => 4,
+                7 => 3,
+                11 => 3,
             ],
             29 => [
-                54 => 4,
-                189 => 3,
+                53 => 4,
+                188 => 2,
             ],
             31 => [
-                56 => 1,
-                97 => 6,
+                55 => 1,
+                96 => 5,
             ],
             28 => [
-                52 => 7,
+                51 => 6,
             ],
             4 => [
-                8 => 7,
+                7 => 6,
             ],
             10 => [
-                60 => 1,
-                62 => 7,
+                59 => 2,
+                61 => 6,
             ],
             33 => [
-                8 => 7,
+                7 => 6,
             ],
         ];
 
@@ -649,29 +669,22 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
     {
         $filterData = new ProductFilterData();
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 38;
+        $countData->countInStock = 14;
         $countData->countByBrandId = [
-            8 => 1,
-            11 => 1,
-            19 => 2,
-            10 => 1,
-            2 => 10,
-            4 => 1,
-            16 => 1,
-            15 => 1,
-            6 => 1,
+            2 => 8,
+            3 => 1,
+            1 => 1,
+            5 => 1,
             14 => 2,
-            12 => 2,
-            3 => 2,
         ];
         $countData->countByFlagId = [
-            1 => 15,
-            2 => 5,
-            3 => 3,
+            1 => 7,
+            2 => 4,
+            3 => 2,
         ];
 
         return [
-            'print',
+            'tisk',
             $filterData,
             $countData,
         ];
@@ -685,25 +698,20 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData = new ProductFilterData();
         $filterData->flags[] = $this->getReference(FlagDataFixture::FLAG_NEW_PRODUCT);
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 11;
+        $countData->countInStock = 6;
         $countData->countByBrandId = [
             2 => 3,
             3 => 1,
-            10 => 1,
-            11 => 1,
-            12 => 1,
             14 => 1,
-            15 => 1,
-            16 => 1,
-            19 => 2,
+            1 => 1,
         ];
         $countData->countByFlagId = [
-            2 => 2,
-            3 => 2,
+            2 => 1,
+            3 => 1,
         ];
 
         return [
-            'print',
+            'tisk',
             $filterData,
             $countData,
         ];
@@ -718,19 +726,12 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->brands[] = $this->getReference(BrandDataFixture::BRAND_CANON);
         $countData = new ProductFilterCountData();
 
-        $countData->countInStock = 10;
+        $countData->countInStock = 8;
         $countData->countByBrandId = [
-            3 => 2,
-            4 => 1,
-            6 => 1,
-            8 => 1,
-            10 => 1,
-            11 => 1,
-            12 => 2,
+            3 => 1,
+            1 => 1,
+            5 => 1,
             14 => 2,
-            15 => 1,
-            16 => 1,
-            19 => 2,
         ];
         $countData->countByFlagId = [
             1 => 3,
@@ -738,7 +739,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
 
         return [
-            'print',
+            'tisk',
             $filterData,
             $countData,
         ];
@@ -753,21 +754,19 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->minimalPrice = Money::create(5000);
         $filterData->maximalPrice = Money::create(50000);
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 9;
+        $countData->countInStock = 4;
         $countData->countByBrandId = [
+            1 => 1,
             2 => 4,
-            3 => 1,
-            4 => 1,
-            11 => 1,
-            15 => 1,
         ];
         $countData->countByFlagId = [
-            1 => 2,
-            2 => 2,
+            1 => 1,
+            2 => 1,
+            3 => 1,
         ];
 
         return [
-            'print',
+            'tisk',
             $filterData,
             $countData,
         ];
@@ -781,27 +780,21 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData = new ProductFilterData();
         $filterData->inStock = true;
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 38;
+        $countData->countInStock = 14;
         $countData->countByBrandId = [
-            2 => 10,
-            3 => 2,
-            4 => 1,
-            6 => 1,
-            8 => 1,
-            10 => 1,
-            11 => 1,
-            12 => 2,
+            2 => 8,
+            3 => 1,
+            5 => 1,
             14 => 2,
-            16 => 1,
         ];
         $countData->countByFlagId = [
-            1 => 11,
-            2 => 4,
-            3 => 2,
+            1 => 6,
+            2 => 3,
+            3 => 1,
         ];
 
         return [
-            'print',
+            'tisk',
             $filterData,
             $countData,
         ];
@@ -822,14 +815,14 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->maximalPrice = Money::create(20000);
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 3;
+        $countData->countInStock = 1;
         $countData->countByBrandId = [
             2 => 3,
             3 => 1,
         ];
 
         return [
-            'print',
+            'tisk',
             $filterData,
             $countData,
         ];
@@ -847,6 +840,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
                 unset($result->countByParameterIdAndValueId[$parameterId]);
             }
         }
+
         return $result;
     }
 }
