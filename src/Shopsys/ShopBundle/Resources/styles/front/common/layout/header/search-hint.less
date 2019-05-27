@@ -1,10 +1,13 @@
 @search-hint-product-image-size: 51px;
+@search-hint-category-image-size: 20px;
+@search-hint-articles-image-size: 20px;
+@search-hint-divider-size: 55px;
 
 .search-hint {
     display: flex;
     width: 100%;
-    z-index: @z-index-menu;
     margin-top: 28px;
+    z-index: @z-index-menu;
 
     background: @color-gray;
 
@@ -23,12 +26,89 @@
         text-transform: uppercase;
     }
 
+    &__divider {
+        display: block;
+        height: @search-hint-divider-size;
+    }
+
     &__category {
         .reset-ul();
+        margin-top: 18px;
+
+        &__link {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 15px;
+
+            color: @color-base;
+            text-decoration: none;
+        }
+
+        &__name {
+            display: block;
+            width: calc(~"100% - @{search-hint-category-image-size}");
+            padding-left: 12px;
+
+            color: @color-brown;
+            font-size: 16px;
+
+            .highlight {
+                color: @color-base;
+            }
+        }
+
+        &__image {
+            width: @search-hint-category-image-size;
+
+            .svg {
+                line-height: 15px;
+                padding-top: 2px;
+                transform: rotate(0deg);
+
+                color: @color-orange;
+                font-size: 19px;
+            }
+        }
     }
 
     &__article {
         .reset-ul();
+        margin-top: 18px;
+
+        &__link {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 15px;
+
+            color: @color-base;
+            text-decoration: none;
+        }
+
+        &__name {
+            display: block;
+            width: calc(~"100% - @{search-hint-category-image-size}");
+            padding-left: 12px;
+
+            color: @color-brown;
+            font-size: 16px;
+
+            .highlight {
+                color: @color-base;
+            }
+        }
+
+        &__image {
+            width: @search-hint-category-image-size;
+
+            .svg {
+                line-height: 15px;
+                transform: rotate(0deg);
+                padding-top: 2px;
+
+                color: @color-orange;
+                font-size: 19px;
+            }
+        }
     }
 
     &__product {
@@ -100,8 +180,8 @@
 
     &__bottom {
         display: flex;
-        margin-top: 30px;
         justify-content: center;
+        margin-top: 30px;
 
         &__button {
             background-color: @color-orange;
