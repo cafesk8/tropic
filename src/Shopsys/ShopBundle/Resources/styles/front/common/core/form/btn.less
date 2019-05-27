@@ -67,6 +67,17 @@
         }
     }
 
+    &--secondary {
+        color: @color-f;
+        background: @color-orange;
+        text-transform: uppercase;
+
+        &:hover {
+            color: @color-f;
+            background: darken(@color-orange, 5%);
+        }
+    }
+
     &--disabled {
         opacity: 0.5;
         cursor: no-drop;
