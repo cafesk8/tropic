@@ -10,7 +10,7 @@
     width: 100%;
     margin-top: 62px;
 
-    @media @query-vl {
+    @media @query-md {
         flex-direction: row;
     }
 
@@ -37,18 +37,47 @@
 
     &__item {
         display: flex;
-        flex-direction: row;
-        width: 100%/2;
-        padding-right: 60px;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 20px;
 
-        &:nth-child(even){
-            padding-right: 0;
-            padding-left: 60px;
+        @media @query-md {
+            width: 100%/2;
+            padding-right: 10px;
+
+            &:nth-child(even){
+                padding-right: 0;
+                padding-left: 10px;
+            }
+        }
+
+        @media @query-lg {
+            width: 100%;
+        }
+
+        @media @query-vl {
+            width: 100%/2;
+            flex-direction: column;
+            padding-right: 60px;
+
+            &:nth-child(even){
+                padding-right: 0;
+                padding-left: 60px;
+            }
+        }
+
+        @media @query-xl {
+            flex-direction: row;
         }
 
         &__image {
-            width: @list-articles-item-image-width;
-            margin-right: @list-articles-item-image-gap;
+            width: 100%;
+            text-align: center;
+
+            @media @query-xl {
+                width: @list-articles-item-image-width;
+                margin-right: @list-articles-item-image-gap;
+            }
 
             img {
                 max-width: @list-articles-item-image-width;
@@ -58,10 +87,15 @@
 
         &__flags {
             display: inline;
+            text-align: center;
+
+            @media @query-xl {
+                text-align: left;
+            }
 
             &__flag {
                 display: inline-block;
-                margin: 0 20px 10px 0;
+                margin: 5px 0;
                 line-height: 15px;
                 padding: 3px 6px;
 
@@ -70,15 +104,24 @@
                 font-size: @font-size;
                 font-weight: 700;
                 text-transform: uppercase;
+
+                @media @query-xl {
+                    margin: 0 20px 10px 0;
+                }
             }
         }
 
         &__content {
             display: flex;
             flex-direction: column;
-            width: calc(~"@{calc-base} - @{list-articles-item-image-width} - @{list-articles-item-image-gap}");
+            width: 100%;
+
+            @media @query-xl {
+                width: calc(~"@{calc-base} - @{list-articles-item-image-width} - @{list-articles-item-image-gap}");
+            }
 
             &__title {
+                margin-top: 10px;
                 margin-bottom: 27px;
 
                 color: @color-base;
@@ -86,6 +129,10 @@
                 font-weight: 700;
                 text-decoration: none;
                 text-transform: uppercase;
+
+                @media @query-vl {
+                    margin-top: 0;
+                }
             }
 
             &__text {
