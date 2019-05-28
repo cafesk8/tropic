@@ -11,7 +11,10 @@ services:
             - POSTGRES_USER=root
             - POSTGRES_PASSWORD=root
             - POSTGRES_DB=shopsys
-        command: postgres -c config_file=/var/lib/postgresql/data/postgresql.conf
+        command:
+            - postgres
+            - -c
+            - config_file=/var/lib/postgresql/data/postgresql.conf
 
     webserver:
         image: nginx:1.13-alpine
@@ -82,6 +85,11 @@ services:
             - elasticsearch-data:/usr/share/elasticsearch/data
         environment:
             - discovery.type=single-node
+    kibana:
+        image: docker.elastic.co/kibana/kibana-oss:6.3.2
+        container_name: shopsys-framework-kibana
+        ports:
+            - "5601:5601"
 
 volumes:
     elasticsearch-data:

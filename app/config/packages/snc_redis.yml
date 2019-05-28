@@ -28,6 +28,12 @@ snc_redis:
             type: 'phpredis'
             alias: 'session'
             dsn: 'redis://%redis_host%'
+        framework_annotations:
+            type: 'phpredis'
+            alias: 'framework_annotations'
+            dsn: 'redis://%redis_host%'
+            options:
+                prefix: '%env(REDIS_PREFIX)%%build-version%:cache:framework:annotations:'
     session:
         client: 'session'
         prefix: '%env(REDIS_PREFIX)%session_'

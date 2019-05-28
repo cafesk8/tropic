@@ -20,6 +20,8 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactory
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
@@ -176,6 +178,25 @@ class ProductFacade extends BaseProductFacade
         $this->updateProductStoreStocks($productData, $product);
 
         return $product;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[]
+     */
+    public function getProductSellingPricesIndexedByDomainId(Product $product, int $domainId): array
+    {
+        $productSellingPrices = [];
+
+        foreach ($this->pricingGroupRepository->getPricingGroupsByDomainId($domainId) as $pricingGroup) {
+            $productSellingPrices[$pricingGroup->getId()] = new ProductSellingPrice(
+                $pricingGroup,
+                $this->productPriceCalculation->calculatePrice($product, $pricingGroup->getDomainId(), $pricingGroup)
+            );
+        }
+
+        return $productSellingPrices;
     }
 
     /**

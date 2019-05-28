@@ -1,9 +1,7 @@
 imports:
     - { resource: cron.yml }
     - { resource: forms.yml }
-    - { resource: services/commands.yml }
-    - { resource: services/data_fixtures.yml }
-    - { resource: services/twig.yml }
+    - { resource: services/*.yml }
 
 services:
     _defaults:
@@ -55,6 +53,10 @@ services:
     Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface: '@Shopsys\ShopBundle\Model\Payment\PaymentDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\ProductDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
@@ -122,6 +124,10 @@ services:
     Shopsys\ShopBundle\Model\Product\LastVisitedProducts\ProductDetailVisitListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    Shopsys\ShopBundle\Model\Product\Search\ProductSearchExportWithFilterRepository: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository: '@Shopsys\ShopBundle\Model\Product\Search\ProductSearchExportWithFilterRepository'
 
     Shopsys\ShopBundle\Model\PayPal\PayPalClient:
         arguments:
