@@ -188,3 +188,5 @@ services:
     Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@Shopsys\ShopBundle\Model\Country\CountryFacade'
 
     Shopsys\FrameworkBundle\Model\Country\CountryRepository: '@Shopsys\ShopBundle\Model\Country\CountryRepository'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation: '@Shopsys\ShopBundle\Model\Transport\TransportVisibilityCalculation'
