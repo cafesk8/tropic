@@ -1,0 +1,99 @@
+@list-articles-item-image-width: 210px;
+@list-articles-item-image-height: 170px;
+@list-articles-item-image-gap: 40px;
+
+.list-articles {
+    .reset-ul();
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 62px;
+
+    @media @query-vl {
+        flex-direction: row;
+    }
+
+    &__title-big {
+        display: block;
+        text-align: center;
+        line-height: 47px;
+
+        color: @color-brown;
+        font-size: 36px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    &__title-small {
+        display: block;
+        line-height: 24px;
+        margin-top: 4px;
+        text-align: center;
+
+        color: @color-brown;
+        font-size: 16px;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: row;
+        width: 100%/2;
+        padding-right: 60px;
+
+        &:nth-child(even){
+            padding-right: 0;
+            padding-left: 60px;
+        }
+
+        &__image {
+            width: @list-articles-item-image-width;
+            margin-right: @list-articles-item-image-gap;
+
+            img {
+                max-width: @list-articles-item-image-width;
+                max-height: @list-articles-item-image-height;
+            }
+        }
+
+        &__flags {
+            display: inline;
+
+            &__flag {
+                display: inline-block;
+                margin: 0 20px 10px 0;
+                line-height: 15px;
+                padding: 3px 6px;
+
+                background-color: @color-orange;
+                color: @color-f;
+                font-size: @font-size;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            width: calc(~"@{calc-base} - @{list-articles-item-image-width} - @{list-articles-item-image-gap}");
+
+            &__title {
+                margin-bottom: 27px;
+
+                color: @color-base;
+                font-size: 18px;
+                font-weight: 700;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            &__text {
+                line-height: 26px;
+
+                color: @color-brown;
+                font-size: 16px;
+            }
+        }
+    }
+}
