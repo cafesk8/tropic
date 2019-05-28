@@ -36,14 +36,6 @@ class PickupPlaceController extends FrontBaseController
 
         $pickupPlaces = $this->pickupPlaceFacade->getAllForTransportId($transportId);
 
-        if ($pickupPlaceId > 0) {
-            try {
-                $pickUpPlace = $this->pickupPlaceFacade->getById($pickupPlaceId);
-                $pickupPlaces[] = $pickUpPlace;
-            } catch (PickupPlaceNotFoundException $exc) {
-            }
-        }
-
         $chosenPickupPlace = null;
         if ($pickupPlaceId > 0) {
             $chosenPickupPlace = $this->pickupPlaceFacade->getById((int)$pickupPlaceId);
