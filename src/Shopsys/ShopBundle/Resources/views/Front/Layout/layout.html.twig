@@ -24,9 +24,13 @@
                 {{ block('header') }}
                 {% block infoRow %}
                     {% if isInfoRowVisible() %}
-                        <div class="web__container info-row" id="js-info-row" data-now="{{ 'now'|date(constant('Shopsys\\ShopBundle\\Component\\InfoRow\\InfoRowFacade::COOKIE_CLOSED_AT_FORMAT')) }}">
-                            {{ getInfoRowText() }}
-                            <button type="button" class="info-row__close-button js-info-row__close" >{{ 'Zavřít'|trans }}</button>
+                        <div class="web__container web__container--big-padding" id="js-info-row" data-now="{{ 'now'|date(constant('Shopsys\\ShopBundle\\Component\\InfoRow\\InfoRowFacade::COOKIE_CLOSED_AT_FORMAT')) }}">
+                            <div class="box-info-row">
+                                {{ getInfoRowText() }}
+                                <span class="box-info-row__close js-info-row__close" >
+                                    <i class="svg svg-remove-thin"></i>
+                                </span>
+                            </div>
                         </div>
                     {% endif %}
                 {% endblock %}
