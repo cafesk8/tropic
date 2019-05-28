@@ -22,4 +22,12 @@ class CountryFacade extends BaseCountryFacade
     {
         return $this->countryRepository->getByCode($code);
     }
+
+    /**
+     * @return string[]
+     */
+    public function getAllCodesInArray(): array
+    {
+        return $this->countryRepository->getAllCodesInArray();
+    }
 }

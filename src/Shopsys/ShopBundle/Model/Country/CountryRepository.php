@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Country;
 
+use Doctrine\ORM\AbstractQuery;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryRepository as BaseCountryRepository;
 use Shopsys\FrameworkBundle\Model\Country\Exception\CountryNotFoundException;
@@ -23,5 +24,17 @@ class CountryRepository extends BaseCountryRepository
         }
 
         return $country;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAllCodesInArray(): array
+    {
+        $results = $this->getCountryRepository()->createQueryBuilder('c')
+            ->getQuery()
+            ->getResult(AbstractQuery::HYDRATE_ARRAY);
+
+        return array_column($results, 'code');
     }
 }
