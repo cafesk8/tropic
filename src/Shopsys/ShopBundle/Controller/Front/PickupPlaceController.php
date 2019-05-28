@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\String\TransformString;
-use Shopsys\ShopBundle\Model\Transport\PickupPlace\Exception\PickupPlaceNotFoundException;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

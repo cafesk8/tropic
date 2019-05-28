@@ -33,6 +33,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface $transportDataFactory
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
     public function __construct(
         TransportFacade $transportFacade,
