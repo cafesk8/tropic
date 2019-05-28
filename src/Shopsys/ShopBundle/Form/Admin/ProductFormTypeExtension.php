@@ -99,6 +99,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     {
         $builderMainVariantGroup = $builder->create('builderMainVariantGroup', GroupType::class, [
             'label' => t('Propojené produkty'),
+            'position' => ['after' => 'name'],
         ]);
 
         $allParameters = $this->parameterFacade->getAll();

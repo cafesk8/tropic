@@ -49,7 +49,7 @@ class ParameterController extends BaseParameterController
 
             $this->getFlashMessageSender()->addErrorFlash(t(
                 'Parametr nelze odstranit, protože se používá jako rozlišující parametr pro produkty s ID'
-                ) . ' - ' . $productIdsWithDistinguishingParameter);
+            ) . ' - ' . $productIdsWithDistinguishingParameter);
         }
 
         return $this->redirectToRoute('admin_parameter_list');
