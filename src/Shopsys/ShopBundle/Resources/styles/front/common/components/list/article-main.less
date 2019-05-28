@@ -6,13 +6,17 @@
 .list-article-main {
     .reset-ul();
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+
+    @media @query-vl {
+        flex-direction: row;
+    }
 
     &__item {
         display: flex;
-        flex-direction: row;
-        width: calc(~"@{calc-base}/2");
-        margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
+        flex-direction: column;
+        width: 100%;
+        margin: 0 0 @list-article-main-item-gap 0;
 
         background-color: @list-article-main-content-bg;
 
@@ -20,18 +24,37 @@
             margin-right: 0;
         }
 
+        @media @query-vl {
+            margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
+        }
+
+        @media @query-xl {
+            flex-direction: row;
+            width: calc(~"@{calc-base}/2");
+            margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
+        }
+
         &__image {
             display: flex;
             width: @list-article-main-image-width;
+            margin: 0 auto;
 
             background-color: @color-gray;
         }
 
         &__content {
-            width: calc(~"@{calc-base} - @{list-article-main-image-width}");
             display: flex;
             flex-direction: column;
-            padding: 72px 65px;
+            width: 100%;
+            padding: 20px 30px;
+
+            @media @query-vl {
+                padding: 72px 65px;
+            }
+
+            @media @query-xl {
+                width: calc(~"@{calc-base} - @{list-article-main-image-width}");
+            }
 
             &__title {
                 line-height: 36px;
@@ -53,9 +76,15 @@
             }
 
             &__bottom {
-                max-width: @list-article-main-button-max-width;
+                text-align: center;
+
+                @media @query-vl {
+                    text-align: left;
+                }
 
                 &__button {
+                    max-width: @list-article-main-button-max-width;
+                    
                     background-color: @color-brown;
                 }
             }
