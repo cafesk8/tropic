@@ -4,6 +4,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
@@ -16,7 +17,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     const TRANSPORT_PPL = 'transport_ppl';
     const TRANSPORT_PERSONAL = 'transport_personal';
 
-    /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade */
+    /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade */
     protected $transportFacade;
 
     /**
@@ -25,15 +26,22 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     protected $transportDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface $transportDataFactory
      */
     public function __construct(
         TransportFacade $transportFacade,
-        TransportDataFactoryInterface $transportDataFactory
+        TransportDataFactoryInterface $transportDataFactory,
+        EntityManagerInterface $entityManager
     ) {
         $this->transportFacade = $transportFacade;
         $this->transportDataFactory = $transportDataFactory;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -41,6 +49,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
      */
     public function load(ObjectManager $manager)
     {
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportData $transportData */
         $transportData = $this->transportDataFactory->create();
         $transportData->name = [
             'cs' => 'Česká pošta - balík do ruky',
@@ -60,6 +69,11 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'PPL',
             'de' => 'PPL',
         ];
+        $transportData->balikobot = true;
+        $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
+        $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
+        $transportData->initialDownload = false;
+
         $transportData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('199.95'),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('6.95'),
@@ -73,6 +87,10 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'Osobní převzetí',
             'de' => 'Personal collection',
         ];
+        $transportData->balikobot = false;
+        $transportData->balikobotShipper = null;
+        $transportData->balikobotShipperService = null;
+
         $transportData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
@@ -97,7 +115,11 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
      */
     protected function createTransport($referenceName, TransportData $transportData)
     {
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = $this->transportFacade->create($transportData);
+        $transport->setAsDownloaded();
+        $this->entityManager->flush($transport);
+
         $this->addReference($referenceName, $transport);
     }
 

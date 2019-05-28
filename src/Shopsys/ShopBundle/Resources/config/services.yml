@@ -33,6 +33,12 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductController
 
+    Faker\Generator:
+        factory: [Faker\Factory, create, ]
+        arguments: ['cs_CZ']
+        calls:
+            - [seed, ['%faker.seed%']]
+
     Shopsys\ShopBundle\Component\Balikobot\BalikobotClient:
         arguments:
             - '%balikobot%'
