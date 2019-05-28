@@ -14,8 +14,8 @@ use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
 use Shopsys\FrameworkBundle\Model\Product\Availability\Availability;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\DataFixtures\Demo\CurrencyDataFixture;
+use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Tests\FrameworkBundle\Test\IsMoneyEqual;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
@@ -81,7 +81,7 @@ class InputPriceRecalculationSchedulerTest extends TransactionFunctionalTestCase
         $inputPriceRecalculationScheduler = $this->getContainer()->get(InputPriceRecalculationScheduler::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\ShopBundle\Model\Payment\PaymentDataFactory $paymentDataFactory */
         $paymentDataFactory = $this->getContainer()->get(PaymentDataFactoryInterface::class);
@@ -157,7 +157,7 @@ class InputPriceRecalculationSchedulerTest extends TransactionFunctionalTestCase
         $inputPriceRecalculationScheduler = $this->getContainer()->get(InputPriceRecalculationScheduler::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\ShopBundle\Model\Payment\PaymentDataFactory $paymentDataFactory */
         $paymentDataFactory = $this->getContainer()->get(PaymentDataFactoryInterface::class);

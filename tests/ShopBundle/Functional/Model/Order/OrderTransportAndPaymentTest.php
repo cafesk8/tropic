@@ -7,9 +7,9 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Shopsys\ShopBundle\Model\Transport\Transport;
+use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
@@ -64,7 +64,7 @@ class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);
@@ -99,7 +99,7 @@ class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);
@@ -125,7 +125,7 @@ class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
         $em->persist($transport);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);
@@ -160,7 +160,7 @@ class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);
@@ -193,7 +193,7 @@ class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade */
         $paymentFacade = $this->getContainer()->get(PaymentFacade::class);

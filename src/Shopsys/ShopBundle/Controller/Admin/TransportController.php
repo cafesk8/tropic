@@ -50,17 +50,18 @@ class TransportController extends BaseTransportController
      */
     public function listBalikobotShipperServicesAction(Request $request): Response
     {
-        $shipper = $request->query->get('shipper');
-
-        $shipperServices = $this->shipperServiceFacade->getServicesForShipper($shipper);
-
+        $shipper = $request->query->get('shipper', null);
         $responseArray = [];
 
-        foreach ($shipperServices as $id => $name) {
-            $responseArray[] = [
-                'id' => $id,
-                'name' => $name,
-            ];
+        if ($shipper !== null) {
+            $shipperServices = $this->shipperServiceFacade->getServicesForShipper($shipper);
+
+            foreach ($shipperServices as $id => $name) {
+                $responseArray[] = [
+                    'id' => $id,
+                    'name' => $name,
+                ];
+            }
         }
 
         return new JsonResponse($responseArray);
