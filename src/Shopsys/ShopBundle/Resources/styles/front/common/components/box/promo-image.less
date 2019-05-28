@@ -3,15 +3,22 @@
 .box-promo-image {
     position: relative;
     height: @box-promo-image-height;
-    padding: 78px 115px;
+    padding: 40px 33px;
+    overflow: hidden;
 
     background-color: @color-gray;
 
+    @media @query-md {
+        padding: 78px 115px;
+    }
+
     img {
         position: absolute;
+        display: block;
         top: 0;
         left: 0;
-        width: 100%;
+        width: @web-width;
+        max-width: none;
     }
 
     &__title {
@@ -24,8 +31,12 @@
             margin-bottom: 28px;
 
             color: @color-f;
-            font-size: 30px;
+            font-size: 26px;
             font-weight: bold;
+
+            @media @query-md {
+                font-size: 30px;
+            }
         }
     }
 
@@ -36,6 +47,14 @@
         color: @color-f;
         font-size: 18px;
         line-height: 30px;
+
+        br {
+            display: none;
+
+            @media @query-md {
+                display: block;
+            }
+        }
     }
 
     &__button {
