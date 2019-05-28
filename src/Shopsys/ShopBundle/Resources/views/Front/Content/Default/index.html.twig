@@ -199,6 +199,44 @@
         </div>
     </div>
 
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <ul class="list-article-main">
+                <li class="list-article-main__item js-not-implemented-yet">
+                    <div class="list-article-main__item__image">
+                        <img src="https://placeimg.com/254/383/any/grayscale" alt="{{ 'Pomáháme'|trans }}">
+                    </div>
+                    <div class="list-article-main__item__content">
+                        <div class="list-article-main__item__content__title">
+                            {{ 'Pomáháme'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__text">
+                            {{ 'V rámci kampaně Water for Afrika pro UNICEF jsme přišpěli na vyčištění téměř 10 000 000 litrů vody!'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__bottom">
+                            <a class="list-article-main__item__content__bottom__button btn" href="#" class="btn">{{ 'Pomáhejte s námi'|trans }}</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-article-main__item js-not-implemented-yet">
+                    <div class="list-article-main__item__image">
+                        <img src="https://placeimg.com/254/383/any/grayscale" alt="{{ 'Pomáháme'|trans }}">
+                    </div>
+                    <div class="list-article-main__item__content">
+                        <div class="list-article-main__item__content__title">
+                            {{ 'Děkujeme Vám'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__text">
+                            {{ 'Bushmanství nás spojuje, vaše příběhy a názory nás inspirují. I proto jsou prodejny spíše místem setkání než pouze nákupu.'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__bottom">
+                            <a class="list-article-main__item__content__bottom__button btn" href="#" class="btn">{{ 'Poznejte nás'|trans }}</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
     {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
 
     {% if topProducts is not empty %}
