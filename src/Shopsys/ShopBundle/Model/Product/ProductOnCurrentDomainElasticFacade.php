@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
-use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacade as BaseProductOnCurrentDomainFacade;
+use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade as BaseProductOnCurrentDomainElasticFacade;
 
-class ProductOnCurrentDomainFacade extends BaseProductOnCurrentDomainFacade
+class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElasticFacade
 {
     /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductRepository

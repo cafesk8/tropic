@@ -35,8 +35,8 @@ class MainVariantGroupController extends AdminBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
-            $mainVariantGroup = $this->mainVariantGroupFacade->createMainVariantGroup($formData[MainVariantGroupFormType::DISTINGUISHING_PARAMETER], $formData[MainVariantGroupFormType::PRODUCTS]);
-            $products = $mainVariantGroup->getProducts();
+            $this->mainVariantGroupFacade->createMainVariantGroup($formData[MainVariantGroupFormType::DISTINGUISHING_PARAMETER], $formData[MainVariantGroupFormType::PRODUCTS]);
+            $products = $formData[MainVariantGroupFormType::PRODUCTS];
             /** @var \Shopsys\ShopBundle\Model\Product\Product $firstProduct */
             $firstProduct = reset($products);
 

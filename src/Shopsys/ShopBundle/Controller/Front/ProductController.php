@@ -41,7 +41,7 @@ class ProductController extends FrontBaseController
     private $domain;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainFacade
+     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
      */
     private $productOnCurrentDomainFacade;
 
