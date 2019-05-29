@@ -9,6 +9,7 @@
     flex-wrap: wrap;
     width: 100%;
     margin-bottom: 20px;
+    text-align: center;
 
     @media @query-xl {
         flex-wrap: nowrap;
@@ -18,18 +19,9 @@
         width: calc(~"@{calc-base}/2");
         padding-right: 3px;
 
-        &:nth-child(even){
-            padding-right: 0;
-            padding-left: 3px;
-        }
-
         @media @query-md {
             width: calc(~"@{calc-base}/4");
 
-            &:nth-child(even){
-                padding-right: 0;
-                padding-left: 0;
-            }
         }
 
         @media @query-xl {
