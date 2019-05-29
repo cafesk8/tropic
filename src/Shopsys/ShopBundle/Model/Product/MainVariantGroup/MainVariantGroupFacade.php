@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product\MainVariantGroup;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -21,13 +23,27 @@ class MainVariantGroupFacade
     private $mainVariantGroupRepository;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     */
+    private $currentCustomer;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupRepository $mainVariantGroupRepository
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      */
-    public function __construct(EntityManagerInterface $entityManager, MainVariantGroupRepository $mainVariantGroupRepository)
+    public function __construct(EntityManagerInterface $entityManager, MainVariantGroupRepository $mainVariantGroupRepository, Domain $domain, CurrentCustomer $currentCustomer)
     {
         $this->entityManager = $entityManager;
         $this->mainVariantGroupRepository = $mainVariantGroupRepository;
+        $this->domain = $domain;
+        $this->currentCustomer = $currentCustomer;
     }
 
     /**
@@ -57,7 +73,11 @@ class MainVariantGroupFacade
      */
     public function getProductsForMainVariantGroup(Product $product): array
     {
-        return $this->mainVariantGroupRepository->getProductsForMainVariantGroup($product);
+        return $this->mainVariantGroupRepository->getProductsForMainVariantGroup(
+            $product,
+            $this->domain->getId(),
+            $this->currentCustomer->getPricingGroup()
+        );
     }
 
     /**

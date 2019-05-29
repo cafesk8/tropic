@@ -18,10 +18,10 @@
 {% block main_content %}
     <div itemscope itemtype="http://schema.org/Product">
         <div class="js-product-variant-group">
-            {{ boxDetail.productBox(product, allVariants, productMainCategory) }}
+            {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants) }}
 
             {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false) }}
+                {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants) }}
             {% endfor %}
         </div>
 

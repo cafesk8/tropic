@@ -6,7 +6,10 @@ namespace Shopsys\ShopBundle\Model\Product\MainVariantGroup;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 use Shopsys\ShopBundle\Model\Product\Product;
 
 class MainVariantGroupRepository
@@ -34,14 +37,23 @@ class MainVariantGroupRepository
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getProductsForMainVariantGroup(Product $product): array
+    public function getProductsForMainVariantGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')
             ->from(Product::class, 'p')
-            ->where('p.mainVariantGroup = :mainVariantGroup')
+            ->join(ProductVisibility::class, 'prv', Join::WITH, 'prv.product = p.id')
+            ->where('prv.domainId = :domainId')
+            ->andWhere('prv.pricingGroup = :pricingGroup')
+            ->andWhere('prv.visible = TRUE')
+            ->andWhere('p.mainVariantGroup = :mainVariantGroup')
+            ->andWhere('p.sellingDenied = false')
+            ->setParameter('domainId', $domainId)
+            ->setParameter('pricingGroup', $pricingGroup)
             ->setParameter('mainVariantGroup', $product->getMainVariantGroup())
             ->getQuery()
             ->getResult();

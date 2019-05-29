@@ -1,4 +1,4 @@
-{% macro productBox(product, variants, productMainCategory, visible = true) %}
+{% macro productBox(product, variants, productMainCategory, visible, mainVariants) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
 
@@ -51,13 +51,13 @@
                     {% endif %}
                 </div>
             {% endif %}
-            {% if product.mainVariantGroup is not null %}
+            {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
                 <dl class="box-detail__info__params">
                     <dt></dt>
                     <dd>
                         <table>
                             <tr>
-                                {% for mainVariantGroupProduct in product.mainVariantGroup.products %}
+                                {% for mainVariantGroupProduct in mainVariants %}
                                     {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
                                     {% if mainVariantGroupDistinguishingParameterValue is not null %}
                                         <td>
@@ -71,27 +71,29 @@
                 </dl>
             {% endif %}
             {% if product.isMainVariant %}
-                <dl class="box-detail__info__params">
-                    <dt></dt>
-                    <dd>
-                        <table>
-                            <tr>
-                                {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
-                                {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
-                                    <td>
-                                        <button
-                                                class="js-product-variant-select-button"
-                                                data-id="{{ variantId }}"
-                                                {{ variantId is null ? 'disabled'}} type="button"
-                                        >
-                                            {{ parameterValue }}
-                                        </button>
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                        </table>
-                    </dd>
-                </dl>
+                {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
+                {% if allDistinguishingParameterValuesForProducts is not empty %}
+                    <dl class="box-detail__info__params">
+                        <dt></dt>
+                        <dd>
+                            <table>
+                                <tr>
+                                    {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
+                                        <td>
+                                            <button
+                                                    class="js-product-variant-select-button"
+                                                    data-id="{{ variantId }}"
+                                                    {{ variantId is null ? 'disabled'}} type="button"
+                                            >
+                                                {{ parameterValue }}
+                                            </button>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                        </dd>
+                    </dl>
+                {% endif %}
             {% endif %}
             {% if not product.isMainVariant %}
                 <div class="js-product-detail-main-add-to-cart-wrapper box-detail-add">
