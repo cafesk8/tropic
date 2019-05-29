@@ -63,7 +63,9 @@ class MainVariantGroupFormType extends AbstractType
                     ])
                     ->addModelTransformer(new RemoveDuplicatesFromArrayTransformer())
             )
-            ->add('save', SubmitType::class);
+            ->add('save', SubmitType::class, [
+                'label' => t('Uložit'),
+            ]);
     }
 
     /**
