@@ -1,0 +1,35 @@
+@box-motto-height: 70px;
+@box-motto-title-font-size: 24px;
+@box-motto-subtitle-font-size: 16px;
+
+.box-motto {
+    display: flex;
+    flex-direction: row;
+    min-height: @box-motto-height;
+    align-items: center;
+    padding: 0 @web-padding-big;
+
+    background-color: @color-brown;
+    color: @color-f;
+
+    &__title {
+        width: calc(~"@{calc-base}/3");
+        text-align: right;
+
+        font-size: @box-motto-title-font-size;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    &__subtitle {
+        width: calc(~"@{calc-base}/3");
+        text-align: center;
+
+        font-size: @box-motto-subtitle-font-size;
+    }
+
+    &__button {
+        width: calc(~"@{calc-base}/3");
+        text-align: right;
+    }
+}
