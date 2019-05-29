@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints;
 
 class VariantFormTypeExtension extends AbstractTypeExtension
 {
+    public const DISTINGUISHING_PARAMETER = 'distinguishingParameter';
+
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
      */
@@ -35,7 +37,7 @@ class VariantFormTypeExtension extends AbstractTypeExtension
         $allParameters = $this->parameterFacade->getAll();
 
         $builder
-            ->add('distinguishingParameter', ChoiceType::class, [
+            ->add(self::DISTINGUISHING_PARAMETER, ChoiceType::class, [
                 'required' => true,
                 'label' => t('Rozlišující parameter'),
                 'choices' => $allParameters,

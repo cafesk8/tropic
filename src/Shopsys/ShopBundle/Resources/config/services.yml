@@ -30,6 +30,9 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ParameterController:
         class: Shopsys\ShopBundle\Controller\Admin\ParameterController
 
+    Shopsys\FrameworkBundle\Controller\Admin\ProductController:
+        class: Shopsys\ShopBundle\Controller\Admin\ProductController
+
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:
