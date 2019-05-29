@@ -1,0 +1,54 @@
+@in-rating-stars-color: #e7e7e7;
+@in-rating-stars-height: 15px;
+@in-rating-stars-font-size: @in-rating-stars-height - 1;
+
+@in-rating-stars-gap-fix: 0.5px;
+@in-rating-stars-bigger-gap-fix: 2px;
+
+.in-rating {
+    display: inline-block;
+    vertical-align: middle;
+
+    text-decoration: none;
+
+    &__stars {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        height: @in-rating-stars-height;
+
+        .in-rating--clickable & {
+            cursor: pointer;
+        }
+
+        .svg {
+            margin-right: -@in-rating-stars-gap-fix;
+            position: relative;
+            top: -1px;
+        }
+
+        &__full {
+            height: @in-rating-stars-height;
+            line-height: @in-rating-stars-height;
+            overflow: hidden;
+            padding-right: @in-rating-stars-gap-fix;
+
+            color: @in-rating-stars-color;
+            font-size: @in-rating-stars-font-size;
+        }
+
+        &__actual {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: @in-rating-stars-height;
+            line-height: @in-rating-stars-height;
+            overflow: hidden;
+            white-space: nowrap;
+            padding-right: @in-rating-stars-gap-fix;
+
+            color: @color-orange;
+            font-size: @in-rating-stars-font-size;
+        }
+    }
+}
