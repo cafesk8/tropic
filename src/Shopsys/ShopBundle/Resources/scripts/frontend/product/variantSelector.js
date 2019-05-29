@@ -10,6 +10,8 @@
 
             $group.filterAllNodes('.js-product-detail').addClass('display-none');
             $group.filterAllNodes(variantSelector).removeClass('display-none');
+            $(variantSelector).filterAllNodes('.js-gallery-slides').slick('checkResponsive', false, true);
+            Shopsys.productDetail.init($(variantSelector));
         });
 
         $container.filterAllNodes('.js-product-variant-select-button').click(function () {
