@@ -4,32 +4,55 @@
 
 .box-motto {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     min-height: @box-motto-height;
     align-items: center;
-    padding: 0 @web-padding-big;
 
     background-color: @color-brown;
     color: @color-f;
 
+    @media @query-vl {
+        flex-direction: row;
+    }
+
     &__title {
-        width: calc(~"@{calc-base}/3");
-        text-align: right;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0 10px 0;
 
         font-size: @box-motto-title-font-size;
         font-weight: 700;
         text-transform: uppercase;
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/3");
+            padding: 0;
+            text-align: right;
+        }
     }
 
     &__subtitle {
-        width: calc(~"@{calc-base}/3");
+        width: 100%;
         text-align: center;
+        padding-bottom: 10px;
 
         font-size: @box-motto-subtitle-font-size;
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/3");
+            padding-bottom: 0;
+        }
     }
 
     &__button {
-        width: calc(~"@{calc-base}/3");
-        text-align: right;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 20px;
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/3");
+            padding-bottom: 0;
+            text-align: right;
+        }
     }
 }
