@@ -26,7 +26,7 @@
                         }
                     },
                     {
-                        breakpoint: 680,
+                        breakpoint: Shopsys.responsive.MD,
                         settings: {
                             slidesToShow: 3,
                             slidesToScroll: 1
@@ -34,13 +34,6 @@
                     },
                     {
                         breakpoint: Shopsys.responsive.LG,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        }
-                    },
-                    {
-                        breakpoint: 860,
                         settings: {
                             slidesToShow: 2,
                             slidesToScroll: 1
