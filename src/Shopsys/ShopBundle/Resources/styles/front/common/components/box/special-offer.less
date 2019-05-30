@@ -1,5 +1,6 @@
 @box-special-offer-coloured-width: 57%;
 @box-special-offer-gap: 20px;
+@box-special-offer-bottom-gap: 90px;
 @box-special-offer-coloured-bg: @color-orange;
 @box-special-offer-grayscale-bg: @color-gray;
 @box-special-offer-button-width: 142px;
@@ -13,9 +14,11 @@
 .box-special-offer {
     display: flex;
     flex-direction: column;
+    margin-bottom: @box-special-offer-bottom-gap/2;
 
     @media @query-lg {
         flex-direction: row;
+        margin-bottom: @box-special-offer-bottom-gap;
     }
 
     &__colored {

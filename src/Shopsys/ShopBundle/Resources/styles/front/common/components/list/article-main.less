@@ -2,14 +2,17 @@
 @list-article-main-image-width: 254px;
 @list-article-main-button-max-width: 172px;
 @list-article-main-item-gap: 20px;
+@list-article-main-bottom-gap: 66px;
 
 .list-article-main {
     .reset-ul();
     display: flex;
     flex-direction: column;
+    margin-bottom: @list-article-main-bottom-gap/2;
 
     @media @query-vl {
         flex-direction: row;
+        margin-bottom: @list-article-main-bottom-gap;
     }
 
     &__item {
@@ -84,7 +87,7 @@
 
                 &__button {
                     max-width: @list-article-main-button-max-width;
-                    
+
                     background-color: @color-brown;
                 }
             }

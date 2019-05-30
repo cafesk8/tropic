@@ -71,18 +71,6 @@
         </div>
     </div>
 
-    {% if sliderItems is not empty %}
-        <div class="box-slider">
-            <div id="js-slider-homepage" class="box-slider__in">
-                {% for item in sliderItems %}
-                    <div class="box-slider__item">
-                        <a href = "{{ item.link }}">{{ image(item) }}</a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <ul class="list-benefits">
@@ -178,6 +166,52 @@
         </div>
     </div>
 
+    {% if topProducts is not empty %}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div id="top-products" class="box-top-products">
+                    <div class="box-top-products__title">
+                        {{ 'Bushmani mají nejraději'|trans }}
+                    </div>
+                    <ul class="box-top-products__tabs">
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Muži'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Ženy'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Děti'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Doplňky'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="box-top-products__in js-top-products">
+                        <span class="js-top-products-prev list-top-products__arrow list-top-products__arrow--prev">
+                            <i class="svg svg-slider-arrow"></i>
+                        </span>
+                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3') }}
+                        <span class="js-references-next list-top-products__arrow list-top-products__arrow--next">
+                            <i class="svg svg-slider-arrow"></i>
+                        </span>
+                    </div>
+                    <div class="box-top-products__bottom">
+                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="web__line">
         <div class="web__container">
             <div class="box-promo-image js-not-implemented-yet">
@@ -237,6 +271,7 @@
             </ul>
         </div>
     </div>
+
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <div class="box-articles">
@@ -294,93 +329,6 @@
             </div>
         </div>
     </div>
-    <div class="web__line">
-        <div class="web__container">
-            <div class="box-images-line">
-                <div class="box-images-line__title">
-                    {{ 'Bushmanství obrazem'|trans }}
-                    <a href="#" class="box-images-line__title__link js-not-implemented-yet">
-                        <i class="svg svg-instagram"></i>
-                        {{ 'Sledujte náš instagram'|trans }}
-                    </a>
-                </div>
-                <ul class="list-images-line">
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                    <li class="list-images-line__item js-not-implemented-yet">
-                        <img src="https://placeimg.com/178/169/any">
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
-
-    {% if topProducts is not empty %}
-        <div class="web__line">
-            <div class="web__container web__container--big-padding">
-                <div id="top-products" class="box-top-products">
-                    <div class="box-top-products__title">
-                        {{ 'Bushmani mají nejraději'|trans }}
-                    </div>
-                    <ul class="box-top-products__tabs">
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Muži'|trans }}
-                            </a>
-                        </li>
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Ženy'|trans }}
-                            </a>
-                        </li>
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Děti'|trans }}
-                            </a>
-                        </li>
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Doplňky'|trans }}
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="box-top-products__in js-top-products">
-                        <span class="js-top-products-prev list-top-products__arrow list-top-products__arrow--prev">
-                            <i class="svg svg-slider-arrow"></i>
-                        </span>
-                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3') }}
-                        <span class="js-references-next list-top-products__arrow list-top-products__arrow--next">
-                            <i class="svg svg-slider-arrow"></i>
-                        </span>
-                    </div>
-                    <div class="box-top-products__bottom">
-                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
 
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
@@ -591,6 +539,47 @@
             </div>
         </div>
     </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            <div class="box-images-line">
+                <div class="box-images-line__title">
+                    {{ 'Bushmanství obrazem'|trans }}
+                    <a href="#" class="box-images-line__title__link js-not-implemented-yet">
+                        <i class="svg svg-instagram"></i>
+                        {{ 'Sledujte náš instagram'|trans }}
+                    </a>
+                </div>
+                <ul class="list-images-line">
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                    <li class="list-images-line__item js-not-implemented-yet">
+                        <img src="https://placeimg.com/178/169/any">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="web__line">
         <div class="web__container web__container--dark web__container--big-padding">
             <div class="box-motto js-not-implemented-yet">
