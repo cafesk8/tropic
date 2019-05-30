@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -15,7 +17,9 @@ use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFac
 use Shopsys\ShopBundle\Form\Front\Cart\AddProductFormType;
 use Shopsys\ShopBundle\Form\Front\Cart\CartFormType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class CartController extends FrontBaseController
 {
@@ -59,6 +63,11 @@ class CartController extends FrontBaseController
     private $errorExtractor;
 
     /**
+     * @var \Symfony\Component\Security\Csrf\CsrfTokenManager
+     */
+    private $tokenManager;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -66,6 +75,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
+     * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
      */
     public function __construct(
         ProductAccessoryFacade $productAccessoryFacade,
@@ -74,7 +84,8 @@ class CartController extends FrontBaseController
         Domain $domain,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         OrderPreviewFactory $orderPreviewFactory,
-        ErrorExtractor $errorExtractor
+        ErrorExtractor $errorExtractor,
+        CsrfTokenManagerInterface $tokenManager
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -83,6 +94,7 @@ class CartController extends FrontBaseController
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->orderPreviewFactory = $orderPreviewFactory;
         $this->errorExtractor = $errorExtractor;
+        $this->tokenManager = $tokenManager;
     }
 
     /**
@@ -144,13 +156,22 @@ class CartController extends FrontBaseController
         ]);
     }
 
-    public function boxAction()
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function boxAction(Request $request): Response
     {
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
+        $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
 
         return $this->render('@ShopsysShop/Front/Inline/Cart/cartBox.html.twig', [
-            'cart' => $this->cartFacade->findCartOfCurrentCustomer(),
+            'cart' => $cart,
+            'cartItems' => $cart === null ? [] : $cart->getItems(),
+            'cartItemPrices' => $orderPreview->getQuantifiedItemsPrices(),
             'productsPrice' => $orderPreview->getProductsPrice(),
+            'renderFlashMessages' => $renderFlashMessage,
         ]);
     }
 
@@ -295,13 +316,13 @@ class CartController extends FrontBaseController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $cartItemId
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request, $cartItemId)
+    public function deleteAction(Request $request, int $cartItemId): Response
     {
-        $cartItemId = (int)$cartItemId;
         $token = new CsrfToken('front_cart_delete_' . $cartItemId, $request->query->get('_token'));
 
-        if ($this->get('security.csrf.token_manager')->isTokenValid($token)) {
+        if ($this->tokenManager->isTokenValid($token)) {
             try {
                 $productName = $this->cartFacade->getProductByCartItemId($cartItemId)->getName();
 
@@ -318,6 +339,10 @@ class CartController extends FrontBaseController
             $this->getFlashMessageSender()->addErrorFlash(
                 t('Unable to remove item from cart. The link for removing it probably expired, try it again.')
             );
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('front_cart_box', ['renderFlashMessages' => true]);
         }
 
         return $this->redirectToRoute('front_cart');
