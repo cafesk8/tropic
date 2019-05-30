@@ -337,9 +337,23 @@
     {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
 
     {% if topProducts is not empty %}
-        <div id="top-products">
-            <h2>{{ 'Special offers'|trans }}</h2>
-            {{ productList.list(topProducts, null, 'h3') }}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div id="top-products" class="box-top-products">
+                    <div class="box-top-products__title">
+                        {{ 'Bushmani mají nejraději'|trans }}
+                    </div>
+                    <div class="box-top-products__in js-top-products">
+                        <span class="js-top-products-prev list-top-products__arrow list-top-products__arrow--prev">
+                            <i class="svg svg-slider-arrow"></i>
+                        </span>
+                        {{ productList.list(topProducts, "list-top-products", 'h3') }}
+                        <span class="js-references-next list-top-products__arrow list-top-products__arrow--next">
+                            <i class="svg svg-slider-arrow"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     {% endif %}
 
