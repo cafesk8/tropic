@@ -125,10 +125,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Shopsys\ShopBundle\Model\Product\Search\ProductSearchExportWithFilterRepository: ~
-
-    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository: '@Shopsys\ShopBundle\Model\Product\Search\ProductSearchExportWithFilterRepository'
-
     Shopsys\ShopBundle\Model\PayPal\PayPalClient:
         arguments:
             - '%payPalClientId%'

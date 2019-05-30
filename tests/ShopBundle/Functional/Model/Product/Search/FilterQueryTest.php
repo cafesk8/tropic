@@ -4,6 +4,7 @@ namespace Tests\ShopBundle\Functional\Model\Product\Search;
 
 use Elasticsearch\Client;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
@@ -13,7 +14,7 @@ use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class FilterQueryTest extends TransactionFunctionalTestCase
 {
-    private const ELASTICSEARCH_INDEX = 'product1';
+    private const ELASTICSEARCH_INDEX = 'product';
 
     public function testBrand(): void
     {
@@ -166,8 +167,13 @@ class FilterQueryTest extends TransactionFunctionalTestCase
     {
         /** @var \Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory */
         $filterQueryFactory = $this->getContainer()->get(FilterQueryFactory::class);
-        $elasticSearchPrefix = $this->getContainer()->getParameter('env(ELASTIC_SEARCH_INDEX_PREFIX)');
-        $filter = $filterQueryFactory->create($elasticSearchPrefix . self::ELASTICSEARCH_INDEX);
+
+        /** @var \Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager $elasticSearchStructureManager */
+        $elasticSearchStructureManager = $this->getContainer()->get(ElasticsearchStructureManager::class);
+
+        $elasticSearchIndexName = $elasticSearchStructureManager->getIndexName(1, self::ELASTICSEARCH_INDEX);
+
+        $filter = $filterQueryFactory->create($elasticSearchIndexName);
 
         return $filter->filterOnlySellable();
     }
