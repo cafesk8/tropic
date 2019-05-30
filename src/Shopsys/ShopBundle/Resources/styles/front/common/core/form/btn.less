@@ -4,7 +4,7 @@
 @btn-padding-horizontal: 24px;
 @btn-color: @color-f;
 @btn-color-hover: @color-f;
-@btn-bg: @color-d;
+@btn-bg: @color-brown;
 @btn-bg-hover: darken(@btn-bg, 5%);
 
 .btn {
@@ -97,13 +97,12 @@
 
     @btn-small-padding-vertical: 5px;
     @btn-small-padding-horizontal: 10px;
-    @btn-small-height: @btn-height - 10;
+    @btn-small-height: @btn-height - 16;
 
     &--small {
-        padding: @btn-small-padding-vertical @btn-small-padding-horizontal;
-        min-height: @btn-small-height;
-
-        font-size: 11px;
+        height: @btn-small-height;
+        line-height: @btn-small-height;
+        min-height: @btn-small-height
     }
 }
 
