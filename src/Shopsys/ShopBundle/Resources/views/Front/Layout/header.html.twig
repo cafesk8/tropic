@@ -124,7 +124,11 @@
 
             <div class="header__right dont-print">
 
-                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-dropdown">
+                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-hover-intent"
+                     data-hover-intent-interval="150"
+                     data-hover-intent-timeout="150"
+                     data-hover-intent-class-for-open="open"
+                >
                     <div class="box-dropdown__select">
                         <i class="header__right__search__icon svg svg-search"></i>
                     </div>
@@ -133,7 +137,11 @@
                     </div>
                 </div>
 
-                <div class="box-dropdown js-dropdown">
+                <div class="box-dropdown js-hover-intent"
+                     data-hover-intent-interval="150"
+                     data-hover-intent-timeout="150"
+                     data-hover-intent-class-for-open="open"
+                >
                     <div class="box-dropdown__select">
                         {{ 'Váš účet'|trans }}
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
