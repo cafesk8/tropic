@@ -64,8 +64,8 @@
 {% endmacro %}
 
 {% macro horizontalList(products, listCssClass, productHeadingTagName) %}
-    <div class="js-{{ listCssClass|default('list-products') }} {{ listCssClass|default('list-products') }}">
-        <span class="js-{{ listCssClass|default('list-products') }}-prev {{ listCssClass|default('list-products') }}__arrow {{ listCssClass|default('list-products') }}__arrow--prev">
+    <div class="{{ listCssClass|default('list-products') }} js-{{ listCssClass|default('list-products') }}">
+        <span class="{{ listCssClass|default('list-products') }}__arrow {{ listCssClass|default('list-products') }}__arrow--prev js-{{ listCssClass|default('list-products') }}-prev">
             <i class="svg svg-slider-arrow"></i>
         </span>
         <div class="{{ listCssClass|default('list-products') }}__in">
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <span class="js-{{ listCssClass|default('list-products') }}-next {{ listCssClass|default('list-products') }}__arrow {{ listCssClass|default('list-products') }}__arrow--next">
+        <span class="{{ listCssClass|default('list-products') }}__arrow {{ listCssClass|default('list-products') }}__arrow--next js-{{ listCssClass|default('list-products') }}-next">
             <i class="svg svg-slider-arrow"></i>
         </span>
     </div>
