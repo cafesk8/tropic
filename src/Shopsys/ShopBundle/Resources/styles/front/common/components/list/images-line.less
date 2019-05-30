@@ -1,4 +1,7 @@
-@image-line-item-count: 8;
+@image-line-item-count-mobile: 2;
+@image-line-item-count-tablet: 4;
+@image-line-item-count-desktop: 8;
+
 @image-line-item-height: 169px;
 @image-line-link-height: 34px;
 
@@ -16,16 +19,16 @@
     }
 
     &__item {
-        width: calc(~"@{calc-base}/2");
+        width: calc(~"@{calc-base}/@{image-line-item-count-mobile}");
         padding-right: 3px;
 
         @media @query-md {
-            width: calc(~"@{calc-base}/4");
+            width: calc(~"@{calc-base}/@{image-line-item-count-tablet}");
 
         }
 
         @media @query-xl {
-            width: calc(~"@{calc-base}/@{image-line-item-count}");
+            width: calc(~"@{calc-base}/@{image-line-item-count-desktop}");
         }
     }
 }
