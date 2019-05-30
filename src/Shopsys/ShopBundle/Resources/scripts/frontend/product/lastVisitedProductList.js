@@ -4,10 +4,10 @@
     Shopsys.horizontalProuductList = Shopsys.horizontalProuductList || {};
 
     Shopsys.horizontalProuductList.init = function ($container) {
-        $container.filterAllNodes('.js-list-last-visited').each(function () {
+        $container.filterAllNodes('.js-list-products').each(function () {
             var $currentGallery = $(this);
 
-            $currentGallery.find('.js-list-last-visited-slides').slick({
+            $currentGallery.find('.js-list-products-slides').slick({
                 dots: false,
                 arrows: true,
                 slidesToShow: 1,
@@ -15,8 +15,8 @@
                 lazyLoad: 'ondemand',
                 mobileFirst: true,
                 infinite: false,
-                prevArrow: $currentGallery.filterAllNodes('.js-list-last-visited-prev'),
-                nextArrow: $currentGallery.filterAllNodes('.js-list-last-visited-next'),
+                prevArrow: $currentGallery.filterAllNodes('.js-list-products-prev'),
+                nextArrow: $currentGallery.filterAllNodes('.js-list-products-next'),
                 responsive: [
                     {
                         breakpoint: Shopsys.responsive.SM,
@@ -65,12 +65,10 @@
         });
     };
 
-    Shopsys.register.registerCallback(function ($container) {
-        Shopsys.horizontalProuductList.init($container);
+    Shopsys.register.registerCallback(Shopsys.horizontalProuductList.init);
 
-        $(window).resize(function () {
-            Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.horizontalProuductList.init', Shopsys.horizontalProuductList.init($container), 200);
-        });
+    $(window).resize(function () {
+        Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.horizontalProuductList.init', Shopsys.horizontalProuductList.init, 200);
     });
 
 })(jQuery);

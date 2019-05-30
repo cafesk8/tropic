@@ -4,10 +4,10 @@
     Shopsys.topProductsList = Shopsys.topProductsList || {};
 
     Shopsys.topProductsList.init = function ($container) {
-        $container.filterAllNodes('.js-top-products').each(function () {
+        $container.filterAllNodes('.js-list-top-products').each(function () {
             var $currentTopProducts = $(this);
 
-            $currentTopProducts.find('.js-top-products-slides').slick({
+            $currentTopProducts.find('.js-list-top-products-slides').slick({
                 dots: false,
                 arrows: true,
                 slidesToShow: 1,
@@ -15,8 +15,8 @@
                 lazyLoad: 'ondemand',
                 mobileFirst: true,
                 infinite: false,
-                prevArrow: $currentTopProducts.filterAllNodes('.js-top-products-prev'),
-                nextArrow: $currentTopProducts.filterAllNodes('.js-top-products-next'),
+                prevArrow: $currentTopProducts.filterAllNodes('.js-list-top-products-prev'),
+                nextArrow: $currentTopProducts.filterAllNodes('.js-list-top-products-next'),
                 responsive: [
                     {
                         breakpoint: Shopsys.responsive.SM,
