@@ -343,14 +343,39 @@
                     <div class="box-top-products__title">
                         {{ 'Bushmani mají nejraději'|trans }}
                     </div>
+                    <ul class="box-top-products__tabs">
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Muži'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Ženy'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Děti'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Doplňky'|trans }}
+                            </a>
+                        </li>
+                    </ul>
                     <div class="box-top-products__in js-top-products">
                         <span class="js-top-products-prev list-top-products__arrow list-top-products__arrow--prev">
                             <i class="svg svg-slider-arrow"></i>
                         </span>
-                        {{ productList.list(topProducts, "list-top-products", 'h3') }}
+                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3') }}
                         <span class="js-references-next list-top-products__arrow list-top-products__arrow--next">
                             <i class="svg svg-slider-arrow"></i>
                         </span>
+                    </div>
+                    <div class="box-top-products__bottom">
+                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
                     </div>
                 </div>
             </div>
