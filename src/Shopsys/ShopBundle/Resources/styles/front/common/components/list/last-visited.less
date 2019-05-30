@@ -7,12 +7,20 @@
 
 @list-last-visited-arrow-size: 28px;
 @list-last-visited-arrow-gap: 30px;
+@list-last-visited-side-gap: 45px;
 
 .list-last-visited {
     display: flex;
     flex-direction: row;
     width: 100%;
     position: relative;
+    width: calc(~"@{calc-base} - 2*@{list-last-visited-side-gap}");
+    margin: 0 @list-last-visited-side-gap;
+
+    @media @query-lg {
+        width: 100%;
+        margin: 0;
+    }
 
     .slick-list {
         overflow: hidden;
@@ -78,6 +86,7 @@
         &__image {
             display: flex;
             position: relative;
+            align-self: center;
             margin-bottom: @list-last-visited-item-image-bottom-gap;
             height: @list-last-visited-item-image-size;
             width: @list-last-visited-item-image-size;
