@@ -48,7 +48,7 @@ class CartController extends FrontBaseController
     private $productAccessoryFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade
+     * @var \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade
      */
     private $freeTransportAndPaymentFacade;
 
@@ -166,12 +166,24 @@ class CartController extends FrontBaseController
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
         $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
 
+        $productsPrice = $orderPreview->getProductsPrice();
+
+        $domainId = $this->domain->getId();
+        $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat(
+            $productsPrice->getPriceWithVat(),
+            $domainId
+        );
+
         return $this->render('@ShopsysShop/Front/Inline/Cart/cartBox.html.twig', [
             'cart' => $cart,
             'cartItems' => $cart === null ? [] : $cart->getItems(),
             'cartItemPrices' => $orderPreview->getQuantifiedItemsPrices(),
-            'productsPrice' => $orderPreview->getProductsPrice(),
+            'productsPrice' => $productsPrice,
             'renderFlashMessages' => $renderFlashMessage,
+            'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
+            'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
+            'remainingPriceWithVat' => $remainingPriceWithVat,
+            'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
         ]);
     }
 

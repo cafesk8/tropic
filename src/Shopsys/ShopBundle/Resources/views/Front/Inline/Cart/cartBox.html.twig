@@ -68,15 +68,24 @@
                     </div>
                     <div class="cart-detail__bottom">
                         <div class="cart-detail__bottom__transport">
-                            <div class="in-free-transport js-not-implemented-yet">
-                                <div class="in-free-transport__title">
-                                    {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">256 Kč</span>&nbsp;{{ 'a'|trans }}<br>
-                                    {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                                </div>
-                                <div class="in-free-transport__pipe">
-                                    <div class="in-free-transport__pipe__line" style="width: 56%;"></div>
-                                </div>
-                            </div>
+                            {% if isFreeTransportAndPaymentActive %}
+                                {% if isPaymentAndTransportFree %}
+                                    <div class="in-free-transport">
+                                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="in-free-transport">
+                                        <div class="in-free-transport__title">
+                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
+                                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                        </div>
+                                        <div class="in-free-transport__pipe">
+                                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            {% endif %}
                         </div>
                         <div class="cart-detail__bottom__button">
                             <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
