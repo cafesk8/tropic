@@ -1,10 +1,6 @@
 <div id="js-cart-box" data-reload-url="{{ url('front_cart_box') }}">
 
-    <div class="box-dropdown box-dropdown--no-right-gap {% if cart is not null %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}"
-         data-hover-intent-interval="150"
-         data-hover-intent-timeout="150"
-         data-hover-intent-class-for-open="open"
-    >
+    <div class="box-dropdown box-dropdown--no-right-gap {% if cart is not null %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}">
 
         <a href="{{ path('front_cart') }}" class="box-dropdown__select">
             <div class="cart__icon">
@@ -36,17 +32,23 @@
                     <div class="cart-detail__wrap">
                         <ul class="cart-detail">
                             {% for cartItem in cartItems %}
-                                {% set cartItemPrice = cartItemPrices[loop.index0] %}
+                                {% set quantifiedItemPrice = quantifiedItemsPrices[loop.index0] %}
                                 <li class="cart-detail__item">
                                     <div class="cart-detail__item__image">
                                         {{ image(cartItem.product, { size: 'cartBox' }) }}
                                     </div>
                                     <div class="cart-detail__item__content">
                                         <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
-                                        <span class="cart-detail__item__content__price"> {{ cartItemPrice.unitPrice.priceWithVat|price }}
+                                        <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
                                         <span class="cart-detail__item__content__price__old js-not-implemented-yet">3099 Kč</span>
                                     </span>
-                                        <span class="cart-detail__item__content__size js-not-implemented-yet"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
+                                    {% set distinguishingProductParameterValueForVariant = distinguishingProductParameterValueForVariant(cartItem.product) %}
+                                    {% if distinguishingProductParameterValueForVariant is not null %}
+                                        <span class="cart-detail__item__content__size">
+                                            {{ distinguishingProductParameterValueForVariant.parameter.name }}
+                                            <span class="in-badge in-bage--outline">{{ distinguishingProductParameterValueForVariant.value.text }}</span>
+                                        </span>
+                                    {% endif %}
                                     </div>
                                     <div class="cart-detail__item__pieces">
                                         {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
@@ -84,7 +86,6 @@
                                         </div>
                                     </div>
                                 {% endif %}
-
                             {% endif %}
                         </div>
                         <div class="cart-detail__bottom__button">

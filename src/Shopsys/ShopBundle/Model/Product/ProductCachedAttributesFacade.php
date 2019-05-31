@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
@@ -83,6 +84,34 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         foreach ($productParameterValues as $productParameterValue) {
             if ($productParameterValue->getParameter() === $product->getMainVariantGroup()->getDistinguishingParameter()) {
                 return $productParameterValue->getValue();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
+     */
+    public function findDistinguishingProductParameterValueForVariant(Product $product): ?ProductParameterValue
+    {
+        if ($product->isVariant() === false) {
+            return null;
+        }
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
+        $mainVariant = $product->getMainVariant();
+
+        if ($mainVariant->getDistinguishingParameter() === null) {
+            return null;
+        }
+
+        $productParameterValues = $this->getProductParameterValues($product);
+
+        foreach ($productParameterValues as $productParameterValue) {
+            if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
+                return $productParameterValue;
             }
         }
 

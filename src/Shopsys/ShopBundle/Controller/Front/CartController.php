@@ -177,7 +177,7 @@ class CartController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Inline/Cart/cartBox.html.twig', [
             'cart' => $cart,
             'cartItems' => $cart === null ? [] : $cart->getItems(),
-            'cartItemPrices' => $orderPreview->getQuantifiedItemsPrices(),
+            'quantifiedItemsPrices' => $orderPreview->getQuantifiedItemsPrices(),
             'productsPrice' => $productsPrice,
             'renderFlashMessages' => $renderFlashMessage,
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),

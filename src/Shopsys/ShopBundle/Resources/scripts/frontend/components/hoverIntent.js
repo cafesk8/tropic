@@ -5,14 +5,23 @@
 
     Shopsys.hoverIntent.HoverIntent = function ($hoverIntentParent) {
 
-        var interval = null;
-        var timeout = null;
-        var classForOpen = null;
+        var interval = 150;
+        var timeout = 150;
+        var classForOpen = 'open';
 
         this.init = function () {
-            interval = parseInt($hoverIntentParent.data('hover-intent-interval'));
-            timeout = parseInt($hoverIntentParent.data('hover-intent-timeout'));
-            classForOpen = $hoverIntentParent.data('hover-intent-class-for-open');
+
+            if ($hoverIntentParent.data('hover-intent-interval')) {
+                interval = parseInt($hoverIntentParent.data('hover-intent-interval'));
+            }
+
+            if ($hoverIntentParent.data('hover-intent-timeout')) {
+                timeout = parseInt($hoverIntentParent.data('hover-intent-timeout'));
+            }
+
+            if ($hoverIntentParent.data('hover-intent-class-for-open')) {
+                classForOpen = $hoverIntentParent.data('hover-intent-class-for-open');
+            }
 
             $hoverIntentParent.hoverIntent({
                 interval: interval,
