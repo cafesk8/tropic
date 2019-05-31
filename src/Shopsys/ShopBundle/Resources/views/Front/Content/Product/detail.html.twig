@@ -20,10 +20,34 @@
         <div class="js-product-variant-group">
             {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants) }}
 
-            {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants) }}
-            {% endfor %}
-        </div>
+                {% if showGallery %}
+                    <div class="box-gallery dont-print">
+                        <div class="box-gallery__in">
+                            {% for galleryImage in galleryImages %}
+                                <div class="box-gallery__item">
+                                    <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-gallery__item__link js-gallery-slide-link">
+                                        {{ image(galleryImage, {size: 'galleryThumbnail'}) }}
+                                    </a>
+                                </div>
+                            {% endfor %}
+                            <div class="box-gallery__item">
+                                <a href="#" class="box-gallery__item__link underline js-not-implemented-yet">
+                                    {{ 'Dalších'|trans }} (10)
+                                </a>
+                            </div>
+                            <div class="box-gallery__item">
+                                <a href="#" class="box-gallery__item__link box-gallery__item__link--video js-not-implemented-yet">
+                                    <i class="svg svg-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="box-detail__info">
+                <h1 itemprop="name">
+                    {{ product.getSeoH1(domain.id)|default(product.name) }}
+                </h1>
 
         {% set productParameterValues = getProductParameterValues(product) %}
         {% if product.getDescription(domain.id)
