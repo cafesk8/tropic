@@ -2,10 +2,6 @@
 @box-detail-info-gap: 90px;
 @box-detail-content-width: calc(~"100% - (@{box-detail-info-width} + @{box-detail-info-gap})");
 
-@box-detail-image-bottom-gap: 96px;
-@box-detail-image-main-bottom-gap: 20px;
-@box-detail-image-min-height: 250px;
-
 .box-detail {
     display: flex;
     flex-direction: row;
@@ -22,16 +18,17 @@
 
         @media @query-lg {
             width: @box-detail-content-width;
+            float: left;
         }
 
         &__main {
             position: relative;
             margin-bottom: @box-detail-image-main-bottom-gap;
             text-align: center;
-            
+
             font-size: 0;
+            }
         }
-    }
 
     &__info {
         margin-left: @box-detail-info-gap;
