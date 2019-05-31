@@ -1,4 +1,4 @@
-{% extends '@ShopsysShop/Front/Layout/layoutWithPanel.html.twig' %}
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 {% import '@ShopsysShop/Front/Content/Product/boxDetail.html.twig' as boxDetail %}
@@ -30,6 +30,7 @@
             or productParameterValues > 0
             or accessories|length > 0
         %}
+        <div class="box-detail__content">
             <div class="in-tab js-responsive-tabs">
                 <div class="in-tab__head dont-print">
                     {% if product.getDescription(domain.id) %}
@@ -89,6 +90,7 @@
                     {% endif %}
                 </div>
             </div>
+        </div>
         {% endif %}
     </div>
 
