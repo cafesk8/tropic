@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Transport;
 
-
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation as BaseTransportVisibilityCalculation;
 

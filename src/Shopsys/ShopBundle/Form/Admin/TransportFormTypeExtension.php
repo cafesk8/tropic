@@ -114,7 +114,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
     {
         $builderBalikobotGroup = $builder->create('balikobotGroup', GroupType::class, [
             'label' => t('Balíkobot'),
-            'position' => ['after' => 'basicInformation']
+            'position' => ['after' => 'basicInformation'],
         ]);
         $builderBalikobotGroup->add('balikobot', YesNoType::class, [
             'label' => t('Použít'),
@@ -161,7 +161,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             'choices' => array_flip($shipperServices),
             'attr' => [
                 'class' => 'js-transport-select-shipper-service',
-            ]
+            ],
         ]);
     }
 }
