@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 
 class ProductRepository extends BaseProductRepository
@@ -26,8 +27,35 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $mainVariants
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     */
+    public function getAllSellableVariantsForMainVariants(array $mainVariants, $domainId, PricingGroup $pricingGroup): array
+    {
+        $queryBuilder = $this->getAllSellableQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->andWhere('p.mainVariant IN (:mainVariants)')
+            ->setParameter('mainVariants', $mainVariants);
+
+        return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsWithDistinguishingParameter(Parameter $parameter): array
+    {
+        return $this->getProductRepository()->findBy([
+            'distinguishingParameter' => $parameter,
+        ]);
+    }
+
+    /**
      * @param int $transferNumber
-     * @return \Shopsys\ShopBundle\Model\Product\Product|null
+     * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
      */
     public function findByTransferNumber(int $transferNumber): ?Product
     {

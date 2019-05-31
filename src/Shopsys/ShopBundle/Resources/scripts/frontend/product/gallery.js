@@ -4,15 +4,15 @@
     Shopsys.responsive = Shopsys.responsive || {};
     Shopsys.productDetail = Shopsys.productDetail || {};
 
-    Shopsys.productDetail.init = function () {
-        $('.js-gallery-main-image').click(function (event) {
-            var $slides = $('.js-gallery .slick-slide:not(.slick-cloned) .js-gallery-slide-link');
+    Shopsys.productDetail.init = function ($container) {
+        $container.filterAllNodes('.js-gallery-main-image').click(function (event) {
+            var $slides = $container.filterAllNodes('.js-gallery .slick-slide:not(.slick-cloned) .js-gallery-slide-link');
             $slides.filter(':first').trigger('click', event);
 
             return false;
         });
 
-        var $gallery = $('.js-gallery');
+        var $gallery = $container.filterAllNodes('.js-gallery');
 
         $gallery.magnificPopup({
             type: 'image',
@@ -68,7 +68,7 @@
     };
 
     $(document).ready(function () {
-        Shopsys.productDetail.init();
+        Shopsys.productDetail.init($('body'));
     });
 
 })(jQuery);

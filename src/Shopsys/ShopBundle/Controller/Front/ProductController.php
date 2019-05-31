@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSear
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
 use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends FrontBaseController
@@ -40,7 +41,7 @@ class ProductController extends FrontBaseController
     private $domain;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface
+     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
      */
     private $productOnCurrentDomainFacade;
 
@@ -75,6 +76,11 @@ class ProductController extends FrontBaseController
     private $brandFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade
+     */
+    private $mainVariantGroupFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -85,6 +91,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -96,7 +103,8 @@ class ProductController extends FrontBaseController
         ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade,
         ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade,
         ModuleFacade $moduleFacade,
-        BrandFacade $brandFacade
+        BrandFacade $brandFacade,
+        MainVariantGroupFacade $mainVariantGroupFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -108,6 +116,7 @@ class ProductController extends FrontBaseController
         $this->productListOrderingModeForSearchFacade = $productListOrderingModeForSearchFacade;
         $this->moduleFacade = $moduleFacade;
         $this->brandFacade = $brandFacade;
+        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
     }
 
     /**
@@ -115,6 +124,7 @@ class ProductController extends FrontBaseController
      */
     public function detailAction($id)
     {
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
         $product = $this->productOnCurrentDomainFacade->getVisibleProductById($id);
 
         if ($product->isVariant()) {
@@ -122,14 +132,21 @@ class ProductController extends FrontBaseController
         }
 
         $accessories = $this->productOnCurrentDomainFacade->getAccessoriesForProduct($product);
-        $variants = $this->productOnCurrentDomainFacade->getVariantsForProduct($product);
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $this->domain->getId());
+        $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
+
+        if (count($mainVariantGroupProducts) > 0) {
+            $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProducts($mainVariantGroupProducts);
+        } else {
+            $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProduct($product);
+        }
 
         return $this->render('@ShopsysShop/Front/Content/Product/detail.html.twig', [
             'product' => $product,
             'accessories' => $accessories,
-            'variants' => $variants,
+            'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
+            'mainVariants' => $mainVariantGroupProducts,
         ]);
     }
 

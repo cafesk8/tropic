@@ -6,10 +6,15 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
 use Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector;
+use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
@@ -34,12 +39,36 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     protected $productVariantFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader
+     */
+    private $productParametersFixtureLoader;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
+     */
+    private $productDataFactory;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory
+     */
+    private $parameterValueDataFactory;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory
+     */
+    private $productParameterValueDataFactory;
+
+    /**
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader $productDataFixtureLoader
      * @param \Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector $referenceInjector
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureCsvReader $productDataFixtureCsvReader
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade $productVariantFacade
+     * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader $productParametersFixtureLoader
+     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
      */
     public function __construct(
         ProductDataFixtureLoader $productDataFixtureLoader,
@@ -47,7 +76,11 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         PersistentReferenceFacade $persistentReferenceFacade,
         ProductDataFixtureCsvReader $productDataFixtureCsvReader,
         ProductFacade $productFacade,
-        ProductVariantFacade $productVariantFacade
+        ProductVariantFacade $productVariantFacade,
+        ProductParametersFixtureLoader $productParametersFixtureLoader,
+        ProductDataFactory $productDataFactory,
+        ParameterValueDataFactory $parameterValueDataFactory,
+        ProductParameterValueDataFactory $productParameterValueDataFactory
     ) {
         $this->productDataFixtureLoader = $productDataFixtureLoader;
         $this->referenceInjector = $referenceInjector;
@@ -55,6 +88,10 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->productDataFixtureCsvReader = $productDataFixtureCsvReader;
         $this->productFacade = $productFacade;
         $this->productVariantFacade = $productVariantFacade;
+        $this->productParametersFixtureLoader = $productParametersFixtureLoader;
+        $this->productDataFactory = $productDataFactory;
+        $this->parameterValueDataFactory = $parameterValueDataFactory;
+        $this->productParameterValueDataFactory = $productParameterValueDataFactory;
     }
 
     /**
@@ -104,15 +141,27 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $csvRows = $this->productDataFixtureCsvReader->getProductDataFixtureCsvRows();
         $variantCatnumsByMainVariantCatnum = $this->productDataFixtureLoader->getVariantCatnumsIndexedByMainVariantCatnum($csvRows);
 
+        $parameter = $this->productParametersFixtureLoader->findParameterByNamesOrCreateNew([
+            'cs' => 'Velikost',
+            'sk' => 'Velikosť',
+            'de' => 'Size',
+        ]);
+
+        $distinguishingParameterForVariants = $this->productParametersFixtureLoader->findParameterByNamesOrCreateNew([
+            'cs' => 'Úhlopříčka',
+        ]);
+
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
+            /* @var $mainProduct \Shopsys\ShopBundle\Model\Product\Product */
             $mainProduct = $productsByCatnum[$mainVariantCatnum];
-            /* @var $mainProduct \Shopsys\FrameworkBundle\Model\Product\Product */
+            $this->setParameterToMainVariant($parameter, $mainProduct);
 
             $variants = [];
             foreach ($variantsCatnums as $variantCatnum) {
                 $variants[] = $productsByCatnum[$variantCatnum];
             }
 
+            $mainProduct->setDistinguishingParameter($distinguishingParameterForVariants);
             $mainVariant = $this->productVariantFacade->createVariant($mainProduct, $variants);
             $this->addReference(self::PRODUCT_PREFIX . $productNo, $mainVariant);
             $productNo++;
@@ -139,5 +188,27 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         }
 
         $productData->stockQuantityByStoreId = $fakeStoreData;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $mainVariant
+     */
+    private function setParameterToMainVariant(Parameter $parameter, Product $mainVariant)
+    {
+        $parameterValueNames = ['XL', 'L', 'M'];
+
+        $productData = $this->productDataFactory->createFromProduct($mainVariant);
+
+        $parameterValueData = $this->parameterValueDataFactory->create();
+        $parameterValueData->text = $parameterValueNames[$mainVariant->getId() % 3];
+        $parameterValueData->locale = 'cs';
+
+        $productParameterValueData = $this->productParameterValueDataFactory->create();
+        $productParameterValueData->parameter = $parameter;
+        $productParameterValueData->parameterValueData = $parameterValueData;
+
+        $productData->parameters[] = $productParameterValueData;
+        $this->productFacade->edit($mainVariant->getId(), $productData);
     }
 }

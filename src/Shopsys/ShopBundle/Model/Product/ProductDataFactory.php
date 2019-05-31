@@ -53,6 +53,13 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = $storeStock->getStockQuantity();
         }
 
+        if ($product->getMainVariantGroup() !== null) {
+            $productData->productsInGroup = $product->getMainVariantGroup()->getProducts();
+            $productData->distinguishingParameterForMainVariantGroup = $product->getMainVariantGroup()->getDistinguishingParameter();
+        }
+
         $productData->transferNumber = $product->getTransferNumber();
+        $productData->distinguishingParameter = $product->getDistinguishingParameter();
+        $productData->mainVariantGroup = $product->getMainVariantGroup();
     }
 }

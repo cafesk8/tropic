@@ -24,6 +24,15 @@ services:
                 local: '@local_filesystem'
                 main: '@main_filesystem'
 
+    Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController:
+        class: Shopsys\ShopBundle\Controller\Admin\ProductPickerController
+
+    Shopsys\FrameworkBundle\Controller\Admin\ParameterController:
+        class: Shopsys\ShopBundle\Controller\Admin\ParameterController
+
+    Shopsys\FrameworkBundle\Controller\Admin\ProductController:
+        class: Shopsys\ShopBundle\Controller\Admin\ProductController
+
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:
@@ -81,7 +90,7 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\ProductDataFactory'
 
-    Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
+    Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
@@ -156,3 +165,12 @@ services:
         arguments:
             - '%payPalClientId%'
             - '%payPalClientSecret%'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade:
+        class: Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
+
+    Shopsys\FrameworkBundle\Model\Product\ProductFactory: '@Shopsys\ShopBundle\Model\Product\ProductFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade: '@Shopsys\ShopBundle\Model\Product\ProductVariantFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade'
