@@ -15,7 +15,7 @@ services:
         tags: ['controller.service_arguments']
 
     Shopsys\ShopBundle\:
-        resource: '../../**/*{Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,OnCurrentDomain}.php'
+        resource: '../../**/*{Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
         exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
     League\Flysystem\MountManager:
@@ -23,6 +23,33 @@ services:
             -
                 local: '@local_filesystem'
                 main: '@main_filesystem'
+
+    Shopsys\FrameworkBundle\Component\Cron\CronFacade:
+        class: Shopsys\ShopBundle\Component\Cron\CronFacade
+        arguments:
+            - '@monolog.logger.cron'
+
+    Shopsys\ShopBundle\Component\Rest\RestClient:
+        class: Shopsys\ShopBundle\Component\Rest\RestClient
+        factory: 'Shopsys\ShopBundle\Component\Rest\RestClientFactory:create'
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_username%'
+            - '%transfer_password%'
+            - '%transfer_enabled%'
+
+    Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory:
+        arguments:
+            - '@monolog.logger.cron'
+
+    Shopsys\ShopBundle\Component\Transfer\TransferConfig:
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_username%'
+            - '%transfer_password%'
+            - '%transfer_enabled%'
+
+    Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency: ~
 
     Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory: ~
 

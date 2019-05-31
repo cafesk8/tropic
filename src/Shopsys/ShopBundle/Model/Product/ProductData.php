@@ -10,4 +10,9 @@ class ProductData extends BaseProductData
      * @var array
      */
     public $stockQuantityByStoreId = [];
+
+    /**
+     * @var int|null
+     */
+    public $transferNumber = null;
 }
