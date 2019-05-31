@@ -199,7 +199,7 @@
                         <span class="js-top-products-prev list-top-products__arrow list-top-products__arrow--prev">
                             <i class="svg svg-slider-arrow"></i>
                         </span>
-                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3') }}
+                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3', 'top-products') }}
                         <span class="js-references-next list-top-products__arrow list-top-products__arrow--next">
                             <i class="svg svg-slider-arrow"></i>
                         </span>
@@ -340,11 +340,11 @@
                 <div class="box-references__title">
                     {{ 'Co na nás říkají zákazníci'|trans }}
                 </div>
-                <div class="box-references__in js-references">
-                    <span class="js-references-prev list-references__arrow list-references__arrow--prev">
+                <div class="box-references__in js-horizontal-list" data-type="references">
+                    <span class="js-horizontal-list-action-prev list-references__arrow list-references__arrow--prev">
                         <i class="svg svg-slider-arrow"></i>
                     </span>
-                    <div class="list-references js-references-slides">
+                    <div class="list-references js-horizontal-list-slides">
                         <div class="list-references__item js-not-implemented-yet">
                             <div class="list-references__item__header">
                                 <div class="list-references__item__header__author">
@@ -532,7 +532,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="js-references-next list-references__arrow list-references__arrow--next">
+                    <span class="js-horizontal-list-action-next list-references__arrow list-references__arrow--next">
                         <i class="svg svg-slider-arrow"></i>
                     </span>
                 </div>

@@ -63,67 +63,67 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(products, listCssClass, productHeadingTagName) %}
-    <div class="{{ listCssClass|default('list-products') }} js-{{ listCssClass|default('list-products') }}">
-        <span class="{{ listCssClass|default('list-products') }}__arrow {{ listCssClass|default('list-products') }}__arrow--prev js-{{ listCssClass|default('list-products') }}-prev">
+{% macro horizontalList(products, listCssClass = 'list-products', productHeadingTagName, type) %}
+    <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}">
+        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
             <i class="svg svg-slider-arrow"></i>
         </span>
-        <div class="{{ listCssClass|default('list-products') }}__in">
+        <div class="{{ listCssClass }}__in">
             {% set domain = getDomain() %}
 
-            <div class="{{ listCssClass|default('list-products') }}__list js-{{ listCssClass|default('list-products') }}-slides">
+            <div class="{{ listCssClass }}__list js-horizontal-list-slides">
                 {% for product in products %}
-
-                <div class="{{ listCssClass|default('list-products') }}__item">
-                    <div class="{{ listCssClass|default('list-products') }}__item__in">
-                        <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass|default('list-products') }}__item__block">
-                            <div class="{{ listCssClass|default('list-products') }}__item__image dont-print">
-                                {{ image(product, { size: 'list', alt: product.name }) }}
-                            </div>
-
-                            <div class="{{ listCssClass|default('list-products') }}__item__info">
-
-                                <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass|default('list-products') }}__item__info__title">
-                                    {{ product.name|striptags|raw }}
-                                </{{ productHeadingTagName|default('h2') }}>
-
-                                {% set productSellingPrice = getProductSellingPrice(product) %}
-
-                                {% if productSellingPrice is not null %}
-                                    <div class="{{ listCssClass|default('list-products') }}__item__info__price">
-                                        <div class="{{ listCssClass|default('list-products') }}__item__info__price__item {{ listCssClass|default('list-products') }}__item__info__price__item--main">
-                                            {% if productSellingPrice.priceFrom %}
-                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                            {% else %}
-                                                {{ productSellingPrice.priceWithVat|price }}
-                                            {% endif %}
-                                        </div>
-                                        <div class="{{ listCssClass|default('list-products') }}__item__info__price__item">
-                                            {% if productSellingPrice.priceFrom %}
-                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
-                                            {% else %}
-                                                {{ productSellingPrice.priceWithoutVat|price }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-
-                                <div class="{{ listCssClass|default('list-products') }}__item__info__availability js-not-implemented-yet">
-                                    {{ 'Vaše velikost'|trans }}
-                                    <span class="in-badge in-badge--outline">M</span>
-                                     {{ product.calculatedAvailability.getName }}
+                    <div class="{{ listCssClass }}__item">
+                        <div class="{{ listCssClass }}__item__in">
+                            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass }}__item__block">
+                                <div class="{{ listCssClass }}__item__image dont-print">
+                                    {{ image(product, { size: 'list', alt: product.name }) }}
                                 </div>
-                            </div>
-                        </a>
+
+                                <div class="{{ listCssClass }}__item__info">
+
+                                    <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">
+                                        {{ product.name|striptags|raw }}
+                                    </{{ productHeadingTagName|default('h2') }}>
+
+                                    {% set productSellingPrice = getProductSellingPrice(product) %}
+
+                                    {% if productSellingPrice is not null %}
+                                        <div class="{{ listCssClass }}__item__info__price">
+                                            <div class="{{ listCssClass }}__item__info__price__item {{ listCssClass }}__item__info__price__item--main">
+                                                {% if productSellingPrice.priceFrom %}
+                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                                {% else %}
+                                                    {{ productSellingPrice.priceWithVat|price }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="{{ listCssClass }}__item__info__price__item">
+                                                {% if productSellingPrice.priceFrom %}
+                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
+                                                {% else %}
+                                                    {{ productSellingPrice.priceWithoutVat|price }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="{{ listCssClass }}__item__info__availability js-not-implemented-yet">
+                                        {{ 'Vaše velikost'|trans }}
+                                        <span class="in-badge in-badge--outline">M</span>
+                                        {{ product.calculatedAvailability.getName }}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
 
-        <span class="{{ listCssClass|default('list-products') }}__arrow {{ listCssClass|default('list-products') }}__arrow--next js-{{ listCssClass|default('list-products') }}-next">
+        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--next js-horizontal-list-action-next">
             <i class="svg svg-slider-arrow"></i>
         </span>
     </div>
 
 {% endmacro %}
+
