@@ -85,6 +85,12 @@
         font-size: @font-size;
         background-color: @box-references-top-bottom-bg;
 
+        br {
+            @media @query-xl {
+                display: none;
+            }
+        }
+
         &__link {
             line-height: 25px;
 
