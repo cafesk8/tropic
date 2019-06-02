@@ -44,6 +44,10 @@
             {% endif %}
         </div>
         <div class="box-detail__info">
+            {% block breadcrumbDetail %}
+                {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
+            {% endblock %}
+
             <h1 itemprop="name">
                 {{ product.getSeoH1(domain.id)|default(product.name) }}
             </h1>
