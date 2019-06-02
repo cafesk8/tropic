@@ -1,26 +1,49 @@
 @in-user-text-ul-point-size: 6px;
+@in-user-text-inner-items-gap: 26px;
+@in-user-text-inner-items-gap-small: @in-user-text-inner-items-gap/2;
+@in-user-text-inner-text-gap: @in-user-text-inner-items-gap - 3;
+@in-user-text-inner-text-gap-small: @in-user-text-inner-text-gap/2;
+@in-user-text-title-font-size: 24px;
+@in-user-text-title-gap: 20px;
+
+@in-user-text-font-size: 20px;
+
 
 .in-user-text {
+    line-height: @in-user-text-font-size + 16px;
+
+    color: @color-brown;
+    font-size: @in-user-text-font-size;
+
+    p {
+        margin: 0 0 @in-user-text-inner-text-gap-small 0;
+        line-height: @in-user-text-font-size + 16px;
+
+        color: @color-brown;
+        font-size: @in-user-text-font-size;
+
+        @media @query-xl {
+            margin-bottom: @in-user-text-inner-text-gap;
+        }
+    }
+
     ul {
-        .reset-ul();
-        margin-bottom: @margin-gap;
+        margin-bottom: @in-user-text-inner-text-gap-small;
+        z-index: 1; // due to combination with IMG and float
+
+        @media @query-xl {
+            margin-bottom: @in-user-text-inner-items-gap;
+        }
 
         li {
             position: relative;
-            padding-left: 15px;
-            line-height: 18px;
+            line-height: @in-user-text-font-size + 16px;
+            padding-left: 5px;
+            margin-left: 15px;
             margin-bottom: 5px;
 
-            &:after {
-                position: absolute;
-                content: '';
-                top: @in-user-text-ul-point-size;
-                left: 0;
-                width: @in-user-text-ul-point-size;
-                height: @in-user-text-ul-point-size;
-
-                background: @color-green;
-            }
+            color: @color-brown;
+            font-size: @in-user-text-font-size;
         }
 
         ul {
@@ -28,7 +51,108 @@
         }
     }
 
+    &__title {
+        margin-bottom: @in-user-text-title-gap;
+
+        color: @color-base;
+        font-size: @in-user-text-title-font-size;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        &--center {
+            text-align: center;
+        }
+    }
+
     img {
+        display: block;
         height: auto !important;
+    }
+
+    img, .in-user-text__image, .in-user-text__image--with-text  {
+        &[style*="float: right"],
+        &[style*="float:right"] {
+            margin:  @in-user-text-inner-items-gap-small/2 0 @in-user-text-inner-items-gap/2 @in-user-text-inner-items-gap;
+        }
+
+        &[style*="float: left"],
+        &[style*="float:left"]{
+            margin:  @in-user-text-inner-items-gap-small/2 @in-user-text-inner-items-gap @in-user-text-inner-items-gap/2 0;
+        }
+    }
+
+    &__image {
+        display: inline-block;
+        margin: 0 0 @in-user-text-inner-items-gap-small;
+        position: relative;
+        overflow: hidden;
+        z-index: 2; // due to combination with UL-LI and float
+
+        @media @query-xl {
+            margin: 0 0 @in-user-text-inner-items-gap @in-user-text-inner-items-gap;
+        }
+
+        &--with-text {
+            display: inline-block;
+            width: auto;
+
+            img {
+                width: auto;
+
+                &[style*="float: right"],
+                &[style*="float:right"],
+                &[style*="float: left"],
+                &[style*="float:left"]{
+                    margin: 0;
+                }
+            }
+
+            span {
+                width: 100%;
+                display: inherit;
+                text-align: center;
+
+                font-size: 12px;
+                font-style: italic;
+            }
+        }
+
+        &--left {
+            @media @query-sm {
+                float: left;
+                margin: 0 0 @in-user-text-inner-items-gap-small @in-user-text-inner-items-gap-small;
+            }
+
+            @media @query-xl {
+                margin: 0 0 @in-user-text-inner-items-gap @in-user-text-inner-items-gap;
+            }
+        }
+
+        &--right {
+            @media @query-sm {
+                float: right;
+                margin: 0 0 @in-user-text-inner-items-gap-small @in-user-text-inner-items-gap-small;
+            }
+
+            @media @query-xl {
+                margin: 0 0 @in-user-text-inner-items-gap @in-user-text-inner-items-gap;
+            }
+        }
+
+        img {
+            width: 100%;
+            margin: 0;
+            transition: @transition transform;
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.2) rotate(-4deg);
+            }
+
+            &:after {
+                bottom: 0;
+            }
+        }
     }
 }
