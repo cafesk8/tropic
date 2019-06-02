@@ -2,6 +2,7 @@
 @box-references-title-bottom-gap: 32px;
 @box-references-top-padding: 30px;
 @box-references-top-nubmer-font-size: 36px;
+@box-references-top-bottom-bg: @color-gray;
 
 .box-references {
     margin-bottom: @box-references-bottom-gap;
@@ -32,7 +33,7 @@
         flex-direction: column;
         padding: @box-references-top-padding;
 
-        background-color: @color-gray;
+        background-color: @box-references-top-bottom-bg;
 
         @media @query-lg {
             flex-direction: row;
@@ -63,6 +64,9 @@
             display: flex;
             flex-direction: column;
 
+            margin-top: -10px;
+            margin-bottom: 10px;
+
             &__link {
                 color: @color-base;
                 font-size: @font-size;
@@ -70,6 +74,25 @@
                 text-transform: uppercase;
                 text-decoration: none;
             }
+        }
+    }
+
+    &__bottom {
+        padding: 22px;
+        text-align: center;
+
+        color: @color-base;
+        font-size: @font-size;
+        background-color: @box-references-top-bottom-bg;
+
+        &__link {
+            line-height: 25px;
+
+            color: @color-base;
+            font-size: @font-size;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
         }
     }
 }
