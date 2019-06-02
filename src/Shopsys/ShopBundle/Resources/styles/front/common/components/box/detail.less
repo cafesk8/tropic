@@ -6,6 +6,9 @@
 @box-detail-image-main-bottom-gap: 20px;
 @box-detail-image-min-height: 250px;
 
+@box-detail-params-column-count: 3px;
+@box-detail-params-padding: 30px;
+
 .box-detail {
     display: flex;
     flex-direction: column;
@@ -48,54 +51,45 @@
 
             font-weight: bold;
         }
-
-        &__params {
-            margin: 0 0 @margin-gap;
-            padding: 10px 0;
-
-            font-size: 0;
-            border-top: 1px solid @color-border;
-            border-bottom: 1px solid @color-border;
-
-            @media @query-md {
-                column-count: 2;
-            }
-
-            @media @query-lg {
-                column-count: 1;
-            }
-
-            @media @query-vl {
-                column-count: 2;
-            }
-
-            dt, dd {
-                margin: 0;
-                padding: 5px 0;
-                display: inline-block;
-                vertical-align: top;
-                width: 50%;
-
-                font-size: 12px;
-            }
-
-            dt {
-                padding-right: 5px;
-
-                font-weight: bold;
-            }
-
-            &:empty {
-                display: none;
-            }
-        }
     }
 
     &__content {
-        width: 100%;
+        width: @box-detail-content-width;
+    }
+
+    &__params {
+        display: flex;
+        flex-direction: column;
+        padding: @box-detail-params-padding;
+        margin-bottom: 50px;
+
+        background-color: @color-gray;
 
         @media @query-lg {
-            width: @box-detail-content-width;
+            flex-direction: row;
+        }
+
+        &__column {
+            width: 100%;
+
+            @media @query-lg {
+                width: calc(~"100% - @{box-detail-params-column-count}");
+            }
+
+            &--middle {
+                @media @query-lg {
+                    padding: 0 20px;
+                }
+            }
+        }
+
+        &__title {
+            margin-bottom: 15px;
+
+            color: @color-base;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
     }
 }

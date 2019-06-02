@@ -76,23 +76,59 @@
                                                 {{ product.getDescription(domain.id)|raw }}
                                             </p>
                                         {% endif %}
-                                        {% if productParameterValues > 0 %}
-                                            <div class="h3">{{ parametersHeadline }}</div>
-                                            <table class="table-params{% if product.getDescription(domain.id) %} margin-top-20{% endif %}">
-                                                <tbody>
+                                    </div>
+                                    <div class="box-detail__params">
+                                        <div class="box-detail__params__column">
+                                            <div class="box-detail__params__title">{{ 'Co potřebujete vědět'|trans }}</div>
+                                            <ul class="list-params">
+                                                <li class="list-params__item-with-icon js-not-implemented-yet">
+                                                    <i class="list-params__item-with-icon__icon svg svg-facebook"></i>
+                                                    <span class="list-params__item-with-icon__text">{{ 'Příroční bavlna'|trans }}</span>
+                                                </li>
+                                                <li class="list-params__item-with-icon js-not-implemented-yet">
+                                                    <i class="list-params__item-with-icon__icon svg svg-facebook"></i>
+                                                    <span class="list-params__item-with-icon__text">{{ 'Perte na 30°'|trans }}</span>
+                                                </li>
+                                                <li class="list-params__item-with-icon js-not-implemented-yet">
+                                                    <i class="list-params__item-with-icon__icon svg svg-facebook"></i>
+                                                    <span class="list-params__item-with-icon__text">{{ 'Běžné žehlení'|trans }}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="box-detail__params__column box-detail__params__column--middle">
+                                            {% if productParameterValues > 0 %}
+                                                <div class="box-detail__params__title">{{ 'Parametry'|trans }}</div>
+                                                <ul class="list-params">
                                                     {% for productParameterValue in productParameterValues %}
-                                                        <tr>
-                                                            <th>
-                                                                {{ productParameterValue.parameter.name }}
-                                                            </th>
-                                                            <td>
-                                                                {{ productParameterValue.value.text }}
-                                                            </td>
-                                                        </tr>
+                                                        <li class="list-params__item">
+                                                            <span class="list-params__item__text">
+                                                                {{ productParameterValue.parameter.name }}&nbsp;{{ productParameterValue.value.text }}
+                                                            </span>
+                                                        </li>
                                                     {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        {% endif %}
+                                                </ul>
+                                            {% endif %}
+                                        </div>
+                                        <div class="box-detail__params__column">
+                                            <div class="box-detail__params__title">{{ 'Najdete v kategoriích'|trans }}</div>
+                                            <div class="list-tags">
+                                                <div class="list-tags__tag list-tags__tag--outline">
+                                                    {{ 'šaty'|trans }}
+                                                </div>
+                                                <div class="list-tags__tag list-tags__tag--outline">
+                                                    {{ 'do práce'|trans }}
+                                                </div>
+                                                <div class="list-tags__tag list-tags__tag--outline">
+                                                    {{ 'volný střih'|trans }}
+                                                </div>
+                                                <div class="list-tags__tag list-tags__tag--outline">
+                                                    {{ 'pro pořádné chlapy'|trans }}
+                                                </div>
+                                                <div class="list-tags__tag list-tags__tag--outline">
+                                                    {{ 'expediční oblečení'|trans }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {% endif %}
