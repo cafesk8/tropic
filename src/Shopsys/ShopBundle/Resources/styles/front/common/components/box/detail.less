@@ -92,6 +92,10 @@
     }
 
     &__content {
-        width: @box-detail-content-width;
+        width: 100%;
+
+        @media @query-lg {
+            width: @box-detail-content-width;
+        }
     }
 }
