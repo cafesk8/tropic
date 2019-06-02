@@ -1,23 +1,40 @@
 @box-gallery-item-size: 70px;
 @box-gallery-item-gap: 24px;
-@box-gallery-item-count: 5;
+@box-gallery-item-count: 3;
 @box-gallery-side-gap: 125px;
 @box-gallery-font-size: 13px;
+
+@box-gallery-item-video-width: 66px;
+@box-gallery-item-more-width: 93px;
+@box-gallery-items-width: calc(~"100% - @{box-gallery-item-more-width} - @{box-gallery-item-video-width}");
 
 .box-gallery {
     display: flex;
     flex-direction: row;
-    height: @box-gallery-item-size;
+    flex-wrap: wrap;
     position: relative;
     margin: 0 auto;
 
-    .slick-list {
-        overflow: hidden;
+    @media @query-md {
+        flex-wrap: nowrap;
+    }
+
+    &__in {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 100%;
+        height: @box-gallery-item-size;
+
+        @media @query-md {
+            flex-wrap: nowrap;
+        }
     }
 
     &__item {
-        float: left;
-        width: calc(~"@{calc-base}/2");
+        width: calc(~"@{box-gallery-items-width}/@{box-gallery-item-count}");
+        margin-right: @box-gallery-item-gap;
         min-width: @box-gallery-item-size;
         text-align: center;
 
@@ -27,22 +44,6 @@
 
         &:last-child {
             margin-right: 0;
-        }
-
-        @media @query-xs {
-            width: calc(~"@{calc-base}/3");
-        }
-
-        @media @query-md {
-            width: calc(~"@{calc-base}/4");
-        }
-
-        @media @query-lg {
-            width: calc(~"@{calc-base}/3");
-        }
-
-        @media @query-vl {
-            width: calc(~"@{calc-base}/5");
         }
 
         &__link {
@@ -57,8 +58,9 @@
         }
 
         &--more {
-            width: 93px;
-            
+            width: @box-gallery-item-more-width;
+            margin-right: 0;
+
             .box-gallery__item__link {
                 display: inline;
                 line-height: @box-gallery-item-size;
@@ -72,8 +74,10 @@
         }
 
         &--video {
-            width: 66px;
+            width: @box-gallery-item-video-width;
             text-align: right;
+            margin-right: 0;
+
             border-left: 3px solid @color-gray;
 
             .box-gallery__item__link {
