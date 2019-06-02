@@ -1,0 +1,25 @@
+.list-tags {
+    display: inline;
+    text-align: center;
+
+    @media @query-xl {
+        text-align: left;
+    }
+
+    &__tag {
+        display: inline-block;
+        margin: 5px 0;
+        line-height: 15px;
+        padding: 3px 6px;
+
+        background-color: @color-orange;
+        color: @color-f;
+        font-size: @font-size;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        @media @query-xl {
+            margin: 0 20px 10px 0;
+        }
+    }
+}
