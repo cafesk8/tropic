@@ -18,11 +18,8 @@
             {{ productFlags.list(product) }}
 
             {% if showGallery %}
-                <div class="box-gallery dont-print js-gallery">
-                    <span class="box-gallery__arrow box-gallery__arrow--prev js-gallery-prev">
-                        <i class="svg svg-arrow"></i>
-                    </span>
-                    <div class="box-gallery__in js-gallery-slides">
+                <div class="box-gallery dont-print">
+                    <div class="box-gallery__in">
                         {% for galleryImage in galleryImages %}
                             <div class="box-gallery__item">
                                 <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-gallery__item__link js-gallery-slide-link">
@@ -31,9 +28,18 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <span class="box-gallery__arrow box-gallery__arrow--next js-gallery-next">
-                        <i class="svg svg-arrow"></i>
-                    </span>
+                    <div class="box-gallery__in">
+                        <div class="box-gallery__item box-gallery__item--more">
+                            <a href="#" class="box-gallery__item__link underline js-not-implemented-yet">
+                                {{ 'Další'|trans }} (10)
+                            </a>
+                        </div>
+                        <div class="box-gallery__item box-gallery__item--video">
+                            <a href="#" class="box-gallery__item__link js-not-implemented-yet">
+                                <i class="svg svg-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             {% endif %}
         </div>
