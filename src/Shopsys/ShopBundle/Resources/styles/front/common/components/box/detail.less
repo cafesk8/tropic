@@ -54,7 +54,11 @@
     }
 
     &__content {
-        width: @box-detail-content-width;
+        width: 100%;
+
+        @media @query-lg {
+            width: @box-detail-content-width;
+        }
     }
 
     &__params {
@@ -71,9 +75,15 @@
 
         &__column {
             width: 100%;
+            margin-bottom: 30px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
 
             @media @query-lg {
                 width: calc(~"100% - @{box-detail-params-column-count}");
+                margin-bottom: 0;
             }
 
             &--middle {
