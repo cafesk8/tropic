@@ -53,6 +53,7 @@
             display: block;
             position: relative;
             height: @in-tab-head-item-height-mobile;
+            line-height: @in-tab-head-item-height-mobile;
 
             cursor: pointer;
 
@@ -76,7 +77,8 @@
                 font-size: @in-tab-arrow-size;
 
             }
-            .active {
+
+            &.active {
                 .svg {
                     transform: rotate(180deg);
                 }
@@ -85,6 +87,7 @@
 
         &__item {
             display: none;
+            padding-top: 15px;
 
             &.active {
                 display: block;
