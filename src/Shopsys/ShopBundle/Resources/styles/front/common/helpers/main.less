@@ -27,7 +27,7 @@
         height: 1px;
         width: 100%;
         left: 0;
-        bottom: -7px;
+        bottom: -@underline-gap;
 
         background-color: @color-orange;
         transition: bottom @transition;
@@ -35,7 +35,7 @@
 
     &:hover {
         &:before {
-            bottom: -3px;
+            bottom: -@underline-gap-hover;
         }
     }
 }
