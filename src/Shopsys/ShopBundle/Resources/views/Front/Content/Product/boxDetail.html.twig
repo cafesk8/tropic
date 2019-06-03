@@ -15,6 +15,7 @@
                     {{ noimage({ alt: product.name }) }}
                 {% endif %}
             </div>
+            
             {{ productFlags.list(product) }}
 
             {% if showGallery %}
@@ -57,43 +58,40 @@
             </div>
 
             <div class="box-detail__variants">
-                <div class="box-detail__variants__title">
-                    {{ 'Vyberte variantu'|trans }}
-                </div>
+                {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
+                    <div class="box-detail__variants__title">
+                        {{ 'Vyberte variantu'|trans }}
+                    </div>
+                    <ul class="list-variants">
+                        {% for mainVariantGroupProduct in mainVariants %}
+                            {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
+                            {% if mainVariantGroupDistinguishingParameterValue is not null %}
+                                <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active'}}" data-id="{{ mainVariantGroupProduct.id }}">
+                                    <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}" class="js-not-implemented-yet">
+                                    <span class="list-variants__item__name">
+                                        {{ mainVariantGroupDistinguishingParameterValue.text }}
+                                    </span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
 
-                <ul class="list-variants">
-                    <li class="list-variants__item__with-image active js-not-implemented-yet">
-                        <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}">
-                        <span class="list-variants__item__name">
-                            {{ 'Light Olive'|trans }}
-                        </span>
-                    </li>
-                    <li class="list-variants__item__with-image js-not-implemented-yet">
-                        <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}">
-                        <span class="list-variants__item__name">
-                            {{ 'Stone'|trans }}
-                        </span>
-                    </li>
-                    <li class="list-variants__item__with-image js-not-implemented-yet">
-                        <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}">
-                        <span class="list-variants__item__name">
-                            {{ 'Red Wall'|trans }}
-                        </span>
-                    </li>
-                </ul>
-
-                <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
-                    {{ 'Vyberte velikost'|trans }}
-                    <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost'}}</a>
-                </div>
-                <ul class="list-variants js-not-implemented-yet">
-                    <li class="list-variants__item disabled">34</li>
-                    <li class="list-variants__item active">36</li>
-                    <li class="list-variants__item">38</li>
-                    <li class="list-variants__item">40</li>
-                    <li class="list-variants__item disabled">42</li>
-                    <li class="list-variants__item disabled">44</li>
-                </ul>
+                {% if product.isMainVariant %}
+                    {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
+                    {% if allDistinguishingParameterValuesForProducts is not empty %}
+                        <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
+                            {{ 'Vyberte velikost'|trans }}
+                            <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost'}}</a>
+                        </div>
+                        <ul class="list-variants">
+                            {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
+                                <li class="list-variants__item {{ variantId is null ? 'disabled'}} js-product-variant-select-button"
+                                data-id="{{ variantId }}">{{ parameterValue }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
             </div>
 
             {% if product.calculatedAvailability %}
@@ -141,6 +139,18 @@
                                 href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
                                 >
                             </div>
+                            <div class="box-detail-add__club">
+                                <span class="box-detail-add__club__text">
+                                    {{ 'Nebo'|trans }}
+                                </span>
+                                <span class="box-detail-add__club__price js-not-implemented-yet">
+                                    {{ '1 390 Kč'|trans }}
+                                </span>
+                                <span class="box-detail-add__club__text">
+                                    {{ 'pro členy'|trans }}
+                                </span>
+                                <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
+                            </div>
                             {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: variant, type: 'large'})) }}
                         {% else %}
                             <div>
@@ -187,8 +197,6 @@
                                     {{ 'pro členy'|trans }}
                                 </span>
                                 <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
-
-
                             </div>
                             {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
                         {% else %}
@@ -199,99 +207,6 @@
                     </div>
                 {% endif %}
             </div>
-
-            {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
-                <dl class="box-detail__info__params">
-                    <dt></dt>
-                    <dd>
-                        <table>
-                            <tr>
-                                {% for mainVariantGroupProduct in mainVariants %}
-                                    {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
-                                    {% if mainVariantGroupDistinguishingParameterValue is not null %}
-                                        <td>
-                                            <button class="js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active'}}" data-id="{{ mainVariantGroupProduct.id }}" type="button">{{ mainVariantGroupDistinguishingParameterValue.text }}</button>
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                        </table>
-                    </dd>
-                </dl>
-            {% endif %}
-
-            {% if product.isMainVariant %}
-                {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
-                {% if allDistinguishingParameterValuesForProducts is not empty %}
-                    <dl class="box-detail__info__params">
-                        <dt></dt>
-                        <dd>
-                            <table>
-                                <tr>
-                                    {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
-                                        <td>
-                                            <button
-                                                    class="js-product-variant-select-button"
-                                                    data-id="{{ variantId }}"
-                                                    {{ variantId is null ? 'disabled'}} type="button"
-                                            >
-                                                {{ parameterValue }}
-                                            </button>
-                                        </td>
-                                    {% endfor %}
-                                </tr>
-                            </table>
-                        </dd>
-                    </dl>
-                {% endif %}
-            {% endif %}
-
-
-
-
-            {% spaceless %}
-                <dl class="box-detail__info__params">
-                    {% if product.brand %}
-                        <dt>
-                            {{ 'Brand'|trans }}:
-                        </dt>
-                        <dd>
-                            <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
-                                <span itemprop="brand">{{ product.brand.name }}</span>
-                            </a>
-                        </dd>
-                    {% endif %}
-
-                    {% if not product.isMainVariant %}
-                        {% if product.catnum %}
-                            <dt>
-                                {{ 'Catalogue number'|trans }}:
-                            </dt>
-                            <dd>
-                                {{ product.catnum }}
-                            </dd>
-                        {% endif %}
-
-                        {% if product.partno %}
-                            <dt>
-                                {{ 'Serial number'|trans }}:
-                            </dt>
-                            <dd>
-                                {{ product.partno }}
-                            </dd>
-                        {% endif %}
-
-                        {% if product.ean %}
-                            <dt>
-                                {{ 'EAN'|trans }}:
-                            </dt>
-                            <dd>
-                                {{ product.ean }}
-                            </dd>
-                        {% endif %}
-                    {% endif %}
-                </dl>
-            {% endspaceless %}
         </div>
     </div>
 {% endmacro %}
