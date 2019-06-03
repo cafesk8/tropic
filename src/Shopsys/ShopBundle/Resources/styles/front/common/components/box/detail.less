@@ -70,6 +70,11 @@
 
         background-color: @color-gray;
 
+        &--in-sets {
+            padding-top: 0;
+            padding-bottom: 20px;
+        }
+
         &__title {
             margin-bottom: 10px;
 
@@ -83,13 +88,18 @@
             }
 
             &__link {
-                margin-left: 18px;
+                display: inline-block;
 
                 color: @color-brown;
                 font-size: 13px;
                 font-weight: 400;
                 text-decoration: none;
                 text-transform: uppercase;
+
+                @media @query-lg {
+                    display: inline;
+                    margin-left: 18px;
+                }
             }
         }
     }
@@ -105,6 +115,10 @@
         &__status {
             font-size: 18px;
             white-space: nowrap;
+        }
+
+        &__next-line {
+            display: block;
         }
 
         &__text {
@@ -134,9 +148,11 @@
 
     &__content {
         width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
 
-        @media @query-vl {
-            width: @box-detail-content-width;
+        @media @query-lg {
+            flex-direction: row;
         }
     }
 

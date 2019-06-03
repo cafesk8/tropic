@@ -4,9 +4,14 @@
 
     &__prices {
         display: flex;
-        flex-direction: row;
-        align-items: baseline;
-        margin-bottom: 2px;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        @media @query-lg {
+            flex-direction: row;
+            align-items: baseline;
+            margin-bottom: 2px;
+        }
 
         &__item {
             color: @color-price;

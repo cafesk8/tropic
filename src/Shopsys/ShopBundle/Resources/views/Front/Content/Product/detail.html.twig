@@ -451,7 +451,147 @@
                             {% endif %}
                         </div>
                     </div>
+
+                    <div class="box-detail-sets">
+                        <div class="box-detail-sets__item js-not-implemented-yet">
+                            <div class="box-detail-sets__item__product">
+                                <div class="box-detail-sets__item__product__image">
+                                    <img src="https://placeimg.com/60/60/any" alt="{{ 'Šátek Etna'|trans }}" class="js-not-implemented-yet">
+                                </div>
+                                <div class="box-detail-sets__item__product__info">
+                                    <span class="box-detail-sets__item__product__title">{{ 'Šátek Etna'|trans }}</span>
+                                    <div class="box-detail-sets__item__product__availability">
+                                        <span class="box-detail__availability__status js-not-implemented-yet" style="color: #7bbd70;">
+                                            {% if product.calculatedSellingDenied %}
+                                                {{ 'Product no longer on sale'|trans }}
+                                            {% else %}
+                                                {{ product.calculatedAvailability.name }}
+                                            {% endif %}
+                                        </span>
+                                        <br class="box-detail__availability__next-line">
+                                        <span class="box-detail__availability__text">
+                                            {{ 'nebo ihned na '}}
+                                        </span>
+                                        <a href="#" class="box-detail__availability__stores underline-small js-not-implemented-yet">
+                                            10 {{ ' prodejnách'|trans }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-detail-sets__item__add-basket">
+                                <div itemprop="offers"
+                                itemscope
+                                itemtype="http://schema.org/Offer"
+                                class="box-detail-add__prices">
+                                    {# TODO PRG: add sets item data #}
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--main js-not-implemented-yet">
+                                        {{ getProductSellingPrice(product).priceWithVat|price }}
+                                    </div>
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
+                                        {{ '3099 Kč'|trans }}
+                                    </div>
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
+                                        {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
+                                    </div>
+                                </div>
+                                <div class="box-detail-add__club">
+                                    <span class="box-detail-add__club__text">
+                                        {{ 'Nebo'|trans }}
+                                    </span>
+                                    <span class="box-detail-add__club__price js-not-implemented-yet">
+                                        {{ '1 390 Kč'|trans }}
+                                    </span>
+                                    <span class="box-detail-add__club__text">
+                                        {{ 'pro členy'|trans }}
+                                    </span>
+                                    <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
+                                </div>
+                                {# TODO PRG: add sets item data #}
+                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
+                            </div>
+                        </div>
+                        <div class="box-detail-sets__item js-not-implemented-yet">
+                            <div class="box-detail-sets__item__product">
+                                <div class="box-detail-sets__item__product__image">
+                                    <img src="https://placeimg.com/60/60/any" alt="{{ 'Šátek Etna'|trans }}" class="js-not-implemented-yet">
+                                </div>
+                                <div class="box-detail-sets__item__product__info">
+                                    <span class="box-detail-sets__item__product__title">{{ 'Šátek Etna'|trans }}</span>
+                                    <div class="box-detail-sets__item__product__availability">
+                                        <span class="box-detail__availability__status js-not-implemented-yet" style="color: #7bbd70;">
+                                            {% if product.calculatedSellingDenied %}
+                                                {{ 'Product no longer on sale'|trans }}
+                                            {% else %}
+                                                {{ product.calculatedAvailability.name }}
+                                            {% endif %}
+                                        </span>
+                                        <br class="box-detail__availability__next-line">
+                                        <span class="box-detail__availability__text">
+                                            {{ 'nebo ihned na '}}
+                                        </span>
+                                        <a href="#" class="box-detail__availability__stores underline-small js-not-implemented-yet">
+                                            10 {{ ' prodejnách'|trans }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-detail-sets__item__variants">
+                                <div class="box-detail__variants box-detail__variants--in-sets">
+                                    {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
+                                        <div class="box-detail__variants__title">
+                                            {{ 'Vyberte variantu'|trans }}
+                                            <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost'}}</a>
+                                        </div>
+                                        <ul class="list-variants">
+                                            {% for mainVariantGroupProduct in mainVariants %}
+                                                {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
+                                                {% if mainVariantGroupDistinguishingParameterValue is not null %}
+                                                    <li class="list-variants__item js-not-implemented-yet" data-id="{{ mainVariantGroupProduct.id }}">
+                                                        <span class="list-variants__item__name">
+                                                            {{ mainVariantGroupDistinguishingParameterValue.text }}
+                                                        </span>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="box-detail-sets__item__add-basket">
+                                <div itemprop="offers"
+                                itemscope
+                                itemtype="http://schema.org/Offer"
+                                class="box-detail-add__prices">
+                                    {# TODO PRG: add sets item data #}
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--main js-not-implemented-yet">
+                                        {{ getProductSellingPrice(product).priceWithVat|price }}
+                                    </div>
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
+                                        {{ '3099 Kč'|trans }}
+                                    </div>
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
+                                        {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
+                                    </div>
+                                </div>
+                                <div class="box-detail-add__club">
+                                    <span class="box-detail-add__club__text">
+                                        {{ 'Nebo'|trans }}
+                                    </span>
+                                    <span class="box-detail-add__club__price js-not-implemented-yet">
+                                        {{ '1 390 Kč'|trans }}
+                                    </span>
+                                    <span class="box-detail-add__club__text">
+                                        {{ 'pro členy'|trans }}
+                                    </span>
+                                    <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
+                                </div>
+                                {# TODO PRG: add sets item data #}
+                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 {% endif %}
             </div>
         </div>
