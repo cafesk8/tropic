@@ -73,8 +73,10 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            $balikobotShipper = $data['balikobotGroup']['balikobotShipper'];
-            $this->addDependendElement($form, $balikobotShipper);
+            if ((int)$data['balikobotGroup']['balikobot'] === 1) {
+                $balikobotShipper = $data['balikobotGroup']['balikobotShipper'];
+                $this->addDependendElement($form, $balikobotShipper);
+            }
         });
     }
 
@@ -137,6 +139,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             'required' => false,
             'label' => t('Dopravce'),
             'data' => $balikobotShipper,
+            'placeholder' => t('Vyberte dopravce'),
             'choices' => array_flip($this->shipperFacade->getShipperNamesIndexedById()),
             'constraints' => [
                 new Constraints\NotBlank([

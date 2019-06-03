@@ -84,10 +84,6 @@ class PickupPlaceRepository
      */
     public function findActiveBySearchQueryAndTransportType(?string $searchQuery, Transport $transport): array
     {
-        if (empty($searchQuery)) {
-            return [];
-        }
-
         $pickupPlaceQueryBuilder = $this->getPickUpPlaceRepository()->createQueryBuilder('pp');
 
         $normalizedPostCode = str_replace(' ', '', $searchQuery);
@@ -103,8 +99,10 @@ class PickupPlaceRepository
         $pickupPlaceQueryBuilder->andWhere('pp.balikobotShipper = :balikobotShipper')
             ->setParameter('balikobotShipper', $transport->getBalikobotShipper());
 
-        $pickupPlaceQueryBuilder->andWhere('pp.balikobotShipperService = :balikobotShipperService')
-            ->setParameter('balikobotShipperService', $transport->getBalikobotShipperService());
+        if ($transport->getBalikobotShipperService() !== null) {
+            $pickupPlaceQueryBuilder->andWhere('pp.balikobotShipperService = :balikobotShipperService')
+                ->setParameter('balikobotShipperService', $transport->getBalikobotShipperService());
+        }
 
         return $pickupPlaceQueryBuilder->orderBy(
             'NORMALIZE(pp.name), NORMALIZE(pp.city), NORMALIZE(pp.street), pp.postCode'

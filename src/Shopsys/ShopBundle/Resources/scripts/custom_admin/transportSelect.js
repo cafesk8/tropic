@@ -10,13 +10,18 @@
         this.init = function () {
             $shipperSelect.change(function () {
                 var $shipperSelector = $(this);
+                var $shipperSelectorValue = $shipperSelector.val();
+                var data = null;
+                if ($shipperSelectorValue !== '') {
+                    data = { 'shipper': $shipperSelector.val() };
+                }
 
                 Shopsys.ajax({
                     overlayDelay: 0,
                     method: 'GET',
                     loaderElement: $shipperServiceSelect,
                     url: $shipperSelector.data('url'),
-                    data: { 'shipper': $shipperSelector.val() },
+                    data: data,
                     dataType: 'JSON',
                     success: function (data) {
                         $shipperServiceSelect.html('');
