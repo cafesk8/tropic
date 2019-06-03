@@ -11,7 +11,7 @@
                     data-name="{{ pickupPlace.name }}"
                     data-address="{{ pickupPlace.street }}"
             >
-                {% if chosenPickupPlace is same as (pickupPlace) %}
+                {% if chosenPickupPlace is not null and chosenPickupPlace is same as (pickupPlace) %}
                     {{ 'Vybráno'|trans }}
                 {% else %}
                     {{ 'Vybrat'|trans }}

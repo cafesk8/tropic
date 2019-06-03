@@ -38,6 +38,10 @@ class PickupPlaceController extends FrontBaseController
         $chosenPickupPlace = null;
         if ($pickupPlaceId > 0) {
             $chosenPickupPlace = $this->pickupPlaceFacade->getById((int)$pickupPlaceId);
+
+            if (in_array($chosenPickupPlace, $pickupPlaces, true) === false) {
+                $chosenPickupPlace = null;
+            }
         }
 
         return $this->render('@ShopsysShop/Front/Inline/PickupPlace/pickupPlaceSearch.html.twig', [
@@ -68,6 +72,7 @@ class PickupPlaceController extends FrontBaseController
 
         return $this->render('@ShopsysShop/Front/Inline/PickupPlace/autocompleteResult.html.twig', [
             'pickupPlaces' => $pickupPlaces,
+            'chosenPickupPlace' => null,
         ]);
     }
 }

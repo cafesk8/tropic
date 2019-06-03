@@ -45,7 +45,7 @@ class PickupFacade
 
         $data = $this->balikobotClient->request(self::BRANCHES_REQUEST, $shipper, [], $shipperService);
 
-        return $data['branches'];
+        return array_key_exists('branches', $data) ? $data['branches'] : null;
     }
 
     /**

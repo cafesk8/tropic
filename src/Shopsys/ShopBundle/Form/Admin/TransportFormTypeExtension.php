@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints;
 class TransportFormTypeExtension extends AbstractTypeExtension
 {
     const VALIDATION_GROUP_BALIKOBOT = 'balikobot';
+    const VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE = 'balikobot_shipper_service';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade
@@ -92,6 +93,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
 
             if ($transportData->balikobot === true) {
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT;
+                $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE;
             }
 
             return $validationGroups;
@@ -154,6 +156,15 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             $shipperServices = $this->shipperServiceFacade->getServicesForShipper($balikobotShipper);
         }
 
+        $validationGroupForShipperService = [];
+
+        if (count($shipperServices) > 0) {
+            $validationGroupForShipperService[] = new Constraints\NotBlank([
+                'message' => 'Musíte vybrat službu dopravce',
+                'groups' => [self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE],
+            ]);
+        }
+
         $builderBalikobotGroup->add('balikobotShipperService', ChoiceType::class, [
             'required' => false,
             'placeholder' => t('Vyberte prosím službu dopravce'),
@@ -162,6 +173,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             'attr' => [
                 'class' => 'js-transport-select-shipper-service',
             ],
+            'constraints' => $validationGroupForShipperService,
         ]);
     }
 }

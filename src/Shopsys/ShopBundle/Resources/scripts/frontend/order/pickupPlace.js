@@ -84,9 +84,11 @@
             $transportInput.prop('checked', true).change();
         }
 
-        var $pickUpPlaceDetail = $('#transport_and_payment_form_transport .js-pickup-place-detail');
+        $('#transport_and_payment_form_transport .js-pickup-place-detail').addClass('display-none');
 
-        $('.js-pickup-place-detail').addClass('display-none');
+        var $pickUpPlaceDetail = $('#transport_and_payment_form_transport .js-pickup-place-detail-' + $transportInput.data('id'));
+
+        $pickUpPlaceDetail.addClass('display-none');
         $pickUpPlaceDetail.removeClass('display-none')
             .attr('title', $button.data('description'))
             .tooltip('destroy');
@@ -102,7 +104,7 @@
     Shopsys.pickupPlaceSelection.onChangeButtonClick = function () {
         var $button = $(this);
         var $transportContainer = $button.closest('.js-order-transport');
-        var $selectedTransportInput = $transportContainer.find('.js-order-transport-input');
+        var $selectedTransportInput = $transportContainer.find('.js-order-transport-input[data-id=' + $button.data('id') + ']');
 
         Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput);
     };

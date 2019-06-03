@@ -53,12 +53,13 @@
                                 </span>
 
                                 {% if choice.data.isPickupPlace() %}
-                                    <div class="js-pickup-place-detail js-pickup-place-tooltip"
-                                         title="{{ pickupPlace ? pickupPlace.name }}">
+                                    {% set checked = child.vars.checked == true %}
+                                    <div class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
+                                         title="{{ pickupPlace and checked ? pickupPlace.name }}">
                                         <strong class="js-pickup-place-detail-name">
-                                            {{ pickupPlace != null ? pickupPlace.name : '' }}
+                                            {{ pickupPlace != null and checked ? pickupPlace.name : '' }}
                                         </strong>
-                                        <button type="button" class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlace is null %} display-none{% endif %}">
+                                        <button type="button" data-id="{{ choice.data.id }}" class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlace is null or checked == false %} display-none{% endif %}">
                                             {{ 'Vybrat'|trans }}
                                         </button>
                                     </div>
