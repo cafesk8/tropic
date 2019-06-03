@@ -15,7 +15,7 @@
                     {{ noimage({ alt: product.name }) }}
                 {% endif %}
             </div>
-            
+
             {{ productFlags.list(product) }}
 
             {% if showGallery %}
@@ -56,7 +56,8 @@
             <div class="box-detail__info__description">
                 {{ 'Košile Indiana si doslova říká o nějakou výpravu. Díky klasickému zpracování však nehraje roli, jestli to bude dobrodružství městské či výprava do divočiny.'|trans }}
             </div>
-
+            
+            {# TODO PRG: add condition for all variants to display or hide box-datail__variants #}
             <div class="box-detail__variants">
                 {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
                     <div class="box-detail__variants__title">
