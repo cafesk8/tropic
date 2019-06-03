@@ -1,0 +1,87 @@
+@list-discussion-text-font-size: 16px;
+@list-discussion-item-top-gap: 29px;
+@list-discussion-item-bottom-gap: 15px 0 33px 0;
+@list-discussion-item-image-width: 62px;
+@list-discussion-item-image-height: 69px;
+@list-discussion-item-image-gap: 15px;
+@list-discussion-item-reply-gap: 43px;
+
+.list-discussion {
+    &__item {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-bottom: @list-discussion-item-top-gap;
+
+        color: @color-brown;
+        border-bottom: 1px solid @color-gray;
+
+        &--reply {
+            margin-left: @list-discussion-item-reply-gap;
+            width: calc(~"100% - @{list-discussion-item-reply-gap}");
+        }
+
+        &--highlight {
+            border-bottom: 1px solid @color-orange;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &__image {
+            display: flex;
+            position: relative;
+            width: @list-discussion-item-image-width;
+            margin-right: @list-discussion-item-image-gap;
+
+            img {
+                .center-image();
+                max-height: @list-discussion-item-image-height;
+                max-width: @list-discussion-item-image-width;
+                margin-top: 5px;
+            }
+        }
+
+        &__text {
+            display: flex;
+            flex-direction: column;
+            width: calc(~"100% - @{list-discussion-item-image-width}");
+            line-height: 24px;
+            margin-bottom: 5px;
+            font-size: @list-discussion-text-font-size;
+
+        }
+
+        &__bottom {
+            display: flex;
+            flex-direction: column;
+            margin: @list-discussion-item-bottom-gap;
+
+            @media @query-md {
+                flex-direction: row;
+            }
+
+            &__author {
+                padding-right: 14px;
+
+                color: @color-brown-light;
+                font-size: @font-size;
+                font-weight: 700;
+                text-transform: uppercase;
+
+                .list-discussion__item--highlight & {
+                    color: @color-brown;
+                }
+            }
+
+        }
+
+        &__date {
+            display: block;
+
+            color: @color-brown-light;
+            font-size: @font-size;
+        }
+    }
+}
