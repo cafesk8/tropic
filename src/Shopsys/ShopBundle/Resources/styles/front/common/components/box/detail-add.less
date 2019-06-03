@@ -1,17 +1,60 @@
+@box-detail-add-price-font-size-main: 32px;
+
 .box-detail-add {
-    margin-bottom: @margin-gap;
 
     &__prices {
-        margin-bottom: @margin-gap;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        margin-bottom: 6px;
 
         &__item {
             color: @color-price;
+            white-space: nowrap;
+            font-weight: 400;
 
             &--main {
-                font-weight: bold;
-                font-size: 18px;
+                padding-right: 15px;
+
+                font-weight: 700;
+                font-size: @box-detail-add-price-font-size-main;
                 color: @color-price-main;
+            }
+
+            &--old {
+                padding-right: 7px;
+
+                color: @color-price-old;
+                text-decoration: line-through;
+            }
+
+            &--save {
+                color: @color-price-save;
             }
         }
     }
+
+    &__club {
+        margin-bottom: 18px;
+
+        &__price {
+            color: @color-base;
+        }
+
+        &__text {
+            color: @color-brown-light;
+            font-size: 14px;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        &__link {
+            color: @color-brown-light;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+    }
+
 }

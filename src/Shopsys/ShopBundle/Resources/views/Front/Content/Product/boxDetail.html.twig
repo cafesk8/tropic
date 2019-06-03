@@ -97,14 +97,109 @@
             </div>
 
             {% if product.calculatedAvailability %}
-                <div class="box-detail__info__availability">
-                    {% if product.calculatedSellingDenied %}
-                        {{ 'Product no longer on sale'|trans }}
-                    {% else %}
-                        {{ product.calculatedAvailability.name }}
-                    {% endif %}
+                <div class="box-detail__availability">
+                    <span class="box-detail__availability__status js-not-implemented-yet" style="color: #7bbd70;">
+                        {% if product.calculatedSellingDenied %}
+                            {{ 'Product no longer on sale'|trans }}
+                        {% else %}
+                            {{ product.calculatedAvailability.name }}
+                        {% endif %}
+                    </span>
+                    <span class="box-detail__availability__text">
+                        {{ 'nebo ihned na '}}
+                    </span>
+                    <a href="#" class="box-detail__availability__stores underline-small js-not-implemented-yet">
+                        10 {{ ' prodejnách'|trans }}
+                    </a>
                 </div>
             {% endif %}
+
+            <div class="box-detail__add-basket js-product-variant-price-wrapper">
+                {% for variant in variants if variant in product.variants %}
+                    <div class="display-none js-product-variant-price js-product-variant-price-{{ variant.id }}">
+                        {% if not variant.calculatedSellingDenied %}
+                            <div itemprop="offers"
+                            itemscope
+                            itemtype="http://schema.org/Offer"
+                            class="box-detail-add__prices">
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+                                    {{ getProductSellingPrice(variant).priceWithVat|price }}
+                                </div>
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
+                                    {{ '3099 Kč'|trans }}
+                                </div>
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
+                                    {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
+                                </div>
+                                <meta itemprop="priceCurrency"
+                                content="{{ currencyCode(domain.id) }}"
+                                >
+                                <meta itemprop="price"
+                                content="{{ getProductSellingPrice(variant).priceWithVat|moneyFormat }}"
+                                >
+                                <link itemprop="availability"
+                                href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
+                                >
+                            </div>
+                            {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: variant, type: 'large'})) }}
+                        {% else %}
+                            <div>
+                                {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory })}) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if not product.isMainVariant %}
+                    <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
+                        {% if not product.calculatedSellingDenied %}
+                            <div itemprop="offers"
+                                 itemscope
+                                 itemtype="http://schema.org/Offer"
+                                 class="box-detail-add__prices">
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+                                    {{ getProductSellingPrice(product).priceWithVat|price }}
+                                </div>
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
+                                    {{ '3099 Kč'|trans }}
+                                </div>
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
+                                    {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
+                                </div>
+                                <meta itemprop="priceCurrency"
+                                      content="{{ currencyCode(domain.id) }}"
+                                >
+                                <meta itemprop="price"
+                                      content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
+                                >
+                                <link itemprop="availability"
+                                      href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
+                                >
+                            </div>
+                            <div class="box-detail-add__club">
+                                <span class="box-detail-add__club__text">
+                                    {{ 'Nebo'|trans }}
+                                </span>
+                                <span class="box-detail-add__club__price js-not-implemented-yet">
+                                    {{ '1 390 Kč'|trans }}
+                                </span>
+                                <span class="box-detail-add__club__text">
+                                    {{ 'pro členy'|trans }}
+                                </span>
+                                <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
+
+
+                            </div>
+                            {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
+                        {% else %}
+                            <div>
+                                {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory })}) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
             {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
                 <dl class="box-detail__info__params">
                     <dt></dt>
@@ -124,6 +219,7 @@
                     </dd>
                 </dl>
             {% endif %}
+
             {% if product.isMainVariant %}
                 {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
                 {% if allDistinguishingParameterValuesForProducts is not empty %}
@@ -149,70 +245,9 @@
                     </dl>
                 {% endif %}
             {% endif %}
-            {% if not product.isMainVariant %}
-                <div class="js-product-detail-main-add-to-cart-wrapper box-detail-add">
-                    {% if not product.calculatedSellingDenied %}
-                        <div itemprop="offers"
-                             itemscope
-                             itemtype="http://schema.org/Offer"
-                             class="box-detail-add__prices">
-                            <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                {{ getProductSellingPrice(product).priceWithVat|price }}
-                            </div>
-                            <div class="box-detail-add__prices__item">
-                                {{ getProductSellingPrice(product).priceWithoutVat|price }} {{ 'excluding VAT'|trans }}
-                            </div>
-                            <meta itemprop="priceCurrency"
-                                  content="{{ currencyCode(domain.id) }}"
-                            >
-                            <meta itemprop="price"
-                                  content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
-                            >
-                            <link itemprop="availability"
-                                  href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                            >
-                        </div>
-                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
-                    {% else %}
-                        <div>
-                            {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory })}) }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endif %}
-            <div class="js-product-variant-price-wrapper">
-                {% for variant in variants if variant in product.variants %}
-                    <div class="display-none js-product-variant-price js-product-variant-price-{{ variant.id }}">
-                        {% if not variant.calculatedSellingDenied %}
-                            <div itemprop="offers"
-                                 itemscope
-                                 itemtype="http://schema.org/Offer"
-                                 class="box-detail-add__prices">
-                                <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                    {{ getProductSellingPrice(variant).priceWithVat|price }}
-                                </div>
-                                <div class="box-detail-add__prices__item">
-                                    {{ getProductSellingPrice(variant).priceWithoutVat|price }} {{ 'excluding VAT'|trans }}
-                                </div>
-                                <meta itemprop="priceCurrency"
-                                      content="{{ currencyCode(domain.id) }}"
-                                >
-                                <meta itemprop="price"
-                                      content="{{ getProductSellingPrice(variant).priceWithVat|moneyFormat }}"
-                                >
-                                <link itemprop="availability"
-                                      href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                >
-                            </div>
-                            {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: variant, type: 'large'})) }}
-                        {% else %}
-                            <div>
-                                {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory })}) }}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
+
+
+
 
             {% spaceless %}
                 <dl class="box-detail__info__params">

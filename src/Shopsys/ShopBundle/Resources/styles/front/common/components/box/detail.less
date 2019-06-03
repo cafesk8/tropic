@@ -7,7 +7,7 @@
 @box-detail-image-min-height: 250px;
 
 @box-detail-params-column-count: 3px;
-@box-detail-params-padding: 30px;
+@box-detail-info-padding: 30px;
 
 .box-detail {
     display: flex;
@@ -63,12 +63,6 @@
             color: @color-brown;
             font-size: 18px;
         }
-
-        &__availability {
-            margin-bottom: @margin-gap;
-
-            font-weight: bold;
-        }
     }
 
     &__variants {
@@ -100,6 +94,44 @@
         }
     }
 
+    &__availability {
+        padding: @box-detail-info-padding/2 @box-detail-info-padding;
+
+        font-weight: bold;
+        background: @color-f;
+        border: solid @color-gray;
+        border-width: 0 3px 1px 3px;
+
+        &__status {
+            font-size: 18px;
+            white-space: nowrap;
+        }
+
+        &__text {
+            color: @color-brown;
+            font-size: 14px;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        &__stores {
+            color: @color-brown-light;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+    }
+
+    &__add-basket {
+        padding: @box-detail-info-padding;
+
+        font-weight: bold;
+        background: @color-f;
+        border: solid @color-gray;
+        border-width: 0 3px 3px 3px;
+    }
+
     &__content {
         width: 100%;
 
@@ -111,7 +143,7 @@
     &__params {
         display: flex;
         flex-direction: column;
-        padding: @box-detail-params-padding;
+        padding: @box-detail-info-padding;
         margin-bottom: 50px;
 
         background-color: @color-gray;
