@@ -46,10 +46,57 @@
             margin-left: @box-detail-info-gap;
         }
 
+        &__title {
+            padding-top: 12px;
+            line-height: 47px;
+            margin-bottom: 20px;
+
+            color: @color-brown;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        &__description {
+            line-height: 30px;
+            margin-bottom: 20px;
+
+            color: @color-brown;
+            font-size: 18px;
+        }
+
         &__availability {
             margin-bottom: @margin-gap;
 
             font-weight: bold;
+        }
+    }
+
+    &__variants {
+        padding: 30px;
+
+        background-color: @color-gray;
+
+        &__title {
+            margin-bottom: 10px;
+
+            color: @color-base;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+
+            &--with-top-gap {
+                margin-top: 30px;
+            }
+
+            &__link {
+                margin-left: 18px;
+
+                color: @color-brown;
+                font-size: 13px;
+                font-weight: 400;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
         }
     }
 

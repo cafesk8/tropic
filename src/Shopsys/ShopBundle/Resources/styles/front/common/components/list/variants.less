@@ -1,0 +1,71 @@
+@list-variants-item-size: 30px;
+@list-variants-item-gap: 10px;
+@list-variants-item-bg: @color-f;
+@list-variants-item-bg-active: @color-green;
+@list-variants-item-border-color: @color-green;
+@list-variants-item-disabled-font-color: #cecdcd;
+
+@list-variants-item-with-image-width: 84px;
+@list-variants-item-with-image-height: 114px;
+@list-variants-item-with-image-picutre-size: 60px;
+
+.list-variants {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &__item {
+        width: @list-variants-item-size;
+        height: @list-variants-item-size;
+        line-height: @list-variants-item-size - 4px;
+        margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
+        text-align: center;
+
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        background-color: @list-variants-item-bg;
+        border: 2px solid @list-variants-item-border-color;
+
+        &.active {
+            color: @color-f;
+            background-color: @list-variants-item-bg-active;
+        }
+
+        &.disabled {
+            color: @list-variants-item-disabled-font-color;
+            background-color: transparent;
+            border: 2px solid @color-gray-dark;
+        }
+
+        &__with-image {
+            padding: 10px 10px 8px 10px;
+            width: @list-variants-item-with-image-width;
+            min-height: @list-variants-item-with-image-height;
+            margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
+            text-align: center;
+
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid @color-gray-dark;
+
+            &.active {
+                background-color: @color-f;
+                border: 2px solid @list-variants-item-border-color;
+            }
+
+            img {
+                max-height: @list-variants-item-with-image-picutre-size;
+                max-width: @list-variants-item-with-image-picutre-size;
+                margin-bottom: 9px;
+            }
+
+            &__name {
+                color: @color-base;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+}

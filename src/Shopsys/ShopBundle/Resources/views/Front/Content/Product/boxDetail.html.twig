@@ -48,9 +48,53 @@
                 {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
             {% endblock %}
 
-            <h1 itemprop="name">
+            <div class="box-detail__info__title" itemprop="name">
                 {{ product.getSeoH1(domain.id)|default(product.name) }}
-            </h1>
+            </div>
+
+            <div class="box-detail__info__description">
+                {{ 'Košile Indiana si doslova říká o nějakou výpravu. Díky klasickému zpracování však nehraje roli, jestli to bude dobrodružství městské či výprava do divočiny.'|trans }}
+            </div>
+
+            <div class="box-detail__variants">
+                <div class="box-detail__variants__title">
+                    {{ 'Vyberte variantu'|trans }}
+                </div>
+
+                <ul class="list-variants">
+                    <li class="list-variants__item__with-image active">
+                        <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}">
+                        <span class="list-variants__item__name">
+                            {{ 'Light Olive'|trans }}
+                        </span>
+                    </li>
+                    <li class="list-variants__item__with-image">
+                        <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}">
+                        <span class="list-variants__item__name">
+                            {{ 'Stone'|trans }}
+                        </span>
+                    </li>
+                    <li class="list-variants__item__with-image">
+                        <img src="https://placeimg.com/60/60/any" alt="{{ 'Light Olive'|trans }}">
+                        <span class="list-variants__item__name">
+                            {{ 'Red Wall'|trans }}
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
+                    {{ 'Vyberte velikost'|trans }}
+                    <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost'}}</a>
+                </div>
+                <ul class="list-variants">
+                    <li class="list-variants__item disabled">34</li>
+                    <li class="list-variants__item active">36</li>
+                    <li class="list-variants__item">38</li>
+                    <li class="list-variants__item">40</li>
+                    <li class="list-variants__item disabled">42</li>
+                    <li class="list-variants__item disabled">44</li>
+                </ul>
+            </div>
 
             {% if product.calculatedAvailability %}
                 <div class="box-detail__info__availability">
