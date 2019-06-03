@@ -1,6 +1,6 @@
 @list-discussion-text-font-size: 16px;
-@list-discussion-item-top-gap: 29px;
-@list-discussion-item-bottom-gap: 15px 0 33px 0;
+@list-discussion-item-bottom-gap: 29px;
+@list-discussion-item-info-gap: 15px 0 33px 0;
 @list-discussion-item-image-width: 62px;
 @list-discussion-item-image-height: 69px;
 @list-discussion-item-image-gap: 15px;
@@ -11,7 +11,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
-        margin-bottom: @list-discussion-item-top-gap;
+        margin-bottom: @list-discussion-item-bottom-gap;
 
         color: @color-brown;
         border-bottom: 1px solid @color-gray;
@@ -53,10 +53,10 @@
 
         }
 
-        &__bottom {
+        &__info {
             display: flex;
             flex-direction: column;
-            margin: @list-discussion-item-bottom-gap;
+            margin: @list-discussion-item-info-gap;
 
             @media @query-md {
                 flex-direction: row;
