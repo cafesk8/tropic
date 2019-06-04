@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Transport\PickupPlace;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 
 class PickupPlaceFacade
@@ -25,15 +26,22 @@ class PickupPlaceFacade
     private $transportFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceRepository $pickupPlaceRepository
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
-    public function __construct(EntityManagerInterface $entityManager, PickupPlaceRepository $pickupPlaceRepository, TransportFacade $transportFacade)
+    public function __construct(EntityManagerInterface $entityManager, PickupPlaceRepository $pickupPlaceRepository, TransportFacade $transportFacade, CountryFacade $countryFacade)
     {
         $this->entityManager = $entityManager;
         $this->pickupPlaceRepository = $pickupPlaceRepository;
         $this->transportFacade = $transportFacade;
+        $this->countryFacade = $countryFacade;
     }
 
     /**
@@ -136,7 +144,8 @@ class PickupPlaceFacade
     public function findActiveBySearchQueryAndTransportId(?string $searchQuery, int $transportId): array
     {
         $transport = $this->transportFacade->getById($transportId);
-        return $this->pickupPlaceRepository->findActiveBySearchQueryAndTransportType($searchQuery, $transport);
+        $countryCodesForCurrentDomain = $this->countryFacade->getAllCodesForDomainInArray();
+        return $this->pickupPlaceRepository->findActiveBySearchQueryAndTransportType($searchQuery, $transport, $countryCodesForCurrentDomain);
     }
 
     /**
@@ -146,6 +155,7 @@ class PickupPlaceFacade
     public function getAllForTransportId(int $transportId): array
     {
         $transport = $this->transportFacade->getById($transportId);
-        return $this->pickupPlaceRepository->getAllForTransport($transport);
+        $countryCodesForCurrentDomain = $this->countryFacade->getAllCodesForDomainInArray();
+        return $this->pickupPlaceRepository->getAllForTransportAndCountryCodes($transport, $countryCodesForCurrentDomain);
     }
 }

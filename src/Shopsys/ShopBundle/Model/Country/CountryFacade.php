@@ -30,4 +30,16 @@ class CountryFacade extends BaseCountryFacade
     {
         return $this->countryRepository->getAllCodesInArray();
     }
+
+    /**
+     * @return string[]
+     */
+    public function getAllCodesForDomainInArray(): array
+    {
+        $countries = $this->countryRepository->getAllEnabledByDomainIdWithLocale($this->domain->getId(), $this->domain->getLocale());
+
+        return array_map(static function (Country $country) {
+            return $country->getCode();
+        }, $countries);
+    }
 }

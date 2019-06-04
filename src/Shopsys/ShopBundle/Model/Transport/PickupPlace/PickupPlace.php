@@ -9,6 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(
  *     name="transport_pickup_places",
+ *     indexes={
+ *         @ORM\Index(columns={"balikobot_id"}),
+ *         @ORM\Index(columns={"balikobot_shipper"}),
+ *         @ORM\Index(columns={"balikobot_shipper_service"}),
+ *         @ORM\Index(columns={"country_code"})
+ *     }
  * )
  * @ORM\Entity
  */

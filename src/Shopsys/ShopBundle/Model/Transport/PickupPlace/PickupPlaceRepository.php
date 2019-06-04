@@ -80,9 +80,10 @@ class PickupPlaceRepository
     /**
      * @param string|null $searchQuery
      * @param \Shopsys\ShopBundle\Model\Transport\Transport $transport
+     * @param string[] $countryCodes
      * @return \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace[]
      */
-    public function findActiveBySearchQueryAndTransportType(?string $searchQuery, Transport $transport): array
+    public function findActiveBySearchQueryAndTransportType(?string $searchQuery, Transport $transport, array $countryCodes): array
     {
         $pickupPlaceQueryBuilder = $this->getPickUpPlaceRepository()->createQueryBuilder('pp');
 
@@ -104,6 +105,9 @@ class PickupPlaceRepository
                 ->setParameter('balikobotShipperService', $transport->getBalikobotShipperService());
         }
 
+        $pickupPlaceQueryBuilder->andWhere('pp.countryCode IN (:countryCodes)')
+            ->setParameter('countryCodes', $countryCodes);
+
         return $pickupPlaceQueryBuilder->orderBy(
             'NORMALIZE(pp.name), NORMALIZE(pp.city), NORMALIZE(pp.street), pp.postCode'
         )->getQuery()->execute();
@@ -111,13 +115,15 @@ class PickupPlaceRepository
 
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\Transport $transport
+     * @param string[] $countryCodes
      * @return \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace[]
      */
-    public function getAllForTransport(Transport $transport): array
+    public function getAllForTransportAndCountryCodes(Transport $transport, array $countryCodes): array
     {
         return $this->getPickupPlaceRepository()->findBy([
             'balikobotShipper' => $transport->getBalikobotShipper(),
             'balikobotShipperService' => $transport->getBalikobotShipperService(),
+            'countryCode' => $countryCodes,
         ]);
     }
 }
