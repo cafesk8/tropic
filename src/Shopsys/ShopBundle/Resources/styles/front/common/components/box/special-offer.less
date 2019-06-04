@@ -1,4 +1,4 @@
-@box-special-offer-coloured-width: 57%;
+@box-special-offer-coloured-width: 58%;
 @box-special-offer-gap: 20px;
 @box-special-offer-bottom-gap: 90px;
 @box-special-offer-coloured-bg: @color-orange;
@@ -43,6 +43,7 @@
             line-height: 56px;
 
             font-size: 30px;
+            letter-spacing: 1.5px;
         }
 
         &__title {
@@ -51,6 +52,7 @@
 
             font-size: 60px;
             font-weight: bold;
+            letter-spacing: 3px;
         }
 
         &__button {
@@ -66,7 +68,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: 48px 0 0 134px;
+        padding: 48px 0 0 138px;
 
         background-color: @box-special-offer-grayscale-bg;
 
@@ -88,6 +90,12 @@
 
         &__title {
             display: inline-block;
+            margin-bottom: 40px;
+
+            @media @query-lg {
+                padding-left: 26px;
+                padding-top: 5px;
+            }
 
             &__text {
                 color: @color-base;
@@ -102,7 +110,6 @@
         .reset-ul();
         display: flex;
         flex-direction: column;
-        margin-top: 32px;
 
         &__item {
             display: flex;

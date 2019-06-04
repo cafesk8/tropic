@@ -15,7 +15,7 @@
     border-top-right-radius: @radius;
 
     @media @query-vl {
-        margin-top: 0;
+        margin-top: 2px;
     }
 
     &:hover {
@@ -23,12 +23,12 @@
         margin-bottom: -@header-all-categories-submenu-top;
         padding-top: 7px;
         padding-bottom: @header-all-categories-submenu-top;
-        
+
         background: @color-gray;
 
         @media @query-vl {
-            margin-top: -7px;
-    }
+            margin-top: -5px;
+        }
     }
 
     &__title {
@@ -40,7 +40,6 @@
 
         color: @color-brown-light-2;
         font-size: 13px;
-        letter-spacing: -0.5px;
         text-transform: uppercase;
     }
 
@@ -48,15 +47,15 @@
         .svg;
         .svg-triangle;
         position: absolute;
-        right: 16px;
-        top: calc(~"50% - @{header-all-categories-arrow-size}/2");
+        right: 25px;
+        top: calc(~"50% - @{header-all-categories-arrow-size}/2 + 2px");
 
         border-top-right-radius: @radius;
         border-top-left-radius: @radius;
         font-size: @header-all-categories-arrow-size;
 
         .all-categories:hover & {
-            top: calc(~"50% - @{header-all-categories-arrow-size}/2 - 6px");
+            top: calc(~"50% - @{header-all-categories-arrow-size}/2 - 4px");
         }
     }
 

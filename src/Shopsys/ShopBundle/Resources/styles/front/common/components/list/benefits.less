@@ -1,5 +1,5 @@
 @list-benefits-count: 3;
-@list-benefits-gap: 50px;
+@list-benefits-gap: 27px 0 50px 0;
 @list-benefits-icon-size: 50px;
 @list-benefits-width-mobile: 280px;
 
@@ -13,7 +13,7 @@
     @media @query-lg {
         flex-direction: row;
         width: 100%;
-        margin: @list-benefits-gap 0;
+        margin: @list-benefits-gap;
     }
 
     &__item {
@@ -26,7 +26,20 @@
         @media @query-lg {
             width: calc(~"@{calc-base}/@{list-benefits-count}");
             margin-bottom: 0;
+
+            &:nth-child(1){
+                padding-left: 16px;
+            }
+
+            &:nth-child(2){
+                padding-left: 50px;
+            }
+
+            &:nth-child(3){
+                padding-left: 78px;
+            }
         }
+
 
         &__icon {
             width: @list-benefits-icon-size;

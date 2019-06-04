@@ -10,7 +10,7 @@
     font-size: 0;
 
     @media @query-vl {
-        width: calc(~"100% - @{header-all-categories-link-width}");
+        width: calc(~"100% - (@{header-all-categories-link-width} + 30px)");
     }
 
     &__item {
@@ -32,7 +32,7 @@
         }
 
         &:last-child {
-            margin-right: @menu-item-gap/2;
+            margin-right: 0;
         }
     }
 }
