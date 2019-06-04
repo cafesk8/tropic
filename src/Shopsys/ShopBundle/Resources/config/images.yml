@@ -39,8 +39,8 @@
     class: Shopsys\FrameworkBundle\Model\Category\Category
     sizes:
         -   name: ~
-            width: 30
-            height: 30
+            width: 380
+            height: 290
             crop: false
             occurrence: 'Front-end: Product list by category'
 
