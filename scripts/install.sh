@@ -47,6 +47,7 @@ case "$operatingSystem" in
 
         echo "You will be asked to enter sudo password in case to allow second domain alias in your system config.."
         sudo ifconfig lo0 alias 127.0.0.2 up
+        sudo ifconfig lo0 alias 127.0.0.3 up
 
         mkdir -p ${projectPathPrefix}var/postgres-data ${projectPathPrefix}var/elasticsearch-data vendor
         docker-sync start

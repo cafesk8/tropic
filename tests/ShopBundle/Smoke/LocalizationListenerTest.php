@@ -21,7 +21,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Katalogové číslo")')->count()
+            $crawler->filter('html:contains("Vložit do košíku")')->count()
         );
     }
 
@@ -43,7 +43,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Catalogue number")')->count()
+            $crawler->filter('html:contains("Add to cart")')->count()
         );
     }
 
@@ -65,7 +65,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Catalogue number")')->count()
+            $crawler->filter('html:contains("Add to cart")')->count()
         );
     }
 }
