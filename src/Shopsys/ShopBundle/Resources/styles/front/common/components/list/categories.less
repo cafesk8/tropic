@@ -1,5 +1,3 @@
-@list-categories-small-item-height: 233px;
-@list-categories-small-item-count-row: 2;
 @list-categories-item-gap: 16px;
 @list-categories-item-button-position: 45px;
 @list-categories-item-button-position-small: 21px;
@@ -22,9 +20,15 @@
 
     &__item {
         display: inline-block;
-        width: calc(~"@{calc-base}/@{list-categories-columns-count}");
+        width: 100%;
+        margin-bottom: 2*@list-categories-item-gap;
         float: left;
         text-align: center;
+
+        @media @query-lg {
+            width: calc(~"@{calc-base}/@{list-categories-columns-count}");
+            margin-right: 0;
+        }
 
         img {
             margin: 0 auto;
@@ -34,16 +38,23 @@
         &__text {
             display: inline-block;
             line-height: 36px;
-            text-align: left;
-            padding: 25px 50px 0 50px;
-
+            padding: 0 50px 0 50px;
+            text-align: center;
             color: @color-brown;
             font-size: 24px;
             font-weight: 700;
 
+            @media @query-lg {
+                text-align: left;
+                padding-top: 25px;
+            }
+
             &--text-right {
-                text-align: right;
-                padding-left: 66px;
+                @media @query-lg {
+                    text-align: right;
+                    padding-top: 25px;
+                    padding-left: 66px;
+                }
             }
         }
     }

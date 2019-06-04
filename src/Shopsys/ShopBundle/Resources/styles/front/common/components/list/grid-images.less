@@ -88,9 +88,15 @@
 
         &__item {
             display: inline-block;
-            width: calc(~"@{calc-base}/@{grid-images-columns-count}");
             float: left;
+            width: 100%;
+            margin-bottom: 2*@grid-images-item-gap;
             text-align: center;
+
+            @media @query-lg {
+                width: calc(~"@{calc-base}/@{grid-images-columns-count}");
+                margin-bottom: 0;
+            }
 
             img {
                 margin: 0 auto;
