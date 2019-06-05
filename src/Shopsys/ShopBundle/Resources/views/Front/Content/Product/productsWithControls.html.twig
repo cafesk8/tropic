@@ -3,16 +3,12 @@
 
 {% if paginationResult.results|length > 0 %}
     <div class="js-product-list-with-paginator">
-        {% set entityName = 'products'|trans %}
-        {{ paginator.paginatorNavigation(paginationResult, entityName) }}
 
         {{ productList.list(paginationResult.results) }}
 
         <div class="text-center margin-bottom-20">
             {{ paginator.loadMoreButton(paginationResult) }}
         </div>
-
-        {{ paginator.paginatorNavigation(paginationResult, entityName) }}
     </div>
 {% else %}
     <div class="in-message in-message--info margin-bottom-20">
