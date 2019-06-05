@@ -68,7 +68,7 @@
         {% if visibleChildren is not empty %}
             <h2>{{ 'List of subcategories'|trans }}</h2>
 
-            {{ render(controller('ShopsysShopBundle:Front/Category:categoryList', {categories: visibleChildren})) }}
+            {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
         {% endif %}
         <div class="web__line">
             <div class="web__container web__container--big-padding">

@@ -14,7 +14,7 @@
 {% block main_content %}
     <h1>{{ 'Search results for "%searchText%"'|trans({ '%searchText%': searchText }) }}</h1>
 
-    {{ render(controller('ShopsysShopBundle:Front/Category:categoryList', {categories: foundCategories})) }}
+    {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories} %}
 
     <div class="js-product-list-with-filter">
         {% if paginationResult.results|length > 0 or filterFormSubmited %}

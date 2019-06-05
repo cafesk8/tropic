@@ -58,7 +58,7 @@
                     </ul>
                 </div>
 
-                {{ render(controller('ShopsysShopBundle:Front/Category:categoryList', {categories: visibleChildren})) }}
+                {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
             </div>
         </div>
     </div>
