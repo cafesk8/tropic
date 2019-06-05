@@ -2,7 +2,8 @@
     {% for orderingModeId, orderingModeName in orderingModesNames %}
         <a
             href="#"
-            class="box-order-type__item js-product-list-ordering-mode {{ activeOrderingModeId == orderingModeId ? 'active' }}"
+            class="box-order-type__item js-product-list-ordering-mode
+            {{ activeOrderingModeId == orderingModeId ? 'active' : 'underline-small' }}"
             data-cookie-name="{{ cookieName }}"
             data-ordering-mode="{{ orderingModeId }}"
         >
