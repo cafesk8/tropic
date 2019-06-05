@@ -20,40 +20,81 @@
 {% block main_content %}
     <div class="box-list">
         {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'productList'})) }}
-        <h1>
+        <h1 class="box-list__title">
             {{ category.getSeoH1(domain.id)|default(category.name) }}
         </h1>
+
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <ul class="list-grid-images__category-advantages">
+                    <li class="list-grid-images__category-advantages__item">
+                        <img class="list-grid-images__category-advantages__item__image left" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
+                        <div class="list-grid-images__category-advantages__item__button right">
+                            <span class="double-lined">
+                                {{ 'Praktické'|trans }}
+                            </span>
+                        </div>
+                    </li>
+                    <li class="list-grid-images__category-advantages__item">
+                        <img class="list-grid-images__category-advantages__item__image center" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
+                        <div class="list-grid-images__category-advantages__item__button center">
+                            <span class="double-lined">
+                                {{ 'Zipy, které vydrží'|trans }}
+                            </span>
+                        </div>
+                    </li>
+                    <li class="list-grid-images__category-advantages__item left">
+                        <img class="list-grid-images__category-advantages__item__image right" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
+                        <div class="list-grid-images__category-advantages__item__button left">
+                            <span class="double-lined">
+                                {{ 'Roky ověřené'|trans }}
+                            </span>
+                        </div>
+                    </li>
+                    <li class="list-grid-images__category-advantages__item center">
+                        <img class="list-grid-images__category-advantages__item__image center" src="https://placeimg.com/285/100/any" class="" alt="Pro pořádné chlapy">
+                        <div class="list-grid-images__category-advantages__item__button center">
+                            <span class="double-lined">
+                                {{ 'Praktické a stylové'|trans }}
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         {% if visibleChildren is not empty %}
             <h2>{{ 'List of subcategories'|trans }}</h2>
 
             {{ render(controller('ShopsysShopBundle:Front/Category:categoryList', {categories: visibleChildren})) }}
         {% endif %}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div class="box-list__wrap js-product-list-with-filter">
+                    {% if paginationResult.results|length > 0 or filterFormSubmited %}
+                        <div class="box-list__panel">
+                            <div class="box-filter js-product-filter">
+                                {{ productFilterForm.filterForm(
+                                    filterForm,
+                                    url('front_product_list', { id: category.id }),
+                                    url('front_product_list', { id: category.id }),
+                                    null,
+                                    'product_list',
+                                    productFilterCountData,
+                                    priceRange
+                                ) }}
+                            </div>
+                        </div>
+                    {% endif %}
 
-        {{ render(controller('ShopsysShopBundle:Front/BestsellingProduct:list', { category: category })) }}
-
-        <div class="js-product-list-with-filter">
-            {% if paginationResult.results|length > 0 or filterFormSubmited %}
-                <div class="box-filter js-product-filter">
-                    {{ productFilterForm.filterForm(
-                        filterForm,
-                        url('front_product_list', { id: category.id }),
-                        url('front_product_list', { id: category.id }),
-                        null,
-                        'product_list',
-                        productFilterCountData,
-                        priceRange
-                    ) }}
+                    <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
+                        {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
+                        {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited} %}
+                    </div>
                 </div>
-            {% endif %}
-
-            <div class="js-product-list-ajax-filter-products-with-controls">
-                <div>
-                    {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
-                </div>
-                {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited} %}
             </div>
         </div>
-
+        
         <div class="box-list__description">
             <div class="js-category-description box-list__description__text in-user-text">
                 {{ category.getDescription(domain.id)|raw }}
