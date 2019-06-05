@@ -5,7 +5,7 @@
 @box-list-title-margin-bottom: 25px;
 
 @box-list-panel-width: 261px;
-@box-list-panel-gap: 39px;
+@box-list-panel-gap: 49px;
 
 .box-list {
     &__title {
@@ -24,8 +24,8 @@
     }
 
     &__panel {
-        width: @box-list-panel-width;
-        margin-right: @box-list-panel-gap;
+        width: @box-list-panel-width + @box-list-panel-gap;
+        padding-right: @box-list-panel-gap;
     }
 
     &__description {

@@ -15,6 +15,10 @@
     flex-direction: row;
     flex-wrap: wrap;
 
+    &--filter {
+        margin-right: -@list-variants-item-gap;
+    }
+
     &__item {
         width: @list-variants-item-size;
         height: @list-variants-item-size;
@@ -25,6 +29,7 @@
         font-size: 13px;
         font-weight: 700;
         cursor: pointer;
+        color: @color-brown-light-2;
         background-color: @list-variants-item-bg;
         border: 2px solid @list-variants-item-border-color;
 
@@ -64,6 +69,29 @@
                 color: @color-base;
                 font-size: 14px;
                 font-weight: 400;
+            }
+        }
+    }
+
+    &__item-color {
+        width: @list-variants-item-size;
+        height: @list-variants-item-size;
+        line-height: @list-variants-item-size - 4px;
+        margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
+        text-align: center;
+
+        .svg {
+            display: none;
+            color: @color-f;
+            line-height: 24px;
+
+            font-size: 20px;
+            text-shadow: 0px 0px 2px @color-0;
+        }
+
+        &.active {
+            .svg {
+                display: block;
             }
         }
     }
