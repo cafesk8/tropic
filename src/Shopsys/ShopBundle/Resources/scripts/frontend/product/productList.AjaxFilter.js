@@ -26,15 +26,15 @@
                 return false;
             });
 
-            /* TODO PRG: on button click set left panel position to bottom of button */ 
+            /* TODO PRG: on button click set left panel position to bottom of button */
             $mobilelFilterOpener.click(function () {
                 var $productListPanel = $('.js-product-list-panel');
                 var $productListFilter = $('.js-product-filter');
                 var position = $mobilelFilterOpener.offset();
                 var newPosition = position.top - 33;
-                $productListPanel.toggleClass("active");
-                $productListFilter.toggleClass("active-mobile");
-                $productListPanel.css({"top": newPosition});
+                $productListPanel.toggleClass('active');
+                $productListFilter.toggleClass('active-mobile');
+                $productListPanel.css({ 'top': newPosition });
                 return false;
             });
 
@@ -52,10 +52,6 @@
 
             updateFiltersDisabled();
         };
-
-        var filterPosition = function () {
-
-        }
 
         var showProducts = function ($wrappedData) {
             var $productsHtml = $wrappedData.find('.js-product-list-ajax-filter-products-with-controls');
