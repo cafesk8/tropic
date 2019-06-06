@@ -65,19 +65,19 @@
         </div>
         <div class="box-filter__choice">
             <label class="form-choice">
-                <span class="form-choice__input">
-                    {{ form_widget(filterForm.inStock) }}
-                </span>
-                <span class="form-choice__label">
-                    {{ 'Products in stock only'|trans }}
-                    {% if productFilterCountData is not null %}
-                        <span
-                            class="js-product-filter-count"
-                            data-form-id="{{ filterForm.inStock.vars.id }}"
-                        >
-                            ({{ productFilterCountData.countInStock }})
-                        </span>
-                    {% endif %}
+                <span class="form-choice__line">
+                    {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox'}}) }}
+                    <span class="css-label-checkbox">
+                        {{ 'Products in stock only'|trans }}
+                        {% if productFilterCountData is not null %}
+                            <span
+                                class="js-product-filter-count"
+                                data-form-id="{{ filterForm.inStock.vars.id }}"
+                            >
+                                ({{ productFilterCountData.countInStock }})
+                            </span>
+                        {% endif %}
+                    </span>
                 </span>
             </label>
         </div>
