@@ -25,16 +25,31 @@
 
     &__panel {
         display: none;
+        position: absolute;
 
         @media @query-vl {
             display: block;
+            position: relative;
             width: @box-list-panel-width + @box-list-panel-gap;
             padding-right: @box-list-panel-gap;
+        }
+
+        &.active {
+            display: block;
+            z-index: @z-index-menu;
         }
     }
 
     &__content {
         width: 100%;
+    }
+
+    &__filter-opener {
+        text-align: center;
+
+        @media @query-vl {
+            display: none;
+        }
     }
 
     &__description {

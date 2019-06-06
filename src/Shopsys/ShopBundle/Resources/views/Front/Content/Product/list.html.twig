@@ -74,7 +74,7 @@
             <div class="web__container web__container--big-padding">
                 <div class="box-list__wrap js-product-list-with-filter">
                     {% if paginationResult.results|length > 0 or filterFormSubmited %}
-                        <div class="box-list__panel">
+                        <div class="box-list__panel js-product-list-panel">
                             <div class="box-filter js-product-filter">
                                 {{ productFilterForm.filterForm(
                                     filterForm,

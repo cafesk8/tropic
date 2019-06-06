@@ -14,6 +14,10 @@
     border: 3px solid @color-gray;
     background-color: @color-gray;
 
+    &.active-mobile {
+        width: calc(~"100% - @{web-padding}");
+    }
+
     &__title {
         display: block;
         margin-bottom: @box-filter-title-bottom-gap;
