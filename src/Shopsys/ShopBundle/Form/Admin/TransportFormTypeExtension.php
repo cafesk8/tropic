@@ -149,7 +149,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             ],
             'attr' => [
                 'data-url' => $this->currentDomainRouter->generate('admin_transport_listbalikobotshipperservices'),
-                'class' => 'js-transport-select-shipper',
+                'class' => 'js-transport-select-shipper js-transport-depend-on-balikobot',
             ],
         ]);
 
@@ -160,21 +160,24 @@ class TransportFormTypeExtension extends AbstractTypeExtension
         }
 
         $validationGroupForShipperService = [];
+        $placeholderMessage = t('Výchozí služba dopravce');
 
         if (count($shipperServices) > 0) {
             $validationGroupForShipperService[] = new Constraints\NotBlank([
                 'message' => 'Musíte vybrat službu dopravce',
                 'groups' => [self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE],
             ]);
+
+            $placeholderMessage = t('Vyberte prosím službu dopravce');
         }
 
         $builderBalikobotGroup->add('balikobotShipperService', ChoiceType::class, [
             'required' => false,
-            'placeholder' => t('Vyberte prosím službu dopravce'),
+            'placeholder' => $placeholderMessage,
             'label' => t('Služba dopravce'),
             'choices' => array_flip($shipperServices),
             'attr' => [
-                'class' => 'js-transport-select-shipper-service',
+                'class' => 'js-transport-select-shipper-service js-transport-depend-on-balikobot',
             ],
             'constraints' => $validationGroupForShipperService,
         ]);

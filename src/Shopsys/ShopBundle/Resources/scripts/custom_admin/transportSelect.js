@@ -6,8 +6,12 @@
     Shopsys.transportSelect.TransportSelect = function ($container) {
         var $shipperSelect = $container.filterAllNodes('.js-transport-select-shipper');
         var $shipperServiceSelect = $container.filterAllNodes('.js-transport-select-shipper-service');
+        var $transportForm = $container.filterAllNodes('form[name=transport_form]');
 
         this.init = function () {
+            this.reloadDependendInputs();
+            $transportForm.find('#transport_form_balikobotGroup_balikobot').on('change', this.reloadDependendInputs);
+
             $shipperSelect.change(function () {
                 var $shipperSelector = $(this);
                 var $shipperSelectorValue = $shipperSelector.val();
@@ -27,7 +31,11 @@
                         $shipperServiceSelect.html('');
                         var $option = $($.parseHTML('<option/>'));
 
-                        $shipperServiceSelect.append($option.clone().val('').text(Shopsys.translator.trans('Vyberte službu dopravce')));
+                        if (data.length > 0) {
+                            $shipperServiceSelect.append($option.clone().val('').text(Shopsys.translator.trans('Vyberte službu dopravce')));
+                        } else {
+                            $shipperServiceSelect.append($option.clone().val('').text(Shopsys.translator.trans('Výchozí služba dopravce')));
+                        }
                         $.each(data, function (key, data) {
                             $shipperServiceSelect.append($option.clone().val(data.id).text(data.name));
                         });
@@ -35,6 +43,14 @@
                     }
                 });
             });
+        };
+
+        this.reloadDependendInputs = function () {
+            if ($transportForm.find('#transport_form_balikobotGroup_balikobot_yes').is(':checked')) {
+                $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').removeClass('display-none');
+            } else {
+                $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').addClass('display-none');
+            }
         };
     };
 
