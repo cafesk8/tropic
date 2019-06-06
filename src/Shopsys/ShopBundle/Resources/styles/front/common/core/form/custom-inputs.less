@@ -2,7 +2,17 @@
 @custom-inputs-filter-margin-left: 25px;
 
 input[type=checkbox].css-checkbox, input[type=checkbox].css-radio, input[type=radio].css-radio, input[type=radio].css-checkbox {
-	position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
+	position:absolute;
+	height:1px;
+	width:1px;
+	left:-1000px;
+	margin:-1px;
+	padding:0;
+	z-index:-1000;
+
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	border:0;
 }
 
 input[type=checkbox].css-checkbox + .css-label-checkbox, input[type=checkbox].css-checkbox + .css-label-checkbox.clr,
@@ -15,15 +25,16 @@ input[type=radio].css-radio + .css-label-radio, input[type=radio].css-radio + .c
 	vertical-align: middle;
 	padding-left: @custom-inputs-margin-left;
 	line-height: 18px;
+
 	font-size: 18px;
 	cursor: pointer;
 
 	&:before {
 		content: "";
 		position: absolute;
+		display: inline-block;
 		top: 0;
 		left: 0;
-		display: inline-block;
 		width: 18px;
 		height: 18px;
 
