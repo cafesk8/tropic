@@ -54,7 +54,7 @@
 
         &__in {
             position: relative;
-            padding: 0 @list-products-item-padding 0px @list-products-item-padding;
+            padding: 0 @list-products-item-padding;
         }
 
         &__block {
@@ -97,10 +97,14 @@
             }
 
             &__availability {
-                margin-bottom: 7px;
 
                 color: @color-brown-light;
                 font-size: @font-size-extra-small;
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
 
                 &__text {
                     display: block;

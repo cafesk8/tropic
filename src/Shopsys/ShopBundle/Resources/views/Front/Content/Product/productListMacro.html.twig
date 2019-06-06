@@ -43,16 +43,17 @@
                                 <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">M</span>
                                 <span class="in-badge in-badge--product-list in-badge--outline">L</span>
                                 <span class="in-badge in-badge--product-list in-badge--outline">XL</span>
+                                <div class="list-products__item__info__availability__spacer"></div>
+                                <div class="list-products__item__info__availability__text js-not-implemented-yet" style="color: #7bbd70;">
+                                    {{ product.calculatedAvailability.getName }}
+                                </div>
+
+                                <div class="list-products__item__info__availability__stores js-not-implemented-yet" style="color: #7bbd70;">
+                                    {# TODO PRG: do not remove element - only remove text inside if needed#}
+                                    {{ 'K dispozici v Hradci Králové'|trans }}
+                                </div>
                             </div>
 
-                            <div class="list-products__item__info__availability__text js-not-implemented-yet" style="color: #7bbd70;">
-                                {{ product.calculatedAvailability.getName }}
-                            </div>
-
-                            <div class="list-products__item__info__availability__stores js-not-implemented-yet" style="color: #7bbd70;">
-                                {# TODO PRG: do not remove element - only remove text inside if needed#}
-                                {{ 'K dispozici v Hradci Králové'|trans }}
-                            </div>
 
                             <div class="list-products__item__variants">
                                 <div class="list-products__item__variants__image">
