@@ -52,6 +52,10 @@
 
         @media @query-xl {
             width: calc(~"@{calc-base}/@{list-products-item-count-xl} - @{list-products-item-gap}*2");
+
+            &--doubled {
+                width: calc(~"(@{calc-base}/@{list-products-item-count-xl} - @{list-products-item-gap}*2)*2");
+            }
         }
 
         &:hover {
