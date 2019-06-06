@@ -15,27 +15,30 @@
     <h1>{{ 'Search results for "%searchText%"'|trans({ '%searchText%': searchText }) }}</h1>
 
     {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories} %}
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <div class="box-list__wrap js-product-list-with-filter">
+                {% if paginationResult.results|length > 0 or filterFormSubmited %}
+                    <div class="box-list__panel">
+                        <div class="box-filter js-product-filter">
+                            {{ productFilterForm.filterForm(
+                                filterForm,
+                                url('front_product_search'),
+                                url('front_product_search', { (SEARCH_TEXT_PARAMETER) : searchText }),
+                                searchText,
+                                'search',
+                                productFilterCountData,
+                                priceRange
+                            ) }}
+                        </div>
+                    </div>
+                {% endif %}
 
-    <div class="js-product-list-with-filter">
-        {% if paginationResult.results|length > 0 or filterFormSubmited %}
-            <div class="box-filter js-product-filter">
-                {{ productFilterForm.filterForm(
-                    filterForm,
-                    url('front_product_search'),
-                    url('front_product_search', { (SEARCH_TEXT_PARAMETER) : searchText }),
-                    searchText,
-                    'search',
-                    productFilterCountData,
-                    priceRange
-                ) }}
+                <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
+                    {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForSearch')) }}
+                    {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited, searchText: searchText} %}
+                </div>
             </div>
-        {% endif %}
-
-        <div class="js-product-list-ajax-filter-products-with-controls">
-            <div>
-                {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForSearch')) }}
-            </div>
-            {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited, searchText: searchText} %}
         </div>
     </div>
 {% endblock %}
