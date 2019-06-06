@@ -1,23 +1,35 @@
 @box-order-type-bottom-gap: 30px;
 @box-order-type-font-size: 13px;
 @box-order-type-item-gap: 38px;
+@box-order-type-item-height: 40px;
 
 .box-order-type {
     .clearfix();
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: flex-start;
     margin-bottom: @box-order-type-bottom-gap;
+
+    @media @query-lg {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
 
     &__item {
         float: left;
-        margin-left: @box-order-type-item-gap;
+        margin-left: 0;
+        margin-bottom: 10px;
 
         color: @color-brown;
         font-size: @box-order-type-font-size;
         font-weight: 700;
         text-transform: uppercase;
         text-decoration: none;
+
+        @media @query-lg {
+            margin-left: @box-order-type-item-gap;
+            margin-bottom: 0;
+        }
 
         &.active {
             margin-top: -2px;
