@@ -13,8 +13,8 @@
     width: @input-width;
     max-width: 100%;
     height: @input-height;
-    line-height: @input-height - 2;
-    padding: 0 @input-padding-horizontal;
+    line-height: @input-height/2;
+    padding: 15px @input-padding-horizontal 0 @input-padding-horizontal;
 
     border: 1px solid @input-border-color;
     color: @color-brown-light;
@@ -24,11 +24,21 @@
     &--big {
         height: 60px;
         padding-top: 20px;
-
     }
 
     & + .input--big {
         border-top: 0;
+    }
+
+    &__label {
+        position: relative;
+        bottom: -25px;
+        left: 15px;
+
+        color: @color-brown-light;
+        font-size: @font-size;
+        text-transform: uppercase;
+        z-index: 1;
     }
 
     &--textarea {
