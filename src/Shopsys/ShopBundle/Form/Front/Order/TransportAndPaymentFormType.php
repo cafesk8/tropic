@@ -10,7 +10,9 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -40,21 +42,29 @@ class TransportAndPaymentFormType extends AbstractType
     private $goPayBankSwiftFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer
+     */
+    private $pickupPlaceIdToEntityTransformer;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
+     * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer
      */
     public function __construct(
         TransportFacade $transportFacade,
         PaymentFacade $paymentFacade,
         CurrencyFacade $currencyFacade,
-        GoPayBankSwiftFacade $goPayBankSwiftFacade
+        GoPayBankSwiftFacade $goPayBankSwiftFacade,
+        PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
         $this->currencyFacade = $currencyFacade;
         $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
+        $this->pickupPlaceIdToEntityTransformer = $pickupPlaceIdToEntityTransformer;
     }
 
     /**
@@ -91,6 +101,11 @@ class TransportAndPaymentFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
             ])
+            ->add(
+                $builder
+                    ->create('pickupPlace', HiddenType::class)
+                    ->addModelTransformer($this->pickupPlaceIdToEntityTransformer)
+            )
             ->add('save', SubmitType::class);
     }
 

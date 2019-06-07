@@ -7,6 +7,9 @@
                 validateTransportPaymentRelation: function () {
                     // JS validation is not necessary as it is not possible to select
                     // an invalid combination of transport and payment.
+                },
+                validatePickupPlaceTransport: function () {
+                    // JS validation is not necessary
                 }
             }
         });

@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
+use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
 /**
  * @ORM\Table(name="orders")
@@ -53,6 +54,14 @@ class Order extends BaseOrder
     private $payPalStatus;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace|null
+     *
+     * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace")
+     * @ORM\JoinColumn(nullable=true, name="pickup_place_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $pickupPlace;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -70,6 +79,13 @@ class Order extends BaseOrder
         $this->goPayStatus = $orderData->goPayStatus;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
+
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
+        $transport = $this->transport;
+
+        if ($this->transport !== null && $transport->isPickupPlace()) {
+            $this->pickupPlace = $orderData->pickupPlace;
+        }
     }
 
     /**
@@ -91,6 +107,7 @@ class Order extends BaseOrder
         $this->goPayStatus = $orderData->goPayStatus;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
+        $this->pickupPlace = $orderData->pickupPlace;
 
         return $orderEditResult;
     }
@@ -173,5 +190,13 @@ class Order extends BaseOrder
     public function getPayPalStatus(): ?string
     {
         return $this->payPalStatus;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace|null
+     */
+    public function getPickupPlace(): ?PickupPlace
+    {
+        return $this->pickupPlace;
     }
 }

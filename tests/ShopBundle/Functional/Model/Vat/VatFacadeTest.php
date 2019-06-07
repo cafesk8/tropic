@@ -7,10 +7,10 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\DataFixtures\Demo\PaymentDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\TransportDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\VatDataFixture;
+use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class VatFacadeTest extends TransactionFunctionalTestCase
@@ -20,7 +20,7 @@ class VatFacadeTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade */
         $vatFacade = $this->getContainer()->get(VatFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         /** @var \Shopsys\ShopBundle\Model\Transport\TransportDataFactory $transportDataFactory */
         $transportDataFactory = $this->getContainer()->get(TransportDataFactoryInterface::class);

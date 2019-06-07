@@ -233,6 +233,7 @@ class OrderController extends FrontBaseController
         $form = $orderFlow->createForm();
 
         $payment = $frontOrderFormData->payment;
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = $frontOrderFormData->transport;
 
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
@@ -240,6 +241,19 @@ class OrderController extends FrontBaseController
         $isValid = $orderFlow->isValid($form);
         // FormData are filled during isValid() call
         $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
+
+        if ($transport !== null && $transport->isPickupPlace()) {
+            if ($orderData->pickupPlace !== null) {
+                if ($transport->getBalikobotShipper() !== $orderData->pickupPlace->getBalikobotShipper() ||
+                    $transport->getBalikobotShipperService() !== $orderData->pickupPlace->getBalikobotShipperService()
+                ) {
+                    $orderData->transport = null;
+                    $orderData->pickupPlace = null;
+                    $transport = null;
+                    $form->get('transport')->setData(null);
+                }
+            }
+        }
 
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
@@ -302,6 +316,7 @@ class OrderController extends FrontBaseController
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
             'goPayBankSwifts' => $goPayBankSwifts,
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
+            'pickupPlace' => $orderData->pickupPlace,
         ]);
     }
 

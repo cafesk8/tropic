@@ -6,9 +6,9 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Shopsys\ShopBundle\Model\Transport\Transport;
+use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class PaymentTest extends TransactionFunctionalTestCase
@@ -42,7 +42,7 @@ class PaymentTest extends TransactionFunctionalTestCase
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade */
         $transportFacade = $this->getContainer()->get(TransportFacade::class);
         $transportFacade->deleteById($transport->getId());
 

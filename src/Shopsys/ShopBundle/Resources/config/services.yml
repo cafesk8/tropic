@@ -33,6 +33,16 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductController
 
+    Faker\Generator:
+        factory: [Faker\Factory, create, ]
+        arguments: ['cs_CZ']
+        calls:
+            - [seed, ['%faker.seed%']]
+
+    Shopsys\ShopBundle\Component\Balikobot\BalikobotClient:
+        arguments:
+            - '%balikobot%'
+
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade
         arguments:
@@ -174,3 +184,15 @@ services:
     Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade: '@Shopsys\ShopBundle\Model\Product\ProductVariantFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@Shopsys\ShopBundle\Model\Transport\TransportFacade'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportRepository: '@Shopsys\ShopBundle\Model\Transport\TransportRepository'
+
+    Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade: '@Shopsys\ShopBundle\Component\Cron\CronModuleFacade'
+
+    Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@Shopsys\ShopBundle\Model\Country\CountryFacade'
+
+    Shopsys\FrameworkBundle\Model\Country\CountryRepository: '@Shopsys\ShopBundle\Model\Country\CountryRepository'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation: '@Shopsys\ShopBundle\Model\Transport\TransportVisibilityCalculation'

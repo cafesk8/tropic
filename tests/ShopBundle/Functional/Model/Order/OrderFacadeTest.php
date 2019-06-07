@@ -14,11 +14,11 @@ use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
-use Shopsys\FrameworkBundle\Model\Transport\TransportRepository;
 use Shopsys\ShopBundle\DataFixtures\Demo\CountryDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\CurrencyDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\OrderStatusDataFixture;
 use Shopsys\ShopBundle\Model\Order\OrderData;
+use Shopsys\ShopBundle\Model\Transport\TransportRepository;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class OrderFacadeTest extends TransactionFunctionalTestCase
@@ -35,7 +35,7 @@ class OrderFacadeTest extends TransactionFunctionalTestCase
         $orderRepository = $this->getContainer()->get(OrderRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Transport\TransportRepository $transportRepository */
+        /** @var \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository */
         $transportRepository = $this->getContainer()->get(TransportRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentRepository $paymentRepository */
         $paymentRepository = $this->getContainer()->get(PaymentRepository::class);
