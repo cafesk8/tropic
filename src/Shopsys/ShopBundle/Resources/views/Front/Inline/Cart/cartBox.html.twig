@@ -25,7 +25,7 @@
             {% endif %}
         </a>
         {% if cart is not null %}
-            <div class="box-dropdown__options">
+            <div class="box-dropdown__options box-dropdown__options--basket js-dropdown-options">
                 <div class="js-cart-box-content">
                     {% if renderFlashMessages %}
                         {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}

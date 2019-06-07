@@ -1,22 +1,20 @@
 @box-login-button-height: 50px;
 @box-login-width: 400px;
-@box-login-width-mobile: 220px;
 @box-login-padding: 40px;
 @box-login-padding-mobile: 20px;
 
 @box-login-facebook-bg: #3d57a1;
-@box-login-google-bg: #4186f6;
+@box-login-google-bg: #6657fc;
 @box-login-button-icon-size: 50px;
 
 .box-login {
     display: block;
-    width: @box-login-width-mobile;
+    width: 100%;
     padding: @box-login-padding-mobile;
 
     background: @color-gray;
 
     @media @query-md {
-        width: @box-login-width;
         padding: @box-login-padding;
     }
 
@@ -50,12 +48,13 @@
     }
 
     &__buttons {
+        display: flex;
         flex-direction: column;
         margin-top: 20px;
         width: 100%;
         text-align: center;
 
-        @media @query-md {
+        @media @query-lg {
             flex-direction: row;
             text-align: left;
         }
