@@ -3,6 +3,10 @@ FROM php:7.3-fpm-stretch as base
 ARG project_root=.
 ENV REDIS_PREFIX=''
 ENV ELASTIC_SEARCH_INDEX_PREFIX=''
+ENV S3_API_HOST=''
+ENV S3_API_USERNAME=''
+ENV S3_API_PASSWORD=''
+ENV S3_API_BUCKET_NAME=''
 
 # install required tools
 # git for computing diffs
@@ -120,7 +124,7 @@ COPY --chown=www-data:www-data / /var/www/html
 
 RUN composer install --optimize-autoloader --no-interaction --no-progress --no-dev
 
-RUN php phing composer npm dirs-create assets
+RUN php phing composer npm assets
 
 ########################################################################################################################
 

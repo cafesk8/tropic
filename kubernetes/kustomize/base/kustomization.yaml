@@ -1,22 +1,36 @@
 resources:
--   ../../deployments/elasticsearch.yml
--   ../../deployments/postgres.yml
+-   ../../cron/php-fpm-cron-executor.yml
+-   ../../endpoints/postgres.yml
+-   ../../endpoints/elasticsearch.yml
 -   ../../deployments/redis.yml
 -   ../../deployments/smtp-server.yml
 -   ../../deployments/webserver-php-fpm.yml
+-   ../../deployments/adminer.yml
 -   ../../services/elasticsearch.yml
 -   ../../services/postgres.yml
 -   ../../services/redis.yml
 -   ../../services/smtp-server.yml
 -   ../../services/webserver-php-fpm.yml
+-   ../../services/adminer.yml
 -   ../../ingress.yml
+-   ../../namespace.yml
+namespace: ~
+patches:
+    - ./ingress-patch.yaml
+secretGenerator:
+    -   name: domains-ssl-certificates
+        commands:
+            tls.key: "cat ${DOMAINS_SSL_DIRECTORY}/tls.key"
+            tls.crt: "cat ${DOMAINS_SSL_DIRECTORY}/tls.crt"
+            ca.crt:  "cat ${DOMAINS_SSL_DIRECTORY}/ca.crt"
 configMapGenerator:
-    -   name: postgres-configuration
-        files:
-        -   ../../../docker/postgres/postgres.conf
     -   name: domains-urls
         files:
         -   ../../../app/config/domains_urls.yml
     -   name: parameters
         files:
         -   ../../../app/config/parameters.yml
+
+    -   name: nginx-configuration
+        files:
+        -   ../../../docker/nginx/s3/nginx.conf

@@ -38,6 +38,12 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\UserDataFactory'
 
+    Shopsys\ShopBundle\Model\Localization\Localization:
+        arguments:
+            $adminLocale: '%shopsys.admin_locale%'
+
+    Shopsys\FrameworkBundle\Model\Localization\Localization: '@Shopsys\ShopBundle\Model\Localization\Localization'
+
     Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\OrderDataFactory'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
