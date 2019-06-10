@@ -36,11 +36,6 @@ class RestClient
     /**
      * @var int
      */
-    private $connectionTimeout;
-
-    /**
-     * @var int
-     */
     private $timeout;
 
     /**
@@ -54,13 +49,11 @@ class RestClient
         string $host,
         string $username,
         string $password,
-        int $connectionTimeout = 60,
         int $timeout = 600
     ) {
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
-        $this->connectionTimeout = $connectionTimeout;
         $this->timeout = $timeout;
     }
 
@@ -113,6 +106,7 @@ class RestClient
         $handle = curl_init();
         $headers = [];
         $headers[] = 'Authorization: Basic ' . $this->getToken();
+        $headers[] = 'Cache-Control: no-cache';
 
         curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($handle, CURLOPT_URL, $this->host . $url);
@@ -127,12 +121,13 @@ class RestClient
         curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, $this->connectionTimeout);
         curl_setopt($handle, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($handle, CURLOPT_FAILONERROR, false);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($handle, CURLOPT_ENCODING, '');
+        curl_setopt($handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 
         $response = curl_exec($handle);
+
         if ($response === false) {
             throw new UnexpectedResponseException(
                 sprintf('Response was not received from URL: %s, Method: %s', $url, $method)

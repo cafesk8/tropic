@@ -44,6 +44,12 @@ RUN apt-get install -y \
     autoconf && \
     apt-get clean
 
+RUN apt-get install -y \
+    vim \
+    nano \
+    htop \
+    mc
+
 # "gd" extension needs to have specified jpeg and freetype dir for jpg/jpeg images support
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 

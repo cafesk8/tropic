@@ -10,7 +10,6 @@ class RestClientFactory
      * @param string $host
      * @param string $username
      * @param string $password
-     * @param int $connectionTimeout
      * @param int $timeout
      * @return \Shopsys\ShopBundle\Component\Rest\RestClient
      */
@@ -18,9 +17,8 @@ class RestClientFactory
         string $host,
         string $username,
         string $password,
-        int $connectionTimeout = 60,
-        int $timeout = 600
+        int $timeout = 100000
     ): RestClient {
-        return new RestClient($host, $username, $password, $connectionTimeout, $timeout);
+        return new RestClient($host, $username, $password, $timeout);
     }
 }
