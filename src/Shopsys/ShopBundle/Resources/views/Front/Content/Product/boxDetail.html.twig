@@ -1,6 +1,7 @@
 {% macro productBox(product, variants, productMainCategory, visible, mainVariants) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
+    {% set showGalleryMaxCount = 3 %}
 
     <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
         <div class="box-detail__image">
@@ -19,22 +20,24 @@
             {{ productFlags.list(product) }}
 
             {% if showGallery %}
-                <div class="box-gallery dont-print">
-                    <div class="box-gallery__in">
+                <div class="box-gallery dont-print js-gallery">
+                    <div class="box-gallery__images">
                         {% for galleryImage in galleryImages %}
-                            <div class="box-gallery__item">
+                            <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
                                 <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-gallery__item__link js-gallery-slide-link">
                                     {{ image(galleryImage, {size: 'thumbnail'}) }}
                                 </a>
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="box-gallery__in">
-                        <div class="box-gallery__item box-gallery__item--more">
-                            <a href="#" class="box-gallery__item__link underline js-not-implemented-yet">
-                                {{ 'Další'|trans }} (10)
-                            </a>
-                        </div>
+                    <div class="box-gallery__links">
+                        {% if galleryImages|length > showGalleryMaxCount %}
+                            <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                                <a href="#" class="box-gallery__item__link underline js-not-implemented-yet">
+                                    {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                                </a>
+                            </div>
+                        {% endif %}
                         <div class="box-gallery__item box-gallery__item--video">
                             <a href="#" class="box-gallery__item__link js-not-implemented-yet">
                                 <i class="svg svg-youtube"></i>
