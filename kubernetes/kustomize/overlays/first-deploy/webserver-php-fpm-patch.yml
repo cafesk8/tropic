@@ -4,6 +4,8 @@
         name: init-application
         image: ~
         command: ["sh", "-c", "cd /tmp/source-codes && ./phing clean dirs-create db-import-basic-structure create-domains-data db-migrations product-search-recreate-structure product-search-export-products grunt error-pages-generate warmup"]
+        securityContext:
+            runAsUser: 33
         volumeMounts:
         -   name: source-codes
             mountPath: /tmp/source-codes

@@ -40,6 +40,11 @@ yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1
 yq write --inplace kubernetes/ingress.yml spec.rules[1].host ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.rules[2].host ${DOMAIN_HOSTNAME_3}
 
+# Set domain name into ingress controller for tls to pass proper certificate
+yq write --inplace kubernetes/kustomize/base/ingress-patch.yaml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_1}
+yq write --inplace kubernetes/kustomize/base/ingress-patch.yaml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
+yq write --inplace kubernetes/kustomize/base/ingress-patch.yaml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
+
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_1}
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_2}
@@ -59,9 +64,9 @@ yq write --inplace kubernetes/namespace.yml metadata.name ${PROJECT_NAME}
 yq write --inplace kubernetes/kustomize/base/kustomization.yaml namespace ${PROJECT_NAME}
 
 # Set domain urls
-yq write --inplace app/config/domains_urls.yml domains_urls[0].url http://${DOMAIN_HOSTNAME_1}
-yq write --inplace app/config/domains_urls.yml domains_urls[1].url http://${DOMAIN_HOSTNAME_2}
-yq write --inplace app/config/domains_urls.yml domains_urls[2].url http://${DOMAIN_HOSTNAME_3}
+yq write --inplace app/config/domains_urls.yml domains_urls[0].url https://${DOMAIN_HOSTNAME_1}
+yq write --inplace app/config/domains_urls.yml domains_urls[1].url https://${DOMAIN_HOSTNAME_2}
+yq write --inplace app/config/domains_urls.yml domains_urls[2].url https://${DOMAIN_HOSTNAME_3}
 
 # set ENV variables into pods using php-fpm image
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].env[0].value ${S3_API_HOST}

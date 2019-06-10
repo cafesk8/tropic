@@ -3,9 +3,14 @@ kind: CronJob
 metadata:
     name: cron-executor
 spec:
+    concurrencyPolicy: Forbid
+    failedJobsHistoryLimit: 5
+    successfulJobsHistoryLimit: 3
     schedule: "1/5 * * * *"
     jobTemplate:
         spec:
+            backoffLimit: 0
+            activeDeadlineSeconds: 300
             template:
                 spec:
                     volumes:
@@ -21,12 +26,16 @@ spec:
                     -   name: copy-source-codes-to-volume
                         image: ~
                         command: ["sh", "-c", "cp -r /var/www/html/. /tmp/source-codes"]
+                        securityContext:
+                            runAsUser: 33
                         volumeMounts:
                         -   name: source-codes
                             mountPath: /tmp/source-codes
                     -   name: upgrade-application
                         image: ~
                         command: ["sh", "-c", "cd /tmp/source-codes && ./phing grunt"]
+                        securityContext:
+                            runAsUser: 33
                         volumeMounts:
                         -   name: source-codes
                             mountPath: /tmp/source-codes
