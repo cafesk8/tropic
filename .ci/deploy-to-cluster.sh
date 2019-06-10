@@ -39,6 +39,7 @@ yq write --inplace kubernetes/cron/php-fpm-cron-executor.yml spec.jobTemplate.sp
 yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1}
 yq write --inplace kubernetes/ingress.yml spec.rules[1].host ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.rules[2].host ${DOMAIN_HOSTNAME_3}
+yq write --inplace kubernetes/ingress.yml spec.rules[3].host ${ADMINER_HOSTNAME}
 
 # Set domain name into ingress controller for tls to pass proper certificate
 yq write --inplace kubernetes/kustomize/base/ingress-patch.yaml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_1}
