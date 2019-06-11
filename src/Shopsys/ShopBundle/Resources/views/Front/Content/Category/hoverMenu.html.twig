@@ -4,18 +4,10 @@
     <div class="list-menu">
         {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
             {% set category = categoryWithLazyLoadedVisibleChildren.category %}
-            <ul class="list-menu__column">
-                {% if category.level == 1 %}
-                    <li class="list-menu__title">
-                        <a href="{{ url('front_product_list', { id: category.id }) }}"
-                        class="list-menu__title__link underline">
-                            {{ category.name }}
-                        </a>
-                    </li>
-                {% endif %}
-                <li class="list-menu__item">
+            {% if category.level == 1 %}<ul class="list-menu__column">{% endif %}
+                <li class="{{ category.level == 1 ? 'list-menu__title' : 'list-menu__item' }}">
                     <a href="{{ url('front_product_list', { id: category.id }) }}"
-                    class="list-menu__item__link list-menu__item__link--level-{{ category.level }}">
+                       class="list-menu__item__link {% if category.level == 1 %}underline{% else %}list-menu__item__link--level-{{ category.level }}{% endif %}">
                         {{ category.name }}
                     </a>
                     {% set categoriesWithLazyLoadedVisibleChildren = categoryWithLazyLoadedVisibleChildren.children %}
@@ -23,7 +15,7 @@
                     {% set isFirstLevel = false %}
                 </li>
                 {% include _self %}
-            </ul>
+            {% if category.level == 1 %}</ul>{% endif %}
         {% endfor %}
     </div>
 {% endif %}
