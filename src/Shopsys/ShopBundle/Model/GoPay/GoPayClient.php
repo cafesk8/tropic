@@ -97,10 +97,10 @@ class GoPayClient
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return \GoPay\Http\Response
      */
-    public function getStatus(int $id): Response
+    public function getStatus(string $id): Response
     {
         $urlPath = 'payments/payment/' . $id;
 
