@@ -65,10 +65,12 @@
         });
     };
 
-    Shopsys.register.registerCallback(Shopsys.horizontalProuductList.init);
+    Shopsys.register.registerCallback(function ($container) {
+        Shopsys.horizontalProuductList.init($container);
 
-    $(window).resize(function () {
-        Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.horizontalProuductList.init', Shopsys.horizontalProuductList.init, 200);
+        $(window).resize(function () {
+            Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.horizontalProuductList.init', Shopsys.horizontalProuductList.init($container), 200);
+        });
     });
 
 })(jQuery);

@@ -70,6 +70,11 @@
             height: 40
             crop: false
             occurrence: 'Front-end: Preview in autocomplete for search, preview in cart during ordering process'
+        -   name: cartBox
+            width: 71
+            height: 71
+            crop: false
+            occurrence: 'Front-end: Preview product in cart box'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem

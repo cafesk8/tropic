@@ -1,9 +1,8 @@
 <div id="js-cart-box" data-reload-url="{{ url('front_cart_box') }}">
 
-    <div class="box-dropdown box-dropdown--no-right-gap js-dropdown
-        {% if cart is null %}box-dropdown--without-arrow {% endif %}">
+    <div class="box-dropdown box-dropdown--no-right-gap {% if cart is not null %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}">
 
-        <span class="box-dropdown__select">
+        <a href="{{ path('front_cart') }}" class="box-dropdown__select">
             <div class="cart__icon">
                 <i class="svg svg-cart"></i>
                 {% if cart is not null %}
@@ -23,90 +22,78 @@
                 <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
                 <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
             {% endif %}
-        </span>
-        <div class="box-dropdown__options js-dropdown-options js-not-implemented-yet">
-            <div class="cart-detail__wrap">
-                <ul class="cart-detail">
-                    <li class="cart-detail__item">
-                        <div class="cart-detail__item__image">
-                            <img src="https://placeimg.com/71/71/any" alt="Product name">
+        </a>
+        {% if cart is not null %}
+            <div class="box-dropdown__options">
+                <div class="js-cart-box-content">
+                    {% if renderFlashMessages %}
+                        {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
+                    {% endif %}
+                    <div class="cart-detail__wrap">
+                        <ul class="cart-detail">
+                            {% for cartItem in cartItems %}
+                                {% set quantifiedItemPrice = quantifiedItemsPrices[loop.index0] %}
+                                <li class="cart-detail__item">
+                                    <div class="cart-detail__item__image">
+                                        {{ image(cartItem.product, { size: 'cartBox' }) }}
+                                    </div>
+                                    <div class="cart-detail__item__content">
+                                        <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
+                                        <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
+                                        <span class="cart-detail__item__content__price__old js-not-implemented-yet">3099 Kč</span>
+                                    </span>
+                                    {% set distinguishingProductParameterValueForVariant = distinguishingProductParameterValueForVariant(cartItem.product) %}
+                                    {% if distinguishingProductParameterValueForVariant is not null %}
+                                        <span class="cart-detail__item__content__size">
+                                            {{ distinguishingProductParameterValueForVariant.parameter.name }}
+                                            <span class="in-badge in-bage--outline">{{ distinguishingProductParameterValueForVariant.value.text }}</span>
+                                        </span>
+                                    {% endif %}
+                                    </div>
+                                    <div class="cart-detail__item__pieces">
+                                        {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
+                                    </div>
+                                    <span class="cart-detail__item__remove js-cart-ajax-remove" data-src="{{ url('front_cart_delete', { cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id) }) }}">
+                                    <i class="svg svg-remove"></i>
+                                </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="cart-detail__total">
+                            <div class="cart-detail__total__text">
+                                {{ 'Celkem'|trans }}
+                            </div>
+                            <div class="cart-detail__total__price">
+                                {{ productsPrice.priceWithVat|price }}
+                            </div>
                         </div>
-                        <div class="cart-detail__item__content">
-                            <a class="cart-detail__item__content__title" href="#" title="Product name">Košile Indiana</a>
-                            <span class="cart-detail__item__content__price"> 1699 Kč
-                                <span class="cart-detail__item__content__price__old">3099 Kč</span>
-                            </span>
-                            <span class="cart-detail__item__content__size"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
-                        </div>
-                        <div class="cart-detail__item__pieces">
-                            1 ks
-                        </div>
-                        <a href="#" class="cart-detail__item__remove">
-                            <i class="svg svg-remove"></i>
-                        </a>
-                    </li>
-                    <li class="cart-detail__item">
-                        <div class="cart-detail__item__image">
-                            <img src="https://placeimg.com/71/71/any" alt="Product name">
-                        </div>
-                        <div class="cart-detail__item__content">
-                            <a class="cart-detail__item__content__title" href="#" title="Product name">Košile Indiana</a>
-                            <span class="cart-detail__item__content__price"> 1699 Kč
-                                <span class="cart-detail__item__content__price__old">3099 Kč</span>
-                            </span>
-                            <span class="cart-detail__item__content__size"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
-                        </div>
-                        <div class="cart-detail__item__pieces">
-                            1 ks
-                        </div>
-                        <a href="#" class="cart-detail__item__remove">
-                            <i class="svg svg-remove"></i>
-                        </a>
-                    </li>
-                    <li class="cart-detail__item">
-                        <div class="cart-detail__item__image">
-                            <img src="https://placeimg.com/71/71/any" alt="Product name">
-                        </div>
-                        <div class="cart-detail__item__content">
-                            <a class="cart-detail__item__content__title" href="#" title="Product name">Košile Indiana</a>
-                            <span class="cart-detail__item__content__price"> 1699 Kč
-                                <span class="cart-detail__item__content__price__old">3099 Kč</span>
-                            </span>
-                            <span class="cart-detail__item__content__size"> Velikost <span class="in-badge in-bage--outline">M</span> </span>
-                        </div>
-                        <div class="cart-detail__item__pieces">
-                            1 ks
-                        </div>
-                        <a href="#" class="cart-detail__item__remove">
-                            <i class="svg svg-remove"></i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="cart-detail__total">
-                    <div class="cart-detail__total__text">
-                        {{ 'Celkem'|trans }}
                     </div>
-                    <div class="cart-detail__total__price">
-                        7 597 Kč
+                    <div class="cart-detail__bottom">
+                        <div class="cart-detail__bottom__transport">
+                            {% if isFreeTransportAndPaymentActive %}
+                                {% if isPaymentAndTransportFree %}
+                                    <div class="in-free-transport">
+                                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="in-free-transport">
+                                        <div class="in-free-transport__title">
+                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
+                                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                        </div>
+                                        <div class="in-free-transport__pipe">
+                                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="cart-detail__bottom__button">
+                            <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="cart-detail__bottom">
-                <div class="cart-detail__bottom__transport">
-                    <div class="in-free-transport js-not-implemented-yet">
-                        <div class="in-free-transport__title">
-                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">256 Kč</span>&nbsp;{{ 'a'|trans }}<br>
-                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                        </div>
-                        <div class="in-free-transport__pipe">
-                            <div class="in-free-transport__pipe__line" style="width: 56%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cart-detail__bottom__button">
-                    <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
-                </div>
-            </div>
-        </div>
+        {% endif %}
     </div>
 </div>
