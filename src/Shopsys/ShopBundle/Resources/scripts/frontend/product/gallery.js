@@ -25,10 +25,10 @@
         });
 
         // show more button
-        $gallery.filterAllNodes('.js-gallery-item-more').on("click", function(e){
+        $gallery.filterAllNodes('.js-gallery-item-more').on('click', function (e) {
             e.preventDefault();
-            $(this).addClass("display-none");
-            $gallery.filterAllNodes('.js-gallery-item').removeClass("display-none");
+            $(this).addClass('display-none');
+            $gallery.filterAllNodes('.js-gallery-item').removeClass('display-none');
         });
 
         $gallery.filterAllNodes('.js-gallery-slides').slick({
