@@ -20,7 +20,7 @@ services:
 
     Predis\Client:
         arguments:
-            -   host: 'redis'
+            -   host: '%redis_host%'
                 scheme: 'redis'
 
     NinjaMutex\Lock\LockInterface:
