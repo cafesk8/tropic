@@ -6,7 +6,7 @@
 
     Shopsys.productDetail.init = function ($container) {
         $container.filterAllNodes('.js-gallery-main-image').click(function (event) {
-            var $slides = $container.filterAllNodes('.js-gallery .slick-slide:not(.slick-cloned) .js-gallery-slide-link');
+            var $slides = $container.filterAllNodes('.js-gallery .js-gallery-slide-link');
             $slides.filter(':first').trigger('click', event);
 
             return false;
@@ -22,6 +22,13 @@
                 navigateByImgClick: true,
                 preload: [0, 1]
             }
+        });
+
+        // show more button
+        $gallery.filterAllNodes('.js-gallery-item-more').on('click', function (e) {
+            e.preventDefault();
+            $(this).addClass('display-none');
+            $gallery.filterAllNodes('.js-gallery-item').removeClass('display-none');
         });
 
         $gallery.filterAllNodes('.js-gallery-slides').slick({

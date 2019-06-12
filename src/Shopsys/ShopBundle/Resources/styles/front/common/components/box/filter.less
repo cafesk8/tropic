@@ -1,17 +1,71 @@
-@box-filter-padding: 10px;
+@box-filter-padding: 30px;
+@box-filter-title-bottom-gap: 21px;
+@box-filter-section-gap: 50px;
+@box-filter-width: @box-list-panel-width;
+@box-filter-gap: @box-list-panel-gap;
+@box-filter-selected-cross-size: 13px;
 
 .box-filter {
+    width: @box-filter-width;
+    margin-right: @box-filter-gap;
     margin-bottom: @margin-gap;
     padding: @box-filter-padding;
 
-    border: 1px solid @color-border;
+    border: 3px solid @color-gray;
+    background-color: @color-gray;
+
+    &.active-mobile {
+        width: calc(~"100% - @{web-padding}");
+    }
+
+    &__title {
+        display: block;
+        margin-bottom: @box-filter-title-bottom-gap;
+
+        color: @color-base;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+
+    &__selected {
+        display: flex;
+        flex-direction: column;
+        margin: -@box-filter-padding -@box-filter-padding @box-filter-padding -@box-filter-padding;
+        padding: @box-filter-padding;
+
+        background-color: @color-f;
+
+        &__item {
+            position: relative;
+            margin-bottom: 5px;
+            padding: 7px 12px;
+
+            color: @color-brown-light-2;
+            background-color: @color-gray;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .svg {
+                position: absolute;
+                right: 10px;
+                top: calc(~"50% - @{box-filter-selected-cross-size}/2");
+
+                cursor: pointer;
+                font-size: @box-filter-selected-cross-size;
+            }
+        }
+    }
 
     &__price {
-        margin-bottom: @margin-gap;
+        margin-bottom: @box-filter-section-gap;
     }
 
     &__choice {
-        margin-bottom: @margin-gap/2;
+        margin-bottom: @box-filter-section-gap;
 
         &__title {
             display: inline-block;
@@ -22,18 +76,7 @@
         }
     }
 
-    &__parameters {
-        &__title {
-            display: block;
-            padding: @box-filter-padding;
-            margin: 0 -@box-filter-padding @margin-gap/2;
-
-            font-weight: bold;
-            background: @color-light;
-        }
-    }
-
     &__action {
-        text-align: right;
+        text-align: center;
     }
 }

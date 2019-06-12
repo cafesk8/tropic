@@ -1,0 +1,96 @@
+@list-article-main-content-bg: @color-orange;
+@list-article-main-image-width: 254px;
+@list-article-main-button-max-width: 172px;
+@list-article-main-item-gap: 20px;
+@list-article-main-bottom-gap: 40px;
+
+.list-article-main {
+    .reset-ul();
+    display: flex;
+    flex-direction: column;
+    margin-bottom: @list-article-main-bottom-gap/2;
+
+    @media @query-vl {
+        flex-direction: row;
+        margin-bottom: @list-article-main-bottom-gap;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: 0 0 @list-article-main-item-gap 0;
+
+        background-color: @list-article-main-content-bg;
+
+        &:nth-child(even){
+            margin-right: 0;
+        }
+
+        @media @query-vl {
+            margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
+        }
+
+        @media @query-xl {
+            flex-direction: row;
+            width: calc(~"@{calc-base}/2");
+            margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
+        }
+
+        &__image {
+            display: flex;
+            width: @list-article-main-image-width;
+            margin: 0 auto;
+
+            background-color: @color-gray;
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 20px 30px;
+
+            @media @query-vl {
+                padding: 72px 65px;
+            }
+
+            @media @query-xl {
+                width: calc(~"@{calc-base} - @{list-article-main-image-width}");
+            }
+
+            &__title {
+                line-height: 36px;
+                margin-bottom: 10px;
+
+                color: @color-f;
+                font-size: 24px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+
+            &__text {
+                line-height: 24px;
+                margin-bottom: 30px;
+
+                color: @color-f;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            &__bottom {
+                text-align: center;
+
+                @media @query-vl {
+                    text-align: left;
+                }
+
+                &__button {
+                    max-width: @list-article-main-button-max-width;
+
+                    background-color: @color-brown;
+                }
+            }
+        }
+    }
+}

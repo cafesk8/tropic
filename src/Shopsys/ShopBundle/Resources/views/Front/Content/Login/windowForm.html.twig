@@ -7,10 +7,12 @@
         </div>
         <div class="display-none in-message in-message--alert js-login-validation-errors"></div>
         <div class="box-login__item">
-            {{ form_widget(form.email, { attr: { placeholder: 'E-mail'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
+            <label class="input__label">{{ 'Email'|trans }}</label>
+            {{ form_widget(form.email, { rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
         <div class="box-login__item">
-            {{ form_widget(form.password, { attr: { placeholder: 'Password'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
+            <label class="input__label">{{ 'Password'|trans }}</label>
+            {{ form_widget(form.password, { attr: { placeholder: '******** 6 nebo více znaků'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
         <div class="box-login__item">
             <label class="form-choice">

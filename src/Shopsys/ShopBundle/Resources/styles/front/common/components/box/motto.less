@@ -1,0 +1,59 @@
+@box-motto-height: 70px;
+@box-motto-gap-mobile: 10px;
+@box-motto-title-font-size: 24px;
+@box-motto-subtitle-font-size: 16px;
+
+.box-motto {
+    display: flex;
+    flex-direction: column;
+    min-height: @box-motto-height;
+    align-items: center;
+
+    background-color: @color-brown;
+    color: @color-f;
+
+    @media @query-vl {
+        flex-direction: row;
+    }
+
+    &__title {
+        width: 100%;
+        text-align: center;
+        padding: 2*@box-motto-gap-mobile 0 @box-motto-gap-mobile 0;
+
+        font-size: @box-motto-title-font-size;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/3");
+            padding: 0;
+            text-align: right;
+        }
+    }
+
+    &__subtitle {
+        width: 100%;
+        text-align: center;
+        padding-bottom: @box-motto-gap-mobile;
+
+        font-size: @box-motto-subtitle-font-size;
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/3");
+            padding-bottom: 0;
+        }
+    }
+
+    &__button {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 2*@box-motto-gap-mobile;
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/3");
+            padding-bottom: 0;
+            text-align: right;
+        }
+    }
+}

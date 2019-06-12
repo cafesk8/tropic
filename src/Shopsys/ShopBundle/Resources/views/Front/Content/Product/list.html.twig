@@ -1,4 +1,4 @@
-{% extends '@ShopsysShop/Front/Layout/layoutWithPanel.html.twig' %}
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import '@ShopsysShop/Front/Inline/Paginator/paginator.html.twig' as paginator %}
 {% import '@ShopsysShop/Front/Content/Product/filterFormMacro.html.twig' as productFilterForm %}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
@@ -20,48 +20,121 @@
 {% block main_content %}
     <div class="box-list">
         {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'productList'})) }}
-        <h1>
+        <h1 class="box-list__title">
             {{ category.getSeoH1(domain.id)|default(category.name) }}
         </h1>
-        {% if visibleChildren is not empty %}
-            <h2>{{ 'List of subcategories'|trans }}</h2>
 
-            {{ render(controller('ShopsysShopBundle:Front/Category:categoryList', {categories: visibleChildren})) }}
-        {% endif %}
-
-        {{ render(controller('ShopsysShopBundle:Front/BestsellingProduct:list', { category: category })) }}
-
-        <div class="js-product-list-with-filter">
-            {% if paginationResult.results|length > 0 or filterFormSubmited %}
-                <div class="box-filter js-product-filter">
-                    {{ productFilterForm.filterForm(
-                        filterForm,
-                        url('front_product_list', { id: category.id }),
-                        url('front_product_list', { id: category.id }),
-                        null,
-                        'product_list',
-                        productFilterCountData,
-                        priceRange
-                    ) }}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div class="list-grid-images">
+                    <ul class="list-grid-images__category-advantages">
+                        <li class="list-grid-images__category-advantages__item">
+                            <img class="list-grid-images__category-advantages__item__image left" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
+                            <div class="list-grid-images__category-advantages__item__button right">
+                                <span class="double-lined">
+                                    {{ 'Praktické'|trans }}
+                                </span>
+                            </div>
+                        </li>
+                        <li class="list-grid-images__category-advantages__item">
+                            <img class="list-grid-images__category-advantages__item__image center" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
+                            <div class="list-grid-images__category-advantages__item__button center">
+                                <span class="double-lined">
+                                    {{ 'Zipy, které vydrží'|trans }}
+                                </span>
+                            </div>
+                        </li>
+                        <li class="list-grid-images__category-advantages__item left">
+                            <img class="list-grid-images__category-advantages__item__image right" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
+                            <div class="list-grid-images__category-advantages__item__button left">
+                                <span class="double-lined">
+                                    {{ 'Roky ověřené'|trans }}
+                                </span>
+                            </div>
+                        </li>
+                        <li class="list-grid-images__category-advantages__item center">
+                            <img class="list-grid-images__category-advantages__item__image center" src="https://placeimg.com/285/100/any" class="" alt="Pro pořádné chlapy">
+                            <div class="list-grid-images__category-advantages__item__button center">
+                                <span class="double-lined">
+                                    {{ 'Praktické a stylové'|trans }}
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            {% endif %}
-
-            <div class="js-product-list-ajax-filter-products-with-controls">
-                <div>
-                    {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
-                </div>
-                {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited} %}
             </div>
         </div>
 
-        <div class="box-list__description">
-            <div class="js-category-description box-list__description__text in-user-text">
-                {{ category.getDescription(domain.id)|raw }}
+        {% if visibleChildren is not empty %}
+            <h2>{{ 'List of subcategories'|trans }}</h2>
+
+            {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
+        {% endif %}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div class="box-list__wrap js-product-list-with-filter">
+                    {% if paginationResult.results|length > 0 or filterFormSubmited %}
+                        <div class="box-list__panel js-product-list-panel">
+                            <div class="box-filter js-product-filter">
+                                {{ productFilterForm.filterForm(
+                                    filterForm,
+                                    url('front_product_list', { id: category.id }),
+                                    url('front_product_list', { id: category.id }),
+                                    null,
+                                    'product_list',
+                                    productFilterCountData,
+                                    priceRange
+                                ) }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
+                        {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
+                        {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited} %}
+                    </div>
+                </div>
             </div>
-            <div class="box-list__description__more">
-                <span class="js-category-description-load-more link-style box-list__description__more__btn">
-                    {{ 'View more'|trans }}
-                </span>
+        </div>
+
+        <div class="web__line">
+            <div class="web__container web__container--big-padding web__container--top-line">
+                <div class="box-list__bottom">
+                    <div class="box-list__bottom__description">
+                        <div class="box-list__bottom__title">
+                            {{ category.name }}
+                        </div>
+                        <div class="box-list__bottom__description__text in-user-text js-category-description ">
+                            {{ category.getDescription(domain.id)|raw }}
+                        </div>
+                    </div>
+                    <div class="box-list__bottom__article">
+                        <div class="box-list__bottom__title">
+                            {{ 'Mohlo by vás zajímat'|trans }}
+                        </div>
+                        <ul class="list-articles">
+                            <li class="list-articles__item list-articles__item--full-size js-not-implemented-yet">
+                                <div class="list-articles__item__image">
+                                    <a href="#" class="list-articles__item__image__link">
+                                        <img src="https://placeimg.com/210/170/any" alt="Bushman expedice aneb čtyři češi na kalahari">
+                                    </a>
+                                </div>
+                                <div class="list-articles__item__content">
+                                    <div class="list-tags">
+                                        <span class="list-tags__tag">
+                                            {{ 'Reportáže z cest'|trans }}
+                                        </span>
+                                    </div>
+                                    <a href="#" class="list-articles__item__content__title underline">
+                                        {{ 'Bushman expedice aneb čtyři češi na kalahari'|trans }}
+                                    </a>
+                                    <div class="list-articles__item__content__text">
+                                        {{ 'Je to tu zase. Po roce mne opět čeká cesta Afriky. S třemi kamarády se chystáme procestovat autem Národní park Kgalagadi, tedy poušť Kalahari na hranicích JAR, Botswany a Namibie. Máme v plánu poznat jižní a střední část parku.'|trans }}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
             </div>
         </div>
     </div>

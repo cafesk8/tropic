@@ -42,7 +42,6 @@ class RestClient
      * @param string $host
      * @param string $username
      * @param string $password
-     * @param int $connectionTimeout
      * @param int $timeout
      */
     public function __construct(

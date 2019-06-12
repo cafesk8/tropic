@@ -1,0 +1,49 @@
+@box-info-row-bg: @color-gray;
+@box-info-row-font-size: 13px;
+@box-info-row-bottom-gap: 20px;
+@box-info-row-min-height: 34px;
+@box-info-row-padding: 40px;
+
+
+.box-info-row {
+    position: relative;
+    display: block;
+    margin-bottom: @box-info-row-bottom-gap;
+    min-height: @box-info-row-min-height;
+    line-height: 20px;
+    padding: 10px @box-info-row-padding;
+    text-align: center;
+
+    background-color: @box-info-row-bg;
+    color: @color-brown;
+    font-size: @box-info-row-font-size;
+    font-weight: 600;
+
+    @media @query-vl {
+        line-height: @box-info-row-min-height;
+        padding: 0 @box-info-row-padding;
+    }
+
+    // wysiwyg - text with link
+    a {
+        color: @color-brown;
+        text-decoration: underline;
+    }
+
+    &__close {
+        position: absolute;
+        right: 14px;
+        top: 2px;
+        line-height: @box-info-row-min-height;
+
+        cursor: pointer;
+        color: @color-brown-light;
+        font-size: 14px;
+
+        &:hover {
+            .svg {
+                font-weight: 700;
+            }
+        }
+    }
+}

@@ -28,8 +28,13 @@
 @web-scrollbar-size: 17px;
 @arrow-size: 6px;
 @calc-base: 99.99%;
+@underline-gap: 7px;
+@underline-gap-hover: 3px;
 
 // Z-index level
+@z-index-under: -1;
+@z-index-normal: 0;
+@z-index-above: 1;
 @z-index-menu: 500;
 @z-index-overlay: 1000;
 
@@ -59,6 +64,7 @@
 @color-red: #d60000;
 
 @color-gray: #efefef;
+@color-gray-dark: #c9c8c8;
 @color-orange: #e79c00;
 @color-brown: #433e3e;
 @color-brown-light: #6d6868;
@@ -80,7 +86,9 @@
 ////// Color for common prices
 @color-price: @color-a;
 ////// Color for more visible prices (main price)
-@color-price-main: @color-red;
+@color-price-main: @color-base;
+@color-price-old: @color-brown-light;
+@color-price-save: #d95c1d;
 
 ////// Color for main links and its hover color
 @color-link: @color-blue;

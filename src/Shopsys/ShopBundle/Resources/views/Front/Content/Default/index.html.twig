@@ -26,7 +26,7 @@
                 <ul class="list-grid-images__landscape">
                     <li class="list-grid-images__landscape__item">
                         <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img src="https://placeimg.com/640/408/any/grayscale" alt="Pro pořádné chlapy">
+                            <img src="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
                             <div class="list-grid-images__button">
                                  <span class="btn btn--secondary">{{ 'Pro pořádné chlapy'|trans }}</span>
                             </div>
@@ -34,7 +34,7 @@
                     </li>
                     <li class="list-grid-images__landscape__item">
                         <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img src="https://placeimg.com/640/408/any/grayscale" alt="Pro pořádné chlapy">
+                            <img src="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
                             <div class="list-grid-images__button">
                                  <span class="btn btn--secondary">{{ 'Kempování'|trans }}</span>
                             </div>
@@ -42,7 +42,7 @@
                     </li>
                     <li class="list-grid-images__landscape__item">
                         <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img src="https://placeimg.com/640/408/any/grayscale" alt="Pro pořádné chlapy">
+                            <img src="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
                             <div class="list-grid-images__button">
                                  <span class="btn btn--secondary">{{ 'Hvězda zahradnictví'|trans }}</span>
                             </div>
@@ -50,7 +50,7 @@
                     </li>
                     <li class="list-grid-images__landscape__item">
                         <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img src="https://placeimg.com/640/408/any/grayscale" alt="Pro pořádné chlapy">
+                            <img src="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
                             <div class="list-grid-images__button">
                                  <span class="btn btn--secondary">{{ 'Pro pořádné chlapy'|trans }}</span>
                             </div>
@@ -60,7 +60,7 @@
                 <ul class="list-grid-images__portrait">
                     <li class="list-grid-images__portrait__item">
                         <a href="#" class="list-grid-images__portrait__link js-not-implemented-yet">
-                            <img src="https://placeimg.com/393/500/any/grayscale" alt="Pro pořádné chlapy">
+                            <img src="https://placeimg.com/393/626/any/grayscale" alt="Pro pořádné chlapy">
                             <div class="list-grid-images__button">
                                  <span class="btn btn--secondary">{{ 'Šití na míru'|trans }}</span>
                             </div>
@@ -71,46 +71,9 @@
         </div>
     </div>
 
-    {% if sliderItems is not empty %}
-        <div class="box-slider">
-            <div id="js-slider-homepage" class="box-slider__in">
-                {% for item in sliderItems %}
-                    <div class="box-slider__item">
-                        <a href = "{{ item.link }}">{{ image(item) }}</a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-
     <div class="web__line">
         <div class="web__container web__container--big-padding">
-            <ul class="list-benefits">
-                <li class="list-benefits__item">
-                    <span class="list-benefits__item__icon">
-                        <i class="svg svg-drops"></i>
-                    </span>
-                    <span class="list-benefits__item__text">
-                        {{ 'Naši bundu budou nosit ještě vaše děti'|trans }}
-                    </span>
-                </li>
-                <li class="list-benefits__item">
-                    <span class="list-benefits__item__icon">
-                        <i class="svg svg-box"></i>
-                    </span>
-                    <span class="list-benefits__item__text">
-                        {{ 'Vše co nabízíme, máme skladem'|trans }}
-                    </span>
-                </li>
-                <li class="list-benefits__item">
-                    <span class="list-benefits__item__icon">
-                        <i class="svg svg-hand"></i>
-                    </span>
-                    <span class="list-benefits__item__text">
-                        {{ 'Neměň se, my se taky neměníme'|trans }}
-                    </span>
-                </li>
-            </ul>
+            {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' %}
         </div>
     </div>
 
@@ -145,7 +108,7 @@
                                 <span class="box-special-offer__products__item__content__price"> 1699 Kč
                                     <span class="box-special-offer__products__item__content__price__old">3099 Kč</span>
                                 </span>
-                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-bage--outline">M</span> {{ 'skladem'|trans }} </span>
+                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-badge--outline">M</span> {{ 'skladem'|trans }} </span>
                             </div>
                         </li>
                         <li class="box-special-offer__products__item js-not-implemented-yet">
@@ -157,7 +120,7 @@
                                 <span class="box-special-offer__products__item__content__price"> 1699 Kč
                                     <span class="box-special-offer__products__item__content__price__old">3099 Kč</span>
                                 </span>
-                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-bage--outline">M</span> {{ 'skladem'|trans }} </span>
+                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-badge--outline">M</span> {{ 'skladem'|trans }} </span>
                             </div>
                         </li>
                         <li class="box-special-offer__products__item js-not-implemented-yet">
@@ -169,7 +132,7 @@
                                 <span class="box-special-offer__products__item__content__price"> 1699 Kč
                                     <span class="box-special-offer__products__item__content__price__old">3099 Kč</span>
                                 </span>
-                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-bage--outline">M</span> {{ 'skladem'|trans }} </span>
+                                <span class="box-special-offer__products__item__content__size"> {{ 'Vaše velikost'|trans }} <span class="in-badge in-badge--outline">M</span> {{ 'skladem'|trans }} </span>
                             </div>
                         </li>
                     </ul>
@@ -178,39 +141,169 @@
         </div>
     </div>
 
+    {% if topProducts is not empty %}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div id="top-products" class="box-top-products">
+                    <div class="box-top-products__title">
+                        {{ 'Bushmani mají nejraději'|trans }}
+                    </div>
+                    <ul class="box-top-products__tabs">
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Muži'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Ženy'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Děti'|trans }}
+                            </a>
+                        </li>
+                        <li class="box-top-products__tabs__item js-not-implemented-yet">
+                            <a href="#" class="box-top-products__tabs__item__link underline">
+                                {{ 'Doplňky'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="box-top-products__in">
+                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3', 'top-products') }}
+                    </div>
+                    <div class="box-top-products__bottom">
+                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="web__line">
         <div class="web__container">
-            <div class="box-promo-image js-not-implemented-yet">
-                <img src="https://placeimg.com/1440/432/any/grayscale" alt="{{ 'Vážím si všech 80 000 bushmanů'|trans }}">
-                <div class="box-promo-image__title double-lined-hard">
-                    <span class="box-promo-image__title__text">
-                        {{ 'Vážím si všech'|trans }} 80&nbsp;000 {{ 'bushmanů'|trans }}
-                    </span>
+            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: ''} only %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <ul class="list-article-main">
+                <li class="list-article-main__item js-not-implemented-yet">
+                    <div class="list-article-main__item__image">
+                        <img src="https://placeimg.com/254/383/any/grayscale" alt="{{ 'Pomáháme'|trans }}">
+                    </div>
+                    <div class="list-article-main__item__content">
+                        <div class="list-article-main__item__content__title">
+                            {{ 'Pomáháme'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__text">
+                            {{ 'V rámci kampaně Water for Afrika pro UNICEF jsme přišpěli na vyčištění téměř 10 000 000 litrů vody!'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__bottom">
+                            <a class="list-article-main__item__content__bottom__button btn" href="#" class="btn">{{ 'Pomáhejte s námi'|trans }}</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-article-main__item js-not-implemented-yet">
+                    <div class="list-article-main__item__image">
+                        <img src="https://placeimg.com/254/383/any/grayscale" alt="{{ 'Pomáháme'|trans }}">
+                    </div>
+                    <div class="list-article-main__item__content">
+                        <div class="list-article-main__item__content__title">
+                            {{ 'Děkujeme Vám'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__text">
+                            {{ 'Bushmanství nás spojuje, vaše příběhy a názory nás inspirují. I proto jsou prodejny spíše místem setkání než pouze nákupu.'|trans }}
+                        </div>
+                        <div class="list-article-main__item__content__bottom">
+                            <a class="list-article-main__item__content__bottom__button btn" href="#" class="btn">{{ 'Poznejte nás'|trans }}</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <div class="box-articles">
+                <div class="box-articles__title-big">
+                    {{ 'Načerpejte inspiraci'|trans }}
                 </div>
-                <div class="box-promo-image__description">
-                    {{ 'Jsem Jindra, otec všech bushmanů. Je potřeba, aby'|trans }}<br>
-                    {{ 'tento text přesně vystihnul atmosféru nové strategie.'|trans }}<br>
-                    {{ 'Celá část je vývzou pro registraci nových členů.'|trans }}
+                <div class="box-articles__title-small">
+                    {{ 'Zážitky z cest si nenecháváme pro sebe'|trans }}
                 </div>
-                <div class="box-promo-image__button">
-                    <a href="#" class="btn btn--secondary">{{ 'Chci se stát bushmanem'|trans }}</a>
+                <ul class="list-articles">
+                    <li class="list-articles__item js-not-implemented-yet">
+                        <div class="list-articles__item__image">
+                            <a href="#" class="list-articles__item__image__link">
+                                <img src="https://placeimg.com/210/170/any" alt="Bushman expedice aneb čtyři češi na kalahari">
+                            </a>
+                        </div>
+                        <div class="list-articles__item__content">
+                            <div class="list-tags">
+                                <span class="list-tags__tag">
+                                    {{ 'Reportáže z cest'|trans }}
+                                </span>
+                            </div>
+                            <a href="#" class="list-articles__item__content__title underline">
+                                {{ 'Bushman expedice aneb čtyři češi na kalahari'|trans }}
+                            </a>
+                            <div class="list-articles__item__content__text">
+                                {{ 'Je to tu zase. Po roce mne opět čeká cesta Afriky. S třemi kamarády se chystáme procestovat autem Národní park Kgalagadi, tedy poušť Kalahari na hranicích JAR, Botswany a Namibie. Máme v plánu poznat jižní a střední část parku.'|trans }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-articles__item js-not-implemented-yet">
+                        <div class="list-articles__item__image">
+                            <a href="#" class="list-articles__item__image__link">
+                                <img src="https://placeimg.com/210/170/any" alt="Bushman expedice aneb čtyři češi na kalahari">
+                            </a>
+                        </div>
+                        <div class="list-articles__item__content">
+                            <div class="list-tags">
+                                <span class="list-tags__tag">
+                                    {{ 'Fotografování s Bushmanem'|trans }}
+                                </span>
+                            </div>
+                            <a href="#" class="list-articles__item__content__title underline">
+                                {{ 'Fotky z dovolené jako od profesionála'|trans }}
+                            </a>
+                            <div class="list-articles__item__content__text">
+                                {{ 'Už cestou na dovolenou si plánujete, jaké fantastické snímky místní krajiny a fauny pořídíte. Ve vašich představách jsou stejně hezké nebo dokonce ještě hezčí, než od profesionálů. Jenomže realita bývá trochu jiná… Jak to tedy udělat, aby bylo opravdu čím se chlubit po návratu?'|trans }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="box-articles__bottom">
+                    <a href="#" class="box-articles__bottom__link underline js-not-implemented-yet">{{ 'Přejít na výpis všech článků'|trans }}</a>
                 </div>
             </div>
         </div>
     </div>
 
-    {{ render(controller('ShopsysShopBundle:Front/Category:top')) }}
-
-    {% if topProducts is not empty %}
-        <div id="top-products">
-            <h2>{{ 'Special offers'|trans }}</h2>
-            {{ productList.list(topProducts, null, 'h3') }}
-        </div>
-    {% endif %}
-
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
 
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            {% include '@ShopsysShop/Front/Content/ImagesLine/list.html.twig' %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--dark web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
+        </div>
+    </div>
 
 {% endblock %}

@@ -1,9 +1,29 @@
+@in-badge-outline-color: @color-brown-light;
+@in-badge-border-radius: 3px;
+
 .in-badge {
     display: inline;
-    padding: 1px 3px;
+    padding: 0px 3px;
 
     color: @color-f;
-    font-size: 11px;
+    font-size: 9px;
     background-color: @color-orange;
-    border-radius: @radius;
+    border-radius: 3px;
+    text-align: center;
+
+    &--product-list {
+        margin-right: 2px;
+    }
+
+    &--outline {
+        color: @in-badge-outline-color;
+        background-color: transparent;
+        border: 1px solid @in-badge-outline-color;
+    }
+
+    &--in-stock {
+        color: @color-green;
+        background-color: transparent;
+        border: 1px solid @color-green;
+    }
 }

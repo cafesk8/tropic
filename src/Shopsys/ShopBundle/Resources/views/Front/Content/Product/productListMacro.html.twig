@@ -4,23 +4,29 @@
 
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for product in products %}
-            <li class="list-products__item js-list-products-item">
+            {% if loop.index == 7 %}
+                <li class="list-products__item list-products__item--doubled list-products__item--image">
+                    {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: 'box-promo-image--product-list'} only %}
+                </li>
+            {% endif %}
+            <li class="list-products__item
+            {% if loop.index == 4 %} list-products__item--doubled{% endif %}
+            {# TODO PRG: add class list-products__item--with-variants - only if there are variants #}
+             list-products__item--with-variants js-list-products-item">
                 <div class="list-products__item__in">
                     <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products__item__block">
-                        <{{ productHeadingTagName|default('h2') }} class="list-products__item__title js-list-products-item-title">
-                            {{ product.name }}
-                        </{{ productHeadingTagName|default('h2') }}>
-
                         <div class="list-products__item__image dont-print">
                             {{ image(product, { size: 'list', alt: product.name }) }}
                             {{ productFlags.list(product, 'in-flag--in-list') }}
                         </div>
 
-                        <div class="list-products__item__info dont-print">
-                            <p class="list-products__item__info__description">
-                                {{ product.getShortDescription(domain.id) }}
-                            </p>
+                        <div class="list-products__item__info">
+                            <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
+                                {{ product.name|striptags|raw }}
+                            </{{ productHeadingTagName|default('h2') }}>
+
                             {% set productSellingPrice = getProductSellingPrice(product) %}
+
                             {% if productSellingPrice is not null %}
                                 <div class="list-products__item__info__price">
                                     <div class="list-products__item__info__price__item list-products__item__info__price__item--main">
@@ -40,89 +46,98 @@
                                 </div>
                             {% endif %}
 
-                            <div class="list-products__item__info__availability">
-                                {{ product.calculatedAvailability.getName }}
+                            <div class="list-products__item__info__availability js-not-implemented-yet">
+                                <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">S</span>
+                                <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">M</span>
+                                <span class="in-badge in-badge--product-list in-badge--outline">L</span>
+                                <span class="in-badge in-badge--product-list in-badge--outline">XL</span>
+                                <div class="list-products__item__info__availability__spacer"></div>
+                                <div class="list-products__item__info__availability__text js-not-implemented-yet" style="color: #7bbd70;">
+                                    {{ product.calculatedAvailability.getName }}
+                                </div>
+
+                                <div class="list-products__item__info__availability__stores js-not-implemented-yet" style="color: #7bbd70;">
+                                    {# TODO PRG: do not remove element - only remove text inside if needed#}
+                                    {{ 'K dispozici v Hradci Králové'|trans }}
+                                </div>
+                            </div>
+
+
+                            <div class="list-products__item__variants">
+                                <div class="list-products__item__variants__image">
+                                    <img src="https://placeimg.com/50/50/any">
+                                </div>
+                                <div class="list-products__item__variants__image">
+                                    <img src="https://placeimg.com/50/50/any">
+                                </div>
                             </div>
                         </div>
                     </a>
-
-                    <div class="list-products__item__action">
-                        {% if not product.isMainVariant %}
-                            {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm',{
-                                product: product
-                            }
-
-                            )) }}
-                        {% else %}
-                            <a href="{{ url('front_product_detail', { id: product.id }) }}" class="btn btn--success">{{ 'Choose variant'|trans }}</a>
-                        {% endif %}
-                    </div>
                 </div>
             </li>
         {% endfor %}
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(products, listCssClass, productHeadingTagName) %}
-    <div class="js-horizontal-gallery list-products-slider">
-        <span class="js-horizontal-gallery-prev list-products-slider__arrow list-products-slider__arrow--prev">
-            <i class="svg svg-arrow-thin">šipka doleva</i>
+{% macro horizontalList(products, listCssClass = 'list-products', productHeadingTagName, type) %}
+    <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}">
+        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
+            <i class="svg svg-slider-arrow"></i>
         </span>
-        <div class="list-products-slider__in">
+        <div class="{{ listCssClass }}__in">
             {% set domain = getDomain() %}
 
-            <div class="list-products-slider__list js-horizontal-gallery-slides horizontal-product-list {{ listCssClass|default('') }}">
+            <div class="{{ listCssClass }}__list js-horizontal-list-slides">
                 {% for product in products %}
-
-                <div class="list-products-slider__item horizontal-product-list__item">
-                    <div class="list-products-slider__item__in">
-                        <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products-slider__item__block">
-                            <div class="list-products-slider__item__image dont-print">
-                                <div class="list-products-slider__item__image__in">
+                    <div class="{{ listCssClass }}__item">
+                        <div class="{{ listCssClass }}__item__in">
+                            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass }}__item__block">
+                                <div class="{{ listCssClass }}__item__image dont-print">
                                     {{ image(product, { size: 'list', alt: product.name }) }}
                                 </div>
-                            </div>
 
-                            <div class="list-products-slider__item__info">
+                                <div class="{{ listCssClass }}__item__info">
 
-                                <{{ productHeadingTagName|default('h2') }} class="list-products-slider__item__info__title">
-                                    {{ product.name|striptags|raw }}
-                                </{{ productHeadingTagName|default('h2') }}>
+                                    <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">
+                                        {{ product.name|striptags|raw }}
+                                    </{{ productHeadingTagName|default('h2') }}>
 
-                                <div class="list-products-slider__item__info__availability">
-                                    {{ product.calculatedAvailability.getName }}
-                                </div>
+                                    {% set productSellingPrice = getProductSellingPrice(product) %}
 
-                                {% set productSellingPrice = getProductSellingPrice(product) %}
-
-                                {% if productSellingPrice is not null %}
-                                    <div class="list-products__item__info__price">
-                                        <div class="list-products__item__info__price__item list-products__item__info__price__item--main">
-                                            {% if productSellingPrice.priceFrom %}
-                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                            {% else %}
-                                                {{ productSellingPrice.priceWithVat|price }}
-                                            {% endif %}
+                                    {% if productSellingPrice is not null %}
+                                        <div class="{{ listCssClass }}__item__info__price">
+                                            <div class="{{ listCssClass }}__item__info__price__item {{ listCssClass }}__item__info__price__item--main">
+                                                {% if productSellingPrice.priceFrom %}
+                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                                {% else %}
+                                                    {{ productSellingPrice.priceWithVat|price }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="{{ listCssClass }}__item__info__price__item">
+                                                {% if productSellingPrice.priceFrom %}
+                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
+                                                {% else %}
+                                                    {{ productSellingPrice.priceWithoutVat|price }}
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                        <div class="list-products__item__info__price__item">
-                                            {% if productSellingPrice.priceFrom %}
-                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
-                                            {% else %}
-                                                {{ productSellingPrice.priceWithoutVat|price }}
-                                            {% endif %}
-                                        </div>
+                                    {% endif %}
+
+                                    <div class="{{ listCssClass }}__item__info__availability js-not-implemented-yet">
+                                        {{ 'Vaše velikost'|trans }}
+                                        <span class="in-badge in-badge--outline">M</span>
+                                        {{ product.calculatedAvailability.getName }}
                                     </div>
-                                {% endif %}
-                            </div>
-                        </a>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
 
-        <span class="js-horizontal-gallery-next list-products-slider__arrow list-products-slider__arrow--next">
-            <i class="svg svg-arrow-thin">šipka doprava</i>
+        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--next js-horizontal-list-action-next">
+            <i class="svg svg-slider-arrow"></i>
         </span>
     </div>
 

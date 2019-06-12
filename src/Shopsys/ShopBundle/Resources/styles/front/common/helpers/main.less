@@ -27,7 +27,7 @@
         height: 1px;
         width: 100%;
         left: 0;
-        bottom: -7px;
+        bottom: -@underline-gap;
 
         background-color: @color-orange;
         transition: bottom @transition;
@@ -35,10 +35,27 @@
 
     &:hover {
         &:before {
-            bottom: -3px;
+            bottom: -@underline-gap-hover;
         }
     }
 }
+
+.underline-small {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        height: 1px;
+        width: 100%;
+        left: 0;
+        bottom: -1px;
+
+        background-color: @color-orange;
+    }
+}
+
 
 .double-lined {
     position: relative;

@@ -1,0 +1,40 @@
+.list-tags {
+    display: inline;
+    text-align: center;
+
+    @media @query-xl {
+        text-align: left;
+    }
+
+    .box-detail__params & {
+        width: 100%;
+        
+        @media @query-vl {
+            width: calc(~"@{calc-base} - @{box-detail-params-title-width}");
+        }
+    }
+
+    &__tag {
+        display: inline-block;
+        margin: 5px 0;
+        line-height: 15px;
+        padding: 3px 6px;
+
+        background-color: @color-orange;
+        color: @color-f;
+        font-size: @font-size-small;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        @media @query-xl {
+            margin: 0 5px 5px 0;
+        }
+
+        &--outline {
+            background-color: transparent;
+
+            color: @color-brown-light;
+            border: 1px solid @color-orange;
+        }
+    }
+}

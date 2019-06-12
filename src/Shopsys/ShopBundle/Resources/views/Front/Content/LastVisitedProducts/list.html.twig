@@ -1,7 +1,15 @@
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 
 {% if products|length > 0 %}
-    <h2>{{ 'Last viewed products'|trans }}</h2>
+    <div class="web__line">
+        <div class="web__container web__container--light web__container--big-padding">
+            <div class="box-last-visited">
+                <div class="box-last-visited__title">
+                    {{ 'Naposledy navštívené produkty'|trans }}
+                </div>
 
-    {{ productList.horizontalList(products, null, 'h3', true) }}
+                {{ productList.horizontalList(products, "list-last-visited", 'h3', 'last-visited') }}
+            </div>
+        </div>
+    </div>
 {% endif %}

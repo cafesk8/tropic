@@ -11,34 +11,73 @@
                 value="{{ searchText|escape('html_attr') }}"
             />
         {% endif %}
+        {% do filterForm.minimalPrice.setRendered %}
+        {% do filterForm.maximalPrice.setRendered %}
 
-        <div class="box-filter__price">
-            {{ form_row(filterForm.minimalPrice, {label: 'Price from'|trans, symbolAfterInput: currencySymbolByDomainId(getDomain().id), attr: { class: 'js-product-filter-call-change-after-reset'} }) }}
-            {{ form_row(filterForm.maximalPrice, {label: 'Price to'|trans, symbolAfterInput: currencySymbolByDomainId(getDomain().id), attr: { class: 'js-product-filter-call-change-after-reset'} }) }}
-            <div
-                class="js-range-slider"
-                data-minimum-input-id="{{ filterForm.minimalPrice.vars.id }}"
-                data-minimal-value="{{ priceRange.minimalPrice|moneyFormat }}"
-                data-maximum-input-id="{{ filterForm.maximalPrice.vars.id }}"
-                data-maximal-value="{{ priceRange.maximalPrice|moneyFormat }}"
-            ></div>
+        <div class="box-filter__selected">
+            <div class="box-filter__title">
+                {{ 'Vybrané filtry'|trans }}
+            </div>
+            <div class="box-filter__selected__item js-not-implemented-yet">
+                {{ 'Velikost'}}: <strong>S</strong>
+                <i class="svg svg-remove"></i>
+            </div>
+            <div class="box-filter__selected__item js-not-implemented-yet">
+                {{ 'Velikost'}}: <strong>S</strong>
+                <i class="svg svg-remove"></i>
+            </div>
+            <div class="box-filter__selected__item js-not-implemented-yet">
+                {{ 'Prodena'}}: <strong>Hradec Králové</strong>
+                <i class="svg svg-remove"></i>
+            </div>
         </div>
-
+        <div class="box-filter__choice">
+            <div class="box-filter__title">
+                {{ 'Velikost'|trans }}
+            </div>
+            <ul class="list-variants list-variants--filter js-not-implemented-yet">
+                <li class="list-variants__item disabled">34</li>
+                <li class="list-variants__item">36</li>
+                <li class="list-variants__item">38</li>
+                <li class="list-variants__item">40</li>
+                <li class="list-variants__item disabled">42</li>
+                <li class="list-variants__item active">S</li>
+                <li class="list-variants__item active">M</li>
+                <li class="list-variants__item">L</li>
+                <li class="list-variants__item disabled">XL</li>
+            </ul>
+        </div>
+        <div class="box-filter__choice">
+            <div class="box-filter__title">
+                {{ 'Barva'|trans }}
+            </div>
+            <ul class="list-variants list-variants--filter js-not-implemented-yet">
+                <li class="list-variants__item-color active" style="background-color: #fff;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #ef9c00;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #f5d62c;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #eb5013;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color active" style="background-color: #000;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #ec5da5;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #027ec6;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #f7b6ec;"><i class="svg svg-checked"></i></li>
+                <li class="list-variants__item-color" style="background-color: #774646;"><i class="svg svg-checked"></i></li>
+            </ul>
+        </div>
         <div class="box-filter__choice">
             <label class="form-choice">
-                <span class="form-choice__input">
-                    {{ form_widget(filterForm.inStock) }}
-                </span>
-                <span class="form-choice__label">
-                    {{ 'Products in stock only'|trans }}
-                    {% if productFilterCountData is not null %}
-                        <span
-                            class="js-product-filter-count"
-                            data-form-id="{{ filterForm.inStock.vars.id }}"
-                        >
-                            ({{ productFilterCountData.countInStock }})
-                        </span>
-                    {% endif %}
+                <span class="form-choice__line">
+                    {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox'}}) }}
+                    <span class="css-label-checkbox">
+                        {{ 'Products in stock only'|trans }}
+                        {% if productFilterCountData is not null %}
+                            <span
+                                class="js-product-filter-count"
+                                data-form-id="{{ filterForm.inStock.vars.id }}"
+                            >
+                                ({{ productFilterCountData.countInStock }})
+                            </span>
+                        {% endif %}
+                    </span>
                 </span>
             </label>
         </div>
@@ -46,27 +85,27 @@
         {% if filterForm.flags is empty %}
             {% do filterForm.flags.setRendered %}
         {% else %}
+            <div class="box-filter__title">
+                {{ 'Flags'|trans }}
+            </div>
             <div class="box-filter__choice" id="{{ filterForm.flags.vars.id }}">
-                <span class="box-filter__choice__title">
-                    {{ 'Flags'|trans }}:
-                </span>
                 {% for flagForm in filterForm.flags %}
                     <label class="form-choice">
-                        <span class="form-choice__input">
-                            {{ form_widget(flagForm) }}
-                        </span>
-                        <span class="form-choice__label">
-                            {{ flagForm.vars.label }}
-                            {% if productFilterCountData is not null %}
-                                <span
-                                    class="js-product-filter-count"
-                                    data-form-id="{{ flagForm.vars.id }}"
-                                >
-                                    {% if not flagForm.vars.checked %}
-                                        ({% if filterForm.flags.vars.data is not empty %}+{% endif %}{{ productFilterCountData.countByFlagId[flagForm.vars.value]|default(0) }})
-                                    {% endif %}
-                                </span>
-                            {% endif %}
+                        <span class="form-choice__line">
+                            {{ form_widget(flagForm, { attr: { class: 'css-checkbox'}}) }}
+                            <span class="css-label-checkbox">
+                                {{ flagForm.vars.label }}
+                                {% if productFilterCountData is not null %}
+                                    <span
+                                        class="js-product-filter-count"
+                                        data-form-id="{{ flagForm.vars.id }}"
+                                    >
+                                        {% if not flagForm.vars.checked %}
+                                            ({% if filterForm.flags.vars.data is not empty %}+{% endif %}{{ productFilterCountData.countByFlagId[flagForm.vars.value]|default(0) }})
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </span>
                         </span>
                     </label>
                 {% endfor %}
@@ -76,14 +115,14 @@
         {% if filterForm.brands is empty %}
             {% do filterForm.brands.setRendered %}
         {% else %}
+            <div class="box-filter__title">
+                {{ 'Brand'|trans }}
+            </div>
             <div class="box-filter__choice" id="{{ filterForm.brands.vars.id }}">
-                <span class="box-filter__choice__title">
-                    {{ 'Brand'|trans }}:
-                </span>
                 {% for brandForm in filterForm.brands %}
                     <label class="form-choice">
-                        {{ form_widget(brandForm, { attr: { class: 'form-choice__input'} }) }}
-                        <span class="form-choice__label">
+                        {{ form_widget(brandForm, { attr: { class: 'form-choice__input css-checkbox'} }) }}
+                        <span class="form-choice__label css-label-checkbox">
                             {{ brandForm.vars.label }}
                             {% if productFilterCountData is not null %}
                                 <span
@@ -106,22 +145,17 @@
             {% do filterForm.parameters.setRendered %}
         {% else %}
             <div class="box-filter__parameters">
-                <span class="box-filter__parameters__title">
-                    {{ 'Parameters'|trans }}:
-                </span>
                 <div id="{{ filterForm.parameters.vars.id }}">
                     {% for parameterId, parameterForm in filterForm.parameters %}
                         <div class="js-product-filter-parameter">
                             <div class="box-filter__choice" id="{{ parameterForm.vars.id }}">
-                                <span class="box-filter__choice__title js-product-filter-parameter-label">
+                                <span class="box-filter__title js-product-filter-parameter-label">
                                     {{ parameterForm.vars.label }}:
                                 </span>
                                 {% for parameterValueForm in parameterForm %}
                                     <label class="form-choice js-product-filter-parameter-value">
-                                        <span class="form-choice__input">
-                                            {{ form_widget(parameterValueForm) }}
-                                        </span>
-                                        <span class="form-choice__label">
+                                        {{ form_widget(parameterValueForm, { attr: { class: 'form-choice__input css-checkbox'} }) }}
+                                        <span class="form-choice__label css-label-checkbox">
                                             {{ parameterValueForm.vars.label }}
                                             {% if productFilterCountData is not null %}
                                                 <span

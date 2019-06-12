@@ -1,4 +1,5 @@
-{% extends '@ShopsysShop/Front/Layout/layoutWithPanel.html.twig' %}
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
+{% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 
 {% set domain = getDomain() %}
 
@@ -11,17 +12,76 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="box-list">
-        {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'productList'})) }}
-        <h1>
-            {{ category.getSeoH1(domain.id)|default(category.name) }}
-        </h1>
-        {{ render(controller('ShopsysShopBundle:Front/Category:categoryList', {categories: visibleChildren})) }}
-        {{ render(controller('ShopsysShopBundle:Front/BestsellingProduct:list', { category: category })) }}
-    </div>
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'productList'})) }}
+            <div class="box-prelist">
+                <div class="box-prelist__title">
+                    {{ category.getSeoH1(domain.id)|default(category.name) }}
+                </div>
 
-    {% block last_visited_products %}
-        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
-    {% endblock %}
+                <div class="list-grid-images">
+                    <ul class="list-grid-images__columns">
+                        <li class="list-grid-images__columns__item">
+                            <a href="#" class="list-grid-images__columns__link js-not-implemented-yet">
+                                <img src="https://placeimg.com/380/210/any/grayscale" alt="Pro pořádné chlapy">
+                                <div class="list-grid-images__button list-grid-images__button--small-gap-under">
+                                     <span class="btn btn--secondary">{{ 'Nová kolekce'|trans }}</span>
+                                </div>
+                            </a>
+                            <span class="list-grid-images__columns__text">
+                                {{ 'Kalhoty jsou dnes opravdu nezbytným základem šatníku každé ženy.'|trans }}
+                            </span>
+                        </li>
+                        <li class="list-grid-images__columns__item">
+                            <a href="#" class="list-grid-images__columns__link js-not-implemented-yet">
+                                <img src="https://placeimg.com/380/210/any/grayscale" alt="Pro pořádné chlapy">
+                                <div class="list-grid-images__button list-grid-images__button--small-gap-under">
+                                     <span class="btn btn--secondary">{{ 'Sety & Outfity'|trans }}</span>
+                                </div>
+                            </a>
+                            <span class="list-grid-images__columns__text">
+                                {{ 'Naštěstí je dnes tento kousek naprostou klasikou dámského šatníku'|trans }}
+                            </span>
+                        </li>
+                        <li class="list-grid-images__columns__item">
+                            <a href="#" class="list-grid-images__columns__link js-not-implemented-yet">
+                                <img src="https://placeimg.com/380/210/any/grayscale" alt="Pro pořádné chlapy">
+                                <div class="list-grid-images__button list-grid-images__button--small-gap-under">
+                                     <span class="btn btn--secondary">{{ 'Legendární kousky'|trans }}</span>
+                                </div>
+                            </a>
+                            <span class="list-grid-images__columns__text">
+                                {{ 'Nezáleží na tom, pro jakou příležitost kalhoty sháníte, u nás jsou v nabídce.'|trans }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
+            </div>
+        </div>
+    </div>
+    {# TODO PRG: add top product for category #}
+    {% if 1==2 %}
+        {#% if topProducts is not empty %#}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div id="top-products" class="box-top-products">
+                    <div class="box-top-products__title">
+                        {{ 'Bushmani mají nejraději'|trans }}
+                    </div>
+                    <div class="box-top-products__in">
+                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3', 'top-products') }}
+                    </div>
+                    <div class="box-top-products__bottom">
+                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block last_visited_products %}{% endblock %}
 
 {% endblock %}

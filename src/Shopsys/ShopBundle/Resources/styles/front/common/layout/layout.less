@@ -49,7 +49,11 @@ img {
     &__container {
         padding: 0 10px;
 
-        @media @query-lg {
+        &--top-line {
+            border-top: 1px solid @color-gray;
+        }
+
+        @media @query-xl {
             padding: 0;
 
             &--small-padding {
@@ -61,8 +65,12 @@ img {
             }
         }
 
-        &--gray {
+        &--light {
             background: @color-gray;
+        }
+
+        &--dark {
+            background: @color-brown;
         }
 
         @media @query-xl {

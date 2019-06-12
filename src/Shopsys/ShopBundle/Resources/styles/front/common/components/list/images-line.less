@@ -1,0 +1,33 @@
+@image-line-item-count-mobile: 2;
+@image-line-item-count-tablet: 4;
+@image-line-item-count-desktop: 8;
+
+@image-line-item-height: 169px;
+
+.list-images-line {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+
+    @media @query-xl {
+        flex-wrap: nowrap;
+    }
+
+    &__item {
+        width: calc(~"@{calc-base}/@{image-line-item-count-mobile}");
+        padding-right: 3px;
+
+        @media @query-md {
+            width: calc(~"@{calc-base}/@{image-line-item-count-tablet}");
+
+        }
+
+        @media @query-xl {
+            width: calc(~"@{calc-base}/@{image-line-item-count-desktop}");
+        }
+    }
+}

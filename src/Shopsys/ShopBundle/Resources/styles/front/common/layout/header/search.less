@@ -2,17 +2,25 @@
 @search-form-height: @input-height;
 @search-width: 650px;
 @search-padding: 26px 42px;
+@search-padding-mobile: 13px 20px;
 @search-input-height: 48px;
 
 .search {
     position: relative;
-    padding: @search-padding;
+    padding: @search-padding-mobile;
 
     background: @color-gray;
 
+    @media @query-lg {
+        padding: @search-padding;
+    }
+
     &__form {
-        width: @search-width;
         display: flex;
+
+        @media @query-lg {
+            width: @search-width;
+        }
 
         .is-no-flex & {
             display: block;

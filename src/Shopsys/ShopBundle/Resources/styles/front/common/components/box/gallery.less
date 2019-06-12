@@ -1,82 +1,110 @@
-@box-gallery-item-height: 80px;
-@box-gallery-item-gap: 10px;
-@box-gallery-arrow-size: 20px;
+@box-gallery-item-size: 70px;
+@box-gallery-item-gap: 24px;
+@box-gallery-item-count: 3;
+@box-gallery-side-gap: 125px;
+@box-gallery-font-size: 13px;
+@box-gallery-width: 290px;
+@box-gallery-bottom-gap: 40px;
+
+@box-gallery-item-video-width: 66px;
+@box-gallery-item-more-width: 93px;
+@box-gallery-items-width: calc(~"100% - @{box-gallery-item-more-width} - @{box-gallery-item-video-width}");
 
 .box-gallery {
-    height: @box-gallery-item-height;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     position: relative;
-    margin-bottom: @margin-gap;
+    margin: 0 auto @box-gallery-bottom-gap auto;
 
-    .slick-list {
-        overflow: hidden;
+    &__images {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: @box-gallery-width;
+        max-width: 100%;
+        min-height: @box-gallery-item-size;
+        margin-bottom: 20px;
+
+        @media @query-vl {
+            margin-bottom: 0;
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        width: 100%;
+
+        @media @query-vl {
+            width: auto;
+        }
     }
 
     &__item {
-        float: left;
-        width: 100%/2;
-        padding: 0 @box-gallery-item-gap/2;
-        box-sizing: content-box;
+        width: calc(~"@{box-gallery-items-width}/@{box-gallery-item-count}");
+        margin-right: @box-gallery-item-gap;
+        min-width: @box-gallery-item-size;
+        text-align: center;
 
-        @media @query-xs {
-            width: 100%/3;
+        &:first-child {
+            margin-left: 0;
         }
 
-        @media @query-md {
-            width: 100%/4;
-        }
-
-        @media @query-lg {
-            width: 100%/3;
-        }
-
-        @media @query-vl {
-            width: 100%/4;
+        &:last-child {
+            margin-right: 0;
         }
 
         &__link {
-            display: block;
-            width: 100%;
-            height: @box-gallery-item-height;
+            display: inline-block;
+            width: @box-gallery-item-size;
+            height: @box-gallery-item-size;
             position: relative;
-
-            border: 1px solid @color-border;
         }
 
         img {
             .center-image();
         }
-    }
 
-    &__arrow {
-        float: left;
-        line-height: @box-gallery-arrow-size;
-        width: @box-gallery-arrow-size;
-        height: @box-gallery-arrow-size;
-        margin-top: @box-gallery-item-height/2 - @box-gallery-arrow-size/2;
+        &--more {
+            width: @box-gallery-item-more-width;
+            margin-right: 0;
 
-        cursor: pointer;
-        color: @color-border;
+            .box-gallery__item__link {
+                display: inline;
+                line-height: @box-gallery-item-size;
 
-        &--prev {
-            position: relative;
-            top: 3px;
-            transform: rotate(90deg);
+                color: @color-brown-light-2;
+                font-size: @box-gallery-font-size;
+                font-weight: 700;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
         }
 
-        &--next {
-            position: relative;
-            top: -3px;
-            transform: rotate(-90deg);
-        }
+        &--video {
+            width: @box-gallery-item-video-width;
+            text-align: right;
+            margin-right: 0;
 
-        &.slick-disabled {
-            color: lighten(@color-border, 10%);
-            cursor: default;
-        }
-    }
+            border-left: 3px solid @color-gray;
 
-    &__in {
-        float: left;
-        width: calc(~"100% - @{box-gallery-arrow-size}*2");
+            .box-gallery__item__link {
+                display: inline;
+                line-height: @box-gallery-item-size;
+
+                color: @color-red;
+                font-size: 33px;
+                text-decoration: none;
+
+                .svg {
+                    position: relative;
+                    top: 5px;
+                }
+            }
+        }
     }
 }

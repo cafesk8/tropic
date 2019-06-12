@@ -1,0 +1,114 @@
+@custom-inputs-margin-left: 30px;
+@custom-inputs-filter-margin-left: 25px;
+
+input[type=checkbox].css-checkbox, input[type=checkbox].css-radio, input[type=radio].css-radio, input[type=radio].css-checkbox {
+	position:absolute;
+	height:1px;
+	width:1px;
+	left:-1000px;
+	margin:-1px;
+	padding:0;
+	z-index:-1000;
+
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	border:0;
+}
+
+input[type=checkbox].css-checkbox + .css-label-checkbox, input[type=checkbox].css-checkbox + .css-label-checkbox.clr,
+input[type=checkbox].css-radio + .css-label-radio, input[type=checkbox].css-radio + .css-label-radio.clr,
+input[type=checkbox].css-checkbox + .css-label-radio, input[type=checkbox].css-checkbox + .css-label-radio.clr,
+input[type=radio].css-radio + .css-label-radio, input[type=radio].css-radio + .css-label-radio.clr
+{
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: @custom-inputs-margin-left;
+	line-height: 18px;
+
+	font-size: 18px;
+	cursor: pointer;
+
+	&:before {
+		content: "";
+		position: absolute;
+		display: inline-block;
+		top: 0;
+		left: 0;
+		width: 18px;
+		height: 18px;
+
+		background-repeat: no-repeat;
+		background-position: left top;
+		background-size: 36px 36px;
+	}
+
+	&:hover, &:focus, &:active {
+		&:before {
+			background-position: right top;
+		}
+	}
+}
+
+input[type=checkbox].css-checkbox:checked + .css-label-checkbox, input[type=checkbox].css-checkbox + .css-label-checkbox.chk,
+input[type=checkbox].css-radio:checked + .css-label-radio, input[type=checkbox].css-radio + .css-label-radio.chk,
+input[type=checkbox].css-checkbox:checked + .css-label-radio, input[type=radio].css-checkbox + .css-label-radio.chk,
+input[type=radio].css-radio:checked + .css-label-radio, input[type=radio].css-radio + .css-label-radio.chk
+{
+	&:before {
+		background-position: left bottom;
+	}
+}
+
+input[type=checkbox].css-checkbox:disabled + .css-label-checkbox, input[type=checkbox].css-checkbox + .css-label-checkbox.chk,
+input[type=checkbox].css-radio:disabled + .css-label-radio, input[type=checkbox].css-radio + .css-label-radio.chk,
+input[type=checkbox].css-checkbox:disabled + .css-label-radio, input[type=radio].css-checkbox + .css-label-radio.chk,
+input[type=radio].css-radio:disabled + .css-label-radio, input[type=radio].css-radio + .css-label-radio.chk
+{
+	&:before {
+		cursor:no-drop;
+		background-position: right bottom;
+	}
+}
+input[type=radio].css-radio:disabled ~ .css-label-checkbox,
+input[type=radio].css-radio:disabled ~ .css-label-radio,
+input[type=checkbox].css-checkbox:disabled ~ .css-label-checkbox,
+input[type=checkbox].css-checkbox:disabled ~ .css-label-radio,
+input[type=checkbox].css-radio:disabled ~ .css-label-radio,
+input[type=checkbox].css-radio:disabled ~ .css-label-radio {
+	cursor: no-drop;
+	color: @color-inactive;
+}
+
+.css-label-checkbox, .css-label-radio {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.css-label-checkbox {
+
+	.css-label-checkbox__link {
+		color: @color-base;
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: @color-orange;
+		}
+	}
+
+	&:before {
+		background-image: url('@{path-design}/custom_checkbox.png');
+	}
+}
+
+.css-label-radio {
+
+	&:before {
+		background-image: url('@{path-design}/custom_radio.png');
+	}
+}

@@ -2,18 +2,30 @@
     <ul class="list-categories">
         {% for category in categories %}
             <li class="list-categories__item">
-                <a href="{{ url('front_product_list', { id: category.id }) }}" class="list-categories__item__block">
-                    <span class="list-categories__item__image">
-                        {{ image(category, { alt: category.name }) }}
-                    </span>
-                    <h3 class="list-categories__item__title">
-                        {{ category.name }}
-                        {% if listableProductCountsIndexedByCategoryId is not empty %}
-                            ({{ listableProductCountsIndexedByCategoryId[category.id] }})
-                        {% endif %}
-                    </h3>
+                <a href="{{ url('front_product_list', { id: category.id }) }}"
+                class="list-categories__link">
+                    {{ image(category, { alt: category.name }) }}
+                    <div class="list-categories__button">
+                         <span class="btn">{{ category.name }}</span>
+                    </div>
                 </a>
             </li>
+            {% if loop.index == 2 %}
+                <li class="list-categories__item js-not-implemented-yet">
+                    <span class="list-categories__item__text">
+                        {{ 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně'|trans }}
+                    </span>
+                </li>
+            {% endif %}
+
+            {% if loop.index == 5 %}
+                <li class="list-categories__item js-not-implemented-yet">
+                    <span class="list-categories__item__text list-categories__item__text--text-right">
+                        {{ 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.'|trans }}
+                    </span>
+                </li>
+            {% endif %}
+
         {% endfor %}
     </ul>
 {% endif %}
