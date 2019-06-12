@@ -4,6 +4,7 @@
 @box-gallery-side-gap: 125px;
 @box-gallery-font-size: 13px;
 @box-gallery-width: 290px;
+@box-gallery-bottom-gap: 40px;
 
 @box-gallery-item-video-width: 66px;
 @box-gallery-item-more-width: 93px;
@@ -14,7 +15,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     position: relative;
-    margin: 0 auto;
+    margin: 0 auto @box-gallery-bottom-gap auto;
 
     &__images {
         display: flex;
