@@ -5,7 +5,7 @@
 
 {% set domain = getDomain() %}
 {% set descriptionHeadline = 'Popis'|trans %}
-{% set parametersHeadline = 'Technical parameters'|trans %}
+{% set parametersHeadline = 'Parametry'|trans %}
 {% set accessoriesHeadline = 'Accessories'|trans %}
 {% set referencesHeadline = 'Hodnocení'|trans %}
 {% set discussionHeadline = 'Diskuze'|trans %}
@@ -44,6 +44,11 @@
                                         {{ descriptionHeadline }}
                                     </a>
                                 {% endif %}
+                                {% if productParameterValues > 0 %}
+                                    <a href="#" class="in-tab__head__item underline js-tabs-button js-not-implemented-yet" data-tab-id="parameters">
+                                        {{ parametersHeadline }}
+                                    </a>
+                                {% endif %}
                                 <a href="#" class="in-tab__head__item underline js-tabs-button js-not-implemented-yet" data-tab-id="references">
                                     {{ referencesHeadline }} (3)
                                 </a>
@@ -58,7 +63,7 @@
                             </div>
                         </div>
                         <div class="in-tab__content">
-                            {% if product.getDescription(domain.id) or productParameterValues > 0 %}
+                            {% if product.getDescription(domain.id) %}
                                 <div class="in-tab__content__title js-tabs-button active" data-tab-id="description">
                                     <a href="#" class="in-tab__content__title__link underline">
                                         {{ descriptionHeadline }}
@@ -77,8 +82,22 @@
                                             </p>
                                         {% endif %}
                                     </div>
+                                </div>
+                            {% endif %}
+
+                            {% if productParameterValues > 0 %}
+                                <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
+                                    <a href="#" class="in-tab__content__title__link underline">
+                                        {{ parametersHeadline }}
+                                    </a>
+                                    <i class="svg svg-triangle"></i>
+                                </div>
+                                <div class="in-tab__content__item js-tabs-content" data-tab-id="parameters">
+                                    <h3 class="in-user-text__title in-user-text__title--center">
+                                        {{ parametersHeadline }}
+                                    </h3>
                                     <div class="box-detail__params">
-                                        <div class="box-detail__params__column">
+                                        <div class="box-detail__params__row">
                                             <div class="box-detail__params__title">{{ 'Co potřebujete vědět'|trans }}</div>
                                             <ul class="list-params">
                                                 <li class="list-params__item-with-icon js-not-implemented-yet">
@@ -95,21 +114,24 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="box-detail__params__column box-detail__params__column--middle">
+                                        <div class="box-detail__params__row">
                                             {% if productParameterValues > 0 %}
-                                                <div class="box-detail__params__title">{{ 'Parametry'|trans }}</div>
-                                                <ul class="list-params">
-                                                    {% for productParameterValue in productParameterValues %}
-                                                        <li class="list-params__item">
-                                                            <span class="list-params__item__text">
-                                                                {{ productParameterValue.parameter.name }}&nbsp;{{ productParameterValue.value.text }}
-                                                            </span>
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
+                                            <div class="box-detail__params__title">{{ 'Parametry'|trans }}</div>
+                                            <ul class="list-params">
+                                                {% for productParameterValue in productParameterValues %}
+                                                <li class="list-params__item">
+                                                    <span class="list-params__item__text">
+                                                        <span class="list-params__item__text__name">
+                                                            {{ productParameterValue.parameter.name }}:
+                                                        </span>
+                                                        {{ productParameterValue.value.text }}
+                                                    </span>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
                                             {% endif %}
                                         </div>
-                                        <div class="box-detail__params__column">
+                                        <div class="box-detail__params__row">
                                             <div class="box-detail__params__title">{{ 'Najdete v kategoriích'|trans }}</div>
                                             <div class="list-tags">
                                                 <div class="list-tags__tag list-tags__tag--outline">
@@ -279,7 +301,7 @@
                                 </div>
                             </div>
 
-                            <div class="in-tab__content__title js-tabs-button" data-tab-id="references">
+                            <div class="in-tab__content__title js-tabs-button" data-tab-id="discussion">
                                 <a href="#" class="in-tab__content__title__link underline js-not-implemented-yet">
                                     {{ discussionHeadline }} (7)
                                 </a>

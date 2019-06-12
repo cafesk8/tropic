@@ -6,7 +6,7 @@
 @box-detail-image-main-bottom-gap: 20px;
 @box-detail-image-min-height: 250px;
 
-@box-detail-params-column-count: 3px;
+@box-detail-params-title-width: 35%;
 @box-detail-info-padding: 30px;
 
 @box-detail-gift-image-size: 50px;
@@ -211,7 +211,7 @@
         &__text {
             font-size: 14px;
             color: @color-brown-light;
-            
+
             &__highlight {
                 color: @color-price-save;
             }
@@ -236,32 +236,20 @@
 
         background-color: @color-gray;
 
-        @media @query-lg {
+        &__row {
+            display: flex;
             flex-direction: row;
-        }
-
-        &__column {
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 38px;
 
             &:last-child {
                 margin-bottom: 0;
-            }
-
-            @media @query-lg {
-                width: calc(~"100% - @{box-detail-params-column-count}");
-                margin-bottom: 0;
-            }
-
-            &--middle {
-                @media @query-lg {
-                    padding: 0 20px;
-                }
             }
         }
 
         &__title {
             margin-bottom: 15px;
+            width: @box-detail-params-title-width;
 
             color: @color-base;
             font-size: 15px;
