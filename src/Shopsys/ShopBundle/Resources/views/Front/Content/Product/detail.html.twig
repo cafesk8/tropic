@@ -624,4 +624,22 @@
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
+
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            {% include '@ShopsysShop/Front/Content/ImagesLine/list.html.twig' %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--dark web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
+        </div>
+    </div>
 {% endblock %}
