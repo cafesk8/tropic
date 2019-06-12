@@ -200,6 +200,8 @@ class ProductController extends FrontBaseController
             );
         }
 
+        $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
+
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'productFilterCountData' => $productFilterCountData,
@@ -208,6 +210,7 @@ class ProductController extends FrontBaseController
             'filterFormSubmited' => $filterForm->isSubmitted(),
             'visibleChildren' => $visibleChildren,
             'priceRange' => $productFilterConfig->getPriceRange(),
+            'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -242,9 +245,12 @@ class ProductController extends FrontBaseController
 
         $brand = $this->brandFacade->getById($id);
 
+        $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
+
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'brand' => $brand,
+            'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -296,6 +302,8 @@ class ProductController extends FrontBaseController
             );
         }
 
+        $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
+
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'productFilterCountData' => $productFilterCountData,
@@ -304,6 +312,7 @@ class ProductController extends FrontBaseController
             'searchText' => $searchText,
             'SEARCH_TEXT_PARAMETER' => self::SEARCH_TEXT_PARAMETER,
             'priceRange' => $productFilterConfig->getPriceRange(),
+            'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
         ];
 
         if ($request->isXmlHttpRequest()) {

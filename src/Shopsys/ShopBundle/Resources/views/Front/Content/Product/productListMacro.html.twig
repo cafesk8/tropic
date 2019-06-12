@@ -1,4 +1,4 @@
-{% macro list(products, listCssClass, productHeadingTagName) %}
+{% macro list(products, variantsIndexedByMainVariantId, listCssClass, productHeadingTagName) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
 
@@ -46,11 +46,13 @@
                                 </div>
                             {% endif %}
 
-                            <div class="list-products__item__info__availability js-not-implemented-yet">
-                                <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">S</span>
-                                <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">M</span>
-                                <span class="in-badge in-badge--product-list in-badge--outline">L</span>
-                                <span class="in-badge in-badge--product-list in-badge--outline">XL</span>
+                            <div class="list-products__item__info__availability">
+                                {% if variantsIndexedByMainVariantId|length > 0 and product.id in variantsIndexedByMainVariantId|keys %}
+                                    {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
+                                    {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
+                                        <span class="in-badge in-badge--product-list in-badge--outline">{{ parameterValue }}</span>
+                                    {% endfor %}
+                                {% endif %}
                                 <div class="list-products__item__info__availability__spacer"></div>
                                 <div class="list-products__item__info__availability__text js-not-implemented-yet" style="color: #7bbd70;">
                                     {{ product.calculatedAvailability.getName }}
