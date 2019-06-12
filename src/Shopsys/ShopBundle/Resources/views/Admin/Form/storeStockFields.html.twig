@@ -1,23 +1,33 @@
 {% block store_stock_row %}
-    <table class="table-form">
-        <thead>
-        <tr class="table-form__row">
-            <th class="table-form__cell">{{ 'Store'|trans }}</th>
-            <th class="table-form__cell">{{ 'on stock'|trans }}</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% set stores = form.vars.stores %}
-
-        {% for store in stores %}
+    {% if form.vars.stores is defined %}
+        <table class="table-form">
+            <thead>
             <tr class="table-form__row">
-                <td class="table-form__cell">{{ store.name }}</td>
-                <td class="table-form__cell">
-                    {{ form_widget(form.children[store.id]) }}
-                </td>
+                <th class="table-form__cell">{{ 'Store'|trans }}</th>
+                <th class="table-form__cell">{{ 'on stock'|trans }}</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            {% set stores = form.vars.stores %}
+
+            {% for store in stores %}
+                <tr class="table-form__row">
+                    <td class="table-form__cell">{{ store.name }}</td>
+                    <td class="table-form__cell">
+                        {{ form_widget(form.children[store.id]) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <table class="table-form">
+            <thead>
+            <tr class="table-form__row">
+                <th class="table-form__cell">{{ 'Neexistují žádné prodejny'|trans }}</th>
+            </tr>
+            </thead>
+        </table>
+    {% endif %}
 {% endblock %}
