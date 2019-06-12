@@ -30,47 +30,47 @@
                     {% if renderFlashMessages %}
                         {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
                     {% endif %}
-            <div class="cart-detail__wrap">
-                <ul class="cart-detail">
+                    <div class="cart-detail__wrap">
+                        <ul class="cart-detail">
                             {% for cartItem in cartItems %}
                                 {% set quantifiedItemPrice = quantifiedItemsPrices[loop.index0] %}
-                    <li class="cart-detail__item">
-                        <div class="cart-detail__item__image">
-                                        {{ image(cartItem.product, { size: 'cartBox' }) }}
-                        </div>
-                        <div class="cart-detail__item__content">
+                                <li class="cart-detail__item">
+                                    <div class="cart-detail__item__image">
+                                            {{ image(cartItem.product, { size: 'thumbnail' }) }}
+                                    </div>
+                                    <div class="cart-detail__item__content">
                                         <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
                                         <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
-                                        <span class="cart-detail__item__content__price__old js-not-implemented-yet">3099 Kč</span>
-                            </span>
-                                    {% set distinguishingProductParameterValueForVariant = distinguishingProductParameterValueForVariant(cartItem.product) %}
-                                    {% if distinguishingProductParameterValueForVariant is not null %}
-                                        <span class="cart-detail__item__content__size">
-                                            {{ distinguishingProductParameterValueForVariant.parameter.name }}
-                                            <span class="in-badge in-bage--outline">{{ distinguishingProductParameterValueForVariant.value.text }}</span>
-                            </span>
-                                    {% endif %}
-                        </div>
-                        <div class="cart-detail__item__pieces">
+                                            <span class="cart-detail__item__content__price__old js-not-implemented-yet">3099 Kč</span>
+                                        </span>
+                                        {% set distinguishingProductParameterValueForVariant = distinguishingProductParameterValueForVariant(cartItem.product) %}
+                                        {% if distinguishingProductParameterValueForVariant is not null %}
+                                            <span class="cart-detail__item__content__size">
+                                                {{ distinguishingProductParameterValueForVariant.parameter.name }}
+                                                <span class="in-badge in-bage--outline">{{ distinguishingProductParameterValueForVariant.value.text }}</span>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cart-detail__item__pieces">
                                         {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
-                        </div>
+                                    </div>
                                     <span class="cart-detail__item__remove js-cart-ajax-remove" data-src="{{ url('front_cart_delete', { cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id) }) }}">
-                            <i class="svg svg-remove"></i>
-                            </span>
-                    </li>
+                                        <i class="svg svg-remove"></i>
+                                    </span>
+                                </li>
                             {% endfor %}
-                </ul>
-                <div class="cart-detail__total">
-                    <div class="cart-detail__total__text">
-                        {{ 'Celkem'|trans }}
+                        </ul>
+                        <div class="cart-detail__total">
+                            <div class="cart-detail__total__text">
+                                {{ 'Celkem'|trans }}
+                            </div>
+                            <div class="cart-detail__total__price">
+                                        {{ productsPrice.priceWithVat|price }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="cart-detail__total__price">
-                                {{ productsPrice.priceWithVat|price }}
-                    </div>
-                </div>
-            </div>
-            <div class="cart-detail__bottom">
-                <div class="cart-detail__bottom__transport">
+                    <div class="cart-detail__bottom">
+                        <div class="cart-detail__bottom__transport">
                             {% if isFreeTransportAndPaymentActive %}
                                 {% if isPaymentAndTransportFree %}
                                     <div class="in-free-transport">
@@ -78,23 +78,23 @@
                                     </div>
                                 {% else %}
                                     <div class="in-free-transport">
-                        <div class="in-free-transport__title">
+                                        <div class="in-free-transport__title">
                                             {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
-                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                        </div>
-                        <div class="in-free-transport__pipe">
+                                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                        </div>
+                                        <div class="in-free-transport__pipe">
                                             <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
-                        </div>
-                    </div>
+                                        </div>
+                                    </div>
                                 {% endif %}
                             {% endif %}
-                </div>
-                <div class="cart-detail__bottom__button">
-                    <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
+                        </div>
+                        <div class="cart-detail__bottom__button">
+                            <a href="{{ url('front_cart') }}" class="btn btn--success">{{ 'Přejít do košíku'|trans }}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
         {% endif %}
-</div>
+    </div>
 </div>

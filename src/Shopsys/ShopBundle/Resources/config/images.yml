@@ -59,17 +59,12 @@
             width: 70
             height: 70
             crop: false
-            occurrence: 'Front-end: Thumbnail of images under the main image in product detail, autocomplete, sets, variants'
+            occurrence: 'Front-end: Thumbnail of images under the main image in product detail, autocomplete, sets, variants, cartbox'
         -   name: list
             width: 260
             height: 260
             crop: false
             occurrence: 'Front-end: Listing of products in section, listing of products on special offer'
-        -   name: cartBox
-            width: 71
-            height: 71
-            crop: false
-            occurrence: 'Front-end: Preview product in cart box'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem
