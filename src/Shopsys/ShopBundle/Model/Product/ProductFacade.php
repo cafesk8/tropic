@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface;
@@ -21,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactory
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
@@ -31,6 +33,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
+use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
@@ -55,6 +58,16 @@ class ProductFacade extends BaseProductFacade
      * @var \Shopsys\ShopBundle\Model\Store\StoreFacade
      */
     private $storeFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
+     */
+    private $productDataFactory;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository
+     */
+    private $categoryRepository;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -82,6 +95,8 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -108,7 +123,9 @@ class ProductFacade extends BaseProductFacade
         ProductPriceCalculation $productPriceCalculation,
         CurrentCustomer $currentCustomer,
         ProductStoreStockFactory $productStoreStockFactory,
-        StoreFacade $storeFacade
+        StoreFacade $storeFacade,
+        ProductDataFactory $productDataFactory,
+        CategoryRepository $categoryRepository
     ) {
         parent::__construct(
             $em,
@@ -138,6 +155,8 @@ class ProductFacade extends BaseProductFacade
         $this->currentCustomer = $currentCustomer;
         $this->productStoreStockFactory = $productStoreStockFactory;
         $this->storeFacade = $storeFacade;
+        $this->productDataFactory = $productDataFactory;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -235,5 +254,63 @@ class ProductFacade extends BaseProductFacade
     public function findByTransferNumber(int $transferNumber): ?Product
     {
         return $this->productRepository->findByTransferNumber($transferNumber);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    public function appendParentCategoriesByProduct(Product $product): void
+    {
+        $productData = $this->productDataFactory->createFromProduct($product);
+
+        foreach ($this->domain->getAll() as $domainConfig) {
+            if (array_key_exists($domainConfig->getId(), $productData->categoriesByDomainId) === false) {
+                return;
+            }
+            $this->appendParentCategories($productData, $domainConfig->getId());
+        }
+        $this->edit($product->getId(), $productData);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param int $domainId
+     */
+    private function appendParentCategories(ProductData $productData, int $domainId): void
+    {
+        $newCategories = [];
+        foreach ($productData->categoriesByDomainId[$domainId] as $category) {
+            $path = $this->categoryRepository->getPath($category);
+            foreach ($path as $parentCategory) {
+                if ($parentCategory->getParent() !== null) {
+                    $newCategories[$parentCategory->getId()] = $parentCategory;
+                }
+            }
+            $productData->categoriesByDomainId[$domainId] = $newCategories;
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
+     */
+    public function removeProductCategoryDomainByProductAndCategory(Product $product, Category $category): void
+    {
+        $productData = $this->productDataFactory->createFromProduct($product);
+        $isSomeCategoryRemoveFromProduct = false;
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $key = false;
+            if (array_key_exists($domainId, $productData->categoriesByDomainId)) {
+                $key = array_search($category, $productData->categoriesByDomainId[$domainId], true);
+            }
+            if ($key !== false) {
+                unset($productData->categoriesByDomainId[$domainId][$key]);
+                $isSomeCategoryRemoveFromProduct = true;
+            }
+        }
+
+        if ($isSomeCategoryRemoveFromProduct === true) {
+            $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+        }
     }
 }

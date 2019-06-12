@@ -26,3 +26,65 @@
         </span>
     {% endif %}
 {% endblock %}
+
+{% block main_content %}
+    <div class="in-tab js-tabs">
+        <div class="in-tab__heading">
+            <a href="#"
+               class="in-tab__heading__item js-tabs-button {{ not isAdvancedSearchFormSubmitted ? 'active' }}"
+               data-tab-id="quick"
+            >
+                {{ 'Quick search'|trans }}
+            </a>
+            <a href="#"
+               class="in-tab__heading__item js-tabs-button {{ isAdvancedSearchFormSubmitted ? 'active' }}"
+               data-tab-id="advanced"
+            >
+                {{ 'Advanced search'|trans }}
+            </a>
+        </div>
+        <div class="in-tab__content">
+            <div class="in-tab__content__in js-tabs-content" data-tab-id="quick">
+                {% include '@ShopsysFramework/Admin/Content/Product/quickSearchFormContent.html.twig' with {quickSearchForm: quickSearchForm} %}
+            </div>
+            <div class="in-tab__content__in js-tabs-content" data-tab-id="advanced">
+                {% include '@ShopsysFramework/Admin/Content/Product/AdvancedSearch/advancedSearch.html.twig'
+                    with {advancedSearchForm: advancedSearchForm}
+                %}
+            </div>
+        </div>
+    </div>
+
+    <div class="js-mass-edit-form-wrapper">
+        {{ form_start(massEditForm) }}
+        <div class="wrap-border js-product-list-with-filter">
+            <div class="box-mass-action" id="js-mass-edit">
+                <span class="box-mass-action__click" id="js-mass-edit-button">
+                    {{ 'Hromadné úpravy'|trans }}:
+                    <i class="box-mass-action__click__icon svg svg-arrow"></i>
+                </span>
+                <div class="box-mass-action__content">
+                    <strong class="box-mass-action__title">
+                        {{ 'Změna pro'|trans }}:
+                    </strong>
+                    {{ form_widget(massEditForm.selectType, { attr: { class: 'js-mass-edit-select-type' } , isSimple: true }) }}
+
+                    <div class="box-mass-action__filter">
+                        <strong class="box-mass-action__title">
+                            {{ 'Provést úpravu'|trans }}:
+                        </strong>
+
+                        <div class="box-mass-action__filter__line js-mass-edit-form-partial" data-ajax-url="{{ path('admin_product_getmasseditform') }}">
+                            {% include '@ShopsysShop/Admin/Content/Product/MassEdit/massEditFormPartial.html.twig' with {massEditForm: massEditForm} %}
+                        </div>
+                        {{ form_widget(massEditForm.submit, { label: 'Make modification'|trans, attr: { class: 'btn btn--medium js-mass-edit-submit' } }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ gridView.render() }}
+        {{ gridView.renderHiddenInputs('page') }}
+        {{ form_end(massEditForm) }}
+    </div>
+{% endblock %}

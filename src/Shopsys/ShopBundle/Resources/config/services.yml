@@ -234,3 +234,13 @@ services:
     Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationListener:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    Shopsys\ShopBundle\Model\Product\MassEdit\MassEditActionProvider: ~
+
+    Shopsys\ShopBundle\Model\Product\MassEdit\Action\FlagsMassAction: ~
+
+    Shopsys\ShopBundle\Model\Product\MassEdit\Action\HiddenMassAction: ~
+
+    Shopsys\ShopBundle\Model\Product\MassEdit\Action\CategoryMassAction: ~
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'

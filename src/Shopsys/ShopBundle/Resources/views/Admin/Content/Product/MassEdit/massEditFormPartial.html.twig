@@ -1,0 +1,14 @@
+{% form_theme massEditForm getDefaultFormTheme() %}
+<div class="box-mass-action__filter__line__item">
+    {{ form_widget(massEditForm.subject, {attr: {class: 'js-mass-edit-subject'}, isSimple: true }) }}
+</div>
+<div class="box-mass-action__filter__line__item">
+    {{ form_widget(massEditForm.operation, { attr: {class: 'js-mass-edit-operation'}, isSimple: true }) }}
+</div>
+{% for child in massEditForm %}
+    {% if child.vars.name starts with 'value' %}
+        <div class="box-mass-action__filter__line__item">
+            {{ form_widget(child, { isSimple: true }) }}
+        </div>
+    {% endif %}
+{% endfor %}
