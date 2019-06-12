@@ -191,6 +191,33 @@
         }
     }
 
+    &__action {
+        display: flex;
+        flex-direction: row;
+        padding: 10px @box-detail-info-padding;
+
+        background-color: @color-f;
+        border-top: 1px solid @color-gray;
+        font-size: @font-size;
+
+        &__title {
+            margin-right: 25px;
+
+            color: @color-price-save;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &__text {
+            font-size: 14px;
+            color: @color-brown-light;
+            
+            &__highlight {
+                color: @color-price-save;
+            }
+        }
+    }
+
     &__content {
         width: 100%;
         display: flex;
