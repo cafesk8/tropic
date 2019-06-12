@@ -7,7 +7,11 @@
     .reset-ul();
 
     .box-detail__params & {
-        width: calc(~"@{calc-base} - @{box-detail-params-title-width}");
+        width: 100%;
+
+        @media @query-lg {
+            width: calc(~"@{calc-base} - @{box-detail-params-title-width}");
+        }
     }
 
     &__item {
@@ -23,7 +27,19 @@
             width: 100%;
 
             &__name {
-                width: @list-params-item-name-width;
+                width: 100%;
+
+                @media @query-vl {
+                    width: @list-params-item-name-width;
+                }
+            }
+
+            &__value {
+                width: 100%;
+
+                @media @query-vl {
+                    width: calc(~"@{calc-base} - @{list-params-item-name-width}");
+                }
             }
         }
     }

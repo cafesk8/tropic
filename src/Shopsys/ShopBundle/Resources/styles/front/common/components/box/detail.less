@@ -238,9 +238,14 @@
 
         &__row {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             width: 100%;
-            margin-bottom: 38px;
+            margin-bottom: 15px;
+
+            @media @query-vl {
+                flex-direction: row;
+                margin-bottom: 38px;
+            }
 
             &:last-child {
                 margin-bottom: 0;
@@ -249,12 +254,16 @@
 
         &__title {
             margin-bottom: 15px;
-            width: @box-detail-params-title-width;
+            width: 100%;
 
             color: @color-base;
             font-size: 15px;
             font-weight: 700;
             text-transform: uppercase;
+
+            @media @query-vl {
+                width: @box-detail-params-title-width;
+            }
         }
     }
 }

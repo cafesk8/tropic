@@ -7,7 +7,11 @@
     }
 
     .box-detail__params & {
-        width: calc(~"@{calc-base} - @{box-detail-params-title-width}");
+        width: 100%;
+        
+        @media @query-vl {
+            width: calc(~"@{calc-base} - @{box-detail-params-title-width}");
+        }
     }
 
     &__tag {
