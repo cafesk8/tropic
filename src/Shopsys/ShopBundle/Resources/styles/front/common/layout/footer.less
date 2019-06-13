@@ -64,6 +64,7 @@
                 flex-direction: row;
                 justify-content: center;
                 line-height: @footer-top-social-height;
+                width: 100%;
 
                 font-size: @font-size;
                 font-weight: bold;
@@ -84,10 +85,26 @@
                 font-size: 30px;
                 color: @color-brown;
 
+                &--facebook {
+                    .footer-top__socials__item:hover & {
+                        color: @color-facebook;
+                    }
+                }
+
+                &--instagram {
+                    .footer-top__socials__item:hover & {
+                        color: @color-instagram;
+                    }
+                }
+
                 &--youtube {
                     padding-top: 3px;
-                    
+
                     font-size: 35px;
+
+                    .footer-top__socials__item:hover & {
+                        color: @color-youtube;
+                    }
                 }
             }
         }
