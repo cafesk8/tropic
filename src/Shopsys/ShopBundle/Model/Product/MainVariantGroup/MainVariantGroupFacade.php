@@ -88,4 +88,31 @@ class MainVariantGroupFacade
     {
         return $this->mainVariantGroupRepository->getByDistinguishingParameter($parameter);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsIndexedByMainVariantGroup(array $products): array
+    {
+        $mainVariantGroups = [];
+        foreach ($products as $product) {
+            if ($product->getMainVariantGroup() !== null) {
+                $mainVariantGroups[$product->getMainVariantGroup()->getId()] = $product->getMainVariantGroup();
+            }
+        }
+
+        $allProductsInMainVariantGroups = $this->mainVariantGroupRepository->getProductsForMainVariantGroups(
+            $mainVariantGroups,
+            $this->domain->getId(),
+            $this->currentCustomer->getPricingGroup()
+        );
+
+        $mainVariantGroups = [];
+        foreach ($allProductsInMainVariantGroups as $product) {
+            $mainVariantGroups[$product->getMainVariantGroup()->getId()][] = $product;
+        }
+
+        return $mainVariantGroups;
+    }
 }

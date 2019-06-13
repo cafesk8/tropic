@@ -201,6 +201,7 @@ class ProductController extends FrontBaseController
         }
 
         $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
+        $mainVariantsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($paginationResult->getResults());
 
         $viewParameters = [
             'paginationResult' => $paginationResult,
@@ -211,6 +212,7 @@ class ProductController extends FrontBaseController
             'visibleChildren' => $visibleChildren,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
+            'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -246,11 +248,13 @@ class ProductController extends FrontBaseController
         $brand = $this->brandFacade->getById($id);
 
         $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
+        $mainVariantsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($paginationResult->getResults());
 
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'brand' => $brand,
             'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
+            'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
         ];
 
         if ($request->isXmlHttpRequest()) {
@@ -303,6 +307,7 @@ class ProductController extends FrontBaseController
         }
 
         $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
+        $mainVariantsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($paginationResult->getResults());
 
         $viewParameters = [
             'paginationResult' => $paginationResult,
@@ -313,6 +318,7 @@ class ProductController extends FrontBaseController
             'SEARCH_TEXT_PARAMETER' => self::SEARCH_TEXT_PARAMETER,
             'priceRange' => $productFilterConfig->getPriceRange(),
             'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
+            'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
         ];
 
         if ($request->isXmlHttpRequest()) {
