@@ -3,14 +3,10 @@
 namespace Shopsys\ShopBundle\Model\Transport;
 
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
+use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 class TransportData extends BaseTransportData
 {
-    /**
-     * @var bool
-     */
-    public $balikobot;
-
     /**
      * @var string|null
      */
@@ -31,11 +27,16 @@ class TransportData extends BaseTransportData
      */
     public $initialDownload;
 
+    /**
+     * @var string
+     */
+    public $personalTakeType;
+
     public function __construct()
     {
         parent::__construct();
-        $this->balikobot = false;
         $this->pickupPlace = false;
         $this->initialDownload = false;
+        $this->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_NONE;
     }
 }

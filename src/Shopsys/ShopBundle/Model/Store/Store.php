@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Store;
 
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Model\Country\Country;
+use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="stores")
  */
-class Store
+class Store implements PickupPlaceInterface
 {
     /**
      * @var int
@@ -57,9 +59,9 @@ class Store
     private $city;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(type="string", length=30, nullable=true)
+     * @ORM\Column(type="string", length=30)
      */
     private $postcode;
 
@@ -85,6 +87,13 @@ class Store
     private $position;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
+     * @ORM\JoinColumn(nullable=false, name="country_id", referencedColumnName="id")
+     */
+    protected $country;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
      */
     public function __construct(StoreData $storeData)
@@ -98,6 +107,7 @@ class Store
         $this->openingHours = $storeData->openingHours;
         $this->googleMapsLink = $storeData->googleMapsLink;
         $this->position = $storeData->position;
+        $this->country = $storeData->country;
     }
 
     /**
@@ -123,6 +133,7 @@ class Store
         $this->openingHours = $storeData->openingHours;
         $this->googleMapsLink = $storeData->googleMapsLink;
         $this->position = $storeData->position;
+        $this->country = $storeData->country;
     }
 
     /**
@@ -158,9 +169,9 @@ class Store
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getStreet(): ?string
+    public function getStreet(): string
     {
         return $this->street;
     }
@@ -174,9 +185,9 @@ class Store
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPostcode(): ?string
+    public function getPostcode(): string
     {
         return $this->postcode;
     }
@@ -203,5 +214,29 @@ class Store
     public function getPosition(): ?int
     {
         return $this->position;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullAddress(): string
+    {
+        return $this->street . ', ' . $this->postcode . ' ' . $this->city;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Country\Country|null
+     */
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryCode(): string
+    {
+        return $this->country->getCode();
     }
 }

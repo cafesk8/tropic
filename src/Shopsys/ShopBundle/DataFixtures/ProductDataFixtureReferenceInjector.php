@@ -10,6 +10,7 @@ use Shopsys\ShopBundle\DataFixtures\Demo\CategoryDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\FlagDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\PricingGroupDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader;
+use Shopsys\ShopBundle\DataFixtures\Demo\StoreDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\UnitDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\VatDataFixture;
 
@@ -204,6 +205,7 @@ class ProductDataFixtureReferenceInjector
             BrandDataFixture::class,
             UnitDataFixture::class,
             PricingGroupDataFixture::class,
+            StoreDataFixture::class,
         ];
     }
 }

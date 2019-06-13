@@ -1,0 +1,23 @@
+{% for pickupPlace in pickupPlaces %}
+    <div class="{% if classes.pickupPlaceName is defined %}{{ classes.pickupPlaceName }}{% endif %}" title="{{ pickupPlace.getName() }}">
+        <div class="{% if classes.pickupPlaceRow is defined %}{{ classes.pickupPlaceRow }}{% endif %}">
+            <strong>{{ pickupPlace.getName() }}</strong>, {{ pickupPlace.getFullAddress() }}
+        </div>
+        <div class="{% if classes.pickupPlaceBtnContainer is defined %}{{ classes.pickupPlaceBtnContainer }}{% endif %}">
+            <div class="{% if classes.pickupPlaceBtnDetail is defined %}{{ classes.pickupPlaceBtnDetail }}{% endif %}"></div>
+
+            <button type="button" class="js-pickup-place-button btn btn--success"
+                    data-id="{{ pickupPlace.getId() }}"
+                    data-name="{{ pickupPlace.getName() }}"
+                    data-address="{{ pickupPlace.getStreet() }}"
+                    data-form-field-class="{{ orderFormFieldClass }}"
+            >
+                {% if chosenPickupPlace is not null and chosenPickupPlace is same as (pickupPlace) %}
+                    {{ 'Vybráno'|trans }}
+                {% else %}
+                    {{ 'Vybrat'|trans }}
+                {% endif %}
+            </button>
+        </div>
+    </div>
+{% endfor %}

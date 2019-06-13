@@ -3,36 +3,48 @@
     Shopsys = window.Shopsys || {};
     Shopsys.pickupPlaceSelection = Shopsys.pickupPlaceSelection || {};
 
-    var $pickupPlaceInput = null;
+    var configurations = [
+        {
+            dataIsPickupPlaceAttribute: 'transport-pickup',
+            pickupPlaceInput: 'js-pickup-place-input'
+        },
+        {
+            dataIsPickupPlaceAttribute: 'choose-store',
+            pickupPlaceInput: 'js-store-input'
+        }
+    ];
 
     Shopsys.pickupPlaceSelection.init = function ($container) {
-        $pickupPlaceInput = $('.js-pickup-place-input');
-
-        $container.filterAllNodes('.js-order-transport-input').change(Shopsys.pickupPlaceSelection.onTransportChange);
-        $container.filterAllNodes('.js-pickup-place-city-post-code-autocomplete-input')
-            .bind('keyup paste', Shopsys.pickupPlaceSelection.onSearchAutocompleteInputChange);
         $container.filterAllNodes('.js-pickup-place-button').click(Shopsys.pickupPlaceSelection.onSelectPlaceButtonClick);
         $container.filterAllNodes('.js-pickup-place-change-button').click(Shopsys.pickupPlaceSelection.onChangeButtonClick);
+        $container.filterAllNodes('.js-order-transport-input').change(Shopsys.pickupPlaceSelection.onTransportChange);
+        $container.filterAllNodes('.js-pickup-place-city-post-code-autocomplete-input').bind('keyup paste', Shopsys.pickupPlaceSelection.onSearchAutocompleteInputChange);
     };
 
     Shopsys.pickupPlaceSelection.onTransportChange = function (event) {
         var $transportInput = $('#js-window').data('transportInput');
-        var isPickUpPlaceTransportType = $(this).data('transport-pickup');
-        if (isPickUpPlaceTransportType && $(this).prop('checked') && ($transportInput === undefined || $transportInput[0] !== $(this)[0])) {
-            Shopsys.pickupPlaceSelection.showSearchWindow($(this));
+        var $selectedTransportInput = $(this);
 
-            $(this).prop('checked', false);
-            event.stopImmediatePropagation();
-            event.preventDefault();
-        }
+        configurations.forEach(function (config) {
+            var isPickUpPlaceTransportType = $selectedTransportInput.data(config.dataIsPickupPlaceAttribute);
+
+            if (isPickUpPlaceTransportType && $selectedTransportInput.prop('checked') && ($transportInput === undefined || $transportInput[0] !== $selectedTransportInput[0])) {
+                Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput, config.pickupPlaceInput);
+                $selectedTransportInput.prop('checked', false);
+            }
+        });
+
+        event.stopImmediatePropagation();
+        event.preventDefault();
     };
 
-    Shopsys.pickupPlaceSelection.showSearchWindow = function ($selectedTransportInput) {
-        var pickupPlaceInput = $('#transport_and_payment_form_pickupPlace').val();
+    Shopsys.pickupPlaceSelection.showSearchWindow = function ($selectedTransportInput, pickupPlaceInputClass) {
+        var $pickupPlaceInput = $('.' + pickupPlaceInputClass);
+        var pickupPlaceInput = $pickupPlaceInput.val();
         var pickUpPlaceValue = (pickupPlaceInput !== '') ? pickupPlaceInput : null;
 
         Shopsys.ajax({
-            url: $pickupPlaceInput.data('pickup-place-search-url'),
+            url: $pickupPlaceInput.data('search-url'),
             dataType: 'html',
             data: {
                 pickupPlaceId: pickUpPlaceValue,
@@ -77,6 +89,8 @@
 
     Shopsys.pickupPlaceSelection.onSelectPlaceButtonClick = function () {
         var $button = $(this);
+
+        var $pickupPlaceInput = $('.' + $button.data('form-field-class'));
         $pickupPlaceInput.val($button.data('id'));
 
         var $transportInput = $('#js-window').data('transportInput');
@@ -106,7 +120,7 @@
         var $transportContainer = $button.closest('.js-order-transport');
         var $selectedTransportInput = $transportContainer.find('.js-order-transport-input[data-id=' + $button.data('id') + ']');
 
-        Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput);
+        Shopsys.pickupPlaceSelection.showSearchWindow($selectedTransportInput, $button.data('form-field-class'));
     };
 
     Shopsys.register.registerCallback(Shopsys.pickupPlaceSelection.init);

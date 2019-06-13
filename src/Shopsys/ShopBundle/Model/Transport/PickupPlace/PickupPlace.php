@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class PickupPlace
+class PickupPlace implements PickupPlaceInterface
 {
     /**
      * @var int

@@ -122,4 +122,13 @@ class StoreFacade
         $this->em->remove($store);
         $this->em->flush();
     }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Store\Store[]
+     */
+    public function getAllForDomain(int $domainId): array
+    {
+        return $this->storeRepository->getAllForDomainQueryBuilder($domainId)->getQuery()->execute();
+    }
 }

@@ -8,9 +8,11 @@ use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
+use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Store\StoreData;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,11 +23,26 @@ use Symfony\Component\Validator\Constraints;
 class StoreFormType extends AbstractType
 {
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     */
+    public function __construct(CountryFacade $countryFacade)
+    {
+        $this->countryFacade = $countryFacade;
+    }
+
+    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
+
         $builderBasicInformationGroup = $builder->create('basicInformation', GroupType::class, [
             'label' => t('Basic information'),
         ]);
@@ -42,7 +59,7 @@ class StoreFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
-                        'message' => 'Please enter name of a store',
+                        'message' => 'Vyplňte, prosím, název prodejny',
                     ]),
                     new Constraints\Length([
                         'max' => 100,
@@ -52,9 +69,12 @@ class StoreFormType extends AbstractType
                 'label' => t('Name'),
             ])
             ->add('city', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => t('City'),
                 'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Vyplňte, prosím, město prodejny',
+                    ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
@@ -62,9 +82,12 @@ class StoreFormType extends AbstractType
                 ],
             ])
             ->add('street', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => t('Street'),
                 'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Vyplňte, prosím, ulici prodejny',
+                    ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
@@ -72,14 +95,29 @@ class StoreFormType extends AbstractType
                 ],
             ])
             ->add('postcode', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Vyplňte, prosím, PSČ prodejny',
+                    ]),
                     new Constraints\Length([
                         'max' => 30,
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
                     ]),
                 ],
                 'label' => t('Postcode'),
+            ])
+            ->add('country', ChoiceType::class, [
+                'required' => true,
+                'label' => t('Country'),
+                'choices' => $countries,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter country of a store',
+                    ]),
+                ],
             ])
             ->add('openingHours', TextType::class, [
                 'required' => false,
@@ -157,12 +195,13 @@ class StoreFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
+            ->setRequired('domain_id')
+            ->addAllowedTypes('domain_id', 'int')
             ->setRequired('store')
             ->setAllowedTypes('store', [Store::class, 'null'])
-            ->setDefaults(
-                [
-                    'data_class' => StoreData::class,
-                ]
-            );
+            ->setDefaults([
+                'data_class' => StoreData::class,
+                'attr' => ['novalidate' => 'novalidate'],
+            ]);
     }
 }

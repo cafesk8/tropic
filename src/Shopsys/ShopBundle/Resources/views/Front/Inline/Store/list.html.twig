@@ -1,0 +1,14 @@
+<div>
+    <div>
+        <h3>{{ 'Vyberte prodejnu'|trans }}</h3>
+    </div>
+    <div>
+        <div>
+            {% include '@ShopsysShop/Front/Inline/Common/pickupPlaces.html.twig' with {
+                pickupPlaces: stores,
+                orderFormFieldClass: 'js-store-input',
+                chosenPickupPlace: chosenStore
+            } %}
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
@@ -11,7 +12,7 @@ use Shopsys\ShopBundle\Model\Store\StoreData;
 use Shopsys\ShopBundle\Model\Store\StoreDataFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
-class StoreDataFixture extends AbstractReferenceFixture
+class StoreDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     public const REFERENCE_STORE_BRNO_FUTURUM = 'store_brno_futurum';
     public const REFERENCE_STORE_OSTRAVA_AVION = 'store_ostrava_avion';
@@ -65,6 +66,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $storeData->street = 'Vídeňská 100';
         $storeData->postcode = '639 00';
         $storeData->openingHours = 'Po-Ne / 10,00 - 20,00';
+        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $this->createStore($storeData, self::REFERENCE_STORE_BRNO_FUTURUM);
 
         $storeData->description = $description;
@@ -74,6 +76,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $storeData->street = 'Rudná 114';
         $storeData->postcode = '700 30';
         $storeData->openingHours = 'Po-Ne / 9,00 - 21,00';
+        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $this->createStore($storeData, self::REFERENCE_STORE_OSTRAVA_AVION);
 
         $storeData->description = $description;
@@ -83,6 +86,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $storeData->street = 'Einsteinova 3541/18';
         $storeData->postcode = '85101';
         $storeData->openingHours = 'Po-Pia / 10,00 - 21,00 So-Ne / 9,00 - 21,00';
+        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createStore($storeData, self::REFERENCE_STORE_BRATISLAVA_AUPARK);
 
         $storeData->description = $description;
@@ -92,6 +96,7 @@ class StoreDataFixture extends AbstractReferenceFixture
         $storeData->street = 'Sachsenstraße 2';
         $storeData->postcode = '92318';
         $storeData->openingHours = 'Mo-So / 10,00 - 21,00';
+        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createStore($storeData, self::REFERENCE_STORE_NEMARKT);
     }
 
@@ -106,5 +111,12 @@ class StoreDataFixture extends AbstractReferenceFixture
         if ($referenceName !== null) {
             $this->addReference($referenceName, $store);
         }
+    }
+
+    public function getDependencies()
+    {
+        return [
+            CountryDataFixture::class,
+        ];
     }
 }

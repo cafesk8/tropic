@@ -21,7 +21,10 @@
         </div>
         <div class="js-pickup-place-autocomplete-results box-pickup-place__results {% if pickupPlaces|length > 0 %}display-block{% endif %}">
             {% if pickupPlaces|length > 0 %}
-                {% include '@ShopsysShop/Front/Inline/PickupPlace/autocompleteResult.html.twig' %}
+                {% include '@ShopsysShop/Front/Inline/PickupPlace/autocompleteResult.html.twig' with {
+                    pickupPlaces: pickupPlaces,
+                    chosenPickupPlace: chosenPickupPlace
+                } %}
             {% endif %}
         </div>
     </div>

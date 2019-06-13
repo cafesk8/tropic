@@ -50,7 +50,7 @@
                     {{ form_row(form.country, { label: 'Country'|trans }) }}
                 </fieldset>
 
-                {% set isSelectedPickupPlaceTransport = transport is not empty and transport.isPickupPlace %}
+                {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
 
                 <div class="box-order__title">
                     <h2 class="box-order__title__text double-lined">
@@ -59,11 +59,16 @@
                 </div>
                 <fieldset>
                     {% if isSelectedPickupPlaceTransport is same as (true) %}
+                        {% set pickupPlaceData = pickupPlace %}
+                        {% if transport.isChooseStore is same as (true) %}
+                            {% set pickupPlaceData = store %}
+                        {% endif %}
+
                         <div class="box-order__info">
-                            <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlace.name }} <br/>
-                            <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlace.street }} <br/>
-                            <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlace.city }} <br/>
-                            <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlace.postcode }} <br/>
+                            <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
+                            <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
+                            <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
+                            <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
                             {% do form.deliveryAddressFilled.setRendered %}
                             {% do form.deliveryFirstName.setRendered %}
                             {% do form.deliveryLastName.setRendered %}

@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
+use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 class TransportDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
@@ -70,7 +71,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'PPL',
             'de' => 'PPL',
         ];
-        $transportData->balikobot = true;
+        $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;

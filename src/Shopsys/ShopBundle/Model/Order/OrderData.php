@@ -35,4 +35,9 @@ class OrderData extends BaseOrderData
      * @var \Shopsys\ShopBundle\Model\Transport\Transport|null
      */
     public $transport;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public $store;
 }

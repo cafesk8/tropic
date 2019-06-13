@@ -15,4 +15,9 @@ class FrontOrderData extends BaseFrontOrderData
      * @var \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace|null
      */
     public $pickupPlace;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public $store;
 }

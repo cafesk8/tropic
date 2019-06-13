@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
-use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter;
 use Shopsys\FrameworkBundle\Form\Admin\Transport\TransportFormType;
 use Shopsys\FrameworkBundle\Form\GroupType;
@@ -24,6 +23,10 @@ class TransportFormTypeExtension extends AbstractTypeExtension
 {
     const VALIDATION_GROUP_BALIKOBOT = 'balikobot';
     const VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE = 'balikobot_shipper_service';
+
+    public const PERSONAL_TAKE_TYPE_NONE = 'none';
+    public const PERSONAL_TAKE_TYPE_BALIKOBOT = 'baikobot';
+    public const PERSONAL_TAKE_TYPE_STORE = 'store';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade
@@ -57,7 +60,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add($this->getBalikobotGroup($builder));
+        $builder->add($this->getBalikobotAndStoreGroup($builder));
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
 
@@ -73,7 +76,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            if ((int)$data['balikobotGroup']['balikobot'] === 1) {
+            if ((string)$data['balikobotGroup']['personalTakeType'] === self::PERSONAL_TAKE_TYPE_BALIKOBOT) {
                 $balikobotShipper = $data['balikobotGroup']['balikobotShipper'];
                 $this->addDependendElement($form, $balikobotShipper);
             }
@@ -93,7 +96,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             /** @var \Shopsys\ShopBundle\Model\Transport\TransportData $transportData */
             $transportData = $form->getData();
 
-            if ($transportData->balikobot === true) {
+            if ($transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_BALIKOBOT) {
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT;
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE;
             }
@@ -114,14 +117,22 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getBalikobotGroup(FormBuilderInterface $builder): FormBuilderInterface
+    private function getBalikobotAndStoreGroup(FormBuilderInterface $builder): FormBuilderInterface
     {
         $builderBalikobotGroup = $builder->create('balikobotGroup', GroupType::class, [
-            'label' => t('Balíkobot'),
+            'label' => t('Možnosti pro osobní převzetí'),
             'position' => ['after' => 'basicInformation'],
         ]);
-        $builderBalikobotGroup->add('balikobot', YesNoType::class, [
+        $builderBalikobotGroup->add('personalTakeType', ChoiceType::class, [
             'label' => t('Použít'),
+            'choices' => [
+                t('Bez osobního převzetí') => self::PERSONAL_TAKE_TYPE_NONE,
+                t('Balíkobot') => self::PERSONAL_TAKE_TYPE_BALIKOBOT,
+                t('Prodejny Bushman') => self::PERSONAL_TAKE_TYPE_STORE,
+            ],
+            'attr' => [
+                'class' => 'js-transport-personal-take',
+            ],
         ]);
 
         return $builderBalikobotGroup;

@@ -157,3 +157,8 @@ front_pickup_place_autocomplete:
     defaults: { _controller: ShopsysShopBundle:Front\PickupPlace:autocomplete }
     methods: [POST]
     condition: "request.isXmlHttpRequest()"
+
+front_store_list:
+    path: /store/list/
+    defaults: { _controller: ShopsysShopBundle:Front\Store:list }
+    condition: "request.isXmlHttpRequest()"

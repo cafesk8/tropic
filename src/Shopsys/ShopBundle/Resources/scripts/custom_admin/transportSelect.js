@@ -10,7 +10,7 @@
 
         this.init = function () {
             this.reloadDependendInputs();
-            $transportForm.find('#transport_form_balikobotGroup_balikobot').on('change', this.reloadDependendInputs);
+            $transportForm.find('.js-transport-personal-take').on('change', this.reloadDependendInputs);
 
             $shipperSelect.change(function () {
                 var $shipperSelector = $(this);
@@ -46,7 +46,7 @@
         };
 
         this.reloadDependendInputs = function () {
-            if ($transportForm.find('#transport_form_balikobotGroup_balikobot_yes').is(':checked')) {
+            if ($transportForm.find('.js-transport-personal-take').val() === Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Admin\\TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT')) {
                 $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').removeClass('display-none');
             } else {
                 $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').addClass('display-none');

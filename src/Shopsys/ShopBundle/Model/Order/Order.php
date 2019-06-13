@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
+use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
 /**
@@ -62,6 +63,14 @@ class Order extends BaseOrder
     private $pickupPlace;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Store\Store|null
+     *
+     * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Store\Store")
+     * @ORM\JoinColumn(nullable=true, name="store_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $store;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -86,6 +95,10 @@ class Order extends BaseOrder
         if ($this->transport !== null && $transport->isPickupPlace()) {
             $this->pickupPlace = $orderData->pickupPlace;
         }
+
+        if ($this->transport !== null && $transport->isChooseStore()) {
+            $this->store = $orderData->store;
+        }
     }
 
     /**
@@ -108,6 +121,7 @@ class Order extends BaseOrder
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
         $this->pickupPlace = $orderData->pickupPlace;
+        $this->store = $orderData->store;
 
         return $orderEditResult;
     }
@@ -198,5 +212,13 @@ class Order extends BaseOrder
     public function getPickupPlace(): ?PickupPlace
     {
         return $this->pickupPlace;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public function getStore(): ?Store
+    {
+        return $this->store;
     }
 }

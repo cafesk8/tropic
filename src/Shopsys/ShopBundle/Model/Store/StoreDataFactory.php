@@ -59,6 +59,7 @@ class StoreDataFactory
         $storeData->googleMapsLink = $store->getGoogleMapsLink();
         $storeData->position = $store->getPosition();
         $storeData->images->orderedImages = $this->imageFacade->getImagesByEntityIndexedById($store, null);
+        $storeData->country = $store->getCountry();
     }
 
     /**

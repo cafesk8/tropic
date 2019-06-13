@@ -317,6 +317,7 @@ class OrderController extends FrontBaseController
             'goPayBankSwifts' => $goPayBankSwifts,
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
             'pickupPlace' => $orderData->pickupPlace,
+            'store' => $orderData->store,
         ]);
     }
 

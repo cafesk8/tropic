@@ -86,3 +86,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\ProductRepository: '@Shopsys\ShopBundle\Model\Product\ProductRepository'
 
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'
+
+    Shopsys\ShopBundle\Model\Customer\CustomerDataFactory: ~

@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderData as BaseFrontOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataMapper as BaseOrderDataMapper;
+use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
 class OrderDataMapper extends BaseOrderDataMapper
@@ -36,11 +37,14 @@ class OrderDataMapper extends BaseOrderDataMapper
         /** @var \Shopsys\ShopBundle\Model\Order\OrderData $orderData */
         $orderData = parent::getOrderDataFromFrontOrderData($frontOrderData);
 
-        $orderData->pickupPlace = $orderData->transport !== null && $orderData->transport->isPickupPlace() ?
-            $frontOrderData->pickupPlace : null;
-
-        if ($orderData->pickupPlace !== null) {
+        if ($orderData->transport !== null && $orderData->transport->isPickupPlace() && $frontOrderData->pickupPlace !== null) {
+            $orderData->pickupPlace = $frontOrderData->pickupPlace;
             $this->setOrderDeliveryAddressDataByPickUpPlace($orderData, $frontOrderData, $orderData->pickupPlace);
+        }
+
+        if ($orderData->transport !== null && $orderData->transport->isChooseStore() && $frontOrderData->store !== null) {
+            $orderData->store = $frontOrderData->store;
+            $this->setOrderDeliveryAddressDataByStore($orderData, $frontOrderData, $orderData->store);
         }
 
         return $orderData;
@@ -74,6 +78,40 @@ class OrderDataMapper extends BaseOrderDataMapper
         $orderData->deliveryPostcode = $frontOrderData->deliveryPostcode;
 
         $frontOrderData->deliveryCountry = $this->countryFacade->getByCode($pickupPlace->getCountryCode());
+        $orderData->deliveryCountry = $frontOrderData->deliveryCountry;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\FrontOrderData $frontOrderData
+     * @param \Shopsys\ShopBundle\Model\Store\Store $store
+     */
+    private function setOrderDeliveryAddressDataByStore(OrderData $orderData, FrontOrderData $frontOrderData, Store $store): void
+    {
+        $frontOrderData->deliveryFirstName = $frontOrderData->firstName;
+        $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
+
+        $frontOrderData->deliveryLastName = $frontOrderData->lastName;
+        $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
+
+        $frontOrderData->deliveryAddressSameAsBillingAddress = false;
+        $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
+
+        $frontOrderData->deliveryCompanyName = $store->getName();
+        $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
+
+        $orderData->deliveryTelephone = null;
+
+        $frontOrderData->deliveryStreet = $store->getStreet();
+        $orderData->deliveryStreet = $frontOrderData->deliveryStreet;
+
+        $frontOrderData->deliveryCity = $store->getCity();
+        $orderData->deliveryCity = $frontOrderData->deliveryCity;
+
+        $frontOrderData->deliveryPostcode = $store->getPostcode();
+        $orderData->deliveryPostcode = $frontOrderData->deliveryPostcode;
+
+        $frontOrderData->deliveryCountry = $store->getCountry();
         $orderData->deliveryCountry = $frontOrderData->deliveryCountry;
     }
 }

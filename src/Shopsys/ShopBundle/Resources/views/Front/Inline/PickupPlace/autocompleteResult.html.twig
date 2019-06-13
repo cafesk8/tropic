@@ -1,22 +1,11 @@
-{% for pickupPlace in pickupPlaces %}
-    <div class="js-pickup-place-tooltip" title="{{ pickupPlace.name }}">
-        <div class="js-pickup-place-row">
-            <strong>{{ pickupPlace.name }}</strong>, {{ pickupPlace.fullAddress }}
-        </div>
-        <div class="js-pickup-place-autocomplete-results-detail-container">
-            <div class="js-pickup-place-autocomplete-results-detail"></div>
-
-            <button type="button" class="js-pickup-place-button btn btn--success"
-                    data-id="{{ pickupPlace.id }}"
-                    data-name="{{ pickupPlace.name }}"
-                    data-address="{{ pickupPlace.street }}"
-            >
-                {% if chosenPickupPlace is not null and chosenPickupPlace is same as (pickupPlace) %}
-                    {{ 'Vybráno'|trans }}
-                {% else %}
-                    {{ 'Vybrat'|trans }}
-                {% endif %}
-            </button>
-        </div>
-    </div>
-{% endfor %}
+{% include '@ShopsysShop/Front/Inline/Common/pickupPlaces.html.twig' with {
+    pickupPlaces: pickupPlaces,
+    chosenPickupPlace: chosenPickupPlace,
+    orderFormFieldClass: 'js-pickup-place-input',
+    classes: {
+        pickupPlaceName: 'js-pickup-place-tooltip',
+        pickupPlaceRow: 'js-pickup-place-row',
+        pickupPlaceBtnContainer: 'js-pickup-place-autocomplete-results-detail-container',
+        pickupPlaceBtnDetail: 'js-pickup-place-autocomplete-results-detail'
+    }
+} %}

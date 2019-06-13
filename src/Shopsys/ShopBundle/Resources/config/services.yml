@@ -270,3 +270,5 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\CustomerController:
         class: Shopsys\ShopBundle\Controller\Admin\CustomerController
         tags: ['controller.service_arguments']
+
+    Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\CustomerDataFactory'

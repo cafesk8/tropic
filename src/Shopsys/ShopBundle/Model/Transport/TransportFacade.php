@@ -20,6 +20,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportRepository;
 use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
 use Shopsys\ShopBundle\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule;
 use Shopsys\ShopBundle\Component\Balikobot\Pickup\PickupFacade;
+use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 class TransportFacade extends BaseTransportFacade
 {
@@ -78,7 +79,7 @@ class TransportFacade extends BaseTransportFacade
     public function create(TransportData $transportData): Transport
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
-        if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
+        if ($transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
             $transportData->initialDownload = true;
         } else {
@@ -98,7 +99,7 @@ class TransportFacade extends BaseTransportFacade
     public function edit(Transport $transport, TransportData $transportData): void
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
-        if ($transportData->balikobot === true && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
+        if ($transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
 
             if ($transport->isBalikobotChanged($transportData) === true) {

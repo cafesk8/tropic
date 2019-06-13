@@ -20,7 +20,12 @@
 
                         {{ form_widget(form.pickupPlace, { attr: {
                             'class': 'js-pickup-place-input',
-                            'data-pickup-place-search-url': url('front_pickup_place_search')
+                            'data-search-url': url('front_pickup_place_search')
+                        }}) }}
+
+                        {{ form_widget(form.store, { attr: {
+                            'class': 'js-store-input',
+                            'data-search-url': url('front_store_list')
                         }}) }}
 
                         <div id="{{ form.transport.vars.id }}">
@@ -32,7 +37,8 @@
                                         {{ form_widget(child, { attr: {
                                             class: 'css-radio js-order-transport-input',
                                             'data-id': choice.data.id,
-                                            'data-transport-pickup': choice.data.pickupPlace
+                                            'data-transport-pickup': choice.data.pickupPlace,
+                                            'data-choose-store': choice.data.chooseStore
                                         } }) }}
                                         <span class="css-label-radio"></span>
                                     </span>
@@ -53,14 +59,27 @@
                                         {% endif %}
                                     </span>
 
-                                    {% if choice.data.isPickupPlace() %}
+                                    {% if choice.data.isPickupPlace() or choice.data.isChooseStore() %}
                                         {% set checked = child.vars.checked == true %}
+
+                                        {% set pickupPlaceName = '' %}
+                                        {% if pickupPlace != null and checked %}
+                                            {% set pickupPlaceName = pickupPlace.getName %}
+                                        {% elseif store != null and checked %}
+                                            {% set pickupPlaceName = store.getName %}
+                                        {% endif %}
+
                                         <div class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
-                                             title="{{ pickupPlace and checked ? pickupPlace.name }}">
+                                             title="{{ pickupPlaceName }}">
                                             <strong class="js-pickup-place-detail-name">
-                                                {{ pickupPlace != null and checked ? pickupPlace.name : '' }}
+                                                {{ pickupPlaceName }}
                                             </strong>
-                                            <button type="button" data-id="{{ choice.data.id }}" class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlace is null or checked == false %} display-none{% endif %}">
+                                            <button
+                                                    type="button"
+                                                    data-id="{{ choice.data.id }}"
+                                                    class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlaceName is same as ('') or checked == false %} display-none{% endif %}"
+                                                    data-form-field-class="{% if choice.data.isPickupPlace() %}js-pickup-place-input{% elseif choice.data.isChooseStore() %}js-store-input{% endif %}"
+                                            >
                                                 {{ 'Vybrat'|trans }}
                                             </button>
                                         </div>

@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Transport;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
+use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 /**
  * @ORM\Table(name="transports")
@@ -50,16 +51,24 @@ class Transport extends BaseTransport
     protected $initialDownload;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $chooseStore;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
     {
         parent::__construct($transportData);
-        $this->balikobot = $transportData->balikobot;
+        $this->balikobot = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
+        $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
     }
 
     /**
@@ -68,11 +77,12 @@ class Transport extends BaseTransport
     public function edit(BaseTransportData $transportData): void
     {
         parent::edit($transportData);
-        $this->balikobot = $transportData->balikobot;
+        $this->balikobot = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
+        $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
     }
 
     /**
@@ -134,5 +144,13 @@ class Transport extends BaseTransport
     public function setAsDownloaded(): void
     {
         $this->initialDownload = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isChooseStore(): bool
+    {
+        return $this->chooseStore;
     }
 }

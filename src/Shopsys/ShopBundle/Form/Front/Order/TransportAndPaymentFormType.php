@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -47,24 +48,32 @@ class TransportAndPaymentFormType extends AbstractType
     private $pickupPlaceIdToEntityTransformer;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer
+     */
+    private $storeIdToEntityTransformer;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer
+     * @param \Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer $storeIdToEntityTransformer
      */
     public function __construct(
         TransportFacade $transportFacade,
         PaymentFacade $paymentFacade,
         CurrencyFacade $currencyFacade,
         GoPayBankSwiftFacade $goPayBankSwiftFacade,
-        PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer
+        PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer,
+        StoreIdToEntityTransformer $storeIdToEntityTransformer
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
         $this->currencyFacade = $currencyFacade;
         $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
         $this->pickupPlaceIdToEntityTransformer = $pickupPlaceIdToEntityTransformer;
+        $this->storeIdToEntityTransformer = $storeIdToEntityTransformer;
     }
 
     /**
@@ -105,6 +114,11 @@ class TransportAndPaymentFormType extends AbstractType
                 $builder
                     ->create('pickupPlace', HiddenType::class)
                     ->addModelTransformer($this->pickupPlaceIdToEntityTransformer)
+            )
+            ->add(
+                $builder
+                    ->create('store', HiddenType::class)
+                    ->addModelTransformer($this->storeIdToEntityTransformer)
             )
             ->add('save', SubmitType::class);
     }

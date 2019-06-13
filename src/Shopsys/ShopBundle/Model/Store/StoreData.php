@@ -58,6 +58,11 @@ class StoreData
      */
     public $images;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     */
+    public $country;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();
