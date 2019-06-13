@@ -112,6 +112,10 @@ yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES
 yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
 
+#set Balikobot credentials
+yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
+yq write --inplace app/config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
+
 RUNNING_POD_EXIST=1
 WEBSERVER_PHP_FPM_POD=$(kubectl get pods --namespace=${PROJECT_NAME} -l app=webserver-php-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}') || RUNNING_POD_EXIST=0
 
