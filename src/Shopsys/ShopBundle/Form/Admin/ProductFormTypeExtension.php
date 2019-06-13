@@ -112,20 +112,15 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'placeholder' => t('Zvolte parametr'),
-                'constraints' => [
-                    new Constraints\NotBlank(),
-                ],
             ])
             ->add(
                 $builder
                     ->create('productsInGroup', ProductsType::class, [
+                        'required' => false,
                         'label' => t('Produkty'),
                         'allow_main_variants' => true,
                         'allow_variants' => false,
                         'is_main_variant_group' => true,
-                        'constraints' => [
-                            new Constraints\NotBlank(),
-                        ],
                     ])
                     ->addModelTransformer(new RemoveDuplicatesFromArrayTransformer())
             );
