@@ -1,4 +1,4 @@
-@list-categories-item-gap: 16px;
+@list-categories-item-gap: 20px;
 @list-categories-item-button-position: 45px;
 @list-categories-item-button-position-small: 21px;
 
@@ -10,8 +10,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 100%;
     margin-bottom: 87px;
+    margin-left: -@list-categories-item-gap;
 
     &__link {
         position: relative;
@@ -22,21 +22,22 @@
         display: inline-block;
         width: 100%;
         text-align: center;
+        margin-left: @list-categories-item-gap;
+        margin-bottom: @list-categories-item-gap;
 
         @media @query-lg {
-            width: calc(~"@{calc-base}/@{list-categories-columns-count}");
+            width: calc(~"@{calc-base}/@{list-categories-columns-count} - @{list-categories-item-gap}");
             margin-right: 0;
         }
 
         img {
             margin: 0 auto;
-            padding: 0 @list-categories-item-gap @list-categories-item-gap 0;
         }
 
         &__text {
             display: inline-block;
             line-height: 36px;
-            padding: 0 34px 0 50px;
+            padding: 0 31px;
             text-align: center;
 
             color: @color-brown;
@@ -46,13 +47,13 @@
 
             @media @query-lg {
                 text-align: left;
-                padding-top: 25px;
+                padding-top: 20px;
             }
 
             &--text-right {
                 @media @query-lg {
                     text-align: right;
-                    padding-top: 25px;
+                    padding-top: 20px;
                     padding-left: 66px;
                 }
             }
@@ -67,12 +68,12 @@
             display: block;
             position: absolute;
             width: 100%;
-            bottom: (@list-categories-item-button-position + @list-categories-item-gap)/2;
+            bottom: @list-categories-item-button-position;
             text-align: center;
         }
 
         @media @query-xl {
-            bottom: @list-categories-item-button-position + @list-categories-item-gap;
+            bottom: @list-categories-item-button-position;
         }
     }
 }
