@@ -12,6 +12,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Migrations/Version*.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/ProductDataFixtureLoader.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
+            - '*/src/Shopsys/ShopBundle/Controller/Front/ProductController.php'
             - '*/src/Shopsys/ShopBundle/Form/Admin/StoreFormType.php'
             - '*/src/Shopsys/ShopBundle/Form/Front/Customer/BillingAddressFormType.php'
             - '*/src/Shopsys/ShopBundle/Form/Front/Customer/DeliveryAddressFormType.php'

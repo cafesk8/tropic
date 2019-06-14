@@ -158,6 +158,14 @@ class ProductController extends FrontBaseController
     {
         /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
         $category = $this->categoryFacade->getVisibleOnDomainById($this->domain->getId(), $id);
+        $visibleChildren = $this->categoryFacade->getAllVisibleChildrenByCategoryAndDomainId($category, $this->domain->getId());
+
+        if ($category->isPreListingCategory()) {
+            return $this->render('@ShopsysShop/Front/Content/Product/preListingCategoryList.html.twig', [
+                'category' => $category,
+                'visibleChildren' => $visibleChildren,
+            ]);
+        }
 
         $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
         if (!$this->isRequestPageValid($requestPage)) {
@@ -165,9 +173,7 @@ class ProductController extends FrontBaseController
         }
         $page = $requestPage === null ? 1 : (int)$requestPage;
 
-        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest(
-            $request
-        );
+        $orderingModeId = $this->productListOrderingModeForListFacade->getOrderingModeIdFromRequest($request);
 
         $productFilterData = new ProductFilterData();
 
@@ -200,13 +206,9 @@ class ProductController extends FrontBaseController
             'category' => $category,
             'filterForm' => $filterForm->createView(),
             'filterFormSubmited' => $filterForm->isSubmitted(),
-            'visibleChildren' => $this->categoryFacade->getAllVisibleChildrenByCategoryAndDomainId($category, $this->domain->getId()),
+            'visibleChildren' => $visibleChildren,
             'priceRange' => $productFilterConfig->getPriceRange(),
         ];
-
-        if ($category->isPreListingCategory()) {
-            return $this->render('@ShopsysShop/Front/Content/Product/preListingCategoryList.html.twig', $viewParameters);
-        }
 
         if ($request->isXmlHttpRequest()) {
             return $this->render('@ShopsysShop/Front/Content/Product/ajaxList.html.twig', $viewParameters);
