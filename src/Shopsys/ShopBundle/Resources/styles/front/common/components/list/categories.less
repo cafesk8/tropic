@@ -36,9 +36,11 @@
         &__text {
             display: inline-block;
             line-height: 36px;
-            padding: 0 50px;
+            padding: 0 34px 0 50px;
             text-align: center;
+
             color: @color-brown;
+            font-family: @font-alt;
             font-size: 24px;
             font-weight: 700;
 
@@ -60,13 +62,13 @@
 
     &__button {
         display: none;
-        position: absolute;
-        width: 100%;
-        bottom: (@list-categories-item-button-position + @list-categories-item-gap)/2;
-        text-align: center;
 
         @media @query-vl {
             display: block;
+            position: absolute;
+            width: 100%;
+            bottom: (@list-categories-item-button-position + @list-categories-item-gap)/2;
+            text-align: center;
         }
 
         @media @query-xl {
