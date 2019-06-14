@@ -17,6 +17,7 @@ class ProductFactory extends BaseProductFactory
     public function createMainVariant(ProductData $data, Product $mainProduct, array $variants): Product
     {
         $variants[] = $mainProduct;
+        $data->transferNumber = null;
 
         $classData = $this->entityNameResolver->resolve(Product::class);
 
