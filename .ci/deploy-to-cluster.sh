@@ -111,9 +111,12 @@ yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES
 yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
 
-#set Balikobot credentials
+# set Balikobot credentials
 yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
 yq write --inplace app/config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
+
+# Replace bucket name for S3 images URL
+sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
 
 RUNNING_POD_EXIST=1
 WEBSERVER_PHP_FPM_POD=$(kubectl get pods --namespace=${PROJECT_NAME} -l app=webserver-php-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}') || RUNNING_POD_EXIST=0
