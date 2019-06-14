@@ -37,7 +37,7 @@
         "ext-pdo_pgsql": "*",
         "ext-redis": "*",
         "ext-xml": "*",
-        "arvenil/ninja-mutex": "^0.4.1",
+        "arvenil/ninja-mutex": "0.6.0 as 0.4.1",
         "bmatzner/jquery-bundle": "^2.2.2",
         "bmatzner/jquery-ui-bundle": "^1.10.3",
         "commerceguys/intl": "0.7.4",
@@ -90,8 +90,7 @@
         "gopay/payments-sdk-php": "^1.4",
         "league/iso3166": "^2.1",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "paypal/rest-api-sdk-php": "*",
-        "predis/predis": "^1.1"
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "ext-pgsql": "*",

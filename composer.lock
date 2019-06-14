@@ -4,33 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b90f4e8124d9c041794e4ccff862eafc",
+    "content-hash": "58d00ca4c5f85323b459258335f72cb4",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
-            "version": "0.4.1",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arvenil/ninja-mutex.git",
-                "reference": "b5be60f8798bdaa07b0bcf9d0a5bc431c3a2de7b"
+                "reference": "8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arvenil/ninja-mutex/zipball/b5be60f8798bdaa07b0bcf9d0a5bc431c3a2de7b",
-                "reference": "b5be60f8798bdaa07b0bcf9d0a5bc431c3a2de7b",
+                "url": "https://api.github.com/repos/arvenil/ninja-mutex/zipball/8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25",
+                "reference": "8c0f5d10f8fb1481b9d98488dbbe2bf84c2e1a25",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "codeclimate/php-test-reporter": "v0.1.2",
+                "codeclimate/php-test-reporter": "0.1.*",
                 "ext-memcache": "*",
                 "ext-memcached": "*",
                 "ext-pdo_mysql": "*",
-                "mikey179/vfsstream": "v1.4.0",
-                "predis/predis": "v1.0.0",
-                "scrutinizer/ocular": "1.1.1"
+                "ext-redis": "*",
+                "mikey179/vfsstream": "1.4.* || 1.5.*",
+                "predis/predis": "1.0.*",
+                "scrutinizer/ocular": "1.1.*"
             },
             "suggest": {
                 "ext-memcache": "Create mutex using memcache extension",
@@ -66,20 +67,20 @@
                 "mysql",
                 "redis"
             ],
-            "time": "2014-10-01T01:23:11+00:00"
+            "time": "2016-05-31T13:47:32+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.99.4",
+            "version": "3.100.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6fff31b8402b3309fcfe51f802c5faca7c738e33"
+                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6fff31b8402b3309fcfe51f802c5faca7c738e33",
-                "reference": "6fff31b8402b3309fcfe51f802c5faca7c738e33",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
+                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
                 "shasum": ""
             },
             "require": {
@@ -149,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-07T18:09:17+00:00"
+            "time": "2019-06-13T19:22:34+00:00"
         },
         {
             "name": "barryvdh/elfinder-flysystem-driver",
@@ -630,16 +631,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.8.5",
+            "version": "1.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "949b116f9e7d98d8d276594fed74b580d125c0e6"
+                "reference": "19b5f66a0e233eb944f134df34091fe1c5dfcc11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/949b116f9e7d98d8d276594fed74b580d125c0e6",
-                "reference": "949b116f9e7d98d8d276594fed74b580d125c0e6",
+                "url": "https://api.github.com/repos/composer/composer/zipball/19b5f66a0e233eb944f134df34091fe1c5dfcc11",
+                "reference": "19b5f66a0e233eb944f134df34091fe1c5dfcc11",
                 "shasum": ""
             },
             "require": {
@@ -706,7 +707,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2019-04-09T15:46:48+00:00"
+            "time": "2019-06-11T13:03:06+00:00"
         },
         {
             "name": "composer/semver",
@@ -1556,16 +1557,16 @@
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
-            "version": "3.2.0",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "13b2e8e1af099bc06f8611497fe079a4e0b4e497"
+                "reference": "90e4a4f968b2dae40e290a6ee516957af043f16c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/13b2e8e1af099bc06f8611497fe079a4e0b4e497",
-                "reference": "13b2e8e1af099bc06f8611497fe079a4e0b4e497",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/90e4a4f968b2dae40e290a6ee516957af043f16c",
+                "reference": "90e4a4f968b2dae40e290a6ee516957af043f16c",
                 "shasum": ""
             },
             "require": {
@@ -1616,7 +1617,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2019-06-07T11:21:53+00:00"
+            "time": "2019-06-12T12:03:37+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -2804,16 +2805,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.28.1",
+            "version": "v1.28.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "1663b311f93f7b0421c3426e6f6bab68dd7738f9"
+                "reference": "cec23ca6273ea8a455012eb6e12d526d5344e527"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/1663b311f93f7b0421c3426e6f6bab68dd7738f9",
-                "reference": "1663b311f93f7b0421c3426e6f6bab68dd7738f9",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/cec23ca6273ea8a455012eb6e12d526d5344e527",
+                "reference": "cec23ca6273ea8a455012eb6e12d526d5344e527",
                 "shasum": ""
             },
             "require": {
@@ -2861,7 +2862,7 @@
                 "Apache-2.0"
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
-            "time": "2019-06-03T20:07:05+00:00"
+            "time": "2019-06-10T19:08:31+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4757,56 +4758,6 @@
                 "tool"
             ],
             "time": "2018-01-25T13:18:09+00:00"
-        },
-        {
-            "name": "predis/predis",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nrk/predis.git",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8"
-            },
-            "suggest": {
-                "ext-curl": "Allows access to Webdis when paired with phpiredis",
-                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Predis\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniele Alessandri",
-                    "email": "suppakilla@gmail.com",
-                    "homepage": "http://clorophilla.net"
-                }
-            ],
-            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
-            "homepage": "http://github.com/nrk/predis",
-            "keywords": [
-                "nosql",
-                "predis",
-                "redis"
-            ],
-            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "presta/sitemap-bundle",
@@ -8468,16 +8419,16 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.6.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "bd8c740097eb9f2fc3735250fc1912bc811a954e"
+                "reference": "e43de70f3c7166169d0f14a374505392734160e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/bd8c740097eb9f2fc3735250fc1912bc811a954e",
-                "reference": "bd8c740097eb9f2fc3735250fc1912bc811a954e",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e43de70f3c7166169d0f14a374505392734160e5",
+                "reference": "e43de70f3c7166169d0f14a374505392734160e5",
                 "shasum": ""
             },
             "require": {
@@ -8524,7 +8475,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-05-16T17:37:13+00:00"
+            "time": "2019-06-13T08:02:18+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
@@ -9587,16 +9538,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06"
+                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
+                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
                 "shasum": ""
             },
             "require": {
@@ -9617,8 +9568,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Prophecy\\": "src/"
+                "psr-4": {
+                    "Prophecy\\": "src/Prophecy"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -9646,7 +9597,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-08-05T17:53:17+00:00"
+            "time": "2019-06-13T12:50:23+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -11166,16 +11117,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8"
+                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/1c42705be2b6c1de5904f8afacef5895cab44bf8",
-                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
+                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
                 "shasum": ""
             },
             "require": {
@@ -11202,7 +11153,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2019-04-04T09:56:43+00:00"
+            "time": "2019-06-13T22:48:21+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -11256,7 +11207,14 @@
             "time": "2018-12-25T11:19:39+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.4.1",
+            "alias_normalized": "0.4.1.0",
+            "version": "0.6.0.0",
+            "package": "arvenil/ninja-mutex"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
