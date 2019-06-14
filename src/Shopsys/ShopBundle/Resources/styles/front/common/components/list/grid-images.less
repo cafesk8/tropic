@@ -86,7 +86,7 @@
         .clearfix();
         display: inline-block;
         margin-left: -@grid-images-item-column-gap;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
 
         &__link {
             position: relative;
@@ -97,12 +97,12 @@
             display: inline-block;
             float: left;
             width: 100%;
+            margin-bottom: @grid-images-item-column-gap;
             margin-left: @grid-images-item-column-gap;
             text-align: center;
 
             @media @query-lg {
                 width: calc(~"@{calc-base}/@{grid-images-columns-count} - @{grid-images-item-column-gap}");
-                margin-bottom: 0;
             }
 
             img {
