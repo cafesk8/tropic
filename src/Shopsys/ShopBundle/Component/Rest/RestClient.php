@@ -39,21 +39,29 @@ class RestClient
     private $timeout;
 
     /**
+     * @var int
+     */
+    private $connectionTimeout;
+
+    /**
      * @param string $host
      * @param string $username
      * @param string $password
      * @param int $timeout
+     * @param int $connectionTimeout
      */
     public function __construct(
         string $host,
         string $username,
         string $password,
-        int $timeout = 600
+        int $timeout = 600,
+        int $connectionTimeout = 120
     ) {
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
         $this->timeout = $timeout;
+        $this->connectionTimeout = $connectionTimeout;
     }
 
     /**
@@ -107,8 +115,9 @@ class RestClient
         $headers[] = 'Authorization: Basic ' . $this->getToken();
         $headers[] = 'Cache-Control: no-cache';
 
+        $apiUrl = $this->host . '/' . ltrim($url, '/');
         curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($handle, CURLOPT_URL, $this->host . $url);
+        curl_setopt($handle, CURLOPT_URL, $apiUrl);
 
         if ($method === self::METHOD_POST || $method === self::METHOD_PUT) {
             $fields = json_encode($data);
@@ -121,6 +130,7 @@ class RestClient
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($handle, CURLOPT_TIMEOUT, $this->timeout);
+        curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, $this->connectionTimeout);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_ENCODING, '');
         curl_setopt($handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
@@ -129,7 +139,7 @@ class RestClient
 
         if ($response === false) {
             throw new UnexpectedResponseException(
-                sprintf('Response was not received from URL: %s, Method: %s', $url, $method)
+                sprintf('Response was not received from URL: %s, Method: %s', $apiUrl, $method)
             );
         }
 

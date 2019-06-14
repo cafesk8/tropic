@@ -63,7 +63,6 @@ services:
             - '%transfer_host%'
             - '%transfer_username%'
             - '%transfer_password%'
-            - '%transfer_enabled%'
 
     Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:
