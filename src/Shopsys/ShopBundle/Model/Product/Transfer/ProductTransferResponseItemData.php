@@ -29,6 +29,11 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
     private $description;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData[]
+     */
+    private $variants = [];
+
+    /**
      * @param array $restData
      */
     public function __construct(array $restData)
@@ -36,6 +41,9 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
         $this->number = (int)$restData['Number'];
         $this->name = $restData['Name'];
         $this->description = $restData['Description'];
+        foreach ($restData['Barcodes'] as $productVariant) {
+            $this->variants[] = new ProductTransferResponseItemVariantData($productVariant);
+        }
     }
 
     /**
@@ -68,5 +76,13 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData[]
+     */
+    public function getVariants(): array
+    {
+        return $this->variants;
     }
 }
