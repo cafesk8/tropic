@@ -4,6 +4,10 @@ services:
         autoconfigure: true
         public: false
 
+    Shopsys\ShopBundle\Model\Customer\Transfer\CustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '3', minutes: '00' }
+
     Shopsys\ShopBundle\Model\GoPay\GoPayAvailablePaymentsCronModule:
         tags:
             - { name: shopsys.cron, hours: '3', minutes: '50', readableFrequency: '1x za den' }
