@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
 use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 
@@ -35,12 +36,18 @@ class CustomerTransferMapper
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData $customerTransferResponseItemData
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User $customer
      * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
      */
     public function mapTransferDataToCustomerData(
-        CustomerTransferResponseItemData $customerTransferResponseItemData
+        CustomerTransferResponseItemData $customerTransferResponseItemData,
+        ?User $customer
     ): CustomerData {
-        $customerData = $this->customerDataFactory->create();
+        if ($customer === null) {
+            $customerData = $this->customerDataFactory->create();
+        } else {
+            $customerData = $this->customerDataFactory->createFromUser($customer);
+        }
 
         /** @var $userData \Shopsys\ShopBundle\Model\Customer\UserData */
         $userData = $customerData->userData;
