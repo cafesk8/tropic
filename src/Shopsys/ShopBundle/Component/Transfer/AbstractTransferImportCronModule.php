@@ -8,6 +8,7 @@ use Exception;
 use Shopsys\ShopBundle\Component\Transfer\Exception\TransferException;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
+use Symfony\Component\Validator\Validator\TraceableValidator;
 
 abstract class AbstractTransferImportCronModule extends AbstractTransferCronModule
 {
@@ -82,6 +83,12 @@ abstract class AbstractTransferImportCronModule extends AbstractTransferCronModu
                 }
 
                 throw $exception;
+            } finally {
+                // Application in DEV mode uses TraceableValidator for validation. TraceableValidator saves data from
+                // validation in memory, so it can consume quite a lot of memory, which leads to transfer crash
+                if ($this->validator instanceof TraceableValidator) {
+                    $this->validator->reset();
+                }
             }
         }
     }
