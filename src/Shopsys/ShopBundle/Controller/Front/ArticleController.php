@@ -41,15 +41,6 @@ class ArticleController extends FrontBaseController
         ]);
     }
 
-    public function footerAction()
-    {
-        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_FOOTER);
-
-        return $this->render('@ShopsysShop/Front/Content/Article/menu.html.twig', [
-            'articles' => $articles,
-        ]);
-    }
-
     public function footerShoppingAction()
     {
         $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_SHOPPING);
