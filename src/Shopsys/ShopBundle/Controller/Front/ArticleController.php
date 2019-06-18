@@ -2,8 +2,8 @@
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
-use Shopsys\FrameworkBundle\Model\Article\Article;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFacade;
+use Shopsys\ShopBundle\Model\Article\Article;
 
 class ArticleController extends FrontBaseController
 {
@@ -46,6 +46,33 @@ class ArticleController extends FrontBaseController
         $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_FOOTER);
 
         return $this->render('@ShopsysShop/Front/Content/Article/menu.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+    public function footerShoppingAction()
+    {
+        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_SHOPPING);
+
+        return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+    public function footerAboutAction()
+    {
+        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_ABOUT);
+
+        return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+    public function footerServicesAction()
+    {
+        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_SERVICES);
+
+        return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
             'articles' => $articles,
         ]);
     }

@@ -13,6 +13,10 @@ use Shopsys\FrameworkBundle\Model\Article\ArticleData as BaseArticleData;
  */
 class Article extends BaseArticle
 {
+    public const PLACEMENT_SHOPPING = 'shopping';
+    public const PLACEMENT_ABOUT = 'about';
+    public const PLACEMENT_SERVICES = 'services';
+
     /**
      * @var \DateTime
      *

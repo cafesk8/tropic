@@ -29,6 +29,9 @@ services:
                 local: '@local_filesystem'
                 main: '@main_filesystem'
 
+    Shopsys\FrameworkBundle\Controller\Admin\ArticleController:
+        class: Shopsys\ShopBundle\Controller\Admin\ArticleController
+
     Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductPickerController
 
