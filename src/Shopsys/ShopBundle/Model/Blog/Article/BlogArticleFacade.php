@@ -197,4 +197,25 @@ class BlogArticleFacade
     ): PaginationResult {
         return $this->blogArticleRepository->getPaginationResultForListableInBlogCategory($blogCategory, $domainId, $locale, $page, $limit);
     }
+
+    /**
+     * @param int $domainId
+     * @param string $locale
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public function getHomepageBlogArticlesByDomainId(int $domainId, string $locale, int $limit): array
+    {
+        return $this->blogArticleRepository->getHomepageBlogArticlesByDomainId($domainId, $locale, $limit);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $blogArticle
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory
+     */
+    public function findBlogArticleMainCategoryOnDomain(BlogArticle $blogArticle, int $domainId): ?BlogCategory
+    {
+        return $this->blogArticleRepository->findBlogArticleMainCategoryOnDomain($blogArticle, $domainId);
+    }
 }

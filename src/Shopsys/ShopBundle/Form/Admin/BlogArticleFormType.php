@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use DateTime;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Form\DatePickerType;
 use Shopsys\FrameworkBundle\Form\FormRenderingConfigurationExtension;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
@@ -56,14 +58,19 @@ class BlogArticleFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builderSettingsGroup = $this->createSettingsGroup($builder);
-        $builderSeoGroup = $this->createSeoGroup($builder, $options);
+        /** @var $blogArticle \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle|null */
+        $blogArticle = $options['blogArticle'];
+
+        $builderSettingsGroup = $this->createSettingsGroup($builder, $blogArticle);
+        $builderSeoGroup = $this->createSeoGroup($builder, $blogArticle);
         $builderDescriptionGroup = $this->createDescriptionGroup($builder);
         $builderImageGroup = $this->createImageGroup($builder, $options);
+        $builderPerexGroup = $this->createPerexGroup($builder);
 
         $builder
             ->add($builderSettingsGroup)
             ->add($builderSeoGroup)
+            ->add($builderPerexGroup)
             ->add($builderDescriptionGroup)
             ->add($builderImageGroup)
             ->add('save', SubmitType::class);
@@ -97,13 +104,11 @@ class BlogArticleFormType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle|null $blogArticle
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function createSeoGroup(FormBuilderInterface $builder, array $options): FormBuilderInterface
+    private function createSeoGroup(FormBuilderInterface $builder, ?BlogArticle $blogArticle): FormBuilderInterface
     {
-        /** @var $blogArticle \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle|null */
-        $blogArticle = $options['blogArticle'];
         list($seoTitlesOptionsByDomainId, $seoMetaDescriptionsOptionsByDomainId, $seoH1OptionsByDomainId) = $this->prepareSeoData($blogArticle);
 
         $builderSeoGroup = $builder->create('seo', GroupType::class, [
@@ -160,9 +165,10 @@ class BlogArticleFormType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle|null $blogArticle
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function createSettingsGroup(FormBuilderInterface $builder): FormBuilderInterface
+    private function createSettingsGroup(FormBuilderInterface $builder, ?BlogArticle $blogArticle): FormBuilderInterface
     {
         $builderSettingsGroup = $builder->create('settings', GroupType::class, [
             'label' => t('Settings'),
@@ -198,6 +204,18 @@ class BlogArticleFormType extends AbstractType
             ->add('hidden', YesNoType::class, [
                 'required' => false,
                 'label' => t('Hide'),
+            ])
+            ->add('visibleOnHomepage', YesNoType::class, [
+                'required' => true,
+                'label' => t('Viditelný na homepage'),
+            ])
+            ->add('publishDate', DatePickerType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Please enter date of creation']),
+                ],
+                'label' => t('Datum publikace'),
+                'data' => $blogArticle === null ? new DateTime() : $blogArticle->getPublishDate(),
             ]);
 
         return $builderSettingsGroup;
@@ -221,6 +239,26 @@ class BlogArticleFormType extends AbstractType
                 'display_format' => FormRenderingConfigurationExtension::DISPLAY_FORMAT_MULTIDOMAIN_ROWS_NO_PADDING,
             ]);
 
+        return $builderDescriptionGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createPerexGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builderDescriptionGroup = $builder->create('perex', GroupType::class, [
+            'label' => t('Perex'),
+        ]);
+
+        $builderDescriptionGroup
+            ->add('perexes', LocalizedType::class, [
+                'entry_options' => [
+                    'required' => false,
+                ],
+                'label' => t('Perex'),
+            ]);
         return $builderDescriptionGroup;
     }
 

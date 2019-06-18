@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Blog\Article;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -67,13 +68,23 @@ class BlogArticleRepository
     public function getBlogArticlesByDomainIdAndLocaleQueryBuilder(int $domainId, string $locale): QueryBuilder
     {
         return $this->em->createQueryBuilder()
-            ->select('ba, bat, babcd')
+            ->select('ba, bat')
             ->from(BlogArticle::class, 'ba')
             ->join('ba.translations', 'bat', Join::WITH, 'bat.locale = :locale')
-            ->join('ba.blogArticleBlogCategoryDomains', 'babcd', Join::WITH, 'babcd.domainId = :domainId')
-            ->setParameter('domainId', $domainId)
             ->setParameter('locale', $locale)
             ->orderBy('ba.createdAt', 'DESC');
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder $queryBuilder
+     * @param int $domainId
+     */
+    private function addBlogArticleBlogCategoryDomainsToQueryBuilder(QueryBuilder $queryBuilder, int $domainId): void
+    {
+        $queryBuilder
+            ->addSelect('babcd')
+            ->join('ba.blogArticleBlogCategoryDomains', 'babcd', Join::WITH, 'babcd.domainId = :domainId')
+            ->setParameter('domainId', $domainId);
     }
 
     /**
@@ -99,7 +110,10 @@ class BlogArticleRepository
     {
         return $this->getBlogArticlesByDomainIdAndLocaleQueryBuilder($domainId, $locale)
             ->join('ba.domains', 'bad', Join::WITH, 'bad.domainId = :domainId')
-            ->andWhere('bad.visible = true');
+            ->andWhere('ba.publishDate <= :todayDate')
+            ->andWhere('bad.visible = true')
+            ->setParameter('todayDate', (new DateTime())->format('Y-m-d'))
+            ->setParameter('domainId', $domainId);
     }
 
     /**
@@ -136,7 +150,11 @@ class BlogArticleRepository
      */
     public function getVisibleOnDomainById(DomainConfig $domainConfig, int $blogArticleId): BlogArticle
     {
-        $blogArticle = $this->getVisibleBlogArticlesByDomainIdAndLocaleQueryBuilder($domainConfig->getId(), $domainConfig->getLocale())
+        $blogArticleQueryBuilder = $this->getVisibleBlogArticlesByDomainIdAndLocaleQueryBuilder($domainConfig->getId(), $domainConfig->getLocale());
+
+        $this->addBlogArticleBlogCategoryDomainsToQueryBuilder($blogArticleQueryBuilder, $domainConfig->getId());
+
+        $blogArticle = $blogArticleQueryBuilder
             ->andWhere('ba.id = :blogArticleId')
             ->setParameter('blogArticleId', $blogArticleId)
             ->getQuery()->getOneOrNullResult();
@@ -161,6 +179,22 @@ class BlogArticleRepository
     }
 
     /**
+     * @param int $domainId
+     * @param string $locale
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public function getHomepageBlogArticlesByDomainId(int $domainId, string $locale, int $limit): array
+    {
+        return $this->getVisibleBlogArticlesByDomainIdAndLocaleQueryBuilder($domainId, $locale)
+            ->andWhere('ba.visibleOnHomepage = true')
+            ->setMaxResults($limit)
+            ->orderBy('ba.publishDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory $blogCategory
      * @param int $domainId
      * @param string $locale
@@ -176,11 +210,38 @@ class BlogArticleRepository
         int $limit
     ): PaginationResult {
         $queryBuilder = $this->getVisibleBlogArticlesByDomainIdAndLocaleQueryBuilder($domainId, $locale);
+        $this->addBlogArticleBlogCategoryDomainsToQueryBuilder($queryBuilder, $domainId);
         $queryBuilder->andWhere('babcd.blogCategory = :blogCategory');
         $queryBuilder->setParameter('blogCategory', $blogCategory);
 
         $queryPaginator = new QueryPaginator($queryBuilder);
 
         return $queryPaginator->getResult($page, $limit);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $blogArticle
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory
+     */
+    public function findBlogArticleMainCategoryOnDomain(BlogArticle $blogArticle, int $domainId): ?BlogCategory
+    {
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('babcd')
+            ->from(BlogArticleBlogCategoryDomain::class, 'babcd')
+            ->join('babcd.blogCategory', 'bc')
+            ->andWhere('babcd.domainId = :domainId')
+            ->andWhere('babcd.blogArticle = :blogArticle')
+            ->orderBy('bc.level DESC, bc.lft')
+            ->setMaxResults(1);
+
+        $queryBuilder->setParameters([
+            'domainId' => $domainId,
+            'blogArticle' => $blogArticle,
+        ]);
+
+        $blogArticleBlogCategoryDomain = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        return $blogArticleBlogCategoryDomain === null ? null : $blogArticleBlogCategoryDomain->getBlogCategory();
     }
 }

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
             },
             admin: {
                 files: {
-                    'web/assets/admin/styles/index_{{ cssVersion }}.css': '{{ frameworkResourcesDirectory|raw }}/styles/admin/main.less'
+                    'web/assets/admin/styles/index_{{ cssVersion }}.css': '{{ customResourcesDirectory|raw }}/styles/admin/main.less'
                 },
                 options: {
                     compress: true,

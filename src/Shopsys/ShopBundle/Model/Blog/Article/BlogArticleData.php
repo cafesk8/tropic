@@ -64,6 +64,21 @@ class BlogArticleData
      */
     public $image;
 
+    /**
+     * @var bool
+     */
+    public $visibleOnHomepage;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $publishDate;
+
+    /**
+     * @var string[]|null[]
+     */
+    public $perexes;
+
     public function __construct()
     {
         $this->names = [];
@@ -77,5 +92,7 @@ class BlogArticleData
         $this->hidden = false;
         $this->urls = new UrlListData();
         $this->image = new ImageUploadData();
+        $this->visibleOnHomepage = true;
+        $this->perexes = [];
     }
 }

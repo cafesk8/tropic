@@ -34,6 +34,13 @@ class BlogArticleTranslation extends AbstractTranslation
     private $description;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $perex;
+
+    /**
      * @return string|null
      */
     public function getName(): ?string
@@ -63,5 +70,21 @@ class BlogArticleTranslation extends AbstractTranslation
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPerex(): ?string
+    {
+        return $this->perex;
+    }
+
+    /**
+     * @param string|null $perex
+     */
+    public function setPerex(?string $perex): void
+    {
+        $this->perex = $perex;
     }
 }

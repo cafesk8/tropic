@@ -7,9 +7,12 @@ use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 
 class HomepageController extends FrontBaseController
 {
+    private const HOMEPAGE_ARTICLES_LIMIT = 2;
+
     /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
      */
@@ -36,24 +39,32 @@ class HomepageController extends FrontBaseController
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade
+     */
+    private $blogArticleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade $sliderItemFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductsFacade
      * @param \Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade $seoSettingFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      */
     public function __construct(
         CurrentCustomer $currentCustomer,
         SliderItemFacade $sliderItemFacade,
         TopProductFacade $topProductsFacade,
         SeoSettingFacade $seoSettingFacade,
-        Domain $domain
+        Domain $domain,
+        BlogArticleFacade $blogArticleFacade
     ) {
         $this->currentCustomer = $currentCustomer;
         $this->sliderItemFacade = $sliderItemFacade;
         $this->topProductFacade = $topProductsFacade;
         $this->seoSettingFacade = $seoSettingFacade;
         $this->domain = $domain;
+        $this->blogArticleFacade = $blogArticleFacade;
     }
 
     public function indexAction()
@@ -69,6 +80,12 @@ class HomepageController extends FrontBaseController
             'topProducts' => $topProducts,
             'title' => $this->seoSettingFacade->getTitleMainPage($this->domain->getId()),
             'metaDescription' => $this->seoSettingFacade->getDescriptionMainPage($this->domain->getId()),
+            'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
+                $this->domain->getId(),
+                $this->domain->getLocale(),
+                self::HOMEPAGE_ARTICLES_LIMIT
+            ),
+            'domainId' => $this->domain->getId(),
         ]);
     }
 }

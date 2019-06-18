@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticle;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,6 +45,19 @@ class BlogArticleController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Blog/Article/detail.html.twig', [
             'blogArticle' => $blogArticle,
             'domainId' => $this->domain->getId(),
+        ]);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $blogArticle
+     * @param string $spanClass
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function mainBlogCategoryForBlogArticleAction(BlogArticle $blogArticle, ?string $spanClass): Response
+    {
+        return $this->render('@ShopsysShop/Front/Content/Blog/Article/mainBlogCategoryForBlogArticle.html.twig', [
+            'blogCategory' => $this->blogArticleFacade->findBlogArticleMainCategoryOnDomain($blogArticle, $this->domain->getId()),
+            'spanClass' => $spanClass,
         ]);
     }
 }

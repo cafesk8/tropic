@@ -67,6 +67,20 @@ class BlogArticle extends AbstractTranslatableEntity
     private $createdAt;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $visibleOnHomepage;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="date")
+     */
+    private $publishDate;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleData $blogArticleData
      */
     public function __construct(BlogArticleData $blogArticleData)
@@ -79,6 +93,8 @@ class BlogArticle extends AbstractTranslatableEntity
 
         $this->hidden = $blogArticleData->hidden;
         $this->createdAt = $blogArticleData->createdAt ?? new DateTime();
+        $this->visibleOnHomepage = $blogArticleData->visibleOnHomepage;
+        $this->publishDate = $blogArticleData->publishDate ?? new DateTime();
     }
 
     /**
@@ -92,6 +108,8 @@ class BlogArticle extends AbstractTranslatableEntity
         $this->setCategories($blogArticleBlogCategoryDomainFactory, $blogArticleData->blogCategoriesByDomainId);
 
         $this->hidden = $blogArticleData->hidden;
+        $this->visibleOnHomepage = $blogArticleData->visibleOnHomepage;
+        $this->publishDate = $blogArticleData->publishDate ?? new DateTime();
     }
 
     /**
@@ -231,6 +249,9 @@ class BlogArticle extends AbstractTranslatableEntity
         foreach ($blogArticleData->descriptions as $locale => $name) {
             $this->translation($locale)->setDescription($name);
         }
+        foreach ($blogArticleData->perexes as $locale => $name) {
+            $this->translation($locale)->setPerex($name);
+        }
     }
 
     /**
@@ -347,5 +368,43 @@ class BlogArticle extends AbstractTranslatableEntity
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisibleOnHomepage(): bool
+    {
+        return $this->visibleOnHomepage;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublishDate(): DateTime
+    {
+        return $this->publishDate;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPerexes(): array
+    {
+        $perexesByLocale = [];
+        foreach ($this->translations as $translation) {
+            $perexesByLocale[$translation->getLocale()] = $translation->getPerex();
+        }
+
+        return $perexesByLocale;
+    }
+
+    /**
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getPerex(?string $locale = null): ?string
+    {
+        return $this->translation($locale)->getPerex();
     }
 }

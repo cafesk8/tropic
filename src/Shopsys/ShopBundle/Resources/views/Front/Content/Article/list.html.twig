@@ -6,48 +6,28 @@
         {{ 'Zážitky z cest si nenecháváme pro sebe'|trans }}
     </div>
     <ul class="list-articles">
-        <li class="list-articles__item js-not-implemented-yet">
-            <div class="list-articles__item__image">
-                <a href="#" class="list-articles__item__image__link">
-                    <img src="https://placeimg.com/210/170/any" alt="Bushman expedice aneb čtyři češi na kalahari">
-                </a>
-            </div>
-            <div class="list-articles__item__content">
-                <div class="list-tags">
-                    <span class="list-tags__tag">
-                        {{ 'Reportáže z cest'|trans }}
-                    </span>
+        {% for blogArticle in blogArticles %}
+            <li class="list-articles__item">
+                <div class="list-articles__item__image">
+                    <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__image__link">
+                        {{ image(blogArticle, { size: 'list', alt: blogArticle.name }) }}
+                    </a>
                 </div>
-                <a href="#" class="list-articles__item__content__title underline">
-                    {{ 'Bushman expedice aneb čtyři češi na kalahari'|trans }}
-                </a>
-                <div class="list-articles__item__content__text">
-                    {{ 'Je to tu zase. Po roce mne opět čeká cesta Afriky. S třemi kamarády se chystáme procestovat autem Národní park Kgalagadi, tedy poušť Kalahari na hranicích JAR, Botswany a Namibie. Máme v plánu poznat jižní a střední část parku.'|trans }}
+                <div class="list-articles__item__content">
+                    <div class="list-tags">
+                        {{ render(controller('ShopsysShopBundle:Front/BlogArticle:mainBlogCategoryForBlogArticle', { blogArticle: blogArticle, spanClass: 'list-tags__tag' })) }}
+                    </div>
+                    <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__content__title underline">
+                        {{ blogArticle.name }}
+                    </a>
+                    <div class="list-articles__item__content__text">
+                        {{ blogArticle.perex }}
+                    </div>
                 </div>
-            </div>
-        </li>
-        <li class="list-articles__item js-not-implemented-yet">
-            <div class="list-articles__item__image">
-                <a href="#" class="list-articles__item__image__link">
-                    <img src="https://placeimg.com/210/170/any" alt="Bushman expedice aneb čtyři češi na kalahari">
-                </a>
-            </div>
-            <div class="list-articles__item__content">
-                <div class="list-tags">
-                    <span class="list-tags__tag">
-                        {{ 'Fotografování s Bushmanem'|trans }}
-                    </span>
-                </div>
-                <a href="#" class="list-articles__item__content__title underline">
-                    {{ 'Fotky z dovolené jako od profesionála'|trans }}
-                </a>
-                <div class="list-articles__item__content__text">
-                    {{ 'Už cestou na dovolenou si plánujete, jaké fantastické snímky místní krajiny a fauny pořídíte. Ve vašich představách jsou stejně hezké nebo dokonce ještě hezčí, než od profesionálů. Jenomže realita bývá trochu jiná… Jak to tedy udělat, aby bylo opravdu čím se chlubit po návratu?'|trans }}
-                </div>
-            </div>
-        </li>
+            </li>
+        {% endfor %}
     </ul>
     <div class="box-articles__bottom">
-        <a href="#" class="box-articles__bottom__link underline js-not-implemented-yet">{{ 'Přejít na výpis všech článků'|trans }}</a>
+        <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
     </div>
 </div>

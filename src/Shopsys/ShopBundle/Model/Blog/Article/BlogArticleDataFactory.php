@@ -69,6 +69,7 @@ class BlogArticleDataFactory
         foreach ($this->domain->getAllLocales() as $locale) {
             $blogArticleData->names[$locale] = null;
             $blogArticleData->descriptions[$locale] = null;
+            $blogArticleData->perexes[$locale] = null;
         }
     }
 
@@ -80,7 +81,10 @@ class BlogArticleDataFactory
     {
         $blogArticleData->names = $blogArticle->getNames();
         $blogArticleData->descriptions = $blogArticle->getDescriptions();
+        $blogArticleData->perexes = $blogArticle->getPerexes();
         $blogArticleData->hidden = $blogArticle->isHidden();
+        $blogArticleData->visibleOnHomepage = $blogArticle->isVisibleOnHomepage();
+        $blogArticleData->publishDate = $blogArticle->getPublishDate();
         $blogArticleData->blogCategoriesByDomainId = $blogArticle->getBlogCategoriesIndexedByDomainId();
 
         foreach ($this->domain->getAllIds() as $domainId) {
