@@ -18,13 +18,10 @@ services:
         resource: '../../**/*{BreadcrumbGenerator,Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,RecalculationScheduler,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
         exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
-    Predis\Client:
-        arguments:
-            -   host: '%redis_host%'
-                scheme: 'redis'
-
     NinjaMutex\Lock\LockInterface:
-        class: NinjaMutex\Lock\PredisRedisLock
+        class: NinjaMutex\Lock\PhpRedisLock
+        arguments:
+            - '@snc_redis.global'
 
     League\Flysystem\MountManager:
         arguments:
