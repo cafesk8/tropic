@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategory;
+use Shopsys\ShopBundle\Model\Product\Product;
 
 class BlogArticleRepository
 {
@@ -243,5 +244,24 @@ class BlogArticleRepository
         $blogArticleBlogCategoryDomain = $queryBuilder->getQuery()->getOneOrNullResult();
 
         return $blogArticleBlogCategoryDomain === null ? null : $blogArticleBlogCategoryDomain->getBlogCategory();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param string $locale
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public function getVisibleByProduct(Product $product, int $domainId, string $locale, int $limit): array
+    {
+        return $this->getVisibleBlogArticlesByDomainIdAndLocaleQueryBuilder($domainId, $locale)
+            ->innerJoin('ba.products', 'p')
+            ->andWhere('p = :product')
+            ->setParameter('product', $product)
+            ->setMaxResults($limit)
+            ->orderBy('ba.publishDate', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationScheduler;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategory;
 
@@ -217,5 +218,17 @@ class BlogArticleFacade
     public function findBlogArticleMainCategoryOnDomain(BlogArticle $blogArticle, int $domainId): ?BlogCategory
     {
         return $this->blogArticleRepository->findBlogArticleMainCategoryOnDomain($blogArticle, $domainId);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param string $locale
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public function getVisibleByProduct(Product $product, int $domainId, string $locale, int $limit): array
+    {
+        return $this->blogArticleRepository->getVisibleByProduct($product, $domainId, $locale, $limit);
     }
 }
