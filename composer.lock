@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58d00ca4c5f85323b459258335f72cb4",
+    "content-hash": "44a19b05b8671c6e7b5ffb04fa3ccab8",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -71,16 +71,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.100.3",
+            "version": "3.100.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe"
+                "reference": "4b3732bfc8c60e5c816dd3b1175b5a7f7231d98d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
-                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4b3732bfc8c60e5c816dd3b1175b5a7f7231d98d",
+                "reference": "4b3732bfc8c60e5c816dd3b1175b5a7f7231d98d",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-13T19:22:34+00:00"
+            "time": "2019-06-18T18:13:15+00:00"
         },
         {
             "name": "barryvdh/elfinder-flysystem-driver",
@@ -3853,16 +3853,16 @@
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "v2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "6bea43eb84fc67c43ab2b43709194efffa8a8ac0"
+                "reference": "267027582a1f1e355276f796f8da0e9f82026bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/6bea43eb84fc67c43ab2b43709194efffa8a8ac0",
-                "reference": "6bea43eb84fc67c43ab2b43709194efffa8a8ac0",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/267027582a1f1e355276f796f8da0e9f82026bf1",
+                "reference": "267027582a1f1e355276f796f8da0e9f82026bf1",
                 "shasum": ""
             },
             "require": {
@@ -3908,7 +3908,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2017-12-24T16:32:39+00:00"
+            "time": "2019-06-17T12:58:15+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -3989,16 +3989,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.52",
+            "version": "1.0.53",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391"
+                "reference": "08e12b7628f035600634a5e76d95b5eb66cea674"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c5a5097156387970e6f0ccfcdf03f752856f3391",
-                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/08e12b7628f035600634a5e76d95b5eb66cea674",
+                "reference": "08e12b7628f035600634a5e76d95b5eb66cea674",
                 "shasum": ""
             },
             "require": {
@@ -4069,7 +4069,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-05-20T20:21:14+00:00"
+            "time": "2019-06-18T20:09:29+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -5497,21 +5497,21 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.24",
+            "version": "v5.0.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "59eac70f15f97ee945924948a6f5e2f6f86b7a4b"
+                "reference": "80a38234bde8321fb92aa0b8c27978a272bb4baf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/59eac70f15f97ee945924948a6f5e2f6f86b7a4b",
-                "reference": "59eac70f15f97ee945924948a6f5e2f6f86b7a4b",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/80a38234bde8321fb92aa0b8c27978a272bb4baf",
+                "reference": "80a38234bde8321fb92aa0b8c27978a272bb4baf",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9",
-                "sensiolabs/security-checker": "~5.0",
+                "sensiolabs/security-checker": "~5.0|~6.0",
                 "symfony/class-loader": "~2.3|~3.0",
                 "symfony/config": "~2.3|~3.0",
                 "symfony/dependency-injection": "~2.3|~3.0",
@@ -5545,7 +5545,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2018-12-14T17:36:15+00:00"
+            "time": "2019-06-18T15:43:58+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -5804,16 +5804,16 @@
         },
         {
             "name": "shopsys/form-types-bundle",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/form-types-bundle.git",
-                "reference": "2f138cbfa63a52f0923fe6bb0982856fd6186b3d"
+                "reference": "06dda2b7b74a2cc2d964d1302b1f0c7be4600bc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/form-types-bundle/zipball/2f138cbfa63a52f0923fe6bb0982856fd6186b3d",
-                "reference": "2f138cbfa63a52f0923fe6bb0982856fd6186b3d",
+                "url": "https://api.github.com/repos/shopsys/form-types-bundle/zipball/06dda2b7b74a2cc2d964d1302b1f0c7be4600bc6",
+                "reference": "06dda2b7b74a2cc2d964d1302b1f0c7be4600bc6",
                 "shasum": ""
             },
             "require": {
@@ -5830,7 +5830,7 @@
                 "symfony/dependency-injection": "3.4.15|3.4.16"
             },
             "require-dev": {
-                "shopsys/coding-standards": "7.2.1"
+                "shopsys/coding-standards": "7.2.2"
             },
             "type": "library",
             "autoload": {
@@ -5855,20 +5855,20 @@
                 "Shopsys Framework",
                 "form"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/framework",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/framework.git",
-                "reference": "689877d6913fea5be1e3f34d38c1e4de53fcd719"
+                "reference": "26af845303ccd98ab4efe06f0af655fc378dda06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/framework/zipball/689877d6913fea5be1e3f34d38c1e4de53fcd719",
-                "reference": "689877d6913fea5be1e3f34d38c1e4de53fcd719",
+                "url": "https://api.github.com/repos/shopsys/framework/zipball/26af845303ccd98ab4efe06f0af655fc378dda06",
+                "reference": "26af845303ccd98ab4efe06f0af655fc378dda06",
                 "shasum": ""
             },
             "require": {
@@ -5926,10 +5926,10 @@
                 "sensio/distribution-bundle": "^5.0.21",
                 "sensio/framework-extra-bundle": "^3.0.29",
                 "shopsys/doctrine-orm": "^2.6.2",
-                "shopsys/form-types-bundle": "7.2.1",
+                "shopsys/form-types-bundle": "7.2.2",
                 "shopsys/jparser": "^0.1",
-                "shopsys/migrations": "7.2.1",
-                "shopsys/plugin-interface": "7.2.1",
+                "shopsys/migrations": "7.2.2",
+                "shopsys/plugin-interface": "7.2.2",
                 "shopsys/postgres-search-bundle": "^0.1",
                 "snc/redis-bundle": "^2.1.8",
                 "stof/doctrine-extensions-bundle": "^1.3.0",
@@ -5951,7 +5951,7 @@
             "require-dev": {
                 "phpstan/phpstan": "^0.11",
                 "phpunit/phpunit": "^7.0",
-                "shopsys/coding-standards": "7.2.1"
+                "shopsys/coding-standards": "7.2.2"
             },
             "suggest": {
                 "ext-pgsql": "Required for dumping the Postgres database in shopsys:database:dump command"
@@ -5973,29 +5973,29 @@
                 "proprietary"
             ],
             "description": "Core of Shopsys Framework - open source framework for building large, scalable, fast-growing e-commerce projects based on Symfony",
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/google-cloud-bundle",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/google-cloud-bundle.git",
-                "reference": "a5bf3f738708cece0f4e89f623ef46c8759d546d"
+                "reference": "262215830027d6074cc2ffda2bddd331c4d6d2d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/google-cloud-bundle/zipball/a5bf3f738708cece0f4e89f623ef46c8759d546d",
-                "reference": "a5bf3f738708cece0f4e89f623ef46c8759d546d",
+                "url": "https://api.github.com/repos/shopsys/google-cloud-bundle/zipball/262215830027d6074cc2ffda2bddd331c4d6d2d3",
+                "reference": "262215830027d6074cc2ffda2bddd331c4d6d2d3",
                 "shasum": ""
             },
             "require": {
                 "google/cloud-storage": "^1.10",
                 "php": "^7.1",
-                "shopsys/form-types-bundle": "7.2.1",
-                "shopsys/framework": "7.2.1",
-                "shopsys/migrations": "7.2.1",
-                "shopsys/plugin-interface": "7.2.1",
+                "shopsys/form-types-bundle": "7.2.2",
+                "shopsys/framework": "7.2.2",
+                "shopsys/migrations": "7.2.2",
+                "shopsys/plugin-interface": "7.2.2",
                 "superbalist/flysystem-google-storage": "^7.1",
                 "symfony/config": "^3.4",
                 "symfony/dependency-injection": "^3.4",
@@ -6004,7 +6004,7 @@
                 "symfony/options-resolver": "^3.4"
             },
             "require-dev": {
-                "shopsys/coding-standards": "7.2.1"
+                "shopsys/coding-standards": "7.2.2"
             },
             "type": "library",
             "autoload": {
@@ -6028,7 +6028,7 @@
                 "Shopsys Framework",
                 "google cloud"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/jparser",
@@ -6072,16 +6072,16 @@
         },
         {
             "name": "shopsys/migrations",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/migrations.git",
-                "reference": "c287f3aa4f5fc2a93683c9abeb8e05cbdb2536a4"
+                "reference": "d7b5cee607ccdf9fcec2b772c3767bfcd81ae1d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/migrations/zipball/c287f3aa4f5fc2a93683c9abeb8e05cbdb2536a4",
-                "reference": "c287f3aa4f5fc2a93683c9abeb8e05cbdb2536a4",
+                "url": "https://api.github.com/repos/shopsys/migrations/zipball/d7b5cee607ccdf9fcec2b772c3767bfcd81ae1d4",
+                "reference": "d7b5cee607ccdf9fcec2b772c3767bfcd81ae1d4",
                 "shasum": ""
             },
             "require": {
@@ -6104,7 +6104,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^5.7|^6.0|^7.0",
-                "shopsys/coding-standards": "7.2.1"
+                "shopsys/coding-standards": "7.2.2"
             },
             "type": "library",
             "autoload": {
@@ -6131,20 +6131,20 @@
                 "orm",
                 "schema"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/plugin-interface",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/plugin-interface.git",
-                "reference": "d4ff00a9684e34a499a773732d0be6e4b7883d3e"
+                "reference": "fbf1291fe75134e189283411b424b456891975f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/plugin-interface/zipball/d4ff00a9684e34a499a773732d0be6e4b7883d3e",
-                "reference": "d4ff00a9684e34a499a773732d0be6e4b7883d3e",
+                "url": "https://api.github.com/repos/shopsys/plugin-interface/zipball/fbf1291fe75134e189283411b424b456891975f7",
+                "reference": "fbf1291fe75134e189283411b424b456891975f7",
                 "shasum": ""
             },
             "require": {
@@ -6152,7 +6152,7 @@
                 "symfony/monolog-bridge": "^3.0.0"
             },
             "require-dev": {
-                "shopsys/coding-standards": "7.2.1"
+                "shopsys/coding-standards": "7.2.2"
             },
             "type": "library",
             "autoload": {
@@ -6176,7 +6176,7 @@
                 "Shopsys Framework",
                 "plugin"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/postgres-search-bundle",
@@ -6226,16 +6226,16 @@
         },
         {
             "name": "shopsys/product-feed-google",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/product-feed-google.git",
-                "reference": "db0150329b1ef95047cfc55ea703e523feb6348e"
+                "reference": "1391624756edb417dd36557a1b4b6707a5eabd03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/product-feed-google/zipball/db0150329b1ef95047cfc55ea703e523feb6348e",
-                "reference": "db0150329b1ef95047cfc55ea703e523feb6348e",
+                "url": "https://api.github.com/repos/shopsys/product-feed-google/zipball/1391624756edb417dd36557a1b4b6707a5eabd03",
+                "reference": "1391624756edb417dd36557a1b4b6707a5eabd03",
                 "shasum": ""
             },
             "require": {
@@ -6245,10 +6245,10 @@
                 "ext-pdo": "*",
                 "php": "^7.1",
                 "shopsys/doctrine-orm": "^2.6.2",
-                "shopsys/form-types-bundle": "7.2.1",
-                "shopsys/framework": "7.2.1",
-                "shopsys/migrations": "7.2.1",
-                "shopsys/plugin-interface": "7.2.1",
+                "shopsys/form-types-bundle": "7.2.2",
+                "shopsys/framework": "7.2.2",
+                "shopsys/migrations": "7.2.2",
+                "shopsys/plugin-interface": "7.2.2",
                 "symfony/symfony": "^3.4.8"
             },
             "conflict": {
@@ -6257,7 +6257,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.0|^7.0",
-                "shopsys/coding-standards": "7.2.1",
+                "shopsys/coding-standards": "7.2.2",
                 "twig/extensions": "^1.5.1",
                 "twig/twig": "^2.4.8"
             },
@@ -6286,20 +6286,20 @@
                 "plugin",
                 "product feed"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/product-feed-heureka",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/product-feed-heureka.git",
-                "reference": "3fcca03787e9599d3ba2371dd2b2c524dc2e1f13"
+                "reference": "65812ea8bc240bae94268d4e8b566cb56c95c9b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/product-feed-heureka/zipball/3fcca03787e9599d3ba2371dd2b2c524dc2e1f13",
-                "reference": "3fcca03787e9599d3ba2371dd2b2c524dc2e1f13",
+                "url": "https://api.github.com/repos/shopsys/product-feed-heureka/zipball/65812ea8bc240bae94268d4e8b566cb56c95c9b0",
+                "reference": "65812ea8bc240bae94268d4e8b566cb56c95c9b0",
                 "shasum": ""
             },
             "require": {
@@ -6312,10 +6312,10 @@
                 "ext-simplexml": "*",
                 "php": "^7.1",
                 "shopsys/doctrine-orm": "^2.6.2",
-                "shopsys/form-types-bundle": "7.2.1",
-                "shopsys/framework": "7.2.1",
-                "shopsys/migrations": "7.2.1",
-                "shopsys/plugin-interface": "7.2.1",
+                "shopsys/form-types-bundle": "7.2.2",
+                "shopsys/framework": "7.2.2",
+                "shopsys/migrations": "7.2.2",
+                "shopsys/plugin-interface": "7.2.2",
                 "symfony/symfony": "^3.4.8"
             },
             "conflict": {
@@ -6324,7 +6324,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.0|^7.0",
-                "shopsys/coding-standards": "7.2.1",
+                "shopsys/coding-standards": "7.2.2",
                 "twig/extensions": "^1.5.1",
                 "twig/twig": "^2.4.8"
             },
@@ -6353,29 +6353,29 @@
                 "plugin",
                 "product feed"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/product-feed-heureka-delivery",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/product-feed-heureka-delivery.git",
-                "reference": "64813df6ef3f2d6c53cb2e98997f21eadf73b8f6"
+                "reference": "8d09e0c0460baa35de50ba8fc3046878af4d465c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/product-feed-heureka-delivery/zipball/64813df6ef3f2d6c53cb2e98997f21eadf73b8f6",
-                "reference": "64813df6ef3f2d6c53cb2e98997f21eadf73b8f6",
+                "url": "https://api.github.com/repos/shopsys/product-feed-heureka-delivery/zipball/8d09e0c0460baa35de50ba8fc3046878af4d465c",
+                "reference": "8d09e0c0460baa35de50ba8fc3046878af4d465c",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
                 "shopsys/doctrine-orm": "^2.6.2",
-                "shopsys/form-types-bundle": "7.2.1",
-                "shopsys/framework": "7.2.1",
-                "shopsys/migrations": "7.2.1",
-                "shopsys/plugin-interface": "7.2.1",
+                "shopsys/form-types-bundle": "7.2.2",
+                "shopsys/framework": "7.2.2",
+                "shopsys/migrations": "7.2.2",
+                "shopsys/plugin-interface": "7.2.2",
                 "symfony/config": "^3.4",
                 "symfony/dependency-injection": "^3.4",
                 "symfony/framework-bundle": "^3.4",
@@ -6387,7 +6387,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.0|^7.0",
-                "shopsys/coding-standards": "7.2.1",
+                "shopsys/coding-standards": "7.2.2",
                 "twig/extensions": "^1.5.1",
                 "twig/twig": "^2.4.8"
             },
@@ -6416,20 +6416,20 @@
                 "plugin",
                 "product delivery feed"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "shopsys/product-feed-zbozi",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/product-feed-zbozi.git",
-                "reference": "5bb301233d21e3d6a99c367f719622ad41f30622"
+                "reference": "8f819832cefb929b964c61fa377d67ce2d79119d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/product-feed-zbozi/zipball/5bb301233d21e3d6a99c367f719622ad41f30622",
-                "reference": "5bb301233d21e3d6a99c367f719622ad41f30622",
+                "url": "https://api.github.com/repos/shopsys/product-feed-zbozi/zipball/8f819832cefb929b964c61fa377d67ce2d79119d",
+                "reference": "8f819832cefb929b964c61fa377d67ce2d79119d",
                 "shasum": ""
             },
             "require": {
@@ -6439,10 +6439,10 @@
                 "ext-pdo": "*",
                 "php": "^7.1",
                 "shopsys/doctrine-orm": "^2.6.2",
-                "shopsys/form-types-bundle": "7.2.1",
-                "shopsys/framework": "7.2.1",
-                "shopsys/migrations": "7.2.1",
-                "shopsys/plugin-interface": "7.2.1",
+                "shopsys/form-types-bundle": "7.2.2",
+                "shopsys/framework": "7.2.2",
+                "shopsys/migrations": "7.2.2",
+                "shopsys/plugin-interface": "7.2.2",
                 "symfony/symfony": "^3.4.8"
             },
             "conflict": {
@@ -6451,7 +6451,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.0|^7.0",
-                "shopsys/coding-standards": "7.2.1",
+                "shopsys/coding-standards": "7.2.2",
                 "twig/extensions": "^1.5.1",
                 "twig/twig": "^2.4.8"
             },
@@ -6480,7 +6480,7 @@
                 "product feed",
                 "zbozi"
             ],
-            "time": "2019-05-29T14:01:01+00:00"
+            "time": "2019-06-17T13:19:35+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -7617,16 +7617,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/swiftmailer-bundle.git",
-                "reference": "959459318a022f9ad6bc85e3a87a0a10af173ff1"
+                "reference": "cb125b3648f132fb8070b55393f20cb310907d3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/959459318a022f9ad6bc85e3a87a0a10af173ff1",
-                "reference": "959459318a022f9ad6bc85e3a87a0a10af173ff1",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/cb125b3648f132fb8070b55393f20cb310907d3b",
+                "reference": "cb125b3648f132fb8070b55393f20cb310907d3b",
                 "shasum": ""
             },
             "require": {
@@ -7678,7 +7678,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2019-05-11T07:24:21+00:00"
+            "time": "2019-06-18T15:27:04+00:00"
         },
         {
             "name": "symfony/symfony",
@@ -7837,16 +7837,16 @@
         },
         {
             "name": "tracy/tracy",
-            "version": "v2.6.2",
+            "version": "v2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tracy.git",
-                "reference": "9a6513089a836744e70af0910ad45f50e603dcf5"
+                "reference": "7613eeff265b49a865add75360d1962449e3c12f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tracy/zipball/9a6513089a836744e70af0910ad45f50e603dcf5",
-                "reference": "9a6513089a836744e70af0910ad45f50e603dcf5",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/7613eeff265b49a865add75360d1962449e3c12f",
+                "reference": "7613eeff265b49a865add75360d1962449e3c12f",
                 "shasum": ""
             },
             "require": {
@@ -7900,7 +7900,7 @@
                 "nette",
                 "profiler"
             ],
-            "time": "2019-04-03T20:29:00+00:00"
+            "time": "2019-06-18T12:20:11+00:00"
         },
         {
             "name": "twig/extensions",
@@ -7959,16 +7959,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.11.2",
+            "version": "v2.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "84a463403da1c81afbcedda8f0e788c78bd25a79"
+                "reference": "699ed2342557c88789a15402de5eb834dedd6792"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/84a463403da1c81afbcedda8f0e788c78bd25a79",
-                "reference": "84a463403da1c81afbcedda8f0e788c78bd25a79",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/699ed2342557c88789a15402de5eb834dedd6792",
+                "reference": "699ed2342557c88789a15402de5eb834dedd6792",
                 "shasum": ""
             },
             "require": {
@@ -8022,7 +8022,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-06-05T11:17:07+00:00"
+            "time": "2019-06-18T15:37:11+00:00"
         },
         {
             "name": "vasek-purchart/console-errors-bundle",
@@ -10623,16 +10623,16 @@
         },
         {
             "name": "shopsys/coding-standards",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/coding-standards.git",
-                "reference": "f8256db66d9196b80e3b5b66205b6155ea904cc4"
+                "reference": "3b089db633ade694e80b6719d3c990e11a43f132"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/coding-standards/zipball/f8256db66d9196b80e3b5b66205b6155ea904cc4",
-                "reference": "f8256db66d9196b80e3b5b66205b6155ea904cc4",
+                "url": "https://api.github.com/repos/shopsys/coding-standards/zipball/3b089db633ade694e80b6719d3c990e11a43f132",
+                "reference": "3b089db633ade694e80b6719d3c990e11a43f132",
                 "shasum": ""
             },
             "require": {
@@ -10676,20 +10676,20 @@
                 "code quality",
                 "coding standards"
             ],
-            "time": "2019-05-10T12:30:20+00:00"
+            "time": "2019-06-17T12:36:16+00:00"
         },
         {
             "name": "shopsys/http-smoke-testing",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopsys/http-smoke-testing.git",
-                "reference": "c4aa27c398fa0e8dc85e12f80bcb1c2fd0e510dc"
+                "reference": "e709960a492d36f84b4bbba5da7700b7df25fafc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopsys/http-smoke-testing/zipball/c4aa27c398fa0e8dc85e12f80bcb1c2fd0e510dc",
-                "reference": "c4aa27c398fa0e8dc85e12f80bcb1c2fd0e510dc",
+                "url": "https://api.github.com/repos/shopsys/http-smoke-testing/zipball/e709960a492d36f84b4bbba5da7700b7df25fafc",
+                "reference": "e709960a492d36f84b4bbba5da7700b7df25fafc",
                 "shasum": ""
             },
             "require": {
@@ -10731,7 +10731,7 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2019-05-13T06:22:24+00:00"
+            "time": "2019-06-17T12:36:16+00:00"
         },
         {
             "name": "slam/php-cs-fixer-extensions",
