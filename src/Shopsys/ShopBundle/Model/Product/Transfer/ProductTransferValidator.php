@@ -35,9 +35,9 @@ class ProductTransferValidator
         $violations = $this->validator->validate($productTransferResponseItemData, new Collection([
             'allowExtraFields' => true,
             'fields' => [
-                'number' => [
+                'transferNumber' => [
                     new NotBlank(),
-                    new Type(['type' => 'int']),
+                    new Type(['type' => 'string']),
                 ],
                 'name' => [
                     new NotBlank(),
@@ -50,9 +50,9 @@ class ProductTransferValidator
                 'variants' => [
                     new All([
                         new Collection([
-                            'number' => [
+                            'transferNumber' => [
                                 new NotBlank(),
-                                new Type(['type' => 'int']),
+                                new Type(['type' => 'string']),
                             ],
                             'colorCode' => [
                                 new NotBlank(),

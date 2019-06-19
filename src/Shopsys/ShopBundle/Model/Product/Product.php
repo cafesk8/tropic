@@ -34,9 +34,9 @@ class Product extends BaseProduct
     protected $storeStocks;
 
     /**
-     * @var int|null
+     * @var string|null
      *
-     * @ORM\Column(type="integer", nullable=true, unique=true)
+     * @ORM\Column(type="string", length=20, nullable=true, unique=true)
      */
     private $transferNumber;
 
@@ -161,9 +161,9 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getTransferNumber(): ?int
+    public function getTransferNumber(): ?string
     {
         return $this->transferNumber;
     }

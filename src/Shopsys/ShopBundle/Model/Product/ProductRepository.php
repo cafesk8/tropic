@@ -55,10 +55,10 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
-     * @param int $transferNumber
+     * @param string $transferNumber
      * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
      */
-    public function findByTransferNumber(int $transferNumber): ?Product
+    public function findByTransferNumber(string $transferNumber): ?Product
     {
         return $this->getProductRepository()->findOneBy(['transferNumber' => $transferNumber]);
     }

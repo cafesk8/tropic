@@ -14,9 +14,9 @@ class ProductTransferResponseItemVariantData implements TransferResponseItemData
     use ReadObjectAsArrayTrait;
 
     /**
-     * @var int
+     * @var string
      */
-    private $number;
+    private $transferNumber;
 
     /**
      * @var int
@@ -43,7 +43,7 @@ class ProductTransferResponseItemVariantData implements TransferResponseItemData
      */
     public function __construct(array $restData)
     {
-        $this->number = (int)$restData['Code'];
+        $this->transferNumber = (string)$restData['Code'];
         $this->colorCode = $restData['ColorCode'];
         $this->colorName = $restData['ColorName'];
         $this->sizeCode = $restData['SizeCode'];
@@ -55,15 +55,15 @@ class ProductTransferResponseItemVariantData implements TransferResponseItemData
      */
     public function getDataIdentifier(): string
     {
-        return (string)$this->number;
+        return (string)$this->transferNumber;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getNumber(): int
+    public function getTransferNumber(): string
     {
-        return $this->number;
+        return $this->transferNumber;
     }
 
     /**
