@@ -151,4 +151,16 @@ class Product extends BaseProduct
     {
         $this->mainVariantGroup = $mainVariantGroup;
     }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product
+     */
+    public function getProductForCreatingImageAccordingToVariant(): self
+    {
+        if ($this->isVariant() === true) {
+            return $this->getMainVariant();
+        }
+
+        return $this;
+    }
 }

@@ -36,7 +36,7 @@
                                 {% set quantifiedItemPrice = quantifiedItemsPrices[loop.index0] %}
                                 <li class="cart-detail__item">
                                     <div class="cart-detail__item__image">
-                                            {{ image(cartItem.product, { size: 'thumbnail' }) }}
+                                            {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
                                     </div>
                                     <div class="cart-detail__item__content">
                                         <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
