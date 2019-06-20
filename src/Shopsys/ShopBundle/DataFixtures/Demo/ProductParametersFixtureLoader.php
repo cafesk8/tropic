@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFac
 class ProductParametersFixtureLoader
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     protected $parameterFacade;
 
@@ -97,7 +97,7 @@ class ProductParametersFixtureLoader
         $parameterNames = $this->getDeserializedValuesIndexedByLocale($serializedParameterNames);
         $parameterValues = $this->getDeserializedValuesIndexedByLocale($serializedValueTexts);
 
-        $parameter = $this->findParameterByNamesOrCreateNew($parameterNames);
+        $parameter = $this->parameterFacade->findOrCreateParameterByNames($parameterNames);
 
         foreach ($parameterValues as $locale => $parameterValue) {
             $productParameterValueData = $this->productParameterValueDataFactory->create();
@@ -125,32 +125,5 @@ class ProductParametersFixtureLoader
         }
 
         return $values;
-    }
-
-    /**
-     * @param string[] $parameterNamesByLocale
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
-     */
-    public function findParameterByNamesOrCreateNew(array $parameterNamesByLocale)
-    {
-        $cacheId = json_encode($parameterNamesByLocale);
-
-        if (isset($this->parameters[$cacheId])) {
-            return $this->parameters[$cacheId];
-        }
-
-        $parameter = $this->parameterFacade->findParameterByNames($parameterNamesByLocale);
-
-        if ($parameter === null) {
-            $visible = true;
-            $parameterData = $this->parameterDataFactory->create();
-            $parameterData->name = $parameterNamesByLocale;
-            $parameterData->visible = $visible;
-            $parameter = $this->parameterFacade->create($parameterData);
-        }
-
-        $this->parameters[$cacheId] = $parameter;
-
-        return $parameter;
     }
 }

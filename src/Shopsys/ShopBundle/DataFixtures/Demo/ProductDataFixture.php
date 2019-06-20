@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
 use Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
@@ -39,11 +40,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     protected $productVariantFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader
-     */
-    private $productParametersFixtureLoader;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
      */
     private $productDataFactory;
@@ -59,16 +55,21 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     private $productParameterValueDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
+     */
+    private $parameterFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader $productDataFixtureLoader
      * @param \Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector $referenceInjector
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureCsvReader $productDataFixtureCsvReader
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade $productVariantFacade
-     * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader $productParametersFixtureLoader
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(
         ProductDataFixtureLoader $productDataFixtureLoader,
@@ -77,10 +78,10 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         ProductDataFixtureCsvReader $productDataFixtureCsvReader,
         ProductFacade $productFacade,
         ProductVariantFacade $productVariantFacade,
-        ProductParametersFixtureLoader $productParametersFixtureLoader,
         ProductDataFactory $productDataFactory,
         ParameterValueDataFactory $parameterValueDataFactory,
-        ProductParameterValueDataFactory $productParameterValueDataFactory
+        ProductParameterValueDataFactory $productParameterValueDataFactory,
+        ParameterFacade $parameterFacade
     ) {
         $this->productDataFixtureLoader = $productDataFixtureLoader;
         $this->referenceInjector = $referenceInjector;
@@ -88,10 +89,10 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->productDataFixtureCsvReader = $productDataFixtureCsvReader;
         $this->productFacade = $productFacade;
         $this->productVariantFacade = $productVariantFacade;
-        $this->productParametersFixtureLoader = $productParametersFixtureLoader;
         $this->productDataFactory = $productDataFactory;
         $this->parameterValueDataFactory = $parameterValueDataFactory;
         $this->productParameterValueDataFactory = $productParameterValueDataFactory;
+        $this->parameterFacade = $parameterFacade;
     }
 
     /**
@@ -141,13 +142,13 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $csvRows = $this->productDataFixtureCsvReader->getProductDataFixtureCsvRows();
         $variantCatnumsByMainVariantCatnum = $this->productDataFixtureLoader->getVariantCatnumsIndexedByMainVariantCatnum($csvRows);
 
-        $parameter = $this->productParametersFixtureLoader->findParameterByNamesOrCreateNew([
+        $parameter = $this->parameterFacade->findOrCreateParameterByNames([
             'cs' => 'Velikost',
             'sk' => 'Velikosť',
             'de' => 'Size',
         ]);
 
-        $distinguishingParameterForVariants = $this->productParametersFixtureLoader->findParameterByNamesOrCreateNew([
+        $distinguishingParameterForVariants = $this->parameterFacade->findOrCreateParameterByNames([
             'cs' => 'Úhlopříčka',
         ]);
 
