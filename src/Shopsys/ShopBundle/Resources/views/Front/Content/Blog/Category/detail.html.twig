@@ -20,53 +20,126 @@
 {% block main_content %}
     {% set entityName = 'blogArticles'|trans %}
 
-    {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', { currentBlogCategory: blogCategory })) }}
-
-    <h1>
-        {% if blogCategory.getSeoH1(domain.id) is not null %}
-            {{ blogCategory.getSeoH1(domain.id) }}
-        {% else %}
-            {{ blogCategory.name }}
-        {% endif %}
-    </h1>
-
-    {% if imageExists(blogCategory) %}
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <div class="box-blog">
+                <h1 class="box-blog__title">
+                    {% if blogCategory.getSeoH1(domain.id) is not null %}
+                        {{ blogCategory.getSeoH1(domain.id) }}
+                    {% else %}
+                        {{ blogCategory.name }}
+                    {% endif %}
+                </h1>
+                {% if imageExists(blogCategory) %}
         {{ image(blogCategory, { itemprop: 'image', lazy: true }) }}
-    {% else %}
-        {{ noimage({ alt: blogCategory.name }) }}
-    {% endif %}
-
-    <div>
-        {{ blogCategory.description|raw }}
-    </div>
-
-    {% if blogArticlePaginationResult.results|length > 0 %}
-        <div class="js-blog-list-with-paginator">
-            <ul class="js-list">
-                {% for blogArticle in blogArticlePaginationResult.results %}
-                    <li>
-                        <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}">
-                            <h2>{{ blogArticle.name }}</h2>
-
-                        <div class="dont-print">
+                {% else %}
+                    {{ noimage({ alt: blogCategory.name }) }}
+                {% endif %}
+                <div>
+                    {{ blogCategory.description|raw }}
+                </div>
+                <div class="box-blog__content">
+                    <div class="box-blog__list">
+                        {% if blogArticlePaginationResult.results|length > 0 %}
+                            <div class="js-blog-list-with-paginator">
+                                <ul class="list-articles js-list">
+                                    {% for blogArticle in blogArticlePaginationResult.results %}
+                                        <li class="list-articles__item list-articles__item--full-size">
+                                            <div class="list-articles__item__image">
+                                                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__image__link" title="{{ blogArticle.name }}">
                             {{ image(blogArticle, { size: 'list', alt: blogArticle.name, lazy: true }) }}
+                                                </a>
+                                            </div>
+                                            <div class="list-articles__item__content">
+                                                <div class="list-tags">
+                                                    <span class="list-tags__tag js-not-implemented-yet">
+                                                        {{ 'Reportáže z cest'|trans }}
+                                                    </span>
+                                                </div>
+                                                <a href="#" class="list-articles__item__content__title underline">
+                                                    {{ blogArticle.name }}
+                                                </a>
+                                                <div class="list-articles__item__content__text">
+                                                    {{ blogArticle.description|truncate(100)|striptags|raw }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="text-center margin-bottom-20">
+                                    {{ paginator.loadMoreButton(blogArticlePaginationResult) }}
+                                </div>
+
+                                {{ paginator.paginatorNavigation(blogArticlePaginationResult, entityName) }}
+                            </div>
+                        {% else %}
+                            <div class="in-message in-message--info margin-bottom-20">
+                                {{ 'This blog category contains no blog articles.'|trans }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="box-blog__panel">
+                        <div class="box-blog__section">
+                            {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', { currentBlogCategory: blogCategory })) }}
                         </div>
-
-                        {{ blogArticle.description|truncate(100)|striptags|raw }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-
-            <div class="text-center margin-bottom-20">
-                {{ paginator.loadMoreButton(blogArticlePaginationResult) }}
-            </div>
-
-            {{ paginator.paginatorNavigation(blogArticlePaginationResult, entityName) }}
+                        <div class="box-blog__section">
+                            <div class="box-blog__title">
+                                {{ 'Nejètenìjší èlánky'|trans }}
+                            </div>
+                            <ul class="list-articles-small js-not-implemented-yet">
+                                <li class="list-articles-small__item">
+                                    <div class="list-articles-small__item__image">
+                                        <a href="#" class="list-articles__item__image__link" title="{{ 'Fotky z dovolené jako od profesionála'|trans }}">
+                                            <img src="https://placeimg.com/70/57/any" alt="{{ 'Fotky z dovolené jako od profesionála'|trans }}">
+                                        </a>
+                                    </div>
+                                    <div class="list-articles-small__item__content">
+                                        <a href="#" class="list-articles-small__item__content__title underline-small">
+                                            {{ 'Fotky z dovolené jako od profesionála'|trans }}
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="list-articles-small__item">
+                                    <div class="list-articles-small__item__image">
+                                        <a href="#" class="list-articles__item__image__link" title="{{ 'Bushman expedice aneb ètyøi èeši na kalahari'|trans }}">
+                                            <img src="https://placeimg.com/70/57/any" alt="{{ 'Bushman expedice aneb ètyøi èeši na kalahari'|trans }}">
+                                        </a>
+                                    </div>
+                                    <div class="list-articles-small__item__content">
+                                        <a href="#" class="list-articles-small__item__content__title underline-small">
+                                            {{ 'Bushman expedice aneb ètyøi èeši na kalahari'|trans }}
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="list-articles-small__item">
+                                    <div class="list-articles-small__item__image">
+                                        <a href="#" class="list-articles__item__image__link" title="{{ 'Fotky z dovolené jako od profesionála'|trans }}">
+                                            <img src="https://placeimg.com/70/57/any" alt="{{ 'Fotky z dovolené jako od profesionála'|trans }}">
+                                        </a>
+                                    </div>
+                                    <div class="list-articles-small__item__content">
+                                        <a href="#" class="list-articles-small__item__content__title underline-small">
+                                            {{ 'Fotky z dovolené jako od profesionála'|trans }}
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="list-articles-small__item">
+                                    <div class="list-articles-small__item__image">
+                                        <a href="#" class="list-articles__item__image__link" title="{{ 'Bushman expedice aneb ètyøi èeši na kalahari'|trans }}">
+                                            <img src="https://placeimg.com/70/57/any" alt="{{ 'Bushman expedice aneb ètyøi èeši na kalahari'|trans }}">
+                                        </a>
+                                    </div>
+                                    <div class="list-articles-small__item__content">
+                                        <a href="#" class="list-articles-small__item__content__title underline-small">
+                                            {{ 'Bushman expedice aneb ètyøi èeši na kalahari'|trans }}
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
         </div>
-    {% else %}
-        <div class="in-message in-message--info margin-bottom-20">
-            {{ 'This blog category contains no blog articles.'|trans }}
-        </div>
-    {% endif %}
+    </div>
 {% endblock %}
