@@ -36,7 +36,9 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
      */
     public function load(ObjectManager $manager)
     {
+        /** @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
         $promoCodeData = $this->promoCodeDataFactory->create();
+        $promoCodeData->unlimited = false;
         $promoCodeData->code = 'test';
         $promoCodeData->percent = 10.0;
         $this->promoCodeFacade->create($promoCodeData);

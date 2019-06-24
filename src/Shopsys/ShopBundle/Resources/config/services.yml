@@ -41,6 +41,9 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductController
 
+    Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController:
+        class: Shopsys\ShopBundle\Controller\Admin\PromoCodeController
+
     Faker\Generator:
         factory: [Faker\Factory, create, ]
         arguments: ['cs_CZ']
@@ -106,6 +109,10 @@ services:
     Shopsys\ShopBundle\Model\Order\OrderDataMapper: ~
 
     Shopsys\FrameworkBundle\Model\Order\OrderDataMapper: '@Shopsys\ShopBundle\Model\Order\OrderDataMapper'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
 
