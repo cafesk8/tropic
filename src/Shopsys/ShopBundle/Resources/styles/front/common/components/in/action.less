@@ -1,9 +1,10 @@
 @in-action-button-big-height: @btn-height + 10px;
 @in-action-button-big-padding-vertical: @btn-padding-vertical;
 @in-action-button-big-padding-horizontal: 30px;
+@in-action-bottom-gap: 40px;
 
 .in-action {
-    margin-bottom: 40px;
+    margin-bottom: @in-action-bottom-gap;
 
     @media @query-md {
         width: 100%;
@@ -13,6 +14,25 @@
         .is-no-flex & {
             display: block;
             .clearfix();
+        }
+    }
+
+    &--centered-on-mobile {
+        margin: 0 auto 20px auto;
+
+        @media @query-md {
+            margin: 0 0 @in-action-bottom-gap 0;
+        }
+    }
+
+    &--with-back-icon {
+        padding-right: 25px;
+
+        .svg {
+            padding: 9px;
+
+            font-size: 7px;
+            transform: rotate(90deg);
         }
     }
 

@@ -2,6 +2,14 @@
 @in-free-transport-pipe-background: #807d7d;
 
 .in-free-transport {
+    &--centered-on-mobile {
+        margin: 0 auto;
+
+        @media @query-md {
+            margin: 0;
+        }
+    }
+
     &__title {
         display: block;
         margin-bottom: 13px;
