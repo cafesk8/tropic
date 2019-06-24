@@ -17,6 +17,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     {
         $promoCodeData = new PromoCodeData();
         $promoCodeData->unlimited = false;
+        $promoCodeData->numberOfUses = 0;
 
         return $promoCodeData;
     }
@@ -43,5 +44,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
 
         $promoCodeData->unlimited = $promoCode->isUnlimited();
         $promoCodeData->usageLimit = $promoCode->getUsageLimit();
+        $promoCodeData->numberOfUses = $promoCode->getNumberOfUses();
     }
 }

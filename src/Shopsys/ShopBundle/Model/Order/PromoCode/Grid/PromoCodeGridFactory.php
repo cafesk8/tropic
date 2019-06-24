@@ -12,6 +12,7 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
     {
         $grid = parent::create();
 
+        $grid->addColumn('number_of_uses', 'pc.numberOfUses', t('Kolikrát použito'), true);
         $grid->addColumn('usage_limit', 'pc.usageLimit', t('Maximální počet použití'), true);
         $grid->addColumn('unlimited', 'pc.unlimited', t('Neomezený'), true);
         $grid->addEditActionColumn('admin_promocode_edit', ['id' => 'pc.id']);

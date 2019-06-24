@@ -29,6 +29,13 @@ class PromoCode extends BasePromoCode
     private $usageLimit;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $numberOfUses;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -37,6 +44,7 @@ class PromoCode extends BasePromoCode
 
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
+        $this->numberOfUses = $promoCodeData->numberOfUses;
     }
 
     /**
@@ -48,6 +56,7 @@ class PromoCode extends BasePromoCode
 
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
+        $this->numberOfUses = $promoCodeData->numberOfUses;
     }
 
     /**
@@ -64,5 +73,13 @@ class PromoCode extends BasePromoCode
     public function getUsageLimit(): ?int
     {
         return $this->usageLimit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfUses(): int
+    {
+        return $this->numberOfUses;
     }
 }
