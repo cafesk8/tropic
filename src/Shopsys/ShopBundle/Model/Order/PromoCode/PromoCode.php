@@ -82,4 +82,9 @@ class PromoCode extends BasePromoCode
     {
         return $this->numberOfUses;
     }
+
+    public function addUsage(): void
+    {
+        $this->numberOfUses++;
+    }
 }
