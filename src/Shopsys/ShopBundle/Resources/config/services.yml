@@ -82,6 +82,11 @@ services:
 
     Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory: ~
 
+    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
+        class: Shopsys\ShopBundle\Model\Cart\CartWatcherFacade\CartWatcherFacade
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
     Shopsys\FrameworkBundle\Model\Order\OrderFlowFactoryInterface: '@Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory'
 
     Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface: '@Shopsys\ShopBundle\Model\Article\ArticleDataFactory'

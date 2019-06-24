@@ -27,6 +27,16 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function setEnteredPromoCode($enteredCode): void
     {
+        $this->checkPromoCodeValidity($enteredCode);
+
+        parent::setEnteredPromoCode($enteredCode);
+    }
+
+    /**
+     * @param string $enteredCode
+     */
+    public function checkPromoCodeValidity(string $enteredCode): void
+    {
         /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
 
@@ -35,7 +45,5 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         } elseif ($promoCode->hasRemainingUses() === false) {
             throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException($enteredCode);
         }
-
-        parent::setEnteredPromoCode($enteredCode);
     }
 }
