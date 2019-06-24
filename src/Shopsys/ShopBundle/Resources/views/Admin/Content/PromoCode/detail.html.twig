@@ -2,7 +2,7 @@
 
 {% block main_content %}
 
-    {{ form_start(form) }}
+    {{ form_start(form, { attr: { class: 'js-promo-code-form' } }) }}
     {{ form_errors(form) }}
 
     <div class="window-fixed-bar js-window-fixed-bar" style="z-index: 0">
