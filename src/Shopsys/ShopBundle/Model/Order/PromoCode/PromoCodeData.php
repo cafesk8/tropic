@@ -12,4 +12,9 @@ class PromoCodeData extends BasePromoCodeData
      * @var bool|null
      */
     public $unlimited;
+
+    /**
+     * @var int|null
+     */
+    public $usageLimit;
 }

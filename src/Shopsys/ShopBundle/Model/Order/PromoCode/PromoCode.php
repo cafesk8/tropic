@@ -22,6 +22,13 @@ class PromoCode extends BasePromoCode
     private $unlimited;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $usageLimit;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -29,6 +36,7 @@ class PromoCode extends BasePromoCode
         parent::__construct($promoCodeData);
 
         $this->unlimited = $promoCodeData->unlimited;
+        $this->usageLimit = $promoCodeData->usageLimit;
     }
 
     /**
@@ -39,6 +47,7 @@ class PromoCode extends BasePromoCode
         parent::edit($promoCodeData);
 
         $this->unlimited = $promoCodeData->unlimited;
+        $this->usageLimit = $promoCodeData->usageLimit;
     }
 
     /**
@@ -47,5 +56,13 @@ class PromoCode extends BasePromoCode
     public function isUnlimited(): bool
     {
         return $this->unlimited;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUsageLimit(): ?int
+    {
+        return $this->usageLimit;
     }
 }

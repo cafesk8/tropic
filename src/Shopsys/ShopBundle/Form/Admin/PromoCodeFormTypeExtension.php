@@ -8,9 +8,12 @@ use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PromoCodeFormTypeExtension extends AbstractTypeExtension
 {
@@ -25,6 +28,14 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $builder->add('unlimited', CheckboxType::class, [
             'label' => t('Neomezený počet použití'),
             'required' => false,
+        ])
+        ->add('usageLimit', IntegerType::class, [
+            'label' => t('Maximální počet použití'),
+            'required' => true,
+            'constraints' => [
+                new GreaterThanOrEqual(['value' => 1]),
+                new NotBlank(['message' => t('Vyplňte prosím množství.')]),
+            ],
         ]);
 
         $builder->add('save', SubmitType::class);

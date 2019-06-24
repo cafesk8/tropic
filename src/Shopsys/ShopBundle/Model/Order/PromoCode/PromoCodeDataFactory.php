@@ -42,5 +42,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         parent::fillFromPromoCode($promoCodeData, $promoCode);
 
         $promoCodeData->unlimited = $promoCode->isUnlimited();
+        $promoCodeData->usageLimit = $promoCode->getUsageLimit();
     }
 }
