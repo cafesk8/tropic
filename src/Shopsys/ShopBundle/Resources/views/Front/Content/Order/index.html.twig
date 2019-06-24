@@ -26,8 +26,6 @@
 {% endblock %}
 
 {% block main_content %}
-    {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: flow.getCurrentStepNumber()} only %}
-
     {{ form_start(form, { attr: { id: "js-order-form", 'data-ajax-save-url': url('front_order_save_form') }}) }}
         {{ form_errors(form) }}
         {% include '@ShopsysShop/Front/Content/Order/step' ~ flow.getCurrentStepNumber() ~ '.html.twig' %}
