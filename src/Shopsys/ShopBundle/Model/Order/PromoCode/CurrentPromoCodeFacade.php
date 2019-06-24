@@ -21,4 +21,21 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             $this->promoCodeFacade->usePromoCode($promoCode);
         }
     }
+
+    /**
+     * @param string $enteredCode
+     */
+    public function setEnteredPromoCode($enteredCode): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
+        $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
+
+        if ($promoCode === null) {
+            throw new \Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException($enteredCode);
+        } elseif ($promoCode->hasRemainingUses() === false) {
+            throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException($enteredCode);
+        }
+
+        parent::setEnteredPromoCode($enteredCode);
+    }
 }

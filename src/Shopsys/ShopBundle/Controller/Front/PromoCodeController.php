@@ -44,6 +44,11 @@ class PromoCodeController extends FrontBaseController
                 'result' => false,
                 'message' => t('Promo code invalid. Check it, please.'),
             ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón byl již vyčerpán.'),
+            ]);
         }
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));
 

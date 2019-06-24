@@ -87,4 +87,20 @@ class PromoCode extends BasePromoCode
     {
         $this->numberOfUses++;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasRemainingUses(): bool
+    {
+        if ($this->isUnlimited() === true) {
+            return true;
+        }
+
+        if ($this->usageLimit !== null) {
+            return ($this->usageLimit - $this->numberOfUses) > 0;
+        }
+
+        return true;
+    }
 }
