@@ -36,6 +36,11 @@ services:
 
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@Shopsys\ShopBundle\Model\Category\CategoryDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
+        class: Shopsys\ShopBundle\Model\Cart\CartWatcherFacade\CartWatcherFacade
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
     Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\UserDataFactory'
 
     Shopsys\ShopBundle\Model\Localization\Localization:
@@ -45,6 +50,14 @@ services:
     Shopsys\FrameworkBundle\Model\Localization\Localization: '@Shopsys\ShopBundle\Model\Localization\Localization'
 
     Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\OrderDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade: '@Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
 
