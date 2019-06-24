@@ -2,14 +2,22 @@
 @box-preview-width: @box-order-cart-width;
 @box-preview-gap: 90px;
 @box-preview-padding: 30px 40px 0 40px;
+@box-preview-padding-small: 15px 20px 0 20px; 
 
 .box-preview {
     display: flex;
     flex-direction: column;
-    width: @box-preview-width + @box-preview-gap;
-    padding-left: @box-preview-gap;
+    margin: 0 auto;
 
     background-color: @box-preview-bg;
+
+    @media @query-md{
+        width: @box-preview-width + @box-preview-gap;
+    }
+
+    @media @query-xl {
+        padding-left: @box-preview-gap;
+    }
 
     &__title {
         display: inline-block;
@@ -26,10 +34,14 @@
     }
 
     &__row {
-        padding: @box-preview-padding;
+        padding: @box-preview-padding-small;
 
         background-color: @color-f;
         border: 3px solid @color-gray;
+
+        @media @query-xl {
+            padding: @box-preview-padding;
+        }
 
         &--dark {
             background-color: @color-gray;

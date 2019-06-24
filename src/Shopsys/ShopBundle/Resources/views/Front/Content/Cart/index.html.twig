@@ -17,112 +17,97 @@
 {% block main_content %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
-            <h1>{{ 'Your cart'|trans }}</h1>
+
             {% if cart is not null %}
                 {{ form_start(form, { attr: { class: 'js-no-validate js-cart-form' }}) }}
                     <div class="box-order">
                         <div class="box-order__info">
-                                {{ form_errors(form) }}
-                                <table class="table-cart js-cart">
-                                    <thead>
-                                        <tr class="table-cart__row">
-                                            <th class="table-cart__cell table-cart__cell--image">{{ 'Image'|trans }}</th>
-                                            <th class="table-cart__cell table-cart__cell--name">{{ 'Name'|trans }}</th>
-                                            <th class="table-cart__cell table-cart__cell--price">{{ 'Unit price including VAT'|trans }}</th>
-                                            <th class="table-cart__cell table-cart__cell--price">{{ 'VAT rate'|trans }}</th>
-                                            <th class="table-cart__cell table-cart__cell--amount">{{ 'Amount'|trans }}</th>
-                                            <th class="table-cart__cell table-cart__cell--price">{{ 'Price including VAT'|trans }}</th>
-                                            <th class="table-cart__cell table-cart__cell--action">&nbsp;</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {% for index, cartItem in cartItems %}
-                                            {% set cartItemPrice = cartItemPrices[index] %}
-                                            {% set cartItemDiscount = cartItemDiscounts[index] %}
-                                            <tr class="table-cart__row js-cart-item">
-                                                <td class="table-cart__cell table-cart__cell--image">
-                                                    <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.product.name }}" class="table-cart__cell__image">
-                                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
-                                                    </a>
-                                                </td>
-
-                                                <td class="table-cart__cell table-cart__cell--name js-cart-item-name">
-                                                    <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="">
-                                                        {{ cartItem.name }}
-                                                    </a>
-                                                    <div class="table-cart__cell__price-mobile">
-                                                        {{ cartItemPrice.totalPrice.priceWithVat|price }}
-                                                        {% if cartItemDiscount is not null %}
-                                                            <div>
-                                                                {{ 'Discount'|trans }}:
-                                                                {{ cartItemDiscount.priceWithVat|price }}
-                                                            </div>
-                                                        {% endif %}
-                                                    </div>
-                                                </td>
-
-                                                <td class="table-cart__cell table-cart__cell--price">
-                                                    {{ cartItemPrice.unitPrice.priceWithVat|price }}
-                                                </td>
-
-                                                <td class="table-cart__cell table-cart__cell--price">
-                                                    {{ cartItem.product.vat.percent|formatPercent }}
-                                                </td>
-
-                                                <td class="table-cart__cell table-cart__cell--amount">
-                                                    <span class="form-input-spinbox js-spinbox">
-                                                        {{ form_widget(form.quantities[cartItem.id], { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
-                                                        <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">+</button>
-                                                        <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">-</button>
-                                                    </span>
-                                                </td>
-
-                                                <td class="table-cart__cell table-cart__cell--price js-cart-item-total-price">
-                                                    {{ cartItemPrice.totalPrice.priceWithVat|price }}
-                                                    {% if cartItemDiscount is not null %}
-                                                        <div>
-                                                            {{ 'Discount'|trans }}:
-                                                            {{ cartItemDiscount.priceWithVat|price }}
-                                                        </div>
-                                                    {% endif %}
-                                                </td>
-
-                                                <td class="table-cart__cell table-cart__cell--action">
-                                                    <a
-                                                        href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"
-                                                        class="js-cart-item-remove-button"
-                                                    >
-                                                        <i class="svg svg-remove"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-
-                                <div class="box-cart-bottom">
-                                    <div class="box-cart-bottom__info">
-                                        {% if isFreeTransportAndPaymentActive %}
-                                            {% if isPaymentAndTransportFree %}
-                                                <div class="box-free-transport box-free-transport--done">
-                                                    {% trans %}
-                                                        Shipping and payment <strong>for free!</strong>
-                                                    {% endtrans %}
-                                                </div>
-                                            {% else %}
-                                                <div class="box-free-transport">
-                                                    {% trans with {'%price%': remainingPriceWithVat|price} %}
-                                                        You still have to purchase products for <strong> %price% </strong> for <strong> free </strong> shipping and payment.
-                                                    {% endtrans %}
-                                                </div>
-                                            {% endif %}
-                                        {% endif %}
-                                    </div>
-                                    <div class="box-cart-bottom__promo">
-                                        {{ render(controller('ShopsysShopBundle:Front/PromoCode:index')) }}
-                                    </div>
+                            <div class="box-order__info__top">
+                                <div class="in-action">
+                                    <a href="{{ url('front_homepage') }}" class="in-action__back double-lined">
+                                        {{ 'Back to buying'|trans }}
+                                    </a>
                                 </div>
+                            </div>
+                            {{ form_errors(form) }}
+                            <div class="table-cart js-cart">
+                                {% for index, cartItem in cartItems %}
+                                    {% set cartItemPrice = cartItemPrices[index] %}
+                                    {% set cartItemDiscount = cartItemDiscounts[index] %}
+                                    <div class="table-cart__row js-cart-item">
+                                        <div class="table-cart__row__left">
+                                            <div class="table-cart__cell__image">
+                                                <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.product.name }}">
+                                    				{{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+                                                </a>
+                                            </div>
+                                            <div class="table-cart__cell__name js-cart-item-name">
+                                                <a class="table-cart__cell__name__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.name }}">
+                                                    {{ cartItem.name }}
+                                                </a>
+                                                <span class="table-cart__cell__name__text">
+                                                    {{ 'Barva'|trans }}: Light Olive
+                                                </span>
+                                                <span class="table-cart__cell__name__text">
+                                                    {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet" title="">36</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="table-cart__row__right">
+                                            <div class="table-cart__cell__spinbox">
+                                                <span class="form-input-spinbox js-spinbox">
+                                                    {{ form_widget(form.quantities[cartItem.id], { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
+                                                    <label class="form-input-spinbox__label">{{ 'Kusù'|trans }}</label>
+                                                    <div class="btn-no-style form-input-spinbox__btn js-spinbox-plus">+</div>
+                                                    <div class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">—</div>
+                                                </span>
+
+                                                <a
+                                                    href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"
+                                                    class="table-cart__cell__spinbox__link js-cart-item-remove-button"
+                                                >
+                                                    {{ 'Odstranit'|trans }}
+                                                </a>
+
+                                            </div>
+                                            <div class="table-cart__cell__price js-cart-item-total-price">
+                                                {% if cartItemDiscount is not null %}
+                                                    <div class="table-cart__cell__price__line-through">
+                                                        {{ cartItemDiscount.priceWithVat|price }}
+                                                    </div>
+                                                {% endif %}
+                                                <div class="table-cart__cell__price__line-through">2099 Kè</div>
+                                                <div class="table-cart__cell__price__primary">
+                                                    {{ cartItemPrice.totalPrice.priceWithVat|price }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="box-cart-bottom">
+                                <div class="box-cart-bottom__info">
+                                    {% if isFreeTransportAndPaymentActive %}
+                                        {% if isPaymentAndTransportFree %}
+                                            <div class="box-free-transport box-free-transport--done">
+                                                {% trans %}
+                                                    Shipping and payment <strong>for free!</strong>
+                                                {% endtrans %}
+                                            </div>
+                                        {% else %}
+                                            <div class="box-free-transport">
+                                                {% trans with {'%price%': remainingPriceWithVat|price} %}
+                                                    You still have to purchase products for <strong> %price% </strong> for <strong> free </strong> shipping and payment.
+                                                {% endtrans %}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="box-cart-bottom__promo">
+                                    {{ render(controller('ShopsysShopBundle:Front/PromoCode:index')) }}
+                                </div>
+                            </div>
                         </div>
                         <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
                             {{ render(controller('ShopsysShopBundle:Front/Order:preview',{

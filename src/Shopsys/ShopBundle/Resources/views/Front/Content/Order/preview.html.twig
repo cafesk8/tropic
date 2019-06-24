@@ -47,7 +47,8 @@
 
                 <tr class="table-cart-preview__row">
                     <td class="table-cart-preview__cell js-not-implemented-yet">
-                        {{ 'Sleva (kód VANOCE2018)'|trans }}:
+                        {{ 'Sleva'|trans }}
+                        <span class="next-line"></span> {{ '(kód VANOCE2018)'|trans }}
                     </td>
                     <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
                         -500 kč
@@ -56,7 +57,7 @@
 
                 <tr class="table-cart-preview__row">
                     <td class="table-cart-preview__cell js-not-implemented-yet">
-                        {{ 'Doprava (29.1. u vás)'|trans }}:
+                        {{ 'Doprava (29.1. u vás)'|trans }}
                     </td>
                     <td class="table-cart-preview__cell table-cart-preview__cell--price">
                         {{ 'zdarma'|trans }}
@@ -66,7 +67,7 @@
                 {% if orderPreview.transport is not empty %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
-                            {{ 'Shipping method'|trans }}: {{ orderPreview.transport.name }}
+                            {{ 'Shipping method'|trans }} {{ orderPreview.transport.name }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price">
                             {{ orderPreview.transportPrice.priceWithVat|priceText }}
@@ -77,7 +78,7 @@
                 {% if orderPreview.payment is not empty %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
-                            {{ 'Payment method'|trans }}: {{ orderPreview.payment.name }}
+                            {{ 'Payment method'|trans }} {{ orderPreview.payment.name }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price">
                             {{ orderPreview.paymentPrice.priceWithVat|priceText }}
@@ -88,7 +89,7 @@
                 {% if orderPreview.roundingPrice is not empty %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
-                            {{ 'Rounding'|trans }}:
+                            {{ 'Rounding'|trans }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price">
                             {{ orderPreview.roundingPrice.priceWithVat|price }}
@@ -98,7 +99,7 @@
 
                 <tr class="table-cart-preview__row">
                     <td class="table-cart-preview__cell">
-                        {{ 'Total price including VAT'|trans }}:
+                        {{ 'Total price including VAT'|trans }}
                     </td>
                     <td class="table-cart-preview__cell table-cart-preview__cell--price">
                         {{ orderPreview.totalPrice.priceWithVat|price }}
@@ -127,18 +128,14 @@
         </table>
         <div class="in-action">
             {% if orderPreview.quantifiedProducts > 0 %}
-                <div class="in-action__right">
-                    {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
-                    <input type="submit" class="btn btn--success btn--full-width" name="cart_form[submit]" value="{{ 'Pokračovat v objednávce'|trans }}">
-                </div>
+                {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
+                <input type="submit" class="in-action__btn btn btn--success btn--full-width" name="cart_form[submit]" value="{{ 'Pokračovat v objednávce'|trans }}">
             {% endif %}
 
             {% if orderStep != "1" %}
-                <div class="in-action__left">
-                    <a href="{{ url('front_homepage') }}" class="btn in-action__btn">
-                        {{ 'Back to buying'|trans }}
-                    </a>
-                </div>
+                <a href="{{ url('front_homepage') }}" class="btn in-action__btn">
+                    {{ 'Back to buying'|trans }}
+                </a>
             {% endif %}
         </div>
 

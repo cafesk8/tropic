@@ -18,6 +18,14 @@
         &--important {
             color: @color-red;
         }
+
+        .next-line {
+            display: block;
+
+            @media @query-md {
+                display: none;
+            }
+        }
     }
 
     &__total {
