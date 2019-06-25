@@ -16,26 +16,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class CartWatcherFacade extends BaseCartWatcherFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $em;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher
-     */
-    protected $cartWatcher;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
-     */
-    protected $flashMessageSender;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
-     */
-    protected $currentCustomer;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
      */
     private $currentPromoCodeFacade;
@@ -61,10 +41,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         SessionInterface $session
     ) {
-        $this->flashMessageSender = $flashMessageSender;
-        $this->em = $em;
-        $this->cartWatcher = $cartWatcher;
-        $this->currentCustomer = $currentCustomer;
+        parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomer);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->session = $session;
     }

@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController as BasePromoCod
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,18 +29,20 @@ class PromoCodeController extends BasePromoCodeController
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit $promoCodeInlineEdit
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory $promoCodeDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
      */
     public function __construct(
         PromoCodeFacade $promoCodeFacade,
+        PromoCodeInlineEdit $promoCodeInlineEdit,
         AdministratorGridFacade $administratorGridFacade,
         PromoCodeDataFactory $promoCodeDataFactory,
         PromoCodeGridFactory $promoCodeGridFactory
     ) {
-        $this->promoCodeFacade = $promoCodeFacade;
-        $this->administratorGridFacade = $administratorGridFacade;
+        parent::__construct($promoCodeFacade, $promoCodeInlineEdit, $administratorGridFacade);
+
         $this->promoCodeDataFactory = $promoCodeDataFactory;
         $this->promoCodeGridFactory = $promoCodeGridFactory;
     }
