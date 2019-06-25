@@ -26,7 +26,7 @@ class User extends BaseUser
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $transferId;
 
