@@ -9,6 +9,7 @@ use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDataFactory;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\BlogVisibilityFacade;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategory;
+use Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryDataFactory;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFacade;
 
 class BlogArticleDataFixture extends AbstractReferenceFixture
@@ -39,24 +40,32 @@ class BlogArticleDataFixture extends AbstractReferenceFixture
     private $blogVisibilityFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryDataFactory
+     */
+    private $blogCategoryDataFactory;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDataFactory $blogArticleDataFactory
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFacade $blogCategoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Blog\BlogVisibilityFacade $blogVisibilityFacade
+     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryDataFactory $blogCategoryDataFactory
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
         BlogArticleDataFactory $blogArticleDataFactory,
         BlogCategoryFacade $blogCategoryFacade,
         Domain $domain,
-        BlogVisibilityFacade $blogVisibilityFacade
+        BlogVisibilityFacade $blogVisibilityFacade,
+        BlogCategoryDataFactory $blogCategoryDataFactory
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->blogArticleDataFactory = $blogArticleDataFactory;
         $this->blogCategoryFacade = $blogCategoryFacade;
         $this->domain = $domain;
         $this->blogVisibilityFacade = $blogVisibilityFacade;
+        $this->blogCategoryDataFactory = $blogCategoryDataFactory;
     }
 
     /**
@@ -65,6 +74,12 @@ class BlogArticleDataFixture extends AbstractReferenceFixture
     public function load(ObjectManager $manager)
     {
         $mainPageBlogCategory = $this->blogCategoryFacade->getById(BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID);
+
+        $mainPageBlogCategoryData = $this->blogCategoryDataFactory->createFromBlogCategory($mainPageBlogCategory);
+        $mainPageBlogCategoryData->names['cs'] = 'Hlavní stránka blogu - cs';
+        $mainPageBlogCategoryData->names['sk'] = 'Hlavní stránka blogu - sk';
+        $mainPageBlogCategoryData->names['de'] = 'Hlavní stránka blogu - de';
+        $this->blogCategoryFacade->edit($mainPageBlogCategory->getId(), $mainPageBlogCategoryData);
 
         $blogArticleData = $this->blogArticleDataFactory->create();
 

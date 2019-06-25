@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
 use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
+use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,6 +27,8 @@ class ProductController extends FrontBaseController
     const PAGE_QUERY_PARAMETER = 'page';
     const PRODUCTS_PER_PAGE = 12;
     private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
+    private const LIST_BLOG_ARTICLES_LIMIT = 1;
+    private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
@@ -88,6 +91,11 @@ class ProductController extends FrontBaseController
     private $blogArticleFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade
+     */
+    private $categoryBlogArticleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -100,6 +108,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -113,7 +122,8 @@ class ProductController extends FrontBaseController
         ModuleFacade $moduleFacade,
         BrandFacade $brandFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
-        BlogArticleFacade $blogArticleFacade
+        BlogArticleFacade $blogArticleFacade,
+        CategoryBlogArticleFacade $categoryBlogArticleFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -127,6 +137,7 @@ class ProductController extends FrontBaseController
         $this->brandFacade = $brandFacade;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->blogArticleFacade = $blogArticleFacade;
+        $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
     }
 
     /**
@@ -181,6 +192,11 @@ class ProductController extends FrontBaseController
             return $this->render('@ShopsysShop/Front/Content/Product/preListingCategoryList.html.twig', [
                 'category' => $category,
                 'visibleChildren' => $visibleChildren,
+                'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
+                    $category,
+                    $this->domain->getId(),
+                    self::PRE_LIST_BLOG_ARTICLES_LIMIT
+                ),
             ]);
         }
 
@@ -230,6 +246,11 @@ class ProductController extends FrontBaseController
             'priceRange' => $productFilterConfig->getPriceRange(),
             'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
             'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
+            'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
+                $category,
+                $this->domain->getId(),
+                self::LIST_BLOG_ARTICLES_LIMIT
+            ),
         ];
 
         if ($request->isXmlHttpRequest()) {

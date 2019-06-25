@@ -1,5 +1,6 @@
 {% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
+{% import '@ShopsysShop/Front/Content/Blog/Article/blogArticleInCategoryMacro.html.twig' as blogArticleList %}
 
 {% set domain = getDomain() %}
 
@@ -82,25 +83,26 @@
         </div>
     {% endif %}
 
-    {% block last_visited_products %}{% endblock %}
-
-
-    <div class="web__line">
-        <div class="web__container web__container--big-padding">
-            <div class="box-articles">
-                <div class="box-articles__title-big">
-                    {{ 'Načerpejte inspiraci'|trans }}
-                </div>
-                <div class="box-articles__title-small">
-                    {{ 'Zážitky z cest si nenecháváme pro sebe'|trans }}
-                </div>
-                {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: [] } %}
-                <div class="box-articles__bottom">
-                    <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+    {# TODO CODER: style blogArticles (Zeny na cestach in inVision) #}
+    {% if categoriesBlogArticles|length > 0 %}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div class="box-articles">
+                    <div class="box-articles__title-big">
+                        {{ 'Mohlo by vás zajímat'|trans }}
+                    </div>
+                    <div class="box-articles__title-small"></div>
+                    {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
+                    <div class="box-articles__bottom">
+                        <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+
+    {% block last_visited_products %}{% endblock %}
+
 
     <div class="web__line">
         <div class="web__container web__container--big-padding">

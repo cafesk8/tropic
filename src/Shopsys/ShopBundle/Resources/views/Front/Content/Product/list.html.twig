@@ -2,6 +2,7 @@
 {% import '@ShopsysShop/Front/Inline/Paginator/paginator.html.twig' as paginator %}
 {% import '@ShopsysShop/Front/Content/Product/filterFormMacro.html.twig' as productFilterForm %}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
+{% import '@ShopsysShop/Front/Content/Blog/Article/blogArticleInCategoryMacro.html.twig' as blogArticleList %}
 
 {% set domain = getDomain() %}
 
@@ -108,33 +109,14 @@
                             {{ category.getDescription(domain.id)|raw }}
                         </div>
                     </div>
-                    <div class="box-list__bottom__article">
-                        <div class="box-list__bottom__title">
-                            {{ 'Mohlo by vás zajímat'|trans }}
+                    {% if categoriesBlogArticles|length > 0 %}
+                        <div class="box-list__bottom__article">
+                            <div class="box-list__bottom__title">
+                                {{ 'Mohlo by vás zajímat'|trans }}
+                            </div>
+                            {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
                         </div>
-                        <ul class="list-articles">
-                            <li class="list-articles__item list-articles__item--full-size js-not-implemented-yet">
-                                <div class="list-articles__item__image">
-                                    <a href="#" class="list-articles__item__image__link">
-                                        <img src="https://placeimg.com/210/170/any" alt="Bushman expedice aneb čtyři češi na kalahari">
-                                    </a>
-                                </div>
-                                <div class="list-articles__item__content">
-                                    <div class="list-tags">
-                                        <span class="list-tags__tag">
-                                            {{ 'Reportáže z cest'|trans }}
-                                        </span>
-                                    </div>
-                                    <a href="#" class="list-articles__item__content__title underline">
-                                        {{ 'Bushman expedice aneb čtyři češi na kalahari'|trans }}
-                                    </a>
-                                    <div class="list-articles__item__content__text">
-                                        {{ 'Je to tu zase. Po roce mne opět čeká cesta Afriky. S třemi kamarády se chystáme procestovat autem Národní park Kgalagadi, tedy poušť Kalahari na hranicích JAR, Botswany a Namibie. Máme v plánu poznat jižní a střední část parku.'|trans }}
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    {% endif %}
             </div>
         </div>
     </div>

@@ -280,4 +280,23 @@ class BlogArticleRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param int $domainId
+     * @param string $locale
+     * @return string[]
+     */
+    public function getAllBlogArticlesNamesIndexedByIdByDomainId(int $domainId, string $locale): array
+    {
+        $queryBuilder = $this->getBlogArticlesByDomainIdAndLocaleQueryBuilder($domainId, $locale);
+
+        $rows = $queryBuilder->select('ba.id, bat.name')->getQuery()->getScalarResult();
+
+        $blogArticlesNameById = [];
+        foreach ($rows as $row) {
+            $blogArticlesNameById[$row['id']] = $row['name'];
+        }
+
+        return $blogArticlesNameById;
+    }
 }

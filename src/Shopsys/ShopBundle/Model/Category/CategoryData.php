@@ -15,4 +15,16 @@ class CategoryData extends BaseCategoryData
      * @var bool
      */
     public $preListingCategory = false;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public $blogArticles;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->blogArticles = [];
+    }
 }

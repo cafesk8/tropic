@@ -3,7 +3,12 @@
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FormTypesBundle\YesNoType;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
+use Shopsys\FrameworkBundle\Form\SortableValuesType;
+use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
 use Shopsys\ShopBundle\Model\Category\CategoryData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,10 +17,50 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CategoryFormTypeExtension extends AbstractTypeExtension
 {
     /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade
+     */
+    private $blogArticleFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
+     */
+    private $adminDomainTabsFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer
+     */
+    private $removeDuplicatesTransformer;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer
+     */
+    private $blogArticlesIdsToBlogArticlesTransformer;
+
+    /**
+     * CategoryFormTypeExtension constructor.
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabFacade
+     * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer
+     */
+    public function __construct(BlogArticleFacade $blogArticleFacade, AdminDomainTabsFacade $adminDomainTabFacade, RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer, BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer)
+    {
+        $this->blogArticleFacade = $blogArticleFacade;
+        $this->adminDomainTabsFacade = $adminDomainTabFacade;
+        $this->removeDuplicatesTransformer = $removeDuplicatesTransformer;
+        $this->blogArticlesIdsToBlogArticlesTransformer = $blogArticlesIdsToBlogArticlesTransformer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $blogArticles = $this->blogArticleFacade->getAllBlogArticlesNamesIndexedByIdByDomainId(
+            $this->adminDomainTabsFacade->getSelectedDomainId(),
+            $this->adminDomainTabsFacade->getSelectedDomainConfig()->getLocale()
+        );
+
         $builderSettingsGroup = $builder->get('settings');
 
         $builderSettingsGroup
@@ -26,7 +71,17 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             ->add('preListingCategory', YesNoType::class, [
                 'required' => false,
                 'label' => t('Předvýpis kategorií'),
-            ]);
+            ])
+            ->add(
+                $builder
+                    ->create('blogArticles', SortableValuesType::class, [
+                        'label' => 'Články blogu',
+                        'labels_by_value' => $blogArticles,
+                        'required' => false,
+                    ])
+                    ->addViewTransformer($this->removeDuplicatesTransformer)
+                    ->addModelTransformer($this->blogArticlesIdsToBlogArticlesTransformer)
+            );
     }
 
     /**
