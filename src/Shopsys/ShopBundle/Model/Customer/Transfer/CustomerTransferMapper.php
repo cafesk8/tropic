@@ -8,7 +8,6 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
-use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 
 class CustomerTransferMapper
 {
@@ -52,7 +51,7 @@ class CustomerTransferMapper
         /** @var $userData \Shopsys\ShopBundle\Model\Customer\UserData */
         $userData = $customerData->userData;
 
-        $domainId = DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$customerTransferResponseItemData->getCountryCode()];
+        $domainId = $customerTransferResponseItemData->getDomainId();
         $userData->transferId = $customerTransferResponseItemData->getDataIdentifier();
         $userData->firstName = $customerTransferResponseItemData->getFirstName();
         $userData->lastName = $customerTransferResponseItemData->getLastName();

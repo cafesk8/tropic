@@ -8,6 +8,7 @@ use ArrayAccess;
 use IteratorAggregate;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\ShopBundle\Component\DataObject\ReadObjectAsArrayTrait;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 
 class CustomerTransferResponseItemData implements TransferResponseItemDataInterface, ArrayAccess, IteratorAggregate
@@ -118,5 +119,13 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
     public function getCountryCode(): ?string
     {
         return $this->countryCode;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDomainId(): ?int
+    {
+        return $this->countryCode !== null ? DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$this->getCountryCode()] : null;
     }
 }

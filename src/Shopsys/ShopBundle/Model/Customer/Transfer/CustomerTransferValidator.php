@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
+use Shopsys\FrameworkBundle\Form\Constraints\UniqueEmail;
 use Shopsys\ShopBundle\Component\Transfer\Exception\TransferInvalidDataException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -58,6 +59,7 @@ class CustomerTransferValidator
                     new NotBlank(),
                     new Type(['type' => 'string']),
                     new Length(['max' => 255]),
+                    new UniqueEmail(['domainId' => $customerTransferResponseItemData->getDomainId()]),
                 ],
                 'phone' => [
                     new Type(['type' => 'string']),
