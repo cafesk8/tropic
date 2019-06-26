@@ -15,9 +15,21 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            ConfigureMenuEvent::SIDE_MENU_PRICING => 'configurePricingMenu',
             ConfigureMenuEvent::SIDE_MENU_MARKETING => 'configureMarketingMenu',
             ConfigureMenuEvent::SIDE_MENU_SETTINGS => 'configureSettingsMenu',
         ];
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\ConfigureMenuEvent $event
+     */
+    public function configurePricingMenu(ConfigureMenuEvent $event): void
+    {
+        $pricingMenu = $event->getMenu();
+        $promoCodeMenu = $pricingMenu->getChild('promo_codes');
+        $promoCodeMenu->addChild('admin_promocode_new', ['route' => 'admin_promocode_new', 'label' => t('Vytvoření slevového kupónu'), 'display' => false]);
+        $promoCodeMenu->addChild('admin_promocode_edit', ['route' => 'admin_promocode_edit', 'label' => t('Editace slevového kupónu'), 'display' => false]);
     }
 
     /**
