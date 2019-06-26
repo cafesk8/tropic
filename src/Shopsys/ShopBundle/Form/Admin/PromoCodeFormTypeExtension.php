@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
+use Shopsys\FrameworkBundle\Form\DatePickerType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -55,6 +56,14 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                     'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
                 ]),
             ],
+        ])
+        ->add('validFrom', DatePickerType::class, [
+            'required' => false,
+            'label' => t('Platný od'),
+        ])
+        ->add('validTo', DatePickerType::class, [
+            'required' => false,
+            'label' => t('Platný do'),
         ]);
 
         $builder->add('save', SubmitType::class);

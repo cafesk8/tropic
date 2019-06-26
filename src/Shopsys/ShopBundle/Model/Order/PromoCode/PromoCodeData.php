@@ -22,4 +22,14 @@ class PromoCodeData extends BasePromoCodeData
      * @var int|null
      */
     public $numberOfUses;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $validFrom;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $validTo;
 }

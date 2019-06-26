@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
 
 class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 {
@@ -44,6 +46,33 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             throw new \Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException($enteredCode);
         } elseif ($promoCode->hasRemainingUses() === false) {
             throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException($enteredCode);
+        } elseif ($this->isPromoCodeValidInItsValidDates($promoCode) === false) {
+            throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow($enteredCode);
         }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @return bool
+     */
+    private function isPromoCodeValidInItsValidDates(PromoCode $promoCode): bool
+    {
+        $validFrom = $promoCode->getValidFrom();
+        $validTo = $promoCode->getValidTo();
+        $now = new DateTime();
+
+        if ($validFrom === null && $validTo === null) {
+            return true;
+        }
+
+        if ($validFrom !== null && $validTo !== null) {
+            return $validFrom < $now && $now < $validTo;
+        }
+
+        if ($validFrom !== null && $validTo === null) {
+            return $validFrom < $now;
+        }
+
+        return $now < $validTo;
     }
 }

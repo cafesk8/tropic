@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
@@ -36,6 +37,20 @@ class PromoCode extends BasePromoCode
     private $numberOfUses;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $validFrom;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $validTo;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -45,6 +60,8 @@ class PromoCode extends BasePromoCode
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
         $this->numberOfUses = $promoCodeData->numberOfUses;
+        $this->validFrom = $promoCodeData->validFrom;
+        $this->validTo = $promoCodeData->validTo;
     }
 
     /**
@@ -57,6 +74,8 @@ class PromoCode extends BasePromoCode
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
         $this->numberOfUses = $promoCodeData->numberOfUses;
+        $this->validFrom = $promoCodeData->validFrom;
+        $this->validTo = $promoCodeData->validTo;
     }
 
     /**
@@ -102,5 +121,21 @@ class PromoCode extends BasePromoCode
         }
 
         return true;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getValidFrom(): ?DateTime
+    {
+        return $this->validFrom;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getValidTo(): ?DateTime
+    {
+        return $this->validTo;
     }
 }
