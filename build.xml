@@ -16,4 +16,20 @@
     <target name="checks-ci" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
     <target name="checks-ci-diff" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
 
+    <target name="cron-default" description="Runs default background jobs. Should be executed periodically by system Cron every 5 minutes.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:cron" />
+            <arg value="--instance-name=default" />
+        </exec>
+    </target>
+
+    <target name="cron-customers" description="Runs customers background jobs. Should be executed periodically by system Cron every 5 minutes.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:cron" />
+            <arg value="--instance-name=customers" />
+        </exec>
+    </target>
+
 </project>
