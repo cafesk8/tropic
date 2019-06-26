@@ -33,6 +33,16 @@ class ProductTransferMapper
     private $parameterValueDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
+     */
+    private $productDataFactory;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade
+     */
+    private $availabilityFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
@@ -71,15 +81,21 @@ class ProductTransferMapper
         $productData->name['cs'] = $productTransferResponseItemData->getName();
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
+        $productData->ean = $productTransferResponseItemVariantData->getEan();
 
+        $productData->parameters = [];
         if ($productTransferResponseItemVariantData->getColorName() !== null) {
             $productData->distinguishingParameterForMainVariantGroup = $this->getColorParameter();
-            $productData->parameters[] = $this->getColorProductParameterValueData($productTransferResponseItemVariantData->getColorName());
+            if ($productTransferResponseItemVariantData->getColorName() !== null) {
+                $productData->parameters[] = $this->getColorProductParameterValueData($productTransferResponseItemVariantData->getColorName());
+            }
         }
 
         if ($productTransferResponseItemVariantData->getSizeName() !== null) {
             $productData->distinguishingParameter = $this->getSizeParameter();
-            $productData->parameters[] = $this->getSizeProductParameterValueData($productTransferResponseItemVariantData->getSizeName());
+            if ($productTransferResponseItemVariantData->getSizeName() !== null) {
+                $productData->parameters[] = $this->getSizeProductParameterValueData($productTransferResponseItemVariantData->getSizeName());
+            }
         }
 
         return $productData;
@@ -91,10 +107,6 @@ class ProductTransferMapper
      */
     private function getSizeProductParameterValueData(?string $valueText = null): ProductParameterValueData
     {
-        if ($valueText === null) {
-            return null;
-        }
-
         $parameterValueData = $this->parameterValueDataFactory->create();
         $parameterValueData->locale = 'cs';
         $parameterValueData->text = $valueText;
@@ -112,10 +124,6 @@ class ProductTransferMapper
      */
     private function getColorProductParameterValueData(?string $valueText = null): ProductParameterValueData
     {
-        if ($valueText === null) {
-            return null;
-        }
-
         $parameterValueData = $this->parameterValueDataFactory->create();
         $parameterValueData->locale = 'cs';
         $parameterValueData->text = $valueText;

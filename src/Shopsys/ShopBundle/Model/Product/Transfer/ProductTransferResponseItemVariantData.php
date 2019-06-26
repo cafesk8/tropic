@@ -97,4 +97,12 @@ class ProductTransferResponseItemVariantData implements TransferResponseItemData
     {
         return $this->sizeName;
     }
+
+    /**
+     * @return string
+     */
+    public function getEan(): string
+    {
+        return $this->transferNumber;
+    }
 }

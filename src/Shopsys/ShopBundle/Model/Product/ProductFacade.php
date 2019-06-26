@@ -209,6 +209,14 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    public function flushProduct(Product $product): void
+    {
+        $this->em->flush($product);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */

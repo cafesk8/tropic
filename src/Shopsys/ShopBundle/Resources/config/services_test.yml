@@ -108,3 +108,5 @@ services:
     Shopsys\FrameworkBundle\Model\Customer\CustomerFacade: '@Shopsys\ShopBundle\Model\Customer\CustomerFacade'
 
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade'
+
+    Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade'
