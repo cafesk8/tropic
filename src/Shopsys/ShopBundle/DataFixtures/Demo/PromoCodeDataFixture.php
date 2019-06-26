@@ -39,8 +39,21 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         /** @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
         $promoCodeData = $this->promoCodeDataFactory->create();
         $promoCodeData->unlimited = false;
-        $promoCodeData->code = 'test';
+        $promoCodeData->usageLimit = 100;
+        $promoCodeData->code = 'promo10';
         $promoCodeData->percent = 10.0;
+        $this->promoCodeFacade->create($promoCodeData);
+
+        $promoCodeData->unlimited = true;
+        $promoCodeData->code = 'promo4';
+        $promoCodeData->percent = 4.0;
+        $this->promoCodeFacade->create($promoCodeData);
+
+        $promoCodeData->unlimited = false;
+        $promoCodeData->usageLimit = 10;
+        $promoCodeData->numberOfUses = 9;
+        $promoCodeData->code = 'promo15';
+        $promoCodeData->percent = 15.0;
         $this->promoCodeFacade->create($promoCodeData);
     }
 }
