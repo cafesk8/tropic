@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product\MainVariantGroup;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -36,12 +37,11 @@ class MainVariantGroupRepository
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getProductsForMainVariantGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
+    private function getProductsQueryBuilder(int $domainId, PricingGroup $pricingGroup): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')
@@ -50,10 +50,21 @@ class MainVariantGroupRepository
             ->where('prv.domainId = :domainId')
             ->andWhere('prv.pricingGroup = :pricingGroup')
             ->andWhere('prv.visible = TRUE')
-            ->andWhere('p.mainVariantGroup = :mainVariantGroup')
             ->andWhere('p.sellingDenied = false')
             ->setParameter('domainId', $domainId)
-            ->setParameter('pricingGroup', $pricingGroup)
+            ->setParameter('pricingGroup', $pricingGroup);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsForMainVariantGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->getProductsQueryBuilder($domainId, $pricingGroup)
+            ->andWhere('p.mainVariantGroup = :mainVariantGroup')
             ->setParameter('mainVariantGroup', $product->getMainVariantGroup())
             ->getQuery()
             ->getResult();
@@ -68,5 +79,20 @@ class MainVariantGroupRepository
         return $this->getMainVariantGroupRepository()->findBy([
             'distinguishingParameter' => $parameter,
         ]);
+    }
+
+    /**
+     * @param array $mainVariantGroups
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsForMainVariantGroups(array $mainVariantGroups, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->getProductsQueryBuilder($domainId, $pricingGroup)
+            ->andWhere('p.mainVariantGroup IN (:mainVariantGroups)')
+            ->setParameter('mainVariantGroups', $mainVariantGroups)
+            ->getQuery()
+            ->getResult();
     }
 }

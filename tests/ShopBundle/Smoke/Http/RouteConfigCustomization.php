@@ -327,7 +327,7 @@ class RouteConfigCustomization
             })
             ->customizeByRouteName('front_product_list', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Use ID 2 as default category (ID 1 is the root).')
-                    ->setParameter('id', 2);
+                    ->setParameter('id', 3);
                 $config->addExtraRequestDataSet('See category that has 500 products in performance data')
                     ->setParameter('id', 8);
                 $config->addExtraRequestDataSet('See and filter category that has 500 products in performance data')

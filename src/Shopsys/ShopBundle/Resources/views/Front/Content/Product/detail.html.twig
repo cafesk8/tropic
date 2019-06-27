@@ -502,37 +502,39 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-detail-sets__item__add-basket">
-                                <div itemprop="offers"
-                                itemscope
-                                itemtype="http://schema.org/Offer"
-                                class="box-detail-add__prices">
+                            {% if not product.calculatedSellingDenied %}
+                                <div class="box-detail-sets__item__add-basket">
+                                    <div itemprop="offers"
+                                    itemscope
+                                    itemtype="http://schema.org/Offer"
+                                    class="box-detail-add__prices">
+                                        {# TODO PRG: add sets item data #}
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--main js-not-implemented-yet">
+                                            {{ getProductSellingPrice(product).priceWithVat|price }}
+                                        </div>
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
+                                            {{ '3099 Kč'|trans }}
+                                        </div>
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
+                                            {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
+                                        </div>
+                                    </div>
+                                    <div class="box-detail-add__club">
+                                        <span class="box-detail-add__club__text">
+                                            {{ 'Nebo'|trans }}
+                                        </span>
+                                        <span class="box-detail-add__club__price js-not-implemented-yet">
+                                            {{ '1 390 Kč'|trans }}
+                                        </span>
+                                        <span class="box-detail-add__club__text">
+                                            {{ 'pro členy'|trans }}
+                                        </span>
+                                        <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
+                                    </div>
                                     {# TODO PRG: add sets item data #}
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--main js-not-implemented-yet">
-                                        {{ getProductSellingPrice(product).priceWithVat|price }}
-                                    </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
-                                        {{ '3099 Kč'|trans }}
-                                    </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
-                                        {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
-                                    </div>
+                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
                                 </div>
-                                <div class="box-detail-add__club">
-                                    <span class="box-detail-add__club__text">
-                                        {{ 'Nebo'|trans }}
-                                    </span>
-                                    <span class="box-detail-add__club__price js-not-implemented-yet">
-                                        {{ '1 390 Kč'|trans }}
-                                    </span>
-                                    <span class="box-detail-add__club__text">
-                                        {{ 'pro členy'|trans }}
-                                    </span>
-                                    <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
-                                </div>
-                                {# TODO PRG: add sets item data #}
-                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
-                            </div>
+                            {% endif %}
                         </div>
                         <div class="box-detail-sets__item js-not-implemented-yet">
                             <div class="box-detail-sets__item__product">
@@ -588,7 +590,7 @@
                                 class="box-detail-add__prices">
                                     {# TODO PRG: add sets item data #}
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--main js-not-implemented-yet">
-                                        {{ getProductSellingPrice(product).priceWithVat|price }}
+                                        {#{ getProductSellingPrice(product).priceWithVat|price }#}
                                     </div>
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
                                         {{ '3099 Kč'|trans }}

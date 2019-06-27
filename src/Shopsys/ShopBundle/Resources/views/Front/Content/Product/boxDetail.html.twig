@@ -61,43 +61,46 @@
                 {{ 'Košile Indiana si doslova říká o nějakou výpravu. Díky klasickému zpracování však nehraje roli, jestli to bude dobrodružství městské či výprava do divočiny.'|trans }}
             </div>
             <div class="box-detail__wrap">
-                {# TODO PRG: add condition for all variants to display or hide box-datail__variants #}
-                <div class="box-detail__variants">
-                    {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
-                        <div class="box-detail__variants__title">
-                            {{ 'Vyberte variantu'|trans }}
-                        </div>
-                        <ul class="list-variants">
-                            {% for mainVariantGroupProduct in mainVariants %}
-                                {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
-                                {% if mainVariantGroupDistinguishingParameterValue is not null %}
-                                    <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active'}}" data-id="{{ mainVariantGroupProduct.id }}">
-                                        {{ image(mainVariantGroupProduct, {size: 'thumbnail'}) }}
-                                        <span class="list-variants__item__name">
-                                            {{ mainVariantGroupDistinguishingParameterValue.text }}
-                                        </span>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-
-                    {% if product.isMainVariant %}
-                        {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
-                        {% if allDistinguishingParameterValuesForProducts is not empty %}
-                            <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
-                                {{ 'Vyberte velikost'|trans }}
-                                <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost?'}}</a>
+                {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant == false %}
+                    <div class="box-detail__variants">
+                        {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
+                            <div class="box-detail__variants__title">
+                                {{ 'Vyberte variantu'|trans }}
                             </div>
                             <ul class="list-variants">
-                                {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
-                                    <li class="list-variants__item {{ variantId is null ? 'disabled'}} js-product-variant-select-button"
-                                    data-id="{{ variantId }}">{{ parameterValue }}</li>
+                                {% for mainVariantGroupProduct in mainVariants %}
+                                    {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
+                                    {% if mainVariantGroupDistinguishingParameterValue is not null %}
+                                        <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active'}}" data-id="{{ mainVariantGroupProduct.id }}">
+                                            {{ image(mainVariantGroupProduct, {size: 'thumbnail'}) }}
+                                            <span class="list-variants__item__name">
+                                                {{ mainVariantGroupDistinguishingParameterValue.text }}
+                                            </span>
+                                        </li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         {% endif %}
-                    {% endif %}
-                </div>
+
+                        {% if product.isMainVariant %}
+                            {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
+                            {% if allDistinguishingParameterValuesForProducts is not empty %}
+                                <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
+                                    {{ 'Vyberte velikost'|trans }}
+                                    <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost?'}}</a>
+                                </div>
+                                <ul class="list-variants">
+                                    {% if product.id in allDistinguishingParameterValuesForProducts|keys %}
+                                        {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
+                                            <li class="list-variants__item {{ variantId is null ? 'disabled'}} js-product-variant-select-button"
+                                            data-id="{{ variantId }}">{{ parameterValue }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 {% if product.calculatedAvailability %}
                     <div class="box-detail__availability">
@@ -116,8 +119,7 @@
                         </a>
                     </div>
                 {% endif %}
-                {# TODO PRG: add class - if no varaints - box-detail__add-basket--empty #}
-                <div class="box-detail__add-basket js-product-variant-price-wrapper">
+                <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-price-wrapper">
                     {% for variant in variants if variant in product.variants %}
                         <div class="display-none js-product-variant-price js-product-variant-price-{{ variant.id }}">
                             {% if not variant.calculatedSellingDenied %}

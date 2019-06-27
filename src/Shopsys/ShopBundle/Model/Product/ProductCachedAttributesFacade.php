@@ -68,6 +68,10 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
                     $finalResult[$mainVariantId][$distinguishingParameterValue] = null;
                 }
             }
+
+            if (array_key_exists($mainVariantId, $finalResult) && is_array($finalResult[$mainVariantId])) {
+                ksort($finalResult[$mainVariantId], SORT_NATURAL);
+            }
         }
 
         return $finalResult;

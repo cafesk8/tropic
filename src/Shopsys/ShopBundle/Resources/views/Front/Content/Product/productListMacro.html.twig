@@ -1,4 +1,4 @@
-{% macro list(products, listCssClass, productHeadingTagName) %}
+{% macro list(products, variantsIndexedByMainVariantId, productsIndexedByMainVariantGroup, listCssClass, productHeadingTagName) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
 
@@ -10,9 +10,9 @@
                 </li>
             {% endif %}
             <li class="list-products__item
-            {% if loop.index == 4 %} list-products__item--doubled{% endif %}
-            {# TODO PRG: add class list-products__item--with-variants - only if there are variants #}
-             list-products__item--with-variants js-list-products-item">
+                {% if loop.index == 4 %} list-products__item--doubled {% endif %}
+                {% if product.mainVariantGroup is not null %} list-products__item--with-variants {% endif %}
+                js-list-products-item">
                 <div class="list-products__item__in">
                     <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products__item__block">
                         <div class="list-products__item__image dont-print">
@@ -46,11 +46,15 @@
                                 </div>
                             {% endif %}
 
-                            <div class="list-products__item__info__availability js-not-implemented-yet">
-                                <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">S</span>
-                                <span class="in-badge in-badge--product-list in-badge--outline in-badge--in-stock">M</span>
-                                <span class="in-badge in-badge--product-list in-badge--outline">L</span>
-                                <span class="in-badge in-badge--product-list in-badge--outline">XL</span>
+                            <div class="list-products__item__info__availability">
+                                {% if variantsIndexedByMainVariantId|length > 0 and product.id in variantsIndexedByMainVariantId|keys %}
+                                    {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
+                                    {% if product.id in secondDistinguishingParameters|keys %}
+                                        {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
+                                            <span class="in-badge in-badge--product-list in-badge--outline">{{ parameterValue }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
                                 <div class="list-products__item__info__availability__spacer"></div>
                                 <div class="list-products__item__info__availability__text js-not-implemented-yet" style="color: #7bbd70;">
                                     {{ product.calculatedAvailability.getName }}
@@ -62,15 +66,18 @@
                                 </div>
                             </div>
 
-
-                            <div class="list-products__item__variants">
-                                <div class="list-products__item__variants__image">
-                                    <img src="https://placeimg.com/50/50/any">
+                            {% if productsIndexedByMainVariantGroup is not null
+                                and product.mainVariantGroup is not null
+                                and product.mainVariantGroup.id in productsIndexedByMainVariantGroup|keys
+                            %}
+                                <div class="list-products__item__variants">
+                                    {% for product in productsIndexedByMainVariantGroup[product.mainVariantGroup.id] %}
+                                        <div class="list-products__item__variants__image">
+                                            {{ image(product, { size: 'thumbnail', alt: product.name }) }}
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                <div class="list-products__item__variants__image">
-                                    <img src="https://placeimg.com/50/50/any">
-                                </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </a>
                 </div>

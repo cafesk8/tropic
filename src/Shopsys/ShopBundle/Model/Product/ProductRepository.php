@@ -61,4 +61,29 @@ class ProductRepository extends BaseProductRepository
     {
         return $this->getProductRepository()->findOneBy(['transferNumber' => $transferNumber]);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsIndexedByMainVariantId(array $products, int $domainId, PricingGroup $pricingGroup): array
+    {
+        $queryBuilder = $this->getAllSellableQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->andWhere('p.mainVariant IN (:mainVariants)')
+            ->setParameter('mainVariants', $products);
+
+        $queryResult = $queryBuilder->getQuery()->execute();
+
+        $results = [];
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
+        foreach ($queryResult as $product) {
+            $results[$product->getMainVariant()->getId()][] = $product;
+        }
+
+        return $results;
+    }
 }
