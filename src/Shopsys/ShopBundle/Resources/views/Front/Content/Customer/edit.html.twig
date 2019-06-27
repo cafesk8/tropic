@@ -29,6 +29,27 @@
             </div>
 
             <div class="wrap-box">
+                <h2 class="wrap-box__title">{{ 'Body v bushman klubu'|trans }}</h2>
+                <div class="wrap-box__in">
+                    <table class="table-main">
+                        <tbody>
+                            {% for bushmanClubPointPeriod in bushmanClubPointPeriods %}
+                                <tr>
+                                    <td>
+                                        {{ bushmanClubPointPeriod.dateFrom|formatDate }} -
+                                        {{ bushmanClubPointPeriod.dateTo|formatDate }}
+                                    </td>
+                                    <td>
+                                        {{ bushmanClubPoints(customerId, bushmanClubPointPeriod) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="wrap-box">
                 <h2 class="wrap-box__title">{{ 'Changing password'|trans }}</h2>
                 <div class="wrap-box__in" id="{{ form.userData.password.vars.id }}">
                     {{ form_row(form.userData.password.first, { label: 'Password'|trans}) }}

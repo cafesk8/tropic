@@ -1,0 +1,9 @@
+{% extends '@!ShopsysFramework/Admin/Content/Customer/listGrid.html.twig' %}
+
+{% block grid_value_cell_id_bushman_club_point_previous %}
+    {{ bushmanClubPointsByIndex(value, 'previous') }}
+{% endblock %}
+
+{% block grid_value_cell_id_bushman_club_point_actual %}
+    {{ bushmanClubPointsByIndex(value, 'actual') }}
+{% endblock %}
