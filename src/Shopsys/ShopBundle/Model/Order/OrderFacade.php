@@ -6,10 +6,17 @@ namespace Shopsys\ShopBundle\Model\Order;
 
 use GoPay\Definition\Response\PaymentStatus;
 use GoPay\Http\Response;
+use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
+use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade as BaseOrderFacade;
 
 class OrderFacade extends BaseOrderFacade
 {
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
+     */
+    protected $currentPromoCodeFacade;
+
     /**
      * @param int $orderId
      * @return string
@@ -81,5 +88,18 @@ class OrderFacade extends BaseOrderFacade
     public function getAllUnpaidPayPalOrders(\DateTime $fromDate): array
     {
         return $this->orderRepository->getAllUnpaidPayPalOrders($fromDate);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @return \Shopsys\FrameworkBundle\Model\Order\Order
+     */
+    public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
+    {
+        $this->currentPromoCodeFacade->useEnteredPromoCode();
+
+        $order = parent::createOrderFromFront($orderData);
+
+        return $order;
     }
 }

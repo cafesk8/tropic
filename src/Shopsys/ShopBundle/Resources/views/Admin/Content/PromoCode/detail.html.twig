@@ -1,0 +1,21 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+
+{% block main_content %}
+
+    {{ form_start(form, { attr: { class: 'js-promo-code-form' } }) }}
+    {{ form_errors(form) }}
+
+    <div class="window-fixed-bar js-window-fixed-bar" style="z-index: 0">
+        <div class="window-fixed-bar__in">
+            <div class="window-fixed-bar__item">
+                <div class="window-fixed-bar__item__cell">
+                    <a href="{{ url('admin_promocode_list') }}" class="btn-link-style">{{ 'Back to overview'|trans }}</a>
+                    {{ form_save(promoCode|default(null), form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

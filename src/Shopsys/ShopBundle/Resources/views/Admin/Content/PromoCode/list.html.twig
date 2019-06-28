@@ -1,0 +1,17 @@
+{% extends '@!ShopsysFramework/Admin/Content/PromoCode/list.html.twig' %}
+
+{% block title %}- {{ 'Promo codes'|trans }}{% endblock %}
+{% block h1 %}{{ 'Promo codes'|trans }}{% endblock %}
+
+{% block btn %}
+    <div class="text-right">
+        <a href="{{ url('admin_promocode_new') }}" class="btn btn--plus">
+            <i class="btn__icon">+</i>
+            {{ 'Vytvořit slevový kupón'|trans }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block main_content %}
+    {{ gridView.render() }}
+{% endblock %}

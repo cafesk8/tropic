@@ -41,6 +41,9 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductController:
         class: Shopsys\ShopBundle\Controller\Admin\ProductController
 
+    Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController:
+        class: Shopsys\ShopBundle\Controller\Admin\PromoCodeController
+
     Faker\Generator:
         factory: [Faker\Factory, create, ]
         arguments: ['cs_CZ']
@@ -79,6 +82,11 @@ services:
 
     Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory: ~
 
+    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
+        class: Shopsys\ShopBundle\Model\Cart\CartWatcherFacade\CartWatcherFacade
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
     Shopsys\FrameworkBundle\Model\Order\OrderFlowFactoryInterface: '@Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory'
 
     Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface: '@Shopsys\ShopBundle\Model\Article\ArticleDataFactory'
@@ -106,6 +114,14 @@ services:
     Shopsys\ShopBundle\Model\Order\OrderDataMapper: ~
 
     Shopsys\FrameworkBundle\Model\Order\OrderDataMapper: '@Shopsys\ShopBundle\Model\Order\OrderDataMapper'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade: '@Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
 
