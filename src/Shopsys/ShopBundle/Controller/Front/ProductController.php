@@ -25,7 +25,7 @@ class ProductController extends FrontBaseController
     const SEARCH_TEXT_PARAMETER = 'q';
     const PAGE_QUERY_PARAMETER = 'page';
     const PRODUCTS_PER_PAGE = 12;
-    private const PRODUCT_BLOG_ARTICLES_LIMIT = 3;
+    private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
