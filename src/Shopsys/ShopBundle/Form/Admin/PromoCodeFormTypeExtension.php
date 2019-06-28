@@ -29,6 +29,9 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     {
         parent::buildForm($builder, $options);
 
+        $this->extendCodeField($builder);
+        $this->extendPercentField($builder);
+
         $builder->add('unlimited', CheckboxType::class, [
             'label' => t('Neomezený počet použití'),
             'required' => false,
@@ -85,5 +88,27 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public function getExtendedType(): string
     {
         return PromoCodeFormType::class;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    protected function extendCodeField(FormBuilderInterface $builder): void
+    {
+        $codeFieldOptions = $builder->get('code')->getOptions();
+        $codeFieldOptions['label'] = t('Kód');
+        $codeFieldType = get_class($builder->get('code')->getType()->getInnerType());
+        $builder->add('code', $codeFieldType, $codeFieldOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function extendPercentField(FormBuilderInterface $builder): void
+    {
+        $percentFieldOptions = $builder->get('percent')->getOptions();
+        $percentFieldOptions['label'] = t('Sleva');
+        $percentFieldType = get_class($builder->get('percent')->getType()->getInnerType());
+        $builder->add('percent', $percentFieldType, $percentFieldOptions);
     }
 }
