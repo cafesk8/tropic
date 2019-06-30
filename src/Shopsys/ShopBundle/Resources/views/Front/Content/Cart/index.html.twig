@@ -28,7 +28,7 @@
                                     <div class="in-action in-action--with-back-icon in-action--centered-on-mobile">
                                         <i class="svg svg-triangle"></i>
                                         <a href="{{ url('front_homepage') }}" class="in-action__back underline">
-                                            {{ 'Zpìt do e-shopu'|trans }}
+                                            {{ 'ZpÄ›t do e-shopu'|trans }}
                                         </a>
                                     </div>
                                 </div>
@@ -36,13 +36,13 @@
                                     {% if isFreeTransportAndPaymentActive %}
                                         {% if isPaymentAndTransportFree %}
                                             <div class="in-free-transport in-free-transport--centered-on-mobile">
-                                                <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                                                <span class="in-free-transport__title__important">{{ 'MÃ¡te dopravu zdarma!'|trans }}</span>
                                             </div>
                                         {% else %}
                                             <div class="in-free-transport in-free-transport--centered-on-mobile">
                                                 <div class="in-free-transport__title">
-                                                    {{ 'Nakupte ještì za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
-                                                    {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                                    {{ 'Nakupte jeÅ¡tÄ› za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
+                                                    {{ 'mÃ¡te'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
                                                 </div>
                                                 <div class="in-free-transport__pipe">
                                                     <div class="in-free-transport__pipe__line" style="width: 40%;"></div>
@@ -61,7 +61,7 @@
                                         <div class="table-cart__row__left">
                                             <div class="table-cart__cell__image">
                                                 <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.product.name }}">
-                                    				{{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+                                                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
                                                 </a>
                                             </div>
                                             <div class="table-cart__cell__name js-cart-item-name">
@@ -80,18 +80,16 @@
                                             <div class="table-cart__cell__spinbox">
                                                 <span class="form-input-spinbox js-spinbox">
                                                     {{ form_widget(form.quantities[cartItem.id], { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
-                                                    <label class="form-input-spinbox__label">{{ 'Kusù'|trans }}</label>
+                                                    <label class="form-input-spinbox__label">{{ 'KusÅ¯'|trans }}</label>
                                                     <div class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></div>
                                                     <div class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></div>
                                                 </span>
-
                                                 <a
                                                     href="{{ url('front_cart_delete', {cartItemId: cartItem.id, _token: csrf_token('front_cart_delete_' ~ cartItem.id)}) }}"
                                                     class="table-cart__cell__spinbox__link js-cart-item-remove-button"
                                                 >
                                                     {{ 'Odstranit'|trans }}
                                                 </a>
-
                                             </div>
                                             <div class="table-cart__cell__price js-cart-item-total-price">
                                                 {% if cartItemDiscount is not null %}
@@ -116,7 +114,7 @@
 
                             <div class="box-order__additional js-not-implemented-yet">
                                 <div class="box-order__additional__title">
-                                    {{ 'Pøihoïte si k nákupu'|trans }}
+                                    {{ 'PÅ™ihoÄŽte si k nÃ¡kupu'|trans }}
                                 </div>
                                 {# TODO PRG: add additional products to list #}
                                 {#{ productList.horizontalList(cartItems, "list-basket-additionals", 'h3', 'basket-additionals') }#}
