@@ -3,7 +3,7 @@
     value:
         name: upgrade-application
         image: ~
-        command: ["sh", "-c", "cd /tmp/source-codes && ./phing clean db-migrations dirs-create assets grunt product-search-export-products replace-domains-urls grunt error-pages-generate warmup"]
+        command: ["sh", "-c", "cd /tmp/source-codes && ./phing build-deploy-part-2-db-dependent"]
         securityContext:
             runAsUser: 33
         volumeMounts:
