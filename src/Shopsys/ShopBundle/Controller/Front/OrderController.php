@@ -349,7 +349,7 @@ class OrderController extends FrontBaseController
             'orderPreview' => $orderPreview,
             'orderStep' => $orderStep,
             'submitButtonText' => $submitButtonText,
-            'backButtonText' => $backButtonText
+            'backButtonText' => $backButtonText,
         ]);
     }
 

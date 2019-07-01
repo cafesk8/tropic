@@ -17,7 +17,7 @@
         var $submitButton = $('.js-submitButton');
 
         var data = {};
-        data['submitButtonText'] = $('.js-submitButton').val();
+        data['submitButtonText'] = $submitButton.val();
         data['backButtonText'] = $backButton.html();
         data['backButtonLink'] = $backButton.attr('href');
 
