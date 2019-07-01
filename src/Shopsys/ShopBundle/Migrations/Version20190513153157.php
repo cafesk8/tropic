@@ -141,10 +141,9 @@ class Version20190513153157 extends AbstractMigration
             foreach ($this->getAllDomainIds() as $domainId) {
                 $locale = $this->getDomainLocale($domainId);
 
-                $this->sql('INSERT INTO blog_category_translations (translatable_id, name, locale) VALUES (2, \'Hlavní stránka blogu - ' . $locale . '\', \'cs\')');
+                $this->sql('INSERT INTO blog_category_translations (translatable_id, name, locale) VALUES (2, \'Hlavní stránka blogu - ' . $locale . '\', \'' . $locale . '\')');
+                $this->sql('INSERT INTO friendly_urls (domain_id, slug, route_name, entity_id, main) VALUES (' . $domainId . ', \'blog/\', \'front_blogcategory_detail\', 2, true)');
             }
-
-            $this->sql('INSERT INTO friendly_urls (domain_id, slug, route_name, entity_id, main) VALUES (1, \'blog/\', \'front_blogcategory_detail\', 2, true)');
         }
     }
 
