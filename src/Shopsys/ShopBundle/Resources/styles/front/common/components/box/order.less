@@ -3,11 +3,13 @@
 @box-order-info-width: ~"calc(100% - @{box-order-cart-width} - @{box-order-cart-gap})";
 @box-order-info-transport-width: 176px;
 @box-order-info-transport-height: 55px;
+@box-order-top-gap: 57px;
 
 .box-order {
     width: 100%;
     display: flex;
     flex-direction: column;
+    margin-top: @box-order-top-gap;
 
     @media @query-xl {
         flex-direction: row;

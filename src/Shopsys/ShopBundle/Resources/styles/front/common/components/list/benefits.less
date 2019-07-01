@@ -25,6 +25,10 @@
         }
     }
 
+    &--in-panel {
+        flex-direction: column;
+    }
+
     &__item {
         display: flex;
         flex-direction: row;
@@ -54,6 +58,12 @@
                 .list-benefits--small & {
                     padding-left: 55px;
                 }
+            }
+
+            .list-benefits--in-panel & {
+                width: 100%;
+                padding-left: 0;
+                margin-bottom: 20px;
             }
         }
 
