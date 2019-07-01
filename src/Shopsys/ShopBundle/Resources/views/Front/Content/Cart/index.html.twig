@@ -122,8 +122,11 @@
                         </div>
                         <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
                             {{ render(controller('ShopsysShopBundle:Front/Order:preview',{
-                                orderStep: "1"
+                                orderStep: "1",
+                                submitButtonText: 'Pokračovat v objednávce'|trans,
+                                backButtonText: 'Zpět do e-shopu'|trans
                             })) }}
+                            {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' with { cssClass: "list-benefits--in-panel" } %}
                         </div>
                     </div>
                     {% do form.submit.setRendered %}
@@ -146,6 +149,11 @@
                     </div>
                 </div>
             {% endif %}
+        </div>
+    </div>
+    <div class="web__line">
+        <div class="web__container web__container--dark web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
         </div>
     </div>
 {% endblock %}

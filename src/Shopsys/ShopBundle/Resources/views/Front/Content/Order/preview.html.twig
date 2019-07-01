@@ -126,17 +126,22 @@
                 </td>
             </tr>
         </table>
-        <div class="in-action">
+        <div class="in-action in-action--column">
             {% if orderPreview.quantifiedProducts > 0 %}
                 {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
-                <input type="submit" class="in-action__btn btn btn--success btn--full-width" name="cart_form[submit]" value="{{ 'Pokračovat v objednávce'|trans }}">
+                <input type="submit" class="in-action__btn btn btn--success btn--full-width" name="cart_form[submit]" value="{{ submitButtonText }}">
             {% endif %}
-
-            {% if orderStep != "1" %}
-                <a href="{{ url('front_homepage') }}" class="btn in-action__btn">
-                    {{ 'Back to buying'|trans }}
+            {% if orderStep == 1 %}
+                {% set backButtonLink = url('front_homepage') %}
+            {% else %}
+                {% set backButtonLink = url('front_cart') %}
+            {% endif %}
+            <div class="in-action in-action--with-back-icon">
+                <i class="svg svg-triangle"></i>
+                <a href="{{ backButtonLink }}" class="in-action__back underline">
+                    {{ backButtonText }}
                 </a>
-            {% endif %}
+            </div>
         </div>
 
 </div>

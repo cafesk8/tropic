@@ -166,20 +166,12 @@
         <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
             {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
                 transportId: transport is empty ? null : transport.id,
-                paymentId: payment is empty ? null : payment.id
+                paymentId: payment is empty ? null : payment.id,
+                orderStep: '2',
+                submitButtonText: 'Vyplnit dodací údaje'|trans,
+                backButtonText: 'Zpět do košíku'|trans
             })) }}
         </div>
-    </div>
-
-    <div class="in-action">
-        <div class="in-action__right">
-            {{ form_widget(form.save, { label: 'Continue in order'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big' } }) }}
-        </div>
-
-        <div class="in-action__left">
-            <button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" class="btn in-action__btn js-no-validate-button">
-                {{ 'Back to cart'|trans }}
-            </button>
-        </div>
+        {% do form.save.setRendered %}
     </div>
 {% endblock %}

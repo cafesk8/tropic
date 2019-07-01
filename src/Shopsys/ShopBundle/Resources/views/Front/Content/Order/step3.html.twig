@@ -135,7 +135,10 @@
         <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
             {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
                 transportId: transport is empty ? null : transport.id,
-                paymentId: payment is empty ? null : payment.id
+                paymentId: payment is empty ? null : payment.id,
+                orderStep: '3',
+                submitButtonText: 'Odeslat objednávku'|trans,
+                backButtonText: 'Zpět'|trans
             })) }}
         </div>
     </div>

@@ -328,6 +328,8 @@ class OrderController extends FrontBaseController
         $transportId = $request->get('transportId');
         $paymentId = $request->get('paymentId');
         $orderStep = $request->get('orderStep');
+        $submitButtonText = $request->get('submitButtonText');
+        $backButtonText = $request->get('backButtonText');
 
         if ($transportId === null) {
             $transport = null;
@@ -346,6 +348,8 @@ class OrderController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Order/preview.html.twig', [
             'orderPreview' => $orderPreview,
             'orderStep' => $orderStep,
+            'submitButtonText' => $submitButtonText,
+            'backButtonText' => $backButtonText
         ]);
     }
 
