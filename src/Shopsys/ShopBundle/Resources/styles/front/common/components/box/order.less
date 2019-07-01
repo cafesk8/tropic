@@ -15,6 +15,20 @@
         flex-direction: row;
     }
 
+    &__title {
+        display: inline-block;
+
+        &__text {
+            line-height: 20px;
+            margin-bottom: 25px;
+
+            color: @color-base;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    }
+
     &__info {
         margin-bottom: @margin-gap;
 
@@ -73,7 +87,7 @@
         margin-bottom: @margin-gap;
 
         @media @query-xl {
-            width: @box-order-cart-width;
+            width: @box-order-cart-width + @box-order-cart-gap;
         }
     }
 }

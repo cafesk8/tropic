@@ -129,16 +129,16 @@
         <div class="in-action in-action--column">
             {% if orderPreview.quantifiedProducts > 0 %}
                 {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
-                <input type="submit" class="in-action__btn btn btn--success btn--full-width" name="cart_form[submit]" value="{{ submitButtonText }}">
+                <input type="submit" class="in-action__btn btn btn--success btn--full-width js-submitButton" name="cart_form[submit]" value="{{ submitButtonText }}">
             {% endif %}
             {% if orderStep == 1 %}
                 {% set backButtonLink = url('front_homepage') %}
             {% else %}
                 {% set backButtonLink = url('front_cart') %}
             {% endif %}
-            <div class="in-action in-action--with-back-icon">
+            <div class="in-action__back in-action--with-back-icon">
                 <i class="svg svg-triangle"></i>
-                <a href="{{ backButtonLink }}" class="in-action__back underline">
+                <a href="{{ backButtonLink }}" class="in-action__back underline js-backButton">
                     {{ backButtonText }}
                 </a>
             </div>

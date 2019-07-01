@@ -13,7 +13,13 @@
         var $orderPreview = $('#js-order-preview');
         var $checkedTransport = $('.js-order-transport-input:checked');
         var $checkedPayment = $('.js-order-payment-input:checked');
+        var $backButton = $('.js-backButton');
+        var $submitButton = $('.js-submitButton');
+
         var data = {};
+        data['submitButtonText'] = $('.js-submitButton').val();
+        data['backButtonText'] = $backButton.html();
+        data['backButtonLink'] = $backButton.attr('href');
 
         if ($checkedTransport.length > 0) {
             data['transportId'] = $checkedTransport.data('id');
