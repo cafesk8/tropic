@@ -19,8 +19,7 @@ secretGenerator:
     -   name: domains-ssl-certificates
         commands:
             tls.key: "cat ${DOMAINS_SSL_DIRECTORY}/tls.key"
-            tls.crt: "cat ${DOMAINS_SSL_DIRECTORY}/tls.crt"
-            ca.crt:  "cat ${DOMAINS_SSL_DIRECTORY}/ca.crt"
+            tls.crt: "cat ${DOMAINS_SSL_DIRECTORY}/fullchain.crt"
 configMapGenerator:
     -   name: domains-urls
         files:
