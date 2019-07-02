@@ -135,12 +135,11 @@ class Version20190513153157 extends AbstractMigration
             $this->sql('INSERT INTO blog_categories (id, parent_id, level, lft, rgt) VALUES (1, null, 0, 1, 2)');
             $this->sql('INSERT INTO blog_categories (id, parent_id, level, lft, rgt) VALUES (2, 1, 1, 0, 3)');
             $this->sql('ALTER SEQUENCE blog_categories_id_seq RESTART WITH 3');
-            $this->sql('INSERT INTO blog_category_domains (blog_category_id, domain_id, enabled, visible) VALUES (1, 1, true, true)');
-            $this->sql('INSERT INTO blog_category_domains (blog_category_id, domain_id, enabled, visible) VALUES (2, 1, true, true)');
 
             foreach ($this->getAllDomainIds() as $domainId) {
                 $locale = $this->getDomainLocale($domainId);
 
+                $this->sql('INSERT INTO blog_category_domains (blog_category_id, domain_id, enabled, visible) VALUES (2, ' . $domainId . ', true, true)');
                 $this->sql('INSERT INTO blog_category_translations (translatable_id, name, locale) VALUES (2, \'Hlavní stránka blogu - ' . $locale . '\', \'' . $locale . '\')');
                 $this->sql('INSERT INTO friendly_urls (domain_id, slug, route_name, entity_id, main) VALUES (' . $domainId . ', \'blog/\', \'front_blogcategory_detail\', 2, true)');
             }
