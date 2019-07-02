@@ -5,7 +5,7 @@
             {{ 'Vaše objednávka'|trans }}
         </span>
     </div>
-    <div class="box-preview__row box-preview__row--dark">
+    <div class="box-preview__row {% if orderStep == "1" %} box-preview__row--dark{% else %} box-preview__row--no-bottom{% endif %}">
         {% if orderStep == "1" %}
             <div class="box-preview__coupone">
                 <div class="box-preview__coupone__title">
@@ -17,34 +17,39 @@
                 </div>
             </div>
         {% endif %}
+        {% if orderStep == "2" %}
+            <ul class="list-cart-preview">
+                {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
+                    {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
+                    {% set quantifiedProductDiscount = orderPreview.quantifiedItemsDiscounts[quantifiedProductKey] %}
+                    <li class="list-cart-preview__item">
+                        <div class="list-cart-preview__item__image">
+                            {{ image(quantifiedProduct.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+                        </div>
+                        <div class="list-cart-preview__item__pieces">
+                            {{ quantifiedProduct.quantity|formatNumber }} {{ quantifiedProduct.product.unit.name }}
+                        </div>
+                        <div class="list-cart-preview__item__name">
+                            <span class="list-cart-preview__item__name__title">
+                                {{ quantifiedProduct.product.name }}
+                            </span>
+                            <span class="list-cart-preview__item__name__text">
+                                {{ 'Barva'|trans }}: Light Olive
+                            </span>
+                            <span class="list-cart-preview__item__name__text">
+                                {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet" title="">36</span>
+                            </span>
+                        </div>
+                        <div class="list-cart-preview__item__price">
+                            {{ quantifiedProductPrice.totalPrice.priceWithVat|price }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         <table class="table-cart-preview">
             <tbody>
-                {% if orderStep != "1" %}
-                    {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
-                        {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
-                        {% set quantifiedProductDiscount = orderPreview.quantifiedItemsDiscounts[quantifiedProductKey] %}
-                        <tr class="table-cart-preview__row">
-                            <td class="table-cart-preview__cell">
-                                <strong>{{ quantifiedProduct.quantity|formatNumber }} {{ quantifiedProduct.product.unit.name }}</strong>
-                                {{ quantifiedProduct.product.name }}
-                            </td>
-                            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                                {{ quantifiedProductPrice.totalPrice.priceWithVat|price }}
-                            </td>
-                        </tr>
-                        {% if quantifiedProductDiscount is not null %}
-                            <tr>
-                                <td class="table-cart-preview__cell">
-                                    {{ 'Promo code'|trans }} {{ (-orderPreview.promoCodeDiscountPercent)|formatPercent }}
-                                </td>
-                                <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                                    {{ quantifiedProductDiscount.inverse.priceWithVat|price }}
-                                </td>
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
                 <tr class="table-cart-preview__row">
                     <td class="table-cart-preview__cell js-not-implemented-yet">
                         {{ 'Sleva'|trans }}
@@ -96,19 +101,20 @@
                         </td>
                     </tr>
                 {% endif %}
-
-                <tr class="table-cart-preview__row">
-                    <td class="table-cart-preview__cell">
-                        {{ 'Total price including VAT'|trans }}
-                    </td>
-                    <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                        {{ orderPreview.totalPrice.priceWithVat|price }}
-                    </td>
-                </tr>
+                {% if orderStep == "1" %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Total price including VAT'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.totalPrice.priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
-    <div class="box-preview__row">
+    <div class="box-preview__row {% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %}">
         <table class="table-cart-preview__total">
             <tr class="table-cart-preview__total__row">
                 <td class="table-cart-preview__total__cell">
@@ -131,16 +137,25 @@
                 {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
                 <input type="submit" class="in-action__btn btn btn--success btn--full-width js-submitButton" name="cart_form[submit]" value="{{ submitButtonText }}">
             {% endif %}
-            {% if orderStep == 1 %}
-                {% set backButtonLink = url('front_homepage') %}
-            {% else %}
-                {% set backButtonLink = url('front_cart') %}
-            {% endif %}
+
             <div class="in-action__back in-action--with-back-icon">
-                <i class="svg svg-triangle"></i>
-                <a href="{{ backButtonLink }}" class="in-action__back underline js-backButton">
-                    {{ backButtonText }}
-                </a>
+                {% if orderStep == 1 %}
+                    <i class="svg svg-triangle"></i>
+                    <a href="{{ url('front_homepage') }}" class="in-action__link underline js-backButton">
+                        {{ backButtonText }}
+                    </a>
+                {% elseif orderStep == 2 %}
+                    <i class="svg svg-triangle"></i>
+                    <a href="{{ url('front_cart') }}" class="in-action__link underline js-backButton">
+                        {{ backButtonText }}
+                    </a>
+                {% elseif orderStep == 3 %}
+                    <button type="submit" name="flow_order_transition" value="back" class="in-action__link underline js-no-validate-button">
+                        {{ 'Back to shipping and payment selection'|trans }}
+                    </button>
+                {% endif %}
+
+
             </div>
         </div>
 

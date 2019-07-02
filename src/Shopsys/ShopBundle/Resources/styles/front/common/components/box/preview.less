@@ -2,7 +2,7 @@
 @box-preview-width: @box-order-cart-width;
 @box-preview-gap: 90px;
 @box-preview-padding: 30px 40px 0 40px;
-@box-preview-padding-small: 15px 20px 0 20px; 
+@box-preview-padding-small: 15px 20px 0 20px;
 
 .box-preview {
     display: flex;
@@ -45,6 +45,14 @@
 
         &--dark {
             background-color: @color-gray;
+        }
+
+        &--no-bottom {
+            border-bottom: 0;
+        }
+
+        &--thin-top-border {
+            border-top: 2px solid @color-gray; 
         }
     }
 
