@@ -263,7 +263,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getExportStatus(): string
     {
@@ -303,5 +303,21 @@ class Order extends BaseOrder
     public function getExportedAt(): ?DateTime
     {
         return $this->exportedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExportStatusName(): string
+    {
+        if ($this->exportStatus === self::EXPORT_SUCCESS) {
+            return t('Přeneseno');
+        }
+        if ($this->exportStatus === self::EXPORT_NOT_YET) {
+            return t('Zatím nepřeneseno');
+        }
+        if ($this->exportStatus === self::EXPORT_ERROR) {
+            return t('Chyba při přenosu');
+        }
     }
 }

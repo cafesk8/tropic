@@ -2,9 +2,5 @@
 
 {% block grid_value_cell_id_status_name %}
     {% set exportStatus = row.order.exportStatus %}
-    {{ value }} (
-        {%- if exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_SUCCESS') %}<span style="color: green">{{ 'Přeneseno'|trans }}</span>{% endif -%}
-        {%- if exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_NOT_YET') %}{{ 'Zatím nepřeneseno'|trans }}{% endif -%}
-        {%- if exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_ERROR') %}<span style="color: red">{{ 'Chyba při přenosu'|trans }}</span>{% endif -%}
-    )
+    {{ value }} (<span style="{{ exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_SUCCESS') ? 'color: green' }}{{ exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_ERROR') ? 'color: red' }}">{{ row.order.exportStatusName }}</span>)
 {% endblock %}
