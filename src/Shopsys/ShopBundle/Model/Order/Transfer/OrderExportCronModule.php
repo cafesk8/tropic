@@ -74,7 +74,8 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
      */
     protected function markItemAsExported($orderIdentifier, TransferResponse $transferResponse): void
     {
-        //$this->orderFacade->markOrderAsExported($orderIdentifier);
+        $this->orderFacade->markOrderAsExported($orderIdentifier);
+        $this->logger->addInfo(sprintf('Order with id %s was successfully exported', $orderIdentifier));
     }
 
     /**
@@ -83,6 +84,6 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
      */
     protected function markItemAsFailedExported($orderIdentifier, Exception $exception): void
     {
-        //$this->orderFacade->markOrderAsFailedExported($orderIdentifier);
+        $this->orderFacade->markOrderAsFailedExported($orderIdentifier);
     }
 }

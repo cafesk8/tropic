@@ -127,4 +127,28 @@ class OrderFacade extends BaseOrderFacade
     {
         return $this->orderRepository->getOrdersValueIndexedByCustomerId($customerIds);
     }
+
+    /**
+     * @param int $orderId
+     */
+    public function markOrderAsExported(int $orderId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+        $order = $this->getById($orderId);
+        $order->markAsExported();
+
+        $this->em->flush($order);
+    }
+
+    /**
+     * @param int $orderId
+     */
+    public function markOrderAsFailedExported(int $orderId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+        $order = $this->getById($orderId);
+        $order->markAsFailedExported();
+
+        $this->em->flush($order);
+    }
 }

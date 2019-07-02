@@ -52,4 +52,14 @@ class OrderData extends BaseOrderData
         parent::__construct();
         $this->updatedAt = new DateTime();
     }
+
+    /**
+     * @var string
+     */
+    public $exportStatus = Order::EXPORT_NOT_YET;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $exportedAt;
 }
