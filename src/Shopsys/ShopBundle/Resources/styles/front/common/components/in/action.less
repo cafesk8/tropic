@@ -5,7 +5,6 @@
 
 .in-action {
     margin-bottom: @in-action-bottom-gap;
-
     width: 100%;
     display: flex;
     align-items: center;
@@ -23,29 +22,23 @@
         margin: 0 auto 20px auto;
 
         @media @query-md {
-            margin: 0 0 @in-action-bottom-gap 0;
+            margin: 0;
+        }
+
+        .svg {
+            margin-top: -15px;
         }
     }
 
     &--with-back-icon {
         padding-right: 25px;
-        
+
         .svg {
             padding: 9px;
 
             font-size: 7px;
             transform: rotate(90deg);
         }
-    }
-
-    &__back {
-        color: @color-base;
-        margin-bottom: 20px;
-
-        font-size: 16px;
-        font-weight: 700;
-        text-decoration: none;
-        text-transform: uppercase;
     }
 
     &__btn {
@@ -56,4 +49,19 @@
             padding: 0 @btn-padding-horizontal;
         }
     }
+
+    &__link {
+        color: @color-base;
+        margin-bottom: 20px;
+
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        cursor: pointer;
+    }
+
 }
