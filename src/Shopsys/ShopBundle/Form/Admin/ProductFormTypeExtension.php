@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -25,12 +29,29 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $parameterFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade
+     */
+    private $blogArticleFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
+     */
+    private $adminDomainTabsFacade;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
-    public function __construct(ParameterFacade $parameterFacade)
-    {
+    public function __construct(
+        ParameterFacade $parameterFacade,
+        BlogArticleFacade $blogArticleFacade,
+        AdminDomainTabsFacade $adminDomainTabsFacade
+    ) {
         $this->parameterFacade = $parameterFacade;
+        $this->blogArticleFacade = $blogArticleFacade;
+        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
     /**
@@ -48,6 +69,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $builderStoreStockGroup->add('stockQuantityByStoreId', StoreStockType::class);
 
         $builder->add($builderStoreStockGroup);
+
+        if ($product !== null) {
+            $builder->add($this->getArticlesGroup($builder, $product));
+        }
 
         if ($product instanceof Product && $product->isMainVariant()) {
             $variantGroup = $builder->get('variantGroup');
@@ -72,6 +97,41 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder);
         }
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    public function getArticlesGroup(FormBuilderInterface $builder, Product $product): FormBuilderInterface
+    {
+        $locale = $this->adminDomainTabsFacade->getSelectedDomainConfig()->getLocale();
+
+        $articlesGroup = $builder->create('articles', GroupType::class, [
+            'label' => t('Produkt v článcích blogu'),
+        ]);
+
+        $blogArticles = $this->blogArticleFacade->getByProduct($product, $locale);
+
+        if (count($blogArticles) < 1) {
+            $articlesGroup->add('noBlogArticles', DisplayOnlyType::class, [
+                'data' => t('Produkt není v žádných článcích'),
+            ]);
+        }
+
+        foreach ($blogArticles as $blogArticle) {
+            $articlesGroup->add('blogArticle' . $blogArticle->getId(), DisplayOnlyUrlType::class, [
+                'label' => $blogArticle->getName($locale),
+                'route' => 'admin_blogarticle_edit',
+                'route_params' => [
+                    'id' => $blogArticle->getId(),
+                ],
+                'route_label' => $blogArticle->getName($locale),
+            ]);
+        }
+
+        return $articlesGroup;
     }
 
     /**

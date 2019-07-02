@@ -231,4 +231,14 @@ class BlogArticleFacade
     {
         return $this->blogArticleRepository->getVisibleByProduct($product, $domainId, $locale, $limit);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public function getByProduct(Product $product, string $locale): array
+    {
+        return $this->blogArticleRepository->getByProduct($product, $locale);
+    }
 }

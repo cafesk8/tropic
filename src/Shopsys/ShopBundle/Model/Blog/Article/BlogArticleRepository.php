@@ -264,4 +264,20 @@ class BlogArticleRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
+     */
+    public function getByProduct(Product $product, string $locale): array
+    {
+        return $this->getAllBlogArticlesByLocaleQueryBuilder($locale)
+            ->innerJoin('ba.products', 'p')
+            ->andWhere('p = :product')
+            ->setParameter('product', $product)
+            ->orderBy('bat.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
