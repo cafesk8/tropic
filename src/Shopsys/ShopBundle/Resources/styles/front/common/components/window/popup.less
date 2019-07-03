@@ -1,5 +1,5 @@
 @window-popup-width: 400px;
-@window-popup-wide-width: 750px;
+@window-popup-wide-width: 760px;
 
 @window-popup-inner-padding: 25px;
 @window-popup-close-position: 5px;
@@ -25,7 +25,6 @@
     background: @color-f;
     box-shadow: 0 0 20px rgba(0,0,0, 0.3);
     transition: @transition transform;
-    border-radius: @radius;
 
     .is-no-flex &, .is-safari &, .is-flex-popup-height-issue-detected & {
         display: block;
@@ -34,6 +33,10 @@
 
     .is-no-flex &, .is-safari &, .is-flex-popup-height-issue-detected & {
         display: block;
+    }
+
+    &--no-padding {
+        padding: 0;
     }
 
     &--active {

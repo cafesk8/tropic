@@ -1,0 +1,150 @@
+@box-popup-add-content-width: 320px;
+@box-popup-add-product-image-size: 101px;
+@box-popup-add-product-name-line-height: 18px;
+@box-popup-add-product-name-lines: 2;
+@box-popup-add-product-name-line-gap: 6px;
+@box-popup-add-product-amount-width: 50px;
+@box-popup-add-padding: 30px;
+
+.box-popup-add {
+    display: flex;
+    flex-direction: row;
+    margin: 0 -@window-popup-inner-padding;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: @box-popup-add-content-width;;
+        padding: @box-popup-add-padding;
+
+        background-color: @color-gray;
+
+        &__title {
+            color: @color-base;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+
+            &__text {
+                position: relative;
+            }
+        }
+
+        &__product {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+
+            &__image {
+                height: @box-popup-add-product-image-size;
+                width: @box-popup-add-product-image-size;
+                position: relative;
+                margin-right: 10px;
+
+                img {
+                    .center-image();
+                }
+            }
+
+            &__pieces {
+                display: flex;
+                align-self: center;
+                width: @box-popup-add-product-amount-width;
+                padding-left: 10px;
+                text-align: left;
+                white-space: nowrap;
+
+                color: @color-brown-light;
+                font-size: @font-size;
+            }
+
+            &__name {
+                width: calc(~"@{calc-base} - @{box-popup-add-product-amount-width} - @{box-popup-add-product-image-size}");
+
+                &__title {
+                    display: block;
+                    line-height: @box-popup-add-product-name-line-height;
+                    max-height: @box-popup-add-product-name-lines*@box-popup-add-product-name-line-height;
+                    margin-bottom: @box-popup-add-product-name-line-gap;;
+                    overflow: hidden;
+
+                    color: @color-base;
+                    font-size: @font-size;
+                    text-decoration: none;
+                }
+
+                &__price {
+                    display: inline-block;
+                    margin-bottom: @box-popup-add-product-name-line-gap;
+
+                    &__main {
+                        color: @color-base;
+                        font-size: @font-size;
+                        font-weight: 700;
+                    }
+
+                    &__old {
+                        color: @color-brown;
+                        font-size: @font-size-small;
+                        font-weight: 400;
+                        text-decoration: line-through;
+                    }
+                }
+
+                &__text {
+                    display: block;
+                    margin-bottom: 6px;
+
+                    color: @color-brown-light;
+                    font-size: @font-size-small;
+                }
+            }
+        }
+    }
+
+    &__action {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: calc(~"@{calc-base} - @{box-popup-add-content-width}");
+        padding: @box-popup-add-padding;
+
+        background-color: @color-f;
+
+        &__buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            &__back {
+                display: inline;
+                line-height: @btn-height;
+
+                &__link {
+                    color: @color-base;
+                    font-size: 16px;
+                    font-weight: 400;
+                    text-decoration: none;
+                }
+
+                .svg {
+                    padding: 9px;
+
+                    font-size: 7px;
+                    transform: rotate(90deg);
+                }
+            }
+
+        }
+
+        &__transport {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+    }
+}

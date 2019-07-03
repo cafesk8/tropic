@@ -89,7 +89,7 @@
             $window.addClass(options.cssClass);
         }
 
-        var $windowContent = $('<div class="js-window-content window-popup__in"></div>');
+        var $windowContent = $('<div class="window-popup__in js-window-content"></div>');
 
         if (options.textHeading !== '') {
             $windowContent.append('<h2 class="' + options.cssClassHeading + '">' + options.textHeading + '</h2>');

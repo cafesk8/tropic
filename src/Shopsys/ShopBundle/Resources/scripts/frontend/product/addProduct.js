@@ -22,21 +22,15 @@
 
     Shopsys.addProduct.onSuccess = function (data) {
         var buttonContinueUrl = $($.parseHTML(data)).filterAllNodes('.js-add-product-url-cart').data('url');
-        var isWide = $($.parseHTML(data)).filterAllNodes('.js-add-product-wide-window').data('wide');
-        if (isWide) {
-            var cssClass = 'window-popup--wide';
-        } else {
-            var cssClass = 'window-popup--standard';
-        }
 
         if (buttonContinueUrl !== undefined) {
             Shopsys.window({
                 content: data,
-                cssClass: cssClass,
-                buttonContinue: true,
-                textContinue: Shopsys.translator.trans('Go to cart'),
+                cssClass: 'window-popup--wide window-popup--no-padding',
+                buttonContinue: false,
+                textContinue: '',
                 urlContinue: buttonContinueUrl,
-                cssClassContinue: 'btn--success'
+                cssClassContinue: ''
             });
 
             $('#js-cart-box').trigger('reload');

@@ -1,4 +1,5 @@
 @in-free-transport-pipe-height: 4px;
+@in-free-transport-pipe-height-fat: 7px;
 @in-free-transport-pipe-background: #807d7d;
 
 .in-free-transport {
@@ -37,6 +38,10 @@
             margin-bottom: 35px;
         }
 
+        &--fat {
+            height: @in-free-transport-pipe-height-fat;
+        }
+
         &__line {
             display: block;
             width: 0;
@@ -46,6 +51,10 @@
             overflow: inherit !important; //remove blink icon before start animate
 
             background: @color-green;
+
+            .in-free-transport__pipe--fat & {
+                height: @in-free-transport-pipe-height-fat;
+            }
         }
     }
 }

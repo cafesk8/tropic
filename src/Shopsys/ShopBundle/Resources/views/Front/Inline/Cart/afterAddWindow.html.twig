@@ -1,6 +1,67 @@
 {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 
+<div class="box-popup-add">
+    <div class="box-popup-add__content">
+        <div class="box-popup-add__content__title">
+            <span class="box-popup-add__content__title__text double-lined">
+                {{ 'Do košíku jste přidali'|trans }}
+            </span>
+        </div>
+        <div class="box-popup-add__content__product js-not-implemented-yet">
+            <div class="box-popup-add__content__product__image">
+                <img src="https://placeimg.com/101/101/any">
+            </div>
+            <div class="box-popup-add__content__product__pieces display-none">
+                1 ks
+            </div>
+            <div class="box-popup-add__content__product__name">
+                <span class="box-popup-add__content__product__name__title">
+                    Košile Indiana
+                </span>
+                <span class="box-popup-add__content__product__name__price">
+                    <span class="box-popup-add__content__product__name__price__main">
+                        1699 Kč
+                    </span>
+                    <span class="box-popup-add__content__product__name__price__old">
+                        3099 Kč
+                    </span>
+                </span>
+                <span class="box-popup-add__content__product__name__text">
+                    {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet" title="">36</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="box-popup-add__action">
+        <div class="box-popup-add__action__buttons">
+            <div class="box-popup-add__action__buttons__back js-window-button-close">
+                <i class="svg svg-triangle"></i>
+                <a href="#" class="box-popup-add__action__buttons__back__link underline-small">
+                    {{ 'Zpět do e-shopu'|trans }}
+                </a>
+            </div>
+            <a href="{{ url('front_cart') }}" class="btn btn--success btn--large">
+                {{ 'Přejít do košíku'|trans }}
+            </a>
+        </div>
+        <div class="box-popup-add__action__transport">
+            <div class="in-free-transport">
+                <div class="in-free-transport js-not-implemented-yet">
+                    <div class="in-free-transport__title">
+                        {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">1000</span>&nbsp;{{ 'a'|trans }}
+                        {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                    </div>
+                    <div class="in-free-transport__pipe in-free-transport__pipe--fat">
+                        <div class="in-free-transport__pipe__line" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% if isModuleEnabled(ACCESSORIES_ON_BUY) %}
     {% if accessories|length > 0 %}
         <div class="wrap-box margin-top-20 margin-bottom-0">
