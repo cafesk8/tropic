@@ -153,6 +153,7 @@ class CartController extends FrontBaseController
             'remainingPriceWithVat' => $remainingPriceWithVat,
             'cartItemDiscounts' => $orderPreview->getQuantifiedItemsDiscounts(),
             'productsPrice' => $productsPrice,
+            'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
         ]);
     }
 
