@@ -313,4 +313,17 @@ class ProductFacade extends BaseProductFacade
             $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
         }
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
+     */
+    protected function refreshProductManualInputPrices(Product $product, array $manualInputPrices)
+    {
+        foreach ($this->pricingGroupRepository->getAll() as $pricingGroup) {
+            if (isset($manualInputPrices[$pricingGroup->getId()]) === true) {
+                $this->productManualInputPriceFacade->refresh($product, $pricingGroup, $manualInputPrices[$pricingGroup->getId()]);
+            }
+        }
+    }
 }
