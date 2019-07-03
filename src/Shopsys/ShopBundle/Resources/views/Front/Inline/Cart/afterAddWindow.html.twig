@@ -1,4 +1,7 @@
-{{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
+{# TODO PRG: hidden by design, bcs we dont need to show message,
+- but I only hide it due to future implementation
+- message contains some information we need in this window #}
+{#{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }#}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 
 <div class="box-popup-add">
@@ -35,7 +38,8 @@
     </div>
     <div class="box-popup-add__action">
         <div class="box-popup-add__action__buttons">
-            <div class="box-popup-add__action__buttons__back js-window-button-close">
+            {# TODO PRG: bind same function like to cross sign at right top #}
+            <div class="box-popup-add__action__buttons__back js-window-button-close js-not-implemented-yet">
                 <i class="svg svg-triangle"></i>
                 <a href="#" class="box-popup-add__action__buttons__back__link underline-small">
                     {{ 'Zpět do e-shopu'|trans }}
