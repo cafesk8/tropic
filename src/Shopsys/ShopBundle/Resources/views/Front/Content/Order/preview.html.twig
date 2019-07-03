@@ -136,20 +136,31 @@
         </div>
         <div class="in-action in-action--column">
             {% if orderPreview.quantifiedProducts > 0 %}
+                {% if orderStep == 1 %}
+                    {% set continueButtonText = 'Pokračovat v objednávce'|trans %}
+                {% elseif orderStep == 2 %}
+                    {% set continueButtonText = 'Vyplnit dodací údaje'|trans %}
+                {% else %}
+                    {% set continueButtonText = 'Odeslat objednávku'|trans %}
+                {% endif %}
                 {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
-                <input type="submit" class="in-action__btn btn btn--success btn--full-width js-submitButton" name="cart_form[submit]" value="{{ submitButtonText }}">
+                <input
+                    type="submit"
+                    class="in-action__btn btn btn--success btn--full-width"
+                    name="cart_form[submit]"
+                    value="{{ continueButtonText }}">
             {% endif %}
 
             <div class="in-action__back">
                 {% if orderStep == 1 %}
                     <i class="svg svg-triangle"></i>
-                    <a href="{{ url('front_homepage') }}" class="in-action__link underline js-backButton">
-                        {{ backButtonText }}
+                    <a href="{{ url('front_homepage') }}" class="in-action__link underline">
+                        {{ 'Zpět do e-shopu'|trans }}
                     </a>
                 {% elseif orderStep == 2 %}
                     <i class="svg svg-triangle"></i>
-                    <a href="{{ url('front_cart') }}" class="in-action__link underline js-backButton">
-                        {{ backButtonText }}
+                    <a href="{{ url('front_cart') }}" class="in-action__link underline">
+                        {{ 'Zpět do košíku'|trans }}
                     </a>
                 {% elseif orderStep == 3 %}
                     <button type="submit" name="flow_order_transition" value="back" class="in-action__link underline js-no-validate-button">
