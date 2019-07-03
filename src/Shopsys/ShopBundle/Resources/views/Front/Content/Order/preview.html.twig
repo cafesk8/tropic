@@ -17,7 +17,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if orderStep == "2" %}
+        {% if orderStep > 1 %}
             <ul class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
                     {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
