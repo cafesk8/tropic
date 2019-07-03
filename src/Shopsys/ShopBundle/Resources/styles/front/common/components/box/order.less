@@ -4,6 +4,7 @@
 @box-order-info-transport-width: 176px;
 @box-order-info-transport-height: 55px;
 @box-order-top-gap: 57px;
+@box-order-additional-gap: 75px;
 
 .box-order {
     width: 100%;
@@ -68,7 +69,7 @@
     }
 
     &__additional {
-        padding: 43px 75px 38px 75px;
+        padding: 43px @box-order-additional-gap 38px @box-order-additional-gap;
 
         background-color: @color-gray;
 

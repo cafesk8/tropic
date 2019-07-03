@@ -115,30 +115,32 @@
         </table>
     </div>
     <div class="box-preview__row {% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %}">
-        <table class="table-cart-preview__total">
-            <tr class="table-cart-preview__total__row">
-                <td class="table-cart-preview__total__cell">
-                    {{ 'Celkem'|trans }}
-                </td>
-                <td class="table-cart-preview__total__price-primary">
-                    {{ orderPreview.totalPrice.priceWithVat|price }}
-                </td>
-            </tr>
-            <tr class="table-cart-preview__total__row">
-                <td class="table-cart-preview__total__cell">
-                </td>
-                <td class="table-cart-preview__total__price-secondary">
-                    {{ orderPreview.totalPrice.priceWithoutVat|price }} {{ 'bez DPH'|trans }}
-                </td>
-            </tr>
-        </table>
+        <div class="table-cart-preview">
+            <table class="table-cart-preview__total">
+                <tr class="table-cart-preview__total__row">
+                    <td class="table-cart-preview__total__cell">
+                        {{ 'Celkem'|trans }}
+                    </td>
+                    <td class="table-cart-preview__total__price-primary">
+                        {{ orderPreview.totalPrice.priceWithVat|price }}
+                    </td>
+                </tr>
+                <tr class="table-cart-preview__total__row">
+                    <td class="table-cart-preview__total__cell">
+                    </td>
+                    <td class="table-cart-preview__total__price-secondary">
+                        {{ orderPreview.totalPrice.priceWithoutVat|price }} {{ 'bez DPH'|trans }}
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div class="in-action in-action--column">
             {% if orderPreview.quantifiedProducts > 0 %}
                 {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
                 <input type="submit" class="in-action__btn btn btn--success btn--full-width js-submitButton" name="cart_form[submit]" value="{{ submitButtonText }}">
             {% endif %}
 
-            <div class="in-action__back in-action--with-back-icon">
+            <div class="in-action__back">
                 {% if orderStep == 1 %}
                     <i class="svg svg-triangle"></i>
                     <a href="{{ url('front_homepage') }}" class="in-action__link underline js-backButton">
@@ -154,9 +156,6 @@
                         {{ 'Back to shipping and payment selection'|trans }}
                     </button>
                 {% endif %}
-
-
             </div>
         </div>
-
-</div>
+    </div>

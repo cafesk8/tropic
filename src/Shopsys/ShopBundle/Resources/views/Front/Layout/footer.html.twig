@@ -10,27 +10,27 @@
                 <div class="web__container web__container--light web__container--big-padding">
                     <div class="footer-top">
                         <div class="footer-top__info">
-                            <ul class="footer-top__socials">
-                                <li class="footer-top__socials__item">
-                                    <a class="footer-top__socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
-                                        <i class="footer-top__socials__item__icon footer-top__socials__item__icon--facebook svg svg-facebook"></i>
-                                        <span class="footer-top__socials__item__text">
+                            <ul class="list-socials">
+                                <li class="list-socials__item">
+                                    <a class="list-socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
+                                        <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
+                                        <span class="list-socials__item__text">
                                             {{ 'Facebook'|trans }}
                                         </span>
                                     </a>
                                 </li>
-                                <li class="footer-top__socials__item">
-                                    <a class="footer-top__socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
-                                        <i class="footer-top__socials__item__icon footer-top__socials__item__icon--instagram svg svg-instagram"></i>
-                                        <span class="footer-top__socials__item__text">
+                                <li class="list-socials__item">
+                                    <a class="list-socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
+                                        <i class="list-socials__item__icon list-socials__item__icon--instagram svg svg-instagram"></i>
+                                        <span class="list-socials__item__text">
                                             {{ 'Instagram'|trans }}
                                         </span>
                                     </a>
                                 </li>
-                                <li class="footer-top__socials__item">
-                                    <a class="footer-top__socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
-                                        <i class="footer-top__socials__item__icon footer-top__socials__item__icon--youtube svg svg-youtube"></i>
-                                        <span class="footer-top__socials__item__text">
+                                <li class="list-socials__item">
+                                    <a class="list-socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
+                                        <i class="list-socials__item__icon list-socials__item__icon--youtube svg svg-youtube"></i>
+                                        <span class="list-socials__item__text">
                                             {{ 'Youtube'|trans }}
                                         </span>
                                     </a>
@@ -142,19 +142,20 @@
                 </div>
             </div>
         {% endblock %}
+        
         <div class="web__line">
             <footer class="web__container footer-bottom">
                 <div class="footer-bottom__copyright dont-print">
                     {{ 'Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena.'|trans }}
                 </div>
-                <div class="footer-bottom__copyright__info dont-print">
+                <div class="footer-bottom__info dont-print">
                     {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat'|trans }}<br>
                     {{ 'přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
                 </div>
-                <div class="footer-bottom__copyright__shopsys dont-print">
+                <div class="footer-bottom__shopsys dont-print">
                     {{ 'Eshop na míru od'|trans }}
                     <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank">
-                        <img class="footer-bottom__copyright__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                        <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
                     </a>
                 </div>
             </footer>

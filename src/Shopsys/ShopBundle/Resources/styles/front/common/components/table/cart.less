@@ -1,5 +1,4 @@
-@table-cart-image-width: 101px;
-@table-cart-image-height: 101px;
+@table-cart-image-size: 101px;
 @table-cart-image-gap: 10px;
 @table-cart-image-gap-vertical: 22px;
 @table-cart-row-left-width: 60%;
@@ -50,8 +49,8 @@
         &__image {
             display: inline-block;
             position: relative;
-            height: @table-cart-image-height + 2*@table-cart-image-gap-vertical;
-            width: @table-cart-image-width + 2*@table-cart-image-gap;
+            height: @table-cart-image-size + 2*@table-cart-image-gap-vertical;
+            width: @table-cart-image-size + 2*@table-cart-image-gap;
 
             img {
                 .center-image();
