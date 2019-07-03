@@ -123,13 +123,13 @@
                             </div>
                         </div>
                         <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
-                            {{ render(controller('ShopsysShopBundle:Front/Order:preview',{
+                            {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
                                 orderStep: "1",
+                                formSubmit: form.submit
                             })) }}
                             {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' with { cssClass: "list-benefits--in-panel" } %}
                         </div>
                     </div>
-                    {% do form.submit.setRendered %}
                 {{ form_end(form) }}
             {% else %}
                 <div class="box-cart-empty">

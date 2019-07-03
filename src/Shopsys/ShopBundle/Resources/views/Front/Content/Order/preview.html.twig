@@ -135,7 +135,7 @@
             </table>
         </div>
         <div class="in-action in-action--column">
-            {% if orderPreview.quantifiedProducts > 0 %}
+            {% if orderPreview.quantifiedProducts > 0 and renderSubmitButton %}
                 {% if orderStep == 1 %}
                     {% set continueButtonText = 'Pokračovat v objednávce'|trans %}
                 {% elseif orderStep == 2 %}
@@ -143,12 +143,7 @@
                 {% else %}
                     {% set continueButtonText = 'Odeslat objednávku'|trans %}
                 {% endif %}
-                {#{ form_row(form.submit, { label: 'Order [verb]'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }#}
-                <input
-                    type="submit"
-                    class="in-action__btn btn btn--success btn--full-width"
-                    name="cart_form[submit]"
-                    value="{{ continueButtonText }}">
+                {{  form_row(formSubmit, { label: continueButtonText, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }}
             {% endif %}
 
             <div class="in-action__back">

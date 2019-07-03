@@ -157,8 +157,8 @@
                     transportId: transport is empty ? null : transport.id,
                     paymentId: payment is empty ? null : payment.id,
                     orderStep: '3',
+                    formSubmit: form.save
                 })) }}
-                {% do form.save.setRendered %}
             </div>
         </div>
     </div>

@@ -342,10 +342,13 @@ class OrderController extends FrontBaseController
         }
 
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        $renderSubmitButton = $request->isXmlHttpRequest() === false || $orderStep === '1';
 
         return $this->render('@ShopsysShop/Front/Content/Order/preview.html.twig', [
             'orderPreview' => $orderPreview,
             'orderStep' => $orderStep,
+            'formSubmit' => $request->get('formSubmit'),
+            'renderSubmitButton' => $renderSubmitButton,
         ]);
     }
 
