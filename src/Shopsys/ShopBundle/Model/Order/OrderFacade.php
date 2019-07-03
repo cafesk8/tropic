@@ -14,6 +14,11 @@ use Shopsys\FrameworkBundle\Model\Order\OrderFacade as BaseOrderFacade;
 class OrderFacade extends BaseOrderFacade
 {
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\OrderRepository
+     */
+    protected $orderRepository;
+
+    /**
      * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
      */
     protected $currentPromoCodeFacade;
@@ -150,5 +155,13 @@ class OrderFacade extends BaseOrderFacade
         $order->markAsFailedExported();
 
         $this->em->flush($order);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getNotExportedOrders(): array
+    {
+        return $this->orderRepository->getNotExportedOrders();
     }
 }

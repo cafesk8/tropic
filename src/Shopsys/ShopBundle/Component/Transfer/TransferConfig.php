@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Transfer;
 
+use DateTime;
+
 class TransferConfig
 {
+    public const DATETIME_FORMAT = DateTime::RFC3339_EXTENDED;
+
     /**
      * @var string
      */

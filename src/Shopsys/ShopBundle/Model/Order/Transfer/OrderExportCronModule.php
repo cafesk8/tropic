@@ -26,18 +26,26 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
     private $orderFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\Transfer\OrderExportMapper
+     */
+    private $orderExportMapper;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
+     * @param \Shopsys\ShopBundle\Model\Order\Transfer\OrderExportMapper $orderExportMapper
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         RestClient $restClient,
-        OrderFacade $orderFacade
+        OrderFacade $orderFacade,
+        OrderExportMapper $orderExportMapper
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->restClient = $restClient;
         $this->orderFacade = $orderFacade;
+        $this->orderExportMapper = $orderExportMapper;
     }
 
     /**
@@ -53,8 +61,14 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
      */
     protected function getDataForExport(): array
     {
-        // TODO: Implement getDataForExport() method.
-        return [];
+        $notExportedOrders = $this->orderFacade->getNotExportedOrders();
+        $ordersToExport = [];
+
+        foreach ($notExportedOrders as $notExportedOrder) {
+            $ordersToExport[$notExportedOrder->getId()] = $this->orderExportMapper->mapToArray($notExportedOrder);
+        }
+
+        return $ordersToExport;
     }
 
     /**
