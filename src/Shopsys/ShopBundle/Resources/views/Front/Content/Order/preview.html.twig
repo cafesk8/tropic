@@ -48,7 +48,7 @@
             </ul>
         {% endif %}
 
-        <table class="table-cart-preview">
+        <table id="js-order-preview-fees" class="table-cart-preview">
             <tbody>
                 <tr class="table-cart-preview__row">
                     <td class="table-cart-preview__cell js-not-implemented-yet">
@@ -115,7 +115,7 @@
         </table>
     </div>
     <div class="box-preview__row {% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %}">
-        <div class="table-cart-preview">
+        <div id="js-order-preview-total-price" class="table-cart-preview">
             <table class="table-cart-preview__total">
                 <tr class="table-cart-preview__total__row">
                     <td class="table-cart-preview__total__cell">

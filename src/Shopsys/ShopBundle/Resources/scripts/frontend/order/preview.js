@@ -15,6 +15,8 @@
         var $checkedPayment = $('.js-order-payment-input:checked');
         var $backButton = $('.js-backButton');
         var $submitButton = $('.js-submitButton');
+        var $orderPreviewItemsList = $orderPreview.filterAllNodes('#js-order-preview-fees');
+        var $orderPreviewTotalPrice = $orderPreview.filterAllNodes('#js-order-preview-total-price');
 
         var data = {};
         data['submitButtonText'] = $submitButton.val();
@@ -34,8 +36,10 @@
             type: 'get',
             data: data,
             success: function (data) {
-                $orderPreview.html(data);
-                Shopsys.register.registerNewContent($orderPreview);
+                var $newOrderPreview = $($.parseHTML(data));
+                $orderPreviewItemsList.html($newOrderPreview.filterAllNodes('#js-order-preview-fees').html());
+                $orderPreviewTotalPrice.html($newOrderPreview.filterAllNodes('#js-order-preview-total-price').html());
+                Shopsys.register.registerNewContent($newOrderPreview);
             }
         });
     };
