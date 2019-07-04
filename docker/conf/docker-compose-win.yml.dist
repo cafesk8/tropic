@@ -13,6 +13,19 @@ services:
             - POSTGRES_DB=shopsys
         command: postgres -c config_file=/var/lib/postgresql/data/postgresql.conf
 
+    mysql:
+        image: mysql:5.5.62
+        container_name: shopsys-framework-mysql
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./migration-data:/migration-data
+            - ./docker/mysql/:/etc/mysql/conf.d
+        environment:
+            MYSQL_DATABASE: dbsklad
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: root
+
     webserver:
         image: nginx:1.13-alpine
         container_name: shopsys-framework-webserver
@@ -93,6 +106,8 @@ services:
             - "5601:5601"
 
 volumes:
+    mysql-data:
+        driver: local
     pgdata:
         driver: local
     elasticsearch-data:
