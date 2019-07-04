@@ -9,6 +9,11 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
 class PromoCodeData extends BasePromoCodeData
 {
     /**
+     * @var int|null
+     */
+    public $domainId;
+
+    /**
      * @var bool|null
      */
     public $unlimited;

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
+use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -24,6 +28,19 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public const VALIDATION_GROUP_TYPE_NOT_UNLIMITED = 'NOT_UNLIMITED';
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function __construct(Domain $domain)
+    {
+        $this->domain = $domain;
+    }
+
+    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      */
@@ -33,6 +50,26 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
         $this->extendCodeField($builder);
         $this->extendPercentField($builder);
+
+        if ($options['promo_code'] === null) {
+            $builder->add('domainId', DomainType::class, [
+                'required' => true,
+                'data' => $options['domain_id'],
+                'label' => t('Domain'),
+            ]);
+        } else {
+            $builder
+                ->add('id', DisplayOnlyType::class, [
+                    'data' => $options['promo_code']->getId(),
+                    'label' => t('ID'),
+                    'position' => 'first',
+                ])
+                ->add('domain', DisplayOnlyType::class, [
+                    'data' => $this->domain->getDomainConfigById($options['promo_code']->getDomainId())->getName(),
+                    'label' => t('Domain'),
+                    'position' => ['after' => 'id'],
+                ]);
+        }
 
         $builder->add($this->getRestictionGroup($builder));
         $builder->add($this->getValidationGroup($builder));
@@ -45,7 +82,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver
+            ->setRequired(['promo_code', 'domain_id'])
+            ->setAllowedTypes('promo_code', [PromoCode::class, 'null'])
+            ->setAllowedTypes('domain_id', 'int')
+            ->setDefaults([
             'data_class' => PromoCodeData::class,
             'validation_groups' => function (FormInterface $form) {
                 $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];

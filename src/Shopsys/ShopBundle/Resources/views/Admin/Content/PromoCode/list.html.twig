@@ -13,5 +13,6 @@
 {% endblock %}
 
 {% block main_content %}
+    {{ render(controller('ShopsysFrameworkBundle:Admin/Domain:domainTabs')) }}
     {{ gridView.render() }}
 {% endblock %}

@@ -16,6 +16,13 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
 class PromoCode extends BasePromoCode
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    protected $domainId;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", nullable=false)
@@ -57,6 +64,7 @@ class PromoCode extends BasePromoCode
     {
         parent::__construct($promoCodeData);
 
+        $this->domainId = $promoCodeData->domainId;
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
         $this->numberOfUses = $promoCodeData->numberOfUses;
@@ -76,6 +84,14 @@ class PromoCode extends BasePromoCode
         $this->numberOfUses = $promoCodeData->numberOfUses;
         $this->validFrom = $promoCodeData->validFrom;
         $this->validTo = $promoCodeData->validTo;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDomainId(): int
+    {
+        return $this->domainId;
     }
 
     /**
