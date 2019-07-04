@@ -1,90 +1,168 @@
-<h2>{{ 'Products in cart overview'|trans }}</h2>
-<table class="table-cart-preview">
-    <tbody>
 
-        {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
-            {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
-            {% set quantifiedProductDiscount = orderPreview.quantifiedItemsDiscounts[quantifiedProductKey] %}
-            <tr class="table-cart-preview__row">
-                <td class="table-cart-preview__cell">
-                    <strong>{{ quantifiedProduct.quantity|formatNumber }} {{ quantifiedProduct.product.unit.name }}</strong>
-                    {{ quantifiedProduct.product.name }}
-                </td>
-                <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                    {{ quantifiedProductPrice.totalPrice.priceWithVat|price }}
-                </td>
-            </tr>
-            {% if quantifiedProductDiscount is not null %}
-                <tr>
-                    <td class="table-cart-preview__cell">
-                        {{ 'Promo code'|trans }} {{ (-orderPreview.promoCodeDiscountPercent)|formatPercent }}
+<div class="box-preview">
+    <div class="box-preview__title">
+        <span class="box-preview__title__text double-lined">
+            {{ 'Vaše objednávka'|trans }}
+        </span>
+    </div>
+    <div class="box-preview__row {% if orderStep == "1" %} box-preview__row--dark{% else %} box-preview__row--no-bottom{% endif %}">
+        {% if orderStep == "1" %}
+            <div class="box-preview__coupone">
+                <div class="box-preview__coupone__title">
+                    {{ 'Máte slevový kód?'|trans }}
+                </div>
+                <div class="box-preview__coupone__input js-not-implemented-yet">
+                    <label for="orderCoupone" class="input__label">{{ 'Zadejte kód'|trans }}</label>
+                    <input type="text" id="orderCoupone" class="input" name="coupone" value="">
+                </div>
+            </div>
+        {% endif %}
+        {% if orderStep > 1 %}
+            <ul class="list-cart-preview">
+                {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
+                    {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
+                    {% set quantifiedProductDiscount = orderPreview.quantifiedItemsDiscounts[quantifiedProductKey] %}
+                    <li class="list-cart-preview__item">
+                        <div class="list-cart-preview__item__image">
+                            {{ image(quantifiedProduct.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+                        </div>
+                        <div class="list-cart-preview__item__pieces">
+                            {{ quantifiedProduct.quantity|formatNumber }} {{ quantifiedProduct.product.unit.name }}
+                        </div>
+                        <div class="list-cart-preview__item__name">
+                            <span class="list-cart-preview__item__name__title">
+                                {{ quantifiedProduct.product.name }}
+                            </span>
+                            <span class="list-cart-preview__item__name__text js-not-implemented-yet">
+                                {{ 'Barva'|trans }}: Light Olive
+                            </span>
+                            <span class="list-cart-preview__item__name__text">
+                                {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet" title="">36</span>
+                            </span>
+                        </div>
+                        <div class="list-cart-preview__item__price">
+                            {{ quantifiedProductPrice.totalPrice.priceWithVat|price }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <table id="js-order-preview-fees" class="table-cart-preview">
+            <tbody>
+                <tr class="table-cart-preview__row">
+                    <td class="table-cart-preview__cell js-not-implemented-yet">
+                        {{ 'Sleva'|trans }}
+                        <span class="next-line"></span> {{ '(kód VANOCE2018)'|trans }}
                     </td>
-                    <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                        {{ quantifiedProductDiscount.inverse.priceWithVat|price }}
+                    <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
+                        -500 kč
                     </td>
                 </tr>
+
+                <tr class="table-cart-preview__row">
+                    <td class="table-cart-preview__cell js-not-implemented-yet">
+                        {{ 'Doprava (29.1. u vás)'|trans }}
+                    </td>
+                    <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                        {{ 'zdarma'|trans }}
+                    </td>
+                </tr>
+
+                {% if orderPreview.transport is not empty %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Shipping method'|trans }} {{ orderPreview.transport.name }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.transportPrice.priceWithVat|priceText }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% if orderPreview.payment is not empty %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Payment method'|trans }} {{ orderPreview.payment.name }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.paymentPrice.priceWithVat|priceText }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% if orderPreview.roundingPrice is not empty %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Rounding'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.roundingPrice.priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if orderStep == "1" %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Total price including VAT'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.totalPrice.priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="box-preview__row {% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %}">
+        <div id="js-order-preview-total-price" class="table-cart-preview">
+            <table class="table-cart-preview__total">
+                <tr class="table-cart-preview__total__row">
+                    <td class="table-cart-preview__total__cell">
+                        {{ 'Celkem'|trans }}
+                    </td>
+                    <td class="table-cart-preview__total__price-primary">
+                        {{ orderPreview.totalPrice.priceWithVat|price }}
+                    </td>
+                </tr>
+                <tr class="table-cart-preview__total__row">
+                    <td class="table-cart-preview__total__cell">
+                    </td>
+                    <td class="table-cart-preview__total__price-secondary">
+                        {{ orderPreview.totalPrice.priceWithoutVat|price }} {{ 'bez DPH'|trans }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="in-action in-action--column">
+            {% if orderPreview.quantifiedProducts > 0 and renderSubmitButton %}
+                {% if orderStep == 1 %}
+                    {% set continueButtonText = 'Pokračovat v objednávce'|trans %}
+                {% elseif orderStep == 2 %}
+                    {% set continueButtonText = 'Vyplnit dodací údaje'|trans %}
+                {% else %}
+                    {% set continueButtonText = 'Odeslat objednávku'|trans %}
+                {% endif %}
+                {{  form_row(formSubmit, { label: continueButtonText, attr: { class: 'btn btn--success in-action__btn in-action__btn--big'}}) }}
             {% endif %}
-        {% endfor %}
 
-        {% if orderPreview.transport is not empty %}
-            <tr class="table-cart-preview__row">
-                <td class="table-cart-preview__cell">
-                    {{ 'Shipping method'|trans }}: {{ orderPreview.transport.name }}
-                </td>
-                <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                    {{ orderPreview.transportPrice.priceWithVat|priceText }}
-                </td>
-            </tr>
-        {% endif %}
-
-        {% if orderPreview.payment is not empty %}
-            <tr class="table-cart-preview__row">
-                <td class="table-cart-preview__cell">
-                    {{ 'Payment method'|trans }}: {{ orderPreview.payment.name }}
-                </td>
-                <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                    {{ orderPreview.paymentPrice.priceWithVat|priceText }}
-                </td>
-            </tr>
-        {% endif %}
-
-        {% if orderPreview.roundingPrice is not empty %}
-            <tr class="table-cart-preview__row">
-                <td class="table-cart-preview__cell">
-                    {{ 'Rounding'|trans }}:
-                </td>
-                <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                    {{ orderPreview.roundingPrice.priceWithVat|price }}
-                </td>
-            </tr>
-        {% endif %}
-
-        <tr class="table-cart-preview__row table-cart-preview__row--total table-cart-preview__row--important">
-            <td class="table-cart-preview__cell">
-                {{ 'Total price including VAT'|trans }}:
-            </td>
-            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                {{ orderPreview.totalPrice.priceWithVat|price }}
-            </td>
-        </tr>
-
-        <tr class="table-cart-preview__row table-cart-preview__row--total">
-            <td class="table-cart-preview__cell">
-                {{ 'Total price excluding VAT'|trans }}:
-            </td>
-            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                {{ orderPreview.totalPrice.priceWithoutVat|price }}
-            </td>
-        </tr>
-
-        <tr class="table-cart-preview__row table-cart-preview__row--total">
-            <td class="table-cart-preview__cell">
-                {{ 'Total amount of VAT'|trans }}:
-            </td>
-            <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                {{ orderPreview.totalPrice.vatAmount|price }}
-            </td>
-        </tr>
-
-    </tbody>
-</table>
+            <div class="in-action__back">
+                {% if orderStep == 1 %}
+                    <i class="svg svg-triangle"></i>
+                    <a href="{{ url('front_homepage') }}" class="in-action__link underline">
+                        {{ 'Zpět do e-shopu'|trans }}
+                    </a>
+                {% elseif orderStep == 2 %}
+                    <i class="svg svg-triangle"></i>
+                    <a href="{{ url('front_cart') }}" class="in-action__link underline">
+                        {{ 'Zpět do košíku'|trans }}
+                    </a>
+                {% elseif orderStep == 3 %}
+                    <button type="submit" name="flow_order_transition" value="back" class="in-action__link underline js-no-validate-button">
+                        {{ 'Back to shipping and payment selection'|trans }}
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,185 +1,182 @@
 {% extends '@ShopsysShop/Front/Content/Order/step.html.twig' %}
 
-{% block h1 %}
-    {{ 'Order [noun]'|trans }}
-{% endblock %}
+{% block h1 %}{% endblock %}
 
 {% block content %}
+<div class="web__line">
+    <div class="web__container web__container--big-padding">
+        <div class="box-order">
 
-    <div class="box-order">
+            <div id="{{ form.vars.id }}" class="box-order__info">
 
-        <div id="{{ form.vars.id }}" class="box-order__info">
+                <div class="box-order__info__item">
+                    <div class="box-order__title">
+                        <h2 id="js-label-{{ form.transport.vars.id }}" class="box-order__title__text double-lined">
+                            {{ 'Vyberte způsob dopravy'|trans }}
+                        </h2>
+                    </div>
+                    <div class="box-chooser js-form-group">
+                        {{ form_errors(form.transport, { errors_attr: {class: 'form-error--inline'} }) }}
 
-            <div class="box-order__info__item">
+                        {{ form_widget(form.pickupPlace, { attr: {
+                            'class': 'js-pickup-place-input',
+                            'data-pickup-place-search-url': url('front_pickup_place_search')
+                        }}) }}
 
-                <h2 id="js-label-{{ form.transport.vars.id }}">{{ 'Shipping selection'|trans }}</h2>
+                        <div id="{{ form.transport.vars.id }}">
+                            {% for child in form.transport %}
+                                {% set choice = form.transport.vars.choices[child.vars.name] %}
+                                {% set transportPrice = transportsPrices[choice.data.id] %}
+                                <label class="box-chooser__item js-order-transport">
+                                    <span class="box-chooser__item__check">
+                                        {{ form_widget(child, { attr: {
+                                            class: 'css-radio js-order-transport-input',
+                                            'data-id': choice.data.id,
+                                            'data-transport-pickup': choice.data.pickupPlace
+                                        } }) }}
+                                        <span class="css-label-radio"></span>
+                                    </span>
 
-                <div class="box-chooser js-form-group">
-                    {{ form_errors(form.transport, { errors_attr: {class: 'form-error--inline'} }) }}
-
-                    {{ form_widget(form.pickupPlace, { attr: {
-                        'class': 'js-pickup-place-input',
-                        'data-pickup-place-search-url': url('front_pickup_place_search')
-                    }}) }}
-
-                    <div id="{{ form.transport.vars.id }}">
-                        {% for child in form.transport %}
-                            {% set choice = form.transport.vars.choices[child.vars.name] %}
-                            {% set transportPrice = transportsPrices[choice.data.id] %}
-                            <label class="box-chooser__item js-order-transport">
-                                <span class="box-chooser__item__check">
-                                    {{ form_widget(child, { attr: {
-                                        class: 'js-order-transport-input',
-                                        'data-id': choice.data.id,
-                                        'data-transport-pickup': choice.data.pickupPlace
-                                    } }) }}
-                                </span>
-
-                                <span class="box-chooser__item__image">
-                                    {% if imageExists(choice.data) %}
-                                        {{ image(choice.data) }}
-                                    {% endif %}
-                                </span>
-
-                                <span class="box-chooser__item__title">
-                                    <strong class="box-chooser__item__title__name">
-                                        {{ choice.data.name }}
-                                    </strong>
-                                    {% if choice.data.description %}
-                                        <span class="box-chooser__item__title__description">
-                                            - {{ choice.data.description }}
+                                    <span class="box-chooser__item__title">
+                                        <span class="box-chooser__item__title__name">
+                                            {{ choice.data.name }}
+                                            {% if imageExists(choice.data) %}
+                                                <span class="box-chooser__item__image">
+                                                    {{ image(choice.data) }}
+                                                </span>
+                                            {% endif %}
                                         </span>
-                                    {% endif %}
-                                </span>
+                                        {% if choice.data.description %}
+                                            <span class="box-chooser__item__title__description">
+                                                - {{ choice.data.description }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
 
-                                {% if choice.data.isPickupPlace() %}
-                                    {% set checked = child.vars.checked == true %}
-                                    <div class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
-                                         title="{{ pickupPlace and checked ? pickupPlace.name }}">
-                                        <strong class="js-pickup-place-detail-name">
-                                            {{ pickupPlace != null and checked ? pickupPlace.name : '' }}
-                                        </strong>
-                                        <button type="button" data-id="{{ choice.data.id }}" class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlace is null or checked == false %} display-none{% endif %}">
-                                            {{ 'Vybrat'|trans }}
-                                        </button>
-                                    </div>
+                                    {% if choice.data.isPickupPlace() %}
+                                        {% set checked = child.vars.checked == true %}
+                                        <div class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
+                                             title="{{ pickupPlace and checked ? pickupPlace.name }}">
+                                            <strong class="js-pickup-place-detail-name">
+                                                {{ pickupPlace != null and checked ? pickupPlace.name : '' }}
+                                            </strong>
+                                            <button type="button" data-id="{{ choice.data.id }}" class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlace is null or checked == false %} display-none{% endif %}">
+                                                {{ 'Vybrat'|trans }}
+                                            </button>
+                                        </div>
+                                    {% endif %}
+
+                                    <span class="box-chooser__item__price">
+                                        {{ transportPrice.priceWithVat|priceText }}
+                                    </span>
+                                </label>
+                            {% else %}
+                                {% do form.transport.setRendered %}
+                                {{ 'Nothing to choose from'|trans }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-order__info__item">
+                    <div class="box-order__title">
+                        <h2 id="js-label-{{ form.payment.vars.id }}" class="box-order__title__text double-lined">
+                            {{ 'Vyberte způsob platby'|trans }}
+                        </h2>
+                    </div>
+                    <div class="box-chooser box-chooser--smaller js-form-group">
+                        {{ form_errors(form.payment, { errors_attr: {class: 'form-error--inline'} }) }}
+
+                        <div id="{{ form.payment.vars.id }}" class="js-payments-wrapper">
+                            {% set bankTransferRendered = false %}
+                            {% set goPayBankSwiftForm = form.goPayBankSwift %}
+
+                            {% for child in form.payment %}
+                                {% set choice = form.payment.vars.choices[child.vars.name] %}
+                                {% set paymentPrice = paymentsPrices[choice.data.id] %}
+
+                                {% set goPayPaymentMethod = choice.data.getGoPayPaymentMethod() %}
+                                {% set isGoPayBankTransfer = goPayPaymentMethod != null and goPayPaymentMethod.identifier == goPayBankTransferIdentifier %}
+                                {% if isGoPayBankTransfer %}
+                                    {% set bankTransferRendered = true %}
                                 {% endif %}
 
-                                <span class="box-chooser__item__price">
-                                    {{ transportPrice.priceWithVat|priceText }}
-                                </span>
-                            </label>
-                        {% else %}
-                            {% do form.transport.setRendered %}
-                            {{ 'Nothing to choose from'|trans }}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
+                                <label class="box-chooser__item">
+                                    <span class="box-chooser__item__check">
+                                        {{ form_widget(child, { attr: { class: 'css-radio js-order-payment-input' ~ (isGoPayBankTransfer ? ' js-gopay-bank-transfer-input' : ''), 'data-id': choice.data.id} }) }}
+                                        <span class="css-label-radio"></span>
+                                    </span>
 
-            <div class="box-order__info__item">
-                <h2 id="js-label-{{ form.payment.vars.id }}">{{ 'Payment selection'|trans }}</h2>
 
-                <div class="box-chooser box-chooser--smaller js-form-group">
-                    {{ form_errors(form.payment, { errors_attr: {class: 'form-error--inline'} }) }}
-
-                    <div id="{{ form.payment.vars.id }}" class="js-payments-wrapper">
-                        {% set bankTransferRendered = false %}
-                        {% set goPayBankSwiftForm = form.goPayBankSwift %}
-
-                        {% for child in form.payment %}
-                            {% set choice = form.payment.vars.choices[child.vars.name] %}
-                            {% set paymentPrice = paymentsPrices[choice.data.id] %}
-
-                            {% set goPayPaymentMethod = choice.data.getGoPayPaymentMethod() %}
-                            {% set isGoPayBankTransfer = goPayPaymentMethod != null and goPayPaymentMethod.identifier == goPayBankTransferIdentifier %}
-                            {% if isGoPayBankTransfer %}
-                                {% set bankTransferRendered = true %}
-                            {% endif %}
-
-                            <label class="box-chooser__item">
-                                <span class="box-chooser__item__check">
-                                    {{ form_widget(child, { attr: { class: 'js-order-payment-input' ~ (isGoPayBankTransfer ? ' js-gopay-bank-transfer-input' : ''), 'data-id': choice.data.id} }) }}
-                                </span>
-
-                                <span class="box-chooser__item__image">
-                                    {% if imageExists(choice.data) %}
-                                        {{ image(choice.data) }}
-                                    {% endif %}
-                                </span>
-
-                                <span class="box-chooser__item__title">
-                                    <strong class="box-chooser__title__name">
-                                        {{ choice.data.name }}
-                                    </strong>
-                                    {% if choice.data.description %}
-                                        <span class="box-chooser__item__title__description">
-                                            - {{ choice.data.description }}
-                                        </span>
-                                    {% endif %}
-                                </span>
-
-                                <span class="box-chooser__item__price">
-                                    {{ paymentPrice.priceWithVat|priceText }}
-                                </span>
-                            </label>
-                            {% if isGoPayBankTransfer %}
-                                <div class="box-chooser__sub-selection js-gopay-list-banks display-none">
-                                    {% for goPayBankSwiftFormChild in goPayBankSwiftForm %}
-                                        {% set goPayBankSwiftFormChildChoice = goPayBankSwiftForm.vars.choices[goPayBankSwiftFormChild.vars.name] %}
-                                        {% set goPayBankSwift = goPayBankSwiftFormChildChoice.data %}
-                                        <label class="box-chooser__item">
-                                            <span class="box-chooser__item__check">
-                                                {{ form_widget(goPayBankSwiftFormChild, { attr: { class: 'js-order-gopay-bank-swift-input css-checkbox', 'data-swift': goPayBankSwift.swift} }) }}
-                                                <label for="{{goPayBankSwiftFormChild.vars.id}}" class="css-label-checkbox"></label>
-                                            </span>
-
+                                    <span class="box-chooser__item__title">
+                                        <span class="box-chooser__title__name">
+                                            {{ choice.data.name }}
+                                            {% if imageExists(choice.data) %}
                                             <span class="box-chooser__item__image">
-                                                <img src="{{ goPayBankSwift.imageLargeUrl }}">
+                                                {{ image(choice.data) }}
                                             </span>
+                                            {% endif %}
+                                        </span>
+                                        {% if choice.data.description %}
+                                            <span class="box-chooser__item__title__description">
+                                                - {{ choice.data.description }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
 
-                                            <span class="box-chooser__item__title">
-                                                <strong class="box-chooser__title__name">
-                                                    {{ goPayBankSwift.name }}
-                                                </strong>
-                                            </span>
+                                    <span class="box-chooser__item__price">
+                                        {{ paymentPrice.priceWithVat|priceText }}
+                                    </span>
+                                </label>
+                                {% if isGoPayBankTransfer %}
+                                    <div class="box-chooser__sub-selection js-gopay-list-banks display-none">
+                                        {% for goPayBankSwiftFormChild in goPayBankSwiftForm %}
+                                            {% set goPayBankSwiftFormChildChoice = goPayBankSwiftForm.vars.choices[goPayBankSwiftFormChild.vars.name] %}
+                                            {% set goPayBankSwift = goPayBankSwiftFormChildChoice.data %}
+                                            <label class="box-chooser__item">
+                                                <span class="box-chooser__item__check">
+                                                    {{ form_widget(goPayBankSwiftFormChild, { attr: { class: 'js-order-gopay-bank-swift-input css-radio', 'data-swift': goPayBankSwift.swift} }) }}
+                                                    <label for="{{goPayBankSwiftFormChild.vars.id}}" class="css-label-radio"></label>
+                                                </span>
 
-                                            <span class="box-chooser__item__price">
-                                                {{ paymentPrice.priceWithVat|priceText }}
-                                            </span>
-                                        </label>
-                                    {% endfor %}
-                                </div>
+                                                <span class="box-chooser__item__image">
+                                                    <img src="{{ goPayBankSwift.imageLargeUrl }}">
+                                                </span>
+
+                                                <span class="box-chooser__item__title">
+                                                    <span class="box-chooser__title__name">
+                                                        {{ goPayBankSwift.name }}
+                                                    </span>
+                                                </span>
+
+                                                <span class="box-chooser__item__price">
+                                                    {{ paymentPrice.priceWithVat|priceText }}
+                                                </span>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                {% do form.payment.setRendered %}
+                                {{ 'Nothing to choose from'|trans }}
+                            {% endfor %}
+                            {% if not bankTransferRendered %}
+                                {% do goPayBankSwiftForm.setRendered %}
                             {% endif %}
-                        {% else %}
-                            {% do form.payment.setRendered %}
-                            {{ 'Nothing to choose from'|trans }}
-                        {% endfor %}
-                        {% if not bankTransferRendered %}
-                            {% do goPayBankSwiftForm.setRendered %}
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
-            {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
-                transportId: transport is empty ? null : transport.id,
-                paymentId: payment is empty ? null : payment.id
-            })) }}
+            <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
+                {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
+                    transportId: transport is empty ? null : transport.id,
+                    paymentId: payment is empty ? null : payment.id,
+                    orderStep: '2',
+                    formSubmit: form.save
+                })) }}
+            </div>
         </div>
     </div>
-
-    <div class="in-action">
-        <div class="in-action__right">
-            {{ form_widget(form.save, { label: 'Continue in order'|trans, attr: { class: 'btn btn--success in-action__btn in-action__btn--big' } }) }}
-        </div>
-
-        <div class="in-action__left">
-            <button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" class="btn in-action__btn js-no-validate-button">
-                {{ 'Back to cart'|trans }}
-            </button>
-        </div>
-    </div>
+</div>
 {% endblock %}

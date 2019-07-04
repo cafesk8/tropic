@@ -19,97 +19,6 @@
         }
     }
 
-    &__socials {
-        .reset-ul();
-        display: flex;
-        width: 100%;
-        margin-right: @footer-top-social-gap;
-        flex-direction: column;
-
-        background-color: @color-f;
-        border-radius: @radius;
-
-        @media @query-vl {
-            width: calc(~"100% - @{footer-top-social-gap}");
-        }
-
-        @media @query-xl {
-            height: @footer-top-social-height;
-            flex-direction: row;
-        }
-
-        &__item {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-
-            border-bottom: 1px solid @color-gray;
-            color: @color-brown;
-
-            @media @query-xl {
-                width: calc(~"@{calc-base}/3");
-
-                border-right: 1px solid @color-gray;
-            }
-
-            &:last-child {
-                border-right: 0;
-                border-bottom: 0;
-            }
-
-            &__link {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                line-height: @footer-top-social-height;
-                width: 100%;
-
-                font-size: @font-size;
-                font-weight: bold;
-                color: @color-base;
-                text-transform: uppercase;
-                text-decoration: none;
-
-                @media @query-xl {
-                    height: @footer-top-social-height;
-                    flex-direction: row;
-                }
-            }
-
-            &__icon {
-                align-self: center;
-                margin-right: 12px;
-
-                font-size: 30px;
-                color: @color-brown;
-
-                &--facebook {
-                    .footer-top__socials__item:hover & {
-                        color: @color-facebook;
-                    }
-                }
-
-                &--instagram {
-                    .footer-top__socials__item:hover & {
-                        color: @color-instagram;
-                    }
-                }
-
-                &--youtube {
-                    padding-top: 3px;
-
-                    font-size: 35px;
-
-                    .footer-top__socials__item:hover & {
-                        color: @color-youtube;
-                    }
-                }
-            }
-        }
-    }
-
     &__contact {
         margin-top: 55px;
 
@@ -207,24 +116,25 @@
             margin-bottom: 0;
         }
 
-        &__info {
-            text-align: center;
+    }
 
-            font-family: @font-alt;
-            font-size: @font-size-extra-small;
-        }
+    &__info {
+        text-align: center;
 
-        &__shopsys {
-            padding-top: 56px;
+        font-family: @font-alt;
+        font-size: @font-size-extra-small;
+    }
 
-            font-family: @font-alt;
-            font-size: @font-size-small;
+    &__shopsys {
+        padding-top: 56px;
 
-            &__image {
-                display: inline-block;
-                margin-bottom: -5px;
-                margin-left: 10px;
-            }
+        font-family: @font-alt;
+        font-size: @font-size-small;
+
+        &__image {
+            display: inline-block;
+            margin-bottom: -5px;
+            margin-left: 10px;
         }
     }
 

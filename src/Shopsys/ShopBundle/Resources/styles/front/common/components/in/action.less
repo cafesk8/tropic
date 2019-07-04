@@ -1,61 +1,61 @@
 @in-action-button-big-height: @btn-height + 10px;
 @in-action-button-big-padding-vertical: @btn-padding-vertical;
 @in-action-button-big-padding-horizontal: 30px;
+@in-action-bottom-gap: 20px;
 
 .in-action {
-    @media @query-md {
-        width: 100%;
-        display: flex;
-        align-items: center;
+    margin-bottom: @in-action-bottom-gap;
+    width: 100%;
+    display: flex;
+    align-items: center;
 
-        .is-no-flex & {
-            display: block;
-            .clearfix();
+    &--column {
+        flex-direction: column;
+    }
+
+    &--centered-on-mobile {
+        margin: 0 auto 20px auto;
+
+        @media @query-md {
+            margin: 0;
+        }
+
+        .svg {
+            margin-top: -15px;
         }
     }
 
-    &__left {
-        @media @query-md {
-            order: 1;
-            flex: 1;
+    &__back {
+        padding-right: 25px;
 
-            .is-no-flex & {
-                float: left;
-                width: 100%/2;
-            }
-        }
-    }
+        .svg {
+            padding: 9px;
 
-    &__right {
-        margin-bottom: 5px;
-
-        @media @query-md {
-            order: 2;
-            flex: 1;
-            margin-bottom: 0;
-            text-align: right;
-
-            .is-no-flex & {
-                float: right;
-                width: 100%/2;
-            }
+            font-size: 7px;
+            transform: rotate(90deg);
         }
     }
 
     &__btn {
-        width: 100%;
+        padding: 0 @btn-padding-horizontal/2;
+        margin-bottom: 30px;
 
         @media @query-md {
-            width: auto;
+            padding: 0 @btn-padding-horizontal;
         }
+    }
 
-        &--big {
-            min-height: @in-action-button-big-height;
-            line-height: @in-action-button-big-height - 2 * @in-action-button-big-padding-vertical;
-            padding-left: @in-action-button-big-padding-horizontal;
-            padding-right: @in-action-button-big-padding-horizontal;
+    &__link {
+        color: @color-base;
+        margin-bottom: 20px;
 
-            font-size: 18px;
-        }
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        cursor: pointer;
     }
 }

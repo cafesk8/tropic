@@ -1,161 +1,164 @@
-<div class="footer">
-    <div class="web__line dont-print">
-        <div class="web__container">
-            {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'footer'})) }}
-        </div>
-    </div>
+{% block footer %}
+    <div class="footer">
+        {% block footer__links %}
+            <div class="web__line dont-print">
+                <div class="web__container">
+                    {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'footer'})) }}
+                </div>
+            </div>
+            <div class="web__line">
+                <div class="web__container web__container--light web__container--big-padding">
+                    <div class="footer-top">
+                        <div class="footer-top__info">
+                            <ul class="list-socials">
+                                <li class="list-socials__item">
+                                    <a class="list-socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
+                                        <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
+                                        <span class="list-socials__item__text">
+                                            {{ 'Facebook'|trans }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="list-socials__item">
+                                    <a class="list-socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
+                                        <i class="list-socials__item__icon list-socials__item__icon--instagram svg svg-instagram"></i>
+                                        <span class="list-socials__item__text">
+                                            {{ 'Instagram'|trans }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="list-socials__item">
+                                    <a class="list-socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
+                                        <i class="list-socials__item__icon list-socials__item__icon--youtube svg svg-youtube"></i>
+                                        <span class="list-socials__item__text">
+                                            {{ 'Youtube'|trans }}
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="footer-top__contact">
+                                <div class="footer-top__contact__block">
+                                    <div class="footer-top__contact__text">
+                                        <i class="svg svg-phone"></i>
+                                        {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                                    </div>
+                                    <div class="footer-top__contact__info">
+                                        {{ getShopInfoPhoneHours() }}
+                                    </div>
+                                </div>
+                                <div class="footer-top__contact__block">
+                                    <div class="footer-top__contact__text">
+                                        <i class="svg svg-mail"></i>
+                                        <a class="footer-top__contact__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
+                                    </div>
+                                    <div class="footer-top__contact__info">
+                                        {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-top__links">
+                            <div class="footer-top__links__column">
+                                <div class="footer-top__links__title">
+                                    {{ 'O nás'|trans }}
+                                </div>
+                                {{ render(controller('ShopsysShopBundle:Front/Article:footerAbout')) }}
+                            </div>
+                            <div class="footer-top__links__column">
+                                <div class="footer-top__links__title">
+                                    {{ 'Naše služby'|trans }}
+                                </div>
+                                {{ render(controller('ShopsysShopBundle:Front/Article:footerServices')) }}
+                            </div>
+                            <div class="footer-top__links__column">
+                                <div class="footer-top__links__title">
+                                    {{ 'O nákupu'|trans }}
+                                </div>
+                                {{ render(controller('ShopsysShopBundle:Front/Article:footerShopping')) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="web__line">
-        <div class="web__container web__container--light web__container--big-padding">
-            <div class="footer-top">
-                <div class="footer-top__info">
-                    <ul class="footer-top__socials">
-                        <li class="footer-top__socials__item">
-                            <a class="footer-top__socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
-                                <i class="footer-top__socials__item__icon footer-top__socials__item__icon--facebook svg svg-facebook"></i>
-                                <span class="footer-top__socials__item__text">
-                                    {{ 'Facebook'|trans }}
-                                </span>
+            <div class="web__line">
+                <div class="web__container">
+                    <ul class="list-languages js-not-implemented-yet">
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Italy.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Italia'|trans }}
                             </a>
                         </li>
-                        <li class="footer-top__socials__item">
-                            <a class="footer-top__socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
-                                <i class="footer-top__socials__item__icon footer-top__socials__item__icon--instagram svg svg-instagram"></i>
-                                <span class="footer-top__socials__item__text">
-                                    {{ 'Instagram'|trans }}
-                                </span>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Netherlands.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Nederland'|trans }}
                             </a>
                         </li>
-                        <li class="footer-top__socials__item">
-                            <a class="footer-top__socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
-                                <i class="footer-top__socials__item__icon footer-top__socials__item__icon--youtube svg svg-youtube"></i>
-                                <span class="footer-top__socials__item__text">
-                                    {{ 'Youtube'|trans }}
-                                </span>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Austria.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Österreich'|trans }}
+                            </a>
+                        </li>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Poland.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Polska'|trans }}
+                            </a>
+                        </li>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Hungary.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Magyarország'|trans }}
+                            </a>
+                        </li>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_England.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Great britain'|trans }}
+                            </a>
+                        </li>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Russia.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'БЪЛГАРИЯ'|trans }}
+                            </a>
+                        </li>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Germany.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Deutschland'|trans }}
+                            </a>
+                        </li>
+                        <li class="list-languages__item">
+                            <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Slovakia.png">
+                            <a class="list-languages__item__link underline" href="#">
+                                {{ 'Slovensko'|trans }}
                             </a>
                         </li>
                     </ul>
-                    <div class="footer-top__contact">
-                        <div class="footer-top__contact__block">
-                            <div class="footer-top__contact__text">
-                                <i class="svg svg-phone"></i>
-                                {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
-                            </div>
-                            <div class="footer-top__contact__info">
-                                {{ getShopInfoPhoneHours() }}
-                            </div>
-                        </div>
-                        <div class="footer-top__contact__block">
-                            <div class="footer-top__contact__text">
-                                <i class="svg svg-mail"></i>
-                                <a class="footer-top__contact__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
-                            </div>
-                            <div class="footer-top__contact__info">
-                                {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-top__links">
-                    <div class="footer-top__links__column">
-                        <div class="footer-top__links__title">
-                            {{ 'O nás'|trans }}
-                        </div>
-                        {{ render(controller('ShopsysShopBundle:Front/Article:footerAbout')) }}
-                    </div>
-                    <div class="footer-top__links__column">
-                        <div class="footer-top__links__title">
-                            {{ 'Naše služby'|trans }}
-                        </div>
-                        {{ render(controller('ShopsysShopBundle:Front/Article:footerServices')) }}
-                    </div>
-                    <div class="footer-top__links__column">
-                        <div class="footer-top__links__title">
-                            {{ 'O nákupu'|trans }}
-                        </div>
-                        {{ render(controller('ShopsysShopBundle:Front/Article:footerShopping')) }}
-                    </div>
                 </div>
             </div>
+        {% endblock %}
+        
+        <div class="web__line">
+            <footer class="web__container footer-bottom">
+                <div class="footer-bottom__copyright dont-print">
+                    {{ 'Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena.'|trans }}
+                </div>
+                <div class="footer-bottom__info dont-print">
+                    {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat'|trans }}<br>
+                    {{ 'přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
+                </div>
+                <div class="footer-bottom__shopsys dont-print">
+                    {{ 'Eshop na míru od'|trans }}
+                    <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank">
+                        <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                    </a>
+                </div>
+            </footer>
         </div>
     </div>
-
-    <div class="web__line">
-        <div class="web__container">
-            <ul class="list-languages js-not-implemented-yet">
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Italy.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Italia'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Netherlands.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Nederland'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Austria.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Österreich'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Poland.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Polska'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Hungary.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Magyarország'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_England.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Great britain'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Russia.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'БЪЛГАРИЯ'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Germany.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Deutschland'|trans }}
-                    </a>
-                </li>
-                <li class="list-languages__item">
-                    <img class="list-languages__item__image" src="https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Slovakia.png">
-                    <a class="list-languages__item__link underline" href="#">
-                        {{ 'Slovensko'|trans }}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="web__line">
-        <footer class="web__container footer-bottom">
-            <div class="footer-bottom__copyright dont-print">
-                {{ 'Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena.'|trans }}
-            </div>
-            <div class="footer-bottom__copyright__info dont-print">
-                {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat'|trans }}<br>
-                {{ 'přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
-            </div>
-            <div class="footer-bottom__copyright__shopsys dont-print">
-                {{ 'Eshop na míru od'|trans }}
-                <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank">
-                    <img class="footer-bottom__copyright__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
-                </a>
-            </div>
-        </footer>
-    </div>
-</div>
+{% endblock %}

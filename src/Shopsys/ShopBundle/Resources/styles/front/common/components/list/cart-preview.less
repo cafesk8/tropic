@@ -1,0 +1,76 @@
+@list-cart-preview-image-size: 71px;
+@list-cart-preview-amount-width: 50px;
+@list-cart-preview-name-width: 110px;
+@list-cart-preview-item-bottom-gap: 25px;
+@list-cart-preview-item-name-lines: 2;
+@list-cart-preview-item-name-line-height: 18px;
+
+.list-cart-preview {
+    .reset-ul();
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: @list-cart-preview-item-bottom-gap;
+
+        &__image {
+            width: @list-cart-preview-image-size;
+            position: relative;
+
+            img {
+                .center-image();
+            }
+        }
+
+        &__pieces {
+            display: flex;
+            align-self: center;
+            width: @list-cart-preview-amount-width;
+            padding-left: 10px;
+            text-align: left;
+            white-space: nowrap;
+
+            color: @color-brown-light;
+            font-size: @font-size;
+        }
+
+        &__name {
+            width: @list-cart-preview-name-width;
+
+            &__title {
+                display: block;
+                margin-bottom: 6px;
+                line-height: @list-cart-preview-item-name-line-height;
+                height: @list-cart-preview-item-name-lines*@list-cart-preview-item-name-line-height;
+                overflow: hidden;
+
+                color: @color-base;
+                font-size: @font-size;
+                text-decoration: none;
+            }
+
+            &__text {
+                display: block;
+                margin-bottom: 6px;
+
+                color: @color-brown-light;
+                font-size: @font-size-small;
+            }
+        }
+
+        &__price {
+            display: flex;
+            align-self: center;
+            justify-content: flex-end;
+            width: calc(~"@{calc-base} - @{list-cart-preview-name-width} - @{list-cart-preview-amount-width} - @{list-cart-preview-image-size}");
+            text-align: right;
+
+            color: @color-base;
+            font-size: @font-size;
+            font-weight: 700;
+        }
+    }
+}

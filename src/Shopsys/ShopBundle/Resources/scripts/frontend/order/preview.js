@@ -13,8 +13,10 @@
         var $orderPreview = $('#js-order-preview');
         var $checkedTransport = $('.js-order-transport-input:checked');
         var $checkedPayment = $('.js-order-payment-input:checked');
-        var data = {};
+        var $orderPreviewItemsList = $orderPreview.filterAllNodes('#js-order-preview-fees');
+        var $orderPreviewTotalPrice = $orderPreview.filterAllNodes('#js-order-preview-total-price');
 
+        var data = {};
         if ($checkedTransport.length > 0) {
             data['transportId'] = $checkedTransport.data('id');
         }
@@ -28,8 +30,10 @@
             type: 'get',
             data: data,
             success: function (data) {
-                $orderPreview.html(data);
-                Shopsys.register.registerNewContent($orderPreview);
+                var $newOrderPreview = $($.parseHTML(data));
+                $orderPreviewItemsList.html($newOrderPreview.filterAllNodes('#js-order-preview-fees').html());
+                $orderPreviewTotalPrice.html($newOrderPreview.filterAllNodes('#js-order-preview-total-price').html());
+                Shopsys.register.registerNewContent($newOrderPreview);
             }
         });
     };

@@ -327,6 +327,7 @@ class OrderController extends FrontBaseController
     {
         $transportId = $request->get('transportId');
         $paymentId = $request->get('paymentId');
+        $orderStep = $request->get('orderStep');
 
         if ($transportId === null) {
             $transport = null;
@@ -341,9 +342,13 @@ class OrderController extends FrontBaseController
         }
 
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        $renderSubmitButton = $request->isXmlHttpRequest() === false || $orderStep === '1';
 
         return $this->render('@ShopsysShop/Front/Content/Order/preview.html.twig', [
             'orderPreview' => $orderPreview,
+            'orderStep' => $orderStep,
+            'formSubmit' => $request->get('formSubmit'),
+            'renderSubmitButton' => $renderSubmitButton,
         ]);
     }
 

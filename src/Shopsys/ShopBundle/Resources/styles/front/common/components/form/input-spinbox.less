@@ -1,22 +1,41 @@
 @form-input-spinbox-padding-vertical: 3px;
-@form-input-spinbox-buttons-width: 24px;
+@form-input-spinbox-buttons-width: 30px;
+@form-input-spinbox-height: 60px;
+@form-input-spinbox-input-width: 83px;
 
 .form-input-spinbox {
-    display: none;
-
-    //display: inline-block;
+    display: inline-block;
     vertical-align: middle;
     position: relative;
     padding: @form-input-spinbox-padding-vertical @form-input-spinbox-buttons-width @form-input-spinbox-padding-vertical 3px;
 
-    border: 1px solid @color-border;
+    border: 2px solid @color-border;
+
+    .box-detail__add-basket &,
+    .box-detail-sets & {
+        display: none;
+    }
+
+    &__label {
+        position: absolute;
+        top: 6px;
+        left: 8px;
+
+        color: @color-brown-light;
+        font-size: @font-size-small;
+        text-transform: uppercase;
+        z-index: 1;
+    }
 
     &__input {
-        width: @form-input-spinbox-buttons-width + @form-input-spinbox-padding-vertical;
-        padding: 0;
-        height: @input-height - 2 * @form-input-spinbox-padding-vertical;
-        line-height: @input-height - 2 * @form-input-spinbox-padding-vertical;
-        text-align: center;
+        width: @form-input-spinbox-input-width + @form-input-spinbox-padding-vertical;
+        padding: @form-input-spinbox-height/2 0 0 5px;
+        height: @form-input-spinbox-height - 2 * @form-input-spinbox-padding-vertical;
+        line-height: @form-input-spinbox-height - 2 * @form-input-spinbox-padding-vertical;
+        text-align: left;
+
+        color: @color-base;
+        font-size: 16px;
     }
 
     &__btn {
@@ -24,14 +43,22 @@
         top: 0;
         right: 0;
         width: @form-input-spinbox-buttons-width;
-        height: 50%;
+        height: @form-input-spinbox-height/2;
+        line-height: @form-input-spinbox-height/2;
+        text-align: center;
+        padding-bottom: 3px;
 
-        background: @color-light;
-        color: @color-base;
+        background-color: @color-f;
+        color: @color-gray-dark;
+        font-size: 13px;
+        cursor: pointer;
 
         &--minus {
             top: auto;
             bottom: 0;
+            padding-top: 2px;
+
+            font-size: 13px;
         }
 
         &:hover {

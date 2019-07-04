@@ -5,11 +5,14 @@
 @box-chooser-price-width: 80px;
 @box-chooser-title-width: ~"calc(100% - @{box-chooser-check-width} - @{box-chooser-image-width} - @{box-chooser-price-width} - 2 * @{box-chooser-item-padding})";
 
+@box-chooser-bottom-gap: 40px;
+@box-chooser-padding: 30px;
 
 .box-chooser {
-    margin-bottom: @margin-gap;
+    margin-bottom: @box-chooser-bottom-gap;
+    padding: @box-chooser-padding;
 
-    border: 1px solid @color-border;
+    background-color: @color-gray;
 
     &__item {
         width: 100%;
@@ -17,37 +20,37 @@
         display: flex;
         align-items: flex-start;
 
+        cursor: pointer;
+
         .is-no-flex & {
             display: block;
             .clearfix();
         }
 
         &__check {
-            flex: 0 @box-chooser-check-width;
+            padding-top: 5px;
 
-            .is-no-flex & {
-                float: left;
-                width: @box-chooser-check-width;
-            }
+            font-size: 0;
         }
 
         &__image {
-            flex: 0 @box-chooser-image-width;
-            text-align: center;
-
-            .is-no-flex & {
-                float: left;
-                width: @box-chooser-image-width;
-            }
+            position: relative;
+            bottom: -5px;
+            margin-left: 5px;
         }
 
         &__title {
             flex: 1;
             padding: 0 10px;
 
-            .is-no-flex & {
-                float: left;
-                width: @box-chooser-title-width;
+            font-size: 15px;
+
+            &__name {
+                font-weight: 400;
+
+                .box-chooser__item--active & {
+                    font-weight: 800;
+                }
             }
 
             .box-chooser__item--inactive & {
@@ -59,7 +62,8 @@
             flex: 0 @box-chooser-price-width;
             text-align: right;
 
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 800;
 
             .is-no-flex & {
                 float: right;
