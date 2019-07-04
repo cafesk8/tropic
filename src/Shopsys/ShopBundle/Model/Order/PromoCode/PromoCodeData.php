@@ -37,4 +37,9 @@ class PromoCodeData extends BasePromoCodeData
      * @var \DateTime|null
      */
     public $validTo;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public $minOrderValue;
 }

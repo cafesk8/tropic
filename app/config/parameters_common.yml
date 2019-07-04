@@ -22,6 +22,7 @@ parameters:
     shopsys.entity_extension.map:
         Shopsys\FrameworkBundle\Model\Article\Article: Shopsys\ShopBundle\Model\Article\Article
         Shopsys\FrameworkBundle\Model\Administrator\Administrator: Shopsys\ShopBundle\Model\Administrator\Administrator
+        Shopsys\FrameworkBundle\Model\Cart\Cart: Shopsys\ShopBundle\Model\Cart\Cart
         Shopsys\FrameworkBundle\Model\Category\Category: Shopsys\ShopBundle\Model\Category\Category
         Shopsys\FrameworkBundle\Model\Customer\User: Shopsys\ShopBundle\Model\Customer\User
         Shopsys\FrameworkBundle\Model\Order\Order: Shopsys\ShopBundle\Model\Order\Order

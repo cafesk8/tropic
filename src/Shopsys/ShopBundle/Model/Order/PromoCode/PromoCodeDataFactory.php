@@ -63,5 +63,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->validFrom = $promoCode->getValidFrom();
         $promoCodeData->validTo = $promoCode->getValidTo();
         $promoCodeData->domainId = $promoCode->getDomainId();
+        $promoCodeData->minOrderValue = $promoCode->getMinOrderValue();
     }
 }

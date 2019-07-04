@@ -6,16 +6,19 @@ namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
+use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -33,11 +36,18 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
      */
-    public function __construct(Domain $domain)
+    private $priceExtension;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
+     */
+    public function __construct(Domain $domain, PriceExtension $priceExtension)
     {
         $this->domain = $domain;
+        $this->priceExtension = $priceExtension;
     }
 
     /**
@@ -71,7 +81,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
 
-        $builder->add($this->getRestictionGroup($builder));
+        $builder->add($this->getRestictionGroup($builder, $options['promo_code'], $options['domain_id']));
         $builder->add($this->getValidationGroup($builder));
 
         $builder->add('save', SubmitType::class);
@@ -154,9 +164,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param int|null $domainId
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getRestictionGroup(FormBuilderInterface $builder): FormBuilderInterface
+    private function getRestictionGroup(FormBuilderInterface $builder, ?PromoCode $promoCode, ?int $domainId): FormBuilderInterface
     {
         return $builder->create('restrictionGroup', GroupType::class, [
             'label' => 'Omezení',
@@ -184,6 +196,29 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
                     ]),
                 ],
+            ])
+            ->add('minOrderValue', MoneyType::class, [
+                'scale' => 6,
+                'required' => false,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                ],
+                'label' => $this->getLabelForMinOrderValue($promoCode, $domainId),
             ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param int|null $domainId
+     * @return string
+     */
+    private function getLabelForMinOrderValue(?PromoCode $promoCode, ?int $domainId): string
+    {
+        if ($promoCode !== null) {
+            return t('Minimální hodnota objednávky') . ' (' . $this->priceExtension->getCurrencySymbolByDomainId($domainId) . ')';
+        } else {
+            return t('Minimální hodnota objednávky v měně dle zvolené domény');
+        }
     }
 }
