@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PromoCodeController extends BasePromoCodeController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory
      */
     private $promoCodeGridFactory;
 
@@ -32,7 +32,7 @@ class PromoCodeController extends BasePromoCodeController
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit $promoCodeInlineEdit
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory $promoCodeDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
      */
     public function __construct(
         PromoCodeFacade $promoCodeFacade,
