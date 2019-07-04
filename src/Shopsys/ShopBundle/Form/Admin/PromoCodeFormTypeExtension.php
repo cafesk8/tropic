@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
+use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -33,38 +34,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $this->extendCodeField($builder);
         $this->extendPercentField($builder);
 
-        $builder->add('unlimited', CheckboxType::class, [
-            'label' => t('Neomezený počet použití'),
-            'required' => false,
-            'attr' => [
-                'class' => 'js-promo-code-input-unlimited',
-            ],
-        ])
-        ->add('usageLimit', IntegerType::class, [
-            'label' => t('Maximální počet použití'),
-            'required' => true,
-            'attr' => [
-                'class' => 'js-promo-code-input-usage-limit',
-            ],
-            'constraints' => [
-                new GreaterThanOrEqual([
-                    'value' => 1,
-                    'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
-                ]),
-                new NotBlank([
-                    'message' => t('Vyplňte prosím množství.'),
-                    'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
-                ]),
-            ],
-        ])
-        ->add('validFrom', DatePickerType::class, [
-            'required' => false,
-            'label' => t('Platný od'),
-        ])
-        ->add('validTo', DatePickerType::class, [
-            'required' => false,
-            'label' => t('Platný do'),
-        ]);
+        $builder->add($this->getRestictionGroup($builder));
+        $builder->add($this->getValidationGroup($builder));
 
         $builder->add('save', SubmitType::class);
     }
@@ -119,5 +90,59 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $percentFieldOptions['label'] = t('Sleva');
         $percentFieldType = get_class($builder->get('percent')->getType()->getInnerType());
         $builder->add('percent', $percentFieldType, $percentFieldOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getValidationGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        return $builder->create('validGroup', GroupType::class, [
+            'label' => t('Platnost'),
+        ])
+            ->add('validFrom', DatePickerType::class, [
+                'required' => false,
+                'label' => t('Platný od'),
+            ])
+            ->add('validTo', DatePickerType::class, [
+                'required' => false,
+                'label' => t('Platný do'),
+            ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getRestictionGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        return $builder->create('restrictionGroup', GroupType::class, [
+            'label' => 'Omezení',
+        ])
+            ->add('unlimited', CheckboxType::class, [
+                'label' => t('Neomezený počet použití'),
+                'required' => false,
+                'attr' => [
+                    'class' => 'js-promo-code-input-unlimited',
+                ],
+            ])
+            ->add('usageLimit', IntegerType::class, [
+                'label' => t('Maximální počet použití'),
+                'required' => true,
+                'attr' => [
+                    'class' => 'js-promo-code-input-usage-limit',
+                ],
+                'constraints' => [
+                    new GreaterThanOrEqual([
+                        'value' => 1,
+                        'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
+                    ]),
+                    new NotBlank([
+                        'message' => t('Vyplňte prosím množství.'),
+                        'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
+                    ]),
+                ],
+            ]);
     }
 }
