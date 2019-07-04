@@ -15,6 +15,8 @@ use Shopsys\FrameworkBundle\Form\FormRenderingConfigurationExtension;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
+use Shopsys\FrameworkBundle\Form\ProductsType;
+use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Form\UrlListType;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 use Shopsys\ShopBundle\Form\BlogCategoriesType;
@@ -41,15 +43,23 @@ class BlogArticleFormType extends AbstractType
     private $seoSettingFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer
+     */
+    private $removeDuplicatesTransformer;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade $seoSettingFacade
+     * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
      */
     public function __construct(
         Domain $domain,
-        SeoSettingFacade $seoSettingFacade
+        SeoSettingFacade $seoSettingFacade,
+        RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
     ) {
         $this->domain = $domain;
         $this->seoSettingFacade = $seoSettingFacade;
+        $this->removeDuplicatesTransformer = $removeDuplicatesTransformer;
     }
 
     /**
@@ -66,6 +76,7 @@ class BlogArticleFormType extends AbstractType
         $builderDescriptionGroup = $this->createDescriptionGroup($builder);
         $builderImageGroup = $this->createImageGroup($builder, $options);
         $builderPerexGroup = $this->createPerexGroup($builder);
+        $builderProductGroup = $this->createProductGroup($builder);
 
         $builder
             ->add($builderSettingsGroup)
@@ -73,6 +84,7 @@ class BlogArticleFormType extends AbstractType
             ->add($builderPerexGroup)
             ->add($builderDescriptionGroup)
             ->add($builderImageGroup)
+            ->add($builderProductGroup)
             ->add('save', SubmitType::class);
     }
 
@@ -328,5 +340,26 @@ class BlogArticleFormType extends AbstractType
         }
 
         return [$seoTitlesOptionsByDomainId, $seoMetaDescriptionsOptionsByDomainId, $seoH1OptionsByDomainId];
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createProductGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builderProductGroup = $builder->create('products', GroupType::class, [
+            'label' => t('Produkty k článku blogu'),
+        ]);
+
+        $builderProductGroup
+            ->add('products', ProductsType::class, [
+                'required' => false,
+                'allow_main_variants' => true,
+                'allow_variants' => false,
+            ])
+            ->addViewTransformer($this->removeDuplicatesTransformer);
+
+        return $builderProductGroup;
     }
 }

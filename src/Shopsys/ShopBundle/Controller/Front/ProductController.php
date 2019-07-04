@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSear
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
 use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,6 +25,7 @@ class ProductController extends FrontBaseController
     const SEARCH_TEXT_PARAMETER = 'q';
     const PAGE_QUERY_PARAMETER = 'page';
     const PRODUCTS_PER_PAGE = 12;
+    private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
@@ -81,6 +83,11 @@ class ProductController extends FrontBaseController
     private $mainVariantGroupFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade
+     */
+    private $blogArticleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -92,6 +99,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -104,7 +112,8 @@ class ProductController extends FrontBaseController
         ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade,
         ModuleFacade $moduleFacade,
         BrandFacade $brandFacade,
-        MainVariantGroupFacade $mainVariantGroupFacade
+        MainVariantGroupFacade $mainVariantGroupFacade,
+        BlogArticleFacade $blogArticleFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -117,6 +126,7 @@ class ProductController extends FrontBaseController
         $this->moduleFacade = $moduleFacade;
         $this->brandFacade = $brandFacade;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
+        $this->blogArticleFacade = $blogArticleFacade;
     }
 
     /**
@@ -147,6 +157,13 @@ class ProductController extends FrontBaseController
             'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
             'mainVariants' => $mainVariantGroupProducts,
+            'domainId' => $this->domain->getId(),
+            'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
+                $product,
+                $this->domain->getId(),
+                $this->domain->getLocale(),
+                self::PRODUCT_BLOG_ARTICLES_LIMIT
+            ),
         ]);
     }
 

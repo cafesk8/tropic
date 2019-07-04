@@ -81,6 +81,14 @@ class BlogArticle extends AbstractTranslatableEntity
     private $publishDate;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\Product[]
+     *
+     * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\Product", fetch="EXTRA_LAZY")
+     * @ORM\JoinTable(name="blog_article_products")
+     */
+    protected $products;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleData $blogArticleData
      */
     public function __construct(BlogArticleData $blogArticleData)
@@ -95,6 +103,7 @@ class BlogArticle extends AbstractTranslatableEntity
         $this->createdAt = $blogArticleData->createdAt ?? new DateTime();
         $this->visibleOnHomepage = $blogArticleData->visibleOnHomepage;
         $this->publishDate = $blogArticleData->publishDate ?? new DateTime();
+        $this->products = new ArrayCollection($blogArticleData->products);
     }
 
     /**
@@ -110,6 +119,7 @@ class BlogArticle extends AbstractTranslatableEntity
         $this->hidden = $blogArticleData->hidden;
         $this->visibleOnHomepage = $blogArticleData->visibleOnHomepage;
         $this->publishDate = $blogArticleData->publishDate ?? new DateTime();
+        $this->products = new ArrayCollection($blogArticleData->products);
     }
 
     /**
@@ -406,5 +416,13 @@ class BlogArticle extends AbstractTranslatableEntity
     public function getPerex(?string $locale = null): ?string
     {
         return $this->translation($locale)->getPerex();
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProducts(): array
+    {
+        return $this->products->toArray();
     }
 }

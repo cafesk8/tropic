@@ -79,6 +79,11 @@ class BlogArticleData
      */
     public $perexes;
 
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public $products;
+
     public function __construct()
     {
         $this->names = [];
@@ -94,5 +99,6 @@ class BlogArticleData
         $this->image = new ImageUploadData();
         $this->visibleOnHomepage = true;
         $this->perexes = [];
+        $this->products = [];
     }
 }
