@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Product\MassEdit\MassEditActionInterface;
 use Shopsys\ShopBundle\Model\Product\Product;
@@ -62,6 +63,11 @@ class CategoryMassAction implements MassEditActionInterface
     private $productPriceRecalculationScheduler;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade
+     */
+    protected $productVisibilityFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
@@ -69,6 +75,7 @@ class CategoryMassAction implements MassEditActionInterface
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -77,7 +84,8 @@ class CategoryMassAction implements MassEditActionInterface
         Domain $domain,
         ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
         ProductFacade $productFacade,
-        ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
+        ProductPriceRecalculationScheduler $productPriceRecalculationScheduler,
+        ProductVisibilityFacade $productVisibilityFacade
     ) {
         $this->categoryFacade = $categoryFacade;
         $this->productDataFactory = $productDataFactory;
@@ -86,6 +94,7 @@ class CategoryMassAction implements MassEditActionInterface
         $this->productCategoryDomainFactory = $productCategoryDomainFactory;
         $this->productFacade = $productFacade;
         $this->productPriceRecalculationScheduler = $productPriceRecalculationScheduler;
+        $this->productVisibilityFacade = $productVisibilityFacade;
     }
 
     /**
@@ -175,6 +184,7 @@ class CategoryMassAction implements MassEditActionInterface
             $this->productFacade->appendParentCategoriesByProduct($product);
         }
         $this->entityManager->flush();
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
     }
 
     /**
@@ -189,6 +199,7 @@ class CategoryMassAction implements MassEditActionInterface
             $product->markForVisibilityRecalculation();
         }
         $this->entityManager->flush();
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
     }
 
     /**
@@ -204,6 +215,7 @@ class CategoryMassAction implements MassEditActionInterface
             $this->productFacade->appendParentCategoriesByProduct($product);
         }
         $this->entityManager->flush();
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
     }
 
     /**
