@@ -33,6 +33,8 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->unlimited = false;
         $promoCodeData->numberOfUses = 0;
         $promoCodeData->domainId = $this->adminDomainTabsFacade->getSelectedDomainId();
+        $promoCodeData->massGenerate = false;
+        $promoCodeData->quantity = 0;
 
         return $promoCodeData;
     }
@@ -64,5 +66,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->validTo = $promoCode->getValidTo();
         $promoCodeData->domainId = $promoCode->getDomainId();
         $promoCodeData->minOrderValue = $promoCode->getMinOrderValue();
+        $promoCodeData->massGenerate = $promoCode->isMassGenerated();
+        $promoCodeData->prefix = $promoCode->getPrefix();
     }
 }
