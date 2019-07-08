@@ -14,6 +14,18 @@ doctrine:
                 # initialization phase (during DIC service creation) for auto-detecting version from the server.
                 # See \Doctrine\DBAL\Connection::getDatabasePlatformVersion().
                 server_version: "%database_server_version%"
+            migration:
+                driver: "%migration_database_driver%"
+                host: "%migration_database_host%"
+                port: "%migration_database_port%"
+                dbname: "%migration_database_name%"
+                user: "%migration_database_user%"
+                password: "%migration_database_password%"
+                charset: UTF8
+                # Explicitly define server version to overcome the need to connect to the database in early
+                # initialization phase (during DIC service creation) for auto-detecting version from the server.
+                # See \Doctrine\DBAL\Connection::getDatabasePlatformVersion().
+                server_version: "%migration_database_server_version%"
         types:
             money: \Shopsys\FrameworkBundle\Component\Doctrine\MoneyType
 
