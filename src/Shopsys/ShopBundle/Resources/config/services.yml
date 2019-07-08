@@ -18,6 +18,11 @@ services:
         resource: '../../**/*{BreadcrumbGenerator,Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,RecalculationScheduler,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
         exclude: '../../{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
 
+    Shopsys\ShopBundle\Command\Migration\:
+        resource: '../../Command/Migration/'
+        arguments:
+            - '@doctrine.dbal.migration_connection'
+
     NinjaMutex\Lock\LockInterface:
         class: NinjaMutex\Lock\PhpRedisLock
         arguments:

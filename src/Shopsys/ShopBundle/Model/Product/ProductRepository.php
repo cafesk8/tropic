@@ -97,4 +97,14 @@ class ProductRepository extends BaseProductRepository
             ->select('p')
             ->from(Product::class, 'p');
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getAllWithEan(): array
+    {
+        return $this->getProductQueryBuilder()
+            ->where('p.ean IS NOT NULL')
+            ->getQuery()->getResult();
+    }
 }
