@@ -7,5 +7,27 @@
     {{ value }}
     {% if value != '' %}
         <span class="js-promo-code-mass {{ prefixJsClass }}" data-promo-code-prefix="{{ prefix }}" data-promo-code-prefix-js-class="{{ prefixJsClass }}" data-promo-code-group-enabled="{{ value != '' ? 1 : 0 }}"></span>
+        <span class="js-promocode-mass-delete display-none">
+            {% set csrfTokenId = constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_ID_PREFIX') ~ 'admin_promocode_deletemass' %}
+            {% set promocodeMassDeleteUrl = url('admin_promocode_deletemass', {
+                prefix: value,
+                (constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_REQUEST_PARAMETER')): csrf_token(csrfTokenId)
+            }) %}
+            <a
+                href="{{ promocodeMassDeleteUrl }}"
+                class="btn btn-danger text-center"
+                onclick="
+                    Shopsys.window({
+                        content: '{{ 'Chcete opravdu smazat tyto slevové kupóny?'|trans|e('js') }}',
+                        buttonCancel: true,
+                        buttonContinue: true,
+                        textContinue: '{{ 'Yes'|trans|e('js') }}',
+                        urlContinue: '{{ promocodeMassDeleteUrl }}'
+                    });
+                    return false;"
+            >
+                {{ 'Smazat všechny'|trans }}
+            </a>
+        </span>
     {% endif %}
 {% endblock %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Admin;
 
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController as BasePromoCodeController;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
@@ -196,5 +197,21 @@ class PromoCodeController extends BasePromoCodeController
         return $this->render('@ShopsysShop/Admin/Content/PromoCode/newMassGenerate.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/promo-code/mass-delete/{prefix}")
+     *
+     * @CsrfProtection
+     *
+     * @param string $prefix
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteMassAction(string $prefix): Response
+    {
+        $this->promoCodeFacade->deleteByPrefix($prefix);
+        $this->getFlashMessageSender()->addSuccessFlash(t('Slevové kupóny byly smazány.'));
+
+        return $this->redirectToRoute('admin_promocode_list');
     }
 }

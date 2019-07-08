@@ -11,11 +11,11 @@
         this.init = function () {
             $rows.addClass('display-none');
 
+            var deleteButtonHtml = $firstRow.find('.js-promocode-mass-delete').html();
             var unpackButtonHtml = '<span class="btn btn-success js-promo-code-group-unpack width-80 text-center" data-promo-code-prefix="' + prefix + '">' + Shopsys.translator.trans('Rozbalit') + '</span>';
             var $parentRow = $('<tr class="table-grid__row js-grid-row background-color-ddd">'
                 + '<td colspan="4" class="table-grid__cell">' + Shopsys.translator.trans('Hromadné kupony s prefixem') + ' <b>' + prefix + '</b></td>'
-                + '<td colspan="2"></td>'
-                + '<td class="table-grid__cell">' + unpackButtonHtml + '</td>'
+                + '<td class="table-grid__cell text-right" colspan="3">' + deleteButtonHtml + unpackButtonHtml + '</td>'
                 + '</tr>'
             );
 

@@ -28,4 +28,17 @@ class PromoCodeRepository extends BasePromoCodeRepository
 
         return array_column($queryBuilder->getQuery()->execute(), 'code');
     }
+
+    /**
+     * @param string $prefix
+     */
+    public function deleteByPrefix(string $prefix): void
+    {
+        $this->getPromoCodeRepository()
+            ->createQueryBuilder('pc')
+            ->delete(PromoCode::class, 'pc')
+            ->where('pc.prefix = :prefix')
+            ->setParameter('prefix', $prefix)
+            ->getQuery()->execute();
+    }
 }

@@ -89,4 +89,12 @@ class PromoCodeFacade extends BasePromoCodeFacade
         $this->em->flush($promoCodesForFlush);
         $this->em->clear();
     }
+
+    /**
+     * @param string $prefix
+     */
+    public function deleteByPrefix(string $prefix): void
+    {
+        $this->promoCodeRepository->deleteByPrefix($prefix);
+    }
 }

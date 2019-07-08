@@ -15,6 +15,7 @@ use Shopsys\ShopBundle\Controller\Front\ProductController;
 use Shopsys\ShopBundle\DataFixtures\Demo\OrderDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\PersonalDataAccessRequestDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\PricingGroupDataFixture;
+use Shopsys\ShopBundle\DataFixtures\Demo\PromoCodeDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\UnitDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\UserDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\VatDataFixture;
@@ -118,7 +119,9 @@ class RouteConfigCustomization
                 }
             })
             ->customize(function (RouteConfig $config, RouteInfo $info) {
-                if (preg_match('~_delete$~', $info->getRouteName())) {
+                if (preg_match('~_delete$~', $info->getRouteName())
+                    || preg_match('~deletemass$~', $info->getRouteName())
+                ) {
                     $debugNote = 'Add CSRF token for any delete action during test execution. '
                         . '(Routes are protected by RouteCsrfProtector.)';
                     $config->changeDefaultRequestDataSet($debugNote)
@@ -246,6 +249,11 @@ class RouteConfigCustomization
                 $config->addExtraRequestDataSet('Editing normal category should be OK.')
                     ->setParameter('id', 2)
                     ->setExpectedStatusCode(200);
+            })
+            ->customizeByRouteName('admin_promocode_massdelete', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Promocode with prefix mass delete')
+                    ->setParameter('prefix', PromoCodeDataFixture::PROMO_CODE_PREFIX_SUMMER)
+                    ->setExpectedStatusCode(302);
             });
     }
 
