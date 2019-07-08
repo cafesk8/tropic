@@ -34,6 +34,11 @@ class PromoCodeController extends BasePromoCodeController
     private $adminDomainTabsFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade
+     */
+    protected $promoCodeFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit $promoCodeInlineEdit
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
@@ -150,6 +155,46 @@ class PromoCodeController extends BasePromoCodeController
         return $this->render('@ShopsysShop/Admin/Content/PromoCode/edit.html.twig', [
             'form' => $form->createView(),
             'promoCode' => $promoCode,
+        ]);
+    }
+
+    /**
+     * @Route("/promo-code/new-mass-generate")
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function newMassGenerateAction(Request $request): Response
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData */
+        $promoCodeData = $this->promoCodeDataFactory->create();
+        $promoCodeData->massGenerated = true;
+
+        $form = $this->createForm(PromoCodeFormType::class, $promoCodeData, [
+            'promo_code' => null,
+            'mass_generate' => true,
+            'domain_id' => $this->adminDomainTabsFacade->getSelectedDomainId(),
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->promoCodeFacade->massCreate($promoCodeData);
+
+                $this->getFlashMessageSender()->addSuccessFlashTwig(
+                    t('Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů'),
+                    [
+                        'quantity' => $promoCodeData->quantity,
+                    ]
+                );
+
+                return $this->redirectToRoute('admin_promocode_list');
+            } else {
+                $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            }
+        }
+
+        return $this->render('@ShopsysShop/Admin/Content/PromoCode/newMassGenerate.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
