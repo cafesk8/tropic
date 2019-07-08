@@ -111,21 +111,21 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             ->setAllowedTypes('domain_id', 'int')
             ->setAllowedTypes('mass_generate', 'bool')
             ->setDefaults([
-            'data_class' => PromoCodeData::class,
-            'mass_generate' => false,
-            'validation_groups' => function (FormInterface $form) {
-                $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
+                'data_class' => PromoCodeData::class,
+                'mass_generate' => false,
+                'validation_groups' => function (FormInterface $form) {
+                    $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
 
-                /* @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
-                $promoCodeData = $form->getData();
+                    /* @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
+                    $promoCodeData = $form->getData();
 
-                if ($promoCodeData->unlimited === false) {
-                    $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED;
-                }
+                    if ($promoCodeData->unlimited === false) {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED;
+                    }
 
-                return $validationGroups;
-            },
-        ]);
+                    return $validationGroups;
+                },
+            ]);
     }
 
     /**

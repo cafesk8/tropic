@@ -250,7 +250,7 @@ class RouteConfigCustomization
                     ->setParameter('id', 2)
                     ->setExpectedStatusCode(200);
             })
-            ->customizeByRouteName('admin_promocode_massdelete', function (RouteConfig $config) {
+            ->customizeByRouteName('admin_promocode_deletemass', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Promocode with prefix mass delete')
                     ->setParameter('prefix', PromoCodeDataFixture::PROMO_CODE_PREFIX_SUMMER)
                     ->setExpectedStatusCode(302);
