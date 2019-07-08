@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
+use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
@@ -17,6 +19,7 @@ use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
@@ -96,6 +99,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder);
+        }
+
+        if ($product !== null && $product->isMainVariant() === false) {
+            $this->addActionPriceToPricesGroup($builder);
         }
     }
 
@@ -186,5 +193,27 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             );
 
         $builder->add($builderMainVariantGroup);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addActionPriceToPricesGroup(FormBuilderInterface $builder): void
+    {
+        $builderPricesGroup = $builder->get('pricesGroup');
+
+        $builderPricesGroup->add('actionPrices', MultidomainType::class, [
+            'entry_type' => MoneyType::class,
+            'required' => false,
+            'label' => t('Akční cena'),
+            'position' => ['after' => 'vat'],
+            'entry_options' => [
+                'scale' => 6,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                ],
+            ],
+        ]);
     }
 }

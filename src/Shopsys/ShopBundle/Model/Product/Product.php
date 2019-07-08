@@ -6,10 +6,12 @@ namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
@@ -162,5 +164,30 @@ class Product extends BaseProduct
         }
 
         return $this;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getActionPrice(int $domainId): ?Money
+    {
+        /** @var \Shopsys\ShopBundle\Model\Product\ProductDomain $productDomain */
+        $productDomain = $this->getProductDomain($domainId);
+        return $productDomain->getActionPrice();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     */
+    protected function setDomains(ProductData $productData): void
+    {
+        parent::setDomains($productData);
+
+        /** @var \Shopsys\ShopBundle\Model\Product\ProductDomain $productDomain */
+        foreach ($this->domains as $productDomain) {
+            $domainId = $productDomain->getDomainId();
+            $productDomain->setActionPrice($productData->actionPrices[$domainId]);
+        }
     }
 }

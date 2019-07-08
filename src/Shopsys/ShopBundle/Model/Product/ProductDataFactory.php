@@ -58,6 +58,10 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->distinguishingParameterForMainVariantGroup = $product->getMainVariantGroup()->getDistinguishingParameter();
         }
 
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $productData->actionPrices[$domainId] = $product->getActionPrice($domainId);
+        }
+
         $productData->transferNumber = $product->getTransferNumber();
         $productData->distinguishingParameter = $product->getDistinguishingParameter();
         $productData->mainVariantGroup = $product->getMainVariantGroup();
