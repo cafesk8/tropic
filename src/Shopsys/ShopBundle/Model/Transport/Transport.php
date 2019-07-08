@@ -153,4 +153,12 @@ class Transport extends BaseTransport
     {
         return $this->chooseStore;
     }
+
+    /**
+     * @return bool
+     */
+    public function isPickupPlaceType(): bool
+    {
+        return $this->isPickupPlace() || $this->isChooseStore();
+    }
 }

@@ -140,7 +140,7 @@ class TransportAndPaymentFormType extends AbstractType
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
      */
     public function validateTransportPaymentRelation(OrderData $orderData, ExecutionContextInterface $context)
@@ -158,5 +158,18 @@ class TransportAndPaymentFormType extends AbstractType
         if (!$relationExists) {
             $context->addViolation('Please choose a valid combination of transport and payment');
         }
+
+        if ($transport instanceof Transport && $transport->isPickupPlaceType() && $this->isPickupPlaceOrStoreIsNull($orderData)) {
+            $context->addViolation('Vyberte prosím pobočku');
+        }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
+     * @return bool
+     */
+    private function isPickupPlaceOrStoreIsNull(OrderData $orderData): bool
+    {
+        return $orderData->pickupPlace === null || $orderData->store === null;
     }
 }
