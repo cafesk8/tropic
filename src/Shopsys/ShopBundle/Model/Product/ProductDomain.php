@@ -38,7 +38,7 @@ class ProductDomain extends BaseProductDomain
     /**
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
      */
-    public function setActionPrice(Money $actionPrice): void
+    public function setActionPrice(?Money $actionPrice): void
     {
         $this->actionPrice = $actionPrice;
     }

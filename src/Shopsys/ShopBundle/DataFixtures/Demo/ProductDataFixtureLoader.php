@@ -168,7 +168,7 @@ class ProductDataFixtureLoader
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param array $row
      */
     protected function updateProductDataFromCsvRow(ProductData $productData, array $row)
@@ -181,6 +181,7 @@ class ProductDataFixtureLoader
             $categoryString = $domainId === 1 ? $row[self::COLUMN_CATEGORIES_1] : $row[self::COLUMN_CATEGORIES_2];
             $productData->categoriesByDomainId[$domainId] =
                 $this->getValuesByKeyString($categoryString, $this->categories);
+            $productData->actionPrices[$domainId] = null;
         }
 
         $productData->catnum = $row[self::COLUMN_CATNUM];

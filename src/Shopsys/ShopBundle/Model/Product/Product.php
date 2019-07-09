@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
-use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
 
@@ -62,7 +61,7 @@ class Product extends BaseProduct
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
      */
-    protected function __construct(BaseProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, array $variants = null)
+    protected function __construct(ProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, array $variants = null)
     {
         parent::__construct($productData, $productCategoryDomainFactory, $variants);
 
@@ -79,12 +78,27 @@ class Product extends BaseProduct
      */
     public function edit(
         ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        BaseProductData $productData,
+        ProductData $productData,
         ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
     ) {
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     */
+    protected function createDomains(ProductData $productData)
+    {
+        $domainIds = array_keys($productData->seoTitles);
+
+        foreach ($domainIds as $domainId) {
+            $productDomain = new ProductDomain($this, $domainId);
+            $this->domains[] = $productDomain;
+        }
+
+        $this->setDomains($productData);
     }
 
     /**
