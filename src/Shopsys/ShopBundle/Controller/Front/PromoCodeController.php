@@ -2,8 +2,10 @@
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
+use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +15,7 @@ class PromoCodeController extends FrontBaseController
     const PROMO_CODE_PARAMETER = 'code';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
      */
     private $currentPromoCodeFacade;
 
@@ -28,18 +30,34 @@ class PromoCodeController extends FrontBaseController
     private $dateTimeFormatterExtension;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Cart\CartFacade
+     */
+    private $cartFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
+     */
+    private $priceExtension;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      */
     public function __construct(
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         PromoCodeFacade $promoCodeFacade,
-        DateTimeFormatterExtension $dateTimeFormatterExtension
+        DateTimeFormatterExtension $dateTimeFormatterExtension,
+        CartFacade $cartFacade,
+        PriceExtension $priceExtension
     ) {
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
+        $this->cartFacade = $cartFacade;
+        $this->priceExtension = $priceExtension;
     }
 
     public function indexAction()
@@ -55,8 +73,15 @@ class PromoCodeController extends FrontBaseController
     public function applyAction(Request $request)
     {
         $promoCodeCode = $request->get(self::PROMO_CODE_PARAMETER);
+
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
+        $cart = $this->cartFacade->getCartOfCurrentCustomerCreateIfNotExists();
+
+        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
+        $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+
         try {
-            $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode);
+            $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts());
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,
@@ -68,13 +93,18 @@ class PromoCodeController extends FrontBaseController
                 'message' => t('Slevový kupón byl již vyčerpán.'),
             ]);
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
-            /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
-            $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
             return new JsonResponse([
                 'result' => false,
                 'message' => t('Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
                     '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
                     '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
+                ]),
+            ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\MinimalOrderValueException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Pro využití slevového kódu musíte nakoupit aspoň za %price%.', [
+                    '%price%' => $this->priceExtension->priceFilter($promoCode->getMinOrderValue()),
                 ]),
             ]);
         }

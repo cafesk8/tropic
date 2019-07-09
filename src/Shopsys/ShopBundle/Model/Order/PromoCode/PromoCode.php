@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 
@@ -15,6 +16,13 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
  */
 class PromoCode extends BasePromoCode
 {
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    protected $domainId;
+
     /**
      * @var bool
      *
@@ -51,17 +59,26 @@ class PromoCode extends BasePromoCode
     private $validTo;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     *
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    private $minOrderValue;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
     {
         parent::__construct($promoCodeData);
 
+        $this->domainId = $promoCodeData->domainId;
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
         $this->numberOfUses = $promoCodeData->numberOfUses;
         $this->validFrom = $promoCodeData->validFrom;
         $this->validTo = $promoCodeData->validTo;
+        $this->minOrderValue = $promoCodeData->minOrderValue;
     }
 
     /**
@@ -76,6 +93,15 @@ class PromoCode extends BasePromoCode
         $this->numberOfUses = $promoCodeData->numberOfUses;
         $this->validFrom = $promoCodeData->validFrom;
         $this->validTo = $promoCodeData->validTo;
+        $this->minOrderValue = $promoCodeData->minOrderValue;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDomainId(): int
+    {
+        return $this->domainId;
     }
 
     /**
@@ -137,5 +163,13 @@ class PromoCode extends BasePromoCode
     public function getValidTo(): ?DateTime
     {
         return $this->validTo;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getMinOrderValue(): ?Money
+    {
+        return $this->minOrderValue;
     }
 }

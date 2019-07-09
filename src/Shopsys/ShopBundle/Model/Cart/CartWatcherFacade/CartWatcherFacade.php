@@ -47,16 +47,19 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
      */
     public function checkCartModifications(Cart $cart): void
     {
         parent::checkCartModifications($cart);
 
-        $this->checkValidityOfEnteredPromoCode();
+        $this->checkValidityOfEnteredPromoCode($cart);
     }
 
-    public function checkValidityOfEnteredPromoCode(): void
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     */
+    public function checkValidityOfEnteredPromoCode(Cart $cart): void
     {
         $enteredCode = $this->session->get(CurrentPromoCodeFacade::PROMO_CODE_SESSION_KEY);
 
@@ -65,7 +68,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         }
 
         try {
-            $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode);
+            $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts());
         } catch (\Exception $exception) {
             $this->flashMessageSender->addErrorFlash(
                 t('Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho.')

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Admin;
 
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController as BasePromoCodeController;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PromoCodeController extends BasePromoCodeController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory
      */
     private $promoCodeGridFactory;
 
@@ -28,23 +29,31 @@ class PromoCodeController extends BasePromoCodeController
     private $promoCodeDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
+     */
+    private $adminDomainTabsFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit $promoCodeInlineEdit
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory $promoCodeDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(
         PromoCodeFacade $promoCodeFacade,
         PromoCodeInlineEdit $promoCodeInlineEdit,
         AdministratorGridFacade $administratorGridFacade,
         PromoCodeDataFactory $promoCodeDataFactory,
-        PromoCodeGridFactory $promoCodeGridFactory
+        PromoCodeGridFactory $promoCodeGridFactory,
+        AdminDomainTabsFacade $adminDomainTabsFacade
     ) {
         parent::__construct($promoCodeFacade, $promoCodeInlineEdit, $administratorGridFacade);
 
         $this->promoCodeDataFactory = $promoCodeDataFactory;
         $this->promoCodeGridFactory = $promoCodeGridFactory;
+        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
     /**
@@ -78,6 +87,7 @@ class PromoCodeController extends BasePromoCodeController
 
         $form = $this->createForm(PromoCodeFormType::class, $promoCodeData, [
             'promo_code' => null,
+            'domain_id' => $this->adminDomainTabsFacade->getSelectedDomainId(),
         ]);
         $form->handleRequest($request);
 
@@ -116,6 +126,7 @@ class PromoCodeController extends BasePromoCodeController
 
         $form = $this->createForm(PromoCodeFormType::class, $promoCodeData, [
             'promo_code' => $promoCode,
+            'domain_id' => $this->adminDomainTabsFacade->getSelectedDomainId(),
         ]);
         $form->handleRequest($request);
 

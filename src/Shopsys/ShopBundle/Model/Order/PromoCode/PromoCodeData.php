@@ -9,6 +9,11 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
 class PromoCodeData extends BasePromoCodeData
 {
     /**
+     * @var int|null
+     */
+    public $domainId;
+
+    /**
      * @var bool|null
      */
     public $unlimited;
@@ -32,4 +37,9 @@ class PromoCodeData extends BasePromoCodeData
      * @var \DateTime|null
      */
     public $validTo;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public $minOrderValue;
 }

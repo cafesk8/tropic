@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
+use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
+use Shopsys\FrameworkBundle\Form\DomainType;
+use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -23,6 +31,26 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public const VALIDATION_GROUP_TYPE_NOT_UNLIMITED = 'NOT_UNLIMITED';
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
+     */
+    private $priceExtension;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
+     */
+    public function __construct(Domain $domain, PriceExtension $priceExtension)
+    {
+        $this->domain = $domain;
+        $this->priceExtension = $priceExtension;
+    }
+
+    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      */
@@ -33,38 +61,28 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $this->extendCodeField($builder);
         $this->extendPercentField($builder);
 
-        $builder->add('unlimited', CheckboxType::class, [
-            'label' => t('Neomezený počet použití'),
-            'required' => false,
-            'attr' => [
-                'class' => 'js-promo-code-input-unlimited',
-            ],
-        ])
-        ->add('usageLimit', IntegerType::class, [
-            'label' => t('Maximální počet použití'),
-            'required' => true,
-            'attr' => [
-                'class' => 'js-promo-code-input-usage-limit',
-            ],
-            'constraints' => [
-                new GreaterThanOrEqual([
-                    'value' => 1,
-                    'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
-                ]),
-                new NotBlank([
-                    'message' => t('Vyplňte prosím množství.'),
-                    'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
-                ]),
-            ],
-        ])
-        ->add('validFrom', DatePickerType::class, [
-            'required' => false,
-            'label' => t('Platný od'),
-        ])
-        ->add('validTo', DatePickerType::class, [
-            'required' => false,
-            'label' => t('Platný do'),
-        ]);
+        if ($options['promo_code'] === null) {
+            $builder->add('domainId', DomainType::class, [
+                'required' => true,
+                'data' => $options['domain_id'],
+                'label' => t('Domain'),
+            ]);
+        } else {
+            $builder
+                ->add('id', DisplayOnlyType::class, [
+                    'data' => $options['promo_code']->getId(),
+                    'label' => t('ID'),
+                    'position' => 'first',
+                ])
+                ->add('domain', DisplayOnlyType::class, [
+                    'data' => $this->domain->getDomainConfigById($options['promo_code']->getDomainId())->getName(),
+                    'label' => t('Domain'),
+                    'position' => ['after' => 'id'],
+                ]);
+        }
+
+        $builder->add($this->getRestictionGroup($builder, $options['promo_code'], $options['domain_id']));
+        $builder->add($this->getValidationGroup($builder));
 
         $builder->add('save', SubmitType::class);
     }
@@ -74,7 +92,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver
+            ->setRequired(['promo_code', 'domain_id'])
+            ->setAllowedTypes('promo_code', [PromoCode::class, 'null'])
+            ->setAllowedTypes('domain_id', 'int')
+            ->setDefaults([
             'data_class' => PromoCodeData::class,
             'validation_groups' => function (FormInterface $form) {
                 $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
@@ -119,5 +141,84 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $percentFieldOptions['label'] = t('Sleva');
         $percentFieldType = get_class($builder->get('percent')->getType()->getInnerType());
         $builder->add('percent', $percentFieldType, $percentFieldOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getValidationGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        return $builder->create('validGroup', GroupType::class, [
+            'label' => t('Platnost'),
+        ])
+            ->add('validFrom', DatePickerType::class, [
+                'required' => false,
+                'label' => t('Platný od'),
+            ])
+            ->add('validTo', DatePickerType::class, [
+                'required' => false,
+                'label' => t('Platný do'),
+            ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param int|null $domainId
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getRestictionGroup(FormBuilderInterface $builder, ?PromoCode $promoCode, ?int $domainId): FormBuilderInterface
+    {
+        return $builder->create('restrictionGroup', GroupType::class, [
+            'label' => 'Omezení',
+        ])
+            ->add('unlimited', CheckboxType::class, [
+                'label' => t('Neomezený počet použití'),
+                'required' => false,
+                'attr' => [
+                    'class' => 'js-promo-code-input-unlimited',
+                ],
+            ])
+            ->add('usageLimit', IntegerType::class, [
+                'label' => t('Maximální počet použití'),
+                'required' => true,
+                'attr' => [
+                    'class' => 'js-promo-code-input-usage-limit',
+                ],
+                'constraints' => [
+                    new GreaterThanOrEqual([
+                        'value' => 1,
+                        'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
+                    ]),
+                    new NotBlank([
+                        'message' => t('Vyplňte prosím množství.'),
+                        'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
+                    ]),
+                ],
+            ])
+            ->add('minOrderValue', MoneyType::class, [
+                'scale' => 6,
+                'required' => false,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                ],
+                'label' => $this->getLabelForMinOrderValue($promoCode, $domainId),
+            ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param int|null $domainId
+     * @return string
+     */
+    private function getLabelForMinOrderValue(?PromoCode $promoCode, ?int $domainId): string
+    {
+        if ($promoCode !== null) {
+            return t('Minimální hodnota objednávky') . ' (' . $this->priceExtension->getCurrencySymbolByDomainId($domainId) . ')';
+        } else {
+            return t('Minimální hodnota objednávky v měně dle zvolené domény');
+        }
     }
 }
