@@ -37,6 +37,8 @@ class ProductDataFactory extends BaseProductDataFactory
     public function fillNew(BaseProductData $productData)
     {
         parent::fillNew($productData);
+        $nullForAllDomains = $this->getNullForAllDomains();
+        $productData->actionPrices = $nullForAllDomains;
 
         $productData->storeStocks = [];
     }
