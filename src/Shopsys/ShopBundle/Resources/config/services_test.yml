@@ -92,3 +92,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface:
         alias: Shopsys\ShopBundle\Model\Product\ProductFactory
+
+    Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\Item\OrderItemDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface: '@Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactory'
+
