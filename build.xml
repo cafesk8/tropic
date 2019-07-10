@@ -7,11 +7,11 @@
     <property name="path.vendor" value="${path.root}/vendor"/>
     <property name="path.framework" value="${path.vendor}/shopsys/framework"/>
 
-    <import file="${path.framework}/build.xml"/>
-
     <property name="is-multidomain" value="true"/>
     <property name="phpstan.level" value="0"/>
     <property name="translations.dump.locales" value="cs sk de"/>
+
+    <import file="${path.framework}/build.xml"/>
 
     <target name="checks-ci" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
     <target name="checks-ci-diff" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
