@@ -114,7 +114,9 @@
               "analyzer": "edge_ngram_without_diacritic"
             },
             "keyword": {
-              "type": "keyword"
+              "type": "icu_collation_keyword",
+              "language": "sk",
+              "index": false
             }
           }
         },
