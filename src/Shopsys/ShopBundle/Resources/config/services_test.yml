@@ -87,4 +87,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'
 
-    Shopsys\ShopBundle\Model\Customer\CustomerDataFactory: ~
+    Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface:
+        alias: Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
+
+    Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface:
+        alias: Shopsys\ShopBundle\Model\Product\ProductFactory
