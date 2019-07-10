@@ -62,7 +62,7 @@ class PromoCode extends BasePromoCode
     private $validTo;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      *
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
@@ -83,6 +83,20 @@ class PromoCode extends BasePromoCode
     private $prefix;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $useNominalDiscount;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
+     *
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    private $nominalDiscount;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -98,6 +112,8 @@ class PromoCode extends BasePromoCode
         $this->minOrderValue = $promoCodeData->minOrderValue;
         $this->massGenerate = $promoCodeData->massGenerate;
         $this->prefix = $promoCodeData->prefix;
+        $this->nominalDiscount = $promoCodeData->nominalDiscount;
+        $this->useNominalDiscount = $promoCodeData->useNominalDiscount;
     }
 
     /**
@@ -115,6 +131,8 @@ class PromoCode extends BasePromoCode
         $this->minOrderValue = $promoCodeData->minOrderValue;
         $this->massGenerate = $promoCodeData->massGenerate;
         $this->prefix = $promoCodeData->prefix;
+        $this->nominalDiscount = $promoCodeData->nominalDiscount;
+        $this->useNominalDiscount = $promoCodeData->useNominalDiscount;
     }
 
     /**
@@ -208,5 +226,21 @@ class PromoCode extends BasePromoCode
     public function getPrefix(): ?string
     {
         return $this->prefix;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getNominalDiscount(): ?Money
+    {
+        return $this->nominalDiscount;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseNominalDiscount(): bool
+    {
+        return $this->useNominalDiscount;
     }
 }

@@ -68,5 +68,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->minOrderValue = $promoCode->getMinOrderValue();
         $promoCodeData->massGenerate = $promoCode->isMassGenerated();
         $promoCodeData->prefix = $promoCode->getPrefix();
+        $promoCodeData->nominalDiscount = $promoCode->getNominalDiscount();
+        $promoCodeData->useNominalDiscount = $promoCode->isUseNominalDiscount();
     }
 }

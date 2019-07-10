@@ -25,13 +25,19 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PromoCodeFormTypeExtension extends AbstractTypeExtension
 {
     public const VALIDATION_GROUP_TYPE_NOT_UNLIMITED = 'NOT_UNLIMITED';
+
+    public const VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT = 'NOMINAL_DISCOUNT';
+
+    public const VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT = 'PERCENT_DISCOUNT';
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -67,6 +73,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
         $this->extendCodeField($builder, $basicInformationsFormGroup);
         $this->extendPercentField($builder, $basicInformationsFormGroup);
+        $this->addNominalDiscountFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
 
         $builder->add($basicInformationsFormGroup);
 
@@ -123,9 +130,31 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED;
                     }
 
+                    if ($promoCodeData->useNominalDiscount === true) {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT;
+                    } else {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT;
+                    }
+
                     return $validationGroups;
                 },
+                'constraints' => [
+                    new Callback([$this, 'validateMinimalOrderValueForNominalDiscount']),
+                ],
             ]);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $orderData
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateMinimalOrderValueForNominalDiscount(PromoCodeData $orderData, ExecutionContextInterface $context)
+    {
+        if ($orderData->useNominalDiscount && $orderData->minOrderValue < $orderData->nominalDiscount) {
+            $context->buildViolation('Minimální hodnota objednávky musí být větší nebo rovna nominální slevě.')
+                ->atPath('minOrderValue')
+                ->addViolation();
+        }
     }
 
     /**
@@ -156,10 +185,61 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     private function extendPercentField(FormBuilderInterface $builder, FormBuilderInterface $basicInformationsGroupType): void
     {
         $percentFieldOptions = $builder->get('percent')->getOptions();
-        $percentFieldOptions['label'] = t('Sleva');
+        $percentFieldOptions['label'] = t('Procentuální sleva');
+        $percentFieldOptions['attr'] = ['class' => 'js-promo-code-input-percent-discount'];
+
+        $percentFieldOptions['constraints'] = [
+            new NotBlank([
+                'message' => 'Please enter discount percentage',
+                'groups' => self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT,
+            ]),
+            new Range([
+                'min' => 0,
+                'max' => 100,
+                'groups' => self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT,
+            ]),
+        ];
+
         $percentFieldType = get_class($builder->get('percent')->getType()->getInnerType());
         $basicInformationsGroupType->add('percent', $percentFieldType, $percentFieldOptions);
         $builder->remove('percent');
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param int|null $domainId
+     */
+    private function addNominalDiscountFields(FormBuilderInterface $builder, ?PromoCode $promoCode = null, ?int $domainId = null): void
+    {
+        $builder
+            ->add('useNominalDiscount', CheckboxType::class, [
+                'label' => t('Použít nominální slevu'),
+                'required' => false,
+                'attr' => [
+                    'class' => 'js-promo-code-input-use-nominal-discount',
+                ],
+                'position' => ['before' => 'percent'],
+            ])
+            ->add('nominalDiscount', MoneyType::class, [
+                'scale' => 6,
+                'required' => true,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount([
+                        'message' => 'Price must be greater or equal to zero',
+                        'groups' => self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT,
+                    ]),
+                    new NotBlank([
+                        'message' => t('Vyplňte prosím nominální hodnotu slevy.'),
+                        'groups' => self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT,
+                    ]),
+                ],
+                'label' => $this->getLabelForMultidomainFieldValue(t('Nominální sleva'), $promoCode, $domainId),
+                'attr' => [
+                    'class' => 'js-promo-code-input-nominal-discount',
+                ],
+            ]);
     }
 
     /**
@@ -223,21 +303,22 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
                 ],
-                'label' => $this->getLabelForMinOrderValue($promoCode, $domainId),
+                'label' => $this->getLabelForMultidomainFieldValue(t('Minimální hodnota objednávky'), $promoCode, $domainId),
             ]);
     }
 
     /**
+     * @param string $prefix
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param int|null $domainId
      * @return string
      */
-    private function getLabelForMinOrderValue(?BasePromoCode $promoCode, ?int $domainId): string
+    private function getLabelForMultidomainFieldValue(string $prefix, ?BasePromoCode $promoCode = null, ?int $domainId = null): string
     {
         if ($promoCode !== null) {
-            return t('Minimální hodnota objednávky') . ' (' . $this->priceExtension->getCurrencySymbolByDomainId($domainId) . ')';
+            return $prefix . ' (' . $this->priceExtension->getCurrencySymbolByDomainId($domainId) . ')';
         } else {
-            return t('Minimální hodnota objednávky v měně dle zvolené domény');
+            return $prefix . ' ' . t('v měně dle zvolené domény');
         }
     }
 

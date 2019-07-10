@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 
 class PromoCodeData extends BasePromoCodeData
@@ -39,7 +40,7 @@ class PromoCodeData extends BasePromoCodeData
     public $validTo;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
     public $minOrderValue;
 
@@ -57,4 +58,21 @@ class PromoCodeData extends BasePromoCodeData
      * @var int|null
      */
     public $quantity;
+
+    /**
+     * @var bool
+     */
+    public $useNominalDiscount;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public $nominalDiscount;
+
+    public function __construct()
+    {
+        $this->percent = 0;
+        $this->nominalDiscount = Money::zero();
+        $this->useNominalDiscount = false;
+    }
 }

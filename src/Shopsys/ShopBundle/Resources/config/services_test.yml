@@ -97,3 +97,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface: '@Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactory'
 
+    Shopsys\ShopBundle\Model\Customer\CustomerDataFactory: ~
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory'

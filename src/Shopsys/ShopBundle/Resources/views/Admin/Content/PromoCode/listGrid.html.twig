@@ -31,3 +31,12 @@
         </span>
     {% endif %}
 {% endblock %}
+
+{% block grid_value_cell_id_percent %}
+    {% if _context.row.pc.useNominalDiscount is same as (true) %}
+        {{ _context.row.pc.nominalDiscount.getAmount|formatNumber }}
+        {{ currencySymbolByDomainId(_context.row.pc.domainId) }}
+    {% else %}
+        {{ value|formatPercent }}
+    {% endif %}
+{% endblock %}

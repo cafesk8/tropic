@@ -289,3 +289,9 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository: '@Shopsys\ShopBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation'
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewCalculation'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation: '@Shopsys\ShopBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation'

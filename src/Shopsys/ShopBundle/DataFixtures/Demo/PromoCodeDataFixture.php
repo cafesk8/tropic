@@ -45,11 +45,13 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         $promoCodeData->usageLimit = 100;
         $promoCodeData->code = 'promo10';
         $promoCodeData->percent = 10.0;
+        $promoCodeData->useNominalDiscount = false;
         $this->promoCodeFacade->create($promoCodeData);
 
         $promoCodeData->unlimited = true;
         $promoCodeData->code = 'promo4';
         $promoCodeData->percent = 4.0;
+        $promoCodeData->useNominalDiscount = false;
         $this->promoCodeFacade->create($promoCodeData);
 
         $promoCodeData->unlimited = false;
@@ -57,6 +59,7 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         $promoCodeData->numberOfUses = 9;
         $promoCodeData->code = 'promo15';
         $promoCodeData->percent = 15.0;
+        $promoCodeData->useNominalDiscount = false;
         $this->promoCodeFacade->create($promoCodeData);
 
         $promoCodeData->usageLimit = 1;

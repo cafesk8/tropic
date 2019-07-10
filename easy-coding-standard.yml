@@ -38,6 +38,7 @@ parameters:
 
         Shopsys\CodingStandards\Sniffs\ObjectIsCreatedByFactorySniff:
             - '*/tests/*'
+            - '*/src/Shopsys/ShopBundle/Model/Order/Preview/OrderPreviewCalculation.php'
 
         Shopsys\CodingStandards\Sniffs\ForbiddenDumpSniff:
             - '*/tests/ShopBundle/Functional/Model/Cart/CartFacadeTest.php'

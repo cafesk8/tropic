@@ -10,7 +10,11 @@
             <span class="box-promo-code__added__discount">
                 {{ 'Your discount'|trans }}:
                 <strong>
-                    {{ validEnteredPromoCode.percent|formatPercent }}
+                    {% if validEnteredPromoCode.isUseNominalDiscount %}
+                        {{ validEnteredPromoCode.nominalDiscount|priceWithCurrency(currency) }}
+                    {% else %}
+                        {{ validEnteredPromoCode.percent|formatPercent }}
+                    {% endif %}
                 </strong>
             </span>
             <a href="{{ url('front_promo_code_remove') }}" id="js-promo-code-remove-button" class="box-promo-code__added__remove">

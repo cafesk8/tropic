@@ -102,9 +102,10 @@ class PromoCodeController extends BasePromoCodeController
                 $promoCode = $this->promoCodeFacade->create($promoCodeData);
 
                 $this->getFlashMessageSender()->addSuccessFlashTwig(
-                    t('Slevový kupón <strong>{{ name }}</strong> byl vytvořen'),
+                    t('Slevový kupón <strong><a href="{{ url }}">{{ name }}</a></strong> byl vytvořen'),
                     [
                         'name' => $promoCode->getCode(),
+                        'url' => $this->generateUrl('admin_promocode_edit', ['id' => $promoCode->getId()]),
                     ]
                 );
 
@@ -141,9 +142,10 @@ class PromoCodeController extends BasePromoCodeController
                 $this->promoCodeFacade->edit($id, $promoCodeData);
 
                 $this->getFlashMessageSender()->addSuccessFlashTwig(
-                    t('Slevový kupón <strong>{{ name }}</strong> byl modifikován'),
+                    t('Slevový kupón <strong><a href="{{ url }}">{{ name }}</a></strong> byl modifikován'),
                     [
                         'name' => $promoCode->getCode(),
+                        'url' => $this->generateUrl('admin_promocode_edit', ['id' => $promoCode->getId()]),
                     ]
                 );
 

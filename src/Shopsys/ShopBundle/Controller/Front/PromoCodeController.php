@@ -2,8 +2,10 @@
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade;
@@ -40,30 +42,47 @@ class PromoCodeController extends FrontBaseController
     private $priceExtension;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     */
+    private $currencyFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         PromoCodeFacade $promoCodeFacade,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         CartFacade $cartFacade,
-        PriceExtension $priceExtension
+        PriceExtension $priceExtension,
+        CurrencyFacade $currencyFacade,
+        Domain $domain
     ) {
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->cartFacade = $cartFacade;
         $this->priceExtension = $priceExtension;
+        $this->currencyFacade = $currencyFacade;
+        $this->domain = $domain;
     }
 
     public function indexAction()
     {
         return $this->render('@ShopsysShop/Front/Content/Order/PromoCode/index.html.twig', [
             'validEnteredPromoCode' => $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull(),
+            'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId($this->domain->getId()),
         ]);
     }
 

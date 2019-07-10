@@ -21,7 +21,7 @@ class Cart extends BaseCart
     {
         $cartProductsValue = Money::zero();
         foreach ($this->getItems() as $cartItem) {
-            $cartProductsValue = $cartProductsValue->add($cartItem->getWatchedPrice()->divide($cartItem->getQuantity(), 6));
+            $cartProductsValue = $cartProductsValue->add($cartItem->getWatchedPrice()->multiply($cartItem->getQuantity()));
         }
 
         return $cartProductsValue;
