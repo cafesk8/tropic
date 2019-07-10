@@ -58,7 +58,6 @@
                             <div class="table-cart js-cart">
                                 {% for index, cartItem in cartItems %}
                                     {% set cartItemPrice = cartItemPrices[index] %}
-                                    {% set cartItemDiscount = cartItemDiscounts[index] %}
                                     <div class="table-cart__row js-cart-item">
                                         <div class="table-cart__row__left">
                                             <div class="table-cart__cell__image">
@@ -94,13 +93,11 @@
                                                 </a>
                                             </div>
                                             <div class="table-cart__cell__price js-cart-item-total-price">
-                                                {% if cartItemDiscount is not null %}
-                                                    <div class="table-cart__cell__price__line-through">
-                                                        {{ cartItemDiscount.priceWithVat|price }}
-                                                    </div>
+                                                {% if cartItemPrice.unitPrice.isActionPrice %}
+                                                    <span class="table-cart__cell__price__line-through">{{ cartItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}</span>
                                                 {% endif %}
                                                 <div class="table-cart__cell__price__primary">
-                                                    {{ cartItemPrice.totalPrice.priceWithVat|price }}
+                                                    {{ cartItemPrice.unitPrice.priceWithVat|price }}
                                                 </div>
                                             </div>
                                         </div>
