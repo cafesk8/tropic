@@ -29,12 +29,15 @@
 
                             {% if productSellingPrice is not null %}
                                 <div class="list-products__item__info__price">
-                                    <div class="list-products__item__info__price__item list-products__item__info__price__item--main">
+                                    <div class="list-products__item__info__price__item__main">
                                         {% if productSellingPrice.priceFrom %}
                                             {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                         {% else %}
                                             {{ productSellingPrice.priceWithVat|price }}
                                         {% endif %}
+                                        <div class="list-products__item__info__price__item__old">
+                                            3099 Kč
+                                        </div>
                                     </div>
                                     <div class="list-products__item__info__price__item">
                                         {% if productSellingPrice.priceFrom %}
@@ -113,12 +116,15 @@
 
                                     {% if productSellingPrice is not null %}
                                         <div class="{{ listCssClass }}__item__info__price">
-                                            <div class="{{ listCssClass }}__item__info__price__item {{ listCssClass }}__item__info__price__item--main">
+                                            <div class="{{ listCssClass }}__item__info__price__item__main">
                                                 {% if productSellingPrice.priceFrom %}
                                                     {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                                 {% else %}
                                                     {{ productSellingPrice.priceWithVat|price }}
                                                 {% endif %}
+                                                <div class="{{ listCssClass }}__item__info__price__item__old">
+                                                    3099 Kč
+                                                </div>
                                             </div>
                                             <div class="{{ listCssClass }}__item__info__price__item">
                                                 {% if productSellingPrice.priceFrom %}
