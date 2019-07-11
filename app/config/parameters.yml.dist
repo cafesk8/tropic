@@ -63,6 +63,19 @@ parameters:
         username: testtestcztest
         apiKey: wqhYdkvv
 
+    instagram:
+        quality: standard_resolution
+        limit: 8
+        cs:
+            accessToken: 16014813377.4a1086a.7204e10003754030958ee8fb8572bd01
+            link: https://www.instagram.com/bushmanoriginal/
+        sk:
+            accessToken: 16014813377.4a1086a.7204e10003754030958ee8fb8572bd01
+            link: https://www.instagram.com/bushmanoriginalsk/
+        de:
+            accessToken: 16014813377.4a1086a.7204e10003754030958ee8fb8572bd01
+            link: https://www.instagram.com/bushmangermany/
+
     env(S3_API_HOST): ''
     env(S3_API_USERNAME): ''
     env(S3_API_PASSWORD): ''

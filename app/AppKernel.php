@@ -42,6 +42,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
             new VasekPurchart\ConsoleErrorsBundle\ConsoleErrorsBundle(),
+            new EmanueleMinotto\TwigCacheBundle\TwigCacheBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(), // has to be loaded after FrameworkBundle and TwigBundle
             new Joschi127\DoctrineEntityOverrideBundle\Joschi127DoctrineEntityOverrideBundle(),
             new Shopsys\FrameworkBundle\ShopsysFrameworkBundle(),

@@ -1,0 +1,24 @@
+<div class="box-images-line">
+    <div class="box-images-line__title">
+        {{ 'Bushmanství obrazem'|trans }}
+        <a href="{{ instagramLink }}" class="box-images-line__title__link btn btn--secondary btn--small">
+            <i class="svg svg-instagram"></i>
+            {{ 'Sledujte náš instagram'|trans }}
+        </a>
+    </div>
+    <ul class="list-images-line">
+        {% for instagramTemplateObject in instagramTemplateObjects %}
+            <li class="list-images-line__item">
+                {% if instagramTemplateObject.link is not null %}
+                    <a href="{{ instagramTemplateObject.link }}" title="{{ instagramTemplateObject.title }}" target="_blank">
+                {% endif %}
+
+                <img src="{{ instagramTemplateObject.url }}" alt="{{ instagramTemplateObject.title }}">
+
+                {% if instagramTemplateObject.link is not null %}
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -297,3 +297,17 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation: '@Shopsys\ShopBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation'
 
     Shopsys\FrameworkBundle\Model\Category\CategoryRepository: '@Shopsys\ShopBundle\Model\Category\CategoryRepository'
+
+    Shopsys\ShopBundle\Component\Instagram\Instagram:
+        arguments:
+            - '%instagram%'
+
+    Shopsys\ShopBundle\Twig\InstagramExtension:
+        tags:
+            - { name: twig.extension }
+
+    shopsys.shop.twig.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
+        arguments:
+            - '@snc_redis.twig'

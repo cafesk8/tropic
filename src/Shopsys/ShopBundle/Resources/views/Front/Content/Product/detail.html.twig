@@ -656,7 +656,9 @@
 
     <div class="web__line">
         <div class="web__container">
-            {% include '@ShopsysShop/Front/Content/ImagesLine/list.html.twig' %}
+            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                {{ instagramFeed() }}
+            {% endcache %}
         </div>
     </div>
 

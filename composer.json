@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
@@ -90,7 +90,9 @@
         "gopay/payments-sdk-php": "^1.4",
         "league/iso3166": "^2.1",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "paypal/rest-api-sdk-php": "*"
+        "paypal/rest-api-sdk-php": "*",
+        "emanueleminotto/twig-cache-bundle": "^1.0",
+        "vinkla/instagram": "^9.3"
     },
     "require-dev": {
         "ext-pgsql": "*",
@@ -125,7 +127,7 @@
         "preferred-install": "dist",
         "component-dir": "web/components",
         "platform": {
-            "php": "7.1"
+            "php": "7.2"
         }
     },
     "extra": {
