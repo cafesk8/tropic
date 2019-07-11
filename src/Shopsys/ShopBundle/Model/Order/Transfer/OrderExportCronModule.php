@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Model\Order\OrderFacade;
 class OrderExportCronModule extends AbstractTransferExportCronModule
 {
     private const TRANSFER_IDENTIFIER = 'export_orders';
+    private const ORDER_EXPORT_BATCH_SIZE = 100;
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient
@@ -61,7 +62,7 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
      */
     protected function getDataForExport(): array
     {
-        $notExportedOrders = $this->orderFacade->getNotExportedOrders();
+        $notExportedOrders = $this->orderFacade->getNotExportedOrdersBatch(self::ORDER_EXPORT_BATCH_SIZE);
         $ordersToExport = [];
 
         foreach ($notExportedOrders as $notExportedOrder) {
