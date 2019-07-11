@@ -16,7 +16,6 @@ class CategoryDataFactory extends BaseCategoryDataFactory
     {
         $categoryData = new CategoryData();
         $this->fillFromCategory($categoryData, $category);
-        $categoryData->preListingCategory = $category->isPreListingCategory();
 
         return $categoryData;
     }
@@ -41,5 +40,7 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         parent::fillFromCategory($categoryData, $category);
 
         $categoryData->displayedInHorizontalMenu = $category->isDisplayedInHorizontalMenu();
+        $categoryData->preListingCategory = $category->isPreListingCategory();
+        $categoryData->displayedInFirstColumn = $category->isDisplayedInFirstColumn();
     }
 }

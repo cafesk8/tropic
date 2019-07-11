@@ -295,3 +295,5 @@ services:
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewCalculation'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation: '@Shopsys\ShopBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation'
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryRepository: '@Shopsys\ShopBundle\Model\Category\CategoryRepository'

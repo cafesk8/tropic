@@ -3,14 +3,16 @@
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade;
+use Shopsys\ShopBundle\Model\Category\Category;
+use Shopsys\ShopBundle\Model\Category\CategoryFacade;
 use Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends FrontBaseController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryFacade
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
      */
     private $categoryFacade;
 
@@ -31,7 +33,7 @@ class CategoryController extends FrontBaseController
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade $topCategoryFacade
      * @param \Shopsys\ShopBundle\Model\Category\HorizontalCategoryFacade $horizontalCategoryFacade
      */
@@ -48,21 +50,30 @@ class CategoryController extends FrontBaseController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function hoverMenuAction()
+    public function hoverMenuAction(): Response
     {
         $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleChildrenForParent(
             $this->categoryFacade->getRootCategory(),
             $this->domain->getCurrentDomainConfig()
         );
 
+        $categoriesForFirstColumn = $this->categoryFacade->getAllVisibleCategoriesForFirstColumnByDomainId($this->domain->getId());
+
         return $this->render('@ShopsysShop/Front/Content/Category/hoverMenu.html.twig', [
             'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
+            'categoriesForFirstColumn' => $categoriesForFirstColumn,
+            'categoriesIdsForFirstColumn' => array_map(function (Category $category) {
+                return $category->getId();
+            }, $categoriesForFirstColumn),
         ]);
     }
 
-    public function topAction()
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function topAction(): Response
     {
         return $this->render('@ShopsysShop/Front/Content/Category/top.html.twig', [
             'categories' => $this->topCategoryFacade->getVisibleCategoriesByDomainId($this->domain->getId()),
@@ -72,7 +83,7 @@ class CategoryController extends FrontBaseController
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function horizontalMenuAction()
+    public function horizontalMenuAction(): Response
     {
         $categories = $this->horizontalCategoryFacade->getCategoriesForHorizontalMenuOnCurrentDomain();
 

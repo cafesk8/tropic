@@ -68,6 +68,10 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('V hlavním menu'),
             ])
+            ->add('displayedInFirstColumn', YesNoType::class, [
+                'required' => false,
+                'label' => t('V prvním sloupci'),
+            ])
             ->add('preListingCategory', YesNoType::class, [
                 'required' => false,
                 'label' => t('Předvýpis kategorií'),

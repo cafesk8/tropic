@@ -100,3 +100,5 @@ services:
     Shopsys\ShopBundle\Model\Customer\CustomerDataFactory: ~
 
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory'
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryRepository: '@Shopsys\ShopBundle\Model\Category\CategoryRepository'

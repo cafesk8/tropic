@@ -31,6 +31,13 @@ class Category extends BaseCategory
     private $preListingCategory;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $displayedInFirstColumn;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -39,6 +46,7 @@ class Category extends BaseCategory
 
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
         $this->preListingCategory = $categoryData->preListingCategory;
+        $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
     }
 
     /**
@@ -50,6 +58,7 @@ class Category extends BaseCategory
 
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
         $this->preListingCategory = $categoryData->preListingCategory;
+        $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
     }
 
     /**
@@ -75,5 +84,13 @@ class Category extends BaseCategory
     public function getNameWithLevelPad(string $locale = null): string
     {
         return str_repeat('-', $this->level < 1 ? 0 : $this->level - 1) . ' ' . parent::getName($locale);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisplayedInFirstColumn(): bool
+    {
+        return $this->displayedInFirstColumn;
     }
 }
