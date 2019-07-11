@@ -74,7 +74,6 @@ class BlogArticleDetailFriendlyUrlDataProvider implements FriendlyUrlDataProvide
         return self::ROUTE_NAME;
     }
 
-
     /**
      * @param int $id
      * @param string $name
