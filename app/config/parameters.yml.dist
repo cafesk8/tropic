@@ -5,6 +5,12 @@ parameters:
     database_user: root
     database_password: root
 
+    migration_database_host: 10.10.12.249
+    migration_database_port: ~
+    migration_database_name: dbsklad
+    migration_database_user: root
+    migration_database_password: sQTn8KnpAztVMu8Z
+
     elasticsearch_host: elasticsearch:9200
 
     redis_host: redis

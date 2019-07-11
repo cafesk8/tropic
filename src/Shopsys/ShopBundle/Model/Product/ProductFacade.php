@@ -315,6 +315,14 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getAllWithEan(): array
+    {
+        return $this->productRepository->getAllWithEan();
+    }
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
      */

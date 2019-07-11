@@ -61,6 +61,7 @@ RUN docker-php-ext-install \
     opcache \
     pgsql \
     pdo_pgsql \
+    pdo_mysql    \
     zip
 
 # install grunt cli used by frontend developers for continuous generating of css files
