@@ -122,6 +122,7 @@ class RestClient
         if ($method === self::METHOD_POST || $method === self::METHOD_PUT) {
             $fields = json_encode($data);
             $fields = str_replace('\u200b', '', $fields);
+            $headers[] = 'Content-Type: application/json';
             $headers[] = 'Content-Length: ' . strlen($fields);
             curl_setopt($handle, CURLOPT_POSTFIELDS, $fields);
         }
