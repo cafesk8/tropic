@@ -52,8 +52,10 @@ abstract class AbstractTransferExportCronModule extends AbstractTransferCronModu
                         $exception->getMessage()
                     )
                 );
-                $this->em->rollback();
-                $this->em->clear();
+                if ($this->em->isOpen()) {
+                    $this->em->rollback();
+                    $this->em->clear();
+                }
             }
         }
 
