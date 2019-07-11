@@ -56,6 +56,8 @@ abstract class AbstractTransferExportCronModule extends AbstractTransferCronModu
                     $this->em->rollback();
                     $this->em->clear();
                 }
+
+                throw $exception;
             }
         }
 
