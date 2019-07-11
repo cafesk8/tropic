@@ -89,7 +89,21 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
     {
         if ($transferResponse->getStatusCode() !== 200) {
             $this->orderFacade->markOrderAsFailedExported($itemIdentifier);
-            $this->logger->addError(sprintf('Order with id %s was not exported', $itemIdentifier));
+            $this->logger->addError(sprintf(
+                'Order with id %s was not exported, because of bad response code `%s`',
+                $itemIdentifier,
+                $transferResponse->getStatusCode()
+            ));
+        }
+
+        $responseData = $transferResponse->getResponseData();
+        if (array_key_exists('Error', $responseData) && $responseData['Error'] === true) {
+            $this->orderFacade->markOrderAsFailedExported($itemIdentifier);
+            $this->logger->addWarning(sprintf(
+                'Order with id %s was not exported, because of error `%s`',
+                $itemIdentifier,
+                $responseData['ErrorMessage']
+            ));
         } else {
             $this->orderFacade->markOrderAsExported($itemIdentifier);
             $this->logger->addInfo(sprintf('Order with id %s was exported successfully', $itemIdentifier));
