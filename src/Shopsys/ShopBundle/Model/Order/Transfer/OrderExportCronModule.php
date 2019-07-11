@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
-use Exception;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferExportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
@@ -80,25 +79,20 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
     {
         $restResponse = $this->restClient->post('api/Eshop/NewOrder', $orderData);
 
-        return new TransferResponse($restResponse->getCode());
+        return new TransferResponse($restResponse->getCode(), $restResponse->getData());
     }
 
     /**
-     * @param int|string $orderIdentifier
-     * @param \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse $transferResponse
+     * @inheritDoc
      */
-    protected function markItemAsExported($orderIdentifier, TransferResponse $transferResponse): void
+    protected function processExportResponse($itemIdentifier, TransferResponse $transferResponse): void
     {
-        $this->orderFacade->markOrderAsExported($orderIdentifier);
-        $this->logger->addInfo(sprintf('Order with id %s was successfully exported', $orderIdentifier));
-    }
-
-    /**
-     * @param int|string $orderIdentifier
-     * @param \Exception $exception
-     */
-    protected function markItemAsFailedExported($orderIdentifier, Exception $exception): void
-    {
-        $this->orderFacade->markOrderAsFailedExported($orderIdentifier);
+        if ($transferResponse->getStatusCode() !== 200) {
+            $this->orderFacade->markOrderAsFailedExported($itemIdentifier);
+            $this->logger->addError(sprintf('Order with id %s was not exported', $itemIdentifier));
+        } else {
+            $this->orderFacade->markOrderAsExported($itemIdentifier);
+            $this->logger->addInfo(sprintf('Order with id %s was exported successfully', $itemIdentifier));
+        }
     }
 }

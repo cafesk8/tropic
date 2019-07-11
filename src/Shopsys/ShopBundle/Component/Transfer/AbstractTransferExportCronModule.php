@@ -24,13 +24,7 @@ abstract class AbstractTransferExportCronModule extends AbstractTransferCronModu
      * @param int|string $itemIdentifier
      * @param \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse $transferResponse
      */
-    abstract protected function markItemAsExported($itemIdentifier, TransferResponse $transferResponse): void;
-
-    /**
-     * @param int|string $itemIdentifier
-     * @param \Exception $exception
-     */
-    abstract protected function markItemAsFailedExported($itemIdentifier, Exception $exception): void;
+    abstract protected function processExportResponse($itemIdentifier, TransferResponse $transferResponse): void;
 
     /**
      * @return bool
@@ -47,7 +41,7 @@ abstract class AbstractTransferExportCronModule extends AbstractTransferCronModu
             $this->em->beginTransaction();
             try {
                 $transferResponse = $this->getTransferResponse($item);
-                $this->markItemAsExported($itemIdentifier, $transferResponse);
+                $this->processExportResponse($itemIdentifier, $transferResponse);
 
                 $this->em->commit();
             } catch (Exception $exception) {
@@ -58,7 +52,6 @@ abstract class AbstractTransferExportCronModule extends AbstractTransferCronModu
                         $exception->getMessage()
                     )
                 );
-                $this->markItemAsFailedExported($itemIdentifier, $exception);
                 $this->em->rollback();
                 $this->em->clear();
             }
