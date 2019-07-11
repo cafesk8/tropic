@@ -8,7 +8,7 @@
     <property name="path.framework" value="${path.vendor}/shopsys/framework"/>
 
     <property name="is-multidomain" value="true"/>
-    <property name="phpstan.level" value="0"/>
+    <property name="phpstan.level" value="1"/>
     <property name="translations.dump.locales" value="cs sk de"/>
 
     <import file="${path.framework}/build.xml"/>

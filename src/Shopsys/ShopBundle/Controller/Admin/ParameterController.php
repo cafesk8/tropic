@@ -25,6 +25,7 @@ class ParameterController extends BaseParameterController
      */
     public function deleteAction($id)
     {
+        $parameter = null;
         try {
             $parameter = $this->parameterFacade->getById($id);
             $this->parameterFacade->deleteById($id);
