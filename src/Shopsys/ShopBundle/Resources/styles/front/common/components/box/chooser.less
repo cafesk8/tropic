@@ -7,29 +7,36 @@
 
 @box-chooser-bottom-gap: 40px;
 @box-chooser-padding: 30px;
+@box-chooser-padding-mobile: 15px;
+
+@box-choose-item-check-width: 30px;
 
 .box-chooser {
     margin-bottom: @box-chooser-bottom-gap;
-    padding: @box-chooser-padding;
-
+    padding: @box-chooser-padding-mobile;
     background-color: @color-gray;
 
+    @media @query-lg {
+        padding: @box-chooser-padding;
+    }
+
     &__item {
+        display: flex;
+        align-items: flex-end;
+        flex-wrap: wrap;
         width: 100%;
         padding: @box-chooser-item-padding;
-        display: flex;
-        align-items: flex-start;
 
         cursor: pointer;
 
-        .is-no-flex & {
-            display: block;
-            .clearfix();
+        @media @query-lg {
+            flex-wrap: nowrap;
+            align-items: flex-start;
         }
 
         &__check {
+            align-self: flex-start;
             padding-top: 5px;
-
             font-size: 0;
         }
 
@@ -40,10 +47,14 @@
         }
 
         &__title {
-            flex: 1;
             padding: 0 10px;
+            width: calc(~"@{calc-base} - @{box-choose-item-check-width}");
 
             font-size: 15px;
+
+            @media @query-lg {
+                flex: 1;
+            }
 
             &__name {
                 font-weight: 400;
@@ -59,14 +70,13 @@
         }
 
         &__price {
-            flex: 0 @box-chooser-price-width;
             text-align: right;
+            width: 100%;
 
             font-size: 15px;
             font-weight: 800;
 
-            .is-no-flex & {
-                float: right;
+            @media @query-lg {
                 width: @box-chooser-price-width;
             }
 

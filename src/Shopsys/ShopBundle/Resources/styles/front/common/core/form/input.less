@@ -1,6 +1,6 @@
 @input-height: @form-item-height;
 @input-textarea-height: @input-height * 3;
-@input-width: 210px;
+@input-width: 100%;
 @input-padding-horizontal: 10px;
 @input-font-size: 16px;
 
@@ -16,7 +16,7 @@
     line-height: @input-height/2;
     padding: 15px @input-padding-horizontal 0 @input-padding-horizontal;
 
-    border: 1px solid @input-border-color;
+    border: 2px solid @input-border-color;
     color: @color-brown-light;
     font-size: @input-font-size;
     background: @input-background;
@@ -31,9 +31,9 @@
     }
 
     &__label {
-        position: relative;
-        bottom: -25px;
-        left: 15px;
+        position: absolute;
+        top: 5px;
+        left: 11px;
 
         color: @color-brown-light;
         font-size: @font-size;

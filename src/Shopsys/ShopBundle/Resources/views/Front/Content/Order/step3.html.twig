@@ -125,9 +125,9 @@
                         </div>
                     </div>
                 {% endif %}
-                <dl class="form-line">
-                    <dt></dt>
-                    <dd>
+                <fieldset>
+                    <div class="form-line">
+
                         {{ form_widget(form.legalConditionsAgreement, { attr: { class: 'css-checkbox' }}) }}
                         <label for="{{ form.legalConditionsAgreement.vars.id }}" class="css-label-checkbox">
                             {% if privacyPolicyArticle is not null and termsAndConditionsArticle is not null %}
@@ -150,12 +150,12 @@
                             </span>
                             <ul class="form-error__list"></ul>
                         </span>
-                    </dd>
-                </dl>
-                {{ form_row(form.newsletterSubscription, { label: 'I want to subscribe to the newsletter'|trans }) }}
-                {% if form.disallowHeurekaVerifiedByCustomers is defined %}
-                    {{ form_row(form.disallowHeurekaVerifiedByCustomers, { label: 'I do not agree with sending a Customer Verified satisfaction questionnaire that helps improve your service'|trans }) }}
-                {% endif %}
+                    </div>
+                    {{ form_row(form.newsletterSubscription, { label: 'I want to subscribe to the newsletter'|trans }) }}
+                    {% if form.disallowHeurekaVerifiedByCustomers is defined %}
+                        {{ form_row(form.disallowHeurekaVerifiedByCustomers, { label: 'I do not agree with sending a Customer Verified satisfaction questionnaire that helps improve your service'|trans }) }}
+                    {% endif %}
+                </fieldset>
             </div>
             <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
                 {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
