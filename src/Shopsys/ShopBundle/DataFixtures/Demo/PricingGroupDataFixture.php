@@ -5,6 +5,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
@@ -71,30 +72,47 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $pricingGroupData->name = 'ADEPT';
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_ADEPT;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_ADEPT_DOMAIN);
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_ADEPT_DOMAIN, true, [
+            1 => Money::create('1999'),
+            2 => Money::create('79.99'),
+            3 => Money::create('79.99'),
+        ]);
 
         $pricingGroupData->name = 'CLASSIC';
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_CLASSIC;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_CLASSIC_DOMAIN);
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_CLASSIC_DOMAIN, true, [
+            1 => Money::create('19999'),
+            2 => Money::create('799.99'),
+            3 => Money::create('799.99'),
+        ]);
 
         $pricingGroupData->name = 'REAL BUSHMAN';
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REAL_BUSHMAN;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN);
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN, true, [
+            1 => Money::create('49999'),
+            2 => Money::create('1999.99'),
+            3 => Money::create('1999.99'),
+        ]);
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param string $referenceName
      * @param bool $firstDomain
      */
     protected function createPricingGroup(
         PricingGroupData $pricingGroupData,
         $referenceName,
-        $firstDomain = true
+        $firstDomain = true,
+        $minimalPrices = null
     ) {
         foreach ($this->domain->getAllIds() as $domainId) {
             if ($firstDomain === false && $domainId === Domain::FIRST_DOMAIN_ID) {
                 continue;
+            }
+
+            if ($minimalPrices !== null) {
+                $pricingGroupData->minimalPrice = $minimalPrices[$domainId];
             }
 
             $pricingGroup = $this->pricingGroupFacade->create($pricingGroupData, $domainId);

@@ -38,5 +38,6 @@ class PricingGroupDataFactory extends BasePricingGroupDataFactory
     {
         parent::fillFromPricingGroup($pricingGroupData, $pricingGroup);
         $pricingGroupData->internalId = $pricingGroup->getInternalId();
+        $pricingGroupData->minimalPrice = $pricingGroup->getMinimalPrice();
     }
 }

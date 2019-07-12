@@ -12,4 +12,9 @@ class PricingGroupData extends BasePricingGroupData
      * @var string|null
      */
     public $internalId;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public $minimalPrice;
 }
