@@ -37,7 +37,7 @@
 {% block form_row %}
     <div class="{{ rowClass|default('form-line') }}">
         <div class="form-line__input">
-            {{ form_label(form, label) }}
+            {{ form_label(form, label, { withoutColon: true }) }}
             {{ form_widget(form) }}
             {{ block('icon') }}
         </div>
@@ -63,7 +63,7 @@
 {% block textarea_row -%}
     <div class="{{ rowClass|default('form-line') }}">
         <div class="form-line__input">
-            {{ form_label(form, label) }}
+            {{ form_label(form, label, { withoutColon: true }) }}
             {{- form_widget(form) -}}
             {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default('form-error--line'))}) %}
             {{ form_errors(form, { errors_attr: errors_attr } ) }}

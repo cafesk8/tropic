@@ -1,23 +1,25 @@
-@input-height: @form-item-height;
+@input-height: 60px;
 @input-textarea-height: @input-height * 3;
 @input-width: 100%;
 @input-padding-horizontal: 10px;
 @input-font-size: 16px;
+@input-font-size-label: 12px;
+@input-font-color: @color-0;
 
 @input-border-color: #cccbcb;
 @input-error-border-color: @color-red;
 @input-background: @color-f;
 @input-disabled-background: #eff1f2;
-
+;
 .input {
     width: @input-width;
     max-width: 100%;
     height: @input-height;
     line-height: @input-height/2;
-    padding: 15px @input-padding-horizontal 0 @input-padding-horizontal;
+    padding: 22px @input-padding-horizontal 0 @input-padding-horizontal;
 
     border: 2px solid @input-border-color;
-    color: @color-brown-light;
+    color: @input-font-color;
     font-size: @input-font-size;
     background: @input-background;
 
@@ -32,11 +34,11 @@
 
     &__label {
         position: absolute;
-        top: 5px;
+        top: 7px;
         left: 11px;
 
         color: @color-brown-light;
-        font-size: @font-size;
+        font-size: @input-font-size-label;
         text-transform: uppercase;
         z-index: 1;
     }
