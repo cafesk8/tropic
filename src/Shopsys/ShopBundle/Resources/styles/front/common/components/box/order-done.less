@@ -1,0 +1,82 @@
+.box-order-done {
+    display: flex;
+    flex-direction: column;
+
+    font-family: @font-alt;
+
+    &__title {
+        width: 100%;
+        line-height: 47px;
+        text-align: center;
+        margin-bottom: 15px;
+
+        font-size: 36px;
+        font-weight: 700;
+    }
+
+    &__text {
+        text-align: center;
+        margin-bottom: 30px;
+        line-height: 30px;
+
+        font-size: 18px;
+
+        &__highlight {
+            background: @color-gray;
+        }
+    }
+
+    &__club {
+        margin: 0 auto;
+        max-width: 790px;
+        padding: 25px;
+
+        background-color: @color-gray;
+
+        @media @query-md {
+            padding: 50px 74px;
+        }
+
+        &__title {
+            width: 100%;
+            line-height: 36px;
+            text-align: center;
+            margin-bottom: 30px;
+
+            color: @color-base;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &__text {
+            line-height: 30px;
+            text-align: center;
+            margin-bottom: 38px;
+
+            font-size: 15px;
+        }
+
+        &__form {
+            @media @query-md {
+                padding-left: 40px;
+            }
+
+            &__input {
+                margin-bottom: 20px;
+
+                @media @query-lg {
+                    margin-bottom: 0px;
+                }
+            }
+
+            &__button {
+                padding-left: 0;
+
+                @media @query-lg {
+                    padding-left: 20px;
+                }
+            }
+        }
+    }
+}

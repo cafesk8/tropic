@@ -16,17 +16,58 @@
     {{ render(controller('ShopsysShopBundle:Front/Script:embedOrderSentPageScripts', {order: order})) }}
     {{ render(controller('ShopsysShopBundle:Front/Script:embedOrderSentPageGoogleAnalyticsScript', {order: order})) }}
 
-    <h1>{{ 'Order sent'|trans }}</h1>
+    <div class="web__container web__container--big-padding">
+        <div class="web__main">
+            <div class="web__main__content js-main-content">
+            <!-- script to display on order sent page -->
+                <div class="box-order-done js-not-implemented-yet">
+                    <h1 class="box-order-done__title">{{ 'Děkujeme za vaši objednávku'|trans }}</h1>
+                    {# TODO PRG START: this text shoudl be in { pageContent|raw } #}
+                    <div class="box-order-done__text">
+                        {{ 'Rekapitulaci jsme vám zaslali také na váš e-mail'|trans }}
+                        <span class="box-order-done__text__highlight">tomas.marny@seznam.cz</span>.
+                    </div>
 
-    <div class="in-user-text">
-        {{ pageContent|raw }}
-    </div>
-
-    <div class="in-action">
-        <div class="in-action__left">
-            <a href="{{ url('front_homepage') }}" class="btn in-action__btn">
-                {{ 'Back to store'|trans }}
-            </a>
+                    <div class="box-order-done__text">
+                        {{ 'Vybrali jste si platbu převodem. '|trans }}
+                        <strong>{{ 'Zboží odešleme po připsání čstky na účet. '|trans }}</strong>
+                        <br>
+                        {{ 'Částku'|trans }} <span class="box-order-done__text__highlight">1 805 Kč</span>
+                        {{ 'zašlete na náš bankovní účet číslo'|trans }}
+                        <span class="box-order-done__text__highlight">789123456/0100</span>.<br>
+                        {{ 'Variabilní symbol platby je číslo objednávky'|trans }} (<span class="box-order-done__text__highlight">123456</span>).
+                    </div>
+                    {# TODO PRG END #}
+                    <div class="box-order-done__club">
+                        <div class="box-order-done__club__title">
+                            {{ 'Stačí zadat heslo a píšt už nic'|trans }} <br>
+                            {{ 'zadávat nemusíte'|trans }}
+                        </div>
+                        <div class="box-order-done__club__text">
+                            {{ 'Jako člen Bushman Clubu budete mít přístup k'|trans }}
+                            <strong>{{ 'historii svých objednávek,'|trans }}</strong>
+                            {{ 'možnost získat'|trans }} <br>
+                            {{ '25 let záruku zdarma ,objednat směnnou zásilku nebo '|trans }}
+                            <strong>{{ 'získat 3% slev'|trans }}</strong>
+                            {{ 'na celý sortiment'|trans }}.
+                        </div>
+                        <div class="box-order-done__club__form js-not-implemented-yet">
+                            <div class="form-line">
+                                <div class="form-line__input box-order-done__club__form__input">
+                                    <label for="registration_form_password_first" class="input__label required">
+                                        {{ 'Heslo'|trans }}
+                                        <span class="form-input-required">*</span>
+                                    </label>
+                                    <input type="password" id="registration_form_password_first" name="registration_form[password][first]" required="required" autocomplete="off" class="input form-input-error">
+                                </div>
+                                <div class="form-line__button box-order-done__club__form__button">
+                                    <button type="submit" name="" class="btn btn--success btn--with-input">{{ 'Vytvořit účet'|trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -37,5 +78,35 @@
     {% if payPalApprovalLink is defined and payPalApprovalLink is not null %}
         {% include '@ShopsysShop/Front/Inline/Payment/payPalPayment.html.twig' %}
     {% endif %}
+
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <div class="box-articles js-not-implemented-yet">
+                <div class="box-articles__title-big">
+                    {{ 'Načerpejte inspiraci'|trans }}
+                </div>
+                <div class="box-articles__title-small">
+                    {{ 'Zážitky z cest si nenecháváme pro sebe'|trans }}
+                </div>
+                {# TODO PRG: add blog articles #}
+                {# include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: homepageBlogArticles } #}
+                <div class="box-articles__bottom">
+                    <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            {% include '@ShopsysShop/Front/Content/ImagesLine/list.html.twig' %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--dark web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
+        </div>
+    </div>
 
 {% endblock %}

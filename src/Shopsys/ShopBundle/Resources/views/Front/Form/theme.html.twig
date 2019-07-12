@@ -78,7 +78,13 @@
                 {% set label_attr = label_attr|merge({'for': id}) %}
             {% endif %}
 
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' input__label {% if required %}required{% endif %}')|trim}) %}
+            {% if required %}
+                {% set required_class = "required" %}
+            {% else %}
+                {% set required_class = "" %}
+            {% endif %}
+
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' input__label ' ~ required_class )|trim}) %}
 
             {% if label is empty %}
                 {% set label = name|humanize %}
