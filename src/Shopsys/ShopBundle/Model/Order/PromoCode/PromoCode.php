@@ -16,7 +16,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
  */
 class PromoCode extends BasePromoCode
 {
-    public const MAX_CODES_GENERATE = 99999;
+    public const MAX_CODES_GENERATE = 9999;
     public const MASS_GENERATED_CODE_LENGTH = 6;
 
     /**
