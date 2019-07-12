@@ -8,12 +8,14 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 
 class PricingGroupDataFixture extends AbstractReferenceFixture
 {
-    const PRICING_GROUP_ORDINARY_DOMAIN = 'pricing_group_ordinary_domain';
-    const PRICING_GROUP_VIP_DOMAIN = 'pricing_group_vip_domain';
-    const PRICING_GROUP_PARTNER_DOMAIN = 'pricing_group_partner_domain';
+    const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
+    const PRICING_GROUP_ADEPT_DOMAIN = 'pricing_group_adept_domain';
+    const PRICING_GROUP_CLASSIC_DOMAIN = 'pricing_group_classic_domain';
+    const PRICING_GROUP_REAL_BUSHMAN_DOMAIN = 'pricing_group_real_bushman_domain';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
@@ -21,7 +23,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     protected $pricingGroupFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupDataFactory
      */
     protected $pricingGroupDataFactory;
 
@@ -55,53 +57,48 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
          * @see \Shopsys\FrameworkBundle\Migrations\Version20180603135346
          */
         $defaultPricingGroup = $this->pricingGroupFacade->getById(1);
-        /** @var $defaultPricingGroup \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup */
-        $this->addReferenceForDomain(self::PRICING_GROUP_ORDINARY_DOMAIN, $defaultPricingGroup, Domain::FIRST_DOMAIN_ID);
+
+        $defaultPricingGroupData = $this->pricingGroupDataFactory->createFromPricingGroup($defaultPricingGroup);
+        $defaultPricingGroupData->name = 'Běžný zákazník';
+        $defaultPricingGroupData->internalId = PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
+
+        $this->pricingGroupFacade->edit($defaultPricingGroup->getId(), $defaultPricingGroupData);
+        $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, Domain::FIRST_DOMAIN_ID);
+
+        $this->createPricingGroup($defaultPricingGroupData, self::PRICING_GROUP_BASIC_DOMAIN, false);
 
         $pricingGroupData = $this->pricingGroupDataFactory->create();
-        $pricingGroupData->name = 'Partner';
-        $this->createPricingGroup($pricingGroupData, Domain::FIRST_DOMAIN_ID, self::PRICING_GROUP_PARTNER_DOMAIN);
 
-        $pricingGroupData->name = 'VIP customer';
-        $this->createPricingGroup($pricingGroupData, Domain::FIRST_DOMAIN_ID, self::PRICING_GROUP_VIP_DOMAIN);
+        $pricingGroupData->name = 'ADEPT';
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_ADEPT;
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_ADEPT_DOMAIN);
 
-        foreach ($this->domain->getAllIdsExcludingFirstDomain() as $domainId) {
-            $this->loadForDomain($domainId);
-        }
-    }
+        $pricingGroupData->name = 'CLASSIC';
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_CLASSIC;
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_CLASSIC_DOMAIN);
 
-    /**
-     * @param int $domainId
-     */
-    protected function loadForDomain($domainId)
-    {
-        $pricingGroupData = $this->pricingGroupDataFactory->create();
-
-        $pricingGroupData->name = 'Obyčejný zákazník';
-
-        $alreadyCreatedDemoPricingGroupsByDomain = $this->pricingGroupFacade->getByDomainId($domainId);
-        if (count($alreadyCreatedDemoPricingGroupsByDomain) > 0) {
-            $pricingGroup = reset($alreadyCreatedDemoPricingGroupsByDomain);
-
-            $this->pricingGroupFacade->edit($pricingGroup->getId(), $pricingGroupData);
-            $this->addReferenceForDomain(self::PRICING_GROUP_ORDINARY_DOMAIN, $pricingGroup, $domainId);
-        }
-
-        $pricingGroupData->name = 'VIP zákazník';
-        $this->createPricingGroup($pricingGroupData, $domainId, self::PRICING_GROUP_VIP_DOMAIN);
+        $pricingGroupData->name = 'REAL BUSHMAN';
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REAL_BUSHMAN;
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN);
     }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData
-     * @param int $domainId
      * @param string $referenceName
+     * @param bool $firstDomain
      */
     protected function createPricingGroup(
         PricingGroupData $pricingGroupData,
-        $domainId,
-        $referenceName
+        $referenceName,
+        $firstDomain = true
     ) {
-        $pricingGroup = $this->pricingGroupFacade->create($pricingGroupData, $domainId);
-        $this->addReferenceForDomain($referenceName, $pricingGroup, $domainId);
+        foreach ($this->domain->getAllIds() as $domainId) {
+            if ($firstDomain === false && $domainId === Domain::FIRST_DOMAIN_ID) {
+                continue;
+            }
+
+            $pricingGroup = $this->pricingGroupFacade->create($pricingGroupData, $domainId);
+            $this->addReferenceForDomain($referenceName, $pricingGroup, $domainId);
+        }
     }
 }

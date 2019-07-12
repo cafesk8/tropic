@@ -280,6 +280,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\CustomerDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactory: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupDataFactory'
+
     Shopsys\FrameworkBundle\Controller\Admin\CategoryController:
         class: Shopsys\ShopBundle\Controller\Admin\CategoryController
         tags: ['controller.service_arguments']

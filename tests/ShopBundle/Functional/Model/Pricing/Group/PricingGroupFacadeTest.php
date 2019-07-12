@@ -51,7 +51,7 @@ class PricingGroupFacadeTest extends TransactionFunctionalTestCase
         $pricingGroupData->name = 'name';
         $pricingGroupToDelete = $pricingGroupFacade->create($pricingGroupData, $domainId);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroupToReplaceWith */
-        $pricingGroupToReplaceWith = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroupToReplaceWith = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $customerFacade->getUserById(1);
         /** @var \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory */

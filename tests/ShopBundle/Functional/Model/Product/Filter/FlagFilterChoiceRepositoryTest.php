@@ -78,7 +78,7 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $repository = $this->getFlagFilterChoiceRepository();
 
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         /** @var \Shopsys\FrameworkBundle\Model\Category\Category $category */
         $category = $this->getReference($categoryReferenceName);
@@ -95,7 +95,7 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $repository = $this->getFlagFilterChoiceRepository();
 
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         return $repository->getFlagFilterChoicesForSearch(1, $pricingGroup, 'cs', $searchText);
     }
