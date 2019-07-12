@@ -283,3 +283,5 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\CategoryController:
         class: Shopsys\ShopBundle\Controller\Admin\CategoryController
         tags: ['controller.service_arguments']
+
+    Shopsys\FrameworkBundle\Component\String\HashGenerator: '@Shopsys\ShopBundle\Component\String\HashGenerator'

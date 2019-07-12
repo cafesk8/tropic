@@ -20,7 +20,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
     protected $promoCodeRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\String\HashGenerator
+     * @var \Shopsys\ShopBundle\Component\String\HashGenerator
      */
     private $hashGenerator;
 
@@ -59,7 +59,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
         $toFlush = [];
 
         while ($generatedPromoCodeCount < $promoCodeData->quantity) {
-            $code = $promoCodeData->prefix . strtoupper($this->hashGenerator->generateHash(PromoCode::MASS_GENERATED_CODE_LENGTH));
+            $code = $promoCodeData->prefix . strtoupper($this->hashGenerator->generateHashWithoutConfusingCharacters(PromoCode::MASS_GENERATED_CODE_LENGTH));
 
             if (!in_array($code, $existingPromoCodeCodes, true)) {
                 $promoCodeData->code = $code;
