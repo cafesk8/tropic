@@ -24,11 +24,6 @@ class OrderFacade extends BaseOrderFacade
     protected $currentPromoCodeFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Order\OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
      * @param int $orderId
      * @return string
      */

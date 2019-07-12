@@ -83,7 +83,6 @@ class OrderExportMapper
         $orderItems = [];
 
         foreach ($order->getProductItems() as $item) {
-
             if ($item->getCatnum() !== null) {
                 /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
                 $product = $item->getProduct();
