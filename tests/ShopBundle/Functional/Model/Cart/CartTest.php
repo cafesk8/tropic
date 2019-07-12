@@ -5,7 +5,7 @@ namespace Tests\ShopBundle\Functional\Model\Cart;
 use ReflectionClass;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactory;
+use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
@@ -261,7 +261,7 @@ class CartTest extends TransactionFunctionalTestCase
      */
     private function getCartItemFactory()
     {
-        return $this->getContainer()->get(CartItemFactory::class);
+        return $this->getContainer()->get(CartItemFactoryInterface::class);
     }
 
     /**

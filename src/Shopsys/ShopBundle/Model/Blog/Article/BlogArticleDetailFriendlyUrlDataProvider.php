@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\CompilerPass\FriendlyUrlDataProviderInterface;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl;
+use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlData;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlDataFactoryInterface;
 
 class BlogArticleDetailFriendlyUrlDataProvider implements FriendlyUrlDataProviderInterface
@@ -59,10 +60,7 @@ class BlogArticleDetailFriendlyUrlDataProvider implements FriendlyUrlDataProvide
         $friendlyUrlsData = [];
 
         foreach ($scalarData as $data) {
-            $friendlyUrlData = $this->friendlyUrlDataFactory->create();
-            $friendlyUrlData->name = $data['id'];
-            $friendlyUrlData->id = $data['name'];
-            $friendlyUrlsData[] = $friendlyUrlData;
+            $friendlyUrlsData[] = $this->createFromIdAndName($data['id'], $data['name']);
         }
 
         return $friendlyUrlsData;
@@ -74,5 +72,19 @@ class BlogArticleDetailFriendlyUrlDataProvider implements FriendlyUrlDataProvide
     public function getRouteName(): string
     {
         return self::ROUTE_NAME;
+    }
+
+    /**
+     * @param int $id
+     * @param string $name
+     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlData
+     */
+    public function createFromIdAndName(int $id, string $name): FriendlyUrlData
+    {
+        $friendlyUrlData = $this->friendlyUrlDataFactory->create();
+        $friendlyUrlData->name = $id;
+        $friendlyUrlData->id = $name;
+
+        return $friendlyUrlData;
     }
 }
