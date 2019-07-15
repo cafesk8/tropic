@@ -58,6 +58,11 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
             'label' => t('Informační řádek'),
         ]);
 
+        $adverts = $marketingMenu->getChild('adverts');
+        $adverts->setLabel('Bannery na Hl. stránce');
+        $adverts->getChild('new')->setLabel('Nový banner');
+        $adverts->getChild('edit')->setLabel('Editace banneru');
+
         $blogMenu = $marketingMenu->addChild('blog', ['label' => t('Blog')]);
 
         $blogMenu->addChild('blog_category', ['route' => 'admin_blogcategory_list', 'label' => t('Blog categories')]);
