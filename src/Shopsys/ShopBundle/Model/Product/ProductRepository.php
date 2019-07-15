@@ -99,12 +99,18 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
+     * @param int $limit
+     * @param int $page
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllWithEan(): array
+    public function getWithEan(int $limit, int $page): array
     {
+        $offset = $limit * $page;
+
         return $this->getProductQueryBuilder()
             ->where('p.ean IS NOT NULL')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->getQuery()->getResult();
     }
 }

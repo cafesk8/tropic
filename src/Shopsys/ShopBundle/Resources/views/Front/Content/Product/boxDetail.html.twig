@@ -59,7 +59,7 @@
             </div>
 
             <div class="box-detail__info__description js-not-implemented-yet">
-                {{ 'Košile Indiana si doslova říká o nějakou výpravu. Díky klasickému zpracování však nehraje roli, jestli to bude dobrodružství městské či výprava do divočiny.'|trans }}
+                {{ product.getShortDescription(domain.id) }}
             </div>
             <div class="box-detail__wrap">
                 {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant == false %}

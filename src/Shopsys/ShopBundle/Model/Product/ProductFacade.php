@@ -315,11 +315,13 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param int $limit
+     * @param int $page
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllWithEan(): array
+    public function getWithEan(int $limit, int $page): array
     {
-        return $this->productRepository->getAllWithEan();
+        return $this->productRepository->getWithEan($limit, $page);
     }
 
     /**

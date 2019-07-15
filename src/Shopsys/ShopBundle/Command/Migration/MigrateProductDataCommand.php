@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Command\Migration;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\ShopBundle\Command\Migration\Exception\MigrationDataNotFoundException;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Product;
@@ -18,6 +19,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MigrateProductDataCommand extends Command
 {
+    private const BATCH_LIMIT = 100;
+
     /**
      * @var string
      */
@@ -39,20 +42,28 @@ class MigrateProductDataCommand extends Command
     private $productDataFactory;
 
     /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @param \Doctrine\DBAL\Connection $connection
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
     public function __construct(
         Connection $connection,
         ProductFacade $productFacade,
-        ProductDataFactory $productDataFactory
+        ProductDataFactory $productDataFactory,
+        EntityManagerInterface $entityManager
     ) {
         $this->connection = $connection;
         $this->productFacade = $productFacade;
 
         parent::__construct();
         $this->productDataFactory = $productDataFactory;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -71,17 +82,27 @@ class MigrateProductDataCommand extends Command
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
-        $allProducts = $this->productFacade->getAllWithEan();
+        $page = 0;
 
-        foreach ($allProducts as $product) {
-            try {
-                $productData = $this->mapProductData($product);
-                $this->productFacade->edit($product->getId(), $productData);
+        $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
+        $productsCount = count($products);
+        while ($productsCount > 0) {
+            foreach ($products as $product) {
+                try {
+                    $productData = $this->mapProductData($product);
+                    $this->productFacade->edit($product->getId(), $productData);
 
-                $symfonyStyleIo->success(sprintf('Data for product with EAN `%s` was migrated', $product->getEan()));
-            } catch (MigrationDataNotFoundException $exception) {
-                $symfonyStyleIo->warning($exception->getMessage());
+                    $symfonyStyleIo->success(sprintf('Data for product with EAN `%s` was migrated', $product->getEan()));
+                } catch (MigrationDataNotFoundException $exception) {
+                    $symfonyStyleIo->warning($exception->getMessage());
+                }
             }
+
+            $this->entityManager->clear();
+
+            $page++;
+            $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
+            $productsCount = count($products);
         }
     }
 
@@ -108,12 +129,39 @@ class MigrateProductDataCommand extends Command
         ];
 
         $productData->shortDescriptions = [
-            DomainHelper::CZECH_DOMAIN => $migrateProductData['shortDescriptionCs'],
-            DomainHelper::SLOVAK_DOMAIN => $migrateProductData['shortDescriptionSk'],
-            DomainHelper::GERMAN_DOMAIN => $migrateProductData['shortDescriptionDe'],
+            DomainHelper::CZECH_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionCs']),
+            DomainHelper::SLOVAK_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionSk']),
+            DomainHelper::GERMAN_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionDe']),
         ];
 
         return $productData;
+    }
+
+    /**
+     * @param string $shortDescription|null
+     * @return string|null
+     */
+    private function getFilteredShortDescription(?string $shortDescription): ?string
+    {
+        if ($shortDescription === null) {
+            return null;
+        }
+
+        $shortDescription = str_replace('<li>', '', $shortDescription);
+        $shortDescription = str_replace('</li>', ', ', $shortDescription);
+
+        $shortDescription = strip_tags($shortDescription);
+
+        $shortDescription = trim($shortDescription);
+        $shortDescription = rtrim($shortDescription, ',');
+
+        $shortDescription = str_replace("\t", '', $shortDescription);
+        $shortDescription = str_replace("\n", '', $shortDescription);
+        $shortDescription = str_replace("\r", '', $shortDescription);
+
+        $shortDescription = str_replace('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', '', $shortDescription);
+
+        return $shortDescription;
     }
 
     /**
