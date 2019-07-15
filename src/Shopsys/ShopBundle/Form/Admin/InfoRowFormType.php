@@ -34,7 +34,7 @@ class InfoRowFormType extends AbstractType
                     'label' => t('Text'),
                     'constraints' => [
                         new NotBlank([
-                            'message' => t('Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit'),
+                            'message' => 'Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit',
                             'groups' => [self::VALIDATION_GROUP_IS_VISIBLE],
                         ]),
                     ],

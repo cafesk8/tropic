@@ -192,7 +192,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
                     ]),
                     new NotBlank([
-                        'message' => t('Vyplňte prosím množství.'),
+                        'message' => 'Vyplňte prosím množství.',
                         'groups' => self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED,
                     ]),
                 ],
