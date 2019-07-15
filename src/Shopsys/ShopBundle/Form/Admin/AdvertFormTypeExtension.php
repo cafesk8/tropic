@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Model\Advert\Advert;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -44,6 +45,12 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
                 new Constraints\NotBlank(['message' => 'Vyplňte prosím text tlačítka']),
             ],
             'label' => t('Text tlačítka'),
+        ]);
+
+        $imagesGroup = $builder->get('image_group');
+        $imagesGroup->add('imageSizes', DisplayOnlyType::class, [
+            'data' => t('Nahrávejte velikosti obrázků: Čtverec (397x306px), Obdélník (393x626px)'),
+            'label' => t('Velikost obrázků'),
         ]);
     }
 
