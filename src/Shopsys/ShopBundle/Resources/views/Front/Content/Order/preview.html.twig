@@ -1,3 +1,25 @@
+{% import '@ShopsysShop/Front/Inline/Product/distinguishingParameterMacro.html.twig' as distinguishingParameter %}
+
+{% macro productPreviewItem(product, quantity, price) %}
+    <li class="list-cart-preview__item">
+        <div class="list-cart-preview__item__image">
+            {{ image(product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+        </div>
+        <div class="list-cart-preview__item__pieces">
+            {{ quantity|formatNumber }} {{ product.unit.name }}
+        </div>
+        <div class="list-cart-preview__item__name">
+            <span class="list-cart-preview__item__name__title">
+                {{ product.name }}
+            </span>
+            {{ distinguishingParameter.writeParameters(product, 'list-cart-preview__item__name__text') }}
+        </div>
+        <div class="list-cart-preview__item__price">
+            {{ price|price }}
+        </div>
+    </li>
+{% endmacro %}
+
 
 <div class="box-preview">
     <div class="box-preview__title">
@@ -29,30 +51,14 @@
             <ul class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
                     {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
-                    {% set quantifiedProductDiscount = orderPreview.quantifiedItemsDiscounts[quantifiedProductKey] %}
-                    <li class="list-cart-preview__item">
-                        <div class="list-cart-preview__item__image">
-                            {{ image(quantifiedProduct.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: true }) }}
-                        </div>
-                        <div class="list-cart-preview__item__pieces">
-                            {{ quantifiedProduct.quantity|formatNumber }} {{ quantifiedProduct.product.unit.name }}
-                        </div>
-                        <div class="list-cart-preview__item__name">
-                            <span class="list-cart-preview__item__name__title">
-                                {{ quantifiedProduct.product.name }}
-                            </span>
-                            <span class="list-cart-preview__item__name__text js-not-implemented-yet">
-                                {{ 'Barva'|trans }}: Light Olive
-                            </span>
-                            <span class="list-cart-preview__item__name__text">
-                                {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet" title="">36</span>
-                            </span>
-                        </div>
-                        <div class="list-cart-preview__item__price">
-                            {{ quantifiedProductPrice.totalPrice.priceWithVat|price }}
-                        </div>
-                    </li>
+                    {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat) }}
                 {% endfor %}
+                {% if orderPreview.gifts is not empty %}
+                    <li>{{ 'Dárky k vaší objednávce:' }}</li>
+                    {% for gift in orderPreview.gifts %}
+                        {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice) }}
+                    {% endfor %}
+                {% endif %}
             </ul>
         {% endif %}
 

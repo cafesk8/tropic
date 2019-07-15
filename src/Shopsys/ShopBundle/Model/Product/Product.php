@@ -73,6 +73,14 @@ class Product extends BaseProduct
     protected $flags;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Product|null
+     *
+     * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Product\Product")
+     * @ORM\JoinColumn(name="gift_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    protected $gift;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -85,6 +93,7 @@ class Product extends BaseProduct
         $this->transferNumber = $productData->transferNumber;
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->mainVariantGroup = $productData->mainVariantGroup;
+        $this->gift = $productData->gift;
     }
 
     /**
@@ -100,6 +109,7 @@ class Product extends BaseProduct
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
+        $this->gift = $productData->gift;
     }
 
     /**
@@ -245,5 +255,13 @@ class Product extends BaseProduct
                 return $productStoreStock->getStockQuantity() > 0;
             }
         );
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     */
+    public function getGift(): ?self
+    {
+        return $this->gift;
     }
 }

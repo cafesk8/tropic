@@ -203,4 +203,55 @@ class CartFacade extends BaseCartFacade
 
         return parent::addProductToCart($productId, $quantity);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftInCart
+     * @param mixed[] $selectedGifts
+     * @throws \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException
+     */
+    public function updateGifts(array $productGiftInCart, array $selectedGifts): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException();
+        }
+
+        $this->removeAllGifts($cart);
+
+        $cartGifts = $cart->updateGifts($this->cartItemFactory, $productGiftInCart, $selectedGifts);
+        foreach ($cartGifts as $cartGift) {
+            $this->em->persist($cartGift);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     */
+    private function removeAllGifts(Cart $cart): void
+    {
+        $allRemovedGifts = $cart->removeAllGift();
+        foreach ($allRemovedGifts as $removedGift) {
+            $this->em->remove($removedGift);
+        }
+        $this->em->flush();
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
+     */
+    public function getGifts(): array
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            return [];
+        }
+
+        return $cart->getGifts();
+    }
 }

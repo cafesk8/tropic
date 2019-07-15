@@ -65,6 +65,11 @@
             height: 260
             crop: false
             occurrence: 'Front-end: Listing of products in section, listing of products on special offer'
+        -   name: gift
+            width: 50
+            height: 50
+            crop: false
+            occurrence: 'Front-end: gift on product detail'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem

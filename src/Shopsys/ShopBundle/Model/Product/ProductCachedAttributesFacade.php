@@ -121,4 +121,23 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
         return null;
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $parameterId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
+     */
+    public function getProductParameterValueByParameterId(Product $product, int $parameterId): ?ProductParameterValue
+    {
+        $productParametersValue = $this->getProductParameterValues($product);
+
+        /** @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue $productParameterValue */
+        foreach ($productParametersValue as $productParameterValue) {
+            if ($productParameterValue->getParameter()->getId() === $parameterId) {
+                return $productParameterValue;
+            }
+        }
+
+        return null;
+    }
 }

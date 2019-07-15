@@ -1,5 +1,6 @@
 {% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
+{% import '@ShopsysShop/Front/Inline/Product/distinguishingParameterMacro.html.twig' as distinguishingParameter %}
 
 {% block meta_robots -%}
     <meta name="robots" content="noindex, follow">
@@ -46,12 +47,7 @@
                                                 <a class="table-cart__cell__name__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.name }}">
                                                     {{ cartItem.name }}
                                                 </a>
-                                                <span class="table-cart__cell__name__text js-not-implemented-yet">
-                                                    {{ 'Barva'|trans }}: Light Olive
-                                                </span>
-                                                <span class="table-cart__cell__name__text">
-                                                    {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet" title="">36</span>
-                                                </span>
+                                                {{ distinguishingParameter.writeParameters(cartItem.product, 'table-cart__cell__name__text') }}
                                             </div>
                                         </div>
                                         <div class="table-cart__row__right">
@@ -79,6 +75,19 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    {% if cartItem.product.id in cartGiftsByProductId|keys %}
+                                        {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
+                                        <ul>
+                                            {% for giftVariant in cartItemGift %}
+                                                <li>
+                                                    {{ form_widget(form.chosenGifts[cartItem.product.id][giftVariant.gift.id], { attr: { class: 'js-take-gift' } }) }}
+                                                    {{ 'Chcete dárek' }} {{ giftVariant.gift.name }} {{ 'v hodnotě' }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }} {{ 'za ' }} {{ giftVariant.price|price }} {{ '?' }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+
                                 {% endfor %}
                             </div>
 

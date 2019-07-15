@@ -36,6 +36,18 @@
                     event.preventDefault();
                 }
             });
+
+        $container.filterAllNodes('.js-take-gift')
+            .change(function () {
+                var isCurrentChecked = $(this).is(':checked');
+                $('.js-take-gift').each(function () {
+                    $(this).prop('checked', false);
+                });
+
+                $(this).prop('checked', isCurrentChecked);
+
+                reloadWithDelay(1000);
+            });
     };
 
     Shopsys.cartRecalculator.reload = function () {

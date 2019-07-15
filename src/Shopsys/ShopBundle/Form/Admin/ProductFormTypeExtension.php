@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ProductsType;
+use Shopsys\FrameworkBundle\Form\ProductType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
@@ -126,11 +127,15 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $builder->add($variantGroup);
         }
 
+        $this->addGiftGroup($builder);
+
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder);
         } else {
-            $this->addActionPriceToPricesGroup($builder);
-            $builder->add($this->getPricesGroup($builder, $product));
+            if ($product !== null && $product->isMainVariant() === false) {
+                $this->addActionPriceToPricesGroup($builder);
+                $builder->add($this->getPricesGroup($builder, $product));
+            }
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
@@ -305,5 +310,25 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $codeFieldOptions['label'] = t('SKU');
         $codeFieldType = get_class($builder->get('catnum')->getType()->getInnerType());
         $builder->add('catnum', $codeFieldType, $codeFieldOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addGiftGroup(FormBuilderInterface $builder)
+    {
+        $giftGroup = $builder->create('giftGroup', GroupType::class, [
+            'label' => t('Dárek za korunu'),
+        ]);
+
+        $giftGroup->add('gift', ProductType::class, [
+            'required' => false,
+            'label' => t('Dárek'),
+            'allow_main_variants' => true,
+            'allow_variants' => true,
+            'enableRemove' => true,
+        ]);
+
+        $builder->add($giftGroup);
     }
 }

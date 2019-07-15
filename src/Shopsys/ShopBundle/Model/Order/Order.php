@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
@@ -17,8 +18,11 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
+use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
+use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
@@ -396,5 +400,62 @@ class Order extends BaseOrder
         }
 
         return $discountPriceWithVat;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function fillOrderGifts(OrderPreview $orderPreview, OrderItemFactoryInterface $orderItemFactory, ProductGiftPriceCalculation $productGiftPriceCalculation, Domain $domain): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $giftInCart */
+        foreach ($orderPreview->getGifts() as $giftInCart) {
+            $gift = $giftInCart->getProduct();
+
+            if (!$gift instanceof Product) {
+                $message = 'Object "' . get_class($gift) . '" is not valid for order creation.';
+                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
+            }
+
+            if (!$orderItemFactory instanceof OrderItemFactory) {
+                $message = 'Object "' . get_class($orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
+                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException();
+            }
+
+            $giftPrice = new Price($productGiftPriceCalculation->getGiftPrice(), $productGiftPriceCalculation->getGiftPrice());
+            $giftTotalPrice = new Price(
+                $productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity()),
+                $productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity())
+            );
+
+            $orderItemFactory->createGift(
+                $this,
+                $gift->getName($domain->getLocale()),
+                $giftPrice,
+                $gift->getVat()->getPercent(),
+                $giftInCart->getQuantity(),
+                $gift->getUnit()->getName($domain->getLocale()),
+                $gift->getCatnum(),
+                $gift,
+                $giftTotalPrice
+            );
+        }
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
+     */
+    public function getGiftItems()
+    {
+        $giftItems = [];
+        foreach ($this->items as $item) {
+            if ($item->isTypeGift()) {
+                $giftItems[] = $item;
+            }
+        }
+
+        return $giftItems;
     }
 }

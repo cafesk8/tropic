@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Item;
 
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Model\Order\Item\Exception\WrongItemTypeException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
-use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
-use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 
 /**
  * @ORM\Table(name="order_items")
@@ -16,6 +16,8 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
 class OrderItem extends BaseOrderItem
 {
     public const TYPE_PROMO_CODE = 'promo_code';
+
+    public const TYPE_GIFT = 'gift';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem|null
@@ -33,35 +35,45 @@ class OrderItem extends BaseOrderItem
     private $ean;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @param string $name
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
-     * @param string $vatPercent
-     * @param int $quantity
-     * @param string $type
-     * @param null|string $unitName
-     * @param null|string $catnum
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      */
-    public function __construct(
-        BaseOrder $order,
-        string $name,
-        Price $price,
-        string $vatPercent,
-        int $quantity,
-        string $type,
-        ?string $unitName,
-        ?string $catnum
-    ) {
-        parent::__construct(
-            $order,
-            $name,
-            $price,
-            $vatPercent,
-            $quantity,
-            $type,
-            $unitName,
-            $catnum
-        );
+    public function setGift(Product $product): void
+    {
+        $this->checkTypeGift();
+        $this->product = $product;
+    }
+
+    protected function checkTypeGift(): void
+    {
+        if (!$this->isTypeGift()) {
+            throw new WrongItemTypeException(self::TYPE_GIFT, $this->type);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypeGift(): bool
+    {
+        return $this->type === self::TYPE_GIFT;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     */
+    public function getGift(): ?Product
+    {
+        $this->checkTypeGift();
+        return $this->product;
+    }
+
+    protected function checkTypeProduct(): void
+    {
+        if ($this->isTypeGift()) {
+            return;
+        }
+
+        parent::checkTypeProduct();
     }
 
     /**

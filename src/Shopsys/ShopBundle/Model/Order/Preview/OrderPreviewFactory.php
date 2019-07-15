@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Preview;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Customer\User;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory as BaseOrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
@@ -16,15 +14,21 @@ use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
+use Shopsys\ShopBundle\Model\Cart\CartFacade;
 
 class OrderPreviewFactory extends BaseOrderPreviewFactory
 {
+    /**
+     * @var \Shopsys\ShopBundle\Model\Cart\CartFacade
+     */
+    protected $cartFacade;
+
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
-     * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      */
     public function __construct(
@@ -61,7 +65,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $payment,
             $this->currentCustomer->findCurrentUser(),
             $validEnteredPromoCodePercent,
-            $validEnteredPromoCode
+            $validEnteredPromoCode,
+            $this->cartFacade->getGifts()
         );
     }
 
@@ -74,7 +79,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
      * @param string|null $promoCodeDiscountPercent
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
-     * @return \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $giftsInCart
+     * @return \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview
      */
     public function create(
         Currency $currency,
@@ -84,7 +90,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?Payment $payment = null,
         ?User $user = null,
         ?string $promoCodeDiscountPercent = null,
-        ?PromoCode $validEnteredPromoCode = null
+        ?PromoCode $validEnteredPromoCode = null,
+        ?array $giftsInCart = []
     ): OrderPreview {
         return $this->orderPreviewCalculation->calculatePreview(
             $currency,
@@ -94,7 +101,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $payment,
             $user,
             $promoCodeDiscountPercent,
-            $validEnteredPromoCode
+            $validEnteredPromoCode,
+            $giftsInCart
         );
     }
 }

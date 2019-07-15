@@ -6,7 +6,6 @@ namespace Tests\ShopBundle\Functional\Model\Cart;
 
 use ReflectionClass;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
@@ -18,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\ShopBundle\DataFixtures\Demo\UnitDataFixture;
 use Shopsys\ShopBundle\Model\Cart\Cart;
+use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 

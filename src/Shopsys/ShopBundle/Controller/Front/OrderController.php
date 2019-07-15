@@ -14,7 +14,6 @@ use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\Watcher\TransportAndPaymentWatcher;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
@@ -32,6 +31,7 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
+use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,7 +74,7 @@ class OrderController extends FrontBaseController
     private $orderFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory
+     * @var \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory
      */
     private $orderPreviewFactory;
 
@@ -141,7 +141,7 @@ class OrderController extends FrontBaseController
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain

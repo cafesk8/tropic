@@ -37,5 +37,6 @@ parameters:
         Shopsys\FrameworkBundle\Model\Product\ProductDomain: Shopsys\ShopBundle\Model\Product\ProductDomain
         Shopsys\FrameworkBundle\Model\Product\Brand\Brand: Shopsys\ShopBundle\Model\Product\Brand\Brand
         Shopsys\FrameworkBundle\Model\Product\Flag\Flag: Shopsys\ShopBundle\Model\Product\Flag\Flag
+        Shopsys\FrameworkBundle\Model\Cart\Item\CartItem: Shopsys\ShopBundle\Model\Cart\Item\CartItem
     build-version: '0000000000000000'
     securityBcryptCost: 12

@@ -17,6 +17,7 @@ use Shopsys\ShopBundle\Form\Front\Cart\CartFormType;
 use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
+use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -69,6 +70,11 @@ class CartController extends FrontBaseController
     private $tokenManager;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade
+     */
+    private $productGiftFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -77,6 +83,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade $productGiftFacade
      */
     public function __construct(
         ProductAccessoryFacade $productAccessoryFacade,
@@ -86,7 +93,8 @@ class CartController extends FrontBaseController
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         OrderPreviewFactory $orderPreviewFactory,
         ErrorExtractor $errorExtractor,
-        CsrfTokenManagerInterface $tokenManager
+        CsrfTokenManagerInterface $tokenManager,
+        ProductGiftFacade $productGiftFacade
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -96,6 +104,7 @@ class CartController extends FrontBaseController
         $this->orderPreviewFactory = $orderPreviewFactory;
         $this->errorExtractor = $errorExtractor;
         $this->tokenManager = $tokenManager;
+        $this->productGiftFacade = $productGiftFacade;
     }
 
     /**
@@ -103,14 +112,13 @@ class CartController extends FrontBaseController
      */
     public function indexAction(Request $request)
     {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
         $this->correctCartItemQuantitiesByStore($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
+        $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cartItems);
 
-        $cartFormData = ['quantities' => []];
-        foreach ($cartItems as $cartItem) {
-            $cartFormData['quantities'][$cartItem->getId()] = $cartItem->getQuantity();
-        }
+        $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $cart);
 
         $form = $this->createForm(CartFormType::class, $cartFormData);
         $form->handleRequest($request);
@@ -119,6 +127,9 @@ class CartController extends FrontBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
+
+                $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cart->getItems());
+                $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
 
                 if (!$request->get(self::RECALCULATE_ONLY_PARAMETER_NAME, false)) {
                     return $this->redirectToRoute('front_order_index');
@@ -149,6 +160,7 @@ class CartController extends FrontBaseController
             'cart' => $cart,
             'cartItems' => $cartItems,
             'cartItemPrices' => $orderPreview->getQuantifiedItemsPrices(),
+            'cartGiftsByProductId' => $cartGiftsByProductId,
             'form' => $form->createView(),
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
             'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
@@ -157,6 +169,42 @@ class CartController extends FrontBaseController
             'productsPrice' => $productsPrice,
             'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
         ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[] $cartItems
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
+     * @return mixed[]
+     */
+    private function getCartFormData(array $cartItems, array $productGiftsInCart, ?Cart $cart = null): array
+    {
+        $cartFormData = ['quantities' => [], 'chosenGifts' => []];
+        foreach ($cartItems as $cartItem) {
+            $cartFormData['quantities'][$cartItem->getId()] = $cartItem->getQuantity();
+        }
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart $productGiftInCart */
+        foreach ($productGiftsInCart as $productGiftInCart) {
+            $cartFormData['chosenGifts'] = $this->getChosenGiftVariant($productGiftInCart, $cart);
+        }
+
+        return $cartFormData;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftInCart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
+     * @return mixed[]
+     */
+    private function getChosenGiftVariant(array $productGiftInCart, ?Cart $cart = null): array
+    {
+        $chosenGifts = [];
+        foreach ($productGiftInCart as $giftVariantInCart) {
+            $chosenGifts[$giftVariantInCart->getProduct()->getId()][$giftVariantInCart->getGift()->getId()] = $cart !== null && $cart->isProductGiftSelected($giftVariantInCart->getGift()->getId());
+        }
+
+        return $chosenGifts;
     }
 
     /**

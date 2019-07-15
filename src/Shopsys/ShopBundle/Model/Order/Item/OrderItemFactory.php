@@ -62,4 +62,44 @@ class OrderItemFactory extends BaseOrderItemFactory
 
         return $orderDiscount;
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param string $name
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
+     * @param string $vatPercent
+     * @param int $quantity
+     * @param string|null $unitName
+     * @param string|null $catnum
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $gift
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPrice
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     */
+    public function createGift(
+        Order $order,
+        string $name,
+        Price $price,
+        string $vatPercent,
+        int $quantity,
+        ?string $unitName,
+        ?string $catnum,
+        ?Product $gift = null,
+        ?Price $totalPrice = null
+    ): BaseOrderItem {
+        $orderProductGift = new OrderItem(
+            $order,
+            $name,
+            $price,
+            $vatPercent,
+            $quantity,
+            OrderItem::TYPE_GIFT,
+            $unitName,
+            $catnum
+        );
+
+        $orderProductGift->setGift($gift);
+        $orderProductGift->setTotalPrice($totalPrice);
+
+        return $orderProductGift;
+    }
 }

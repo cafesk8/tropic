@@ -208,22 +208,28 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="box-detail__gift">
-                    <div class="box-detail__gift__image">
-                        <img src="https://placeimg.com/50/50/any">
-                    </div>
-                    <div class="box-detail__gift__info">
-                        <a href="#" class="box-detail__gift__info__title js-not-implemented-yet">
-                            {{ 'Dárek'|trans }}
-                            <span class="underline-small">Bushman Zebra</span>
-                        </a>
-                        <div class="box-detail__gift__info__text">
-                            {{ 'Ke každému nákupu osuška za '}} <strong> 590 Kč</strong>
+                {% if product.gift is not null
+                    and product.gift.calculatedHidden is same as (false) and product.gift.hidden is same as (false)
+                    and product.gift.calculatedSellingDenied is same as (false) and product.gift.sellingDenied is same as (false) %}
+                    <div class="box-detail__gift">
+                        <div class="box-detail__gift__image">
+                            {% if imageExists(product.gift) %}
+                                {{ image(product.gift, { size: 'gift' }) }}
+                            {% else %}
+                                {{ noimage({ alt: product.gift.name }) }}
+                            {% endif %}
+                        </div>
+                        <div class="box-detail__gift__info">
+                            <a href="{{ url('front_product_detail', { id: product.gift.id }) }}" class="box-detail__gift__info__title">
+                                {{ 'Dárek'|trans }}
+                                <span class="underline-small">{{ product.gift.name }}</span>
+                            </a>
+                            <div class="box-detail__gift__info__text">
+                                {{ 'Ke každému nákupu dárek v hodnotě'|trans}} <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {# Design - temporary hidden #}
-                {% if 1==2 %}
+                {% endif %}
                 <div class="box-detail__action">
                     <div class="box-detail__action__title js-not-implemented-yet">
                         {{ 'AKCE'|trans }}
@@ -232,13 +238,6 @@
                         {{ 'Kupte bundu a na všehna trička máte '}} <span class="box-detail__action__text__highlight"> 20% {{ 'slevu'|trans }}</span>
                     </div>
                 </div>
-                {% endif %}
-            </div>
-            <div class="box-detail__catnumber">
-                {{ 'Kód produktu'}}:
-                <span class="box-detail__catnumber__number">
-                    {{ product.catnum }}
-                </span>
             </div>
         </div>
     </div>

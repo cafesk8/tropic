@@ -6,7 +6,7 @@ namespace Shopsys\ShopBundle\Model\Order\Preview;
 
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation as BaseOrderPreviewCalculation;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
@@ -48,7 +48,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
      * @param string|null $promoCodeDiscountPercent
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
-     * @return \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $giftsInCart
+     * @return \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview
      */
     public function calculatePreview(
         Currency $currency,
@@ -58,8 +59,9 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         ?Payment $payment = null,
         ?User $user = null,
         ?string $promoCodeDiscountPercent = null,
-        ?PromoCode $promoCode = null
-    ): OrderPreview {
+        ?PromoCode $promoCode = null,
+        ?array $giftsInCart = []
+    ): BaseOrderPreview {
         $quantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(
             $quantifiedProducts,
             $domainId,
@@ -72,10 +74,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         );
 
         $productsPrice = $this->getProductsPrice($quantifiedItemsPrices, $quantifiedItemsDiscounts);
+        $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
-        $totalPrice = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
+        $totalPrice = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice, $totalGiftPrice);
 
         return new OrderPreview(
             $quantifiedProducts,
@@ -88,8 +91,54 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $payment,
             $paymentPrice,
             $roundingPrice,
-            $promoCodeDiscountPercent
+            $promoCodeDiscountPercent,
+            $giftsInCart
         );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalGiftsPrice
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    protected function calculateTotalPrice(
+        Price $productsPrice,
+        ?Price $transportPrice = null,
+        ?Price $paymentPrice = null,
+        ?Price $roundingPrice = null,
+        ?Price $totalGiftsPrice = null
+    ): Price {
+        $totalPrice = parent::calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
+
+        if ($totalGiftsPrice !== null) {
+            $totalPrice = $totalPrice->add($totalGiftsPrice);
+        }
+
+        return $totalPrice;
+    }
+
+    /**
+     * @param array|null $giftsInCart
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    private function getTotalGiftsPrice(?array $giftsInCart = null): Price
+    {
+        $totalGiftsPrice = Price::zero();
+
+        if ($giftsInCart === null) {
+            return $totalGiftsPrice;
+        }
+
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $giftInCart */
+        foreach ($giftsInCart as $giftInCart) {
+            $giftPrice = $giftInCart->getWatchedPrice()->multiply($giftInCart->getQuantity());
+            $totalGiftsPrice = $totalGiftsPrice->add(new Price($giftPrice, $giftPrice));
+        }
+
+        return $totalGiftsPrice;
     }
 
     /**

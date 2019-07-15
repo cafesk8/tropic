@@ -1,5 +1,35 @@
 {% extends '@!ShopsysFramework/Admin/Form/theme.html.twig' %}
 
+{% block product_widget %}
+    <span class="js-product-picker-container{% if attr.containerClass is defined %} {{ attr.containerClass }}{% endif %}" data-placeholder="{{ placeholder }}">
+        <span class="form-line__item">
+            <input
+                    class="input js-product-picker-label"
+                    value="{{ productName|default(placeholder) }}"
+                    disabled="disabled"
+                    readonly="readonly"
+            />
+        </span>
+        <span class="form-line__item">
+            <button
+                    type="button"
+                    data-product-picker-url="{{ url('admin_productpicker_picksingle', {allowMainVariants: allow_main_variants, allowVariants: allow_variants}) }}"
+                    class="js-product-picker-create-picker-button btn btn--default"
+                    title="{{ 'Click to go to product section'|trans }}"
+                    type="button"
+            >
+                ...
+            </button>
+        </span>
+        {% if enableRemove %}
+            <a href="#" class="js-product-picker-remove-button display-none">
+                {{ 'Remove'|trans }}
+            </a>
+        {% endif %}
+        {{- form_widget(form, {attr: {class: 'js-product-picker-input'}}) -}}
+    </span>
+{% endblock product_widget %}
+
 {% block products_widget %}
     {% import _self as self %}
     {% set attr = attr|merge({'class': (attr.class|default('') ~ ' js-products-picker')|trim}) %}

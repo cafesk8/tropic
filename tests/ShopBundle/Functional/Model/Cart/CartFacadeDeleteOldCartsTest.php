@@ -10,7 +10,6 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFactory;
 use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
@@ -21,6 +20,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
+use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class CartFacadeDeleteOldCartsTest extends TransactionFunctionalTestCase

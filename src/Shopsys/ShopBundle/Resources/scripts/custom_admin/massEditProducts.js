@@ -23,6 +23,7 @@
                 success: function (responseData) {
                     $partialWrapper.html(responseData);
                     Shopsys.register.registerNewContent($partialWrapper);
+                    hideValueField();
                 }
             });
         };
@@ -39,6 +40,13 @@
                 selectedOperationName: $partialWrapper.find('.js-mass-edit-operation option:selected').attr('value')
             });
         });
+
+        var hideValueField = function () {
+            var subjectValue = $('.js-mass-edit-subject').val();
+            var operationValue = $('.js-mass-edit-operation').val();
+
+            $('.js-hide-when-operation-is-remove').toggleClass('display-none', subjectValue === 'gifts' && operationValue === 'remove');
+        };
     };
 
     Shopsys.register.registerCallback(Shopsys.massEdit.init);

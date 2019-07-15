@@ -43,10 +43,16 @@ class ProductData extends BaseProductData
      */
     public $actionPrices;
 
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Product|null
+     */
+    public $gift;
+
     public function __construct()
     {
         parent::__construct();
         $this->productsInGroup = [];
         $this->actionPrices = [];
+        $this->gift = null;
     }
 }

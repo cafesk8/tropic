@@ -1,0 +1,20 @@
+{% macro writeParameters(product, parameterClassName) %}
+    {% if (product.isVariant is same as (true) and product.mainVariant.mainVariantGroup is not null) %}
+        {% set parametereValueColor = productParameterValueByParameterId(product, product.mainVariant.mainVariantGroup.distinguishingParameter.id) %}
+        {% if parametereValueColor is not null %}
+            <span class="{{ parameterClassName }}">
+                {{ product.mainVariant.mainVariantGroup.distinguishingParameter.name }}: {{ parametereValueColor.value.text }}
+            </span>
+        {% endif %}
+    {% endif %}
+
+    {% if (product.distinguishingParameter is not null) %}
+        {% set parametereValueSize = productParameterValueByParameterId(product, product.distinguishingParameter.id) %}
+        {% if parametereValueSize is not null %}
+            <span class="{{ parameterClassName }}">
+                {{ product.distinguishingParameter.name }}:
+                <span class="in-badge in-badge--outline" title="{{ parametereValueSize.value.text }}">{{ parametereValueSize.value.text }}</span>
+            </span>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
