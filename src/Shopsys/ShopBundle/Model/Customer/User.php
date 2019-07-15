@@ -24,6 +24,20 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class User extends BaseUser
 {
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $transferId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, unique=true)
+     */
+    private $branchNumber;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
@@ -36,6 +50,9 @@ class User extends BaseUser
         ?BaseUser $userByEmail
     ) {
         parent::__construct($userData, $billingAddress, $deliveryAddress, $userByEmail);
+
+        $this->transferId = $userData->transferId;
+        $this->branchNumber = $userData->branchNumber;
     }
 
     /**
@@ -45,5 +62,22 @@ class User extends BaseUser
     public function edit(BaseUserData $userData, EncoderFactoryInterface $encoderFactory)
     {
         parent::edit($userData, $encoderFactory);
+        $this->branchNumber = $userData->branchNumber;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBranchNumber(): ?string
+    {
+        return $this->branchNumber;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTransferId(): ?string
+    {
+        return $this->transferId;
     }
 }

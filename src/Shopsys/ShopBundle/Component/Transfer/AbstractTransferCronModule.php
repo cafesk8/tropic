@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Component\Transfer;
 use DateTime;
 use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
 use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\Validator\Validator\TraceableValidator;
 
 abstract class AbstractTransferCronModule implements IteratedCronModuleInterface, TransferIteratedCronModuleInterface
 {
@@ -34,7 +33,7 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     /**
      * @var \Symfony\Component\Validator\Validator\ValidatorInterface
      */
-    private $validator;
+    protected $validator;
 
     /**
      * @var \Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory
@@ -111,12 +110,6 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
             $needNextIteration = $this->runTransfer();
 
             $this->em->clear();
-
-            // Application in DEV mode uses TraceableValidator for validation. TraceableValidator saves data from
-            // validation in memory, so it can consume quite a lot of memory, which leads to transfer crash
-            if ($this->validator instanceof TraceableValidator) {
-                $this->validator->reset();
-            }
 
             return $needNextIteration;
         } finally {
