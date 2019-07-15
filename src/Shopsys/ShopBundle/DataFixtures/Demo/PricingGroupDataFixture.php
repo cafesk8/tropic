@@ -99,6 +99,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param string $referenceName
      * @param bool $firstDomain
+     * @param mixed|null $minimalPrices
      */
     protected function createPricingGroup(
         PricingGroupData $pricingGroupData,

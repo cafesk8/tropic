@@ -7,6 +7,7 @@ use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User as BaseUser;
 use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -79,5 +80,13 @@ class User extends BaseUser
     public function getTransferId(): ?string
     {
         return $this->transferId;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     */
+    public function setPricingGroup(PricingGroup $pricingGroup): void
+    {
+        $this->pricingGroup = $pricingGroup;
     }
 }

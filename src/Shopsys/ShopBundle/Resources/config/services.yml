@@ -106,6 +106,10 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\UserDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Customer\CustomerFacade: '@Shopsys\ShopBundle\Model\Customer\CustomerFacade'
+
+    Shopsys\FrameworkBundle\Model\Customer\UserRepository: '@Shopsys\ShopBundle\Model\Customer\UserRepository'
+
     Shopsys\ShopBundle\Model\Localization\Localization:
         arguments:
             $adminLocale: '%shopsys.admin_locale%'
@@ -281,6 +285,8 @@ services:
     Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\CustomerDataFactory'
 
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactory: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade'
 
     Shopsys\FrameworkBundle\Controller\Admin\CategoryController:
         class: Shopsys\ShopBundle\Controller\Admin\CategoryController
