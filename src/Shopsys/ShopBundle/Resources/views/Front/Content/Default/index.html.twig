@@ -20,57 +20,7 @@
 
 {% block main_content %}
 
-    <div class="web__line">
-        <div class="web__container web__container--big-padding">
-            <div class="list-grid-images">
-                <ul class="list-grid-images__landscape">
-                    <li class="list-grid-images__landscape__item">
-                        <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__button">
-                                 <span class="btn btn--secondary">{{ 'Pro pořádné chlapy'|trans }}</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="list-grid-images__landscape__item">
-                        <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__button">
-                                 <span class="btn btn--secondary">{{ 'Kempování'|trans }}</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="list-grid-images__landscape__item">
-                        <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__button">
-                                 <span class="btn btn--secondary">{{ 'Hvězda zahradnictví'|trans }}</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="list-grid-images__landscape__item">
-                        <a href="#" class="list-grid-images__landscape__link js-not-implemented-yet">
-                            <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/397/306/any/grayscale" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__button">
-                                 <span class="btn btn--secondary">{{ 'Pro pořádné chlapy'|trans }}</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="list-grid-images__portrait">
-                    <li class="list-grid-images__portrait__item">
-                        <a href="#" class="list-grid-images__portrait__link js-not-implemented-yet">
-                            <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/393/626/any/grayscale" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__button">
-                                 <span class="btn btn--secondary">{{ 'Šití na míru'|trans }}</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
+    {{ render(controller('ShopsysShopBundle:Front/Advert:banner')) }}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' %}

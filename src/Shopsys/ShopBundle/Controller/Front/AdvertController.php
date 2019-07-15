@@ -19,15 +19,14 @@ class AdvertController extends FrontBaseController
         $this->advertFacade = $advertFacade;
     }
 
-    /**
-     * @param string $positionName
-     */
-    public function boxAction($positionName)
+    public function bannerAction()
     {
-        $advert = $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain($positionName);
-
-        return $this->render('@ShopsysShop/Front/Content/Advert/box.html.twig', [
-            'advert' => $advert,
+        return $this->render('@ShopsysShop/Front/Content/Advert/banners.html.twig', [
+            'firstSquare' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('firstSquare'),
+            'secondSquare' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('secondSquare'),
+            'thirdSquare' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('thirdSquare'),
+            'fourthSquare' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('fourthSquare'),
+            'fifthRectangle' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('fifthRectangle'),
         ]);
     }
 }

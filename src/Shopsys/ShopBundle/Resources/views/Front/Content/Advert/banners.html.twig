@@ -1,0 +1,60 @@
+<div class="web__line">
+    <div class="web__container web__container--big-padding">
+        <div class="list-grid-images">
+            <ul class="list-grid-images__landscape">
+                {% if firstSquare is not null %}
+                    <li class="list-grid-images__landscape__item">
+                        <a href="#" class="list-grid-images__landscape__link">
+                            {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}
+                            <div class="list-grid-images__button">
+                                <span class="btn btn--secondary">{{ firstSquare.name }}</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if secondSquare is not null %}
+                    <li class="list-grid-images__landscape__item">
+                        <a href="#" class="list-grid-images__landscape__link">
+                            {{ image(secondSquare, {size: 'square', alt: secondSquare.name}) }}
+                            <div class="list-grid-images__button">
+                                <span class="btn btn--secondary">{{ secondSquare.name }}</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if thirdSquare is not null %}
+                    <li class="list-grid-images__landscape__item">
+                        <a href="#" class="list-grid-images__landscape__link">
+                            {{ image(thirdSquare, {size: 'square', alt: thirdSquare.name}) }}
+                            <div class="list-grid-images__button">
+                                <span class="btn btn--secondary">{{ thirdSquare.name }}</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if fourthSquare is not null %}
+                    <li class="list-grid-images__landscape__item">
+                        <a href="#" class="list-grid-images__landscape__link">
+                            {{ image(fourthSquare, {size: 'square', alt: fourthSquare.name}) }}
+                            <div class="list-grid-images__button">
+                                <span class="btn btn--secondary">{{ fourthSquare.name }}</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="list-grid-images__portrait">
+                {% if fifthRectangle is not null %}
+                    <li class="list-grid-images__portrait__item">
+                        <a href="#" class="list-grid-images__portrait__link">
+                            {{ image(fifthRectangle, {size: 'rectangle', alt: fifthRectangle.name}) }}
+                            <div class="list-grid-images__button">
+                                <span class="btn btn--secondary">{{ fifthRectangle.name }}</span>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>

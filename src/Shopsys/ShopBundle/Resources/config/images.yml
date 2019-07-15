@@ -89,40 +89,16 @@
 -   name: noticer
     class: Shopsys\FrameworkBundle\Model\Advert\Advert
     sizes:
-        -   name: header
-            width: 1160
-            height: ~
+        -   name: square
+            width: 397
+            height: 306
             crop: false
-            occurrence: 'Front-end: Advertising under heading'
-            additionalSizes:
-                - {width: 440, height: ~, media: "(max-width: 479px)"}
-                - {width: 730, height: ~, media: "(max-width: 768px)"}
-                - {width: 990, height: ~, media: "(max-width: 1023px)"}
-        -   name: footer
-            width: 1160
-            height: ~
+            occurrence: 'Front-end: Banner square on homepage'
+        -   name: rectangle
+            width: 393
+            height: 626
             crop: false
-            occurrence: 'Front-end: Advertising above footer'
-            additionalSizes:
-                - {width: 440, height: ~, media: "(max-width: 479px)"}
-                - {width: 730, height: ~, media: "(max-width: 768px)"}
-                - {width: 990, height: ~, media: "(max-width: 1023px)"}
-        -   name: productList
-            width: 900
-            height: ~
-            crop: false
-            occurrence: 'Front-end: Advertising in category (above the category name)'
-            additionalSizes:
-                - {width: 440, height: ~, media: "(max-width: 479px)"}
-                - {width: 730, height: ~, media: "(max-width: 1023px)"}
-        -   name: leftSidebar
-            width: 240
-            height: ~
-            crop: false
-            occurrence: 'Front-end: Advertising in the left panel under the category tree'
-            additionalSizes:
-                - {width: 440, height: ~, media: "(max-width: 479px)"}
-                - {width: 730, height: ~, media: "(max-width: 768px)"}
+            occurrence: 'Front-end: Banner rectangle on homepage'
 
 -   name: brand
     class: Shopsys\FrameworkBundle\Model\Product\Brand\Brand

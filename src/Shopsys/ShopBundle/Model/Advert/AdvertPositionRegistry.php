@@ -14,11 +14,11 @@ class AdvertPositionRegistry extends BaseAdvertPositionRegistry
     public function getAllLabelsIndexedByNames(): array
     {
         return [
-            '1_square' => t('1 - čtverec'),
-            '2_square' => t('2 - čtverec'),
-            '3_square' => t('3 - čtverec'),
-            '4_square' => t('4 - čtverec'),
-            '5_rectangle' => t('5 - obdélník na výšku'),
+            'firstSquare' => t('1 - čtverec'),
+            'secondSquare' => t('2 - čtverec'),
+            'thirdSquare' => t('3 - čtverec'),
+            'fourthSquare' => t('4 - čtverec'),
+            'fifthRectangle' => t('5 - obdélník na výšku'),
         ];
     }
 }
