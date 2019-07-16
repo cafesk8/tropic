@@ -93,12 +93,24 @@ class PromoCodeController extends FrontBaseController
                 'message' => t('Slevový kupón byl již vyčerpán.'),
             ]);
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
-            return new JsonResponse([
-                'result' => false,
-                'message' => t('Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
+            if ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() !== null) { // FROM and TO dates are filled
+                $message = t('Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
                     '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
                     '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
-                ]),
+                ]);
+            } elseif ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() === null) { // Only FROM date is filled
+                $message = t('Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}.', [
+                    '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
+                ]);
+            } else { // Only TO date is filled
+                $message = t('Slevový kód nemůžete uplatnit. Jeho platnost byla do {{validityTo}}.', [
+                    '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
+                ]);
+            }
+
+            return new JsonResponse([
+                'result' => false,
+                'message' => $message,
             ]);
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\MinimalOrderValueException $ex) {
             return new JsonResponse([
