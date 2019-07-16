@@ -4,6 +4,7 @@ namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
@@ -381,5 +382,22 @@ class Order extends BaseOrder
             null,
             $orderItem->getProduct()
         );
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getOrderDiscountPrice(): Money
+    {
+        $discountPriceWithVat = Money::zero();
+
+        /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
+        foreach ($this->getItems() as $item) {
+            if ($item->isTypePromoCode()) {
+                $discountPriceWithVat = $discountPriceWithVat->add($item->getPriceWithVat());
+            }
+        }
+
+        return $discountPriceWithVat;
     }
 }

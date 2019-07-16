@@ -59,7 +59,7 @@ class OrderExportMapper
             ],
             'NumberOfItems' => $order->getProductItemsCount(),
             'Total' => $order->getTotalPriceWithVat()->getAmount(),
-            'OrderDiscount' => 0.0,
+            'OrderDiscount' => $order->getOrderDiscountPrice()->getAmount(),
             'ShippingPrice' => $order->getTransportAndPaymentPrice()->getPriceWithVat()->getAmount(),
             'PaymentMetod' => $order->getPaymentName(),
             'ShippingMetod' => $order->getTransportName(),
