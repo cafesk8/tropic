@@ -31,9 +31,20 @@ class CustomerTransferValidator
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData $customerTransferResponseItemData
+     * @param bool $isNewCustomer
      */
-    public function validate(CustomerTransferResponseItemData $customerTransferResponseItemData)
+    public function validate(CustomerTransferResponseItemData $customerTransferResponseItemData, bool $isNewCustomer)
     {
+        $emailConstraints = [
+            new NotBlank(),
+            new Type(['type' => 'string']),
+            new Length(['max' => 255]),
+        ];
+
+        if ($isNewCustomer === true) {
+            $emailConstraints[] = new UniqueEmail(['domainId' => $customerTransferResponseItemData->getDomainId()]);
+        }
+
         $violations = $this->validator->validate($customerTransferResponseItemData, new Collection([
             'allowExtraFields' => true,
             'fields' => [
@@ -55,12 +66,7 @@ class CustomerTransferValidator
                     new Type(['type' => 'string']),
                     new Length(['max' => 255]),
                 ],
-                'email' => [
-                    new NotBlank(),
-                    new Type(['type' => 'string']),
-                    new Length(['max' => 255]),
-                    new UniqueEmail(['domainId' => $customerTransferResponseItemData->getDomainId()]),
-                ],
+                'email' => $emailConstraints,
                 'phone' => [
                     new Type(['type' => 'string']),
                 ],
