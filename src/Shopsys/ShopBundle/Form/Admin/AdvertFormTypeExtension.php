@@ -49,7 +49,7 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
 
         $imagesGroup = $builder->get('image_group');
         $imagesGroup->add('imageSizes', DisplayOnlyType::class, [
-            'data' => t('Nahrávejte velikosti obrázků: Čtverec (397x306px), Obdélník (393x626px)'),
+            'data' => t('Nahrávejte velikosti obrázků: čtverec (380x290px), obdélník na výšku (380x600px)'),
             'label' => t('Velikost obrázků'),
         ]);
     }

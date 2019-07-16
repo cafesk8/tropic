@@ -90,13 +90,13 @@
     class: Shopsys\FrameworkBundle\Model\Advert\Advert
     sizes:
         -   name: square
-            width: 397
-            height: 306
+            width: 380
+            height: 290
             crop: false
             occurrence: 'Front-end: Banner square on homepage'
         -   name: rectangle
-            width: 393
-            height: 626
+            width: 380
+            height: 600
             crop: false
             occurrence: 'Front-end: Banner rectangle on homepage'
 

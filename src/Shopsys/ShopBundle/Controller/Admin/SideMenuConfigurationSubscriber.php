@@ -59,7 +59,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         ]);
 
         $adverts = $marketingMenu->getChild('adverts');
-        $adverts->setLabel('Bannery na Hl. stránce');
+        $adverts->setLabel('Bannery na hl. stránce');
         $adverts->getChild('new')->setLabel('Nový banner');
         $adverts->getChild('edit')->setLabel('Editace banneru');
 

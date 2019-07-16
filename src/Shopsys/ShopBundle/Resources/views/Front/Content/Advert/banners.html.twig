@@ -4,8 +4,8 @@
             <ul class="list-grid-images__landscape">
                 {% if firstSquare is not null %}
                     <li class="list-grid-images__landscape__item">
+                        {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}
                         <a href="{{ firstSquare.link }}" class="list-grid-images__landscape__link">
-                            {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}
                             <div class="list-grid-images__button">
                                 <span class="btn btn--secondary">{{ firstSquare.name }}</span>
                             </div>
@@ -14,8 +14,8 @@
                 {% endif %}
                 {% if secondSquare is not null %}
                     <li class="list-grid-images__landscape__item">
+                        {{ image(secondSquare, {size: 'square', alt: secondSquare.name}) }}
                         <a href="{{ secondSquare.link }}" class="list-grid-images__landscape__link">
-                            {{ image(secondSquare, {size: 'square', alt: secondSquare.name}) }}
                             <div class="list-grid-images__button">
                                 <span class="btn btn--secondary">{{ secondSquare.name }}</span>
                             </div>
@@ -24,8 +24,8 @@
                 {% endif %}
                 {% if thirdSquare is not null %}
                     <li class="list-grid-images__landscape__item">
-                        <a href="{{ secondSquare.link }}" class="list-grid-images__landscape__link">
-                            {{ image(thirdSquare, {size: 'square', alt: thirdSquare.name}) }}
+                        {{ image(thirdSquare, {size: 'square', alt: thirdSquare.name}) }}
+                        <a href="{{ thirdSquare.link }}" class="list-grid-images__landscape__link">
                             <div class="list-grid-images__button">
                                 <span class="btn btn--secondary">{{ thirdSquare.name }}</span>
                             </div>
@@ -34,8 +34,8 @@
                 {% endif %}
                 {% if fourthSquare is not null %}
                     <li class="list-grid-images__landscape__item">
+                        {{ image(fourthSquare, {size: 'square', alt: fourthSquare.name}) }}
                         <a href="{{ fourthSquare.link }}" class="list-grid-images__landscape__link">
-                            {{ image(fourthSquare, {size: 'square', alt: fourthSquare.name}) }}
                             <div class="list-grid-images__button">
                                 <span class="btn btn--secondary">{{ fourthSquare.name }}</span>
                             </div>
@@ -46,8 +46,8 @@
             <ul class="list-grid-images__portrait">
                 {% if fifthRectangle is not null %}
                     <li class="list-grid-images__portrait__item">
+                        {{ image(fifthRectangle, {size: 'rectangle', alt: fifthRectangle.name}) }}
                         <a href="{{ fifthRectangle.link }}" class="list-grid-images__portrait__link">
-                            {{ image(fifthRectangle, {size: 'rectangle', alt: fifthRectangle.name}) }}
                             <div class="list-grid-images__button">
                                 <span class="btn btn--secondary">{{ fifthRectangle.name }}</span>
                             </div>
