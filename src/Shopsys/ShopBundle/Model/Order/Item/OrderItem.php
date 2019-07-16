@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Item;
 
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Model\Order\Item\Exception\WrongItemTypeException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
@@ -15,6 +16,8 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
  */
 class OrderItem extends BaseOrderItem
 {
+    public const TYPE_PROMO_CODE = 'promo_code';
+
     /**
      * @var string|null
      *
@@ -68,5 +71,20 @@ class OrderItem extends BaseOrderItem
     public function setEan(?string $ean): void
     {
         $this->ean = $ean;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypePromoCode(): bool
+    {
+        return $this->type === self::TYPE_PROMO_CODE;
+    }
+
+    protected function checkTypeProduct(): void
+    {
+        if (!$this->isTypeProduct() && !$this->isTypePromoCode()) {
+            throw new WrongItemTypeException(self::TYPE_PRODUCT, $this->type);
+        }
     }
 }
