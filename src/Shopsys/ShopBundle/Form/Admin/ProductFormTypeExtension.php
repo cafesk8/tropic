@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
+use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
@@ -39,19 +44,35 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $adminDomainTabsFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
+     */
+    private $priceExtension;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         ParameterFacade $parameterFacade,
         BlogArticleFacade $blogArticleFacade,
-        AdminDomainTabsFacade $adminDomainTabsFacade
+        AdminDomainTabsFacade $adminDomainTabsFacade,
+        PriceExtension $priceExtension,
+        Domain $domain
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+        $this->priceExtension = $priceExtension;
+        $this->domain = $domain;
     }
 
     /**
@@ -96,6 +117,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder);
+        }
+
+        if ($product !== null && $product->isMainVariant() === false) {
+            $this->addActionPriceToPricesGroup($builder);
         }
     }
 
@@ -186,5 +211,38 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             );
 
         $builder->add($builderMainVariantGroup);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addActionPriceToPricesGroup(FormBuilderInterface $builder): void
+    {
+        $builderPricesGroup = $builder->get('pricesGroup');
+        $actionPriceOptionsByDomainId = [];
+
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $domainId = $domainConfig->getId();
+
+            $actionPriceOptionsByDomainId[$domainId] = [
+               'currency' => $this->priceExtension->getCurrencyCodeByDomainId($domainId),
+            ];
+        }
+
+        $builderPricesGroup->add('actionPrices', MultidomainType::class, [
+            'entry_type' => MoneyType::class,
+            'required' => false,
+            'block_name' => 'custom_name',
+            'label' => t('Akční cena'),
+            'position' => ['after' => 'vat'],
+            'options_by_domain_id' => $actionPriceOptionsByDomainId,
+            'entry_options' => [
+                'scale' => 6,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                ],
+            ],
+        ]);
     }
 }

@@ -6,11 +6,12 @@ namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
+use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
 
@@ -56,11 +57,18 @@ class Product extends BaseProduct
     protected $distinguishingParameter;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Shopsys\ShopBundle\Model\Product\ProductDomain", mappedBy="product", cascade={"persist"}, fetch="EXTRA_LAZY")
+     */
+    protected $domains;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
      */
-    protected function __construct(BaseProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, array $variants = null)
+    protected function __construct(ProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, array $variants = null)
     {
         parent::__construct($productData, $productCategoryDomainFactory, $variants);
 
@@ -77,12 +85,27 @@ class Product extends BaseProduct
      */
     public function edit(
         ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        BaseProductData $productData,
+        ProductData $productData,
         ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
     ) {
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     */
+    protected function createDomains(ProductData $productData)
+    {
+        $domainIds = array_keys($productData->seoTitles);
+
+        foreach ($domainIds as $domainId) {
+            $productDomain = new ProductDomain($this, $domainId);
+            $this->domains[] = $productDomain;
+        }
+
+        $this->setDomains($productData);
     }
 
     /**
@@ -162,5 +185,30 @@ class Product extends BaseProduct
         }
 
         return $this;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getActionPrice(int $domainId): ?Money
+    {
+        /** @var \Shopsys\ShopBundle\Model\Product\ProductDomain $productDomain */
+        $productDomain = $this->getProductDomain($domainId);
+        return $productDomain->getActionPrice();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     */
+    protected function setDomains(ProductData $productData): void
+    {
+        parent::setDomains($productData);
+
+        /** @var \Shopsys\ShopBundle\Model\Product\ProductDomain $productDomain */
+        foreach ($this->domains as $productDomain) {
+            $domainId = $productDomain->getDomainId();
+            $productDomain->setActionPrice($productData->actionPrices[$domainId]);
+        }
     }
 }

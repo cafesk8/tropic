@@ -37,6 +37,8 @@ class ProductDataFactory extends BaseProductDataFactory
     public function fillNew(BaseProductData $productData)
     {
         parent::fillNew($productData);
+        $nullForAllDomains = $this->getNullForAllDomains();
+        $productData->actionPrices = $nullForAllDomains;
 
         $productData->storeStocks = [];
     }
@@ -56,6 +58,10 @@ class ProductDataFactory extends BaseProductDataFactory
         if ($product->getMainVariantGroup() !== null) {
             $productData->productsInGroup = $product->getMainVariantGroup()->getProducts();
             $productData->distinguishingParameterForMainVariantGroup = $product->getMainVariantGroup()->getDistinguishingParameter();
+        }
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $productData->actionPrices[$domainId] = $product->getActionPrice($domainId);
         }
 
         $productData->transferNumber = $product->getTransferNumber();

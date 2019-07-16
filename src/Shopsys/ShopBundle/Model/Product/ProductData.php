@@ -36,9 +36,15 @@ class ProductData extends BaseProductData
      */
     public $productsInGroup;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public $actionPrices;
+
     public function __construct()
     {
         parent::__construct();
         $this->productsInGroup = [];
+        $this->actionPrices = [];
     }
 }

@@ -285,3 +285,7 @@ services:
         tags: ['controller.service_arguments']
 
     Shopsys\FrameworkBundle\Component\String\HashGenerator: '@Shopsys\ShopBundle\Component\String\HashGenerator'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository: '@Shopsys\ShopBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation'

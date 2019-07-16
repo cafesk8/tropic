@@ -123,24 +123,27 @@
                     {% for variant in variants if variant in product.variants %}
                         <div class="display-none js-product-variant-price js-product-variant-price-{{ variant.id }}">
                             {% if not variant.calculatedSellingDenied %}
+                                {% set sellingPrice = getProductSellingPrice(variant) %}
                                 <div itemprop="offers"
                                 itemscope
                                 itemtype="http://schema.org/Offer"
                                 class="box-detail-add__prices">
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                        {{ getProductSellingPrice(variant).priceWithVat|price }}
+                                        {{ sellingPrice.priceWithVat|price }}
                                     </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
-                                        {{ '3099 Kč'|trans }}
-                                    </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
-                                        {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
-                                    </div>
+                                    {% if sellingPrice.isActionPrice %}
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+                                            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                        </div>
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+                                            {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+                                        </div>
+                                    {% endif %}
                                     <meta itemprop="priceCurrency"
                                     content="{{ currencyCode(domain.id) }}"
                                     >
                                     <meta itemprop="price"
-                                    content="{{ getProductSellingPrice(variant).priceWithVat|moneyFormat }}"
+                                    content="{{ sellingPrice.priceWithVat|moneyFormat }}"
                                     >
                                     <link itemprop="availability"
                                     href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
@@ -170,19 +173,22 @@
                     {% if not product.isMainVariant %}
                         <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
                             {% if not product.calculatedSellingDenied %}
+                                {% set sellingPrice = getProductSellingPrice(product) %}
                                 <div itemprop="offers"
                                      itemscope
                                      itemtype="http://schema.org/Offer"
                                      class="box-detail-add__prices">
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                        {{ getProductSellingPrice(product).priceWithVat|price }}
+                                        {{ sellingPrice.priceWithVat|price }}
                                     </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old js-not-implemented-yet">
-                                        {{ '3099 Kč'|trans }}
-                                    </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save js-not-implemented-yet">
-                                        {{ 'ušetříte '|trans }} {{ '1900 Kč'|trans }}
-                                    </div>
+                                    {% if sellingPrice.isActionPrice %}
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+                                            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                        </div>
+                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+                                            {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+                                        </div>
+                                    {% endif %}
                                     <meta itemprop="priceCurrency"
                                           content="{{ currencyCode(domain.id) }}"
                                     >

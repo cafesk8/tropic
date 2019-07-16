@@ -29,11 +29,16 @@
 
                             {% if productSellingPrice is not null %}
                                 <div class="list-products__item__info__price">
-                                    <div class="list-products__item__info__price__item list-products__item__info__price__item--main">
+                                    <div class="list-products__item__info__price__item__main">
                                         {% if productSellingPrice.priceFrom %}
                                             {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                         {% else %}
                                             {{ productSellingPrice.priceWithVat|price }}
+                                        {% endif %}
+                                        {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                            <div class="list-products__item__info__price__item__old">
+                                                {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                            </div>
                                         {% endif %}
                                     </div>
                                     <div class="list-products__item__info__price__item">
@@ -113,11 +118,16 @@
 
                                     {% if productSellingPrice is not null %}
                                         <div class="{{ listCssClass }}__item__info__price">
-                                            <div class="{{ listCssClass }}__item__info__price__item {{ listCssClass }}__item__info__price__item--main">
+                                            <div class="{{ listCssClass }}__item__info__price__item__main">
                                                 {% if productSellingPrice.priceFrom %}
                                                     {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                                 {% else %}
                                                     {{ productSellingPrice.priceWithVat|price }}
+                                                {% endif %}
+                                                {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                                    <div class="{{ listCssClass }}__item__info__price__item__old">
+                                                        {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                                    </div>
                                                 {% endif %}
                                             </div>
                                             <div class="{{ listCssClass }}__item__info__price__item">

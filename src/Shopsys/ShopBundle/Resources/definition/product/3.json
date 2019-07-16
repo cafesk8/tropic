@@ -173,6 +173,9 @@
             }
           }
         },
+        "action_price": {
+          "type": "float"
+        },
         "in_stock": {
           "type": "boolean"
         },

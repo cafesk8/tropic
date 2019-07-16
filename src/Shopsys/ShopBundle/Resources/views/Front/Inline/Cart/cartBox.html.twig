@@ -41,7 +41,9 @@
                                     <div class="cart-detail__item__content">
                                         <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
                                         <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
-                                            <span class="cart-detail__item__content__price__old js-not-implemented-yet">3099 Kč</span>
+                                            {% if quantifiedItemPrice.unitPrice.isActionPrice %}
+                                                <span class="cart-detail__item__content__price__old">{{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}</span>
+                                            {% endif %}
                                         </span>
                                         {% set distinguishingProductParameterValueForVariant = distinguishingProductParameterValueForVariant(cartItem.product) %}
                                         {% if distinguishingProductParameterValueForVariant is not null %}
@@ -65,7 +67,7 @@
                                 {{ 'Celkem'|trans }}
                             </div>
                             <div class="cart-detail__total__price">
-                                        {{ productsPrice.priceWithVat|price }}
+                                {{ productsPrice.priceWithVat|price }}
                             </div>
                         </div>
                     </div>
