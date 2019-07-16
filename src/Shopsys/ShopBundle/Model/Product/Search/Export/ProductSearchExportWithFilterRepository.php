@@ -38,7 +38,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
                 'ean' => $product->getEan(),
                 'name' => $product->getName($locale),
                 'description' => $product->getDescription($domainId),
-                'shortDescription' => $product->getShortDescription($domainId),
+                'short_description' => $product->getShortDescription($domainId),
                 'brand' => $product->getBrand() ? $product->getBrand()->getId() : '',
                 'flags' => $flagIds,
                 'categories' => $categoryIds,

@@ -96,7 +96,7 @@ class FilterQueryTest extends TransactionFunctionalTestCase
         $filter = $this->createFilter();
 
         $kittyFilter = $filter->search('apple');
-        $this->assertIdWithFilter($kittyFilter, [5, 111, 9, 144, 40, 25, 30]);
+        $this->assertIdWithFilter($kittyFilter, [5, 9, 144, 40, 25, 30]);
 
         $mg3550Filer = $filter->search('mg3550');
         $this->assertIdWithFilter($mg3550Filer, [9, 144, 10, 145]);
