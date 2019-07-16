@@ -52,6 +52,7 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
         $grid->addColumn('number_of_uses', 'pc.numberOfUses', t('Kolikrát použito'), true);
         $grid->addColumn('usage_limit', 'pc.usageLimit', t('Maximální počet použití'), true);
         $grid->addColumn('unlimited', 'pc.unlimited', t('Neomezený'), true);
+        $grid->addColumn('prefix', 'pc.prefix', t('Prefix'), true);
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
 
@@ -59,7 +60,7 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
         $grid->addDeleteActionColumn('admin_promocode_delete', ['id' => 'pc.id'])
             ->setConfirmMessage(t('Do you really want to remove this promo code?'));
 
-        $grid->setTheme('@ShopsysFramework/Admin/Content/PromoCode/listGrid.html.twig');
+        $grid->setTheme('@ShopsysShop/Admin/Content/PromoCode/listGrid.html.twig');
 
         return $grid;
     }

@@ -42,4 +42,19 @@ class PromoCodeData extends BasePromoCodeData
      * @var \Shopsys\FrameworkBundle\Component\Money\Money
      */
     public $minOrderValue;
+
+    /**
+     * @var bool|null
+     */
+    public $massGenerate;
+
+    /**
+     * @var string|null
+     */
+    public $prefix;
+
+    /**
+     * @var int|null
+     */
+    public $quantity;
 }

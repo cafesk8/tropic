@@ -126,6 +126,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade'
 
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeRepository'
+
     Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory'
 
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
@@ -281,3 +283,5 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\CategoryController:
         class: Shopsys\ShopBundle\Controller\Admin\CategoryController
         tags: ['controller.service_arguments']
+
+    Shopsys\FrameworkBundle\Component\String\HashGenerator: '@Shopsys\ShopBundle\Component\String\HashGenerator'

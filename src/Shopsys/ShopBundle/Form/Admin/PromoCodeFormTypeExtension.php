@@ -12,19 +12,22 @@ use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
-use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class PromoCodeFormTypeExtension extends AbstractTypeExtension
 {
@@ -58,17 +61,27 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     {
         parent::buildForm($builder, $options);
 
-        $this->extendCodeField($builder);
-        $this->extendPercentField($builder);
+        $basicInformationsFormGroup = $builder->create('basicInformationsGroup', GroupType::class, [
+            'label' => t('Základní informace'),
+        ]);
+
+        $this->extendCodeField($builder, $basicInformationsFormGroup);
+        $this->extendPercentField($builder, $basicInformationsFormGroup);
+
+        $builder->add($basicInformationsFormGroup);
+
+        if ($options['mass_generate'] === true) {
+            $builder->add($this->addMassGenerationGroup($builder));
+        }
 
         if ($options['promo_code'] === null) {
-            $builder->add('domainId', DomainType::class, [
+            $basicInformationsFormGroup->add('domainId', DomainType::class, [
                 'required' => true,
                 'data' => $options['domain_id'],
                 'label' => t('Domain'),
             ]);
         } else {
-            $builder
+            $basicInformationsFormGroup
                 ->add('id', DisplayOnlyType::class, [
                     'data' => $options['promo_code']->getId(),
                     'label' => t('ID'),
@@ -93,24 +106,26 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['promo_code', 'domain_id'])
-            ->setAllowedTypes('promo_code', [PromoCode::class, 'null'])
+            ->setRequired(['promo_code', 'domain_id', 'mass_generate'])
+            ->setAllowedTypes('promo_code', [BasePromoCode::class, 'null'])
             ->setAllowedTypes('domain_id', 'int')
+            ->setAllowedTypes('mass_generate', 'bool')
             ->setDefaults([
-            'data_class' => PromoCodeData::class,
-            'validation_groups' => function (FormInterface $form) {
-                $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
+                'data_class' => PromoCodeData::class,
+                'mass_generate' => false,
+                'validation_groups' => function (FormInterface $form) {
+                    $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
 
-                /* @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
-                $promoCodeData = $form->getData();
+                    /* @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
+                    $promoCodeData = $form->getData();
 
-                if ($promoCodeData->unlimited === false) {
-                    $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED;
-                }
+                    if ($promoCodeData->unlimited === false) {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED;
+                    }
 
-                return $validationGroups;
-            },
-        ]);
+                    return $validationGroups;
+                },
+            ]);
     }
 
     /**
@@ -123,24 +138,28 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationsGroupType
      */
-    protected function extendCodeField(FormBuilderInterface $builder): void
+    protected function extendCodeField(FormBuilderInterface $builder, FormBuilderInterface $basicInformationsGroupType): void
     {
         $codeFieldOptions = $builder->get('code')->getOptions();
         $codeFieldOptions['label'] = t('Kód');
         $codeFieldType = get_class($builder->get('code')->getType()->getInnerType());
-        $builder->add('code', $codeFieldType, $codeFieldOptions);
+        $basicInformationsGroupType->add('code', $codeFieldType, $codeFieldOptions);
+        $builder->remove('code');
     }
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationsGroupType
      */
-    private function extendPercentField(FormBuilderInterface $builder): void
+    private function extendPercentField(FormBuilderInterface $builder, FormBuilderInterface $basicInformationsGroupType): void
     {
         $percentFieldOptions = $builder->get('percent')->getOptions();
         $percentFieldOptions['label'] = t('Sleva');
         $percentFieldType = get_class($builder->get('percent')->getType()->getInnerType());
-        $builder->add('percent', $percentFieldType, $percentFieldOptions);
+        $basicInformationsGroupType->add('percent', $percentFieldType, $percentFieldOptions);
+        $builder->remove('percent');
     }
 
     /**
@@ -168,7 +187,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
      * @param int|null $domainId
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getRestictionGroup(FormBuilderInterface $builder, ?PromoCode $promoCode, ?int $domainId): FormBuilderInterface
+    private function getRestictionGroup(FormBuilderInterface $builder, ?BasePromoCode $promoCode, ?int $domainId): FormBuilderInterface
     {
         return $builder->create('restrictionGroup', GroupType::class, [
             'label' => 'Omezení',
@@ -213,12 +232,48 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
      * @param int|null $domainId
      * @return string
      */
-    private function getLabelForMinOrderValue(?PromoCode $promoCode, ?int $domainId): string
+    private function getLabelForMinOrderValue(?BasePromoCode $promoCode, ?int $domainId): string
     {
         if ($promoCode !== null) {
             return t('Minimální hodnota objednávky') . ' (' . $this->priceExtension->getCurrencySymbolByDomainId($domainId) . ')';
         } else {
             return t('Minimální hodnota objednávky v měně dle zvolené domény');
         }
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function addMassGenerationGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builder->get('basicInformationsGroup')->remove('code');
+
+        $builderMassPromoCodeGroup = $builder->create('massPromoCodeGroup', GroupType::class, [
+            'label' => t('Hromadné generování kupónu'),
+            'position' => 'first',
+        ]);
+
+        $builderMassPromoCodeGroup
+            ->add('prefix', TextType::class, [
+                'label' => t('Prefix (např. "JARO_")'),
+                'required' => false,
+            ])
+            ->add('quantity', IntegerType::class, [
+                'label' => t('Počet generovaných kupónů'),
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => t('Vyplňte prosím množství.'),
+                    ]),
+                    new Range([
+                        'min' => 1,
+                        'max' => PromoCode::MAX_CODES_GENERATE,
+                    ]),
+                ],
+                'invalid_message' => t('Zadejte prosím celé číslo.'),
+            ]);
+
+        return $builderMassPromoCodeGroup;
     }
 }

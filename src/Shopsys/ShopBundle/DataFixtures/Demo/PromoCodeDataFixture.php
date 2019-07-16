@@ -9,8 +9,10 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 
 class PromoCodeDataFixture extends AbstractReferenceFixture
 {
+    public const PROMO_CODE_PREFIX_SUMMER = 'summer_';
+
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade
      */
     protected $promoCodeFacade;
 
@@ -39,6 +41,7 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         /** @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
         $promoCodeData = $this->promoCodeDataFactory->create();
         $promoCodeData->unlimited = false;
+        $promoCodeData->domainId = 1;
         $promoCodeData->usageLimit = 100;
         $promoCodeData->code = 'promo10';
         $promoCodeData->percent = 10.0;
@@ -55,5 +58,12 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         $promoCodeData->code = 'promo15';
         $promoCodeData->percent = 15.0;
         $this->promoCodeFacade->create($promoCodeData);
+
+        $promoCodeData->usageLimit = 1;
+        $promoCodeData->quantity = 10;
+        $promoCodeData->prefix = 'spring_';
+        $this->promoCodeFacade->massCreate($promoCodeData);
+        $promoCodeData->prefix = self::PROMO_CODE_PREFIX_SUMMER;
+        $this->promoCodeFacade->massCreate($promoCodeData);
     }
 }

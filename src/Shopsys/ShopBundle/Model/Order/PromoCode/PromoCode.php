@@ -16,6 +16,9 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
  */
 class PromoCode extends BasePromoCode
 {
+    public const MAX_CODES_GENERATE = 9999;
+    public const MASS_GENERATED_CODE_LENGTH = 6;
+
     /**
      * @var int
      *
@@ -66,6 +69,20 @@ class PromoCode extends BasePromoCode
     private $minOrderValue;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $massGenerate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $prefix;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -79,6 +96,8 @@ class PromoCode extends BasePromoCode
         $this->validFrom = $promoCodeData->validFrom;
         $this->validTo = $promoCodeData->validTo;
         $this->minOrderValue = $promoCodeData->minOrderValue;
+        $this->massGenerate = $promoCodeData->massGenerate;
+        $this->prefix = $promoCodeData->prefix;
     }
 
     /**
@@ -94,6 +113,8 @@ class PromoCode extends BasePromoCode
         $this->validFrom = $promoCodeData->validFrom;
         $this->validTo = $promoCodeData->validTo;
         $this->minOrderValue = $promoCodeData->minOrderValue;
+        $this->massGenerate = $promoCodeData->massGenerate;
+        $this->prefix = $promoCodeData->prefix;
     }
 
     /**
@@ -171,5 +192,21 @@ class PromoCode extends BasePromoCode
     public function getMinOrderValue(): ?Money
     {
         return $this->minOrderValue;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMassGenerated(): bool
+    {
+        return $this->massGenerate;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrefix(): ?string
+    {
+        return $this->prefix;
     }
 }
