@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
+use Shopsys\ShopBundle\Model\Order\Item\OrderItem;
 use Shopsys\ShopBundle\Model\Order\Order;
 
 class OrderExportMapper
@@ -89,6 +90,7 @@ class OrderExportMapper
     {
         $orderItems = [];
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
         foreach ($order->getProductItems() as $item) {
             /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
             $orderItems[] = [
@@ -96,10 +98,25 @@ class OrderExportMapper
                 'Name' => $item->getName(),
                 'Quantity' => $item->getQuantity(),
                 'FullPrice' => $item->getPriceWithVat()->getAmount(),
-                'Discount' => 0.0,
+                'Discount' => $this->getOrderItemDiscount($item),
             ];
         }
 
         return $orderItems;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item
+     * @return string
+     */
+    private function getOrderItemDiscount(OrderItem $item): string
+    {
+        $orderItemDiscount = $item->getPromoCodeForOrderItem();
+
+        if ($orderItemDiscount !== null) {
+            return $orderItemDiscount->getPriceWithVat()->getAmount();
+        }
+
+        return '0.0';
     }
 }

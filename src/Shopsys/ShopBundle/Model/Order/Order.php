@@ -379,7 +379,7 @@ class Order extends BaseOrder
             1,
             null,
             null,
-            null
+            $orderItem->getProduct()
         );
     }
 }
