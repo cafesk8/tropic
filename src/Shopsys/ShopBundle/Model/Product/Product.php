@@ -64,6 +64,15 @@ class Product extends BaseProduct
     protected $domains;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     *
+     * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\Flag\Flag")
+     * @ORM\JoinTable(name="product_flags")
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    protected $flags;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -196,6 +205,19 @@ class Product extends BaseProduct
         /** @var \Shopsys\ShopBundle\Model\Product\ProductDomain $productDomain */
         $productDomain = $this->getProductDomain($domainId);
         return $productDomain->getActionPrice();
+    }
+
+    /**
+     * @param int|null $limit
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     */
+    public function getFlags(?int $limit = null)
+    {
+        if ($limit !== null) {
+            return new ArrayCollection($this->flags->slice(0, $limit));
+        }
+
+        return $this->flags;
     }
 
     /**

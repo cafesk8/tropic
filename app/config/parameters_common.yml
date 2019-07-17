@@ -36,4 +36,5 @@ parameters:
         Shopsys\FrameworkBundle\Model\Product\Product: Shopsys\ShopBundle\Model\Product\Product
         Shopsys\FrameworkBundle\Model\Product\ProductDomain: Shopsys\ShopBundle\Model\Product\ProductDomain
         Shopsys\FrameworkBundle\Model\Product\Brand\Brand: Shopsys\ShopBundle\Model\Product\Brand\Brand
+        Shopsys\FrameworkBundle\Model\Product\Flag\Flag: Shopsys\ShopBundle\Model\Product\Flag\Flag
     build-version: '0000000000000000'

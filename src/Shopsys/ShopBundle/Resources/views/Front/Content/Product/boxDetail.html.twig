@@ -2,6 +2,7 @@
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
+    {% set showFlagsMaxCount = 3 %}
 
     <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
         <div class="box-detail__image">
@@ -17,7 +18,7 @@
                 {% endif %}
             </div>
 
-            {{ productFlags.list(product) }}
+            {{ productFlags.list(product.getFlags(showFlagsMaxCount), '') }}
 
             {% if showGallery %}
                 <div class="box-gallery dont-print js-gallery">
