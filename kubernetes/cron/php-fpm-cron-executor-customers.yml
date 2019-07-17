@@ -1,16 +1,16 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-    name: cron-executor
+    name: cron-executor-customers
 spec:
     concurrencyPolicy: Forbid
-    failedJobsHistoryLimit: 5
-    successfulJobsHistoryLimit: 3
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 1
     schedule: "1/5 * * * *"
     jobTemplate:
         spec:
             backoffLimit: 0
-            activeDeadlineSeconds: 300
+            activeDeadlineSeconds: 86400
             template:
                 spec:
                     volumes:
@@ -59,12 +59,12 @@ spec:
                         -   name: ELASTIC_SEARCH_INDEX_PREFIX
                             value: ~
                     containers:
-                    -   name: cron-executor
+                    -   name: cron-executor-customers
                         image: ~
                         args:
                         -   /bin/sh
                         -   -c
-                        -   ./phing cron
+                        -   ./phing cron-customers
                         securityContext:
                             runAsUser: 33
                         imagePullPolicy: Always

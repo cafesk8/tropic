@@ -1,5 +1,6 @@
 resources:
--   ../../cron/php-fpm-cron-executor.yml
+-   ../../cron/php-fpm-cron-executor-default.yml
+-   ../../cron/php-fpm-cron-executor-customers.yml
 -   ../../endpoints/postgres.yml
 -   ../../endpoints/elasticsearch.yml
 -   ../../deployments/redis.yml
