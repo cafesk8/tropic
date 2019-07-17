@@ -159,7 +159,7 @@ class TransportAndPaymentFormType extends AbstractType
             $context->addViolation('Please choose a valid combination of transport and payment');
         }
 
-        if ($transport instanceof Transport && $transport->isPickupPlaceType() && $this->isPickupPlaceOrStoreIsNull($orderData)) {
+        if ($transport instanceof Transport && $transport->isPickupPlaceType() && $this->isPickupPlaceAndStoreNull($orderData)) {
             $context->addViolation('Vyberte prosím pobočku');
         }
     }
@@ -168,8 +168,8 @@ class TransportAndPaymentFormType extends AbstractType
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @return bool
      */
-    private function isPickupPlaceOrStoreIsNull(OrderData $orderData): bool
+    private function isPickupPlaceAndStoreNull(OrderData $orderData): bool
     {
-        return $orderData->pickupPlace === null || $orderData->store === null;
+        return $orderData->pickupPlace === null && $orderData->store === null;
     }
 }
