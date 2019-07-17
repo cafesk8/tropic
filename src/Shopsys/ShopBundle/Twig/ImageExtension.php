@@ -58,13 +58,14 @@ class ImageExtension extends BaseImageExtension
         try {
             $image = $this->imageFacade->getImageByObject($imageOrEntity, $attributes['type']);
             $entityName = $image->getEntityName();
-            $attributes['src'] = $this->getImagePlaceholder();
-            $attributes['data-original'] = $this->getImageUrl($image, $attributes['size'], $attributes['type']);
 
-            if (isset($attributes['class'])) {
-                $attributes['class'] .= ' js-lazy-load';
+            $useLazyLoading = array_key_exists('lazy', $attributes) ? (bool)$attributes['lazy'] : false;
+            if ($useLazyLoading === true) {
+                $attributes['src'] = $this->getImagePlaceholder();
+                $attributes['data-original'] = $this->getImageUrl($image, $attributes['size'], $attributes['type']);
+                $attributes['class'] = array_key_exists('class', $attributes) ? $attributes['class'] . ' js-lazy-load' : 'js-lazy-load';
             } else {
-                $attributes['class'] = 'js-lazy-load';
+                $attributes['src'] = $this->getImageUrl($image, $attributes['size'], $attributes['type']);
             }
 
             $additionalImagesData = $this->imageFacade->getAdditionalImagesData($this->domain->getCurrentDomainConfig(), $image, $attributes['size'], $attributes['type']);
