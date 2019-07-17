@@ -24,7 +24,7 @@
                     {% set quantifiedProductDiscount = orderPreview.quantifiedItemsDiscounts[quantifiedProductKey] %}
                     <li class="list-cart-preview__item">
                         <div class="list-cart-preview__item__image">
-                            {{ image(quantifiedProduct.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+                            {{ image(quantifiedProduct.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: true }) }}
                         </div>
                         <div class="list-cart-preview__item__pieces">
                             {{ quantifiedProduct.quantity|formatNumber }} {{ quantifiedProduct.product.unit.name }}

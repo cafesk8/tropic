@@ -18,7 +18,7 @@
     </h1>
 
     {% if imageExists(blogArticle) %}
-        {{ image(blogArticle, { itemprop: 'image' }) }}
+        {{ image(blogArticle, { itemprop: 'image', lazy:true }) }}
     {% else %}
         {{ noimage({ alt: blogArticle.name }) }}
     {% endif %}

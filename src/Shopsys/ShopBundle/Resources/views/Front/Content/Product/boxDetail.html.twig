@@ -11,7 +11,7 @@
             <div class="box-detail__image__main">
                 {% if imageExists(product) %}
                     <a href="{{ imageUrl(product, 'original') }}" class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
-                        {{ image(product, { itemprop: 'image' }) }}
+                        {{ image(product, { itemprop: 'image', lazy: true }) }}
                     </a>
                 {% else %}
                     {{ noimage({ alt: product.name }) }}
@@ -26,7 +26,7 @@
                         {% for galleryImage in galleryImages %}
                             <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
                                 <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-gallery__item__link js-gallery-slide-link">
-                                    {{ image(galleryImage, {size: 'thumbnail'}) }}
+                                    {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
                                 </a>
                             </div>
                         {% endfor %}
@@ -73,7 +73,7 @@
                                     {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
                                     {% if mainVariantGroupDistinguishingParameterValue is not null %}
                                         <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active'}}" data-id="{{ mainVariantGroupProduct.id }}">
-                                            {{ image(mainVariantGroupProduct, {size: 'thumbnail'}) }}
+                                            {{ image(mainVariantGroupProduct, {size: 'thumbnail', lazy: true}) }}
                                             <span class="list-variants__item__name">
                                                 {{ mainVariantGroupDistinguishingParameterValue.text }}
                                             </span>

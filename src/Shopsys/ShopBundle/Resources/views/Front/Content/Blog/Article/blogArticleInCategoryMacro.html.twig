@@ -3,7 +3,7 @@
     <li class="list-articles__item list-articles__item--full-size">
         <div class="list-articles__item__image">
             <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__image__link">
-                {{ image(blogArticle, { size: 'list', alt: blogArticle.name }) }}
+                {{ image(blogArticle, { size: 'list', alt: blogArticle.name, lazy: true }) }}
             </a>
         </div>
         <div class="list-articles__item__content">

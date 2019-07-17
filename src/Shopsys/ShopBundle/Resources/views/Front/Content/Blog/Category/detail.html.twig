@@ -31,7 +31,7 @@
     </h1>
 
     {% if imageExists(blogCategory) %}
-        {{ image(blogCategory, { itemprop: 'image' }) }}
+        {{ image(blogCategory, { itemprop: 'image', lazy: true }) }}
     {% else %}
         {{ noimage({ alt: blogCategory.name }) }}
     {% endif %}
@@ -49,7 +49,7 @@
                             <h2>{{ blogArticle.name }}</h2>
 
                         <div class="dont-print">
-                            {{ image(blogArticle, { size: 'list', alt: blogArticle.name }) }}
+                            {{ image(blogArticle, { size: 'list', alt: blogArticle.name, lazy: true }) }}
                         </div>
 
                         {{ blogArticle.description|truncate(100)|striptags|raw }}

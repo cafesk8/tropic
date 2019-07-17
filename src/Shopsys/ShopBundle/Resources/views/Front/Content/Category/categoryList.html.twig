@@ -4,7 +4,7 @@
             <li class="list-categories__item">
                 <a href="{{ url('front_product_list', { id: category.id }) }}"
                 class="list-categories__link">
-                    {{ image(category, { alt: category.name }) }}
+                    {{ image(category, { alt: category.name, lazy: true }) }}
                     <div class="list-categories__button">
                          <span class="btn">{{ category.name }}</span>
                     </div>
