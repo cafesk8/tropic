@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\PayPal;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use PayPal\Exception\PayPalConnectionException;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use Shopsys\ShopBundle\Model\Order\OrderFacade;
 use Symfony\Bridge\Monolog\Logger;
@@ -57,12 +58,23 @@ class OrderPayPalStatusUpdateCronModule implements SimpleCronModuleInterface
         foreach ($orders as $order) {
             $this->logger->debug('Downloading PayPal status for order with ID "' . $order->getId() . '".');
 
-            $oldPayPalStatus = $order->getPayPalStatus();
-            $newPayPalStatus = $this->payPalFacade->getPaymentStatus($order->getPayPalId());
+            try {
+                $oldPayPalStatus = $order->getPayPalStatus();
+                $newPayPalStatus = $this->payPalFacade->getPaymentStatus($order->getPayPalId());
 
-            if ($oldPayPalStatus !== $newPayPalStatus) {
-                $this->orderFacade->setPayPalStatus($order, $newPayPalStatus);
-                $this->logger->info('Order with id "' . $order->getId() . '" changed PayPal status from "' . $oldPayPalStatus . '" to "' . $newPayPalStatus . '".');
+                if ($oldPayPalStatus !== $newPayPalStatus) {
+                    $this->orderFacade->setPayPalStatus($order, $newPayPalStatus);
+                    $this->logger->info('Order with id "' . $order->getId() . '" changed PayPal status from "' . $oldPayPalStatus . '" to "' . $newPayPalStatus . '".');
+                }
+            } catch (PayPalConnectionException $exception) {
+                $this->logger->addError(
+                    sprintf(
+                        'Downloading PayPal status for order with ID `%s` was aborted. '
+                        . 'This error will be reported to Shopsys. Reason of this error: %s',
+                        $order->getId(),
+                        $exception->getMessage()
+                    )
+                );
             }
         }
 
