@@ -95,10 +95,8 @@
             $windowContent.append('<h2 class="' + options.cssClassHeading + '">' + options.textHeading + '</h2>');
         }
 
-        $windowContent.append(
-            '<div class="display-none in-message in-message--alert js-window-validation-errors"></div>'
-            + options.content
-        );
+        $windowContent.append('<div class="display-none in-message in-message--alert js-window-validation-errors"></div>');
+        $windowContent.append(options.content);
 
         $activeWindow = $window;
 
