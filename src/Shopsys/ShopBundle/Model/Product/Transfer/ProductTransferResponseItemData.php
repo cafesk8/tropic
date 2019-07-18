@@ -41,8 +41,10 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
         $this->transferNumber = (string)$restData['Number'];
         $this->name = $restData['Name'];
         $this->description = $restData['Description'];
-        foreach ($restData['Barcodes'] as $productVariant) {
-            $this->variants[] = new ProductTransferResponseItemVariantData($productVariant);
+        if (isset($restData['Barcodes'])) {
+            foreach ($restData['Barcodes'] as $productVariant) {
+                $this->variants[] = new ProductTransferResponseItemVariantData($productVariant);
+            }
         }
     }
 
