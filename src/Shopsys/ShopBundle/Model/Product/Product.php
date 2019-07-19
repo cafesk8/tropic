@@ -81,6 +81,13 @@ class Product extends BaseProduct
     protected $gift;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $generateToHsSportXmlFeed;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -94,6 +101,7 @@ class Product extends BaseProduct
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->mainVariantGroup = $productData->mainVariantGroup;
         $this->gift = $productData->gift;
+        $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
     }
 
     /**
@@ -110,6 +118,7 @@ class Product extends BaseProduct
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->gift = $productData->gift;
+        $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
     }
 
     /**
@@ -231,6 +240,24 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
+     */
+    public function getProductCategoriesByDomainId(int $domainId): array
+    {
+        $productCategories = [];
+
+        foreach ($this->getProductCategoryDomainsByDomainIdIndexedByCategoryId($domainId) as $categoryDomain) {
+            $category = $categoryDomain->getCategory();
+            if ($category->isVisible($domainId)) {
+                $productCategories[$category->getId()] = $category;
+            }
+        }
+
+        return $productCategories;
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      */
     protected function setDomains(ProductData $productData): void
@@ -275,5 +302,13 @@ class Product extends BaseProduct
         }
 
         return $this->mainVariant;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGenerateToHsSportXmlFeed(): bool
+    {
+        return $this->generateToHsSportXmlFeed;
     }
 }

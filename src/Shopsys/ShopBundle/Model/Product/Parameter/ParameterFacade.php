@@ -12,6 +12,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterfac
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParameterFacade;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
@@ -28,6 +29,11 @@ class ParameterFacade extends BaseParameterFacade
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository
+     */
+    protected $parameterRepository;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface
@@ -58,6 +64,7 @@ class ParameterFacade extends BaseParameterFacade
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
     ) {
         parent::__construct($em, $parameterRepository, $parameterFactory);
+
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->productFacade = $productFacade;
         $this->parameterDataFactory = $parameterDataFactory;
@@ -104,6 +111,40 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
+     * @param int $productId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
+     */
+    public function findColorProductParameterValueByProductId(int $productId): ?ProductParameterValue
+    {
+        $parameter = $this->findColorParameter();
+
+        if ($parameter === null) {
+            return null;
+        }
+
+        $product = $this->productFacade->getById($productId);
+
+        return $this->parameterRepository->findProductParameterValueByParameterAndProduct($parameter, $product);
+    }
+
+    /**
+     * @param int $productId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
+     */
+    public function findSizeProductParameterValueByProductId(int $productId): ?ProductParameterValue
+    {
+        $parameter = $this->findSizeParameter();
+
+        if ($parameter === null) {
+            return null;
+        }
+
+        $product = $this->productFacade->getById($productId);
+
+        return $this->parameterRepository->findProductParameterValueByParameterAndProduct($parameter, $product);
+    }
+
+    /**
      * @param string[] $parameterNamesByLocale
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
      */
@@ -119,5 +160,29 @@ class ParameterFacade extends BaseParameterFacade
         }
 
         return $parameter;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     */
+    public function findColorParameter(): ?Parameter
+    {
+        return $this->findParameterByNames([
+            'cs' => 'Barva',
+            'sk' => 'Farba',
+            'de' => 'Farbe',
+        ]);
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     */
+    public function findSizeParameter(): ?Parameter
+    {
+        return $this->findParameterByNames([
+            'cs' => 'Velikost',
+            'sk' => 'Velikosť',
+            'de' => 'Größe',
+        ]);
     }
 }

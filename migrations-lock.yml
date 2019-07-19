@@ -493,3 +493,9 @@
 20190801121143:
     class: Shopsys\ShopBundle\Migrations\Version20190801121143
     skip: false
+20190731151412:
+    class: Shopsys\ShopBundle\Migrations\Version20190731151412
+    skip: false
+20190814092835:
+    class: Shopsys\ShopBundle\Migrations\Version20190814092835
+    skip: false

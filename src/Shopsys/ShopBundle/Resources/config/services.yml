@@ -412,3 +412,14 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade'
 
+    Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryDataFactoryInterface:
+        alias: Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryDataFactory
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\Product\HeurekaProductDomainDataFactoryInterface:
+        alias: Shopsys\ProductFeed\HeurekaBundle\Model\Product\HeurekaProductDomainDataFactory
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository'
+
+    Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension: '@Shopsys\ShopBundle\Twig\DateTimeFormatterExtension'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory'

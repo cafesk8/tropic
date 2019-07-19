@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Image;
 
+use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
+
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade as BaseImageFacade;
 
 class ImageFacade extends BaseImageFacade
@@ -49,5 +51,22 @@ class ImageFacade extends BaseImageFacade
         }
 
         $this->deleteImages($entity, $migratedImages);
+    }
+
+    /**
+     * @param object $entity
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return \Shopsys\FrameworkBundle\Component\Image\Image[]
+     */
+    public function getAllImagesUrlsByEntity($entity, DomainConfig $domainConfig): array
+    {
+        $allImagesUrls = [];
+        $allImages = $this->getAllImagesByEntity($entity);
+
+        foreach ($allImages as $image) {
+            $allImagesUrls[] = $this->getImageUrl($domainConfig, $image);
+        }
+
+        return $allImagesUrls;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FormTypesBundle\MultidomainType;
+use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
@@ -152,6 +153,12 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
+
+        $builder->get('basicInformationGroup')
+            ->add('generateToHsSportXmlFeed', YesNoType::class, [
+                'required' => false,
+                'label' => t('Generovat tento produkt do HS-SPORT XML feedu'),
+            ]);
     }
 
     /**

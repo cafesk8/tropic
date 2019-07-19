@@ -48,6 +48,11 @@ class ProductData extends BaseProductData
      */
     public $gift;
 
+    /**
+     * @var bool
+     */
+    public $generateToHsSportXmlFeed;
+
     public function __construct()
     {
         parent::__construct();

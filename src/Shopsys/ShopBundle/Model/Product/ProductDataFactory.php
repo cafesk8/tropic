@@ -43,6 +43,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->actionPrices = $nullForAllDomains;
 
         $productData->storeStocks = [];
+        $productData->generateToHsSportXmlFeed = true;
     }
 
     /**
@@ -70,5 +71,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->distinguishingParameter = $product->getDistinguishingParameter();
         $productData->mainVariantGroup = $product->getMainVariantGroup();
         $productData->gift = $product->getGift();
+        $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
     }
 }

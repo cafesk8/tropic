@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\ORM\QueryBuilder;
+use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
@@ -113,5 +114,34 @@ class ProductRepository extends BaseProductRepository
             ->setFirstResult($offset)
             ->orderBy('p.id', 'ASC')
             ->getQuery()->getResult();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param int|null $lastSeekId
+     * @param int $maxResults
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]|\Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getProductsForHsSportXmlFeed(DomainConfig $domainConfig, PricingGroup $pricingGroup, ?int $lastSeekId, int $maxResults): iterable
+    {
+        $queryBuilder = $this->getAllVisibleQueryBuilder($domainConfig->getId(), $pricingGroup)
+            ->addSelect('v')->join('p.vat', 'v')
+            ->addSelect('b')->leftJoin('p.brand', 'b')
+            ->andWhere('p.variantType = :variantTypeMain')
+            ->setParameter('variantTypeMain', Product::VARIANT_TYPE_MAIN)
+            ->andWhere('p.calculatedSellingDenied = false')
+            ->andWhere('p.generateToHsSportXmlFeed = true')
+            ->orderBy('p.id', 'asc')
+            ->setMaxResults($maxResults);
+
+        $this->addTranslation($queryBuilder, $domainConfig->getLocale());
+        $this->addDomain($queryBuilder, $domainConfig->getId());
+
+        if ($lastSeekId !== null) {
+            $queryBuilder->andWhere('p.id > :lastProductId')->setParameter('lastProductId', $lastSeekId);
+        }
+
+        return $queryBuilder->getQuery()->execute();
     }
 }

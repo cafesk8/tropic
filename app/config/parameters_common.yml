@@ -39,5 +39,6 @@ parameters:
         Shopsys\FrameworkBundle\Model\Product\Flag\Flag: Shopsys\ShopBundle\Model\Product\Flag\Flag
         Shopsys\FrameworkBundle\Model\Cart\Item\CartItem: Shopsys\ShopBundle\Model\Cart\Item\CartItem
         Shopsys\FrameworkBundle\Component\Image\Image: Shopsys\ShopBundle\Component\Image\Image
+        Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue: Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
     build-version: '0000000000000000'
     securityBcryptCost: 12

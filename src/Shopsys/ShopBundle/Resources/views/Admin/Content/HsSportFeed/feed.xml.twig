@@ -1,0 +1,48 @@
+{% block begin %}
+<?xml version="1.0" encoding="utf-8"?>
+<BUSHMAN>
+    <GENERATED>{{ formatCurrentDateTime('Y-m-d H:i:s') }}</GENERATED>
+{% endblock %}
+
+{% block item %}
+    <BUSHMANITEM>
+        <ID>{{ item.id }}</ID>
+        <VAR>{{ item.var }}</VAR>
+        <CODE>{{ item.code }}</CODE>
+        <NAME><![CDATA[{{ item.name }}]]></NAME>
+        <SHORTDESCR><![CDATA[{{ item.shortDescription|raw }}]]></SHORTDESCR>
+        <DESCR><![CDATA[{{ item.description|raw }}]]></DESCR>
+        <PRICE>{{ item.price }}</PRICE>
+        <RRP>{{ item.originalPrice }}</RRP>
+        <CUR>{{ item.currencyCode }}</CUR>
+        <ALLIMAGES>
+            {% for imageUrl in item.imagesUrls %}
+                <IMG>{{ imageUrl }}</IMG>
+            {% endfor %}
+        </ALLIMAGES>
+        <CATEGORY>
+            {% for category in item.categories %}
+                <CAT>{{ category.id }}_{{ category.name }}</CAT>
+            {% endfor %}
+        </CATEGORY>
+        <VARIANTS>
+            {% for variant in item.variants %}
+                <VARIANT>
+                    <EAN>{{ variant.ean }}</EAN>
+                    <SIZE>{{ variant.size }}</SIZE>
+                    <COLOR>{{ variant.color }}</COLOR>
+                    <IMAGES>
+                        {% for imageUrl in variant.imagesUrls %}
+                            <IMG>{{ imageUrl }}</IMG>
+                        {% endfor %}
+                    </IMAGES>
+                    <AVA>{{ variant.availability }}</AVA>
+                </VARIANT>
+            {% endfor %}
+        </VARIANTS>
+    </BUSHMANITEM>
+{% endblock %}
+
+{% block end %}
+</BUSHMAN>
+{% endblock %}
