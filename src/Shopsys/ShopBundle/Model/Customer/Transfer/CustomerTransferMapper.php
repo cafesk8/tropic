@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 
 class CustomerTransferMapper
 {
@@ -22,15 +23,23 @@ class CustomerTransferMapper
     private $pricingGroupSettingFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
     public function __construct(
         CustomerDataFactory $customerDataFactory,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        CountryFacade $countryFacade
     ) {
         $this->customerDataFactory = $customerDataFactory;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->countryFacade = $countryFacade;
     }
 
     /**
@@ -60,6 +69,21 @@ class CustomerTransferMapper
         $userData->branchNumber = $customerTransferResponseItemData->getBranchNumber();
         $userData->domainId = $domainId;
         $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+
+        $billingAddressData = $customerData->billingAddressData;
+        $billingAddressData->city = $customerTransferResponseItemData->getCity();
+        $billingAddressData->street = $customerTransferResponseItemData->getStreet();
+        $billingAddressData->postcode = $customerTransferResponseItemData->getPostcode();
+        $billingAddressData->country = $this->countryFacade->findByCode($customerTransferResponseItemData->getCountryCode());
+
+        $billingAddressData->companyName = $customerTransferResponseItemData->getCompanyName();
+        $billingAddressData->companyNumber = $customerTransferResponseItemData->getCompanyNumber();
+        $billingAddressData->companyTaxNumber = $customerTransferResponseItemData->getCompanyTaxNumber();
+        if ($billingAddressData->companyNumber !== null) {
+            $billingAddressData->companyCustomer = true;
+        }
+
+        $customerData->billingAddressData = $billingAddressData;
 
         $customerData->userData = $userData;
 

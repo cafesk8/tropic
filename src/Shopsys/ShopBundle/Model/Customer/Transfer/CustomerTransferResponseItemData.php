@@ -51,6 +51,36 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
     private $countryCode;
 
     /**
+     * @var string|null
+     */
+    private $street;
+
+    /**
+     * @var string|null
+     */
+    private $city;
+
+    /**
+     * @var string|null
+     */
+    private $postcode;
+
+    /**
+     * @var string|null
+     */
+    private $companyName;
+
+    /**
+     * @var string|null
+     */
+    private $companyNumber;
+
+    /**
+     * @var string|null
+     */
+    private $companyTaxNumber;
+
+    /**
      * @param array $restData
      */
     public function __construct(array $restData)
@@ -63,6 +93,12 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
         $this->email = $restData['Email'] !== null ? TransformString::emptyToNull(trim($restData['Email'])) : null;
         $this->phone = $restData['Phone'] !== null ? TransformString::emptyToNull(trim($restData['Phone'])) : null;
         $this->countryCode = $address['Country'] !== null ? TransformString::emptyToNull(trim($address['Country'])) : null;
+        $this->street = $address['Street'] !== null ? TransformString::emptyToNull(trim($address['Street'])) : null;
+        $this->city = $address['City'] !== null ? TransformString::emptyToNull(trim($address['City'])) : null;
+        $this->postcode = $address['ZIP'] !== null ? TransformString::emptyToNull(trim($address['ZIP'])) : null;
+        $this->companyName = $address['Company'] !== null ? TransformString::emptyToNull(trim($address['Company'])) : null;
+        $this->companyNumber = $restData['ICO'] !== null ? TransformString::emptyToNull(trim($restData['ICO'])) : null;
+        $this->companyTaxNumber = $restData['DIC'] !== null ? TransformString::emptyToNull(trim($restData['DIC'])) : null;
     }
 
     /**
@@ -127,5 +163,53 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
     public function getDomainId(): ?int
     {
         return $this->countryCode !== null ? DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$this->getCountryCode()] : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostcode(): ?string
+    {
+        return $this->postcode;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyNumber(): ?string
+    {
+        return $this->companyNumber;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyTaxNumber(): ?string
+    {
+        return $this->companyTaxNumber;
     }
 }
