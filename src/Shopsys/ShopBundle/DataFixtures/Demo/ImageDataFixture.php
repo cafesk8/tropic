@@ -97,6 +97,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
 
     protected function processDbImagesChanges()
     {
+        $this->processAdvertImages();
         $this->processBrandsImages();
         $this->processCategoriesImages();
         $this->processPaymentsImages();
@@ -104,6 +105,24 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->processProductsImages();
         $this->processSliderItemsImages();
         $this->restartImagesIdsDbSequence();
+    }
+
+    private function processAdvertImages()
+    {
+        $advertImagesData = [
+            103 => AdvertDataFixture::ADVERT_FIRST_SQUARE,
+            104 => AdvertDataFixture::ADVERT_SECOND_SQUARE,
+            105 => AdvertDataFixture::ADVERT_THIRD_SQUARE,
+            106 => AdvertDataFixture::ADVERT_FOURTH_SQUARE,
+            107 => AdvertDataFixture::ADVERT_FIFTH_RECTANGLE,
+        ];
+
+        foreach ($advertImagesData as $imageId => $advertName) {
+            $advert = $this->getReference($advertName);
+            /* @var $advert \Shopsys\FrameworkBundle\Model\Advert\Advert */
+
+            $this->saveImageIntoDb($advert->getId(), 'noticer', $imageId);
+        }
     }
 
     protected function processBrandsImages()
@@ -290,7 +309,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
 
     protected function restartImagesIdsDbSequence()
     {
-        $this->em->createNativeQuery('ALTER SEQUENCE images_id_seq RESTART WITH 103', new ResultSetMapping())->execute();
+        $this->em->createNativeQuery('ALTER SEQUENCE images_id_seq RESTART WITH 108', new ResultSetMapping())->execute();
     }
 
     /**
@@ -299,6 +318,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
     public function getDependencies()
     {
         return [
+            AdvertDataFixture::class,
             BrandDataFixture::class,
             CategoryDataFixture::class,
             PaymentDataFixture::class,

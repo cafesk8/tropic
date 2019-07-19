@@ -55,6 +55,10 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\ProductsType}
 
+    Shopsys\ShopBundle\Form\Admin\AdvertFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType}
+
     Twig_Extensions_Extension_Text:
         class: Twig_Extensions_Extension_Text
         tags:

@@ -1,0 +1,10 @@
+{% extends '@!ShopsysFramework/Admin/Content/Advert/list.html.twig' %}
+
+{% block title %}- {{ 'Bannery na hl. stránce'|trans }}{% endblock %}
+{% block h1 %}{{ 'Bannery na hl. stránce'|trans }}{% endblock %}
+
+{% block btn %}
+    <a href="{{ url('admin_advert_new') }}" class="btn btn--plus wrap-bar__btn">
+        <i class="btn__icon">+</i>{{ 'Přidat nový banner'|trans }}
+    </a>
+{% endblock %}

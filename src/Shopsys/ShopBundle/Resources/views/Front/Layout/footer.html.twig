@@ -1,11 +1,6 @@
 {% block footer %}
     <div class="footer">
         {% block footer__links %}
-            <div class="web__line dont-print">
-                <div class="web__container">
-                    {{ render(controller('ShopsysShopBundle:Front/Advert:box',{'positionName' : 'footer'})) }}
-                </div>
-            </div>
             <div class="web__line">
                 <div class="web__container web__container--light web__container--big-padding">
                     <div class="footer-top">
@@ -142,7 +137,7 @@
                 </div>
             </div>
         {% endblock %}
-        
+
         <div class="web__line">
             <footer class="web__container footer-bottom">
                 <div class="footer-bottom__copyright dont-print">
