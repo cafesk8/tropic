@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\ShopBundle\Form\Admin\StoreFormType;
 use Shopsys\ShopBundle\Model\Store\Exception\StoreNotFoundException;
@@ -39,29 +38,21 @@ class StoreController extends AdminBaseController
     private $storeGridFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
-
-    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreDataFactory $storeDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreGridFactory $storeGridFactory
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         StoreFacade $storeFacade,
         StoreDataFactory $storeDataFactory,
         AdminDomainTabsFacade $adminDomainTabsFacade,
-        StoreGridFactory $storeGridFactory,
-        Domain $domain
+        StoreGridFactory $storeGridFactory
     ) {
         $this->storeFacade = $storeFacade;
         $this->storeDataFactory = $storeDataFactory;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
         $this->storeGridFactory = $storeGridFactory;
-        $this->domain = $domain;
     }
 
     /**
@@ -76,7 +67,6 @@ class StoreController extends AdminBaseController
 
         $form = $this->createForm(StoreFormType::class, $storeData, [
             'store' => null,
-            'domain_id' => $this->domain->getId(),
         ]);
 
         $form->handleRequest($request);
@@ -127,7 +117,6 @@ class StoreController extends AdminBaseController
 
         $form = $this->createForm(StoreFormType::class, $storeData, [
             'store' => $store,
-            'domain_id' => $this->domain->getCurrentDomainConfig()->getId(),
         ]);
         $form->handleRequest($request);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
@@ -28,11 +29,20 @@ class StoreFormType extends AbstractType
     private $countryFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
      */
-    public function __construct(CountryFacade $countryFacade)
-    {
+    private $adminDomainTabsFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     */
+    public function __construct(
+        CountryFacade $countryFacade,
+        AdminDomainTabsFacade $adminDomainTabsFacade
+    ) {
         $this->countryFacade = $countryFacade;
+        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
     /**
@@ -41,7 +51,9 @@ class StoreFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
+        $countries = $this->countryFacade->getAllEnabledOnDomain(
+            $this->adminDomainTabsFacade->getSelectedDomainId()
+        );
 
         $builderBasicInformationGroup = $builder->create('basicInformation', GroupType::class, [
             'label' => t('Basic information'),
@@ -195,8 +207,6 @@ class StoreFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired('domain_id')
-            ->addAllowedTypes('domain_id', 'int')
             ->setRequired('store')
             ->setAllowedTypes('store', [Store::class, 'null'])
             ->setDefaults([
