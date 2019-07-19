@@ -92,7 +92,8 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "paypal/rest-api-sdk-php": "*",
         "emanueleminotto/twig-cache-bundle": "^1.0",
-        "vinkla/instagram": "^9.3"
+        "vinkla/instagram": "^9.3",
+        "php-http/message": "^1.7"
     },
     "require-dev": {
         "ext-pgsql": "*",
