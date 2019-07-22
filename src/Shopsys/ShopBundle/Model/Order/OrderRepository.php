@@ -5,7 +5,9 @@ namespace Shopsys\ShopBundle\Model\Order;
 use DateTime;
 use Doctrine\ORM\Query\Expr\Join;
 use GoPay\Definition\Response\PaymentStatus;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
+use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 
@@ -69,5 +71,56 @@ class OrderRepository extends BaseOrderRepository
             ]);
 
         return (float)$queryBuilder->getQuery()->getSingleResult()['sum'] ?? 0;
+    }
+
+    /**
+     * @param \DateTime $startTime
+     * @param \DateTime $endTime
+     * @return int[]
+     */
+    public function getCustomerIdsFromOrdersUpdatedAt(DateTime $startTime, DateTime $endTime): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->select('IDENTITY(o.customer) as id')
+            ->where('o.updatedAt > :startTime')
+            ->andWhere('o.updatedAt < :endTime')
+            ->andWhere('o.customer is not null')
+            ->groupBy('o.customer')
+            ->setParameter('startTime', $startTime)
+            ->setParameter('endTime', $endTime);
+
+        $customerIds = $queryBuilder->getQuery()->getResult();
+
+        return array_column($customerIds, 'id');
+    }
+
+    /**
+     * @param int[] $customerIds
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getOrdersValueIndexedByCustomerId(array $customerIds): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->select('IDENTITY(o.customer) as customerId')
+            ->addSelect('SUM(o.totalPriceWithVat) as ordersValue')
+            ->where('o.status = :statusCompleted')
+            ->andWhere('o.customer IN (:customerIds)')
+            ->groupBy('customerId')
+            ->setParameter('statusCompleted', OrderStatus::TYPE_DONE)
+            ->setParameter('customerIds', $customerIds);
+
+        $ordersValue = $queryBuilder->getQuery()->getResult();
+
+        $ordersValueIndexedByCustomer = array_column($ordersValue, 'ordersValue', 'customerId');
+
+        $ordersValueForAllGivenCustomerIds = [];
+
+        foreach ($customerIds as $customerId) {
+            $ordersValueForAllGivenCustomerIds[$customerId] = array_key_exists($customerId, $ordersValueIndexedByCustomer) ? $ordersValueIndexedByCustomer[$customerId] : 0;
+        }
+
+        return array_map(function ($value) {
+            return Money::create($value);
+        }, $ordersValueForAllGivenCustomerIds);
     }
 }

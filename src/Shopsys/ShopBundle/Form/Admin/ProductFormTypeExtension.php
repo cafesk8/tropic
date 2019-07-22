@@ -17,10 +17,13 @@ use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransform
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,25 +57,33 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         ParameterFacade $parameterFacade,
         BlogArticleFacade $blogArticleFacade,
         AdminDomainTabsFacade $adminDomainTabsFacade,
         PriceExtension $priceExtension,
-        Domain $domain
+        Domain $domain,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
         $this->priceExtension = $priceExtension;
         $this->domain = $domain;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -117,10 +128,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder);
-        }
-
-        if ($product !== null && $product->isMainVariant() === false) {
+        } else {
             $this->addActionPriceToPricesGroup($builder);
+            $builder->add($this->getPricesGroup($builder, $product));
         }
     }
 
@@ -244,5 +254,43 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getPricesGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
+    {
+        $pricesGroupBuilder = $builder->get('pricesGroup');
+
+        $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');
+        $productCalculatedPricesGroup->remove('manualInputPricesByPricingGroupId');
+
+        $manualInputPricesByPricingGroup = $builder->create('manualInputPricesByPricingGroupId', FormType::class, [
+            'compound' => true,
+            'render_form_row' => false,
+            'disabled' => $product !== null && $product->isMainVariant(),
+        ]);
+
+        /** @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
+        foreach ($this->pricingGroupFacade->getAll() as $pricingGroup) {
+            $manualInputPricesByPricingGroup->add($pricingGroup->getId(), MoneyType::class, [
+                'scale' => 6,
+                'required' => false,
+                'disabled' => $pricingGroup->getInternalId() !== null && $pricingGroup->getInternalId() !== PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                ],
+                'label' => $pricingGroup->getName(),
+            ]);
+        }
+
+        $productCalculatedPricesGroup->add($manualInputPricesByPricingGroup);
+        $pricesGroupBuilder->add($productCalculatedPricesGroup);
+
+        return $pricesGroupBuilder;
     }
 }

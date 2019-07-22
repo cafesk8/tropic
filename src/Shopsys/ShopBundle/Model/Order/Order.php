@@ -2,6 +2,7 @@
 
 namespace Shopsys\ShopBundle\Model\Order;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
@@ -71,6 +72,13 @@ class Order extends BaseOrder
     private $store;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updatedAt;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -88,6 +96,7 @@ class Order extends BaseOrder
         $this->goPayStatus = $orderData->goPayStatus;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
+        $this->updatedAt = $orderData->updatedAt;
 
         /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = $this->transport;
@@ -122,6 +131,7 @@ class Order extends BaseOrder
         $this->payPalStatus = $orderData->payPalStatus;
         $this->pickupPlace = $orderData->pickupPlace;
         $this->store = $orderData->store;
+        $this->updatedAt = $orderData->updatedAt;
 
         return $orderEditResult;
     }
@@ -220,5 +230,13 @@ class Order extends BaseOrder
     public function getStore(): ?Store
     {
         return $this->store;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
     }
 }

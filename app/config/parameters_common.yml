@@ -32,6 +32,7 @@ parameters:
         Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode: Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode
         Shopsys\FrameworkBundle\Model\Transport\Transport: Shopsys\ShopBundle\Model\Transport\Transport
         Shopsys\FrameworkBundle\Model\Payment\Payment: Shopsys\ShopBundle\Model\Payment\Payment
+        Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup: Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup
         Shopsys\FrameworkBundle\Model\Product\Product: Shopsys\ShopBundle\Model\Product\Product
         Shopsys\FrameworkBundle\Model\Product\ProductDomain: Shopsys\ShopBundle\Model\Product\ProductDomain
         Shopsys\FrameworkBundle\Model\Product\Brand\Brand: Shopsys\ShopBundle\Model\Product\Brand\Brand

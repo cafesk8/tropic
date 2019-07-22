@@ -2,6 +2,7 @@
 
 namespace Shopsys\ShopBundle\Model\Order;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 
 class OrderData extends BaseOrderData
@@ -40,4 +41,15 @@ class OrderData extends BaseOrderData
      * @var \Shopsys\ShopBundle\Model\Store\Store|null
      */
     public $store;
+
+    /**
+     * @var \DateTime
+     */
+    public $updatedAt;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->updatedAt = new DateTime();
+    }
 }

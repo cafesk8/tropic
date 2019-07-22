@@ -41,7 +41,7 @@ class ProductManualInputPriceTest extends TransactionFunctionalTestCase
         $vatData->percent = 21;
         $vat = new Vat($vatData);
 
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         $productData = $producDataFactory->create();
         $productData->vat = $vat;
@@ -75,7 +75,7 @@ class ProductManualInputPriceTest extends TransactionFunctionalTestCase
         $vatData->percent = 21;
         $vat = new Vat($vatData);
 
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         $productData = $productDataFactory->create();
         $productData->vat = $vat;

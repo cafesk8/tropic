@@ -6,12 +6,12 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPrice;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Shopsys\ShopBundle\DataFixtures\Demo\PricingGroupDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixture;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class PricingGroupFacadeTest extends TransactionFunctionalTestCase
@@ -51,7 +51,7 @@ class PricingGroupFacadeTest extends TransactionFunctionalTestCase
         $pricingGroupData->name = 'name';
         $pricingGroupToDelete = $pricingGroupFacade->create($pricingGroupData, $domainId);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroupToReplaceWith */
-        $pricingGroupToReplaceWith = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroupToReplaceWith = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $customerFacade->getUserById(1);
         /** @var \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory */

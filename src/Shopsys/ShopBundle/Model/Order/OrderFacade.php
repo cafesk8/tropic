@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order;
 
+use DateTime;
 use GoPay\Definition\Response\PaymentStatus;
 use GoPay\Http\Response;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
@@ -16,6 +17,11 @@ class OrderFacade extends BaseOrderFacade
      * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
      */
     protected $currentPromoCodeFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\OrderRepository
+     */
+    protected $orderRepository;
 
     /**
      * @param int $orderId
@@ -101,5 +107,24 @@ class OrderFacade extends BaseOrderFacade
         $order = parent::createOrderFromFront($orderData);
 
         return $order;
+    }
+
+    /**
+     * @param \DateTime $startTime
+     * @param \DateTime $endTime
+     * @return int[]
+     */
+    public function getCustomerIdsFromOrdersUpdatedAt(DateTime $startTime, DateTime $endTime): array
+    {
+        return $this->orderRepository->getCustomerIdsFromOrdersUpdatedAt($startTime, $endTime);
+    }
+
+    /**
+     * @param int[] $customerIds
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getOrdersValueIndexedByCustomerId(array $customerIds): array
+    {
+        return $this->orderRepository->getOrdersValueIndexedByCustomerId($customerIds);
     }
 }

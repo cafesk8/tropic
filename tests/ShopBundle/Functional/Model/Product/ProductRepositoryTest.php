@@ -46,7 +46,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
@@ -92,7 +92,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
@@ -138,7 +138,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
@@ -199,7 +199,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
@@ -253,7 +253,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
 
@@ -280,7 +280,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository */
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_ORDINARY_DOMAIN, Domain::FIRST_DOMAIN_ID);
+        $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
 
