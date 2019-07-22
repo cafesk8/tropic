@@ -130,6 +130,13 @@ yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
 yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
 
+# Set migration database IPs
+yq write --inplace app/config/parameters.yml parameters.migration_database_host ${MIGRATION_DATABASE_HOST}
+yq write --inplace app/config/parameters.yml parameters.migration_database_name ${MIGRATION_DATABASE_NAME}
+yq write --inplace app/config/parameters.yml parameters.migration_database_password ${MIGRATION_DATABASE_PASSWORD}
+yq write --inplace app/config/parameters.yml parameters.migration_database_port ${MIGRATION_DATABASE_PORT}
+yq write --inplace app/config/parameters.yml parameters.migration_database_user ${MIGRATION_DATABASE_USER}
+
 # set Balikobot credentials
 yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
 yq write --inplace app/config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
