@@ -1,12 +1,12 @@
-{% macro list(product, classAddition) %}
+{% macro list(productFlags, classAddition) %}
 
-    {% if product.flags %}
+    {% if productFlags|length > 0 %}
         <div class="in-flag dont-print {{ classAddition }}">
-            {% for productFlag in product.flags %}
-
-                <span class="in-flag__item
-                    {# TODO PRG: get some condition here for long text #}
-                    {% if productFlag.name|length > 7 %} in-flag__item--smaller-text js-not-implemented-yet{% endif %}" style="background-color: {{ productFlag.rgbColor }};">
+            {% for productFlag in productFlags %}
+                <span
+                    class="in-flag__item{% if productFlag.name|length > 7 %} in-flag__item--smaller-text{% endif %}"
+                    style="background-color: {{ productFlag.rgbColor }};"
+                >
                     {{ productFlag.name }}
                 </span>
             {% endfor %}

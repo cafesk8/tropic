@@ -17,7 +17,7 @@
                     <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products__item__block">
                         <div class="list-products__item__image dont-print">
                             {{ image(product, { size: 'list', alt: product.name }) }}
-                            {{ productFlags.list(product, 'in-flag--in-list') }}
+                            {{ productFlags.list(product.getFlags(1), 'in-flag--in-list') }}
                         </div>
 
                         <div class="list-products__item__info">
