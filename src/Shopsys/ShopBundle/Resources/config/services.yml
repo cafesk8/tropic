@@ -323,3 +323,5 @@ services:
     Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry: '@Shopsys\ShopBundle\Model\Advert\AdvertPositionRegistry'
 
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapDumperFactory: '@Shopsys\ShopBundle\Model\Sitemap\SitemapDumperFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade'

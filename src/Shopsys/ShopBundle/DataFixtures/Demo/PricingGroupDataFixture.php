@@ -72,6 +72,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $pricingGroupData->name = 'ADEPT';
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_ADEPT;
+        $pricingGroupData->discount = (float)0.95;
         $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_ADEPT_DOMAIN, true, [
             1 => Money::create('1999'),
             2 => Money::create('79.99'),
@@ -80,6 +81,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $pricingGroupData->name = 'CLASSIC';
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_CLASSIC;
+        $pricingGroupData->discount = (float)0.90;
         $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_CLASSIC_DOMAIN, true, [
             1 => Money::create('19999'),
             2 => Money::create('799.99'),
@@ -88,6 +90,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $pricingGroupData->name = 'REAL BUSHMAN';
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REAL_BUSHMAN;
+        $pricingGroupData->discount = (float)0.85;
         $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN, true, [
             1 => Money::create('49999'),
             2 => Money::create('1999.99'),

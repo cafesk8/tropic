@@ -17,4 +17,9 @@ class PricingGroupData extends BasePricingGroupData
      * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
     public $minimalPrice;
+
+    /**
+     * @var float|null
+     */
+    public $discount;
 }

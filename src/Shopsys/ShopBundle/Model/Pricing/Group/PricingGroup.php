@@ -35,6 +35,13 @@ class PricingGroup extends BasePricingGroup
     private $minimalPrice;
 
     /**
+     * @var float|null
+     *
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $discount;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param $domainId
      */
@@ -43,6 +50,7 @@ class PricingGroup extends BasePricingGroup
         parent::__construct($pricingGroupData, $domainId);
         $this->internalId = $pricingGroupData->internalId;
         $this->minimalPrice = $pricingGroupData->minimalPrice;
+        $this->discount = $pricingGroupData->discount;
     }
 
     /**
@@ -53,6 +61,7 @@ class PricingGroup extends BasePricingGroup
         parent::edit($pricingGroupData);
         $this->internalId = $pricingGroupData->internalId;
         $this->minimalPrice = $pricingGroupData->minimalPrice;
+        $this->discount = $pricingGroupData->discount;
     }
 
     /**
@@ -69,5 +78,13 @@ class PricingGroup extends BasePricingGroup
     public function getMinimalPrice(): ?Money
     {
         return $this->minimalPrice;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getDiscount(): ?float
+    {
+        return $this->discount;
     }
 }
