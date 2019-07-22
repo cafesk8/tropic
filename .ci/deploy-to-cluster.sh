@@ -128,6 +128,7 @@ yq write --inplace app/config/parameters.yml parameters.database_password ${POST
 yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES_DATABASE_PORT}
 yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
+yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
 
 # set Balikobot credentials
 yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
