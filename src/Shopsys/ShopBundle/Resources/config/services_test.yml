@@ -102,3 +102,9 @@ services:
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory'
 
     Shopsys\FrameworkBundle\Model\Category\CategoryRepository: '@Shopsys\ShopBundle\Model\Category\CategoryRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade'
+
+    Shopsys\FrameworkBundle\Model\Customer\CustomerFacade: '@Shopsys\ShopBundle\Model\Customer\CustomerFacade'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade'
