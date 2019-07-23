@@ -16,7 +16,7 @@
                 <div class="list-products__item__in">
                     <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products__item__block">
                         <div class="list-products__item__image dont-print">
-                            {{ image(product, { size: 'list', alt: product.name }) }}
+                            {{ image(product, { size: 'list', alt: product.name, lazy: true }) }}
                             {{ productFlags.list(product.getFlags(1), 'in-flag--in-list') }}
                         </div>
 
@@ -78,7 +78,7 @@
                                 <div class="list-products__item__variants">
                                     {% for product in productsIndexedByMainVariantGroup[product.mainVariantGroup.id] %}
                                         <div class="list-products__item__variants__image">
-                                            {{ image(product, { size: 'thumbnail', alt: product.name }) }}
+                                            {{ image(product, { size: 'thumbnail', alt: product.name, lazy: true }) }}
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -105,7 +105,7 @@
                         <div class="{{ listCssClass }}__item__in">
                             <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass }}__item__block">
                                 <div class="{{ listCssClass }}__item__image dont-print">
-                                    {{ image(product, { size: 'list', alt: product.name }) }}
+                                    {{ image(product, { size: 'list', alt: product.name, lazy: true }) }}
                                 </div>
 
                                 <div class="{{ listCssClass }}__item__info">
