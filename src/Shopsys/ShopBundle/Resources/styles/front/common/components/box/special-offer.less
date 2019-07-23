@@ -49,19 +49,29 @@
 
         &__title {
             display: block;
-            line-height: 78px;
+            line-height: 38px;
 
             font-family: @font-alt;
-            font-size: 60px;
+            font-size: 30px;
             font-weight: bold;
             letter-spacing: 3px;
+
+            @media @query-md {
+                line-height: 78px;
+
+                font-size: 60px;
+            }
         }
 
         &__button {
-            width: @box-special-offer-button-width;
+            width: 100%;
             margin-top: 62px;
 
             background-color: @color-brown;
+
+            @media @query-md {
+                width: @box-special-offer-button-width;
+            }
         }
     }
 
@@ -70,9 +80,13 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: 48px 0 0 138px;
+        padding: 48px 0 0 70px;
 
         background-color: @box-special-offer-grayscale-bg;
+
+        @media @query-md {
+            padding: 48px 0 0 138px;
+        }
 
         @media @query-vl {
             width: calc(~"100% - @{box-special-offer-coloured-width}");
@@ -82,8 +96,12 @@
         &__image {
             display: block;
             position: absolute;
-            left: -70px;
+            left: -130px;
             bottom: 0;
+
+            @media @query-md {
+                left: -70px;
+            }
 
             @media @query-vl {
                 left: -24%;

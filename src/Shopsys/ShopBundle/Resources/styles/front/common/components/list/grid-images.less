@@ -98,10 +98,11 @@
             float: left;
             width: 100%;
             margin-bottom: @grid-images-item-column-gap;
-            margin-left: @grid-images-item-column-gap;
+            margin-left: @grid-images-item-column-gap/2;
             text-align: center;
 
             @media @query-lg {
+                margin-left: @grid-images-item-column-gap;
                 width: calc(~"@{calc-base}/@{grid-images-columns-count} - @{grid-images-item-column-gap}");
             }
 

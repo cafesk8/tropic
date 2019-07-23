@@ -55,9 +55,12 @@
         display: flex;
         flex-direction: column;
         width: calc(~"@{calc-base}/@{list-references-item-count}");
-        padding-right: @list-references-item-gap;
 
         color: @color-brown;
+
+        @media @query-md {
+            padding-right: @list-references-item-gap;
+        }
 
         .list-references--in-detail & {
             width: 100%;

@@ -1,7 +1,7 @@
 // Default button
 @btn-height: @form-item-height;
 @btn-padding-vertical: 0;
-@btn-padding-horizontal: 22px;
+@btn-padding-horizontal: 19px;
 @btn-color: @color-f;
 @btn-color-hover: @color-f;
 @btn-bg: @color-brown;
@@ -88,12 +88,18 @@
 //// Modifications - size
 .btn {
     @btn-large-padding-horizontal: 25px;
+    @btn-large-padding-horizontal-mobile: 20px;
 
     &--large {
-        padding-left: @btn-large-padding-horizontal;
-        padding-right: @btn-large-padding-horizontal;
+        padding-left: @btn-large-padding-horizontal-mobile;
+        padding-right: @btn-large-padding-horizontal-mobile;
 
         font-size: 16px;
+
+        @media @query-md {
+            padding-left: @btn-large-padding-horizontal;
+            padding-right: @btn-large-padding-horizontal;
+        }
     }
 
     @btn-small-padding-vertical: 5px;
@@ -114,7 +120,7 @@
         height: @input-height;
         line-height: @input-height;
         min-height: @input-height;
-    }
+}
 }
 
 // Button with icon
