@@ -60,7 +60,7 @@
                                                     {{ blogArticle.name }}
                                                 </a>
                                                 <div class="list-articles__item__content__text">
-                                                    {{ blogArticle.description|truncate(100)|striptags|raw }}
+                                                    {{ blogArticle.description|striptags|truncate(100)|raw }}
                                                 </div>
                                             </div>
                                         </li>
