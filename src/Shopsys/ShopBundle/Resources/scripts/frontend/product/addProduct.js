@@ -27,10 +27,8 @@
             Shopsys.window({
                 content: data,
                 cssClass: 'window-popup--wide window-popup--no-padding',
-                buttonContinue: false,
                 textContinue: '',
-                urlContinue: buttonContinueUrl,
-                cssClassContinue: ''
+                urlContinue: buttonContinueUrl
             });
 
             $('#js-cart-box').trigger('reload');
