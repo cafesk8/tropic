@@ -51,6 +51,14 @@
                             <strong>{{ 'získat 3% slevu'|trans }}</strong>
                             {{ 'na celý sortiment'|trans }}.
                         </div>
+                        {# Save password and user name hack.
+                        * The browsers need field with name 'name' to store login (password stored by field with type password).
+                        * I can't create a field with a specific name in symfony.
+                        * IE and Edge store login by type hidden, other by type text or email.
+                        #}
+                        <input type="text" name="name" value="{{ order.email }}" style="display: none;">
+                        <input type="hidden" name="name" value="{{ order.email }}">
+
                         <div class="box-order-done__club__form js-not-implemented-yet">
                             <div class="form-line">
                                 <div class="form-line__input box-order-done__club__form__input">
