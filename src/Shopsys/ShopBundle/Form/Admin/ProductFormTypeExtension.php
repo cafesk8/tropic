@@ -19,6 +19,7 @@ use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransform
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
+use Shopsys\ShopBundle\Form\Transformers\RemoveProductTransformer;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
@@ -161,7 +162,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->addVideoGroup($builder);
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
-            $this->createMainVariantGroup($builder);
+            $this->createMainVariantGroup($builder, $product);
         } else {
             if ($product !== null && $product->isMainVariant() === false) {
                 $this->addActionPriceToPricesGroup($builder);
@@ -237,8 +238,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */
-    private function createMainVariantGroup(FormBuilderInterface $builder): void
+    private function createMainVariantGroup(FormBuilderInterface $builder, Product $product): void
     {
         $builderMainVariantGroup = $builder->create('builderMainVariantGroup', GroupType::class, [
             'label' => t('Propojené produkty'),
@@ -266,6 +268,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                         'is_main_variant_group' => true,
                     ])
                     ->addModelTransformer(new RemoveDuplicatesFromArrayTransformer())
+                    ->addModelTransformer(new RemoveProductTransformer($product))
             );
 
         $builder->add($builderMainVariantGroup);
