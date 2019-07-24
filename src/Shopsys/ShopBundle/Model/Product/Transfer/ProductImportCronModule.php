@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
+use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
+use Shopsys\ShopBundle\Model\Product\ProductVariantFacade;
 use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferResponseItemDataException;
 
 class ProductImportCronModule extends AbstractTransferImportCronModule
@@ -43,12 +47,35 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $productVisibilityFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductVariantFacade
+     */
+    private $productVariantFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade
+     */
+    private $mainVariantGroupFacade;
+
+    /**
+     * @var array
+     */
+    private $productTree;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory
+     */
+    private $productCategoryDomainFactory;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferValidator $productTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductVariantFacade $productVariantFacade
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory $productCategoryDomainFactory
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -56,7 +83,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         ProductTransferMapper $productTransferMapper,
         ProductTransferValidator $productTransferValidator,
         ProductFacade $productFacade,
-        ProductVisibilityFacade $productVisibilityFacade
+        ProductVisibilityFacade $productVisibilityFacade,
+        ProductVariantFacade $productVariantFacade,
+        MainVariantGroupFacade $mainVariantGroupFacade,
+        ProductCategoryDomainFactory $productCategoryDomainFactory
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->restClient = $restClient;
@@ -64,6 +94,9 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->productTransferValidator = $productTransferValidator;
         $this->productFacade = $productFacade;
         $this->productVisibilityFacade = $productVisibilityFacade;
+        $this->productVariantFacade = $productVariantFacade;
+        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
+        $this->productCategoryDomainFactory = $productCategoryDomainFactory;
     }
 
     /**
@@ -96,30 +129,31 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface $itemData
+     * @param \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface $productTransferResponseItemData
      */
-    protected function processTransferItemData(TransferResponseItemDataInterface $itemData): void
+    protected function processTransferItemData(TransferResponseItemDataInterface $productTransferResponseItemData): void
     {
-        if (!($itemData instanceof ProductTransferResponseItemData)) {
+        if (!($productTransferResponseItemData instanceof ProductTransferResponseItemData)) {
             throw new InvalidProductTransferResponseItemDataException(
                 'Invalid argument passed into method. Instance of %s was expected',
                 ProductTransferResponseItemData::class
             );
         }
 
-        $this->productTransferValidator->validate($itemData);
+        $this->productTransferValidator->validate($productTransferResponseItemData);
 
-        $product = $this->productFacade->findByTransferNumber($itemData->getNumber());
+        $this->productTree = [];
 
-        $productData = $this->productTransferMapper->mapTransferDataToProductData($itemData, $product);
+        if (count($productTransferResponseItemData->getVariants()) > 0) {
+            foreach ($productTransferResponseItemData->getVariants() as $productVariantsItemData) {
+                $this->processProductItemWithVariants($productTransferResponseItemData, $productVariantsItemData);
+            }
 
-        if ($product === null) {
-            $this->productFacade->create($productData);
-            $this->logger->addInfo(sprintf('Product with transfer number %s was created', $itemData->getNumber()));
+            $this->createProductTree();
         } else {
-            $this->productFacade->edit($product->getId(), $productData);
-            $this->logger->addInfo(sprintf('Product with transfer number %s was edited', $itemData->getNumber()));
+            $this->processProductItemWithVariants($productTransferResponseItemData);
         }
+        $this->logger->addInfo(sprintf('Products for group with transfer number %s were created', $productTransferResponseItemData->getTransferNumber()));
     }
 
     /**
@@ -135,5 +169,76 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->logger->addInfo('Recalculate products visibility');
         $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
         parent::end();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemData $productTransferResponseItemData
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData|null $productTransferResponseItemVariantData
+     * @return \Shopsys\ShopBundle\Model\Product\Product
+     */
+    private function processProductItemWithVariants(ProductTransferResponseItemData $productTransferResponseItemData, ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData = null): Product
+    {
+        $parameterColor = null;
+        $parameterSize = null;
+
+        $transferNumber = $productTransferResponseItemVariantData ? $productTransferResponseItemVariantData->getTransferNumber() : $productTransferResponseItemData->getTransferNumber();
+        $product = $this->productFacade->findByTransferNumber($transferNumber);
+
+        $productData = $this->productTransferMapper->mapTransferDataToProductData($transferNumber, $productTransferResponseItemData, $productTransferResponseItemVariantData, $product);
+
+        if ($product === null) {
+            $product = $this->productFacade->create($productData);
+            $this->logger->addInfo(sprintf('Product variant with transfer number %s was created', $transferNumber));
+        } else {
+            $product = $this->productFacade->edit($product->getId(), $productData);
+            $this->logger->addInfo(sprintf('Product variant with transfer number %s was edited', $transferNumber));
+        }
+
+        foreach ($productData->parameters as $parameter) {
+            if ($parameter->parameter === $productData->distinguishingParameter) {
+                $parameterSize = $parameter->parameterValueData->text;
+            }
+
+            if ($parameter->parameter === $productData->distinguishingParameterForMainVariantGroup) {
+                $parameterColor = $parameter->parameterValueData->text;
+            }
+        }
+
+        $this->productTree[$parameterColor][$parameterSize] = $product;
+
+        return $product;
+    }
+
+    private function createProductTree(): void
+    {
+        $newMainVariants = [];
+        foreach ($this->productTree as $colorValue => $secondParameterValuesWithProducts) {
+            $mainVariant = null;
+            $notVariants = [];
+            foreach ($secondParameterValuesWithProducts as $productBySizeValue) {
+                if ($productBySizeValue->isVariant()) {
+                    $mainVariant = $productBySizeValue->getMainVariant();
+                } elseif ($productBySizeValue->isVariant() === false) {
+                    $notVariants[] = $productBySizeValue;
+                }
+            }
+
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
+            if ($mainVariant !== null) {
+                foreach ($notVariants as $notVariant) {
+                    $mainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
+                }
+                if (count($notVariants) > 0) {
+                    $this->productFacade->flushProduct($mainVariant);
+                }
+            } else {
+                $mainVariant = array_shift($secondParameterValuesWithProducts);
+                $newMainVariants[] = $this->productVariantFacade->createVariant($mainVariant, $secondParameterValuesWithProducts);
+            }
+        }
+
+        if (count($newMainVariants) > 0) {
+            $this->mainVariantGroupFacade->createMainVariantGroup($this->productTransferMapper->getColorParameter(), $newMainVariants);
+        }
     }
 }

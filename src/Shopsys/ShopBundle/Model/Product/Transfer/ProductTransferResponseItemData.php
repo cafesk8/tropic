@@ -14,9 +14,9 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
     use ReadObjectAsArrayTrait;
 
     /**
-     * @var int
+     * @var string
      */
-    private $number;
+    private $transferNumber;
 
     /**
      * @var string
@@ -29,13 +29,23 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
     private $description;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData[]
+     */
+    private $variants = [];
+
+    /**
      * @param array $restData
      */
     public function __construct(array $restData)
     {
-        $this->number = (int)$restData['Number'];
+        $this->transferNumber = (string)$restData['Number'];
         $this->name = $restData['Name'];
         $this->description = $restData['Description'];
+        if (isset($restData['Barcodes'])) {
+            foreach ($restData['Barcodes'] as $productVariant) {
+                $this->variants[] = new ProductTransferResponseItemVariantData($productVariant);
+            }
+        }
     }
 
     /**
@@ -43,15 +53,15 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
      */
     public function getDataIdentifier(): string
     {
-        return (string)$this->number;
+        return (string)$this->transferNumber;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getNumber(): int
+    public function getTransferNumber(): string
     {
-        return $this->number;
+        return $this->transferNumber;
     }
 
     /**
@@ -68,5 +78,13 @@ class ProductTransferResponseItemData implements TransferResponseItemDataInterfa
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData[]
+     */
+    public function getVariants(): array
+    {
+        return $this->variants;
     }
 }

@@ -12,7 +12,7 @@ class ProductData extends BaseProductData
     public $stockQuantityByStoreId = [];
 
     /**
-     * @var int|null
+     * @var string|null
      */
     public $transferNumber = null;
 

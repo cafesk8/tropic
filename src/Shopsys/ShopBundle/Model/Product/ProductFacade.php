@@ -209,6 +209,14 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    public function flushProduct(Product $product): void
+    {
+        $this->em->flush($product);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */
@@ -248,10 +256,10 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param int $transferNumber
+     * @param string $transferNumber
      * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */
-    public function findByTransferNumber(int $transferNumber): ?Product
+    public function findByTransferNumber(string $transferNumber): ?Product
     {
         return $this->productRepository->findByTransferNumber($transferNumber);
     }
