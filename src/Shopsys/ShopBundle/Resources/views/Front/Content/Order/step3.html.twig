@@ -31,7 +31,7 @@
                     <label for="{{ form.companyCustomer.vars.id }}" class="css-label-checkbox">
                         {{ 'I buy on company behalf'|trans }}
                     </label>
-                    <div id="js-company-fields">
+                    <div id="js-company-fields" class="margin-top-20">
                         {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
                         {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
                         {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
@@ -87,7 +87,7 @@
                             {{ 'I want to deliver products to different address than the billing one'|trans }}
                         </label>
 
-                        <div id="js-delivery-address-fields">
+                        <div id="js-delivery-address-fields" class="margin-top-20">
                             {{ form_row(form.deliveryFirstName, { label: 'First name'|trans }) }}
                             {{ form_row(form.deliveryLastName, { label: 'Last name'|trans }) }}
                             {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
