@@ -40,11 +40,6 @@ parameters:
             clientId: 1437261089
             clientSecret: acdDPRSW
             language: SK
-        de:
-            goid: 8111408481
-            clientId: 1437261089
-            clientSecret: acdDPRSW
-            language: DE
         isProductionMode: false
         scope: payment-all
         timeout: 30

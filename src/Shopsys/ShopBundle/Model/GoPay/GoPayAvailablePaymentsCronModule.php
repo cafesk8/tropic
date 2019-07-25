@@ -34,15 +34,23 @@ class GoPayAvailablePaymentsCronModule implements SimpleCronModuleInterface
     private $domain;
 
     /**
+     * @var mixed[]
+     */
+    private $goPayConfig;
+
+    /**
+     * @param mixed[] $goPayConfig
      * @param \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade $paymentMethodFacade
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
+        array $goPayConfig,
         GoPayPaymentMethodFacade $paymentMethodFacade,
         EntityManagerInterface $entityManager,
         Domain $domain
     ) {
+        $this->goPayConfig = $goPayConfig;
         $this->paymentMethodFacade = $paymentMethodFacade;
         $this->em = $entityManager;
         $this->domain = $domain;
@@ -78,6 +86,10 @@ class GoPayAvailablePaymentsCronModule implements SimpleCronModuleInterface
     {
         $allDomains = $this->domain->getAll();
         foreach ($allDomains as $domain) {
+            if (array_key_exists($domain->getLocale(), $this->goPayConfig) === false) {
+                continue;
+            }
+
             $this->logger->addInfo(sprintf('downloading for %s locale', $domain->getLocale()));
             try {
                 $this->paymentMethodFacade->downloadAndUpdatePaymentMethods($domain);
