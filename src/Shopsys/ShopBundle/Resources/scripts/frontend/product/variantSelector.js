@@ -12,6 +12,11 @@
             $group.filterAllNodes(variantSelector).removeClass('display-none');
             $(variantSelector).filterAllNodes('.js-gallery-slides').slick('checkResponsive', false, true);
             Shopsys.productDetail.init($(variantSelector));
+
+            $group.filterAllNodes('.js-lazy-load').each(function () {
+                var $lazyloadedImage = $(this);
+                Shopsys.lazyLoadInit.manualReplaceSrc($lazyloadedImage);
+            });
         });
 
         $container.filterAllNodes('.js-product-variant-select-button').click(function () {

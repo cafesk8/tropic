@@ -48,7 +48,7 @@
                                             {{ choice.data.name }}
                                             {% if imageExists(choice.data) %}
                                                 <span class="box-chooser__item__image">
-                                                    {{ image(choice.data, { lazy: true }) }}
+                                                    {{ image(choice.data, { lazy: false }) }}
                                                 </span>
                                             {% endif %}
                                         </span>
@@ -132,7 +132,7 @@
                                             {{ choice.data.name }}
                                             {% if imageExists(choice.data) %}
                                             <span class="box-chooser__item__image">
-                                                {{ image(choice.data, { lazy: true }) }}
+                                                {{ image(choice.data, { lazy: false }) }}
                                             </span>
                                             {% endif %}
                                         </span>
