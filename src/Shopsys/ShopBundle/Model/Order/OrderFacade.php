@@ -104,7 +104,15 @@ class OrderFacade extends BaseOrderFacade
     {
         $this->currentPromoCodeFacade->useEnteredPromoCode();
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
+
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
+        $customer = $order->getCustomer();
+        if ($customer !== null) {
+            $order->setCustomerTransferId($customer->getTransferId());
+            $this->em->flush($order);
+        }
 
         return $order;
     }

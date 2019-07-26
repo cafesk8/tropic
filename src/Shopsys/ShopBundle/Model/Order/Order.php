@@ -98,6 +98,13 @@ class Order extends BaseOrder
     private $exportedAt;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $customerTransferId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -319,5 +326,21 @@ class Order extends BaseOrder
         if ($this->exportStatus === self::EXPORT_ERROR) {
             return t('Chyba při přenosu');
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomerTransferId(): ?string
+    {
+        return $this->customerTransferId;
+    }
+
+    /**
+     * @param string|null $customerTransferId
+     */
+    public function setCustomerTransferId(?string $customerTransferId): void
+    {
+        $this->customerTransferId = $customerTransferId;
     }
 }
