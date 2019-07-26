@@ -83,18 +83,14 @@ class OrderExportMapper
         $orderItems = [];
 
         foreach ($order->getProductItems() as $item) {
-            if ($item->getCatnum() !== null) {
-                /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
-                $product = $item->getProduct();
-
-                $orderItems[] = [
-                    'BarCode' => $product !== null ? $product->getTransferNumber() : '',
-                    'Name' => $item->getName(),
-                    'Quantity' => $item->getQuantity(),
-                    'FullPrice' => $item->getTotalPriceWithVat()->getAmount(),
-                    'Discount' => 0.0,
-                ];
-            }
+            /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
+            $orderItems[] = [
+                'BarCode' => $item->getEan(),
+                'Name' => $item->getName(),
+                'Quantity' => $item->getQuantity(),
+                'FullPrice' => $item->getTotalPriceWithVat()->getAmount(),
+                'Discount' => 0.0,
+            ];
         }
 
         return $orderItems;

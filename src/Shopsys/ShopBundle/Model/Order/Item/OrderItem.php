@@ -55,6 +55,14 @@ class OrderItem extends BaseOrderItem
     }
 
     /**
+     * @return string|null
+     */
+    public function getEan(): ?string
+    {
+        return $this->ean;
+    }
+
+    /**
      * @param string|null $ean
      */
     public function setEan(?string $ean): void
