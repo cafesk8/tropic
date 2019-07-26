@@ -33,7 +33,7 @@ class OrderExportMapper
             'Number' => $order->getNumber(),
             'CreatingDateTime' => $order->getCreatedAt()->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
-                'ID' => '',
+                'ID' => $order->getCustomerTransferId(),
                 'Adress' => [
                     'SureName' => $order->getFirstName(),
                     'ForeName' => $order->getLastName(),
