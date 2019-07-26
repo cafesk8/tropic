@@ -8,6 +8,10 @@
 @list-products-item-gap: 41px/2;
 @list-products-item-font-size: 16px;
 @list-products-item-stores-height: 18px;
+@list-products-item-info-gap: 15px;
+
+@list-products-item-variants-arrow-size: 15px;
+@list-products-item-variants-height: 70px;
 
 @list-products-item-count-sm: 1;
 @list-products-item-count-md: 2;
@@ -100,7 +104,7 @@
         }
 
         &__info {
-            padding: 0 15px;
+            padding: 0 @list-products-item-info-gap;
             text-align: center;
 
             &__title {
@@ -165,20 +169,74 @@
         }
 
         &__variants {
+            position: relative;
             display: none;
             flex-direction: row;
             justify-content: center;
+            margin: 0 -(@list-products-item-padding + @list-products-item-info-gap) 0 -(@list-products-item-padding + @list-products-item-info-gap);
+            height: @list-products-item-variants-height;
+
+            &__slider {
+                width: 100%;
+                padding: 0 @list-products-item-variants-arrow-size+8px;
+            }
+
+            .slick-list {
+                overflow: hidden;
+            }
+
+            .slick-track {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: stretch;
+
+                .is-no-flex & {
+                    .clearfix();
+                    display: block;
+                }
+            }
+
+            &__arrow {
+                position: absolute;
+                height: @list-products-item-variants-height;
+                line-height: @list-products-item-variants-height;
+
+                cursor: pointer;
+                color: @color-orange;
+                font-size: @list-products-item-variants-arrow-size;
+
+                &.slick-disabled {
+                    color: @color-brown;
+                    opacity: 0.2;
+                }
+
+                &--prev {
+                    left: 5px;
+                }
+
+                &--next {
+                    right: 5px;
+
+                    transform: rotate(180deg);
+                }
+            }
 
             .list-products__item--with-variants:hover & {
                 display: flex;
             }
 
             &__image {
+                position: relative;
                 margin: 0 10px 0 0;
                 padding: 0;
+                height: @list-products-item-variants-height - 5px;
 
                 font-size: 0;
                 border: 1px solid @color-gray;
+
+                img {
+                    .center-image();
+                }
             }
         }
     }

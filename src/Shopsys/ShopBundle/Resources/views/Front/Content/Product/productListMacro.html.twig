@@ -81,12 +81,21 @@
                                 and product.mainVariantGroup is not null
                                 and product.mainVariantGroup.id in productsIndexedByMainVariantGroup|keys
                             %}
+                                {# TODO PRG TK-32515: dont slick if less than 5 items #}
                                 <div class="list-products__item__variants">
-                                    {% for product in productsIndexedByMainVariantGroup[product.mainVariantGroup.id] %}
-                                        <div class="list-products__item__variants__image">
-                                            {{ image(product, { size: 'thumbnail', alt: product.name, lazy: true }) }}
-                                        </div>
-                                    {% endfor %}
+                                    <span class="js-variantsSlider-action-prev list-products__item__variants__arrow list-products__item__variants__arrow--prev">
+                                        <i class="svg svg-slider-arrow"></i>
+                                    </span>
+                                    <div class="list-products__item__variants__slider js-variantsSlider-slides">
+                                        {% for product in productsIndexedByMainVariantGroup[product.mainVariantGroup.id] %}
+                                            <div class="list-products__item__variants__image">
+                                                {{ image(product, { size: 'thumbnail', alt: product.name, lazy: true }) }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <span class="js-variantsSlider-action-next list-products__item__variants__arrow list-products__item__variants__arrow--next">
+                                        <i class="svg svg-slider-arrow"></i>
+                                    </span>
                                 </div>
                             {% endif %}
                         </div>
