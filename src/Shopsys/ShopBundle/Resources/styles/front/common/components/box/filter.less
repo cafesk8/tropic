@@ -45,10 +45,6 @@
             color: @color-brown-light-2;
             background-color: @color-gray;
 
-            &:last-child {
-                margin-bottom: 0;
-            }
-
             .svg {
                 position: absolute;
                 right: 10px;
@@ -56,6 +52,18 @@
 
                 cursor: pointer;
                 font-size: @box-filter-selected-cross-size;
+            }
+        }
+
+        &__remove {
+            margin-top: 15px;
+
+            &__link {
+                color: @color-base;
+                font-family: @font;
+                font-weight: 700;
+                text-transform: uppercase;
+                text-decoration: none;
             }
         }
     }
