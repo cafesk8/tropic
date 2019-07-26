@@ -26,7 +26,8 @@
             {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' %}
         </div>
     </div>
-
+    {# Design - temporary hidden #}
+    {% if 1==2 %}
     <div class="web__line">
         <div class="web__container">
             <div class="box-special-offer js-not-implemented-yet">
@@ -92,7 +93,8 @@
             </div>
         </div>
     </div>
-
+    {% endif %}
+    
     {% if topProducts is not empty %}
         <div class="web__line">
             <div class="web__container web__container--big-padding">
@@ -100,6 +102,8 @@
                     <div class="box-top-products__title">
                         {{ 'Bushmani mají nejraději'|trans }}
                     </div>
+                    {# Design - temporary hidden #}
+                    {% if 1==2 %}
                     <ul class="box-top-products__tabs">
                         <li class="box-top-products__tabs__item js-not-implemented-yet">
                             <a href="#" class="box-top-products__tabs__item__link underline">
@@ -122,6 +126,7 @@
                             </a>
                         </li>
                     </ul>
+                    {% endif %}
                     <div class="box-top-products__in">
                         {{ productList.horizontalList(topProducts, "list-top-products", 'h3', 'top-products') }}
                     </div>
