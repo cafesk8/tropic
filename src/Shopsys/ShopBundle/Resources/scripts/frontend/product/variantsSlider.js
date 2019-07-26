@@ -4,7 +4,7 @@
     Shopsys.variantsSlider = Shopsys.variantsSlider || {};
 
     Shopsys.variantsSlider.init = function ($container) {
-        $container.filterAllNodes('.js-list-products-item').on("hover", function () {
+        $container.filterAllNodes('.js-list-products-item').on('hover', function () {
             var $currentGallery = $(this);
             $currentGallery.find('.js-variantsSlider-slides:not(.slick-initialized)').slick({
                 dots: false,
@@ -17,10 +17,10 @@
                 nextArrow: $currentGallery.filterAllNodes('.js-variantsSlider-action-next')
             });
 
-            $currentGallery.filterAllNodes('.js-variantsSlider-action-prev').click(function(e){
+            $currentGallery.filterAllNodes('.js-variantsSlider-action-prev').click(function (e) {
                 e.preventDefault();
             });
-            $currentGallery.filterAllNodes('.js-variantsSlider-action-next').click(function(e){
+            $currentGallery.filterAllNodes('.js-variantsSlider-action-next').click(function (e) {
                 e.preventDefault();
             });
         });
