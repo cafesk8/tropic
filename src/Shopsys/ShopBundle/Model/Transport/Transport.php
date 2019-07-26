@@ -58,6 +58,14 @@ class Transport extends BaseTransport
     protected $chooseStore;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Country\Country[]
+     *
+     * @ORM\ManyToMany(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
+     * @ORM\JoinTable(name="transport_countries")
+     */
+    protected $countries;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -69,6 +77,7 @@ class Transport extends BaseTransport
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
         $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
+        $this->countries = $transportData->countries;
     }
 
     /**
@@ -83,6 +92,7 @@ class Transport extends BaseTransport
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
         $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
+        $this->countries = $transportData->countries;
     }
 
     /**
@@ -160,5 +170,13 @@ class Transport extends BaseTransport
     public function isPickupPlaceType(): bool
     {
         return $this->isPickupPlace() || $this->isChooseStore();
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Country\Country[]
+     */
+    public function getCountries()
+    {
+        return $this->countries->toArray();
     }
 }

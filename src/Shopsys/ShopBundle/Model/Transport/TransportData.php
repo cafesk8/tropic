@@ -34,6 +34,11 @@ class TransportData extends BaseTransportData
      */
     public $personalTakeType;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Country\Country[]
+     */
+    public $countries;
+
     public function __construct()
     {
         parent::__construct();

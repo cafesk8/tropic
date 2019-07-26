@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,15 +45,26 @@ class TransportFormTypeExtension extends AbstractTypeExtension
     private $currentDomainRouter;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade $shipperFacade
      * @param \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade $shipperServiceFacade
      * @param \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter $currentDomainRouter
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
-    public function __construct(ShipperFacade $shipperFacade, ShipperServiceFacade $shipperServiceFacade, CurrentDomainRouter $currentDomainRouter)
-    {
+    public function __construct(
+        ShipperFacade $shipperFacade,
+        ShipperServiceFacade $shipperServiceFacade,
+        CurrentDomainRouter $currentDomainRouter,
+        CountryFacade $countryFacade
+    ) {
         $this->shipperFacade = $shipperFacade;
         $this->shipperServiceFacade = $shipperServiceFacade;
         $this->currentDomainRouter = $currentDomainRouter;
+        $this->countryFacade = $countryFacade;
     }
 
     /**
@@ -60,6 +72,18 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $countries = $this->countryFacade->getAll();
+        $builderBasicInformationGroup = $builder->get('basicInformation');
+        $builderBasicInformationGroup
+            ->add('countries', ChoiceType::class, [
+                'required' => false,
+                'choices' => $countries,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'multiple' => true,
+                'expanded' => true,
+            ]);
+
         $builder->add($this->getBalikobotAndStoreGroup($builder));
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
