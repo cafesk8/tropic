@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Command\Migration;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Shopsys\ShopBundle\Command\Migration\Exception\MigrationDataNotFoundException;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Product;
@@ -87,6 +88,8 @@ class MigrateProductDataCommand extends Command
         $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
         $productsCount = count($products);
         while ($productsCount > 0) {
+            $this->entityManager->beginTransaction();
+
             foreach ($products as $product) {
                 try {
                     $productData = $this->mapProductData($product);
@@ -95,9 +98,11 @@ class MigrateProductDataCommand extends Command
                     $symfonyStyleIo->success(sprintf('Data for product with EAN `%s` was migrated', $product->getEan()));
                 } catch (MigrationDataNotFoundException $exception) {
                     $symfonyStyleIo->warning($exception->getMessage());
+                } catch (Exception $exception) {
+                    $this->entityManager->rollback();
                 }
             }
-
+            $this->entityManager->commit();
             $this->entityManager->clear();
 
             $page++;
