@@ -88,7 +88,7 @@ class OrderExportMapper
                 'BarCode' => $item->getEan(),
                 'Name' => $item->getName(),
                 'Quantity' => $item->getQuantity(),
-                'FullPrice' => $item->getTotalPriceWithVat()->getAmount(),
+                'FullPrice' => $item->getPriceWithVat()->getAmount(),
                 'Discount' => 0.0,
             ];
         }
