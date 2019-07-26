@@ -38,3 +38,4 @@ parameters:
         Shopsys\FrameworkBundle\Model\Product\Brand\Brand: Shopsys\ShopBundle\Model\Product\Brand\Brand
         Shopsys\FrameworkBundle\Model\Product\Flag\Flag: Shopsys\ShopBundle\Model\Product\Flag\Flag
     build-version: '0000000000000000'
+    securityBcryptCost: 12

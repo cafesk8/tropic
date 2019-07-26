@@ -7,4 +7,9 @@ services:
     Shopsys\ShopBundle\Command\:
         resource: '../../../Command'
 
+    Shopsys\ShopBundle\Command\MigrateCustomersPasswordsCommand:
+        class: Shopsys\ShopBundle\Command\Migration\MigrateCustomersPasswordsCommand
+        arguments:
+            - '%kernel.project_dir%'
+
     Shopsys\FrameworkBundle\Command\RedisCleanCacheOldCommand: ~

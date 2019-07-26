@@ -16,4 +16,12 @@ class UserRepository extends BaseUserRepository
     {
         return $this->getUserRepository()->findBy(['id' => $userIds]);
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
+     */
+    public function getAllUsers(): array
+    {
+        return $this->getUserRepository()->findAll();
+    }
 }

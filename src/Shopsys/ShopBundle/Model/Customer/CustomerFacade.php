@@ -32,4 +32,12 @@ class CustomerFacade extends BaseCustomerFacade
         $user->setPricingGroup($pricingGroup);
         $this->em->flush($user);
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
+     */
+    public function getAllUsers(): array
+    {
+        return $this->userRepository->getAllUsers();
+    }
 }

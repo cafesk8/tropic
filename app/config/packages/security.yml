@@ -1,8 +1,7 @@
 security:
     encoders:
         Symfony\Component\Security\Core\User\UserInterface:
-            algorithm: bcrypt
-            cost: 12
+            id: Shopsys\ShopBundle\Model\Customer\BushmanCustomPasswordEncoder
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN]

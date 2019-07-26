@@ -91,4 +91,23 @@ class User extends BaseUser
     {
         $this->pricingGroup = $pricingGroup;
     }
+
+    /**
+     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
+     * @param string $password
+     */
+    public function changePasswordByMigration(EncoderFactoryInterface $encoderFactory, $password): void
+    {
+        $encoder = $encoderFactory->getEncoder($this);
+
+        if ($encoder instanceof BushmanCustomPasswordEncoder) {
+            $passwordHash = $encoder->getHashOfMigratedPassword($password, null);
+            $this->password = $passwordHash;
+            $this->resetPasswordHash = null;
+            $this->resetPasswordHashValidThrough = null;
+            return;
+        }
+
+        parent::changePassword($encoderFactory, $password);
+    }
 }
