@@ -1,0 +1,25 @@
+@box-price-slider-inputs-gap: 10px;
+
+.box-price-slider {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    &__form {
+        display: flex;
+        flex-direction: row;
+
+        &__input {
+            position: relative;
+            width: 50%;
+
+            &--left {
+                margin-right: @box-price-slider-inputs-gap/2;
+            }
+
+            &--right {
+                margin-left: @box-price-slider-inputs-gap/2;
+            }
+        }
+    }
+}

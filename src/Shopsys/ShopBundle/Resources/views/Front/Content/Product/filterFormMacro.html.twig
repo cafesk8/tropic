@@ -38,6 +38,37 @@
         </div>
         <div class="box-filter__choice">
             <div class="box-filter__title">
+                {{ 'Cena'|trans }}
+            </div>
+            <div class="box-filter__price js-not-implemented-yet">
+                <div
+                class="box-price-slider js-range-slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                data-minimum-input-id="{{ filterForm.minimalPrice.vars.id }}"
+                data-minimal-value="{{ priceRange.minimalPrice|moneyFormat }}"
+                data-maximum-input-id="{{ filterForm.maximalPrice.vars.id }}"
+                data-maximal-value="{{ priceRange.maximalPrice|moneyFormat }}"
+                ></div>
+
+                <div class="box-price-slider__form">
+                    <div class="box-price-slider__form__input box-price-slider__form__input--left">
+                        {{ form_widget(filterForm.minimalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
+                        <label for="{{ filterForm.minimalPrice.vars.id }}" class="input__label required">
+                            {{ 'Od'|trans }}
+                        </label>
+                        <input id="{{ filterForm.minimalPrice.vars.id }}" type="text" class="input" value="{{ priceRange.minimalPrice|moneyFormat }}" id="minimalPrice">
+                    </div>
+                    <div class="box-price-slider__form__input box-price-slider__form__input--right">
+                        {{ form_widget(filterForm.maximalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
+                        <label for="{{ filterForm.maximalPrice.vars.id }}" class="input__label required">
+                            {{ 'Do'|trans }}
+                        </label>
+                        <input id="{{ filterForm.maximalPrice.vars.id }}" type="text" class="input" value="{{ priceRange.maximalPrice|moneyFormat }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-filter__choice">
+            <div class="box-filter__title">
                 {{ 'Velikost'|trans }}
             </div>
             <ul class="list-variants list-variants--filter js-not-implemented-yet">
