@@ -475,7 +475,8 @@
                             {% endif %}
                         </div>
                     </div>
-
+                    {# Design - temporary hidden #}
+                    {% if 1==2 %}
                     {# TODO PGR: set set #}
                     <div class="box-detail-sets">
                         <div class="box-detail-sets__item js-not-implemented-yet">
@@ -552,9 +553,9 @@
                                         </span>
                                         <br class="box-detail__availability__next-line">
 
+                                            </div>
                                     </div>
                                 </div>
-                            </div>
                             <div class="box-detail-sets__item__variants">
                                 <div class="box-detail__variants box-detail__variants--in-sets">
                                     {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
@@ -610,6 +611,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
 
                 {% endif %}
