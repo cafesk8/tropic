@@ -3,11 +3,16 @@
 @in-tab-head-item-gap: 25px;
 @in-tab-head-item-height-mobile: 40px;
 @in-tab-head-bottom-gap: 60px;
+@in-tab-head-bottom-gap-small: 30px;
 @in-tab-arrow-size: 10px;
 
 .in-tab {
     @media @query-vl {
         width: @box-detail-content-width;
+    }
+
+    &--full-width {
+        width: 100%;
     }
 
     &__wrap {
@@ -19,6 +24,10 @@
             margin-bottom: @in-tab-head-bottom-gap;
 
             border-bottom: 1px solid @in-tab-border-color;
+
+            &--small-gap {
+                margin-bottom: @in-tab-head-bottom-gap-small;
+            }
         }
     }
 

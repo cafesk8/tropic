@@ -13,6 +13,15 @@
     margin-bottom: 87px;
     margin-left: -@list-categories-item-gap;
 
+    &__title {
+        margin-bottom: 30px;
+
+        font-family: @font-alt;
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
     &__link {
         position: relative;
         display: block;
@@ -28,6 +37,10 @@
         @media @query-lg {
             width: calc(~"@{calc-base}/@{list-categories-columns-count} - @{list-categories-item-gap}");
             margin-right: 0;
+        }
+
+        .list-categories--four-on-row & {
+            width: calc(~"@{calc-base}/4 - @{list-categories-item-gap}");
         }
 
         img {

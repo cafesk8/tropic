@@ -15,11 +15,19 @@
         padding: @search-padding;
     }
 
+    .box-search & {
+        padding: 0;
+    }
+
     &__form {
         display: flex;
 
         @media @query-lg {
             width: @search-width;
+        }
+
+        .box-search & {
+            width: 100%;
         }
 
         .is-no-flex & {
@@ -45,6 +53,11 @@
                 color: @color-base;
                 border: none;
                 border-bottom: 1px solid @color-base;
+
+                .box-search & {
+                    line-height: @search-input-height;
+                    padding: 0 10px;
+                }
             }
         }
 
