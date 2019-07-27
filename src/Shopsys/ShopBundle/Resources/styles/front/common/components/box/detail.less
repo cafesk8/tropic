@@ -6,7 +6,7 @@
 @box-detail-image-main-bottom-gap: 20px;
 @box-detail-image-min-height: 250px;
 
-@box-detail-params-title-width: 35%;
+@box-detail-params-title-width: 32%;
 @box-detail-info-padding: 30px;
 
 @box-detail-gift-image-size: 50px;
@@ -250,17 +250,14 @@
         padding: @box-detail-info-padding;
         margin-bottom: 50px;
 
-        background-color: @color-gray;
-
         &__row {
             display: flex;
             flex-direction: column;
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 38px;
 
             @media @query-vl {
                 flex-direction: row;
-                margin-bottom: 38px;
             }
 
             &:last-child {
@@ -271,6 +268,7 @@
         &__title {
             margin-bottom: 15px;
             width: 100%;
+            text-align: center;
 
             color: @color-base;
             font-size: 15px;
@@ -279,6 +277,7 @@
 
             @media @query-vl {
                 width: @box-detail-params-title-width;
+                text-align: left;
             }
         }
     }
