@@ -78,6 +78,8 @@
                             </div>
                         {% endif %}
                     </div>
+                    {# Design - temporary hidden #}
+                    {% if 1== 2 %}
                     <div class="box-blog__panel">
                         <div class="box-blog__section">
                             {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', { currentBlogCategory: blogCategory })) }}
@@ -138,6 +140,7 @@
                             </ul>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
