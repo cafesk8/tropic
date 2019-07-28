@@ -32,6 +32,11 @@
                                     {% set cartItemPrice = cartItemPrices[index] %}
                                     <div class="table-cart__row js-cart-item">
                                         <div class="table-cart__row__left">
+                                            <div class="table-cart__cell__number">
+                                                <span class="table-cart__cell__number__text">
+                                                    {{ loop.index }}
+                                                </span>
+                                            </div>
                                             <div class="table-cart__cell__image">
                                                 <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.product.name }}">
                                                     {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: true }) }}
