@@ -61,6 +61,9 @@
                                                 <div class="list-articles__item__content__text">
                                                     {{ blogArticle.description|striptags|truncate(100)|raw }}
                                                 </div>
+                                                <div class="list-articles__item__content__date js-not-implemented-yet">
+                                                    {{ blogArticle.createdAt|date('j.n.Y') }}
+                                                </div>
                                             </div>
                                         </li>
                                     {% endfor %}
@@ -78,12 +81,12 @@
                             </div>
                         {% endif %}
                     </div>
-                    {# Design - temporary hidden #}
-                    {% if 1== 2 %}
                     <div class="box-blog__panel">
                         <div class="box-blog__section">
                             {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', { currentBlogCategory: blogCategory })) }}
                         </div>
+                        {# Design - temporary hidden #}
+                        {% if 1==2 %}
                         <div class="box-blog__section">
                             <div class="box-blog__title">
                                 {{ 'Nejčtenější články'|trans }}
@@ -139,8 +142,8 @@
                                 </li>
                             </ul>
                         </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
             </div>
         </div>

@@ -16,6 +16,9 @@
             <div class="list-articles__item__content__text">
                 {{ blogArticle.perex }}
             </div>
+            <div class="list-articles__item__content__date js-not-implemented-yet">
+                {{ blogArticle.createdAt|date('j.n.Y') }}
+            </div>
         </div>
     </li>
 {% endmacro %}

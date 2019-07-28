@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block main_content %}
-    <h1>
+    <h1 class="in-article__title">
         {% if article.seoH1 is not null %}
             {{ article.seoH1 }}
         {% else %}
@@ -17,9 +17,9 @@
         {% endif %}
     </h1>
 
-    <p>{{ article.createdAt|date('j.n.Y') }}</p>
+    <div class="in-article__date">{{ article.createdAt|date('j.n.Y') }}</div>
 
-    <div class="in-user-text">
+    <div class="in-article__text in-user-text">
         {{ article.text|raw }}
     </div>
 {% endblock %}
