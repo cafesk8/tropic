@@ -3,46 +3,36 @@
 .box-progress {
     .reset-ul();
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    margin-bottom: @margin-gap;
-
-    .is-no-flex & {
-        display: block;
-        .clearfix();
-    }
+    margin-bottom: -4px;
 
     &__item {
-        flex: 1;
         display: flex;
         align-items: center;
 
-        background: @color-light;
-        border-left: 1px solid @color-f;
-
-        .is-no-flex & {
-            float: left;
-            width: 100%/@box-progress-steps-count;
-            display: block;
-        }
-
-        &:first-child {
-            border-left: 0;
-        }
+        color: @color-brown-light;
+        font-weight: 700;
 
         &--active {
-            background: @color-primary;
-            color: @color-f;
+            color: @color-base;
         }
 
         &--done {
-            background: @color-base;
-            color: @color-c;
+            color: @color-brown;
         }
 
-        &--previous-active {
-            background: lighten(@color-base, 10%);
-            color: lighten(@color-c, 10%);
+        &--separator {
+            position: relative;
+            margin: @box-breadcrumb-padding-vertical @box-breadcrumb-padding-horizontal;
+            top: @box-breadcrumb-top-move;
+
+            .svg {
+                transform: rotate(-90deg);
+
+                font-size: 6px;
+            }
         }
 
         &__inner {
@@ -52,20 +42,8 @@
 
             font-size: 12px;
 
-            .is-no-flex & {
-                display: block;
-            }
-
             @media @query-lg {
                 font-size: 14px;
-            }
-        }
-
-        &__step {
-            font-weight: bold;
-
-            @media @query-lg {
-                font-size: 18px;
             }
         }
     }

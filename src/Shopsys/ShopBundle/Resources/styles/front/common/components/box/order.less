@@ -40,38 +40,13 @@
         &__top {
             display: flex;
             flex-direction: column;
-
-            @media @query-md {
-                flex-direction: row;
-                height: @box-order-info-transport-height;
-            }
-
-            &__left {
-                display: flex;
-                justify-content: flex-start;
-                width: 100%;
-
-                @media @query-md {
-                    width: calc(~"@{calc-base} - @{box-order-info-transport-width}");
-                }
-            }
-
-            &__right {
-                display: flex;
-                justify-content: flex-end;
-                width: 100%;
-
-                @media @query-md {
-                    width: @box-order-info-transport-width;
-                }
-            }
         }
     }
 
     &__additional {
         padding: 43px @box-order-additional-gap 38px @box-order-additional-gap;
         margin-bottom: 20px;
-        
+
         background-color: @color-gray;
 
         &__title {

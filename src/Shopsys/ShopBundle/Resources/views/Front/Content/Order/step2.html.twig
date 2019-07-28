@@ -8,7 +8,9 @@
         <div class="box-order">
 
             <div id="{{ form.vars.id }}" class="box-order__info">
-
+                <div class="box-order__info__top">
+                    {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: flow.getCurrentStepNumber()} only %}
+                </div>
                 <div class="box-order__info__item">
                     <div class="box-order__title">
                         <h2 id="js-label-{{ form.transport.vars.id }}" class="box-order__title__text double-lined">

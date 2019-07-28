@@ -24,35 +24,7 @@
                     <div class="box-order">
                         <div class="box-order__info">
                             <div class="box-order__info__top">
-                                <div class="box-order__info__top__left">
-                                    <div class="in-action in-action--centered-on-mobile in-action--to-top">
-                                        <div class="in-action__back">
-                                            <i class="svg svg-triangle"></i>
-                                            <a href="{{ url('front_homepage') }}" class="in-action__link underline">
-                                                {{ 'Zpět do e-shopu'|trans }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="box-order__info__top__right">
-                                    {% if isFreeTransportAndPaymentActive %}
-                                        {% if isPaymentAndTransportFree %}
-                                            <div class="in-free-transport in-free-transport--centered-on-mobile">
-                                                <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
-                                            </div>
-                                        {% else %}
-                                            <div class="in-free-transport in-free-transport--centered-on-mobile">
-                                                <div class="in-free-transport__title">
-                                                    {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
-                                                    {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
-                                                </div>
-                                                <div class="in-free-transport__pipe">
-                                                    <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
+                                {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '1'} only %}
                             </div>
                             {{ form_errors(form) }}
                             <div class="table-cart js-cart">
@@ -104,6 +76,24 @@
                                     </div>
                                 {% endfor %}
                             </div>
+
+                            {% if isFreeTransportAndPaymentActive %}
+                                {% if isPaymentAndTransportFree %}
+                                    <div class="in-free-transport in-free-transport--centered-on-mobile">
+                                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="in-free-transport in-free-transport--centered-on-mobile">
+                                        <div class="in-free-transport__title">
+                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
+                                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                        </div>
+                                        <div class="in-free-transport__pipe">
+                                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
 
                             <div class="box-cart-bottom">
                                 <div class="box-cart-bottom__promo">
