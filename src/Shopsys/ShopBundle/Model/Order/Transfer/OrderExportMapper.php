@@ -114,7 +114,7 @@ class OrderExportMapper
         $orderItemDiscount = $item->getPromoCodeForOrderItem();
 
         if ($orderItemDiscount !== null) {
-            return $orderItemDiscount->getPriceWithVat()->getAmount();
+            return $orderItemDiscount->getPriceWithVat()->multiply(-1)->getAmount();
         }
 
         return '0.0';
