@@ -1,0 +1,131 @@
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block title %}
+    {{ 'Kontakt'|trans }}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block main_content %}
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <h1 class="in-article__title">
+                {{ 'Kontakt'|trans }}
+            </h1>
+            <div class="box-contact">
+                <div class="box-contact__left">
+                    <div class="box-contact__block">
+                        <div class="box-contact__block__text">
+                            <i class="svg svg-phone"></i>
+                            {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                        </div>
+                        <div class="box-contact__block__info">
+                            {{ getShopInfoPhoneHours() }}
+                        </div>
+                    </div>
+                    <div class="box-contact__block box-contact__block--no-bottom-gap">
+                        <div class="box-contact__block__text">
+                            <i class="svg svg-mail"></i>
+                            <a class="box-contact__block__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
+                        </div>
+                        <div class="box-contact__block__info">
+                            {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
+                        </div>
+                    </div>
+                </div>
+                <div class="box-contact__right">
+                    <div class="box-contact__right__title">
+                        {{ 'S čím potřebujete pomoct?'|trans }}
+                    </div>
+                    <div class="box-contact__right__list">
+                        <ul class="list-simple js-not-implemented-yet">
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Změna nebo storno objednávky'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Chci reklamovat zboží'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Pozáruční servis a prodloužená záruka'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Jak na výměnu velikosti?'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Co je Bushman Klub?'|trans }}</a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-article">
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__half padding-right-20">
+                        <img src="https://placeimg.com/590/393/any">
+                    </div>
+                    <div class="wrap-article__row__half">
+                        <div class="wrap-article__row">
+                            <div class="wrap-article__row__full">
+                                <h4>{{ 'Provozovna'|trans }}</h4>
+                            </div>
+                        </div>
+                        <div class="wrap-article__row padding-bottom-20">
+                            <div class="wrap-article__row__half">
+                                Administrativní areál BUSHMAN<br>
+                                Městečko - Nespeky č.p. 75<br>
+                                257 22 Čerčany<br>
+                            </div>
+                            <div class="wrap-article__row__half">
+                                Pondělí až pátek 9–15 hod<br>
+                                tel.: +420 317 712 400<br>
+                                fax: +420 317 712 499<br>
+                                recepce@bushman.cz<br>
+                            </div>
+                        </div>
+                        <div class="wrap-article__row">
+                            <div class="wrap-article__row__full">
+                                <h4>{{ 'Sídlo'|trans }}</h4>
+                            </div>
+                        </div>
+                        <div class="wrap-article__row padding-bottom-20">
+                            <div class="wrap-article__row__half">
+                                Bushman Company a.s.<br>
+                                Lazarská 5/1719, 110 00 Praha 1<br>
+                                IČ: 26052679, DIČ: CZ26052679<br>
+                            </div>
+                            <div class="wrap-article__row__half">
+                                Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl B, vložka 8948.
+                            </div>
+                        </div>
+                        <div class="wrap-article__row">
+                            <div class="wrap-article__row__half">
+                                LP Komfort s.r.o.<br>
+                                Lazarská 5/1719, 110 00 Praha 1<br>
+                                IČ: 25618601, DIČ: CZ25618601<br>
+                            </div>
+                            <div class="wrap-article__row__half">
+                                Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 55269.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-article">
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__full">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.5853368987177!2d14.673543315559575!3d49.850248479397116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b871241bc86ab%3A0xb8fdb42aee6cdd!2sBushman+Company+a.s.!5e0!3m2!1scs!2scz!4v1564350162889!5m2!1scs!2scz" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-well wrap-well--big-padding" id="js-contact-form-container">
+                {{ render(controller('ShopsysShopBundle:Front/ContactForm:index')) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
