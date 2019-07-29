@@ -16,15 +16,10 @@
 
         $container.filterAllNodes('.js-product-variant-select-button').click(function () {
             var $priceWrapper = $(this).closest('.js-product-variant-group').find('.js-product-variant-price-wrapper');
-            var $detailWrap = $(this).closest('.js-product-variant-group').find('.box-detail__wrap');
             var variantPriceSelector = '.js-product-variant-price-' + $(this).data('id');
-            var availabilitySelector = '.js-detail-availability-' + $(this).data('id');
 
             $priceWrapper.filterAllNodes('.js-product-variant-price').addClass('display-none');
             $priceWrapper.filterAllNodes(variantPriceSelector).removeClass('display-none');
-
-            $detailWrap.filterAllNodes('.js-detail-availability').addClass('display-none');
-            $detailWrap.filterAllNodes(availabilitySelector).removeClass('display-none');
 
             $container.filterAllNodes('.js-product-variant-select-button').removeClass('active');
             $(this).addClass('active');
