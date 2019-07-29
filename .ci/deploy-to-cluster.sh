@@ -169,7 +169,7 @@ fi
 # default value is 0 because if rollout status ends well then it would not be set because of /dev/null implementation
 EXIT_CODE=0
 # wait for new pod to be initialized and if it fails send result to /dev/null and save output code to a varaible.
-kubectl rollout status --namespace=${PROJECT_NAME} deployment/webserver-php-fpm --watch 2> /dev/null || EXIT_CODE=$?
+kubectl rollout status --namespace=${PROJECT_NAME} deployment/webserver-php-fpm --watch || EXIT_CODE=$?
 
 # if rollout status failed, it will turn maintenance on previous running instance and outputs logs of a new version that failed
 if [ $EXIT_CODE -eq "0" ]; then
