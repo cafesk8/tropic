@@ -3,12 +3,8 @@
 @in-free-transport-pipe-background: #807d7d;
 
 .in-free-transport {
-    &--centered-on-mobile {
-        margin: 0 auto;
-
-        @media @query-md {
-            margin: 0;
-        }
+    &--dark {
+        background-color: @color-gray;
     }
 
     &__title {
@@ -20,12 +16,24 @@
         color: @color-brown;
 
         &__price {
-            font-weight: bold;
+            font-weight: 700;
         }
 
         &__important {
-            font-weight: bold;
+            font-weight: 700;
             color: @color-green;
+        }
+
+        .in-free-transport--dark & {
+            font-size: @font-size-big;
+            margin-bottom: 0;
+            padding: 20px 10px;
+
+            @media @query-md {
+                br {
+                    display: none;
+                }
+            }
         }
     }
 
