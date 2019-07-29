@@ -10,14 +10,22 @@
 
     &__row {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+
+        @media @query-md {
+            flex-direction: row;
+        }
 
         &__full {
             width: 100%;
         }
 
         &__half {
-            width: 100%/2;
+            width: 100%;
+
+            @media @query-md {
+                width: 100%/2;
+            }
         }
     }
 }
