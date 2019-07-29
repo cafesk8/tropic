@@ -90,7 +90,7 @@ class OrderItem extends BaseOrderItem
     {
         /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
         foreach ($this->getOrder()->getItems() as $item) {
-            if ($item->isTypePromoCode() && $item->getProduct() === $this->getProduct()) {
+            if ($item->isTypePromoCode() && $item->getMainOrderItem() === $this) {
                 return $item;
             }
         }
