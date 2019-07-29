@@ -337,3 +337,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagGridFactory: '@Shopsys\ShopBundle\Model\Product\Flag\FlagGridFactory'
 
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade'
+
+    Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@Shopsys\ShopBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator'
