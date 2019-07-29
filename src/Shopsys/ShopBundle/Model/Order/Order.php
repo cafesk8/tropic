@@ -373,14 +373,9 @@ class Order extends BaseOrder
         );
 
         $orderItemFactory->createPromoCode(
-            $orderItem->getOrder(),
             $name,
             $quantifiedItemDiscount->inverse(),
-            $orderItem->getVatPercent(),
-            1,
-            null,
-            null,
-            $orderItem->getProduct()
+            $orderItem
         );
     }
 

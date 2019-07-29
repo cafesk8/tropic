@@ -36,41 +36,29 @@ class OrderItemFactory extends BaseOrderItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
-     * @param string $vatPercent
-     * @param int $quantity
-     * @param string|null $unitName
-     * @param string|null $catnum
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product|null $product
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
      * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
      */
     public function createPromoCode(
-        Order $order,
         string $name,
         Price $price,
-        string $vatPercent,
-        int $quantity,
-        ?string $unitName,
-        ?string $catnum,
-        Product $product = null
+        OrderItem $orderItem
     ): BaseOrderItem {
-        $classData = $this->entityNameResolver->resolve(BaseOrderItem::class);
-
         /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderDiscount */
-        $orderDiscount = new $classData(
-            $order,
+        $orderDiscount = new OrderItem(
+            $orderItem->getOrder(),
             $name,
             $price,
-            $vatPercent,
-            $quantity,
+            $orderItem->getVatPercent(),
+            1,
             OrderItem::TYPE_PROMO_CODE,
-            $unitName,
-            $catnum
+            null,
+            null
         );
 
-        $orderDiscount->setProduct($product);
+        $orderDiscount->setMainOrderItem($orderItem);
 
         return $orderDiscount;
     }
