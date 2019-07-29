@@ -5,13 +5,18 @@
             {{ 'Vaše objednávka'|trans }}
         </span>
     </div>
-    <div class="box-preview__row {% if orderStep == "1" %} box-preview__row--dark{% else %} box-preview__row--no-bottom{% endif %}">
+    <div class="box-preview__row {% if orderStep == "1" %} box-preview__row--dark{% endif %}">
         {% if orderStep == "1" %}
             <div class="box-preview__coupone">
                 <div class="box-preview__coupone__title">
-                    {{ 'Máte slevový kód?'|trans }}
+                    <label>
+                        <input type="checkbox" class="css-checkbox js-promo-code-toggle-checkbox">
+                        <span class="css-label-checkbox">
+                            {{ 'Máte slevový kód?'|trans }}
+                        </span>
+                    </label>
                 </div>
-                <div class="box-preview__coupone__input js-not-implemented-yet">
+                <div class="box-preview__coupone__input js-promo-code-toggle-content js-not-implemented-yet">
                     <label for="orderCoupone" class="input__label">{{ 'Zadejte kód'|trans }}</label>
                     <input type="text" id="orderCoupone" class="input" name="coupone" value="">
                 </div>

@@ -31,6 +31,7 @@
 
         &--dark {
             background-color: @color-gray;
+            padding-bottom: 20px;
         }
 
         &--no-bottom {
@@ -47,14 +48,17 @@
             margin-bottom: 13px;
 
             color: @color-base;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            text-transform: uppercase;
         }
 
         &__input {
-            position: relative;
-            margin-bottom: 30px;
+            display: none;
+
+            &.active {
+                display: block;
+                position: relative;
+            }
 
             .input {
                 width: 100%;
