@@ -12,12 +12,12 @@
                     {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: flow.getCurrentStepNumber()} only %}
                 </div>
                 <div class="box-order__info__item">
-                    <div class="box-order__title">
-                        <h2 id="js-label-{{ form.transport.vars.id }}" class="box-order__title__text double-lined">
+                    <div class="box-chooser js-form-group">
+
+                        <h2 id="js-label-{{ form.transport.vars.id }}" class="in-title in-title--small in-title--dark">
                             {{ 'Vyberte způsob dopravy'|trans }}
                         </h2>
-                    </div>
-                    <div class="box-chooser js-form-group">
+
                         {{ form_errors(form.transport, { errors_attr: {class: 'form-error--inline'} }) }}
 
                         {{ form_widget(form.pickupPlace, { attr: {
@@ -100,12 +100,11 @@
                 </div>
 
                 <div class="box-order__info__item">
-                    <div class="box-order__title">
-                        <h2 id="js-label-{{ form.payment.vars.id }}" class="box-order__title__text double-lined">
+
+                    <div class="box-chooser box-chooser--smaller js-form-group">
+                        <h2 id="js-label-{{ form.payment.vars.id }}" class="in-title in-title--small in-title--dark">
                             {{ 'Vyberte způsob platby'|trans }}
                         </h2>
-                    </div>
-                    <div class="box-chooser box-chooser--smaller js-form-group">
                         {{ form_errors(form.payment, { errors_attr: {class: 'form-error--inline'} }) }}
 
                         <div id="{{ form.payment.vars.id }}" class="js-payments-wrapper">
