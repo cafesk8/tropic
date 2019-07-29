@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\FrameworkBundle\Model\Pricing\InputPriceCalculation;
+use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
 use Shopsys\ShopBundle\Model\Order\Item\OrderItem;
 use Shopsys\ShopBundle\Model\Order\Order;
@@ -16,6 +18,19 @@ class OrderExportMapper
         DomainHelper::SLOVAK_DOMAIN => 'BSHTR',
         DomainHelper::GERMAN_DOMAIN => 'BSHDE',
     ];
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Rounding
+     */
+    private $rounding;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Rounding $rounding
+     */
+    public function __construct(Rounding $rounding)
+    {
+        $this->rounding = $rounding;
+    }
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
@@ -114,7 +129,9 @@ class OrderExportMapper
         $orderItemDiscount = $item->getPromoCodeForOrderItem();
 
         if ($orderItemDiscount !== null) {
-            return $orderItemDiscount->getPriceWithVat()->multiply(-1)->getAmount();
+            $discountPerUnit = $orderItemDiscount->getPriceWithVat()->divide($item->getQuantity(), InputPriceCalculation::INPUT_PRICE_SCALE);
+            $discountPerUnit = $this->rounding->roundPriceWithoutVat($discountPerUnit);
+            return $discountPerUnit->multiply(-1)->getAmount();
         }
 
         return '0.0';
