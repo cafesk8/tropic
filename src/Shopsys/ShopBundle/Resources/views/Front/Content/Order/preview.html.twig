@@ -1,7 +1,7 @@
 
 <div class="box-preview">
     <div class="box-preview__title">
-        <span class="box-preview__title__text double-lined">
+        <span class="in-title in-title--small">
             {{ 'Vaše objednávka'|trans }}
         </span>
     </div>
@@ -17,6 +17,8 @@
                 </div>
             </div>
         {% endif %}
+    </div>
+    <div class="box-preview__row box-preview__row--no-bottom">
         {% if orderStep > 1 %}
             <ul class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
