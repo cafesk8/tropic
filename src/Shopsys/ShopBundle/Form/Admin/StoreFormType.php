@@ -51,10 +51,34 @@ class StoreFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $countries = $this->countryFacade->getAllEnabledOnDomain(
-            $this->adminDomainTabsFacade->getSelectedDomainId()
-        );
+        $builder
+            ->add($this->getBasicInformationGroup($builder))
+            ->add($this->getAddressGroup($builder))
+            ->add($this->getDescriptionGroup($builder))
+            ->add($this->getImagesGroup($builder, $options['store']))
+            ->add('save', SubmitType::class);
+    }
 
+    /**
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setRequired('store')
+            ->setAllowedTypes('store', [Store::class, 'null'])
+            ->setDefaults([
+                'data_class' => StoreData::class,
+                'attr' => ['novalidate' => 'novalidate'],
+            ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getBasicInformationGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
         $builderBasicInformationGroup = $builder->create('basicInformation', GroupType::class, [
             'label' => t('Basic information'),
         ]);
@@ -79,57 +103,6 @@ class StoreFormType extends AbstractType
                     ]),
                 ],
                 'label' => t('Name'),
-            ])
-            ->add('city', TextType::class, [
-                'required' => true,
-                'label' => t('City'),
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Vyplňte, prosím, město prodejny',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 100,
-                        'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
-            ])
-            ->add('street', TextType::class, [
-                'required' => true,
-                'label' => t('Street'),
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Vyplňte, prosím, ulici prodejny',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 100,
-                        'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
-            ])
-            ->add('postcode', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Vyplňte, prosím, PSČ prodejny',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 30,
-                        'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
-                'label' => t('Postcode'),
-            ])
-            ->add('country', ChoiceType::class, [
-                'required' => true,
-                'label' => t('Country'),
-                'choices' => $countries,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please enter country of a store',
-                    ]),
-                ],
             ])
             ->add('openingHours', TextType::class, [
                 'required' => false,
@@ -162,6 +135,80 @@ class StoreFormType extends AbstractType
                 ],
             ]);
 
+        return $builderBasicInformationGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getAddressGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builderAddressGroup = $builder->create('address', GroupType::class, [
+            'label' => t('Adresa'),
+        ]);
+
+        $builderAddressGroup->add('city', TextType::class, [
+            'required' => true,
+            'label' => t('City'),
+            'constraints' => [
+                new Constraints\NotBlank([
+                    'message' => 'Vyplňte, prosím, město prodejny',
+                ]),
+                new Constraints\Length([
+                    'max' => 100,
+                    'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
+                ]),
+            ],
+        ])
+        ->add('street', TextType::class, [
+            'required' => true,
+            'label' => t('Street'),
+            'constraints' => [
+                new Constraints\NotBlank([
+                    'message' => 'Vyplňte, prosím, ulici prodejny',
+                ]),
+                new Constraints\Length([
+                    'max' => 100,
+                    'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
+                ]),
+            ],
+        ])
+        ->add('postcode', TextType::class, [
+            'required' => true,
+            'constraints' => [
+                new Constraints\NotBlank([
+                    'message' => 'Vyplňte, prosím, PSČ prodejny',
+                ]),
+                new Constraints\Length([
+                    'max' => 30,
+                    'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
+                ]),
+            ],
+            'label' => t('Postcode'),
+        ])
+        ->add('country', ChoiceType::class, [
+            'required' => true,
+            'label' => t('Country'),
+            'choices' => $this->countryFacade->getAllEnabledOnDomain($this->adminDomainTabsFacade->getSelectedDomainId()),
+            'choice_label' => 'name',
+            'choice_value' => 'id',
+            'constraints' => [
+                new Constraints\NotBlank([
+                    'message' => 'Please enter country of a store',
+                ]),
+            ],
+        ]);
+
+        return $builderAddressGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getDescriptionGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
         $builderDescriptionGroup = $builder->create('description', GroupType::class, [
             'label' => t('Description'),
         ]);
@@ -172,6 +219,16 @@ class StoreFormType extends AbstractType
                 'label' => t('Description'),
             ]);
 
+        return $builderDescriptionGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Store\Store|null $store
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getImagesGroup(FormBuilderInterface $builder, ?Store $store): FormBuilderInterface
+    {
         $builderImageGroup = $builder->create('image', GroupType::class, [
             'label' => t('Image'),
         ]);
@@ -189,29 +246,11 @@ class StoreFormType extends AbstractType
                             . 'Maximum size of an image is {{ limit }} {{ suffix }}.',
                     ]),
                 ],
-                'entity' => $options['store'],
+                'entity' => $store,
                 'info_text' => t('You can upload following formats: PNG, JPG, GIF'),
                 'label' => t('Image'),
             ]);
 
-        $builder
-            ->add($builderBasicInformationGroup)
-            ->add($builderDescriptionGroup)
-            ->add($builderImageGroup)
-            ->add('save', SubmitType::class);
-    }
-
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver
-            ->setRequired('store')
-            ->setAllowedTypes('store', [Store::class, 'null'])
-            ->setDefaults([
-                'data_class' => StoreData::class,
-                'attr' => ['novalidate' => 'novalidate'],
-            ]);
+        return $builderImageGroup;
     }
 }
