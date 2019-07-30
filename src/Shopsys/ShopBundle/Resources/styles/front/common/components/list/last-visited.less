@@ -98,13 +98,17 @@
             text-align: center;
 
             &__title {
-                display: block;
+                display: flex;
+                justify-content: center;
                 height: @list-last-visited-item-title-rows*@list-last-visited-item-title-line-height;
                 line-height: @list-last-visited-item-title-line-height;
                 margin-bottom: 0;
+                width: 100%;
+                text-align: center;
                 overflow: hidden;
 
                 font-size: @font-size;
+                font-family: @font-alt;
             }
 
             &__availability {
@@ -120,6 +124,7 @@
                         display: block;
                         padding: 5px 0;
 
+                        font-size: 16px;
                         font-weight: 700;
                     }
 
