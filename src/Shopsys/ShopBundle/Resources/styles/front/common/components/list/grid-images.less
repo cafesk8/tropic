@@ -131,10 +131,14 @@
         flex-direction: column;
         flex-wrap: wrap;
         width: 100%;
-        margin-bottom: 50px;
+        margin-bottom: 20px;
 
         @media @query-md {
             flex-direction: row;
+        }
+
+        @media @query-lg {
+            margin-bottom: 50px;
         }
 
         &__item {
