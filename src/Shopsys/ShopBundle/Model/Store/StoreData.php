@@ -78,6 +78,11 @@ class StoreData
      */
     public $telephone;
 
+    /**
+     * @var string|null
+     */
+    public $region;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();

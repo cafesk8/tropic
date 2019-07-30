@@ -195,6 +195,13 @@ class StoreFormType extends AbstractType
             ],
             'label' => t('Postcode'),
         ])
+        ->add('region', TextType::class, [
+            'required' => false,
+            'label' => t('Kraj'),
+            'constraints' => [
+                new Constraints\Length(['max' => 200, 'maxMessage' => 'Region nesmí být delší než {{ limit }} znaků']),
+            ],
+        ])
         ->add('country', ChoiceType::class, [
             'required' => true,
             'label' => t('Country'),

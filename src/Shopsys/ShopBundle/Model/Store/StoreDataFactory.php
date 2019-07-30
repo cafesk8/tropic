@@ -61,6 +61,7 @@ class StoreDataFactory
         $storeData->pickupPlace = $store->isPickupPlace();
         $storeData->telephone = $store->getTelephone();
         $storeData->email = $store->getEmail();
+        $storeData->region = $store->getRegion();
     }
 
     /**
