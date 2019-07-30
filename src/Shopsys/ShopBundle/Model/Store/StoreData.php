@@ -68,6 +68,16 @@ class StoreData
      */
     public $pickupPlace;
 
+    /**
+     * @var string|null
+     */
+    public $email;
+
+    /**
+     * @var string|null
+     */
+    public $telephone;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();

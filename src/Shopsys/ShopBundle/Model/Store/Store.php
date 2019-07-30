@@ -101,6 +101,20 @@ class Store implements PickupPlaceInterface
     protected $country;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $email;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    protected $telephone;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
      */
     public function __construct(StoreData $storeData)
@@ -116,6 +130,8 @@ class Store implements PickupPlaceInterface
         $this->position = $storeData->position;
         $this->country = $storeData->country;
         $this->pickupPlace = $storeData->pickupPlace;
+        $this->telephone = $storeData->telephone;
+        $this->email = $storeData->email;
     }
 
     /**
@@ -143,6 +159,8 @@ class Store implements PickupPlaceInterface
         $this->position = $storeData->position;
         $this->country = $storeData->country;
         $this->pickupPlace = $storeData->pickupPlace;
+        $this->telephone = $storeData->telephone;
+        $this->email = $storeData->email;
     }
 
     /**
@@ -255,5 +273,21 @@ class Store implements PickupPlaceInterface
     public function isPickupPlace(): bool
     {
         return $this->pickupPlace;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
     }
 }

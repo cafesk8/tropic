@@ -59,6 +59,8 @@ class StoreDataFactory
         $storeData->images->orderedImages = $this->imageFacade->getImagesByEntityIndexedById($store, null);
         $storeData->country = $store->getCountry();
         $storeData->pickupPlace = $store->isPickupPlace();
+        $storeData->telephone = $store->getTelephone();
+        $storeData->email = $store->getEmail();
     }
 
     /**

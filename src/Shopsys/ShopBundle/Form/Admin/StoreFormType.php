@@ -15,6 +15,7 @@ use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Store\StoreData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -54,6 +55,7 @@ class StoreFormType extends AbstractType
     {
         $builder
             ->add($this->getBasicInformationGroup($builder))
+            ->add($this->getContactGroup($builder))
             ->add($this->getAddressGroup($builder))
             ->add($this->getDescriptionGroup($builder))
             ->add($this->getImagesGroup($builder, $options['store']))
@@ -127,6 +129,36 @@ class StoreFormType extends AbstractType
             ]);
 
         return $builderBasicInformationGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getContactGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builderContactGroup = $builder->create('contact', GroupType::class, [
+            'label' => t('Kontakt'),
+        ]);
+
+        $builderContactGroup
+            ->add('email', EmailType::class, [
+                'required' => false,
+                'label' => t('E-mail'),
+                'constraints' => [
+                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
+                    new Constraints\Email(['message' => 'Please enter valid e-mail']),
+                ],
+            ])
+            ->add('telephone', TextType::class, [
+                'required' => false,
+                'label' => t('Telefon'),
+                'constraints' => [
+                    new Constraints\Length(['max' => 30, 'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters']),
+                ],
+            ]);
+
+        return $builderContactGroup;
     }
 
     /**
