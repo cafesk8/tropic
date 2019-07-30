@@ -88,21 +88,24 @@ class MigrateProductDataCommand extends Command
         $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
         $productsCount = count($products);
         while ($productsCount > 0) {
-            $this->entityManager->beginTransaction();
-
             foreach ($products as $product) {
+                $this->entityManager->beginTransaction();
                 try {
                     $productData = $this->mapProductData($product);
                     $this->productFacade->edit($product->getId(), $productData);
 
                     $symfonyStyleIo->success(sprintf('Data for product with EAN `%s` was migrated', $product->getEan()));
+                    $this->entityManager->commit();
                 } catch (MigrationDataNotFoundException $exception) {
                     $symfonyStyleIo->warning($exception->getMessage());
                 } catch (Exception $exception) {
-                    $this->entityManager->rollback();
+                    $symfonyStyleIo->error($exception->getMessage());
+                    $this->entityManager->clear();
+                    if ($this->entityManager->isOpen()) {
+                        $this->entityManager->rollback();
+                    }
                 }
             }
-            $this->entityManager->commit();
             $this->entityManager->clear();
 
             $page++;
@@ -202,7 +205,6 @@ class MigrateProductDataCommand extends Command
         if (count($migrateProductData) === 0) {
             throw new MigrationDataNotFoundException(sprintf('No data found for product with EAN `%s`', $product->getEan()));
         }
-
         return $migrateProductData[0];
     }
 }
