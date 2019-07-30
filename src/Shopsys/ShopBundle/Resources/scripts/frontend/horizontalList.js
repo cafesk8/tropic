@@ -9,7 +9,7 @@
             var galleryType = $currentGallery.data('type');
 
             var types = {
-                'last-visited': [2, 3, 1, 2, 3],
+                'last-visited': [1, 2, 3, 3, 6],
                 'top-products': [1, 2, 3, 3, 4],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4]
