@@ -343,3 +343,9 @@ services:
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade'
 
     Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@Shopsys\ShopBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator'
+
+    Shopsys\ShopBundle\Model\Cart\CartFacade:
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
+    Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@Shopsys\ShopBundle\Model\Cart\CartFacade'

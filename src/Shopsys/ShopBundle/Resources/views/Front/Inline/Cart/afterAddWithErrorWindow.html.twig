@@ -1,0 +1,22 @@
+<div class="box-popup-add">
+    <div class="box-popup-add__action">
+
+        <ul>
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+
+        <div class="box-popup-add__action__buttons">
+            {# TODO PRG: bind same function like to cross sign at right top #}
+            <div class="box-popup-add__action__buttons__back js-window-button-close js-not-implemented-yet">
+                <i class="svg svg-triangle"></i>
+                <a href="#" class="box-popup-add__action__buttons__back__link underline-small">
+                    {{ 'Zpět do e-shopu'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<span class="js-add-product-url-cart" data-url="{{ url('front_cart') }}"></span>

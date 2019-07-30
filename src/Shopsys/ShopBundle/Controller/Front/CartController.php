@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Controller\Front;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
-use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
@@ -15,6 +14,8 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ShopBundle\Form\Front\Cart\AddProductFormType;
 use Shopsys\ShopBundle\Form\Front\Cart\CartFormType;
+use Shopsys\ShopBundle\Model\Cart\Cart;
+use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ class CartController extends FrontBaseController
     public const RECALCULATE_ONLY_PARAMETER_NAME = 'recalculateOnly';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Cart\CartFacade
+     * @var \Shopsys\ShopBundle\Model\Cart\CartFacade
      */
     private $cartFacade;
 
@@ -69,7 +70,7 @@ class CartController extends FrontBaseController
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
-     * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
@@ -103,6 +104,7 @@ class CartController extends FrontBaseController
     public function indexAction(Request $request)
     {
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        $this->correctCartItemQuantitiesByStore($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
 
         $cartFormData = ['quantities' => []];
@@ -165,6 +167,9 @@ class CartController extends FrontBaseController
     {
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
+
+        $this->correctCartItemQuantitiesByStore($cart);
+
         $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
 
         $productsPrice = $orderPreview->getProductsPrice();
@@ -217,13 +222,15 @@ class CartController extends FrontBaseController
             try {
                 $formData = $form->getData();
 
-                $addProductResult = $this->cartFacade->addProductToCart($formData['productId'], (int)$formData['quantity']);
+                $addProductResult = $this->cartFacade->addProductToCart((int)$formData['productId'], (int)$formData['quantity']);
 
                 $this->sendAddProductResultFlashMessage($addProductResult);
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Selected product no longer available or doesn\'t exist.'));
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidQuantityException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Please enter valid quantity you want to add to cart.'));
+            } catch (\Shopsys\ShopBundle\Model\Cart\Exception\OutOfStockException $ex) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Snažíte se koupit více kusů, než je skladem.'));
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\CartException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Unable to add product to cart'));
             }
@@ -280,6 +287,8 @@ class CartController extends FrontBaseController
                 $this->getFlashMessageSender()->addErrorFlash(t('Selected product no longer available or doesn\'t exist.'));
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidQuantityException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Please enter valid quantity you want to add to cart.'));
+            } catch (\Shopsys\ShopBundle\Model\Cart\Exception\OutOfStockException $ex) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Snažíte se koupit více kusů, než je skladem.'));
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\CartException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Unable to add product to cart'));
             }
@@ -296,7 +305,10 @@ class CartController extends FrontBaseController
             );
         }
 
-        return $this->forward('ShopsysShopBundle:Front/FlashMessage:index');
+        $flashMessageBag = $this->get('shopsys.shop.component.flash_message.bag.front');
+        return $this->render('@ShopsysShop/Front/Inline/Cart/afterAddWithErrorWindow.html.twig', [
+            'errors' => $flashMessageBag->getErrorMessages(),
+        ]);
     }
 
     /**
@@ -359,5 +371,16 @@ class CartController extends FrontBaseController
         }
 
         return $this->redirectToRoute('front_cart');
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
+     */
+    private function correctCartItemQuantitiesByStore(?Cart $cart): void
+    {
+        if ($cart !== null) {
+            $cartModifiedQuantitiesIndexedByCartItemId = $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
+            $this->cartFacade->displayInfoMessageAboutCorrectedCartItemsQuantities($cartModifiedQuantitiesIndexedByCartItemId);
+        }
     }
 }
