@@ -145,6 +145,13 @@
             &__back {
                 display: inline;
                 line-height: @btn-height;
+                text-align: center;
+                padding-right: 15px;
+
+                @media @query-md {
+                    padding-right: 0;
+                    text-align: left;
+                }
 
                 &__link {
                     color: @color-base;
