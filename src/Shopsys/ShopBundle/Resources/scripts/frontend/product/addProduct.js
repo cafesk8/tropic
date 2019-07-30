@@ -26,6 +26,7 @@
         if (buttonContinueUrl !== undefined) {
             Shopsys.window({
                 content: data,
+                buttonClose: false,
                 cssClass: 'window-popup--wide window-popup--no-padding',
                 textContinue: '',
                 urlContinue: buttonContinueUrl
