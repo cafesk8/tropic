@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -122,12 +123,47 @@ class Order extends BaseOrder
      * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
      */
     public function __construct(
-        BaseOrderData $orderData,
-        string $orderNumber,
-        string $urlHash,
-        ?User $user = null
+        OrderData $orderData,
+        $orderNumber,
+        $urlHash,
+        User $user = null
     ) {
         parent::__construct($orderData, $orderNumber, $urlHash, $user);
+
+        $this->transport = $orderData->transport;
+        $this->payment = $orderData->payment;
+
+        $this->deliveryFirstName = $orderData->deliveryFirstName;
+        $this->deliveryLastName = $orderData->deliveryLastName;
+        $this->email = $orderData->email;
+        $this->deliveryTelephone = $orderData->deliveryTelephone;
+        $this->deliveryStreet = $orderData->deliveryStreet;
+        $this->deliveryCity = $orderData->deliveryCity;
+        $this->deliveryPostcode = $orderData->deliveryPostcode;
+        $this->deliveryCountry = $orderData->deliveryCountry;
+
+        $this->note = $orderData->note;
+        $this->items = new ArrayCollection();
+        $this->setCompanyInfo(
+            $orderData->companyName,
+            $orderData->companyNumber,
+            $orderData->companyTaxNumber
+        );
+        $this->setBillingAddress($orderData);
+        $this->number = $orderNumber;
+        $this->status = $orderData->status;
+        $this->customer = $user;
+        $this->deleted = false;
+        if ($orderData->createdAt === null) {
+            $this->createdAt = new DateTime();
+        } else {
+            $this->createdAt = $orderData->createdAt;
+        }
+        $this->domainId = $orderData->domainId;
+        $this->urlHash = $urlHash;
+        $this->currency = $orderData->currency;
+        $this->createdAsAdministrator = $orderData->createdAsAdministrator;
+        $this->createdAsAdministratorName = $orderData->createdAsAdministratorName;
 
         $this->goPayId = $orderData->goPayId;
         $this->goPayStatus = $orderData->goPayStatus;
@@ -174,6 +210,33 @@ class Order extends BaseOrder
         $this->updatedAt = $orderData->updatedAt;
 
         return $orderEditResult;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
+     */
+    protected function setBillingAddress(BaseOrderData $orderData)
+    {
+        $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
+        if ($orderData->deliveryAddressSameAsBillingAddress) {
+            $this->firstName = $orderData->deliveryFirstName;
+            $this->lastName = $orderData->deliveryLastName;
+            $this->companyName = $orderData->deliveryCompanyName;
+            $this->telephone = $orderData->deliveryTelephone;
+            $this->street = $orderData->deliveryStreet;
+            $this->city = $orderData->deliveryCity;
+            $this->postcode = $orderData->deliveryPostcode;
+            $this->country = $orderData->deliveryCountry;
+        } else {
+            $this->firstName = $orderData->firstName;
+            $this->lastName = $orderData->lastName;
+            $this->companyName = $orderData->companyName;
+            $this->telephone = $orderData->telephone;
+            $this->street = $orderData->street;
+            $this->city = $orderData->city;
+            $this->postcode = $orderData->postcode;
+            $this->country = $orderData->country;
+        }
     }
 
     /**

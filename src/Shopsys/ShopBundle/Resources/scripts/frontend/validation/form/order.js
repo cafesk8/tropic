@@ -19,7 +19,7 @@
             'groups': function () {
 
                 var groups = [Shopsys.constant('\\Shopsys\\FrameworkBundle\\Form\\ValidationGroup::VALIDATION_GROUP_DEFAULT')];
-                if ($orderPersonalInfoForm.find('#order_personal_info_form_deliveryAddressFilled').is(':checked')) {
+                if ($orderPersonalInfoForm.find('#order_personal_info_form_billingAddressFilled').is(':checked')) {
                     groups.push(Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Front\\Customer\\DeliveryAddressFormType::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS'));
                 }
                 if ($orderPersonalInfoForm.find('#order_personal_info_form_companyCustomer').is(':checked')) {

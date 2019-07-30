@@ -66,14 +66,14 @@ class PersonalInfoFormTypeTest extends TypeTestCase
     private function getPersonalInfoFormData($legalConditionsAgreement)
     {
         $personalInfoFormData = [];
-        $personalInfoFormData['firstName'] = 'test';
-        $personalInfoFormData['lastName'] = 'test';
+        $personalInfoFormData['deliveryFirstName'] = 'test';
+        $personalInfoFormData['deliveryLastName'] = 'test';
         $personalInfoFormData['email'] = 'test@test.cz';
-        $personalInfoFormData['telephone'] = '123456789';
-        $personalInfoFormData['street'] = 'test';
-        $personalInfoFormData['city'] = 'test';
-        $personalInfoFormData['postcode'] = '12345';
-        $personalInfoFormData['country'] = 1;
+        $personalInfoFormData['deliveryTelephone'] = '123456789';
+        $personalInfoFormData['deliveryStreet'] = 'test';
+        $personalInfoFormData['deliveryCity'] = 'test';
+        $personalInfoFormData['deliveryPostcode'] = '12345';
+        $personalInfoFormData['deliveryCountry'] = 1;
         $personalInfoFormData['legalConditionsAgreement'] = $legalConditionsAgreement;
         $personalInfoFormData['newsletterSubscription'] = false;
 
