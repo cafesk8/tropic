@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="web__container">
-        <header class="header">
+        <header class="header {{ block('headerClass') }}">
             <div class="header__menu dont-print">
                 {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
                 <div class="all-categories">

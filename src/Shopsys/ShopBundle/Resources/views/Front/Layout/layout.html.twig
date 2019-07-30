@@ -2,6 +2,8 @@
 {% use '@ShopsysShop/Front/Layout/header.html.twig' %}
 {% use '@ShopsysShop/Front/Layout/footer.html.twig' %}
 
+{% block headerClass %}{% endblock %}
+
 {% block html_body %}
     {% set adminLoggedAsCustomer = is_granted(constant('Shopsys\\FrameworkBundle\\Model\\Security\\Roles::ROLE_ADMIN_AS_CUSTOMER')) %}
     {% if adminLoggedAsCustomer or isMailerSettingUnusual() %}
