@@ -26,23 +26,9 @@
             width: @search-width;
         }
 
-        .box-search & {
-            width: 100%;
-        }
-
-        .is-no-flex & {
-            display: block;
-            .clearfix();
-        }
-
         &__input {
             flex: 1;
             position: relative;
-
-            .is-no-flex & {
-                float: left;
-                width: ~"calc(100% - @{search-button-width})";
-            }
 
             .input {
                 width: 100%;
@@ -57,20 +43,16 @@
                 .box-search & {
                     line-height: @search-input-height;
                     padding: 0 10px;
-                }
             }
+        }
         }
 
         &__button {
             display: none;
-            flex: 0 @search-button-width;
+            width: @search-button-width;
             height: @search-form-height;
             line-height: @search-form-height;
             padding: 0;
-
-            .is-no-flex & {
-                width: @search-button-width;
-            }
         }
     }
 }
