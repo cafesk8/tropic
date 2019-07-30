@@ -104,21 +104,7 @@
                 {% endif %}
 
                 {% if product.calculatedAvailability %}
-                    <div class="box-detail__availability">
-                        <span class="box-detail__availability__status js-not-implemented-yet" style="color: #7bbd70;">
-                            {% if product.calculatedSellingDenied %}
-                                {{ 'Product no longer on sale'|trans }}
-                            {% else %}
-                                {{ product.calculatedAvailability.name }}
-                            {% endif %}
-                        </span>
-                        <span class="box-detail__availability__text">
-                            {{ 'nebo ihned na '}}
-                        </span>
-                        <a href="#" class="box-detail__availability__stores underline-small js-not-implemented-yet">
-                            10 {{ ' prodejnách'|trans }}
-                        </a>
-                    </div>
+                    {% include '@ShopsysShop/Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
                 {% endif %}
                 <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-price-wrapper">
                     {% for variant in variants if variant in product.variants %}

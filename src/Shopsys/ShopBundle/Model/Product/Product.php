@@ -233,4 +233,17 @@ class Product extends BaseProduct
             $productDomain->setActionPrice($productData->actionPrices[$domainId]);
         }
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
+     */
+    public function getStocksWithoutZeroQuantityOnStore(): array
+    {
+        return array_filter(
+            $this->storeStocks->toArray(),
+            function (ProductStoreStock $productStoreStock) {
+                return $productStoreStock->getStockQuantity() > 0;
+            }
+        );
+    }
 }
