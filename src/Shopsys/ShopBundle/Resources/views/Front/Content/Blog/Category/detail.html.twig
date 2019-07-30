@@ -61,6 +61,7 @@
                                                 <div class="list-articles__item__content__text">
                                                     {{ blogArticle.description|striptags|truncate(100)|raw }}
                                                 </div>
+                                                {# TODO PRG TK-32653: add date format 8.listopadu 2018 #}
                                                 <div class="list-articles__item__content__date js-not-implemented-yet">
                                                     {{ blogArticle.createdAt|date('j.n.Y') }}
                                                 </div>
