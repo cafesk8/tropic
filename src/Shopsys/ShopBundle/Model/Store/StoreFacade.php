@@ -127,8 +127,8 @@ class StoreFacade
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Store\Store[]
      */
-    public function getAllForDomain(int $domainId): array
+    public function getAllPickupPlacesForDomain(int $domainId): array
     {
-        return $this->storeRepository->getAllForDomainQueryBuilder($domainId)->getQuery()->execute();
+        return $this->storeRepository->getAllPickupPlacesForDomain($domainId);
     }
 }

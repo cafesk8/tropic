@@ -39,7 +39,7 @@ class StoreController extends FrontBaseController
     {
         $storeId = $request->query->getInt('pickupPlaceId');
 
-        $stores = $this->storeFacade->getAllForDomain($this->domain->getCurrentDomainConfig()->getId());
+        $stores = $this->storeFacade->getAllPickupPlacesForDomain($this->domain->getCurrentDomainConfig()->getId());
 
         $chosenStore = null;
         if ($storeId > 0) {

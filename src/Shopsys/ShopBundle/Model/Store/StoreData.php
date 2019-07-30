@@ -63,8 +63,14 @@ class StoreData
      */
     public $country;
 
+    /**
+     * @var bool
+     */
+    public $pickupPlace;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();
+        $this->pickupPlace = false;
     }
 }

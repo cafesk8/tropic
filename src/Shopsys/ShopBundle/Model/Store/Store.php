@@ -87,6 +87,13 @@ class Store implements PickupPlaceInterface
     private $position;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $pickupPlace;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
      * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
      * @ORM\JoinColumn(nullable=false, name="country_id", referencedColumnName="id")
@@ -108,6 +115,7 @@ class Store implements PickupPlaceInterface
         $this->googleMapsLink = $storeData->googleMapsLink;
         $this->position = $storeData->position;
         $this->country = $storeData->country;
+        $this->pickupPlace = $storeData->pickupPlace;
     }
 
     /**
@@ -134,6 +142,7 @@ class Store implements PickupPlaceInterface
         $this->googleMapsLink = $storeData->googleMapsLink;
         $this->position = $storeData->position;
         $this->country = $storeData->country;
+        $this->pickupPlace = $storeData->pickupPlace;
     }
 
     /**
@@ -238,5 +247,13 @@ class Store implements PickupPlaceInterface
     public function getCountryCode(): string
     {
         return $this->country->getCode();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPickupPlace(): bool
+    {
+        return $this->pickupPlace;
     }
 }

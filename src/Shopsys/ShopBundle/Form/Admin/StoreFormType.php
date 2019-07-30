@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
@@ -94,13 +95,8 @@ class StoreFormType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Vyplňte, prosím, název prodejny',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 100,
-                        'maxMessage' => 'Store name cannot be longer than {{ limit }} characters',
-                    ]),
+                    new Constraints\NotBlank(['message' => 'Vyplňte, prosím, název prodejny']),
+                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Store name cannot be longer than {{ limit }} characters']),
                 ],
                 'label' => t('Name'),
             ])
@@ -108,31 +104,26 @@ class StoreFormType extends AbstractType
                 'required' => false,
                 'label' => t('Opening hours'),
                 'constraints' => [
-                    new Constraints\Length([
-                        'max' => 100,
-                        'maxMessage' => 'Opening hours cannot be longer than {{ limit }} characters',
-                    ]),
+                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Opening hours cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('googleMapsLink', TextType::class, [
                 'required' => false,
                 'label' => t('Google Maps link'),
                 'constraints' => [
-                    new Constraints\Length([
-                        'max' => 255,
-                        'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters',
-                    ]),
+                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('position', IntegerType::class, [
                 'required' => false,
                 'label' => t('Order in list'),
                 'constraints' => [
-                    new Constraints\Length([
-                        'max' => 10,
-                        'maxMessage' => 'Position in list cannot be longer than {{ limit }} characters',
-                    ]),
+                    new Constraints\Length(['max' => 10, 'maxMessage' => 'Position in list cannot be longer than {{ limit }} characters']),
                 ],
+            ])
+            ->add('pickupPlace', YesNoType::class, [
+                'required' => false,
+                'label' => t('Odběrné místo'),
             ]);
 
         return $builderBasicInformationGroup;
@@ -152,38 +143,23 @@ class StoreFormType extends AbstractType
             'required' => true,
             'label' => t('City'),
             'constraints' => [
-                new Constraints\NotBlank([
-                    'message' => 'Vyplňte, prosím, město prodejny',
-                ]),
-                new Constraints\Length([
-                    'max' => 100,
-                    'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
-                ]),
+                new Constraints\NotBlank(['message' => 'Vyplňte, prosím, město prodejny']),
+                new Constraints\Length(['max' => 100, 'maxMessage' => 'City name cannot be longer than {{ limit }} characters']),
             ],
         ])
         ->add('street', TextType::class, [
             'required' => true,
             'label' => t('Street'),
             'constraints' => [
-                new Constraints\NotBlank([
-                    'message' => 'Vyplňte, prosím, ulici prodejny',
-                ]),
-                new Constraints\Length([
-                    'max' => 100,
-                    'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
-                ]),
+                new Constraints\NotBlank(['message' => 'Vyplňte, prosím, ulici prodejny']),
+                new Constraints\Length(['max' => 100, 'maxMessage' => 'Street name cannot be longer than {{ limit }} characters']),
             ],
         ])
         ->add('postcode', TextType::class, [
             'required' => true,
             'constraints' => [
-                new Constraints\NotBlank([
-                    'message' => 'Vyplňte, prosím, PSČ prodejny',
-                ]),
-                new Constraints\Length([
-                    'max' => 30,
-                    'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
-                ]),
+                new Constraints\NotBlank(['message' => 'Vyplňte, prosím, PSČ prodejny']),
+                new Constraints\Length(['max' => 30, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
             ],
             'label' => t('Postcode'),
         ])
@@ -194,9 +170,7 @@ class StoreFormType extends AbstractType
             'choice_label' => 'name',
             'choice_value' => 'id',
             'constraints' => [
-                new Constraints\NotBlank([
-                    'message' => 'Please enter country of a store',
-                ]),
+                new Constraints\NotBlank(['message' => 'Please enter country of a store']),
             ],
         ]);
 
