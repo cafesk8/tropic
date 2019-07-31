@@ -46,8 +46,6 @@ spec:
                 securityContext:
                     runAsUser: 33
                 command: ["sh", "-c", "cp -r /var/www/html/. /tmp/source-codes"]
-                securityContext:
-                    runAsUser: 33
                 volumeMounts:
                 -   name: source-codes
                     mountPath: /tmp/source-codes
