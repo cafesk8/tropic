@@ -58,7 +58,13 @@
                             {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
                             {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
                             {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
-                            {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
+
+                            {% if getDomain().locale is same as ('de') %}
+                                {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
+                                <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
+                            {% else %}
+                                {% do form.deliveryCountry.setRendered %}
+                            {% endif %}
                         </div>
                     {% endif %}
                 </fieldset>

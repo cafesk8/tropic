@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Front\Order;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\SingleCheckboxChoiceType;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Order\OrderData;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +29,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class TransportAndPaymentFormType extends AbstractType
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade
+     * @var \Shopsys\ShopBundle\Model\Transport\TransportFacade
      */
     private $transportFacade;
 
@@ -55,12 +59,24 @@ class TransportAndPaymentFormType extends AbstractType
     private $storeIdToEntityTransformer;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer
      * @param \Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer $storeIdToEntityTransformer
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
     public function __construct(
         TransportFacade $transportFacade,
@@ -68,7 +84,9 @@ class TransportAndPaymentFormType extends AbstractType
         CurrencyFacade $currencyFacade,
         GoPayBankSwiftFacade $goPayBankSwiftFacade,
         PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer,
-        StoreIdToEntityTransformer $storeIdToEntityTransformer
+        StoreIdToEntityTransformer $storeIdToEntityTransformer,
+        Domain $domain,
+        CountryFacade $countryFacade
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
@@ -76,6 +94,8 @@ class TransportAndPaymentFormType extends AbstractType
         $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
         $this->pickupPlaceIdToEntityTransformer = $pickupPlaceIdToEntityTransformer;
         $this->storeIdToEntityTransformer = $storeIdToEntityTransformer;
+        $this->domain = $domain;
+        $this->countryFacade = $countryFacade;
     }
 
     /**
@@ -85,8 +105,26 @@ class TransportAndPaymentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
-        $transports = $this->transportFacade->getVisibleByDomainId($options['domain_id'], $payments);
+        $transports = $this->transportFacade->getVisibleByDomainIdAndCountry($options['domain_id'], $payments, $options['country']);
+
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);
+
+        if ($this->domain->getLocale() === 'de') {
+            $countries = $this->countryFacade->getAllEnabledOnCurrentDomain();
+            $defaultCountry = $this->countryFacade->findByCode('DE');
+            $builder->add('country', ChoiceType::class, [
+                'choices' => $countries,
+                'data' => $defaultCountry,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Please choose country']),
+                ],
+                'attr' => [
+                    'class' => 'js-transport-country',
+                ],
+            ]);
+        }
 
         $builder
             ->add('transport', SingleCheckboxChoiceType::class, [
@@ -133,6 +171,8 @@ class TransportAndPaymentFormType extends AbstractType
         $resolver
             ->setRequired('domain_id')
             ->setAllowedTypes('domain_id', 'int')
+            ->setRequired('country')
+            ->setAllowedTypes('country', [Country::class, 'null'])
             ->setDefaults([
                 'attr' => ['novalidate' => 'novalidate'],
                 'constraints' => [

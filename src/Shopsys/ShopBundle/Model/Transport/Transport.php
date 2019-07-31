@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Transport;
 
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
@@ -178,5 +179,14 @@ class Transport extends BaseTransport
     public function getCountries()
     {
         return $this->countries->toArray();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @return bool
+     */
+    public function hasCountry(?Country $country): bool
+    {
+        return $this->countries->contains($country);
     }
 }

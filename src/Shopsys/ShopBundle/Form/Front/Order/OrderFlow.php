@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Form\Front\Order;
 
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\StepInterface;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 
 class OrderFlow extends FormFlow
 {
@@ -20,11 +21,24 @@ class OrderFlow extends FormFlow
     private $domainId;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     */
+    private $country;
+
+    /**
      * @param int $domainId
      */
     public function setDomainId($domainId)
     {
         $this->domainId = $domainId;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     */
+    public function setTransportCountry(?Country $country): void
+    {
+        $this->country = $country;
     }
 
     /**
@@ -47,11 +61,17 @@ class OrderFlow extends FormFlow
             ],
             [
                 'form_type' => TransportAndPaymentFormType::class,
-                'form_options' => ['domain_id' => $this->domainId],
+                'form_options' => [
+                    'domain_id' => $this->domainId,
+                    'country' => $this->country,
+                ],
             ],
             [
                 'form_type' => PersonalInfoFormType::class,
-                'form_options' => ['domain_id' => $this->domainId],
+                'form_options' => [
+                    'domain_id' => $this->domainId,
+                    'country' => $this->country,
+                ],
             ],
         ];
     }

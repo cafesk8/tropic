@@ -127,6 +127,7 @@ class PersonalInfoFormTypeTest extends TypeTestCase
     {
         $personalInfoForm = $this->factory->create(PersonalInfoFormType::class, null, [
             'domain_id' => 1,
+            'country' => null,
         ]);
 
         return $personalInfoForm;

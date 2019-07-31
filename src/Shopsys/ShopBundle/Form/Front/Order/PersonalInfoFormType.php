@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\Transformers\InverseTransformer;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderData;
@@ -281,6 +282,8 @@ class PersonalInfoFormType extends AbstractType
             ->add('deliveryCountry', ChoiceType::class, [
                 'required' => true,
                 'choices' => $countries,
+                'data' => $options['country'],
+                'disabled' => true,
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'constraints' => [
@@ -327,6 +330,8 @@ class PersonalInfoFormType extends AbstractType
         $resolver
             ->setRequired('domain_id')
             ->setAllowedTypes('domain_id', 'int')
+            ->setRequired('country')
+            ->setAllowedTypes('country', [Country::class, 'null'])
             ->setDefaults([
                 'data_class' => FrontOrderData::class,
                 'attr' => ['novalidate' => 'novalidate'],

@@ -110,6 +110,10 @@ front_order_terms_and_conditions_download:
     path: /order/terms-and-conditions-download/
     defaults: { _controller: ShopsysShopBundle:Front\Order:TermsAndConditionsDownload }
 
+front_order_transport_and_payment_box:
+    path: /order/transport-and-payment-box/
+    defaults: { _controller: ShopsysShopBundle:Front\Order:transportAndPaymentBox }
+
 front_promo_code_apply:
     path: /promo-code/apply/
     defaults: { _controller: ShopsysShopBundle:Front\PromoCode:apply }
