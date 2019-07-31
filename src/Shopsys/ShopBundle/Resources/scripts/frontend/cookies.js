@@ -11,7 +11,11 @@
             $.cookie(cookieName, true, { expires: tenYears, path: '/' });
 
             $cookiesBlock.addClass('box-cookies--closing');
-            $cookiesFooterGap.removeClass('web__footer--with-cookies');
+        });
+        
+        $('.js-eu-cookies-close-button').click(function () {
+            var $cookiesBlock = $('.js-eu-cookies');
+            $cookiesBlock.addClass('box-cookies--closing');
         });
     });
 
