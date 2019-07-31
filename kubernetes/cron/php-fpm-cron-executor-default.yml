@@ -4,8 +4,8 @@ metadata:
     name: cron-executor-default
 spec:
     concurrencyPolicy: Forbid
-    failedJobsHistoryLimit: 5
-    successfulJobsHistoryLimit: 3
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 1
     schedule: "1/5 * * * *"
     jobTemplate:
         spec:
