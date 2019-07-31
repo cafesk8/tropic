@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
 use Shopsys\ShopBundle\Model\Order\Order;
 
 class OrderExportMapper
 {
+    private const ORDER_DOMAIN_ID_TO_SOURCE = [
+        DomainHelper::CZECH_DOMAIN => 'LPKCZ',
+        DomainHelper::SLOVAK_DOMAIN => 'BSHTR',
+        DomainHelper::GERMAN_DOMAIN => 'BSHDE',
+    ];
+
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @return array
@@ -29,7 +36,7 @@ class OrderExportMapper
     private function prepareHeader(Order $order): array
     {
         $headerArray = [
-            'Source' => 'LPKCZ',
+            'Source' => self::ORDER_DOMAIN_ID_TO_SOURCE[$order->getDomainId()],
             'Number' => $order->getNumber(),
             'CreatingDateTime' => $order->getCreatedAt()->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
