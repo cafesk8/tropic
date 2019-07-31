@@ -6,6 +6,7 @@ spec:
     concurrencyPolicy: Forbid
     failedJobsHistoryLimit: 2
     successfulJobsHistoryLimit: 1
+    startingDeadlineSeconds: 600 # Prevents disable creating cron jobs
     schedule: "1/5 * * * *"
     jobTemplate:
         spec:
