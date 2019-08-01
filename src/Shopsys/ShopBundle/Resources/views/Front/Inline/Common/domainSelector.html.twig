@@ -1,0 +1,10 @@
+<ul class="list-languages">
+    {% for domain in domainsToRender %}
+        <li class="list-languages__item">
+            <img class="list-languages__item__image" src="{{ domain.iconUrl }}">
+            <a class="list-languages__item__link underline" href="{{ domain.url }}">
+                {{ domain.translatedName }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

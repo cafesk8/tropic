@@ -9,3 +9,7 @@ services:
 
     Shopsys\ShopBundle\Twig\ImageExtension:
         arguments: ['%shopsys.front_design_image_url_prefix%', '@assets._default_package']
+
+    Shopsys\ShopBundle\Twig\DomainExtension:
+        arguments:
+            - '%shopsys.domain_images_url_prefix%'
