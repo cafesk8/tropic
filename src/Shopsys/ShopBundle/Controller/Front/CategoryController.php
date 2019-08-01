@@ -91,4 +91,16 @@ class CategoryController extends FrontBaseController
             'categories' => $categories,
         ]);
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function horizontalMenuMobileAction(): Response
+    {
+        $categories = $this->horizontalCategoryFacade->getCategoriesForHorizontalMenuOnCurrentDomain();
+
+        return $this->render('@ShopsysShop/Front/Inline/Category/horizontalMenuMobile.html.twig', [
+            'categories' => $categories,
+        ]);
+    }
 }

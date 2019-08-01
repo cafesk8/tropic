@@ -127,53 +127,6 @@
             border: 3px solid @color-gray;
             border-radius: @radius;
             border-top-right-radius: 0;
-
-            &.box-dropdown__options--search {
-                right: -225px;
-                width: 300px;
-
-                @media @query-md {
-                    right: -320px;
-                    width: 500px;
-                }
-
-                @media @query-lg {
-                    right: -500px;
-                    width: auto;
-                }
-
-                @media @query-vl {
-                    right: -160px;
-                }
-            }
-
-            &.box-dropdown__options--login {
-                right: -94px;
-                width: 300px;
-
-                @media @query-md {
-                    right: -140px;
-                    width: @box-login-width;
-                }
-
-                @media @query-vl {
-                    right: 0;
-                }
-            }
-
-            &.box-dropdown__options--basket {
-                right: -30px;
-                width: 300px;
-
-                @media @query-md {
-                    right: -140px;
-                    width: @cart-detail-width;
-                }
-
-                @media @query-vl {
-                    right: 0;
-                }
-            }
         }
 
         &__item {
@@ -201,6 +154,74 @@
                 color: @box-dropdown-item-font-color;
                 font-size: @box-dropdown-item-font-size;
                 font-weight: 500;
+            }
+        }
+    }
+}
+
+/* custom part */
+.box-dropdown__options {
+    .open & {
+        &.box-dropdown__options--search {
+            left: -65px;
+            width: 300px;
+
+            @media @query-md {
+                right: -320px;
+                width: 500px;
+            }
+
+            @media @query-lg {
+                right: -500px;
+                width: auto;
+            }
+
+            @media @query-vl {
+                right: -160px;
+            }
+        }
+
+        &.box-dropdown__options--login {
+            left: -115px;
+            width: 300px;
+
+            @media @query-md {
+                right: -140px;
+                width: @box-login-width;
+            }
+
+            @media @query-vl {
+                right: 0;
+            }
+        }
+
+        &.box-dropdown__options--basket {
+            left: -228px;
+            width: 304px;
+
+            @media @query-md {
+                right: -140px;
+                width: @cart-detail-width;
+            }
+
+            @media @query-vl {
+                right: 0;
+            }
+        }
+
+        &.box-dropdown__options--menu {
+            left: -15px;
+            width: 300px;
+
+            background-color: @color-f;
+
+            @media @query-md {
+                right: -140px;
+                width: @box-login-width;
+            }
+
+            @media @query-vl {
+                right: 0;
             }
         }
     }

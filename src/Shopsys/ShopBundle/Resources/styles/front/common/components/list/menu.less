@@ -7,25 +7,34 @@
 // global settings
 .list-menu {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
+    flex-direction: column;
+
+    @media @query-vl {
+        flex-direction: row;
+    }
 
     &__column-single {
         .reset-ul();
         width: 100%;
 
         &--with-icon {
-            margin-top: 60px;
+            @media @query-vl {
+                margin-top: 60px;
+            }
         }
     }
 
     &__column {
         .reset-ul();
-        width: calc(~"@{calc-base}/@{list-menu-columns-count}");
+        width: 100%;
+
+        @media @query-vl {
+            width: calc(~"@{calc-base}/@{list-menu-columns-count}");
+        }
     }
 
     &__title {
-        margin-bottom: 35px;
         padding-right: @list-menu-columns-gap;
 
         color: @color-base;
@@ -33,6 +42,10 @@
         font-weight: bold;
         text-transform: uppercase;
         text-decoration: none;
+
+        @media @query-vl {
+            margin-bottom: 35px;
+        }
 
         .list-menu__column-single & {
             margin-bottom: 6px;

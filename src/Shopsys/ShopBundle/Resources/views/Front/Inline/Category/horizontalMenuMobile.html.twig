@@ -1,0 +1,7 @@
+<ul class="menu-mobile dont-print">
+    {% for category in categories %}
+        <li class="menu-mobile__item">
+            <a class="menu-mobile__item__link underline" href="{{ url('front_product_list', { id: category.id }) }}">{{ category.name }}</a>
+        </li>
+    {% endfor %}
+</ul>

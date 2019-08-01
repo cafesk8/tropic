@@ -1,0 +1,35 @@
+@menu-item-gap: 42px;
+@menu-height: 37px;
+
+.menu-mobile {
+    .reset-ul();
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    line-height: @menu-height;
+
+    font-size: 0;
+
+    @media @query-vl {
+        width: calc(~"100% - (@{header-all-categories-link-width} + 30px)");
+    }
+
+    &__item {
+        display: inline-block;
+        vertical-align: middle;
+        margin-bottom: 15px;
+
+        font-size: @font-size;
+
+        &__link {
+            display: block;
+            line-height: 21px;
+
+            color: @color-base;
+            font-size: @font-size-big;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+    }
+}

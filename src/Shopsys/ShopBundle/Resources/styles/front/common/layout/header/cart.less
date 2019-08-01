@@ -5,45 +5,45 @@
 .cart {
     display: none;
 
-    &__icon {
-        width: 20px;
-    }
-
-    &__info {
-        display: none;
-    }
-
     @media @query-lg {
         display: inline-block;
         position: relative;
         .clearfix();
         text-align: left;
+    }
 
-        &__icon {
-            position: relative;
-            float: left;
-            text-align: left;
+    &__info {
+        display: none;
 
-            &__count {
-                position: absolute;
-                display: block;
-                height: @cart-number-size;
-                line-height: @cart-number-size;
-                width: @cart-number-size;
-                top: -2px;
-                right: -5px;
-                text-align: center;
-
-                color: @color-f;
-                font-size: 11px;
-                border-radius: 50%;
-                background-color: @color-green;
-            }
-        }
-
-        &__info {
+        @media @query-lg {
             display: inline-block;
             margin-left: @cart-icon-gap;
+        }
+    }
+
+    &__icon {
+        position: relative;
+        width: 20px;
+        text-align: left;
+
+        @media @query-lg {
+            float: left;
+        }
+
+        &__count {
+            position: absolute;
+            display: block;
+            height: @cart-number-size;
+            line-height: @cart-number-size;
+            width: @cart-number-size;
+            top: -2px;
+            right: -5px;
+            text-align: center;
+
+            color: @color-f;
+            font-size: 11px;
+            border-radius: 50%;
+            background-color: @color-green;
         }
     }
 }
