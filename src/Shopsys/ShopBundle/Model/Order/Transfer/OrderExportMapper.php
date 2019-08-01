@@ -48,7 +48,7 @@ class OrderExportMapper
                     'Street' => $order->getStreet(),
                     'City' => $order->getCity(),
                     'ZIP' => $order->getPostcode(),
-                    'Country' => $order->getCountry() !== null ? $order->getCountry()->getName('cs') : '',
+                    'Country' => $order->getCountry() !== null ? $order->getCountry()->getCode() : '',
                     'BranchNumber' => '',
                 ],
                 'ICO' => $order->getCompanyNumber(),
@@ -73,7 +73,7 @@ class OrderExportMapper
                 'Street' => $order->getDeliveryStreet(),
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
-                'Country' => $order->getDeliveryCountry() !== null ? $order->getDeliveryCountry()->getName('cs') : '',
+                'Country' => $order->getDeliveryCountry() !== null ? $order->getCountry()->getCode() : '',
                 'BranchNumber' => '',
             ];
         }
