@@ -448,3 +448,12 @@
 20190619095039:
     class: Shopsys\ShopBundle\Migrations\Version20190619095039
     skip: false
+20190730125448:
+    class: Shopsys\ShopBundle\Migrations\Version20190730125448
+    skip: false
+20190730131216:
+    class: Shopsys\ShopBundle\Migrations\Version20190730131216
+    skip: false
+20190730132258:
+    class: Shopsys\ShopBundle\Migrations\Version20190730132258
+    skip: false

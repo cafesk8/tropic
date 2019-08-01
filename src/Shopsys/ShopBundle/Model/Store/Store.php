@@ -87,11 +87,39 @@ class Store implements PickupPlaceInterface
     private $position;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $pickupPlace;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
      * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
      * @ORM\JoinColumn(nullable=false, name="country_id", referencedColumnName="id")
      */
     protected $country;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $email;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    protected $telephone;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $region;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
@@ -108,6 +136,10 @@ class Store implements PickupPlaceInterface
         $this->googleMapsLink = $storeData->googleMapsLink;
         $this->position = $storeData->position;
         $this->country = $storeData->country;
+        $this->pickupPlace = $storeData->pickupPlace;
+        $this->telephone = $storeData->telephone;
+        $this->email = $storeData->email;
+        $this->region = $storeData->region;
     }
 
     /**
@@ -134,6 +166,10 @@ class Store implements PickupPlaceInterface
         $this->googleMapsLink = $storeData->googleMapsLink;
         $this->position = $storeData->position;
         $this->country = $storeData->country;
+        $this->pickupPlace = $storeData->pickupPlace;
+        $this->telephone = $storeData->telephone;
+        $this->email = $storeData->email;
+        $this->region = $storeData->region;
     }
 
     /**
@@ -238,5 +274,37 @@ class Store implements PickupPlaceInterface
     public function getCountryCode(): string
     {
         return $this->country->getCode();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPickupPlace(): bool
+    {
+        return $this->pickupPlace;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRegion(): ?string
+    {
+        return $this->region;
     }
 }

@@ -68,6 +68,18 @@ class StoreRepository
     }
 
     /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Store\Store[]
+     */
+    public function getAllPickupPlacesForDomain(int $domainId): array
+    {
+        $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
+        $queryBuilder->andWhere('s.pickupPlace = true');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * @return \Shopsys\ShopBundle\Model\Store\Store[]
      */
     public function getAll(): array

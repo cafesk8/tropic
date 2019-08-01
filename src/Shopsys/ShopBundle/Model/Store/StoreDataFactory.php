@@ -26,9 +26,7 @@ class StoreDataFactory
      */
     public function create(): StoreData
     {
-        $storeData = new StoreData();
-
-        return $storeData;
+        return new StoreData();
     }
 
     /**
@@ -60,6 +58,10 @@ class StoreDataFactory
         $storeData->position = $store->getPosition();
         $storeData->images->orderedImages = $this->imageFacade->getImagesByEntityIndexedById($store, null);
         $storeData->country = $store->getCountry();
+        $storeData->pickupPlace = $store->isPickupPlace();
+        $storeData->telephone = $store->getTelephone();
+        $storeData->email = $store->getEmail();
+        $storeData->region = $store->getRegion();
     }
 
     /**

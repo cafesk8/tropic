@@ -67,6 +67,7 @@ class StoreGridFactory
         $grid->addColumn('name', 's.name', t('Name'));
         $grid->addColumn('city', 's.city', t('City'));
         $grid->addColumn('street', 's.street', t('Street'));
+        $grid->addColumn('pickupPlace', 's.pickupPlace', t('Odběrné místo'));
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
         $grid->addEditActionColumn('admin_store_edit', ['id' => 's.id']);
