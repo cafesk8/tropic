@@ -8,9 +8,20 @@ use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 
 class OrderPreview extends BaseOrderPreview
 {
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null
+     */
+    private $promoCode;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    private $totalDiscount;
+
     /**
      * @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
@@ -67,5 +78,41 @@ class OrderPreview extends BaseOrderPreview
     public function getGifts(): ?array
     {
         return $this->gifts;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     */
+    public function setPromoCode(?PromoCode $promoCode): void
+    {
+        $this->promoCode = $promoCode;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalDiscount
+     */
+    public function setTotalDiscount(Price $totalDiscount): void
+    {
+        $this->totalDiscount = $totalDiscount;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null
+     */
+    public function getPromoCode(): ?PromoCode
+    {
+        return $this->promoCode;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    public function getTotalDiscount(): Price
+    {
+        if ($this->totalDiscount === null) {
+            return Price::zero();
+        }
+
+        return $this->totalDiscount;
     }
 }

@@ -64,15 +64,17 @@
 
         <table id="js-order-preview-fees" class="table-cart-preview">
             <tbody>
-                <tr class="table-cart-preview__row">
-                    <td class="table-cart-preview__cell js-not-implemented-yet">
-                        {{ 'Sleva'|trans }}
-                        <span class="next-line"></span> {{ '(kód VANOCE2018)'|trans }}
-                    </td>
-                    <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                        -500 kč
-                    </td>
-                </tr>
+                {% if orderPreview.promoCode is not null %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Sleva'|trans }}
+                            <span class="next-line"></span> {{ orderPreview.promoCode.code }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
+                            - {{ orderPreview.totalDiscount.priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endif %}
 
                 <tr class="table-cart-preview__row">
                     <td class="table-cart-preview__cell js-not-implemented-yet">

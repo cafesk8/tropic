@@ -356,8 +356,8 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $quantifiedItemDiscount
      * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
@@ -371,10 +371,16 @@ class Order extends BaseOrder
         OrderItem $orderItem,
         $locale
     ) {
+        if ($orderPreview->getPromoCode()->isUseNominalDiscount()) {
+            $discountValue = $numberFormatterExtension->formatNumber(-$orderPreview->getPromoCode()->getNominalDiscount()->getAmount()) . ' ' . $numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
+        } else {
+            $discountValue = $numberFormatterExtension->formatPercent(-$orderPreview->getPromoCodeDiscountPercent(), $locale);
+        }
+
         $name = sprintf(
             '%s %s - %s',
             t('Promo code', [], 'messages', $locale),
-            $numberFormatterExtension->formatPercent(-$orderPreview->getPromoCodeDiscountPercent(), $locale),
+            $discountValue,
             $orderItem->getName()
         );
 

@@ -149,6 +149,7 @@ class CartController extends FrontBaseController
 
         $domainId = $this->domain->getId();
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $productsPrice = $orderPreview->getProductsPrice();
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat(
@@ -168,6 +169,7 @@ class CartController extends FrontBaseController
             'cartItemDiscounts' => $orderPreview->getQuantifiedItemsDiscounts(),
             'productsPrice' => $productsPrice,
             'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
+            'promoCode' => $orderPreview->getPromoCode(),
         ]);
     }
 

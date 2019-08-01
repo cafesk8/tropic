@@ -354,3 +354,9 @@ services:
     Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@Shopsys\ShopBundle\Model\Cart\CartFacade'
 
     Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface: '@Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory'
+
+    Shopsys\ShopBundle\Model\Order\Preview\OrderPreview: ~
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreview'
+
+    Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@Shopsys\ShopBundle\Twig\NumberFormatterExtension'
