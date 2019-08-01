@@ -108,7 +108,13 @@
                     {{ form_row(form.deliveryAddressData.street, { label: 'Street'|trans}) }}
                     {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans}) }}
                     {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans}) }}
-                    {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans}) }}
+
+                    {% if app.user.deliveryAddress is null %}
+                        {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans}) }}
+                    {% else %}
+                        {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans, attr: { disabled: 'disabled' } }) }}
+                    {% endif %}
+
                 </div>
             </div>
         </div>

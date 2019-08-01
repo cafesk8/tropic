@@ -6,7 +6,9 @@
 <div class="web__line">
     <div class="web__container web__container--big-padding">
 
-        {% if getDomain().locale is same as ('de') %}
+        {% if getDomain().locale is same as (
+            constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_LOCALE')
+        ) %}
             {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
         {% endif %}
 

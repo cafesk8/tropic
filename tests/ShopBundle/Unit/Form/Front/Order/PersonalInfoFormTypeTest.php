@@ -6,9 +6,9 @@ namespace Tests\ShopBundle\Unit\Form\Front\Order;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\ShopBundle\Form\Front\Order\PersonalInfoFormType;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\PreloadedExtension;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validation;
 class PersonalInfoFormTypeTest extends TypeTestCase
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade|\PHPUnit\Framework\MockObject\MockObject
      */
     private $countryFacade;
 

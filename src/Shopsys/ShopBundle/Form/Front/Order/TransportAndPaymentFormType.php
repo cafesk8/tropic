@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer;
@@ -104,17 +105,19 @@ class TransportAndPaymentFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $country = $this->countryFacade->getHackedCountry();
+
         $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
-        $transports = $this->transportFacade->getVisibleByDomainIdAndCountry($options['domain_id'], $payments, $options['country']);
+        $transports = $this->transportFacade->getVisibleByDomainIdAndCountry($options['domain_id'], $payments, $country);
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);
 
-        if ($this->domain->getLocale() === 'de') {
+        if (DomainHelper::isGermanDomain($this->domain)) {
             $countries = $this->countryFacade->getAllEnabledOnCurrentDomain();
-            $defaultCountry = $this->countryFacade->findByCode('DE');
+
             $builder->add('country', ChoiceType::class, [
                 'choices' => $countries,
-                'data' => $defaultCountry,
+                'data' => $country,
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'constraints' => [
@@ -123,6 +126,10 @@ class TransportAndPaymentFormType extends AbstractType
                 'attr' => [
                     'class' => 'js-transport-country',
                 ],
+            ]);
+        } else {
+            $builder->add('country', HiddenType::class, [
+                'data' => $country === null ? null : $country->getId(),
             ]);
         }
 

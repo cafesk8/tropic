@@ -31,6 +31,7 @@ parameters:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
             - '*/tests/ShopBundle/Smoke/Http/RouteConfigCustomization.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/ProductController.php'
+            - '*/src/Shopsys/ShopBundle/Form/Front/Order/TransportAndPaymentFormType.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
@@ -42,6 +43,7 @@ parameters:
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:
             - '*/tests/ShopBundle/Functional/EntityExtension/EntityExtensionTest.php'
             - '*/tests/ShopBundle/Test/Codeception/_generated/AcceptanceTesterActions.php'
+            - '*/src/Shopsys/ShopBundle/Model/Country/CountryFacade.php'
 
         Shopsys\CodingStandards\Sniffs\ObjectIsCreatedByFactorySniff:
             - '*/tests/*'
@@ -54,6 +56,9 @@ parameters:
         Shopsys\CodingStandards\Sniffs\ForbiddenDoctrineInheritanceSniff:
             - '*/src/Shopsys/ShopBundle/*'
             - '*/tests/ShopBundle/*'
+
+        Shopsys\CodingStandards\Sniffs\ForbiddenSuperGlobalSniff:
+            - '*/src/Shopsys/ShopBundle/Model/Country/CountryFacade.php'
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - '*/src/Shopsys/ShopBundle/Model/Blog/Category/BlogCategoryDomain.php'

@@ -238,8 +238,6 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
-        $orderFlow->setTransportCountry($this->getCountryForTransportAndPaymentForm());
-
         $orderFlow->bind($frontOrderFormData);
         $orderFlow->saveSentStepData();
 
@@ -335,9 +333,10 @@ class OrderController extends FrontBaseController
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function transportAndPaymentBoxAction(): Response
+    public function transportAndPaymentBoxAction(Request $request): Response
     {
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
         if ($cart === null) {
@@ -361,7 +360,8 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
-        $orderFlow->setTransportCountry($this->getCountryForTransportAndPaymentForm());
+        $country = $this->countryFacade->getById($request->get('countryId'));
+        $orderFlow->setTransportCountry($country);
 
         $orderFlow->bind($frontOrderFormData);
         $orderFlow->saveSentStepData();
@@ -658,24 +658,5 @@ class OrderController extends FrontBaseController
         if ($mailTemplate->isSendMail()) {
             $this->orderMailFacade->sendEmail($order);
         }
-    }
-
-    /**
-     * @return \Shopsys\FrameworkBundle\Model\Country\Country|null
-     */
-    private function getCountryForTransportAndPaymentForm()
-    {
-        if ($this->domain->getLocale() === 'cs') {
-            return $this->countryFacade->getByCode('CZ');
-        }
-        if ($this->domain->getLocale() === 'sk') {
-            return $this->countryFacade->getByCode('SK');
-        }
-
-        $flow = $this->domainAwareOrderFlowFactory->create();
-        $frontOrderData = new FrontOrderData();
-        $flow->bind($frontOrderData);
-
-        return $frontOrderData->country;
     }
 }
