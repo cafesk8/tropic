@@ -26,6 +26,20 @@
             width: @search-width;
         }
 
+        .box-dropdown & {
+            @media @query-md {
+                width: 400px;
+            }
+
+            @media @query-lg {
+                width: 520px;
+            }
+
+            @media @query-vl {
+                width: @search-width;
+            }
+        }
+
         &__input {
             flex: 1;
             position: relative;
