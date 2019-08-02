@@ -6,7 +6,7 @@
 @box-dropdown-padding-vertical: 10px;
 @box-dropdown-padding-vertical-small: 9px;
 @box-dropdown-font-size: 15px;
-@box-dropdown-arrow-size: @arrow-size;
+@box-dropdown-arrow-size: 8px;
 @box-dropdown-arrow-color: @color-brown-light-2;
 @box-dropdown-open-bottom-gap: 10px;
 
@@ -83,11 +83,15 @@
             display: inline-block;
             width: @box-dropdown-arrow-size;
             height: @box-dropdown-arrow-size;
-            top: 18px;
+            top: 17px;
             right: 15px;
 
             color: @box-dropdown-arrow-color;
             font-size: @box-dropdown-arrow-size;
+
+            .open & {
+                top: 18px;
+            }
 
             &--down {
                 .svg;
