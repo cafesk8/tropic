@@ -1,12 +1,12 @@
 @menu-item-gap: 42px;
 @menu-height: 37px;
 
-.menu {
+.menu-mobile {
     .reset-ul();
-    height: @menu-height;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
     line-height: @menu-height;
-    display: inline;
-    overflow: hidden;
 
     font-size: 0;
 
@@ -17,7 +17,7 @@
     &__item {
         display: inline-block;
         vertical-align: middle;
-        margin-right: @menu-item-gap;
+        margin-bottom: 15px;
 
         font-size: @font-size;
 
@@ -30,10 +30,6 @@
             font-weight: bold;
             text-transform: uppercase;
             text-decoration: none;
-        }
-
-        &:last-child {
-            margin-right: 0;
         }
     }
 }

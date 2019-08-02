@@ -47,6 +47,9 @@
                         <br class="top-bar__menu__next-line">
                         <br class="top-bar__menu__next-line">
                         <br class="top-bar__menu__next-line">
+                        <span class="top-bar__menu__item__text__mobile">
+                            {{ 'Využijte'|trans}}:
+                        </span>
                         {{ 'Poštovné'|trans }}
                         <span class="top-bar__menu__item__text__spacer">—</span>
                         {{ 'Výměnu'|trans }}
@@ -58,7 +61,7 @@
         </div>
     </div>
     <div class="web__container">
-        <header class="header">
+        <header class="header {{ block('headerClass') }}">
             <div class="header__menu dont-print">
                 {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
                 <div class="all-categories">
@@ -83,9 +86,19 @@
 
             <div class="header__right dont-print">
 
+                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__menu js-hover-intent">
+                    <div class="box-dropdown__select">
+                        <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
+                    </div>
+                    <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
+                        {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
+                        {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                    </div>
+                </div>
+
                 <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-hover-intent">
                     <div class="box-dropdown__select">
-                        <i class="header__right__search__icon svg svg-search"></i>
+                        <i class="header__right__search__icon-search svg svg-search"></i>
                     </div>
                     <div class="box-dropdown__options box-dropdown__options--search js-dropdown-options">
                         {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}

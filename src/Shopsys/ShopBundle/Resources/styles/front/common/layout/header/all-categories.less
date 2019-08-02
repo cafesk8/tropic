@@ -76,11 +76,23 @@
         }
 
         &__left {
-            width: @header-all-categories-left-width;
-    }
+            width: 100%;
+            padding: 20px;
+
+            @media @query-vl {
+                width: @header-all-categories-left-width;
+                padding: 0;
+            }
+        }
 
         &__right {
-            width: calc(~"@{calc-base} - @{header-all-categories-left-width}");
-}
+            width: 100%;
+            padding: 20px;
+
+            @media @query-vl {
+                width: calc(~"@{calc-base} - @{header-all-categories-left-width}");
+                padding: 0;
+            }
+        }
     }
 }

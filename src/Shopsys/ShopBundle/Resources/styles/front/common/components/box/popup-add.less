@@ -22,6 +22,7 @@
         align-items: center;
         width: 100%;
         padding: @box-popup-add-padding;
+        padding-bottom: @box-popup-add-padding + 5px;
 
         background-color: @color-gray;
 
@@ -30,11 +31,16 @@
         }
 
         &__title {
+            margin-bottom: 30px;
+
             color: @color-base;
             font-size: 16px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 30px;
+
+            @media @query-lg {
+                width: 100%;
+            }
 
             &__text {
                 position: relative;
@@ -145,6 +151,13 @@
             &__back {
                 display: inline;
                 line-height: @btn-height;
+                text-align: center;
+                padding-right: 15px;
+
+                @media @query-md {
+                    padding-right: 0;
+                    text-align: left;
+                }
 
                 &__link {
                     color: @color-base;

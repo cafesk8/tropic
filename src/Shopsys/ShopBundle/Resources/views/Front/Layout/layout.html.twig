@@ -2,6 +2,8 @@
 {% use '@ShopsysShop/Front/Layout/header.html.twig' %}
 {% use '@ShopsysShop/Front/Layout/footer.html.twig' %}
 
+{% block headerClass %}{% endblock %}
+
 {% block html_body %}
     {% set adminLoggedAsCustomer = is_granted(constant('Shopsys\\FrameworkBundle\\Model\\Security\\Roles::ROLE_ADMIN_AS_CUSTOMER')) %}
     {% if adminLoggedAsCustomer or isMailerSettingUnusual() %}
@@ -47,24 +49,30 @@
     {% if not isCookiesConsentGiven() %}
         {% set cookiesArticle = findCookiesArticleByDomainId(getDomain().id) %}
         <div class="box-cookies dont-print js-eu-cookies">
-            <div class="box-cookies__in">
-                <div class="box-cookies__text">
-                    <span class="display-none-tablet display-inline-block">
-                        {{ 'This site uses cookies. By staying on the site you agree with that.'|trans }}
-                    </span>
-                    <span class="display-none display-inline-block-tablet">
-                        {{ 'This site uses cookies.'|trans }}
-                    </span>
-                    {% if cookiesArticle is not null %}
-                        <a href="{{ url('front_article_detail', { id: cookiesArticle.id }) }}" target="_blank">
-                            {{- 'More information'|trans -}}
-                        </a>
-                    {% endif %}
-                </div>
-                <div class="box-cookies__btn">
-                    <button class="btn btn--small js-eu-cookies-consent-button" type="button">{{ 'I understand'|trans }}</button>
-                </div>
+            <div class="box-cookies__title">
+                {{ 'Cookies nejsou sušenky'|trans }}
             </div>
+
+            <div class="box-cookies__text">
+                <span class="display-none-tablet display-inline-block">
+                    {{ 'Sbíráme anonymní data a měříme, abychom náš web mohli dále vylepšovat. Souhlasíte se sběrem cookies?'|trans }}
+                </span>
+                <span class="display-none display-inline-block-tablet">
+                    {{ 'This site uses cookies.'|trans }}
+                </span>
+                {% if cookiesArticle is not null %}
+                {% endif %}
+            </div>
+            <div class="box-cookies__buttons">
+                <button class="btn btn--success box-cookies__buttons__agree js-eu-cookies-consent-button" type="button">{{ 'V pořádku'|trans }}</button>
+                <span class="box-cookies__buttons__link__wrap">
+                    <a class="box-cookies__buttons__link underline" href="{{ url('front_article_detail', { id: cookiesArticle.id }) }}" target="_blank">
+                        {{- 'More information'|trans -}}
+                    </a>
+                </span>
+            </div>
+
+            <div class="box-cookies__close js-eu-cookies-close-button"><i class="svg svg-remove"></i></div>
         </div>
     {% endif %}
 {% endblock %}
