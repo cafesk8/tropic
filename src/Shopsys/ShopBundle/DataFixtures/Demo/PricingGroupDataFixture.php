@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -13,10 +15,10 @@ use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 
 class PricingGroupDataFixture extends AbstractReferenceFixture
 {
-    const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
-    const PRICING_GROUP_ADEPT_DOMAIN = 'pricing_group_adept_domain';
-    const PRICING_GROUP_CLASSIC_DOMAIN = 'pricing_group_classic_domain';
-    const PRICING_GROUP_REAL_BUSHMAN_DOMAIN = 'pricing_group_real_bushman_domain';
+    public const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
+    public const PRICING_GROUP_ADEPT_DOMAIN = 'pricing_group_adept_domain';
+    public const PRICING_GROUP_CLASSIC_DOMAIN = 'pricing_group_classic_domain';
+    public const PRICING_GROUP_REAL_BUSHMAN_DOMAIN = 'pricing_group_real_bushman_domain';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade

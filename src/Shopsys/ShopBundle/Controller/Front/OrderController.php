@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -38,8 +40,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrderController extends FrontBaseController
 {
-    const SESSION_CREATED_ORDER = 'created_order_id';
-    const SESSION_GOPAY_CHOOSEN_SWIFT = 'gopay_choosen_swift';
+    public const SESSION_CREATED_ORDER = 'created_order_id';
+    public const SESSION_GOPAY_CHOOSEN_SWIFT = 'gopay_choosen_swift';
 
     /**
      * @var \Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory

@@ -9,7 +9,7 @@ use Shopsys\ShopBundle\Component\Balikobot\Shipper\Exception\ShipperNotSupported
 
 class ShipperServiceFacade
 {
-    const SERVICES_REQUEST = 'services';
+    public const SERVICES_REQUEST = 'services';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Balikobot\BalikobotClient

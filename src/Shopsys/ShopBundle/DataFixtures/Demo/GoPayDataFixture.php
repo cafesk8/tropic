@@ -14,7 +14,7 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade;
 
 class GoPayDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
-    const PAYMENT_CARD_METHOD = 'gopay_payment_card_method';
+    public const PAYMENT_CARD_METHOD = 'gopay_payment_card_method';
 
     /**
      * @var \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade

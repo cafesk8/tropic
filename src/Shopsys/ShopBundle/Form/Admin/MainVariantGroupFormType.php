@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FrameworkBundle\Form\ProductsType;
@@ -14,8 +16,8 @@ use Symfony\Component\Validator\Constraints;
 
 class MainVariantGroupFormType extends AbstractType
 {
-    const DISTINGUISHING_PARAMETER = 'distinguishingParameter';
-    const PRODUCTS = 'products';
+    public const DISTINGUISHING_PARAMETER = 'distinguishingParameter';
+    public const PRODUCTS = 'products';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade

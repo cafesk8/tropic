@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints;
 
 class TransportFormTypeExtension extends AbstractTypeExtension
 {
-    const VALIDATION_GROUP_BALIKOBOT = 'balikobot';
-    const VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE = 'balikobot_shipper_service';
+    public const VALIDATION_GROUP_BALIKOBOT = 'balikobot';
+    public const VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE = 'balikobot_shipper_service';
 
     public const PERSONAL_TAKE_TYPE_NONE = 'none';
     public const PERSONAL_TAKE_TYPE_BALIKOBOT = 'baikobot';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -14,9 +16,9 @@ use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 class TransportDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
-    const TRANSPORT_CZECH_POST = 'transport_cp';
-    const TRANSPORT_PPL = 'transport_ppl';
-    const TRANSPORT_PERSONAL = 'transport_personal';
+    public const TRANSPORT_CZECH_POST = 'transport_cp';
+    public const TRANSPORT_PPL = 'transport_ppl';
+    public const TRANSPORT_PERSONAL = 'transport_personal';
 
     /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade */
     protected $transportFacade;

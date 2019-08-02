@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\ShopBundle\Functional\Model\Product\Availability;
 
 use Doctrine\ORM\EntityManager;
@@ -31,10 +33,10 @@ class ProductAvailabilityCalculationTest extends FunctionalTestCase
         $usingStock,
         $stockQuantity,
         $outOfStockAction,
-        Availability $availability = null,
-        Availability $outOfStockAvailability = null,
-        Availability $defaultInStockAvailability = null,
-        Availability $expectedCalculatedAvailability = null
+        ?Availability $availability = null,
+        ?Availability $outOfStockAvailability = null,
+        ?Availability $defaultInStockAvailability = null,
+        ?Availability $expectedCalculatedAvailability = null
     ) {
         $productDataFactory = $this->getContainer()->get(ProductDataFactoryInterface::class);
         $productData = $productDataFactory->create();

@@ -17,7 +17,7 @@ use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
 
 class GoPayClient
 {
-    const RESPONSE_STATUS_CODE_OK = '200';
+    public const RESPONSE_STATUS_CODE_OK = '200';
 
     /**
      * @var array
@@ -53,7 +53,7 @@ class GoPayClient
      * @param array|null $data
      * @return \GoPay\Http\Response
      */
-    private function sendApiRequest(string $urlPath, string $contentType, string $method, array $data = null): Response
+    private function sendApiRequest(string $urlPath, string $contentType, string $method, ?array $data = null): Response
     {
         if ($this->config['goid'] === null) {
             throw new \Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException();

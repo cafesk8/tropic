@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade;
 
 class PickupFacade
 {
-    const BRANCHES_REQUEST = 'branches';
+    public const BRANCHES_REQUEST = 'branches';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade

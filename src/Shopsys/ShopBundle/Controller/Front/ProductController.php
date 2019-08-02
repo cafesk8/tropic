@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -23,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends FrontBaseController
 {
-    const SEARCH_TEXT_PARAMETER = 'q';
-    const PAGE_QUERY_PARAMETER = 'page';
-    const PRODUCTS_PER_PAGE = 12;
+    public const SEARCH_TEXT_PARAMETER = 'q';
+    public const PAGE_QUERY_PARAMETER = 'page';
+    public const PRODUCTS_PER_PAGE = 12;
     private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
     private const LIST_BLOG_ARTICLES_LIMIT = 1;
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;

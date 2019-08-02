@@ -62,7 +62,7 @@ class MassEditFacade
      * @param array|null $requestData
      * @return array
      */
-    public function getActionFormViewDataByRequestData(array $requestData = null): array
+    public function getActionFormViewDataByRequestData(?array $requestData = null): array
     {
         if ($requestData === null || count($requestData) === 0) {
             return $this->createDefaultRuleFormViewData(HiddenMassAction::NAME, null);

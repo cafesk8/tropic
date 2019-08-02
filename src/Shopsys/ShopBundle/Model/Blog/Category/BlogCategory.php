@@ -109,7 +109,7 @@ class BlogCategory extends AbstractTranslatableEntity
     /**
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory $parent
      */
-    public function setParent(self $parent = null): void
+    public function setParent(?self $parent = null): void
     {
         $this->parent = $parent;
     }
@@ -126,7 +126,7 @@ class BlogCategory extends AbstractTranslatableEntity
      * @param string|null $locale
      * @return string
      */
-    public function getName(string $locale = null): ?string
+    public function getName(?string $locale = null): ?string
     {
         return $this->translation($locale)->getName();
     }
@@ -272,7 +272,7 @@ class BlogCategory extends AbstractTranslatableEntity
      * @param string locale
      * @return string|null
      */
-    public function getDescription(string $locale = null): ?string
+    public function getDescription(?string $locale = null): ?string
     {
         return $this->translation($locale)->getDescription();
     }

@@ -23,7 +23,7 @@ class OrderItemFactory extends BaseOrderItemFactory
         int $quantity,
         ?string $unitName,
         ?string $catnum,
-        Product $product = null
+        ?Product $product = null
     ): BaseOrderItem {
         /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderProduct */
         $orderProduct = parent::createProduct($order, $name, $price, $vatPercent, $quantity, $unitName, $catnum, $product);

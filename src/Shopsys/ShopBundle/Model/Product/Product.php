@@ -77,7 +77,7 @@ class Product extends BaseProduct
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
      */
-    protected function __construct(ProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, array $variants = null)
+    protected function __construct(ProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, ?array $variants = null)
     {
         parent::__construct($productData, $productCategoryDomainFactory, $variants);
 
@@ -147,7 +147,7 @@ class Product extends BaseProduct
         return $this->storeStocks;
     }
 
-    public function clearStoreStocks():void
+    public function clearStoreStocks(): void
     {
         $this->storeStocks->clear();
     }
