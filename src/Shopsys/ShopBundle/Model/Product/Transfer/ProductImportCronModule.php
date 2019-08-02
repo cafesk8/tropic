@@ -19,7 +19,7 @@ use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferRe
 
 class ProductImportCronModule extends AbstractTransferImportCronModule
 {
-    const TRANSFER_IDENTIFIER = 'import_products';
+    public const TRANSFER_IDENTIFIER = 'import_products';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient

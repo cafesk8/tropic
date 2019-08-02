@@ -12,7 +12,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class StrictWebDriver extends WebDriver
 {
-    const WAIT_AFTER_CLICK_MICROSECONDS = 50000;
+    public const WAIT_AFTER_CLICK_MICROSECONDS = 50000;
 
     /**
      * @param string[] $alternatives

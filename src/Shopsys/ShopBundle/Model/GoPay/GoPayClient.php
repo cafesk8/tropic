@@ -17,7 +17,7 @@ use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
 
 class GoPayClient
 {
-    const RESPONSE_STATUS_CODE_OK = '200';
+    public const RESPONSE_STATUS_CODE_OK = '200';
 
     /**
      * @var array

@@ -13,8 +13,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ProductDetailVisitListener implements EventSubscriberInterface
 {
-    const LAST_VISITED_PRODUCTS_COOKIE = 'lastVisitedProducts';
-    const COOKIE_EXPIRE_IN_YEARS = 1;
+    public const LAST_VISITED_PRODUCTS_COOKIE = 'lastVisitedProducts';
+    public const COOKIE_EXPIRE_IN_YEARS = 1;
 
     /**
      * {@inheritdoc}

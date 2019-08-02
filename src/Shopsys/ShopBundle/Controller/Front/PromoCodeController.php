@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PromoCodeController extends FrontBaseController
 {
-    const PROMO_CODE_PARAMETER = 'code';
+    public const PROMO_CODE_PARAMETER = 'code';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade

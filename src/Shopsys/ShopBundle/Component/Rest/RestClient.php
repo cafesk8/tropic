@@ -8,15 +8,15 @@ use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseException;
 
 class RestClient
 {
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
-    const METHOD_DELETE = 'DELETE';
-    const METHOD_PUT = 'PUT';
+    public const METHOD_GET = 'GET';
+    public const METHOD_POST = 'POST';
+    public const METHOD_DELETE = 'DELETE';
+    public const METHOD_PUT = 'PUT';
 
-    const EXPECTED_CODE_GET = 200;
-    const EXPECTED_CODE_POST = 201;
-    const EXPECTED_CODE_DELETE = 204;
-    const EXPECTED_CODE_PUT = 200;
+    public const EXPECTED_CODE_GET = 200;
+    public const EXPECTED_CODE_POST = 201;
+    public const EXPECTED_CODE_DELETE = 204;
+    public const EXPECTED_CODE_PUT = 200;
 
     /**
      * @var string

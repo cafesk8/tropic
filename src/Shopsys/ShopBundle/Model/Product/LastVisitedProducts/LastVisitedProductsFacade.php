@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class LastVisitedProductsFacade
 {
-    const COOKIE_PRODUCT_IDS_DELIMITER = ',';
+    public const COOKIE_PRODUCT_IDS_DELIMITER = ',';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade

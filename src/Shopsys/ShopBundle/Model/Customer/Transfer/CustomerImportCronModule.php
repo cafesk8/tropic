@@ -15,7 +15,7 @@ use Shopsys\ShopBundle\Model\Customer\Transfer\Exception\InvalidCustomerTransfer
 
 class CustomerImportCronModule extends AbstractTransferImportCronModule
 {
-    const TRANSFER_IDENTIFIER = 'import_customers';
+    public const TRANSFER_IDENTIFIER = 'import_customers';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient

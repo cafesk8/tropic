@@ -16,9 +16,9 @@ use Shopsys\ShopBundle\Model\Payment\Payment;
 
 class PaymentDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
-    const PAYMENT_CARD = 'payment_card';
-    const PAYMENT_CASH_ON_DELIVERY = 'payment_cash_on_delivery';
-    const PAYMENT_CASH = 'payment_cash';
+    public const PAYMENT_CARD = 'payment_card';
+    public const PAYMENT_CASH_ON_DELIVERY = 'payment_cash_on_delivery';
+    public const PAYMENT_CASH = 'payment_cash';
 
     /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade */
     protected $paymentFacade;

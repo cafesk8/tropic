@@ -11,7 +11,7 @@ use Tests\ShopBundle\Test\FunctionalTestCase;
 
 class NumberFormatterExtensionTest extends FunctionalTestCase
 {
-    const NBSP = "\xc2\xa0";
+    public const NBSP = "\xc2\xa0";
 
     public function formatNumberDataProvider()
     {

@@ -13,8 +13,8 @@ use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceFacade;
 
 class TransportPickupPlaceDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
-    const BALIKOBOT_SHIPPER = 'cp';
-    const BALIKOBOT_SHIPPER_SERVICE = 'NP';
+    public const BALIKOBOT_SHIPPER = 'cp';
+    public const BALIKOBOT_SHIPPER_SERVICE = 'NP';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceFacade

@@ -6,7 +6,7 @@ namespace Shopsys\ShopBundle\Component\Balikobot\Shipper;
 
 class ShipperFacade
 {
-    const
+    public const
         SHIPPER_CESKA_POSTA = 'cp',
         SHIPPER_DPD = 'dpd',
         SHIPPER_GEIS = 'geis',

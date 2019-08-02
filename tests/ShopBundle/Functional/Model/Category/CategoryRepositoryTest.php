@@ -12,8 +12,8 @@ use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class CategoryRepositoryTest extends TransactionFunctionalTestCase
 {
-    const FIRST_DOMAIN_ID = 1;
-    const SECOND_DOMAIN_ID = 2;
+    public const FIRST_DOMAIN_ID = 1;
+    public const SECOND_DOMAIN_ID = 2;
 
     public function testDoNotGetCategoriesWithoutVisibleChildren()
     {

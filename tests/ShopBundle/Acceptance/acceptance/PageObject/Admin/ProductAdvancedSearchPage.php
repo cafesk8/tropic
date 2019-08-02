@@ -10,7 +10,7 @@ use Tests\ShopBundle\Acceptance\acceptance\PageObject\AbstractPage;
 
 class ProductAdvancedSearchPage extends AbstractPage
 {
-    const SEARCH_SUBJECT_CATNUM = 'productCatnum';
+    public const SEARCH_SUBJECT_CATNUM = 'productCatnum';
 
     /**
      * @param string $searchSubject

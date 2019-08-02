@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LastVisitedProductsController extends FrontBaseController
 {
-    const MAX_VISITED_PRODUCT_COUNT = 12;
+    public const MAX_VISITED_PRODUCT_COUNT = 12;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\LastVisitedProducts\LastVisitedProductsFacade
