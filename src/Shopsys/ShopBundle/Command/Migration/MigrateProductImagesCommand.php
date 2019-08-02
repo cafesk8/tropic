@@ -117,7 +117,7 @@ class MigrateProductImagesCommand extends Command
      */
     private function getMigrateProductData(Product $product): array
     {
-        $sql = 'SELECT svi.nid AS migrateProductId, svi.fid AS migratePhotogalleryId
+        $sql = 'SELECT DISTINCT svi.nid AS migrateProductId, svi.fid AS migratePhotogalleryId
             FROM `sklad_varianty` sv
             JOIN `sklad_varianty_image` svi ON sv.var_id = svi.var_id
             WHERE sv.ean = :ean';
