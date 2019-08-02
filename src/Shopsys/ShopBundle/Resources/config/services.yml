@@ -360,3 +360,11 @@ services:
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview: '@Shopsys\ShopBundle\Model\Order\Preview\OrderPreview'
 
     Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@Shopsys\ShopBundle\Twig\NumberFormatterExtension'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory: '@Shopsys\ShopBundle\Model\Product\Search\FilterQueryFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForListFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade'

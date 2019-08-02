@@ -181,6 +181,9 @@
             }
           }
         },
+        "selling_from": {
+          "type": "date"
+        },
         "action_price": {
           "type": "float"
         },

@@ -56,6 +56,7 @@ class ProductSearchExportRepositoryTest extends TransactionFunctionalTestCase
             'partno',
             'ean',
             'description',
+            'selling_from',
             'short_description',
             'action_price',
         ];
