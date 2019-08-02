@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Component\Image;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use IOException;
 use League\Flysystem\FileExistsException;
+use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Shopsys\FrameworkBundle\Component\FileUpload\FileNamingConvention;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
@@ -35,21 +36,29 @@ class MigrateImageDoctrineListener
     private $mountManager;
 
     /**
+     * @var \League\Flysystem\FilesystemInterface
+     */
+    private $filesystem;
+
+    /**
      * @param string $migrateProductImagesDir
      * @param \Shopsys\FrameworkBundle\Component\FileUpload\FileNamingConvention $fileNamingConvention
      * @param \Shopsys\ShopBundle\Component\FileUpload\FileUpload $fileUpload
      * @param \League\Flysystem\MountManager $mountManager
+     * @param \League\Flysystem\FilesystemInterface $filesystem
      */
     public function __construct(
         $migrateProductImagesDir,
         FileNamingConvention $fileNamingConvention,
         FileUpload $fileUpload,
-        MountManager $mountManager
+        MountManager $mountManager,
+        FilesystemInterface $filesystem
     ) {
         $this->migrateProductImagesDir = $migrateProductImagesDir;
         $this->fileNamingConvention = $fileNamingConvention;
         $this->fileUpload = $fileUpload;
         $this->mountManager = $mountManager;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -105,6 +114,9 @@ class MigrateImageDoctrineListener
         );
 
         try {
+            if ($this->filesystem->has($targetFilepath)) {
+                $this->filesystem->delete($targetFilepath);
+            }
             $this->mountManager->copy('local://' . $sourceFilepath, 'main://' . $targetFilepath);
         } catch (FileExistsException | IOException $ex) {
             $message = sprintf(
