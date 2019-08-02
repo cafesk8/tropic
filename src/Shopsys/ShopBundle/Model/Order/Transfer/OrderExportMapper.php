@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
-use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\FrameworkBundle\Model\Pricing\InputPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
 use Shopsys\ShopBundle\Model\Order\Item\OrderItem;
 use Shopsys\ShopBundle\Model\Order\Order;
