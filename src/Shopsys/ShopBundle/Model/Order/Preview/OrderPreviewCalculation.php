@@ -54,10 +54,10 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         Currency $currency,
         int $domainId,
         array $quantifiedProducts,
-        Transport $transport = null,
-        Payment $payment = null,
-        User $user = null,
-        string $promoCodeDiscountPercent = null,
+        ?Transport $transport = null,
+        ?Payment $payment = null,
+        ?User $user = null,
+        ?string $promoCodeDiscountPercent = null,
         ?PromoCode $promoCode = null
     ): OrderPreview {
         $quantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(

@@ -81,7 +81,7 @@ class Category extends BaseCategory
      * @param string|null $locale
      * @return string
      */
-    public function getNameWithLevelPad(string $locale = null): string
+    public function getNameWithLevelPad(?string $locale = null): string
     {
         return str_repeat('-', $this->level < 1 ? 0 : $this->level - 1) . ' ' . parent::getName($locale);
     }

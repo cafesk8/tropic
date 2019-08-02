@@ -310,7 +310,7 @@ class BlogArticle extends AbstractTranslatableEntity
      * @param string locale
      * @return string|null
      */
-    public function getDescription(string $locale = null): ?string
+    public function getDescription(?string $locale = null): ?string
     {
         return $this->translation($locale)->getDescription();
     }

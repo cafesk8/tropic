@@ -107,7 +107,7 @@ class BlogArticleFormType extends AbstractType
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle|null $blogArticle
      * @return string|null
      */
-    private function getArticleNameForPlaceholder(DomainConfig $domainConfig, BlogArticle $blogArticle = null): ?string
+    private function getArticleNameForPlaceholder(DomainConfig $domainConfig, ?BlogArticle $blogArticle = null): ?string
     {
         $domainLocale = $domainConfig->getLocale();
 

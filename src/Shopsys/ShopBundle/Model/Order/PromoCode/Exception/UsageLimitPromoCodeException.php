@@ -13,7 +13,7 @@ class UsageLimitPromoCodeException extends Exception implements PromoCodeExcepti
      * @param string $invalidPromoCode
      * @param \Exception|null $previous
      */
-    public function __construct(string $invalidPromoCode, Exception $previous = null)
+    public function __construct(string $invalidPromoCode, ?Exception $previous = null)
     {
         parent::__construct('Promo code "' . $invalidPromoCode . '" is already used.', 0, $previous);
     }

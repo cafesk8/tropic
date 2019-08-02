@@ -46,7 +46,7 @@ class TransferLoggerFactory
      * @param \Symfony\Bridge\Monolog\Logger $logger
      * @return \Shopsys\ShopBundle\Component\Transfer\Logger\TransferLogger
      */
-    public function getTransferLoggerByIdentifier($transferIdentifier, Logger $logger = null): TransferLogger
+    public function getTransferLoggerByIdentifier($transferIdentifier, ?Logger $logger = null): TransferLogger
     {
         if ($logger === null) {
             $logger = $this->defaultLogger;
