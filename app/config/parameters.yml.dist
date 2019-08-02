@@ -77,3 +77,6 @@ parameters:
     env(S3_API_USERNAME): ''
     env(S3_API_PASSWORD): ''
     env(S3_API_BUCKET_NAME): ''
+
+    migrate_product_images_dir: '%kernel.root_dir%/migration-data/product-images'
+
