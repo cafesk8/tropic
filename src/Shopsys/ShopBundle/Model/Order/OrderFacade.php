@@ -14,14 +14,14 @@ use Shopsys\FrameworkBundle\Model\Order\OrderFacade as BaseOrderFacade;
 class OrderFacade extends BaseOrderFacade
 {
     /**
-     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
-     */
-    protected $currentPromoCodeFacade;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Order\OrderRepository
      */
     protected $orderRepository;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
+     */
+    protected $currentPromoCodeFacade;
 
     /**
      * @param int $orderId
@@ -104,7 +104,15 @@ class OrderFacade extends BaseOrderFacade
     {
         $this->currentPromoCodeFacade->useEnteredPromoCode();
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
+
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
+        $customer = $order->getCustomer();
+        if ($customer !== null) {
+            $order->setCustomerTransferId($customer->getTransferId());
+            $this->em->flush($order);
+        }
 
         return $order;
     }
@@ -126,5 +134,38 @@ class OrderFacade extends BaseOrderFacade
     public function getOrdersValueIndexedByCustomerId(array $customerIds): array
     {
         return $this->orderRepository->getOrdersValueIndexedByCustomerId($customerIds);
+    }
+
+    /**
+     * @param int $orderId
+     */
+    public function markOrderAsExported(int $orderId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+        $order = $this->getById($orderId);
+        $order->markAsExported();
+
+        $this->em->flush($order);
+    }
+
+    /**
+     * @param int $orderId
+     */
+    public function markOrderAsFailedExported(int $orderId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+        $order = $this->getById($orderId);
+        $order->markAsFailedExported();
+
+        $this->em->flush($order);
+    }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getNotExportedOrdersBatch(int $limit): array
+    {
+        return $this->orderRepository->getNotExportedOrdersBatch($limit);
     }
 }

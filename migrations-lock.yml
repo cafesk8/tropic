@@ -457,3 +457,15 @@
 20190730132258:
     class: Shopsys\ShopBundle\Migrations\Version20190730132258
     skip: false
+20190702132350:
+    class: Shopsys\ShopBundle\Migrations\Version20190702132350
+    skip: false
+20190702140701:
+    class: Shopsys\ShopBundle\Migrations\Version20190702140701
+    skip: false
+20190726105716:
+    class: Shopsys\ShopBundle\Migrations\Version20190726105716
+    skip: false
+20190726115733:
+    class: Shopsys\ShopBundle\Migrations\Version20190726115733
+    skip: false

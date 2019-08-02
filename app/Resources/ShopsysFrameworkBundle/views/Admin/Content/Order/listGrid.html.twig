@@ -1,0 +1,6 @@
+{% extends '@!ShopsysFramework/Admin/Content/Order/listGrid.html.twig' %}
+
+{% block grid_value_cell_id_status_name %}
+    {% set exportStatus = row.order.exportStatus %}
+    {{ value }} (<span style="{{ exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_SUCCESS') ? 'color: green' }}{{ exportStatus == constant('Shopsys\\ShopBundle\\Model\\Order\\Order::EXPORT_ERROR') ? 'color: red' }}">{{ row.order.exportStatusName }}</span>)
+{% endblock %}

@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
+use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
@@ -20,6 +21,10 @@ use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
  */
 class Order extends BaseOrder
 {
+    public const EXPORT_SUCCESS = 'export_success';
+    public const EXPORT_NOT_YET = 'export_not_yet';
+    public const EXPORT_ERROR = 'export_error';
+
     /**
      * @var string
      *
@@ -79,6 +84,27 @@ class Order extends BaseOrder
     protected $updatedAt;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $exportStatus;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $exportedAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $customerTransferId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -108,6 +134,9 @@ class Order extends BaseOrder
         if ($this->transport !== null && $transport->isChooseStore()) {
             $this->store = $orderData->store;
         }
+
+        $this->exportStatus = $orderData->exportStatus;
+        $this->exportedAt = $orderData->exportedAt;
     }
 
     /**
@@ -238,5 +267,80 @@ class Order extends BaseOrder
     public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExportStatus(): string
+    {
+        return $this->exportStatus;
+    }
+
+    /**
+     * @param string $exportStatus
+     * @return string
+     */
+    private function setExportStatus(string $exportStatus): void
+    {
+        if (in_array($exportStatus, [self::EXPORT_SUCCESS, self::EXPORT_NOT_YET, self::EXPORT_ERROR], true) === false) {
+            throw new UnsupportedOrderExportStatusException(
+                sprintf('Export status `%s` is not supported.', $exportStatus)
+            );
+        }
+
+        $this->exportStatus = $exportStatus;
+    }
+
+    public function markAsExported(): void
+    {
+        $this->setExportStatus(self::EXPORT_SUCCESS);
+        $this->exportedAt = new DateTime();
+    }
+
+    public function markAsFailedExported(): void
+    {
+        $this->setExportStatus(self::EXPORT_ERROR);
+        $this->exportedAt = new DateTime();
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getExportedAt(): ?DateTime
+    {
+        return $this->exportedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExportStatusName(): string
+    {
+        if ($this->exportStatus === self::EXPORT_SUCCESS) {
+            return t('Přeneseno');
+        }
+        if ($this->exportStatus === self::EXPORT_NOT_YET) {
+            return t('Zatím nepřeneseno');
+        }
+        if ($this->exportStatus === self::EXPORT_ERROR) {
+            return t('Chyba při přenosu');
+        }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomerTransferId(): ?string
+    {
+        return $this->customerTransferId;
+    }
+
+    /**
+     * @param string|null $customerTransferId
+     */
+    public function setCustomerTransferId(?string $customerTransferId): void
+    {
+        $this->customerTransferId = $customerTransferId;
     }
 }

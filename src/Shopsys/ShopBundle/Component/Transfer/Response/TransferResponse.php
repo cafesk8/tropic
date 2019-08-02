@@ -12,7 +12,7 @@ class TransferResponse
     private $statusCode;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[]
+     * @var \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[]|null
      */
     private $responseData;
 
@@ -20,7 +20,7 @@ class TransferResponse
      * @param int $statusCode
      * @param \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[] $responseData
      */
-    public function __construct(int $statusCode, array $responseData)
+    public function __construct(int $statusCode, ?array $responseData = null)
     {
         $this->statusCode = $statusCode;
         $this->responseData = $responseData;
@@ -35,9 +35,9 @@ class TransferResponse
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[]
+     * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[]|null
      */
-    public function getResponseData(): array
+    public function getResponseData(): ?array
     {
         return $this->responseData;
     }
@@ -47,6 +47,6 @@ class TransferResponse
      */
     public function isEmpty(): bool
     {
-        return count($this->responseData) === 0;
+        return $this->responseData === null || count($this->responseData) === 0;
     }
 }

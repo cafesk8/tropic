@@ -16,6 +16,13 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
 class OrderItem extends BaseOrderItem
 {
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $ean;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
@@ -45,5 +52,21 @@ class OrderItem extends BaseOrderItem
             $unitName,
             $catnum
         );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEan(): ?string
+    {
+        return $this->ean;
+    }
+
+    /**
+     * @param string|null $ean
+     */
+    public function setEan(?string $ean): void
+    {
+        $this->ean = $ean;
     }
 }

@@ -123,4 +123,15 @@ class OrderRepository extends BaseOrderRepository
             return Money::create($value);
         }, $ordersValueForAllGivenCustomerIds);
     }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getNotExportedOrdersBatch(int $limit): array
+    {
+        return $this->getOrderRepository()->findBy([
+            'exportStatus' => [Order::EXPORT_NOT_YET, Order::EXPORT_ERROR],
+        ], null, $limit);
+    }
 }
