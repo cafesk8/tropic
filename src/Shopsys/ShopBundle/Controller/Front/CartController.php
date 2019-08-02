@@ -7,8 +7,11 @@ namespace Shopsys\ShopBundle\Controller\Front;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
+use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
+use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
@@ -329,9 +332,21 @@ class CartController extends FrontBaseController
                     self::AFTER_ADD_WINDOW_ACCESSORIES_LIMIT
                 );
 
+                $domainId = $this->domain->getId();
+
+                $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
+                $productsPrice = $orderPreview->getProductsPrice();
+                $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
+
                 return $this->render('@ShopsysShop/Front/Inline/Cart/afterAddWindow.html.twig', [
                     'accessories' => $accessories,
                     'ACCESSORIES_ON_BUY' => ModuleList::ACCESSORIES_ON_BUY,
+                    'cartItem' => $addProductResult->getCartItem(),
+                    'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
+                    'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
+                    'remainingPriceWithVat' => $remainingPriceWithVat,
+                    'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
+                    'quantifiedItemPrice' => $this->findQuantifiedItemPriceForProduct($addProductResult->getCartItem(), $orderPreview),
                 ]);
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Selected product no longer available or doesn\'t exist.'));
@@ -349,9 +364,7 @@ class CartController extends FrontBaseController
             $formErrors = $this->errorExtractor->getAllErrorsAsArray($form, $flashMessageBag);
             $this->getFlashMessageSender()->addErrorFlashTwig(
                 t('Unable to add product to cart:<br/><ul><li>{{ errors|raw }}</li></ul>'),
-                [
-                    'errors' => implode('</li><li>', $formErrors),
-                ]
+                ['errors' => implode('</li><li>', $formErrors)]
             );
         }
 
@@ -359,6 +372,30 @@ class CartController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Inline/Cart/afterAddWithErrorWindow.html.twig', [
             'errors' => $flashMessageBag->getErrorMessages(),
         ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem $cartItem
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice|null
+     */
+    private function findQuantifiedItemPriceForProduct(CartItem $cartItem, OrderPreview $orderPreview): ?QuantifiedItemPrice
+    {
+        $quantifiedProductIndex = null;
+        foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
+            if ($quantifiedProduct->getProduct()->getId() === $cartItem->getProduct()->getId()) {
+                $quantifiedProductIndex = $index;
+                break;
+            }
+        }
+
+        $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
+
+        if ($quantifiedProductIndex === null && array_key_exists($quantifiedProductIndex, $quantifiedItemsPrices) === false) {
+            return null;
+        }
+
+        return $quantifiedItemsPrices[$quantifiedProductIndex];
     }
 
     /**

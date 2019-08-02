@@ -140,4 +140,33 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
         return null;
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return array
+     */
+    public function getDistinguishingParametersForProduct(Product $product): array
+    {
+        $distinguishingParametersForProduct = [
+            'firstDistinguishingParameter' => null,
+            'secondDistinguishingParameter' => null,
+        ];
+
+        $productParameterValues = $this->getProductParameterValues($product);
+
+        $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
+        $mainVariantGroup = $mainVariant->getMainVariantGroup();
+
+        foreach ($productParameterValues as $productParameterValue) {
+            if ($mainVariantGroup !== null && $productParameterValue->getParameter()->getId() === $mainVariantGroup->getDistinguishingParameter()->getId()) {
+                $distinguishingParametersForProduct['firstDistinguishingParameter'] = $productParameterValue;
+            }
+
+            if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
+                $distinguishingParametersForProduct['secondDistinguishingParameter'] = $productParameterValue;
+            }
+        }
+
+        return $distinguishingParametersForProduct;
+    }
 }

@@ -264,4 +264,16 @@ class Product extends BaseProduct
     {
         return $this->gift;
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product
+     */
+    public function getMainVariant(): BaseProduct
+    {
+        if (!$this->isVariant()) {
+            throw new \Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException();
+        }
+
+        return $this->mainVariant;
+    }
 }

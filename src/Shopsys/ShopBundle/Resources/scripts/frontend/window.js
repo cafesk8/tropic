@@ -118,14 +118,15 @@
         $window.append($windowContent);
         if (options.buttonClose) {
             var $windowButtonClose = $('<a href="#" class="window-button-close window-popup__close js-window-button-close" title="' + Shopsys.translator.trans('Close (Esc)') + '"><i class="svg svg-remove-thin"></i></a>');
-            $windowButtonClose
-                .bind('click.window', options.eventClose)
-                .bind('click.windowClose', function () {
-                    $window.trigger('windowClose');
-                    return false;
-                });
             $window.append($windowButtonClose);
         }
+
+        $window.filterAllNodes('.js-window-button-close')
+            .bind('click.window', options.eventClose)
+            .bind('click.windowClose', function () {
+                $window.trigger('windowClose');
+                return false;
+            });
 
         $('body').keyup(function (event) {
             if (event.keyCode === Shopsys.keyCodes.ESCAPE) {

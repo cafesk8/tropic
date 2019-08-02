@@ -1,9 +1,4 @@
-{# TODO PRG: hidden by design, bcs we dont need to show message,
-- but I only hide it due to future implementation
-- message contains some information we need in this window #}
-{#{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }#}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
-{# TODO PRG: 31870 - join data #}
 <div class="box-popup-add">
     <div class="box-popup-add__content">
         <div class="box-popup-add__content__title">
@@ -11,40 +6,47 @@
                 {{ 'Do košíku jste přidali'|trans }}
             </span>
         </div>
-        <div class="box-popup-add__content__product js-not-implemented-yet">
+        <div class="box-popup-add__content__product">
             <div class="box-popup-add__content__product__image">
-                <img src="https://placeimg.com/101/101/any">
+                {{ image(cartItem.product, { size: 'thumbnail', lazy: false }) }}
             </div>
             <div class="box-popup-add__content__product__pieces display-none">
-                1 ks
+                {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
             </div>
             <div class="box-popup-add__content__product__name">
                 <span class="box-popup-add__content__product__name__title">
-                    Košile Indiana
+                    {{ cartItem.product.name }}
                 </span>
                 <span class="box-popup-add__content__product__name__price">
                     <span class="box-popup-add__content__product__name__price__main">
-                        1699 Kč
+                        {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
                     </span>
-                    <span class="box-popup-add__content__product__name__price__old">
-                        3099 Kč
+                    {% if quantifiedItemPrice.unitPrice.isActionPrice %}
+                        <span class="box-popup-add__content__product__name__price__old">
+                            {{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}
+                        </span>
+                    {% endif %}
+                </span>
+                {% set distinguishingParameters = distinguishingProductParameterValueForProduct(cartItem.product) %}
+                
+                {% if distinguishingParameters['firstDistinguishingParameter'] is not null %}
+                    <span class="box-popup-add__content__product__name__text">
+                        {{ distinguishingParameters['firstDistinguishingParameter'].parameter.name }}: {{ distinguishingParameters['firstDistinguishingParameter'].value.text }}
                     </span>
-                </span>
-                <span class="box-popup-add__content__product__name__text js-not-implemented-yet">
-                    {{ 'Barva'|trans }}: Light Olive
-                </span>
-                <span class="box-popup-add__content__product__name__text">
-                    {{ 'Velikost'|trans }}: <span class="in-badge in-badge--outline js-not-implemented-yet">36</span>
-                </span>
+                {% endif %}
+                {% if distinguishingParameters['secondDistinguishingParameter'] is not null %}
+                    <span class="box-popup-add__content__product__name__text">
+                        {{ distinguishingParameters['secondDistinguishingParameter'].parameter.name }}: <span class="in-badge in-badge--outline">{{ distinguishingParameters['secondDistinguishingParameter'].value.text }}</span>
+                    </span>
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="box-popup-add__action">
         <div class="box-popup-add__action__buttons">
-            {# TODO PRG: bind same function like to cross sign at right top #}
-            <div class="box-popup-add__action__buttons__back js-window-button-close js-not-implemented-yet">
+            <div class="box-popup-add__action__buttons__back">
                 <i class="svg svg-triangle"></i>
-                <a href="#" class="box-popup-add__action__buttons__back__link underline-small">
+                <a href="#" class="box-popup-add__action__buttons__back__link underline-small js-window-button-close">
                     {{ 'Zpět do e-shopu'|trans }}
                 </a>
             </div>
@@ -53,17 +55,23 @@
             </a>
         </div>
         <div class="box-popup-add__action__transport">
-            <div class="in-free-transport">
-                <div class="in-free-transport js-not-implemented-yet">
-                    <div class="in-free-transport__title">
-                        {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">1000</span>&nbsp;{{ 'a'|trans }}
-                        {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+            {% if isFreeTransportAndPaymentActive %}
+                {% if isPaymentAndTransportFree %}
+                    <div class="in-free-transport">
+                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
                     </div>
-                    <div class="in-free-transport__pipe in-free-transport__pipe--fat">
-                        <div class="in-free-transport__pipe__line" style="width: 60%;"></div>
+                {% else %}
+                    <div class="in-free-transport">
+                        <div class="in-free-transport__title">
+                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
+                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                        </div>
+                        <div class="in-free-transport__pipe">
+                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>
