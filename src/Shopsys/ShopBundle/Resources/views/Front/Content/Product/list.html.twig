@@ -28,7 +28,7 @@
         <div class="web__line js-not-implemented-yet">
             <div class="web__container web__container--big-padding">
                 <div class="box-category">
-                    <div class="box-category__description">
+                    <div class="box-category__description in-user-text">
                         {{ 'Kalhoty jsou dnes opravdu nezbytným základem šatníku každé ženy. Ne vždycky tomu tak ale bylo.
                         Byly doby, kdy bylo nemyslitelné, aby si žena oblékla kalhoty. Přitom dámské kalhoty jsou něco tak
                         slušivého. Naštěstí je dnes tento kousek naprostou klasikou'|trans }}
@@ -138,7 +138,7 @@
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
-    
+
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
