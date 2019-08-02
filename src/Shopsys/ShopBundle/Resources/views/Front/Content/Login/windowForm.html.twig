@@ -10,7 +10,7 @@
             <label class="input__label">{{ 'Email'|trans }}</label>
             {{ form_widget(form.email, { rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
-        <div class="box-login__item">
+        <div class="box-login__item box-login__item--move-top">
             <label class="input__label">{{ 'Password'|trans }}</label>
             {{ form_widget(form.password, { attr: { placeholder: '******** 6 nebo více znaků'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
