@@ -3,6 +3,7 @@
 @list-categories-item-button-position-small: 21px;
 
 @list-categories-columns-count: 3;
+@list-categories-small-btn-height: @btn-height - 16;
 
 .list-categories {
     .reset-ul();
@@ -84,14 +85,22 @@
 
 
     &__button {
-        display: none;
+        display: block;
+        position: absolute;
+        width: 100%;
+        bottom: @list-categories-item-button-position-small;
+        text-align: center;
+
+        @media @query-mobile {
+            .btn {
+                height: @list-categories-small-btn-height;
+                line-height: @list-categories-small-btn-height;
+                min-height: @list-categories-small-btn-height;
+            }
+        }
 
         @media @query-vl {
-            display: block;
-            position: absolute;
-            width: 100%;
             bottom: @list-categories-item-button-position;
-            text-align: center;
         }
 
         @media @query-xl {
