@@ -78,6 +78,7 @@ class MigrateProductImagesCommand extends Command
 
         while ($productsCount > 0) {
             foreach ($products as $product) {
+                $this->imageFacade->deleteImagesFromMigration($product);
                 $this->migrateProductImage($product, $symfonyStyleIo);
             }
         }

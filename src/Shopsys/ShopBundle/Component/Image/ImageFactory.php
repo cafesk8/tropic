@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Component\Image;
 
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageEntityConfig;
-use Shopsys\FrameworkBundle\Component\Image\ImageFactory as BaseImageFactory;
 use Shopsys\FrameworkBundle\Component\Image\Image as BaseImage;
+use Shopsys\FrameworkBundle\Component\Image\ImageFactory as BaseImageFactory;
 
 class ImageFactory extends BaseImageFactory
 {

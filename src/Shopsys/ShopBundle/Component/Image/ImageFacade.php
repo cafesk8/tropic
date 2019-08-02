@@ -32,4 +32,22 @@ class ImageFacade extends BaseImageFacade
         $this->em->persist($newImage);
         $this->em->flush($newImage);
     }
+
+    /**
+     * @param object $entity
+     */
+    public function deleteImagesFromMigration(object $entity): void
+    {
+        $allImages = $this->getAllImagesByEntity($entity);
+
+        $migratedImages = [];
+        /** @var \Shopsys\ShopBundle\Component\Image\Image $image */
+        foreach ($allImages as $image) {
+            if ($image->getMigrateFileName() !== null) {
+                $migratedImages[] = $image;
+            }
+        }
+
+        $this->deleteImages($entity, $migratedImages);
+    }
 }
