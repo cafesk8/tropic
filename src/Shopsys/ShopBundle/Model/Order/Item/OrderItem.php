@@ -15,6 +15,16 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
  */
 class OrderItem extends BaseOrderItem
 {
+    public const TYPE_PROMO_CODE = 'promo_code';
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem|null
+     *
+     * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Order\Item\OrderItem")
+     * @ORM\JoinColumn(name="main_order_item_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     */
+    private $mainOrderItem;
+
     /**
      * @var string|null
      *
@@ -68,5 +78,44 @@ class OrderItem extends BaseOrderItem
     public function setEan(?string $ean): void
     {
         $this->ean = $ean;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem|null
+     */
+    public function getPromoCodeForOrderItem(): ?self
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
+        foreach ($this->getOrder()->getItems() as $item) {
+            if ($item->isTypePromoCode() && $item->getMainOrderItem() === $this) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypePromoCode(): bool
+    {
+        return $this->type === self::TYPE_PROMO_CODE;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem|null
+     */
+    public function getMainOrderItem(): ?self
+    {
+        return $this->mainOrderItem;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem|null $mainOrderItem
+     */
+    public function setMainOrderItem(?self $mainOrderItem): void
+    {
+        $this->mainOrderItem = $mainOrderItem;
     }
 }

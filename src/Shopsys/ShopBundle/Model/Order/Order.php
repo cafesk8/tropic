@@ -4,13 +4,18 @@ namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
+use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
@@ -342,5 +347,52 @@ class Order extends BaseOrder
     public function setCustomerTransferId(?string $customerTransferId): void
     {
         $this->customerTransferId = $customerTransferId;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $quantifiedItemDiscount
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
+     * @param string $locale
+     */
+    protected function addOrderItemDiscount(
+        NumberFormatterExtension $numberFormatterExtension,
+        OrderPreview $orderPreview,
+        OrderItemFactoryInterface $orderItemFactory,
+        Price $quantifiedItemDiscount,
+        OrderItem $orderItem,
+        $locale
+    ) {
+        $name = sprintf(
+            '%s %s - %s',
+            t('Promo code', [], 'messages', $locale),
+            $numberFormatterExtension->formatPercent(-$orderPreview->getPromoCodeDiscountPercent(), $locale),
+            $orderItem->getName()
+        );
+
+        $orderItemFactory->createPromoCode(
+            $name,
+            $quantifiedItemDiscount->inverse(),
+            $orderItem
+        );
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getOrderDiscountPrice(): Money
+    {
+        $discountPriceWithVat = Money::zero();
+
+        /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
+        foreach ($this->getItems() as $item) {
+            if ($item->isTypePromoCode()) {
+                $discountPriceWithVat = $discountPriceWithVat->add($item->getPriceWithVat());
+            }
+        }
+
+        return $discountPriceWithVat;
     }
 }
