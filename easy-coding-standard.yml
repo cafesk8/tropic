@@ -3,6 +3,7 @@ imports:
 
 services:
     PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff: ~
 
 parameters:
     exclude_files:

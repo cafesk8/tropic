@@ -54,7 +54,7 @@ final class OrderEditTest extends TransactionFunctionalTestCase
      */
     private $orderPriceCalculation;
 
-    protected function setUp():void
+    protected function setUp(): void
     {
         parent::setUp();
 

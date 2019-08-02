@@ -147,7 +147,7 @@ class Product extends BaseProduct
         return $this->storeStocks;
     }
 
-    public function clearStoreStocks():void
+    public function clearStoreStocks(): void
     {
         $this->storeStocks->clear();
     }
