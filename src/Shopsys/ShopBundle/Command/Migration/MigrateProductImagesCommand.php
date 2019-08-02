@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Command\Migration;
 
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Shopsys\ShopBundle\Command\Migration\Exception\MigrationDataNotFoundException;
 use Shopsys\ShopBundle\Component\Image\Exception\MigrateImageToEntityFailedException;
 use Shopsys\ShopBundle\Component\Image\ImageFacade;
@@ -40,19 +42,27 @@ class MigrateProductImagesCommand extends Command
     private $imageFacade;
 
     /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @param \Doctrine\DBAL\Driver\Connection $connection
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
     public function __construct(
         Connection $connection,
         ProductFacade $productFacade,
-        ImageFacade $imageFacade
+        ImageFacade $imageFacade,
+        EntityManagerInterface $entityManager
     ) {
         parent::__construct();
         $this->connection = $connection;
         $this->productFacade = $productFacade;
         $this->imageFacade = $imageFacade;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -78,9 +88,25 @@ class MigrateProductImagesCommand extends Command
 
         while ($productsCount > 0) {
             foreach ($products as $product) {
-                $this->imageFacade->deleteImagesFromMigration($product);
-                $this->migrateProductImage($product, $symfonyStyleIo);
+                $this->entityManager->beginTransaction();
+                try {
+                    $this->imageFacade->deleteImagesFromMigration($product);
+                    $this->migrateProductImage($product, $symfonyStyleIo);
+                } catch (MigrationDataNotFoundException $exception) {
+                    $symfonyStyleIo->warning($exception->getMessage());
+                } catch (Exception $exception) {
+                    $symfonyStyleIo->error($exception->getMessage());
+                    $this->entityManager->clear();
+                    if ($this->entityManager->isOpen()) {
+                        $this->entityManager->rollback();
+                    }
+                }
             }
+            $this->entityManager->clear();
+
+            $page++;
+            $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
+            $productsCount = count($products);
         }
     }
 
