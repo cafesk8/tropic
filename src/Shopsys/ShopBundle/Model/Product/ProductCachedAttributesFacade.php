@@ -184,6 +184,19 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     {
         $locale = $this->localization->getLocale();
 
+        return new ProductDistinguishingParameterValue(
+            $this->findColorParameterValue($product, $locale),
+            $this->findSizeParameterColor($product, $locale)
+        );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     */
+    private function findColorParameterValue(Product $product, string $locale): ?ParameterValue
+    {
         $colorParameterValue = null;
         if ($product->isVariant() === true) {
             /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
@@ -191,14 +204,25 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             $mainVariantGroup = $mainVariant->getMainVariantGroup();
             if ($mainVariantGroup !== null && $mainVariantGroup->getDistinguishingParameter() !== null) {
                 $distinguishingParameter = $mainVariantGroup->getDistinguishingParameter();
-                $colorParameterValue = $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
-                    $mainVariant,
-                    $distinguishingParameter,
-                    $locale
-                );
+                $colorParameterValue =
+                    $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
+                        $mainVariant,
+                        $distinguishingParameter,
+                        $locale
+                    );
             }
         }
 
+        return $colorParameterValue !== null ? $colorParameterValue->getValue() : null;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     */
+    private function findSizeParameterColor(Product $product, string $locale): ?ParameterValue
+    {
         $sizeParameterValue = null;
         if ($product->getDistinguishingParameter() !== null) {
             $sizeParameterValue = $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
@@ -208,9 +232,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             );
         }
 
-        return new ProductDistinguishingParameterValue(
-            $colorParameterValue !== null ? $colorParameterValue->getValue() : null,
-            $sizeParameterValue !== null ? $sizeParameterValue->getValue() : null
-        );
+        return $sizeParameterValue !== null ? $sizeParameterValue->getValue() : null;
     }
 }
