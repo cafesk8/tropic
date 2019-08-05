@@ -16,9 +16,8 @@
                 <div class="list-articles__item__content__text">
                     {{ blogArticle.perex }}
                 </div>
-                {# TODO PRG TK-32653: add date format 8.listopadu 2018 #}
-                <div class="list-articles__item__content__date js-not-implemented-yet">
-                    {{ blogArticle.createdAt|date('j.n.Y') }}
+                <div class="list-articles__item__content__date">
+                    {{ blogArticle.createdAt|formatLongDate }}
                 </div>
             </div>
         </li>
