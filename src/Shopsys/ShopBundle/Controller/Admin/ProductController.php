@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Controller\Admin\ProductController as BaseProductController;
@@ -211,5 +212,17 @@ class ProductController extends BaseProductController
         return $this->render('@ShopsysShop/Admin/Content/Product/MassEdit/massEditFormPartial.html.twig', [
             'massEditForm' => $massEditForm->createView(),
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getGrid(QueryBuilder $queryBuilder): Grid
+    {
+        $grid = parent::getGrid($queryBuilder);
+
+        $grid->addColumn('catnum', 'p.catnum', t('SKU'), true);
+
+        return $grid;
     }
 }

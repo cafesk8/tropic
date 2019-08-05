@@ -82,6 +82,7 @@ class ProductTransferMapper
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
         $productData->ean = $productTransferResponseItemVariantData->getEan();
+        $productData->catnum = $productTransferResponseItemData->getTransferNumber();
 
         $productData->parameters = [];
         if ($productTransferResponseItemVariantData->getColorName() !== null) {

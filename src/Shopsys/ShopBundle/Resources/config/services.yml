@@ -93,6 +93,8 @@ services:
 
     Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency: ~
 
+    Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchProductFilterTranslation: '@Shopsys\ShopBundle\Form\Admin\AdvancedSearchProductFilterTranslation'
+
     Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory: ~
 
     Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:

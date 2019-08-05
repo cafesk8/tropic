@@ -132,6 +132,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $this->addActionPriceToPricesGroup($builder);
             $builder->add($this->getPricesGroup($builder, $product));
         }
+
+        $this->extendCatnum($builder->get('basicInformationGroup'));
     }
 
     /**
@@ -292,5 +294,16 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $pricesGroupBuilder->add($productCalculatedPricesGroup);
 
         return $pricesGroupBuilder;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function extendCatnum(FormBuilderInterface $builder): void
+    {
+        $codeFieldOptions = $builder->get('catnum')->getOptions();
+        $codeFieldOptions['label'] = t('SKU');
+        $codeFieldType = get_class($builder->get('catnum')->getType()->getInnerType());
+        $builder->add('catnum', $codeFieldType, $codeFieldOptions);
     }
 }
