@@ -11,6 +11,11 @@ use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseP
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository
+     */
+    protected $parameterRepository;
+
+    /**
      * This method returns for every main variant all values of distinguishing parameter used in variants with variantId if variant has that value
      *
      * Example result:
@@ -168,5 +173,34 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         }
 
         return $distinguishingParametersForProduct;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     *
+     * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
+     */
+    public function findProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
+    {
+        $locale = $this->localization->getLocale();
+
+        $colorParameterValue = null;
+        if ($product->isVariant() === true) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
+            $mainVariant = $product->getMainVariant();
+            $mainVariantGroup = $mainVariant->getMainVariantGroup();
+            if ($mainVariantGroup !== null && $mainVariantGroup->getDistinguishingParameter() !== null) {
+                $distinguishingParameter = $mainVariantGroup->getDistinguishingParameter();
+                $colorParameterValue = $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
+                    $mainVariant,
+                    $distinguishingParameter,
+                    $locale
+                );
+            }
+        }
+
+        return new ProductDistinguishingParameterValue(
+            $colorParameterValue !== null ? $colorParameterValue->getValue() : null
+        );
     }
 }
