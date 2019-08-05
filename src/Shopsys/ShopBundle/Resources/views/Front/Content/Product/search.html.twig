@@ -19,11 +19,7 @@
                     {{ 'Výsledky výrazu:'|trans }}
                 </div>
                 <div class="box-search__input">
-                    {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}
-                </div>
-                {# TODO PRG TK-32532: add js function to submit form above? #}
-                <div class="box-search__button js-not-implemented-yet">
-                    <input type="submit" name="" class="btn btn--success" value="{{ 'Hledat znovu'|trans }}" >
+                    {{ render(controller('ShopsysShopBundle:Front/Search:box', {'withButton': true})) }}
                 </div>
             </div>
         </div>

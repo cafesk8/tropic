@@ -13,9 +13,11 @@
                     data-autocomplete-url="{{ url('front_search_autocomplete') }}"
                 />
             </div>
-            <button type="submit" class="btn search__form__button">
-                {{ 'Search [verb]'|trans }}
-            </button>
+            {% if renderButton %}
+                <div class="box-search__button">
+                    <input type="submit" name="" class="btn btn--success" value="{{ 'Hledat znovu'|trans }}" >
+                </div>
+            {% endif %}
         </div>
         <div id="js-search-autocomplete-results"></div>
     </form>

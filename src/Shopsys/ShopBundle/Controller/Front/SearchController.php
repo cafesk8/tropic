@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Controller\Front;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends FrontBaseController
 {
@@ -58,14 +59,17 @@ class SearchController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param bool $withButton
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function boxAction(Request $request)
+    public function boxAction(Request $request, bool $withButton = false): Response
     {
         $searchText = $request->query->get(ProductController::SEARCH_TEXT_PARAMETER);
 
         return $this->render('@ShopsysShop/Front/Content/Search/searchBox.html.twig', [
             'searchText' => $searchText,
             'SEARCH_TEXT_PARAMETER' => ProductController::SEARCH_TEXT_PARAMETER,
+            'renderButton' => $withButton,
         ]);
     }
 }
