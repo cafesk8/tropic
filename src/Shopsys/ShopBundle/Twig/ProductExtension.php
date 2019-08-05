@@ -102,6 +102,9 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     /**
      * @inheritDoc
      */
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     */
     public function getProductListDisplayName(Product $product)
     {
         $productDistinguishingParameterValue = $this->productCachedAttributesFacade->findProductDistinguishingParameterValue($product);
@@ -110,6 +113,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
         if ($productDistinguishingParameterValue->getColorParameterValue() !== null) {
             $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getColorParameterValue()->getText();
+        }
+
+        if ($productDistinguishingParameterValue->getSizeParameterValue() !== null) {
+            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getSizeParameterValue()->getText();
         }
 
         return $productListDisplayName;

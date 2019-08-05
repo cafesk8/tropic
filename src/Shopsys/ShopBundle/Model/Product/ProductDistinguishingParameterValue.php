@@ -14,11 +14,18 @@ class ProductDistinguishingParameterValue
     private $colorParameterValue;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null $colorParameterValue
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
      */
-    public function __construct(?ParameterValue $colorParameterValue)
+    private $sizeParameterValue;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null $colorParameterValue
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null $sizeParameterValue
+     */
+    public function __construct(?ParameterValue $colorParameterValue, ?ParameterValue $sizeParameterValue)
     {
         $this->colorParameterValue = $colorParameterValue;
+        $this->sizeParameterValue = $sizeParameterValue;
     }
 
     /**
@@ -27,5 +34,13 @@ class ProductDistinguishingParameterValue
     public function getColorParameterValue(): ?ParameterValue
     {
         return $this->colorParameterValue;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     */
+    public function getSizeParameterValue(): ?ParameterValue
+    {
+        return $this->sizeParameterValue;
     }
 }

@@ -199,8 +199,18 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             }
         }
 
+        $sizeParameterValue = null;
+        if ($product->getDistinguishingParameter() !== null) {
+            $sizeParameterValue = $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
+                $product,
+                $product->getDistinguishingParameter(),
+                $locale
+            );
+        }
+
         return new ProductDistinguishingParameterValue(
-            $colorParameterValue !== null ? $colorParameterValue->getValue() : null
+            $colorParameterValue !== null ? $colorParameterValue->getValue() : null,
+            $sizeParameterValue !== null ? $sizeParameterValue->getValue() : null
         );
     }
 }
