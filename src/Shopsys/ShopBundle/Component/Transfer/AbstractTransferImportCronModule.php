@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Component\Transfer;
 
 use Exception;
+use Shopsys\ShopBundle\Component\Rest\Exception\RestException;
 use Shopsys\ShopBundle\Component\Transfer\Exception\TransferException;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
@@ -32,7 +33,15 @@ abstract class AbstractTransferImportCronModule extends AbstractTransferCronModu
      */
     protected function runTransfer(): bool
     {
-        $transferResponse = $this->getTransferResponse();
+        try {
+            $transferResponse = $this->getTransferResponse();
+        } catch (RestException $exception) {
+            $this->logger->addError(
+                sprintf('Transfer was aborted because of connection exception `%s`', $exception->getMessage())
+            );
+
+            return false;
+        }
 
         if ($transferResponse->isEmpty()) {
             return false;
