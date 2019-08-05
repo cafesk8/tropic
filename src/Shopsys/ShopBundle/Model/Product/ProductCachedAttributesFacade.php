@@ -198,19 +198,23 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     private function findColorParameterValue(Product $product, string $locale): ?ParameterValue
     {
         $colorParameterValue = null;
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
         if ($product->isVariant() === true) {
-            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
             $mainVariant = $product->getMainVariant();
-            $mainVariantGroup = $mainVariant->getMainVariantGroup();
-            if ($mainVariantGroup !== null && $mainVariantGroup->getDistinguishingParameter() !== null) {
-                $distinguishingParameter = $mainVariantGroup->getDistinguishingParameter();
-                $colorParameterValue =
-                    $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
-                        $mainVariant,
-                        $distinguishingParameter,
-                        $locale
-                    );
-            }
+        } else {
+            $mainVariant = $product;
+        }
+        $mainVariantGroup = $mainVariant->getMainVariantGroup();
+
+        if ($mainVariantGroup !== null && $mainVariantGroup->getDistinguishingParameter() !== null) {
+            $distinguishingParameter = $mainVariantGroup->getDistinguishingParameter();
+            $colorParameterValue =
+                $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
+                    $mainVariant,
+                    $distinguishingParameter,
+                    $locale
+                );
         }
 
         return $colorParameterValue !== null ? $colorParameterValue->getValue() : null;
