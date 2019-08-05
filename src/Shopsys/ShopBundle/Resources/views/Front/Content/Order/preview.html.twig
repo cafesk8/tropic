@@ -27,25 +27,9 @@
             {{ 'Vaše objednávka'|trans }}
         </span>
     </div>
-    <div class="box-preview__row {% if orderStep == "1" %} box-preview__row--dark{% endif %}">
-        {% if orderStep == "1" %}
-            <div class="box-preview__coupone">
-                <div class="box-preview__coupone__title">
-                    <label>
-                        <input type="checkbox" class="css-checkbox js-promo-code-toggle-checkbox">
-                        <span class="css-label-checkbox">
-                            {{ 'Máte slevový kód?'|trans }}
-                        </span>
-                    </label>
-                </div>
-                <div class="box-preview__coupone__input js-promo-code-toggle-content js-not-implemented-yet">
-                    <label for="orderCoupone" class="input__label">{{ 'Zadejte kód'|trans }}</label>
-                    <input type="text" id="orderCoupone" class="input" name="coupone" value="">
-                    <button class="box-preview__coupone__input__button btn btn--success btn--small" type="button">{{ 'Použít'|trans }}</button>
-                </div>
-            </div>
-        {% endif %}
-    </div>
+    {% if orderStep == "1" %}
+        {{ render(controller('ShopsysShopBundle:Front/PromoCode:index')) }}
+    {% endif %}
     <div class="box-preview__row box-preview__row--no-bottom">
         {% if orderStep > 1 %}
             <ul class="list-cart-preview">
@@ -68,7 +52,7 @@
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
                             {{ 'Sleva'|trans }}
-                            <span class="next-line"></span> {{ orderPreview.promoCode.code }}
+                            <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': orderPreview.promoCode.code }) }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
                             - {{ orderPreview.totalDiscount.priceWithVat|price }}

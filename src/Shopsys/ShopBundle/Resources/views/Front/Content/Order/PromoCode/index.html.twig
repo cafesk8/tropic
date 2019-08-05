@@ -1,25 +1,19 @@
-<div class="box-promo-code">
-    {% if validEnteredPromoCode is null %}
-        <label class="box-promo-code__input">
-            {{ 'Promo code'|trans }}:
-            <input type="text" value="" id="js-promo-code-input" class="input" data-apply-code-url="{{ url('front_promo_code_apply') }}"/>
-        </label>
-        <button type="button" id="js-promo-code-submit-button" class="btn box-promo-code__btn">{{ 'Apply'|trans }}</button>
-    {% else %}
-        <span class="box-promo-code__added">
-            <span class="box-promo-code__added__discount">
-                {{ 'Your discount'|trans }}:
-                <strong>
-                    {% if validEnteredPromoCode.isUseNominalDiscount %}
-                        {{ validEnteredPromoCode.nominalDiscount|priceWithCurrency(currency) }}
-                    {% else %}
-                        {{ validEnteredPromoCode.percent|formatPercent }}
-                    {% endif %}
-                </strong>
-            </span>
-            <a href="{{ url('front_promo_code_remove') }}" id="js-promo-code-remove-button" class="box-promo-code__added__remove">
-                <i class="svg svg-remove"></i>
-            </a>
-        </span>
-    {% endif %}
-</div>
+{% if validEnteredPromoCode is null %}
+    <div class="box-preview__row box-preview__row--dark">
+        <div class="box-preview__coupone">
+            <div class="box-preview__coupone__title">
+                <label>
+                    <input type="checkbox" class="css-checkbox js-promo-code-toggle-checkbox">
+                    <span class="css-label-checkbox">
+                        {{ 'Máte slevový kód?'|trans }}
+                    </span>
+                </label>
+            </div>
+            <div class="box-preview__coupone__input js-promo-code-toggle-content">
+                <label for="orderCoupone" class="input__label">{{ 'Zadejte kód'|trans }}</label>
+                <input type="text" id="js-promo-code-input" class="input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
+                <button class="box-preview__coupone__input__button btn btn--success btn--small" id="js-promo-code-submit-button" type="button">{{ 'Použít'|trans }}</button>
+            </div>
+        </div>
+    </div>
+{% endif %}
