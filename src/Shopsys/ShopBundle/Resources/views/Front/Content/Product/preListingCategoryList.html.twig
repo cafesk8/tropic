@@ -62,25 +62,8 @@
             </div>
         </div>
     </div>
-    {# TODO PRG: add top product for category #}
-    {% if 1==2 %}
-        {#% if topProducts is not empty %#}
-        <div class="web__line">
-            <div class="web__container web__container--big-padding">
-                <div id="top-products" class="box-top-products">
-                    <div class="box-top-products__title">
-                        {{ 'Bushmani mají nejraději'|trans }}
-                    </div>
-                    <div class="box-top-products__in">
-                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3', 'top-products') }}
-                    </div>
-                    <div class="box-top-products__bottom">
-                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
+
+    {{ render(controller('ShopsysShopBundle:Front/BestsellingProduct:list', {'category': category})) }}
 
     {# TODO CODER: style blogArticles (Zeny na cestach in inVision) #}
     {% if categoriesBlogArticles|length > 0 %}
