@@ -315,14 +315,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationGroup
      */
-    private function extendCatnum(FormBuilderInterface $builder): void
+    private function extendCatnum(FormBuilderInterface $basicInformationGroup): void
     {
-        $codeFieldOptions = $builder->get('catnum')->getOptions();
-        $codeFieldOptions['label'] = t('SKU');
-        $codeFieldType = get_class($builder->get('catnum')->getType()->getInnerType());
-        $builder->add('catnum', $codeFieldType, $codeFieldOptions);
+        $catnumFieldOptions = $basicInformationGroup->get('catnum')->getOptions();
+        $catnumFieldOptions['label'] = t('SKU');
+        $catnumFieldType = get_class($basicInformationGroup->get('catnum')->getType()->getInnerType());
+        $basicInformationGroup->add('catnum', $catnumFieldType, $catnumFieldOptions);
     }
 
     /**
