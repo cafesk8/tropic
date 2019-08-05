@@ -96,20 +96,31 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      */
     public function getProductDisplayName(Product $product)
     {
-        return parent::getProductDisplayName($product);
+        $productDisplayName = parent::getProductDisplayName($product);
+
+        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
     }
 
     /**
      * @inheritDoc
      */
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     */
     public function getProductListDisplayName(Product $product)
     {
-        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->findProductDistinguishingParameterValue($product);
+        $productDisplayName = parent::getProductListDisplayName($product);
 
-        $productListDisplayName = parent::getProductListDisplayName($product);
+        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $productListDisplayName
+     * @return string
+     */
+    protected function addParameterValueToProductDisplayName(
+        Product $product,
+        string $productListDisplayName
+    ): string {
+        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->findProductDistinguishingParameterValue($product);
 
         if ($productDistinguishingParameterValue->getColorParameterValue() !== null) {
             $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getColorParameterValue()->getText();
