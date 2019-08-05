@@ -14,22 +14,23 @@
                     </div>
                 </a>
             </li>
-            {% if loop.index == 2 %}
-                <li class="list-categories__item js-not-implemented-yet">
-                    <span class="list-categories__item__text">
-                        {{ 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně'|trans }}
-                    </span>
-                </li>
-            {% endif %}
+            {% if showText is not defined or showText == true %}
+                {% if loop.index == 2 %}
+                    <li class="list-categories__item js-not-implemented-yet">
+                        <span class="list-categories__item__text">
+                            {{ 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně'|trans }}
+                        </span>
+                    </li>
+                {% endif %}
 
-            {% if loop.index == 5 %}
-                <li class="list-categories__item js-not-implemented-yet">
-                    <span class="list-categories__item__text list-categories__item__text--text-right">
-                        {{ 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.'|trans }}
-                    </span>
-                </li>
+                {% if loop.index == 5 %}
+                    <li class="list-categories__item js-not-implemented-yet">
+                        <span class="list-categories__item__text list-categories__item__text--text-right">
+                            {{ 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.'|trans }}
+                        </span>
+                    </li>
+                {% endif %}
             {% endif %}
-
         {% endfor %}
     </ul>
 {% endif %}
