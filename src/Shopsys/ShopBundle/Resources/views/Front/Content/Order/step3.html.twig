@@ -80,7 +80,7 @@
                     {{ form_widget(form.companyCustomer, {
                         attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
                     }}
-                    <label for="{{ form.companyCustomer.vars.id }}" class="css-label-checkbox">
+                    <label for="{{ form.companyCustomer.vars.id }}" class="css-checkbox__image">
                         {{ 'I buy on company behalf'|trans }}
                     </label>
                     <div id="js-company-fields" class="margin-top-20">
@@ -145,7 +145,7 @@
                     <div class="form-line">
 
                         {{ form_widget(form.legalConditionsAgreement, { attr: { class: 'css-checkbox' }}) }}
-                        <label for="{{ form.legalConditionsAgreement.vars.id }}" class="css-label-checkbox">
+                        <label for="{{ form.legalConditionsAgreement.vars.id }}" class="css-checkbox__image">
                             {% if privacyPolicyArticle is not null and termsAndConditionsArticle is not null %}
                                 {% set privacyPolicyUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
                                 {% set termsAndConditionsUrl = url('front_article_detail', {'id': termsAndConditionsArticle.id}) %}
