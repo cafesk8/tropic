@@ -96,7 +96,6 @@
                     {{ label }}
                 {% endif %}
                 {% if not withoutColon|default(false) %}:{% endif %}
-                {% if required %}<span class="form-input-required">*</span>{% endif %}
             </label>
         {% endif %}
     {% endspaceless %}
@@ -112,13 +111,14 @@
 {% block form_errors %}
     {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default(''))}) %}
     {% spaceless %}
-        <span class="js-validation-errors-list js-validation-error-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }} {{ errors|length > 0 ? '' : 'display-none' }}">
+        <span class="js-validation-errors-list js-validation-error-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }}">
             <ul class="{{ form.parent ? 'form-error__list' : 'in-message__list' }}">
                 {% if errors|length > 0 %}
                     {% for error in errors %}
                         <li>{{ error.message }}</li>
                     {% endfor %}
                 {% endif %}
+                {% if not form.vars.required %}<span class="form-input-not-required">Nepovinný údaj</span>{% endif %}
             </ul>
         </span>
     {% endspaceless %}
