@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Rest;
 
+use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseCodeException;
 use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseException;
 
 class RestClient
@@ -70,7 +71,13 @@ class RestClient
      */
     public function get(string $url): RestResponse
     {
-        return $this->request(self::METHOD_GET, $url);
+        $response = $this->request(self::METHOD_GET, $url);
+
+        if ($response->getCode() !== self::EXPECTED_CODE_GET) {
+            throw new UnexpectedResponseCodeException($response->getCode(), self::EXPECTED_CODE_GET, self::METHOD_GET, $url);
+        }
+
+        return $response;
     }
 
     /**
@@ -80,7 +87,13 @@ class RestClient
      */
     public function post(string $url, array $requestData): RestResponse
     {
-        return $this->request(self::METHOD_POST, $url, $requestData);
+        $response = $this->request(self::METHOD_POST, $url, $requestData);
+
+        if (in_array($response->getCode(), [self::EXPECTED_CODE_POST, self::EXPECTED_CODE_GET], true) === false) {
+            throw new UnexpectedResponseCodeException($response->getCode(), self::EXPECTED_CODE_GET, self::METHOD_POST, $url);
+        }
+
+        return $response;
     }
 
     /**
@@ -90,7 +103,13 @@ class RestClient
      */
     public function put(string $url, $requestData): RestResponse
     {
-        return $this->request(self::METHOD_PUT, $url, $requestData);
+        $response = $this->request(self::METHOD_PUT, $url, $requestData);
+
+        if ($response->getCode() !== self::EXPECTED_CODE_PUT) {
+            throw new UnexpectedResponseCodeException($response->getCode(), self::EXPECTED_CODE_GET, self::METHOD_PUT, $url);
+        }
+
+        return $response;
     }
 
     /**
@@ -99,7 +118,13 @@ class RestClient
      */
     public function delete(string $url): RestResponse
     {
-        return $this->request(self::METHOD_DELETE, $url);
+        $response = $this->request(self::METHOD_DELETE, $url);
+
+        if ($response->getCode() !== self::EXPECTED_CODE_DELETE) {
+            throw new UnexpectedResponseCodeException($response->getCode(), self::EXPECTED_CODE_GET, self::METHOD_DELETE, $url);
+        }
+
+        return $response;
     }
 
     /**
