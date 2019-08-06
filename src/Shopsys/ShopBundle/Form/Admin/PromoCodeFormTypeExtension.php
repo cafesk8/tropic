@@ -231,7 +231,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         'groups' => self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT,
                     ]),
                     new NotBlank([
-                        'message' => t('Vyplňte prosím nominální hodnotu slevy.'),
+                        'message' => 'Vyplňte prosím nominální hodnotu slevy.',
                         'groups' => self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT,
                     ]),
                 ],
@@ -345,14 +345,14 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => t('Vyplňte prosím množství.'),
+                        'message' => 'Vyplňte prosím množství.',
                     ]),
                     new Range([
                         'min' => 1,
                         'max' => PromoCode::MAX_CODES_GENERATE,
                     ]),
                 ],
-                'invalid_message' => t('Zadejte prosím celé číslo.'),
+                'invalid_message' => 'Zadejte prosím celé číslo.',
             ]);
 
         return $builderMassPromoCodeGroup;

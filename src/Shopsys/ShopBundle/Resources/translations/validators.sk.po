@@ -64,6 +64,9 @@ msgstr ""
 msgid "Please choose a valid combination of transport and payment"
 msgstr ""
 
+msgid "Please choose advertisement type"
+msgstr ""
+
 msgid "Please choose article placement"
 msgstr ""
 
@@ -89,6 +92,9 @@ msgid "Please enter country of a store"
 msgstr ""
 
 msgid "Please enter date of creation"
+msgstr ""
+
+msgid "Please enter discount percentage"
 msgstr ""
 
 msgid "Please enter e-mail"
@@ -154,6 +160,9 @@ msgstr ""
 msgid "Quantity must be greater than {{ compared_value }}"
 msgstr ""
 
+msgid "Region nesmí být delší než {{ limit }} znaků"
+msgstr ""
+
 msgid "Store name cannot be longer than {{ limit }} characters"
 msgstr ""
 
@@ -178,6 +187,12 @@ msgstr ""
 msgid "Vyplňte prosím množství."
 msgstr ""
 
+msgid "Vyplňte prosím nominální hodnotu slevy."
+msgstr ""
+
+msgid "Vyplňte prosím text tlačítka"
+msgstr ""
+
 msgid "Vyplňte, prosím, PSČ prodejny"
 msgstr ""
 
@@ -194,6 +209,9 @@ msgid "You have to agree with privacy policy"
 msgstr ""
 
 msgid "You have to agree with terms and conditions and privacy policy"
+msgstr ""
+
+msgid "Zadejte prosím celé číslo."
 msgstr ""
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
