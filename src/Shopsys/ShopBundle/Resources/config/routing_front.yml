@@ -170,3 +170,11 @@ front_store_list:
 front_contact_index:
     path: /contact/
     defaults: { _controller: ShopsysShopBundle:Front\Contact:index }
+
+front_store_index:
+    path: /stores/
+    defaults: { _controller: ShopsysShopBundle:Front\Store:index }
+
+front_store_detail:
+    path: /stores/detail/
+    defaults: { _controller: ShopsysShopBundle:Front\Store:storeDetail }
