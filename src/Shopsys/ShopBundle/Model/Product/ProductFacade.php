@@ -70,6 +70,11 @@ class ProductFacade extends BaseProductFacade
     private $categoryRepository;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade
+     */
+    private $cachedProductDistinguishingParameterValueFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -97,6 +102,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
+     * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -125,7 +131,8 @@ class ProductFacade extends BaseProductFacade
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
         ProductDataFactory $productDataFactory,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
     ) {
         parent::__construct(
             $em,
@@ -157,6 +164,7 @@ class ProductFacade extends BaseProductFacade
         $this->storeFacade = $storeFacade;
         $this->productDataFactory = $productDataFactory;
         $this->categoryRepository = $categoryRepository;
+        $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
     }
 
     /**
@@ -195,6 +203,8 @@ class ProductFacade extends BaseProductFacade
 
         $this->updateProductStoreStocks($productData, $product);
         $this->updateMainVariantGroup($productData, $product);
+
+        $this->cachedProductDistinguishingParameterValueFacade->invalidCacheByProduct($product);
 
         return $product;
     }

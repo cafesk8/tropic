@@ -49,6 +49,20 @@ class CachedProductDistinguishingParameterValueFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    public function invalidCacheByProduct(Product $product): void
+    {
+        $cacheId = $product->getId() . '*';
+        $this->cacheProvider->delete($cacheId);
+    }
+
+    public function invalidAll(): void
+    {
+        $this->cacheProvider->delete('*');
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
      * @return string
      */
