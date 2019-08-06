@@ -18,9 +18,9 @@ class RestResponse
 
     /**
      * @param int $code
-     * @param array $data
+     * @param array|null $data
      */
-    public function __construct(int $code, array $data)
+    public function __construct(int $code, ?array $data)
     {
         $this->code = $code;
         $this->data = $data;
