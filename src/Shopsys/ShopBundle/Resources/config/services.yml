@@ -71,6 +71,13 @@ services:
         arguments:
             - '@monolog.logger.cron'
 
+    Shopsys\ShopBundle\Component\Redis\RedisFacade:
+        arguments:
+            $allClients: !tagged snc_redis.client
+            $persistentClients:
+                - '@snc_redis.global'
+                - '@snc_redis.session'
+
     Shopsys\ShopBundle\Component\Rest\RestClient:
         class: Shopsys\ShopBundle\Component\Rest\RestClient
         factory: 'Shopsys\ShopBundle\Component\Rest\RestClientFactory:create'

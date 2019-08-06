@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\Common\Cache\CacheProvider;
+use Shopsys\ShopBundle\Component\Redis\RedisFacade;
 
 class CachedProductDistinguishingParameterValueFacade
 {
@@ -16,11 +17,18 @@ class CachedProductDistinguishingParameterValueFacade
     private $cacheProvider;
 
     /**
-     * @param \Doctrine\Common\Cache\CacheProvider $cacheProvider
+     * @var \Shopsys\ShopBundle\Component\Redis\RedisFacade
      */
-    public function __construct(CacheProvider $cacheProvider)
+    private $redisFacade;
+
+    /**
+     * @param \Doctrine\Common\Cache\CacheProvider $cacheProvider
+     * @param \Shopsys\ShopBundle\Component\Redis\RedisFacade $redisFacade
+     */
+    public function __construct(CacheProvider $cacheProvider, RedisFacade $redisFacade)
     {
         $this->cacheProvider = $cacheProvider;
+        $this->redisFacade = $redisFacade;
     }
 
     /**
@@ -52,13 +60,13 @@ class CachedProductDistinguishingParameterValueFacade
      */
     public function invalidCacheByProduct(Product $product): void
     {
-        $cacheId = $product->getId() . '*';
-        $this->cacheProvider->delete($cacheId);
+        $cacheId = $product->getId();
+        $this->redisFacade->clearCacheByPattern('distinguishing_parameters', $cacheId);
     }
 
     public function invalidAll(): void
     {
-        $this->cacheProvider->delete('*');
+        $this->redisFacade->clearCacheByPattern('distinguishing_parameters');
     }
 
     /**
