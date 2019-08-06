@@ -44,6 +44,11 @@
         &.active {
             display: block;
             z-index: @z-index-menu;
+
+            @media @query-vl {
+                position: relative;
+                top: 0!important;
+            }
         }
     }
 
