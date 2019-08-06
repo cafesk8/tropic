@@ -31,11 +31,6 @@ services:
         arguments:
             - '@doctrine.dbal.migration_connection'
 
-    NinjaMutex\Lock\LockInterface:
-        class: NinjaMutex\Lock\PhpRedisLock
-        arguments:
-            - '@snc_redis.global'
-
     League\Flysystem\MountManager:
         arguments:
             -
