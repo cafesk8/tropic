@@ -8,8 +8,6 @@
         var $productsWithControls = $('.js-product-list-ajax-filter-products-with-controls');
         var $productFilterForm = $('form[name="product_filter_form"]');
         var $showResultsButton = $('.js-product-filter-show-result-button');
-        var $resetFilterButton = $('.js-product-filter-reset-button');
-        var $mobilelFilterOpener = $('.js-product-filter-opener');
         var requestTimer = null;
         var requestDelay = 1000;
 

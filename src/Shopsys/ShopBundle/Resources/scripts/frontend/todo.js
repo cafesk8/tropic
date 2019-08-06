@@ -1,13 +1,13 @@
 /* TODO PRG */
 
 $(document).ready(function () {
-    $('.js-product-filter-opener').click(function(e){
+    $('.js-product-filter-opener').click(function (e) {
         e.preventDefault();
         setFilterPosition();
     });
 
     var setFilterPosition = function () {
-        if($(window).width() < 1024){
+        if ($(window).width() < 1024) {
             var position = $('.js-product-list').position();
             var newPosition = position.top;
             $('.js-product-list-panel').toggleClass('active');
@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
     };
 
-    $( window ).resize(function() {
+    $(window).resize(function () {
         setFilterPosition();
     });
 });
