@@ -82,11 +82,11 @@ class MigrateProductImagesCommand extends Command
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
         $page = 0;
+        do {
+            $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
+            $productsCount = count($products);
+            $page++;
 
-        $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
-        $productsCount = count($products);
-
-        while ($productsCount > 0) {
             foreach ($products as $product) {
                 $this->entityManager->beginTransaction();
                 try {
@@ -103,11 +103,7 @@ class MigrateProductImagesCommand extends Command
                 }
             }
             $this->entityManager->clear();
-
-            $page++;
-            $products = $this->productFacade->getWithEan(self::BATCH_LIMIT, $page);
-            $productsCount = count($products);
-        }
+        } while ($productsCount > 0);
     }
 
     /**
