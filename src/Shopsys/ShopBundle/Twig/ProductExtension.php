@@ -123,11 +123,11 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         $productDistinguishingParameterValue = $this->productCachedAttributesFacade->findProductDistinguishingParameterValue($product);
 
         if ($productDistinguishingParameterValue->getColorParameterValue() !== null) {
-            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getColorParameterValue()->getText();
+            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getColorParameterValue();
         }
 
         if ($productDistinguishingParameterValue->getSizeParameterValue() !== null) {
-            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getSizeParameterValue()->getText();
+            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getSizeParameterValue();
         }
 
         return $productListDisplayName;

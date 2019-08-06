@@ -226,9 +226,9 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @return string|null
      */
-    private function findColorParameterValue(Product $product, string $locale): ?ParameterValue
+    private function findColorParameterValue(Product $product, string $locale): ?string
     {
         $colorParameterValue = null;
 
@@ -250,15 +250,15 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
                 );
         }
 
-        return $colorParameterValue !== null ? $colorParameterValue->getValue() : null;
+        return $colorParameterValue !== null ? $colorParameterValue->getValue()->getText() : null;
     }
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @return string|null
      */
-    private function findSizeParameterColor(Product $product, string $locale): ?ParameterValue
+    private function findSizeParameterColor(Product $product, string $locale): ?string
     {
         $sizeParameterValue = null;
         if ($product->getDistinguishingParameter() !== null) {
@@ -269,6 +269,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             );
         }
 
-        return $sizeParameterValue !== null ? $sizeParameterValue->getValue() : null;
+        return $sizeParameterValue !== null ? $sizeParameterValue->getValue()->getText() : null;
     }
 }

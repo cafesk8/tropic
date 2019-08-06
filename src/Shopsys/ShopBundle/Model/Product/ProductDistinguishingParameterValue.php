@@ -4,42 +4,40 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
-
 class ProductDistinguishingParameterValue
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @var string|null
      */
     private $colorParameterValue;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @var string|null
      */
     private $sizeParameterValue;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null $colorParameterValue
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null $sizeParameterValue
+     * @param string|null $colorParameterValue
+     * @param string|null $sizeParameterValue
      */
-    public function __construct(?ParameterValue $colorParameterValue, ?ParameterValue $sizeParameterValue)
+    public function __construct(?string $colorParameterValue, ?string $sizeParameterValue)
     {
         $this->colorParameterValue = $colorParameterValue;
         $this->sizeParameterValue = $sizeParameterValue;
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @return string|null
      */
-    public function getColorParameterValue(): ?ParameterValue
+    public function getColorParameterValue(): ?string
     {
         return $this->colorParameterValue;
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @return string|null
      */
-    public function getSizeParameterValue(): ?ParameterValue
+    public function getSizeParameterValue(): ?string
     {
         return $this->sizeParameterValue;
     }
