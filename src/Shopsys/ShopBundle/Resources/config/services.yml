@@ -331,6 +331,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapDumperFactory: '@Shopsys\ShopBundle\Model\Sitemap\SitemapDumperFactory'
 
+    Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@Shopsys\ShopBundle\Model\Feed\FeedExportFactory'
+
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagGridFactory: '@Shopsys\ShopBundle\Model\Product\Flag\FlagGridFactory'
