@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
+use Shopsys\FrameworkBundle\Model\Localization\Localization;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
@@ -14,6 +17,27 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository
      */
     protected $parameterRepository;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade
+     */
+    private $cachedProductDistinguishingParameterValueFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
+     * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+     */
+    public function __construct(
+        ProductPriceCalculationForUser $productPriceCalculationForUser,
+        ParameterRepository $parameterRepository,
+        Localization $localization,
+        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+    ) {
+        parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
+        $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
+    }
 
     /**
      * This method returns for every main variant all values of distinguishing parameter used in variants with variantId if variant has that value
@@ -184,10 +208,19 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     {
         $locale = $this->localization->getLocale();
 
-        return new ProductDistinguishingParameterValue(
-            $this->findColorParameterValue($product, $locale),
-            $this->findSizeParameterColor($product, $locale)
-        );
+        $productDistinguishingParameterValue =
+            $this->cachedProductDistinguishingParameterValueFacade->findProductDistinguishingParameterValue($product, $locale);
+
+        if ($productDistinguishingParameterValue === null) {
+            $productDistinguishingParameterValue = new ProductDistinguishingParameterValue(
+                $this->findColorParameterValue($product, $locale),
+                $this->findSizeParameterColor($product, $locale)
+            );
+
+            $this->cachedProductDistinguishingParameterValueFacade->saveToCache($product, $locale, $productDistinguishingParameterValue);
+        }
+
+        return $productDistinguishingParameterValue;
     }
 
     /**
