@@ -75,7 +75,7 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
 
         $restResponseData = $restResponse->getData();
         $transferDataItems = [];
-        foreach ($restResponseData['CustomerList'] as $restData) {
+        foreach ($restResponseData as $restData) {
             $transferDataItems[] = new CustomerTransferResponseItemData($restData);
         }
         return new TransferResponse($restResponse->getCode(), $transferDataItems);
