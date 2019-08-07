@@ -85,7 +85,6 @@ abstract class AbstractTransferImportCronModule extends AbstractTransferCronModu
                         $exception->getMessage()
                     )
                 );
-                $this->em->clear();
 
                 if ($this->em->isOpen()) {
                     $this->em->rollback();
@@ -93,6 +92,7 @@ abstract class AbstractTransferImportCronModule extends AbstractTransferCronModu
 
                 throw $exception;
             } finally {
+                $this->em->clear();
                 // Application in DEV mode uses TraceableValidator for validation. TraceableValidator saves data from
                 // validation in memory, so it can consume quite a lot of memory, which leads to transfer crash
                 if ($this->validator instanceof TraceableValidator) {
