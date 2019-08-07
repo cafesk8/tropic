@@ -205,14 +205,21 @@
     }
 
     &__button {
-        display: none;
         position: absolute;
         width: 100%;
-        bottom: (@grid-images-item-button-position + @grid-images-item-gap)/2;
+        bottom: 24px;
         text-align: center;
 
-        @media @query-vl {
-            display: block;
+        @media @query-mobile {
+            .btn {
+                height: @list-categories-small-btn-height;
+                line-height: @list-categories-small-btn-height;
+                min-height: @list-categories-small-btn-height;
+            }
+        }
+
+        @media @query-lg {
+            bottom: (@grid-images-item-button-position + @grid-images-item-gap)/2;
         }
 
         @media @query-xl {
@@ -220,7 +227,11 @@
         }
 
         &--small-gap-under {
-            bottom: @grid-images-item-button-position-small + @grid-images-item-gap;
+            bottom: 24px;
+
+            @media @query-lg {
+                bottom: @grid-images-item-button-position-small + @grid-images-item-gap;
+            }
         }
     }
 }
