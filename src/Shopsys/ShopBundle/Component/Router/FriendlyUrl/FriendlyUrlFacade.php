@@ -8,5 +8,5 @@ use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade as Ba
 
 class FriendlyUrlFacade extends BaseFriendlyUrlFacade
 {
-    public const MAX_URL_UNIQUE_RESOLVE_ATTEMPT = 1000;
+    public const MAX_URL_UNIQUE_RESOLVE_ATTEMPT = 10000;
 }
