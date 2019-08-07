@@ -60,6 +60,8 @@ yq write --inplace kubernetes/endpoints/elasticsearch.yml subsets[0].addresses[0
 yq write --inplace kubernetes/endpoints/elasticsearch.yml subsets[0].ports[0].port ${ELASTICSEARCH_HOST_PORT}
 yq write --inplace kubernetes/services/elasticsearch.yml spec.ports[0].port ${ELASTICSEARCH_HOST_PORT}
 
+yq write --inplace kubernetes/endpoints/mysql-import.yml subsets[0].addresses[0].ip ${MIGRATION_DATABASE_HOST}
+
 # Add a mask for trusted proxies so that load balanced traffic is trusted and headers from outside of the network are not lost
 yq write --inplace app/config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
 
@@ -131,7 +133,7 @@ yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elast
 yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
 
 # Set migration database IPs
-yq write --inplace app/config/parameters.yml parameters.migration_database_host ${MIGRATION_DATABASE_HOST}
+yq write --inplace app/config/parameters.yml parameters.migration_database_host mysql
 yq write --inplace app/config/parameters.yml parameters.migration_database_name ${MIGRATION_DATABASE_NAME}
 yq write --inplace app/config/parameters.yml parameters.migration_database_password ${MIGRATION_DATABASE_PASSWORD}
 yq write --inplace app/config/parameters.yml parameters.migration_database_port ${MIGRATION_DATABASE_PORT}
