@@ -5,11 +5,8 @@
 .top-bar {
     color: @color-brown-light-2;
     background: @color-brown;
-
-    @media @query-vl {
-        height: @top-bar-height;
-        line-height: @top-bar-height;
-    }
+    height: @top-bar-height;
+    line-height: @top-bar-height;
 
     &__in {
         display: flex;
@@ -48,7 +45,7 @@
             display: flex;
             justify-content: center;
             margin-left: 0;
-            margin-top: 15px;
+            margin-top: 10px;
 
             @media @query-vl {
                 margin-top: 0;
@@ -89,6 +86,7 @@
             }
 
             &__text {
+                display: flex;
                 line-height: 15px;
 
                 font-size: @font-size-small;
@@ -107,6 +105,7 @@
 
                 &__mobile {
                     display: inline;
+                    margin-right: 5px;
 
                     font-weight: 700;
                     font-size: @font-size-small;
