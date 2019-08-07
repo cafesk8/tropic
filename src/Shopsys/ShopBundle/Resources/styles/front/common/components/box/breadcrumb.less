@@ -5,12 +5,9 @@
 
 .box-breadcrumb {
     margin-bottom: @margin-gap;
+    text-align: center;
 
     font-size: 0;
-
-    @media @query-md {
-        text-align: center;
-    }
 
     &__item {
         display: inline-block;
@@ -23,9 +20,10 @@
         text-decoration: none;
 
         &--home {
-            padding-right: 10px;
+            padding-right: 6px;
 
             color: @color-orange;
+            font-size: 14px;
         }
 
         &--separator {
