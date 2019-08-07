@@ -128,7 +128,7 @@
                             <div class="box-list__bottom__title">
                                 {{ 'Mohlo by vás zajímat'|trans }}
                             </div>
-                            {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
+                            {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list' } %}
                         </div>
                     {% endif %}
             </div>
