@@ -93,9 +93,7 @@ class MigrateProductImagesCommand extends Command
                     $this->imageFacade->deleteImagesFromMigration($product);
                     $this->migrateProductImage($product, $symfonyStyleIo);
                     $this->entityManager->commit();
-                } catch (MigrationDataNotFoundException $exception) {
-                    $symfonyStyleIo->warning($exception->getMessage());
-                } catch (Exception $exception) {
+                } catch (MigrationDataNotFoundException | Exception $exception) {
                     $symfonyStyleIo->error($exception->getMessage());
                     $this->entityManager->clear();
                     if ($this->entityManager->isOpen()) {
