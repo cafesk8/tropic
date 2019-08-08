@@ -104,6 +104,9 @@ class MigrateImageDoctrineListener
         );
 
         try {
+            if ($this->filesystem->has($sourceFilepath) === false) {
+                return;
+            }
             if ($this->filesystem->has($targetFilepath)) {
                 $this->filesystem->delete($targetFilepath);
             }
