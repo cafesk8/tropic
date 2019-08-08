@@ -197,7 +197,7 @@ class CartFacade extends BaseCartFacade
         } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException $ex) {
         }
 
-        if (($productQuantityInCart + $quantity) > $product->getStockQuantity()) {
+        if ($product->isUsingStock() && ($productQuantityInCart + $quantity) > $product->getStockQuantity()) {
             throw new \Shopsys\ShopBundle\Model\Cart\Exception\OutOfStockException();
         }
 
