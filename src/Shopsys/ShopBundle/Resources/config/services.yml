@@ -103,8 +103,19 @@ services:
         factory: 'Shopsys\ShopBundle\Component\Rest\RestClientFactory:create'
         arguments:
             - '%transfer_host%'
-            - '%transfer_username%'
-            - '%transfer_password%'
+            - '%transfer_cs_username%'
+            - '%transfer_cs_password%'
+
+    Shopsys\ShopBundle\Component\Rest\MultidomainRestClient:
+        factory: 'Shopsys\ShopBundle\Component\Rest\MultidomainRestClientFactory:create'
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_cs_username'
+            - '%transfer_cs_password%'
+            - '%transfer_sk_username'
+            - '%transfer_sk_password%'
+            - '%transfer_de_username'
+            - '%transfer_de_password%'
 
     Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:
@@ -113,8 +124,8 @@ services:
     Shopsys\ShopBundle\Component\Transfer\TransferConfig:
         arguments:
             - '%transfer_host%'
-            - '%transfer_username%'
-            - '%transfer_password%'
+            - '%transfer_cs_username%'
+            - '%transfer_cs_password%'
             - '%transfer_enabled%'
 
     Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency: ~
