@@ -2293,3 +2293,6 @@ msgstr ""
 msgid "Ženy"
 msgstr ""
 
+msgid "Promo codes"
+msgstr "Slevové kupóny a certifikáty"
+

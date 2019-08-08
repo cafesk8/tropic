@@ -66,6 +66,40 @@ class OrderItemFactory extends BaseOrderItemFactory
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
      * @param string $name
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $certificatePrice
+     * @param string $certificateSku
+     * @param string $vatPercent
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     */
+    public function createGiftCertificate(
+        Order $order,
+        string $name,
+        Price $certificatePrice,
+        string $certificateSku,
+        string $vatPercent
+    ): BaseOrderItem {
+        /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderCertification */
+        $orderCertification = new OrderItem(
+            $order,
+            $name,
+            $certificatePrice->inverse(),
+            $vatPercent,
+            1,
+            OrderItem::TYPE_GIFT_CERTIFICATE,
+            null,
+            $certificateSku
+        );
+
+        // ???
+        $orderCertification->setEan($certificateSku);
+        $orderCertification->setTotalPrice($certificatePrice->inverse());
+
+        return $orderCertification;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param string $vatPercent
      * @param int $quantity

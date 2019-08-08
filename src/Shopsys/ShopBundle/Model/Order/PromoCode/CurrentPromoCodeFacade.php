@@ -40,8 +40,16 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         $promoCode = $this->getValidEnteredPromoCodeOrNull();
 
         if ($promoCode instanceof PromoCode) {
-            $this->promoCodeFacade->usePromoCode($promoCode);
+            $this->usePromoCode($promoCode);
         }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode $promoCode
+     */
+    public function usePromoCode(PromoCode $promoCode): void
+    {
+        $this->promoCodeFacade->usePromoCode($promoCode);
     }
 
     /**

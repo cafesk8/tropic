@@ -97,6 +97,27 @@ class PromoCode extends BasePromoCode
     private $nominalDiscount;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    public $type;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
+     *
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
+     */
+    public $certificateValue;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    public $certificateSku;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -114,6 +135,9 @@ class PromoCode extends BasePromoCode
         $this->prefix = $promoCodeData->prefix;
         $this->nominalDiscount = $promoCodeData->nominalDiscount;
         $this->useNominalDiscount = $promoCodeData->useNominalDiscount;
+        $this->type = $promoCodeData->type;
+        $this->certificateValue = $promoCodeData->certificateValue;
+        $this->certificateSku = $promoCodeData->certificateSku;
     }
 
     /**
@@ -133,6 +157,9 @@ class PromoCode extends BasePromoCode
         $this->prefix = $promoCodeData->prefix;
         $this->nominalDiscount = $promoCodeData->nominalDiscount;
         $this->useNominalDiscount = $promoCodeData->useNominalDiscount;
+        $this->type = $promoCodeData->type;
+        $this->certificateValue = $promoCodeData->certificateValue;
+        $this->certificateSku = $promoCodeData->certificateSku;
     }
 
     /**
@@ -242,5 +269,29 @@ class PromoCode extends BasePromoCode
     public function isUseNominalDiscount(): bool
     {
         return $this->useNominalDiscount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getCertificateValue(): ?Money
+    {
+        return $this->certificateValue;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCertificateSku(): ?string
+    {
+        return $this->certificateSku;
     }
 }

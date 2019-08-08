@@ -36,8 +36,10 @@ use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
+use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
 class OrderFacade extends BaseOrderFacade
@@ -58,7 +60,11 @@ class OrderFacade extends BaseOrderFacade
     private $productGiftPriceCalculation;
 
     /**
-     * OrderFacade constructor.
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade
+     */
+    private $vatFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderRepository $orderRepository
@@ -86,6 +92,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -114,7 +121,8 @@ class OrderFacade extends BaseOrderFacade
         PaymentPriceCalculation $paymentPriceCalculation,
         TransportPriceCalculation $transportPriceCalculation,
         OrderItemFactoryInterface $orderItemFactory,
-        ProductGiftPriceCalculation $productGiftPriceCalculation
+        ProductGiftPriceCalculation $productGiftPriceCalculation,
+        VatFacade $vatFacade
     ) {
         parent::__construct(
             $em,
@@ -146,6 +154,7 @@ class OrderFacade extends BaseOrderFacade
         );
 
         $this->productGiftPriceCalculation = $productGiftPriceCalculation;
+        $this->vatFacade = $vatFacade;
     }
 
     /**
@@ -227,11 +236,15 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
-        $this->currentPromoCodeFacade->useEnteredPromoCode();
+        $enteredValidPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
+
+        if ($enteredValidPromoCode !== null) {
+            $this->currentPromoCodeFacade->usePromoCode($enteredValidPromoCode);
+        }
 
         /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $order->getCustomer();
@@ -297,12 +310,25 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     protected function fillOrderItems(Order $order, OrderPreview $orderPreview): void
     {
         parent::fillOrderItems($order, $orderPreview);
 
         $order->fillOrderGifts($orderPreview, $this->orderItemFactory, $this->productGiftPriceCalculation, $this->domain);
+
+        $promoCode = $orderPreview->getPromoCode();
+        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            $order->setGiftCertificate(
+                $orderPreview,
+                $this->orderItemFactory,
+                $this->numberFormatterExtension,
+                $order,
+                $promoCode,
+                $this->vatFacade->getDefaultVat()->getPercent(),
+                $this->domain->getCurrentDomainConfig()->getLocale()
+            );
+        }
     }
 }

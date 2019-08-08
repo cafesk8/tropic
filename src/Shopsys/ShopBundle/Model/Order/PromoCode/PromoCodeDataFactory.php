@@ -70,5 +70,8 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->prefix = $promoCode->getPrefix();
         $promoCodeData->nominalDiscount = $promoCode->getNominalDiscount();
         $promoCodeData->useNominalDiscount = $promoCode->isUseNominalDiscount();
+        $promoCodeData->type = $promoCode->getType();
+        $promoCodeData->certificateValue = $promoCode->getCertificateValue();
+        $promoCodeData->certificateSku = $promoCode->getCertificateSku();
     }
 }

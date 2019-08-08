@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation as BaseQuantifiedProductDiscountCalculation;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
 class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscountCalculation
 {
@@ -39,7 +40,11 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
         $quantifiedItemsDiscounts = [];
         foreach ($quantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
-            $quantifiedItemsDiscounts[$quantifiedItemIndex] = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
+            $quantifiedItemsDiscount = null;
+            if ($promoCode !== null && $promoCode->type === PromoCodeData::TYPE_PROMO_CODE) {
+                $quantifiedItemsDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
+            }
+            $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemsDiscount;
         }
 
         return $quantifiedItemsDiscounts;

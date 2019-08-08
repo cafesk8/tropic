@@ -9,6 +9,10 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCode
 
 class PromoCodeData extends BasePromoCodeData
 {
+    public const TYPE_PROMO_CODE = 'promoCode';
+
+    public const TYPE_CERTIFICATE = 'certificate';
+
     /**
      * @var int|null
      */
@@ -69,10 +73,27 @@ class PromoCodeData extends BasePromoCodeData
      */
     public $nominalDiscount;
 
+    /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var string|null
+     */
+    public $certificateValue;
+
+    /**
+     * @var string|null
+     */
+    public $certificateSku;
+
     public function __construct()
     {
         $this->percent = 0;
         $this->nominalDiscount = Money::zero();
         $this->useNominalDiscount = false;
+        $this->type = self::TYPE_PROMO_CODE;
+        $this->certificateValue = Money::zero();
     }
 }

@@ -18,6 +18,7 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -38,6 +39,10 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public const VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT = 'NOMINAL_DISCOUNT';
 
     public const VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT = 'PERCENT_DISCOUNT';
+
+    public const VALIDATION_GROUP_TYPE_CERTIFICATE = 'CERTIFICATE';
+
+    public const VALIDATION_GROUP_TYPE_PROMO_CODE = 'PROMO_CODE';
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -71,9 +76,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'label' => t('Základní informace'),
         ]);
 
+        $this->addPromoCodeOrCertificateField($builder, $basicInformationsFormGroup);
         $this->extendCodeField($builder, $basicInformationsFormGroup);
         $this->extendPercentField($builder, $basicInformationsFormGroup);
         $this->addNominalDiscountFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
+        $this->addCertificateFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
 
         $builder->add($basicInformationsFormGroup);
 
@@ -136,6 +143,12 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT;
                     }
 
+                    if ($promoCodeData->type === PromoCodeData::TYPE_CERTIFICATE) {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_CERTIFICATE;
+                    } else {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_PROMO_CODE;
+                    }
+
                     return $validationGroups;
                 },
                 'constraints' => [
@@ -145,12 +158,12 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
      */
-    public function validateMinimalOrderValueForNominalDiscount(PromoCodeData $orderData, ExecutionContextInterface $context)
+    public function validateMinimalOrderValueForNominalDiscount(PromoCodeData $promoCodeData, ExecutionContextInterface $context)
     {
-        if ($orderData->useNominalDiscount && $orderData->minOrderValue < $orderData->nominalDiscount) {
+        if ($promoCodeData->type === PromoCodeData::TYPE_PROMO_CODE && $promoCodeData->useNominalDiscount && $promoCodeData->minOrderValue < $promoCodeData->nominalDiscount) {
             $context->buildViolation('Minimální hodnota objednávky musí být větší nebo rovna nominální slevě.')
                 ->atPath('minOrderValue')
                 ->addViolation();
@@ -186,7 +199,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     {
         $percentFieldOptions = $builder->get('percent')->getOptions();
         $percentFieldOptions['label'] = t('Procentuální sleva');
-        $percentFieldOptions['attr'] = ['class' => 'js-promo-code-input-percent-discount'];
+        $percentFieldOptions['attr'] = ['class' => 'js-promo-code-input-percent-discount js-promo-code-promo-code-only'];
 
         $percentFieldOptions['constraints'] = [
             new NotBlank([
@@ -217,7 +230,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'label' => t('Použít nominální slevu'),
                 'required' => false,
                 'attr' => [
-                    'class' => 'js-promo-code-input-use-nominal-discount',
+                    'class' => 'js-promo-code-input-use-nominal-discount js-promo-code-promo-code-only',
                 ],
                 'position' => ['before' => 'percent'],
             ])
@@ -237,8 +250,52 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 ],
                 'label' => $this->getLabelForMultidomainFieldValue(t('Nominální sleva'), $promoCode, $domainId),
                 'attr' => [
-                    'class' => 'js-promo-code-input-nominal-discount',
+                    'class' => 'js-promo-code-input-nominal-discount js-promo-code-promo-code-only',
                 ],
+            ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param int|null $domainId
+     */
+    private function addCertificateFields(FormBuilderInterface $builder, ?PromoCode $promoCode = null, ?int $domainId = null): void
+    {
+        $builder
+            ->add('certificateSku', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Vyplňte prosím SKU dárkového certifikátu.',
+                        'groups' => self::VALIDATION_GROUP_TYPE_CERTIFICATE,
+                    ]),
+                ],
+                'label' => t('SKU certifikátu'),
+                'attr' => [
+                    'class' => 'js-promo-code-certificate-field',
+                ],
+                'position' => ['after' => 'nominalDiscount'],
+            ])
+            ->add('certificateValue', MoneyType::class, [
+                'scale' => 6,
+                'required' => true,
+                'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
+                'constraints' => [
+                    new NotNegativeMoneyAmount([
+                        'message' => 'Price must be greater or equal to zero',
+                        'groups' => self::VALIDATION_GROUP_TYPE_CERTIFICATE,
+                    ]),
+                    new NotBlank([
+                        'message' => 'Vyplňte prosím nominální hodnotu dárkového certifikátu.',
+                        'groups' => self::VALIDATION_GROUP_TYPE_CERTIFICATE,
+                    ]),
+                ],
+                'label' => $this->getLabelForMultidomainFieldValue(t('Hodnota certifikátu'), $promoCode, $domainId),
+                'attr' => [
+                    'class' => 'js-promo-code-certificate-field',
+                ],
+                'position' => ['after' => 'certificateSku'],
             ]);
     }
 
@@ -301,7 +358,13 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
-                    new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                    new NotNegativeMoneyAmount([
+                        'message' => 'Price must be greater or equal to zero',
+                        'groups' => self::VALIDATION_GROUP_TYPE_PROMO_CODE,
+                    ]),
+                ],
+                'attr' => [
+                    'class' => 'js-promo-code-promo-code-only',
                 ],
                 'label' => $this->getLabelForMultidomainFieldValue(t('Minimální hodnota objednávky'), $promoCode, $domainId),
             ]);
@@ -356,5 +419,25 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             ]);
 
         return $builderMassPromoCodeGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationsFormGroup
+     */
+    private function addPromoCodeOrCertificateField(FormBuilderInterface $builder, FormBuilderInterface $basicInformationsFormGroup)
+    {
+        $basicInformationsFormGroup->add('type', ChoiceType::class, [
+            'label' => t('Vyberte typ poukazu'),
+            'required' => true,
+            'choices' => [
+                t('Slevový kód') => PromoCodeData::TYPE_PROMO_CODE,
+                t('Dárkový certifikát') => PromoCodeData::TYPE_CERTIFICATE,
+            ],
+            'attr' => [
+                'class' => 'js-promo-code-promo-code-or-certificate',
+            ],
+            'position' => 'first',
+        ]);
     }
 }

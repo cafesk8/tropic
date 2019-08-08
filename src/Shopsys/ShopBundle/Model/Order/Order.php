@@ -23,6 +23,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
 use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
@@ -488,7 +489,7 @@ class Order extends BaseOrder
 
             if (!$orderItemFactory instanceof OrderItemFactory) {
                 $message = 'Object "' . get_class($orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
-                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException();
+                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
             }
 
             $giftPrice = new Price($productGiftPriceCalculation->getGiftPrice(), $productGiftPriceCalculation->getGiftPrice());
@@ -539,5 +540,59 @@ class Order extends BaseOrder
         $this->deliveryCity = $orderData->deliveryCity;
         $this->deliveryPostcode = $orderData->deliveryPostcode;
         $this->deliveryCountry = $orderData->deliveryCountry;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param string $defaultVatValue
+     * @param string $locale
+     */
+    public function setGiftCertificate(
+        OrderPreview $orderPreview,
+        OrderItemFactoryInterface $orderItemFactory,
+        NumberFormatterExtension $numberFormatterExtension,
+        self $order,
+        PromoCode $promoCode,
+        string $defaultVatValue,
+        string $locale
+    ): void {
+        $name = sprintf(
+            '%s %s %s',
+            t('Dárkový certifikát ', [], 'messages', $locale),
+            $promoCode->getCode(),
+            $numberFormatterExtension->formatNumber($promoCode->getCertificateValue()->getAmount()) . ' ' . $numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($order->getDomainId(), $locale)
+        );
+
+        $certificatePrice = new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
+        if ($certificatePrice->getPriceWithVat()->isGreaterThan($orderPreview->getTotalPriceWithoutGiftCertificate()->getPriceWithVat())) {
+            $certificatePrice = $orderPreview->getTotalPriceWithoutGiftCertificate();
+        }
+
+        $orderItemFactory->createGiftCertificate(
+            $order,
+            $name,
+            $certificatePrice,
+            $promoCode->getCertificateSku(),
+            $defaultVatValue
+        );
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
+     */
+    public function getGiftCertificationItems()
+    {
+        $giftItems = [];
+        foreach ($this->items as $item) {
+            if ($item->isTypeGiftCertification()) {
+                $giftItems[] = $item;
+            }
+        }
+
+        return $giftItems;
     }
 }

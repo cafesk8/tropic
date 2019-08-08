@@ -47,6 +47,7 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
         $grid = $this->gridFactory->create('promoCodeList', $dataSource);
         $grid->setDefaultOrder('code');
 
+        $grid->addColumn('type', 'pc.type', t('Typ'), true);
         $grid->addColumn('code', 'pc.code', t('Code'), true);
         $grid->addColumn('percent', 'pc.percent', t('Discount'), true);
         $grid->addColumn('number_of_uses', 'pc.numberOfUses', t('Kolikrát použito'), true);

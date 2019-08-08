@@ -42,6 +42,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/OrderDataFixture.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
             - '*/src/Shopsys/ShopBundle/Command/Product/RemoveLegacyProductsCommand.php'
+            - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
 
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:
             - '*/tests/ShopBundle/Functional/EntityExtension/EntityExtensionTest.php'

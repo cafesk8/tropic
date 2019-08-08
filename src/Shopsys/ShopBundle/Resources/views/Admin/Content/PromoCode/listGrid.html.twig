@@ -33,10 +33,21 @@
 {% endblock %}
 
 {% block grid_value_cell_id_percent %}
-    {% if _context.row.pc.useNominalDiscount is same as (true) %}
+    {% if _context.row.pc.type is same as (constant('Shopsys\\ShopBundle\\Model\\Order\\PromoCode\\PromoCodeData::TYPE_CERTIFICATE')) %}
+        {{ _context.row.pc.certificateValue.getAmount|formatNumber }}
+        {{ currencySymbolByDomainId(_context.row.pc.domainId) }}
+    {% elseif _context.row.pc.useNominalDiscount is same as (true) %}
         {{ _context.row.pc.nominalDiscount.getAmount|formatNumber }}
         {{ currencySymbolByDomainId(_context.row.pc.domainId) }}
     {% else %}
         {{ value|formatPercent }}
+    {% endif %}
+{% endblock %}
+
+{% block grid_value_cell_id_type %}
+    {% if value is same as (constant('Shopsys\\ShopBundle\\Model\\Order\\PromoCode\\PromoCodeData::TYPE_CERTIFICATE')) %}
+        {{ 'Dárkový certifikát'|trans }}
+    {% else %}
+        {{ 'Slevový kupón'|trans }}
     {% endif %}
 {% endblock %}

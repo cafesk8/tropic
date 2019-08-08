@@ -5,13 +5,21 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Preview;
 
 use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation as BaseOrderPreviewCalculation;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
+use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
+use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
+use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
 class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 {
@@ -19,6 +27,46 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @var \Shopsys\ShopBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation
      */
     protected $quantifiedProductDiscountCalculation;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation
+     */
+    private $priceCalculation;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade
+     */
+    private $vatFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation $quantifiedProductDiscountCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
+     */
+    public function __construct(
+        QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation,
+        QuantifiedProductDiscountCalculation $quantifiedProductDiscountCalculation,
+        TransportPriceCalculation $transportPriceCalculation,
+        PaymentPriceCalculation $paymentPriceCalculation,
+        OrderPriceCalculation $orderPriceCalculation,
+        PriceCalculation $priceCalculation,
+        VatFacade $vatFacade
+    ) {
+        parent::__construct(
+            $quantifiedProductPriceCalculation,
+            $quantifiedProductDiscountCalculation,
+            $transportPriceCalculation,
+            $paymentPriceCalculation,
+            $orderPriceCalculation
+        );
+
+        $this->priceCalculation = $priceCalculation;
+        $this->vatFacade = $vatFacade;
+    }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
@@ -59,8 +107,21 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
-        $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscounts);
-        $totalPrice = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice, $totalGiftPrice);
+        $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscounts, $promoCode);
+        $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice, $totalGiftPrice);
+
+        $totalPrice = $totalPriceWithoutGiftCertificate;
+        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            $totalPriceWithVat = $promoCode->certificateValue;
+            $totalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($totalPriceWithVat, $this->vatFacade->getDefaultVat());
+            $totalPriceWithoutVat = $totalPriceWithVat->subtract($totalVatAmount);
+
+            $certificatePrice = new Price($totalPriceWithoutVat, $totalPriceWithVat);
+            $totalPrice = $totalPriceWithoutGiftCertificate->subtract($certificatePrice);
+            if ($totalPrice->getPriceWithVat()->isNegative()) {
+                $totalPrice = Price::zero();
+            }
+        }
 
         $orderPreview = new OrderPreview(
             $quantifiedProducts,
@@ -74,6 +135,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $paymentPrice,
             $roundingPrice,
             $promoCodeDiscountPercent,
+            $totalPriceWithoutGiftCertificate,
             $giftsInCart
         );
         $orderPreview->setPromoCode($promoCode);
@@ -194,10 +256,15 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
     /**
      * @param array $quantifiedItemsDiscounts
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function calculateTotalDiscount(array $quantifiedItemsDiscounts): Price
+    protected function calculateTotalDiscount(array $quantifiedItemsDiscounts, ?PromoCode $promoCode): Price
     {
+        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            return new Price($promoCode->certificateValue, $promoCode->certificateValue);
+        }
+
         return array_reduce($quantifiedItemsDiscounts, function ($totalDiscount, $quantifiedItemsDiscount) {
             if ($quantifiedItemsDiscount === null) {
                 return $totalDiscount;

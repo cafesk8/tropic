@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,26 +108,29 @@ class PromoCodeController extends FrontBaseController
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,
-                'message' => t('Promo code invalid. Check it, please.'),
+                'message' => t('{{title}} není platný. Prosím, zkontrolujte ho.', ['{{title}}' => $this->getErrorMessageTitle()]),
             ]);
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,
-                'message' => t('Slevový kupón byl již vyčerpán.'),
+                'message' => t('{{title}} byl již vyčerpán.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
             if ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() !== null) { // FROM and TO dates are filled
-                $message = t('Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
+                $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
                     '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
                     '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
+                    '{{title}}' => $this->getErrorMessageTitle($promoCode),
                 ]);
             } elseif ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() === null) { // Only FROM date is filled
-                $message = t('Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}.', [
+                $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}.', [
                     '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
+                    '{{title}}' => $this->getErrorMessageTitle($promoCode),
                 ]);
             } else { // Only TO date is filled
-                $message = t('Slevový kód nemůžete uplatnit. Jeho platnost byla do {{validityTo}}.', [
+                $message = t('{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}.', [
                     '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
+                    '{{title}}' => $this->getErrorMessageTitle($promoCode),
                 ]);
             }
 
@@ -144,6 +149,23 @@ class PromoCodeController extends FrontBaseController
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));
 
         return new JsonResponse(['result' => true]);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @return string
+     */
+    private function getErrorMessageTitle(?PromoCode $promoCode = null): string
+    {
+        if ($promoCode === null) {
+            return t('Slevový kupón nebo certifikát');
+        }
+
+        if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            return t('Dárkový certifikát');
+        }
+
+        return t('Slevový kupón');
     }
 
     public function removeAction()

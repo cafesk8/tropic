@@ -15,6 +15,8 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
  */
 class OrderItem extends BaseOrderItem
 {
+    public const TYPE_GIFT_CERTIFICATE = 'gift_certificate';
+
     public const TYPE_PROMO_CODE = 'promo_code';
 
     public const TYPE_GIFT = 'gift';
@@ -129,5 +131,13 @@ class OrderItem extends BaseOrderItem
     public function setMainOrderItem(?self $mainOrderItem): void
     {
         $this->mainOrderItem = $mainOrderItem;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypeGiftCertification(): bool
+    {
+        return $this->type === self::TYPE_GIFT_CERTIFICATE;
     }
 }

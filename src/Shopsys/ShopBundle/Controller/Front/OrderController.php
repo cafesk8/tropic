@@ -72,7 +72,7 @@ class OrderController extends FrontBaseController
     private $orderDataMapper;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\OrderFacade
+     * @var \Shopsys\ShopBundle\Model\Order\OrderFacade
      */
     private $orderFacade;
 
