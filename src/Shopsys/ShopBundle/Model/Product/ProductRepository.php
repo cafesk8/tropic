@@ -109,8 +109,6 @@ class ProductRepository extends BaseProductRepository
 
         return $this->getProductQueryBuilder()
             ->where('p.ean IS NOT NULL')
-            ->andWhere('p.variantType != :variant')
-            ->setParameter('variant', Product::VARIANT_TYPE_VARIANT)
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->getQuery()->getResult();
