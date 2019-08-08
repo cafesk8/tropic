@@ -18,7 +18,7 @@
 
     &__title {
         width: 100%;
-        text-align: center;
+        text-align: left;
         padding: 2*@box-motto-gap-mobile 0 @box-motto-gap-mobile 0;
 
         font-size: @box-motto-title-font-size;
@@ -48,13 +48,16 @@
 
     &__button {
         width: 100%;
-        text-align: center;
+        text-align: right;
         padding: 0 2*@box-motto-gap-mobile 14px 2*@box-motto-gap-mobile;
 
         @media @query-xl {
             width: calc(~"@{calc-base}/3");
             padding-bottom: 0;
+            padding-right: 0;
             text-align: right;
+
+            font-size: 14px;
         }
     }
 }
