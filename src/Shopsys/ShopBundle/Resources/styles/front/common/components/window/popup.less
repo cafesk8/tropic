@@ -85,13 +85,16 @@
         line-height: @window-popup-inner-padding;
         text-align: center;
 
-        color: @color-7;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 10px;
+        cursor: pointer;
+        color: @box-cookies-close-color;
+        font-size: @box-cookies-close-size;
+
+        .svg {
+            text-decoration: none;
+        }
 
         &:hover {
-            text-decoration: none;
+            color: @color-base;
         }
     }
 

@@ -117,7 +117,7 @@
 
         $window.append($windowContent);
         if (options.buttonClose) {
-            var $windowButtonClose = $('<a href="#" class="window-button-close window-popup__close js-window-button-close" title="' + Shopsys.translator.trans('Close (Esc)') + '"><i class="svg svg-remove-thin"></i></a>');
+            var $windowButtonClose = $('<a href="#" class="window-button-close window-popup__close js-window-button-close" title="' + Shopsys.translator.trans('Close (Esc)') + '"><i class="svg svg-remove"></i></a>');
             $window.append($windowButtonClose);
         }
 
