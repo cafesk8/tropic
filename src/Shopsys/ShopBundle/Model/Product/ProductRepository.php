@@ -65,6 +65,15 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
+     * @param string $ean
+     * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
+     */
+    public function findByEan(string $ean): ?Product
+    {
+        return $this->getProductRepository()->findOneBy(['ean' => $ean]);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup

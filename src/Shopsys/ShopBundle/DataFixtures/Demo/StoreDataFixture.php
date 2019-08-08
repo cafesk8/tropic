@@ -66,6 +66,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->street = 'Vídeňská 100';
         $storeData->postcode = '639 00';
         $storeData->openingHours = 'Po-Ne / 10,00 - 20,00';
+        $storeData->externalNumber = '0039';
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $this->createStore($storeData, self::REFERENCE_STORE_BRNO_FUTURUM);
 
@@ -76,6 +77,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->street = 'Rudná 114';
         $storeData->postcode = '700 30';
         $storeData->openingHours = 'Po-Ne / 9,00 - 21,00';
+        $storeData->externalNumber = '0040';
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $this->createStore($storeData, self::REFERENCE_STORE_OSTRAVA_AVION);
 
@@ -86,6 +88,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->street = 'Einsteinova 3541/18';
         $storeData->postcode = '85101';
         $storeData->openingHours = 'Po-Pia / 10,00 - 21,00 So-Ne / 9,00 - 21,00';
+        $storeData->externalNumber = '1001';
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createStore($storeData, self::REFERENCE_STORE_BRATISLAVA_AUPARK);
 
@@ -96,6 +99,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->street = 'Sachsenstraße 2';
         $storeData->postcode = '92318';
         $storeData->openingHours = 'Mo-So / 10,00 - 21,00';
+        $storeData->externalNumber = '1003';
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createStore($storeData, self::REFERENCE_STORE_NEMARKT);
     }

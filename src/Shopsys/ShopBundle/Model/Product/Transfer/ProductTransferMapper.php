@@ -83,6 +83,8 @@ class ProductTransferMapper
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
         $productData->ean = $productTransferResponseItemVariantData->getEan();
         $productData->catnum = $productTransferResponseItemData->getTransferNumber();
+        $productData->usingStock = true;
+        $productData->stockQuantity = 0;
 
         $productData->parameters = [];
         if ($productTransferResponseItemVariantData->getColorName() !== null) {

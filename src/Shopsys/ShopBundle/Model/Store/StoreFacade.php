@@ -74,6 +74,15 @@ class StoreFacade
     }
 
     /**
+     * @param string $externalNumber
+     * @return \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public function findByExternalNumber(string $externalNumber): ?Store
+    {
+        return $this->storeRepository->findByExternalNumber($externalNumber);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
      * @return \Shopsys\ShopBundle\Model\Store\Store
      */

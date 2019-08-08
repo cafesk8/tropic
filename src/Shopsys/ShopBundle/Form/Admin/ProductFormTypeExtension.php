@@ -181,6 +181,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Generovat tento produkt do HS-SPORT XML feedu'),
             ]);
+
+        $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
     }
 
     /**
@@ -354,6 +356,20 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $catnumFieldOptions['label'] = t('SKU');
         $catnumFieldType = get_class($basicInformationGroup->get('catnum')->getType()->getInnerType());
         $basicInformationGroup->add('catnum', $catnumFieldType, $catnumFieldOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
+     */
+    private function extendOutOfStockAction(FormBuilderInterface $builder, ?Product $product): void
+    {
+        if ($product !== null && $product->isMainVariant()) {
+            $codeFieldOptions = $builder->get('outOfStockAction')->getOptions();
+            $codeFieldOptions['constraints'] = null;
+            $codeFieldType = get_class($builder->get('outOfStockAction')->getType()->getInnerType());
+            $builder->add('outOfStockAction', $codeFieldType, $codeFieldOptions);
+        }
     }
 
     /**

@@ -57,6 +57,15 @@ class StoreRepository
     }
 
     /**
+     * @param string $externalNumber
+     * @return \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public function findByExternalNumber(string $externalNumber): ?Store
+    {
+        return $this->getStoreRepository()->findOneBy(['externalNumber' => $externalNumber]);
+    }
+
+    /**
      * @param int $domainId
      * @return \Doctrine\ORM\QueryBuilder
      */
