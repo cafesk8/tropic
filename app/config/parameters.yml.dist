@@ -78,5 +78,5 @@ parameters:
     env(S3_API_PASSWORD): ''
     env(S3_API_BUCKET_NAME): ''
 
-    migrate_product_images_dir: '%shopsys.root_dir%/migration-data/product-images'
+    migrate_product_images_dir: 'migration-data/product-images'
 
