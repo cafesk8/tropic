@@ -126,6 +126,13 @@ class StoreFormType extends AbstractType
             ->add('pickupPlace', YesNoType::class, [
                 'required' => false,
                 'label' => t('Odběrné místo'),
+            ])
+            ->add('externalNumber', TextType::class, [
+                'required' => false,
+                'label' => t('Externí ID'),
+                'constraints' => [
+                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Externí ID nesmí být delší než {{ limit }} znaků']),
+                ],
             ]);
 
         return $builderBasicInformationGroup;

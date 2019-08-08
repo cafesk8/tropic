@@ -83,6 +83,11 @@ class StoreData
      */
     public $region;
 
+    /**
+     * @var string|null
+     */
+    public $externalNumber;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();

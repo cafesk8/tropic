@@ -122,6 +122,13 @@ class Store implements PickupPlaceInterface
     protected $region;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    protected $externalNumber;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
      */
     public function __construct(StoreData $storeData)
@@ -140,6 +147,7 @@ class Store implements PickupPlaceInterface
         $this->telephone = $storeData->telephone;
         $this->email = $storeData->email;
         $this->region = $storeData->region;
+        $this->externalNumber = $storeData->externalNumber;
     }
 
     /**
@@ -170,6 +178,7 @@ class Store implements PickupPlaceInterface
         $this->telephone = $storeData->telephone;
         $this->email = $storeData->email;
         $this->region = $storeData->region;
+        $this->externalNumber = $storeData->externalNumber;
     }
 
     /**
@@ -306,5 +315,13 @@ class Store implements PickupPlaceInterface
     public function getRegion(): ?string
     {
         return $this->region;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalNumber(): ?string
+    {
+        return $this->externalNumber;
     }
 }
