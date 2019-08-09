@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Component\Redis\RedisFacade as BaseRedisFacade;
 
 class RedisFacade extends BaseRedisFacade
 {
-
     /**
      * @param string $pattern
      * @param mixed|null $id
