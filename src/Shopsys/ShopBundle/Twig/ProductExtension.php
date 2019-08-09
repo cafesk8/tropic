@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Twig;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
 use Twig\TwigFunction;
 
 class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
@@ -39,8 +40,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'getProductParameterValueByParameterId']
             ),
             new TwigFunction(
-                'distinguishingProductParameterValueForProduct',
-                [$this, 'getDistinguishingProductParameterValueForProduct']
+                'productDistinguishingParameterValue',
+                [$this, 'getProductDistinguishingParameterValue']
             ),
         ];
     }
@@ -84,11 +85,11 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return array
+     * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    public function getDistinguishingProductParameterValueForProduct(Product $product): array
+    public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
-        return $this->productCachedAttributesFacade->getDistinguishingParametersForProduct($product);
+        return $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
     }
 
     /**
@@ -120,14 +121,14 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         Product $product,
         string $productListDisplayName
     ): string {
-        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->findProductDistinguishingParameterValue($product);
+        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
 
-        if ($productDistinguishingParameterValue->getColorParameterValue() !== null) {
-            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getColorParameterValue();
+        if ($productDistinguishingParameterValue->getFirstDistinguishingParameterValue() !== null) {
+            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getFirstDistinguishingParameterValue();
         }
 
-        if ($productDistinguishingParameterValue->getSizeParameterValue() !== null) {
-            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getSizeParameterValue();
+        if ($productDistinguishingParameterValue->getSecondDistinguishingParameterValue() !== null) {
+            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getSecondDistinguishingParameterValue();
         }
 
         return $productListDisplayName;

@@ -27,16 +27,16 @@
                         </span>
                     {% endif %}
                 </span>
-                {% set distinguishingParameters = distinguishingProductParameterValueForProduct(cartItem.product) %}
-                
-                {% if distinguishingParameters['firstDistinguishingParameter'] is not null %}
+                {% set distinguishingParameters = productDistinguishingParameterValue(cartItem.product) %}
+
+                {% if distinguishingParameters.firstDistinguishingParameterValue is not null %}
                     <span class="box-popup-add__content__product__name__text">
-                        {{ distinguishingParameters['firstDistinguishingParameter'].parameter.name }}: {{ distinguishingParameters['firstDistinguishingParameter'].value.text }}
+                        {{ distinguishingParameters.firstDistinguishingParameterName }}: {{ distinguishingParameters.firstDistinguishingParameterValue }}
                     </span>
                 {% endif %}
-                {% if distinguishingParameters['secondDistinguishingParameter'] is not null %}
+                {% if distinguishingParameters.secondDistinguishingParameterValue is not null %}
                     <span class="box-popup-add__content__product__name__text">
-                        {{ distinguishingParameters['secondDistinguishingParameter'].parameter.name }}: <span class="in-badge in-badge--outline">{{ distinguishingParameters['secondDistinguishingParameter'].value.text }}</span>
+                        {{ distinguishingParameters.secondDistinguishingParameterName }}: <span class="in-badge in-badge--outline">{{ distinguishingParameters.secondDistinguishingParameterValue }}</span>
                     </span>
                 {% endif %}
             </div>

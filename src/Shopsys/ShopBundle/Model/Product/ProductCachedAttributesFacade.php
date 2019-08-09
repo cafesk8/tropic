@@ -14,7 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseP
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository
      */
     protected $parameterRepository;
 
@@ -172,39 +172,9 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return array
-     */
-    public function getDistinguishingParametersForProduct(Product $product): array
-    {
-        $distinguishingParametersForProduct = [
-            'firstDistinguishingParameter' => null,
-            'secondDistinguishingParameter' => null,
-        ];
-
-        $productParameterValues = $this->getProductParameterValues($product);
-
-        $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
-        $mainVariantGroup = $mainVariant->getMainVariantGroup();
-
-        foreach ($productParameterValues as $productParameterValue) {
-            if ($mainVariantGroup !== null && $productParameterValue->getParameter()->getId() === $mainVariantGroup->getDistinguishingParameter()->getId()) {
-                $distinguishingParametersForProduct['firstDistinguishingParameter'] = $productParameterValue;
-            }
-
-            if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
-                $distinguishingParametersForProduct['secondDistinguishingParameter'] = $productParameterValue;
-            }
-        }
-
-        return $distinguishingParametersForProduct;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     *
      * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    public function findProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
+    public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
         $locale = $this->localization->getLocale();
 
@@ -212,11 +182,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             $this->cachedProductDistinguishingParameterValueFacade->findProductDistinguishingParameterValue($product, $locale);
 
         if ($productDistinguishingParameterValue === null) {
-            $productDistinguishingParameterValue = new ProductDistinguishingParameterValue(
-                $this->findColorParameterValue($product, $locale),
-                $this->findSizeParameterColor($product, $locale)
-            );
-
+            $productDistinguishingParameterValue = $this->createProductDistinguishingParameterValue($product);
             $this->cachedProductDistinguishingParameterValueFacade->saveToCache($product, $locale, $productDistinguishingParameterValue);
         }
 
@@ -225,50 +191,32 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param string $locale
-     * @return string|null
+     * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    private function findColorParameterValue(Product $product, string $locale): ?string
+    private function createProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
-        $colorParameterValue = null;
+        $productParameterValues = $this->getProductParameterValues($product);
 
-        /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
-        if ($product->isVariant() === true) {
-            $mainVariant = $product->getMainVariant();
-        } else {
-            $mainVariant = $product;
-        }
+        $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
         $mainVariantGroup = $mainVariant->getMainVariantGroup();
 
-        if ($mainVariantGroup !== null && $mainVariantGroup->getDistinguishingParameter() !== null) {
-            $distinguishingParameter = $mainVariantGroup->getDistinguishingParameter();
-            $colorParameterValue =
-                $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
-                    $mainVariant,
-                    $distinguishingParameter,
-                    $locale
-                );
+        $firstDistinguishingParameterValue = null;
+        $secondDistinguishingParameterValue = null;
+        $productDistinguishingParameterValue = null;
+        foreach ($productParameterValues as $productParameterValue) {
+            if ($mainVariantGroup !== null && $productParameterValue->getParameter()->getId() === $mainVariantGroup->getDistinguishingParameter()->getId()) {
+                $firstDistinguishingParameterValue = $productParameterValue;
+            }
+            if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
+                $secondDistinguishingParameterValue = $productParameterValue;
+            }
         }
 
-        return $colorParameterValue !== null ? $colorParameterValue->getValue()->getText() : null;
-    }
+        $productDistinguishingParameterValue = new ProductDistinguishingParameterValue(
+            $firstDistinguishingParameterValue,
+            $secondDistinguishingParameterValue
+        );
 
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param string $locale
-     * @return string|null
-     */
-    private function findSizeParameterColor(Product $product, string $locale): ?string
-    {
-        $sizeParameterValue = null;
-        if ($product->getDistinguishingParameter() !== null) {
-            $sizeParameterValue = $this->parameterRepository->findProductParameterValueByProductAndParameterAndLocale(
-                $product,
-                $product->getDistinguishingParameter(),
-                $locale
-            );
-        }
-
-        return $sizeParameterValue !== null ? $sizeParameterValue->getValue()->getText() : null;
+        return $productDistinguishingParameterValue;
     }
 }
