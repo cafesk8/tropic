@@ -8,6 +8,14 @@
     height: @top-bar-height;
     line-height: @top-bar-height;
 
+    @media @query-vl {
+        padding-left: 5px;
+    }
+    
+    @media @query-xl {
+        padding-left: 0;
+    }
+
     &__in {
         display: flex;
         flex-direction: column;
