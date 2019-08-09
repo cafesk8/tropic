@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MigrateProductImagesCommand extends Command
 {
-    private const BATCH_LIMIT = 100;
+    private const BATCH_LIMIT = 10;
 
     /**
      * @var string
@@ -95,7 +95,6 @@ class MigrateProductImagesCommand extends Command
                     $this->entityManager->commit();
                 } catch (MigrationDataNotFoundException | Exception $exception) {
                     $symfonyStyleIo->error($exception->getMessage());
-                    $this->entityManager->clear();
                     if ($this->entityManager->isOpen()) {
                         $this->entityManager->rollback();
                     }
