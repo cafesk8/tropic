@@ -26,6 +26,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
 
+    Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ProductPriceImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
     Shopsys\ShopBundle\Model\Order\Transfer\OrderExportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }

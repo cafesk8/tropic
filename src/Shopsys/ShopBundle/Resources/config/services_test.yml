@@ -132,3 +132,5 @@ services:
     Shopsys\ShopBundle\Component\GoogleApi\GoogleClient:
         arguments:
             - '%googleApiKey%'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator'

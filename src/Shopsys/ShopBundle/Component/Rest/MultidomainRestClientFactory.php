@@ -11,6 +11,9 @@ class MultidomainRestClientFactory
      */
     private $restClientFactory;
 
+    /**
+     * @param \Shopsys\ShopBundle\Component\Rest\RestClientFactory $restClientFactory
+     */
     public function __construct(RestClientFactory $restClientFactory)
     {
         $this->restClientFactory = $restClientFactory;
@@ -38,7 +41,7 @@ class MultidomainRestClientFactory
         string $germanPassword,
         int $timeout = 600,
         int $connectionTimeout = 120
-    ): RestClient {
+    ): MultidomainRestClient {
         return new MultidomainRestClient(
             $this->restClientFactory->create($host, $czechUsername, $czechPassword, $timeout, $connectionTimeout),
             $this->restClientFactory->create($host, $slovakUsername, $slovakPassword, $timeout, $connectionTimeout),

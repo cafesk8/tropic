@@ -353,6 +353,15 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param string $ean
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
+     */
+    public function findOneByEan(string $ean): ?Product
+    {
+        return $this->productRepository->findOneByEan($ean);
+    }
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
      */

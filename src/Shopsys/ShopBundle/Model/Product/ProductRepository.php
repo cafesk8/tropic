@@ -144,4 +144,13 @@ class ProductRepository extends BaseProductRepository
 
         return $queryBuilder->getQuery()->execute();
     }
+
+    /**
+     * @param string $ean
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
+     */
+    public function findOneByEan(string $ean): ?Product
+    {
+        return $this->getProductRepository()->findOneBy(['ean' => $ean]);
+    }
 }

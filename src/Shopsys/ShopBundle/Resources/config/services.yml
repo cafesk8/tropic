@@ -110,11 +110,11 @@ services:
         factory: 'Shopsys\ShopBundle\Component\Rest\MultidomainRestClientFactory:create'
         arguments:
             - '%transfer_host%'
-            - '%transfer_cs_username'
+            - '%transfer_cs_username%'
             - '%transfer_cs_password%'
-            - '%transfer_sk_username'
+            - '%transfer_sk_username%'
             - '%transfer_sk_password%'
-            - '%transfer_de_username'
+            - '%transfer_de_username%'
             - '%transfer_de_password%'
 
     Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory:
@@ -437,3 +437,5 @@ services:
     Shopsys\ShopBundle\Component\GoogleApi\GoogleClient:
         arguments:
             - '%googleApiKey%'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator'
