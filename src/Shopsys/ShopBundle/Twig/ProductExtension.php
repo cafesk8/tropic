@@ -27,10 +27,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'findDistinguishingParameterValuesForProducts']
             ),
             new TwigFunction(
-                'distinguishingProductParameterValueForVariant',
-                [$this, 'findDistinguishingProductParameterValueForVariant']
-            ),
-            new TwigFunction(
                 'productParameterValueByParameterId',
                 [$this, 'getProductParameterValueByParameterId']
             ),
@@ -48,15 +44,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function findDistinguishingParameterValuesForProducts(array $products): array
     {
         return $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($products);
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
-     */
-    public function findDistinguishingProductParameterValueForVariant(Product $product): ?ProductParameterValue
-    {
-        return $this->productCachedAttributesFacade->findDistinguishingProductParameterValueForVariant($product);
     }
 
     /**
