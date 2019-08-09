@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Transport;
 
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
@@ -58,6 +59,14 @@ class Transport extends BaseTransport
     protected $chooseStore;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Country\Country[]
+     *
+     * @ORM\ManyToMany(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
+     * @ORM\JoinTable(name="transport_countries")
+     */
+    protected $countries;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -69,6 +78,7 @@ class Transport extends BaseTransport
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
         $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
+        $this->countries = $transportData->countries;
     }
 
     /**
@@ -83,6 +93,7 @@ class Transport extends BaseTransport
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
         $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
+        $this->countries = $transportData->countries;
     }
 
     /**
@@ -160,5 +171,22 @@ class Transport extends BaseTransport
     public function isPickupPlaceType(): bool
     {
         return $this->isPickupPlace() || $this->isChooseStore();
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Country\Country[]
+     */
+    public function getCountries()
+    {
+        return $this->countries->toArray();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @return bool
+     */
+    public function hasCountry(?Country $country): bool
+    {
+        return $this->countries->contains($country);
     }
 }

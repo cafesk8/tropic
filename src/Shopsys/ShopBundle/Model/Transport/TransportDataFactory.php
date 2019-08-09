@@ -45,6 +45,7 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->balikobotShipperService = $transport->getBalikobotShipperService();
         $transportData->pickupPlace = $transport->isPickupPlace();
         $transportData->initialDownload = $transport->isInitialDownload();
+        $transportData->countries = $transport->getCountries();
 
         if ($transport->isChooseStore()) {
             $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;

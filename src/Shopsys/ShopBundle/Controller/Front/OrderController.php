@@ -22,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
@@ -139,6 +140,11 @@ class OrderController extends FrontBaseController
     private $payPalFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -158,6 +164,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
      * @param \Shopsys\ShopBundle\Model\PayPal\PayPalFacade $payPalFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -178,7 +185,8 @@ class OrderController extends FrontBaseController
         NewsletterFacade $newsletterFacade,
         GoPayBankSwiftFacade $goPayBankSwiftFacade,
         GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain,
-        PayPalFacade $payPalFacade
+        PayPalFacade $payPalFacade,
+        CountryFacade $countryFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -199,6 +207,7 @@ class OrderController extends FrontBaseController
         $this->goPayBankSwiftFacade = $goPayBankSwiftFacade;
         $this->goPayFacadeOnCurrentDomain = $goPayFacadeOnCurrentDomain;
         $this->payPalFacade = $payPalFacade;
+        $this->countryFacade = $countryFacade;
     }
 
     public function indexAction()
@@ -317,6 +326,87 @@ class OrderController extends FrontBaseController
             'termsAndConditionsArticle' => $this->legalConditionsFacade->findTermsAndConditions($this->domain->getId()),
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
             'goPayBankSwifts' => $goPayBankSwifts,
+            'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
+            'pickupPlace' => $orderData->pickupPlace,
+            'store' => $orderData->store,
+        ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function transportAndPaymentBoxAction(Request $request): Response
+    {
+        $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        if ($cart === null) {
+            return new Response('');
+        }
+
+        $user = $this->getUser();
+
+        $frontOrderFormData = new FrontOrderData();
+        $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
+        if ($user instanceof User) {
+            $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $user);
+        }
+        $domainId = $this->domain->getId();
+        $frontOrderFormData->domainId = $domainId;
+        $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
+        $frontOrderFormData->currency = $currency;
+
+        $orderFlow = $this->domainAwareOrderFlowFactory->create();
+        if ($orderFlow->isBackToCartTransition()) {
+            return $this->redirectToRoute('front_cart');
+        }
+
+        $country = $this->countryFacade->getById($request->get('countryId'));
+        $orderFlow->setTransportCountry($country);
+
+        $orderFlow->bind($frontOrderFormData);
+        $orderFlow->saveSentStepData();
+
+        $form = $orderFlow->createForm();
+
+        $payment = $frontOrderFormData->payment;
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
+        $transport = $frontOrderFormData->transport;
+
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+
+        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
+
+        if ($transport !== null && $transport->isPickupPlace()) {
+            if ($orderData->pickupPlace !== null) {
+                if ($transport->getBalikobotShipper() !== $orderData->pickupPlace->getBalikobotShipper() ||
+                    $transport->getBalikobotShipperService() !== $orderData->pickupPlace->getBalikobotShipperService()
+                ) {
+                    $orderData->transport = null;
+                    $orderData->pickupPlace = null;
+                    $transport = null;
+                    $form->get('transport')->setData(null);
+                }
+            }
+        }
+
+        $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
+        $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
+        $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
+
+        return $this->render('@ShopsysShop/Front/Content/Order/transportAndPaymentBox.html.twig', [
+            'form' => $form->createView(),
+            'transportsPrices' => $this->transportPriceCalculation->getCalculatedPricesIndexedByTransportId(
+                $transports,
+                $currency,
+                $orderPreview->getProductsPrice(),
+                $domainId
+            ),
+            'paymentsPrices' => $this->paymentPriceCalculation->getCalculatedPricesIndexedByPaymentId(
+                $payments,
+                $currency,
+                $orderPreview->getProductsPrice(),
+                $domainId
+            ),
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
             'pickupPlace' => $orderData->pickupPlace,
             'store' => $orderData->store,

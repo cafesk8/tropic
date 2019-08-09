@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
@@ -142,5 +143,30 @@ class TransportFacade extends BaseTransportFacade
     {
         $transport->setAsDownloaded();
         $this->em->flush($transport);
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     */
+    public function getVisibleByDomainIdAndCountry(int $domainId, array $visiblePaymentsOnDomain, ?Country $country)
+    {
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport[] $visibleTransports */
+        $visibleTransports = $this->getVisibleByDomainId($domainId, $visiblePaymentsOnDomain);
+
+        if ($country === null) {
+            return $visibleTransports;
+        }
+
+        $transportsWithNeededCountry = [];
+        foreach ($visibleTransports as $transport) {
+            if ($transport->hasCountry($country)) {
+                $transportsWithNeededCountry[] = $transport;
+            }
+        }
+
+        return $transportsWithNeededCountry;
     }
 }

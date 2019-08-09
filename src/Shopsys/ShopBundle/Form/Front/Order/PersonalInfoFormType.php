@@ -8,9 +8,10 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\Transformers\InverseTransformer;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
+use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
-use Shopsys\FrameworkBundle\Model\Order\FrontOrderData;
+use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,9 +28,11 @@ class PersonalInfoFormType extends AbstractType
 {
     public const VALIDATION_GROUP_COMPANY_CUSTOMER = 'companyCustomer';
     public const VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS = 'differentDeliveryAddress';
+    public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
+    public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
      */
     private $countryFacade;
 
@@ -66,14 +69,27 @@ class PersonalInfoFormType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter first name']),
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'First name cannot be longer then {{ limit }} characters']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter first name',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
+                    new Constraints\Length([
+                        'max' => 100,
+                        'maxMessage' => 'First name cannot be longer then {{ limit }} characters',
+                    ]),
                 ],
             ])
             ->add('lastName', TextType::class, [
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter last name']),
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Last name cannot be longer than {{ limit }} characters']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter last name',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
+                    new Constraints\Length([
+                        'max' => 100,
+                        'maxMessage' => 'Last name cannot be longer than {{ limit }} characters',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -85,8 +101,15 @@ class PersonalInfoFormType extends AbstractType
             ])
             ->add('telephone', TextType::class, [
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter telephone number']),
-                    new Constraints\Length(['max' => 30, 'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter telephone number',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
+                    new Constraints\Length([
+                        'max' => 30,
+                        'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
                 ],
             ])
             ->add('companyCustomer', CheckboxType::class, ['required' => false])
@@ -129,19 +152,36 @@ class PersonalInfoFormType extends AbstractType
             ])
             ->add('street', TextType::class, [
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter street']),
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Street name cannot be longer than {{ limit }} characters']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter street',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
+                    new Constraints\Length([
+                        'max' => 100,
+                        'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
                 ],
             ])
             ->add('city', TextType::class, [
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter city']),
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'City name cannot be longer than {{ limit }} characters']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter city',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
+                    new Constraints\Length([
+                        'max' => 100,
+                        'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
                 ],
             ])
             ->add('postcode', TextType::class, [
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter zip code']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter zip code',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
                     new Constraints\Length(['max' => 30, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
                 ],
             ])
@@ -150,11 +190,14 @@ class PersonalInfoFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please choose country']),
+                    new Constraints\NotBlank([
+                        'message' => 'Please choose country',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                    ]),
                 ],
             ])
             ->add($builder
-                ->create('deliveryAddressFilled', CheckboxType::class, [
+                ->create('billingAddressFilled', CheckboxType::class, [
                     'required' => false,
                     'property_path' => 'deliveryAddressSameAsBillingAddress',
                 ])
@@ -164,12 +207,12 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter first name of contact person',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'First name of contact person cannot be longer then {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -178,12 +221,12 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter last name of contact person',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Last name of contact person cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -193,7 +236,7 @@ class PersonalInfoFormType extends AbstractType
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Company name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -203,7 +246,7 @@ class PersonalInfoFormType extends AbstractType
                     new Constraints\Length([
                         'max' => 30,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -212,12 +255,12 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter street',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -226,12 +269,12 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter city',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -240,24 +283,26 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter zip code',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 30,
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
             ->add('deliveryCountry', ChoiceType::class, [
                 'required' => true,
                 'choices' => $countries,
+                'data' => $this->countryFacade->getHackedCountry(),
+                'disabled' => true,
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please choose country',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -299,24 +344,39 @@ class PersonalInfoFormType extends AbstractType
         $resolver
             ->setRequired('domain_id')
             ->setAllowedTypes('domain_id', 'int')
+            ->setRequired('country')
+            ->setAllowedTypes('country', [Country::class, 'null'])
             ->setDefaults([
                 'data_class' => FrontOrderData::class,
                 'attr' => ['novalidate' => 'novalidate'],
                 'validation_groups' => function (FormInterface $form) {
                     $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
 
-                    /** @var \Shopsys\FrameworkBundle\Model\Order\FrontOrderData $orderData */
+                    /** @var \Shopsys\ShopBundle\Model\Order\FrontOrderData $orderData */
                     $orderData = $form->getData();
 
                     if ($orderData->companyCustomer) {
                         $validationGroups[] = self::VALIDATION_GROUP_COMPANY_CUSTOMER;
                     }
                     if (!$orderData->deliveryAddressSameAsBillingAddress) {
-                        $validationGroups[] = self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS;
+                        $validationGroups[] = self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED;
+                    }
+
+                    if ($this->isPickupPlaceAndStoreNull($orderData) === true) {
+                        $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
                     }
 
                     return $validationGroups;
                 },
             ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\FrontOrderData $orderData
+     * @return bool
+     */
+    private function isPickupPlaceAndStoreNull(FrontOrderData $orderData): bool
+    {
+        return $orderData->pickupPlace === null && $orderData->store === null;
     }
 }

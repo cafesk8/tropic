@@ -22,4 +22,9 @@ class FrontOrderData extends BaseFrontOrderData
      * @var \Shopsys\ShopBundle\Model\Store\Store|null
      */
     public $store;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     */
+    public $country;
 }

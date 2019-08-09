@@ -6,9 +6,9 @@ namespace Tests\ShopBundle\Unit\Form\Front\Order;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\ShopBundle\Form\Front\Order\PersonalInfoFormType;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\PreloadedExtension;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validation;
 class PersonalInfoFormTypeTest extends TypeTestCase
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade|\PHPUnit\Framework\MockObject\MockObject
      */
     private $countryFacade;
 
@@ -66,14 +66,14 @@ class PersonalInfoFormTypeTest extends TypeTestCase
     private function getPersonalInfoFormData($legalConditionsAgreement)
     {
         $personalInfoFormData = [];
-        $personalInfoFormData['firstName'] = 'test';
-        $personalInfoFormData['lastName'] = 'test';
+        $personalInfoFormData['deliveryFirstName'] = 'test';
+        $personalInfoFormData['deliveryLastName'] = 'test';
         $personalInfoFormData['email'] = 'test@test.cz';
-        $personalInfoFormData['telephone'] = '123456789';
-        $personalInfoFormData['street'] = 'test';
-        $personalInfoFormData['city'] = 'test';
-        $personalInfoFormData['postcode'] = '12345';
-        $personalInfoFormData['country'] = 1;
+        $personalInfoFormData['deliveryTelephone'] = '123456789';
+        $personalInfoFormData['deliveryStreet'] = 'test';
+        $personalInfoFormData['deliveryCity'] = 'test';
+        $personalInfoFormData['deliveryPostcode'] = '12345';
+        $personalInfoFormData['deliveryCountry'] = 1;
         $personalInfoFormData['legalConditionsAgreement'] = $legalConditionsAgreement;
         $personalInfoFormData['newsletterSubscription'] = false;
 
@@ -127,6 +127,7 @@ class PersonalInfoFormTypeTest extends TypeTestCase
     {
         $personalInfoForm = $this->factory->create(PersonalInfoFormType::class, null, [
             'domain_id' => 1,
+            'country' => null,
         ]);
 
         return $personalInfoForm;

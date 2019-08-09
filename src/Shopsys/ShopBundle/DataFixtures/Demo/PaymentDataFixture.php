@@ -70,6 +70,8 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->createPayment(self::PAYMENT_CARD, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,
+            TransportDataFixture::TRANSPORT_PPL_DE,
+            TransportDataFixture::TRANSPORT_PPL_FR,
         ]);
 
         $paymentData = $this->paymentDataFactory->create();
@@ -134,6 +136,8 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->createPayment(Payment::TYPE_GOPAY, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,
+            TransportDataFixture::TRANSPORT_PPL_DE,
+            TransportDataFixture::TRANSPORT_PPL_FR,
         ]);
 
         $paymentData = $this->paymentDataFactory->create();
@@ -169,6 +173,8 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,
             TransportDataFixture::TRANSPORT_CZECH_POST,
+            TransportDataFixture::TRANSPORT_PPL_DE,
+            TransportDataFixture::TRANSPORT_PPL_FR,
         ]);
     }
 

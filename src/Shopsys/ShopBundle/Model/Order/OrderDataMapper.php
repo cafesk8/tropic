@@ -47,6 +47,8 @@ class OrderDataMapper extends BaseOrderDataMapper
             $this->setOrderDeliveryAddressDataByStore($orderData, $frontOrderData, $orderData->store);
         }
 
+        $orderData->deliveryCountry = $frontOrderData->country;
+
         return $orderData;
     }
 
@@ -57,8 +59,8 @@ class OrderDataMapper extends BaseOrderDataMapper
      */
     private function setOrderDeliveryAddressDataByPickUpPlace(OrderData $orderData, FrontOrderData $frontOrderData, PickupPlace $pickupPlace): void
     {
-        $orderData->deliveryFirstName = $frontOrderData->firstName;
-        $orderData->deliveryLastName = $frontOrderData->lastName;
+        $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
+        $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
 
         $frontOrderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
@@ -88,10 +90,8 @@ class OrderDataMapper extends BaseOrderDataMapper
      */
     private function setOrderDeliveryAddressDataByStore(OrderData $orderData, FrontOrderData $frontOrderData, Store $store): void
     {
-        $frontOrderData->deliveryFirstName = $frontOrderData->firstName;
         $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
 
-        $frontOrderData->deliveryLastName = $frontOrderData->lastName;
         $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
 
         $frontOrderData->deliveryAddressSameAsBillingAddress = false;

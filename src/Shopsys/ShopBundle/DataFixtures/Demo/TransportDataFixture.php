@@ -19,6 +19,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     public const TRANSPORT_CZECH_POST = 'transport_cp';
     public const TRANSPORT_PPL = 'transport_ppl';
     public const TRANSPORT_PERSONAL = 'transport_personal';
+    public const TRANSPORT_PPL_DE = 'transport_ppl_de';
+    public const TRANSPORT_PPL_FR = 'transport_ppl_fr';
 
     /** @var \Shopsys\ShopBundle\Model\Transport\TransportFacade */
     protected $transportFacade;
@@ -65,6 +67,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('3.95'),
         ];
         $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_CZECH_POST, $transportData);
 
         $transportData = $this->transportDataFactory->create();
@@ -83,6 +87,8 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('6.95'),
         ];
         $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_PPL, $transportData);
 
         $transportData = $this->transportDataFactory->create();
@@ -110,7 +116,47 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'de' => 'We are looking forward to your visit.',
         ];
         $transportData->vat = $this->getReference(VatDataFixture::VAT_ZERO);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_PERSONAL, $transportData);
+
+        $transportData = $this->transportDataFactory->create();
+        $transportData->name = [
+            'cs' => 'PPL',
+            'sk' => 'PPL',
+            'de' => 'PPL',
+        ];
+        $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
+        $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
+        $transportData->initialDownload = false;
+
+        $transportData->pricesByCurrencyId = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('230.90'),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('7.95'),
+        ];
+        $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_GERMANY);
+        $this->createTransport(self::TRANSPORT_PPL_DE, $transportData);
+
+        $transportData = $this->transportDataFactory->create();
+        $transportData->name = [
+            'cs' => 'PPL',
+            'sk' => 'PPL',
+            'de' => 'PPL',
+        ];
+        $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
+        $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
+        $transportData->initialDownload = false;
+
+        $transportData->pricesByCurrencyId = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('499.90'),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('15.95'),
+        ];
+        $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_FRANCE);
+        $this->createTransport(self::TRANSPORT_PPL_FR, $transportData);
     }
 
     /**
@@ -135,6 +181,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         return [
             VatDataFixture::class,
             CurrencyDataFixture::class,
+            CountryDataFixture::class,
         ];
     }
 }

@@ -14,6 +14,8 @@ class CountryDataFixture extends AbstractReferenceFixture
 {
     public const COUNTRY_CZECH_REPUBLIC = 'country_czech_republic';
     public const COUNTRY_SLOVAKIA = 'country_slovakia';
+    public const COUNTRY_GERMANY = 'country_germany';
+    public const COUNTRY_FRANCE = 'country_france';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
@@ -58,6 +60,24 @@ class CountryDataFixture extends AbstractReferenceFixture
         $countryData->code = 'SK';
 
         $this->createCountry($countryData, self::COUNTRY_SLOVAKIA);
+
+        $countryData = $this->countryDataFactory->create();
+        $countryData->names = [
+            'cs' => 'Německo',
+            'sk' => 'Nemecko',
+            'de' => 'Deutschland',
+        ];
+        $countryData->code = 'DE';
+        $this->createCountry($countryData, self::COUNTRY_GERMANY);
+
+        $countryData = $this->countryDataFactory->create();
+        $countryData->names = [
+            'cs' => 'Francie',
+            'sk' => 'Francúzsko',
+            'de' => 'Frankreich',
+        ];
+        $countryData->code = 'FR';
+        $this->createCountry($countryData, self::COUNTRY_FRANCE);
     }
 
     /**
