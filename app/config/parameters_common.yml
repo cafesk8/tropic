@@ -22,6 +22,7 @@ parameters:
     shopsys.performance_test.feed.min_duration_seconds: 5
     container.autowiring.strict_mode: true
     shopsys.entity_extension.map:
+        Shopsys\FrameworkBundle\Model\Advert\Advert: Shopsys\ShopBundle\Model\Advert\Advert
         Shopsys\FrameworkBundle\Model\Article\Article: Shopsys\ShopBundle\Model\Article\Article
         Shopsys\FrameworkBundle\Model\Administrator\Administrator: Shopsys\ShopBundle\Model\Administrator\Administrator
         Shopsys\FrameworkBundle\Model\Cart\Cart: Shopsys\ShopBundle\Model\Cart\Cart

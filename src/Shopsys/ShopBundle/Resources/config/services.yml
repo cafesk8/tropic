@@ -383,6 +383,8 @@ services:
         arguments:
             - '@snc_redis.twig'
 
+    Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory: '@Shopsys\ShopBundle\Model\Advert\AdvertDataFactory'
+
     Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry: '@Shopsys\ShopBundle\Model\Advert\AdvertPositionRegistry'
 
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapDumperFactory: '@Shopsys\ShopBundle\Model\Sitemap\SitemapDumperFactory'
