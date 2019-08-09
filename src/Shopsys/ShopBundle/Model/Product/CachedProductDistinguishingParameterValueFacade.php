@@ -60,8 +60,16 @@ class CachedProductDistinguishingParameterValueFacade
      */
     public function invalidCacheByProduct(Product $product): void
     {
-        $cacheId = $product->getId();
-        $this->redisFacade->clearCacheByPattern('distinguishing_parameters', $cacheId);
+        $this->redisFacade->clearCacheByPattern('distinguishing_parameters', $product->getId());
+        foreach ($product->getVariants() as $variant) {
+            $this->redisFacade->clearCacheByPattern('distinguishing_parameters', $variant->getId());
+        }
+
+        if ($product->getMainVariantGroup() !== null) {
+            foreach ($product->getMainVariantGroup()->getProducts() as $mainProduct) {
+                $this->redisFacade->clearCacheByPattern('distinguishing_parameters', $mainProduct->getId());
+            }
+        }
     }
 
     public function invalidAll(): void
