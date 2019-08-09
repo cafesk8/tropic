@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Model\Product;
 
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 
@@ -103,25 +102,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         }
 
         return $finalResult;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param int $parameterId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
-     */
-    public function getProductParameterValueByParameterId(Product $product, int $parameterId): ?ProductParameterValue
-    {
-        $productParametersValue = $this->getProductParameterValues($product);
-
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue $productParameterValue */
-        foreach ($productParametersValue as $productParameterValue) {
-            if ($productParameterValue->getParameter()->getId() === $parameterId) {
-                return $productParameterValue;
-            }
-        }
-
-        return null;
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
 use Twig\TwigFunction;
@@ -27,10 +26,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'findDistinguishingParameterValuesForProducts']
             ),
             new TwigFunction(
-                'productParameterValueByParameterId',
-                [$this, 'getProductParameterValueByParameterId']
-            ),
-            new TwigFunction(
                 'productDistinguishingParameterValue',
                 [$this, 'getProductDistinguishingParameterValue']
             ),
@@ -44,16 +39,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function findDistinguishingParameterValuesForProducts(array $products): array
     {
         return $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($products);
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @param int $parameterId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue
-     */
-    public function getProductParameterValueByParameterId(Product $product, int $parameterId): ?ProductParameterValue
-    {
-        return $this->productCachedAttributesFacade->getProductParameterValueByParameterId($product, $parameterId);
     }
 
     /**
