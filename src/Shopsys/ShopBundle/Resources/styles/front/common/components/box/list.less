@@ -54,6 +54,10 @@
 
     &__content {
         width: 100%;
+
+        @media @query-vl {
+            width: calc(~"100% - (@{box-list-panel-width} + @{box-list-panel-gap})");
+        }
     }
 
     &__filter-opener {
