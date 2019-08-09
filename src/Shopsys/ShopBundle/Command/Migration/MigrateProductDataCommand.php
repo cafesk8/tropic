@@ -96,9 +96,7 @@ class MigrateProductDataCommand extends Command
 
                     $symfonyStyleIo->success(sprintf('Data for product with EAN `%s` was migrated', $product->getEan()));
                     $this->entityManager->commit();
-                } catch (MigrationDataNotFoundException $exception) {
-                    $symfonyStyleIo->warning($exception->getMessage());
-                } catch (Exception $exception) {
+                } catch (MigrationDataNotFoundException | Exception $exception) {
                     $symfonyStyleIo->error($exception->getMessage());
                     $this->entityManager->clear();
                     if ($this->entityManager->isOpen()) {
