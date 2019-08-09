@@ -560,11 +560,11 @@
                                         </div>
                                         <ul class="list-variants">
                                             {% for mainVariantGroupProduct in mainVariants %}
-                                                {% set mainVariantGroupDistinguishingParameterValue = mainVariantGroupDistinguishingParameterValue(mainVariantGroupProduct) %}
-                                                {% if mainVariantGroupDistinguishingParameterValue is not null %}
+                                                {% set productDistinguishingParameterValue = productDistinguishingParameterValue(mainVariantGroupProduct) %}
+                                                {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
                                                     <li class="list-variants__item js-not-implemented-yet" data-id="{{ mainVariantGroupProduct.id }}">
                                                         <span class="list-variants__item__name">
-                                                            {{ mainVariantGroupDistinguishingParameterValue.text }}
+                                                            {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
                                                         </span>
                                                     </li>
                                                 {% endif %}
