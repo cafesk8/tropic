@@ -221,6 +221,8 @@ services:
         arguments:
             - '%shopsys.data_fixtures.resource_customers_filepath%'
 
+    Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter: ~
+
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
     Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig'
@@ -389,3 +391,4 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade'
+
