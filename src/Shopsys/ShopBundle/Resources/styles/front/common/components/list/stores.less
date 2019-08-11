@@ -7,14 +7,13 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: -@list-stores-item-gap;
-    margin-right: -@list-stores-item-gap;
+    margin: 0 -@list-stores-item-gap 78px -@list-stores-item-gap;
 
     &__item {
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: @list-stores-item-padding;
+        padding: @list-stores-item-padding @list-stores-item-padding 12px @list-stores-item-padding;
         margin: @list-stores-item-gap/2;
 
         background-color: @color-f;
@@ -30,9 +29,13 @@
 
         &__image {
             width: 100%;
-            height: @list-stores-item-image-height;
             position: relative;
+            min-height: 110px;
             margin-bottom: 20px;
+
+            @media @query-lg {
+                height: @list-stores-item-image-height;
+            }
 
             img {
                 .center-image();
@@ -54,9 +57,10 @@
                 text-transform: uppercase;
 
                 &__additional {
-                    padding-left: 15px;
+                    padding-left: 12px;
 
                     color: @color-brown;
+                    font-family: @font-alt;
                     font-size: 14px;
                     font-weight: 400;
                     text-transform: none;
@@ -68,6 +72,8 @@
                 text-align: right;
 
                 color: @color-brown;
+                font-size: 14px;
+                font-family: @font-alt;
             }
         }
     }

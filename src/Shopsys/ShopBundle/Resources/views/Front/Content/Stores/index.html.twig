@@ -9,7 +9,7 @@
 {% block main_content %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
-            <h1 class="in-title in-title--big in-title--center">
+            <h1 class="in-title in-title--big in-title--dark in-title--center">
                 {{ 'Prodejny'|trans }}
             </h1>
             <ul class="list-stores">
@@ -185,6 +185,20 @@
                     </a>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                {{ instagramFeed() }}
+            {% endcache %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--dark web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
         </div>
     </div>
 {% endblock %}
