@@ -224,13 +224,17 @@ class Order extends BaseOrder
         } else {
             $this->firstName = $orderData->firstName ?? '';
             $this->lastName = $orderData->lastName ?? '';
-            $this->companyName = $orderData->companyName ?? '';
+            $this->companyName = $orderData->companyName;
             $this->telephone = $orderData->telephone ?? '';
             $this->street = $orderData->street ?? '';
             $this->city = $orderData->city ?? '';
             $this->postcode = $orderData->postcode ?? '';
             $this->country = $orderData->country;
         }
+
+        $this->firstName = $this->firstName === '' ? $this->deliveryFirstName : $this->firstName;
+        $this->lastName = $this->lastName === '' ? $this->deliveryLastName : $this->lastName;
+        $this->telephone = $this->telephone === '' ? $this->deliveryTelephone : $this->telephone;
     }
 
     /**

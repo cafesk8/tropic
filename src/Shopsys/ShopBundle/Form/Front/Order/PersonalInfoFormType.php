@@ -30,6 +30,7 @@ class PersonalInfoFormType extends AbstractType
     public const VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS = 'differentDeliveryAddress';
     public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
+    public const VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED = 'deliveryTelephoneRequired';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
@@ -207,12 +208,10 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter first name of contact person',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'First name of contact person cannot be longer then {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -221,12 +220,10 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter last name of contact person',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Last name of contact person cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                 ],
             ])
@@ -243,10 +240,14 @@ class PersonalInfoFormType extends AbstractType
             ->add('deliveryTelephone', TextType::class, [
                 'required' => false,
                 'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter telephone number',
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED],
+                    ]),
                     new Constraints\Length([
                         'max' => 30,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
+                        'groups' => [self::VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED],
                     ]),
                 ],
             ])
@@ -364,6 +365,10 @@ class PersonalInfoFormType extends AbstractType
 
                     if ($this->isPickupPlaceAndStoreNull($orderData) === true) {
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
+                    }
+
+                    if ($this->isPickupPlaceAndStoreNull($orderData) === false) {
+                        $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED;
                     }
 
                     return $validationGroups;

@@ -21,8 +21,16 @@
                         </h2>
                     </div>
 
+                    {% if isSelectedPickupPlaceTransport is same as (true) %}
+                        {{ form_row(form.deliveryFirstName, { label: 'First name'|trans }) }}
+                        {{ form_row(form.deliveryLastName, { label: 'Last name'|trans }) }}
+                    {% endif %}
+
                     {{ form_row(form.email, { label: 'E-mail'|trans }) }}
 
+                    {% if isSelectedPickupPlaceTransport is same as (true) %}
+                        {{ form_row(form.deliveryTelephone, { required: true, label: 'Telephone'|trans }) }}
+                    {% endif %}
                 </fieldset>
 
                 <fieldset>
@@ -37,15 +45,12 @@
                             {% set pickupPlaceData = store %}
                         {% endif %}
 
-                        {{ form_row(form.deliveryFirstName, { label: 'First name'|trans }) }}
-                        {{ form_row(form.deliveryLastName, { label: 'Last name'|trans }) }}
                         <div class="box-order__info">
                             <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
                             <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
                             <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
                             <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
                             {% do form.deliveryCompanyName.setRendered %}
-                            {% do form.deliveryTelephone.setRendered %}
                             {% do form.deliveryStreet.setRendered %}
                             {% do form.deliveryCity.setRendered %}
                             {% do form.deliveryPostcode.setRendered %}

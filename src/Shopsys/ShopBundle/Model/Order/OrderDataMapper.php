@@ -68,7 +68,7 @@ class OrderDataMapper extends BaseOrderDataMapper
         $frontOrderData->deliveryCompanyName = $pickupPlace->getName();
         $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
 
-        $orderData->deliveryTelephone = null;
+        $orderData->deliveryTelephone = $frontOrderData->deliveryTelephone;
 
         $frontOrderData->deliveryStreet = $pickupPlace->getStreet();
         $orderData->deliveryStreet = $frontOrderData->deliveryStreet;
@@ -100,7 +100,7 @@ class OrderDataMapper extends BaseOrderDataMapper
         $frontOrderData->deliveryCompanyName = $store->getName();
         $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
 
-        $orderData->deliveryTelephone = null;
+        $orderData->deliveryTelephone = $frontOrderData->deliveryTelephone;
 
         $frontOrderData->deliveryStreet = $store->getStreet();
         $orderData->deliveryStreet = $frontOrderData->deliveryStreet;
