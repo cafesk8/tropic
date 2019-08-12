@@ -78,6 +78,26 @@ services:
                 - '@snc_redis.global'
                 - '@snc_redis.session'
 
+    Shopsys\ShopBundle\Component\FileUpload\FileUpload:
+        arguments: ['%kernel.cache_dir%', '%shopsys.uploaded_file_dir%', '%shopsys.image_dir%']
+
+    Shopsys\FrameworkBundle\Component\FileUpload\FileUpload: '@Shopsys\ShopBundle\Component\FileUpload\FileUpload'
+
+    Shopsys\ShopBundle\Component\Image\MigrateImageDoctrineListener:
+        arguments:
+            - '%shopsys.product_images_migrate_dir%'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: prePersist }
+
+    Shopsys\ShopBundle\Component\Image\ImageFacade:
+        arguments: ['%shopsys.image_url_prefix%']
+
+    Shopsys\FrameworkBundle\Component\Image\ImageFacade: '@Shopsys\ShopBundle\Component\Image\ImageFacade'
+
+    Shopsys\FrameworkBundle\Component\Image\ImageFactoryInterface:
+        alias: Shopsys\ShopBundle\Component\Image\ImageFactory
+
     Shopsys\ShopBundle\Component\Rest\RestClient:
         class: Shopsys\ShopBundle\Component\Rest\RestClient
         factory: 'Shopsys\ShopBundle\Component\Rest\RestClientFactory:create'

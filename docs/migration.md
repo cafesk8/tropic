@@ -36,3 +36,4 @@ To run commands, you need them from terminal on server. Then you need to run com
 listed bellow:
 
 1. Migrate product data: `php bin/console shopsys:migrate:product-data`
+2. Migrate product images: `php bin/console shopsys:migrate:product-images`

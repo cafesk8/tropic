@@ -111,6 +111,7 @@ class ProductRepository extends BaseProductRepository
             ->where('p.ean IS NOT NULL')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->orderBy('p.id', 'ASC')
             ->getQuery()->getResult();
     }
 }
