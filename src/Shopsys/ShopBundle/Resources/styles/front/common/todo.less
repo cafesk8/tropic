@@ -15,6 +15,18 @@ button.active {
     color: red;
 }
 
+/*
+    Fix: https://app.yodiz.com/plan/pages/detail.vz?cid=10273#/bg-5577
+    It was add js into variantSelector.js:
+    if ($priceWrapper.children(':not(.display-none)').length) {
+        $priceWrapper.css('padding', '30px');
+    }
+
+    TODO coder:  The better solution with css only maybe exist? Please delete this comment when not.
+*/
+.box-detail__add-basket {
+    padding: 0;
+}
 .box-gallery__item--video {
     max-height: 72px;
     min-height: 72px;

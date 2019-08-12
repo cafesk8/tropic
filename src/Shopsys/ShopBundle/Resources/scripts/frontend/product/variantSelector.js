@@ -33,6 +33,10 @@
 
             $container.filterAllNodes('.js-product-variant-select-button').removeClass('active');
             $(this).addClass('active');
+
+            if ($priceWrapper.children(':not(.display-none)').length > 0) {
+                $priceWrapper.css('padding', '30px');
+            }
         });
     });
 })(jQuery);
