@@ -117,14 +117,16 @@ class MigrateProductImagesCommand extends Command
             try {
                 $this->imageFacade->migrateImage($product, $imageFileName, null);
                 $symfonyStyleIo->success(sprintf(
-                    'Image `%s` for product with EAN `%s` was migrated',
+                    'Image `%s` for product(%s) with EAN `%s` was migrated',
                     $productImageData['migrateFilename'],
+                    $product->getId(),
                     $product->getEan()
                 ));
             } catch (MigrateImageToEntityFailedException $ex) {
                 $symfonyStyleIo->error(sprintf(
-                    'Image `%s` for product with EAN `%s` was not migrated, because of error `%s`',
+                    'Image `%s` for product(%s) with EAN `%s` was not migrated, because of error `%s`',
                     $productImageData['migrateFilename'],
+                    $product->getId(),
                     $product->getEan(),
                     $ex->getMessage()
                 ));
@@ -149,7 +151,11 @@ class MigrateProductImagesCommand extends Command
 
         $migrateProductData = $stmt->fetchAll();
         if (count($migrateProductData) === 0) {
-            throw new MigrationDataNotFoundException(sprintf('No data found for product with EAN `%s`', $product->getEan()));
+            throw new MigrationDataNotFoundException(sprintf(
+                'No data found for product(%s) with EAN `%s`',
+                $product->getId(),
+                $product->getEan()
+            ));
         }
         return $migrateProductData;
     }
