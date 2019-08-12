@@ -195,4 +195,19 @@ class ProductRepository extends BaseProductRepository
     {
         return $this->getProductRepository()->findBy(['catnum' => $catnum]);
     }
+
+    /**
+     * @param int $limit
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsForExportToMall(int $limit, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
+            ->andWhere('p.mallExport = TRUE')
+            ->andWhere('p.mallExportedAt is NULL OR p.mallExportedAt < p.updatedAt')
+            ->setMaxResults($limit)
+            ->getQuery()->getResult();
+    }
 }

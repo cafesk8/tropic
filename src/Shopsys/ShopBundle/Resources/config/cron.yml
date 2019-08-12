@@ -49,3 +49,7 @@ services:
     Shopsys\ShopBundle\Model\Customer\RecalculateUserPricingGroupCronModule:
         tags:
             - { name: shopsys.cron, hours: '23', minutes: '50', readableFrequency: 'v 23:50' }
+
+    Shopsys\ShopBundle\Model\Product\Mall\MallProductExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }

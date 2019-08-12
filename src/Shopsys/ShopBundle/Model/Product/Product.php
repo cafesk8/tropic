@@ -406,4 +406,9 @@ class Product extends BaseProduct
     {
         return $this->updatedAt;
     }
+
+    public function markProductAsExportedToMall(): void
+    {
+        $this->mallExportedAt = new DateTime();
+    }
 }
