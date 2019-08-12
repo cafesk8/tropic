@@ -323,8 +323,6 @@ class CartController extends FrontBaseController
 
                 $addProductResult = $this->cartFacade->addProductToCart($formData['productId'], (int)$formData['quantity']);
 
-                $this->sendAddProductResultFlashMessage($addProductResult);
-
                 $accessories = $this->productAccessoryFacade->getTopOfferedAccessories(
                     $addProductResult->getCartItem()->getProduct(),
                     $this->domain->getId(),
