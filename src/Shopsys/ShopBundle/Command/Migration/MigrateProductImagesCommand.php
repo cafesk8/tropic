@@ -93,7 +93,7 @@ class MigrateProductImagesCommand extends Command
                     $this->imageFacade->deleteImagesFromMigration($product);
                     $this->migrateProductImage($product, $symfonyStyleIo);
                     $this->entityManager->commit();
-                } catch (MigrationDataNotFoundException | Exception $exception) {
+                } catch (MigrateImageToEntityFailedException | MigrationDataNotFoundException | Exception $exception) {
                     $symfonyStyleIo->error($exception->getMessage());
                     if ($this->entityManager->isOpen()) {
                         $this->entityManager->rollback();
@@ -114,23 +114,13 @@ class MigrateProductImagesCommand extends Command
 
         foreach ($productImagesData as $productImageData) {
             $imageFileName = $productImageData['migrateProductId'] . '/' . $productImageData['migrateFilename'];
-            try {
-                $this->imageFacade->migrateImage($product, $imageFileName, null);
-                $symfonyStyleIo->success(sprintf(
-                    'Image `%s` for product(%s) with EAN `%s` was migrated',
-                    $productImageData['migrateFilename'],
-                    $product->getId(),
-                    $product->getEan()
-                ));
-            } catch (MigrateImageToEntityFailedException $ex) {
-                $symfonyStyleIo->error(sprintf(
-                    'Image `%s` for product(%s) with EAN `%s` was not migrated, because of error `%s`',
-                    $productImageData['migrateFilename'],
-                    $product->getId(),
-                    $product->getEan(),
-                    $ex->getMessage()
-                ));
-            }
+            $this->imageFacade->migrateImage($product, $imageFileName, null);
+            $symfonyStyleIo->success(sprintf(
+                'Image `%s` for product(%s) with EAN `%s` was migrated',
+                $productImageData['migrateFilename'],
+                $product->getId(),
+                $product->getEan()
+            ));
         }
     }
 
