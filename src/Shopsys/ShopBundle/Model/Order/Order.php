@@ -216,7 +216,7 @@ class Order extends BaseOrder
             $this->firstName = $orderData->deliveryFirstName;
             $this->lastName = $orderData->deliveryLastName;
             $this->companyName = $orderData->deliveryCompanyName;
-            $this->telephone = $orderData->deliveryTelephone;
+            $this->telephone = $orderData->deliveryTelephone ?? '';
             $this->street = $orderData->deliveryStreet;
             $this->city = $orderData->deliveryCity;
             $this->postcode = $orderData->deliveryPostcode;
