@@ -29,6 +29,10 @@
             e.preventDefault();
             $(this).addClass('display-none');
             $gallery.filterAllNodes('.js-gallery-item').removeClass('display-none');
+            $gallery.filterAllNodes('.js-lazy-load').each(function () {
+                var $lazyloadedImage = $(this);
+                Shopsys.lazyLoadInit.manualReplaceSrc($lazyloadedImage);
+            });
         });
 
         $gallery.filterAllNodes('.js-gallery-slides').slick({
