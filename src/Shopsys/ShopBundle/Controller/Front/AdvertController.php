@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Model\Advert\AdvertFacade;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdvertController extends FrontBaseController
 {
@@ -30,5 +31,13 @@ class AdvertController extends FrontBaseController
             'fourthSquare' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('fourthSquare'),
             'fifthRectangle' => $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('fifthRectangle'),
         ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function bigBannerOnHomepageAction(): Response
+    {
+        return $this->render('@ShopsysShop/Front/Content/Advert/bigBannerOnHomepage.html.twig');
     }
 }
