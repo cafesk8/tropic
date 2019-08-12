@@ -57,7 +57,13 @@ class MigrateImageDoctrineListener
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
+
         if ($entity instanceof Image && $entity->getMigrateFileName() !== null) {
+            $sourceFilepath = $this->migrateProductImagesDir . '/' . $entity->getMigrateFileName();
+            if ($this->filesystem->has($sourceFilepath) === false) {
+                throw new FileNotFoundException($sourceFilepath);
+            }
+
             $this->preFlushImage($entity);
         }
     }
@@ -103,9 +109,6 @@ class MigrateImageDoctrineListener
         );
 
         try {
-            if ($this->filesystem->has($sourceFilepath) === false) {
-                throw new FileNotFoundException($sourceFilepath);
-            }
             if ($this->filesystem->has($targetFilepath)) {
                 $this->filesystem->delete($targetFilepath);
             }
