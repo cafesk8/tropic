@@ -63,10 +63,16 @@ class ProductData extends BaseProductData
      */
     public $youtubeVideoId;
 
+    /**
+     * @var bool
+     */
+    public $mallExport;
+
     public function __construct()
     {
         parent::__construct();
         $this->productsInGroup = [];
         $this->actionPrices = [];
+        $this->mallExport = false;
     }
 }

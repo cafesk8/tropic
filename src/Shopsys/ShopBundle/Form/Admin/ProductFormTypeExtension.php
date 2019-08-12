@@ -183,6 +183,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
         $this->extendAccessoriesGroup($builder);
+        $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'));
     }
 
     /**
@@ -401,6 +402,17 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($giftGroup);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $displayAvailabilityGroup
+     */
+    private function extendDisplayAvailabilityGroup(FormBuilderInterface $displayAvailabilityGroup): void
+    {
+        $displayAvailabilityGroup->add('mallExport', YesNoType::class, [
+            'required' => false,
+            'label' => t('Export do Mall.cz'),
+        ]);
     }
 
     /**
