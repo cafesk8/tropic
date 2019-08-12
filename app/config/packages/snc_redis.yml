@@ -6,6 +6,12 @@ snc_redis:
             dsn: 'redis://%redis_host%'
             options:
                 prefix: '%env(REDIS_PREFIX)%%build-version%:cache:bestselling_products:'
+        distinguishing_parameters:
+            type: 'phpredis'
+            alias: 'distinguishing_parameters'
+            dsn: 'redis://%redis_host%'
+            options:
+                prefix: '%env(REDIS_PREFIX)%%build-version%:cache:distinguishing_parameters:'
         doctrine_metadata:
             type: 'phpredis'
             alias: 'doctrine_metadata'

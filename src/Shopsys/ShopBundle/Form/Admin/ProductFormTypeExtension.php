@@ -22,6 +22,7 @@ use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
+use Shopsys\ShopBundle\Twig\ProductExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -63,6 +64,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $pricingGroupFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Twig\ProductExtension
+     */
+    private $productExtension;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -70,6 +76,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Twig\ProductExtension $productExtension
      */
     public function __construct(
         ParameterFacade $parameterFacade,
@@ -77,7 +84,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         AdminDomainTabsFacade $adminDomainTabsFacade,
         PriceExtension $priceExtension,
         Domain $domain,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        ProductExtension $productExtension
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
@@ -85,6 +93,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->priceExtension = $priceExtension;
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->productExtension = $productExtension;
     }
 
     /**
@@ -136,6 +145,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 $this->addActionPriceToPricesGroup($builder);
                 $builder->add($this->getPricesGroup($builder, $product));
             }
+        }
+
+        if ($product !== null && $product->isVariant()) {
+            $this->extendVariantGroup($builder->get('variantGroup'), $product);
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
@@ -302,14 +315,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationGroup
      */
-    private function extendCatnum(FormBuilderInterface $builder): void
+    private function extendCatnum(FormBuilderInterface $basicInformationGroup): void
     {
-        $codeFieldOptions = $builder->get('catnum')->getOptions();
-        $codeFieldOptions['label'] = t('SKU');
-        $codeFieldType = get_class($builder->get('catnum')->getType()->getInnerType());
-        $builder->add('catnum', $codeFieldType, $codeFieldOptions);
+        $catnumFieldOptions = $basicInformationGroup->get('catnum')->getOptions();
+        $catnumFieldOptions['label'] = t('SKU');
+        $catnumFieldType = get_class($basicInformationGroup->get('catnum')->getType()->getInnerType());
+        $basicInformationGroup->add('catnum', $catnumFieldType, $catnumFieldOptions);
     }
 
     /**
@@ -330,5 +343,18 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($giftGroup);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $variantGroup
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    private function extendVariantGroup(FormBuilderInterface $variantGroup, Product $product)
+    {
+        $mainVariant = $product->getMainVariant();
+        $mainVariantUrlOptions = $variantGroup->get('mainVariantUrl')->getOptions();
+        $mainVariantUrlOptions['route_label'] = $this->productExtension->getProductDisplayName($mainVariant);
+        $mainVariantUrlType = get_class($variantGroup->get('mainVariantUrl')->getType()->getInnerType());
+        $variantGroup->add('mainVariantUrl', $mainVariantUrlType, $mainVariantUrlOptions);
     }
 }

@@ -1,20 +1,18 @@
 {% macro writeParameters(product, parameterClassName) %}
-    {% if (product.isVariant is same as (true) and product.mainVariant.mainVariantGroup is not null) %}
-        {% set parametereValueColor = productParameterValueByParameterId(product, product.mainVariant.mainVariantGroup.distinguishingParameter.id) %}
-        {% if parametereValueColor is not null %}
-            <span class="{{ parameterClassName }}">
-                {{ product.mainVariant.mainVariantGroup.distinguishingParameter.name }}: {{ parametereValueColor.value.text }}
-            </span>
-        {% endif %}
+    {% set productDistinguishingParameterValue = productDistinguishingParameterValue(product) %}
+    {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
+        <span class="{{ parameterClassName }}">
+            {{ productDistinguishingParameterValue.firstDistinguishingParameterName }}: {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
+        </span>
     {% endif %}
 
-    {% if (product.distinguishingParameter is not null) %}
-        {% set parametereValueSize = productParameterValueByParameterId(product, product.distinguishingParameter.id) %}
-        {% if parametereValueSize is not null %}
-            <span class="{{ parameterClassName }}">
-                {{ product.distinguishingParameter.name }}:
-                <span class="in-badge in-badge--outline" title="{{ parametereValueSize.value.text }}">{{ parametereValueSize.value.text }}</span>
+    {% if productDistinguishingParameterValue.secondDistinguishingParameterValue is not null %}
+        <span class="{{ parameterClassName }}">
+            {{ productDistinguishingParameterValue.secondDistinguishingParameterName }}:
+            <span class="in-badge in-badge--outline"
+                  title="{{ productDistinguishingParameterValue.secondDistinguishingParameterValue }}">
+                {{ productDistinguishingParameterValue.secondDistinguishingParameterValue }}
             </span>
-        {% endif %}
+        </span>
     {% endif %}
 {% endmacro %}

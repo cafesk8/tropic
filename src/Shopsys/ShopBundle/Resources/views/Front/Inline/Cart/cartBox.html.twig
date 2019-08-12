@@ -45,11 +45,11 @@
                                                 <span class="cart-detail__item__content__price__old">{{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}</span>
                                             {% endif %}
                                         </span>
-                                        {% set distinguishingProductParameterValueForVariant = distinguishingProductParameterValueForVariant(cartItem.product) %}
-                                        {% if distinguishingProductParameterValueForVariant is not null %}
+                                        {% set productDistinguishingParameterValue = productDistinguishingParameterValue(cartItem.product) %}
+                                        {% if productDistinguishingParameterValue.secondDistinguishingParameterValue is not null %}
                                             <span class="cart-detail__item__content__size">
-                                                {{ distinguishingProductParameterValueForVariant.parameter.name }}
-                                                <span class="in-badge in-bage--outline">{{ distinguishingProductParameterValueForVariant.value.text }}</span>
+                                                {{ productDistinguishingParameterValue.secondDistinguishingParameterName }}
+                                                <span class="in-badge in-bage--outline">{{ productDistinguishingParameterValue.secondDistinguishingParameterValue }}</span>
                                             </span>
                                         {% endif %}
                                     </div>

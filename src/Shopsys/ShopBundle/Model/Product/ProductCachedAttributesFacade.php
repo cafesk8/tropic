@@ -4,12 +4,39 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Shopsys\FrameworkBundle\Model\Localization\Localization;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository
+     */
+    protected $parameterRepository;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade
+     */
+    private $cachedProductDistinguishingParameterValueFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
+     * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+     */
+    public function __construct(
+        ProductPriceCalculationForUser $productPriceCalculationForUser,
+        ParameterRepository $parameterRepository,
+        Localization $localization,
+        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+    ) {
+        parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
+        $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
+    }
+
     /**
      * This method returns for every main variant all values of distinguishing parameter used in variants with variantId if variant has that value
      *
@@ -79,94 +106,51 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    public function findMainVariantGroupDistinguishingParameterValue(Product $product): ?ParameterValue
+    public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
-        $productParameterValues = $this->getProductParameterValues($product);
+        $locale = $this->localization->getLocale();
 
-        foreach ($productParameterValues as $productParameterValue) {
-            if ($productParameterValue->getParameter() === $product->getMainVariantGroup()->getDistinguishingParameter()) {
-                return $productParameterValue->getValue();
-            }
+        $productDistinguishingParameterValue =
+            $this->cachedProductDistinguishingParameterValueFacade->findProductDistinguishingParameterValue($product, $locale);
+
+        if ($productDistinguishingParameterValue === null) {
+            $productDistinguishingParameterValue = $this->createProductDistinguishingParameterValue($product);
+            $this->cachedProductDistinguishingParameterValueFacade->saveToCache($product, $locale, $productDistinguishingParameterValue);
         }
 
-        return null;
+        return $productDistinguishingParameterValue;
     }
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
+     * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    public function findDistinguishingProductParameterValueForVariant(Product $product): ?ProductParameterValue
+    private function createProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
-        if ($product->isVariant() === false) {
-            return null;
-        }
-
-        /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
-        $mainVariant = $product->getMainVariant();
-
-        if ($mainVariant->getDistinguishingParameter() === null) {
-            return null;
-        }
-
-        $productParameterValues = $this->getProductParameterValues($product);
-
-        foreach ($productParameterValues as $productParameterValue) {
-            if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
-                return $productParameterValue;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param int $parameterId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
-     */
-    public function getProductParameterValueByParameterId(Product $product, int $parameterId): ?ProductParameterValue
-    {
-        $productParametersValue = $this->getProductParameterValues($product);
-
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue $productParameterValue */
-        foreach ($productParametersValue as $productParameterValue) {
-            if ($productParameterValue->getParameter()->getId() === $parameterId) {
-                return $productParameterValue;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return array
-     */
-    public function getDistinguishingParametersForProduct(Product $product): array
-    {
-        $distinguishingParametersForProduct = [
-            'firstDistinguishingParameter' => null,
-            'secondDistinguishingParameter' => null,
-        ];
-
         $productParameterValues = $this->getProductParameterValues($product);
 
         $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
         $mainVariantGroup = $mainVariant->getMainVariantGroup();
 
+        $firstDistinguishingParameterValue = null;
+        $secondDistinguishingParameterValue = null;
+        $productDistinguishingParameterValue = null;
         foreach ($productParameterValues as $productParameterValue) {
             if ($mainVariantGroup !== null && $productParameterValue->getParameter()->getId() === $mainVariantGroup->getDistinguishingParameter()->getId()) {
-                $distinguishingParametersForProduct['firstDistinguishingParameter'] = $productParameterValue;
+                $firstDistinguishingParameterValue = $productParameterValue;
             }
-
             if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
-                $distinguishingParametersForProduct['secondDistinguishingParameter'] = $productParameterValue;
+                $secondDistinguishingParameterValue = $productParameterValue;
             }
         }
 
-        return $distinguishingParametersForProduct;
+        $productDistinguishingParameterValue = new ProductDistinguishingParameterValue(
+            $firstDistinguishingParameterValue,
+            $secondDistinguishingParameterValue
+        );
+
+        return $productDistinguishingParameterValue;
     }
 }

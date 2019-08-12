@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductNameFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductPartnoFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductStockFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig as BaseProductAdvancedSearchConfig;
+use Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter;
 
 class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
 {
@@ -27,6 +28,7 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductAvailabilityFilter $productAvailabilityFilter
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductBrandFilter $productBrandFilter
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductCategoryFilter $productCategoryFilter
+     * @param \Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter $productMainVariantFilter
      */
     public function __construct(
         ProductCatnumFilter $productCatnumFilter,
@@ -37,7 +39,8 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
         ProductCalculatedSellingDeniedFilter $productCalculatedSellingDeniedFilter,
         ProductAvailabilityFilter $productAvailabilityFilter,
         ProductBrandFilter $productBrandFilter,
-        ProductCategoryFilter $productCategoryFilter
+        ProductCategoryFilter $productCategoryFilter,
+        ProductMainVariantFilter $productMainVariantFilter
     ) {
         parent::__construct(
             $productCatnumFilter,
@@ -51,5 +54,6 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
         );
 
         $this->registerFilter($productCategoryFilter);
+        $this->registerFilter($productMainVariantFilter);
     }
 }

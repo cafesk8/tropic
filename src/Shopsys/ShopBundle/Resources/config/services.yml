@@ -71,6 +71,13 @@ services:
         arguments:
             - '@monolog.logger.cron'
 
+    Shopsys\ShopBundle\Component\Redis\RedisFacade:
+        arguments:
+            $allClients: !tagged snc_redis.client
+            $persistentClients:
+                - '@snc_redis.global'
+                - '@snc_redis.session'
+
     Shopsys\ShopBundle\Component\Rest\RestClient:
         class: Shopsys\ShopBundle\Component\Rest\RestClient
         factory: 'Shopsys\ShopBundle\Component\Rest\RestClientFactory:create'
@@ -110,6 +117,16 @@ services:
     League\Flysystem\FilesystemInterface: '@main_filesystem'
 
     Shopsys\FrameworkBundle\Model\Administrator\AdministratorDataFactoryInterface: '@Shopsys\ShopBundle\Model\Administrator\AdministratorDataFactory'
+
+    shopsys.shop.product.distinguishing_parameters.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
+        arguments:
+            - '@snc_redis.distinguishing_parameters'
+
+    Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade:
+        arguments:
+            - '@shopsys.shop.product.distinguishing_parameters.cache_provider'
 
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@Shopsys\ShopBundle\Model\Category\CategoryDataFactory'
 
@@ -203,6 +220,8 @@ services:
     Shopsys\ShopBundle\DataFixtures\Demo\UserDataFixtureLoader:
         arguments:
             - '%shopsys.data_fixtures.resource_customers_filepath%'
+
+    Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter: ~
 
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
@@ -372,3 +391,4 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade'
+

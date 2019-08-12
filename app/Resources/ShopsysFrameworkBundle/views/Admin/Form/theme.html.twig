@@ -70,7 +70,7 @@
             <span class="js-products-picker-item-product-name">
                 {% if product is not null %}
                     <a href="{{ url('admin_product_edit', {id: product.id}) }}" target="_blank" class="btn-link-style btn-link-style--iconic-l">
-                        <span>{{ product.name }}</span>&nbsp;<i class="svg svg-forward-page"></i>
+                        <span>{{ product|productListDisplayName }}</span>&nbsp;<i class="svg svg-forward-page"></i>
                     </a>
                 {% endif %}
             </span>
