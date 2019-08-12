@@ -387,6 +387,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry: '@Shopsys\ShopBundle\Model\Advert\AdvertPositionRegistry'
 
+    Shopsys\FrameworkBundle\Model\Advert\AdvertFacade: '@Shopsys\ShopBundle\Model\Advert\AdvertFacade'
+
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapDumperFactory: '@Shopsys\ShopBundle\Model\Sitemap\SitemapDumperFactory'
 
     Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@Shopsys\ShopBundle\Model\Feed\FeedExportFactory'

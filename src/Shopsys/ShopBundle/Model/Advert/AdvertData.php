@@ -22,4 +22,16 @@ class AdvertData extends BaseAdvertData
      * @var string|null
      */
     public $productTitle;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public $products;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->products = [];
+    }
 }

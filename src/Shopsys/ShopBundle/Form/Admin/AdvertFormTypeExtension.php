@@ -7,6 +7,8 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\GroupType;
+use Shopsys\FrameworkBundle\Form\ProductsType;
+use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Model\Advert\Advert;
 use Shopsys\ShopBundle\Model\Advert\AdvertData;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -121,7 +123,13 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
                         'maxMessage' => 'Hodnota nemůže byt delší než {{ limit }} znaků',
                     ]),
                 ],
-            ]);
+            ])
+            ->add('products', ProductsType::class, [
+                'required' => false,
+                'sortable' => true,
+                'label' => t('Produkty'),
+            ])
+            ->addModelTransformer(new RemoveDuplicatesFromArrayTransformer());
 
         return $builderSixPositionSettingGroup;
     }
