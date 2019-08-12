@@ -54,9 +54,12 @@ class ProductMainVariantFilter implements AdvancedSearchFilterInterface
     public function extendQueryBuilder(QueryBuilder $queryBuilder, $rulesData)
     {
         foreach ($rulesData as $index => $ruleData) {
+            $parameterName = 'variantType_' . $index;
             if ($ruleData->operator === self::OPERATOR_IS) {
-                $parameterName = 'variantType_' . $index;
                 $queryBuilder->andWhere('p.variantType = :' . $parameterName)
+                    ->setParameter($parameterName, Product::VARIANT_TYPE_MAIN);
+            } else {
+                $queryBuilder->andWhere('p.variantType != :' . $parameterName)
                     ->setParameter($parameterName, Product::VARIANT_TYPE_MAIN);
             }
         }
