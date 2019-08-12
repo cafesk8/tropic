@@ -122,7 +122,7 @@ class MigrateProductImagesCommand extends Command
                     $product->getEan()
                 ));
             } catch (MigrateImageToEntityFailedException $ex) {
-                $symfonyStyleIo->success(sprintf(
+                $symfonyStyleIo->error(sprintf(
                     'Image `%s` for product with EAN `%s` was not migrated, because of error `%s`',
                     $productImageData['migrateFilename'],
                     $product->getEan(),
