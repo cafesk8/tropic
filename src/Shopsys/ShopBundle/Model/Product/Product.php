@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -107,6 +108,20 @@ class Product extends BaseProduct
     protected $mallExport;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mallExportedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $updatedAt;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -124,6 +139,8 @@ class Product extends BaseProduct
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
+        $this->mallExportedAt = $productData->mallExportedAt;
+        $this->updatedAt = new DateTime();
     }
 
     /**
@@ -144,6 +161,8 @@ class Product extends BaseProduct
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
+        $this->mallExportedAt = $productData->mallExportedAt;
+        $this->updatedAt = new DateTime();
     }
 
     /**
@@ -370,5 +389,21 @@ class Product extends BaseProduct
     public function isMallExport(): bool
     {
         return $this->mallExport;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getMallExportedAt(): ?DateTime
+    {
+        return $this->mallExportedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
     }
 }

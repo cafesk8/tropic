@@ -68,11 +68,17 @@ class ProductData extends BaseProductData
      */
     public $mallExport;
 
+    /**
+     * @var \DateTime|null
+     */
+    public $mallExportedAt;
+
     public function __construct()
     {
         parent::__construct();
         $this->productsInGroup = [];
         $this->actionPrices = [];
         $this->mallExport = false;
+        $this->mallExportedAt = null;
     }
 }
