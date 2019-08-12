@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Component\Image;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use IOException;
-use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Component\FileUpload\FileNamingConvention;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
@@ -105,13 +104,13 @@ class MigrateImageDoctrineListener
 
         try {
             if ($this->filesystem->has($sourceFilepath) === false) {
-                return;
+                throw new FileNotFoundException($sourceFilepath);
             }
             if ($this->filesystem->has($targetFilepath)) {
                 $this->filesystem->delete($targetFilepath);
             }
             $this->filesystem->put($targetFilepath, $this->filesystem->read($sourceFilepath));
-        } catch (FileExistsException | IOException $ex) {
+        } catch (FileNotFoundException $ex) {
             $message = sprintf(
                 'Failed to rename file from migrate directory to entity (from `%s` to `%s`), exception: `%s`',
                 $sourceFilepath,
