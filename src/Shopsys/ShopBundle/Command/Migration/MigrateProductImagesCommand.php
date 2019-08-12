@@ -113,18 +113,18 @@ class MigrateProductImagesCommand extends Command
         $productImagesData = $this->getMigrateProductData($product);
 
         foreach ($productImagesData as $productImageData) {
-            $imageFileName = $productImageData['migrateProductId'] . '/' . $productImageData['migratePhotogalleryId'] . '.jpg';
+            $imageFileName = $productImageData['migrateProductId'] . '/' . $productImageData['migrateFilename'];
             try {
                 $this->imageFacade->migrateImage($product, $imageFileName, null);
                 $symfonyStyleIo->success(sprintf(
                     'Image `%s` for product with EAN `%s` was migrated',
-                    $productImageData['migratePhotogalleryId'],
+                    $productImageData['migrateFilename'],
                     $product->getEan()
                 ));
             } catch (MigrateImageToEntityFailedException $ex) {
                 $symfonyStyleIo->success(sprintf(
                     'Image `%s` for product with EAN `%s` was not migrated, because of error `%s`',
-                    $productImageData['migratePhotogalleryId'],
+                    $productImageData['migrateFilename'],
                     $product->getEan(),
                     $ex->getMessage()
                 ));
@@ -138,9 +138,10 @@ class MigrateProductImagesCommand extends Command
      */
     private function getMigrateProductData(Product $product): array
     {
-        $sql = 'SELECT DISTINCT svi.nid AS migrateProductId, svi.fid AS migratePhotogalleryId
+        $sql = 'SELECT DISTINCT svi.nid AS migrateProductId, fm.filename AS migrateFilename
             FROM `sklad_varianty` sv
             JOIN `sklad_varianty_image` svi ON sv.var_id = svi.var_id
+            JOIN `file_managed` fm ON fm.fid = svi.fid 
             WHERE sv.ean = :ean';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('ean', $product->getEan());
