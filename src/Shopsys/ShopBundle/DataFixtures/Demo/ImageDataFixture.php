@@ -117,6 +117,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
             105 => AdvertDataFixture::ADVERT_THIRD_SQUARE,
             106 => AdvertDataFixture::ADVERT_FOURTH_SQUARE,
             107 => AdvertDataFixture::ADVERT_FIFTH_RECTANGLE,
+            108 => AdvertDataFixture::ADVERT_SIXTH_RECTANGLE,
         ];
 
         foreach ($advertImagesData as $imageId => $advertName) {
