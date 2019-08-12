@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
-use Shopsys\FrameworkBundle\Model\Advert\AdvertFacade;
+use Shopsys\ShopBundle\Model\Advert\AdvertFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdvertController extends FrontBaseController
 {
+    private const LIMIT_FOR_PRODUCTS_TO_SHOW = 3;
+
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade
+     * @var \Shopsys\ShopBundle\Model\Advert\AdvertFacade
      */
     private $advertFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade $advertFacade
+     * @param \Shopsys\ShopBundle\Model\Advert\AdvertFacade $advertFacade
      */
     public function __construct(AdvertFacade $advertFacade)
     {
@@ -38,6 +40,13 @@ class AdvertController extends FrontBaseController
      */
     public function bigBannerOnHomepageAction(): Response
     {
-        return $this->render('@ShopsysShop/Front/Content/Advert/bigBannerOnHomepage.html.twig');
+        /** @var \Shopsys\ShopBundle\Model\Advert\Advert $advert */
+        $advert = $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('sixthRectangle');
+        $advertProducts = $this->advertFacade->getAdvertProductsByAdvertAndLimit($advert, self::LIMIT_FOR_PRODUCTS_TO_SHOW);
+
+        return $this->render('@ShopsysShop/Front/Content/Advert/bigBannerOnHomepage.html.twig', [
+            'advert' => $advert,
+            'advertProducts' => $advertProducts,
+        ]);
     }
 }

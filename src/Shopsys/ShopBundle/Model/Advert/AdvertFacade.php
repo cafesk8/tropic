@@ -73,6 +73,20 @@ class AdvertFacade extends BaseAdvertFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Advert\Advert|null $advert
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Advert\Product\AdvertProduct[]
+     */
+    public function getAdvertProductsByAdvertAndLimit(?Advert $advert, int $limit): array
+    {
+        if ($advert === null) {
+            return [];
+        }
+
+        return $this->advertProductRepository->getAdvertProductsByAdvertAndLimit($advert, $limit);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Advert\Advert $advert
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      */

@@ -39,4 +39,14 @@ class AdvertProductRepository
     {
         return $this->getAdvertProductRepository()->findBy(['advert' => $advert], ['position' => 'asc']);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Advert\Advert $advert
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Advert\Product\AdvertProduct[]
+     */
+    public function getAdvertProductsByAdvertAndLimit(Advert $advert, int $limit): array
+    {
+        return $this->getAdvertProductRepository()->findBy(['advert' => $advert], ['position' => 'asc'], $limit);
+    }
 }
