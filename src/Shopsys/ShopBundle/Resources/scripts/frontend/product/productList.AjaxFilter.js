@@ -8,6 +8,7 @@
         var $productsWithControls = $('.js-product-list-ajax-filter-products-with-controls');
         var $productFilterForm = $('form[name="product_filter_form"]');
         var $showResultsButton = $('.js-product-filter-show-result-button');
+        var $selectedFiltersBox = $('#js-selected-filters-box');
         var requestTimer = null;
         var requestDelay = 1000;
 
@@ -71,6 +72,12 @@
             return $countElement.html().indexOf('(0)') !== -1;
         };
 
+        var updateSelectedFilters = function ($wrappedData) {
+            var $newSelectedFiltersBox = $wrappedData.filterAllNodes('#js-selected-filters-box');
+            $selectedFiltersBox.html($newSelectedFiltersBox.html());
+            Shopsys.register.registerNewContent($selectedFiltersBox);
+        };
+
         var submitFormWithAjax = function () {
             Shopsys.ajax({
                 overlayDelay: 0,
@@ -82,6 +89,7 @@
                     showProducts($wrappedData);
                     updateFiltersCounts($wrappedData);
                     updateFiltersDisabled();
+                    updateSelectedFilters($wrappedData);
                 }
             });
         };
