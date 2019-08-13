@@ -48,7 +48,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
                 'parameters' => $parameters,
                 'ordering_priority' => $product->getOrderingPriority(),
                 'calculated_selling_denied' => $product->getCalculatedSellingDenied(),
-                'selling_from' => $product->getSellingFrom()->format('Y-m-d'),
+                'selling_from' => ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d'),
             ];
         }
 
