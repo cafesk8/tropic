@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 
 class ProductRepository extends BaseProductRepository
 {
@@ -95,6 +96,34 @@ class ProductRepository extends BaseProductRepository
         /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
         foreach ($queryResult as $product) {
             $results[$product->getMainVariant()->getId()][] = $product;
+        }
+
+        return $results;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup $mainVariantGroup
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForMainVariantGroup(MainVariantGroup $mainVariantGroup, int $domainId, PricingGroup $pricingGroup): array
+    {
+        $queryBuilder = $this->getAllSellableQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->leftJoin('p.mainVariant', 'pmv')
+            ->andWhere('p.variantType = :variant')
+            ->andWhere('pmv.mainVariantGroup = :mainVariantGroup')
+            ->setParameter('variant', Product::VARIANT_TYPE_VARIANT)
+            ->setParameter('mainVariantGroup', $mainVariantGroup);
+
+        $queryResult = $queryBuilder->getQuery()->execute();
+
+        $results = [];
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $variant */
+        foreach ($queryResult as $variant) {
+            $results[] = $variant;
         }
 
         return $results;
@@ -206,8 +235,27 @@ class ProductRepository extends BaseProductRepository
     {
         return $this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
             ->andWhere('p.mallExport = TRUE')
+            ->andWhere('p.variantType IN (:mainOrNoneVariant)')
+            ->setParameter('mainOrNoneVariant', [Product::VARIANT_TYPE_MAIN, Product::VARIANT_TYPE_NONE])
             ->andWhere('p.mallExportedAt is NULL OR p.mallExportedAt < p.updatedAt')
             ->setMaxResults($limit)
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForProductExportToMall(Product $product, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
+            ->andWhere('p.mallExport = TRUE')
+            ->andWhere('p.variantType = :variant')
+            ->andWhere('p.mainVariant = :mainVariant')
+            ->setParameter('mainVariant', $product)
+            ->setParameter('variant', Product::VARIANT_TYPE_VARIANT)
             ->getQuery()->getResult();
     }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Mall;
 
+use MPAPI\Exceptions\ApplicationException;
+use MPAPI\Services\Products;
 use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
+use Shopsys\ShopBundle\Component\Mall\MallClient;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -23,11 +26,23 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
     private $productFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Mall\ProductMallExportMapper
+     */
+    private $productMallExportMapper;
+
+    /**
+     * @var \Shopsys\ShopBundle\Component\Mall\MallClient
+     */
+    private $mallClient;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(ProductFacade $productFacade)
+    public function __construct(ProductFacade $productFacade, ProductMallExportMapper $productMallExportMapper, MallClient $mallClient)
     {
         $this->productFacade = $productFacade;
+        $this->productMallExportMapper = $productMallExportMapper;
+        $this->mallClient = $mallClient;
     }
 
     /**
@@ -44,15 +59,23 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
     public function iterate()
     {
         $productsToExport = $this->productFacade->getProductsForExportToMall(self::BATCH_SIZE);
-        $this->processItems($productsToExport);
 
-        if (count($productsToExport) < self::BATCH_SIZE) {
-            $this->logger->info('All products are exported to Mall.cz.');
-            return false;
-        } else {
-            $this->logger->info('Batch is exported.');
-            return true;
+        try {
+            $this->processItems($productsToExport);
+
+            if (count($productsToExport) < self::BATCH_SIZE) {
+                $this->logger->info('All products are exported to Mall.cz.');
+                return false;
+            } else {
+                $this->logger->info('Batch is exported.');
+                return true;
+            }
+        } catch (ApplicationException $exception) {
+            $this->logger->addError(sprintf('Products were not exported to Mall.cz due to exception: %s', $exception->getMessage()), [
+                'exception' => $exception,
+            ]);
         }
+
     }
 
     public function sleep(): void
@@ -68,9 +91,17 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
      */
     private function processItems(array $productsToExport): void
     {
+        $productSynchronizer = new Products($this->mallClient->getClient());
+        $productIds = [];
+
         foreach ($productsToExport as $product) {
-            $this->productFacade->markProductAsExportedToMall($product);
-            $this->logger->addInfo(sprintf('Product with ID `%s` was exported to Mall.cz', $product->getId()));
+            d($this->productMallExportMapper->mapProductOrMainVariantGroup($product));
+            $this->logger->addInfo(sprintf('Product with ID `%s` is prepared for export to Mall.cz', $product->getId()));
+            $productIds[] = $product->getId();
         }
+
+        //$productSynchronizer->post();
+        //$this->productFacade->markProductsAsExportedToMall($productsToExport);
+        //$this->logger->addInfo(sprintf('Products with ID `%s` were exported to Mall.cz', implode(',', $productIds)));
     }
 }

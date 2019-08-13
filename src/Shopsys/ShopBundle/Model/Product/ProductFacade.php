@@ -40,6 +40,7 @@ use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
 use Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
@@ -431,12 +432,50 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      */
-    public function markProductAsExportedToMall(Product $product): void
+    public function markProductsAsExportedToMall(array $products): void
     {
-        $product->markProductAsExportedToMall();
-        $this->em->flush($product);
+        foreach ($products as $product) {
+            $product->markProductAsExportedToMall();
+        }
+
+        $this->em->flush($products);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForProductExportToMall(Product $product): array
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getVariantsForProductExportToMall(
+            $product,
+            DomainHelper::CZECH_DOMAIN,
+            $defaultPricingGroup
+        );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup $mainVariantGroup
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForMainVariantGroup(MainVariantGroup $mainVariantGroup, int $domainId): array
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getVariantsForMainVariantGroup(
+            $mainVariantGroup,
+            $domainId,
+            $defaultPricingGroup
+        );
     }
 
     /**
