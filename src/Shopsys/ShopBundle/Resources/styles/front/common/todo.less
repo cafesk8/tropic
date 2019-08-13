@@ -14,3 +14,59 @@ button.active {
 .table-cart__cell__discount {
     color: red;
 }
+
+.box-gallery__item--video {
+    max-height: 72px;
+    min-height: 72px;
+
+    .box-gallery__item__link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin-left: 10px;
+        position: relative;
+
+        &--play-circle {
+            width: 33%;
+            height: 33%;
+            background-color: #e79c00;
+            border-radius: 50%;
+            position: absolute;
+            left: 33%;
+            top: 33%;
+        }
+
+        &--play-triangl {
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: 43%;
+            top: 43%;
+            border-style: solid;
+            border-width: 5px 0 5px 10px;
+            border-color: transparent transparent transparent #ffffff;
+        }
+    }
+}
+
+.window-popup--youtube {
+    width: 610px;
+    position: fixed;
+    left: 50%;
+    margin-left: -305px;
+}
+
+.youtubeWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

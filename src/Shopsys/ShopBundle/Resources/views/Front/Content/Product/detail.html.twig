@@ -25,10 +25,10 @@
         <div class="web__container web__container--big-padding">
             <div itemscope itemtype="http://schema.org/Product">
                 <div class="js-product-variant-group">
-                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants) }}
+                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail) }}
 
                     {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants) }}
+                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id]) }}
                     {% endfor %}
                 </div>
 
@@ -88,6 +88,18 @@
                                             <p>
                                                 {{ product.getDescription(domain.id)|raw }}
                                             </p>
+
+                                            {% if youtubeDetail is not null %}
+                                                <div class="youtubeWrapper">
+                                                    <iframe
+                                                            width="560"
+                                                            height="315"
+                                                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                                            frameborder="0"
+                                                            allowfullscreen
+                                                    ></iframe>
+                                                </div>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
                                 </div>

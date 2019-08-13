@@ -80,3 +80,5 @@ parameters:
 
     migrate_product_images_dir: 'migration-data/product-images'
 
+
+    googleApiKey: AIzaSyDI31ip9EdLYk2bm_mcpmYDqi8hbqb5GbU

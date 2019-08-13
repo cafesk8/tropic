@@ -423,3 +423,6 @@ services:
     Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension: '@Shopsys\ShopBundle\Twig\DateTimeFormatterExtension'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory'
+    Shopsys\ShopBundle\Component\GoogleApi\GoogleClient:
+        arguments:
+            - '%googleApiKey%'

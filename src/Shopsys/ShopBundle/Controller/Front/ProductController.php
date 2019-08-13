@@ -21,6 +21,7 @@ use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends FrontBaseController
@@ -98,6 +99,11 @@ class ProductController extends FrontBaseController
     private $categoryBlogArticleFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -111,6 +117,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -125,7 +132,8 @@ class ProductController extends FrontBaseController
         BrandFacade $brandFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
         BlogArticleFacade $blogArticleFacade,
-        CategoryBlogArticleFacade $categoryBlogArticleFacade
+        CategoryBlogArticleFacade $categoryBlogArticleFacade,
+        ProductFacade $productFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -140,6 +148,7 @@ class ProductController extends FrontBaseController
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -157,6 +166,7 @@ class ProductController extends FrontBaseController
         $accessories = $this->productOnCurrentDomainFacade->getAccessoriesForProduct($product);
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $this->domain->getId());
         $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
+        $youtubeDetailForMainVariants = $this->productFacade->getYoutubeViewForMainVariants($mainVariantGroupProducts);
 
         if (count($mainVariantGroupProducts) > 0) {
             $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProducts($mainVariantGroupProducts);
@@ -170,6 +180,7 @@ class ProductController extends FrontBaseController
             'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
             'mainVariants' => $mainVariantGroupProducts,
+            'youtubeDetailForMainVariants' => $youtubeDetailForMainVariants,
             'domainId' => $this->domain->getId(),
             'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
                 $product,
@@ -177,6 +188,7 @@ class ProductController extends FrontBaseController
                 $this->domain->getLocale(),
                 self::PRODUCT_BLOG_ARTICLES_LIMIT
             ),
+            'youtubeDetail' => $this->productFacade->getYoutubeView($product),
         ]);
     }
 

@@ -95,7 +95,8 @@
         "paypal/rest-api-sdk-php": "*",
         "emanueleminotto/twig-cache-bundle": "^1.0",
         "vinkla/instagram": "^9.3",
-        "php-http/message": "^1.7"
+        "php-http/message": "^1.7",
+        "google/apiclient": "^2.0"
     },
     "require-dev": {
         "ext-pgsql": "*",

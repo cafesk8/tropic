@@ -110,6 +110,11 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         foreach ($csvRows as $row) {
             $productData = $this->productDataFixtureLoader->createProductDataFromRow($row);
             $this->addFakeStoreStocks($productData);
+
+            if ($productNo === 1) {
+                $productData->youtubeVideoId = '_fNVmKtS8og';
+            }
+
             $product = $this->createProduct(self::PRODUCT_PREFIX . $productNo, $productData);
 
             if ($product->getCatnum() !== null) {

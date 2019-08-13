@@ -93,6 +93,13 @@ class Product extends BaseProduct
     protected $finished;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $youtubeVideoId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -108,6 +115,7 @@ class Product extends BaseProduct
         $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
+        $this->youtubeVideoId = $productData->youtubeVideoId;
     }
 
     /**
@@ -126,6 +134,7 @@ class Product extends BaseProduct
         $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
+        $this->youtubeVideoId = $productData->youtubeVideoId;
     }
 
     /**
@@ -325,5 +334,13 @@ class Product extends BaseProduct
     public function isFinished(): bool
     {
         return $this->finished;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getYoutubeVideoId(): ?string
+    {
+        return $this->youtubeVideoId;
     }
 }

@@ -74,5 +74,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->gift = $product->getGift();
         $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
         $productData->finished = $product->isFinished();
+        $productData->youtubeVideoId = $product->getYoutubeVideoId();
     }
 }

@@ -18,6 +18,7 @@ use Shopsys\FrameworkBundle\Form\ProductType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
+use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
@@ -28,9 +29,12 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
@@ -70,6 +74,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $productExtension;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient
+     */
+    private $googleClient;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -78,6 +87,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \Shopsys\ShopBundle\Twig\ProductExtension $productExtension
+     * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      */
     public function __construct(
         ParameterFacade $parameterFacade,
@@ -86,7 +96,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         PriceExtension $priceExtension,
         Domain $domain,
         PricingGroupFacade $pricingGroupFacade,
-        ProductExtension $productExtension
+        ProductExtension $productExtension,
+        GoogleClient $googleClient
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
@@ -95,6 +106,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->productExtension = $productExtension;
+        $this->googleClient = $googleClient;
     }
 
     /**
@@ -145,6 +157,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $this->addGiftGroup($builder);
+
+        $this->addVideoGroup($builder);
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder);
@@ -370,5 +384,45 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $mainVariantUrlOptions['route_label'] = $this->productExtension->getProductDisplayName($mainVariant);
         $mainVariantUrlType = get_class($variantGroup->get('mainVariantUrl')->getType()->getInnerType());
         $variantGroup->add('mainVariantUrl', $mainVariantUrlType, $mainVariantUrlOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addVideoGroup(FormBuilderInterface $builder)
+    {
+        $videoGroup = $builder->create('videoGroup', GroupType::class, [
+            'label' => t('Video'),
+            'position' => ['after' => 'imageGroup'],
+        ]);
+
+        $videoGroup->add('youtubeVideoId', TextType::class, [
+            'required' => false,
+            'label' => t('Youtube video id'),
+            'constraints' => [
+                new Callback([$this, 'validateYoutubeVideo']),
+            ],
+            'attr' => [
+                'class' => 'js-video-id',
+            ],
+        ]);
+
+        $builder->add($videoGroup);
+    }
+
+    /**
+     * @param string|null $youtubeVideoId
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateYoutubeVideo(?string $youtubeVideoId, ExecutionContextInterface $context): void
+    {
+        if ($youtubeVideoId === null) {
+            return;
+        }
+
+        $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
+        if ($youtubeResponse->getPageInfo()->getTotalResults() === 0) {
+            $context->addViolation('Vložené youtube id neobsahuje žádné video.');
+        }
     }
 }

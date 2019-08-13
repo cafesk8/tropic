@@ -128,3 +128,7 @@ services:
     Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@Shopsys\ShopBundle\Model\Country\CountryFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository'
+
+    Shopsys\ShopBundle\Component\GoogleApi\GoogleClient:
+        arguments:
+            - '%googleApiKey%'

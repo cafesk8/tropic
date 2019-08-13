@@ -33,6 +33,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
+use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
+use Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
@@ -75,6 +77,11 @@ class ProductFacade extends BaseProductFacade
     private $cachedProductDistinguishingParameterValueFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient
+     */
+    private $googleClient;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -103,6 +110,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+     * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -132,7 +140,8 @@ class ProductFacade extends BaseProductFacade
         StoreFacade $storeFacade,
         ProductDataFactory $productDataFactory,
         CategoryRepository $categoryRepository,
-        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
+        GoogleClient $googleClient
     ) {
         parent::__construct(
             $em,
@@ -165,6 +174,7 @@ class ProductFacade extends BaseProductFacade
         $this->productDataFactory = $productDataFactory;
         $this->categoryRepository = $categoryRepository;
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
+        $this->googleClient = $googleClient;
     }
 
     /**
@@ -353,5 +363,43 @@ class ProductFacade extends BaseProductFacade
                 $this->productManualInputPriceFacade->refresh($product, $pricingGroup, $manualInputPrices[$pricingGroup->getId()]);
             }
         }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView|null
+     */
+    public function getYoutubeView(Product $product): ?YoutubeView
+    {
+        $youtubeDetail = null;
+        if ($product->getYoutubeVideoId() !== null) {
+            $youtubeResponse = $this->googleClient->getVideoList($product->getYoutubeVideoId());
+            if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
+                /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
+                $youtubeVideoItem = $youtubeResponse->getItems()[0];
+                $youtubeDetail = new YoutubeView(
+                    $product->getYoutubeVideoId(),
+                    $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
+                    $youtubeVideoItem->getSnippet()->getTitle()
+                );
+            }
+        }
+
+        return $youtubeDetail;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView[]
+     */
+    public function getYoutubeViewForMainVariants(array $products): array
+    {
+        $youtubeViewForMainVariants = [];
+
+        foreach ($products as $product) {
+            $youtubeViewForMainVariants[$product->getId()] = $this->getYoutubeView($product);
+        }
+
+        return $youtubeViewForMainVariants;
     }
 }

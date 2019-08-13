@@ -1,4 +1,4 @@
-{% macro productBox(product, variants, productMainCategory, visible, mainVariants) %}
+{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetail) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
@@ -7,7 +7,7 @@
     <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
         <div class="box-detail__image">
             {% set galleryImages = getImages(product) %}
-            {% set showGallery = galleryImages|length > 1 %}
+            {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null  %}
             <div class="box-detail__image__main">
                 {% if imageExists(product) %}
                     <a href="{{ imageUrl(product, 'original') }}" class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
@@ -39,11 +39,30 @@
                                 </a>
                             </div>
                         {% endif %}
-                        <div class="box-gallery__item box-gallery__item--video">
-                            <a href="#" class="box-gallery__item__link js-not-implemented-yet">
-                                <i class="svg svg-youtube"></i>
-                            </a>
-                        </div>
+                        {% if youtubeDetail is not null %}
+                            <div class="box-gallery__item box-gallery__item--video">
+                                <a
+                                    href="#"
+                                    class="box-gallery__item__link js-youtube-video-play"
+                                    onclick="Shopsys.window({ content: $('.js-youtube-video-box').html(), cssClass: 'window-popup--youtube' }); return false;"
+                                >
+                                    <img src="{{ youtubeDetail.getThumbnailUrl() }}" alt="{{ youtubeDetail.getVideoTitle() }}" title="{{ youtubeDetail.getVideoTitle() }}">
+                                    <span class="box-gallery__item__link--play-circle"></span>
+                                    <span class="box-gallery__item__link--play-triangl"></span>
+                                </a>
+
+                                <div class="display-none js-youtube-video-box">
+                                    <iframe
+                                            width="560"
+                                            height="315"
+                                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                            frameborder="0"
+                                            allowfullscreen
+                                    ></iframe>
+                                </div>
+
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             {% endif %}
