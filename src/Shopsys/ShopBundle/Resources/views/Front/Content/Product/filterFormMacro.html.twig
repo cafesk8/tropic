@@ -2,6 +2,8 @@
     {{ form_start(filterForm, { action: actionUrl }) }}
         {% form_theme filterForm '@ShopsysShop/Front/Content/Product/filterFormTheme.html.twig' %}
 
+        {% import '@ShopsysShop/Front/Content/Product/selectedFilterBoxMacro.html.twig' as selectedFilterBox %}
+
         {% set isSearch = page == 'search' %}
 
         {% if isSearch %}
@@ -14,28 +16,7 @@
         {% do filterForm.minimalPrice.setRendered %}
         {% do filterForm.maximalPrice.setRendered %}
 
-        <div class="box-filter__selected">
-            <div class="box-filter__title">
-                {{ 'Vybrané filtry'|trans }}
-            </div>
-            <div class="box-filter__selected__item js-not-implemented-yet">
-                {{ 'Velikost'}}: <strong>S</strong>
-                <i class="svg svg-remove"></i>
-            </div>
-            <div class="box-filter__selected__item js-not-implemented-yet">
-                {{ 'Velikost'}}: <strong>S</strong>
-                <i class="svg svg-remove"></i>
-            </div>
-            <div class="box-filter__selected__item js-not-implemented-yet">
-                {{ 'Prodena'}}: <strong>Hradec Králové</strong>
-                <i class="svg svg-remove"></i>
-            </div>
-            <div class="box-filter__selected__remove">
-                <a href="{{ resetUrl }}" class="box-filter__selected__remove__link underline-small js-product-filter-reset-button">
-                    {{ 'Zrušit všechny filtry'|trans }}
-                </a>
-            </div>
-        </div>
+        {{ selectedFilterBox.filterBox(filterForm, resetUrl) }}
         <div class="box-filter__choice">
             <div class="box-filter__title">
                 {{ 'Cena'|trans }}
