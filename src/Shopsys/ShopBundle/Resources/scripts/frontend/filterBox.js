@@ -11,7 +11,7 @@
             $filterUncheckButtons.each(function () {
                 var $filterUncheckButton = $(this);
                 var formId = $filterUncheckButton.data('filter-form-id');
-                var $formInput = $('#' + formId);
+                var $formInput = $('[data-filter-name-with-entity-id="' + formId + '"]');
 
                 uncheckCheckboxAndRefreshContent($filterUncheckButton, $formInput);
             });
