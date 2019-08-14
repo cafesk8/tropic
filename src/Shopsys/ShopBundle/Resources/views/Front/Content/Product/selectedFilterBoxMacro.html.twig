@@ -5,23 +5,23 @@
         </div>
         {% if filterForm.brands.vars.data|length > 0 %}
             {% for brand in filterForm.brands.vars.data %}
-                {{ _self.filterRow('Značka'|trans, brand.name) }}
+                {{ _self.filterRow('Značka'|trans, brand.name, filterForm.brands.vars.id ~ '_' ~ brand.id) }}
             {% endfor %}
         {% endif %}
         {% if filterForm.flags.vars.data|length > 0 %}
             {% for flag in filterForm.flags.vars.data %}
-                {{ _self.filterRow('Flags'|trans, flag.name) }}
+                {{ _self.filterRow('Flags'|trans, flag.name, filterForm.flags.vars.id ~ '_' ~ flag.id) }}
             {% endfor %}
         {% endif %}
         {% if filterForm.inStock.vars.data %}
-            {{ _self.filterRow('Skladovost'|trans, 'Products in stock only'|trans) }}
+            {{ _self.filterRow('Skladovost'|trans, 'Products in stock only'|trans, filterForm.inStock.vars.id) }}
         {% endif %}
         {% if filterForm.parameters.vars.data|length > 0 %}
             {% for parameterFilterData in filterForm.parameters.vars.data %}
                 {% if parameterFilterData.values|length > 0 %}
                     {% set parameter = parameterFilterData.parameter %}
                     {% for parameterValue in parameterFilterData.values %}
-                        {{ _self.filterRow(parameter.name, parameterValue.text) }}
+                        {{ _self.filterRow(parameter.name, parameterValue.text, filterForm.parameters.vars.id ~ '_' ~ parameter.id ~ '_' ~ parameterValue.id) }}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
@@ -34,9 +34,9 @@
     </div>
 {% endmacro %}
 
-{% macro filterRow(formName, formValueName) %}
+{% macro filterRow(formName, formValueName, formId) %}
     <div class="box-filter__selected__item">
         {{ formName }}: <strong>{{ formValueName }}</strong>
-        <i class="svg svg-remove"></i>
+        <i class="svg svg-remove js-selected-filters-box-uncheck" data-filter-form-id="{{ formId }}"></i>
     </div>
 {% endmacro %}
