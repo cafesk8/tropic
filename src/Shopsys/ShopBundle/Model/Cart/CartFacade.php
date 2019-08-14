@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
+use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
 
 class CartFacade extends BaseCartFacade
 {
@@ -78,12 +79,11 @@ class CartFacade extends BaseCartFacade
         $cartModifiedQuantitiesIndexedByCartItemId = [];
 
         $cart = $this->findCartOfCurrentCustomer();
-
         if ($cart === null) {
             return $cartModifiedQuantitiesIndexedByCartItemId;
         }
         foreach ($cart->getItems() as $cartItem) {
-            if ($cartItem->getProduct()->isUsingStock() && $cartItem->getQuantity() > $cartItem->getProduct()->getStockQuantity()) {
+            if ($this->canUpdateCartItemQuantity($cartItem, $cartItem->getQuantity()) === true) {
                 $cartModifiedQuantitiesIndexedByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
             }
         }
@@ -111,7 +111,7 @@ class CartFacade extends BaseCartFacade
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
             $cartItem = $cart->getItemById($cartItemId);
 
-            if ($quantity > $cartItem->getProduct()->getStockQuantity()) {
+            if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
                 $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
             }
         }
@@ -136,7 +136,7 @@ class CartFacade extends BaseCartFacade
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
             $cartItem = $cart->getItemById($cartItemId);
 
-            if ($quantity > $cartItem->getProduct()->getStockQuantity()) {
+            if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
                 $modifyFormData[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
             } else {
                 $modifyFormData[$cartItemId] = $quantity;
@@ -253,5 +253,15 @@ class CartFacade extends BaseCartFacade
         }
 
         return $cart->getGifts();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
+     * @param int $quantity
+     * @return bool
+     */
+    private function canUpdateCartItemQuantity(CartItem $cartItem, int $quantity): bool
+    {
+        return $cartItem->getProduct()->isUsingStock() && $quantity > $cartItem->getProduct()->getStockQuantity() === true;
     }
 }
