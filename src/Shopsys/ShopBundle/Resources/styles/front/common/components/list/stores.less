@@ -1,0 +1,80 @@
+@list-stores-item-image-height: 245px;
+@list-stores-item-gap: 20px;
+@list-stores-item-padding: 30px;
+
+.list-stores {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0 -@list-stores-item-gap 78px -@list-stores-item-gap;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: @list-stores-item-padding @list-stores-item-padding 12px @list-stores-item-padding;
+        margin: @list-stores-item-gap/2;
+
+        background-color: @color-f;
+        border: 3px solid @color-gray;
+
+        @media @query-vl {
+            width: calc(~"100%/2 - @{list-stores-item-gap}");
+        }
+
+        &__in {
+            text-decoration: none;
+        }
+
+        &__image {
+            width: 100%;
+            position: relative;
+            min-height: 110px;
+            margin-bottom: 20px;
+
+            @media @query-lg {
+                height: @list-stores-item-image-height;
+            }
+
+            img {
+                .center-image();
+            }
+        }
+
+        &__info {
+            display: flex;
+            flex-direction: row;
+
+            &__name {
+                display: block;
+                width: 100%/2;
+                line-height: 24px;
+
+                color: @color-base;
+                font-size: 15px;
+                font-weight: 700;
+                text-transform: uppercase;
+
+                &__additional {
+                    padding-left: 12px;
+
+                    color: @color-brown;
+                    font-family: @font-alt;
+                    font-size: 14px;
+                    font-weight: 400;
+                    text-transform: none;
+                }
+            }
+
+            &__open-hours {
+                width: 100%/2;
+                text-align: right;
+
+                color: @color-brown;
+                font-size: 14px;
+                font-family: @font-alt;
+            }
+        }
+    }
+}

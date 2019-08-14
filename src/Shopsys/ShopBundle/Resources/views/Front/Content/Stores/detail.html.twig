@@ -1,0 +1,81 @@
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block title %}
+    {{ 'Kontakt'|trans }}
+{% endblock %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block main_content %}
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <h1 class="in-title in-title--dark in-title--big in-title--center js-not-implemented-yet">
+                {{ 'Olomouc Galerie Šantovka'|trans }}
+            </h1>
+            <div class="box-contact">
+                <div class="box-contact__left">
+                    <div class="box-contact__block">
+                        <div class="box-contact__block__text">
+                            <i class="svg svg-phone"></i>
+                            {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                        </div>
+                        <div class="box-contact__block__info">
+                            {{ getShopInfoPhoneHours() }}
+                        </div>
+                    </div>
+                    <div class="box-contact__block box-contact__block--no-bottom-gap">
+                        <div class="box-contact__block__text">
+                            <i class="svg svg-mail"></i>
+                            <a class="box-contact__block__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
+                        </div>
+                        <div class="box-contact__block__info">
+                            {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
+                        </div>
+                    </div>
+                </div>
+                <div class="box-contact__right">
+                    <div class="box-contact__right__title">
+                        {{ 'Jaké služby najdete'|trans }}<br>
+                        {{ 'na prodejně?'|trans }}
+                    </div>
+                    <div class="box-contact__right__list">
+                        <ul class="list-simple js-not-implemented-yet">
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Změna nebo storno objednávky'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Chci reklamovat zboží'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Pozáruční servis a prodloužená záruka'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Jak na výměnu velikosti?'|trans }}</a>
+                            </li>
+                            <li class="list-simple__item">
+                                <a href="#" class="list-simple__item__link underline">{{ 'Co je Bushman Klub?'|trans }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="wrap-article">
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__half">
+                        <img src="https://placeimg.com/570/380/any">
+                    </div>
+                    <div class="wrap-article__row__half">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.5853368987177!2d14.673543315559575!3d49.850248479397116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b871241bc86ab%3A0xb8fdb42aee6cdd!2sBushman+Company+a.s.!5e0!3m2!1scs!2scz!4v1564350162889!5m2!1scs!2scz" width="100%" height="378" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wrap-well wrap-well--big-padding" id="js-contact-form-container">
+                {{ render(controller('ShopsysShopBundle:Front/ContactForm:index')) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

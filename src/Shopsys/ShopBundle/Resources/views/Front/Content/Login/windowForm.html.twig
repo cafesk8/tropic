@@ -7,30 +7,29 @@
         </div>
         <div class="display-none in-message in-message--alert js-login-validation-errors"></div>
         <div class="box-login__item">
-            <label class="input__label">{{ 'Email'|trans }}</label>
+            <label class="input__label">{{ 'E-mail'|trans }}</label>
             {{ form_widget(form.email, { rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
-        <div class="box-login__item">
+        <div class="box-login__item box-login__item--move-top">
             <label class="input__label">{{ 'Password'|trans }}</label>
             {{ form_widget(form.password, { attr: { placeholder: '******** 6 nebo více znaků'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
         <div class="box-login__item">
-            <label class="form-choice">
-                <span class="form-choice__input">
-                    {{ form_widget(form.rememberMe) }}
-                </span>
-                <span class="form-choice__label">
-                    {{ 'Remember my login'|trans }}
-                    <i class="svg svg-info in-icon in-icon--info js-tooltip"
-                       data-toggle="tooltip" data-placement="right"
-                       title="{{ 'We will remember your login on this computer for 30 days.'|trans }}"
-                    ></i>
-                </span>
+            {{ form_widget(form.rememberMe, { attr: {class: 'css-checkbox'}}) }}
+            <label class="css-checkbox__image" for="{{ form.rememberMe.vars.id}}">
+                {{ 'Remember my login'|trans }}
+                <i class="svg svg-info in-icon in-icon--info js-tooltip"
+                   data-toggle="tooltip" data-placement="right"
+                   title="{{ 'We will remember your login on this computer for 30 days.'|trans }}"
+                ></i>
             </label>
         </div>
         <div class="box-login__buttons">
             {{ form_widget(form.login, {label: 'Přihlásit se'|trans, attr: {class: 'btn box-login__buttons__login'}}) }}
-            <a href="{{ url('front_registration_reset_password') }}" class="box-login__buttons__lost underline" >{{ 'Zapomenuté heslo?'|trans }}</a>
+            <div class="box-login__buttons__lost">
+                <a href="{{ url('front_registration_reset_password') }}" class="box-login__buttons__lost__link underline">
+                {{ 'Zapomenuté heslo?'|trans }}</a>
+            </div>
         </div>
     {{ form_end(form) }}
 </div>

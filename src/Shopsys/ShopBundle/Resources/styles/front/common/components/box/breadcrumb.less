@@ -2,15 +2,13 @@
 @box-breadcrumb-padding-vertical: 0;
 @box-breadcrumb-font-size: 16px;
 @box-breadcrumb-top-move: -3px;
+@box-breadcrumb-bottom-gap: 25px;
 
 .box-breadcrumb {
-    margin-bottom: @margin-gap;
+    margin-bottom: @box-breadcrumb-bottom-gap;
+    text-align: center;
 
     font-size: 0;
-
-    @media @query-md {
-        text-align: center;
-    }
 
     &__item {
         display: inline-block;
@@ -23,9 +21,10 @@
         text-decoration: none;
 
         &--home {
-            padding-right: 10px;
+            padding-right: 6px;
 
             color: @color-orange;
+            font-size: 14px;
         }
 
         &--separator {

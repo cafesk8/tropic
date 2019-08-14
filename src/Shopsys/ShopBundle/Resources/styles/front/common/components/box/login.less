@@ -30,6 +30,10 @@
     &__item {
         position: relative;
 
+        &--move-top {
+            margin-top: -@input-border-size;
+        }
+
         &--checkbox {
             margin-top: 10px;
         }
@@ -74,14 +78,16 @@
             height: @box-login-button-height;
             line-height: @box-login-button-height;
 
-            color: @color-base;
-            font-size: @font-size;
-            font-weight: bold;
-            text-decoration: none;
-            text-transform: uppercase;
-
             @media @query-md {
                 margin-left: 30px;
+            }
+
+            &__link {
+                color: @color-base;
+                font-size: @font-size;
+                font-weight: bold;
+                text-decoration: none;
+                text-transform: uppercase;
             }
         }
     }

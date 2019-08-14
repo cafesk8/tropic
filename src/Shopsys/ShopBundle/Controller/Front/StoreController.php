@@ -55,4 +55,20 @@ class StoreController extends FrontBaseController
             'chosenStore' => $chosenStore,
         ]);
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(): Response
+    {
+        return $this->render('@ShopsysShop/Front/Content/Stores/index.html.twig');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function storeDetailAction(): Response
+    {
+        return $this->render('@ShopsysShop/Front/Content/Stores/detail.html.twig');
+    }
 }

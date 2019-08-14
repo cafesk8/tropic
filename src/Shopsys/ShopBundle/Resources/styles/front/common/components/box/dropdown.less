@@ -6,7 +6,7 @@
 @box-dropdown-padding-vertical: 10px;
 @box-dropdown-padding-vertical-small: 9px;
 @box-dropdown-font-size: 15px;
-@box-dropdown-arrow-size: @arrow-size;
+@box-dropdown-arrow-size: 8px;
 @box-dropdown-arrow-color: @color-brown-light-2;
 @box-dropdown-open-bottom-gap: 10px;
 
@@ -61,6 +61,11 @@
             border-bottom-right-radius: 0;
         }
 
+        .open.box-dropdown--open-light & {
+            background-color: @color-f;
+            box-shadow: inset 0px 0px 0px 3px @color-gray;
+        }
+
         &:after {
             display: none;
             content: '';
@@ -76,6 +81,17 @@
             .open & {
                 display: block;
             }
+
+            .open.box-dropdown--open-light & {
+                background-color: @color-f;
+                z-index: @z-index-menu + 1;
+                height: @box-dropdown-open-bottom-gap;
+                top: calc(100% - 3.5px);
+                right: 0px;
+                width: calc(100% - 5px);
+                border-right: 3px solid @color-gray;
+                border-left: 3px solid @color-gray;
+            }
         }
 
         &__arrow {
@@ -83,11 +99,15 @@
             display: inline-block;
             width: @box-dropdown-arrow-size;
             height: @box-dropdown-arrow-size;
-            top: 18px;
+            top: 17px;
             right: 15px;
 
             color: @box-dropdown-arrow-color;
             font-size: @box-dropdown-arrow-size;
+
+            .open & {
+                top: 18px;
+            }
 
             &--down {
                 .svg;
@@ -193,7 +213,7 @@
             }
 
             @media @query-vl {
-                right: 0;
+                left: -280px;
             }
         }
 
@@ -202,12 +222,12 @@
             width: 304px;
 
             @media @query-md {
-                right: -140px;
+                right: -120px;
                 width: @cart-detail-width;
             }
 
             @media @query-vl {
-                right: 0;
+                left: -244px;
             }
         }
 
@@ -223,7 +243,7 @@
             }
 
             @media @query-vl {
-                right: 0;
+                right: -236px;
             }
         }
     }

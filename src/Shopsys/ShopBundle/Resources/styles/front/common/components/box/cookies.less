@@ -7,6 +7,9 @@
 @box-cookies-background: @color-gray;
 @box-cookies-close-color: #979797;
 @box-cookies-close-size: 13px;
+@box-cookies-buttons-height: 44px;
+
+@box-cookies-button-agree-width: 46%;
 
 .box-cookies {
     position: fixed;
@@ -56,11 +59,16 @@
         width: 100%;
 
         &__agree {
-            width: 100%/2;
+            padding: 0 10px;
+            width: @box-cookies-button-agree-width;
+            line-height: @box-cookies-buttons-height;
+            height: @box-cookies-buttons-height;
+
+            font-size: 14px;
         }
 
         &__link {
-            line-height: @input-height;
+            line-height: @box-cookies-buttons-height;
             text-decoration: none;
 
             color: @color-base;
@@ -69,7 +77,7 @@
             text-transform: uppercase;
 
             &__wrap {
-                width: 100%/2;
+                width: calc(~"100% - @{box-cookies-button-agree-width}");
                 text-align: center;
             }
         }
@@ -83,6 +91,10 @@
         cursor: pointer;
         color: @box-cookies-close-color;
         font-size: @box-cookies-close-size;
+
+        &:hover {
+            color: @color-base;
+        }
     }
 
     &--closing {

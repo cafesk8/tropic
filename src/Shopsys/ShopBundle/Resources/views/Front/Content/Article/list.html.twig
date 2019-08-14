@@ -1,4 +1,4 @@
-<ul class="list-articles">
+<ul class="list-articles {{ cssClass|default('') }}">
     {% for blogArticle in blogArticles %}
         <li class="list-articles__item">
             <div class="list-articles__item__image">
@@ -10,8 +10,10 @@
                 <div class="list-tags">
                     {{ render(controller('ShopsysShopBundle:Front/BlogArticle:mainBlogCategoryForBlogArticle', { blogArticle: blogArticle, spanClass: 'list-tags__tag' })) }}
                 </div>
-                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__content__title underline">
-                    {{ blogArticle.name }}
+                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__content__title">
+                    <span class="underline-text">
+                        {{ blogArticle.name }}
+                    </span>
                 </a>
                 <div class="list-articles__item__content__text">
                     {{ blogArticle.perex }}

@@ -13,22 +13,24 @@
 
                 {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
 
-                <div class="box-order__title">
-                    <h2 class="box-order__title__text double-lined">
-                        {{ 'Osobní údaje'|trans }}
-                    </h2>
-                </div>
 
                 <fieldset>
+                    <div class="box-order__title">
+                        <h2 class="in-title in-title--small in-title--dark">
+                            {{ 'Osobní údaje'|trans }}
+                        </h2>
+                    </div>
+
                     {{ form_row(form.email, { label: 'E-mail'|trans }) }}
+
                 </fieldset>
 
-                <div class="box-order__title">
-                    <h2 class="box-order__title__text double-lined">
-                        {{ 'Shipping address'|trans }} {% if isSelectedPickupPlaceTransport is not same as (true) %} <span class="heading-addition">{{ 'Zboží bude doručeno na tuto adresu.'|trans }}</span>{% endif %}
-                    </h2>
-                </div>
                 <fieldset>
+                    <div class="box-order__title">
+                        <h2 class="in-title in-title--small in-title--dark">
+                            {{ 'Shipping address'|trans }} {% if isSelectedPickupPlaceTransport is not same as (true) %} <span class="heading-addition">{{ 'Zboží bude doručeno na tuto adresu.'|trans }}</span>{% endif %}
+                        </h2>
+                    </div>
                     {% if isSelectedPickupPlaceTransport is same as (true) %}
                         {% set pickupPlaceData = pickupPlace %}
                         {% if transport.isChooseStore is same as (true) %}
@@ -71,16 +73,16 @@
                     {% endif %}
                 </fieldset>
 
-                <div class="box-order__title">
-                    <h2 class="box-order__title__text double-lined">
-                        {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
-                    </h2>
-                </div>
                 <fieldset>
+                    <div class="box-order__title">
+                        <h2 class="in-title in-title--small in-title--dark">
+                            {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
+                        </h2>
+                    </div>
                     {{ form_widget(form.companyCustomer, {
                         attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
                     }}
-                    <label for="{{ form.companyCustomer.vars.id }}" class="css-label-checkbox">
+                    <label for="{{ form.companyCustomer.vars.id }}" class="css-checkbox__image">
                         {{ 'I buy on company behalf'|trans }}
                     </label>
                     <div id="js-company-fields" class="margin-top-20">
@@ -90,12 +92,12 @@
                     </div>
                 </fieldset>
 
-                <div class="box-order__title">
-                    <h2 class="box-order__title__text double-lined">
-                        {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
-                    </h2>
-                </div>
                 <fieldset>
+                    <div class="box-order__title">
+                        <h2 class="in-title in-title--small in-title--dark">
+                            {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
+                        </h2>
+                    </div>
                     {{ form_widget(form.billingAddressFilled, {
                         attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
                     }}
@@ -116,18 +118,18 @@
                     </div>
                 </fieldset>
 
-                <div class="box-order__title">
-                    <h2 class="box-order__title__text double-lined">
-                        {{ 'Note'|trans }}
-                    </h2>
-                </div>
                 <fieldset>
+                    <div class="box-order__title">
+                        <h2 class="in-title in-title--small in-title--dark">
+                            {{ 'Note'|trans }}
+                        </h2>
+                    </div>
                     {{ form_row(form.note, { label: 'Contact us'|trans }) }}
                 </fieldset>
 
                 {% if termsAndConditionsArticle is not null %}
                     <div class="box-order__title">
-                        <h2 class="box-order__title__text double-lined">
+                        <h2 class="in-title in-title--small in-title--dark">
                             {{ 'Terms and conditions'|trans }}
                         </h2>
                     </div>
@@ -145,7 +147,7 @@
                     <div class="form-line">
 
                         {{ form_widget(form.legalConditionsAgreement, { attr: { class: 'css-checkbox' }}) }}
-                        <label for="{{ form.legalConditionsAgreement.vars.id }}" class="css-label-checkbox">
+                        <label for="{{ form.legalConditionsAgreement.vars.id }}" class="css-checkbox__image">
                             {% if privacyPolicyArticle is not null and termsAndConditionsArticle is not null %}
                                 {% set privacyPolicyUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
                                 {% set termsAndConditionsUrl = url('front_article_detail', {'id': termsAndConditionsArticle.id}) %}
@@ -167,10 +169,15 @@
                             <ul class="form-error__list"></ul>
                         </span>
                     </div>
-                    {{ form_row(form.newsletterSubscription, { label: 'I want to subscribe to the newsletter'|trans }) }}
-                    {% if form.disallowHeurekaVerifiedByCustomers is defined %}
-                        {{ form_row(form.disallowHeurekaVerifiedByCustomers, { label: 'I do not agree with sending a Customer Verified satisfaction questionnaire that helps improve your service'|trans }) }}
-                    {% endif %}
+                    <div class="form-line">
+                        {{ form_row(form.newsletterSubscription, { attr: { class: 'css-checkbox' }}) }}
+                        <label class="css-checkbox__image" for="{{ form.newsletterSubscription.vars.id }}">
+                            {{ 'I want to subscribe to the newsletter'|trans }}
+                        </label>
+                        {% if form.disallowHeurekaVerifiedByCustomers is defined %}
+                            {{ form_row(form.disallowHeurekaVerifiedByCustomers, { label: 'I do not agree with sending a Customer Verified satisfaction questionnaire that helps improve your service'|trans }) }}
+                        {% endif %}
+                    </div>
                 </fieldset>
             </div>
             <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">

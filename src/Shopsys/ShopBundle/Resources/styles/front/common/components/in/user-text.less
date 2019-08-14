@@ -16,6 +16,32 @@
     font-family: @font-alt;
     font-size: @in-user-text-font-size;
 
+    a {
+        position: relative;
+        text-decoration: none;
+
+        color: @color-base;
+
+        &:before {
+            content: '';
+            position: absolute;
+            display: block;
+            height: 1px;
+            width: 100%;
+            left: 0;
+            bottom: -2px;
+
+            background-color: @color-orange;
+            transition: bottom @transition;
+        }
+
+        &:hover {
+            &:before {
+                bottom: 0;
+            }
+        }
+    }
+
     p {
         margin: 0 0 @in-user-text-inner-text-gap-small 0;
         line-height: @in-user-text-font-size + 16px;

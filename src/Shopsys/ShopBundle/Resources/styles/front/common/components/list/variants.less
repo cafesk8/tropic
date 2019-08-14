@@ -23,10 +23,11 @@
     }
 
     &__item {
-        width: @list-variants-item-size;
+        min-width: @list-variants-item-size;
         height: @list-variants-item-size;
         line-height: @list-variants-item-size - 4px;
         margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
+        padding: 0 5px;
         text-align: center;
 
         font-size: 13px;
@@ -49,6 +50,7 @@
 
         &__name {
             display: block;
+            word-wrap: break-word;
         }
 
         &__with-image {

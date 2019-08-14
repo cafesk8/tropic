@@ -8,8 +8,6 @@
         var $productsWithControls = $('.js-product-list-ajax-filter-products-with-controls');
         var $productFilterForm = $('form[name="product_filter_form"]');
         var $showResultsButton = $('.js-product-filter-show-result-button');
-        var $resetFilterButton = $('.js-product-filter-reset-button');
-        var $mobilelFilterOpener = $('.js-product-filter-opener');
         var requestTimer = null;
         var requestDelay = 1000;
 
@@ -23,30 +21,6 @@
             $showResultsButton.click(function () {
                 var $productList = $('.js-product-list');
                 $('html, body').animate({ scrollTop: $productList.offset().top }, 'slow');
-                return false;
-            });
-
-            /* TODO PRG: on button click set left panel position to bottom of button */
-            $mobilelFilterOpener.click(function () {
-                var $productListPanel = $('.js-product-list-panel');
-                var $productListFilter = $('.js-product-filter');
-                var position = $mobilelFilterOpener.offset();
-                var newPosition = position.top - 33;
-                $productListPanel.toggleClass('active');
-                $productListFilter.toggleClass('active-mobile');
-                $productListPanel.css({ 'top': newPosition });
-                return false;
-            });
-
-            $resetFilterButton.click(function () {
-                $productFilterForm
-                    .find(':radio, :checkbox').removeAttr('checked').end()
-                    .find('textarea, :text, select').val('');
-                $productFilterForm.find('.js-product-filter-call-change-after-reset').change();
-                clearTimeout(requestTimer);
-                var resetUrl = $(this).attr('href');
-                Shopsys.history.pushReloadState(resetUrl);
-                submitFormWithAjax();
                 return false;
             });
 
