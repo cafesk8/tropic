@@ -70,6 +70,11 @@
             height: 50
             crop: false
             occurrence: 'Front-end: gift on product detail'
+        -   name: homepageBanner
+            width: 101
+            height: 101
+            crop: false
+            occurrence: 'Front-end: gift on product detail'
 
 -   name: sliderItem
     class: Shopsys\FrameworkBundle\Model\Slider\SliderItem
