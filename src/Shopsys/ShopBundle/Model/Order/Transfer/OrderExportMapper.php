@@ -14,6 +14,8 @@ use Shopsys\ShopBundle\Model\Order\Order;
 
 class OrderExportMapper
 {
+    private const MALL_SOURCE = 'MALL';
+
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Rounding
      */
@@ -47,7 +49,7 @@ class OrderExportMapper
     private function prepareHeader(Order $order): array
     {
         $headerArray = [
-            'Source' => DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$order->getDomainId()],
+            'Source' => $this->getSource($order),
             'Number' => $order->getNumber(),
             'CreatingDateTime' => $order->getCreatedAt()->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
@@ -90,6 +92,19 @@ class OrderExportMapper
         }
 
         return $headerArray;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return string
+     */
+    private function getSource(Order $order): string
+    {
+        if ($order->getMallOrderId() !== null) {
+            return self::MALL_SOURCE;
+        }
+
+        return DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$order->getDomainId()];
     }
 
     /**

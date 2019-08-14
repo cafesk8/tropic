@@ -176,6 +176,43 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             TransportDataFixture::TRANSPORT_PPL_DE,
             TransportDataFixture::TRANSPORT_PPL_FR,
         ]);
+
+        $paymentData = $this->paymentDataFactory->create();
+        $paymentData->type = Payment::TYPE_MALL;
+        $paymentData->name = [
+            'cs' => 'Mall',
+            'sk' => 'Mall',
+            'de' => 'Mall',
+        ];
+        $paymentData->czkRounding = false;
+        $paymentData->pricesByCurrencyId = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
+        ];
+        $paymentData->prices = [
+            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
+            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
+        ];
+        $paymentData->description = [
+            'cs' => 'Platba provedena u mall.cz',
+            'sk' => '',
+            'de' => '',
+        ];
+        $paymentData->instructions = [
+            'cs' => '',
+            'sk' => '',
+            'de' => '',
+        ];
+        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
+        $paymentData->hidden = true;
+        $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
+            TransportDataFixture::TRANSPORT_PERSONAL,
+            TransportDataFixture::TRANSPORT_PPL,
+            TransportDataFixture::TRANSPORT_CZECH_POST,
+            TransportDataFixture::TRANSPORT_PPL_DE,
+            TransportDataFixture::TRANSPORT_PPL_FR,
+        ]);
     }
 
     /**

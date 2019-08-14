@@ -135,4 +135,12 @@ class OrderPreview extends BaseOrderPreview
 
         return $this->totalPriceWithoutGiftCertificate;
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPricesByIndex
+     */
+    public function setQuantifiedItemsPricesByIndex(array $quantifiedItemsPricesByIndex): void
+    {
+        $this->quantifiedItemsPricesByIndex = $quantifiedItemsPricesByIndex;
+    }
 }

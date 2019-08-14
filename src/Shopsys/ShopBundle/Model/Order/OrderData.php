@@ -54,13 +54,6 @@ class OrderData extends BaseOrderData
      */
     public $statusCheckedAt;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->updatedAt = new DateTime();
-        $this->statusCheckedAt = new DateTime();
-    }
-
     /**
      * @var string
      */
@@ -70,4 +63,21 @@ class OrderData extends BaseOrderData
      * @var \DateTime|null
      */
     public $exportedAt;
+
+    /**
+     * @var string|null
+     */
+    public $mallOrderId;
+
+    /**
+     * @var string|null
+     */
+    public $mallStatus;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->updatedAt = new DateTime();
+        $this->statusCheckedAt = new DateTime();
+    }
 }

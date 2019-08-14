@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -84,6 +85,10 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'choice_value' => 'id',
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('mallType', TextType::class, [
+                'required' => false,
+                'label' => t('Mall id'),
             ])
             ->add('deliveryDays', IntegerType::class, [
                 'required' => true,

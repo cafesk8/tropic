@@ -202,6 +202,20 @@ class Order extends BaseOrder
     private $statusCheckedAt;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $mallOrderId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $mallStatus;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -264,6 +278,8 @@ class Order extends BaseOrder
 
         $this->exportStatus = $orderData->exportStatus;
         $this->exportedAt = $orderData->exportedAt;
+        $this->mallOrderId = $orderData->mallOrderId;
+        $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
     }
 
@@ -290,6 +306,8 @@ class Order extends BaseOrder
         $this->store = $orderData->store;
         $this->storeExternalNumber = $orderData->store !== null ? $orderData->store->getExternalNumber() : null;
         $this->updatedAt = $orderData->updatedAt;
+        $this->mallOrderId = $orderData->mallOrderId;
+        $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
 
         return $orderEditResult;
@@ -682,6 +700,22 @@ class Order extends BaseOrder
         }
 
         return $giftItems;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMallOrderId(): ?string
+    {
+        return $this->mallOrderId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMallStatus(): ?string
+    {
+        return $this->mallStatus;
     }
 
     /**

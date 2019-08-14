@@ -17,4 +17,16 @@ class PaymentRepository extends BasePaymentRepository
     {
         return $this->getPaymentRepository()->findBy(['goPayPaymentMethod' => $goPayPaymentMethod]);
     }
+
+    /**
+     * @param string $type
+     * @return \Shopsys\ShopBundle\Model\Payment\Payment[]
+     */
+    public function getByType(string $type): array
+    {
+        return $this->getQueryBuilderForAll()
+            ->andWhere('p.type = :type')->setParameter('type', $type)
+            ->getQuery()
+            ->getResult();
+    }
 }

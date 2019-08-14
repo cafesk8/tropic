@@ -10,6 +10,11 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 class PaymentFacade extends BasePaymentFacade
 {
     /**
+     * @var \Shopsys\ShopBundle\Model\Payment\PaymentRepository
+     */
+    protected $paymentRepository;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod $goPayPaymentMethod
      */
     public function hideByGoPayPaymentMethod(GoPayPaymentMethod $goPayPaymentMethod): void
@@ -21,5 +26,20 @@ class PaymentFacade extends BasePaymentFacade
         }
 
         $this->em->flush($payments);
+    }
+
+    /**
+     * @param string $type
+     * @return \Shopsys\ShopBundle\Model\Payment\Payment|null
+     */
+    public function getFirstPaymentByType(string $type): ?Payment
+    {
+        $paymentsByType = $this->paymentRepository->getByType($type);
+
+        if (count($paymentsByType) > 0) {
+            return $paymentsByType[0];
+        }
+
+        return null;
     }
 }

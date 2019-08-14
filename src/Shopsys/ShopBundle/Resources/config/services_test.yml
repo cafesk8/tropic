@@ -152,3 +152,7 @@ services:
     Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade: '@Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade'
     Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository: '@Shopsys\ShopBundle\Model\Order\Status\OrderStatusRepository'
     Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade: '@Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade'
+
+    Shopsys\ShopBundle\Component\Mall\MallImportOrderClient: ~

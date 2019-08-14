@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
-use Shopsys\FrameworkBundle\Model\Transport\Transport;
+use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade as BaseTransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFactoryInterface;
@@ -97,7 +97,7 @@ class TransportFacade extends BaseTransportFacade
      * @param \Shopsys\ShopBundle\Model\Transport\Transport $transport
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
-    public function edit(Transport $transport, TransportData $transportData): void
+    public function edit(BaseTransport $transport, TransportData $transportData): void
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
         if ($transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
@@ -198,5 +198,20 @@ class TransportFacade extends BaseTransportFacade
         }
 
         return $noPickUpPlaceTransports;
+    }
+
+    /**
+     * @param string $mallId
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport|null
+     */
+    public function getFirstTransportByMallTransportName(string $mallId): ?Transport
+    {
+        $transportsByMallId = $this->transportRepository->getByMallTransportName($mallId);
+
+        if (count($transportsByMallId) > 0) {
+            return $transportsByMallId[0];
+        }
+
+        return null;
     }
 }

@@ -39,6 +39,7 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
+use Shopsys\ShopBundle\Component\Mall\MallImportOrderClient;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
@@ -58,6 +59,11 @@ class OrderFacade extends BaseOrderFacade
      * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation
      */
     private $productGiftPriceCalculation;
+
+    /**
+     * @var \Shopsys\ShopBundle\Component\Mall\MallImportOrderClient
+     */
+    private $mallImportOrderClient;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade
@@ -93,6 +99,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
+     * @param \Shopsys\ShopBundle\Component\Mall\MallImportOrderClient $mallImportOrderClient
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -122,7 +129,8 @@ class OrderFacade extends BaseOrderFacade
         TransportPriceCalculation $transportPriceCalculation,
         OrderItemFactoryInterface $orderItemFactory,
         ProductGiftPriceCalculation $productGiftPriceCalculation,
-        VatFacade $vatFacade
+        VatFacade $vatFacade,
+        MallImportOrderClient $mallImportOrderClient
     ) {
         parent::__construct(
             $em,
@@ -155,6 +163,7 @@ class OrderFacade extends BaseOrderFacade
 
         $this->productGiftPriceCalculation = $productGiftPriceCalculation;
         $this->vatFacade = $vatFacade;
+        $this->mallImportOrderClient = $mallImportOrderClient;
     }
 
     /**
@@ -360,5 +369,26 @@ class OrderFacade extends BaseOrderFacade
 
         $order->updateStatusCheckedAt();
         $this->em->flush($order);
+    }
+
+    /**
+     * @param int $orderId
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @return \Shopsys\ShopBundle\Model\Order\Order
+     */
+    public function edit($orderId, BaseOrderData $orderData)
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+        $order = $this->orderRepository->getById($orderId);
+        $originalMallStatus = $order->getMallStatus();
+
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $updatedOrder */
+        $updatedOrder = parent::edit($orderId, $orderData);
+
+        if ($originalMallStatus !== $updatedOrder->getMallStatus()) {
+            $this->mallImportOrderClient->changeStatus($updatedOrder->getMallStatus(), $updatedOrder->getMallStatus());
+        }
+
+        return $updatedOrder;
     }
 }

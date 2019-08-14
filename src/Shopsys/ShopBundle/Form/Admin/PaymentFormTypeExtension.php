@@ -40,6 +40,7 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                     t('Basic') => Payment::TYPE_BASIC,
                     t('GoPay') => Payment::TYPE_GOPAY,
                     t('PayPal') => Payment::TYPE_PAY_PAL,
+                    t('Mall') => Payment::TYPE_MALL,
                 ],
                 'multiple' => false,
                 'expanded' => false,

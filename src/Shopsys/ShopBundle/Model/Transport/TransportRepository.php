@@ -32,4 +32,16 @@ class TransportRepository extends BaseTransportRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param string $mallId
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
+     */
+    public function getByMallTransportName(string $mallId): array
+    {
+        return $this->getQueryBuilderForAll()
+            ->andWhere('t.mallId = :mallId')->setParameter('mallId', $mallId)
+            ->getQuery()
+            ->getResult();
+    }
 }

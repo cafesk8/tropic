@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use MPAPI\Entity\Order;
 use Shopsys\FrameworkBundle\Form\Admin\Order\OrderFormType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class OrderFormTypeExtension extends AbstractTypeExtension
@@ -50,6 +52,24 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                     'after' => 'exportStatus',
                 ],
             ]);
+
+        if ($order !== null && $order->getMallOrderId() !== null) {
+            $builderBasicInformationGroup
+                ->add('mallStatus', ChoiceType::class, [
+                    'label' => t('Mall status'),
+                    'choices' => [
+                        t('Zrušena, nefakturována') => Order::STATUS_CANCELLED,
+                        t('Doručena, vyfakturována') => Order::STATUS_DELIVERED,
+                        t('Otevřena') => Order::STATUS_OPEN,
+                        t('Nedoručena, nefakturována') => Order::STATUS_RETURNED,
+                        t('Odeslána, nefakturována') => Order::STATUS_SHIPPED,
+                        t('Odesílána, nefakturována') => Order::STATUS_SHIPPING,
+                    ],
+                    'position' => [
+                        'after' => 'status',
+                    ],
+                ]);
+        }
     }
 
     /**

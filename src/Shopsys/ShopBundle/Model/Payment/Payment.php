@@ -18,6 +18,7 @@ class Payment extends BasePayment
     public const TYPE_BASIC = 'basic';
     public const TYPE_GOPAY = 'goPay';
     public const TYPE_PAY_PAL = 'payPal';
+    public const TYPE_MALL = 'mall';
 
     /**
      * @var string

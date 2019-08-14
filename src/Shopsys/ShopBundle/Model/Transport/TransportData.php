@@ -40,6 +40,11 @@ class TransportData extends BaseTransportData
     public $countries;
 
     /**
+     * @var string
+     */
+    public $mallType;
+
+    /**
      * @var int
      */
     public $deliveryDays;
