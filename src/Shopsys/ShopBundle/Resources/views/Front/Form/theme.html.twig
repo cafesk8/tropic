@@ -118,7 +118,7 @@
                         <li>{{ error.message }}</li>
                     {% endfor %}
                 {% endif %}
-                {% if not form.vars.required %}<span class="form-input-not-required">Nepovinný údaj</span>{% endif %}
+                {% if not form.vars.required %}<span class="form-input-not-required">{{ 'Nepovinný údaj'|trans }}</span>{% endif %}
             </ul>
         </span>
     {% endspaceless %}
