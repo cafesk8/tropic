@@ -66,10 +66,13 @@ class OrderRepository extends BaseOrderRepository
             ->where('o.customer = :customerId')
             ->andWhere('o.createdAt >= :ordersFrom')
             ->andWhere('o.createdAt <= :ordersTo')
+            ->andWhere('o.status = :status')
+            ->andWhere('o.deleted = FALSE')
             ->setParameters([
                 'customerId' => $customerId,
                 'ordersFrom' => $dateFrom,
                 'ordersTo' => $dateTo,
+                'status' => OrderStatus::TYPE_DONE,
             ]);
 
         return (float)$queryBuilder->getQuery()->getSingleResult()['sum'] ?? 0;
@@ -107,6 +110,7 @@ class OrderRepository extends BaseOrderRepository
             ->addSelect('SUM(o.totalPriceWithVat) as ordersValue')
             ->where('o.status = :statusCompleted')
             ->andWhere('o.customer IN (:customerIds)')
+            ->andWhere('o.deleted = FALSE')
             ->groupBy('customerId')
             ->setParameter('statusCompleted', OrderStatus::TYPE_DONE)
             ->setParameter('customerIds', $customerIds);
