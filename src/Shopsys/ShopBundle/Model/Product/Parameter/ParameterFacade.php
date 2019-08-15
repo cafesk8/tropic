@@ -104,6 +104,8 @@ class ParameterFacade extends BaseParameterFacade
 
         $this->em->remove($parameter);
         $this->em->flush();
+
+        $this->cachedProductDistinguishingParameterValueFacade->invalidAll();
     }
 
     /**
