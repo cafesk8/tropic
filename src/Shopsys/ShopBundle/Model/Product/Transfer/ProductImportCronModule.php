@@ -187,10 +187,18 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
         if ($product === null) {
             $product = $this->productFacade->create($productData);
-            $this->logger->addInfo(sprintf('Product variant with transfer number `%s` was created', $transferNumber));
+            $this->logger->addInfo(sprintf(
+                'Product variant with transfer number `%s`(ID: `%s`) was created',
+                $transferNumber,
+                $product->getId()
+            ));
         } else {
             $product = $this->productFacade->edit($product->getId(), $productData);
-            $this->logger->addInfo(sprintf('Product variant with transfer number `%s` was edited', $transferNumber));
+            $this->logger->addInfo(sprintf(
+                'Product variant with transfer number `%s`(ID: `%s`) was edited',
+                $transferNumber,
+                $product->getId()
+            ));
         }
 
         foreach ($productData->parameters as $parameter) {
