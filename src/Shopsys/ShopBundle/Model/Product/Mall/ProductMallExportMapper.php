@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
@@ -45,18 +46,25 @@ class ProductMallExportMapper
      */
     private $productFacade;
 
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade
+     */
+    private $mainVariantGroupFacade;
+
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
         ImageFacade $imageFacade,
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        MainVariantGroupFacade $mainVariantGroupFacade
     ) {
         $this->productPriceCalculationForUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
         $this->domain = $domain;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->productFacade = $productFacade;
+        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
     }
 
 
@@ -174,7 +182,10 @@ class ProductMallExportMapper
         $variants = $this->productFacade->getVariantsForMainVariantGroup($product->getMainVariantGroup(), self::CZECH_DOMAIN);
 
         if (count($variants) <= 0) {
-            return null;
+            $variants = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
+            if (count($variants) <= 0) {
+                return null;
+            }
         }
 
         foreach ($variants as $variant) {
