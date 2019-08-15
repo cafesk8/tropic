@@ -85,16 +85,21 @@ class ProductTransferMapper
         $productData->usingStock = true;
         $productData->stockQuantity = 0;
 
-        $productData->parameters = [];
         if ($productTransferResponseItemVariantData->getColorName() !== null) {
             $productData->distinguishingParameterForMainVariantGroup = $this->getColorParameter();
-            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale($productTransferResponseItemVariantData->getColorName());
+            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale(
+                $productData->parameters,
+                $productTransferResponseItemVariantData->getColorName()
+            );
             $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
         }
 
         if ($productTransferResponseItemVariantData->getSizeName() !== null) {
             $productData->distinguishingParameter = $this->getSizeParameter();
-            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale($productTransferResponseItemVariantData->getSizeName());
+            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale(
+                $productData->parameters,
+                $productTransferResponseItemVariantData->getSizeName()
+            );
             $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
         }
 
@@ -102,13 +107,18 @@ class ProductTransferMapper
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $productParameterValuesData
      * @param string|null $valueText
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */
-    private function getSizeProductParameterValueDataByLocale(?string $valueText = null): array
-    {
+    private function getSizeProductParameterValueDataByLocale(
+        array $productParameterValuesData,
+        ?string $valueText = null
+): array {
+        $missingLocales = $this->findMissingLocalesForProductParameterValue($this->getSizeParameter(), $productParameterValuesData);
+
         $sizeProductParameterValueData = [];
-        foreach (DomainHelper::LOCALES as $locale) {
+        foreach ($missingLocales as $locale) {
             $parameterValueData = $this->parameterValueDataFactory->create();
             $parameterValueData->locale = $locale;
             $parameterValueData->text = $valueText;
@@ -122,13 +132,19 @@ class ProductTransferMapper
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
+     * @param array $productParameterValuesData
      * @param string|null $valueText
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */
-    private function getColorProductParameterValueDataByLocale(?string $valueText = null): array
-    {
+    private function getColorProductParameterValueDataByLocale(
+        array $productParameterValuesData,
+        ?string $valueText = null
+    ): array {
+        $missingLocales = $this->findMissingLocalesForProductParameterValue($this->getColorParameter(), $productParameterValuesData);
+
         $colorProductParameterValueData = [];
-        foreach (DomainHelper::LOCALES as $locale) {
+        foreach ($missingLocales as $locale) {
             $parameterValueData = $this->parameterValueDataFactory->create();
             $parameterValueData->locale = $locale;
             $parameterValueData->text = $valueText;
@@ -165,5 +181,27 @@ class ProductTransferMapper
             'sk' => 'Velikosť',
             'de' => 'Größe',
         ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param array $productParameterValuesData
+     * @return string[]
+     */
+    private function findMissingLocalesForProductParameterValue(Parameter $parameter, array $productParameterValuesData): array
+    {
+        $missingLocales = DomainHelper::LOCALES;
+
+        foreach ($productParameterValuesData as $productParameterValueData) {
+            $productParameter = $productParameterValueData->parameter;
+            $locale = $productParameterValueData->parameterValueData->locale;
+
+            if ($productParameter === $parameter && in_array($locale, $missingLocales, true)) {
+                $indexToRemove = array_search($locale, $missingLocales, true);
+                unset($missingLocales[$indexToRemove]);
+            }
+        }
+
+        return $missingLocales;
     }
 }
