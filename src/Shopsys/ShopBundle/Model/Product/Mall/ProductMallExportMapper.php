@@ -51,6 +51,14 @@ class ProductMallExportMapper
      */
     private $mainVariantGroupFacade;
 
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
+     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
+     */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
         ImageFacade $imageFacade,
@@ -67,12 +75,11 @@ class ProductMallExportMapper
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
     }
 
-
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return \MPAPI\Entity\Products\AbstractArticleEntity|null
+     * @return \MPAPI\Entity\Products\Product|null
      */
-    public function mapProductOrMainVariantGroup(Product $product): ?AbstractArticleEntity
+    public function mapProductOrMainVariantGroup(Product $product): ?\MPAPI\Entity\Products\Product
     {
         if ($product->isMainVariant() === false) {
             return $this->mapProduct($product);

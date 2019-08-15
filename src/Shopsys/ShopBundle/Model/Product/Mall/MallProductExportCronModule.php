@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product\Mall;
 
 use MPAPI\Exceptions\ApplicationException;
-use MPAPI\Services\Products;
 use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
-use Shopsys\ShopBundle\Component\Mall\MallClient;
+use Shopsys\ShopBundle\Component\Mall\MallFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -31,18 +30,20 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
     private $productMallExportMapper;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\Mall\MallClient
+     * @var \Shopsys\ShopBundle\Component\Mall\MallFacade
      */
-    private $mallClient;
+    private $mallFacade;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Mall\ProductMallExportMapper $productMallExportMapper
+     * @param \Shopsys\ShopBundle\Component\Mall\MallFacade $mallFacade
      */
-    public function __construct(ProductFacade $productFacade, ProductMallExportMapper $productMallExportMapper, MallClient $mallClient)
+    public function __construct(ProductFacade $productFacade, ProductMallExportMapper $productMallExportMapper, MallFacade $mallFacade)
     {
         $this->productFacade = $productFacade;
         $this->productMallExportMapper = $productMallExportMapper;
-        $this->mallClient = $mallClient;
+        $this->mallFacade = $mallFacade;
     }
 
     /**
@@ -75,7 +76,6 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
                 'exception' => $exception,
             ]);
         }
-
     }
 
     public function sleep(): void
@@ -91,17 +91,18 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
      */
     private function processItems(array $productsToExport): void
     {
-        $productSynchronizer = new Products($this->mallClient->getClient());
-        $productIds = [];
+        $exportedProducts = [];
 
         foreach ($productsToExport as $product) {
-            d($this->productMallExportMapper->mapProductOrMainVariantGroup($product));
-            $this->logger->addInfo(sprintf('Product with ID `%s` is prepared for export to Mall.cz', $product->getId()));
-            $productIds[] = $product->getId();
+            $preparedProductToExport = $this->productMallExportMapper->mapProductOrMainVariantGroup($product);
+            $response = $this->mallFacade->createOrUpdateProduct($preparedProductToExport);
+
+            if ($response === true) {
+                $this->logger->addInfo(sprintf('Product with ID `%s` was exported to Mall.cz', $product->getId()));
+                $exportedProducts[] = $product;
+            }
         }
 
-        //$productSynchronizer->post();
-        //$this->productFacade->markProductsAsExportedToMall($productsToExport);
-        //$this->logger->addInfo(sprintf('Products with ID `%s` were exported to Mall.cz', implode(',', $productIds)));
+        $this->productFacade->markProductsAsExportedToMall($exportedProducts);
     }
 }
