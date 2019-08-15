@@ -176,6 +176,7 @@ class ProductMallExportMapper
     {
         /** @var \MPAPI\Entity\Products\Product $mallProduct */
         $mallProduct = $this->mapBasicInformation($product, false);
+        $mallProduct->setId('group-' . $product->getMainVariantGroup()->getId());
 
         $distinguishingParameters = $this->getDistinguishingParametersForProduct($product);
         $mallProduct->setVariableParameters($distinguishingParameters);
