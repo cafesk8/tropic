@@ -88,18 +88,14 @@ class ProductTransferMapper
         $productData->parameters = [];
         if ($productTransferResponseItemVariantData->getColorName() !== null) {
             $productData->distinguishingParameterForMainVariantGroup = $this->getColorParameter();
-            if ($productTransferResponseItemVariantData->getColorName() !== null) {
-                $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale($productTransferResponseItemVariantData->getColorName());
-                $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
-            }
+            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale($productTransferResponseItemVariantData->getColorName());
+            $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
         }
 
         if ($productTransferResponseItemVariantData->getSizeName() !== null) {
             $productData->distinguishingParameter = $this->getSizeParameter();
-            if ($productTransferResponseItemVariantData->getSizeName() !== null) {
-                $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale($productTransferResponseItemVariantData->getSizeName());
-                $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
-            }
+            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale($productTransferResponseItemVariantData->getSizeName());
+            $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
         }
 
         return $productData;
