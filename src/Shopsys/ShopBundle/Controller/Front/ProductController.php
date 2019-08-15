@@ -39,7 +39,7 @@ class ProductController extends FrontBaseController
     private $productFilterConfigFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryFacade
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
      */
     private $categoryFacade;
 
@@ -179,6 +179,7 @@ class ProductController extends FrontBaseController
             'accessories' => $accessories,
             'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleProductCategoryDomains($product, $this->domain->getId()),
             'mainVariants' => $mainVariantGroupProducts,
             'youtubeDetailForMainVariants' => $youtubeDetailForMainVariants,
             'domainId' => $this->domain->getId(),

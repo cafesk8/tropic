@@ -138,21 +138,11 @@
                                         <div class="box-detail__params__row">
                                             <div class="box-detail__params__title">{{ 'Najdete v kategoriích'|trans }}</div>
                                             <div class="list-tags">
-                                                <div class="list-tags__tag list-tags__tag--outline">
-                                                    {{ 'šaty'|trans }}
-                                                </div>
-                                                <div class="list-tags__tag list-tags__tag--outline">
-                                                    {{ 'do práce'|trans }}
-                                                </div>
-                                                <div class="list-tags__tag list-tags__tag--outline">
-                                                    {{ 'volný střih'|trans }}
-                                                </div>
-                                                <div class="list-tags__tag list-tags__tag--outline">
-                                                    {{ 'pro pořádné chlapy'|trans }}
-                                                </div>
-                                                <div class="list-tags__tag list-tags__tag--outline">
-                                                    {{ 'expediční oblečení'|trans }}
-                                                </div>
+                                                {% for productCategoryDomain in productVisibleProductCategoryDomains %}
+                                                    <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
+                                                        {{ productCategoryDomain.category.name }}
+                                                    </a>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
