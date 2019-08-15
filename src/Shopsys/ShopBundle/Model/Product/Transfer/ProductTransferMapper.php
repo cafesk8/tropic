@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Model\Product\Transfer;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
@@ -90,14 +89,16 @@ class ProductTransferMapper
         if ($productTransferResponseItemVariantData->getColorName() !== null) {
             $productData->distinguishingParameterForMainVariantGroup = $this->getColorParameter();
             if ($productTransferResponseItemVariantData->getColorName() !== null) {
-                $productData->parameters[] = $this->getColorProductParameterValueData($productTransferResponseItemVariantData->getColorName());
+                $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale($productTransferResponseItemVariantData->getColorName());
+                $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
             }
         }
 
         if ($productTransferResponseItemVariantData->getSizeName() !== null) {
             $productData->distinguishingParameter = $this->getSizeParameter();
             if ($productTransferResponseItemVariantData->getSizeName() !== null) {
-                $productData->parameters[] = $this->getSizeProductParameterValueData($productTransferResponseItemVariantData->getSizeName());
+                $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale($productTransferResponseItemVariantData->getSizeName());
+                $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
             }
         }
 
@@ -106,36 +107,44 @@ class ProductTransferMapper
 
     /**
      * @param string|null $valueText
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */
-    private function getSizeProductParameterValueData(?string $valueText = null): ProductParameterValueData
+    private function getSizeProductParameterValueDataByLocale(?string $valueText = null): array
     {
-        $parameterValueData = $this->parameterValueDataFactory->create();
-        $parameterValueData->locale = 'cs';
-        $parameterValueData->text = $valueText;
+        $sizeProductParameterValueData = [];
+        foreach (DomainHelper::LOCALES as $locale) {
+            $parameterValueData = $this->parameterValueDataFactory->create();
+            $parameterValueData->locale = $locale;
+            $parameterValueData->text = $valueText;
 
-        $productParameterValueData = $this->productParameterValueDataFactory->create();
-        $productParameterValueData->parameter = $this->getSizeParameter();
-        $productParameterValueData->parameterValueData = $parameterValueData;
-
-        return $productParameterValueData;
+            $productParameterValueData = $this->productParameterValueDataFactory->create();
+            $productParameterValueData->parameter = $this->getSizeParameter();
+            $productParameterValueData->parameterValueData = $parameterValueData;
+            $sizeProductParameterValueData[] = $productParameterValueData;
+        }
+        return $sizeProductParameterValueData;
     }
 
     /**
      * @param string|null $valueText
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */
-    private function getColorProductParameterValueData(?string $valueText = null): ProductParameterValueData
+    private function getColorProductParameterValueDataByLocale(?string $valueText = null): array
     {
-        $parameterValueData = $this->parameterValueDataFactory->create();
-        $parameterValueData->locale = 'cs';
-        $parameterValueData->text = $valueText;
+        $colorProductParameterValueData = [];
+        foreach (DomainHelper::LOCALES as $locale) {
+            $parameterValueData = $this->parameterValueDataFactory->create();
+            $parameterValueData->locale = $locale;
+            $parameterValueData->text = $valueText;
 
-        $productParameterValueData = $this->productParameterValueDataFactory->create();
-        $productParameterValueData->parameter = $this->getColorParameter();
-        $productParameterValueData->parameterValueData = $parameterValueData;
+            $productParameterValueData = $this->productParameterValueDataFactory->create();
+            $productParameterValueData->parameter = $this->getColorParameter();
+            $productParameterValueData->parameterValueData = $parameterValueData;
 
-        return $productParameterValueData;
+            $colorProductParameterValueData[] = $productParameterValueData;
+        }
+
+        return $colorProductParameterValueData;
     }
 
     /**
