@@ -43,16 +43,10 @@ class FeedExport extends BaseFeedExport
     protected function finishFile(): void
     {
         if ($this->abstractFilesystem->has($this->feedFilepath)) {
-            $this->abstractFilesystem->update(
-                $this->feedFilepath,
-                file_get_contents($this->getTemporaryLocalFilepath())
-            );
-        } else {
-            $this->mountManager->move(
-                'local://' . TransformString::removeDriveLetterFromPath($this->getTemporaryLocalFilepath()),
-                'main://' . $this->feedFilepath
-            );
+            $this->abstractFilesystem->delete($this->feedFilepath);
         }
+
+        $this->mountManager->move('local://' . TransformString::removeDriveLetterFromPath($this->getTemporaryLocalFilepath()), 'main://' . $this->feedFilepath);
 
         $this->finished = true;
     }
