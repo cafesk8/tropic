@@ -44,6 +44,7 @@ class ProductDataFactory extends BaseProductDataFactory
 
         $productData->storeStocks = [];
         $productData->generateToHsSportXmlFeed = true;
+        $productData->finished = false;
     }
 
     /**
@@ -72,5 +73,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->mainVariantGroup = $product->getMainVariantGroup();
         $productData->gift = $product->getGift();
         $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
+        $productData->finished = $product->isFinished();
     }
 }

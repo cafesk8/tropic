@@ -222,6 +222,7 @@ class ProductController extends BaseProductController
         $grid = parent::getGrid($queryBuilder);
 
         $grid->addColumn('catnum', 'p.catnum', t('SKU'), true);
+        $grid->addColumn('finished', 'p.finished', t('Produkt je hotový'), true);
 
         return $grid;
     }

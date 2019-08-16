@@ -88,6 +88,11 @@ class Product extends BaseProduct
     protected $generateToHsSportXmlFeed;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $finished;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -102,6 +107,7 @@ class Product extends BaseProduct
         $this->mainVariantGroup = $productData->mainVariantGroup;
         $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
+        $this->finished = $productData->finished;
     }
 
     /**
@@ -119,6 +125,7 @@ class Product extends BaseProduct
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
+        $this->finished = $productData->finished;
     }
 
     /**
@@ -310,5 +317,13 @@ class Product extends BaseProduct
     public function isGenerateToHsSportXmlFeed(): bool
     {
         return $this->generateToHsSportXmlFeed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinished(): bool
+    {
+        return $this->finished;
     }
 }

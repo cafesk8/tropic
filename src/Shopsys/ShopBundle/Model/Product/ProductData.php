@@ -53,11 +53,15 @@ class ProductData extends BaseProductData
      */
     public $generateToHsSportXmlFeed;
 
+    /**
+     * @var bool|null
+     */
+    public $finished;
+
     public function __construct()
     {
         parent::__construct();
         $this->productsInGroup = [];
         $this->actionPrices = [];
-        $this->gift = null;
     }
 }

@@ -105,6 +105,13 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $product = $options['product'];
         /* @var $product \Shopsys\FrameworkBundle\Model\Product\Product|null */
 
+        $builderBasicInformationGroup = $builder->get('basicInformationGroup');
+        $builderBasicInformationGroup
+            ->add('finished', YesNoType::class, [
+                'required' => false,
+                'label' => t('Produkt je hotový'),
+            ]);
+
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
             'label' => t('Stock in stores'),
         ]);
