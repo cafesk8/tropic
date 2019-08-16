@@ -38,6 +38,6 @@ class ParameterValueDataFactory extends BaseParameterValueDataFactory
     {
         parent::fillFromParameterValue($parameterValueData, $parameterValue);
 
-        $parameterValueData->externalId = $parameterValue->getExternalId();
+        $parameterValueData->hsFeedId = $parameterValue->getHsFeedId();
     }
 }

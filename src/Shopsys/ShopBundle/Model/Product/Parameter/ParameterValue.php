@@ -19,7 +19,7 @@ class ParameterValue extends BaseParameterValue
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $externalId;
+    protected $hsFeedId;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterData
@@ -28,7 +28,7 @@ class ParameterValue extends BaseParameterValue
     {
         parent::__construct($parameterData);
 
-        $this->externalId = $parameterData->externalId;
+        $this->hsFeedId = $parameterData->hsFeedId;
     }
 
     /**
@@ -38,14 +38,14 @@ class ParameterValue extends BaseParameterValue
     {
         parent::edit($parameterData);
 
-        $this->externalId = $parameterData->externalId;
+        $this->hsFeedId = $parameterData->hsFeedId;
     }
 
     /**
      * @return string|null
      */
-    public function getExternalId(): ?string
+    public function getHsFeedId(): ?string
     {
-        return $this->externalId;
+        return $this->hsFeedId;
     }
 }

@@ -11,5 +11,5 @@ class ParameterValueData extends BaseParameterValueData
     /**
      * @var int
      */
-    public $externalId;
+    public $hsFeedId;
 }
