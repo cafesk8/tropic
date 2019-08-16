@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Command\Migration;
 
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Shopsys\ShopBundle\Command\Migration\Exception\MigrationDataNotFoundException;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
@@ -41,20 +42,28 @@ class MigrateParameterValuesCommand extends Command
     private $parameterValueDataFactory;
 
     /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @param \Doctrine\DBAL\Driver\Connection $connection
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
     public function __construct(
         Connection $connection,
         ParameterFacade $parameterFacade,
-        ParameterValueDataFactory $parameterValueDataFactory
+        ParameterValueDataFactory $parameterValueDataFactory,
+        EntityManagerInterface $entityManager
     ) {
         parent::__construct();
 
         $this->connection = $connection;
         $this->parameterFacade = $parameterFacade;
         $this->parameterValueDataFactory = $parameterValueDataFactory;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -78,6 +87,7 @@ class MigrateParameterValuesCommand extends Command
             $parameterValuesCount = count($parameterValues);
             $page++;
             foreach ($parameterValues as $parameterValue) {
+                $this->entityManager->beginTransaction();
                 try {
                     $parameterValueData = $this->mapParameterValueData($parameterValue);
                     $this->parameterFacade->editParameterValue($parameterValue, $parameterValueData);
@@ -86,10 +96,15 @@ class MigrateParameterValuesCommand extends Command
                         'Data for parameter value with ID `%s` was migrated',
                         $parameterValue->getId()
                     ));
+                    $this->entityManager->commit();
                 } catch (MigrationDataNotFoundException | Exception $exception) {
                     $symfonyStyleIo->error($exception->getMessage());
+                    if ($this->entityManager->isOpen()) {
+                        $this->entityManager->rollback();
+                    }
                 }
             }
+            $this->entityManager->clear();
         } while ($parameterValuesCount > 0);
     }
 
