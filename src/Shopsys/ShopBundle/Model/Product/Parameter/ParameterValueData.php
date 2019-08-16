@@ -12,4 +12,9 @@ class ParameterValueData extends BaseParameterValueData
      * @var int
      */
     public $hsFeedId;
+
+    /**
+     * @var string|null
+     */
+    public $rgb;
 }

@@ -39,5 +39,6 @@ class ParameterValueDataFactory extends BaseParameterValueDataFactory
         parent::fillFromParameterValue($parameterValueData, $parameterValue);
 
         $parameterValueData->hsFeedId = $parameterValue->getHsFeedId();
+        $parameterValueData->rgb = $parameterValue->getRgb();
     }
 }

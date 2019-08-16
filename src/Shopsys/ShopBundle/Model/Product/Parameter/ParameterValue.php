@@ -22,6 +22,13 @@ class ParameterValue extends BaseParameterValue
     protected $hsFeedId;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    protected $rgb;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterData
      */
     public function __construct(ParameterValueData $parameterData)
@@ -29,6 +36,7 @@ class ParameterValue extends BaseParameterValue
         parent::__construct($parameterData);
 
         $this->hsFeedId = $parameterData->hsFeedId;
+        $this->rgb = $parameterData->rgb;
     }
 
     /**
@@ -39,6 +47,7 @@ class ParameterValue extends BaseParameterValue
         parent::edit($parameterData);
 
         $this->hsFeedId = $parameterData->hsFeedId;
+        $this->rgb = $parameterData->rgb;
     }
 
     /**
@@ -47,5 +56,13 @@ class ParameterValue extends BaseParameterValue
     public function getHsFeedId(): ?string
     {
         return $this->hsFeedId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRgb(): ?string
+    {
+        return $this->rgb;
     }
 }

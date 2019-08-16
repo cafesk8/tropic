@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Command\Migration;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\ShopBundle\Command\Migration\Exception\MigrationDataNotFoundException;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue;
@@ -119,6 +120,9 @@ class MigrateParameterValuesCommand extends Command
         $parameterValueData = $this->parameterValueDataFactory->createFromParameterValue($parameterValue);
         $parameterValueData->hsFeedId = $migrateParameterValueData['hsFeedId'];
 
+        $rbg = TransformString::emptyToNull($migrateParameterValueData['rgb']);
+        $parameterValueData->rgb = $rbg !== null ? strip_tags($rbg) : null;
+
         return $parameterValueData;
     }
 
@@ -128,7 +132,7 @@ class MigrateParameterValuesCommand extends Command
      */
     private function getMigrateParameterValueData(ParameterValue $parameterValue): array
     {
-        $sql = 'SELECT tid AS hsFeedId
+        $sql = 'SELECT tid AS hsFeedId, LOWER(description) AS rgb
             FROM `taxonomy_term_data` 
             WHERE name = :name';
         $stmt = $this->connection->prepare($sql);
