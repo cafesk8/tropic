@@ -1,4 +1,4 @@
-{% macro filterForm(filterForm, actionUrl, resetUrl, searchText, page, productFilterCountData, priceRange) %}
+{% macro filterForm(filterForm, actionUrl, resetUrl, searchText, page, productFilterCountData, priceRange, filterFormSubmitted) %}
     {{ form_start(filterForm, { action: actionUrl }) }}
         {% form_theme filterForm '@ShopsysShop/Front/Content/Product/filterFormTheme.html.twig' %}
 
@@ -16,7 +16,7 @@
         {% do filterForm.minimalPrice.setRendered %}
         {% do filterForm.maximalPrice.setRendered %}
 
-        {{ selectedFilterBox.filterBox(filterForm, resetUrl) }}
+        {{ selectedFilterBox.filterBox(filterForm, resetUrl, filterFormSubmitted) }}
         <div class="box-filter__choice">
             <div class="box-filter__title">
                 {{ 'Cena'|trans }}
