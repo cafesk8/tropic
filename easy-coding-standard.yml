@@ -32,6 +32,7 @@ parameters:
             - '*/tests/ShopBundle/Smoke/Http/RouteConfigCustomization.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/ProductController.php'
             - '*/src/Shopsys/ShopBundle/Form/Front/Order/TransportAndPaymentFormType.php'
+            - '*/src/Shopsys/ShopBundle/Form/Admin/ProductFormTypeExtension.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
