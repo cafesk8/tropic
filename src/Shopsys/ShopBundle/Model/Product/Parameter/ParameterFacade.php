@@ -19,6 +19,18 @@ use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 class ParameterFacade extends BaseParameterFacade
 {
+    private const PARAMETER_COLOR = [
+        'cs' => 'Barva',
+        'sk' => 'Farba',
+        'de' => 'Farbe',
+    ];
+
+    private const PARAMETER_SIZE = [
+        'cs' => 'Velikost',
+        'sk' => 'Velikosť',
+        'de' => 'Größe',
+    ];
+
     /**
      * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade
      */
@@ -177,11 +189,7 @@ class ParameterFacade extends BaseParameterFacade
      */
     public function findColorParameter(): ?Parameter
     {
-        return $this->findParameterByNames([
-            'cs' => 'Barva',
-            'sk' => 'Farba',
-            'de' => 'Farbe',
-        ]);
+        return $this->findParameterByNames(self::PARAMETER_COLOR);
     }
 
     /**
@@ -189,11 +197,23 @@ class ParameterFacade extends BaseParameterFacade
      */
     public function findSizeParameter(): ?Parameter
     {
-        return $this->findParameterByNames([
-            'cs' => 'Velikost',
-            'sk' => 'Velikosť',
-            'de' => 'Größe',
-        ]);
+        return $this->findParameterByNames(self::PARAMETER_SIZE);
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
+     */
+    public function getColorParameter(): Parameter
+    {
+        return $this->findOrCreateParameterByNames(self::PARAMETER_COLOR);
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
+     */
+    public function getSizeParameter(): Parameter
+    {
+        return $this->findOrCreateParameterByNames(self::PARAMETER_SIZE);
     }
 
     /**

@@ -86,7 +86,7 @@ class ProductTransferMapper
         $productData->stockQuantity = 0;
 
         if ($productTransferResponseItemVariantData->getColorName() !== null) {
-            $productData->distinguishingParameterForMainVariantGroup = $this->getColorParameter();
+            $productData->distinguishingParameterForMainVariantGroup = $this->parameterFacade->getColorParameter();
             $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale(
                 $productData->parameters,
                 $productTransferResponseItemVariantData->getColorName()
@@ -95,7 +95,7 @@ class ProductTransferMapper
         }
 
         if ($productTransferResponseItemVariantData->getSizeName() !== null) {
-            $productData->distinguishingParameter = $this->getSizeParameter();
+            $productData->distinguishingParameter = $this->parameterFacade->getSizeParameter();
             $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale(
                 $productData->parameters,
                 $productTransferResponseItemVariantData->getSizeName()
@@ -115,7 +115,7 @@ class ProductTransferMapper
         array $productParameterValuesData,
         ?string $valueText = null
 ): array {
-        $missingLocales = $this->findMissingLocalesForProductParameterValue($this->getSizeParameter(), $productParameterValuesData);
+        $missingLocales = $this->findMissingLocalesForProductParameterValue($this->parameterFacade->getSizeParameter(), $productParameterValuesData);
 
         $sizeProductParameterValueData = [];
         foreach ($missingLocales as $locale) {
@@ -124,7 +124,7 @@ class ProductTransferMapper
             $parameterValueData->text = $valueText;
 
             $productParameterValueData = $this->productParameterValueDataFactory->create();
-            $productParameterValueData->parameter = $this->getSizeParameter();
+            $productParameterValueData->parameter = $this->parameterFacade->getSizeParameter();
             $productParameterValueData->parameterValueData = $parameterValueData;
             $sizeProductParameterValueData[] = $productParameterValueData;
         }
@@ -141,7 +141,7 @@ class ProductTransferMapper
         array $productParameterValuesData,
         ?string $valueText = null
     ): array {
-        $missingLocales = $this->findMissingLocalesForProductParameterValue($this->getColorParameter(), $productParameterValuesData);
+        $missingLocales = $this->findMissingLocalesForProductParameterValue($this->parameterFacade->getColorParameter(), $productParameterValuesData);
 
         $colorProductParameterValueData = [];
         foreach ($missingLocales as $locale) {
@@ -150,37 +150,13 @@ class ProductTransferMapper
             $parameterValueData->text = $valueText;
 
             $productParameterValueData = $this->productParameterValueDataFactory->create();
-            $productParameterValueData->parameter = $this->getColorParameter();
+            $productParameterValueData->parameter = $this->parameterFacade->getColorParameter();
             $productParameterValueData->parameterValueData = $parameterValueData;
 
             $colorProductParameterValueData[] = $productParameterValueData;
         }
 
         return $colorProductParameterValueData;
-    }
-
-    /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
-     */
-    public function getColorParameter(): Parameter
-    {
-        return $this->parameterFacade->findOrCreateParameterByNames([
-            'cs' => 'Barva',
-            'sk' => 'Farba',
-            'de' => 'Farbe',
-        ]);
-    }
-
-    /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
-     */
-    private function getSizeParameter(): Parameter
-    {
-        return $this->parameterFacade->findOrCreateParameterByNames([
-            'cs' => 'Velikost',
-            'sk' => 'Velikosť',
-            'de' => 'Größe',
-        ]);
     }
 
     /**
