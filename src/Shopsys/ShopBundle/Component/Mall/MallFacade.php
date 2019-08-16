@@ -6,10 +6,12 @@ namespace Shopsys\ShopBundle\Component\Mall;
 
 use Exception;
 use MPAPI\Entity\Products\Product;
+use MPAPI\Entity\Products\Variant;
 use MPAPI\Exceptions\ApplicationException;
 use MPAPI\Exceptions\ForceTokenException;
 use MPAPI\Services\Products;
-use Symfony\Bridge\Monolog\Logger;
+use MPAPI\Services\Variants;
+use Psr\Log\LoggerInterface;
 
 class MallFacade
 {
@@ -27,7 +29,7 @@ class MallFacade
      * @param \Shopsys\ShopBundle\Component\Mall\MallClient $mallClient
      * @param \Symfony\Bridge\Monolog\Logger $logger
      */
-    public function __construct(MallClient $mallClient, Logger $logger)
+    public function __construct(MallClient $mallClient, LoggerInterface $logger)
     {
         $this->mallClient = $mallClient;
         $this->logger = $logger;
@@ -58,5 +60,46 @@ class MallFacade
         }
 
         return true;
+    }
+
+    /**
+     * @param int $productId
+     * @return bool
+     */
+    public function deleteProduct(int $productId): bool
+    {
+        try {
+            $products = new Products($this->mallClient->getClient());
+            $products->delete($productId);
+
+            return true;
+        } catch (Exception $exception) {
+            $this->logger->addError(sprintf('Delete product from Mall.cz failed due to: %s', $exception->getMessage()), [
+                'exception' => $exception,
+            ]);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param int $productId
+     * @param int $variantId
+     * @return bool
+     */
+    public function deleteVariant(int $productId, int $variantId)
+    {
+        try {
+            $variants = new Variants($this->mallClient->getClient());
+            $variants->delete($productId, $variantId);
+
+            return true;
+        } catch (Exception $exception) {
+            $this->logger->addError(sprintf('Delete variant from Mall.cz failed due to: %s', $exception->getMessage()), [
+                'exception' => $exception,
+            ]);
+
+            return false;
+        }
     }
 }

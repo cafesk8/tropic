@@ -53,3 +53,7 @@ services:
     Shopsys\ShopBundle\Model\Product\Mall\MallProductExportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    Shopsys\ShopBundle\Model\Product\Mall\MallProductDeleteCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }

@@ -271,7 +271,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             return $this->parameterValuesByProductId[$product->getId()];
         }
 
-        if($locale === null) {
+        if ($locale === null) {
             $locale = $this->localization->getLocale();
         }
 

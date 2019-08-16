@@ -539,4 +539,33 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getByCatnum($catnum);
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsToDeleteFromMall(): array
+    {
+        return $this->productRepository->getProductsToDeleteFromMall(
+            DomainHelper::CZECH_DOMAIN
+        );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
+     * @param int $domainId
+     * @return int
+     * @throws \Shopsys\FrameworkBundle\Component\Setting\Exception\SettingValueNotFoundException
+     */
+    public function getCountOfVisibleVariantsForMainVariant(Product $mainVariant, int $domainId): int
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getCountOfVisibleVariantsForMainVariant(
+            $mainVariant,
+            $domainId,
+            $defaultPricingGroup
+        );
+    }
 }
