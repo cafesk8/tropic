@@ -32,7 +32,7 @@ class ParameterValue extends BaseParameterValue
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData $parameterData
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterData
      */
     public function edit(ParameterValueData $parameterData)
     {
