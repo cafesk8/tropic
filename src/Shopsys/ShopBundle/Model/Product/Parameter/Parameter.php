@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterTranslation;
+use Shopsys\ShopBundle\Model\Product\Parameter\Exception\InvalidParameterTypeException;
 
 /**
  * @ORM\Table(name="parameters")
@@ -17,6 +18,15 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterTranslation;
  */
 class Parameter extends BaseParameter
 {
+    public const TYPE_DEFAULT = 'default';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $type;
+
     /**
      * @var bool
      *
@@ -31,6 +41,7 @@ class Parameter extends BaseParameter
     {
         parent::__construct($parameterData);
 
+        $this->setType($parameterData->type);
         $this->visibleOnFrontend = $parameterData->visibleOnFrontend;
     }
 
@@ -41,6 +52,7 @@ class Parameter extends BaseParameter
     {
         parent::edit($parameterData);
 
+        $this->setType($parameterData->type);
         $this->visibleOnFrontend = $parameterData->visibleOnFrontend;
     }
 
@@ -50,5 +62,24 @@ class Parameter extends BaseParameter
     public function isVisibleOnFrontend(): bool
     {
         return $this->visibleOnFrontend;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        if (in_array($type, [self::TYPE_DEFAULT], true) === false) {
+            throw new InvalidParameterTypeException(sprintf('Invalid parameter type `%s`', $type));
+        }
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

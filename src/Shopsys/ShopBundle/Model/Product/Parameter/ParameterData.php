@@ -13,6 +13,11 @@ class ParameterData extends BaseParameterData
      */
     public $visibleOnFrontend;
 
+    /**
+     * @var string
+     */
+    public $type;
+
     public function __construct()
     {
         parent::__construct();
