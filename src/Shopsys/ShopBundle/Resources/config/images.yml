@@ -109,6 +109,11 @@
             height: 600
             crop: false
             occurrence: 'Front-end: Banner rectangle on homepage'
+        -   name: bigBanner
+            width: 190
+            height: 460
+            crop: false
+            occurrence: 'Front-end: Big banner, six position on homepage'
 
 -   name: brand
     class: Shopsys\FrameworkBundle\Model\Product\Brand\Brand
