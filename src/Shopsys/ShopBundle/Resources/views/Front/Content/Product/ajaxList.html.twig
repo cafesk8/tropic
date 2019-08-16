@@ -16,6 +16,6 @@
     </div>
     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
         {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
-        {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited} %}
+        {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
     </div>
 </div>
