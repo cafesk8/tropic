@@ -69,4 +69,12 @@ button.active {
         width: 100%;
         height: 100%;
     }
+}}
+
+.display-only-for-vl-screen {
+    display: none;
+
+    @media only screen and (min-width: 1200px) {
+        display: block;
+    }
 }
