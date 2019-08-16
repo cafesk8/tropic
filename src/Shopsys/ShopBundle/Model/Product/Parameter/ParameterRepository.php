@@ -23,4 +23,18 @@ class ParameterRepository extends BaseParameterRepository
             'product' => $product,
         ]);
     }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[]
+     */
+    public function getParameterValuesBatch(int $limit, int $offset): array
+    {
+        return $this->getParameterValueRepository()->createQueryBuilder('pv')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->orderBy('pv.id', 'ASC')
+            ->getQuery()->getResult();
+    }
 }

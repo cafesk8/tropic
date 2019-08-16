@@ -231,4 +231,27 @@ class ParameterFacade extends BaseParameterFacade
 
         return $productIdsWithDistinguishingParameter;
     }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return array|\Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[]
+     */
+    public function getParameterValuesBatch(int $limit, int $offset): array
+    {
+        return $this->parameterRepository->getParameterValuesBatch($limit, $offset);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterValueData
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
+     */
+    public function editParameterValue(ParameterValue $parameterValue, ParameterValueData $parameterValueData): ParameterValue
+    {
+        $parameterValue->edit($parameterValueData);
+        $this->em->flush();
+
+        return $parameterValue;
+    }
 }
