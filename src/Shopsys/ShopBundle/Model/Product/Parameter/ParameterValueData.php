@@ -17,4 +17,9 @@ class ParameterValueData extends BaseParameterValueData
      * @var string|null
      */
     public $rgb;
+
+    /**
+     * @var string|null
+     */
+    public $mallName;
 }

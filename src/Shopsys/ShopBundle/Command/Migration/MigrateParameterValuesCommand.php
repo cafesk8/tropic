@@ -123,6 +123,8 @@ class MigrateParameterValuesCommand extends Command
         $rbg = TransformString::emptyToNull($migrateParameterValueData['rgb']);
         $parameterValueData->rgb = $rbg !== null ? strip_tags($rbg) : null;
 
+        $parameterValueData->mallName = TransformString::emptyToNull($migrateParameterValueData['mallName']);
+
         return $parameterValueData;
     }
 
@@ -132,8 +134,9 @@ class MigrateParameterValuesCommand extends Command
      */
     private function getMigrateParameterValueData(ParameterValue $parameterValue): array
     {
-        $sql = 'SELECT tid AS hsFeedId, LOWER(description) AS rgb
-            FROM `taxonomy_term_data` 
+        $sql = 'SELECT tid AS hsFeedId, LOWER(description) AS rgb, mallcz_parameter_value_id AS mallName
+            FROM `taxonomy_term_data` ttd
+            LEFT JOIN `mallcz_parameter_values` mpv ON ttd.tid=mpv.bushman_parameter_value_id
             WHERE name = :name';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('name', $parameterValue->getText());

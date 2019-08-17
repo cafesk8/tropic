@@ -40,5 +40,6 @@ class ParameterValueDataFactory extends BaseParameterValueDataFactory
 
         $parameterValueData->hsFeedId = $parameterValue->getHsFeedId();
         $parameterValueData->rgb = $parameterValue->getRgb();
+        $parameterValueData->mallName = $parameterValue->getMallName();
     }
 }

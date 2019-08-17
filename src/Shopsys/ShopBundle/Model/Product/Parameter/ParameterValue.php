@@ -29,6 +29,13 @@ class ParameterValue extends BaseParameterValue
     protected $rgb;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $mallName;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterData
      */
     public function __construct(ParameterValueData $parameterData)
@@ -37,6 +44,7 @@ class ParameterValue extends BaseParameterValue
 
         $this->hsFeedId = $parameterData->hsFeedId;
         $this->rgb = $parameterData->rgb;
+        $this->mallName = $parameterData->mallName;
     }
 
     /**
@@ -48,6 +56,7 @@ class ParameterValue extends BaseParameterValue
 
         $this->hsFeedId = $parameterData->hsFeedId;
         $this->rgb = $parameterData->rgb;
+        $this->mallName = $parameterData->mallName;
     }
 
     /**
@@ -64,5 +73,13 @@ class ParameterValue extends BaseParameterValue
     public function getRgb(): ?string
     {
         return $this->rgb;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMallName(): ?string
+    {
+        return $this->mallName;
     }
 }
