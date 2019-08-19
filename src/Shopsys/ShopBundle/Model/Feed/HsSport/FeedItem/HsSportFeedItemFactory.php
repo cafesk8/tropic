@@ -77,7 +77,7 @@ class HsSportFeedItemFactory
             $product->getId(),
             count($hsSportVariantItems) > 0 ? 1 : 0,
             $product->getCatnum(),
-            $product->getName(),
+            $product->getName($domainConfig->getLocale()),
             $product->getShortDescription($domainConfig->getId()),
             $product->getDescription($domainConfig->getId()),
             $this->getPrice($product, $domainConfig)->getPriceWithVat()->getAmount(),
