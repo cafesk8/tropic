@@ -110,7 +110,7 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(products, listCssClass = 'list-products', productHeadingTagName, type) %}
+{% macro horizontalList(products, variantsIndexedByMainVariantId, listCssClass = 'list-products', productHeadingTagName, type) %}
     <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}">
         <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
             <i class="svg svg-slider-arrow"></i>
@@ -159,9 +159,16 @@
                                         </div>
                                     {% endif %}
 
-                                    <div class="{{ listCssClass }}__item__info__availability js-not-implemented-yet">
+                                    <div class="{{ listCssClass }}__item__info__availability">
                                         {{ 'Vaše velikost'|trans }}
-                                        <span class="in-badge in-badge--outline">M</span>
+                                        {% if variantsIndexedByMainVariantId|length > 0 and product.id in variantsIndexedByMainVariantId|keys %}
+                                            {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
+                                            {% if product.id in secondDistinguishingParameters|keys %}
+                                                {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
+                                                    <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endif %}
                                         {{ product.calculatedAvailability.getName }}
                                     </div>
                                 </div>
