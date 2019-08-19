@@ -377,46 +377,48 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->maximalPrice = Money::create(80000);
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 6;
+        $countData->countInStock = 8;
         $countData->countByBrandId = [
             2 => 4,
             14 => 2,
         ];
         $countData->countByFlagId = [
-            1 => 3,
+            1 => 4,
             2 => 2,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
-                7 => 6,
+                7 => 8,
             ],
             11 => [
                 57 => 6,
+                123 => 2,
             ],
             30 => [
-                7 => 3,
-                11 => 3,
+                7 => 4,
+                11 => 4,
             ],
             29 => [
-                53 => 4,
+                53 => 6,
                 188 => 2,
             ],
             31 => [
-                55 => 1,
-                96 => 5,
+                55 => 2,
+                96 => 6,
             ],
             28 => [
-                51 => 6,
+                51 => 8,
             ],
             4 => [
-                7 => 6,
+                7 => 8,
             ],
             10 => [
                 59 => 2,
-                61 => 4,
+                61 => 6,
             ],
             33 => [
                 7 => 6,
+                11 => 2,
             ],
         ];
 

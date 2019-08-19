@@ -84,8 +84,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(1000)));
         $this->assertNull($orderItem->getTotalPriceWithoutVat());
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(1342)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('966.67')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(1300)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('931.960000')));
     }
 
     public function testEditProductItemWithoutUsingPriceCalculation(): void
@@ -109,8 +109,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(950)));
         $this->assertThat($orderItem->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create(400)));
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(1292)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create(700)));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create('1250.000000')));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('665.290000')));
     }
 
     public function testAddProductItem(): void
@@ -132,8 +132,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(1000)));
         $this->assertNull($orderItem->getTotalPriceWithoutVat());
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(22932)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('18809.65')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(19143)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('15678.240000')));
     }
 
     public function testAddProductItemWithoutUsingPriceCalculation(): void
@@ -159,8 +159,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(950)));
         $this->assertThat($orderItem->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create(400)));
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(22882)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('18542.98')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(19093)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('15411.570000')));
     }
 
     public function testEditTransportItem(): void
@@ -179,8 +179,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(100)));
         $this->assertNull($orderItem->getTotalPriceWithoutVat());
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(21790)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('18009.65')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(18043)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('14912.950000')));
     }
 
     public function testEditTransportItemWithoutUsingPriceCalculation(): void
@@ -203,8 +203,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(100)));
         $this->assertThat($orderItem->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create(50)));
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(21790)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('17992.98')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(18043)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('14896.280000')));
     }
 
     public function testEditPaymentItem(): void
@@ -223,8 +223,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(100)));
         $this->assertNull($orderItem->getTotalPriceWithoutVat());
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(21932)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('18109.65')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(18143)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('14978.240000')));
     }
 
     public function testEditPaymentItemWithoutUsingPriceCalculation(): void
@@ -247,8 +247,8 @@ final class OrderEditTest extends TransactionFunctionalTestCase
         $this->assertThat($orderItem->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(100)));
         $this->assertThat($orderItem->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create(50)));
 
-        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(21932)));
-        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('18092.98')));
+        $this->assertThat($this->order->getTotalPriceWithVat(), new IsMoneyEqual(Money::create(18143)));
+        $this->assertThat($this->order->getTotalPriceWithoutVat(), new IsMoneyEqual(Money::create('14961.570000')));
     }
 
     /**
