@@ -170,12 +170,14 @@ class ParameterFacade extends BaseParameterFacade
      * @param string[] $parameterNamesByLocale
      * @param string|null $type
      * @param string|null $mallId
+     * @param bool $visible
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter
      */
     public function findOrCreateParameterByNames(
         array $parameterNamesByLocale,
         ?string $type = Parameter::TYPE_DEFAULT,
-        ?string $mallId = null
+        ?string $mallId = null,
+        bool $visible = true
     ): BaseParameter {
         $parameter = $this->findParameterByNames($parameterNamesByLocale);
 
@@ -183,7 +185,7 @@ class ParameterFacade extends BaseParameterFacade
             /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterData $parameterData */
             $parameterData = $this->parameterDataFactory->create();
             $parameterData->name = $parameterNamesByLocale;
-            $parameterData->visible = true;
+            $parameterData->visible = $visible;
             $parameterData->type = $type;
             $parameterData->mallId = $mallId;
             $parameter = $this->create($parameterData);

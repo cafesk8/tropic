@@ -200,7 +200,12 @@ class MigrateProductParameterValuesCommand extends Command
             $parameterNames[$locale] = $parameterName;
         }
 
-        return $this->parameterFacade->findOrCreateParameterByNames($parameterNames, Parameter::TYPE_DEFAULT, $parameterName);
+        return $this->parameterFacade->findOrCreateParameterByNames(
+            $parameterNames,
+            Parameter::TYPE_DEFAULT,
+            $parameterName,
+            false
+        );
     }
 
     /**
