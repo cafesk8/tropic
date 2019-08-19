@@ -94,6 +94,8 @@
                                                 </li>
                                             {% endfor %}
                                         </ul>
+                                    {% else %}
+                                        {% do form.chosenGifts.setRendered %}
                                     {% endif %}
 
                                 {% endfor %}
