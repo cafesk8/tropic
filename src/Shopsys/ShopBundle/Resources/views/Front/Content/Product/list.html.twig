@@ -24,20 +24,17 @@
             {{ category.getSeoH1(domain.id)|default(category.name) }}
         </h1>
 
-        {# TODO PRG TK-32525: add this line only if legendary items #}
-        <div class="web__line js-not-implemented-yet">
-            <div class="web__container web__container--big-padding">
-                <div class="box-category">
-                    <div class="box-category__description in-user-text">
-                        {{ 'Kalhoty jsou dnes opravdu nezbytným základem šatníku každé ženy. Ne vždycky tomu tak ale bylo.
-                        Byly doby, kdy bylo nemyslitelné, aby si žena oblékla kalhoty. Přitom dámské kalhoty jsou něco tak
-                        slušivého. Naštěstí je dnes tento kousek naprostou klasikou'|trans }}
-                        <span class="underline-small">{{ 'dámského šatníku'|trans }}</span>
-                        {{ 'a každá žena.'|trans }}
+        {% if category.legendaryCategory %}
+            <div class="web__line">
+                <div class="web__container web__container--big-padding">
+                    <div class="box-category">
+                        <div class="box-category__description in-user-text">
+                            {{ category.getDescription(domain.id)|raw }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="web__line">
             <div class="web__container web__container--big-padding">
