@@ -19,6 +19,8 @@ use Shopsys\ShopBundle\Model\Product\Parameter\Exception\InvalidParameterTypeExc
 class Parameter extends BaseParameter
 {
     public const TYPE_DEFAULT = 'default';
+    public const TYPE_COLOR = 'color';
+    public const TYPE_SIZE = 'size';
 
     /**
      * @var string
@@ -69,7 +71,7 @@ class Parameter extends BaseParameter
      */
     public function setType(string $type): void
     {
-        if (in_array($type, [self::TYPE_DEFAULT], true) === false) {
+        if (in_array($type, [self::TYPE_DEFAULT, self::TYPE_COLOR, self::TYPE_SIZE], true) === false) {
             throw new InvalidParameterTypeException(sprintf('Invalid parameter type `%s`', $type));
         }
         $this->type = $type;

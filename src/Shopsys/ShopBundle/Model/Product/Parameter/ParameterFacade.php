@@ -168,16 +168,21 @@ class ParameterFacade extends BaseParameterFacade
 
     /**
      * @param string[] $parameterNamesByLocale
+     * @param string|null $type
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter
      */
-    public function findOrCreateParameterByNames(array $parameterNamesByLocale): BaseParameter
-    {
+    public function findOrCreateParameterByNames(
+        array $parameterNamesByLocale,
+        ?string $type = Parameter::TYPE_DEFAULT
+    ): BaseParameter {
         $parameter = $this->findParameterByNames($parameterNamesByLocale);
 
         if ($parameter === null) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterData $parameterData */
             $parameterData = $this->parameterDataFactory->create();
             $parameterData->name = $parameterNamesByLocale;
             $parameterData->visible = true;
+            $parameterData->type = $type;
             $parameter = $this->create($parameterData);
         }
 
@@ -205,7 +210,7 @@ class ParameterFacade extends BaseParameterFacade
      */
     public function getColorParameter(): Parameter
     {
-        return $this->findOrCreateParameterByNames(self::PARAMETER_COLOR);
+        return $this->findOrCreateParameterByNames(self::PARAMETER_COLOR, Parameter::TYPE_COLOR);
     }
 
     /**
@@ -213,7 +218,7 @@ class ParameterFacade extends BaseParameterFacade
      */
     public function getSizeParameter(): Parameter
     {
-        return $this->findOrCreateParameterByNames(self::PARAMETER_SIZE);
+        return $this->findOrCreateParameterByNames(self::PARAMETER_SIZE, Parameter::TYPE_SIZE);
     }
 
     /**
