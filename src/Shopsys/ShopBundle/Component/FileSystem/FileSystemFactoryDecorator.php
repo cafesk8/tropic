@@ -7,6 +7,8 @@ namespace Shopsys\ShopBundle\Component\FileSystem;
 use Aws\S3\S3Client;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\Storage\Memory;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Component\Filesystem\FilesystemFactoryInterface;
@@ -69,15 +71,16 @@ class FileSystemFactoryDecorator implements FilesystemFactoryInterface
                 'version' => '2006-03-01',
                 'region' => '',
                 'endpoint' => $this->s3ApiHost,
-                'bucket_endpoint' => true,
+                'use_path_style_endpoint' => true,
                 'credentials' => [
                     'key' => $this->s3ApiUsername,
                     'secret' => $this->s3ApiPassword,
                 ],
             ]);
 
-            $s3Adapater = new AwsS3Adapter($s3Client, $this->s3ApiBucketName, $this->s3ApiBucketName);
-            return new Filesystem($s3Adapater, [
+            $s3Adapter = new AwsS3Adapter($s3Client, $this->s3ApiBucketName);
+            $cachedAdapter = new CachedAdapter($s3Adapter, new Memory());
+            return new Filesystem($cachedAdapter, [
                 'visibility' => AdapterInterface::VISIBILITY_PUBLIC,
             ]);
         }
