@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product\Parameter;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParameterFacade;
@@ -121,7 +121,7 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsWithDistinguishingParameter(Parameter $parameter): array
@@ -168,9 +168,9 @@ class ParameterFacade extends BaseParameterFacade
 
     /**
      * @param string[] $parameterNamesByLocale
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter
      */
-    public function findOrCreateParameterByNames(array $parameterNamesByLocale): Parameter
+    public function findOrCreateParameterByNames(array $parameterNamesByLocale): BaseParameter
     {
         $parameter = $this->findParameterByNames($parameterNamesByLocale);
 
@@ -185,23 +185,23 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      */
-    public function findColorParameter(): ?Parameter
+    public function findColorParameter(): ?BaseParameter
     {
         return $this->findParameterByNames(self::PARAMETER_COLOR);
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      */
-    public function findSizeParameter(): ?Parameter
+    public function findSizeParameter(): ?BaseParameter
     {
         return $this->findParameterByNames(self::PARAMETER_SIZE);
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter
      */
     public function getColorParameter(): Parameter
     {
@@ -209,7 +209,7 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter
      */
     public function getSizeParameter(): Parameter
     {
