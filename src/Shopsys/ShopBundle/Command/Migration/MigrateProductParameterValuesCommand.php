@@ -146,6 +146,10 @@ class MigrateProductParameterValuesCommand extends Command
         $migrateParameterValuesData = $this->getMigrateProductParameterValues($product);
 
         $productData = $this->productDataFactory->createFromProduct($product);
+
+        $filteredParameters = $this->filterMallProductParameters($productData->parameters);
+        $productData->parameters = $filteredParameters;
+
         foreach ($migrateParameterValuesData as $migrateParameterValueData) {
             $parameter = $this->getParameter($migrateParameterValueData['parameterName']);
             foreach (DomainHelper::LOCALES as $locale) {
@@ -197,5 +201,25 @@ class MigrateProductParameterValuesCommand extends Command
         }
 
         return $this->parameterFacade->findOrCreateParameterByNames($parameterNames, Parameter::TYPE_DEFAULT, $parameterName);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $productParameterValues
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
+     */
+    private function filterMallProductParameters(array $productParameterValues): array
+    {
+        $filteredProductParameterValues = [];
+        /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $productParameterValue */
+        foreach ($productParameterValues as $productParameterValue) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter */
+            $parameter = $productParameterValue->parameter;
+
+            if ($parameter->getMallId() === null) {
+                $filteredProductParameterValues[] = $productParameterValue;
+            }
+        }
+
+        return $filteredProductParameterValues;
     }
 }
