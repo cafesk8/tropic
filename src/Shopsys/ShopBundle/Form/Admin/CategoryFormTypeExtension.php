@@ -78,6 +78,10 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Předvýpis kategorií'),
             ])
+            ->add('legendaryCategory', YesNoType::class, [
+                'required' => false,
+                'label' => t('Legendární kategorie'),
+            ])
             ->add(
                 $builder
                     ->create('blogArticles', SortableValuesType::class, [
