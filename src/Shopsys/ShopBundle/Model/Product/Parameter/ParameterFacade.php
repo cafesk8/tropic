@@ -253,6 +253,15 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
+     * @param int $id
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
+     */
+    public function getParameterValueById(int $id): ParameterValue
+    {
+        return $this->parameterRepository->getParameterValueById($id);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterValueData
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue

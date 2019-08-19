@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
 use Shopsys\ShopBundle\Model\Product\Product;
 
 class ParameterRepository extends BaseParameterRepository
@@ -36,5 +37,20 @@ class ParameterRepository extends BaseParameterRepository
             ->setFirstResult($offset)
             ->orderBy('pv.id', 'ASC')
             ->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $id
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
+     */
+    public function getParameterValueById(int $id): ParameterValue
+    {
+        $parameterValue = $this->getParameterValueRepository()->find($id);
+
+        if ($parameterValue === null) {
+            throw new ParameterValueNotFoundException(sprintf('Parameter `%d` was not found', $id));
+        }
+
+        return $parameterValue;
     }
 }

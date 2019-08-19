@@ -127,6 +127,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@Shopsys\ShopBundle\Model\Country\CountryFacade'
 
+    Shopsys\ShopBundle\Model\Product\Parameter\AdminSelectedParameter: ~
+
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository'
 
     Shopsys\ShopBundle\Component\GoogleApi\GoogleClient:
