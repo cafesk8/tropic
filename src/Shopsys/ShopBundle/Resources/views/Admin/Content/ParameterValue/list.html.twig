@@ -1,7 +1,7 @@
 {% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
 
-{% block title %}- {{ 'Přehled hodnot parametra'|trans }}{% endblock %}
-{% block h1 %}{{ 'Přehled hodnot parametra'|trans }}{% endblock %}
+{% block title %}- {{ 'Přehled hodnot parametra ' ~ parameter.name|trans }}{% endblock %}
+{% block h1 %}{{ 'Přehled hodnot parametra ' ~ parameter.name|trans }}{% endblock %}
 
 {% block main_content %}
     {{ gridView.render() }}

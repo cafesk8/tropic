@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\ShopBundle\Model\Product\Parameter\AdminSelectedParameter;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueInlineEdit;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,15 +24,23 @@ class ParameterValueController extends AdminBaseController
     private $parameterValueInlineEdit;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
+     */
+    private $parameterFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\AdminSelectedParameter $adminSelectedParameter
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueInlineEdit $parameterValueInlineEdit
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(
         AdminSelectedParameter $adminSelectedParameter,
-        ParameterValueInlineEdit $parameterValueInlineEdit
+        ParameterValueInlineEdit $parameterValueInlineEdit,
+        ParameterFacade $parameterFacade
     ) {
         $this->adminSelectedParameter = $adminSelectedParameter;
         $this->parameterValueInlineEdit = $parameterValueInlineEdit;
+        $this->parameterFacade = $parameterFacade;
     }
 
     /**
@@ -47,6 +56,7 @@ class ParameterValueController extends AdminBaseController
 
         return $this->render('@ShopsysShop/Admin/Content/ParameterValue/list.html.twig', [
             'gridView' => $grid->createView(),
+            'parameter' => $this->parameterFacade->getById($parameterId),
         ]);
     }
 }
