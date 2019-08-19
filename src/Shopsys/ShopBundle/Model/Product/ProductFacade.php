@@ -285,6 +285,15 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param string $ean
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     */
+    public function findByEan(string $ean): ?Product
+    {
+        return $this->productRepository->findByEan($ean);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */
     public function appendParentCategoriesByProduct(Product $product): void

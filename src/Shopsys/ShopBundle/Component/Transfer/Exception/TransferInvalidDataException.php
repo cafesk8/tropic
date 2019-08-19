@@ -17,7 +17,7 @@ class TransferInvalidDataException extends TransferException
         ConstraintViolationListInterface $violations,
         ?Exception $previous = null
     ) {
-        $message = 'Data is not valid: ' . $this->getViolationsAsString($violations);
+        $message = 'Data is not valid: ' . "\n" . $this->getViolationsAsString($violations);
         parent::__construct($message, 0, $previous);
     }
 
@@ -31,9 +31,9 @@ class TransferInvalidDataException extends TransferException
 
         foreach ($violations as $violation) {
             $constraintsViolationsMessages[] =
-                sprintf('Invalid value of %s - "%s"', $violation->getPropertyPath(), $violation->getMessage());
+                sprintf('Invalid value of %s - "%s"', $violation->getPropertyPath(), $violation->getMessage()) . "\n";
         }
 
-        return implode(', ', $constraintsViolationsMessages);
+        return implode('', $constraintsViolationsMessages);
     }
 }
