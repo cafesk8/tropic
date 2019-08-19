@@ -37,3 +37,6 @@ listed bellow:
 
 1. Migrate product data: `php bin/console shopsys:migrate:product-data`
 2. Migrate product images: `php bin/console shopsys:migrate:product-images`
+3. Migrate product parameter values: `php bin/console shopsys:migrate:product-parameter-values`
+4. Migrate parameter values: `php bin/console shopsys:migrate:parameter-values`
+5. Migrate customer passwords: `php bin/console shopsys:migrate:customer-passwords`
