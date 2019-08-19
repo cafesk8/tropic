@@ -64,16 +64,16 @@ parameters:
 
     instagram:
         quality: standard_resolution
-        limit: 8
+        limit: 9
         cs:
-            accessToken: 16014813377.4a1086a.7204e10003754030958ee8fb8572bd01
-            link: https://www.instagram.com/bushmanoriginal/
+            accessToken: 4059513203.238d10b.a291c7002b6a4934ad680cfe135a9ec3
+            link: 'https://www.instagram.com/bushmanoriginal/'
         sk:
-            accessToken: 16014813377.4a1086a.7204e10003754030958ee8fb8572bd01
-            link: https://www.instagram.com/bushmanoriginalsk/
+            accessToken: 9146692398.2d275fd.3eeb6bd42798413bb1a84dd8e4e16a74
+            link: 'https://www.instagram.com/bushmanoriginalsk/'
         de:
-            accessToken: 16014813377.4a1086a.7204e10003754030958ee8fb8572bd01
-            link: https://www.instagram.com/bushmangermany/
+            accessToken: 4059513203.238d10b.a291c7002b6a4934ad680cfe135a9ec3
+            link: 'https://www.instagram.com/bushmanoriginal/'
 
     mall_apiKey: xxx
 

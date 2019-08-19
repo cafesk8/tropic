@@ -31,7 +31,7 @@ class Instagram
         $instagramClient = new VinkaInstagram($this->config[$locale]['accessToken']);
         $instagramTemplateObjects = [];
 
-        foreach ($instagramClient->media(['count' => $this->config['limit'] + 1]) as $instagramObject) {
+        foreach ($instagramClient->media(['count' => $this->config['limit']]) as $instagramObject) {
             $instagramObjectImage = $this->getInstagramPostImage($instagramObject);
 
             if ($instagramObjectImage !== null) {
