@@ -14,6 +14,8 @@
 
         $('.js-eu-cookies-close-button').click(function () {
             var $cookiesBlock = $('.js-eu-cookies');
+            $.cookie(cookieName, true, { expires: tenYears, path: '/' });
+
             $cookiesBlock.addClass('box-cookies--closing');
         });
     });
