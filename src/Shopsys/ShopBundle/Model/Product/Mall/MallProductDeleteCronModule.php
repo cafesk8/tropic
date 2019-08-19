@@ -28,6 +28,10 @@ class MallProductDeleteCronModule implements SimpleCronModuleInterface
      */
     private $productFacade;
 
+    /**
+     * @param \Shopsys\ShopBundle\Component\Mall\MallFacade $mallFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     */
     public function __construct(MallFacade $mallFacade, ProductFacade $productFacade)
     {
         $this->mallFacade = $mallFacade;

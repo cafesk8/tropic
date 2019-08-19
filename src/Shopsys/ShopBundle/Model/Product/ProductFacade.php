@@ -553,8 +553,8 @@ class ProductFacade extends BaseProductFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
      * @param int $domainId
-     * @return int
      * @throws \Shopsys\FrameworkBundle\Component\Setting\Exception\SettingValueNotFoundException
+     * @return int
      */
     public function getCountOfVisibleVariantsForMainVariant(Product $mainVariant, int $domainId): int
     {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
@@ -289,7 +288,7 @@ class ProductRepository extends BaseProductRepository
      */
     public function getCountOfVisibleVariantsForMainVariant(Product $mainVariant, int $domainId, PricingGroup $pricingGroup): int
     {
-        return (int) $this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
+        return (int)$this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
             ->select('count(p)')
             ->andWhere('p.mainVariant = :mainVariant OR p.mainVariantGroup = :mainVariantGroup')
             ->andWhere('p.variantType = :variant')
