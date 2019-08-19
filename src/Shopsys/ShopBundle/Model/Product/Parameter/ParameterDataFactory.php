@@ -18,6 +18,7 @@ class ParameterDataFactory extends BaseParameterDataFactory
         $parameterData = new ParameterData();
         $this->fillNew($parameterData);
         $parameterData->type = Parameter::TYPE_DEFAULT;
+        $parameterData->mallId = null;
 
         return $parameterData;
     }
@@ -43,6 +44,7 @@ class ParameterDataFactory extends BaseParameterDataFactory
         parent::fillFromParameter($parameterData, $parameter);
 
         $parameterData->type = $parameter->getType();
+        $parameterData->mallId = $parameter->getMallId();
         $parameterData->visibleOnFrontend = $parameter->isVisibleOnFrontend();
     }
 }

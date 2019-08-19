@@ -18,6 +18,11 @@ class ParameterData extends BaseParameterData
      */
     public $type;
 
+    /**
+     * @var string|null
+     */
+    public $mallId;
+
     public function __construct()
     {
         parent::__construct();

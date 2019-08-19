@@ -37,12 +37,20 @@ class Parameter extends BaseParameter
     private $visibleOnFrontend;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $mallId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterData $parameterData
      */
     public function __construct(ParameterData $parameterData)
     {
         parent::__construct($parameterData);
 
+        $this->mallId = $parameterData->mallId;
         $this->setType($parameterData->type);
         $this->visibleOnFrontend = $parameterData->visibleOnFrontend;
     }
@@ -54,6 +62,7 @@ class Parameter extends BaseParameter
     {
         parent::edit($parameterData);
 
+        $this->mallId = $parameterData->mallId;
         $this->setType($parameterData->type);
         $this->visibleOnFrontend = $parameterData->visibleOnFrontend;
     }
@@ -83,5 +92,13 @@ class Parameter extends BaseParameter
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMallId(): ?string
+    {
+        return $this->mallId;
     }
 }
