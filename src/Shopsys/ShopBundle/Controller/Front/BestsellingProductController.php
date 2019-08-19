@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
+use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 
 class BestsellingProductController extends FrontBaseController
 {
@@ -27,18 +28,26 @@ class BestsellingProductController extends FrontBaseController
     private $currentCustomer;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
+     */
+    private $productOnCurrentDomainFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade $cachedBestsellingProductFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      */
     public function __construct(
         CachedBestsellingProductFacade $cachedBestsellingProductFacade,
         Domain $domain,
-        CurrentCustomer $currentCustomer
+        CurrentCustomer $currentCustomer,
+        ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
     ) {
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
         $this->domain = $domain;
         $this->currentCustomer = $currentCustomer;
+        $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
     }
 
     /**
@@ -54,6 +63,7 @@ class BestsellingProductController extends FrontBaseController
 
         return $this->render('@ShopsysShop/Front/Content/Product/bestsellingProductsList.html.twig', [
             'products' => $bestsellingProducts,
+            'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($bestsellingProducts),
         ]);
     }
 }
