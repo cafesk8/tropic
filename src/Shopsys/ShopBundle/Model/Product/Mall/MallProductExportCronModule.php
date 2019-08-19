@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Mall;
 
-use MPAPI\Exceptions\ApplicationException;
 use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
 use Shopsys\ShopBundle\Component\Mall\MallFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
@@ -61,20 +60,14 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
     {
         $productsToExport = $this->productFacade->getProductsForExportToMall(self::BATCH_SIZE);
 
-        try {
-            $this->processItems($productsToExport);
+        $this->processItems($productsToExport);
 
-            if (count($productsToExport) < self::BATCH_SIZE) {
-                $this->logger->info('All products are exported to Mall.cz.');
-                return false;
-            } else {
-                $this->logger->info('Batch is exported.');
-                return true;
-            }
-        } catch (ApplicationException $exception) {
-            $this->logger->addError(sprintf('Products were not exported to Mall.cz due to exception: %s', $exception->getMessage()), [
-                'exception' => $exception,
-            ]);
+        if (count($productsToExport) < self::BATCH_SIZE) {
+            $this->logger->info('All products are exported to Mall.cz.');
+            return false;
+        } else {
+            $this->logger->info('Batch is exported.');
+            return true;
         }
     }
 
@@ -95,9 +88,9 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
 
         foreach ($productsToExport as $product) {
             $preparedProductToExport = $this->productMallExportMapper->mapProductOrMainVariantGroup($product);
-            $response = $this->mallFacade->createOrUpdateProduct($preparedProductToExport);
+            $isCreatedOrUpdated = $this->mallFacade->createOrUpdateProduct($preparedProductToExport);
 
-            if ($response === true) {
+            if ($isCreatedOrUpdated === true) {
                 $this->logger->addInfo(sprintf('Product with ID `%s` was exported to Mall.cz', $product->getId()));
                 $exportedProducts[] = $product;
             }
