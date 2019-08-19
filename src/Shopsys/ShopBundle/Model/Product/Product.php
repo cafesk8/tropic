@@ -117,6 +117,7 @@ class Product extends BaseProduct
     /**
      * @var \DateTime
      *
+     * @Gedmo\Mapping\Annotation\Timestampable(on="update")
      * @ORM\Column(type="datetime", nullable=false)
      */
     private $updatedAt;
@@ -140,7 +141,7 @@ class Product extends BaseProduct
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
-        $this->updatedAt = new DateTime();
+        $this->updatedAt = $productData->updatedAt;
     }
 
     /**
@@ -162,7 +163,6 @@ class Product extends BaseProduct
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
-        $this->updatedAt = new DateTime();
     }
 
     /**

@@ -77,5 +77,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->youtubeVideoId = $product->getYoutubeVideoId();
         $productData->mallExport = $product->isMallExport();
         $productData->mallExportedAt = $product->getMallExportedAt();
+        $productData->updatedAt = $product->getUpdatedAt();
     }
 }
