@@ -18,11 +18,4 @@
         });
     });
 
-    $(document).ready(function () {
-        $('.js-blog-list-with-paginator').each(function () {
-            var ajaxFilter = new Shopsys.blogList.AjaxFilter();
-            ajaxFilter.init();
-        });
-    });
-
 })(jQuery);
