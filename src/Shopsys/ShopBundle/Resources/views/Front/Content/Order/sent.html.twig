@@ -20,24 +20,11 @@
         <div class="web__main">
             <div class="web__main__content js-main-content">
             <!-- script to display on order sent page -->
-                <div class="box-order-done js-not-implemented-yet">
+                <div class="box-order-done">
                     <h1 class="box-order-done__title">{{ 'Děkujeme za vaši objednávku'|trans }}</h1>
-                    {# TODO PRG START: this text shoudl be in { pageContent|raw } #}
                     <div class="box-order-done__text">
-                        {{ 'Rekapitulaci jsme vám zaslali také na váš e-mail'|trans }}
-                        <span class="box-order-done__text__highlight">tomas.marny@seznam.cz</span>.
+                        {{ pageContent|raw }}
                     </div>
-
-                    <div class="box-order-done__text">
-                        {{ 'Vybrali jste si platbu převodem. '|trans }}
-                        <strong>{{ 'Zboží odešleme po připsání částky na účet. '|trans }}</strong>
-                        <br>
-                        {{ 'Částku'|trans }} <span class="box-order-done__text__highlight">1 805 Kč</span>
-                        {{ 'zašlete na náš bankovní účet číslo'|trans }}
-                        <span class="box-order-done__text__highlight">789123456/0100</span>.<br>
-                        {{ 'Variabilní symbol platby je číslo objednávky'|trans }} (<span class="box-order-done__text__highlight">123456</span>).
-                    </div>
-                    {# TODO PRG END #}
                     <div class="box-order-done__club">
                         <div class="box-order-done__club__title">
                             {{ 'Stačí zadat heslo a příště už nic'|trans }} <br>
