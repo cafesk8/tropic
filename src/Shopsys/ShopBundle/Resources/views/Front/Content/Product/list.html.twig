@@ -129,32 +129,32 @@
                             {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list' } %}
                         </div>
                     {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% block last_visited_products %}
+            {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
+        {% endblock %}
+
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
+            </div>
+        </div>
+
+        <div class="web__line">
+            <div class="web__container">
+                {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                    {{ instagramFeed() }}
+                {% endcache %}
+            </div>
+        </div>
+
+        <div class="web__line">
+            <div class="web__container web__container--dark web__container--big-padding">
+                {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
             </div>
         </div>
     </div>
-
-    {% block last_visited_products %}
-        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
-    {% endblock %}
-
-    <div class="web__line">
-        <div class="web__container web__container--big-padding">
-            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-        </div>
-    </div>
-
-    <div class="web__line">
-        <div class="web__container">
-            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                {{ instagramFeed() }}
-            {% endcache %}
-        </div>
-    </div>
-
-    <div class="web__line">
-        <div class="web__container web__container--dark web__container--big-padding">
-            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
-        </div>
-    </div>
-
 {% endblock %}
