@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Model\Blog\Category;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
-use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticle;
 use Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationScheduler;
@@ -29,11 +28,6 @@ class BlogCategoryFacade
     private $friendlyUrlFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\ImageFacade
-     */
-    private $imageFacade;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFactory
      */
     private $blogCategoryFactory;
@@ -52,7 +46,6 @@ class BlogCategoryFacade
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryRepository $blogCategoryRepository
      * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFactory $blogCategoryFactory
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryWithPreloadedChildrenFactory $blogCategoryWithPreloadedChildrenFactory
      * @param \Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationScheduler $blogVisibilityRecalculationScheduler
@@ -61,7 +54,6 @@ class BlogCategoryFacade
         EntityManagerInterface $em,
         BlogCategoryRepository $blogCategoryRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
-        ImageFacade $imageFacade,
         BlogCategoryFactory $blogCategoryFactory,
         BlogCategoryWithPreloadedChildrenFactory $blogCategoryWithPreloadedChildrenFactory,
         BlogVisibilityRecalculationScheduler $blogVisibilityRecalculationScheduler
@@ -69,7 +61,6 @@ class BlogCategoryFacade
         $this->em = $em;
         $this->blogCategoryRepository = $blogCategoryRepository;
         $this->friendlyUrlFacade = $friendlyUrlFacade;
-        $this->imageFacade = $imageFacade;
         $this->blogCategoryFactory = $blogCategoryFactory;
         $this->blogCategoryWithPreloadedChildrenFactory = $blogCategoryWithPreloadedChildrenFactory;
         $this->blogVisibilityRecalculationScheduler = $blogVisibilityRecalculationScheduler;
@@ -99,7 +90,6 @@ class BlogCategoryFacade
         $blogCategory->createDomains($blogCategoryData);
 
         $this->friendlyUrlFacade->createFriendlyUrls('front_blogcategory_detail', $blogCategory->getId(), $blogCategory->getNames());
-        $this->imageFacade->uploadImage($blogCategory, $blogCategoryData->image->uploadedFiles, null);
         $this->blogVisibilityRecalculationScheduler->scheduleRecalculation();
 
         $this->em->flush($blogCategory);
@@ -126,7 +116,6 @@ class BlogCategoryFacade
 
         $this->friendlyUrlFacade->saveUrlListFormData('front_blogcategory_detail', $blogCategory->getId(), $blogCategoryData->urls);
         $this->friendlyUrlFacade->createFriendlyUrls('front_blogcategory_detail', $blogCategory->getId(), $blogCategory->getNames());
-        $this->imageFacade->uploadImage($blogCategory, $blogCategoryData->image->uploadedFiles, null);
         $this->blogVisibilityRecalculationScheduler->scheduleRecalculation();
 
         return $blogCategory;

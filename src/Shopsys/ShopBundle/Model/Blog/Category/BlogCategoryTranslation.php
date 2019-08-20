@@ -27,13 +27,6 @@ class BlogCategoryTranslation extends AbstractTranslation
     private $name;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-    /**
      * @return string|null
      */
     public function getName(): ?string
@@ -47,21 +40,5 @@ class BlogCategoryTranslation extends AbstractTranslation
     public function setName(?string $name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
     }
 }

@@ -217,9 +217,6 @@ class BlogCategory extends AbstractTranslatableEntity
         foreach ($blogCategoryData->names as $locale => $name) {
             $this->translation($locale)->setName($name);
         }
-        foreach ($blogCategoryData->descriptions as $locale => $name) {
-            $this->translation($locale)->setDescription($name);
-        }
     }
 
     /**
@@ -265,29 +262,6 @@ class BlogCategory extends AbstractTranslatableEntity
     public function getSeoMetaDescription(int $domainId): ?string
     {
         return $this->getDomain($domainId)->getSeoMetaDescription();
-    }
-
-    /**
-     * @param string|null $locale
-     * @param string locale
-     * @return string|null
-     */
-    public function getDescription(?string $locale = null): ?string
-    {
-        return $this->translation($locale)->getDescription();
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDescriptions(): array
-    {
-        $descriptionsByLocale = [];
-        foreach ($this->translations as $translation) {
-            $descriptionsByLocale[$translation->getLocale()] = $translation->getDescription();
-        }
-
-        return $descriptionsByLocale;
     }
 
     /**

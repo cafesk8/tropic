@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DomainsType;
-use Shopsys\FrameworkBundle\Form\FormRenderingConfigurationExtension;
 use Shopsys\FrameworkBundle\Form\GroupType;
-use Shopsys\FrameworkBundle\Form\ImageUploadType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\UrlListType;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
@@ -68,14 +65,10 @@ class BlogCategoryFormType extends AbstractType
     {
         $builderSettingsGroup = $this->createSettingsGroup($builder, $options);
         $builderSeoGroup = $this->createSeoGroup($builder, $options);
-        $builderDescriptionGroup = $this->createDescriptionGroup($builder);
-        $builderImageGroup = $this->createImageGroup($builder, $options);
 
         $builder
             ->add($builderSettingsGroup)
             ->add($builderSeoGroup)
-            ->add($builderDescriptionGroup)
-            ->add($builderImageGroup)
             ->add('save', SubmitType::class);
     }
 
@@ -259,57 +252,5 @@ class BlogCategoryFormType extends AbstractType
         }
 
         return $builderSeoGroup;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @return \Symfony\Component\Form\FormBuilderInterface
-     */
-    private function createDescriptionGroup(FormBuilderInterface $builder): FormBuilderInterface
-    {
-        $builderDescriptionGroup = $builder->create('description', GroupType::class, [
-            'label' => t('Description'),
-        ]);
-
-        $builderDescriptionGroup
-            ->add('descriptions', LocalizedType::class, [
-                'entry_type' => CKEditorType::class,
-                'label' => t('Description'),
-                'required' => false,
-                'display_format' => FormRenderingConfigurationExtension::DISPLAY_FORMAT_MULTIDOMAIN_ROWS_NO_PADDING,
-            ]);
-
-        return $builderDescriptionGroup;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
-     * @return \Symfony\Component\Form\FormBuilderInterface
-     */
-    private function createImageGroup(FormBuilderInterface $builder, array $options): \Symfony\Component\Form\FormBuilderInterface
-    {
-        $builderImageGroup = $builder->create('image', GroupType::class, [
-            'label' => t('Image'),
-        ]);
-
-        $builderImageGroup
-            ->add('image', ImageUploadType::class, [
-                'required' => false,
-                'file_constraints' => [
-                    new Constraints\Image([
-                        'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
-                        'mimeTypesMessage' => 'Image can be only in JPG, GIF or PNG format',
-                        'maxSize' => '2M',
-                        'maxSizeMessage' => 'Uploaded image is to large ({{ size }} {{ suffix }}). '
-                            . 'Maximum size of an image is {{ limit }} {{ suffix }}.',
-                    ]),
-                ],
-                'label' => t('Upload image'),
-                'entity' => $options['blogCategory'],
-                'info_text' => t('You can upload following formats: PNG, JPG, GIF'),
-            ]);
-
-        return $builderImageGroup;
     }
 }

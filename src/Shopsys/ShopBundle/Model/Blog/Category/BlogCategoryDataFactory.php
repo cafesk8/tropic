@@ -68,7 +68,6 @@ class BlogCategoryDataFactory
 
         foreach ($this->domain->getAllLocales() as $locale) {
             $blogCategoryData->names[$locale] = null;
-            $blogCategoryData->descriptions[$locale] = null;
         }
     }
 
@@ -79,7 +78,6 @@ class BlogCategoryDataFactory
     private function fillFromBlogCategory(BlogCategoryData $blogCategoryData, BlogCategory $blogCategory): void
     {
         $blogCategoryData->names = $blogCategory->getNames();
-        $blogCategoryData->descriptions = $blogCategory->getDescriptions();
         $blogCategoryData->parent = $blogCategory->getParent();
 
         foreach ($this->domain->getAllIds() as $domainId) {

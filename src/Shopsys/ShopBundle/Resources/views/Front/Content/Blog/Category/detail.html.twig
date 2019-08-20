@@ -29,14 +29,6 @@
                         {{ blogCategory.name }}
                     {% endif %}
                 </h1>
-                {% if imageExists(blogCategory) %}
-                    {{ image(blogCategory, { itemprop: 'image', lazy: true }) }}
-                {% else %}
-                    {{ noimage({ alt: blogCategory.name }) }}
-                {% endif %}
-                <div>
-                    {{ blogCategory.description|raw }}
-                </div>
                 <div class="box-blog__content">
                     <div class="box-blog__list">
                         {% if blogArticlePaginationResult.results|length > 0 %}
