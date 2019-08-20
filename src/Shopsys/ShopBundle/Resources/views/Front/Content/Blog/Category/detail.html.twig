@@ -59,7 +59,7 @@
                                                     {{ blogArticle.name }}
                                                 </a>
                                                 <div class="list-articles__item__content__text">
-                                                    {{ blogArticle.description|striptags|truncate(100)|raw }}
+                                                    {{ blogArticle.perex|striptags|raw }}
                                                 </div>
                                                 <div class="list-articles__item__content__date">
                                                     {{ blogArticle.createdAt|formatLongDate }}
