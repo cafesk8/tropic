@@ -110,28 +110,30 @@
             </div>
         </div>
 
-        <div class="web__line">
-            <div class="web__container web__container--big-padding web__container--top-line">
-                <div class="box-list__bottom">
-                    <div class="box-list__bottom__description">
-                        <div class="box-list__bottom__title">
-                            {{ category.name }}
-                        </div>
-                        <div class="box-list__bottom__description__text in-user-text js-category-description ">
-                            {{ category.getDescription(domain.id)|raw }}
-                        </div>
-                    </div>
-                    {% if categoriesBlogArticles|length > 0 %}
-                        <div class="box-list__bottom__article">
+        {% if category.legendaryCategory != true %}
+            <div class="web__line">
+                <div class="web__container web__container--big-padding web__container--top-line">
+                    <div class="box-list__bottom">
+                        <div class="box-list__bottom__description">
                             <div class="box-list__bottom__title">
-                                {{ 'Mohlo by vás zajímat'|trans }}
+                                {{ category.name }}
                             </div>
-                            {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list' } %}
+                            <div class="box-list__bottom__description__text in-user-text js-category-description ">
+                                {{ category.getDescription(domain.id)|raw }}
+                            </div>
                         </div>
-                    {% endif %}
+                        {% if categoriesBlogArticles|length > 0 %}
+                            <div class="box-list__bottom__article">
+                                <div class="box-list__bottom__title">
+                                    {{ 'Mohlo by vás zajímat'|trans }}
+                                </div>
+                                {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list' } %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         {% block last_visited_products %}
             {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
