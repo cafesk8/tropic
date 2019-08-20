@@ -60,7 +60,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
         $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscounts);
-        $totalPrice = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
+        $totalPrice = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice, $totalGiftPrice);
 
         $orderPreview = new OrderPreview(
             $quantifiedProducts,
