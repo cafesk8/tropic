@@ -1,0 +1,49 @@
+<div class="web__line">
+    <div class="web__container">
+        <div class="box-special-offer">
+            {% if advert is not null %}
+                <div class="box-special-offer__colored">
+                    <span class="box-special-offer__colored__title-small">
+                        {{ advert.smallTitle }}
+                    </span>
+
+                    <span class="box-special-offer__colored__title">
+                        {{ advert.bigTitle }}
+                    </span>
+                    <a href="{{ advert.link }}" class="box-special-offer__colored__button btn">{{ advert.name }}</a>
+                </div>
+                <div class="box-special-offer__grayscale">
+                    <div class="display-only-for-vl-screen">
+                        {{ image(advert, { size: 'bigBanner', alt: advert.smallTitle, lazy: true, class: 'box-special-offer__grayscale__image' }) }}
+                    </div>
+                    <div class="box-special-offer__grayscale__title">
+                        <span class="box-special-offer__grayscale__title__text double-lined">
+                            {{ advert.productTitle }}
+                        </span>
+                    </div>
+                    <ul class="box-special-offer__products">
+                        {% for advertProduct in advertProducts %}
+                            {% set sellingPrice = getProductSellingPrice(advertProduct.product) %}
+                            <li class="box-special-offer__products__item">
+                                <div class="box-special-offer__products__item__image">
+                                    {{ image(advertProduct.product, { size: 'homepageBanner', alt: advertProduct.product.name, lazy: true }) }}
+                                </div>
+                                <div class="box-special-offer__products__item__content">
+                                    <a class="box-special-offer__products__item__content__title" href="{{ url('front_product_detail', {'id': advertProduct.product.id}) }}" title="{{ advertProduct.product.name }}">{{ advertProduct.product.name }}</a>
+                                    <span class="box-special-offer__products__item__content__price"> {{ sellingPrice.priceWithVat|price }}
+                                        {% if sellingPrice.isActionPrice %}
+                                            <span class="box-special-offer__products__item__content__price__old">{{ sellingPrice.defaultProductPrice.priceWithVat|price }}</span>
+                                        {% endif %}
+                                    </span>
+                                    <span class="box-special-offer__products__item__content__size">
+                                        {{ 'Vaše velikost'|trans }} <span class="in-badge in-badge--outline js-not-implemented-yet">M</span> {{ advertProduct.product.calculatedAvailability.name }}
+                                    </span>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
