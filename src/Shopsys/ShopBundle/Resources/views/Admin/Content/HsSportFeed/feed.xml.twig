@@ -21,8 +21,8 @@
             {% endfor %}
         </ALLIMAGES>
         <CATEGORY>
-            {% for category in item.categories %}
-                <CAT>{{ category.id }}_{{ category.name }}</CAT>
+            {% for categoryString in item.categoriesStrings %}
+                <CAT>{{ categoryString }}</CAT>
             {% endfor %}
         </CATEGORY>
         <VARIANTS>

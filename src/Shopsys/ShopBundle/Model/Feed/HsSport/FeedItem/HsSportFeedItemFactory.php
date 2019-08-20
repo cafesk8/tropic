@@ -84,7 +84,10 @@ class HsSportFeedItemFactory
             $this->getPrice($product, $domainConfig)->defaultProductPrice()->getPriceWithVat()->getAmount(),
             $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainConfig->getId())->getCode(),
             $this->getAllImagesUrlsByProduct($product, $domainConfig),
-            $product->getProductCategoriesByDomainId($domainConfig->getId()),
+            $this->getCategoriesStringsFromCategories(
+                $product->getProductCategoriesByDomainId($domainConfig->getId()),
+                $domainConfig
+            ),
             $hsSportVariantItems
         );
     }
@@ -171,5 +174,20 @@ class HsSportFeedItemFactory
             $domainConfig->getId(),
             $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainConfig->getId())
         );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Category\Category[] $categories
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return string[]
+     */
+    private function getCategoriesStringsFromCategories(array $categories, DomainConfig $domainConfig): array
+    {
+        $categoriesStrings = [];
+        foreach ($categories as $category) {
+            $categoriesStrings[] = $category->getId() . '_' . $category->getName($domainConfig->getLocale());
+        }
+
+        return $categoriesStrings;
     }
 }

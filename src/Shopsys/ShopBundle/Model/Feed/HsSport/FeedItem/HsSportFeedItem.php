@@ -59,9 +59,9 @@ class HsSportFeedItem implements FeedItemInterface
     protected $imagesUrls;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @var string[]
      */
-    protected $categories;
+    protected $categoriesStrings;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Feed\HsSport\FeedItem\HsSportFeedVariantItem[]
@@ -79,7 +79,7 @@ class HsSportFeedItem implements FeedItemInterface
      * @param string $originalPrice
      * @param string $currencyCode
      * @param string[] $imagesUrls
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category[] $categories
+     * @param string[] $categoriesStrings
      * @param \Shopsys\ShopBundle\Model\Feed\HsSport\FeedItem\HsSportFeedVariantItem[] $variants
      */
     public function __construct(
@@ -93,7 +93,7 @@ class HsSportFeedItem implements FeedItemInterface
         string $originalPrice,
         string $currencyCode,
         array $imagesUrls,
-        array $categories,
+        array $categoriesStrings,
         array $variants
     ) {
         $this->id = $id;
@@ -106,7 +106,7 @@ class HsSportFeedItem implements FeedItemInterface
         $this->originalPrice = $originalPrice;
         $this->currencyCode = $currencyCode;
         $this->imagesUrls = $imagesUrls;
-        $this->categories = $categories;
+        $this->categoriesStrings = $categoriesStrings;
         $this->variants = $variants;
     }
 
@@ -199,11 +199,11 @@ class HsSportFeedItem implements FeedItemInterface
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @return string[]
      */
-    public function getCategories(): array
+    public function getCategoriesStrings(): array
     {
-        return $this->categories;
+        return $this->categoriesStrings;
     }
 
     /**
