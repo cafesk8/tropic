@@ -11,13 +11,14 @@
                         searchText,
                         'search',
                         productFilterCountData,
-                        priceRange
+                        priceRange,
+                        filterFormSubmitted
                     ) }}
                 </div>
             </div>
             <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
                 {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForSearch')) }}
-                {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited, searchText: searchText} %}
+                {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
             </div>
         </div>
     </div>

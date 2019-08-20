@@ -1,6 +1,8 @@
-{% macro filterForm(filterForm, actionUrl, resetUrl, searchText, page, productFilterCountData, priceRange) %}
+{% macro filterForm(filterForm, actionUrl, resetUrl, searchText, page, productFilterCountData, priceRange, filterFormSubmitted) %}
     {{ form_start(filterForm, { action: actionUrl }) }}
         {% form_theme filterForm '@ShopsysShop/Front/Content/Product/filterFormTheme.html.twig' %}
+
+        {% import '@ShopsysShop/Front/Content/Product/selectedFilterBoxMacro.html.twig' as selectedFilterBox %}
 
         {% set isSearch = page == 'search' %}
 
@@ -14,28 +16,7 @@
         {% do filterForm.minimalPrice.setRendered %}
         {% do filterForm.maximalPrice.setRendered %}
 
-        <div class="box-filter__selected">
-            <div class="box-filter__title">
-                {{ 'Vybrané filtry'|trans }}
-            </div>
-            <div class="box-filter__selected__item js-not-implemented-yet">
-                {{ 'Velikost'}}: <strong>S</strong>
-                <i class="svg svg-remove"></i>
-            </div>
-            <div class="box-filter__selected__item js-not-implemented-yet">
-                {{ 'Velikost'}}: <strong>S</strong>
-                <i class="svg svg-remove"></i>
-            </div>
-            <div class="box-filter__selected__item js-not-implemented-yet">
-                {{ 'Prodena'}}: <strong>Hradec Králové</strong>
-                <i class="svg svg-remove"></i>
-            </div>
-            <div class="box-filter__selected__remove">
-                <a href="{{ resetUrl }}" class="box-filter__selected__remove__link underline-small js-product-filter-reset-button">
-                    {{ 'Zrušit všechny filtry'|trans }}
-                </a>
-            </div>
-        </div>
+        {{ selectedFilterBox.filterBox(filterForm, resetUrl, filterFormSubmitted) }}
         <div class="box-filter__choice">
             <div class="box-filter__title">
                 {{ 'Cena'|trans }}
@@ -102,7 +83,7 @@
         <div class="box-filter__choice">
             <label class="form-choice">
                 <span class="form-choice__line">
-                    {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox'}}) }}
+                    {{ form_widget(filterForm.inStock, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.inStock.vars.id }}) }}
                     <span class="css-checkbox__image">
                         {{ 'Products in stock only'|trans }}
                         {% if productFilterCountData is not null %}
@@ -128,7 +109,7 @@
                 {% for flagForm in filterForm.flags %}
                     <label class="form-choice">
                         <span class="form-choice__line">
-                            {{ form_widget(flagForm, { attr: { class: 'css-checkbox'}}) }}
+                            {{ form_widget(flagForm, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.flags.vars.id ~ '_' ~ flagForm.vars.value }}) }}
                             <span class="css-checkbox__image">
                                 {{ flagForm.vars.label }}
                                 {% if productFilterCountData is not null %}
@@ -157,7 +138,7 @@
             <div class="box-filter__choice" id="{{ filterForm.brands.vars.id }}">
                 {% for brandForm in filterForm.brands %}
                     <label class="form-choice">
-                        {{ form_widget(brandForm, { attr: { class: 'form-choice__input css-checkbox'} }) }}
+                        {{ form_widget(brandForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.brands.vars.id ~ '_' ~ brandForm.vars.value } }) }}
                         <span class="form-choice__label css-checkbox__image">
                             {{ brandForm.vars.label }}
                             {% if productFilterCountData is not null %}
@@ -190,7 +171,7 @@
                                 </span>
                                 {% for parameterValueForm in parameterForm %}
                                     <label class="form-choice js-product-filter-parameter-value">
-                                        {{ form_widget(parameterValueForm, { attr: { class: 'form-choice__input css-checkbox'} }) }}
+                                        {{ form_widget(parameterValueForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.parameters.vars.id ~ '_' ~ parameterId ~ '_' ~ parameterValueForm.vars.value } }) }}
                                         <span class="form-choice__label css-checkbox__image">
                                             {{ parameterValueForm.vars.label }}
                                             {% if productFilterCountData is not null %}

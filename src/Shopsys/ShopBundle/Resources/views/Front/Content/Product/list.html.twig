@@ -88,7 +88,7 @@
         <div class="web__line">
             <div class="web__container web__container--big-padding">
                 <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
-                    {% if paginationResult.results|length > 0 or filterFormSubmited %}
+                    {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                         <div class="box-list__panel js-product-list-panel">
                             <div class="box-filter js-product-filter">
                                 {{ productFilterForm.filterForm(
@@ -98,7 +98,8 @@
                                     null,
                                     'product_list',
                                     productFilterCountData,
-                                    priceRange
+                                    priceRange,
+                                    filterFormSubmitted
                                 ) }}
                             </div>
                         </div>
@@ -106,7 +107,7 @@
 
                     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
                         {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
-                        {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmited: filterFormSubmited} %}
+                        {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
                     </div>
                 </div>
             </div>
