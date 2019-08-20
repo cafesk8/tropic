@@ -76,15 +76,14 @@
 
     <div class="web__line">
         <div class="web__container web__container--big-padding">
-            <div class="box-articles js-not-implemented-yet">
+            <div class="box-articles">
                 <div class="box-articles__title-big">
                     {{ 'Načerpejte inspiraci'|trans }}
                 </div>
                 <div class="box-articles__title-small">
                     {{ 'Zážitky z cest si nenecháváme pro sebe'|trans }}
                 </div>
-                {# TODO PRG: add blog articles #}
-                {# include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: homepageBlogArticles } #}
+                {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: homepageBlogArticles } %}
                 <div class="box-articles__bottom">
                     <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
                 </div>

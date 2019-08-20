@@ -22,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
@@ -43,6 +44,7 @@ class OrderController extends FrontBaseController
 {
     public const SESSION_CREATED_ORDER = 'created_order_id';
     public const SESSION_GOPAY_CHOOSEN_SWIFT = 'gopay_choosen_swift';
+    private const HOMEPAGE_ARTICLES_LIMIT = 2;
 
     /**
      * @var \Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory
@@ -145,6 +147,11 @@ class OrderController extends FrontBaseController
     private $countryFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade
+     */
+    private $blogArticleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -165,6 +172,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
      * @param \Shopsys\ShopBundle\Model\PayPal\PayPalFacade $payPalFacade
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -186,7 +194,8 @@ class OrderController extends FrontBaseController
         GoPayBankSwiftFacade $goPayBankSwiftFacade,
         GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain,
         PayPalFacade $payPalFacade,
-        CountryFacade $countryFacade
+        CountryFacade $countryFacade,
+        BlogArticleFacade $blogArticleFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -208,6 +217,7 @@ class OrderController extends FrontBaseController
         $this->goPayFacadeOnCurrentDomain = $goPayFacadeOnCurrentDomain;
         $this->payPalFacade = $payPalFacade;
         $this->countryFacade = $countryFacade;
+        $this->blogArticleFacade = $blogArticleFacade;
     }
 
     public function indexAction()
@@ -533,6 +543,11 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
             'payPalApprovalLink' => $payPalApprovalLink,
+            'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
+                $this->domain->getId(),
+                $this->domain->getLocale(),
+                self::HOMEPAGE_ARTICLES_LIMIT
+            ),
         ]);
     }
 
