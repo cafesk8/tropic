@@ -34,6 +34,11 @@ class CategoryData extends BaseCategoryData
     public $legendaryCategory;
 
     /**
+     * @var string|null
+     */
+    public $mallCategoryId;
+
+    /**
      * @var string[]|null[]
      */
     public $leftBannerTexts;

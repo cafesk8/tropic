@@ -45,6 +45,7 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->preListingCategory = $category->isPreListingCategory();
         $categoryData->displayedInFirstColumn = $category->isDisplayedInFirstColumn();
         $categoryData->legendaryCategory = $category->isLegendaryCategory();
+        $categoryData->mallCategoryId = $category->getMallCategoryId();
         $categoryData->leftBannerTexts = $category->getLeftBannerTexts();
         $categoryData->rightBannerTexts = $category->getRightBannerTexts();
     }

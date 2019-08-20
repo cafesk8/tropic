@@ -8,6 +8,7 @@ use Exception;
 use MPAPI\Entity\Products\Product;
 use MPAPI\Exceptions\ApplicationException;
 use MPAPI\Exceptions\ForceTokenException;
+use MPAPI\Services\Categories;
 use MPAPI\Services\Products;
 use MPAPI\Services\Variants;
 use Psr\Log\LoggerInterface;
@@ -23,6 +24,11 @@ class MallFacade
      * @var \Symfony\Bridge\Monolog\Logger
      */
     private $logger;
+
+    /**
+     * @var string[]
+     */
+    private $downloadedCategories = [];
 
     /**
      * @param \Shopsys\ShopBundle\Component\Mall\MallClient $mallClient
@@ -99,6 +105,31 @@ class MallFacade
             ]);
 
             return false;
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCategories(): array
+    {
+        try {
+            if (count($this->downloadedCategories) <= 0) {
+                $categories = new Categories($this->mallClient->getClient());
+                $categoriesArray = $categories->get()->categories();
+
+                foreach ($categoriesArray as $item) {
+                    $this->downloadedCategories[$item['category_id']] = $item['title'];
+                }
+            }
+
+            return $this->downloadedCategories;
+        } catch (Exception $exception) {
+            $this->logger->addError(sprintf('Download categories from Mall.cz failed due to: %s', $exception->getMessage()), [
+                'exception' => $exception,
+            ]);
+
+            return [];
         }
     }
 }

@@ -7,13 +7,16 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
+use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
+use Shopsys\ShopBundle\Component\Mall\MallFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
 use Shopsys\ShopBundle\Model\Category\CategoryData;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -40,18 +43,30 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     private $blogArticlesIdsToBlogArticlesTransformer;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Mall\MallFacade
+     */
+    private $mallFacade;
+
+    /**
      * CategoryFormTypeExtension constructor.
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabFacade
      * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer
+     * @param \Shopsys\ShopBundle\Component\Mall\MallFacade $mallFacade
      */
-    public function __construct(BlogArticleFacade $blogArticleFacade, AdminDomainTabsFacade $adminDomainTabFacade, RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer, BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer)
-    {
+    public function __construct(
+        BlogArticleFacade $blogArticleFacade,
+        AdminDomainTabsFacade $adminDomainTabFacade,
+        RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer,
+        BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer,
+        MallFacade $mallFacade
+    ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabFacade;
         $this->removeDuplicatesTransformer = $removeDuplicatesTransformer;
         $this->blogArticlesIdsToBlogArticlesTransformer = $blogArticlesIdsToBlogArticlesTransformer;
+        $this->mallFacade = $mallFacade;
     }
 
     /**
@@ -111,6 +126,8 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                     ->addViewTransformer($this->removeDuplicatesTransformer)
                     ->addModelTransformer($this->blogArticlesIdsToBlogArticlesTransformer)
             );
+
+        $builder->add($this->createMallGroup($builder));
     }
 
     /**
@@ -131,5 +148,26 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return CategoryFormType::class;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createMallGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builderMallGroup = $builder->create('mall', GroupType::class, [
+            'label' => t('Mall.cz'),
+        ]);
+
+        $mallCategories = $this->mallFacade->getCategories();
+
+        $builderMallGroup->add('mallCategoryId', ChoiceType::class, [
+            'choices' => array_flip($mallCategories),
+            'required' => false,
+            'label' => t('Kategorie v Mall.cz'),
+        ]);
+
+        return $builderMallGroup;
     }
 }
