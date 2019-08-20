@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Category;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Model\Category\CategoryRepository as BaseCategoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
@@ -82,5 +83,34 @@ class CategoryRepository extends BaseCategoryRepository
         }
 
         return null;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @return string|null
+     */
+    public function findMallCategoryForProduct(Product $product, int $domainId): ?string
+    {
+        $queryBuilder = $this->getAllVisibleByDomainIdQueryBuilder($domainId)
+            ->join(
+                ProductCategoryDomain::class,
+                'pcd',
+                Join::WITH,
+                'pcd.product = :product
+                    AND pcd.category = c
+                    AND pcd.domainId = :domainId'
+            )
+            ->select('c.mallCategoryId')
+            ->andWhere('c.mallCategoryId is NOT NULL')
+            ->orderBy('c.level DESC, c.lft')
+            ->setMaxResults(1);
+
+        $queryBuilder->setParameters([
+            'domainId' => $domainId,
+            'product' => $product,
+        ]);
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 }

@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Model\Category\CategoryFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
@@ -52,12 +53,18 @@ class ProductMallExportMapper
     private $mainVariantGroupFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
+     */
+    private $categoryFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
@@ -65,7 +72,8 @@ class ProductMallExportMapper
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
-        MainVariantGroupFacade $mainVariantGroupFacade
+        MainVariantGroupFacade $mainVariantGroupFacade,
+        CategoryFacade $categoryFacade
     ) {
         $this->productPriceCalculationForUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
@@ -73,6 +81,7 @@ class ProductMallExportMapper
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->productFacade = $productFacade;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
+        $this->categoryFacade = $categoryFacade;
     }
 
     /**
@@ -137,6 +146,11 @@ class ProductMallExportMapper
             $mallProduct = new MallProduct();
             $mallProduct->setVat($product->getVat()->getPercent());
             $mallProduct->setBrandId('BUSHMAN');
+
+            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
+            if ($mallCategoryId !== null) {
+                $mallProduct->setCategoryId($mallCategoryId);
+            }
         } else {
             $mallProduct = new Variant();
         }
