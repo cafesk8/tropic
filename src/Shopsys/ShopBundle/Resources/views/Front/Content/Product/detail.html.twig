@@ -6,7 +6,7 @@
 {% set domain = getDomain() %}
 {% set descriptionHeadline = 'Popis'|trans %}
 {% set parametersHeadline = 'Parametry'|trans %}
-{% set accessoriesHeadline = 'Accessories'|trans %}
+{% set accessoriesHeadline = 'Dolaďte svůj outfit'|trans %}
 {% set referencesHeadline = 'Hodnocení'|trans %}
 {% set discussionHeadline = 'Diskuze'|trans %}
 
@@ -467,7 +467,7 @@
                                     <h3 class="in-user-text__title in-user-text__title--center">
                                         {{ accessoriesHeadline }}
                                     </h3>
-                                    {{ productList.list(accessories) }}
+                                    {{ productList.horizontalList(accessories, [], "list-top-products", 'h3', 'top-products') }}
                                 </div>
                             {% endif %}
                         </div>

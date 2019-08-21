@@ -183,6 +183,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
+        $this->extendAccessoriesGroup($builder);
     }
 
     /**
@@ -370,6 +371,17 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $codeFieldType = get_class($builder->get('outOfStockAction')->getType()->getInnerType());
             $builder->add('outOfStockAction', $codeFieldType, $codeFieldOptions);
         }
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function extendAccessoriesGroup(FormBuilderInterface $builder): void
+    {
+        $codeFieldOptions = $builder->get('accessories')->getOptions();
+        $codeFieldOptions['label'] = t('Dolaďte svůj outfit');
+        $codeFieldType = get_class($builder->get('accessories')->getType()->getInnerType());
+        $builder->add('accessories', $codeFieldType, $codeFieldOptions);
     }
 
     /**
