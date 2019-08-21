@@ -14,16 +14,9 @@
             <label class="input__label">{{ 'Password'|trans }}</label>
             {{ form_widget(form.password, { attr: { placeholder: '******** 6 nebo více znaků'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
-        <div class="box-login__item">
-            {{ form_widget(form.rememberMe, { attr: {class: 'css-checkbox'}}) }}
-            <label class="css-checkbox__image" for="{{ form.rememberMe.vars.id}}">
-                {{ 'Remember my login'|trans }}
-                <i class="svg svg-info in-icon in-icon--info js-tooltip"
-                   data-toggle="tooltip" data-placement="right"
-                   title="{{ 'We will remember your login on this computer for 30 days.'|trans }}"
-                ></i>
-            </label>
-        </div>
+
+        {% do form.rememberMe.setRendered %}
+
         <div class="box-login__buttons">
             {{ form_widget(form.login, {label: 'Přihlásit se'|trans, attr: {class: 'btn box-login__buttons__login'}}) }}
             <div class="box-login__buttons__lost">
