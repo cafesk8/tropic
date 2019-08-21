@@ -12,6 +12,11 @@
                 Shopsys.lazyLoadInit.manualReplaceSrc($lazyloadedImage);
             });
         });
+
+        $('.js-horizontal-list-action-next').click(function () {
+            // Classic lazy loading is needed, so I can't use native Slick lazy loading
+            $('body').scroll();
+        });
     };
 
     Shopsys.lazyLoadInit.manualReplaceSrc = function ($lazyloadedImage) {
