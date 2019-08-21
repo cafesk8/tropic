@@ -72,7 +72,7 @@
                 {% if orderPreview.transport is not empty %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
-                            {{ 'Shipping method'|trans }} {{ orderPreview.transport.name }}
+                            {{ 'Doprava'|trans }} - {{ orderPreview.transport.name }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price">
                             {{ orderPreview.transportPrice.priceWithVat|priceText }}
@@ -83,7 +83,7 @@
                 {% if orderPreview.payment is not empty %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
-                            {{ 'Payment method'|trans }} {{ orderPreview.payment.name }}
+                            {{ 'Platba'|trans }} - {{ orderPreview.payment.name }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price">
                             {{ orderPreview.paymentPrice.priceWithVat|priceText }}
