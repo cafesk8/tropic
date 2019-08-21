@@ -200,6 +200,7 @@ class PersonalInfoFormType extends AbstractType
             ->add($builder
                 ->create('billingAddressFilled', CheckboxType::class, [
                     'required' => false,
+                    'value' => false,
                     'property_path' => 'deliveryAddressSameAsBillingAddress',
                 ])
                 ->addModelTransformer(new InverseTransformer()))
