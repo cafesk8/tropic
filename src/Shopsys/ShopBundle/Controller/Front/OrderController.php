@@ -323,8 +323,6 @@ class OrderController extends FrontBaseController
                 $orderPreview->getProductsPrice(),
                 $domainId
             ),
-            'termsAndConditionsArticle' => $this->legalConditionsFacade->findTermsAndConditions($this->domain->getId()),
-            'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
             'goPayBankSwifts' => $goPayBankSwifts,
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
             'pickupPlace' => $orderData->pickupPlace,
