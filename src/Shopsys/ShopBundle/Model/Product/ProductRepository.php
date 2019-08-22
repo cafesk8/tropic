@@ -162,4 +162,13 @@ class ProductRepository extends BaseProductRepository
     {
         return $this->getProductRepository()->findOneBy(['ean' => $ean]);
     }
+
+    /**
+     * @param string $catnum
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getByCatnum(string $catnum): array
+    {
+        return $this->getProductRepository()->findBy(['catnum' => $catnum]);
+    }
 }

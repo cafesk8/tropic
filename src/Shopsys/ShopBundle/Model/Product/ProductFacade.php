@@ -420,4 +420,13 @@ class ProductFacade extends BaseProductFacade
 
         return $youtubeViewForMainVariants;
     }
+
+    /**
+     * @param string $catnum
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getByCatnum(string $catnum): array
+    {
+        return $this->productRepository->getByCatnum($catnum);
+    }
 }
