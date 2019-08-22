@@ -144,8 +144,12 @@ yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BAL
 yq write --inplace app/config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
 
 # set IS credentials
-yq write --inplace app/config/parameters.yml parameters.transfer_username ${TRANSFER_USERNAME}
-yq write --inplace app/config/parameters.yml parameters.transfer_password ${TRANSFER_PASSWORD}
+yq write --inplace app/config/parameters.yml parameters.transfer_cs_username ${TRANSFER_CS_USERNAME}
+yq write --inplace app/config/parameters.yml parameters.transfer_cs_password ${TRANSFER_CS_PASSWORD}
+yq write --inplace app/config/parameters.yml parameters.transfer_sk_username ${TRANSFER_SK_USERNAME}
+yq write --inplace app/config/parameters.yml parameters.transfer_sk_password ${TRANSFER_SK_PASSWORD}
+yq write --inplace app/config/parameters.yml parameters.transfer_de_username ${TRANSFER_DE_USERNAME}
+yq write --inplace app/config/parameters.yml parameters.transfer_de_password ${TRANSFER_DE_PASSWORD}
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
