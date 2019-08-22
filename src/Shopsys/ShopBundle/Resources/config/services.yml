@@ -389,8 +389,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Advert\AdvertFacade: '@Shopsys\ShopBundle\Model\Advert\AdvertFacade'
 
-    Shopsys\FrameworkBundle\Model\Sitemap\SitemapDumperFactory: '@Shopsys\ShopBundle\Model\Sitemap\SitemapDumperFactory'
-
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagGridFactory: '@Shopsys\ShopBundle\Model\Product\Flag\FlagGridFactory'
