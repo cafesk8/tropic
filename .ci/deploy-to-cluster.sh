@@ -208,5 +208,7 @@ fi
 # For first deploy you cant apply maintenance page
 if [ $RUNNING_POD_EXIST -eq "1" ]; then
     echo "Turning maintenance page off for running pod"
-    kubectl exec ${WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} ./phing maintenance-off
+    kubectl exec ${WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} ./phing maintenance-off || echo "There is no running previous pod"
 fi
+
+exit 0
