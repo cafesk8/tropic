@@ -192,11 +192,6 @@ kubectl rollout status --namespace=${PROJECT_NAME} deployment/webserver-php-fpm 
 if [ $EXIT_CODE -eq "0" ]; then
     echo "Rollout succesful"
 else
-    # For first deploy you cant apply maintenance page
-    if [ $RUNNING_POD_EXIST -eq "1" ]; then
-        echo "Turning maintenance page off for running pod"
-        kubectl exec ${WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} ./phing maintenance-off
-    fi
     CRASHED_WEBSERVER_PHP_FPM_POD=$(kubectl get pods --namespace=${PROJECT_NAME} --field-selector=status.phase!=Running -l app=webserver-php-fpm -o=jsonpath='{.items[0].metadata.name}')
 
     if [ $FIRST_DEPLOY -eq "1" ]; then
@@ -208,4 +203,10 @@ else
     fi
 
     exit 1
+fi
+
+# For first deploy you cant apply maintenance page
+if [ $RUNNING_POD_EXIST -eq "1" ]; then
+    echo "Turning maintenance page off for running pod"
+    kubectl exec ${WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} ./phing maintenance-off
 fi

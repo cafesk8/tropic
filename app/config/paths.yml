@@ -21,7 +21,7 @@ parameters:
     shopsys.image_url_prefix: '/%shopsys.content_dir_name%/images/'
     shopsys.javascript_sources_dir: '%shopsys.resources_dir%/scripts'
     shopsys.javascript_url_prefix: /assets/scripts/
-    shopsys.log_stream: '%shopsys.root_dir%/var/log'
+    shopsys.log_stream: '/tmp/log-pipe'
     shopsys.product_images_migrate_dir: '%migrate_product_images_dir%'
     shopsys.resources_dir: '%shopsys.root_dir%/src/Shopsys/ShopBundle/Resources'
     shopsys.root_dir: '%kernel.root_dir%/..'
