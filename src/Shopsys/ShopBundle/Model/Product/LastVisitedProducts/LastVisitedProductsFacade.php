@@ -42,7 +42,7 @@ class LastVisitedProductsFacade
     {
         $productIds = $this->getProductIdsFromCookieWithoutCurrentProduct($cookies, $limit);
 
-        $products = $this->productFacade->getAllVisibleByIds($productIds);
+        $products = $this->productFacade->getVisibleMainVariantsByIds($productIds);
 
         return $this->sortProductsInSameOrderAsIdsFromCookie($products, $productIds);
     }

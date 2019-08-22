@@ -181,9 +181,9 @@ class ProductFacade extends BaseProductFacade
      * @param array $productIds
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllVisibleByIds(array $productIds): array
+    public function getVisibleMainVariantsByIds(array $productIds): array
     {
-        return $this->productRepository->getAllVisibleByIds(
+        return $this->productRepository->getVisibleMainVariantsByIds(
             $this->domain->getId(),
             $this->currentCustomer->getPricingGroup(),
             $productIds

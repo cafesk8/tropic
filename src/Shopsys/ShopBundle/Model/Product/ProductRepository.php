@@ -8,6 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 
 class ProductRepository extends BaseProductRepository
@@ -18,14 +19,15 @@ class ProductRepository extends BaseProductRepository
      * @param array $ids
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllVisibleByIds(int $domainId, PricingGroup $pricingGroup, array $ids): array
+    public function getVisibleMainVariantsByIds(int $domainId, PricingGroup $pricingGroup, array $ids): array
     {
-        $queryBuilder = $this->getAllVisibleQueryBuilder($domainId, $pricingGroup);
-        $queryBuilder
+        return $this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
             ->andWhere('p.id IN(:productIds)')
-            ->setParameter('productIds', $ids);
-
-        return $queryBuilder->getQuery()->execute();
+            ->andWhere('p.variantType = :variantTypeMain')
+            ->setParameter('productIds', $ids)
+            ->setParameter('variantTypeMain', Product::VARIANT_TYPE_MAIN)
+            ->getQuery()
+            ->execute();
     }
 
     /**
