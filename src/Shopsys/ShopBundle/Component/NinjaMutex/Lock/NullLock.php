@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shopsys\ShopBundle\Component\NinjaMutex\Lock;
 
 use NinjaMutex\Lock\LockAbstract;

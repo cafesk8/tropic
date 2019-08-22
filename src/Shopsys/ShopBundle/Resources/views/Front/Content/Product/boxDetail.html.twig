@@ -80,7 +80,7 @@
                 {{ product.getShortDescription(domain.id) }}
             </div>
             <div class="box-detail__wrap">
-                {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant == false %}
+                {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant is same as (true) %}
                     <div class="box-detail__variants">
                         {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
                             <div class="box-detail__variants__title">
@@ -101,7 +101,7 @@
                             </ul>
                         {% endif %}
 
-                        {% if product.isMainVariant %}
+                        {% if product.isMainVariant is same as (true) %}
                             {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
                             {% if allDistinguishingParameterValuesForProducts is not empty %}
                                 <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
