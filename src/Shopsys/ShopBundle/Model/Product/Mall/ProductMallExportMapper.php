@@ -16,11 +16,13 @@ use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
+use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
 class ProductMallExportMapper
 {
     private const CZECH_LOCALE = DomainHelper::CZECH_LOCALE;
     private const CZECH_DOMAIN = DomainHelper::CZECH_DOMAIN;
+    private const STOCK_QUANTITY_FUSE = 2;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser
@@ -58,6 +60,11 @@ class ProductMallExportMapper
     private $categoryFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Store\StoreFacade
+     */
+    private $storeFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -65,6 +72,7 @@ class ProductMallExportMapper
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
@@ -73,7 +81,8 @@ class ProductMallExportMapper
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        StoreFacade $storeFacade
     ) {
         $this->productPriceCalculationForUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
@@ -82,6 +91,7 @@ class ProductMallExportMapper
         $this->productFacade = $productFacade;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -182,7 +192,7 @@ class ProductMallExportMapper
             $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
 
             if ($product->isUsingStock()) {
-                $mallProduct->setInStock($product->getStockQuantity());
+                $mallProduct->setInStock($this->getStockQuantity($product));
             }
         }
 
@@ -233,5 +243,30 @@ class ProductMallExportMapper
         }
 
         return $distinguishingParameters;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return int
+     */
+    private function getStockQuantity(Product $product): int
+    {
+        $defaultStore = $this->storeFacade->findDefaultStore();
+
+        if ($defaultStore === null && $product->getStockQuantity() !== null) {
+            return $product->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
+        }
+
+        if ($defaultStore === null && $product->getStockQuantity() === null) {
+            return 0;
+        }
+
+        foreach ($product->getStoreStocks() as $productStoreStocks) {
+            if ($productStoreStocks->getStore() === $defaultStore && $productStoreStocks->getStockQuantity() !== null) {
+                return $productStoreStocks->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
+            }
+        }
+
+        return 0;
     }
 }
