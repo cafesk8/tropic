@@ -12,8 +12,10 @@ use Shopsys\FrameworkBundle\Model\Advert\AdvertFacade as BaseAdvertFacade;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertRepository;
+use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\ShopBundle\Model\Advert\Product\AdvertProduct;
 use Shopsys\ShopBundle\Model\Advert\Product\AdvertProductRepository;
+use Shopsys\ShopBundle\Model\Product\ProductRepository;
 
 class AdvertFacade extends BaseAdvertFacade
 {
@@ -23,6 +25,16 @@ class AdvertFacade extends BaseAdvertFacade
     private $advertProductRepository;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     */
+    private $currentCustomer;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertRepository $advertRepository
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
@@ -30,6 +42,8 @@ class AdvertFacade extends BaseAdvertFacade
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertFactoryInterface $advertFactory
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
      * @param \Shopsys\ShopBundle\Model\Advert\Product\AdvertProductRepository $advertProductRepository
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -38,11 +52,15 @@ class AdvertFacade extends BaseAdvertFacade
         Domain $domain,
         AdvertFactoryInterface $advertFactory,
         AdvertPositionRegistry $advertPositionRegistry,
-        AdvertProductRepository $advertProductRepository
+        AdvertProductRepository $advertProductRepository,
+        CurrentCustomer $currentCustomer,
+        ProductRepository $productRepository
     ) {
         parent::__construct($em, $advertRepository, $imageFacade, $domain, $advertFactory, $advertPositionRegistry);
 
         $this->advertProductRepository = $advertProductRepository;
+        $this->currentCustomer = $currentCustomer;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -75,15 +93,39 @@ class AdvertFacade extends BaseAdvertFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Advert\Advert|null $advert
      * @param int $limit
-     * @return \Shopsys\ShopBundle\Model\Advert\Product\AdvertProduct[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getAdvertProductsByAdvertAndLimit(?Advert $advert, int $limit): array
     {
+        $sellableProductsForAdvert = [];
+
         if ($advert === null) {
-            return [];
+            return $sellableProductsForAdvert;
         }
 
-        return $this->advertProductRepository->getAdvertProductsByAdvertAndLimit($advert, $limit);
+        $allAdvertProducts = $this->advertProductRepository->getAdvertProductsByAdvert($advert);
+
+        foreach ($allAdvertProducts as $advertProduct) {
+            if ($advertProduct->getProduct()->isMainVariant()) {
+                $sellableVariants = $this->productRepository->getAllSellableVariantsByMainVariant(
+                    $advertProduct->getProduct(),
+                    $this->domain->getId(),
+                    $this->currentCustomer->getPricingGroup()
+                );
+
+                if (count($sellableVariants) > 0) {
+                    $sellableProductsForAdvert[] = $advertProduct->getProduct();
+                }
+            } else {
+                $sellableProductsForAdvert[] = $advertProduct->getProduct();
+            }
+
+            if (count($sellableProductsForAdvert) === $limit) {
+                return $sellableProductsForAdvert;
+            }
+        }
+
+        return $sellableProductsForAdvert;
     }
 
     /**

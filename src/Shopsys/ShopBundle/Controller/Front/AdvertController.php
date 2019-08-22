@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\ShopBundle\Model\Advert\AdvertFacade;
+use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdvertController extends FrontBaseController
@@ -17,11 +18,18 @@ class AdvertController extends FrontBaseController
     private $advertFacade;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Advert\AdvertFacade $advertFacade
+     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
      */
-    public function __construct(AdvertFacade $advertFacade)
+    private $productOnCurrentDomainFacade;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Advert\AdvertFacade $advertFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
+     */
+    public function __construct(AdvertFacade $advertFacade, ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade)
     {
         $this->advertFacade = $advertFacade;
+        $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
     }
 
     public function bannerAction()
@@ -47,6 +55,7 @@ class AdvertController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Advert/bigBannerOnHomepage.html.twig', [
             'advert' => $advert,
             'advertProducts' => $advertProducts,
+            'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($advertProducts),
         ]);
     }
 }
