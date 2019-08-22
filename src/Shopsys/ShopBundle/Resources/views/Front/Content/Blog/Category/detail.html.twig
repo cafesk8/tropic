@@ -11,12 +11,6 @@
     {{- blogCategory.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
 {% endblock %}
 
-{% block breadcrumb %}
-    {% if isMainPage is defined and isMainPage is same as(false) %}
-        {{ parent() }}
-    {% endif %}
-{% endblock %}
-
 {% block main_content %}
     {% set entityName = 'blogArticles'|trans %}
     <div class="web__line">
@@ -47,7 +41,7 @@
                                                         {{ 'Reportáže z cest'|trans }}
                                                     </span>
                                                 </div>
-                                                <a href="#" class="list-articles__item__content__title underline">
+                                                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles__item__content__title underline">
                                                     {{ blogArticle.name }}
                                                 </a>
                                                 <div class="list-articles__item__content__text">
