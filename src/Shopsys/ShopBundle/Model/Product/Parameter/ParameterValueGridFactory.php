@@ -55,7 +55,7 @@ class ParameterValueGridFactory implements GridFactoryInterface
             ->from(ParameterValue::class, 'pv')
             ->join(ProductParameterValue::class, 'ppv', Join::WITH, 'pv = ppv.value')
             ->where('ppv.parameter = :parameterId')
-            ->orderBy('pv.id')
+            ->orderBy('pv.text')
             ->groupBy('pv.id')
             ->setParameter('parameterId', $this->adminSelectedParameter->getSelectedParameter());
         $dataSource = new QueryBuilderDataSource($queryBuilder, 'pv.id');
