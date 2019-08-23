@@ -64,7 +64,7 @@ parameters:
 
     instagram:
         quality: standard_resolution
-        limit: 9
+        limit: 8
         cs:
             accessToken: 4059513203.238d10b.a291c7002b6a4934ad680cfe135a9ec3
             link: 'https://www.instagram.com/bushmanoriginal/'
@@ -83,6 +83,5 @@ parameters:
     env(S3_API_BUCKET_NAME): ''
 
     migrate_product_images_dir: 'migration-data/product-images'
-
 
     googleApiKey: AIzaSyDI31ip9EdLYk2bm_mcpmYDqi8hbqb5GbU
