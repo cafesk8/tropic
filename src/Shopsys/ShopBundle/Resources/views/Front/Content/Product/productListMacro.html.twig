@@ -110,11 +110,15 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(products, variantsIndexedByMainVariantId, listCssClass = 'list-products', productHeadingTagName, type) %}
+{% macro horizontalList(products, variantsIndexedByMainVariantId, listCssClass = 'list-products', productHeadingTagName, type, minCountForShowArrows = 1) %}
     <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}">
-        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
-            <i class="svg svg-slider-arrow"></i>
-        </span>
+
+        {% if products|length >= minCountForShowArrows %}
+            <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
+                <i class="svg svg-slider-arrow"></i>
+            </span>
+        {% endif %}
+
         <div class="{{ listCssClass }}__in">
             {% set domain = getDomain() %}
 
@@ -179,9 +183,11 @@
             </div>
         </div>
 
-        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--next js-horizontal-list-action-next">
-            <i class="svg svg-slider-arrow"></i>
-        </span>
+        {% if products|length >= minCountForShowArrows %}
+            <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--next js-horizontal-list-action-next">
+                <i class="svg svg-slider-arrow"></i>
+            </span>
+        {% endif %}
     </div>
 
 {% endmacro %}
