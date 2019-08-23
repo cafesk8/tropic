@@ -44,5 +44,6 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->displayedInHorizontalMenu = $category->isDisplayedInHorizontalMenu();
         $categoryData->preListingCategory = $category->isPreListingCategory();
         $categoryData->displayedInFirstColumn = $category->isDisplayedInFirstColumn();
+        $categoryData->legendaryCategory = $category->isLegendaryCategory();
     }
 }

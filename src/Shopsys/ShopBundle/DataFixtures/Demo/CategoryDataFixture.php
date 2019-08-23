@@ -101,6 +101,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             ]
         );
         $categoryData->displayedInHorizontalMenu = false;
+        $categoryData->legendaryCategory = true;
         $categoryData->parent = $this->getReference(self::CATEGORY_ELECTRONICS);
         $this->createCategory($categoryData, self::CATEGORY_TV);
 
@@ -117,6 +118,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             ]
         );
         $categoryData->displayedInHorizontalMenu = false;
+        $categoryData->legendaryCategory = false;
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 
         $categoryData->name = [

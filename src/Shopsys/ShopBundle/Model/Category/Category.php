@@ -38,6 +38,13 @@ class Category extends BaseCategory
     private $displayedInFirstColumn;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $legendaryCategory;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -47,6 +54,7 @@ class Category extends BaseCategory
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
+        $this->legendaryCategory = $categoryData->legendaryCategory;
     }
 
     /**
@@ -59,6 +67,7 @@ class Category extends BaseCategory
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
+        $this->legendaryCategory = $categoryData->legendaryCategory;
     }
 
     /**
@@ -92,5 +101,13 @@ class Category extends BaseCategory
     public function isDisplayedInFirstColumn(): bool
     {
         return $this->displayedInFirstColumn;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLegendaryCategory(): bool
+    {
+        return $this->legendaryCategory;
     }
 }

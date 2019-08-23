@@ -28,11 +28,17 @@ class CategoryData extends BaseCategoryData
      */
     public $displayedInFirstColumn;
 
+    /**
+     * @var bool
+     */
+    public $legendaryCategory;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->blogArticles = [];
         $this->displayedInFirstColumn = false;
+        $this->legendaryCategory = false;
     }
 }
