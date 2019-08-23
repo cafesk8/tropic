@@ -444,3 +444,6 @@ services:
 
     NinjaMutex\Lock\LockInterface:
         class: Shopsys\ShopBundle\Component\NinjaMutex\Lock\NullLock
+
+    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule:
+        class: Shopsys\ShopBundle\Model\Feed\DailyFeedCronModule
