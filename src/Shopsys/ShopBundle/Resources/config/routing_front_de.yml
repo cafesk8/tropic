@@ -1,3 +1,7 @@
+front_about_us_info:
+    path: /uber-uns/
+    defaults: { _controller: ShopsysShopBundle:Front\AboutUs:info }
+
 front_cart:
     path: /warenkorb/
     defaults: { _controller: ShopsysShopBundle:Front\Cart:index }

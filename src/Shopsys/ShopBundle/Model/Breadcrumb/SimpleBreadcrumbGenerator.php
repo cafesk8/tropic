@@ -17,6 +17,7 @@ class SimpleBreadcrumbGenerator extends BaseSimpleBreadcrumbGenerator
             parent::getRouteNameMap();
             $this->routeNameMap['front_store_index'] = t('Prodejny');
             $this->routeNameMap['front_contact_index'] = t('Kontakt');
+            $this->routeNameMap['front_about_us_info'] = t('O nás');
         }
 
         return $this->routeNameMap;

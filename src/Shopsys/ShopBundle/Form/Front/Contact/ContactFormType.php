@@ -7,7 +7,7 @@ namespace Shopsys\ShopBundle\Form\Front\Contact;
 use Shopsys\FrameworkBundle\Component\Form\TimedFormTypeExtension;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\HoneyPotType;
-use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormData;
+use Shopsys\ShopBundle\Model\ContactForm\ContactFormData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -30,7 +30,13 @@ class ContactFormType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Please enter full name']),
+                    new Constraints\NotBlank(['message' => 'Vyplňte prosím jméno']),
+                ],
+            ])
+            ->add('surname', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Vyplňte prosím příjmení']),
                 ],
             ])
             ->add('message', TextareaType::class, [
@@ -43,6 +49,13 @@ class ContactFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(['message' => 'Please enter valid e-mail']),
+                ],
+            ])
+            ->add('telephone', TextType::class, [
+                'constraints' => [
+                    new Constraints\NotBlank([
+                        'message' => 'Please enter telephone number',
+                    ]),
                 ],
             ])
             ->add('privacyPolicy', CheckboxType::class, [

@@ -3,26 +3,11 @@
 
 {{ form_errors(form) }}
 <div class="wrap-article__row">
-    <div class="wrap-article__row__full">
-        <div class="form-line-block">
-            <div class="form-line__input form-line__input--full">
-                <label for="contact_form_last" class="input__label required">
-                    {{ 'Vyberte dotaz'|trans }}
-                </label>
-
-                <select name="" class="js-not-implemented-yet">
-                    <option value="1">{{ 'Mohu odstoupit od smlouvy?'|trans}}</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="wrap-article__row">
     <div class="wrap-article__row__half">
-        {{ form_row(form.name, { label: 'Full name'|trans }) }}
+        {{ form_row(form.name, { label: 'Full name'|trans, attr: { tabindex: 1 }  }) }}
     </div>
     <div class="wrap-article__row__half">
-        {{ form_row(form.email, { label: 'E-mail'|trans }) }}
+        {{ form_row(form.email, { label: 'E-mail'|trans, attr: { tabindex: 3 }  }) }}
     </div>
 </div>
 <div class="wrap-article__row">
@@ -33,7 +18,7 @@
                     {{ 'Příjmení'|trans }}
                     <span class="form-input-required">*</span>
                 </label>
-                <input type="text" id="contact_form_lastname" name="contact_form[lastname]" required="required" class="input">
+                <input type="text" id="contact_form_lastname" name="contact_form[lastname]" required="required" class="input" tabindex="2">
             </div>
             <div class="form-line__error">
                 <span class="js-validation-errors-list js-validation-error-list-contact_form_name form-error form-error--line-block display-none" style="display: none;"><ul class="form-error__list"></ul></span>
@@ -47,7 +32,7 @@
                     {{ 'Telefon'|trans }}
                     <span class="form-input-required">*</span>
                 </label>
-                <input type="text" id="contact_form_phone" name="contact_form[phone]" required="required" class="input">
+                <input type="text" id="contact_form_phone" name="contact_form[phone]" required="required" class="input" tabindex="4">
             </div>
             <div class="form-line__error">
                 <span class="js-validation-errors-list js-validation-error-list-contact_form_name form-error form-error--line-block display-none" style="display: none;"><ul class="form-error__list"></ul></span>
@@ -62,7 +47,7 @@
                 <label class="input__label" for="{{ form.message.vars.id }}">
                     {{ 'Message'|trans }}
                 </label>
-                {{ form_widget(form.message, { rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' } }) }}
+                {{ form_widget(form.message, { rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' }, attr: { tabindex: 5 } }) }}
             </div>
             <div class="form-line__error">
                 {{ form_errors(form.message) }}

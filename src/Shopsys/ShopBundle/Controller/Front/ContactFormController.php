@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormData;
-use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormFacade;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\ShopBundle\Form\Front\Contact\ContactFormType;
+use Shopsys\ShopBundle\Model\ContactForm\ContactFormData;
+use Shopsys\ShopBundle\Model\ContactForm\ContactFormFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContactFormController extends FrontBaseController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\ContactForm\ContactFormFacade
+     * @var \Shopsys\ShopBundle\Model\ContactForm\ContactFormFacade
      */
     private $contactFormFacade;
 
@@ -30,7 +30,7 @@ class ContactFormController extends FrontBaseController
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\ContactForm\ContactFormFacade $contactFormFacade
+     * @param \Shopsys\ShopBundle\Model\ContactForm\ContactFormFacade $contactFormFacade
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
