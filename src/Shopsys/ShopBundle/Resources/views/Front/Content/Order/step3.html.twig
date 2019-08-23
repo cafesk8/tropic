@@ -35,6 +35,9 @@
 
                     {% if isSelectedPickupPlaceTransport is same as (true) %}
                         {{ form_row(form.deliveryTelephone, { required: true, label: 'Telephone'|trans }) }}
+                        {% if isGermanyDomain() is same as (true) %}
+                            <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                        {% endif %}
                     {% endif %}
                 </fieldset>
 
@@ -67,13 +70,14 @@
                             {{ form_row(form.deliveryLastName, { label: 'Last name'|trans }) }}
                             {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
                             {{ form_row(form.deliveryTelephone, { label: 'Telephone'|trans }) }}
+                            {% if isGermanyDomain() is same as (true) %}
+                                <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                            {% endif %}
                             {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
                             {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
                             {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
 
-                            {% if getDomain().locale is same as (
-                                constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_LOCALE')
-                            ) %}
+                            {% if isGermanyDomain() is same as (true) %}
                                 {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
                                 <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
                             {% else %}

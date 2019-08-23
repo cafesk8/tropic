@@ -10,9 +10,7 @@
             {{ 'Doprava a platba'|trans }}
         </h1>
 
-        {% if getDomain().locale is same as (
-            constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_LOCALE')
-        ) %}
+       {% if isGermanyDomain() is same as (true) %}
             {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
         {% endif %}
 

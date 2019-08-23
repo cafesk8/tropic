@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Twig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Domain\DomainFacade;
 use Shopsys\FrameworkBundle\Twig\DomainExtension as BaseDomainExtension;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Domain\Exception\MissingDomainIconException;
 use Shopsys\ShopBundle\Component\Domain\Exception\MissingDomainNameException;
 use Symfony\Component\Asset\Packages;
@@ -66,6 +67,7 @@ class DomainExtension extends BaseDomainExtension
     {
         return array_merge(parent::getFunctions(), [
             new TwigFunction('domainSelector', [$this, 'getDomainSelector'], ['is_safe' => ['html']]),
+            new TwigFunction('isGermanyDomain', [$this, 'isGermanyDomain']),
         ]);
     }
 
@@ -89,6 +91,14 @@ class DomainExtension extends BaseDomainExtension
         return $this->templating->render('@ShopsysShop/Front/Inline/Common/domainSelector.html.twig', [
             'domainsToRender' => $domainsToRender,
         ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGermanyDomain(): bool
+    {
+        return DomainHelper::isGermanDomain($this->domain);
     }
 
     /**

@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -23,14 +24,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PersonalInfoFormType extends AbstractType
 {
     public const VALIDATION_GROUP_COMPANY_CUSTOMER = 'companyCustomer';
-    public const VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS = 'differentDeliveryAddress';
     public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
-    public const VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED = 'deliveryTelephoneRequired';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
@@ -111,6 +111,7 @@ class PersonalInfoFormType extends AbstractType
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
+                    new Constraints\Callback([$this, 'validateTelephone']),
                 ],
             ])
             ->add('companyCustomer', CheckboxType::class, ['required' => false])
@@ -239,17 +240,16 @@ class PersonalInfoFormType extends AbstractType
                 ],
             ])
             ->add('deliveryTelephone', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter telephone number',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED],
                     ]),
                     new Constraints\Length([
                         'max' => 30,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED],
                     ]),
+                    new Constraints\Callback([$this, 'validateTelephone']),
                 ],
             ])
             ->add('deliveryStreet', TextType::class, [
@@ -322,6 +322,25 @@ class PersonalInfoFormType extends AbstractType
     }
 
     /**
+     * @param string|null $telephone
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateTelephone(?string $telephone, ExecutionContextInterface $context): void
+    {
+        if ($telephone === null) {
+            return;
+        }
+
+        if ($this->domain->getId() === DomainHelper::GERMAN_DOMAIN) {
+            // https://regex101.com/r/H4hXF5/55
+            preg_match('/^\+{1}[^\+]+$/', $telephone, $matches);
+            if (count($matches) === 0) {
+                $context->addViolation('Telefonní číslo musí začínat znakem +');
+            }
+        }
+    }
+
+    /**
      * @return string
      */
     public function getBlockPrefix()
@@ -357,10 +376,6 @@ class PersonalInfoFormType extends AbstractType
 
                     if ($this->isPickupPlaceAndStoreNull($orderData) === true) {
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
-                    }
-
-                    if ($this->isPickupPlaceAndStoreNull($orderData) === false) {
-                        $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_TELEPHONE_REQUIRED;
                     }
 
                     return $validationGroups;
