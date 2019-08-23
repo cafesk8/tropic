@@ -19,7 +19,7 @@ class MallClient
     public function __construct(
         string $apiKey
     ) {
-        $this->client = new Client($apiKey);
+        $this->client = new Client($apiKey, false);
     }
 
     /**
