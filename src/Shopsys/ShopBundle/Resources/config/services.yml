@@ -264,6 +264,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Payment\PaymentFacade: '@Shopsys\ShopBundle\Model\Payment\PaymentFacade'
 
+    Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation: '@Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation'
+
     Shopsys\FrameworkBundle\Model\Payment\PaymentRepository: '@Shopsys\ShopBundle\Model\Payment\PaymentRepository'
 
     Shopsys\ShopBundle\Model\GoPay\GoPayClientFactory:
