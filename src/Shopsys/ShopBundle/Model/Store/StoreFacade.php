@@ -10,7 +10,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
 class StoreFacade
 {
-    const DEFAULT_STORE_EXTERNAL_ID = '10001';
+    public const DEFAULT_STORE_EXTERNAL_ID = '10001';
 
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
