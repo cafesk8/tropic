@@ -439,3 +439,8 @@ services:
             - '%googleApiKey%'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator'
+
+    Shopsys\ShopBundle\Component\NinjaMutex\Lock\NullLock: ~
+
+    NinjaMutex\Lock\LockInterface:
+        class: Shopsys\ShopBundle\Component\NinjaMutex\Lock\NullLock
