@@ -14,12 +14,17 @@ class MallClient
     private $client;
 
     /**
+     * @var string
+     */
+    private $apiKey;
+
+    /**
      * @param string $apiKey
      */
     public function __construct(
         string $apiKey
     ) {
-        $this->client = new Client($apiKey, false);
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -27,6 +32,9 @@ class MallClient
      */
     public function getClient(): Client
     {
+        if ($this->client === null) {
+            $this->client = new Client($this->apiKey, false);
+        }
         return $this->client;
     }
 }
