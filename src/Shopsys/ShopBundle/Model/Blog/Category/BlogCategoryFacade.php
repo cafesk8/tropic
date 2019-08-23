@@ -223,13 +223,12 @@ class BlogCategoryFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory $category
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[]
      */
-    public function getAllVisibleChildrenByBlogCategoryAndDomainId(BlogCategory $category, int $domainId): array
+    public function getAllVisibleChildrenByDomainId(int $domainId): array
     {
-        return $this->blogCategoryRepository->getAllVisibleChildrenByBlogCategoryAndDomainId($category, $domainId);
+        return $this->blogCategoryRepository->getAllVisibleByDomainId($domainId);
     }
 
     /**

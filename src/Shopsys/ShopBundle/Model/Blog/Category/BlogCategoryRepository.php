@@ -222,17 +222,12 @@ class BlogCategoryRepository extends NestedTreeRepository
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory $blogCategory
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[]
      */
-    public function getAllVisibleChildrenByBlogCategoryAndDomainId(BlogCategory $blogCategory, int $domainId): array
+    public function getAllVisibleByDomainId(int $domainId): array
     {
-        $queryBuilder = $this->getAllVisibleByDomainIdQueryBuilder($domainId)
-            ->andWhere('bc.parent = :blogCategory')
-            ->setParameter('blogCategory', $blogCategory);
-
-        return $queryBuilder->getQuery()->execute();
+        return $this->getAllVisibleByDomainIdQueryBuilder($domainId)->getQuery()->execute();
     }
 
     /**

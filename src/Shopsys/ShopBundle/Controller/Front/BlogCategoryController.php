@@ -88,15 +88,11 @@ class BlogCategoryController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory $currentBlogCategory
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(BlogCategory $currentBlogCategory): Response
+    public function listAction(): Response
     {
-        $childrenBlogCategories = $this->blogCategoryFacade->getAllVisibleChildrenByBlogCategoryAndDomainId(
-            $currentBlogCategory,
-            $this->domain->getId()
-        );
+        $childrenBlogCategories = $this->blogCategoryFacade->getAllVisibleChildrenByDomainId($this->domain->getId());
 
         return $this->render('@ShopsysShop/Front/Content/Blog/Category/list.html.twig', [
             'blogCategories' => $childrenBlogCategories,
