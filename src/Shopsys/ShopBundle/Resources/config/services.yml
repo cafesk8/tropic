@@ -143,6 +143,10 @@ services:
 
     Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface: '@Shopsys\ShopBundle\Model\Article\ArticleDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Article\ArticleFacade: '@Shopsys\ShopBundle\Model\Article\ArticleFacade'
+
+    Shopsys\FrameworkBundle\Model\Article\ArticleRepository: '@Shopsys\ShopBundle\Model\Article\ArticleRepository'
+
     Shopsys\ShopBundle\Model\Category\CurrentCategoryResolver: ~
 
     League\Flysystem\FilesystemInterface: '@main_filesystem'

@@ -7,16 +7,7 @@
         <div class="top-bar__in">
 
             <ul class="top-bar__menu">
-                <li class="top-bar__menu__item">
-                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
-                        {{ 'Bushman club'|trans }}
-                    </a>
-                </li>
-                <li class="top-bar__menu__item">
-                    <a href="#" class="top-bar__menu__item__link js-not-implemented-yet">
-                        {{ 'Naše hodnoty'|trans }}
-                    </a>
-                </li>
+                {{ render(controller('ShopsysShopBundle:Front/Article:headerList')) }}
                 <li class="top-bar__menu__item">
                     <a href="{{ url(
                         'front_blogcategory_detail', {

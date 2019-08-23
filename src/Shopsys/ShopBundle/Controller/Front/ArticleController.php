@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
-use Shopsys\FrameworkBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Article\Article;
+use Shopsys\ShopBundle\Model\Article\ArticleFacade;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends FrontBaseController
 {
+    private const LIMIT_FOR_HEADER_ARTICLES = 3;
+
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Article\ArticleFacade
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
      */
     private $articleFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(ArticleFacade $articleFacade)
     {
@@ -66,6 +69,18 @@ class ArticleController extends FrontBaseController
         $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_SERVICES);
 
         return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
+            'articles' => $articles,
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function headerListAction(): Response
+    {
+        $articles = $this->articleFacade->getVisibleArticlesOnCurrentDomainByPlacementAndLimit(Article::PLACEMENT_TOP_MENU, self::LIMIT_FOR_HEADER_ARTICLES);
+
+        return $this->render('@ShopsysShop/Front/Content/Article/headerList.twig', [
             'articles' => $articles,
         ]);
     }
