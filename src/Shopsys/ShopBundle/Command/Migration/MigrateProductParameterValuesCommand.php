@@ -177,7 +177,8 @@ class MigrateProductParameterValuesCommand extends Command
         $sql = 'SELECT ttd.id_parameter AS parameterName, ttd.parameter_value AS parameterValue 
             FROM `sklad_varianty` sv
             JOIN `mallcz_product_parameters` ttd ON sv.nid = ttd.id_product
-            WHERE sv.ean = :ean';
+            WHERE sv.ean = :ean
+            GROUP BY sv.ean, ttd.id_parameter';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('ean', $product->getEan());
         $stmt->execute();
