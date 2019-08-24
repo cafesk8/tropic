@@ -8,7 +8,6 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
@@ -17,6 +16,7 @@ use Shopsys\ShopBundle\DataFixtures\Demo\BrandDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\CategoryDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\FlagDataFixture;
 use Shopsys\ShopBundle\Model\Category\Category;
+use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTestCase

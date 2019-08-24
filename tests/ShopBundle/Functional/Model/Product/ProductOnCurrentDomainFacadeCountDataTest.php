@@ -10,13 +10,13 @@ use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\ShopBundle\DataFixtures\Demo\BrandDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\CategoryDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\FlagDataFixture;
+use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunctionalTestCase

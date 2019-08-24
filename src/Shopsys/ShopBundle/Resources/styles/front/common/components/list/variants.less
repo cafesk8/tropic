@@ -1,5 +1,6 @@
 @list-variants-item-size: 30px;
 @list-variants-item-gap: 11px;
+@list-variants-item-padding: 5px;
 @list-variants-item-gap-with-image: 8px;
 @list-variants-item-bg: @color-f;
 @list-variants-item-bg-active: @color-green;
@@ -27,7 +28,7 @@
         height: @list-variants-item-size;
         line-height: @list-variants-item-size - 4px;
         margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
-        padding: 0 5px;
+        padding: 0 @list-variants-item-padding;
         text-align: center;
 
         font-size: 13px;
@@ -46,6 +47,15 @@
             color: @list-variants-item-disabled-font-color;
             background-color: transparent;
             border: 3px solid @color-gray-dark;
+        }
+
+        &__label {
+            display: block;
+            margin: 0 -@list-variants-item-padding;
+            width: calc(~"100% + 2*@{list-variants-item-padding}");
+            height: @list-variants-item-size - 4px;
+
+            cursor: pointer;
         }
 
         &__name {
@@ -108,5 +118,24 @@
                 display: block;
             }
         }
+
+        &__label {
+            display: block;
+            width: 100%;
+            height: @list-variants-item-size;
+
+            cursor: pointer;
+        }
+    }
+}
+
+input[type=checkbox]:checked + .list-variants__item {
+    color: @color-f;
+    background-color: @list-variants-item-bg-active;
+}
+
+input[type=checkbox]:checked + .list-variants__item-color {
+    .svg {
+        display: block;
     }
 }

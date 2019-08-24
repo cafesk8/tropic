@@ -156,3 +156,11 @@ services:
     Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade: '@Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade'
 
     Shopsys\ShopBundle\Component\Mall\MallImportOrderClient: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfigFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository'
+
+    Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade: ~
+
+    Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade'

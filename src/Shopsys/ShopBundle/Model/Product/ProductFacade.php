@@ -38,6 +38,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
 use Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView;
+use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
@@ -580,6 +581,24 @@ class ProductFacade extends BaseProductFacade
 
         return $this->productRepository->getCountOfVisibleVariantsForMainVariant(
             $mainVariant,
+            $domainId,
+            $defaultPricingGroup
+        );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForProduct(Product $product, int $domainId): array
+    {
+        $defaultPricingGroup = $this->pricingGroupRepository->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getAllSellableVariantsByMainVariant(
+            $product,
             $domainId,
             $defaultPricingGroup
         );

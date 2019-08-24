@@ -152,7 +152,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             }
 
             if (array_key_exists($mainVariantId, $finalResult) && is_array($finalResult[$mainVariantId])) {
-                ksort($finalResult[$mainVariantId], SORT_NATURAL);
+                uksort($finalResult[$mainVariantId], [SizeHelper::class, 'compareSizes']);
             }
         }
 

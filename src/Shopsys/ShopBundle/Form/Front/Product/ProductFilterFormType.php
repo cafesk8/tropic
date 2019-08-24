@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Front\Product;
 
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Twig\MoneyExtension;
+use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig;
+use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -83,6 +83,7 @@ class ProductFilterFormType extends AbstractType
                 'expanded' => true,
             ])
             ->add('search', SubmitType::class);
+        $this->addDistinguishingParameters($builder, $config);
     }
 
     /**
@@ -99,5 +100,32 @@ class ProductFilterFormType extends AbstractType
                 'method' => 'GET',
                 'csrf_protection' => false,
             ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig $config
+     */
+    private function addDistinguishingParameters(FormBuilderInterface $builder, ProductFilterConfig $config): void
+    {
+        $builder->add('colors', ChoiceType::class, [
+            'required' => false,
+            'choices' => $config->getColorChoices(),
+            'choice_label' => 'rgb',
+            'choice_name' => 'id',
+            'choice_value' => 'id',
+            'multiple' => true,
+            'expanded' => true,
+        ]);
+
+        $builder->add('sizes', ChoiceType::class, [
+            'required' => false,
+            'choices' => $config->getSizeChoices(),
+            'choice_label' => 'text',
+            'choice_name' => 'id',
+            'choice_value' => 'id',
+            'multiple' => true,
+            'expanded' => true,
+        ]);
     }
 }

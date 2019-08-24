@@ -424,6 +424,10 @@ services:
 
     Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@Shopsys\ShopBundle\Twig\NumberFormatterExtension'
 
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig: '@Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfigFactory'
+
     Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory: '@Shopsys\ShopBundle\Model\Product\Search\FilterQueryFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade: '@Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForListFacade'
@@ -508,3 +512,9 @@ services:
             - { name: kernel.event_listener, event: kernel.controller }
 
     Shopsys\ShopBundle\Model\Gtm\GtmHelper: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer: '@Shopsys\ShopBundle\Model\Product\Search\ProductFilterDataToQueryTransformer'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@Shopsys\ShopBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'

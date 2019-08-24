@@ -10,7 +10,6 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
-use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade;
@@ -22,6 +21,7 @@ use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
+use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\Request;
@@ -251,6 +251,7 @@ class ProductController extends FrontBaseController
 
         $productFilterData = new ProductFilterData();
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $productFilterConfig */
         $productFilterConfig = $this->createProductFilterConfigForCategory($category);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
