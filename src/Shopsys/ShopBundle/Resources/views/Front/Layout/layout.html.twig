@@ -38,13 +38,13 @@
                     {% endif %}
                 {% endblock %}
             </div>
-            <div class="web__container">
-                {% block content %}{% endblock %}
+
+            {% block content %}{% endblock %}
+
+            <div class="web__footer{% if not isCookiesConsentGiven() %} web__footer--with-cookies js-eu-cookies-consent-footer-gap{% endif %}">
+                {{ block('footer') }}
             </div>
         </div>
-    </div>
-    <div class="web__footer{% if not isCookiesConsentGiven() %} web__footer--with-cookies js-eu-cookies-consent-footer-gap{% endif %}">
-        {{ block('footer') }}
     </div>
     {% if not isCookiesConsentGiven() %}
         {% set cookiesArticle = findCookiesArticleByDomainId(getDomain().id) %}
