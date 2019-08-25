@@ -29,7 +29,7 @@
         .reset-ul();
         .clearfix();
         padding: 0;
-        width: calc(~"100% + @{grid-images-item-gap}");
+        width: 100%;
 
         @media @query-md {
             width: @grid-images-landscape-width;
@@ -44,13 +44,21 @@
         &__item {
             display: inline-block;
             float: left;
-            width: 100%/2;
+            width: 100%;
+
+            @media @query-sm {
+                width: 100%/2;
+            }
 
             img {
                 width: 100%;
                 max-width: @grid-images-landscape-image-width;
                 max-height: @grid-images-landscape-image-height;
-                padding: 0 @grid-images-item-gap @grid-images-item-gap 0;
+                padding-bottom: @grid-images-item-gap;
+
+                @media @query-sm {
+                    padding: 0 @grid-images-item-gap @grid-images-item-gap 0;
+                }
             }
         }
     }
