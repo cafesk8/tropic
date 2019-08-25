@@ -90,7 +90,7 @@ class GoPayAvailablePaymentsCronModule implements SimpleCronModuleInterface
                 continue;
             }
 
-            $this->logger->addInfo(sprintf('downloading for %s locale', $domain->getLocale()));
+            $this->logger->addInfo(sprintf('downloading for `%s` locale', $domain->getLocale()));
             try {
                 $this->paymentMethodFacade->downloadAndUpdatePaymentMethods($domain);
             } catch (GoPayPaymentDownloadException $ex) {

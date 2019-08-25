@@ -135,8 +135,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     {
         if (!($productTransferResponseItemData instanceof ProductTransferResponseItemData)) {
             throw new InvalidProductTransferResponseItemDataException(
-                'Invalid argument passed into method. Instance of %s was expected',
-                ProductTransferResponseItemData::class
+                sprintf('Invalid argument passed into method. Instance of `%s` was expected', ProductTransferResponseItemData::class)
             );
         }
 
@@ -153,7 +152,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         } else {
             $this->processProductItemWithVariants($productTransferResponseItemData);
         }
-        $this->logger->addInfo(sprintf('Products for group with transfer number %s were created', $productTransferResponseItemData->getTransferNumber()));
+        $this->logger->addInfo(sprintf('Products for group with transfer number `%s` were created', $productTransferResponseItemData->getTransferNumber()));
     }
 
     /**
@@ -188,10 +187,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
         if ($product === null) {
             $product = $this->productFacade->create($productData);
-            $this->logger->addInfo(sprintf('Product variant with transfer number %s was created', $transferNumber));
+            $this->logger->addInfo(sprintf('Product variant with transfer number `%s` was created', $transferNumber));
         } else {
             $product = $this->productFacade->edit($product->getId(), $productData);
-            $this->logger->addInfo(sprintf('Product variant with transfer number %s was edited', $transferNumber));
+            $this->logger->addInfo(sprintf('Product variant with transfer number `%s` was edited', $transferNumber));
         }
 
         foreach ($productData->parameters as $parameter) {

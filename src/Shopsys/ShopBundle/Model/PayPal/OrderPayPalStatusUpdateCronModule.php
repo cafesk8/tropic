@@ -53,10 +53,10 @@ class OrderPayPalStatusUpdateCronModule implements SimpleCronModuleInterface
         $twentyOneDaysAgo = new DateTime('-21 days');
         $orders = $this->orderFacade->getAllUnpaidPayPalOrders($twentyOneDaysAgo);
 
-        $this->logger->debug('Downloading status updates for ' . count($orders) . ' orders.');
+        $this->logger->debug('Downloading status updates for `' . count($orders) . '` orders.');
 
         foreach ($orders as $order) {
-            $this->logger->debug('Downloading PayPal status for order with ID "' . $order->getId() . '".');
+            $this->logger->debug('Downloading PayPal status for order with ID `' . $order->getId() . '`.');
 
             try {
                 $oldPayPalStatus = $order->getPayPalStatus();
@@ -64,7 +64,12 @@ class OrderPayPalStatusUpdateCronModule implements SimpleCronModuleInterface
 
                 if ($oldPayPalStatus !== $newPayPalStatus) {
                     $this->orderFacade->setPayPalStatus($order, $newPayPalStatus);
-                    $this->logger->info('Order with id "' . $order->getId() . '" changed PayPal status from "' . $oldPayPalStatus . '" to "' . $newPayPalStatus . '".');
+                    $this->logger->info(sprintf(
+                        'Order with id `%d` changed PayPal status from `%s` to `%s`.',
+                        $order->getId(),
+                        $oldPayPalStatus,
+                        $newPayPalStatus
+                    ));
                 }
             } catch (PayPalConnectionException $exception) {
                 $this->logger->addError(

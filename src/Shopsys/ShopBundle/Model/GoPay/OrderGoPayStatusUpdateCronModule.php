@@ -65,10 +65,10 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
         $twentyOneDaysAgo = $now->sub(DateInterval::createFromDateString('21 days'));
         $orders = $this->orderFacade->getAllUnpaidGoPayOrders($twentyOneDaysAgo);
 
-        $this->logger->debug('Downloading status updates for ' . count($orders) . ' orders.');
+        $this->logger->debug('Downloading status updates for `' . count($orders) . '` orders.');
 
         foreach ($orders as $order) {
-            $this->logger->debug('Downloading GoPay status for order with ID "' . $order->getId() . '".');
+            $this->logger->debug('Downloading GoPay status for order with ID `' . $order->getId() . '`.');
 
             $oldOrderGoPayStatus = $order->getGoPayStatus();
 
@@ -87,10 +87,17 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
             }
 
             if ($oldOrderGoPayStatus !== $order->getGoPayStatus()) {
-                $this->logger->info('Order with id "' . $order->getId() . '" changed GoPay status from "' . $oldOrderGoPayStatus . '" to "' . $order->getGoPayStatus() . '".');
+                $this->logger->info(
+                    sprintf(
+                        'Order with id `%d` changed GoPay status from `%s` to `%s`.',
+                        $order->getId(),
+                        $oldOrderGoPayStatus,
+                        $order->getGoPayStatus()
+                    )
+                );
             }
 
-            $this->logger->info('Order with id "' . $order->getId() . '" now has GoPay status: "' . $order->getGoPayStatus() . '".');
+            $this->logger->info(sprintf('Order with id `%d` now has GoPay status: `%s`.', $order->getId(), $order->getGoPayStatus()));
 
             if ($oldOrderGoPayStatus !== $order->getGoPayStatus() && $order->getGoPayStatus() === PaymentStatus::PAID) {
                 if ($order->getStatus()->getMailTemplateName() !== null) {

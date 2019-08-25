@@ -105,10 +105,10 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
 
         if ($isNew === true) {
             $this->customerFacade->create($customerData);
-            $this->logger->addInfo(sprintf('Customer with transfer ID %s was created', $itemData->getDataIdentifier()));
+            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` was created', $itemData->getDataIdentifier()));
         } else {
             $this->customerFacade->editByCustomer($customer->getId(), $customerData);
-            $this->logger->addInfo(sprintf('Customer with transfer ID %s was edited', $itemData->getDataIdentifier()));
+            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` was edited', $itemData->getDataIdentifier()));
         }
     }
 

@@ -104,8 +104,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
     {
         if (!($storeStockTransferResponseItemData instanceof StoreStockTransferResponseItemData)) {
             throw new InvalidProductTransferResponseItemDataException(
-                'Invalid argument passed into method. Instance of %s was expected',
-                StoreStockTransferResponseItemData::class
+                sprintf('Invalid argument passed into method. Instance of `%s` was expected', StoreStockTransferResponseItemData::class)
             );
         }
 
@@ -115,7 +114,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
 
         if ($product === null) {
             $this->logger->addError(
-                printf('Product with EAN %s has not been found while updating store stock quantities', $storeStockTransferResponseItemData->getBarcode())
+                sprintf('Product with EAN `%s` has not been found while updating store stock quantities', $storeStockTransferResponseItemData->getBarcode())
             );
             return;
         }
@@ -129,7 +128,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
 
         $this->productFacade->edit($product->getId(), $productData);
 
-        $this->logger->addInfo(sprintf('Store stock quantities has been updated for product with EAN %s', $storeStockTransferResponseItemData->getBarcode()));
+        $this->logger->addInfo(sprintf('Store stock quantities has been updated for product with EAN `%s`', $storeStockTransferResponseItemData->getBarcode()));
     }
 
     /**

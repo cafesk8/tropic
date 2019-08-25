@@ -59,7 +59,7 @@ class StoreStockTransferMapper
 
             if ($store === null) {
                 $transferLogger->addError(
-                    printf('Store with external number %s not found while updating product store stock quantities.', $stockQuantity->getSiteNumber())
+                    sprintf('Store with external number `%s` not found while updating product store stock quantities.', $stockQuantity->getSiteNumber())
                 );
                 continue;
             }

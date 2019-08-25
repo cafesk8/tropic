@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
 use Shopsys\ShopBundle\Component\Rest\RestClient;
+use Shopsys\ShopBundle\Component\String\StringHelper;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferExportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
@@ -90,7 +91,7 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
         if ($transferResponse->getStatusCode() !== 200) {
             $this->orderFacade->markOrderAsFailedExported($itemIdentifier);
             $this->logger->addError(sprintf(
-                'Order with id %s was not exported, because of bad response code `%s`',
+                'Order with id `%s` was not exported, because of bad response code `%s`',
                 $itemIdentifier,
                 $transferResponse->getStatusCode()
             ));
@@ -100,13 +101,13 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
         if (array_key_exists('Error', $responseData) && $responseData['Error'] === true) {
             $this->orderFacade->markOrderAsFailedExported($itemIdentifier);
             $this->logger->addWarning(sprintf(
-                'Order with id %s was not exported, because of error `%s`',
+                'Order with id `%s` was not exported, because of error `%s`',
                 $itemIdentifier,
-                $responseData['ErrorMessage']
+                StringHelper::removeNewline((string)$responseData['ErrorMessage'])
             ));
         } else {
             $this->orderFacade->markOrderAsExported($itemIdentifier);
-            $this->logger->addInfo(sprintf('Order with id %s was exported successfully', $itemIdentifier));
+            $this->logger->addInfo(sprintf('Order with id `%s` was exported successfully', $itemIdentifier));
         }
     }
 }

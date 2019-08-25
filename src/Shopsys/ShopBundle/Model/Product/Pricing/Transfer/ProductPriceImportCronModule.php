@@ -93,15 +93,15 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $this->logger->addInfo('Downloading product prices for domain with ID ' . DomainHelper::CZECH_DOMAIN);
+        $this->logger->addInfo('Downloading product prices for domain with ID `' . DomainHelper::CZECH_DOMAIN . '`');
         $czechTransferDataItems = $this->getTransferItemsFromResponse(DomainHelper::CZECH_DOMAIN, $this->multidomainRestClient->getCzechRestClient());
         $transferDataItems = $czechTransferDataItems;
 
-        $this->logger->addInfo('Downloading product prices for domain with ID ' . DomainHelper::SLOVAK_DOMAIN);
+        $this->logger->addInfo('Downloading product prices for domain with ID `' . DomainHelper::SLOVAK_DOMAIN . '`');
         $slovakTransferDataItems = $this->getTransferItemsFromResponse(DomainHelper::SLOVAK_DOMAIN, $this->multidomainRestClient->getSlovakRestClient());
         $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
 
-        $this->logger->addInfo('Downloading product prices for domain with ID ' . DomainHelper::GERMAN_DOMAIN);
+        $this->logger->addInfo('Downloading product prices for domain with ID `' . DomainHelper::GERMAN_DOMAIN . '`');
         $germanTransferDataItems = $this->getTransferItemsFromResponse(DomainHelper::GERMAN_DOMAIN, $this->multidomainRestClient->getGermanRestClient());
         $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
 
@@ -115,8 +115,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
     {
         if (!($productTransferResponseItemData instanceof ProductPriceTransferResponseItemData)) {
             throw new InvalidProductTransferResponseItemDataException(
-                'Invalid argument passed into method. Instance of %s was expected',
-                ProductPriceTransferResponseItemData::class
+                sprintf('Invalid argument passed into method. Instance of %s was expected', ProductPriceTransferResponseItemData::class)
             );
         }
 
@@ -126,7 +125,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
 
         if ($product === null) {
             $this->logger->addError(
-                printf('Product with EAN %s has not been found while updating prices', $productTransferResponseItemData->getBarcode())
+                sprintf('Product with EAN `%s` has not been found while updating prices', $productTransferResponseItemData->getBarcode())
             );
             return;
         }
@@ -145,7 +144,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
 
         $this->productPriceRecalculator->recalculateOneProductPrices($product);
 
-        $this->logger->addInfo(sprintf('Prices for product with ID %s has been updated and recalculated', $product->getId()));
+        $this->logger->addInfo(sprintf('Prices for product with ID `%s` has been updated and recalculated', $product->getId()));
     }
 
     /**
