@@ -80,6 +80,25 @@ class StoreRepository
     }
 
     /**
+     * @param int $storeId
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Store\Store
+     */
+    public function getStoreForDomainById(int $storeId, int $domainId): Store
+    {
+        $store = $this->getAllForDomainQueryBuilder($domainId)
+            ->andWhere('s.id = :storeId')
+            ->setParameter('storeId', $storeId)
+            ->getQuery()->getOneOrNullResult();
+
+        if ($store === null) {
+            throw new StoreNotFoundException('Store with ID ' . $storeId . ' not found for domain with ID `' . $storeId . '`.');
+        }
+
+        return $store;
+    }
+
+    /**
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Store\Store[]
      */

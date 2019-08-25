@@ -68,10 +68,15 @@ class StoreController extends FrontBaseController
     }
 
     /**
+     * @param int $storeId
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function storeDetailAction(): Response
+    public function detailAction(int $storeId): Response
     {
-        return $this->render('@ShopsysShop/Front/Content/Stores/detail.html.twig');
+        $store = $this->storeFacade->getStoreForDomainById($storeId);
+
+        return $this->render('@ShopsysShop/Front/Content/Stores/detail.html.twig', [
+            'store' => $store,
+        ]);
     }
 }

@@ -113,7 +113,7 @@ class StoreFormType extends AbstractType
                 'required' => false,
                 'label' => t('Google Maps link'),
                 'constraints' => [
-                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters']),
+                    new Constraints\Length(['max' => 500, 'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('position', IntegerType::class, [

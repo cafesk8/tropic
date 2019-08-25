@@ -28,7 +28,7 @@
                 <ul class="list-stores">
                     {% for store in stores %}
                         <li class="list-stores__item">
-                            <a href="/stores/detail" class="list-stores__item__in">
+                            <a href="{{ url('front_store_detail', { storeId: store.id }) }}" class="list-stores__item__in">
                                 <div class="list-stores__item__image">
                                     {{ image(store) }}
                                 </div>

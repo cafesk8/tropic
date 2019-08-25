@@ -83,5 +83,5 @@ front_store_index:
     defaults: { _controller: ShopsysShopBundle:Front\Store:index }
 
 front_store_detail:
-    path: /prodejny/detail/
-    defaults: { _controller: ShopsysShopBundle:Front\Store:storeDetail }
+    path: /prodejny/detail/{storeId}/
+    defaults: { _controller: ShopsysShopBundle:Front\Store:detail }

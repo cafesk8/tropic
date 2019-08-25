@@ -83,6 +83,15 @@ class StoreFacade
     }
 
     /**
+     * @param int $storeId
+     * @return \Shopsys\ShopBundle\Model\Store\Store
+     */
+    public function getStoreForDomainById(int $storeId): Store
+    {
+        return $this->storeRepository->getStoreForDomainById($storeId, $this->domain->getId());
+    }
+
+    /**
      * @param string $externalNumber
      * @return \Shopsys\ShopBundle\Model\Store\Store|null
      */

@@ -9,24 +9,24 @@
 {% block main_content %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
-            <h1 class="in-title in-title--dark in-title--big in-title--center js-not-implemented-yet">
-                {{ 'Olomouc Galerie Šantovka'|trans }}
+            <h1 class="in-title in-title--dark in-title--big in-title--center">
+                {{ store.name }}
             </h1>
             <div class="box-contact">
                 <div class="box-contact__left">
                     <div class="box-contact__block">
                         <div class="box-contact__block__text">
                             <i class="svg svg-phone"></i>
-                            {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                            {{ 'Volejte na '|trans }} {{ store.telephone }}
                         </div>
                         <div class="box-contact__block__info">
-                            {{ getShopInfoPhoneHours() }}
+                            {{ store.openingHours }}
                         </div>
                     </div>
                     <div class="box-contact__block box-contact__block--no-bottom-gap">
                         <div class="box-contact__block__text">
                             <i class="svg svg-mail"></i>
-                            <a class="box-contact__block__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
+                            <a class="box-contact__block__text__link underline" href="mailto:{{ store.email }}" class="underline">{{ store.email }}</a>
                         </div>
                         <div class="box-contact__block__info">
                             {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
@@ -65,10 +65,10 @@
             <div class="wrap-article">
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        <img src="https://placeimg.com/570/380/any">
+                        {{ image(store) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.5853368987177!2d14.673543315559575!3d49.850248479397116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b871241bc86ab%3A0xb8fdb42aee6cdd!2sBushman+Company+a.s.!5e0!3m2!1scs!2scz!4v1564350162889!5m2!1scs!2scz" width="100%" height="378" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        <iframe src="{{ store.googleMapsLink }}" width="100%" height="378" frameborder="0" style="border:0" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
