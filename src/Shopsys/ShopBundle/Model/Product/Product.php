@@ -243,6 +243,17 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
+     * @param int $domainId
+     */
+    public function setActionPrice(?Money $actionPrice, int $domainId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Product\ProductDomain $productDomain */
+        $productDomain = $this->getProductDomain($domainId);
+        $productDomain->setActionPrice($actionPrice);
+    }
+
+    /**
      * @param int|null $limit
      * @return \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
      */

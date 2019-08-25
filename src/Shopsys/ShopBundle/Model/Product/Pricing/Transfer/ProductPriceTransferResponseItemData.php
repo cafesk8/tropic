@@ -30,6 +30,11 @@ class ProductPriceTransferResponseItemData implements TransferResponseItemDataIn
     private $price;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    private $actionPrice;
+
+    /**
      * @var int
      */
     private $domainId;
@@ -42,7 +47,8 @@ class ProductPriceTransferResponseItemData implements TransferResponseItemDataIn
     {
         $this->number = $restData['Number'];
         $this->barcode = $restData['Barcode'];
-        $this->price = Money::createFromFloat($restData['Price'], 6);
+        $this->price = Money::createFromFloat($restData['FullPrice'], 6);
+        $this->actionPrice = Money::createFromFloat($restData['Price'], 6);
         $this->domainId = $domainId;
     }
 
@@ -76,6 +82,22 @@ class ProductPriceTransferResponseItemData implements TransferResponseItemDataIn
     public function getPrice(): Money
     {
         return $this->price;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money
+     */
+    public function getActionPrice(): Money
+    {
+        return $this->actionPrice;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActionPrice(): bool
+    {
+        return $this->price->equals($this->actionPrice) === false;
     }
 
     /**
