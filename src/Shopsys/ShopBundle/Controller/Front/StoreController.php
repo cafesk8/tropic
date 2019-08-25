@@ -61,7 +61,10 @@ class StoreController extends FrontBaseController
      */
     public function indexAction(): Response
     {
-        return $this->render('@ShopsysShop/Front/Content/Stores/index.html.twig');
+        return $this->render('@ShopsysShop/Front/Content/Stores/index.html.twig', [
+            'regions' => $this->storeFacade->findRegionNames(),
+            'storesIndexedByRegion' => $this->storeFacade->findStoresIndexedByRegion(),
+        ]);
     }
 
     /**

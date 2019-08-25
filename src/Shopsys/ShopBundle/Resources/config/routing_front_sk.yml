@@ -77,3 +77,11 @@ front_personal_data_export:
 front_personal_data_access_export:
     path: /export-osobnich-udaju/{hash}/
     defaults: { _controller: ShopsysShopBundle:Front\PersonalData:accessExport }
+
+front_store_index:
+    path: /stores/
+    defaults: { _controller: ShopsysShopBundle:Front\Store:index }
+
+front_store_detail:
+    path: /stores/detail/
+    defaults: { _controller: ShopsysShopBundle:Front\Store:storeDetail }

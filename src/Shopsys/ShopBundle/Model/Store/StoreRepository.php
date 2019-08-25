@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Store;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -96,5 +97,51 @@ class StoreRepository
     public function getAll(): array
     {
         return $this->getStoreRepository()->findAll();
+    }
+
+    /**
+     * @param int $domainId
+     * @return string[]
+     */
+    public function findRegionNames(int $domainId): array
+    {
+        $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
+        $queryBuilder->select('s.region')
+            ->addSelect('COUNT(s) as storesCount')
+            ->andWhere('s.region IS NOT NULL')
+            ->groupBy('s.region');
+
+        $regionsArray = $queryBuilder->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
+
+        $regionsNameAndCount = [];
+
+        foreach ($regionsArray as $regionData) {
+            $regionsNameAndCount[$regionData['region']] = $regionData['region'] . ' (' . $regionData['storesCount'] . ')';
+        }
+
+        return $regionsNameAndCount;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Store\Store[][]
+     */
+    public function findStoresIndexedByRegion(int $domainId): array
+    {
+        $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
+        $queryBuilder
+            ->orderBy('s.region', 'ASC')
+            ->addOrderBy('s.position', 'ASC');
+
+        $stores = $queryBuilder->getQuery()->getResult();
+
+        $storesIndexedByRegion = [];
+
+        /** @var \Shopsys\ShopBundle\Model\Store\Store $store */
+        foreach ($stores as $store) {
+            $storesIndexedByRegion[$store->getRegion()][] = $store;
+        }
+
+        return $storesIndexedByRegion;
     }
 }
