@@ -5,7 +5,7 @@
 @list-top-products-item-title-line-height: @font-size-small+4px;
 @list-top-products-item-title-rows: 2;
 
-@list-top-products-arrow-size: 28px;
+@list-top-products-arrow-size: 38px;
 @list-top-products-arrow-gap: 30px;
 @list-top-products-side-gap: 40px;
 
@@ -38,6 +38,7 @@
         cursor: pointer;
         color: @color-orange;
         font-size: @list-top-products-arrow-size;
+        height: @list-top-products-arrow-size + 2px;
 
         &:hover {
             color: darken(@color-orange, 10%);
@@ -57,7 +58,7 @@
         }
 
         &--next {
-            right: -(@list-top-products-arrow-size + @list-top-products-arrow-gap - 5px);
+            right: -(@list-top-products-arrow-size + @list-top-products-arrow-gap - 10px);
 
             transform: rotate(180deg);
 

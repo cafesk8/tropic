@@ -39,6 +39,7 @@
         cursor: pointer;
         color: @color-orange;
         font-size: @list-last-visited-arrow-size;
+        height: @list-last-visited-arrow-size + 2px;
 
         &:hover {
             color: darken(@color-orange, 10%);
@@ -59,7 +60,6 @@
 
         &--next {
             right: -(@list-last-visited-arrow-size + @list-last-visited-arrow-gap/2);
-            top: calc(~"@{list-last-visited-item-image-size}/2 - 14px");
 
             transform: rotate(180deg);
 
