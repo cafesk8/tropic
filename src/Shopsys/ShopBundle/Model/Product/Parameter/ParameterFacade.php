@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Model\Product\Parameter;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParameterFacade;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface;
@@ -72,10 +71,19 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
-     * @inheritDoc
+     * @param int $parameterId
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterData $parameterData
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter
      */
     public function edit($parameterId, ParameterData $parameterData)
     {
+        /** @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameterForCheck */
+        $parameterForCheck = $this->parameterRepository->getById($parameterId);
+
+        if ($parameterData->visibleOnFrontend !== $parameterForCheck->isVisibleOnFrontend() && count($this->getProductsWithDistinguishingParameter($parameterForCheck)) > 0) {
+            throw new ParameterUsedAsDistinguishingParameterException();
+        }
+
         $parameter = parent::edit($parameterId, $parameterData);
 
         $this->cachedProductDistinguishingParameterValueFacade->invalidAll();
@@ -184,5 +192,21 @@ class ParameterFacade extends BaseParameterFacade
             'sk' => 'Velikosť',
             'de' => 'Größe',
         ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @return string
+     */
+    public function getParameterUsedAsDistinguishingParameterExceptionProducts(Parameter $parameter): string
+    {
+        $productIdsWithDistinguishingParameter = implode(
+            ', ',
+            array_map(function ($product) {
+                return $product->getId();
+            }, $this->getProductsWithDistinguishingParameter($parameter))
+        );
+
+        return $productIdsWithDistinguishingParameter;
     }
 }

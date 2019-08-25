@@ -121,16 +121,18 @@
                                             {% if productParameterValues > 0 %}
                                             <ul class="list-params">
                                                 {% for productParameterValue in productParameterValues %}
-                                                <li class="list-params__item">
-                                                    <span class="list-params__item__text">
-                                                        <span class="list-params__item__text__name">
-                                                            {{ productParameterValue.parameter.name }}:
-                                                        </span>
-                                                        <span class="list-params__item__text__value">
-                                                            {{ productParameterValue.value.text }}
-                                                        </span>
-                                                    </span>
-                                                </li>
+                                                    {% if(productParameterValue.parameter.visibleOnFrontend is same as (true)) %}
+                                                        <li class="list-params__item">
+                                                            <span class="list-params__item__text">
+                                                                <span class="list-params__item__text__name">
+                                                                    {{ productParameterValue.parameter.name }}:
+                                                                </span>
+                                                                <span class="list-params__item__text__value">
+                                                                    {{ productParameterValue.value.text }}
+                                                                </span>
+                                                            </span>
+                                                        </li>
+                                                    {% endif %}
                                                 {% endfor %}
                                             </ul>
                                             {% endif %}

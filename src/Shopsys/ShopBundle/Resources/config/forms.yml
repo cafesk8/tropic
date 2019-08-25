@@ -63,3 +63,7 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
+
+    Shopsys\ShopBundle\Form\Admin\ParameterFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\Parameter\ParameterFormType}

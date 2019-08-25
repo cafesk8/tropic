@@ -449,3 +449,11 @@ services:
 
     Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule:
         class: Shopsys\ShopBundle\Model\Feed\DailyFeedCronModule
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterGridFactory: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterGridFactory'
+
+    Shopsys\FrameworkBundle\Controller\Admin\GridController:
+        class: Shopsys\ShopBundle\Controller\Admin\GridController
+        tags: ['controller.service_arguments']
