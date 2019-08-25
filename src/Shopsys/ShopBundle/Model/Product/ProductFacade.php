@@ -271,7 +271,7 @@ class ProductFacade extends BaseProductFacade
         }
 
         $mainVariantGroup->setDistinguishingParameter($productData->distinguishingParameterForMainVariantGroup);
-        $mainVariantGroup->addProducts($productData->productsInGroup);
+        $mainVariantGroup->addProducts(array_merge($productData->productsInGroup, [$product]));
         $this->em->flush();
     }
 
