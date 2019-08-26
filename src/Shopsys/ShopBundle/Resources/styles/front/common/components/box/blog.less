@@ -1,7 +1,7 @@
 @box-blog-panel-width: 320px;
 @box-blog-panel-gap: 50px;
 @box-blog-padding: 30px;
-@box-blog-title-bottom-gap: 21px;
+@box-blog-title-bottom-gap: 11px;
 
 .box-blog {
     display: flex;
@@ -57,13 +57,12 @@
 
     &__title {
         display: block;
-        margin-bottom: @box-blog-title-bottom-gap;
+        text-align: center;
+        margin-bottom: 66px;
 
-        color: @color-base;
-        font-size: 15px;
+        font-family: @font-alt;
         font-weight: 700;
-        text-transform: uppercase;
-        text-decoration: none;
+        font-size: 36px;
     }
 
     &__categories {
@@ -75,15 +74,27 @@
 
         background-color: @color-gray;
 
+        &__title {
+            display: block;
+            margin-bottom: @box-blog-title-bottom-gap;
+
+            color: @color-base;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
 
         &__item {
             position: relative;
-            margin-bottom: 5px;
-            padding: 7px 12px;
+            margin-bottom: 6px;
+            padding: 5px 12px;
 
             color: @color-brown-light-2;
             background-color: @color-f;
+            font-size: 13px;
             text-decoration: none;
+            text-transform: uppercase;
 
             &:last-child {
                 margin-bottom: 0;

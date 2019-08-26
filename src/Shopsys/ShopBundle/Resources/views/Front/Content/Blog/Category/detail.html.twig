@@ -16,7 +16,7 @@
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <div class="box-blog">
-                <h1 class="box-blog__title">
+                <h1 class="box-bog__title">
                     {% if blogCategory.getSeoH1(domain.id) is not null %}
                         {{ blogCategory.getSeoH1(domain.id) }}
                     {% else %}
@@ -41,8 +41,8 @@
                                                         {{ 'Reportáže z cest'|trans }}
                                                     </span>
                                                 </div>
-                                                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles-blog__item__content__title underline">
-                                                    {{ blogArticle.name }}
+                                                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles-blog__item__content__title">
+                                                    <span class="underline-text">{{ blogArticle.name }}</span>
                                                 </a>
                                                 <div class="list-articles-blog__item__content__text">
                                                     {{ blogArticle.perex|striptags|raw }}
