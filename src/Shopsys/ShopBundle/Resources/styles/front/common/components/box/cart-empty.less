@@ -4,15 +4,22 @@
 .box-cart-empty {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin-bottom: @margin-gap;
+
+    @media @query-md {
+        flex-direction: row;
+    }
 
     &__image {
         flex: 1;
         padding-right: @box-cart-empty-gap-mobile;
         text-align: center;
+        width: 150px;
 
         @media @query-lg {
+            width: auto;
             padding-right: @box-cart-empty-gap-desktop;
         }
     }
@@ -21,6 +28,7 @@
         flex: 1;
         padding: 0 @box-cart-empty-gap-mobile;
         text-align: center;
+        margin-top: 20px;
 
         font-size: 12px;
 
@@ -37,6 +45,10 @@
 
         @media @query-vl {
             font-size: 20px;
+        }
+
+        &__button {
+            margin-top: 20px;
         }
     }
 }

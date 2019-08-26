@@ -143,16 +143,15 @@
                     </div>
                     <div class="box-cart-empty__text">
                         {{ 'Your cart is unfortunately empty. To create order, you have to <a href="%url%">choose</a> some product first'|transHtml({ '%url%': url('front_homepage') }) }}
+
+                        <div class="box-cart-empty__text__button">
+                            <a href="{{url('front_homepage') }}" class="btn">
+                                {{ 'Back to buying'|trans }}
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="in-action">
-                    <div class="in-action__left">
-                        <a href="{{url('front_homepage') }}" class="btn in-action__btn">
-                            {{ 'Back to buying'|trans }}
-                        </a>
-                    </div>
-                </div>
             {% endif %}
         </div>
     </div>
