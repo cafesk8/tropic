@@ -16,7 +16,7 @@ class UserData extends BaseUserData
     /**
      * @var string|null
      */
-    public $branchNumber;
+    public $ean;
 
     /**
      * @var bool

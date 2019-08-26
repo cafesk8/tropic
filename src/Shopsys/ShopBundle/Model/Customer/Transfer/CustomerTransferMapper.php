@@ -66,7 +66,7 @@ class CustomerTransferMapper
         $userData->lastName = $customerTransferResponseItemData->getLastName();
         $userData->email = $customerTransferResponseItemData->getEmail();
         $userData->telephone = $customerTransferResponseItemData->getPhone();
-        $userData->branchNumber = $customerTransferResponseItemData->getBranchNumber();
+        $userData->ean = $customerTransferResponseItemData->getBranchNumber();
         $userData->domainId = $domainId;
         $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
 
