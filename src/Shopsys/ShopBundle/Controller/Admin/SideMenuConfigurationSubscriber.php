@@ -31,6 +31,9 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $promoCodeMenu->addChild('admin_promocode_new', ['route' => 'admin_promocode_new', 'label' => t('Vytvoření slevového kupónu'), 'display' => false]);
         $promoCodeMenu->addChild('admin_promocode_edit', ['route' => 'admin_promocode_edit', 'label' => t('Editace slevového kupónu'), 'display' => false]);
         $promoCodeMenu->addChild('admin_promocode_newmassgenerate', ['route' => 'admin_promocode_newmassgenerate', 'label' => t('Hromadné vytvoření slevových kupónů'), 'display' => false]);
+
+        $transportAndPaymentMenu = $pricingMenu->getChild('free_transport_and_payment');
+        $transportAndPaymentMenu->setLabel(t('Doprava zdarma'));
     }
 
     /**
