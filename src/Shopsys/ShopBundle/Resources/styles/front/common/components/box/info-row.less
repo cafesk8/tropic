@@ -28,6 +28,11 @@
     a {
         color: @color-brown;
         text-decoration: underline;
+
+        &:hover {
+            color: @color-base;
+            transition: color @transition;
+        }
     }
 
     &__close {
