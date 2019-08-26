@@ -114,7 +114,7 @@ class CustomerController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Customer/edit.html.twig', [
             'form' => $form->createView(),
             'bushmanClubPointPeriods' => $this->bushmanClubPointPeriodSettings->getPeriods(),
-            'customerId' => $user->getId(),
+            'customer' => $user,
         ]);
     }
 
