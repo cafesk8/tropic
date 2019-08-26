@@ -67,6 +67,13 @@ class Transport extends BaseTransport
     protected $countries;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $deliveryDays;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -79,6 +86,7 @@ class Transport extends BaseTransport
         $this->initialDownload = $transportData->initialDownload;
         $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
         $this->countries = $transportData->countries;
+        $this->deliveryDays = $transportData->deliveryDays;
     }
 
     /**
@@ -94,6 +102,7 @@ class Transport extends BaseTransport
         $this->initialDownload = $transportData->initialDownload;
         $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
         $this->countries = $transportData->countries;
+        $this->deliveryDays = $transportData->deliveryDays;
     }
 
     /**
@@ -188,5 +197,13 @@ class Transport extends BaseTransport
     public function hasCountry(?Country $country): bool
     {
         return $this->countries->contains($country);
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeliveryDays(): int
+    {
+        return $this->deliveryDays;
     }
 }

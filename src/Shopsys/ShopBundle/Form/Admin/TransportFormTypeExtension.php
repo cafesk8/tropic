@@ -13,6 +13,7 @@ use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -83,6 +84,14 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'choice_value' => 'id',
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('deliveryDays', IntegerType::class, [
+                'required' => true,
+                'label' => t('Počet prac. dní do dodání'),
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Vyplňte prosím počet dnů do dodání']),
+                    new Constraints\GreaterThanOrEqual(['value' => 0, 'message' => 'Počet dnů do dodání musí být větší nebo roven nule']),
+                ],
             ]);
 
         $builder->add($this->getBalikobotAndStoreGroup($builder));

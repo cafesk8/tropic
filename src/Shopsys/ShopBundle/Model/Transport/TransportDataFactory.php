@@ -54,5 +54,6 @@ class TransportDataFactory extends BaseTransportDataFactory
         } else {
             $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_NONE;
         }
+        $transportData->deliveryDays = $transport->getDeliveryDays();
     }
 }
