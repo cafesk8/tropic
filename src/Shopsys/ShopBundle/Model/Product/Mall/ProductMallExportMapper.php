@@ -201,11 +201,11 @@ class ProductMallExportMapper
             $mallProduct->setBarcode($product->getEan());
 
             if ($productPrice->isActionPrice()) {
-                $mallProduct->setPurchasePrice($productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
-                $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
+                $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
+                $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
             } else {
-                $mallProduct->setPurchasePrice($productPrice->getPriceWithVat()->getAmount());
-                $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
+                $mallProduct->setPurchasePrice((float)$productPrice->getPriceWithVat()->getAmount());
+                $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
             }
 
             if ($product->isUsingStock()) {
