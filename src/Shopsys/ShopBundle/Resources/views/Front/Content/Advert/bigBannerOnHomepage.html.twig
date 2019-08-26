@@ -26,7 +26,7 @@
                             {% set sellingPrice = getProductSellingPrice(advertProduct) %}
                             <li class="box-special-offer__products__item">
                                 <div class="box-special-offer__products__item__image">
-                                    {{ image(advertProduct, { size: 'homepageBanner', alt: advertProduct.name, lazy: true }) }}
+                                    {{ image(advertProduct.product, { size: 'biggerThumbnail', alt: advertProduct.product.name, lazy: true }) }}
                                 </div>
                                 <div class="box-special-offer__products__item__content">
                                     <a class="box-special-offer__products__item__content__title" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">{{ advertProduct.name }}</a>

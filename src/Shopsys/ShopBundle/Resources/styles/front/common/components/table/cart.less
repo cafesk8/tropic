@@ -1,5 +1,5 @@
 @table-cart-image-size: 101px;
-@table-cart-image-gap: 10px;
+@table-cart-image-gap: 15px;
 @table-cart-image-gap-vertical: 22px;
 @table-cart-row-left-width: 60%;
 @table-cart-row-bottom-gap-mobile: 30px;
@@ -20,6 +20,7 @@
 
         @media @query-md {
             flex-direction: row;
+            margin-bottom: 0;
         }
 
         &__left {
@@ -67,6 +68,10 @@
         }
 
         &__name {
+            @media @query-lg {
+                padding-left: 25px;
+            }
+
             &__title {
                 display: block;
                 margin-bottom: 6px;

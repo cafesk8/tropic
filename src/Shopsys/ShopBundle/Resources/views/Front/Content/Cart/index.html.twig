@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="table-cart__cell__image">
                                                 <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.product.name }}">
-                                                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: true }) }}
+                                                    {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
                                                 </a>
                                             </div>
                                             <div class="table-cart__cell__name js-cart-item-name">
