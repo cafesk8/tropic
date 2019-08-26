@@ -25,10 +25,16 @@
         font-family: @font-alt;
         font-weight: 700;
         text-transform: uppercase;
+        text-align: center;
+
+        @media @query-vl {
+            text-align: left;
+            padding: 0;
+        }
 
         @media @query-xl {
             width: calc(~"@{calc-base}/3");
-            padding: 0;
+
         }
     }
 
@@ -39,22 +45,27 @@
 
         font-size: @box-motto-subtitle-font-size;
 
+        @media @query-vl {
+            padding-bottom: 0;
+        }
+
         @media @query-xl {
             width: calc(~"@{calc-base}/3");
-            padding-bottom: 0;
         }
     }
 
     &__button {
         width: 100%;
-        text-align: right;
+        text-align: center;
         padding: 0 2*@box-motto-gap-mobile 14px 2*@box-motto-gap-mobile;
+
+        @media @query-vl {
+            padding: 0;
+            text-align: right;
+        }
 
         @media @query-xl {
             width: calc(~"@{calc-base}/3");
-            padding-bottom: 0;
-            padding-right: 0;
-            text-align: right;
         }
 
         &__link {
