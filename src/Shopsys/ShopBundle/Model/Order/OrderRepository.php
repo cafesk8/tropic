@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\ORM\Query\Expr\Join;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
@@ -87,9 +88,11 @@ class OrderRepository extends BaseOrderRepository
     {
         $queryBuilder = $this->createOrderQueryBuilder()
             ->select('IDENTITY(o.customer) as id')
+            ->join(User::class, 'u', Join::WITH, 'o.customer = u.id')
             ->where('o.updatedAt > :startTime')
             ->andWhere('o.updatedAt < :endTime')
             ->andWhere('o.customer is not null')
+            ->andWhere('u.memberOfBushmanClub = TRUE')
             ->groupBy('o.customer')
             ->setParameter('startTime', $startTime)
             ->setParameter('endTime', $endTime);
