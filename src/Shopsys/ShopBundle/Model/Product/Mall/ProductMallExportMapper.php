@@ -176,7 +176,10 @@ class ProductMallExportMapper
         $mallProduct->setTitle($product->getName(self::CZECH_LOCALE));
         $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
 
-        if ($product->getOrderingPriority() !== 0) {
+        // Minimum priority in Mall has to be 1
+        if ($product->getOrderingPriority() === 0) {
+            $mallProduct->setPriority(1);
+        } else {
             $mallProduct->setPriority($product->getOrderingPriority());
         }
 
