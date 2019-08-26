@@ -23,9 +23,7 @@
 
 <div class="box-preview">
     <div class="box-preview__title">
-        <span class="in-title in-title--small">
-            {{ 'Vaše objednávka'|trans }}
-        </span>
+        {{ 'Vaše objednávka'|trans }}
     </div>
     {% if orderStep == "1" %}
         {{ render(controller('ShopsysShopBundle:Front/PromoCode:index')) }}
