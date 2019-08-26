@@ -17,7 +17,7 @@
     width: calc(~"@{calc-base} - 2*@{list-last-visited-side-gap}");
     margin: 0 @list-last-visited-side-gap;
 
-    @media @query-vl {
+    @media @query-xl {
         width: 100%;
         margin: 0;
     }
@@ -53,7 +53,7 @@
         &--prev {
             left: -(@list-last-visited-arrow-size + @list-last-visited-arrow-gap/2);
 
-            @media @query-vl {
+            @media @query-xl {
                 left: -(@list-last-visited-arrow-size + @list-last-visited-arrow-gap - 2px);
             }
         }
@@ -63,7 +63,7 @@
 
             transform: rotate(180deg);
 
-            @media @query-vl {
+            @media @query-xl {
                 right: -(@list-last-visited-arrow-size + @list-last-visited-arrow-gap - 2px);
             }
         }
