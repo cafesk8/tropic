@@ -171,8 +171,11 @@ class ProductMallExportMapper
         $mallProduct->setTitle($product->getName(self::CZECH_LOCALE));
         $mallProduct->setShortdesc($product->getShortDescription(self::CZECH_DOMAIN));
         $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
-        $mallProduct->setPriority($product->getOrderingPriority());
         $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
+
+        if ($product->getOrderingPriority() !== 0) {
+            $mallProduct->setPriority($product->getOrderingPriority());
+        }
 
         $productParameters = $this->productCachedAttributesFacade->getProductParameterValues($product, self::CZECH_LOCALE);
         foreach ($productParameters as $productParameter) {
