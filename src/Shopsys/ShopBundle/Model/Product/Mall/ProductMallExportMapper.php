@@ -205,6 +205,7 @@ class ProductMallExportMapper
                 $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
             } else {
                 $mallProduct->setPurchasePrice($productPrice->getPriceWithVat()->getAmount());
+                $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
             }
 
             if ($product->isUsingStock()) {
