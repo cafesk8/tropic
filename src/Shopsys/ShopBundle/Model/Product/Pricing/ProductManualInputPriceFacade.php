@@ -37,13 +37,13 @@ class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $inputPrice
      */
-    public function refresh(Product $product, PricingGroup $pricingGroup, ?Money $inputPrice)
+    public function refresh(Product $product, PricingGroup $pricingGroup, ?Money $inputPrice): void
     {
         $defaultPricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($pricingGroup->getDomainId());
         $defaultInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $defaultPricingGroup);
         $manualInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $pricingGroup);
 
-        if ($pricingGroup->getInternalId() !== null && $pricingGroup->getDiscount() !== null && $defaultInputPrice !== null) {
+        if ($defaultInputPrice !== null && $defaultInputPrice->getInputPrice() !== null && $pricingGroup->getInternalId() !== null && $pricingGroup->getDiscount() !== null) {
             $inputPrice = $defaultInputPrice->getInputPrice()->multiply((string)$pricingGroup->getDiscount());
         }
 

@@ -377,9 +377,11 @@ class ProductFacade extends BaseProductFacade
     protected function refreshProductManualInputPrices(Product $product, array $manualInputPrices)
     {
         foreach ($this->pricingGroupRepository->getAll() as $pricingGroup) {
-            if (isset($manualInputPrices[$pricingGroup->getId()]) === true) {
-                $this->productManualInputPriceFacade->refresh($product, $pricingGroup, $manualInputPrices[$pricingGroup->getId()]);
-            }
+            $this->productManualInputPriceFacade->refresh(
+                $product,
+                $pricingGroup,
+                $manualInputPrices[$pricingGroup->getId()] ?? null
+            );
         }
     }
 
