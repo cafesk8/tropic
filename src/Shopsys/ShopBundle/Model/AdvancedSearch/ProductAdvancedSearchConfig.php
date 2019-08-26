@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductPartnoFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductStockFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig as BaseProductAdvancedSearchConfig;
 use Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter;
+use Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter;
 
 class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
 {
@@ -29,6 +30,8 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductBrandFilter $productBrandFilter
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductCategoryFilter $productCategoryFilter
      * @param \Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter $productMainVariantFilter
+     * @param \Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter $productVariantTypeNoneFilter
+     * @param \Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantOrVariantFilter $productMainVariantOrVariantFilter
      */
     public function __construct(
         ProductCatnumFilter $productCatnumFilter,
@@ -40,7 +43,8 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
         ProductAvailabilityFilter $productAvailabilityFilter,
         ProductBrandFilter $productBrandFilter,
         ProductCategoryFilter $productCategoryFilter,
-        ProductMainVariantFilter $productMainVariantFilter
+        ProductMainVariantFilter $productMainVariantFilter,
+        ProductVariantTypeNoneFilter $productVariantTypeNoneFilter
     ) {
         parent::__construct(
             $productCatnumFilter,
@@ -55,5 +59,6 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
 
         $this->registerFilter($productCategoryFilter);
         $this->registerFilter($productMainVariantFilter);
+        $this->registerFilter($productVariantTypeNoneFilter);
     }
 }

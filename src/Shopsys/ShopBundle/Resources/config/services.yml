@@ -258,6 +258,8 @@ services:
 
     Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter: ~
 
+    Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter: ~
+
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
     Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig'
