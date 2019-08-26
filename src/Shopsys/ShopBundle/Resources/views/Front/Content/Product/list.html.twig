@@ -146,7 +146,7 @@
         </div>
 
         <div class="web__line">
-            <div class="web__container">
+            <div class="web__container web__container--no-padding">
                 {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
                     {{ instagramFeed() }}
                 {% endcache %}

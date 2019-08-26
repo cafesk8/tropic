@@ -2,28 +2,32 @@
 @image-line-item-count-tablet: 4;
 @image-line-item-count-desktop: 8;
 
+@image-line-item-gap: 3px;
 @image-line-item-height: 169px;
+
+@image-line-bottom-gap: 20px;
 
 .list-images-line {
     .reset-ul();
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 100%;
-    margin-bottom: 20px;
     text-align: center;
+    width: 100%;
+    margin-bottom: @image-line-bottom-gap;
 
     @media @query-xl {
+        width: calc(~"100% + @{image-line-item-gap}");
+        margin: 0 -@image-line-item-gap/2 @image-line-bottom-gap -@image-line-item-gap/2;
         flex-wrap: nowrap;
     }
 
     &__item {
         width: calc(~"@{calc-base}/@{image-line-item-count-mobile}");
-        padding-right: 3px;
+        padding: 0 @image-line-item-gap/2;
 
         @media @query-md {
             width: calc(~"@{calc-base}/@{image-line-item-count-tablet}");
-
         }
 
         @media @query-xl {
