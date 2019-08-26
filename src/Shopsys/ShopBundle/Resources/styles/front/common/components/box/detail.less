@@ -150,13 +150,17 @@
     }
 
     &__add-basket {
-        padding: @box-detail-info-padding;
+        padding: 0;
 
         font-weight: bold;
         background: @color-f;
 
         &--empty {
             padding: 0;
+        }
+
+        & > div {
+            padding: @box-detail-info-padding;
         }
     }
 
