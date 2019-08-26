@@ -13,8 +13,11 @@
         {% endif %}
 
         <div class="box-order">
-
             <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
+                <div class="box-order__info__top">
+                    {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '2'} only %}
+                </div>
+
                 {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
             </div>
 

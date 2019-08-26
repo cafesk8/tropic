@@ -26,7 +26,7 @@
                             'data-transport-pickup': choice.data.pickupPlace,
                             'data-choose-store': choice.data.chooseStore
                         } }) }}
-                        <span class="css-label-radio__image"></span>
+                        <span class="css-radio__image"></span>
                     </span>
                     <span class="box-chooser__item__title">
                         <span class="box-chooser__item__title__name">
@@ -99,7 +99,7 @@
                 <label class="box-chooser__item">
                     <span class="box-chooser__item__check">
                         {{ form_widget(child, { attr: { class: 'css-radio js-order-payment-input' ~ (isGoPayBankTransfer ? ' js-gopay-bank-transfer-input' : ''), 'data-id': choice.data.id} }) }}
-                        <span class="css-label-radio"></span>
+                        <span class="css-radio__image"></span>
                     </span>
                     <span class="box-chooser__item__title">
                         <span class="box-chooser__title__name">
@@ -128,7 +128,7 @@
                             <label class="box-chooser__item">
                                 <span class="box-chooser__item__check">
                                     {{ form_widget(goPayBankSwiftFormChild, { attr: { class: 'js-order-gopay-bank-swift-input css-radio', 'data-swift': goPayBankSwift.swift} }) }}
-                                    <label for="{{goPayBankSwiftFormChild.vars.id}}" class="css-label-radio__image"></label>
+                                    <label for="{{goPayBankSwiftFormChild.vars.id}}" class="css-radio__image"></label>
                                 </span>
                                 <span class="box-chooser__item__image">
                                     <img src="{{ goPayBankSwift.imageLargeUrl }}">
