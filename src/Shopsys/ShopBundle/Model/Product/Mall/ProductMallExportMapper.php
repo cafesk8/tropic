@@ -9,6 +9,7 @@ use MPAPI\Entity\Products\Product as MallProduct;
 use MPAPI\Entity\Products\Variant;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
@@ -185,7 +186,12 @@ class ProductMallExportMapper
 
         $productParameters = $this->productCachedAttributesFacade->getProductParameterValues($product, self::CZECH_LOCALE);
         foreach ($productParameters as $productParameter) {
-            $mallProduct->setParameter($productParameter->getParameter()->getName(self::CZECH_LOCALE), $productParameter->getValue()->getText());
+            $mallParameterId = $this->getParameterId($productParameter->getParameter());
+
+            if ($mallParameterId !== null) {
+                $mallProduct->setParameter($mallParameterId, $productParameter->getValue()->getText());
+            }
+
         }
 
         $firstInLoop = false;
@@ -214,6 +220,15 @@ class ProductMallExportMapper
         }
 
         return $mallProduct;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
+     * @return string|null
+     */
+    private function getParameterId(Parameter $parameter): ?string
+    {
+        return $parameter->getMallId();
     }
 
     /**
