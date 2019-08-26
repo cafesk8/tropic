@@ -69,7 +69,11 @@ class ProductDetailVisitListener implements EventSubscriberInterface
         return new Cookie(
             self::LAST_VISITED_PRODUCTS_COOKIE,
             implode(LastVisitedProductsFacade::COOKIE_PRODUCT_IDS_DELIMITER, $productIds),
-            new DateTime('+' . self::COOKIE_EXPIRE_IN_YEARS . ' years')
+            new DateTime('+' . self::COOKIE_EXPIRE_IN_YEARS . ' years'),
+            '/',
+            null,
+            false,
+            false
         );
     }
 }
