@@ -76,6 +76,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
         $builderBasicInformationGroup = $builder->get('basicInformation');
         $builderBasicInformationGroup
             ->add('countries', ChoiceType::class, [
+                'label' => t('Státy, pro které je doprava dostupná'),
                 'required' => false,
                 'choices' => $countries,
                 'choice_label' => 'name',
