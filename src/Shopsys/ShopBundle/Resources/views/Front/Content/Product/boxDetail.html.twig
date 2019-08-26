@@ -167,11 +167,13 @@
                                     </span>
                                     <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
                                 </div>
-                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
-                                    product: variant,
-                                    type: 'large',
-                                    disabled: true
-                                })) }}
+                                <div class="js-product-detail-add-variant-button">
+                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
+                                        product: variant,
+                                        type: 'large',
+                                        disabled: true
+                                    })) }}
+                                </div>
                             {% else %}
                                 <div>
                                     {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory })}) }}
