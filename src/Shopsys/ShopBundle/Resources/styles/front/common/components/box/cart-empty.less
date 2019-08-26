@@ -47,6 +47,16 @@
             font-size: 20px;
         }
 
+        // translated text
+        & > a {
+            color: @color-brown;
+
+            &:hover {
+                color: @color-base;
+                transition: color @transition;
+            }
+        }
+
         &__button {
             margin-top: 20px;
         }
