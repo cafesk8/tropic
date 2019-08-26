@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Component\Mall;
 
 use Exception;
 use MPAPI\Entity\Products\Product;
-use MPAPI\Exceptions\ApplicationException;
 use MPAPI\Exceptions\ForceTokenException;
 use MPAPI\Services\Categories;
 use MPAPI\Services\Products;

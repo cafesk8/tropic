@@ -130,6 +130,9 @@ class ProductMallExportMapper
             }
         }
 
+        $mallProduct->setShortdesc($product->getShortDescription(self::CZECH_DOMAIN));
+        $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
+
         return $mallProduct;
     }
 
@@ -141,6 +144,8 @@ class ProductMallExportMapper
     {
         /** @var \MPAPI\Entity\Products\Variant $mallVariant */
         $mallVariant = $this->mapBasicInformation($variant, true);
+        $mallVariant->setShortdesc($variant->getMainVariant()->getShortDescription(self::CZECH_DOMAIN));
+        $mallVariant->setLongdesc($variant->getMainVariant()->getDescription(self::CZECH_DOMAIN));
 
         return $mallVariant;
     }
@@ -169,8 +174,6 @@ class ProductMallExportMapper
 
         $mallProduct->setId($product->getId());
         $mallProduct->setTitle($product->getName(self::CZECH_LOCALE));
-        $mallProduct->setShortdesc($product->getShortDescription(self::CZECH_DOMAIN));
-        $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
         $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
 
         if ($product->getOrderingPriority() !== 0) {
@@ -188,11 +191,18 @@ class ProductMallExportMapper
             $firstInLoop = true;
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
         $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
 
         if ($product->isMainVariant() === false || $isVariant) {
             $mallProduct->setBarcode($product->getEan());
-            $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
+
+            if ($productPrice->isActionPrice()) {
+                $mallProduct->setPurchasePrice($productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
+                $mallProduct->setPrice($productPrice->getPriceWithVat()->getAmount());
+            } else {
+                $mallProduct->setPurchasePrice($productPrice->getPriceWithVat()->getAmount());
+            }
 
             if ($product->isUsingStock()) {
                 $mallProduct->setInStock($this->getStockQuantity($product));
@@ -211,6 +221,9 @@ class ProductMallExportMapper
         /** @var \MPAPI\Entity\Products\Product $mallProduct */
         $mallProduct = $this->mapBasicInformation($product, false);
         $mallProduct->setId('group-' . $product->getMainVariantGroup()->getId());
+
+        $mallProduct->setShortdesc($product->getShortDescription(self::CZECH_DOMAIN));
+        $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
 
         $distinguishingParameters = $this->getDistinguishingParametersForProduct($product);
         $mallProduct->setVariableParameters($distinguishingParameters);
