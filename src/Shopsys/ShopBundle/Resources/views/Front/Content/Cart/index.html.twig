@@ -19,6 +19,9 @@
 {% block main_content %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
+            <h1 class="in-title in-title--big in-title--center in-title--dark">
+                {{ 'Nákupní košík'|trans }}
+            </h1>
 
             {% if cart is not null %}
                 {{ form_start(form, { attr: { class: 'js-no-validate js-cart-form' }}) }}
@@ -132,7 +135,6 @@
                                 orderStep: "1",
                                 formSubmit: form.submit
                             })) }}
-                            {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' with { cssClass: "list-benefits--in-panel" } %}
                         </div>
                     </div>
                 {{ form_end(form) }}
