@@ -54,7 +54,7 @@ class MallFacade
             } catch (ForceTokenException $forceTokenException) {
                 $forceToken = $forceTokenException->getForceToken();
                 $products->put($product->getId(), $product, null, $forceToken);
-            } catch (ApplicationException $exception) {
+            } catch (Exception $exception) {
                 $products->post($product);
             }
         } catch (Exception $exception) {
