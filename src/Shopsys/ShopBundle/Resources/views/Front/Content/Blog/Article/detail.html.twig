@@ -28,4 +28,22 @@
     <div class="in-article__text in-user-text">
         {{ blogArticle.description|raw }}
     </div>
+
+    {% block last_visited_products %}
+        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
+    {% endblock %}
+
+    <div class="web__line">
+        <div class="web__container">
+            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                {{ instagramFeed() }}
+            {% endcache %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--dark web__container--big-padding">
+            {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
+        </div>
+    </div>
 {% endblock %}

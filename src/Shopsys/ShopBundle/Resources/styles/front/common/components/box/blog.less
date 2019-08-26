@@ -9,20 +9,42 @@
 
     &__content {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+
+        @media @query-lg {
+            flex-direction: row;
+        }
     }
 
     &__list {
         display: flex;
         flex-direction: column;
-        width: calc(~"@{calc-base} - @{box-blog-panel-width} - @{box-blog-panel-gap}");
+        width: 100%;
+        order: 2;
+
+        @media @query-lg {
+            width: calc(~"@{calc-base} - @{box-blog-panel-width} - @{box-blog-panel-gap}");
+            order: 1;
+        }
+
+        &__button {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
     }
 
     &__panel {
         display: flex;
         flex-direction: column;
-        width: @box-blog-panel-width + @box-blog-panel-gap;
-        padding-left: @box-blog-panel-gap;
+        width: 100%;
+        order: 1;
+
+        @media @query-lg {
+            order: 2;
+            width: @box-blog-panel-width + @box-blog-panel-gap;
+            padding-left: @box-blog-panel-gap;
+        }
     }
 
     &__section {
