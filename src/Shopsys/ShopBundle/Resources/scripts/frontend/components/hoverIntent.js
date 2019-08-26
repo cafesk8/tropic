@@ -5,8 +5,8 @@
 
     Shopsys.hoverIntent.HoverIntent = function ($hoverIntentParent) {
 
-        var interval = 150;
-        var timeout = 150;
+        var interval = 250;
+        var timeout = 250;
         var classForOpen = 'open';
 
         this.init = function () {
