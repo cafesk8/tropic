@@ -18,6 +18,11 @@ class UserData extends BaseUserData
      */
     public $branchNumber;
 
+    /**
+     * @var bool
+     */
+    public $memberOfBushmanClub;
+
     public function __construct()
     {
         parent::__construct();

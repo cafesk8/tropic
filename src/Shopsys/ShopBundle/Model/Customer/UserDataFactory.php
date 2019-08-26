@@ -35,6 +35,7 @@ class UserDataFactory extends BaseUserDataFactory
     {
         $userData = new UserData();
         $this->fillForDomainId($userData, $domainId);
+        $userData->memberOfBushmanClub = false;
 
         return $userData;
     }
@@ -49,5 +50,15 @@ class UserDataFactory extends BaseUserDataFactory
         $this->fillFromUser($userData, $user);
 
         return $userData;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     */
+    protected function fillFromUser(BaseUserData $userData, BaseUser $user): void
+    {
+        parent::fillFromUser($userData, $user);
+        $userData->memberOfBushmanClub = $user->isMemberOfBushmanClub();
     }
 }

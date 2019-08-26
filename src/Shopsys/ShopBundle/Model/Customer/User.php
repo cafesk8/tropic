@@ -41,6 +41,13 @@ class User extends BaseUser
     private $branchNumber;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $memberOfBushmanClub;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
@@ -56,6 +63,7 @@ class User extends BaseUser
 
         $this->transferId = $userData->transferId;
         $this->branchNumber = $userData->branchNumber;
+        $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
     }
 
     /**
@@ -66,6 +74,7 @@ class User extends BaseUser
     {
         parent::edit($userData, $encoderFactory);
         $this->branchNumber = $userData->branchNumber;
+        $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
     }
 
     /**
@@ -109,5 +118,13 @@ class User extends BaseUser
         }
 
         parent::changePassword($encoderFactory, $password);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMemberOfBushmanClub(): bool
+    {
+        return $this->memberOfBushmanClub;
     }
 }

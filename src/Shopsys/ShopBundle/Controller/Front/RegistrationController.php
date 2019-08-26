@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
+use Shopsys\ShopBundle\Model\BushmanClub\BushmanClubFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,24 +42,32 @@ class RegistrationController extends FrontBaseController
     private $legalConditionsFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\BushmanClub\BushmanClubFacade
+     */
+    private $bushmanClubFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface $userDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
+     * @param \Shopsys\ShopBundle\Model\BushmanClub\BushmanClubFacade $bushmanClubFacade
      */
     public function __construct(
         Domain $domain,
         UserDataFactoryInterface $userDataFactory,
         CustomerFacade $customerFacade,
         Authenticator $authenticator,
-        LegalConditionsFacade $legalConditionsFacade
+        LegalConditionsFacade $legalConditionsFacade,
+        BushmanClubFacade $bushmanClubFacade
     ) {
         $this->domain = $domain;
         $this->userDataFactory = $userDataFactory;
         $this->customerFacade = $customerFacade;
         $this->authenticator = $authenticator;
         $this->legalConditionsFacade = $legalConditionsFacade;
+        $this->bushmanClubFacade = $bushmanClubFacade;
     }
 
     /**
@@ -99,6 +108,7 @@ class RegistrationController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Registration/register.html.twig', [
             'form' => $form->createView(),
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
+            'bushmanClubArticle' => $this->bushmanClubFacade->findBushmanClubArticleByDomainId($this->domain->getId()),
         ]);
     }
 }
