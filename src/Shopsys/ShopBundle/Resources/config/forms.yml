@@ -59,6 +59,10 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType}
 
+    Shopsys\ShopBundle\Form\Admin\OrderStatusFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Order\Status\OrderStatusFormType}
+
     Twig_Extensions_Extension_Text:
         class: Twig_Extensions_Extension_Text
         tags:
