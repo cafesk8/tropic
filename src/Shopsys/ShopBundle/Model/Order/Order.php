@@ -41,6 +41,76 @@ class Order extends BaseOrder
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=60)
+     */
+    protected $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=30)
+     */
+    protected $lastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50)
+     */
+    protected $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $telephone;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    protected $companyNumber;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    protected $companyTaxNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=6)
+     */
+    protected $postcode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=60)
+     */
+    protected $deliveryFirstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=30)
+     */
+    protected $deliveryLastName;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=6)
+     */
+    protected $deliveryPostcode;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $goPayId;

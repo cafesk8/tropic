@@ -71,7 +71,7 @@ class DeliveryAddressFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 60,
                         'maxMessage' => 'First name of contact person cannot be longer then {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),
@@ -85,7 +85,7 @@ class DeliveryAddressFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 30,
                         'maxMessage' => 'Last name of contact person cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),
@@ -95,7 +95,7 @@ class DeliveryAddressFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),
@@ -137,7 +137,7 @@ class DeliveryAddressFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 6,
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
                     ]),

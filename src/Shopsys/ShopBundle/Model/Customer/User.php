@@ -27,6 +27,21 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class User extends BaseUser
 {
     /**
+     * @ORM\Column(type="string", length=60)
+     */
+    protected $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    protected $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    protected $email;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)

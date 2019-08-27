@@ -65,7 +65,7 @@ class BillingAddressFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
-                        'max' => 50,
+                        'max' => 20,
                         'maxMessage' => 'Identification number cannot be longer then {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -75,7 +75,7 @@ class BillingAddressFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 50,
+                        'max' => 30,
                         'maxMessage' => 'Tax number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -103,7 +103,7 @@ class BillingAddressFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 6,
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
                     ]),
                 ],

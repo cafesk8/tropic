@@ -42,5 +42,7 @@ parameters:
         Shopsys\FrameworkBundle\Component\Image\Image: Shopsys\ShopBundle\Component\Image\Image
         Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue: Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
         Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter: Shopsys\ShopBundle\Model\Product\Parameter\Parameter
+        Shopsys\FrameworkBundle\Model\Customer\BillingAddress: Shopsys\ShopBundle\Model\Customer\BillingAddress
+        Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress: Shopsys\ShopBundle\Model\Customer\DeliveryAddress
     build-version: '0000000000000000'
     securityBcryptCost: 12

@@ -75,7 +75,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 60,
                         'maxMessage' => 'First name cannot be longer then {{ limit }} characters',
                     ]),
                 ],
@@ -87,7 +87,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 30,
                         'maxMessage' => 'Last name cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
@@ -97,7 +97,7 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(['message' => 'Please enter valid e-mail']),
-                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
                 ],
             ])
             ->add('telephone', TextType::class, [
@@ -107,7 +107,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
@@ -136,7 +136,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                     new Constraints\Length([
-                        'max' => 50,
+                        'max' => 20,
                         'maxMessage' => 'Identification number cannot be longer then {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -146,7 +146,7 @@ class PersonalInfoFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 50,
+                        'max' => 30,
                         'maxMessage' => 'Tax number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
@@ -184,7 +184,7 @@ class PersonalInfoFormType extends AbstractType
                         'message' => 'Please enter zip code',
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
-                    new Constraints\Length(['max' => 30, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
+                    new Constraints\Length(['max' => 6, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('country', ChoiceType::class, [
@@ -212,7 +212,7 @@ class PersonalInfoFormType extends AbstractType
                         'message' => 'Please enter first name of contact person',
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 60,
                         'maxMessage' => 'First name of contact person cannot be longer then {{ limit }} characters',
                     ]),
                 ],
@@ -224,7 +224,7 @@ class PersonalInfoFormType extends AbstractType
                         'message' => 'Please enter last name of contact person',
                     ]),
                     new Constraints\Length([
-                        'max' => 100,
+                        'max' => 30,
                         'maxMessage' => 'Last name of contact person cannot be longer than {{ limit }} characters',
                     ]),
                 ],
@@ -246,7 +246,7 @@ class PersonalInfoFormType extends AbstractType
                         'message' => 'Please enter telephone number',
                     ]),
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                     ]),
                     new Constraints\Callback([$this, 'validateTelephone']),
@@ -288,7 +288,7 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 6,
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
                     ]),
@@ -308,7 +308,15 @@ class PersonalInfoFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('note', TextareaType::class, ['required' => false])
+            ->add('note', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Constraints\Length([
+                        'max' => 1000,
+                        'maxMessage' => 'Poznámka nesmí být delší než {{ limit }} znaků',
+                    ]),
+                ],
+            ])
             ->add('newsletterSubscription', CheckboxType::class, [
                 'required' => false,
             ])

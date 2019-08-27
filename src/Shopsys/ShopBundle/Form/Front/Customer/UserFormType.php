@@ -28,13 +28,13 @@ class UserFormType extends AbstractType
             ->add('firstName', TextType::class, [
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter first name']),
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'First name cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 60, 'maxMessage' => 'First name cannot be longer then {{ limit }} characters']),
                 ],
             ])
             ->add('lastName', TextType::class, [
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter last name']),
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Last name cannot be longer than {{ limit }} characters']),
+                    new Constraints\Length(['max' => 30, 'maxMessage' => 'Last name cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -45,7 +45,7 @@ class UserFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Constraints\Length([
-                        'max' => 30,
+                        'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                     ]),
                 ],
