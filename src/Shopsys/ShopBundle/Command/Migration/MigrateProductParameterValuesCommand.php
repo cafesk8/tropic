@@ -205,6 +205,7 @@ class MigrateProductParameterValuesCommand extends Command
             $parameterNames,
             Parameter::TYPE_DEFAULT,
             $parameterName,
+            false,
             false
         );
     }
