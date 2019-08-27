@@ -72,35 +72,14 @@ class ProductTransferMapper
     ): ProductData {
         if ($product === null) {
             $productData = $this->productDataFactory->create();
-            $productData->transferNumber = $transferNumber;
+            $this->mapToNewProductData(
+                $productData,
+                $transferNumber,
+                $productTransferResponseItemData,
+                $productTransferResponseItemVariantData
+            );
         } else {
             $productData = $this->productDataFactory->createFromProduct($product);
-        }
-
-        $productData->name['cs'] = $productTransferResponseItemData->getName();
-        $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
-        $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
-        $productData->ean = $productTransferResponseItemVariantData->getEan();
-        $productData->catnum = $productTransferResponseItemData->getTransferNumber();
-        $productData->usingStock = true;
-        $productData->stockQuantity = 0;
-
-        if ($productTransferResponseItemVariantData->getColorName() !== null) {
-            $productData->distinguishingParameterForMainVariantGroup = $this->parameterFacade->getColorParameter();
-            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale(
-                $productData->parameters,
-                $productTransferResponseItemVariantData->getColorName()
-            );
-            $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
-        }
-
-        if ($productTransferResponseItemVariantData->getSizeName() !== null) {
-            $productData->distinguishingParameter = $this->parameterFacade->getSizeParameter();
-            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale(
-                $productData->parameters,
-                $productTransferResponseItemVariantData->getSizeName()
-            );
-            $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
         }
 
         return $productData;
@@ -179,5 +158,44 @@ class ProductTransferMapper
         }
 
         return $missingLocales;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     * @param string $transferNumber
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemData $productTransferResponseItemData
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData|null $productTransferResponseItemVariantData
+     */
+    private function mapToNewProductData(
+        ProductData $productData,
+        string $transferNumber,
+        ProductTransferResponseItemData $productTransferResponseItemData,
+        ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData
+    ): void {
+        $productData->transferNumber = $transferNumber;
+        $productData->name['cs'] = $productTransferResponseItemData->getName();
+        $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
+        $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
+        $productData->ean = $productTransferResponseItemVariantData->getEan();
+        $productData->catnum = $productTransferResponseItemData->getTransferNumber();
+        $productData->usingStock = true;
+        $productData->stockQuantity = 0;
+        if ($productTransferResponseItemVariantData->getColorName() !== null) {
+            $productData->distinguishingParameterForMainVariantGroup = $this->parameterFacade->getColorParameter();
+            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale(
+                $productData->parameters,
+                $productTransferResponseItemVariantData->getColorName()
+            );
+            $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
+        }
+
+        if ($productTransferResponseItemVariantData->getSizeName() !== null) {
+            $productData->distinguishingParameter = $this->parameterFacade->getSizeParameter();
+            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale(
+                $productData->parameters,
+                $productTransferResponseItemVariantData->getSizeName()
+            );
+            $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
+        }
     }
 }
