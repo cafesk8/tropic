@@ -65,7 +65,7 @@ class OrderExportMapper
                     'City' => $order->getCity(),
                     'ZIP' => $order->getPostcode(),
                     'Country' => $order->getCountry() !== null ? $order->getCountry()->getCode() : '',
-                    'BranchNumber' => '',
+                    'BranchNumber' => '', // it is allowed only for delivery address (see IS documentation)
                 ],
                 'ICO' => $order->getCompanyNumber(),
                 'DIC' => $order->getCompanyTaxNumber(),
@@ -90,7 +90,7 @@ class OrderExportMapper
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
                 'Country' => $order->getDeliveryCountry() !== null ? $order->getCountry()->getCode() : '',
-                'BranchNumber' => '',
+                'BranchNumber' => $order->getStoreExternalNumber() ?? '',
             ];
         }
 
