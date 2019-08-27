@@ -127,7 +127,7 @@
 
                 <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-price-wrapper">
                     {% for variant in variants if variant in product.variants %}
-                        <div class="display-none js-product-variant-price js-product-variant-price-{{ variant.id }}">
+                        <div class="{% if not loop.first %}display-none {% endif %} js-product-variant-price js-product-variant-price-{{ variant.id }}">
                             {% if not variant.calculatedSellingDenied %}
                                 {% set sellingPrice = getProductSellingPrice(variant) %}
                                 <div itemprop="offers"
@@ -167,7 +167,13 @@
                                     </span>
                                     <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
                                 </div>
-                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: variant, type: 'large'})) }}
+                                <div class="js-product-detail-add-variant-button">
+                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
+                                        product: variant,
+                                        type: 'large',
+                                        disabled: true
+                                    })) }}
+                                </div>
                             {% else %}
                                 <div>
                                     {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory })}) }}
