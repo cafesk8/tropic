@@ -9,7 +9,7 @@
 {% block main_content %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
-            <h1 class="in-title in-title--dark in-title--big in-title--center">
+            <h1 class="in-title in-title--big in-title--center">
                 {{ store.name }}
             </h1>
             <div class="box-contact">
@@ -72,13 +72,13 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
-    </div>
     <div class="web__line">
         <div class="web__container web__container--no-padding">
             {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
                 {{ instagramFeed() }}
             {% endcache %}
-        </div>
+    </div>
     </div>
 {% endblock %}
