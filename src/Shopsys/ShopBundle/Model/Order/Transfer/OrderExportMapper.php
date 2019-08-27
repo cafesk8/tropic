@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Pricing\InputPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
@@ -61,9 +62,9 @@ class OrderExportMapper
                     'SureName' => $order->getFirstName(),
                     'ForeName' => $order->getLastName(),
                     'Company' => $order->getCompanyName(),
-                    'Street' => $order->getStreet(),
-                    'City' => $order->getCity(),
-                    'ZIP' => $order->getPostcode(),
+                    'Street' => TransformString::emptyToNull($order->getStreet()) ?? 'empty',
+                    'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
+                    'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? 'empty',
                     'Country' => $order->getCountry() !== null ? $order->getCountry()->getCode() : '',
                     'BranchNumber' => '', // it is allowed only for delivery address (see IS documentation)
                 ],
