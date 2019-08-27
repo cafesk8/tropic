@@ -25,10 +25,10 @@
         <div class="web__container web__container--big-padding">
             <div itemscope itemtype="http://schema.org/Product">
                 <div class="js-product-variant-group">
-                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail) }}
+                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail, productSizeArticleId) }}
 
                     {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id]) }}
+                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId) }}
                     {% endfor %}
                 </div>
 
@@ -560,7 +560,7 @@
                                     {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
                                         <div class="box-detail__variants__title">
                                             {{ 'Vyberte variantu'|trans }}
-                                            <a href="#" class="box-detail__variants__title__link underline-small js-not-implemented-yet">{{ 'Jak vybrat správnou velikost?'}}</a>
+                                            <a href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}" class="box-detail__variants__title__link underline-small">{{ 'Jak vybrat správnou velikost?'}}</a>
                                         </div>
                                         <ul class="list-variants">
                                             {% for mainVariantGroupProduct in mainVariants %}

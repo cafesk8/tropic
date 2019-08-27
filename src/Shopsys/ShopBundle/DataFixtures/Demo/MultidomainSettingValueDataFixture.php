@@ -100,6 +100,10 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
 
         $this->setting->setForDomain(Setting::PERSONAL_DATA_DISPLAY_SITE_CONTENT, $personalDataDisplaySiteContent, $domainId);
         $this->setting->setForDomain(Setting::PERSONAL_DATA_EXPORT_SITE_CONTENT, $personalDataExportSiteContent, $domainId);
+
+        /** @var \Shopsys\FrameworkBundle\Model\Article\Article $articleProductSizeDomain */
+        $articleProductSizeDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRODUCT_SIZE, $domainId);
+        $this->setting->setForDomain(\Shopsys\ShopBundle\Component\Setting\Setting::PRODUCT_SIZE_ARTICLE_ID, $articleProductSizeDomain->getId(), $domainId);
     }
 
     /**

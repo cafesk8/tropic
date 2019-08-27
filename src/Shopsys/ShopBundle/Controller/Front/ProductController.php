@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForList
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
+use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
@@ -104,6 +105,11 @@ class ProductController extends FrontBaseController
     private $productFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
+     */
+    private $setting;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -118,6 +124,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -133,7 +140,8 @@ class ProductController extends FrontBaseController
         MainVariantGroupFacade $mainVariantGroupFacade,
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        Setting $setting
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -149,6 +157,7 @@ class ProductController extends FrontBaseController
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->productFacade = $productFacade;
+        $this->setting = $setting;
     }
 
     /**
@@ -164,7 +173,8 @@ class ProductController extends FrontBaseController
         }
 
         $accessories = $this->productOnCurrentDomainFacade->getAccessoriesForProduct($product);
-        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $this->domain->getId());
+        $domainId = $this->domain->getId();
+        $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
         $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
         $youtubeDetailForMainVariants = $this->productFacade->getYoutubeViewForMainVariants($mainVariantGroupProducts);
 
@@ -179,17 +189,18 @@ class ProductController extends FrontBaseController
             'accessories' => $accessories,
             'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
-            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleProductCategoryDomains($product, $this->domain->getId()),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleProductCategoryDomains($product, $domainId),
             'mainVariants' => $mainVariantGroupProducts,
             'youtubeDetailForMainVariants' => $youtubeDetailForMainVariants,
-            'domainId' => $this->domain->getId(),
+            'domainId' => $domainId,
             'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
                 $product,
-                $this->domain->getId(),
+                $domainId,
                 $this->domain->getLocale(),
                 self::PRODUCT_BLOG_ARTICLES_LIMIT
             ),
             'youtubeDetail' => $this->productFacade->getYoutubeView($product),
+            'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
         ]);
     }
 

@@ -37,6 +37,18 @@ class ArticleController extends FrontBaseController
         ]);
     }
 
+    /**
+     * @param int $id
+     */
+    public function detailForModalAction($id)
+    {
+        $article = $this->articleFacade->getVisibleById($id);
+
+        return $this->render('@ShopsysShop/Front/Content/Article/detailForModal.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
     public function menuAction()
     {
         $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_TOP_MENU);
