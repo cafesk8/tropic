@@ -138,6 +138,7 @@ class StoreRepository
             $regionsNameAndCount[$regionData['region']] = $regionData['region'] . ' (' . $regionData['storesCount'] . ')';
         }
 
+        ksort($regionsNameAndCount);
         return $regionsNameAndCount;
     }
 
@@ -155,12 +156,19 @@ class StoreRepository
         $stores = $queryBuilder->getQuery()->getResult();
 
         $storesIndexedByRegion = [];
+        $storesWithoutRegion = [];
 
         /** @var \Shopsys\ShopBundle\Model\Store\Store $store */
         foreach ($stores as $store) {
-            $storesIndexedByRegion[$store->getRegion()][] = $store;
+            if ($store->getRegion() === null || $store->getRegion() === '') {
+                $storesWithoutRegion[] = $store;
+            } else {
+                $storesIndexedByRegion[$store->getRegion()][] = $store;
+            }
         }
 
+        ksort($storesIndexedByRegion);
+        $storesIndexedByRegion[''] = $storesWithoutRegion;
         return $storesIndexedByRegion;
     }
 }
