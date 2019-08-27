@@ -189,7 +189,7 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      */
     public function getDistinguishingParameter(): ?Parameter
     {

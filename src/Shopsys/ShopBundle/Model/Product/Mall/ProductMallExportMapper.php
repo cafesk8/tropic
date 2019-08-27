@@ -262,11 +262,11 @@ class ProductMallExportMapper
     {
         $distinguishingParameters = [];
         if ($product->getMainVariantGroup() !== null && $product->getMainVariantGroup()->getDistinguishingParameter() !== null) {
-            $distinguishingParameters[] = $product->getMainVariantGroup()->getDistinguishingParameter()->getName(self::CZECH_LOCALE);
+            $distinguishingParameters[] = $product->getMainVariantGroup()->getDistinguishingParameter()->getMallId();
         }
 
         if ($product->getDistinguishingParameter() !== null) {
-            $distinguishingParameters[] = $product->getDistinguishingParameter()->getName(self::CZECH_LOCALE);
+            $distinguishingParameters[] = $product->getDistinguishingParameter()->getMallId();
         }
 
         return $distinguishingParameters;
