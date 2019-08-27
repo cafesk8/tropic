@@ -72,10 +72,13 @@
                     </div>
                 </div>
             </div>
-
-            <div class="wrap-well wrap-well--big-padding" id="js-contact-form-container">
-                {{ render(controller('ShopsysShopBundle:Front/ContactForm:index')) }}
-            </div>
+        </div>
+    </div>
+    <div class="web__line">
+        <div class="web__container web__container--no-padding">
+            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                {{ instagramFeed() }}
+            {% endcache %}
         </div>
     </div>
 {% endblock %}
