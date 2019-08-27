@@ -13,8 +13,8 @@
                     <a href="{{ advert.link }}" class="box-special-offer__colored__button btn">{{ advert.name }}</a>
                 </div>
                 <div class="box-special-offer__grayscale">
-                    <div class="box-special-offer__grayscale__image">
-                        {{ image(advert, { size: 'bigBanner', alt: advert.smallTitle, lazy: true }) }}
+                    <div class="display-only-for-vl-screen">
+                        {{ image(advert, { size: 'bigBanner', alt: advert.smallTitle, lazy: true, class: 'box-special-offer__grayscale__image' }) }}
                     </div>
                     <div class="box-special-offer__grayscale__title">
                         <span class="box-special-offer__grayscale__title__text double-lined">
@@ -26,7 +26,7 @@
                             {% set sellingPrice = getProductSellingPrice(advertProduct) %}
                             <li class="box-special-offer__products__item">
                                 <div class="box-special-offer__products__item__image">
-                                    {{ image(advertProduct.product, { size: 'biggerThumbnail', alt: advertProduct.product.name, lazy: true }) }}
+                                    {{ image(advertProduct, { size: 'biggerThumbnail', alt: advertProduct.name, lazy: true }) }}
                                 </div>
                                 <div class="box-special-offer__products__item__content">
                                     <a class="box-special-offer__products__item__content__title" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">{{ advertProduct.name }}</a>
@@ -36,16 +36,7 @@
                                         {% endif %}
                                     </span>
                                     <span class="box-special-offer__products__item__content__size">
-                                        {{ 'Vaše velikost'|trans }}
-                                        {% if variantsIndexedByMainVariantId|length > 0 and advertProduct.id in variantsIndexedByMainVariantId|keys %}
-                                            {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[advertProduct.id]) %}
-                                            {% if advertProduct.id in secondDistinguishingParameters|keys %}
-                                                {% for parameterValue, variantId in secondDistinguishingParameters[advertProduct.id] %}
-                                                    <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% endif %}
-                                        {{ advertProduct.calculatedAvailability.name }}
+                                        {{ 'Vaše velikost'|trans }} <span class="in-badge in-badge--outline js-not-implemented-yet">M</span> {{ advertProduct.calculatedAvailability.name }}
                                     </span>
                                 </div>
                             </li>
