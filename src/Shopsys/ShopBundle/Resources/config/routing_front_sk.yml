@@ -19,7 +19,7 @@ front_customer_order_detail_unregistered:
     defaults: { _controller: ShopsysShopBundle:Front\Customer:orderDetailUnregistered }
 
 front_login:
-    path: /prihlaseni/
+    path: /prihlasenie/
     defaults: { _controller: ShopsysShopBundle:Front\Login:login }
 
 front_logout:
@@ -31,27 +31,27 @@ front_order_index:
     defaults: { _controller: ShopsysShopBundle:Front\Order:index }
 
 front_order_paid:
-    path: /potvrzeni-platby-objednavky/{urlHash}
+    path: /potvrdenie-platby-objednavky/{urlHash}
     defaults: { _controller: ShopsysShopBundle:Front\Order:paid }
 
 front_order_not_paid:
-    path: /nezaplacena-objednavka/{urlHash}
+    path: /nezaplatena-objednavka/{urlHash}
     defaults: { _controller: ShopsysShopBundle:Front\Order:notPaid }
 
 front_order_sent:
-    path: /potvrzeni-objednavky/
+    path: /potvrdenie-objednavky/
     defaults: { _controller: ShopsysShopBundle:Front\Order:sent }
 
 front_product_search:
-    path: /hledani
+    path: /hladanie
     defaults: { _controller: ShopsysShopBundle:Front\Product:search }
 
 front_registration_register:
-    path: /registrace/
+    path: /registracia/
     defaults: { _controller: ShopsysShopBundle:Front\Registration:register }
 
 front_registration_reset_password:
-    path: /zapomenute-heslo/
+    path: /zabudnute-heslo/
     defaults: { _controller: ShopsysShopBundle:Front\CustomerPassword:resetPassword }
 
 front_registration_set_new_password:
@@ -59,23 +59,23 @@ front_registration_set_new_password:
     defaults: { _controller: ShopsysShopBundle:Front\CustomerPassword:setNewPassword }
 
 front_brand_list:
-    path: /prehled-znacek/
+    path: /prehlad-znaciek/
     defaults: { _controller: ShopsysShopBundle:Front\Brand:list }
 
 front_personal_data:
-    path: /prehled-osobnich-udaju/
+    path: /prehlad-osobnych-udajov/
     defaults: { _controller: ShopsysShopBundle:Front\PersonalData:index }
 
 front_personal_data_access:
-    path: /prehled-osobnich-udaju/{hash}/
+    path: /prehlad-osobnych-udajov/{hash}/
     defaults: { _controller: ShopsysShopBundle:Front\PersonalData:accessDisplay }
 
 front_personal_data_export:
-    path: /export-osobnich-udaju/
+    path: /export-osobnych-udajov/
     defaults: { _controller: ShopsysShopBundle:Front\PersonalData:export }
 
 front_personal_data_access_export:
-    path: /export-osobnich-udaju/{hash}/
+    path: /export-osobnych-udajov/{hash}/
     defaults: { _controller: ShopsysShopBundle:Front\PersonalData:accessExport }
 
 front_store_index:
