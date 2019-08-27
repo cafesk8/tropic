@@ -128,10 +128,15 @@
     class: Shopsys\ShopBundle\Model\Store\Store
     sizes:
         -   name: ~
-            width: 400
-            height: 250
+            width: 570
+            height: 380
             crop: true
             occurrence: 'Front-end: Store detail'
+        -   name: list
+            width: 520
+            height: 245
+            crop: true
+            occurrence: 'Front-end: Stores list'
 
 -   name:  blogCategory
     class: Shopsys\ShopBundle\Model\Blog\Category\BlogCategory

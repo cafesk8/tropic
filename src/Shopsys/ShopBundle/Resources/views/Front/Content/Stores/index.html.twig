@@ -30,7 +30,7 @@
                         <li class="list-stores__item">
                             <a href="{{ url('front_store_detail', { storeId: store.id }) }}" class="list-stores__item__in">
                                 <div class="list-stores__item__image">
-                                    {{ image(store) }}
+                                    {{ image(store, { 'size': 'list' }) }}
                                 </div>
                                 <div class="list-stores__item__info">
                                     <div class="list-stores__item__info__name">
