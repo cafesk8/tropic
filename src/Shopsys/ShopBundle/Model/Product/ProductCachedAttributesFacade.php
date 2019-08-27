@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Transport\DeliveryDate\DeliveryDateFacade;
+use Shopsys\ShopBundle\Model\Transport\Transport;
 
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
@@ -22,19 +25,27 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     private $cachedProductDistinguishingParameterValueFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transport\DeliveryDate\DeliveryDateFacade
+     */
+    private $deliveryDateFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+     * @param \Shopsys\ShopBundle\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
         ParameterRepository $parameterRepository,
         Localization $localization,
-        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
+        DeliveryDateFacade $deliveryDateFacade
     ) {
         parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
+        $this->deliveryDateFacade = $deliveryDateFacade;
     }
 
     /**
@@ -152,5 +163,14 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         );
 
         return $productDistinguishingParameterValue;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
+     * @return \DateTime
+     */
+    public function getExpectedDeliveryDate(?Transport $transport = null): DateTime
+    {
+        return $this->deliveryDateFacade->getExpectedDeliveryDate($transport);
     }
 }

@@ -469,3 +469,11 @@ services:
     Shopsys\ShopBundle\Component\Setting\Setting: ~
     Shopsys\FrameworkBundle\Component\Setting\Setting: '@Shopsys\ShopBundle\Component\Setting\Setting'
 
+    Shopsys\ShopBundle\Twig\DeliveryDateExtension:
+        tags:
+            - { name: twig.extension }
+
+    Shopsys\ShopBundle\Twig\FriendlyDateTimeFormatterExtension:
+        tags:
+            - { name: twig.extension }
+

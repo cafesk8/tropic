@@ -1,0 +1,22 @@
+{% macro productAvailabilityWithDeliveryDate(product) %}
+    <span>
+        {% set domain = getDomain() %}
+        {% set showDeliveryDate = product.usingStock
+            and product.stockQuantity > 0
+            and domain.id is not constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN')
+            and getDeliveryDate() is not null  %}
+
+        {% if showDeliveryDate %}
+            {% set expectedDeliveryDate = getDeliveryDate() %}
+            {% set friendlyDayInterval = expectedDeliveryDate.diff(date()) %}
+
+            {{ expectedDeliveryDate|friendlyDay }}
+            {% if friendlyDayInterval.days >= 2 %}
+                {{ expectedDeliveryDate|date('j. n.') }}
+            {% endif %}
+            {{ 'u&nbsp;vás'|trans|raw }}
+        {% else %}
+            {{ product.calculatedAvailability.name }}
+        {% endif %}
+    </span>
+{% endmacro %}

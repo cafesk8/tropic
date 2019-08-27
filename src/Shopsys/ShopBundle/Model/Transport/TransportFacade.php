@@ -169,4 +169,34 @@ class TransportFacade extends BaseTransportFacade
 
         return $transportsWithNeededCountry;
     }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
+     */
+    public function getVisibleByDomainIdWithoutPickUpPlaces(int $domainId, array $visiblePaymentsOnDomain): array
+    {
+        $transports = $this->transportRepository->getAllByDomainId($domainId);
+        $transports = $this->filterTransportsWithoutPickUpPlaces($transports);
+
+        return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport[] $transports
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
+     */
+    private function filterTransportsWithoutPickUpPlaces(array $transports): array
+    {
+        $noPickUpPlaceTransports = [];
+
+        foreach ($transports as $transport) {
+            if (!$transport->isPickupPlaceType()) {
+                $noPickUpPlaceTransports[] = $transport;
+            }
+        }
+
+        return $noPickUpPlaceTransports;
+    }
 }
