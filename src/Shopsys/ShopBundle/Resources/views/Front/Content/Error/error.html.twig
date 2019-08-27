@@ -8,7 +8,7 @@
     {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
 
     {% if status_code == 404 %}
-        <div class="box-promo-image box-promo-image--error js-not-implemented-yet">
+        <div class="box-promo-image box-promo-image--error">
             <img src="https://placeimg.com/1440/432/any/grayscale" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
             <div class="box-promo-image__title double-lined-hard">
                 <span class="box-promo-image__title__text">
@@ -24,7 +24,7 @@
             </div>
         </div>
     {% else %}
-        <div class="box-promo-image box-promo-image--error js-not-implemented-yet">
+        <div class="box-promo-image box-promo-image--error">
             <img src="https://placeimg.com/1440/432/any/grayscale" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
             <div class="box-promo-image__title double-lined-hard">
                 <span class="box-promo-image__title__text">

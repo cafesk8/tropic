@@ -58,9 +58,6 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $otherSettingMenu = $settingMenu->addChild('other', ['label' => t('Ostatní')]);
         $otherSettingMenu->addChild('deliverydate_setting', ['route' => 'admin_deliverydate_setting', 'label' => t('Výpočet termínu dodání')]);
-
-        $legalMenu = $settingMenu->getChild('legal');
-        $legalMenu->addChild('bushman_club', ['route' => 'admin_bushmanclub_setting', 'label' => t('Bushman club')]);
     }
 
     /**
@@ -69,6 +66,8 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     public function configureMarketingMenu(ConfigureMenuEvent $event): void
     {
         $marketingMenu = $event->getMenu();
+
+        $marketingMenu->addChild('articles_settings', ['route' => 'admin_articlesettings_setting', 'label' => t('Přiřazení článků')]);
 
         $marketingMenu->addChild('stores', [
             'route' => 'admin_inforow_detail',

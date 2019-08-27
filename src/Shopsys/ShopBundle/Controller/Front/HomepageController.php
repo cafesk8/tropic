@@ -9,6 +9,8 @@ use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
+use Shopsys\ShopBundle\Component\Setting\Setting;
+use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
@@ -58,6 +60,11 @@ class HomepageController extends FrontBaseController
     private $categoryFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
+     */
+    private $articleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade $sliderItemFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductsFacade
@@ -66,6 +73,7 @@ class HomepageController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(
         CurrentCustomer $currentCustomer,
@@ -75,7 +83,8 @@ class HomepageController extends FrontBaseController
         Domain $domain,
         BlogArticleFacade $blogArticleFacade,
         ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        ArticleFacade $articleFacade
     ) {
         $this->currentCustomer = $currentCustomer;
         $this->sliderItemFacade = $sliderItemFacade;
@@ -85,6 +94,7 @@ class HomepageController extends FrontBaseController
         $this->blogArticleFacade = $blogArticleFacade;
         $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->articleFacade = $articleFacade;
     }
 
     public function indexAction()
@@ -108,6 +118,9 @@ class HomepageController extends FrontBaseController
             'domainId' => $this->domain->getId(),
             'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($topProducts),
             'legendaryCategoryId' => $this->categoryFacade->getHighestLegendaryCategoryIdByDomainId($this->domain->getId()),
+            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
+            'ourValuesArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_VALUES_ARTICLE_ID, $this->domain->getId()),
+            'ourStoryArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_STORY_ARTICLE_ID, $this->domain->getId()),
         ]);
     }
 }

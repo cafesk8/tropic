@@ -77,42 +77,46 @@
 
     <div class="web__line">
         <div class="web__container">
-            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: ''} only %}
+            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
         </div>
     </div>
 
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <ul class="list-article-main">
-                <li class="list-article-main__item js-not-implemented-yet">
+                <li class="list-article-main__item">
                     <div class="list-article-main__item__image">
-                        <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/254/383/any/grayscale" alt="{{ 'Pomáháme'|trans }}">
+                        <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="{{ asset('assets/frontend/images/homepage_ideo_bann_2.jpg') }}" alt="{{ '22 let s vámi'|trans }}">
                     </div>
                     <div class="list-article-main__item__content">
                         <div class="list-article-main__item__content__title">
-                            {{ 'Pomáháme'|trans }}
+                            {{ '22 let s vámi'|trans }}
                         </div>
                         <div class="list-article-main__item__content__text">
-                            {{ 'V rámci kampaně Water for Afrika pro UNICEF jsme přišpěli na vyčištění téměř 10 000 000 litrů vody!'|trans }}
+                            {{ 'Tvoříme praktické a pohodlné oblečení pro každodenní expedice. Ty mu dáváš příběh a tvoříš vzpomínky s ním spojené. Věříš naší tradici a kvalitě?'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
-                            <a class="list-article-main__item__content__bottom__button btn" href="#" class="btn">{{ 'Pomáhejte s námi'|trans }}</a>
+                            {% if ourStoryArticle is not null %}
+                                <a class="list-article-main__item__content__bottom__button btn" href="{{ url('front_article_detail', { id: ourStoryArticle.id }) }}" class="btn">{{ 'Ke kořenům'|trans }}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </li>
-                <li class="list-article-main__item js-not-implemented-yet">
+                <li class="list-article-main__item">
                     <div class="list-article-main__item__image">
-                        <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="https://placeimg.com/254/383/any/grayscale" alt="{{ 'Pomáháme'|trans }}">
+                        <img class="js-lazy-load" src="{{ imagePlaceholder() }}" data-original="{{ asset('assets/frontend/images/homepage_ideo_bann_3.jpg') }}" alt="{{ 'Naše hodnoty'|trans }}">
                     </div>
                     <div class="list-article-main__item__content">
                         <div class="list-article-main__item__content__title">
-                            {{ 'Děkujeme Vám'|trans }}
+                            {{ 'Naše hodnoty'|trans }}
                         </div>
                         <div class="list-article-main__item__content__text">
-                            {{ 'Bushmanství nás spojuje, vaše příběhy a názory nás inspirují. I proto jsou prodejny spíše místem setkání než pouze nákupu.'|trans }}
+                            {{ 'Není ti jedno, jak žiješ, co děláš a co po tobě zůstane? Ani nám. Svět možná nespasíme, ale za pokus to stojí a bude to jízda. Vyrazíš s námi?'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
-                            <a class="list-article-main__item__content__bottom__button btn" href="#" class="btn">{{ 'Poznejte nás'|trans }}</a>
+                            {% if ourValuesArticle is not null %}
+                                <a class="list-article-main__item__content__bottom__button btn" href="{{ url('front_article_detail', { id: ourValuesArticle.id }) }}" class="btn">{{ 'K hodnotám'|trans }}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </li>

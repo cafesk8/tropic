@@ -1,5 +1,5 @@
-<div class="box-promo-image {{ cssClass }} js-not-implemented-yet">
-    <img src="https://placeimg.com/1440/432/any/grayscale" alt="{{ 'Vážím si všech 80 000 bushmanů'|trans }}">
+<div class="box-promo-image {{ cssClass }}">
+    <img src="{{ asset('assets/frontend/images/homepage_ideo_bann_1.jpg') }}" alt="{{ 'Vážím si všech 80 000 bushmanů'|trans }}">
     <div class="box-promo-image__title double-lined-hard">
         <span class="box-promo-image__title__text">
             {{ 'Vážím si všech'|trans }} 80&nbsp;000 {{ 'bushmanů'|trans }}
@@ -7,12 +7,15 @@
     </div>
     <div class="box-promo-image__content">
         <div class="box-promo-image__content__description">
-            {{ 'Jsem Jindra, otec všech bushmanů. Je potřeba, aby'|trans }}<br>
-            {{ 'tento text přesně vystihnul atmosféru nové strategie.'|trans }}<br>
-            {{ 'Celá část je vývzou pro registraci nových členů.'|trans }}
+            {{ '„Když jsem zakládal projekt BUSHMAN,'|trans }}<br>
+            {{ 'chtěl jsem vytvořit něco obyčejně přirozeného, a přitom pořádného.'|trans }}<br>
+            {{ 'Pro lidi s životním názorem, který nás spojuje.“'|trans }}<br>
+            {{ 'Jindřich Melichar'|trans }}<br>
         </div>
         <div class="box-promo-image__content__button">
-            <a href="#" class="btn btn--secondary">{{ 'Chci se stát bushmanem'|trans }}</a>
+            {% if bushmanClubArticle is not null %}
+                <a href="{{ url('front_article_detail', { id: bushmanClubArticle.id }) }}" class="btn btn--secondary">{{ 'Do Bushman Clubu'|trans }}</a>
+            {% endif %}
         </div>
     </div>
 </div>

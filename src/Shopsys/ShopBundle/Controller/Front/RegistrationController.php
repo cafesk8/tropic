@@ -9,8 +9,9 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
+use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
-use Shopsys\ShopBundle\Model\BushmanClub\BushmanClubFacade;
+use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Customer\EanFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,9 +44,9 @@ class RegistrationController extends FrontBaseController
     private $legalConditionsFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\BushmanClub\BushmanClubFacade
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
      */
-    private $bushmanClubFacade;
+    private $articleFacade;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Customer\EanFacade
@@ -58,8 +59,8 @@ class RegistrationController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
-     * @param \Shopsys\ShopBundle\Model\BushmanClub\BushmanClubFacade $bushmanClubFacade
      * @param \Shopsys\ShopBundle\Model\Customer\EanFacade $eanFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(
         Domain $domain,
@@ -67,16 +68,16 @@ class RegistrationController extends FrontBaseController
         CustomerFacade $customerFacade,
         Authenticator $authenticator,
         LegalConditionsFacade $legalConditionsFacade,
-        BushmanClubFacade $bushmanClubFacade,
-        EanFacade $eanFacade
+        EanFacade $eanFacade,
+        ArticleFacade $articleFacade
     ) {
         $this->domain = $domain;
         $this->userDataFactory = $userDataFactory;
         $this->customerFacade = $customerFacade;
         $this->authenticator = $authenticator;
         $this->legalConditionsFacade = $legalConditionsFacade;
-        $this->bushmanClubFacade = $bushmanClubFacade;
         $this->eanFacade = $eanFacade;
+        $this->articleFacade = $articleFacade;
     }
 
     /**
@@ -118,7 +119,7 @@ class RegistrationController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Registration/register.html.twig', [
             'form' => $form->createView(),
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
-            'bushmanClubArticle' => $this->bushmanClubFacade->findBushmanClubArticleByDomainId($this->domain->getId()),
+            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
         ]);
     }
 }

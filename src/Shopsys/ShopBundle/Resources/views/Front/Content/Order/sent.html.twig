@@ -25,6 +25,7 @@
                     <div class="box-order-done__text">
                         {{ pageContent|raw }}
                     </div>
+                    {#
                     <div class="box-order-done__club">
                         <div class="box-order-done__club__title">
                             {{ 'Stačí zadat heslo a příště už nic'|trans }} <br>
@@ -42,7 +43,7 @@
                         * The browsers need field with name 'name' to store login (password stored by field with type password).
                         * I can't create a field with a specific name in symfony.
                         * IE and Edge store login by type hidden, other by type text or email.
-                        #}
+
                         <input type="text" name="name" value="{{ order.email }}" style="display: none;">
                         <input type="hidden" name="name" value="{{ order.email }}">
 
@@ -61,6 +62,7 @@
                             </div>
                         </div>
                     </div>
+                    #}
                 </div>
             </div>
         </div>

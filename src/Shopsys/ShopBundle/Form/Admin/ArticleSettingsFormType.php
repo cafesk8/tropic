@@ -12,9 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BushmanClubFormType extends AbstractType
+class ArticleSettingsFormType extends AbstractType
 {
     public const FIELD_BUSHMAN_ARTICLE = 'bushmanClubArticle';
+    public const FIELD_OUR_STORY_ARTICLE = 'ourStoryArticle';
+    public const FIELD_OUR_VALUES_ARTICLE = 'ourValuesArticle';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Article\ArticleFacade
@@ -48,8 +50,26 @@ class BushmanClubFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'placeholder' => t('-- Choose article --'),
-                'label' => t('Bushman Club'),
-                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu.'),
+                'label' => t('(Banner) Bushman Club'),
+                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu, a také jako odkaz pro banner Bushman club'),
+            ])
+            ->add(self::FIELD_OUR_STORY_ARTICLE, ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('Banner Náš příběh'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Náš příběh'),
+            ])
+            ->add(self::FIELD_OUR_VALUES_ARTICLE, ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('Banner Naše hodnoty'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Naše hodnoty'),
             ]);
 
         $builder
