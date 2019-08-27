@@ -5,6 +5,9 @@
 
     Shopsys.register.registerCallback(function ($container) {
         $container.filterAllNodes('.js-product-main-variant-select-button').click(function () {
+            if ($(this).hasClass('active')) {
+                return;
+            }
             var $group = $(this).closest('.js-product-variant-group');
             var variantSelector = '.js-product-detail-' + $(this).data('id');
 
