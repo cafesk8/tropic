@@ -33,6 +33,9 @@
         });
 
         $container.filterAllNodes('.js-product-variant-select-button').click(function () {
+            if ($(this).hasClass('disabled')) {
+                return;
+            }
             var $priceWrapper = $(this).closest('.js-product-variant-group').find('.js-product-variant-price-wrapper');
             var $detailWrap = $(this).closest('.js-product-variant-group').find('.box-detail__wrap');
             var variantPriceSelector = '.js-product-variant-price-' + $(this).data('id');
