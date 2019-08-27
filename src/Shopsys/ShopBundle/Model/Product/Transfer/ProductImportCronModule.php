@@ -245,7 +245,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
                     $mainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
                 }
                 if (count($notVariants) > 0) {
-                    $this->productFacade->flushProduct($mainVariant);
+                    $this->productFacade->flushMainVariant($mainVariant);
                 }
             } else {
                 $mainVariant = array_shift($secondParameterValuesWithProducts);
