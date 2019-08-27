@@ -27,7 +27,9 @@
 
             $priceWrapper.filterAllNodes('.js-product-variant-price').addClass('display-none');
             $priceWrapper.filterAllNodes(variantPriceSelector).removeClass('display-none');
-            $priceWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]').removeAttr('disabled');
+            $priceWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
+                .removeAttr('disabled')
+                .removeClass('btn--disabled');
 
             $detailWrap.filterAllNodes('.js-detail-availability').addClass('display-none');
             $detailWrap.filterAllNodes(availabilitySelector).removeClass('display-none');
