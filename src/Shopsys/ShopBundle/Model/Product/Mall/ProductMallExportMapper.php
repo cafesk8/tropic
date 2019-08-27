@@ -184,15 +184,7 @@ class ProductMallExportMapper
             $mallProduct->setPriority($product->getOrderingPriority());
         }
 
-        $productParameters = $this->productCachedAttributesFacade->getProductParameterValues($product, self::CZECH_LOCALE);
-        foreach ($productParameters as $productParameter) {
-            $mallParameterId = $this->getParameterId($productParameter->getParameter());
-
-            if ($mallParameterId !== null) {
-                $mallProduct->setParameter($mallParameterId, $productParameter->getValue()->getText());
-            }
-
-        }
+        $this->setParameters($mallProduct, $product);
 
         $firstInLoop = false;
         foreach ($this->imageFacade->getImagesByEntityIndexedById($product, null) as $image) {
@@ -303,5 +295,21 @@ class ProductMallExportMapper
         }
 
         return 0;
+    }
+
+    /**
+     * @param \MPAPI\Entity\Products\AbstractArticleEntity $mallProduct
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    private function setParameters(AbstractArticleEntity $mallProduct, Product $product): void
+    {
+        $productParameters = $this->productCachedAttributesFacade->getProductParameterValues($product, self::CZECH_LOCALE);
+        foreach ($productParameters as $productParameter) {
+            $mallParameterId = $this->getParameterId($productParameter->getParameter());
+
+            if ($mallParameterId !== null) {
+                $mallProduct->setParameter($mallParameterId, $productParameter->getValue()->getText());
+            }
+        }
     }
 }
