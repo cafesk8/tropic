@@ -269,7 +269,9 @@ class BlogArticleFormType extends AbstractType
                 'entry_options' => [
                     'required' => false,
                 ],
+                'entry_type' => TextareaType::class,
                 'label' => t('Perex'),
+
             ]);
         return $builderDescriptionGroup;
     }
