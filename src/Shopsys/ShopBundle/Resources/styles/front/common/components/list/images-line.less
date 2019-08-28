@@ -3,7 +3,7 @@
 @image-line-item-count-desktop: 8;
 
 @image-line-item-gap: 3px;
-@image-line-item-height: 169px;
+@image-line-item-height: 177px;
 
 @image-line-bottom-gap: 20px;
 
@@ -32,6 +32,10 @@
 
         @media @query-xl {
             width: calc(~"@{calc-base}/@{image-line-item-count-desktop}");
+        }
+
+        img {
+            max-height: @image-line-item-height;
         }
     }
 }

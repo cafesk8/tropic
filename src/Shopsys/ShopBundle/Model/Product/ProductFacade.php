@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
@@ -229,11 +230,13 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
      */
-    public function flushProduct(Product $product): void
+    public function flushMainVariant(Product $mainVariant): void
     {
-        $this->em->flush($product);
+        $toFlush = $mainVariant->getVariants();
+        $toFlush[] = $mainVariant;
+        $this->em->flush($toFlush);
     }
 
     /**
@@ -368,6 +371,17 @@ class ProductFacade extends BaseProductFacade
     public function findOneByEan(string $ean): ?Product
     {
         return $this->productRepository->findOneByEan($ean);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
+     * @param int $domainId
+     */
+    public function setActionPriceForProduct(Product $product, ?Money $actionPrice, int $domainId): void
+    {
+        $product->setActionPrice($actionPrice, $domainId);
+        $this->em->flush();
     }
 
     /**

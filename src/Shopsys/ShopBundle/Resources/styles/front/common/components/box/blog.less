@@ -21,6 +21,7 @@
         flex-direction: column;
         width: 100%;
         order: 2;
+        margin-bottom: 50px;
 
         @media @query-lg {
             width: calc(~"@{calc-base} - @{box-blog-panel-width} - @{box-blog-panel-gap}");
@@ -30,7 +31,10 @@
         &__button {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+
+            .btn {
+                margin-bottom: 70px;
+            }
         }
     }
 
@@ -58,7 +62,7 @@
     &__title {
         display: block;
         text-align: center;
-        margin-bottom: 66px;
+        margin: 33px auto;
 
         font-family: @font-alt;
         font-weight: 700;

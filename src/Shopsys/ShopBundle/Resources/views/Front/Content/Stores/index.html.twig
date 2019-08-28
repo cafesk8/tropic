@@ -1,10 +1,8 @@
 {% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
 
 {% block title %}
-    {{ 'Kontakt'|trans }}
+    {{ 'Prodejny'|trans }}
 {% endblock %}
-
-{% block breadcrumb %}{% endblock %}
 
 {% block main_content %}
     <div class="web__line">
@@ -12,179 +10,45 @@
             <h1 class="in-title in-title--big in-title--dark in-title--center">
                 {{ 'Prodejny'|trans }}
             </h1>
-            <ul class="list-stores">
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
 
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
+            <div class="in-tab__wrap">
+                <div class="in-tab__head text-left">
+                    {% for regionId, regionText in regions %}
+                        <a href="#{{ regionId|webalize }}" class="in-tab__head__item underline">
+                            {{ regionText }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
 
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
+            {% for regionName, stores in storesIndexedByRegion %}
+                {% if regionName|length != 0 %}
+                    <h2 id="{{ regionName|webalize }}">{{ regionName }} ({{ stores|length }})</h2>
+                {% endif %}
+                <ul class="list-stores">
+                    {% for store in stores %}
+                        <li class="list-stores__item">
+                            <a href="{{ url('front_store_detail', { storeId: store.id }) }}" class="list-stores__item__in">
+                                <div class="list-stores__item__image">
+                                    {{ image(store, { 'size': 'list' }) }}
+                                </div>
+                                <div class="list-stores__item__info">
+                                    <div class="list-stores__item__info__name">
+                                        {{ store.name }}
 
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
-
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
-
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
-
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
-
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
-
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="list-stores__item js-not-implemented-yet">
-                    <a href="/stores/detail" class="list-stores__item__in">
-                        <div class="list-stores__item__image">
-                            <img src="https://placeimg.com/520/245/any">
-                        </div>
-                        <div class="list-stores__item__info">
-                            <div class="list-stores__item__info__name">
-                                {{ 'Brno Futurum'|trans}}
-
-                                <span class="list-stores__item__info__name__additional">
-                                    {{ 'OC futurum'|trans }}
-                                </span>
-                            </div>
-                            <div class="list-stores__item__info__open-hours">
-                                {{ 'Po-Ne 10.00-20.00'|trans }}
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+                                        <span class="list-stores__item__info__name__additional">
+                                            {{ store.street }}
+                                        </span>
+                                    </div>
+                                    <div class="list-stores__item__info__open-hours">
+                                        {{ store.openingHours }}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
         </div>
     </div>
 

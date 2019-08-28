@@ -25,28 +25,30 @@
                         {% for advertProduct in advertProducts %}
                             {% set sellingPrice = getProductSellingPrice(advertProduct) %}
                             <li class="box-special-offer__products__item">
-                                <div class="box-special-offer__products__item__image">
+                                <a class="box-special-offer__products__item__image" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">
                                     {{ image(advertProduct, { size: 'biggerThumbnail', alt: advertProduct.name, lazy: true }) }}
-                                </div>
+                                </a>
                                 <div class="box-special-offer__products__item__content">
-                                    <a class="box-special-offer__products__item__content__title" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">{{ advertProduct.name }}</a>
-                                    <span class="box-special-offer__products__item__content__price"> {{ sellingPrice.priceWithVat|price }}
-                                        {% if sellingPrice.isActionPrice %}
-                                            <span class="box-special-offer__products__item__content__price__old">{{ sellingPrice.defaultProductPrice.priceWithVat|price }}</span>
-                                        {% endif %}
-                                    </span>
-                                    <span class="box-special-offer__products__item__content__size">
-                                        {{ 'Vaše velikost'|trans }}
-                                        {% if variantsIndexedByMainVariantId|length > 0 and advertProduct.id in variantsIndexedByMainVariantId|keys %}
-                                            {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[advertProduct.id]) %}
-                                            {% if advertProduct.id in secondDistinguishingParameters|keys %}
-                                                {% for parameterValue, variantId in secondDistinguishingParameters[advertProduct.id] %}
-                                                    <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
-                                                {% endfor %}
+                                    <a href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">
+                                        <div class="box-special-offer__products__item__content__title" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">{{ advertProduct.name }}</div>
+                                        <span class="box-special-offer__products__item__content__price"> {{ sellingPrice.priceWithVat|price }}
+                                            {% if sellingPrice.isActionPrice %}
+                                                <span class="box-special-offer__products__item__content__price__old">{{ sellingPrice.defaultProductPrice.priceWithVat|price }}</span>
                                             {% endif %}
-                                        {% endif %}
-                                        {{ advertProduct.calculatedAvailability.name }}
-                                    </span>
+                                        </span>
+                                        <span class="box-special-offer__products__item__content__size">
+                                            {{ 'Vaše velikost'|trans }}
+                                            {% if variantsIndexedByMainVariantId|length > 0 and advertProduct.id in variantsIndexedByMainVariantId|keys %}
+                                                {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[advertProduct.id]) %}
+                                                {% if advertProduct.id in secondDistinguishingParameters|keys %}
+                                                    {% for parameterValue, variantId in secondDistinguishingParameters[advertProduct.id] %}
+                                                        <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endif %}
+                                            {{ advertProduct.calculatedAvailability.name }}
+                                        </span>
+                                    </a>
                                 </div>
                             </li>
                         {% endfor %}

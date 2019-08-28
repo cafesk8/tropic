@@ -23,7 +23,7 @@ class ProductDomain extends BaseProductDomain
     /**
      * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      *
-     * @ORM\Column(type="money", nullable=true)
+     * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
     private $actionPrice;
 

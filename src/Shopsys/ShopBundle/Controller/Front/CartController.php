@@ -249,8 +249,10 @@ class CartController extends FrontBaseController
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param string $type
+     * @param bool $disabled
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addProductFormAction(Product $product, $type = 'normal')
+    public function addProductFormAction(Product $product, $type = 'normal', $disabled = false)
     {
         $form = $this->createForm(AddProductFormType::class, ['productId' => $product->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
@@ -260,6 +262,7 @@ class CartController extends FrontBaseController
             'form' => $form->createView(),
             'product' => $product,
             'type' => $type,
+            'disabled' => $disabled,
         ]);
     }
 

@@ -1,9 +1,14 @@
-.in-article {
-    &__title {
-        text-align: center;
+@in-article-container-max-width: 810px;
 
-        font-size: 24px;
-        font-weight: 700;
+.in-article {
+
+    &__container {
+        width: 100%;
+
+        @media @query-vl {
+            width: @in-article-container-max-width;
+            margin: 0 auto;
+        }
     }
 
     &__date {
@@ -15,7 +20,27 @@
         font-size: 16px;
     }
 
+    &__text-perex {
+        margin-bottom: 20px;
+
+        font-weight: 500;
+    }
+
     &__text {
         margin-bottom: 20px;
+    }
+
+    &__main-img {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    &__img-caption {
+        margin-top: -20px;
+        margin-bottom: 20px;
+
+        color: @color-brown-light;
+        font-size: 13px;
+        font-family: @font;
     }
 }

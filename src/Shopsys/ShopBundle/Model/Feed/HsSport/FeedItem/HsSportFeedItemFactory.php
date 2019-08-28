@@ -106,11 +106,11 @@ class HsSportFeedItemFactory
             $colorProductParameterValue = $this->parameterFacade->findColorProductParameterValueByProductId($variant->getId());
 
             $sizeValue = $sizeProductParameterValue !== null ?
-                $sizeProductParameterValue->getValue()->getExternalId() . '_' . $sizeProductParameterValue->getValue()->getText()
+                $sizeProductParameterValue->getValue()->getHsFeedId() . '_' . $sizeProductParameterValue->getValue()->getText()
                 : '';
 
             $colorValue = $colorProductParameterValue !== null ?
-                $colorProductParameterValue->getValue()->getExternalId() . '_' . $colorProductParameterValue->getValue()->getText()
+                $colorProductParameterValue->getValue()->getHsFeedId() . '_' . $colorProductParameterValue->getValue()->getText()
                 : '';
 
             $hsSportVariantItems[] = new HsSportFeedVariantItem(

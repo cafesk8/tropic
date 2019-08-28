@@ -1,0 +1,10 @@
+{% extends '@!ShopsysFramework/Admin/Content/Parameter/listGrid.html.twig' %}
+
+{% block grid_action_cell %}
+    <a
+        class="in-icon in-icon--delete svg svg-visible table-action"
+        title="{{ 'Detail'|trans }}"
+        href="{{  url('admin_parametervalue_list', {parameterId: row.p.id}) }}"
+    ></a>
+    {{ parent() }}
+{% endblock %}

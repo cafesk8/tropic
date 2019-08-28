@@ -23,7 +23,10 @@
 
     &--small {
         border-bottom: 1px solid @color-gray;
-        padding: @header-height-gap/2 @web-padding-big 0 @web-padding-big;
+
+        @media @query-lg {
+            padding: @header-height-gap/2 @web-padding-big 0 @web-padding-big;
+        }
     }
 
     &--no-gap {
@@ -139,13 +142,16 @@
         font-family: @font-alt;
 
         @media @query-md {
-            padding-right: 30px;
             margin-bottom: -10px;
         }
 
         @media @query-lg {
-            text-align: left;
             margin-bottom: 15px;
+        }
+
+        @media @query-vl {
+            padding-right: 30px;
+            text-align: left;
         }
     }
 

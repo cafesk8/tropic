@@ -47,6 +47,14 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $storeMenu->addChild('store_list', ['route' => 'admin_store_list', 'label' => t('Stores')]);
         $storeMenu->addChild('new', ['route' => 'admin_store_new', 'label' => t('New store'), 'display' => false]);
         $storeMenu->addChild('edit', ['route' => 'admin_store_edit', 'label' => t('Editing store'), 'display' => false]);
+
+        $listsMenu = $settingMenu->getChild('lists');
+        $parameterMenu = $listsMenu->getChild('parameters');
+        $parameterMenu->addChild('parametervalue_list', [
+            'route' => 'admin_parametervalue_list',
+            'label' => t('Hodnoty parametra'),
+            'display' => false,
+        ]);
     }
 
     /**

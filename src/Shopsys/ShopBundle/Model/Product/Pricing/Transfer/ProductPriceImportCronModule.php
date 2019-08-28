@@ -131,6 +131,14 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
         }
 
         $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($productTransferResponseItemData->getDomainId());
+
+        $actionPrice = null;
+        if ($productTransferResponseItemData->isActionPrice()) {
+            $actionPrice = $productTransferResponseItemData->getActionPrice();
+        }
+
+        $this->productFacade->setActionPriceForProduct($product, $actionPrice, $productTransferResponseItemData->getDomainId());
+
         $this->productManualInputPriceFacade->refresh(
             $product,
             $pricingGroup,
@@ -138,7 +146,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
         );
 
         // ProductPriceRecalculator::recalculateOneProductPrices uses cached pricing groups,
-        // but after item trasnfer identity map is cleared, we need to refresh currently cached pricing groups.
+        // but after item transfer identity map is cleared, we need to refresh currently cached pricing groups.
         // Otherwise fatal is thrown.
         $this->productPriceRecalculator->refreshAllPricingGroups();
 

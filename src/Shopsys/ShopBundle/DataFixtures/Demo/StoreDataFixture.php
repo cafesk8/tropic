@@ -16,6 +16,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
 {
     public const REFERENCE_STORE_BRNO_FUTURUM = 'store_brno_futurum';
     public const REFERENCE_STORE_OSTRAVA_AVION = 'store_ostrava_avion';
+    public const REFERENCE_STORE_OSTRAVA_KAROLINA = 'store_ostrava_karolina';
     public const REFERENCE_STORE_BRATISLAVA_AUPARK = 'store_bratislava_aupark';
     public const REFERENCE_STORE_NEMARKT = 'store_neumarkt';
 
@@ -80,6 +81,17 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->externalNumber = '0040';
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $this->createStore($storeData, self::REFERENCE_STORE_OSTRAVA_AVION);
+
+        $storeData->description = $description;
+        $storeData->domainId = DomainHelper::CZECH_DOMAIN;
+        $storeData->name = 'Ostrava Nová Karolína';
+        $storeData->city = 'Ostrava';
+        $storeData->street = 'Rudná 114';
+        $storeData->postcode = '700 30';
+        $storeData->openingHours = 'Po-Ne / 9,00 - 21,00';
+        $storeData->externalNumber = '0060';
+        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $this->createStore($storeData, self::REFERENCE_STORE_OSTRAVA_KAROLINA);
 
         $storeData->description = $description;
         $storeData->domainId = DomainHelper::SLOVAK_DOMAIN;

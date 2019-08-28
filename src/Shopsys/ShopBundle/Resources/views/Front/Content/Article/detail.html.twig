@@ -9,17 +9,23 @@
 {% endblock %}
 
 {% block main_content %}
-    <h1 class="in-article__title">
+
+    <h1 class="in-title in-title--big in-title--center">
         {% if article.seoH1 is not null %}
             {{ article.seoH1 }}
         {% else %}
             {{ article.name }}
         {% endif %}
     </h1>
+    <div class="web__line">
+        <div class="web__container web__container--big-padding">
+            <div class="in-article__container">
+                <div class="in-article__date">{{ article.createdAt|date('j.n.Y') }}</div>
 
-    <div class="in-article__date">{{ article.createdAt|date('j.n.Y') }}</div>
-
-    <div class="in-article__text in-user-text">
-        {{ article.text|raw }}
+                <div class="in-article__text in-user-text">
+                    {{ article.text|raw }}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

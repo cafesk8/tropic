@@ -40,4 +40,13 @@ class CategoryFacade extends BaseCategoryFacade
     {
         return $this->categoryRepository->getProductVisibleProductCategoryDomains($product, $domainId);
     }
+
+    /**
+     * @param int $domainId
+     * @return int|null
+     */
+    public function getHighestLegendaryCategoryIdByDomainId(int $domainId): ?int
+    {
+        return $this->categoryRepository->getHighestLegendaryCategoryIdByDomainId($domainId);
+    }
 }

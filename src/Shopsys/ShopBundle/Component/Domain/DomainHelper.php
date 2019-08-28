@@ -17,6 +17,8 @@ class DomainHelper
     public const SLOVAK_LOCALE = 'sk';
     public const GERMAN_LOCALE = 'de';
 
+    public const LOCALES = [self::CZECH_LOCALE, self::SLOVAK_LOCALE, self::GERMAN_LOCALE];
+
     public const CZECH_COUNTRY_CODE = 'CZ';
     public const SLOVAK_COUNTRY_CODE = 'SK';
     public const GERMAN_COUNTRY_CODE = 'DE';
