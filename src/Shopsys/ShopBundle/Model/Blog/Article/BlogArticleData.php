@@ -84,6 +84,11 @@ class BlogArticleData
      */
     public $products;
 
+    /**
+     * @var string[]|null[]
+     */
+    public $mainPhotoTitles;
+
     public function __construct()
     {
         $this->names = [];
@@ -100,5 +105,6 @@ class BlogArticleData
         $this->visibleOnHomepage = true;
         $this->perexes = [];
         $this->products = [];
+        $this->mainPhotoTitles = [];
     }
 }

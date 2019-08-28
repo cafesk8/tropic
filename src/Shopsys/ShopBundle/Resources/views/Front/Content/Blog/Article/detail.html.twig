@@ -31,8 +31,8 @@
                         <div class="in-article__main-img">
                             {{ image(blogArticle, { itemprop: 'image', lazy:true }) }}
                         </div>
-                        <div class="in-article__img-caption js-not-implemented-yet">
-                            {{ 'FOTO: Národní park ve vší kráse'|trans}}
+                        <div class="in-article__img-caption">
+                            {{ blogArticle.mainPhotoTitle }}
                         </div>
                     {% endif %}
 
