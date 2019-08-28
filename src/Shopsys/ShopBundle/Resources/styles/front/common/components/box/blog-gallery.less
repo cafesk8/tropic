@@ -1,0 +1,111 @@
+@box-blog-gallery-item-size: 70px;
+@box-blog-gallery-item-gap: 10px;
+@box-blog-gallery-item-count: 5;
+@box-blog-gallery-side-gap: 125px;
+@box-blog-gallery-font-size: 13px;
+@box-blog-gallery-width: 400px;
+@box-blog-gallery-bottom-gap: 40px;
+
+@box-blog-gallery-item-video-width: 66px;
+@box-blog-gallery-item-more-width: 93px;
+@box-blog-gallery-items-width: calc(~"100% - @{box-blog-gallery-item-more-width} - @{box-blog-gallery-item-video-width}");
+
+.box-blog-gallery {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    margin: 0 auto @box-blog-gallery-bottom-gap auto;
+
+    &__images {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: @box-blog-gallery-width;
+        max-width: 100%;
+        min-height: @box-blog-gallery-item-size;
+        margin-bottom: 20px;
+
+        @media @query-vl {
+            margin-bottom: 0;
+        }
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        width: 100%;
+
+        @media @query-vl {
+            width: auto;
+        }
+    }
+
+    &__item {
+        width: calc(~"@{box-blog-gallery-items-width}/@{box-blog-gallery-item-count}");
+        margin-right: @box-blog-gallery-item-gap;
+        min-width: @box-blog-gallery-item-size;
+        text-align: center;
+        margin-bottom: 5px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &__link {
+            display: inline-block;
+            width: @box-blog-gallery-item-size;
+            height: @box-blog-gallery-item-size;
+            position: relative;
+        }
+
+        img {
+            .center-image();
+        }
+
+        &--more {
+            width: @box-blog-gallery-item-more-width;
+            margin-right: 0;
+
+            .box-blog-gallery__item__link {
+                display: inline;
+                line-height: @box-blog-gallery-item-size;
+
+                color: @color-brown-light-2;
+                font-size: @box-blog-gallery-font-size;
+                font-weight: 700;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+        }
+
+        &--video {
+            width: @box-blog-gallery-item-video-width;
+            text-align: right;
+            margin-right: 0;
+
+            border-left: 3px solid @color-gray;
+
+            .box-blog-gallery__item__link {
+                display: inline;
+                line-height: @box-blog-gallery-item-size;
+
+                color: @color-red;
+                font-size: 33px;
+                text-decoration: none;
+
+                .svg {
+                    position: relative;
+                    top: 5px;
+                }
+            }
+        }
+    }
+}
