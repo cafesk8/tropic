@@ -48,14 +48,14 @@
             </div>
         </div>
 
-        <h2>{{ 'Další fotografie'|trans }}</h2>
-
         <div class="box-blog__gallery">
             {% set galleryImages = getImages(blogArticle) %}
             {% set showGallery = galleryImages|length > 0 %}
             {% set showGalleryMaxCount = 4 %}
 
             {% if showGallery %}
+                <h2>{{ 'Další fotografie'|trans }}</h2>
+
                 <div class="box-blog-gallery dont-print js-gallery">
                     <div class="box-blog-gallery__images">
                         {% for galleryImage in galleryImages %}
