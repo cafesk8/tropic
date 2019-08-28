@@ -192,11 +192,11 @@ class ProductMallExportMapper
             $firstInLoop = true;
         }
 
-        /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
-        $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
-
         if ($product->isMainVariant() === false || $isVariant) {
             $mallProduct->setBarcode($product->getEan());
+
+            /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
+            $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
 
             if ($productPrice->isActionPrice()) {
                 $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
