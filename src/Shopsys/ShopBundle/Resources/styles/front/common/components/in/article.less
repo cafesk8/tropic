@@ -1,4 +1,15 @@
+@in-article-container-max-width: 810px;
+
 .in-article {
+
+    &__container {
+        width: 100%;
+
+        @media @query-vl {
+            width: @in-article-container-max-width;
+            margin: 0 auto;
+        }
+    }
 
     &__date {
         margin-bottom: 10px;
@@ -9,7 +20,27 @@
         font-size: 16px;
     }
 
+    &__text-perex {
+        margin-bottom: 20px;
+
+        font-weight: 500;
+    }
+
     &__text {
         margin-bottom: 20px;
+    }
+
+    &__main-img {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    &__img-caption {
+        margin-top: -20px;
+        margin-bottom: 20px;
+
+        color: @color-brown-light;
+        font-size: 13px;
+        font-family: @font;
     }
 }

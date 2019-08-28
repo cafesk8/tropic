@@ -12,7 +12,7 @@
 <div class="web__line">
     <div class="web__container web__container--big-padding">
         <div class="box-blog">
-            <h1 class="in-title in-title--big in-title--center">
+            <h1 class="box-blog__title">
                 {% if blogArticle.getSeoH1(domainId) is not null %}
                     {{ blogArticle.getSeoH1(domainId) }}
                 {% else %}
@@ -21,13 +21,20 @@
             </h1>
             <div class="box-blog__content">
                 <div class="box-blog__list">
-                    {% if imageExists(blogArticle) %}
-                        {{ image(blogArticle, { itemprop: 'image', lazy:true }) }}
-                    {% else %}
-                        {{ noimage({ alt: blogArticle.name }) }}
-                    {% endif %}
-
                     <div class="in-article__date">{{ blogArticle.createdAt|date('j.n.Y') }}</div>
+
+                    <div class="in-article__text-perex in-user-text">
+                        {{ blogArticle.perex|raw }}
+                    </div>
+
+                    {% if imageExists(blogArticle) %}
+                        <div class="in-article__main-img">
+                            {{ image(blogArticle, { itemprop: 'image', lazy:true }) }}
+                        </div>
+                        <div class="in-article__img-caption js-not-implemented-yet">
+                            {{ 'FOTO: Národní park ve vší kráse'|trans}}
+                        </div>
+                    {% endif %}
 
                     <div class="in-article__text in-user-text">
                         {{ blogArticle.description|raw }}
