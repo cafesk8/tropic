@@ -62,4 +62,25 @@ class CategoryRepository extends BaseCategoryRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param int $domainId
+     * @return int|null
+     */
+    public function getHighestLegendaryCategoryIdByDomainId(int $domainId): ?int
+    {
+        /** @var \Shopsys\ShopBundle\Model\Category\Category|null $highestCategory */
+        $highestCategory = $this
+            ->getAllVisibleByDomainIdQueryBuilder($domainId)
+            ->andWhere('c.legendaryCategory = TRUE')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($highestCategory !== null) {
+            return $highestCategory->getId();
+        }
+
+        return null;
+    }
 }

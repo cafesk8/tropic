@@ -65,9 +65,11 @@
                     <div class="box-top-products__in">
                         {{ productList.horizontalList(topProducts, variantsIndexedByMainVariantId, "list-top-products", 'h3', 'top-products', 5) }}
                     </div>
-                    <div class="box-top-products__bottom">
-                        <a href="#" class="box-top-products__bottom__link underline js-not-implemented-yet">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
-                    </div>
+                    {% if legendaryCategoryId is not null%}
+                        <div class="box-top-products__bottom">
+                            <a href="{{ url('front_product_list', { id: legendaryCategoryId }) }}" class="box-top-products__bottom__link underline">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

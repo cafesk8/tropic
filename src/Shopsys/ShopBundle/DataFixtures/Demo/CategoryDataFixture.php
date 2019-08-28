@@ -75,6 +75,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'en' => 'Electronics',
         ];
         $categoryData->preListingCategory = true;
+        $categoryData->legendaryCategory = true;
         $categoryData->descriptions = array_merge(
             $emptyDescriptionsForAllDomains,
             [
