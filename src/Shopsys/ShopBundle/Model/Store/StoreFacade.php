@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Store;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
 class StoreFacade
@@ -30,21 +31,29 @@ class StoreFacade
     private $storeFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Store\StoreRepository $storeRepository
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFactory $storeFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         EntityManagerInterface $em,
         StoreRepository $storeRepository,
         ImageFacade $imageFacade,
-        StoreFactory $storeFactory
+        StoreFactory $storeFactory,
+        Domain $domain
     ) {
         $this->em = $em;
         $this->storeRepository = $storeRepository;
         $this->imageFacade = $imageFacade;
         $this->storeFactory = $storeFactory;
+        $this->domain = $domain;
     }
 
     /**
@@ -71,6 +80,15 @@ class StoreFacade
     public function getById($storeId): Store
     {
         return $this->storeRepository->getById($storeId);
+    }
+
+    /**
+     * @param int $storeId
+     * @return \Shopsys\ShopBundle\Model\Store\Store
+     */
+    public function getStoreForDomainById(int $storeId): Store
+    {
+        return $this->storeRepository->getStoreForDomainById($storeId, $this->domain->getId());
     }
 
     /**
@@ -139,5 +157,21 @@ class StoreFacade
     public function getAllPickupPlacesForDomain(int $domainId): array
     {
         return $this->storeRepository->getAllPickupPlacesForDomain($domainId);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function findRegionNames(): array
+    {
+        return $this->storeRepository->findRegionNames($this->domain->getId());
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Store\Store[][]
+     */
+    public function findStoresIndexedByRegion(): array
+    {
+        return $this->storeRepository->findStoresIndexedByRegion($this->domain->getId());
     }
 }
