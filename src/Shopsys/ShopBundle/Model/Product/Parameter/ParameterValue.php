@@ -19,7 +19,21 @@ class ParameterValue extends BaseParameterValue
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $externalId;
+    protected $hsFeedId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    protected $rgb;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $mallName;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterData
@@ -28,24 +42,44 @@ class ParameterValue extends BaseParameterValue
     {
         parent::__construct($parameterData);
 
-        $this->externalId = $parameterData->externalId;
+        $this->hsFeedId = $parameterData->hsFeedId;
+        $this->rgb = $parameterData->rgb;
+        $this->mallName = $parameterData->mallName;
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData $parameterData
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $parameterData
      */
     public function edit(ParameterValueData $parameterData)
     {
         parent::edit($parameterData);
 
-        $this->externalId = $parameterData->externalId;
+        $this->hsFeedId = $parameterData->hsFeedId;
+        $this->rgb = $parameterData->rgb;
+        $this->mallName = $parameterData->mallName;
     }
 
     /**
      * @return string|null
      */
-    public function getExternalId(): ?string
+    public function getHsFeedId(): ?string
     {
-        return $this->externalId;
+        return $this->hsFeedId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRgb(): ?string
+    {
+        return $this->rgb;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMallName(): ?string
+    {
+        return $this->mallName;
     }
 }

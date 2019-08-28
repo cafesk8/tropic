@@ -437,6 +437,8 @@ services:
     Shopsys\ProductFeed\HeurekaBundle\Model\Product\HeurekaProductDomainDataFactoryInterface:
         alias: Shopsys\ProductFeed\HeurekaBundle\Model\Product\HeurekaProductDomainDataFactory
 
+    Shopsys\ShopBundle\Model\Product\Parameter\AdminSelectedParameter: ~
+
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository: '@Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository'
 
     Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension: '@Shopsys\ShopBundle\Twig\DateTimeFormatterExtension'

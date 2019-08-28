@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
 use Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector;
+use Shopsys\ShopBundle\Model\Product\Parameter\Parameter as ProjectParameter;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 
@@ -153,7 +154,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
             'cs' => 'Velikost',
             'sk' => 'Velikosť',
             'de' => 'Size',
-        ]);
+        ], ProjectParameter::TYPE_SIZE);
 
         $distinguishingParameterForVariants = $this->parameterFacade->findOrCreateParameterByNames([
             'cs' => 'Úhlopříčka',

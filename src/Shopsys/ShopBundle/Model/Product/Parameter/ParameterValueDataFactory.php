@@ -20,7 +20,7 @@ class ParameterValueDataFactory extends BaseParameterValueDataFactory
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue $parameterValue
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
      */
     public function createFromParameterValue(ParameterValue $parameterValue): BaseParameterValueData
     {
@@ -38,6 +38,8 @@ class ParameterValueDataFactory extends BaseParameterValueDataFactory
     {
         parent::fillFromParameterValue($parameterValueData, $parameterValue);
 
-        $parameterValueData->externalId = $parameterValue->getExternalId();
+        $parameterValueData->hsFeedId = $parameterValue->getHsFeedId();
+        $parameterValueData->rgb = $parameterValue->getRgb();
+        $parameterValueData->mallName = $parameterValue->getMallName();
     }
 }

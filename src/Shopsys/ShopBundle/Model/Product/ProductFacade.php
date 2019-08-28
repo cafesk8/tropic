@@ -229,11 +229,13 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
      */
-    public function flushProduct(Product $product): void
+    public function flushMainVariant(Product $mainVariant): void
     {
-        $this->em->flush($product);
+        $toFlush = $mainVariant->getVariants();
+        $toFlush[] = $mainVariant;
+        $this->em->flush($toFlush);
     }
 
     /**

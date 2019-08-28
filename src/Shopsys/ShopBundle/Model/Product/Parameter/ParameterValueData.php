@@ -11,5 +11,15 @@ class ParameterValueData extends BaseParameterValueData
     /**
      * @var int
      */
-    public $externalId;
+    public $hsFeedId;
+
+    /**
+     * @var string|null
+     */
+    public $rgb;
+
+    /**
+     * @var string|null
+     */
+    public $mallName;
 }
