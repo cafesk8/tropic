@@ -71,10 +71,16 @@ class BlogCategoryController extends FrontBaseController
             self::BLOG_ARTICLES_PER_PAGE
         );
 
+        $lastBlogCategoryForBlogArticlesByBlogArticleId = $this->blogCategoryFacade->getLastBlogCategoryForBlogArticlesByBlogArticleId(
+            $blogArticlePaginationResult->getResults(),
+            $this->domain->getId()
+        );
+
         return $this->render('@ShopsysShop/Front/Content/Blog/Category/detail.html.twig', [
             'blogCategory' => $blogCategory,
             'isMainPage' => $blogCategory->isMainPage(),
             'blogArticlePaginationResult' => $blogArticlePaginationResult,
+            'lastBlogCategoryForBlogArticlesByBlogArticleId' => $lastBlogCategoryForBlogArticlesByBlogArticleId,
         ]);
     }
 

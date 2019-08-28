@@ -284,4 +284,19 @@ class BlogCategoryFacade
     {
         return $this->blogCategoryRepository->getByIds($blogCategoryIds);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[] $blogArticles
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[]
+     */
+    public function getLastBlogCategoryForBlogArticlesByBlogArticleId(array $blogArticles, int $domainId): array
+    {
+        $lastBlogCategoriesByBlogArticleId = [];
+        foreach ($blogArticles as $blogArticle) {
+            $lastBlogCategoriesByBlogArticleId[$blogArticle->getId()] = $this->getBlogArticleMainBlogCategoryOnDomain($blogArticle, $domainId);
+        }
+
+        return $lastBlogCategoriesByBlogArticleId;
+    }
 }

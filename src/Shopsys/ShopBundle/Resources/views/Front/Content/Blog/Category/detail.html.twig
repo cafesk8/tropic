@@ -37,8 +37,8 @@
                                             </div>
                                             <div class="list-articles-blog__item__content">
                                                 <div class="list-tags">
-                                                    <span class="list-tags__tag js-not-implemented-yet">
-                                                        {{ 'Reportáže z cest'|trans }}
+                                                    <span class="list-tags__tag">
+                                                        {{ lastBlogCategoryForBlogArticlesByBlogArticleId[blogArticle.id].name }}
                                                     </span>
                                                 </div>
                                                 <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles-blog__item__content__title">
