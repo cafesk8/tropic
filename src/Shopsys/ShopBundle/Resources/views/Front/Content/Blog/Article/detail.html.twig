@@ -47,6 +47,38 @@
                 </div>
             </div>
         </div>
+
+        <h2>{{ 'Další fotografie'|trans }}</h2>
+
+        <div class="box-detail__image">
+            {% set galleryImages = getImages(blogArticle) %}
+            {% set showGallery = galleryImages|length > 0 %}
+            {% set showGalleryMaxCount = 4 %}
+
+            {% if showGallery %}
+                <div class="box-gallery dont-print js-gallery">
+                    <div class="box-gallery__images">
+                        {% for galleryImage in galleryImages %}
+                            <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                                <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-gallery__item__link js-gallery-slide-link">
+                                    {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="box-gallery__links">
+                        {% if galleryImages|length > showGalleryMaxCount %}
+                            <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                                <a href="#" class="box-gallery__item__link underline">
+                                    {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
     </div>
 
     {% block last_visited_products %}
@@ -66,4 +98,6 @@
             {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
         </div>
     </div>
+
+</div>
 {% endblock %}

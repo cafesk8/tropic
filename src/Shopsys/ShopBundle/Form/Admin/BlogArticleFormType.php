@@ -283,13 +283,14 @@ class BlogArticleFormType extends AbstractType
      */
     private function createImageGroup(FormBuilderInterface $builder, array $options): FormBuilderInterface
     {
-        $builderImageGroup = $builder->create('image', GroupType::class, [
-            'label' => t('Image'),
+        $builderImageGroup = $builder->create('images', GroupType::class, [
+            'label' => t('Obrázky'),
         ]);
 
         $builderImageGroup
-            ->add('image', ImageUploadType::class, [
+            ->add('images', ImageUploadType::class, [
                 'required' => false,
+                'multiple' => true,
                 'file_constraints' => [
                     new Constraints\Image([
                         'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],

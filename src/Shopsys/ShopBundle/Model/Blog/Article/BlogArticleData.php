@@ -62,7 +62,7 @@ class BlogArticleData
     /**
      * @var \Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData
      */
-    public $image;
+    public $images;
 
     /**
      * @var bool
@@ -96,7 +96,7 @@ class BlogArticleData
         $this->enabled = [];
         $this->hidden = false;
         $this->urls = new UrlListData();
-        $this->image = new ImageUploadData();
+        $this->images = new ImageUploadData();
         $this->visibleOnHomepage = true;
         $this->perexes = [];
         $this->products = [];
