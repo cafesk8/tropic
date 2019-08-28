@@ -76,6 +76,7 @@ parameters:
             link: 'https://www.instagram.com/bushmanoriginal/'
 
     mall_apiKey: xxx
+    mall_isProductionMode: false
 
     env(S3_API_HOST): ''
     env(S3_API_USERNAME): ''

@@ -19,12 +19,20 @@ class MallClient
     private $apiKey;
 
     /**
+     * @var bool
+     */
+    private $isProductionMode;
+
+    /**
      * @param string $apiKey
+     * @param bool $isProductionMode
      */
     public function __construct(
-        string $apiKey
+        string $apiKey,
+        bool $isProductionMode
     ) {
         $this->apiKey = $apiKey;
+        $this->isProductionMode = $isProductionMode;
     }
 
     /**
@@ -33,7 +41,11 @@ class MallClient
     public function getClient(): Client
     {
         if ($this->client === null) {
-            $this->client = new Client($this->apiKey, false);
+            if ($this->isProductionMode === true) {
+                $this->client = new Client($this->apiKey, false);
+            } else {
+                $this->client = new Client($this->apiKey, false, 'https://test-mpapi.mallgroup.com/v1/');
+            }
         }
         return $this->client;
     }

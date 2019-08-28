@@ -153,6 +153,7 @@ yq write --inplace app/config/parameters.yml parameters.transfer_de_password ${T
 
 # Mall api key
 yq write --inplace app/config/parameters.yml parameters.mall_apiKey ${MALL_API_KEY}
+yq write --inplace app/config/parameters.yml parameters.mall_isProductionMode ${MALL_IS_PRODUCTION_MODE}
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
