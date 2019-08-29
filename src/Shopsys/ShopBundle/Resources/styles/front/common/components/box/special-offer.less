@@ -90,7 +90,7 @@
 
         @media @query-vl {
             width: calc(~"100% - @{box-special-offer-coloured-width}");
-            padding: 48px 0 0 138px;
+            padding: 48px 48px 0 138px;
             margin-left: @box-special-offer-gap;
         }
 
@@ -102,6 +102,8 @@
                 position: absolute;
                 bottom: 0;
                 left: -24%;
+
+                font-size: 0;
             }
         }
 
@@ -134,6 +136,10 @@
             width: 100%;
             height: @box-special-offer-product-item-height;
             margin-bottom: @box-special-offer-product-item-bottom-gap;
+
+            &:hover {
+                box-shadow: 0 2px 20px 0 rgba(0,0,0,0.1);
+            }
 
             &__image {
                 position: relative;
