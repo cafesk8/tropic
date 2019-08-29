@@ -9,7 +9,10 @@
 {% endblock %}
 
 {% block main_content %}
-    <h1>{{ 'Order Nr.'|trans }} {{order.number}}</h1>
+<div class="web__line">
+    <div class="web__container">
+
+    <h1 class="in-title in-title--big in-title--center">{{ 'Order Nr.'|trans }} {{order.number}}</h1>
     <div class="box-order-detail">
 
         <div class="wrap-box">
@@ -27,7 +30,6 @@
                 </table>
             </div>
         </div>
-
 
         <div class="wrap-box">
             <h2 class="wrap-box__title">{{ 'Billing address'|trans }}</h2>
@@ -182,4 +184,6 @@
     {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
         <a href="{{ url('front_customer_orders') }}" class="btn">{{ 'Back to orders overview'|trans }}</a>
     {% endif %}
+    </div>
+</div>
 {% endblock %}
