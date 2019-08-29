@@ -26,10 +26,12 @@
 
         <div class="wrap-well wrap-well--big-padding">
             {{ form_start(form, { method: 'POST' }) }}
-                {{ form_row(form.email) }}
-                <div class="form-line margin-top-20">
-                    <div class="form-line__input text-right">
-                        {{ form_row(form.send) }}
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__half">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="wrap-article__row__half">
+                        {{ form_row(form.send, {label: 'Odeslat na mail'|trans, attr: {class: 'btn btn--success btn--with-input'}}) }}
                     </div>
                 </div>
             {{ form_end(form) }}
