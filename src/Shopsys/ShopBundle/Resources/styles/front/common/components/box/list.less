@@ -118,4 +118,24 @@
             }
         }
     }
+
+    &__producer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @media @query-md {
+            flex-direction: row;
+        }
+
+        &__image {
+            @media @query-md {
+                padding-right: 30px;
+            }
+        }
+
+        &__text {
+            margin-bottom: 20px;
+        }
+    }
 }
