@@ -498,3 +498,13 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository:
         class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusRepository
+
+    Shopsys\ShopBundle\Model\Gtm\GtmContainer:
+        arguments:
+            $containersConfigs: '%gtm.config%'
+
+    Shopsys\ShopBundle\Model\Gtm\GtmListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+
+    Shopsys\ShopBundle\Model\Gtm\GtmHelper: ~

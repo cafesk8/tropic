@@ -40,6 +40,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Component\Mall\MallImportOrderClient;
+use Shopsys\ShopBundle\Model\Gtm\GtmHelper;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
@@ -71,6 +72,11 @@ class OrderFacade extends BaseOrderFacade
     private $vatFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Gtm\GtmHelper
+     */
+    private $gtmHelper;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderRepository $orderRepository
@@ -100,6 +106,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\ShopBundle\Component\Mall\MallImportOrderClient $mallImportOrderClient
+     * @param \Shopsys\ShopBundle\Model\Gtm\GtmHelper $gtmHelper
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -130,7 +137,8 @@ class OrderFacade extends BaseOrderFacade
         OrderItemFactoryInterface $orderItemFactory,
         ProductGiftPriceCalculation $productGiftPriceCalculation,
         VatFacade $vatFacade,
-        MallImportOrderClient $mallImportOrderClient
+        MallImportOrderClient $mallImportOrderClient,
+        GtmHelper $gtmHelper
     ) {
         parent::__construct(
             $em,
@@ -164,6 +172,7 @@ class OrderFacade extends BaseOrderFacade
         $this->productGiftPriceCalculation = $productGiftPriceCalculation;
         $this->vatFacade = $vatFacade;
         $this->mallImportOrderClient = $mallImportOrderClient;
+        $this->gtmHelper = $gtmHelper;
     }
 
     /**
@@ -246,6 +255,8 @@ class OrderFacade extends BaseOrderFacade
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
         $enteredValidPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
+        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $enteredValidPromoCode, $orderPreview);
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);

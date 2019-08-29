@@ -20,6 +20,7 @@ use Shopsys\ShopBundle\Form\Front\Cart\AddProductFormType;
 use Shopsys\ShopBundle\Form\Front\Cart\CartFormType;
 use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
+use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
@@ -90,6 +91,11 @@ class CartController extends FrontBaseController
     private $productOnCurrentDomainElasticFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Gtm\GtmFacade
+     */
+    private $gtmFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -101,6 +107,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade $productGiftFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
+     * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
      */
     public function __construct(
         ProductAccessoryFacade $productAccessoryFacade,
@@ -113,7 +120,8 @@ class CartController extends FrontBaseController
         CsrfTokenManagerInterface $tokenManager,
         ProductGiftFacade $productGiftFacade,
         TopProductFacade $topProductFacade,
-        ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
+        ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade,
+        GtmFacade $gtmFacade
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -126,6 +134,7 @@ class CartController extends FrontBaseController
         $this->productGiftFacade = $productGiftFacade;
         $this->topProductFacade = $topProductFacade;
         $this->productOnCurrentDomainElasticFacade = $productOnCurrentDomainElasticFacade;
+        $this->gtmFacade = $gtmFacade;
     }
 
     /**
@@ -148,7 +157,6 @@ class CartController extends FrontBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
-
                 $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cart->getItems());
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
 
@@ -174,6 +182,7 @@ class CartController extends FrontBaseController
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $topProducts = $this->topProductFacade->getAllOfferedProducts($this->domain->getId(), $this->currentCustomer->getPricingGroup());
 
+        $this->gtmFacade->onCartPage($orderPreview);
         return $this->render('@ShopsysShop/Front/Content/Cart/index.html.twig', [
             'cart' => $cart,
             'cartItems' => $cartItems,

@@ -155,6 +155,14 @@ yq write --inplace app/config/parameters.yml parameters.transfer_de_password ${T
 yq write --inplace app/config/parameters.yml parameters.mall_apiKey ${MALL_API_KEY}
 yq write --inplace app/config/parameters.yml parameters.mall_isProductionMode ${MALL_IS_PRODUCTION_MODE}
 
+#GTM
+yq write --inplace app/config/parameters.yml parameters[gtm.config].cs.enabled ${GTM_CS_ENABLED}
+yq write --inplace app/config/parameters.yml parameters[gtm.config].cs.container_id ${GTM_CS_CONTAINER_ID}
+yq write --inplace app/config/parameters.yml parameters[gtm.config].sk.enabled ${GTM_SK_ENABLED}
+yq write --inplace app/config/parameters.yml parameters[gtm.config].sk.container_id ${GTM_SK_CONTAINER_ID}
+yq write --inplace app/config/parameters.yml parameters[gtm.config].de.enabled ${GTM_DE_ENABLED}
+yq write --inplace app/config/parameters.yml parameters[gtm.config].de.container_id ${GTM_DE_CONTAINER_ID}
+
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
 

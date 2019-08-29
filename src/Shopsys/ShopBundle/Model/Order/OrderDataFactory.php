@@ -47,5 +47,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->mallOrderId = $order->getMallOrderId();
         $orderData->mallStatus = $order->getMallStatus();
         $orderData->statusCheckedAt = $order->getStatusCheckedAt();
+        $orderData->gtmCoupon = $order->getGtmCoupon();
     }
 }

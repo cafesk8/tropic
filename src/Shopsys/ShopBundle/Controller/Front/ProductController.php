@@ -21,6 +21,7 @@ use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
+use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,6 +111,11 @@ class ProductController extends FrontBaseController
     private $articleFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Gtm\GtmFacade
+     */
+    private $gtmFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -125,6 +131,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -141,7 +148,8 @@ class ProductController extends FrontBaseController
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
         ProductFacade $productFacade,
         Setting $setting,
-        ArticleFacade $articleFacade
+        ArticleFacade $articleFacade,
+        GtmFacade $gtmFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -158,6 +166,7 @@ class ProductController extends FrontBaseController
         $this->productFacade = $productFacade;
         $this->setting = $setting;
         $this->articleFacade = $articleFacade;
+        $this->gtmFacade = $gtmFacade;
     }
 
     /**
@@ -167,6 +176,8 @@ class ProductController extends FrontBaseController
     {
         /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
         $product = $this->productOnCurrentDomainFacade->getVisibleProductById($id);
+
+        $this->gtmFacade->onProductDetailPage($product);
 
         if ($product->isVariant()) {
             return $this->redirectToRoute('front_product_detail', ['id' => $product->getMainVariant()->getId()]);
@@ -213,6 +224,9 @@ class ProductController extends FrontBaseController
     {
         /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
         $category = $this->categoryFacade->getVisibleOnDomainById($this->domain->getId(), $id);
+
+        $this->gtmFacade->onProductListByCategoryPage($category);
+
         $visibleChildren = $this->categoryFacade->getAllVisibleChildrenByCategoryAndDomainId($category, $this->domain->getId());
 
         if ($category->isPreListingCategory()) {

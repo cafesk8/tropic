@@ -80,4 +80,9 @@ class OrderData extends BaseOrderData
         $this->updatedAt = new DateTime();
         $this->statusCheckedAt = new DateTime();
     }
+
+    /**
+     * @var string|null
+     */
+    public $gtmCoupon;
 }

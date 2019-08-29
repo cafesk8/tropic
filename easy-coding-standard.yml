@@ -70,3 +70,6 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Model/Blog/Category/BlogCategoryDomain.php'
             - '*/src/Shopsys/ShopBundle/Model/Blog/Article/BlogArticleDomain.php'
             - '*/src/Shopsys/ShopBundle/Model/Blog/Article/BlogArticleBlogCategoryDomain.php'
+
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty:
+            - '*/src/Shopsys/ShopBundle/Model/Gtm/Data/*'

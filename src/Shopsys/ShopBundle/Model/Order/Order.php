@@ -216,6 +216,13 @@ class Order extends BaseOrder
     private $mallStatus;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $gtmCoupon;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -281,6 +288,7 @@ class Order extends BaseOrder
         $this->mallOrderId = $orderData->mallOrderId;
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
+        $this->gtmCoupon = $orderData->gtmCoupon;
     }
 
     /**
@@ -309,6 +317,7 @@ class Order extends BaseOrder
         $this->mallOrderId = $orderData->mallOrderId;
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
+        $this->gtmCoupon = $orderData->gtmCoupon;
 
         return $orderEditResult;
     }
@@ -740,5 +749,13 @@ class Order extends BaseOrder
     public function updateStatusCheckedAt(): void
     {
         $this->statusCheckedAt = new DateTime();
+    }
+
+    /**
+     * @return string|string
+     */
+    public function getGtmCoupon(): ?string
+    {
+        return $this->gtmCoupon;
     }
 }

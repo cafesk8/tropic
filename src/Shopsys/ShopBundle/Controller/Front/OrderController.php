@@ -22,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
+use Shopsys\ShopBundle\Form\Front\Order\OrderFlow;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
@@ -30,6 +31,7 @@ use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
 use Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
+use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
@@ -152,6 +154,11 @@ class OrderController extends FrontBaseController
     private $blogArticleFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Gtm\GtmFacade
+     */
+    private $gtmFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -173,6 +180,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\PayPal\PayPalFacade $payPalFacade
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
+     * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -195,7 +203,8 @@ class OrderController extends FrontBaseController
         GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain,
         PayPalFacade $payPalFacade,
         CountryFacade $countryFacade,
-        BlogArticleFacade $blogArticleFacade
+        BlogArticleFacade $blogArticleFacade,
+        GtmFacade $gtmFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -218,6 +227,7 @@ class OrderController extends FrontBaseController
         $this->payPalFacade = $payPalFacade;
         $this->countryFacade = $countryFacade;
         $this->blogArticleFacade = $blogArticleFacade;
+        $this->gtmFacade = $gtmFacade;
     }
 
     public function indexAction()
@@ -315,6 +325,8 @@ class OrderController extends FrontBaseController
             $form->addError(new FormError(t('Please check the correctness of all data filled.')));
         }
 
+        $this->setGtmDataLayer($orderFlow, $orderPreview);
+
         return $this->render('@ShopsysShop/Front/Content/Order/index.html.twig', [
             'form' => $form->createView(),
             'flow' => $orderFlow,
@@ -338,6 +350,22 @@ class OrderController extends FrontBaseController
             'pickupPlace' => $orderData->pickupPlace,
             'store' => $orderData->store,
         ]);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Form\Front\Order\OrderFlow $orderFlow
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     */
+    private function setGtmDataLayer(OrderFlow $orderFlow, OrderPreview $orderPreview): void
+    {
+        switch ($orderFlow->getCurrentStep()) {
+            case 2:
+                $this->gtmFacade->onOrderTransportAndPaymentPage($orderPreview);
+                break;
+            case 3:
+                $this->gtmFacade->onOrderDeliveryPage($orderPreview);
+                break;
+        }
     }
 
     /**
@@ -539,6 +567,8 @@ class OrderController extends FrontBaseController
                 $this->getFlashMessageSender()->addErrorFlash(t('Connection to PayPal gateway failed.'));
             }
         }
+
+        $this->gtmFacade->onOrderSentPage($order);
 
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
             'pageContent' => $this->orderFacade->getOrderSentPageContent($orderId),

@@ -86,3 +86,20 @@ parameters:
     migrate_product_images_dir: 'migration-data/product-images'
 
     googleApiKey: AIzaSyDI31ip9EdLYk2bm_mcpmYDqi8hbqb5GbU
+
+    gtm.config:
+        cs:
+            enabled: true
+            container_id: TEST
+            container_environment: null
+            datalayer_locale: cs
+        sk:
+            enabled: true
+            container_id: TEST
+            container_environment: null
+            datalayer_locale: cs
+        de:
+            enabled: true
+            container_id: TEST
+            container_environment: null
+            datalayer_locale: cs
