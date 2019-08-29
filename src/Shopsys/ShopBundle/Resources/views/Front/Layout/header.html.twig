@@ -102,31 +102,42 @@
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
                     </div>
-                    <div class="box-dropdown__options box-dropdown__options--login js-dropdown-options">
+                    <div class="box-dropdown__options
+                    {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                        box-dropdown__options--logged
+                    {% else %}
+                        box-dropdown__options--login
+                    {% endif %}
+                     js-dropdown-options">
                         {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                            <li class="box-dropdown__options__item js-dropdown-item'">
+                            <div class="box-dropdown__options__item js-dropdown-item'">
                                 <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
-                                    <i class="svg svg-user"></i>
-                                    <span>
+                                    <span class="underline">
                                         {{ app.user.firstName }} {{ app.user.lastName }}
                                     </span>
                                 </a>
-                                <ul class="menu-iconic__sub">
-                                    <li class="menu-iconic__sub__item">
-                                        <a href="{{ url('front_customer_edit') }}" class="menu-iconic__sub__item__link">{{ 'Personal data'|trans }}</a>
-                                    </li>
-                                    <li class="menu-iconic__sub__item">
-                                        <a href="{{ url('front_customer_orders') }}" class="menu-iconic__sub__item__link">{{ 'My orders'|trans }}</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="js-logout-link-desktop menu-iconic__item__link">
-                                    <span>
+                            </div>
+                            <div class="box-dropdown__options__item js-dropdown-item'">
+                                <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
+                                    <span class="underline">
+                                        {{ 'Personal data'|trans }}
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="box-dropdown__options__item js-dropdown-item'">
+                                <a href="{{ url('front_customer_orders') }}" class="menu-iconic__item__link">
+                                    <span class="underline">
+                                        {{ 'My orders'|trans }}
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="box-dropdown__options__item js-dropdown-item'">
+                                <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="menu-iconic__item__link menu-iconic__item__link--last js-logout-link-desktop">
+                                    <span class="underline">
                                         {{ 'Log out'|trans }}
                                     </span>
                                 </a>
-                            </li>
+                            </div>
                         {% else %}
                             {{ render(controller('ShopsysShopBundle:Front/Login:windowForm')) }}
                         {% endif %}
