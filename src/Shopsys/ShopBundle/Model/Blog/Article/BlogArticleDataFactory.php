@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Blog\Article;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\ShopBundle\Component\Image\ImageFacade;
 
 class BlogArticleDataFactory
 {
@@ -20,15 +21,23 @@ class BlogArticleDataFactory
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Image\ImageFacade
+     */
+    private $imageFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      */
     public function __construct(
         FriendlyUrlFacade $friendlyUrlFacade,
-        Domain $domain
+        Domain $domain,
+        ImageFacade $imageFacade
     ) {
         $this->friendlyUrlFacade = $friendlyUrlFacade;
         $this->domain = $domain;
+        $this->imageFacade = $imageFacade;
     }
 
     /**
@@ -82,11 +91,13 @@ class BlogArticleDataFactory
         $blogArticleData->names = $blogArticle->getNames();
         $blogArticleData->descriptions = $blogArticle->getDescriptions();
         $blogArticleData->perexes = $blogArticle->getPerexes();
+        $blogArticleData->mainPhotoTitles = $blogArticle->getMainPhotosTitles();
         $blogArticleData->hidden = $blogArticle->isHidden();
         $blogArticleData->visibleOnHomepage = $blogArticle->isVisibleOnHomepage();
         $blogArticleData->publishDate = $blogArticle->getPublishDate();
         $blogArticleData->blogCategoriesByDomainId = $blogArticle->getBlogCategoriesIndexedByDomainId();
         $blogArticleData->products = $blogArticle->getProducts();
+        $blogArticleData->images->orderedImages = $this->imageFacade->getImagesByEntityIndexedById($blogArticle, null);
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $blogArticleData->seoMetaDescriptions[$domainId] = $blogArticle->getSeoMetaDescription($domainId);

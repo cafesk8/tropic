@@ -76,6 +76,7 @@ class BlogArticleFormType extends AbstractType
         $builderDescriptionGroup = $this->createDescriptionGroup($builder);
         $builderImageGroup = $this->createImageGroup($builder, $options);
         $builderPerexGroup = $this->createPerexGroup($builder);
+        $mainPhotoTitleGroup = $this->createMainPhotoTitleGroup($builder);
         $builderProductGroup = $this->createProductGroup($builder);
 
         $builder
@@ -83,6 +84,7 @@ class BlogArticleFormType extends AbstractType
             ->add($builderSeoGroup)
             ->add($builderPerexGroup)
             ->add($builderDescriptionGroup)
+            ->add($mainPhotoTitleGroup)
             ->add($builderImageGroup)
             ->add($builderProductGroup)
             ->add('save', SubmitType::class);
@@ -278,18 +280,42 @@ class BlogArticleFormType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createMainPhotoTitleGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $builderDescriptionGroup = $builder->create('mainPhotoTitlesGroup', GroupType::class, [
+            'label' => t('Popisy hlavních obrázků'),
+        ]);
+
+        $builderDescriptionGroup
+            ->add('mainPhotoTitles', LocalizedType::class, [
+                'entry_options' => [
+                    'required' => false,
+                ],
+                'entry_type' => TextareaType::class,
+                'required' => false,
+                'label' => t('Popisy hlavních obrázků'),
+
+            ]);
+        return $builderDescriptionGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
     private function createImageGroup(FormBuilderInterface $builder, array $options): FormBuilderInterface
     {
-        $builderImageGroup = $builder->create('image', GroupType::class, [
-            'label' => t('Image'),
+        $builderImageGroup = $builder->create('images', GroupType::class, [
+            'label' => t('Obrázky'),
         ]);
 
         $builderImageGroup
-            ->add('image', ImageUploadType::class, [
+            ->add('images', ImageUploadType::class, [
                 'required' => false,
+                'multiple' => true,
                 'file_constraints' => [
                     new Constraints\Image([
                         'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],

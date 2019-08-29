@@ -41,6 +41,13 @@ class BlogArticleTranslation extends AbstractTranslation
     private $perex;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $mainPhotoTitle;
+
+    /**
      * @return string|null
      */
     public function getName(): ?string
@@ -86,5 +93,21 @@ class BlogArticleTranslation extends AbstractTranslation
     public function setPerex(?string $perex): void
     {
         $this->perex = $perex;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMainPhotoTitle(): ?string
+    {
+        return $this->mainPhotoTitle;
+    }
+
+    /**
+     * @param string|null $mainPhotoTitle
+     */
+    public function setMainPhotoTitle(?string $mainPhotoTitle): void
+    {
+        $this->mainPhotoTitle = $mainPhotoTitle;
     }
 }

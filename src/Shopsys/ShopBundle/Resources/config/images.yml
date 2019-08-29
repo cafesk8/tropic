@@ -149,6 +149,7 @@
 
 -   name:  blogArticle
     class: Shopsys\ShopBundle\Model\Blog\Article\BlogArticle
+    multiple: true
     sizes:
         -   name: ~
             width: 810
@@ -160,3 +161,8 @@
             height: 250
             crop: true
             occurrence: 'Front-end: Blog article list'
+        -   name: thumbnail
+            width: 170
+            height: 170
+            crop: true
+            occurrence: 'Front-end: Thumbnail of images under the main image in blog article detail gallery'

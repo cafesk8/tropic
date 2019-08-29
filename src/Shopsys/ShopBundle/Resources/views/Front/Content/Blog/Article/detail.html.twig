@@ -31,8 +31,8 @@
                         <div class="in-article__main-img">
                             {{ image(blogArticle, { itemprop: 'image', lazy:true }) }}
                         </div>
-                        <div class="in-article__img-caption js-not-implemented-yet">
-                            {{ 'FOTO: Národní park ve vší kráse'|trans}}
+                        <div class="in-article__img-caption">
+                            {{ blogArticle.mainPhotoTitle }}
                         </div>
                     {% endif %}
 
@@ -47,6 +47,38 @@
                 </div>
             </div>
         </div>
+
+        <div class="box-blog__gallery">
+            {% set galleryImages = getImages(blogArticle) %}
+            {% set showGallery = galleryImages|length > 0 %}
+            {% set showGalleryMaxCount = 4 %}
+
+            {% if showGallery %}
+                <h2>{{ 'Další fotografie'|trans }}</h2>
+
+                <div class="box-blog-gallery dont-print js-gallery">
+                    <div class="box-blog-gallery__images">
+                        {% for galleryImage in galleryImages %}
+                            <div class="box-blog-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                                <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-blog-gallery__item__link js-gallery-slide-link">
+                                    {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="box-blog-gallery__links">
+                        {% if galleryImages|length > showGalleryMaxCount %}
+                            <div class="box-blog-gallery__item box-blog-gallery__item--more js-gallery-item-more">
+                                <a href="#" class="box-blog-gallery__item__link underline">
+                                    {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
     </div>
 
     {% block last_visited_products %}
@@ -66,4 +98,6 @@
             {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
         </div>
     </div>
+
+</div>
 {% endblock %}

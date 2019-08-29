@@ -262,6 +262,9 @@ class BlogArticle extends AbstractTranslatableEntity
         foreach ($blogArticleData->perexes as $locale => $name) {
             $this->translation($locale)->setPerex($name);
         }
+        foreach ($blogArticleData->mainPhotoTitles as $locale => $mainPhotoTitle) {
+            $this->translation($locale)->setMainPhotoTitle($mainPhotoTitle);
+        }
     }
 
     /**
@@ -416,6 +419,28 @@ class BlogArticle extends AbstractTranslatableEntity
     public function getPerex(?string $locale = null): ?string
     {
         return $this->translation($locale)->getPerex();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMainPhotosTitles(): array
+    {
+        $mainPhotoTitlesByLocale = [];
+        foreach ($this->translations as $translation) {
+            $mainPhotoTitlesByLocale[$translation->getLocale()] = $translation->getMainPhotoTitle();
+        }
+
+        return $mainPhotoTitlesByLocale;
+    }
+
+    /**
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getMainPhotoTitle(?string $locale = null): ?string
+    {
+        return $this->translation($locale)->getMainPhotoTitle();
     }
 
     /**
