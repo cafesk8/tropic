@@ -12,7 +12,8 @@
                 'last-visited': [1, 2, 3, 3, 6],
                 'top-products': [1, 2, 3, 3, 4],
                 'products': [2, 3, 2, 3, 6],
-                'references': [1, 2, 3, 3, 4]
+                'references': [1, 2, 3, 3, 4],
+                'accessories-products': [1, 2, 3, 3, 3]
             };
 
             var selectedType = types[galleryType];
