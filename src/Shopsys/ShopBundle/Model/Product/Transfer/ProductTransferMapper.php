@@ -82,6 +82,24 @@ class ProductTransferMapper
             $productData = $this->productDataFactory->createFromProduct($product);
         }
 
+        if ($productTransferResponseItemVariantData->getColorName() !== null) {
+            $productData->distinguishingParameterForMainVariantGroup = $this->parameterFacade->getColorParameter();
+            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale(
+                $productData->parameters,
+                $productTransferResponseItemVariantData->getColorName()
+            );
+            $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
+        }
+
+        if ($productTransferResponseItemVariantData->getSizeName() !== null) {
+            $productData->distinguishingParameter = $this->parameterFacade->getSizeParameter();
+            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale(
+                $productData->parameters,
+                $productTransferResponseItemVariantData->getSizeName()
+            );
+            $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
+        }
+
         return $productData;
     }
 
@@ -180,22 +198,5 @@ class ProductTransferMapper
         $productData->catnum = $productTransferResponseItemData->getTransferNumber();
         $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        if ($productTransferResponseItemVariantData->getColorName() !== null) {
-            $productData->distinguishingParameterForMainVariantGroup = $this->parameterFacade->getColorParameter();
-            $colorProductParameterValueData = $this->getColorProductParameterValueDataByLocale(
-                $productData->parameters,
-                $productTransferResponseItemVariantData->getColorName()
-            );
-            $productData->parameters = array_merge($productData->parameters, $colorProductParameterValueData);
-        }
-
-        if ($productTransferResponseItemVariantData->getSizeName() !== null) {
-            $productData->distinguishingParameter = $this->parameterFacade->getSizeParameter();
-            $sizeProductParameterValueData = $this->getSizeProductParameterValueDataByLocale(
-                $productData->parameters,
-                $productTransferResponseItemVariantData->getSizeName()
-            );
-            $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
-        }
     }
 }
