@@ -7,9 +7,10 @@
 {% block main_content %}
 <div class="web__line">
     <div class="web__container web__container--big-padding">
-        <div class="wrap-well wrap-well--big-padding">
-            <h1 class="in-article__title text-center">{{ 'Registration'|trans }}</h1>
 
+        <h1 class="in-title in-title--big in-title--center">{{ 'Registration'|trans }}</h1>
+
+        <div class="wrap-well wrap-well--big-padding">
             {{ form_errors(form) }}
 
             {{ form_start(form) }}
