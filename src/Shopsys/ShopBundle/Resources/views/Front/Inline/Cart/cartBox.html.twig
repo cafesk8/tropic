@@ -27,9 +27,11 @@
         {% if cart is not null %}
             <div class="box-dropdown__options box-dropdown__options--basket js-dropdown-options">
                 <div class="js-cart-box-content">
-                    {% if renderFlashMessages %}
-                        {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
-                    {% endif %}
+                    <div class="display-none">
+                        {% if renderFlashMessages %}
+                            {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
+                        {% endif %}
+                    </div>
                     <div class="cart-detail__wrap">
                         <ul class="cart-detail">
                             {% for cartItem in cartItems %}
