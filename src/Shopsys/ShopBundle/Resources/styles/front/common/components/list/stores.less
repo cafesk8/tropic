@@ -44,17 +44,27 @@
 
         &__info {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
+
+            @media @query-md {
+                flex-direction: row;
+            }
 
             &__name {
                 display: block;
-                width: 100%/2;
+                width: 100%;
                 line-height: 24px;
+                text-align: center;
 
                 color: @color-base;
                 font-size: 15px;
                 font-weight: 700;
                 text-transform: uppercase;
+
+                @media @query-md {
+                    width: 100%/2;
+                    text-align: left;
+                }
 
                 &__additional {
                     padding-left: 12px;
@@ -68,12 +78,17 @@
             }
 
             &__open-hours {
-                width: 100%/2;
-                text-align: right;
+                width: 100%;
+                text-align: center;
 
                 color: @color-brown;
                 font-size: 14px;
                 font-family: @font-alt;
+
+                @media @query-md {
+                    width: 100%/2;
+                    text-align: right;
+                }
             }
         }
     }
