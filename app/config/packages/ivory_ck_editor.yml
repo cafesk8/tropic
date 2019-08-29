@@ -12,7 +12,7 @@ ivory_ck_editor:
                 - ['PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
                 - ['NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
                 - ['Outdent', 'Indent', '-', 'Blockquote']
-                - ['Link', 'Unlink']
+                - ['Link', 'Unlink', "Anchor"]
                 - '/'
                 - ['Source', '-', 'Image', 'Flash', 'Table', 'SpecialChar', 'Iframe']
                 - ['Format']
