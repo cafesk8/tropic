@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
+use DateInterval;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
@@ -66,13 +67,16 @@ class RecalculateUserPricingGroupCronModule implements SimpleCronModuleInterface
      */
     public function run(): void
     {
-        $startTime = new DateTime('today');
-        $endTime = new DateTime('tomorrow');
+        $today = new DateTime('today');
+        $tomorrow = new DateTime('tomorrow');
 
-        $customerIds = $this->orderFacade->getCustomerIdsFromOrdersUpdatedAt($startTime, $endTime);
+        $startTime = $today->sub(DateInterval::createFromDateString('21 days'));
+        $endTime = $tomorrow->sub(DateInterval::createFromDateString('14 days'));
+
+        $customerIds = $this->orderFacade->getCustomerIdsFromOrdersByDatePeriod($startTime, $endTime);
         $pricingGroupsIndexedByDomainId = $this->pricingGroupFacade->getAllIndexedByDomainIdOrderedByMinimalPrice();
         $customers = $this->customerFacade->getUsersByIds($customerIds);
-        $ordersValueIndexedByUser = $this->orderFacade->getOrdersValueIndexedByCustomerId($customerIds);
+        $ordersValueIndexedByUser = $this->orderFacade->getOrdersValueIndexedByCustomerIdOlderThanDate($customerIds, $endTime);
 
         /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         foreach ($customers as $customer) {

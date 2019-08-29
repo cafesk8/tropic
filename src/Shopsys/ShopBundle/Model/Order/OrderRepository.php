@@ -84,13 +84,13 @@ class OrderRepository extends BaseOrderRepository
      * @param \DateTime $endTime
      * @return int[]
      */
-    public function getCustomerIdsFromOrdersUpdatedAt(DateTime $startTime, DateTime $endTime): array
+    public function getCustomerIdsFromOrdersByDatePeriod(DateTime $startTime, DateTime $endTime): array
     {
         $queryBuilder = $this->createOrderQueryBuilder()
             ->select('IDENTITY(o.customer) as id')
             ->join(User::class, 'u', Join::WITH, 'o.customer = u.id')
-            ->where('o.updatedAt > :startTime')
-            ->andWhere('o.updatedAt < :endTime')
+            ->where('o.createdAt > :startTime')
+            ->andWhere('o.createdAt < :endTime')
             ->andWhere('o.customer is not null')
             ->andWhere('u.memberOfBushmanClub = TRUE')
             ->groupBy('o.customer')
@@ -104,9 +104,10 @@ class OrderRepository extends BaseOrderRepository
 
     /**
      * @param int[] $customerIds
+     * @param \DateTime $endTime
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
-    public function getOrdersValueIndexedByCustomerId(array $customerIds): array
+    public function getOrdersValueIndexedByCustomerIdOlderThanDate(array $customerIds, DateTime $endTime): array
     {
         $queryBuilder = $this->createOrderQueryBuilder()
             ->select('IDENTITY(o.customer) as customerId')
@@ -114,9 +115,11 @@ class OrderRepository extends BaseOrderRepository
             ->where('o.status = :statusCompleted')
             ->andWhere('o.customer IN (:customerIds)')
             ->andWhere('o.deleted = FALSE')
+            ->andWhere('o.createdAt < :endTime')
             ->groupBy('customerId')
             ->setParameter('statusCompleted', OrderStatus::TYPE_DONE)
-            ->setParameter('customerIds', $customerIds);
+            ->setParameter('customerIds', $customerIds)
+            ->setParameter('endTime', $endTime);
 
         $ordersValue = $queryBuilder->getQuery()->getResult();
 

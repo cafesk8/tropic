@@ -262,18 +262,19 @@ class OrderFacade extends BaseOrderFacade
      * @param \DateTime $endTime
      * @return int[]
      */
-    public function getCustomerIdsFromOrdersUpdatedAt(DateTime $startTime, DateTime $endTime): array
+    public function getCustomerIdsFromOrdersByDatePeriod(DateTime $startTime, DateTime $endTime): array
     {
-        return $this->orderRepository->getCustomerIdsFromOrdersUpdatedAt($startTime, $endTime);
+        return $this->orderRepository->getCustomerIdsFromOrdersByDatePeriod($startTime, $endTime);
     }
 
     /**
      * @param int[] $customerIds
+     * @param \DateTime $endTime
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
-    public function getOrdersValueIndexedByCustomerId(array $customerIds): array
+    public function getOrdersValueIndexedByCustomerIdOlderThanDate(array $customerIds, DateTime $endTime): array
     {
-        return $this->orderRepository->getOrdersValueIndexedByCustomerId($customerIds);
+        return $this->orderRepository->getOrdersValueIndexedByCustomerIdOlderThanDate($customerIds, $endTime);
     }
 
     /**
