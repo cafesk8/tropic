@@ -1,0 +1,40 @@
+@list-pickup-place-bg: @color-light;
+
+.list-pickup-place {
+
+    &__row {
+
+        border-top: 1px solid @color-border;
+
+        &:first-child {
+            border-top: 0;
+        }
+
+        &.active {
+            overflow: hidden;
+
+            border-top: 0;
+            border-radius: @radius;
+            background: @list-pickup-place-bg;
+        }
+    }
+
+    /* in row */
+    &__title {
+        padding: 8px 15px;
+        cursor: pointer;
+
+        .list-pickup-place__row.active & {
+            cursor: auto;
+        }
+    }
+
+    &__content {
+        display: none;
+        padding: 2px 15px 12px;
+
+        .list-pickup-place__row.active & {
+            display: block;
+        }
+    }
+}

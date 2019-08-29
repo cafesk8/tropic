@@ -1,9 +1,9 @@
 {% for pickupPlace in pickupPlaces %}
-    <div class="{% if classes.pickupPlaceName is defined %}{{ classes.pickupPlaceName }}{% endif %}" title="{{ pickupPlace.getName() }}">
-        <div class="{% if classes.pickupPlaceRow is defined %}{{ classes.pickupPlaceRow }}{% endif %}">
+    <div class="list-pickup-place__row js-pickup-place-row js-pickup-place {% if classes.pickupPlaceName is defined %}{{ classes.pickupPlaceName }}{% endif %}" title="{{ pickupPlace.getName() }}">
+        <div class="list-pickup-place__title {% if classes.pickupPlaceRow is defined %}{{ classes.pickupPlaceRow }}{% endif %}">
             <strong>{{ pickupPlace.getName() }}</strong>, {{ pickupPlace.getFullAddress() }}
         </div>
-        <div class="{% if classes.pickupPlaceBtnContainer is defined %}{{ classes.pickupPlaceBtnContainer }}{% endif %}">
+        <div class="list-pickup-place__content {% if classes.pickupPlaceBtnContainer is defined %}{{ classes.pickupPlaceBtnContainer }}{% endif %}">
             <div class="{% if classes.pickupPlaceBtnDetail is defined %}{{ classes.pickupPlaceBtnDetail }}{% endif %}"></div>
 
             <button type="button" class="js-pickup-place-button btn btn--success"

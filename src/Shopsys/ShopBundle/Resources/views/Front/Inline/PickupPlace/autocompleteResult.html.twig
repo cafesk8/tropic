@@ -1,11 +1,20 @@
-{% include '@ShopsysShop/Front/Inline/Common/pickupPlaces.html.twig' with {
-    pickupPlaces: pickupPlaces,
-    chosenPickupPlace: chosenPickupPlace,
-    orderFormFieldClass: 'js-pickup-place-input',
-    classes: {
-        pickupPlaceName: 'js-pickup-place-tooltip',
-        pickupPlaceRow: 'js-pickup-place-row',
-        pickupPlaceBtnContainer: 'js-pickup-place-autocomplete-results-detail-container',
-        pickupPlaceBtnDetail: 'js-pickup-place-autocomplete-results-detail'
-    }
-} %}
+{% if pickupPlaces|length > 0 %}
+    <div class="box-pick-up-place__list">
+
+        <div class="list-pick-up-place">
+            {% include '@ShopsysShop/Front/Inline/Common/pickupPlaces.html.twig' with {
+                pickupPlaces: pickupPlaces,
+                chosenPickupPlace: chosenPickupPlace,
+                orderFormFieldClass: 'js-pickup-place-input',
+                classes: {
+                    pickupPlaceName: 'js-pickup-place-tooltip',
+                    pickupPlaceRow: 'js-pickup-place-row',
+                    pickupPlaceBtnContainer: 'js-pickup-place-autocomplete-results-detail-container',
+                    pickupPlaceBtnDetail: 'js-pickup-place-autocomplete-results-detail'
+                }
+            } %}
+        </div>
+    </div>
+{% else %}
+    {{ 'Podle zvolené adresy nebylo možné vyhledat žádné pobočky'|trans }}
+{% endif %}

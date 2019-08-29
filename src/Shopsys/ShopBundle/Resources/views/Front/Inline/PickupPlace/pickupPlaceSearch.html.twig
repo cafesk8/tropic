@@ -1,22 +1,31 @@
 <div class="js-pickup-place-search" data-pickup-place-autocomplete-url="{{ url('front_pickup_place_autocomplete') }}">
-    <div>
-        <h3>{{ 'Vyberte pobočku'|trans }}</h3>
+    <div class="box-popup-add__content__title">
+        <span class="box-popup-add__content__title__text double-lined">
+            {{ 'Vyberte pobočku'|trans }}
+        </span>
     </div>
-    <div>
-        <div>
-            <strong>
-                {{ 'Zadejte město nebo PSČ:'|trans }}:
-            </strong>
-            <div class="box-pickup-place__control">
-                <input
+
+    <div class="box-pickup-place">
+        <div class="box-pickup-place__search">
+            <div class="box-pickup-place__search__wrap">
+                <div class="box-pickup-place__search__in">
+                    <div class="box-pickup-place__search__input">
+                        <label class="input__label">
+                            {{ 'Zadejte město nebo PSČ:'|trans }}
+                        </label>
+                        <input
                         type="text"
                         placeholder="{{ 'např. Praha'|trans }}"
                         class="js-pickup-place-city-post-code-autocomplete-input input"
                         autocomplete="off"
-                />
-                <button class="btn btn--primary" type="button">
-                    {{ 'Vyhledat'|trans }}
-                </button>
+                        />
+                    </div>
+                    <div class="box-pickup-place__search__button">
+                        <button class="btn btn--success btn--with-input" type="button">
+                            {{ 'Vyhledat'|trans }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="js-pickup-place-autocomplete-results box-pickup-place__results {% if pickupPlaces|length > 0 %}display-block{% endif %}">
