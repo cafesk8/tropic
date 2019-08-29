@@ -77,8 +77,10 @@
             }
 
             img {
-                max-width: @list-articles-item-image-width;
-                max-height: @list-articles-item-image-height;
+                @media @query-md {
+                    max-width: @list-articles-item-image-width;
+                    max-height: @list-articles-item-image-height;
+                }
             }
         }
 
