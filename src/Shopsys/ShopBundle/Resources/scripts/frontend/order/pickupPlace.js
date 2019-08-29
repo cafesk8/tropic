@@ -19,6 +19,21 @@
         $container.filterAllNodes('.js-pickup-place-change-button').click(Shopsys.pickupPlaceSelection.onChangeButtonClick);
         $container.filterAllNodes('.js-order-transport-input').change(Shopsys.pickupPlaceSelection.onTransportChange);
         $container.filterAllNodes('.js-pickup-place-city-post-code-autocomplete-input').bind('keyup paste', Shopsys.pickupPlaceSelection.onSearchAutocompleteInputChange);
+
+        Shopsys.pickupPlaceSelection.initListPickUpPlaceSelectors($container);
+    };
+
+    Shopsys.pickupPlaceSelection.activatePickUpPlaceSelector = function ($pickupPlaceSelector) {
+        $('.js-pickup-place-row').removeClass('active');
+        $pickupPlaceSelector.addClass('active');
+    };
+
+    Shopsys.pickupPlaceSelection.initListPickUpPlaceSelectors = function ($container) {
+        $container.filterAllNodes('.js-pickup-place').each(function () {
+            $(this).click(function () {
+                Shopsys.pickupPlaceSelection.activatePickUpPlaceSelector($(this));
+            });
+        });
     };
 
     Shopsys.pickupPlaceSelection.onTransportChange = function (event) {
@@ -41,13 +56,13 @@
     Shopsys.pickupPlaceSelection.showSearchWindow = function ($selectedTransportInput, pickupPlaceInputClass) {
         var $pickupPlaceInput = $('.' + pickupPlaceInputClass);
         var pickupPlaceInput = $pickupPlaceInput.val();
-        var pickUpPlaceValue = (pickupPlaceInput !== '') ? pickupPlaceInput : null;
+        var pickupPlaceValue = (pickupPlaceInput !== '') ? pickupPlaceInput : null;
 
         Shopsys.ajax({
             url: $pickupPlaceInput.data('search-url'),
             dataType: 'html',
             data: {
-                pickupPlaceId: pickUpPlaceValue,
+                pickupPlaceId: pickupPlaceValue,
                 transportId: $selectedTransportInput.data('id')
             },
             success: function (data) {
@@ -100,17 +115,17 @@
 
         $('#transport_and_payment_form_transport .js-pickup-place-detail').addClass('display-none');
 
-        var $pickUpPlaceDetail = $('#transport_and_payment_form_transport .js-pickup-place-detail-' + $transportInput.data('id'));
+        var $pickupPlaceDetail = $('#transport_and_payment_form_transport .js-pickup-place-detail-' + $transportInput.data('id'));
 
-        $pickUpPlaceDetail.addClass('display-none');
-        $pickUpPlaceDetail.removeClass('display-none')
+        $pickupPlaceDetail.addClass('display-none');
+        $pickupPlaceDetail.removeClass('display-none')
             .attr('title', $button.data('description'))
             .tooltip('destroy');
 
-        $pickUpPlaceDetail.find('.js-pickup-place-detail-name')
+        $pickupPlaceDetail.find('.js-pickup-place-detail-name')
             .text($button.data('name'));
 
-        $pickUpPlaceDetail.find('.js-pickup-place-change-button').toggle($button.data('name').length > 0);
+        $pickupPlaceDetail.find('.js-pickup-place-change-button').toggle($button.data('name').length > 0);
 
         Shopsys.windowFunctions.close();
     };
