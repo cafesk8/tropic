@@ -52,13 +52,15 @@
                                 </a>
 
                                 <div class="display-none js-youtube-video-box">
-                                    <iframe
-                                            width="560"
-                                            height="315"
-                                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
-                                            frameborder="0"
-                                            allowfullscreen
-                                    ></iframe>
+                                    <div class="youtubeWrapper">
+                                        <iframe
+                                                width="560"
+                                                height="315"
+                                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                                frameborder="0"
+                                                allowfullscreen
+                                        ></iframe>
+                                    </div>
                                 </div>
 
                             </div>
