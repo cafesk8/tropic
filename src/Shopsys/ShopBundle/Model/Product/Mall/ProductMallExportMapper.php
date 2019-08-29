@@ -193,7 +193,9 @@ class ProductMallExportMapper
         }
 
         if ($product->isMainVariant() === false || $isVariant) {
-            $mallProduct->setBarcode($product->getEan());
+            if ($product->getEan() !== null) {
+                $mallProduct->setBarcode((int)$product->getEan());
+            }
 
             /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
             $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
@@ -248,7 +250,9 @@ class ProductMallExportMapper
         }
 
         foreach ($variants as $variant) {
-            $mallProduct->addVariant($this->mapVariant($variant));
+            if ($variant->getEan() !== null) {
+                $mallProduct->addVariant($this->mapVariant($variant));
+            }
         }
 
         return $mallProduct;
