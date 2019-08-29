@@ -13,22 +13,28 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="in-user-text">
-        <div class="padding-20">
-            <h1>{{ 'Personal information export'|trans }} - {{ personalDataAccessRequest.email }} </h1>
+<div class="web__line">
+    <div class="web__container web__container--big-padding">
+        <h1 class="in-title in-title--big in-title--center">
+            {{ 'Personal information export'|trans }} - {{ personalDataAccessRequest.email }}
+        </h1>
+
+        <div class="in-user-text">
             {{ 'Clicking on the link below you can download in XML format your personal information, which we have in evidence
             in our online store %domain%.'|trans({ '%domain%': domainName }) }}
         </div>
+
         {% if user is null and newsletterSubscriber is null and ordersCount == 0 %}
-        <div class="padding-20">
-            <h2>{{ 'No personal data for this e-mail address'|trans }}</h2>
-        </div>
-        {% else %}
             <div class="padding-20">
+                <h2>{{ 'No personal data for this e-mail address'|trans }}</h2>
+            </div>
+        {% else %}
+            <div class="padding-20 text-center">
                 <a href="{{ url('front_export_personal_data', {'hash': hash }) }}" class="btn btn--success">
                     {{ 'Download the personal information'|trans }}
                 </a>
             </div>
         {% endif %}
     </div>
+</div>
 {% endblock %}
