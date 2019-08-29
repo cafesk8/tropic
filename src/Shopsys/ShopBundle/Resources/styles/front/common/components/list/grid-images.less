@@ -139,11 +139,12 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        width: 100% + 2*@grid-images-category-advantages-item-gap;
+        width: 100%;
         margin: 0 -@grid-images-category-advantages-item-gap/2 20px -@grid-images-category-advantages-item-gap/2;
 
         @media @query-md {
             flex-direction: row;
+            width: 100% + 2*@grid-images-category-advantages-item-gap;
         }
 
         @media @query-lg {
