@@ -63,15 +63,20 @@
             background-color: transparent;
             border: 3px solid @color-gray-dark;
 
-            &.active {
-                background-color: @color-f;
-                border: 3px solid @list-variants-item-border-color;
-            }
-
             img {
                 max-height: @list-variants-item-with-image-picture-size;
                 max-width: @list-variants-item-with-image-picture-size;
                 margin-bottom: 9px;
+                filter: brightness(0.94);
+            }
+
+            &.active {
+                background-color: @color-f;
+                border: 3px solid @list-variants-item-border-color;
+
+                img {
+                    filter: brightness(1);
+                }
             }
 
             &__name {
