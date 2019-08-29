@@ -19,15 +19,15 @@
 </div>
 <div class="wrap-article__row">
     <div class="wrap-article__row__half">
-        {{ form_row(form.name, { label: 'Full name'|trans, rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' } }) }}
+        {{ form_row(form.name, { label: 'Full name'|trans }) }}
     </div>
     <div class="wrap-article__row__half">
-        {{ form_row(form.email, { label: 'E-mail'|trans, rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' } }) }}
+        {{ form_row(form.email, { label: 'E-mail'|trans }) }}
     </div>
 </div>
 <div class="wrap-article__row">
     <div class="wrap-article__row__half js-not-implemented-yet">
-        <div class="form-line-block">
+        <div class="form-line">
             <div class="form-line__input">
                 <label for="contact_form_last" class="input__label required">
                     {{ 'Příjmení'|trans }}
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="wrap-article__row__half">
-        <div class="form-line-block">
+        <div class="form-line">
             <div class="form-line__input">
                 <label for="contact_form_phone" class="input__label required">
                     {{ 'Telefon'|trans }}
@@ -57,7 +57,17 @@
 </div>
 <div class="wrap-article__row">
     <div class="wrap-article__row__full">
-        {{ form_row(form.message, { label: 'Message'|trans, rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' } }) }}
+        <div class="form-line">
+            <div class="form-line__input form-line__input--full">
+                <label class="input__label" for="{{ form.message.vars.id }}">
+                    {{ 'Message'|trans }}
+                </label>
+                {{ form_widget(form.message, { rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' } }) }}
+            </div>
+            <div class="form-line__error">
+                {{ form_errors(form.message) }}
+            </div>
+        </div>
     </div>
 </div>
 <div class="wrap-article__row">

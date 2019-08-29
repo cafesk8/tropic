@@ -14,18 +14,43 @@
             {{ form_errors(form) }}
 
             {{ form_start(form) }}
-
-                {{ form_row(form.firstName, { label: 'First name'|trans }) }}
-                {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
-                {{ form_row(form.email, { label: 'E-mail'|trans , attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
-                {{ form_row(form.password.first, {
-                    label: 'Password'|trans,
-                    icon: {
-                        class: 'in-icon in-icon--info js-tooltip',
-                        title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
-                    }
-                }) }}
-                {{ form_row(form.password.second, { label: 'Password again'|trans }) }}
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__half">
+                        {{ form_row(form.firstName, { label: 'First name'|trans }) }}
+                    </div>
+                    <div class="wrap-article__row__half">
+                        {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
+                    </div>
+                </div>
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__full">
+                        <div class="form-line">
+                            <div class="form-line__input form-line__input--full">
+                                <label class="input__label" for="{{ form.email.vars.id }}">
+                                    {{ 'E-mail'|trans }}
+                                </label>
+                                {{ form_widget(form.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
+                            </div>
+                            <div class="form-line__error">
+                                {{ form_errors(form.email) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__half">
+                        {{ form_row(form.password.first, {
+                            label: 'Password'|trans,
+                            icon: {
+                                class: 'in-icon in-icon--info js-tooltip',
+                                title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
+                            }
+                        }) }}
+                    </div>
+                    <div class="wrap-article__row__half">
+                        {{ form_row(form.password.second, { label: 'Password again'|trans }) }}
+                    </div>
+                </div>
                 {{ form_widget(form.privacyPolicy, { attr: {class: 'css-checkbox'}}) }}
 
                 <label class="css-checkbox__image" for="{{ form.privacyPolicy.vars.id }}">
