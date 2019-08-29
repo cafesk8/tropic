@@ -103,7 +103,7 @@
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
                     </div>
                     <div class="box-dropdown__options
-                    {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                         box-dropdown__options--logged
                     {% else %}
                         box-dropdown__options--login
