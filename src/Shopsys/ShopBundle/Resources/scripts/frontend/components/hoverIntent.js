@@ -30,7 +30,9 @@
                     $(this).addClass(classForOpen);
                 },
                 out: function () {
-                    $(this).removeClass(classForOpen);
+                    if($(this).find('input:focus').size() === 0){
+                        $(this).removeClass(classForOpen);
+                    }
                 }
             });
         };
