@@ -673,18 +673,14 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
     {
         $filterData = new ProductFilterData();
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 14;
+        $countData->countInStock = 8;
         $countData->countByBrandId = [
-            2 => 8,
-            3 => 1,
-            1 => 1,
-            5 => 1,
+            2 => 6,
             14 => 2,
         ];
         $countData->countByFlagId = [
-            1 => 7,
-            2 => 4,
-            3 => 2,
+            1 => 4,
+            2 => 2,
         ];
 
         return [
@@ -702,16 +698,10 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData = new ProductFilterData();
         $filterData->flags[] = $this->getReference(FlagDataFixture::FLAG_NEW_PRODUCT);
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 6;
+        $countData->countInStock = 4;
         $countData->countByBrandId = [
             2 => 3,
-            3 => 1,
             14 => 1,
-            1 => 1,
-        ];
-        $countData->countByFlagId = [
-            2 => 1,
-            3 => 1,
         ];
 
         return [
@@ -730,11 +720,8 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->brands[] = $this->getReference(BrandDataFixture::BRAND_CANON);
         $countData = new ProductFilterCountData();
 
-        $countData->countInStock = 8;
+        $countData->countInStock = 6;
         $countData->countByBrandId = [
-            3 => 1,
-            1 => 1,
-            5 => 1,
             14 => 2,
         ];
         $countData->countByFlagId = [
@@ -758,15 +745,9 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData->minimalPrice = Money::create(5000);
         $filterData->maximalPrice = Money::create(50000);
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 4;
+        $countData->countInStock = 2;
         $countData->countByBrandId = [
-            1 => 1,
-            2 => 4,
-        ];
-        $countData->countByFlagId = [
-            1 => 1,
-            2 => 1,
-            3 => 1,
+            2 => 2,
         ];
 
         return [
@@ -784,17 +765,14 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $filterData = new ProductFilterData();
         $filterData->inStock = true;
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 14;
+        $countData->countInStock = 8;
         $countData->countByBrandId = [
-            2 => 8,
-            3 => 1,
-            5 => 1,
+            2 => 6,
             14 => 2,
         ];
         $countData->countByFlagId = [
-            1 => 6,
-            2 => 3,
-            3 => 1,
+            1 => 4,
+            2 => 2,
         ];
 
         return [
@@ -822,7 +800,6 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $countData->countInStock = 1;
         $countData->countByBrandId = [
             2 => 3,
-            3 => 1,
         ];
 
         return [

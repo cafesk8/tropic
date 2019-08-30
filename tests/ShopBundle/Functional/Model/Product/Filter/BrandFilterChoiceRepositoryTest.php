@@ -43,7 +43,7 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
     {
         $brandFilterChoices = $this->getChoicesForSearchText('telefon');
 
-        $this->assertCount(13, $brandFilterChoices);
+        $this->assertCount(2, $brandFilterChoices);
 
         $ids = array_map(
             static function (Brand $brand) {
@@ -52,19 +52,8 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
             $brandFilterChoices
         );
 
-        $this->assertContains(6, $ids);
         $this->assertContains(1, $ids);
-        $this->assertContains(2, $ids);
-        $this->assertContains(23, $ids);
-        $this->assertContains(3, $ids);
-        $this->assertContains(24, $ids);
-        $this->assertContains(22, $ids);
-        $this->assertContains(21, $ids);
-        $this->assertContains(4, $ids);
         $this->assertContains(20, $ids);
-        $this->assertContains(19, $ids);
-        $this->assertContains(5, $ids);
-        $this->assertContains(8, $ids);
     }
 
     public function testGetBrandFilterChoicesForSearch47(): void
