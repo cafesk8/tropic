@@ -11,33 +11,11 @@
     </div>
 </div>
 <div class="wrap-article__row">
-    <div class="wrap-article__row__half js-not-implemented-yet">
-        <div class="form-line">
-            <div class="form-line__input">
-                <label for="contact_form_last" class="input__label required">
-                    {{ 'Příjmení'|trans }}
-                    <span class="form-input-required">*</span>
-                </label>
-                <input type="text" id="contact_form_lastname" name="contact_form[lastname]" required="required" class="input" tabindex="2">
-            </div>
-            <div class="form-line__error">
-                <span class="js-validation-errors-list js-validation-error-list-contact_form_name form-error form-error--line-block display-none" style="display: none;"><ul class="form-error__list"></ul></span>
-            </div>
-        </div>
+    <div class="wrap-article__row__half">
+        {{ form_row(form.surname, { label: 'Příjmení'|trans, attr: { tabindex: 2 }  }) }}
     </div>
     <div class="wrap-article__row__half">
-        <div class="form-line">
-            <div class="form-line__input">
-                <label for="contact_form_phone" class="input__label required">
-                    {{ 'Telefon'|trans }}
-                    <span class="form-input-required">*</span>
-                </label>
-                <input type="text" id="contact_form_phone" name="contact_form[phone]" required="required" class="input" tabindex="4">
-            </div>
-            <div class="form-line__error">
-                <span class="js-validation-errors-list js-validation-error-list-contact_form_name form-error form-error--line-block display-none" style="display: none;"><ul class="form-error__list"></ul></span>
-            </div>
-        </div>
+        {{ form_row(form.telephone, { label: 'Telefon'|trans, attr: { tabindex: 4 }  }) }}
     </div>
 </div>
 <div class="wrap-article__row">
