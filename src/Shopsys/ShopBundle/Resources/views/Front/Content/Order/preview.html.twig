@@ -130,6 +130,19 @@
             </table>
         </div>
         <div class="in-action in-action--column">
+            {% if orderStep > 2 %}
+                <div class="box-preview__conditions">
+                    {{ 'Kliknutím na tlačítko Odeslat objednávku'|trans }}<br>
+                    {{ 'souhlasím s '|trans }}
+                    <a href="#" target="_blank" class="box-preview__conditions__link js-not-implemented-yet">
+                        <span class="underline-small">
+                            {{ 'obchodními podmínkami'|trans }}
+                        </span>
+                    </a>
+                    {{ ' e-shopu.'|trans}}
+                </div>
+            {% endif %}
+
             {% if orderPreview.quantifiedProducts > 0 and renderSubmitButton %}
                 {% if orderStep == 1 %}
                     {% set continueButtonText = 'Pokračovat v objednávce'|trans %}
