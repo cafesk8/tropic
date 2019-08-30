@@ -450,7 +450,11 @@ services:
         arguments:
             - '%googleApiKey%'
 
-    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator'
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator:
+        class: Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator
+        tags:
+            # must be run before ProductVisibilityFacade
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 20 }
 
     Shopsys\ShopBundle\Component\NinjaMutex\Lock\NullLock: ~
 
