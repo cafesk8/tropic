@@ -21,7 +21,11 @@
 
         &--full {
             max-width: 100%;
-            width: calc(~"100% - 5px");
+            width: 100%;
+
+            @media @query-md {
+                width: calc(~"100% - 5px");
+            }
         }
     }
 
