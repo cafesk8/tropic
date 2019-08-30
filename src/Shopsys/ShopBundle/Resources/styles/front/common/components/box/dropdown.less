@@ -219,7 +219,12 @@
         }
 
         &.box-dropdown__options--logged {
-            width: 150px;
+            width: 250px;
+            right: -60px;
+
+            @media @query-md {
+                right: 0;
+            }
         }
 
         &.box-dropdown__options--basket {
