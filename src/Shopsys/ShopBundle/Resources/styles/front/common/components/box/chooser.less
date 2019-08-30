@@ -2,6 +2,7 @@
 
 @box-chooser-check-width: 20px;
 @box-chooser-image-width: 40px;
+@box-chooser-image-height: 30px;
 @box-chooser-price-width: 80px;
 @box-chooser-title-width: ~"calc(100% - @{box-chooser-check-width} - @{box-chooser-image-width} - @{box-chooser-price-width} - 2 * @{box-chooser-item-padding})";
 
@@ -22,12 +23,16 @@
         padding: @box-chooser-padding;
     }
 
+    &__title {
+        margin-bottom: 3px;
+    }
+
     &__item {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         flex-wrap: wrap;
         width: 100%;
-        padding: @box-chooser-item-padding;
+        padding: 0 @box-chooser-item-padding;
 
         cursor: pointer;
 
@@ -38,28 +43,35 @@
 
         &__check {
             align-self: flex-start;
-            padding-top: 5px;
+            padding-top: 10px;
             font-size: 0;
         }
 
         &__image {
+            height: @box-chooser-image-height;
+            width: @box-chooser-image-width;
             position: relative;
-            bottom: -5px;
             margin-left: 5px;
+            line-height: 40px;
+
+            img {
+                .center-image();
+            }
         }
 
         &__title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
             padding: 0 10px;
             width: calc(~"@{calc-base} - @{box-choose-item-check-width}");
+            line-height: 38px;
 
             font-size: 15px;
 
-            @media @query-lg {
-                flex: 1;
-            }
-
             &__name {
                 font-weight: 400;
+                padding-right: 10px;
 
                 .box-chooser__item--active & {
                     font-weight: 800;

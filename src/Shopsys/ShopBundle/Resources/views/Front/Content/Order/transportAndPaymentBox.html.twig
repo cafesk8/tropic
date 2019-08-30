@@ -1,7 +1,7 @@
 <div class="box-order__info__item">
     <div class="box-chooser js-form-group">
 
-        <h2 id="js-label-{{ form.transport.vars.id }}" class="in-title in-title--small in-title--dark">
+        <h2 id="js-label-{{ form.transport.vars.id }}" class="in-title in-title--small in-title--dark box-chooser__title">
             {{ 'Vyberte způsob dopravy'|trans }}
         </h2>
 
@@ -31,12 +31,12 @@
                     <span class="box-chooser__item__title">
                         <span class="box-chooser__item__title__name">
                             {{ choice.data.name }}
-                            {% if imageExists(choice.data) %}
-                                <span class="box-chooser__item__image">
-                                    {{ image(choice.data, { lazy: false }) }}
-                                </span>
-                            {% endif %}
                         </span>
+                        {% if imageExists(choice.data) %}
+                            <span class="box-chooser__item__image">
+                                {{ image(choice.data, { lazy: false }) }}
+                            </span>
+                        {% endif %}
                         {% if choice.data.description %}
                             <span class="box-chooser__item__title__description">
                                 ({{ choice.data.description }})
@@ -81,7 +81,7 @@
 <div class="box-order__info__item">
 
     <div class="box-chooser box-chooser--smaller js-form-group">
-        <h2 id="js-label-{{ form.payment.vars.id }}" class="in-title in-title--small in-title--dark">
+        <h2 id="js-label-{{ form.payment.vars.id }}" class="in-title in-title--small in-title--dark box-chooser__title">
             {{ 'Vyberte způsob platby'|trans }}
         </h2>
         {{ form_errors(form.payment, { errors_attr: {class: 'form-error--inline'} }) }}
@@ -104,12 +104,12 @@
                     <span class="box-chooser__item__title">
                         <span class="box-chooser__item__title__name">
                             {{ choice.data.name }}
-                            {% if imageExists(choice.data) %}
-                                <span class="box-chooser__item__image">
+                        </span>
+                        {% if imageExists(choice.data) %}
+                            <span class="box-chooser__item__image">
                                 {{ image(choice.data, { lazy: false }) }}
                             </span>
-                            {% endif %}
-                        </span>
+                        {% endif %}
                         {% if choice.data.description %}
                             <span class="box-chooser__item__title__description">
                                 ({{ choice.data.description }})
@@ -130,12 +130,12 @@
                                     {{ form_widget(goPayBankSwiftFormChild, { attr: { class: 'js-order-gopay-bank-swift-input css-radio', 'data-swift': goPayBankSwift.swift} }) }}
                                     <label for="{{goPayBankSwiftFormChild.vars.id}}" class="css-radio__image"></label>
                                 </span>
-                                <span class="box-chooser__item__image">
-                                    <img src="{{ goPayBankSwift.imageLargeUrl }}">
-                                </span>
                                 <span class="box-chooser__item__title">
                                     <span class="box-chooser__item__title__name">
                                         {{ goPayBankSwift.name }}
+                                    </span>
+                                    <span class="box-chooser__item__image">
+                                        <img src="{{ goPayBankSwift.imageLargeUrl }}">
                                     </span>
                                 </span>
                                 <span class="box-chooser__item__price">
