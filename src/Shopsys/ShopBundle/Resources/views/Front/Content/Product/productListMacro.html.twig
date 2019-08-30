@@ -110,7 +110,7 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(products, variantsIndexedByMainVariantId, listCssClass = 'list-products', productHeadingTagName, type, minCountForShowArrows = 1) %}
+{% macro horizontalList(products, variantsIndexedByMainVariantId, listCssClass = 'list-products', productHeadingTagName, type) %}
     <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ products|length }}">
 
         <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
