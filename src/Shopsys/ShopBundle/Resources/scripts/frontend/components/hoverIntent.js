@@ -30,7 +30,7 @@
                     $(this).addClass(classForOpen);
                 },
                 out: function () {
-                    if($(this).find('input:focus').size() === 0){
+                    if ($(this).find('input:focus').size() === 0) {
                         $(this).removeClass(classForOpen);
                     }
                 }
