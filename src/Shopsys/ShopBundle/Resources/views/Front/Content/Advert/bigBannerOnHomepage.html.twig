@@ -36,18 +36,6 @@
                                                 <span class="box-special-offer__products__item__content__price__old">{{ sellingPrice.defaultProductPrice.priceWithVat|price }}</span>
                                             {% endif %}
                                         </span>
-                                        <span class="box-special-offer__products__item__content__size">
-                                            {{ 'Vaše velikost'|trans }}
-                                            {% if variantsIndexedByMainVariantId|length > 0 and advertProduct.id in variantsIndexedByMainVariantId|keys %}
-                                                {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[advertProduct.id]) %}
-                                                {% if advertProduct.id in secondDistinguishingParameters|keys %}
-                                                    {% for parameterValue, variantId in secondDistinguishingParameters[advertProduct.id] %}
-                                                        <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
-                                                    {% endfor %}
-                                                {% endif %}
-                                            {% endif %}
-                                            {{ advertProduct.calculatedAvailability.name }}
-                                        </span>
                                     </a>
                                 </div>
                             </li>

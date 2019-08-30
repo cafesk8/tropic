@@ -162,19 +162,6 @@
                                             </div>
                                         </div>
                                     {% endif %}
-
-                                    <div class="{{ listCssClass }}__item__info__availability">
-                                        {{ 'Vaše velikost'|trans }}
-                                        {% if variantsIndexedByMainVariantId|length > 0 and product.id in variantsIndexedByMainVariantId|keys %}
-                                            {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
-                                            {% if product.id in secondDistinguishingParameters|keys %}
-                                                {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
-                                                    <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% endif %}
-                                        {{ product.calculatedAvailability.getName }}
-                                    </div>
                                 </div>
                             </a>
                         </div>
