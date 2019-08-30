@@ -20,7 +20,7 @@
             {{ title }}
         </h1>
 
-        <div class="in-user-text">
+        <div class="in-user-text margin-bottom-20">
             {{ personalDataSiteContent|raw }}
         </div>
 
@@ -28,7 +28,7 @@
             {{ form_start(form, { method: 'POST' }) }}
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.email) }}
+                        {{ form_row(form.email, {errors_attr: { class: 'form-error--under' }}) }}
                     </div>
                     <div class="wrap-article__row__half">
                         {{ form_row(form.send, {label: 'Odeslat na mail'|trans, attr: {class: 'btn btn--success btn--with-input'}}) }}

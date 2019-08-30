@@ -16,10 +16,10 @@
             {{ form_start(form) }}
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.firstName, { label: 'First name'|trans }) }}
+                        {{ form_row(form.firstName, { label: 'First name'|trans, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
+                        {{ form_row(form.lastName, { label: 'Last name'|trans, errors_attr: { class: 'form-error--under' }}) }}
                     </div>
                 </div>
                 <div class="wrap-article__row">
@@ -32,7 +32,7 @@
                                 {{ form_widget(form.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
                             </div>
                             <div class="form-line__error">
-                                {{ form_errors(form.email) }}
+                                {{ form_errors(form.email, {errors_attr: { class: 'form-error--under' }}) }}
                             </div>
                         </div>
                     </div>
@@ -41,6 +41,7 @@
                     <div class="wrap-article__row__half">
                         {{ form_row(form.password.first, {
                             label: 'Password'|trans,
+                            errors_attr: { class: 'form-error--under' },
                             icon: {
                                 class: 'in-icon in-icon--info js-tooltip',
                                 title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
@@ -48,7 +49,7 @@
                         }) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.password.second, { label: 'Password again'|trans }) }}
+                        {{ form_row(form.password.second, { label: 'Password again'|trans, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                 </div>
                 {{ form_widget(form.memberOfBushmanClub, { attr: {class: 'css-checkbox'}}) }}
