@@ -125,12 +125,11 @@
                                 {% endif %}
                             {% endif %}
 
-                            <div class="box-order__additional js-not-implemented-yet">
+                            <div class="box-order__additional">
                                 <div class="box-order__additional__title">
                                     {{ 'Přihoďte si k nákupu'|trans }}
                                 </div>
-                                {# TODO PRG: add additional products to list #}
-                                {#{ productList.horizontalList(cartItems, null, "list-basket-additionals", 'h3', 'basket-additionals') }#}
+                                {{ productList.horizontalList(topProducts, variantsIndexedByMainVariantId, "list-basket-additionals", 'h3', 'basket-additionals') }}  {#TODO COD - check the css classes (for example, the backround is not grey in Invision#}
                             </div>
                         </div>
                         <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">

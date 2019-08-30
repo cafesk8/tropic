@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ShopBundle\Form\Front\Cart\AddProductFormType;
 use Shopsys\ShopBundle\Form\Front\Cart\CartFormType;
@@ -21,6 +22,7 @@ use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade;
+use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -78,6 +80,16 @@ class CartController extends FrontBaseController
     private $productGiftFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade
+     */
+    private $topProductFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
+     */
+    private $productOnCurrentDomainElasticFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -87,6 +99,8 @@ class CartController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade $productGiftFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
      */
     public function __construct(
         ProductAccessoryFacade $productAccessoryFacade,
@@ -97,7 +111,9 @@ class CartController extends FrontBaseController
         OrderPreviewFactory $orderPreviewFactory,
         ErrorExtractor $errorExtractor,
         CsrfTokenManagerInterface $tokenManager,
-        ProductGiftFacade $productGiftFacade
+        ProductGiftFacade $productGiftFacade,
+        TopProductFacade $topProductFacade,
+        ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -108,6 +124,8 @@ class CartController extends FrontBaseController
         $this->errorExtractor = $errorExtractor;
         $this->tokenManager = $tokenManager;
         $this->productGiftFacade = $productGiftFacade;
+        $this->topProductFacade = $topProductFacade;
+        $this->productOnCurrentDomainElasticFacade = $productOnCurrentDomainElasticFacade;
     }
 
     /**
@@ -145,9 +163,7 @@ class CartController extends FrontBaseController
         }
 
         if ($invalidCart) {
-            $this->getFlashMessageSender()->addErrorFlash(
-                t('Please make sure that you entered right quantity of all items in cart.')
-            );
+            $this->getFlashMessageSender()->addErrorFlash(t('Please make sure that you entered right quantity of all items in cart.'));
         }
 
         $domainId = $this->domain->getId();
@@ -155,10 +171,8 @@ class CartController extends FrontBaseController
         /** @var \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $productsPrice = $orderPreview->getProductsPrice();
-        $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat(
-            $productsPrice->getPriceWithVat(),
-            $domainId
-        );
+        $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
+        $topProducts = $this->topProductFacade->getAllOfferedProducts($this->domain->getId(), $this->currentCustomer->getPricingGroup());
 
         return $this->render('@ShopsysShop/Front/Content/Cart/index.html.twig', [
             'cart' => $cart,
@@ -173,6 +187,8 @@ class CartController extends FrontBaseController
             'productsPrice' => $productsPrice,
             'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
             'promoCode' => $orderPreview->getPromoCode(),
+            'topProducts' => $topProducts,
+            'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainElasticFacade->getVariantsIndexedByMainVariantId($topProducts),
         ]);
     }
 
