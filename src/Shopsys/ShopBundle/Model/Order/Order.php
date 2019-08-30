@@ -90,6 +90,13 @@ class Order extends BaseOrder
     private $store;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $storeExternalNumber;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -173,8 +180,9 @@ class Order extends BaseOrder
             $this->pickupPlace = $orderData->pickupPlace;
         }
 
-        if ($this->transport !== null && $transport->isChooseStore()) {
+        if ($this->transport !== null && $transport->isChooseStore() && $orderData->store !== null) {
             $this->store = $orderData->store;
+            $this->storeExternalNumber = $orderData->store->getExternalNumber();
         }
 
         $this->exportStatus = $orderData->exportStatus;
@@ -202,6 +210,7 @@ class Order extends BaseOrder
         $this->payPalStatus = $orderData->payPalStatus;
         $this->pickupPlace = $orderData->pickupPlace;
         $this->store = $orderData->store;
+        $this->storeExternalNumber = $orderData->store !== null ? $orderData->store->getExternalNumber() : null;
         $this->updatedAt = $orderData->updatedAt;
 
         return $orderEditResult;
@@ -594,5 +603,13 @@ class Order extends BaseOrder
         }
 
         return $giftItems;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStoreExternalNumber(): ?string
+    {
+        return $this->storeExternalNumber;
     }
 }
