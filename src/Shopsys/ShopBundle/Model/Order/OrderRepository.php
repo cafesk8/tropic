@@ -140,8 +140,8 @@ class OrderRepository extends BaseOrderRepository
     public function getNotExportedOrdersBatch(int $limit): array
     {
         return $this->createOrderQueryBuilder()
-            ->andWhere('o.exportStatus IN (:exportStatus)')
-            ->setParameter('exportStatus', [Order::EXPORT_NOT_YET, Order::EXPORT_ERROR])
+            ->andWhere('o.exportStatus = :exportStatus')
+            ->setParameter('exportStatus', Order::EXPORT_NOT_YET)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
