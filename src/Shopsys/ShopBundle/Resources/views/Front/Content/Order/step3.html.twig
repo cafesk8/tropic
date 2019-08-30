@@ -85,43 +85,40 @@
                             {% endif %}
                         </div>
                     {% endif %}
-                </fieldset>
-
-                <fieldset>
-                    <div class="box-order__title">
-                        <h2 class="in-title in-title--small in-title--dark">
-                            {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
-                        </h2>
+                    <div class="margin-top-10">
+                        {{ form_widget(form.companyCustomer, {
+                            attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
+                        }}
+                        <label for="{{ form.companyCustomer.vars.id }}" class="css-checkbox__image">
+                            {{ 'I buy on company behalf'|trans }}
+                        </label>
                     </div>
-                    {{ form_widget(form.companyCustomer, {
-                        attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
-                    }}
-                    <label for="{{ form.companyCustomer.vars.id }}" class="css-checkbox__image">
-                        {{ 'I buy on company behalf'|trans }}
-                    </label>
                     <div id="js-company-fields" class="margin-top-20">
+                        <div class="box-order__title">
+                            <h2 class="in-title in-title--small in-title--dark">
+                                {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
+                            </h2>
+                        </div>
                         {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
                         {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
                         {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
                     </div>
-                </fieldset>
 
-                <fieldset>
-                    <div class="box-order__title">
-                        <h2 class="in-title in-title--small in-title--dark">
-                            {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
-                        </h2>
+                    <div class="margin-top-10">
+                        {{ form_widget(form.billingAddressFilled, {
+                            attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
+                        }}
+                        <label for="{{ form.billingAddressFilled.vars.id }}" class="css-checkbox__image">
+                            {{ 'Chci zadat jiné fakturační údaje'|trans }}
+                        </label>
                     </div>
-                    {{ form_widget(form.billingAddressFilled, {
-                        attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
-                    }}
-                    <label for="{{ form.billingAddressFilled.vars.id }}" class="css-checkbox__image">
-                        {{ 'Vyplním fakturační údaje'|trans }}
-                    </label>
+                    <div id="js-billing-address-fields" class="margin-top-20">
+                        <div class="box-order__title">
+                            <h2 class="in-title in-title--small in-title--dark">
+                                {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
+                            </h2>
+                        </div>
 
-                    <br><br>
-
-                    <div id="js-billing-address-fields">
                         {{ form_row(form.firstName, { label: 'First name'|trans }) }}
                         {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
                         {{ form_row(form.telephone, { label: 'Telephone'|trans }) }}
@@ -130,20 +127,26 @@
                         {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
                         {{ form_row(form.country, { label: 'Country'|trans }) }}
                     </div>
-                </fieldset>
 
-                <fieldset>
-                    <div class="box-order__title">
-                        <h2 class="in-title in-title--small in-title--dark">
-                            {{ 'Note'|trans }}
-                        </h2>
+                    <div class="margin-top-10">
+                        <input type="checkbox" id="order_note" name="order_note" class="css-checkbox js-checkbox-toggle" data-checkbox-toggle-container-id="js-order-note" value="">
+                        <label for="order_note" class="css-checkbox__image">
+                            {{ 'Přidám poznámku k objednávce'|trans }}
+                        </label>
                     </div>
-                    {{ form_row(form.note, { label: 'Contact us'|trans }) }}
+                    <div id="js-order-note" class="margin-top-20">
+                        <div class="box-order__title">
+                            <h2 class="in-title in-title--small in-title--dark">
+                                {{ 'Note'|trans }}
+                            </h2>
+                        </div>
+                        {{ form_row(form.note, { label: 'Contact us'|trans }) }}
+                    </div>
                 </fieldset>
 
                 <fieldset>
-                    <div class="form-line">
-                        {{ form_row(form.newsletterSubscription, { attr: { class: 'css-checkbox' }}) }}
+                    <div class="form-line margin-bottom-0">
+                        {{ form_widget(form.newsletterSubscription, { attr: { class: 'css-checkbox' }}) }}
                         <label class="css-checkbox__image" for="{{ form.newsletterSubscription.vars.id }}">
                             {{ 'I want to subscribe to the newsletter'|trans }}
                         </label>
