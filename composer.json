@@ -96,7 +96,8 @@
         "emanueleminotto/twig-cache-bundle": "^1.0",
         "vinkla/instagram": "^9.3",
         "php-http/message": "^1.7",
-        "google/apiclient": "^2.0"
+        "google/apiclient": "^2.0",
+        "nette/utils": "^2.4"
     },
     "require-dev": {
         "ext-pgsql": "*",
