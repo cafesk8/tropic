@@ -11,8 +11,8 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
-use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
+use Shopsys\ShopBundle\Model\Order\OrderFacade;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,6 +43,11 @@ class PersonalInfoFormType extends AbstractType
     private $heurekaFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\OrderFacade
+     */
+    private $orderFacade;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
     private $domain;
@@ -51,12 +56,14 @@ class PersonalInfoFormType extends AbstractType
      * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade $heurekaFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      */
-    public function __construct(CountryFacade $countryFacade, HeurekaFacade $heurekaFacade, Domain $domain)
+    public function __construct(CountryFacade $countryFacade, HeurekaFacade $heurekaFacade, Domain $domain, OrderFacade $orderFacade)
     {
         $this->countryFacade = $countryFacade;
         $this->heurekaFacade = $heurekaFacade;
         $this->domain = $domain;
+        $this->orderFacade = $orderFacade;
     }
 
     /**
@@ -112,6 +119,9 @@ class PersonalInfoFormType extends AbstractType
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Callback([$this, 'validateTelephone']),
+                ],
+                'attr' => [
+                    'class' => 'js-personal-info-telephone',
                 ],
             ])
             ->add('companyCustomer', CheckboxType::class, ['required' => false])
@@ -251,6 +261,9 @@ class PersonalInfoFormType extends AbstractType
                     ]),
                     new Constraints\Callback([$this, 'validateTelephone']),
                 ],
+                'attr' => [
+                    'class' => 'js-personal-info-delivery-telephone',
+                ],
             ])
             ->add('deliveryStreet', TextType::class, [
                 'required' => true,
@@ -335,16 +348,8 @@ class PersonalInfoFormType extends AbstractType
      */
     public function validateTelephone(?string $telephone, ExecutionContextInterface $context): void
     {
-        if ($telephone === null) {
-            return;
-        }
-
-        if ($this->domain->getId() === DomainHelper::GERMAN_DOMAIN) {
-            // https://regex101.com/r/H4hXF5/55
-            preg_match('/^\+{1}[^\+]+$/', $telephone, $matches);
-            if (count($matches) === 0) {
-                $context->addViolation('Telefonní číslo musí začínat znakem +');
-            }
+        if ($this->orderFacade->isTelephoneValid($telephone) === false) {
+            $context->addViolation('Telefonní číslo musí začínat znakem +');
         }
     }
 

@@ -34,7 +34,7 @@
                     {{ form_row(form.email, { label: 'E-mail'|trans }) }}
 
                     {% if isSelectedPickupPlaceTransport is same as (true) %}
-                        {{ form_row(form.deliveryTelephone, { required: true, label: 'Telephone'|trans }) }}
+                        {{ form_row(form.deliveryTelephone, { required: true, label: 'Telephone'|trans, attr: { 'data-validation-url': url('front_order_is_telephone_validate') } }) }}
                         {% if isGermanyDomain() is same as (true) %}
                             <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
                         {% endif %}
@@ -69,7 +69,7 @@
                             {{ form_row(form.deliveryFirstName, { label: 'First name'|trans }) }}
                             {{ form_row(form.deliveryLastName, { label: 'Last name'|trans }) }}
                             {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
-                            {{ form_row(form.deliveryTelephone, { label: 'Telephone'|trans }) }}
+                            {{ form_row(form.deliveryTelephone, { label: 'Telephone'|trans, attr: { 'data-validation-url': url('front_order_is_telephone_validate') }  }) }}
                             {% if isGermanyDomain() is same as (true) %}
                                 <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
                             {% endif %}

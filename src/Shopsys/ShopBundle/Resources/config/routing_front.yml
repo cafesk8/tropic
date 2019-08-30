@@ -97,6 +97,12 @@ front_order_preview:
     condition: "request.isXmlHttpRequest()"
     methods: [GET]
 
+front_order_is_telephone_validate:
+    path: /order/is-telephone-valid/
+    defaults: { _controller: ShopsysShopBundle:Front\Order:isTelephoneValid }
+    condition: "request.isXmlHttpRequest()"
+    methods: [GET]
+
 front_order_save_form:
     path: /order/save-form/
     defaults: { _controller: ShopsysShopBundle:Front\Order:saveOrderForm }

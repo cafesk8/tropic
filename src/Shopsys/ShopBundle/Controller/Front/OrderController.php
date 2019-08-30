@@ -672,4 +672,15 @@ class OrderController extends FrontBaseController
             $this->orderMailFacade->sendEmail($order);
         }
     }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function isTelephoneValidAction(Request $request): Response
+    {
+        return $this->json([
+            'isValid' => $this->orderFacade->isTelephoneValid($request->get('telephone')),
+        ]);
+    }
 }

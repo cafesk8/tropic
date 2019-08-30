@@ -39,6 +39,7 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
@@ -306,6 +307,27 @@ class OrderFacade extends BaseOrderFacade
     public function getNotExportedOrdersBatch(int $limit): array
     {
         return $this->orderRepository->getNotExportedOrdersBatch($limit);
+    }
+
+    /**
+     * @param string|null $telephone
+     * @return bool
+     */
+    public function isTelephoneValid(?string $telephone): bool
+    {
+        if ($telephone === null) {
+            return true;
+        }
+
+        if ($this->domain->getId() === DomainHelper::GERMAN_DOMAIN) {
+            // https://regex101.com/r/H4hXF5/55
+            preg_match('/^\+{1}[^\+]+$/', $telephone, $matches);
+            if (count($matches) === 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
