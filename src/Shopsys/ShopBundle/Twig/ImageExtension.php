@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
+use Picqer\Barcode\BarcodeGeneratorPNG;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Twig\ImageExtension as BaseImageExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Asset\Package;
@@ -40,6 +42,7 @@ class ImageExtension extends BaseImageExtension
     {
         return array_merge(parent::getFunctions(), [
             new TwigFunction('imagePlaceholder', [$this, 'getImagePlaceholder']),
+            new TwigFunction('barcodeImageByUser', [$this, 'getBarcodeImageByUser']),
         ]);
     }
 
@@ -78,5 +81,16 @@ class ImageExtension extends BaseImageExtension
         }
 
         return $this->getImageHtmlByEntityName($attributes, $entityName, $additionalImagesData);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
+     * @return string
+     */
+    public function getBarcodeImageByUser(User $user): string
+    {
+        $barcodeGenerator = new BarcodeGeneratorPNG();
+
+        return 'data:image/png;base64,' . base64_encode($barcodeGenerator->getBarcode($user->getEan(), $barcodeGenerator::TYPE_EAN_13));
     }
 }

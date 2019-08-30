@@ -20,7 +20,10 @@
                 <div class="wrap-box">
                     <h2 class="wrap-box__title">{{ 'Personal data'|trans }}</h2>
                     <div class="wrap-box__in">
-                        {{ form_row(form.userData.firstName, { label: 'First name'|trans}) }}
+                        {% if customer.memberOfBushmanClub %} {# TODO COD - dostylovat #}
+                            <img src="{{ barcodeImageByUser(customer) }}" alt="{{ 'Identifikační údaj zakazníka'|trans }}">
+                        {% endif %}
+                    {{ form_row(form.userData.firstName, { label: 'First name'|trans}) }}
                         {{ form_row(form.userData.lastName, { label: 'Last name'|trans}) }}
                         {{ form_row(form.userData.telephone, { label: 'Telephone'|trans}) }}
                         {{ form_row(form.userData.email, { label: 'E-mail'|trans}) }}
@@ -42,7 +45,7 @@
                                             {{ bushmanClubPointPeriod.dateTo|formatDate }}
                                         </td>
                                         <td>
-                                            {{ bushmanClubPoints(customerId, bushmanClubPointPeriod) }}
+                                            {{ bushmanClubPoints(customer.id, bushmanClubPointPeriod) }}
                                         </td>
                                     </tr>
                                 {% endfor %}

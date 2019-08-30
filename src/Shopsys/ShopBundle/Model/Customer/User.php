@@ -36,9 +36,16 @@ class User extends BaseUser
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true, unique=true, length=13)
      */
-    private $branchNumber;
+    private $ean;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $memberOfBushmanClub;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
@@ -55,7 +62,8 @@ class User extends BaseUser
         parent::__construct($userData, $billingAddress, $deliveryAddress, $userByEmail);
 
         $this->transferId = $userData->transferId;
-        $this->branchNumber = $userData->branchNumber;
+        $this->ean = $userData->ean;
+        $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
     }
 
     /**
@@ -65,15 +73,16 @@ class User extends BaseUser
     public function edit(BaseUserData $userData, EncoderFactoryInterface $encoderFactory)
     {
         parent::edit($userData, $encoderFactory);
-        $this->branchNumber = $userData->branchNumber;
+        $this->ean = $userData->ean;
+        $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
     }
 
     /**
      * @return string|null
      */
-    public function getBranchNumber(): ?string
+    public function getEan(): ?string
     {
-        return $this->branchNumber;
+        return $this->ean;
     }
 
     /**
@@ -109,5 +118,13 @@ class User extends BaseUser
         }
 
         parent::changePassword($encoderFactory, $password);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMemberOfBushmanClub(): bool
+    {
+        return $this->memberOfBushmanClub;
     }
 }

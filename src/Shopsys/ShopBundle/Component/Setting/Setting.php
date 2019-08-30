@@ -10,4 +10,5 @@ class Setting extends BaseSetting
 {
     public const ORDER_TRANSPORT_DEADLINE_HOURS = 'orderTransportDeadlineHours';
     public const ORDER_TRANSPORT_DEADLINE_MINUTES = 'orderTransportDeadlineMinutes';
+    public const BUSHMAN_CLUB_ARTICLE_ID = 'bushmanClubArticleId';
 }

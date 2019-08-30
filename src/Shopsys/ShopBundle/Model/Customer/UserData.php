@@ -16,7 +16,12 @@ class UserData extends BaseUserData
     /**
      * @var string|null
      */
-    public $branchNumber;
+    public $ean;
+
+    /**
+     * @var bool
+     */
+    public $memberOfBushmanClub;
 
     public function __construct()
     {
