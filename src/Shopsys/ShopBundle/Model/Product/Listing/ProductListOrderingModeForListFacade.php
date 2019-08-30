@@ -15,11 +15,11 @@ class ProductListOrderingModeForListFacade extends BaseProductListOrderingModeFo
     {
         return new ProductListOrderingConfig(
             [
+                ProductListOrderingConfig::ORDER_BY_PRIORITY => t('Od nejprodávanějších'),
                 ProductListOrderingConfig::ORDER_BY_NEWEST => t('Od nejnovějších'),
                 ProductListOrderingConfig::ORDER_BY_PRICE_ASC => t('Od nejlevnějších'),
-                ProductListOrderingConfig::ORDER_BY_PRIORITY => t('Od nejprodávanějších'),
             ],
-            ProductListOrderingConfig::ORDER_BY_NEWEST,
+            ProductListOrderingConfig::ORDER_BY_PRIORITY,
             static::COOKIE_NAME
         );
     }
