@@ -63,18 +63,15 @@
                 <br>
                 {{ form_widget(form.privacyPolicy, { attr: {class: 'css-checkbox'}}) }}
 
-                <label class="css-checkbox__image" for="{{ form.privacyPolicy.vars.id }}">
+                <label class="css-checkbox__image margin-bottom-10" for="{{ form.privacyPolicy.vars.id }}">
                     {% if privacyPolicyArticle is not null %}
                         {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
-                        {{ 'I agree with <a href="%url%" target="_blank">privacy policy</a>.'|trans({'%url%': articleUrl})|raw }}
+                        {{ 'Souhlasím se <a href="%url%" target="_blank"><span class="underline-small">zpracováním osobních údajů</span></a>.'|trans({'%url%': articleUrl})|raw }}
                     {% else %}
-                        {{ 'I agree with privacy policy.'|trans }}
+                        {{ 'Souhlasím se zpracováním osobních údajů.'|trans }}
                     {% endif %}
                 </label>
-                <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicy.vars.id }} form-error form-error--choice display-none">
-                    <span class="form-error__icon">
-                        <i class="svg svg-warning"></i>
-                    </span>
+                <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicy.vars.id }} form-error form-error--under display-none">
                     <ul class="form-error__list"></ul>
                 </span>
 
