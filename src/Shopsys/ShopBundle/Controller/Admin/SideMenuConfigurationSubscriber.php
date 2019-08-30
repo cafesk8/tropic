@@ -55,6 +55,9 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
             'label' => t('Hodnoty parametra'),
             'display' => false,
         ]);
+
+        $otherSettingMenu = $settingMenu->addChild('other', ['label' => t('Ostatní')]);
+        $otherSettingMenu->addChild('deliverydate_setting', ['route' => 'admin_deliverydate_setting', 'label' => t('Výpočet termínu dodání')]);
     }
 
     /**

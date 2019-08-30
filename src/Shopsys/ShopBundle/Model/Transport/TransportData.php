@@ -39,11 +39,17 @@ class TransportData extends BaseTransportData
      */
     public $countries;
 
+    /**
+     * @var int
+     */
+    public $deliveryDays;
+
     public function __construct()
     {
         parent::__construct();
         $this->pickupPlace = false;
         $this->initialDownload = false;
         $this->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_NONE;
+        $this->deliveryDays = 0;
     }
 }

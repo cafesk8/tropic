@@ -1,10 +1,14 @@
+{% import '@ShopsysShop/Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+
 {% macro availibilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}box-detail__availability js-detail-availability js-detail-availability-{{ product.id }}">
-        <span class="box-detail__availability__status js-not-implemented-yet" style="color: #7bbd70;">
+        <span class="box-detail__availability__status" style="color: #7bbd70;">
             {% if product.calculatedSellingDenied %}
                 {{ 'Product no longer on sale'|trans }}
             {% else %}
-                {{ product.calculatedAvailability.name }}
+                <span class="box-detail__info__availability__date">
+                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                </span>
             {% endif %}
         </span>
 

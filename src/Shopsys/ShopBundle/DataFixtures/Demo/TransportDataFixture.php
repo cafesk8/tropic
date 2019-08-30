@@ -62,6 +62,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'Česká pošta - balík do ruky',
             'de' => 'Czech post',
         ];
+        $transportData->deliveryDays = 2;
         $transportData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('99.95'),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('3.95'),
@@ -77,6 +78,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'PPL',
             'de' => 'PPL',
         ];
+        $transportData->deliveryDays = 1;
         $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
@@ -97,6 +99,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'Osobní převzetí',
             'de' => 'Personal collection',
         ];
+        $transportData->deliveryDays = 1;
         $transportData->balikobot = false;
         $transportData->balikobotShipper = null;
         $transportData->balikobotShipperService = null;
@@ -126,6 +129,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'PPL',
             'de' => 'PPL',
         ];
+        $transportData->deliveryDays = 3;
         $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
@@ -145,6 +149,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'sk' => 'PPL',
             'de' => 'PPL',
         ];
+        $transportData->deliveryDays = 1;
         $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;

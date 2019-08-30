@@ -144,3 +144,6 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\GridController:
         class: Shopsys\ShopBundle\Controller\Admin\GridController
         tags: ['controller.service_arguments']
+
+    Shopsys\ShopBundle\Component\Setting\Setting: ~
+    Shopsys\FrameworkBundle\Component\Setting\Setting: '@Shopsys\ShopBundle\Component\Setting\Setting'
