@@ -54,9 +54,17 @@
                         </span>
                         <span class="search-hint__product__item__name js-search-autocomplete-item-label">
                             {{ product.name }}
-                            <span class="search-hint__product__item__price js-not-implemented-yet"> 1699 Kč
-                                <span class="search-hint__product__item__price search-hint__product__item__price--old">3099 Kč</span>
-                            </span>
+                            {% if not product.calculatedSellingDenied %}
+                                <span class="search-hint__product__item__price">
+                                    {% set sellingPrice = getProductSellingPrice(product) %}
+                                    {{ sellingPrice.priceWithVat|price }}
+                                    {% if sellingPrice.isActionPrice %}
+                                        <span class="search-hint__product__item__price search-hint__product__item__price--old">
+                                            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                        </span>
+                                    {% endif %}
+                                </span>
+                            {% endif %}
                         </span>
                     </a>
                 </li>
