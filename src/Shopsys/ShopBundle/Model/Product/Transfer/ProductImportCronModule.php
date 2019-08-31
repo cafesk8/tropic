@@ -262,12 +262,11 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
             }
 
             if ($existingMainVariant !== null) {
+                $existingMainVariant->setDistinguishingParameter($this->parameterFacade->getSizeParameter());
                 foreach ($notVariants as $notVariant) {
                     $existingMainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
                 }
-                if (count($notVariants) > 0) {
-                    $this->productFacade->flushMainVariant($existingMainVariant);
-                }
+                $this->productFacade->flushMainVariant($existingMainVariant);
                 $mainVariants[] = $existingMainVariant;
             } else {
                 $newMainVariant = array_shift($secondParameterValuesWithProducts);
