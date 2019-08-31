@@ -13,6 +13,7 @@ use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInter
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
+use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\Product\ProductVariantFacade;
@@ -73,6 +74,11 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $parameterFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator
+     */
+    private $productPriceRecalculator;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
@@ -83,6 +89,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -94,7 +101,8 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         ProductVariantFacade $productVariantFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
         ProductCategoryDomainFactory $productCategoryDomainFactory,
-        ParameterFacade $parameterFacade
+        ParameterFacade $parameterFacade,
+        ProductPriceRecalculator $productPriceRecalculator
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->restClient = $restClient;
@@ -106,6 +114,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->productCategoryDomainFactory = $productCategoryDomainFactory;
         $this->parameterFacade = $parameterFacade;
+        $this->productPriceRecalculator = $productPriceRecalculator;
     }
 
     /**
@@ -162,6 +171,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
             $this->processProductItemWithVariants($productTransferResponseItemData);
         }
         $this->logger->addInfo(sprintf('Products for group with transfer number `%s` were created', $productTransferResponseItemData->getTransferNumber()));
+
+        $this->logger->addInfo('Recalculate products prices');
+        $this->productPriceRecalculator->refreshAllPricingGroups();
+        $this->productPriceRecalculator->runImmediateRecalculations();
     }
 
     /**
