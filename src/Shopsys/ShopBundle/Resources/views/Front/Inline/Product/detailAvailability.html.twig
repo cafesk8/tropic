@@ -51,7 +51,7 @@
 
 
 {% if variants|length > 0 or product.variants|length > 0 %}
-    <div class="box-detail__availability js-detail-availability-variant-select-info">
+    <div class="box-detail__availability js-product-variant-detail-select-info">
         {{ 'Pro termín doručení a dostupnost na prodejnách si vyberte z velikostí.'|trans }}
     </div>
     {% for variant in variants if variant in product.variants %}

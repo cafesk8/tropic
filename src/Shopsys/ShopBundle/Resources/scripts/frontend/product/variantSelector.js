@@ -13,7 +13,7 @@
             var $activeMainVariant = $group.filterAllNodes(variantSelector);
 
             $group.filterAllNodes('.js-product-detail, .js-detail-availability').addClass('display-none');
-            $group.filterAllNodes('.js-detail-availability-variant-select-info').removeClass('display-none');
+            $group.filterAllNodes('.js-product-variant-detail-select-info').removeClass('display-none');
             $group.filterAllNodes('.js-product-variant-select-button').removeClass('active');
             $group.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
                 .attr('disabled', 'disabled')
@@ -41,14 +41,14 @@
             var variantDetailSelector = '.js-product-variant-detail-' + $(this).data('id');
             var availabilitySelector = '.js-detail-availability-' + $(this).data('id');
 
-            $variantDetailWrapper.filterAllNodes('.js-detail-availability-variant-select-info, .js-product-variant-detail')
+            $variantDetailWrapper.filterAllNodes('.js-product-variant-detail-select-info, .js-product-variant-detail')
                 .addClass('display-none');
             $variantDetailWrapper.filterAllNodes(variantDetailSelector).removeClass('display-none');
             $variantDetailWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
                 .removeAttr('disabled')
                 .removeClass('btn--disabled');
 
-            $detailWrap.filterAllNodes('.js-detail-availability, .js-detail-availability-variant-select-info').addClass('display-none');
+            $detailWrap.filterAllNodes('.js-product-variant-detail-select-info, .js-detail-availability').addClass('display-none');
             $detailWrap.filterAllNodes(availabilitySelector).removeClass('display-none');
 
             $container.filterAllNodes('.js-product-variant-select-button').removeClass('active');
