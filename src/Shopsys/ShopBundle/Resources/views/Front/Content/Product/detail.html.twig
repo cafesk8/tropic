@@ -41,7 +41,21 @@
                     accessoriesHeadline,
                     productVisibleProductCategoryDomains
                 )}}
-
+                {% for mainVariant in mainVariants if mainVariant.id != product.id %}
+                    {{ boxTabs.productTabs(
+                        mainVariant,
+                        allVariants,
+                        productMainCategory,
+                        true,
+                        mainVariants,
+                        youtubeDetailForMainVariants[mainVariant.id],
+                        productSizeArticleId,
+                        accessories,
+                        accessoriesHeadline,
+                        productVisibleProductCategoryDomains
+                    )}}
+                {% endfor %}
+                </div>
             </div>
         </div>
     </div>

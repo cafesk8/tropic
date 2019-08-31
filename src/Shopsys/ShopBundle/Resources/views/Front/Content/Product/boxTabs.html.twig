@@ -1,4 +1,4 @@
-{% macro productTabs(
+{% macro productTabs(Product
     product,
     variants,
     productMainCategory,
@@ -19,7 +19,7 @@
     {% if product.getDescription(domain.id)
         or productParameterValues > 0
     %}
-    <div class="box-detail__content">
+    <div class="box-detail__content {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
         <div class="in-tab js-anchor-tabs">
             <div class="in-tab__wrap">
                 <div class="in-tab__head dont-print">
