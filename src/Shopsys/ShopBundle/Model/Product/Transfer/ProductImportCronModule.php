@@ -11,6 +11,7 @@ use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator;
@@ -240,34 +241,53 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
     private function createProductTree(): void
     {
-        $newMainVariants = [];
+        $mainVariants = [];
+        $existingMainVariantGroup = null;
         foreach ($this->productTree as $colorValue => $secondParameterValuesWithProducts) {
-            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
-            $mainVariant = null;
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $existingMainVariant */
+            $existingMainVariant = null;
             $notVariants = [];
             foreach ($secondParameterValuesWithProducts as $productBySizeValue) {
                 if ($productBySizeValue->isVariant() === true) {
-                    $mainVariant = $productBySizeValue->getMainVariant();
+                    if ($existingMainVariant === null) {
+                        $existingMainVariant = $productBySizeValue->getMainVariant();
+                    }
+
+                    if ($existingMainVariantGroup === null) {
+                        $existingMainVariantGroup = $this->findMainVariantGroup($existingMainVariant);
+                    }
                 } elseif ($productBySizeValue->isVariant() === false) {
                     $notVariants[] = $productBySizeValue;
                 }
             }
 
-            if ($mainVariant !== null) {
+            if ($existingMainVariant !== null) {
                 foreach ($notVariants as $notVariant) {
-                    $mainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
+                    $existingMainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
                 }
                 if (count($notVariants) > 0) {
-                    $this->productFacade->flushMainVariant($mainVariant);
+                    $this->productFacade->flushMainVariant($existingMainVariant);
                 }
+                $mainVariants[] = $existingMainVariant;
             } else {
-                $mainVariant = array_shift($secondParameterValuesWithProducts);
-                $newMainVariants[] = $this->productVariantFacade->createVariant($mainVariant, $secondParameterValuesWithProducts);
+                $newMainVariant = array_shift($secondParameterValuesWithProducts);
+                $mainVariants[] = $this->productVariantFacade->createVariant($newMainVariant, $secondParameterValuesWithProducts);
             }
         }
 
-        if (count($newMainVariants) > 0) {
-            $this->mainVariantGroupFacade->createMainVariantGroup($this->parameterFacade->getColorParameter(), $newMainVariants);
+        if ($existingMainVariantGroup !== null) {
+            $this->mainVariantGroupFacade->updateMainVariantGroup($existingMainVariantGroup, $mainVariants);
+        } else {
+            $this->mainVariantGroupFacade->createMainVariantGroup($this->parameterFacade->getColorParameter(), $mainVariants);
         }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
+     * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null
+     */
+    private function findMainVariantGroup(Product $mainVariant): ?MainVariantGroup
+    {
+        return $mainVariant !== null ? $mainVariant->getMainVariantGroup() : null;
     }
 }
