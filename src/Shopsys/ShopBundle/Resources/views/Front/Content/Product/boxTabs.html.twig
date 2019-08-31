@@ -76,9 +76,9 @@
                     </div>
                 {% endif %}
 
-                <div class="js-product-variant-price-wrapper">
+                <div class="js-product-variant-detail-wrapper">
                     {% for variant in variants %}
-                        <div class="{% if not loop.first %}display-none {% endif %} js-product-variant-price js-product-variant-price-{{ variant.id }}">
+                        <div class="{% if not loop.first %}display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
                         {% set productParameterValues = getProductParameterValues(variant) %}
                         {% if productParameterValues > 0 %}
                             <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">

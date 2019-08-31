@@ -20,8 +20,8 @@
                 .addClass('btn--disabled');
 
             $activeMainVariant.removeClass('display-none');
-            $activeMainVariant.filterAllNodes('.js-product-variant-price').addClass('display-none');
-            $activeMainVariant.filterAllNodes('.js-product-variant-price:first').removeClass('display-none');
+            $activeMainVariant.filterAllNodes('.js-product-variant-detail').addClass('display-none');
+            $activeMainVariant.filterAllNodes('.js-product-variant-detail:first').removeClass('display-none');
 
             $(variantSelector).filterAllNodes('.js-gallery-slides').slick('checkResponsive', false, true);
             Shopsys.productDetail.init($(variantSelector));
@@ -36,14 +36,14 @@
             if ($(this).hasClass('disabled')) {
                 return;
             }
-            var $priceWrapper = $(this).closest('.js-product-variant-group').find('.js-product-variant-price-wrapper');
+            var $variantDetailWrapper = $(this).closest('.js-product-variant-group').find('.js-product-variant-detail-wrapper');
             var $detailWrap = $(this).closest('.js-product-variant-group').find('.box-detail__wrap');
-            var variantPriceSelector = '.js-product-variant-price-' + $(this).data('id');
+            var variantDetailSelector = '.js-product-variant-detail-' + $(this).data('id');
             var availabilitySelector = '.js-detail-availability-' + $(this).data('id');
 
-            $priceWrapper.filterAllNodes('.js-product-variant-price').addClass('display-none');
-            $priceWrapper.filterAllNodes(variantPriceSelector).removeClass('display-none');
-            $priceWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
+            $variantDetailWrapper.filterAllNodes('.js-product-variant-detail').addClass('display-none');
+            $variantDetailWrapper.filterAllNodes(variantDetailSelector).removeClass('display-none');
+            $variantDetailWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
                 .removeAttr('disabled')
                 .removeClass('btn--disabled');
 
