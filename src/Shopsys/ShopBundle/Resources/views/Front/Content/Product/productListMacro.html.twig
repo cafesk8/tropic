@@ -49,9 +49,9 @@
                                     </div>
                                     <div class="list-products__item__info__price__item">
                                         {% if productSellingPrice.priceFrom %}
-                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
+                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                         {% else %}
-                                            {{ productSellingPrice.priceWithoutVat|price }}
+                                            {{ productSellingPrice.priceWithVat|price }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -155,9 +155,9 @@
                                             </div>
                                             <div class="{{ listCssClass }}__item__info__price__item">
                                                 {% if productSellingPrice.priceFrom %}
-                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithoutVat|price}) }}
+                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                                 {% else %}
-                                                    {{ productSellingPrice.priceWithoutVat|price }}
+                                                    {{ productSellingPrice.priceWithVat|price }}
                                                 {% endif %}
                                             </div>
                                         </div>

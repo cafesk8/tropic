@@ -151,7 +151,6 @@
                                 <th class="text-right">{{ 'Amount'|trans }}</th>
                                 <th class="text-right">{{ 'VAT rate'|trans }}</th>
                                 <th class="text-right">{{ 'Total including VAT'|trans }}</th>
-                                <th class="text-right">{{ 'Total excluding VAT'|trans }}</th>
                             </tr>
                             {% for item in order.items %}
                                 <tr>
@@ -160,7 +159,6 @@
                                     <td class="text-right">{{ item.quantity|formatNumber }} {{ item.unitName }}</td>
                                     <td class="text-right">{{ item.vatPercent|formatPercent }}</td>
                                     <td class="text-right">{{ orderItemTotalPricesById[item.id].priceWithVat|priceWithCurrency(order.currency) }}</td>
-                                    <td class="text-right">{{ orderItemTotalPricesById[item.id].priceWithoutVat|priceWithCurrency(order.currency) }}</td>
                                 </tr>
                             {% endfor %}
                         </table>
