@@ -41,7 +41,8 @@
             var variantDetailSelector = '.js-product-variant-detail-' + $(this).data('id');
             var availabilitySelector = '.js-detail-availability-' + $(this).data('id');
 
-            $variantDetailWrapper.filterAllNodes('.js-product-variant-detail').addClass('display-none');
+            $variantDetailWrapper.filterAllNodes('.js-detail-availability-variant-select-info, .js-product-variant-detail')
+                .addClass('display-none');
             $variantDetailWrapper.filterAllNodes(variantDetailSelector).removeClass('display-none');
             $variantDetailWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
                 .removeAttr('disabled')

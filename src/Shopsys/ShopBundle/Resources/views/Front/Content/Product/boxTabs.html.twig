@@ -77,8 +77,11 @@
                 {% endif %}
 
                 <div class="js-product-variant-detail-wrapper">
+                    <div class="js-detail-availability-variant-select-info">
+                        {{ 'Pro zobrazení parametrů si vyberte z velikostí.'|trans }}
+                    </div>
                     {% for variant in variants %}
-                        <div class="{% if not loop.first %}display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
+                        <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
                         {% set productParameterValues = getProductParameterValues(variant) %}
                         {% if productParameterValues > 0 %}
                             <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
