@@ -232,7 +232,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
             $mainVariant = null;
             $notVariants = [];
             foreach ($secondParameterValuesWithProducts as $productBySizeValue) {
-                if ($productBySizeValue->isVariant()) {
+                if ($productBySizeValue->isVariant() === true) {
                     $mainVariant = $productBySizeValue->getMainVariant();
                 } elseif ($productBySizeValue->isVariant() === false) {
                     $notVariants[] = $productBySizeValue;
