@@ -229,6 +229,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     {
         $newMainVariants = [];
         foreach ($this->productTree as $colorValue => $secondParameterValuesWithProducts) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
             $mainVariant = null;
             $notVariants = [];
             foreach ($secondParameterValuesWithProducts as $productBySizeValue) {
@@ -239,7 +240,6 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
                 }
             }
 
-            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
             if ($mainVariant !== null) {
                 foreach ($notVariants as $notVariant) {
                     $mainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
