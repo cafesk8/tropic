@@ -225,16 +225,12 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         }
 
         foreach ($productData->parameters as $parameter) {
-            if ($parameter->parameter === $productData->distinguishingParameter) {
-                $parameterSize = $parameter->parameterValueData->text;
-            }
-
             if ($parameter->parameter === $productData->distinguishingParameterForMainVariantGroup) {
                 $parameterColor = $parameter->parameterValueData->text;
             }
         }
 
-        $this->productTree[$parameterColor][$parameterSize] = $product;
+        $this->productTree[$parameterColor][] = $product;
 
         return $product;
     }
