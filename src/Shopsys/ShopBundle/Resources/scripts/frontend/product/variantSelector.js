@@ -21,7 +21,7 @@
 
             $activeMainVariant.removeClass('display-none');
             $activeMainVariant.filterAllNodes('.js-product-variant-detail').addClass('display-none');
-            $activeMainVariant.filterAllNodes('.js-product-variant-detail:first').removeClass('display-none');
+            $activeMainVariant.filterAllNodes('.js-product-variant-first-price').removeClass('display-none');
 
             $(variantSelector).filterAllNodes('.js-gallery-slides').slick('checkResponsive', false, true);
             Shopsys.productDetail.init($(variantSelector));
