@@ -113,9 +113,9 @@ class ProductRepository extends BaseProductRepository
     /**
      * @param int $limit
      * @param int $page
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getWithEan(int $limit, int $page): array
+    public function getWithEanQueryBuilder(int $limit, int $page): QueryBuilder
     {
         $offset = $limit * $page;
 
@@ -123,7 +123,29 @@ class ProductRepository extends BaseProductRepository
             ->where('p.ean IS NOT NULL')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.id', 'ASC');
+    }
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return array
+     */
+    public function getWithEan(int $limit, int $page): array
+    {
+        return $this->getWithEanQueryBuilder($limit, $page)->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getMainVariantsWithEan(int $limit, int $page): array
+    {
+        return $this->getWithEanQueryBuilder($limit, $page)
+            ->andWhere('p.variantType = :mainVariantType')
+            ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->getQuery()->getResult();
     }
 

@@ -365,6 +365,16 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param int $limit
+     * @param int $page
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getMainVariantsWithEan(int $limit, int $page): array
+    {
+        return $this->productRepository->getMainVariantsWithEan($limit, $page);
+    }
+
+    /**
      * @param string $ean
      * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */

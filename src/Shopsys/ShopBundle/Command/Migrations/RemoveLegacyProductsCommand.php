@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Shopsys\ShopBundle\Command\Product;
+namespace Shopsys\ShopBundle\Command\Migrations;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;

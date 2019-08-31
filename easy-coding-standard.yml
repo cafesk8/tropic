@@ -33,7 +33,8 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Controller/Front/ProductController.php'
             - '*/src/Shopsys/ShopBundle/Form/Front/Order/TransportAndPaymentFormType.php'
             - '*/src/Shopsys/ShopBundle/Form/Admin/ProductFormTypeExtension.php'
-            - '*/src/Shopsys/ShopBundle/Command/Product/RemoveLegacyProductsCommand.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
@@ -41,8 +42,9 @@ parameters:
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/MultidomainOrderDataFixture.phpFixture.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/OrderDataFixture.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
-            - '*/src/Shopsys/ShopBundle/Command/Product/RemoveLegacyProductsCommand.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
 
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:
             - '*/tests/ShopBundle/Functional/EntityExtension/EntityExtensionTest.php'
