@@ -7,12 +7,15 @@ namespace Shopsys\ShopBundle\Model\Category;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
+use Shopsys\FrameworkBundle\Model\Category\CategoryData;
 use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
 
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="categories")
  * @ORM\Entity
+ *
+ * @method CategoryTranslation translation(?string $locale = null)
  */
 class Category extends BaseCategory
 {
@@ -55,6 +58,8 @@ class Category extends BaseCategory
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
+
+        $this->setTranslations($categoryData);
     }
 
     /**
@@ -68,6 +73,8 @@ class Category extends BaseCategory
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
+
+        $this->setTranslations($categoryData);
     }
 
     /**
@@ -109,5 +116,74 @@ class Category extends BaseCategory
     public function isLegendaryCategory(): bool
     {
         return $this->legendaryCategory;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Category\CategoryTranslation
+     */
+    protected function createTranslation(): CategoryTranslation
+    {
+        return new CategoryTranslation();
+    }
+
+    /**
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getLeftBannerText($locale = null): ?string
+    {
+        return $this->translation($locale)->getLeftBannerText();
+    }
+
+    /**
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getRightBannerText($locale = null): ?string
+    {
+        return $this->translation($locale)->getRightBannerText();
+    }
+
+    /**
+     * @return string[]|null[]
+     */
+    public function getLeftBannerTexts(): array
+    {
+        $textsByLocale = [];
+
+        foreach ($this->translations as $translation) {
+            $textsByLocale[$translation->getLocale()] = $translation->getLeftBannerText();
+        }
+
+        return $textsByLocale;
+    }
+
+    /**
+     * @return string[]|null[]
+     */
+    public function getRightBannerTexts(): array
+    {
+        $textsByLocale = [];
+
+        foreach ($this->translations as $translation) {
+            $textsByLocale[$translation->getLocale()] = $translation->getRightBannerText();
+        }
+
+        return $textsByLocale;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
+     */
+    protected function setTranslations(CategoryData $categoryData): void
+    {
+        parent::setTranslations($categoryData);
+
+        foreach ($categoryData->leftBannerTexts as $locale => $text) {
+            $this->translation($locale)->setLeftBannerText($text);
+        }
+        foreach ($categoryData->rightBannerTexts as $locale => $text) {
+            $this->translation($locale)->setRightBannerText($text);
+        }
     }
 }

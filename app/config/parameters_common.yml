@@ -27,6 +27,7 @@ parameters:
         Shopsys\FrameworkBundle\Model\Administrator\Administrator: Shopsys\ShopBundle\Model\Administrator\Administrator
         Shopsys\FrameworkBundle\Model\Cart\Cart: Shopsys\ShopBundle\Model\Cart\Cart
         Shopsys\FrameworkBundle\Model\Category\Category: Shopsys\ShopBundle\Model\Category\Category
+        Shopsys\FrameworkBundle\Model\Category\CategoryTranslation: Shopsys\ShopBundle\Model\Category\CategoryTranslation
         Shopsys\FrameworkBundle\Model\Customer\User: Shopsys\ShopBundle\Model\Customer\User
         Shopsys\FrameworkBundle\Model\Order\Order: Shopsys\ShopBundle\Model\Order\Order
         Shopsys\FrameworkBundle\Model\Order\Item\OrderItem: Shopsys\ShopBundle\Model\Order\Item\OrderItem

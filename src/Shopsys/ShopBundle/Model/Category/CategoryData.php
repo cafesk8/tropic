@@ -33,6 +33,16 @@ class CategoryData extends BaseCategoryData
      */
     public $legendaryCategory;
 
+    /**
+     * @var string[]|null[]
+     */
+    public $leftBannerTexts;
+
+    /**
+     * @var string[]|null[]
+     */
+    public $rightBannerTexts;
+
     public function __construct()
     {
         parent::__construct();
@@ -40,5 +50,7 @@ class CategoryData extends BaseCategoryData
         $this->blogArticles = [];
         $this->displayedInFirstColumn = false;
         $this->legendaryCategory = false;
+        $this->leftBannerTexts = [];
+        $this->rightBannerTexts = [];
     }
 }
