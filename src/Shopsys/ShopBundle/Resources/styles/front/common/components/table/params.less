@@ -10,6 +10,14 @@
         &:first-child {
             border-top: 0;
         }
+
+        td {
+            overflow-wrap: break-word;
+
+            @media @query-mobile {
+                width: 50%;
+            }
+        }
     }
 
     td, th {
