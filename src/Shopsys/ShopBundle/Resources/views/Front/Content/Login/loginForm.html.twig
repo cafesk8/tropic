@@ -12,42 +12,33 @@
 
     {{ form_start(form, {attr: {'multipleForm': true}}) }}
     {{ form_errors(form, {errors_attr: { class: 'in-message--alert' }}) }}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
 
-        <h1>{{ 'Login'|trans }}</h1>
+                <h1 class="in-title in-title--big in-title--center">{{ 'Login'|trans }}</h1>
 
+                <div class="wrap-well wrap-well--big-padding">
 
-        <dl class="form-line">
-            <dt>
-                {{ form_label(form.email) }}
-            </dt>
-            <dd>
-                {{ form_widget(form.email) }}
-            </dd>
-        </dl>
-
-        <dl class="form-line">
-            <dt>
-                {{ form_label(form.password) }}
-            </dt>
-            <dd>
-                {{ form_widget(form.password) }}
-            </dd>
-        </dl>
-
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.email, { label: 'E-mail'|trans }) }}
+                        </div>
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.password, { label: 'Heslo'|trans }) }}
+                        </div>
+                    </div>
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            <a href="{{ url('front_registration_reset_password') }}"><span class="underline-small">{{ 'Forgot your password?'|trans }}</span></a>
+                        </div>
+                        <div class="wrap-article__row__half text-right margin-right-5">
+                            {{ form_widget(form.login, {label: 'Log in'|trans}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% do form.rememberMe.setRendered %}
-
-        <dl class="form-line">
-            <dt></dt>
-            <dd>
-                {{ form_widget(form.login, {label: 'Log in'|trans}) }}
-            </dd>
-        </dl>
-        <dl class="form-line">
-            <dt></dt>
-            <dd>
-                <a href="{{ url('front_registration_reset_password') }}">{{ 'Forgot your password?'|trans }}</a>
-            </dd>
-        </dl>
 
     {{ form_end(form) }}
 
