@@ -14,19 +14,19 @@
                     </div>
                 </a>
             </li>
-            {% if showText is not defined or showText == true %}
+            {% if currentCategory is defined %}
                 {% if loop.index == 2 %}
-                    <li class="list-categories__item js-not-implemented-yet">
+                    <li class="list-categories__item">
                         <span class="list-categories__item__text">
-                            {{ 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně'|trans }}
+                            {{ currentCategory.rightBannerText }}
                         </span>
                     </li>
                 {% endif %}
 
                 {% if loop.index == 5 %}
-                    <li class="list-categories__item js-not-implemented-yet">
+                    <li class="list-categories__item">
                         <span class="list-categories__item__text list-categories__item__text--text-right">
-                            {{ 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.'|trans }}
+                            {{ currentCategory.leftBannerText }}
                         </span>
                     </li>
                 {% endif %}
