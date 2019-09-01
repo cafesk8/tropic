@@ -458,20 +458,6 @@
                                 </div>
                             </div>
                             {% endif %}
-                            {% if accessories|length > 0 %}
-                                <div class="in-tab__content__title js-tabs-button" data-tab-id="accessories">
-                                    <a href="#" class="in-tab__content__title__link underline">
-                                        {{ accessoriesHeadline }}
-                                    </a>
-                                    <i class="svg svg-triangle"></i>
-                                </div>
-                                <div class="in-tab__content__item js-tabs-content active" data-tab-id="accessories">
-                                    <h3 class="in-user-text__title in-user-text__title--center">
-                                        {{ accessoriesHeadline }}
-                                    </h3>
-                                    {{ productList.horizontalList(accessories, [], "list-accessories-products", 'h3', 'accessories-products') }}
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                     {# Design - temporary hidden #}
@@ -617,6 +603,19 @@
             </div>
         </div>
     </div>
+
+    {% if accessories|length > 0 %}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                <div class="box-accessories">
+                    <h2 class="in-title in-title--big in-title--center box-accessories__title">
+                        {{ accessoriesHeadline }}
+                    </h2>
+                    {{ productList.horizontalList(accessories, [], "list-accessories-products", 'h3', 'accessories-products') }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
