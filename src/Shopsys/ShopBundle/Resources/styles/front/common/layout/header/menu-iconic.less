@@ -1,39 +1,40 @@
 .menu-iconic {
 
-    .reset-ul();
-    display: block;
+        .reset-ul();
+        display: block;
 
-    font-size: 0;
+        font-size: 0;
 
-    &__item {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-        margin-bottom: 20px;
+        &__item {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            margin-bottom: 20px;
 
-        font-size: @font-size;
+            font-size: @font-size;
 
-        &__link {
-            display: block;
+            &__link {
+                display: block;
+                text-align: left;
 
-            color: @color-base;
-            text-decoration: none;
+                color: @color-base;
+                text-decoration: none;
 
-            &:hover {
-                span {
-                    font-weight: 700;
+                &:hover {
+                    span {
+                        font-weight: 700;
+                    }
+                }
+
+                &--last {
+                    margin-bottom: 20px;
                 }
             }
 
-            &--last {
-                margin-bottom: 20px;
-            }
-        }
-
-        &:hover {
-            .menu-iconic__sub {
-                display: block;
+            &:hover {
+                .menu-iconic__sub {
+                    display: block;
+                }
             }
         }
     }
-}
