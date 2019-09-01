@@ -65,6 +65,8 @@
             height: 260
             crop: false
             occurrence: 'Front-end: Listing of products in section, listing of products on special offer'
+            additionalSizes:
+                - {width: 520, height: 520, media: "(-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi)"}
         -   name: gift
             width: 50
             height: 50
