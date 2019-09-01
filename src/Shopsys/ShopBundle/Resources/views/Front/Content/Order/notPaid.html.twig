@@ -8,9 +8,11 @@
 {% endblock %}
 
 {% block main_content %}
+<div class="web__line">
+    <div class="web__container web__container--big-padding">
+        <h1 class="in-title in-title--center in-title--big">{{ 'Order has been created but there were problems during payment'|trans }}</h1>
 
-    <h1>{{ 'Order has been created but there were problems during payment'|trans }}</h1>
-
-    <p>{{ 'There were problems during payment of created order with number %orderNumber%.'|trans({ '%orderNumber%' : order.number }) }}</p>
-
+        <p class="in-user-text text-center">{{ 'There were problems during payment of created order with number %orderNumber%.'|trans({ '%orderNumber%' : order.number }) }}</p>
+    </div>
+</div>
 {% endblock %}
