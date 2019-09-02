@@ -79,7 +79,7 @@
             </div>
 
             <div class="box-detail__info__description">
-                {{ product.getShortDescription(domain.id) }}
+                {{ product.getShortDescription(domain.id)|raw }}
             </div>
             <div class="box-detail__wrap">
                 {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant is same as (true) %}
