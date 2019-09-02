@@ -25,6 +25,9 @@
                 if ($orderPersonalInfoForm.find('#order_personal_info_form_companyCustomer').is(':checked')) {
                     groups.push(Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Front\\Customer\\BillingAddressFormType::VALIDATION_GROUP_COMPANY_CUSTOMER'));
                 }
+                if ($orderPersonalInfoForm.find('#order_personal_info_form_deliveryStreet') !== null) {
+                    groups.push(Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Front\\Order\\PersonalInfoFormType::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED'));
+                }
 
                 return groups;
             }
