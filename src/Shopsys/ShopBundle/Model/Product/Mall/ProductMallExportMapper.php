@@ -184,6 +184,13 @@ class ProductMallExportMapper
         $mallProduct->setId($product->getId());
         $mallProduct->setTitle($product->getName(self::CZECH_LOCALE));
         $this->setParameters($mallProduct, $product, $mallCategoryId);
+        $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
+        if ($product->isUsingStock()) {
+            $stockQuantity = $this->findStockQuantity($product);
+            if ($stockQuantity !== null && $stockQuantity > 0) {
+                $mallProduct->setInStock($stockQuantity);
+            }
+        }
 
         // Minimum priority in Mall has to be 1
         if ($product->getOrderingPriority() === 0) {
@@ -211,14 +218,6 @@ class ProductMallExportMapper
             } else {
                 $mallProduct->setPurchasePrice((float)$productPrice->getPriceWithVat()->getAmount());
                 $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
-            }
-
-            $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
-            if ($product->isUsingStock()) {
-                $stockQuantity = $this->findStockQuantity($product);
-                if ($stockQuantity !== null && $stockQuantity > 0) {
-                    $mallProduct->setInStock($stockQuantity);
-                }
             }
         }
 
