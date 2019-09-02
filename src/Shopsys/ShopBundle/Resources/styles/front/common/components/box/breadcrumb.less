@@ -1,5 +1,5 @@
 @box-breadcrumb-padding-horizontal: 17px;
-@box-breadcrumb-padding-vertical: 0;
+@box-breadcrumb-padding-vertical: 15px;
 @box-breadcrumb-font-size: 16px;
 @box-breadcrumb-top-move: -3px;
 @box-breadcrumb-bottom-gap: 25px;
@@ -10,9 +10,19 @@
 
     font-size: 0;
 
+    .box-detail & {
+        padding-left: 2px;
+        margin-bottom: 8px;
+
+        @media @query-md {
+            text-align: left;
+        }
+    }
+
     &__item {
         display: inline-block;
         vertical-align: middle;
+        margin-bottom: @box-breadcrumb-padding-vertical;
 
         color: @color-base;
         font-size: @box-breadcrumb-font-size;
@@ -22,14 +32,19 @@
 
         &--home {
             padding-right: 6px;
+            margin-bottom: @box-breadcrumb-padding-vertical;
 
             color: @color-orange;
             font-size: 14px;
+
+            .box-detail & {
+                display: none;
+            }
         }
 
         &--separator {
             position: relative;
-            margin: @box-breadcrumb-padding-vertical @box-breadcrumb-padding-horizontal;
+            margin: 0 @box-breadcrumb-padding-horizontal @box-breadcrumb-padding-vertical;
             top: @box-breadcrumb-top-move;
 
             .svg {
