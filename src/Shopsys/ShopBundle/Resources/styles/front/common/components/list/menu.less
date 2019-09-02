@@ -14,6 +14,14 @@
         flex-direction: row;
     }
 
+    &--footer {
+        display: none;
+
+        @media @query-lg {
+            display: block!important;
+        }
+    }
+
     &__column-single {
         .reset-ul();
         width: 100%;
