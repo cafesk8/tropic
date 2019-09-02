@@ -129,7 +129,7 @@ class BlogArticleFacade
         $blogArticle->createDomains($blogArticleData);
 
         $this->friendlyUrlFacade->createFriendlyUrls('front_blogarticle_detail', $blogArticle->getId(), $blogArticle->getNames());
-        $this->imageFacade->uploadImage($blogArticle, $blogArticleData->images->uploadedFiles, null);
+        $this->imageFacade->uploadImages($blogArticle, $blogArticleData->images->uploadedFiles, null);
         $this->blogVisibilityRecalculationScheduler->scheduleRecalculation();
 
         $this->em->flush();
