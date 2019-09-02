@@ -30,15 +30,15 @@
 
         {% block javascripts %}{% endblock %}
 
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/frontend/images/favicons/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/frontend/images/favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/frontend/images/favicons/favicon-16x16.png">
-        <link rel="manifest" href="/assets/frontend/images/favicons/site.webmanifest">
-        <link rel="mask-icon" href="/assets/frontend/images/favicons/safari-pinned-tab.svg" color="#e79c00">
-        <link rel="shortcut icon" href="/assets/frontend/images/favicons/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/assets/frontend/images/favicons/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/assets/frontend/images/favicons/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/assets/frontend/images/favicons/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('/assets/frontend/images/favicons/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ asset('/assets/frontend/images/favicons/safari-pinned-tab.svg') }}" color="#e79c00">
+        <link rel="shortcut icon" href="{{ asset('/assets/frontend/images/favicons/favicon.ico') }}">
         <meta name="msapplication-TileColor" content="#e79c00">
-        <meta name="msapplication-TileImage" content="/assets/frontend/images/favicons/mstile-144x144.png">
-        <meta name="msapplication-config" content="/assets/frontend/images/favicons/browserconfig.xml">
+        <meta name="msapplication-TileImage" content="{{ asset('/assets/frontend/images/favicons/mstile-144x144.png') }}">
+        <meta name="msapplication-config" content="{{ asset('/assets/frontend/images/favicons/browserconfig.xml') }}">
         <meta name="theme-color" content="#e79c00">
 
         <title>{% block title %}Shopsys Framework{% endblock %} {{ getSeoTitleAddOn() }}</title>
