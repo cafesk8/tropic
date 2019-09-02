@@ -21,7 +21,7 @@
             </h1>
             <div class="box-blog__content">
                 <div class="box-blog__list">
-                    <div class="in-article__date">{{ blogArticle.createdAt|date('j.n.Y') }}</div>
+                    <div class="in-article__date">{{ blogArticle.publishDate|date('j.n.Y') }}</div>
 
                     <div class="in-article__text-perex in-user-text">
                         {{ blogArticle.perex|raw }}
