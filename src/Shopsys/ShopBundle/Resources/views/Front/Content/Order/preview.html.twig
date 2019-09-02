@@ -134,11 +134,15 @@
                 <div class="box-preview__conditions">
                     {{ 'Kliknutím na tlačítko Odeslat objednávku'|trans }}<br>
                     {{ 'souhlasím s '|trans }}
-                    <a href="#" target="_blank" class="box-preview__conditions__link js-not-implemented-yet">
-                        <span class="underline-small">
-                            {{ 'obchodními podmínkami'|trans }}
-                        </span>
-                    </a>
+                    {% if termsAndConditionsArticle is not null %}
+                        <a href="{{ url('front_article_detail', { id: termsAndConditionsArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
+                            <span class="underline-small">
+                                {{ 'obchodními podmínkami'|trans }}
+                            </span>
+                        </a>
+                    {% else %}
+                        {{ 'obchodními podmínkami'|trans }}
+                    {% endif %}
                     {{ ' e-shopu.'|trans}}
                 </div>
             {% endif %}

@@ -450,6 +450,7 @@ class OrderController extends FrontBaseController
             'orderStep' => $orderStep,
             'formSubmit' => $request->get('formSubmit'),
             'renderSubmitButton' => $renderSubmitButton,
+            'termsAndConditionsArticle' => $this->legalConditionsFacade->findTermsAndConditions($this->domain->getId()),
         ]);
     }
 
