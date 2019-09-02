@@ -54,7 +54,11 @@
 
 {% block main_content %}
     {{ form_start(form, { attr: { id: "js-order-form", 'data-ajax-save-url': url('front_order_save_form') }}) }}
-        {{ form_errors(form) }}
+        <div class="web__line">
+            <div class="web__container web__container--big-padding">
+                {{ form_errors(form) }}
+            </div>
+        </div>
         {% include '@ShopsysShop/Front/Content/Order/step' ~ flow.getCurrentStepNumber() ~ '.html.twig' %}
     {{ form_end(form) }}
 {% endblock %}
