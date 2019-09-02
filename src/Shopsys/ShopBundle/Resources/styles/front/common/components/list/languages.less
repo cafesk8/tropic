@@ -32,6 +32,12 @@
             }
         }
 
+        &--inactive {
+            filter: grayscale(100%);
+
+            cursor: not-allowed;
+        }
+
         &__image {
             height: @list-languages-image-size;
             width: @list-languages-image-size;
@@ -44,12 +50,15 @@
             margin-left: 15px;
             line-height: 18px;
 
-
             color: @color-base;
             font-size: @font-size;
             font-weight: bold;
             text-decoration: none;
             text-transform: uppercase;
+
+            .list-languages__item--inactive & {
+                cursor: not-allowed;
+            }
         }
     }
 }
