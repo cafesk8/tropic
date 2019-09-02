@@ -14,7 +14,7 @@
             <div class="in-tab__wrap">
                 <div class="in-tab__head text-left">
                     {% for regionId, regionText in regions %}
-                        <a href="#{{ regionId|webalize }}" class="in-tab__head__item underline js-anchor-link">
+                        <a href="#{{ regionId|webalize }}" class="in-tab__head__item in-tab__head__item--bottom-gap underline js-anchor-link">
                             {{ regionText }}
                         </a>
                     {% endfor %}
