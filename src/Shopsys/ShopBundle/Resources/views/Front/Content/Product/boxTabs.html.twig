@@ -76,61 +76,20 @@
                     </div>
                 {% endif %}
 
-                <div class="js-product-variant-detail-wrapper">
-                    <div class="js-product-variant-detail-select-info">
-                        {{ 'Pro zobrazení parametrů si vyberte z velikostí.'|trans }}
-                    </div>
-                    {% for variant in variants %}
-                        <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
-                        {% set productParameterValues = getProductParameterValues(variant) %}
-                        {% if productParameterValues > 0 %}
-                            <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
-                                <a href="#" class="in-tab__content__title__link underline">
-                                    {{ parametersHeadline }}
-                                </a>
-                                <i class="svg svg-triangle"></i>
-                            </div>
-                            <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
-                                <h3 class="in-user-text__title in-user-text__title--center">
-                                    {{ parametersHeadline }}
-                                </h3>
-                                <div class="box-detail__params">
-                                    <div class="box-detail__params__row">
-                                        {% if productParameterValues > 0 %}
-                                        <ul class="list-params">
-                                            {% for productParameterValue in productParameterValues %}
-                                                {% if(productParameterValue.parameter.visibleOnFrontend is same as (true)) %}
-                                                    <li class="list-params__item">
-                                                        <span class="list-params__item__text">
-                                                            <span class="list-params__item__text__name">
-                                                                {{ productParameterValue.parameter.name }}:
-                                                            </span>
-                                                            <span class="list-params__item__text__value">
-                                                                {{ productParameterValue.value.text }}
-                                                            </span>
-                                                        </span>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
-                                    </div>
-                                    <div class="box-detail__params__row">
-                                        <div class="box-detail__params__title">{{ 'Najdete v kategoriích'|trans }}</div>
-                                        <div class="list-tags">
-                                            {% for productCategoryDomain in productVisibleProductCategoryDomains %}
-                                                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
-                                                    {{ productCategoryDomain.category.name }}
-                                                </a>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
+                {% if product.mainVariantGroup is not null %}
+                    <div class="js-product-variant-detail-wrapper">
+                        <div class="js-product-variant-detail-select-info">
+                            {{ 'Pro zobrazení parametrů si vyberte z velikostí.'|trans }}
                         </div>
-                    {% endfor %}
-                </div>
+                        {% for variant in variants %}
+                            <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
+                                {{ _self.parameters(variant, parametersHeadline, productVisibleProductCategoryDomains) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ _self.parameters(product, parametersHeadline, productVisibleProductCategoryDomains) }}
+                {% endif %}
 
                 {{ designHiddenStuff.hiddenTabs() }}
 
@@ -140,5 +99,54 @@
         {{ designHiddenStuff.hiddenSets() }}
 
     </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro parameters(product, parametersHeadline, productVisibleProductCategoryDomains) %}
+    {% set productParameterValues = getProductParameterValues(product) %}
+    {% if productParameterValues > 0 %}
+        <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
+            <a href="#" class="in-tab__content__title__link underline">
+                {{ parametersHeadline }}
+            </a>
+            <i class="svg svg-triangle"></i>
+        </div>
+        <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
+            <h3 class="in-user-text__title in-user-text__title--center">
+                {{ parametersHeadline }}
+            </h3>
+            <div class="box-detail__params">
+                <div class="box-detail__params__row">
+                    {% if productParameterValues > 0 %}
+                    <ul class="list-params">
+                        {% for productParameterValue in productParameterValues %}
+                            {% if(productParameterValue.parameter.visibleOnFrontend is same as (true)) %}
+                                <li class="list-params__item">
+                                    <span class="list-params__item__text">
+                                        <span class="list-params__item__text__name">
+                                            {{ productParameterValue.parameter.name }}:
+                                        </span>
+                                        <span class="list-params__item__text__value">
+                                            {{ productParameterValue.value.text }}
+                                        </span>
+                                    </span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="box-detail__params__row">
+                    <div class="box-detail__params__title">{{ 'Najdete v kategoriích'|trans }}</div>
+                    <div class="list-tags">
+                        {% for productCategoryDomain in productVisibleProductCategoryDomains %}
+                            <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
+                                {{ productCategoryDomain.category.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endmacro %}
