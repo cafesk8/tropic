@@ -172,7 +172,6 @@ class ProductMallExportMapper
             $mallProduct->setBrandId('BUSHMAN');
 
             $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
-
             if ($mallCategoryId !== null) {
                 $mallProduct->setCategoryId($mallCategoryId);
             }
@@ -182,10 +181,9 @@ class ProductMallExportMapper
         }
 
         $domainConfig = $this->domain->getDomainConfigById(self::CZECH_DOMAIN);
-
         $mallProduct->setId($product->getId());
         $mallProduct->setTitle($product->getName(self::CZECH_LOCALE));
-        $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
+        $this->setParameters($mallProduct, $product, $mallCategoryId);
 
         // Minimum priority in Mall has to be 1
         if ($product->getOrderingPriority() === 0) {
@@ -193,8 +191,6 @@ class ProductMallExportMapper
         } else {
             $mallProduct->setPriority($product->getOrderingPriority());
         }
-
-        $this->setParameters($mallProduct, $product, $mallCategoryId);
 
         $firstInLoop = false;
         foreach ($this->imageFacade->getImagesByEntityIndexedById($product, null) as $image) {
@@ -209,7 +205,6 @@ class ProductMallExportMapper
 
             /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
             $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
-
             if ($productPrice->isActionPrice()) {
                 $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
                 $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
@@ -218,9 +213,10 @@ class ProductMallExportMapper
                 $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
             }
 
+            $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
             if ($product->isUsingStock()) {
                 $stockQuantity = $this->findStockQuantity($product);
-                if ($stockQuantity > 0) {
+                if ($stockQuantity !== null && $stockQuantity > 0) {
                     $mallProduct->setInStock($stockQuantity);
                 }
             }
