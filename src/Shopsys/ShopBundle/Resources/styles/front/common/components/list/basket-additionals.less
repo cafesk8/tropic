@@ -38,6 +38,11 @@
         cursor: pointer;
         color: @color-orange;
         font-size: @list-basket-additionals-arrow-size;
+        height: @list-basket-additionals-arrow-size + 2px;
+
+        &:hover {
+            color: darken(@color-orange, 10%);
+        }
 
         &.slick-disabled {
             color: @color-brown;
@@ -45,13 +50,21 @@
         }
 
         &--prev {
-            left: -(@list-basket-additionals-arrow-size + @list-basket-additionals-arrow-gap);
+            left: -(@list-basket-additionals-arrow-size + @list-basket-additionals-arrow-gap/2);
+
+            @media @query-xl {
+                left: -(@list-basket-additionals-arrow-size + @list-basket-additionals-arrow-gap - 2px);
+            }
         }
 
         &--next {
-            right: -(@list-basket-additionals-arrow-size + @list-basket-additionals-arrow-gap);
+            right: -(@list-basket-additionals-arrow-size + @list-basket-additionals-arrow-gap/2);
 
             transform: rotate(180deg);
+
+            @media @query-xl {
+                right: -(@list-basket-additionals-arrow-size + @list-basket-additionals-arrow-gap - 2px);
+            }
         }
     }
 
@@ -98,26 +111,40 @@
 
             &__title {
                 display: block;
-                height: @list-basket-additionals-item-title-rows*@list-basket-additionals-item-title-line-height;
-                line-height: @list-basket-additionals-item-title-line-height;
+                height: @list-top-products-item-title-rows*@list-top-products-item-title-line-height;
+                line-height: @list-top-products-item-title-line-height;
                 margin-bottom: 0;
                 overflow: hidden;
 
-                font-size: 16px;
+                font-size: 18px;
+            }
+
+            &__availability {
+                color: @color-brown-light;
+                font-size: @font-size-extra-small;
             }
 
             &__price {
                 &__item {
                     display: none;
 
-                    &--main {
+                    &__main {
                         display: block;
                         padding: 5px 0;
 
+                        font-size: 16px;
                         font-weight: 700;
                     }
-                }
 
+                    &__old {
+                        display: inline;
+                        padding-left: 5px;
+                        font-weight: normal;
+                        font-size: 11px;
+                        color: @color-brown-light;
+                        text-decoration: line-through;
+                    }
+                }
             }
         }
     }
