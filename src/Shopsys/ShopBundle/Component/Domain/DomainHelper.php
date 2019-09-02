@@ -35,6 +35,12 @@ class DomainHelper
         self::GERMAN_LOCALE => self::GERMAN_COUNTRY_CODE,
     ];
 
+    public const DOMAIN_ID_TO_TRANSFER_SOURCE = [
+        self::CZECH_DOMAIN => 'LPKCZ',
+        self::SLOVAK_DOMAIN => 'BSHTR',
+        self::GERMAN_DOMAIN => 'BSHDE',
+    ];
+
     /**
      * @param string $locale
      * @return string
