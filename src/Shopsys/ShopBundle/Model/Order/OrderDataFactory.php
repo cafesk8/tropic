@@ -44,5 +44,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->payPalStatus = $order->getPayPalStatus();
         $orderData->exportedAt = $order->getExportedAt();
         $orderData->exportStatus = $order->getExportStatus();
+        $orderData->statusCheckedAt = $order->getStatusCheckedAt();
     }
 }
