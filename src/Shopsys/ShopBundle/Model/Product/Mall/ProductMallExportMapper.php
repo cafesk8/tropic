@@ -219,7 +219,10 @@ class ProductMallExportMapper
             }
 
             if ($product->isUsingStock()) {
-                $mallProduct->setInStock($this->getStockQuantity($product));
+                $stockQuantity = $this->findStockQuantity($product);
+                if ($stockQuantity > 0) {
+                    $mallProduct->setInStock($stockQuantity);
+                }
             }
         }
 
@@ -279,9 +282,9 @@ class ProductMallExportMapper
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return int
+     * @return int|null
      */
-    private function getStockQuantity(Product $product): int
+    private function findStockQuantity(Product $product): ?int
     {
         $defaultStore = $this->storeFacade->findDefaultStore();
 
@@ -290,16 +293,16 @@ class ProductMallExportMapper
         }
 
         if ($defaultStore === null && $product->getStockQuantity() === null) {
-            return 0;
+            return null;
         }
 
         foreach ($product->getStoreStocks() as $productStoreStocks) {
-            if ($productStoreStocks->getStore() === $defaultStore && $productStoreStocks->getStockQuantity() !== null) {
+            if ($productStoreStocks->getStore()->getId() === $defaultStore->getId() && $productStoreStocks->getStockQuantity() !== null) {
                 return $productStoreStocks->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
             }
         }
 
-        return 0;
+        return null;
     }
 
     /**
