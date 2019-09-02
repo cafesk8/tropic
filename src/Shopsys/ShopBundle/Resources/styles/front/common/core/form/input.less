@@ -1,6 +1,7 @@
 @input-height: 60px;
 @input-textarea-height: @input-height * 3;
 @input-width: 100%;
+@input-padding-top: 22px;
 @input-padding-horizontal: 10px;
 @input-font-size: 16px;
 @input-font-size-label: 12px;
@@ -17,7 +18,7 @@
     max-width: 100%;
     height: @input-height;
     line-height: @input-height/2;
-    padding: 22px @input-padding-horizontal 0 @input-padding-horizontal;
+    padding: @input-padding-top @input-padding-horizontal 0 @input-padding-horizontal;
 
     border: @input-border-size solid @input-border-color;
     color: @input-font-color;
@@ -47,8 +48,7 @@
     &--textarea {
         height: @input-textarea-height;
         line-height: 20px;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        padding: @input-padding-top @input-padding-horizontal 5px @input-padding-horizontal;
     }
 
     &:focus {
