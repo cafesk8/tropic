@@ -194,4 +194,30 @@
             }
         }
     }
+
+    table {
+        width: 100%;
+        border: none;
+
+        thead {
+            tr td {
+                background-color: @color-light;
+                font-weight: 700;
+                text-align: center;
+            }
+        }
+
+        tr td {
+            padding: 5px;
+            line-height: 16px;
+            text-align: center;
+
+            font-size: 14px;
+            border: 1px solid @color-gray;
+
+            &:first-child {
+                text-align: left;
+            }
+        }
+    }
 }
