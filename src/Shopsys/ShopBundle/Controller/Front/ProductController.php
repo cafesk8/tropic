@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
-use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade;
@@ -80,11 +79,6 @@ class ProductController extends FrontBaseController
     private $moduleFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
-     */
-    private $brandFacade;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade
      */
     private $mainVariantGroupFacade;
@@ -119,7 +113,6 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
@@ -136,7 +129,6 @@ class ProductController extends FrontBaseController
         ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade,
         ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade,
         ModuleFacade $moduleFacade,
-        BrandFacade $brandFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
@@ -152,7 +144,6 @@ class ProductController extends FrontBaseController
         $this->productListOrderingModeForBrandFacade = $productListOrderingModeForBrandFacade;
         $this->productListOrderingModeForSearchFacade = $productListOrderingModeForSearchFacade;
         $this->moduleFacade = $moduleFacade;
-        $this->brandFacade = $brandFacade;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
@@ -283,48 +274,6 @@ class ProductController extends FrontBaseController
             return $this->render('@ShopsysShop/Front/Content/Product/ajaxList.html.twig', $viewParameters);
         } else {
             return $this->render('@ShopsysShop/Front/Content/Product/list.html.twig', $viewParameters);
-        }
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $id
-     */
-    public function listByBrandAction(Request $request, $id)
-    {
-        $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
-        if (!$this->isRequestPageValid($requestPage)) {
-            return $this->redirectToRoute('front_brand_detail', $this->getRequestParametersWithoutPage());
-        }
-        $page = $requestPage === null ? 1 : (int)$requestPage;
-
-        $orderingModeId = $this->productListOrderingModeForBrandFacade->getOrderingModeIdFromRequest(
-            $request
-        );
-
-        $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsForBrand(
-            $orderingModeId,
-            $page,
-            self::PRODUCTS_PER_PAGE,
-            $id
-        );
-
-        $brand = $this->brandFacade->getById($id);
-
-        $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
-        $mainVariantsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($paginationResult->getResults());
-
-        $viewParameters = [
-            'paginationResult' => $paginationResult,
-            'brand' => $brand,
-            'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
-            'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
-        ];
-
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('@ShopsysShop/Front/Content/Product/ajaxListByBrand.html.twig', $viewParameters);
-        } else {
-            return $this->render('@ShopsysShop/Front/Content/Product/listByBrand.html.twig', $viewParameters);
         }
     }
 
