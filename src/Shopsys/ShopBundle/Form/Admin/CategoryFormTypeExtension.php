@@ -86,10 +86,20 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             ->add('leftBannerTexts', LocalizedType::class, [
                 'required' => false,
                 'label' => t('Levý textový baner dole'),
+                'entry_options' => [
+                    'attr' => [
+                        'class' => 'js-category-left-banner-texts',
+                    ],
+                ],
             ])
             ->add('rightBannerTexts', LocalizedType::class, [
                 'required' => false,
                 'label' => t('Pravý textový baner nahoře'),
+                'entry_options' => [
+                    'attr' => [
+                        'class' => 'js-category-right-banner-texts',
+                    ],
+                ],
             ])
             ->add(
                 $builder
