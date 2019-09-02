@@ -157,12 +157,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $builder->add($variantGroup);
         }
 
-        $this->addGiftGroup($builder);
-
         $this->addVideoGroup($builder);
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder, $product);
+            $this->addGiftGroup($builder);
         } else {
             if ($product !== null && $product->isMainVariant() === false) {
                 $this->addActionPriceToPricesGroup($builder);

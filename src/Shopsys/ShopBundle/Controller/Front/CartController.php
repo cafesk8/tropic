@@ -207,7 +207,7 @@ class CartController extends FrontBaseController
 
         /** @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart $productGiftInCart */
         foreach ($productGiftsInCart as $productGiftInCart) {
-            $cartFormData['chosenGifts'] = $this->getChosenGiftVariant($productGiftInCart, $cart);
+            $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }
 
         return $cartFormData;

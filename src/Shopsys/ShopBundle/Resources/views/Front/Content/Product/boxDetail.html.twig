@@ -268,7 +268,7 @@
                         <div class="box-detail__gift__info">
                             <a href="{{ url('front_product_detail', { id: product.gift.id }) }}" class="box-detail__gift__info__title">
                                 {{ 'Dárek'|trans }}
-                                <span class="underline-small">{{ product.gift.name }}</span>
+                                {{ product.gift.name }}
                             </a>
                             <div class="box-detail__gift__info__text">
                                 {{ 'Ke každému nákupu dárek v hodnotě'|trans}} <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>

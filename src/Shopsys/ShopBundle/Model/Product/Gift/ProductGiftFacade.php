@@ -33,9 +33,13 @@ class ProductGiftFacade
 
         /** @var \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem $cartItem */
         foreach ($cartItems as $cartItem) {
-
-            /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
-            $gift = $cartItem->getProduct()->getGift();
+            if ($cartItem->getProduct()->isVariant() === true) {
+                /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
+                $gift = $cartItem->getProduct()->getMainVariant()->getGift();
+            } else {
+                /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
+                $gift = $cartItem->getProduct()->getGift();
+            }
 
             if ($this->isGiftMarketable($gift)) {
                 $giftsVariantsByProductId[$cartItem->getProduct()->getId()] = $this->getGiftVariants($gift, $cartItem);

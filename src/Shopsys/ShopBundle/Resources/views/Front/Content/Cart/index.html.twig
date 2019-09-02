@@ -89,14 +89,18 @@
 
                                     {% if cartItem.product.id in cartGiftsByProductId|keys %}
                                         {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
-                                        <ul>
+                                        <div class="table-cart__gifts">
                                             {% for giftVariant in cartItemGift %}
-                                                <li>
-                                                    {{ form_widget(form.chosenGifts[cartItem.product.id][giftVariant.gift.id], { attr: { class: 'js-take-gift' } }) }}
-                                                    {{ 'Chcete dárek' }} {{ giftVariant.gift.name }} {{ 'v hodnotě' }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }} {{ 'za ' }} {{ giftVariant.price|price }} {{ '?' }}
-                                                </li>
+                                                <div class="table-cart__gifts__item">
+                                                    {{ form_widget(form.chosenGifts[cartItem.product.id][giftVariant.gift.id], { attr: { class: 'css-checkbox js-take-gift' } }) }}
+                                                    <label class="css-checkbox__image" for="{{ form.chosenGifts[cartItem.product.id][giftVariant.gift.id].vars.id }}">
+                                                        {{ 'Chceš dárek' }}
+                                                        {{ giftVariant.gift.name }}
+                                                        {{ 'v hodnotě' }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }} {{ 'za ' }} {{ giftVariant.price|price }} {{ '?' }}
+                                                    </label>
+                                                </div>
                                             {% endfor %}
-                                        </ul>
+                                        </div>
                                     {% else %}
                                         {% do form.chosenGifts.setRendered %}
                                     {% endif %}
