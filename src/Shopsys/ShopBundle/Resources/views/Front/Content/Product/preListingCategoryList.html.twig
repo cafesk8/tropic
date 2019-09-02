@@ -20,6 +20,7 @@
                     {{ category.getSeoH1(domain.id)|default(category.name) }}
                 </div>
 
+{#
                 <div class="list-grid-images">
                     <ul class="list-grid-images__columns">
                         <li class="list-grid-images__columns__item">
@@ -57,6 +58,7 @@
                         </li>
                     </ul>
                 </div>
+#}
 
                 {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
             </div>
