@@ -59,8 +59,8 @@ class OrderExportMapper
             'Customer' => [
                 'ID' => $order->getCustomerTransferId(),
                 'Adress' => [
-                    'SureName' => $order->getFirstName(),
-                    'ForeName' => $order->getLastName(),
+                    'SureName' => $order->getLastName(),
+                    'ForeName' => $order->getFirstName(),
                     'Company' => $order->getCompanyName(),
                     'Street' => TransformString::emptyToNull($order->getStreet()) ?? 'empty',
                     'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
