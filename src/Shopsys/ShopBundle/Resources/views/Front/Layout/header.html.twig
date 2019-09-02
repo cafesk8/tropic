@@ -104,11 +104,11 @@
                     </div>
                     <div class="box-dropdown__options
                         {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                        box-dropdown__options--logged
-                    {% else %}
-                        box-dropdown__options--login
-                    {% endif %}
-                     js-dropdown-options">
+                            box-dropdown__options--logged
+                        {% else %}
+                            box-dropdown__options--login
+                        {% endif %}
+                         js-dropdown-options">
                         {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                             <div class="box-dropdown__options__item js-dropdown-item'">
                                 <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
