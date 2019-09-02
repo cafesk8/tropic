@@ -27,34 +27,33 @@
                     {% for mainVariant in mainVariants if mainVariant.id != product.id %}
                         {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId) }}
                     {% endfor %}
-                </div>
 
-                {{ boxTabs.productTabs(
-                    product,
-                    allVariants,
-                    productMainCategory,
-                    true,
-                    mainVariants,
-                    youtubeDetail,
-                    productSizeArticleId,
-                    accessories,
-                    accessoriesHeadline,
-                    productVisibleProductCategoryDomains
-                )}}
-                {% for mainVariant in mainVariants if mainVariant.id != product.id %}
                     {{ boxTabs.productTabs(
-                        mainVariant,
+                        product,
                         allVariants,
                         productMainCategory,
                         true,
                         mainVariants,
-                        youtubeDetailForMainVariants[mainVariant.id],
+                        youtubeDetail,
                         productSizeArticleId,
                         accessories,
                         accessoriesHeadline,
                         productVisibleProductCategoryDomains
                     )}}
-                {% endfor %}
+                    {% for mainVariant in mainVariants if mainVariant.id != product.id %}
+                        {{ boxTabs.productTabs(
+                            mainVariant,
+                            allVariants,
+                            productMainCategory,
+                            false,
+                            mainVariants,
+                            youtubeDetailForMainVariants[mainVariant.id],
+                            productSizeArticleId,
+                            accessories,
+                            accessoriesHeadline,
+                            productVisibleProductCategoryDomains
+                        )}}
+                    {% endfor %}
                 </div>
             </div>
         </div>

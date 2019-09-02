@@ -104,7 +104,7 @@
 
 {% macro parameters(product, parametersHeadline, productVisibleProductCategoryDomains) %}
     {% set productParameterValues = getProductParameterValues(product) %}
-    {% if productParameterValues > 0 %}
+    {% if productParameterValues|length > 0 %}
         <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
             <a href="#" class="in-tab__content__title__link underline">
                 {{ parametersHeadline }}
