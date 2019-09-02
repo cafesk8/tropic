@@ -166,17 +166,19 @@ class ProductMallExportMapper
      */
     private function mapBasicInformation(Product $product, bool $isVariant): AbstractArticleEntity
     {
-        $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
         if ($isVariant === false) {
             $mallProduct = new MallProduct();
             $mallProduct->setVat($product->getVat()->getPercent());
             $mallProduct->setBrandId('BUSHMAN');
+
+            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
 
             if ($mallCategoryId !== null) {
                 $mallProduct->setCategoryId($mallCategoryId);
             }
         } else {
             $mallProduct = new Variant();
+            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product->getMainVariant(), self::CZECH_DOMAIN);
         }
 
         $domainConfig = $this->domain->getDomainConfigById(self::CZECH_DOMAIN);
