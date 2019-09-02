@@ -5,10 +5,13 @@
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-
+    
     cursor: default;
+
+    @media @query-md {
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
     &--under {
         display: inline;
