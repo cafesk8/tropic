@@ -24,8 +24,8 @@
                 slide: function (event, ui) {
                     var minimumSliderValue = getValueFromStep(ui.values[0]);
                     var maximumSliderValue = getValueFromStep(ui.values[1]);
-                    $minimumInput.val(minimumSliderValue != minimalValue ? Shopsys.number.formatDecimalNumber(minimumSliderValue, 2) : '');
-                    $maximumInput.val(maximumSliderValue != maximalValue ? Shopsys.number.formatDecimalNumber(maximumSliderValue, 2) : '');
+                    $minimumInput.val(minimumSliderValue != minimalValue ? Shopsys.number.formatDecimalNumber(minimumSliderValue, 0) : '');
+                    $maximumInput.val(maximumSliderValue != maximalValue ? Shopsys.number.formatDecimalNumber(maximumSliderValue, 0) : '');
                 },
                 stop: function () {
                     if (lastMinimumInputValue != $minimumInput.val()) {

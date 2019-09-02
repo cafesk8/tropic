@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Front\Product;
 
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
+use Shopsys\FrameworkBundle\Twig\MoneyExtension;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,6 +18,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductFilterFormType extends AbstractType
 {
+    /**
+     * @var \Shopsys\FrameworkBundle\Twig\MoneyExtension
+     */
+    private $moneyExtension;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Twig\MoneyExtension $moneyExtension
+     */
+    public function __construct(MoneyExtension $moneyExtension)
+    {
+        $this->moneyExtension = $moneyExtension;
+    }
+
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -32,19 +45,21 @@ class ProductFilterFormType extends AbstractType
         $builder
             ->add('minimalPrice', MoneyType::class, [
                 'required' => false,
-                'attr' => ['placeholder' => $this->transformMoneyToView($config->getPriceRange()->getMinimalPrice(), $moneyBuilder)],
+                'attr' => ['placeholder' => $this->moneyExtension->moneyFormatFilter($config->getPriceRange()->getMinimalPrice(), 0)],
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
                 ],
+                'scale' => 0,
             ])
             ->add('maximalPrice', MoneyType::class, [
                 'required' => false,
-                'attr' => ['placeholder' => $this->transformMoneyToView($config->getPriceRange()->getMaximalPrice(), $moneyBuilder)],
+                'attr' => ['placeholder' => $this->moneyExtension->moneyFormatFilter($config->getPriceRange()->getMaximalPrice(), 0)],
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
                 ],
+                'scale' => 0,
             ])
             ->add('parameters', ParameterFilterFormType::class, [
                 'required' => false,
@@ -84,24 +99,5 @@ class ProductFilterFormType extends AbstractType
                 'method' => 'GET',
                 'csrf_protection' => false,
             ]);
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money $money
-     * @param \Symfony\Component\Form\FormBuilderInterface $moneyBuilder
-     * @return string
-     */
-    protected function transformMoneyToView(Money $money, FormBuilderInterface $moneyBuilder): string
-    {
-        foreach ($moneyBuilder->getModelTransformers() as $modelTransformer) {
-            /** @var \Symfony\Component\Form\DataTransformerInterface $modelTransformer */
-            $money = $modelTransformer->transform($money);
-        }
-        foreach ($moneyBuilder->getViewTransformers() as $viewTransformer) {
-            /** @var \Symfony\Component\Form\DataTransformerInterface $viewTransformer */
-            $money = $viewTransformer->transform($money);
-        }
-
-        return $money;
     }
 }

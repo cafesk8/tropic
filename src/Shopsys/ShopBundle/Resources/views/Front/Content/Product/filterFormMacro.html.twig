@@ -13,8 +13,6 @@
                 value="{{ searchText|escape('html_attr') }}"
             />
         {% endif %}
-        {% do filterForm.minimalPrice.setRendered %}
-        {% do filterForm.maximalPrice.setRendered %}
 
         {{ selectedFilterBox.filterBox(filterForm, resetUrl, filterFormSubmitted) }}
         <div class="box-filter__choice">
@@ -32,18 +30,16 @@
 
                 <div class="box-price-slider__form">
                     <div class="box-price-slider__form__input box-price-slider__form__input--left">
-                        {{ form_widget(filterForm.minimalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
                         <label for="{{ filterForm.minimalPrice.vars.id }}" class="input__label required">
                             {{ 'Od'|trans }}
                         </label>
-                        <input id="{{ filterForm.minimalPrice.vars.id }}" type="text" class="input" value="{{ priceRange.minimalPrice|moneyFormat }}" id="minimalPrice">
+                        {{ form_widget(filterForm.minimalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
                     </div>
                     <div class="box-price-slider__form__input box-price-slider__form__input--right">
-                        {{ form_widget(filterForm.maximalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
                         <label for="{{ filterForm.maximalPrice.vars.id }}" class="input__label required">
                             {{ 'Do'|trans }}
                         </label>
-                        <input id="{{ filterForm.maximalPrice.vars.id }}" type="text" class="input" value="{{ priceRange.maximalPrice|moneyFormat }}">
+                        {{ form_widget(filterForm.maximalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
                     </div>
                 </div>
             </div>
