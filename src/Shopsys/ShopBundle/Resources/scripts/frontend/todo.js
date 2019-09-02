@@ -12,5 +12,4 @@
         $(this).parent().find($footerLinkContent).slideToggle();
     });
 
-
 })(jQuery);
