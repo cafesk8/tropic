@@ -131,4 +131,22 @@ class MallFacade
             return [];
         }
     }
+
+    /**
+     * @param string $categoryId
+     * @return array
+     */
+    public function getParametersByCateogoryId(string $categoryId): array
+    {
+        try {
+            $categories = new Categories($this->mallClient->getClient());
+            return array_column($categories->get()->categoryParameters($categoryId), 'param_id');
+        } catch (Exception $exception) {
+            $this->logger->addError(sprintf('Download parameters for category with ID `%s` from Mall.cz failed due to: %s', $categoryId, $exception->getMessage()), [
+                'exception' => $exception,
+            ]);
+
+            return [];
+        }
+    }
 }

@@ -9,9 +9,9 @@ use MPAPI\Entity\Products\Product as MallProduct;
 use MPAPI\Entity\Products\Variant;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Component\Mall\MallFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
@@ -66,6 +66,11 @@ class ProductMallExportMapper
     private $storeFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Mall\MallFacade
+     */
+    private $mallFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -74,6 +79,7 @@ class ProductMallExportMapper
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
+     * @param \Shopsys\ShopBundle\Component\Mall\MallFacade $mallFacade
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
@@ -83,7 +89,8 @@ class ProductMallExportMapper
         ProductFacade $productFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
         CategoryFacade $categoryFacade,
-        StoreFacade $storeFacade
+        StoreFacade $storeFacade,
+        MallFacade $mallFacade
     ) {
         $this->productPriceCalculationForUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
@@ -93,6 +100,7 @@ class ProductMallExportMapper
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->categoryFacade = $categoryFacade;
         $this->storeFacade = $storeFacade;
+        $this->mallFacade = $mallFacade;
     }
 
     /**
@@ -158,12 +166,12 @@ class ProductMallExportMapper
      */
     private function mapBasicInformation(Product $product, bool $isVariant): AbstractArticleEntity
     {
+        $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
         if ($isVariant === false) {
             $mallProduct = new MallProduct();
             $mallProduct->setVat($product->getVat()->getPercent());
             $mallProduct->setBrandId('BUSHMAN');
 
-            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
             if ($mallCategoryId !== null) {
                 $mallProduct->setCategoryId($mallCategoryId);
             }
@@ -184,7 +192,7 @@ class ProductMallExportMapper
             $mallProduct->setPriority($product->getOrderingPriority());
         }
 
-        $this->setParameters($mallProduct, $product);
+        $this->setParameters($mallProduct, $product, $mallCategoryId);
 
         $firstInLoop = false;
         foreach ($this->imageFacade->getImagesByEntityIndexedById($product, null) as $image) {
@@ -214,15 +222,6 @@ class ProductMallExportMapper
         }
 
         return $mallProduct;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
-     * @return string|null
-     */
-    private function getParameterId(Parameter $parameter): ?string
-    {
-        return $parameter->getMallId();
     }
 
     /**
@@ -304,14 +303,23 @@ class ProductMallExportMapper
     /**
      * @param \MPAPI\Entity\Products\AbstractArticleEntity $mallProduct
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string|null $categoryId
      */
-    private function setParameters(AbstractArticleEntity $mallProduct, Product $product): void
+    private function setParameters(AbstractArticleEntity $mallProduct, Product $product, ?string $categoryId): void
     {
+        if ($categoryId === null) {
+            return;
+        }
+
+        $mallParametersByCategoryId = $this->mallFacade->getParametersByCateogoryId($categoryId);
+
         $productParameters = $this->productCachedAttributesFacade->getProductParameterValues($product, self::CZECH_LOCALE);
         foreach ($productParameters as $productParameter) {
-            $mallParameterId = $this->getParameterId($productParameter->getParameter());
+            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter */
+            $parameter = $productParameter->getParameter();
+            $mallParameterId = $parameter->getMallId();
 
-            if ($mallParameterId !== null) {
+            if ($mallParameterId !== null && in_array($mallParameterId, $mallParametersByCategoryId, true) === true) {
                 $mallProduct->setParameter($mallParameterId, $productParameter->getValue()->getText());
             }
         }
