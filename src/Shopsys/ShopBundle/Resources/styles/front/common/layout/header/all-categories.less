@@ -18,7 +18,7 @@
         margin-top: 2px;
     }
 
-    &:hover {
+    &.open {
         margin-top: 13px;
         margin-bottom: -@header-all-categories-submenu-top;
         padding-top: 7px;
@@ -48,14 +48,15 @@
         .svg-triangle;
         position: absolute;
         right: 25px;
-        top: calc(~"50% - @{header-all-categories-arrow-size}/2 + 2px");
+        top: calc(~"50% - @{header-all-categories-arrow-size}/2");
 
         border-top-right-radius: @radius;
         border-top-left-radius: @radius;
         font-size: @header-all-categories-arrow-size;
 
-        .all-categories:hover & {
-            top: calc(~"50% - @{header-all-categories-arrow-size}/2 - 4px");
+        .open & {
+            top: calc(~"50% - @{header-all-categories-arrow-size}/2 - 5px");
+            transform: rotate(-180deg);
         }
     }
 
@@ -71,7 +72,7 @@
         background: @color-gray;
         border-radius: @radius;
 
-        .all-categories:hover & {
+        .open & {
             display: flex;
         }
 
