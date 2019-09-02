@@ -62,10 +62,6 @@ front_registration_set_new_password:
     path: /nove-heslo/
     defaults: { _controller: ShopsysShopBundle:Front\CustomerPassword:setNewPassword }
 
-front_brand_list:
-    path: /prehled-znacek/
-    defaults: { _controller: ShopsysShopBundle:Front\Brand:list }
-
 front_personal_data:
     path: /prehled-osobnich-udaju/
     defaults: { _controller: ShopsysShopBundle:Front\PersonalData:index }
