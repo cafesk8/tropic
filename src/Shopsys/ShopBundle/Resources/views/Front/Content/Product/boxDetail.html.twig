@@ -133,9 +133,9 @@
                     {% include '@ShopsysShop/Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
                 {% endif %}
 
-                <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-price-wrapper">
+                <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-detail-wrapper">
                     {% for variant in variants if variant in product.variants %}
-                        <div class="{% if not loop.first %}display-none {% endif %} js-product-variant-price js-product-variant-price-{{ variant.id }}">
+                        <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
                             {% if not variant.calculatedSellingDenied %}
                                 {% set sellingPrice = getProductSellingPrice(variant) %}
                                 <div itemprop="offers"

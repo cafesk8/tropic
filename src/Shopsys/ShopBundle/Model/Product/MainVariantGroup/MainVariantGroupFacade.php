@@ -68,6 +68,24 @@ class MainVariantGroupFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup $mainVariantGroup
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup
+     */
+    public function updateMainVariantGroup(MainVariantGroup $mainVariantGroup, array $products): MainVariantGroup
+    {
+        foreach ($products as $product) {
+            if ($product->isVariant() === false) {
+                $product->setMainVariantGroup($mainVariantGroup);
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return $mainVariantGroup;
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */

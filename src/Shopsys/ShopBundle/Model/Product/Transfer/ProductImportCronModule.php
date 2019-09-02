@@ -11,8 +11,10 @@ use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
+use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\Product\ProductVariantFacade;
@@ -73,6 +75,11 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $parameterFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator
+     */
+    private $productPriceRecalculator;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
@@ -83,6 +90,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -94,7 +102,8 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         ProductVariantFacade $productVariantFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
         ProductCategoryDomainFactory $productCategoryDomainFactory,
-        ParameterFacade $parameterFacade
+        ParameterFacade $parameterFacade,
+        ProductPriceRecalculator $productPriceRecalculator
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->restClient = $restClient;
@@ -106,6 +115,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->productCategoryDomainFactory = $productCategoryDomainFactory;
         $this->parameterFacade = $parameterFacade;
+        $this->productPriceRecalculator = $productPriceRecalculator;
     }
 
     /**
@@ -162,6 +172,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
             $this->processProductItemWithVariants($productTransferResponseItemData);
         }
         $this->logger->addInfo(sprintf('Products for group with transfer number `%s` were created', $productTransferResponseItemData->getTransferNumber()));
+
+        $this->logger->addInfo('Recalculate products prices');
+        $this->productPriceRecalculator->refreshAllPricingGroups();
+        $this->productPriceRecalculator->runImmediateRecalculations();
     }
 
     /**
@@ -211,50 +225,64 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         }
 
         foreach ($productData->parameters as $parameter) {
-            if ($parameter->parameter === $productData->distinguishingParameter) {
-                $parameterSize = $parameter->parameterValueData->text;
-            }
-
             if ($parameter->parameter === $productData->distinguishingParameterForMainVariantGroup) {
                 $parameterColor = $parameter->parameterValueData->text;
             }
         }
 
-        $this->productTree[$parameterColor][$parameterSize] = $product;
+        $this->productTree[$parameterColor][] = $product;
 
         return $product;
     }
 
     private function createProductTree(): void
     {
-        $newMainVariants = [];
+        $mainVariants = [];
+        $existingMainVariantGroup = null;
         foreach ($this->productTree as $colorValue => $secondParameterValuesWithProducts) {
-            $mainVariant = null;
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $existingMainVariant */
+            $existingMainVariant = null;
             $notVariants = [];
             foreach ($secondParameterValuesWithProducts as $productBySizeValue) {
-                if ($productBySizeValue->isVariant()) {
-                    $mainVariant = $productBySizeValue->getMainVariant();
+                if ($productBySizeValue->isVariant() === true) {
+                    if ($existingMainVariant === null) {
+                        $existingMainVariant = $productBySizeValue->getMainVariant();
+                    }
+
+                    if ($existingMainVariantGroup === null) {
+                        $existingMainVariantGroup = $this->findMainVariantGroup($existingMainVariant);
+                    }
                 } elseif ($productBySizeValue->isVariant() === false) {
                     $notVariants[] = $productBySizeValue;
                 }
             }
 
-            /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
-            if ($mainVariant !== null) {
+            if ($existingMainVariant !== null) {
+                $existingMainVariant->setDistinguishingParameter($this->parameterFacade->getSizeParameter());
                 foreach ($notVariants as $notVariant) {
-                    $mainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
+                    $existingMainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
                 }
-                if (count($notVariants) > 0) {
-                    $this->productFacade->flushMainVariant($mainVariant);
-                }
+                $this->productFacade->flushMainVariant($existingMainVariant);
+                $mainVariants[] = $existingMainVariant;
             } else {
-                $mainVariant = array_shift($secondParameterValuesWithProducts);
-                $newMainVariants[] = $this->productVariantFacade->createVariant($mainVariant, $secondParameterValuesWithProducts);
+                $newMainVariant = array_shift($secondParameterValuesWithProducts);
+                $mainVariants[] = $this->productVariantFacade->createVariant($newMainVariant, $secondParameterValuesWithProducts);
             }
         }
 
-        if (count($newMainVariants) > 0) {
-            $this->mainVariantGroupFacade->createMainVariantGroup($this->parameterFacade->getColorParameter(), $newMainVariants);
+        if ($existingMainVariantGroup !== null) {
+            $this->mainVariantGroupFacade->updateMainVariantGroup($existingMainVariantGroup, $mainVariants);
+        } else {
+            $this->mainVariantGroupFacade->createMainVariantGroup($this->parameterFacade->getColorParameter(), $mainVariants);
         }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
+     * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null
+     */
+    private function findMainVariantGroup(Product $mainVariant): ?MainVariantGroup
+    {
+        return $mainVariant !== null ? $mainVariant->getMainVariantGroup() : null;
     }
 }

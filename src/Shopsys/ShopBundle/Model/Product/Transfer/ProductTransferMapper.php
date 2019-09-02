@@ -111,7 +111,7 @@ class ProductTransferMapper
     private function getSizeProductParameterValueDataByLocale(
         array $productParameterValuesData,
         ?string $valueText = null
-): array {
+    ): array {
         $missingLocales = $this->findMissingLocalesForProductParameterValue($this->parameterFacade->getSizeParameter(), $productParameterValuesData);
 
         $sizeProductParameterValueData = [];
