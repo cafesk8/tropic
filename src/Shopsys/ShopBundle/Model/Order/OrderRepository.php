@@ -160,7 +160,8 @@ class OrderRepository extends BaseOrderRepository
             ->join('o.status', 'os')
             ->where('o.exportStatus = :exportStatus')
             ->andWhere('os.type NOT IN (:orderStatuses)')
-            ->orderBy('o.id', 'ASC')
+            ->orderBy('o.statusCheckedAt', 'ASC')
+            ->addOrderBy('o.id', 'ASC')
             ->setMaxResults($limit);
 
         $queryBuilder->setParameters([

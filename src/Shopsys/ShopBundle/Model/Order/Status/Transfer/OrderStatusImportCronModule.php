@@ -134,6 +134,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         }
 
         $orderData->status = $orderStatus;
+        $orderData->statusCheckedAt = new \DateTime();
         $this->orderFacade->edit($order->getId(), $orderData);
 
         $this->logger->addInfo(sprintf('Order status of order with ID `%s` has been changed', $order->getId()));
