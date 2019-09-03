@@ -7,6 +7,8 @@
         $container.filterAllNodes('.js-horizontal-list').each(function () {
             var $currentGallery = $(this);
             var galleryType = $currentGallery.data('type');
+            var prevArrow = $currentGallery.filterAllNodes('.js-horizontal-list-action-prev');
+            var nextArrow = $currentGallery.filterAllNodes('.js-horizontal-list-action-next');
 
             var types = {
                 'last-visited': [1, 2, 3, 3, 6],
@@ -27,8 +29,8 @@
                 lazyLoad: 'ondemand',
                 mobileFirst: true,
                 infinite: false,
-                prevArrow: $currentGallery.filterAllNodes('.js-horizontal-list-action-prev'),
-                nextArrow: $currentGallery.filterAllNodes('.js-horizontal-list-action-next'),
+                prevArrow: prevArrow,
+                nextArrow: nextArrow,
                 responsive: [
                     {
                         breakpoint: Shopsys.responsive.SM,
@@ -67,6 +69,46 @@
                     }
                 ]
             });
+
+            $currentGallery.find('.js-horizontal-list-slides').on('breakpoint', function (event, slick, breakpoint) {
+                recalculateSlickArrowVisibility(breakpoint);
+            });
+            recalculateSlickArrowVisibility(window.innerWidth || $(window).width());
+
+            function recalculateSlickArrowVisibility (breakpoint) {
+                switch (true) {
+                    case breakpoint === Shopsys.responsive.SM:
+                        toggleSlickArrow(selectedType[0]);
+                        break;
+                    case breakpoint === Shopsys.responsive.MD:
+                        toggleSlickArrow(selectedType[1]);
+                        break;
+                    case breakpoint === Shopsys.responsive.LG:
+                        toggleSlickArrow(selectedType[2]);
+                        break;
+                    case breakpoint === Shopsys.responsive.VL:
+                        toggleSlickArrow(selectedType[3]);
+                        break;
+                    case breakpoint >= Shopsys.responsive.XL:
+                        toggleSlickArrow(selectedType[4]);
+                        break;
+                    default:
+                        toggleSlickArrow(1);
+                        break;
+                }
+            }
+
+            function toggleSlickArrow (minCountForShowArrows) {
+                var countOfProduct = $currentGallery.data('count-of-product');
+
+                if (countOfProduct > minCountForShowArrows) {
+                    prevArrow.show();
+                    nextArrow.show();
+                } else {
+                    prevArrow.hide();
+                    nextArrow.hide();
+                }
+            }
         });
     };
 
