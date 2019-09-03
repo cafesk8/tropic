@@ -197,7 +197,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $orderNumber = $orderStatusTransferResponseItemData->getOrderNumber();
         $order = $this->orderFacade->findByNumber($orderNumber);
         if ($order === null) {
-            throw new TransferException('Order with number `%s` not found', $orderNumber);
+            throw new TransferException(sprintf('Order with number `%s` not found', $orderNumber));
         }
 
         return $order;
@@ -212,7 +212,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $orderStatusTransferId = $orderStatusTransferResponseItemData->getTransferStatus();
         $orderStatus = $this->orderStatusFacade->findByTransferId($orderStatusTransferId);
         if ($orderStatus === null) {
-            throw new TransferException('Order status with transfer ID `%s` not found', $orderStatusTransferId);
+            throw new TransferException(sprintf('Order status with transfer ID `%s` not found', $orderStatusTransferId));
         }
 
         return $orderStatus;
