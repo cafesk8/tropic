@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
+use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
@@ -81,6 +82,11 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $productPriceRecalculator;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator
+     */
+    private $productAvailabilityRecalculator;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferMapper $productTransferMapper
@@ -92,6 +98,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
+     * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator $productAvailabilityRecalculator
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -104,7 +111,8 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         MainVariantGroupFacade $mainVariantGroupFacade,
         ProductCategoryDomainFactory $productCategoryDomainFactory,
         ParameterFacade $parameterFacade,
-        ProductPriceRecalculator $productPriceRecalculator
+        ProductPriceRecalculator $productPriceRecalculator,
+        ProductAvailabilityRecalculator $productAvailabilityRecalculator
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->restClient = $restClient;
@@ -117,6 +125,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->productCategoryDomainFactory = $productCategoryDomainFactory;
         $this->parameterFacade = $parameterFacade;
         $this->productPriceRecalculator = $productPriceRecalculator;
+        $this->productAvailabilityRecalculator = $productAvailabilityRecalculator;
     }
 
     /**
@@ -180,6 +189,8 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->logger->addInfo('Recalculate products prices');
         $this->productPriceRecalculator->refreshAllPricingGroups();
         $this->productPriceRecalculator->runImmediateRecalculations();
+        $this->logger->addInfo('Recalculate product availability');
+        $this->productAvailabilityRecalculator->runImmediateRecalculations();
     }
 
     /**
