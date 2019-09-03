@@ -67,14 +67,15 @@
                                     {% endif %}
                                 {% endif %}
                                 <div class="list-products__item__info__availability__spacer"></div>
-                                <div class="list-products__item__info__availability__text js-not-implemented-yet" style="color: #7bbd70;">
+                                <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
                                     {{ product.calculatedAvailability.getName }}
                                 </div>
 
-                                <div class="list-products__item__info__availability__stores js-not-implemented-yet" style="color: #7bbd70;">
-                                    {# TODO PRG: do not remove element - only remove text inside if needed#}
+                                {# Temporary remove unnecessary stores availability #}
+                                {#<div class="list-products__item__info__availability__stores js-not-implemented-yet" style="color: #7bbd70;">
+                                    #}{# TODO PRG: do not remove element - only remove text inside if needed#}{#
                                     {{ 'K dispozici v Hradci Králové'|trans }}
-                                </div>
+                                </div>#}
                             </div>
 
                             {% if productsIndexedByMainVariantGroup is not null
