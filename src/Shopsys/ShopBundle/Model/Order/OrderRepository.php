@@ -149,4 +149,35 @@ class OrderRepository extends BaseOrderRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getBatchToCheckOrderStatus(int $limit): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->join('o.status', 'os')
+            ->where('o.exportStatus = :exportStatus')
+            ->andWhere('os.type NOT IN (:orderStatuses)')
+            ->orderBy('o.id', 'ASC')
+            ->setMaxResults($limit);
+
+        $queryBuilder->setParameters([
+            'exportStatus' => Order::EXPORT_SUCCESS,
+            'orderStatuses' => [OrderStatus::TYPE_DONE, OrderStatus::TYPE_CANCELED],
+        ]);
+
+        return $queryBuilder->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param string $number
+     * @return \Shopsys\ShopBundle\Model\Order\Order|null
+     */
+    public function findByNumber(string $number): ?Order
+    {
+        return $this->getOrderRepository()->findOneBy(['number' => $number]);
+    }
 }
