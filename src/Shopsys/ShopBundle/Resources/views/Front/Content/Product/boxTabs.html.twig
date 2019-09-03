@@ -136,14 +136,16 @@
                     </ul>
                     {% endif %}
                 </div>
-                <div class="box-detail__params__row">
-                    <div class="box-detail__params__title">{{ 'Najdete v kategoriích'|trans }}</div>
-                    <div class="list-tags">
-                        {% for productCategoryDomain in productVisibleProductCategoryDomains %}
-                            <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
-                                {{ productCategoryDomain.category.name }}
-                            </a>
-                        {% endfor %}
+                <div class="box-detail__tags__row">
+                    <div class="box-detail__tags__title">{{ 'Najdete v kategoriích'|trans }}</div>
+                    <div class="box-detail__tags__values">
+                        <div class="list-tags">
+                            {% for productCategoryDomain in productVisibleProductCategoryDomains %}
+                                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
+                                    {{ productCategoryDomain.category.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

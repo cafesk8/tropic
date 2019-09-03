@@ -287,4 +287,27 @@
             }
         }
     }
+
+    &__tags {
+         &__row {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+
+             @media @query-lg {
+                 flex-direction: row;
+             }
+         }
+
+         &__title {
+             color: @color-base;
+             font-size: 15px;
+             font-weight: 700;
+             text-transform: uppercase;
+
+             @media @query-lg {
+                 padding-right: 20px;
+             }
+        }
+    }
 }
