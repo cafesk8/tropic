@@ -119,11 +119,17 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             return;
         }
 
+        $oldOrderStatusName = $order->getStatus()->getName('cs');
         $orderData->status = $orderStatus;
         $orderData->statusCheckedAt = new \DateTime();
-        $this->orderFacade->edit($order->getId(), $orderData);
+        $order = $this->orderFacade->edit($order->getId(), $orderData);
 
-        $this->logger->addInfo(sprintf('Order status of order with ID `%s` has been changed', $order->getId()));
+        $this->logger->addInfo(sprintf(
+            'Order status of order with ID `%s` has been changed from `%s` to `%s`',
+            $order->getId(),
+            $oldOrderStatusName,
+            $order->getStatus()->getName('cs')
+        ));
     }
 
     /**
