@@ -27,4 +27,11 @@ class FrontOrderData extends BaseFrontOrderData
      * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
      */
     public $country;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->newsletterSubscription = true;
+    }
 }

@@ -143,18 +143,6 @@
                         {{ form_row(form.note, { label: 'Contact us'|trans }) }}
                     </div>
                 </fieldset>
-
-                <fieldset>
-                    <div class="form-line margin-bottom-0">
-                        {{ form_widget(form.newsletterSubscription, { attr: { class: 'css-checkbox' }}) }}
-                        <label class="css-checkbox__image" for="{{ form.newsletterSubscription.vars.id }}">
-                            {{ 'I want to subscribe to the newsletter'|trans }}
-                        </label>
-                        {% if form.disallowHeurekaVerifiedByCustomers is defined %}
-                            {{ form_row(form.disallowHeurekaVerifiedByCustomers, { label: 'I do not agree with sending a Customer Verified satisfaction questionnaire that helps improve your service'|trans }) }}
-                        {% endif %}
-                    </div>
-                </fieldset>
             </div>
             <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
                 {{ render(controller('ShopsysShopBundle:Front/Order:preview', {

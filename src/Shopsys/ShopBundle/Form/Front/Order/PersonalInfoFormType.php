@@ -330,9 +330,6 @@ class PersonalInfoFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('newsletterSubscription', CheckboxType::class, [
-                'required' => false,
-            ])
             ->add('save', SubmitType::class);
 
         if ($this->heurekaFacade->isHeurekaShopCertificationActivated($this->domain->getId())) {

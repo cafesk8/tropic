@@ -58,15 +58,6 @@
                     </tr>
                 {% endif %}
 
-                <tr class="table-cart-preview__row">
-                    <td class="table-cart-preview__cell js-not-implemented-yet">
-                        {{ 'Doprava (29.1. u vás)'|trans }}
-                    </td>
-                    <td class="table-cart-preview__cell table-cart-preview__cell--price">
-                        {{ 'zdarma'|trans }}
-                    </td>
-                </tr>
-
                 {% if orderPreview.transport is not empty %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
@@ -143,7 +134,16 @@
                     {% else %}
                         {{ 'obchodními podmínkami'|trans }}
                     {% endif %}
-                    {{ ' e-shopu.'|trans}}
+                    {{ ' e-shopu a souhlasím se zpracováním'|trans}}
+                    {% if privacyPolicyArticle is not null %}
+                        <a href="{{ url('front_article_detail', { id: privacyPolicyArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
+                            <span class="underline-small">
+                                {{ 'osobních údajů'|trans }}
+                            </span>
+                        </a>
+                    {% else %}
+                        {{ 'osobních údajů'|trans }}
+                    {% endif %}
                 </div>
             {% endif %}
 
