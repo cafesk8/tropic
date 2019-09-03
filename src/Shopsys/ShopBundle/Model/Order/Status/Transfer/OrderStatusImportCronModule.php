@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Status\Transfer;
 
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseCodeException;
 use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
@@ -81,37 +82,23 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $orders = $this->orderFacade->getBatchToCheckOrderStatus(self::ORDER_BATCH_SIZE);
         $orderNumbersByDomain = $this->getOrderNumbersIndexedByDomain($orders);
 
-        $transferDataItems = [];
-        if (array_key_exists(DomainHelper::CZECH_DOMAIN, $orderNumbersByDomain) === true) {
-            $source = DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[DomainHelper::CZECH_DOMAIN];
-            $transferDataItems = $this->getTransferItemsFromResponse(
-                $source,
-                $orderNumbersByDomain[DomainHelper::CZECH_DOMAIN],
-                $this->multidomainRestClient->getCzechRestClient()
-            );
+        $allTransferDataItems = [];
+        foreach ($orderNumbersByDomain as $domainId => $orderNumbers) {
+            foreach ($orderNumbers as $orderNumber) {
+                $source = DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$domainId];
+                $transferDataItems = $this->getTransferItemsFromResponse(
+                    $source,
+                    $orderNumber,
+                    $this->multidomainRestClient->getByDomainId($domainId)
+                );
+
+                if (count($transferDataItems) > 0) {
+                    $allTransferDataItems = array_merge($allTransferDataItems, $transferDataItems);
+                }
+            }
         }
 
-        if (array_key_exists(DomainHelper::SLOVAK_DOMAIN, $orderNumbersByDomain) === true) {
-            $source = DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[DomainHelper::SLOVAK_DOMAIN];
-            $slovakTransferDataItems = $this->getTransferItemsFromResponse(
-                $source,
-                $orderNumbersByDomain[DomainHelper::SLOVAK_DOMAIN],
-                $this->multidomainRestClient->getSlovakRestClient()
-            );
-            $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
-        }
-
-        if (array_key_exists(DomainHelper::GERMAN_DOMAIN, $orderNumbersByDomain) === true) {
-            $source = DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[DomainHelper::GERMAN_DOMAIN];
-            $germanTransferDataItems = $this->getTransferItemsFromResponse(
-                $source,
-                $orderNumbersByDomain[DomainHelper::GERMAN_DOMAIN],
-                $this->multidomainRestClient->getSlovakRestClient()
-            );
-            $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
-        }
-
-        return new TransferResponse(200, $transferDataItems);
+        return new TransferResponse(200, $allTransferDataItems);
     }
 
     /**
@@ -150,26 +137,24 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 
     /**
      * @param string $source
-     * @param string[] $orderNumbers
+     * @param string $orderNumber
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @return array
      */
-    private function getTransferItemsFromResponse(string $source, array $orderNumbers, RestClient $restClient)
+    private function getTransferItemsFromResponse(string $source, string $orderNumber, RestClient $restClient)
     {
-        $apiMethodUrl = sprintf(
-            'api/Eshop/GetOrdersStatus?Source=%s&Numbers=%s',
-            $source,
-            implode(';', $orderNumbers)
-        );
+        $apiMethodUrl = sprintf('api/Eshop/GetOrdersStatus?Source=%s&Numbers=%s', $source, $orderNumber);
 
         $transferDataItems = [];
-        $restResponse = $restClient->get($apiMethodUrl);
-
-        foreach ($restResponse->getData() as $responseData) {
-            foreach ($responseData as $restDataItem) {
-                $transferDataItems[] = new OrderStatusTransferResponseItemData($restDataItem);
-            }
+        try {
+            $restResponse = $restClient->get($apiMethodUrl);
+        } catch (UnexpectedResponseCodeException $exception) {
+            $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
+            return [];
         }
+
+        $responseData = $restResponse->getData();
+        $transferDataItems[] = new OrderStatusTransferResponseItemData($responseData['StatusList'][0]);
 
         return $transferDataItems;
     }

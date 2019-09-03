@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Rest;
 
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+
 class MultidomainRestClient
 {
     /**
@@ -58,5 +60,22 @@ class MultidomainRestClient
     public function getGermanRestClient(): RestClient
     {
         return $this->germanRestClient;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Component\Rest\RestClient
+     */
+    public function getByDomainId(int $domainId): RestClient
+    {
+        $restClient = $this->czechRestClient;
+        if ($domainId === DomainHelper::SLOVAK_DOMAIN) {
+            $restClient = $this->slovakRestClient;
+        }
+        if ($domainId === DomainHelper::GERMAN_DOMAIN) {
+            $restClient = $this->germanRestClient;
+        }
+
+        return $restClient;
     }
 }
