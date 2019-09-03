@@ -309,8 +309,6 @@ services:
 
     Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade: '@Shopsys\ShopBundle\Component\Cron\CronModuleFacade'
 
-    Shopsys\ShopBundle\Component\Setting\Setting: ~
-
     Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@Shopsys\ShopBundle\Model\Country\CountryFacade'
 
     Shopsys\FrameworkBundle\Model\Country\CountryRepository: '@Shopsys\ShopBundle\Model\Country\CountryRepository'
