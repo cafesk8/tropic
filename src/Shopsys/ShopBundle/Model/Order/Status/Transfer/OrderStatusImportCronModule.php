@@ -129,6 +129,10 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $orderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
         $orderData = $this->orderDataFactory->createFromOrder($order);
 
+        if ($order->getStatus() === $orderStatus) {
+            return;
+        }
+
         $orderData->status = $orderStatus;
         $this->orderFacade->edit($order->getId(), $orderData);
 
