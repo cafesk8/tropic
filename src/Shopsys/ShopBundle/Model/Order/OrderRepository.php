@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
@@ -180,5 +181,19 @@ class OrderRepository extends BaseOrderRepository
     public function findByNumber(string $number): ?Order
     {
         return $this->getOrderRepository()->findOneBy(['number' => $number]);
+    }
+
+    /**
+     * @param string $number
+     * @return \Shopsys\ShopBundle\Model\Order\Order
+     */
+    public function getByNumber(string $number): Order
+    {
+        $order = $this->findByNumber($number);
+        if ($order === null) {
+            throw new OrderNotFoundException(sprintf('Order with number `%s` not found', $number));
+        }
+
+        return $order;
     }
 }

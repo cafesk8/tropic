@@ -699,4 +699,12 @@ class Order extends BaseOrder
     {
         return $this->statusCheckedAt;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function updateStatusCheckedAt(): void
+    {
+        $this->statusCheckedAt = new DateTime();
+    }
 }

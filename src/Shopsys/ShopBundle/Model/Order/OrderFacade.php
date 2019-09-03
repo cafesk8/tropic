@@ -350,4 +350,15 @@ class OrderFacade extends BaseOrderFacade
     {
         return $this->orderRepository->getBatchToCheckOrderStatus($limit);
     }
+
+    /**
+     * @param string $number
+     */
+    public function updateStatusCheckedAtByNumber(string $number): void
+    {
+        $order = $this->orderRepository->getByNumber($number);
+
+        $order->updateStatusCheckedAt();
+        $this->em->flush($order);
+    }
 }

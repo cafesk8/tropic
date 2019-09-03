@@ -111,7 +111,6 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
                 sprintf('Invalid argument passed into method. Instance of `%s` was expected', OrderStatusTransferResponseItemData::class)
             );
         }
-
         $order = $this->getOrder($orderStatusTransferResponseItemData);
         $orderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
         $orderData = $this->orderDataFactory->createFromOrder($order);
@@ -149,6 +148,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         try {
             $restResponse = $restClient->get($apiMethodUrl);
         } catch (UnexpectedResponseCodeException $exception) {
+            $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
             $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
             return [];
         }
@@ -184,6 +184,8 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         if ($order === null) {
             throw new TransferException(sprintf('Order with number `%s` not found', $orderNumber));
         }
+
+        $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
 
         return $order;
     }
