@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
+use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
@@ -81,6 +82,24 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             ->add('legendaryCategory', YesNoType::class, [
                 'required' => false,
                 'label' => t('Legendární kategorie'),
+            ])
+            ->add('leftBannerTexts', LocalizedType::class, [
+                'required' => false,
+                'label' => t('Levý textový baner dole'),
+                'entry_options' => [
+                    'attr' => [
+                        'class' => 'js-category-left-banner-texts',
+                    ],
+                ],
+            ])
+            ->add('rightBannerTexts', LocalizedType::class, [
+                'required' => false,
+                'label' => t('Pravý textový baner nahoře'),
+                'entry_options' => [
+                    'attr' => [
+                        'class' => 'js-category-right-banner-texts',
+                    ],
+                ],
             ])
             ->add(
                 $builder

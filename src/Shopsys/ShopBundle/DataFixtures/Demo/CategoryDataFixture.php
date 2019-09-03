@@ -74,6 +74,16 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Elektro',
             'en' => 'Electronics',
         ];
+        $categoryData->leftBannerTexts = [
+            'cs' => 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.',
+            'sk' => null,
+            'en' => null,
+        ];
+        $categoryData->rightBannerTexts = [
+            'cs' => 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně',
+            'sk' => null,
+            'en' => null,
+        ];
         $categoryData->preListingCategory = true;
         $categoryData->legendaryCategory = true;
         $categoryData->descriptions = array_merge(
@@ -92,6 +102,16 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'cs' => 'Televize, audio',
             'sk' => 'Televize, audio',
             'de' => 'TV, audio',
+        ];
+        $categoryData->leftBannerTexts = [
+            'cs' => null,
+            'sk' => null,
+            'en' => null,
+        ];
+        $categoryData->rightBannerTexts = [
+            'cs' => null,
+            'sk' => null,
+            'en' => null,
         ];
         $categoryData->preListingCategory = false;
         $categoryData->descriptions = array_merge(
