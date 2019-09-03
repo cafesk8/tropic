@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\Brand\BrandBreadcrumbGenerator;
 use Shopsys\FrameworkBundle\Model\Product\ProductBreadcrumbGenerator;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleBreadcrumbGenerator;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryBreadcrumbGenerator;
+use Shopsys\ShopBundle\Model\Store\StoreBreadcrumbGenerator;
 
 class FrontBreadcrumbResolverFactory extends BaseFrontBreadcrumbResolverFactory
 {
@@ -27,6 +28,7 @@ class FrontBreadcrumbResolverFactory extends BaseFrontBreadcrumbResolverFactory
      * @param \Shopsys\FrameworkBundle\Model\PersonalData\PersonalDataBreadcrumbGenerator $personalDataBreadcrumbGenerator
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryBreadcrumbGenerator $blogCategoryBreadcrumbGenerator
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleBreadcrumbGenerator $blogArticleBreadcrumbGenerator
+     * @param \Shopsys\ShopBundle\Model\Store\StoreBreadcrumbGenerator $storeBreadcrumbGenerator
      */
     public function __construct(
         ArticleBreadcrumbGenerator $articleBreadcrumbGenerator,
@@ -37,7 +39,8 @@ class FrontBreadcrumbResolverFactory extends BaseFrontBreadcrumbResolverFactory
         ErrorPageBreadcrumbGenerator $errorPageBreadcrumbGenerator,
         PersonalDataBreadcrumbGenerator $personalDataBreadcrumbGenerator,
         BlogCategoryBreadcrumbGenerator $blogCategoryBreadcrumbGenerator,
-        BlogArticleBreadcrumbGenerator $blogArticleBreadcrumbGenerator
+        BlogArticleBreadcrumbGenerator $blogArticleBreadcrumbGenerator,
+        StoreBreadcrumbGenerator $storeBreadcrumbGenerator
     ) {
         parent::__construct(
             $articleBreadcrumbGenerator,
@@ -51,5 +54,6 @@ class FrontBreadcrumbResolverFactory extends BaseFrontBreadcrumbResolverFactory
 
         $this->breadcrumbGenerators[] = $blogCategoryBreadcrumbGenerator;
         $this->breadcrumbGenerators[] = $blogArticleBreadcrumbGenerator;
+        $this->breadcrumbGenerators[] = $storeBreadcrumbGenerator;
     }
 }
