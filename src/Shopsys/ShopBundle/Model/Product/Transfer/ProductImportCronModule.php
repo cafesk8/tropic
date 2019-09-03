@@ -23,6 +23,7 @@ use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferRe
 class ProductImportCronModule extends AbstractTransferImportCronModule
 {
     public const TRANSFER_IDENTIFIER = 'import_products';
+    private const PRODUCT_NUMBER_TO_NOT_IMPORT = '899005';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient
@@ -141,6 +142,9 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
         $transferDataItems = [];
         foreach ($restResponse->getData() as $restData) {
+            if ($restData['Number'] === self::PRODUCT_NUMBER_TO_NOT_IMPORT) {
+                continue;
+            }
             $transferDataItems[] = new ProductTransferResponseItemData($restData);
         }
 
