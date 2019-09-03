@@ -23,6 +23,11 @@ class UserData extends BaseUserData
      */
     public $memberOfBushmanClub;
 
+    /**
+     * @var string
+     */
+    public $exportStatus = User::EXPORT_NOT_YET;
+
     public function __construct()
     {
         parent::__construct();

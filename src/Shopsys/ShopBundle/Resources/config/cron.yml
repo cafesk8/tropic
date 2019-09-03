@@ -30,6 +30,10 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
 
+    Shopsys\ShopBundle\Model\Customer\Registration\Transfer\CustomerExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
     Shopsys\ShopBundle\Model\Order\Transfer\OrderExportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }

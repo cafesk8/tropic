@@ -97,4 +97,37 @@ class CustomerFacade extends BaseCustomerFacade
             $customerData->deliveryAddressData->country = $this->countryFacade->getById($countryIdOrCountry);
         }
     }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getNotExportedCustomersBatch(int $limit): array
+    {
+        return $this->userRepository->getNotExportedCustomersBatch($limit);
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function markCustomerAsExported(int $userId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
+        $user = $this->getUserById($userId);
+        $user->markAsExported();
+
+        $this->em->flush($user);
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function markCustomerAsFailedExported(int $userId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
+        $user = $this->getUserById($userId);
+        $user->markAsFailedExported();
+
+        $this->em->flush($user);
+    }
 }

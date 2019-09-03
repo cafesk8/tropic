@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User as BaseUser;
 use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\ShopBundle\Model\Customer\Exception\UnsupportedCustomerExportStatusException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -26,6 +28,10 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
  */
 class User extends BaseUser
 {
+    public const EXPORT_SUCCESS = 'export_success';
+    public const EXPORT_NOT_YET = 'export_not_yet';
+    public const EXPORT_ERROR = 'export_error';
+
     /**
      * @ORM\Column(type="string", length=60)
      */
@@ -63,6 +69,20 @@ class User extends BaseUser
     private $memberOfBushmanClub;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $exportStatus;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $exportedAt;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
@@ -79,6 +99,7 @@ class User extends BaseUser
         $this->transferId = $userData->transferId;
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
+        $this->exportStatus = $userData->exportStatus;
     }
 
     /**
@@ -141,5 +162,73 @@ class User extends BaseUser
     public function isMemberOfBushmanClub(): bool
     {
         return $this->memberOfBushmanClub;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExportStatus(): string
+    {
+        return $this->exportStatus;
+    }
+
+    /**
+     * @param string $exportStatus
+     * @return string
+     */
+    private function setExportStatus(string $exportStatus): void
+    {
+        if (in_array($exportStatus, [self::EXPORT_SUCCESS, self::EXPORT_NOT_YET, self::EXPORT_ERROR], true) === false) {
+            throw new UnsupportedCustomerExportStatusException(
+                sprintf('Export status `%s` is not supported.', $exportStatus)
+            );
+        }
+
+        $this->exportStatus = $exportStatus;
+    }
+
+    public function markAsExported(): void
+    {
+        $this->setExportStatus(self::EXPORT_SUCCESS);
+        $this->exportedAt = new DateTime();
+    }
+
+    public function markAsFailedExported(): void
+    {
+        $this->setExportStatus(self::EXPORT_ERROR);
+        $this->exportedAt = new DateTime();
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getExportedAt(): ?DateTime
+    {
+        return $this->exportedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExportStatusName(): string
+    {
+        return self::getExportStatusNameByExportStatus($this->exportStatus);
+    }
+
+    /**
+     * @param string $exportStatus
+     * @return string
+     */
+    public static function getExportStatusNameByExportStatus(string $exportStatus): string
+    {
+        if ($exportStatus === self::EXPORT_SUCCESS) {
+            return t('Přeneseno');
+        }
+        if ($exportStatus === self::EXPORT_NOT_YET) {
+            return t('Zatím nepřeneseno');
+        }
+        if ($exportStatus === self::EXPORT_ERROR) {
+            return t('Chyba při přenosu');
+        }
     }
 }
