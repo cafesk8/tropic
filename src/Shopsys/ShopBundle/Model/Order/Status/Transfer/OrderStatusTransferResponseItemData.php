@@ -28,7 +28,7 @@ class OrderStatusTransferResponseItemData implements TransferResponseItemDataInt
      */
     public function __construct(array $restDataItem)
     {
-        $this->orderNumber = $restDataItem['Number'];
+        $this->orderNumber = (string)$restDataItem['Number'];
         $this->transferStatus = $restDataItem['Status'];
     }
 
