@@ -486,3 +486,9 @@ services:
         class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory
 
     Shopsys\FrameworkBundle\Model\Order\Status\Grid\OrderStatusGridFactory: '@Shopsys\ShopBundle\Model\Order\Status\Grid\OrderStatusGridFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusRepository

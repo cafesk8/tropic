@@ -147,3 +147,9 @@ services:
 
     Shopsys\ShopBundle\Component\Setting\Setting: ~
     Shopsys\FrameworkBundle\Component\Setting\Setting: '@Shopsys\ShopBundle\Component\Setting\Setting'
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusRepository
