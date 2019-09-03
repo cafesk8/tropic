@@ -1,4 +1,4 @@
-{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetail, productSizeArticleId) %}
+{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
@@ -163,18 +163,25 @@
                                     href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
                                     >
                                 </div>
-                                <div class="box-detail-add__club">
-                                    <span class="box-detail-add__club__text">
-                                        {{ 'Nebo'|trans }}
-                                    </span>
-                                    <span class="box-detail-add__club__price js-not-implemented-yet">
-                                        {{ '1 390 Kč'|trans }}
-                                    </span>
-                                    <span class="box-detail-add__club__text">
-                                        {{ 'pro členy'|trans }}
-                                    </span>
-                                    <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
-                                </div>
+                                {% if getProductAdeptPrice(variant) is not null %}
+                                    <div class="box-detail-add__club">
+                                        <span class="box-detail-add__club__text">
+                                            {{ 'Nebo'|trans }}
+                                        </span>
+                                        <span class="box-detail-add__club__price">
+                                            {{ getProductAdeptPrice(variant).priceWithVat|price }}
+                                        </span>
+                                        <span class="box-detail-add__club__text">
+                                            {{ 'pro členy'|trans }}
+                                        </span>
+                                        {% if bushmanClubArticle is not null %}
+                                            {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
+                                            {{ '<a href="%url%" class="box-detail-add__club__link underline-small" target="_blank">BUSHMAN Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
+                                        {% else %}
+                                            {{ 'BUSHMAN Clubu'|trans }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                                 <div class="js-product-detail-add-variant-button">
                                     {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
                                         product: variant,
@@ -219,18 +226,25 @@
                                           href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
                                     >
                                 </div>
-                                <div class="box-detail-add__club">
-                                    <span class="box-detail-add__club__text">
-                                        {{ 'Nebo'|trans }}
-                                    </span>
-                                    <span class="box-detail-add__club__price js-not-implemented-yet">
-                                        {{ '1 390 Kč'|trans }}
-                                    </span>
-                                    <span class="box-detail-add__club__text">
-                                        {{ 'pro členy'|trans }}
-                                    </span>
-                                    <a href="#" class="box-detail-add__club__link underline-small js-not-implemented-yet">{{ 'Bushman klubu'|trans }}</a>
-                                </div>
+                                {% if getProductAdeptPrice(product) is not null %}
+                                    <div class="box-detail-add__club">
+                                        <span class="box-detail-add__club__text">
+                                            {{ 'Nebo'|trans }}
+                                        </span>
+                                        <span class="box-detail-add__club__price">
+                                            {{ getProductAdeptPrice(product).priceWithVat|price }}
+                                        </span>
+                                        <span class="box-detail-add__club__text">
+                                            {{ 'pro členy'|trans }}
+                                        </span>
+                                        {% if bushmanClubArticle is not null %}
+                                            {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
+                                            {{ '<a href="%url%" class="box-detail-add__club__link underline-small" target="_blank">BUSHMAN Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
+                                        {% else %}
+                                            {{ 'BUSHMAN Clubu'|trans }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                                 {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
                             {% else %}
                                 <div>

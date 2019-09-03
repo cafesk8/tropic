@@ -22,10 +22,10 @@
         <div class="web__container web__container--big-padding">
             <div itemscope itemtype="http://schema.org/Product">
                 <div class="js-product-variant-group">
-                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail, productSizeArticleId) }}
+                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle) }}
 
                     {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId) }}
+                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId, bushmanClubArticle) }}
                     {% endfor %}
 
                     {{ boxTabs.productTabs(

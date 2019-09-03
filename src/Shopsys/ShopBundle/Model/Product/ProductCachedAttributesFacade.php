@@ -5,10 +5,17 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use DateTime;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
+use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation;
 use Shopsys\ShopBundle\Model\Transport\DeliveryDate\DeliveryDateFacade;
 use Shopsys\ShopBundle\Model\Transport\Transport;
 
@@ -30,22 +37,59 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     private $deliveryDateFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation
+     */
+    private $productPriceCalculation;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     */
+    private $currentCustomer;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice[]
+     */
+    protected $adeptPricesByProductId;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \Shopsys\ShopBundle\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
         ParameterRepository $parameterRepository,
         Localization $localization,
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
-        DeliveryDateFacade $deliveryDateFacade
+        DeliveryDateFacade $deliveryDateFacade,
+        ProductPriceCalculation $productPriceCalculation,
+        Domain $domain,
+        PricingGroupFacade $pricingGroupFacade,
+        CurrentCustomer $currentCustomer
     ) {
         parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
         $this->deliveryDateFacade = $deliveryDateFacade;
+        $this->productPriceCalculation = $productPriceCalculation;
+        $this->domain = $domain;
+        $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->currentCustomer = $currentCustomer;
     }
 
     /**
@@ -172,5 +216,44 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     public function getExpectedDeliveryDate(?Transport $transport = null): DateTime
     {
         return $this->deliveryDateFacade->getExpectedDeliveryDate($transport);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
+     */
+    public function getProductAdeptPrice(Product $product): ?ProductPrice
+    {
+        if (isset($this->adeptPricesByProductId[$product->getId()])) {
+            return $this->adeptPricesByProductId[$product->getId()];
+        }
+
+        $adeptPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ADEPT, $this->domain->getId());
+
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
+        $user = $this->currentCustomer->findCurrentUser();
+
+        if ($adeptPricingGroup === null || ($user !== null && $user->getPricingGroup()->getId() === $adeptPricingGroup->getId())) {
+            return null;
+        }
+
+        try {
+            $adeptProductPrice = $this->productPriceCalculation->calculatePrice($product, $this->domain->getId(), $adeptPricingGroup);
+        } catch (\Shopsys\FrameworkBundle\Model\Product\Pricing\Exception\MainVariantPriceCalculationException $ex) {
+            $adeptProductPrice = null;
+        }
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productSellingPrice */
+        $productSellingPrice = $this->getProductSellingPrice($product);
+
+        if ($adeptProductPrice->getPriceWithVat()->isLessThan($productSellingPrice->getPriceWithVat())
+            && $adeptProductPrice->getPriceWithVat()->isLessThan($productSellingPrice->defaultProductPrice()->getPriceWithVat())
+        ) {
+            $this->adeptPricesByProductId[$product->getId()] = $adeptProductPrice;
+
+            return $adeptProductPrice;
+        }
+
+        return null;
     }
 }

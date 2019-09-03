@@ -481,3 +481,6 @@ services:
     Shopsys\ShopBundle\Twig\FriendlyDateTimeFormatterExtension:
         tags:
             - { name: twig.extension }
+
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository'
+

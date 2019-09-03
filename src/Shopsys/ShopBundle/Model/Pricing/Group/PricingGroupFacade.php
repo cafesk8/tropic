@@ -9,6 +9,11 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade as BasePricin
 class PricingGroupFacade extends BasePricingGroupFacade
 {
     /**
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository
+     */
+    protected $pricingGroupRepository;
+
+    /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
     public function getAllIndexedByDomainIdOrderedByMinimalPrice(): array
@@ -36,5 +41,15 @@ class PricingGroupFacade extends BasePricingGroupFacade
         }
 
         return $pricingGroupsByDomainId;
+    }
+
+    /**
+     * @param string $name
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null
+     */
+    public function getByNameAndDomainId(string $name, int $domainId): ?PricingGroup
+    {
+        return $this->pricingGroupRepository->getByNameAndDomainId($name, $domainId);
     }
 }

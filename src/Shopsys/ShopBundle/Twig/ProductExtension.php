@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
 use Twig\TwigFunction;
@@ -28,6 +29,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'productDistinguishingParameterValue',
                 [$this, 'getProductDistinguishingParameterValue']
+            ),
+            new TwigFunction(
+                'getProductAdeptPrice',
+                [$this, 'getProductAdeptPrice']
             ),
         ];
     }
@@ -90,5 +95,14 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return $productListDisplayName;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
+     */
+    public function getProductAdeptPrice(Product $product): ?ProductPrice
+    {
+        return $this->productCachedAttributesFacade->getProductAdeptPrice($product);
     }
 }

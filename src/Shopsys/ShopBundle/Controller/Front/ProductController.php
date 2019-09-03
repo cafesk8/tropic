@@ -18,6 +18,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
+use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
@@ -104,6 +105,11 @@ class ProductController extends FrontBaseController
     private $setting;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
+     */
+    private $articleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -118,6 +124,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -133,7 +140,8 @@ class ProductController extends FrontBaseController
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
         ProductFacade $productFacade,
-        Setting $setting
+        Setting $setting,
+        ArticleFacade $articleFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -149,6 +157,7 @@ class ProductController extends FrontBaseController
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->productFacade = $productFacade;
         $this->setting = $setting;
+        $this->articleFacade = $articleFacade;
     }
 
     /**
@@ -192,6 +201,7 @@ class ProductController extends FrontBaseController
             ),
             'youtubeDetail' => $this->productFacade->getYoutubeView($product),
             'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
+            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
         ]);
     }
 
