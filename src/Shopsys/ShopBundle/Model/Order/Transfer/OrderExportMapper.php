@@ -78,7 +78,7 @@ class OrderExportMapper
             'OrderDiscount' => 0.0,
             'ShippingPrice' => $order->getTransportAndPaymentPrice()->getPriceWithVat()->getAmount(),
             'PaymentMetod' => $order->getPaymentName(),
-            'ShippingMetod' => $order->getTransportName(),
+            'ShippingMetod' => $order->getStoreExternalNumber() ?? $order->getTransportName(),
             'CustomerNote' => $order->getNote(),
         ];
 
@@ -91,7 +91,7 @@ class OrderExportMapper
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
                 'Country' => $order->getDeliveryCountry() !== null ? $order->getCountry()->getCode() : '',
-                'BranchNumber' => $order->getStoreExternalNumber() ?? '',
+                'BranchNumber' => '', //IS was not able to tell us, what they use it for
             ];
         }
 
