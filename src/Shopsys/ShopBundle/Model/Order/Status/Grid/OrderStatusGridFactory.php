@@ -11,7 +11,7 @@ class OrderStatusGridFactory extends BaseOrderStatusGridFactory
     public function create()
     {
         $grid = parent::create();
-        $grid->addColumn('transferId', 'os.transferId', t('Id stavu z IS'), true);
+        $grid->addColumn('transferStatus', 'os.transferStatus', t('Stav z IS'), true);
 
         return $grid;
     }

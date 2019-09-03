@@ -17,8 +17,8 @@ class OrderStatusFacade extends BaseOrderStatusFacade
      * @param string $transferId
      * @return \Shopsys\ShopBundle\Model\Order\Status\OrderStatus|null
      */
-    public function findByTransferId(string $transferId): ?OrderStatus
+    public function findByTransferStatus(string $transferId): ?OrderStatus
     {
-        return $this->orderStatusRepository->findByTransferId($transferId);
+        return $this->orderStatusRepository->findByTransferStatus($transferId);
     }
 }

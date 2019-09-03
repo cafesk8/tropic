@@ -11,5 +11,5 @@ class OrderStatusData extends BaseOrderStatusData
     /**
      * @var string|null
      */
-    public $transferId;
+    public $transferStatus;
 }

@@ -196,10 +196,10 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
      */
     private function getOrderStatus(OrderStatusTransferResponseItemData $orderStatusTransferResponseItemData): OrderStatus
     {
-        $orderStatusTransferId = $orderStatusTransferResponseItemData->getTransferStatus();
-        $orderStatus = $this->orderStatusFacade->findByTransferId($orderStatusTransferId);
+        $transferOrderStatus = $orderStatusTransferResponseItemData->getTransferStatus();
+        $orderStatus = $this->orderStatusFacade->findByTransferStatus($transferOrderStatus);
         if ($orderStatus === null) {
-            throw new TransferException(sprintf('Order status with transfer ID `%s` not found', $orderStatusTransferId));
+            throw new TransferException(sprintf('Order status with transfer ID `%s` not found', $transferOrderStatus));
         }
 
         return $orderStatus;

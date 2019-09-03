@@ -9,11 +9,11 @@ use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository as BaseOrde
 class OrderStatusRepository extends BaseOrderStatusRepository
 {
     /**
-     * @param string $transferId
+     * @param string $transferStatus
      * @return \Shopsys\ShopBundle\Model\Order\Status\OrderStatus|null
      */
-    public function findByTransferId(string $transferId): ?OrderStatus
+    public function findByTransferStatus(string $transferStatus): ?OrderStatus
     {
-        return $this->getOrderStatusRepository()->findOneBy(['transferId' => $transferId]);
+        return $this->getOrderStatusRepository()->findOneBy(['transferStatus' => $transferStatus]);
     }
 }

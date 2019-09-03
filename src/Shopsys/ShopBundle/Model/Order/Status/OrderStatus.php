@@ -22,7 +22,7 @@ class OrderStatus extends BaseOrderStatus
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $transferId;
+    protected $transferStatus;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusData $orderStatusData
@@ -31,7 +31,7 @@ class OrderStatus extends BaseOrderStatus
     public function __construct(OrderStatusData $orderStatusData, $type)
     {
         parent::__construct($orderStatusData, $type);
-        $this->transferId = $orderStatusData->transferId;
+        $this->transferStatus = $orderStatusData->transferStatus;
     }
 
     /**
@@ -40,14 +40,14 @@ class OrderStatus extends BaseOrderStatus
     public function edit(OrderStatusData $orderStatusData): void
     {
         parent::edit($orderStatusData);
-        $this->transferId = $orderStatusData->transferId;
+        $this->transferStatus = $orderStatusData->transferStatus;
     }
 
     /**
      * @return string|null
      */
-    public function getTransferId(): ?string
+    public function getTransferStatus(): ?string
     {
-        return $this->transferId;
+        return $this->transferStatus;
     }
 }

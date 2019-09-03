@@ -39,6 +39,6 @@ class OrderStatusDataFactory extends BaseOrderStatusDataFactory
     public function fillFromOrderStatus(BaseOrderStatusData $orderStatusData, OrderStatus $orderStatus)
     {
         parent::fillFromOrderStatus($orderStatusData, $orderStatus);
-        $orderStatusData->transferId = $orderStatus->getTransferId();
+        $orderStatusData->transferStatus = $orderStatus->getTransferStatus();
     }
 }

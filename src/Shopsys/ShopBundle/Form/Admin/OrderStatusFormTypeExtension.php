@@ -18,7 +18,7 @@ class OrderStatusFormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('transferId', TextType::class, [
+        $builder->add('transferStatus', TextType::class, [
             'label' => t('Id stavu z IS'),
         ]);
     }
