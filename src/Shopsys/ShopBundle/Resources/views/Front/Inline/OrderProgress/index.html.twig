@@ -6,7 +6,7 @@
                 ">1. {{ 'Nákupní košík'|trans }}</span>
         </span>
     </li>
-    <li class="box-breadcrumb__item box-breadcrumb__item--separator "><i class="svg svg-triangle"></i></li>
+    <li class="box-progress__item box-progress__item--separator "><i class="svg svg-triangle"></i></li>
     <li class="box-progress__item {% if step == 2 %}box-progress__item--active{% elseif step > 2 %}box-progress__item--done{% endif %}{% if step == 3 %} box-progress__item--previous-active{% endif %}">
         <span class="box-progress__item__inner">
             <span class="box-progress__item__title
@@ -14,7 +14,7 @@
                 ">2. {{ 'Doprava a platba'|trans }}</span>
         </span>
     </li>
-    <li class="box-breadcrumb__item box-breadcrumb__item--separator "><i class="svg svg-triangle"></i></li>
+    <li class="box-progress__item box-progress__item--separator "><i class="svg svg-triangle"></i></li>
     <li class="box-progress__item {% if step == 3 %}box-progress__item--active{% endif %}">
         <span class="box-progress__item__inner">
             <span class="box-progress__item__title

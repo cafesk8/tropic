@@ -1,4 +1,6 @@
-@box-progress-steps-count: 3;
+@box-progress-steps-count: 5;
+@box-progress-padding-horizontal: 17px;
+@box-progress-padding-vertical: 15px;
 
 .box-progress {
     .reset-ul();
@@ -25,8 +27,7 @@
 
         &--separator {
             position: relative;
-            margin: @box-breadcrumb-padding-vertical @box-breadcrumb-padding-horizontal;
-            top: @box-breadcrumb-top-move;
+            margin: 0 @box-progress-padding-horizontal;
 
             .svg {
                 transform: rotate(-90deg);

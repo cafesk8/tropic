@@ -44,8 +44,12 @@
 
         &--separator {
             position: relative;
-            margin: 0 @box-breadcrumb-padding-horizontal @box-breadcrumb-padding-vertical;
+            margin: 0 @box-breadcrumb-padding-horizontal;
             top: @box-breadcrumb-top-move;
+
+            .box-detail & {
+                margin: 0 @box-breadcrumb-padding-horizontal @box-breadcrumb-padding-vertical;
+            }
 
             .svg {
                 transform: rotate(-90deg);
