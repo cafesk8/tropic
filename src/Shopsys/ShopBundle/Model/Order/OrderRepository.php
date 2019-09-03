@@ -161,6 +161,7 @@ class OrderRepository extends BaseOrderRepository
             ->join('o.status', 'os')
             ->where('o.exportStatus = :exportStatus')
             ->andWhere('os.type NOT IN (:orderStatuses)')
+            ->andWhere('o.statusCheckedAt < :dateTime')
             ->orderBy('o.statusCheckedAt', 'ASC')
             ->addOrderBy('o.id', 'ASC')
             ->setMaxResults($limit);
@@ -168,6 +169,7 @@ class OrderRepository extends BaseOrderRepository
         $queryBuilder->setParameters([
             'exportStatus' => Order::EXPORT_SUCCESS,
             'orderStatuses' => [OrderStatus::TYPE_DONE, OrderStatus::TYPE_CANCELED],
+            'dateTime' => new DateTime('-15 minutes'),
         ]);
 
         return $queryBuilder->getQuery()
