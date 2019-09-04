@@ -3,14 +3,13 @@
     Shopsys = window.Shopsys || {};
     Shopsys.hoverIntent = Shopsys.hoverIntent || {};
 
-    Shopsys.hoverIntent.HoverIntent = function ($hoverIntentParent) {
-
+    Shopsys.hoverIntent.HoverIntentSetting = function ($hoverIntentParent) {
         var interval = 250;
         var timeout = 250;
         var classForOpen = 'open';
+        var $selector = $hoverIntentParent;
 
         this.init = function () {
-
             if ($hoverIntentParent.data('hover-intent-interval')) {
                 interval = parseInt($hoverIntentParent.data('hover-intent-interval'));
             }
@@ -22,27 +21,51 @@
             if ($hoverIntentParent.data('hover-intent-class-for-open')) {
                 classForOpen = $hoverIntentParent.data('hover-intent-class-for-open');
             }
+        };
 
-            $hoverIntentParent.hoverIntent({
-                interval: interval,
-                timeout: timeout,
-                over: function () {
-                    $(this).addClass(classForOpen);
-                },
-                out: function () {
-                    if ($(this).find('input:focus').size() === 0) {
-                        $(this).removeClass(classForOpen);
-                    }
-                }
-            });
+        this.getInterval = function () {
+            return interval;
+        };
+
+        this.getTimeout = function () {
+            return timeout;
+        };
+
+        this.getClassForOpen = function () {
+            return classForOpen;
+        };
+
+        this.getSelector = function () {
+            return $selector;
         };
     };
 
-    Shopsys.register.registerCallback(function ($container) {
-        $container.filterAllNodes('.js-hover-intent').each(function () {
-            var hoverIntent = new Shopsys.hoverIntent.HoverIntent($(this));
-            hoverIntent.init();
+    Shopsys.hoverIntent.hoverIntent = function (hoverIntentSettings) {
+        hoverIntentSettings.forEach(function (hoverIntentSetting) {
+            hoverIntentSetting.getSelector().hoverIntent({
+                interval: hoverIntentSetting.getInterval(),
+                timeout: hoverIntentSetting.getTimeout(),
+                over: function () {
+                    $(this).addClass(hoverIntentSetting.getClassForOpen());
+                },
+                out: function () {
+                    if ($(this).find('input:focus').size() === 0) {
+                        $(this).removeClass(hoverIntentSetting.getClassForOpen());
+                    }
+                }
+            });
         });
+    };
+
+    Shopsys.register.registerCallback(function ($container) {
+        var hoverIntentSettings = [];
+        $container.filterAllNodes('.js-hover-intent').each(function () {
+            var hoverIntentSetting = new Shopsys.hoverIntent.HoverIntentSetting($(this));
+            hoverIntentSetting.init();
+            hoverIntentSettings.push(hoverIntentSetting);
+        });
+
+        Shopsys.hoverIntent.hoverIntent(hoverIntentSettings);
     });
 
 })(jQuery);
