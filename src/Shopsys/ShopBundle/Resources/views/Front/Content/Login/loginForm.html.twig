@@ -11,14 +11,17 @@
 {% block main_content %}
 
     {{ form_start(form, {attr: {'multipleForm': true}}) }}
-    {{ form_errors(form, {errors_attr: { class: 'in-message--alert' }}) }}
         <div class="web__line">
             <div class="web__container web__container--big-padding">
 
                 <h1 class="in-title in-title--big in-title--center">{{ 'Login'|trans }}</h1>
 
                 <div class="wrap-well wrap-well--big-padding">
-
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__full padding-bottom-10">
+                            {{ form_errors(form) }}
+                        </div>
+                    </div>
                     <div class="wrap-article__row">
                         <div class="wrap-article__row__half">
                             {{ form_row(form.email, { label: 'E-mail'|trans }) }}
@@ -28,7 +31,7 @@
                         </div>
                     </div>
                     <div class="wrap-article__row">
-                        <div class="wrap-article__row__half">
+                        <div class="wrap-article__row__half padding-top-15 padding-bottom-15">
                             <a href="{{ url('front_registration_reset_password') }}"><span class="underline-small">{{ 'Forgot your password?'|trans }}</span></a>
                         </div>
                         <div class="wrap-article__row__half text-right margin-right-5">
