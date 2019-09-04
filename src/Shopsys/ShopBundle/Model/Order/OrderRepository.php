@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
@@ -148,5 +149,53 @@ class OrderRepository extends BaseOrderRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getBatchToCheckOrderStatus(int $limit): array
+    {
+        $queryBuilder = $this->createOrderQueryBuilder()
+            ->join('o.status', 'os')
+            ->where('o.exportStatus = :exportStatus')
+            ->andWhere('os.type NOT IN (:orderStatuses)')
+            ->andWhere('o.statusCheckedAt < :dateTime')
+            ->orderBy('o.statusCheckedAt', 'ASC')
+            ->addOrderBy('o.id', 'ASC')
+            ->setMaxResults($limit);
+
+        $queryBuilder->setParameters([
+            'exportStatus' => Order::EXPORT_SUCCESS,
+            'orderStatuses' => [OrderStatus::TYPE_DONE, OrderStatus::TYPE_CANCELED],
+            'dateTime' => new DateTime('-5 minutes'),
+        ]);
+
+        return $queryBuilder->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param string $number
+     * @return \Shopsys\ShopBundle\Model\Order\Order|null
+     */
+    public function findByNumber(string $number): ?Order
+    {
+        return $this->getOrderRepository()->findOneBy(['number' => $number]);
+    }
+
+    /**
+     * @param string $number
+     * @return \Shopsys\ShopBundle\Model\Order\Order
+     */
+    public function getByNumber(string $number): Order
+    {
+        $order = $this->findByNumber($number);
+        if ($order === null) {
+            throw new OrderNotFoundException(sprintf('Order with number `%s` not found', $number));
+        }
+
+        return $order;
     }
 }

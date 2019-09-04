@@ -309,8 +309,6 @@ services:
 
     Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade: '@Shopsys\ShopBundle\Component\Cron\CronModuleFacade'
 
-    Shopsys\ShopBundle\Component\Setting\Setting: ~
-
     Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@Shopsys\ShopBundle\Model\Country\CountryFacade'
 
     Shopsys\FrameworkBundle\Model\Country\CountryRepository: '@Shopsys\ShopBundle\Model\Country\CountryRepository'
@@ -484,3 +482,13 @@ services:
 
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository'
 
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusDataFactoryInterface:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory
+
+    Shopsys\FrameworkBundle\Model\Order\Status\Grid\OrderStatusGridFactory: '@Shopsys\ShopBundle\Model\Order\Status\Grid\OrderStatusGridFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository:
+        class: Shopsys\ShopBundle\Model\Order\Status\OrderStatusRepository

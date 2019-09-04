@@ -332,4 +332,33 @@ class OrderFacade extends BaseOrderFacade
             );
         }
     }
+
+    /**
+     * @param string $number
+     * @return \Shopsys\ShopBundle\Model\Order\Order|null
+     */
+    public function findByNumber(string $number): ?Order
+    {
+        return $this->orderRepository->findByNumber($number);
+    }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     */
+    public function getBatchToCheckOrderStatus(int $limit): array
+    {
+        return $this->orderRepository->getBatchToCheckOrderStatus($limit);
+    }
+
+    /**
+     * @param string $number
+     */
+    public function updateStatusCheckedAtByNumber(string $number): void
+    {
+        $order = $this->orderRepository->getByNumber($number);
+
+        $order->updateStatusCheckedAt();
+        $this->em->flush($order);
+    }
 }

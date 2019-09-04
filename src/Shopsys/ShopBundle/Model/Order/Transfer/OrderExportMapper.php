@@ -14,12 +14,6 @@ use Shopsys\ShopBundle\Model\Order\Order;
 
 class OrderExportMapper
 {
-    private const ORDER_DOMAIN_ID_TO_SOURCE = [
-        DomainHelper::CZECH_DOMAIN => 'LPKCZ',
-        DomainHelper::SLOVAK_DOMAIN => 'BSHTR',
-        DomainHelper::GERMAN_DOMAIN => 'BSHDE',
-    ];
-
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Rounding
      */
@@ -53,7 +47,7 @@ class OrderExportMapper
     private function prepareHeader(Order $order): array
     {
         $headerArray = [
-            'Source' => self::ORDER_DOMAIN_ID_TO_SOURCE[$order->getDomainId()],
+            'Source' => DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$order->getDomainId()],
             'Number' => $order->getNumber(),
             'CreatingDateTime' => $order->getCreatedAt()->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [

@@ -195,6 +195,13 @@ class Order extends BaseOrder
     private $customerTransferId;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $statusCheckedAt;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -257,6 +264,7 @@ class Order extends BaseOrder
 
         $this->exportStatus = $orderData->exportStatus;
         $this->exportedAt = $orderData->exportedAt;
+        $this->statusCheckedAt = $orderData->statusCheckedAt;
     }
 
     /**
@@ -282,6 +290,7 @@ class Order extends BaseOrder
         $this->store = $orderData->store;
         $this->storeExternalNumber = $orderData->store !== null ? $orderData->store->getExternalNumber() : null;
         $this->updatedAt = $orderData->updatedAt;
+        $this->statusCheckedAt = $orderData->statusCheckedAt;
 
         return $orderEditResult;
     }
@@ -681,5 +690,21 @@ class Order extends BaseOrder
     public function getStoreExternalNumber(): ?string
     {
         return $this->storeExternalNumber;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStatusCheckedAt(): \DateTime
+    {
+        return $this->statusCheckedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function updateStatusCheckedAt(): void
+    {
+        $this->statusCheckedAt = new DateTime();
     }
 }

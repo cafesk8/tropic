@@ -49,10 +49,16 @@ class OrderData extends BaseOrderData
      */
     public $updatedAt;
 
+    /**
+     * @var \DateTime
+     */
+    public $statusCheckedAt;
+
     public function __construct()
     {
         parent::__construct();
         $this->updatedAt = new DateTime();
+        $this->statusCheckedAt = new DateTime();
     }
 
     /**
