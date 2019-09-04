@@ -16,6 +16,7 @@ class ParameterGridFactory extends BaseParameterGridFactory
         $grid = parent::create();
 
         $grid->addColumn('visibleOnFrontend', 'p.visibleOnFrontend', t('Zobrazit na frontendu'), true);
+        $grid->addColumn('mallId', 'p.mallId', t('Mall ID'), true);
 
         return $grid;
     }

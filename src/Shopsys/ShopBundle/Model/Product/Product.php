@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -100,6 +101,28 @@ class Product extends BaseProduct
     protected $youtubeVideoId;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $mallExport;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $mallExportedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Mapping\Annotation\Timestampable(on="update")
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $updatedAt;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -116,6 +139,9 @@ class Product extends BaseProduct
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
+        $this->mallExport = $productData->mallExport;
+        $this->mallExportedAt = $productData->mallExportedAt;
+        $this->updatedAt = $productData->updatedAt;
     }
 
     /**
@@ -135,6 +161,8 @@ class Product extends BaseProduct
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
+        $this->mallExport = $productData->mallExport;
+        $this->mallExportedAt = $productData->mallExportedAt;
     }
 
     /**
@@ -161,7 +189,7 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      */
     public function getDistinguishingParameter(): ?Parameter
     {
@@ -353,5 +381,34 @@ class Product extends BaseProduct
     public function getYoutubeVideoId(): ?string
     {
         return $this->youtubeVideoId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMallExport(): bool
+    {
+        return $this->mallExport;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getMallExportedAt(): ?DateTime
+    {
+        return $this->mallExportedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function markProductAsExportedToMall(): void
+    {
+        $this->mallExportedAt = new DateTime();
     }
 }

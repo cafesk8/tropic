@@ -48,6 +48,13 @@ class Category extends BaseCategory
     private $legendaryCategory;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $mallCategoryId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -58,6 +65,7 @@ class Category extends BaseCategory
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
+        $this->mallCategoryId = $categoryData->mallCategoryId;
 
         $this->setTranslations($categoryData);
     }
@@ -73,6 +81,7 @@ class Category extends BaseCategory
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
+        $this->mallCategoryId = $categoryData->mallCategoryId;
 
         $this->setTranslations($categoryData);
     }
@@ -116,6 +125,14 @@ class Category extends BaseCategory
     public function isLegendaryCategory(): bool
     {
         return $this->legendaryCategory;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMallCategoryId(): ?string
+    {
+        return $this->mallCategoryId;
     }
 
     /**

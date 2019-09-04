@@ -46,5 +46,6 @@ class ParameterDataFactory extends BaseParameterDataFactory
         $parameterData->type = $parameter->getType();
         $parameterData->mallId = $parameter->getMallId();
         $parameterData->visibleOnFrontend = $parameter->isVisibleOnFrontend();
+        $parameterData->mallId = $parameter->getMallId();
     }
 }

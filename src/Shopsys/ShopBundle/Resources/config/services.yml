@@ -65,6 +65,7 @@ services:
     Shopsys\ShopBundle\Component\Mall\MallClient:
         arguments:
             - '%mall_apiKey%'
+            - '%mall_isProductionMode%'
 
     Shopsys\FrameworkBundle\Component\Cron\CronFacade:
         class: Shopsys\ShopBundle\Component\Cron\CronFacade

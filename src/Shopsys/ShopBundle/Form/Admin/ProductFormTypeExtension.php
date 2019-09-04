@@ -25,6 +25,7 @@ use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
+use Shopsys\ShopBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\ShopBundle\Twig\ProductExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -80,6 +81,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $googleClient;
 
     /**
+     * @var \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension
+     */
+    private $dateTimeFormatterExtension;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -89,6 +95,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \Shopsys\ShopBundle\Twig\ProductExtension $productExtension
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
+     * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      */
     public function __construct(
         ParameterFacade $parameterFacade,
@@ -98,7 +105,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         Domain $domain,
         PricingGroupFacade $pricingGroupFacade,
         ProductExtension $productExtension,
-        GoogleClient $googleClient
+        GoogleClient $googleClient,
+        DateTimeFormatterExtension $dateTimeFormatterExtension
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
@@ -106,6 +114,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->priceExtension = $priceExtension;
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->productExtension = $productExtension;
         $this->googleClient = $googleClient;
     }
@@ -183,6 +192,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
         $this->extendAccessoriesGroup($builder);
+        $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'), $product);
     }
 
     /**
@@ -401,6 +411,23 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($giftGroup);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $displayAvailabilityGroup
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
+     */
+    private function extendDisplayAvailabilityGroup(FormBuilderInterface $displayAvailabilityGroup, ?Product $product): void
+    {
+        $displayAvailabilityGroup
+            ->add('mallExport', YesNoType::class, [
+                'required' => false,
+                'label' => t('Export do Mall.cz'),
+            ])
+            ->add('mallExportedAt', DisplayOnlyType::class, [
+                'label' => t('Exportováno do Mall.cz'),
+                'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getMallExportedAt()) : '~',
+            ]);
     }
 
     /**

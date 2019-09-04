@@ -161,11 +161,14 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string|null $locale
      * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
+    public function getProductDistinguishingParameterValue(Product $product, ?string $locale = null): ProductDistinguishingParameterValue
     {
-        $locale = $this->localization->getLocale();
+        if ($locale === null) {
+            $locale = $this->localization->getLocale();
+        }
 
         $productDistinguishingParameterValue =
             $this->cachedProductDistinguishingParameterValueFacade->findProductDistinguishingParameterValue($product, $locale);
@@ -255,5 +258,34 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         }
 
         return null;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string|null $locale
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
+     */
+    public function getProductParameterValues(Product $product, ?string $locale = null)
+    {
+        if (isset($this->parameterValuesByProductId[$product->getId()])) {
+            return $this->parameterValuesByProductId[$product->getId()];
+        }
+
+        if ($locale === null) {
+            $locale = $this->localization->getLocale();
+        }
+
+        $productParameterValues = $this->parameterRepository->getProductParameterValuesByProductSortedByName($product, $locale);
+        foreach ($productParameterValues as $index => $productParameterValue) {
+            $parameter = $productParameterValue->getParameter();
+            if ($parameter->getName($locale) === null
+                || $productParameterValue->getValue()->getLocale() !== $locale
+            ) {
+                unset($productParameterValues[$index]);
+            }
+        }
+        $this->parameterValuesByProductId[$product->getId()] = $productParameterValues;
+
+        return $productParameterValues;
     }
 }

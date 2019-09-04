@@ -49,4 +49,14 @@ class CategoryFacade extends BaseCategoryFacade
     {
         return $this->categoryRepository->getHighestLegendaryCategoryIdByDomainId($domainId);
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @return string|null
+     */
+    public function findMallCategoryForProduct(Product $product, int $domainId): ?string
+    {
+        return $this->categoryRepository->findMallCategoryForProduct($product, $domainId);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
 class ProductData extends BaseProductData
@@ -63,10 +64,28 @@ class ProductData extends BaseProductData
      */
     public $youtubeVideoId;
 
+    /**
+     * @var bool
+     */
+    public $mallExport;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $mallExportedAt;
+
+    /**
+     * @var \DateTime
+     */
+    public $updatedAt;
+
     public function __construct()
     {
         parent::__construct();
         $this->productsInGroup = [];
         $this->actionPrices = [];
+        $this->mallExport = false;
+        $this->mallExportedAt = null;
+        $this->updatedAt = new DateTime();
     }
 }

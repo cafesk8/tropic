@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
@@ -34,9 +35,12 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
 use Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView;
 use Shopsys\ShopBundle\Model\Category\Category;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
@@ -83,6 +87,16 @@ class ProductFacade extends BaseProductFacade
     private $googleClient;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     */
+    private $setting;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -112,6 +126,8 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -142,7 +158,9 @@ class ProductFacade extends BaseProductFacade
         ProductDataFactory $productDataFactory,
         CategoryRepository $categoryRepository,
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
-        GoogleClient $googleClient
+        GoogleClient $googleClient,
+        PricingGroupFacade $pricingGroupFacade,
+        Setting $setting
     ) {
         parent::__construct(
             $em,
@@ -176,6 +194,8 @@ class ProductFacade extends BaseProductFacade
         $this->categoryRepository = $categoryRepository;
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
         $this->googleClient = $googleClient;
+        $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->setting = $setting;
     }
 
     /**
@@ -395,6 +415,70 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsForExportToMall(int $limit): array
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getProductsForExportToMall(
+            $limit,
+            DomainHelper::CZECH_DOMAIN,
+            $defaultPricingGroup
+        );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     */
+    public function markProductsAsExportedToMall(array $products): void
+    {
+        foreach ($products as $product) {
+            $product->markProductAsExportedToMall();
+        }
+
+        $this->em->flush($products);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForProductExportToMall(Product $product): array
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getVariantsForProductExportToMall(
+            $product,
+            DomainHelper::CZECH_DOMAIN,
+            $defaultPricingGroup
+        );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup $mainVariantGroup
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsForMainVariantGroup(MainVariantGroup $mainVariantGroup, int $domainId): array
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getVariantsForMainVariantGroup(
+            $mainVariantGroup,
+            $domainId,
+            $defaultPricingGroup
+        );
+    }
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
      */
@@ -454,5 +538,34 @@ class ProductFacade extends BaseProductFacade
     public function getByCatnum(string $catnum): array
     {
         return $this->productRepository->getByCatnum($catnum);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsToDeleteFromMall(): array
+    {
+        return $this->productRepository->getProductsToDeleteFromMall(
+            DomainHelper::CZECH_DOMAIN
+        );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
+     * @param int $domainId
+     * @throws \Shopsys\FrameworkBundle\Component\Setting\Exception\SettingValueNotFoundException
+     * @return int
+     */
+    public function getCountOfVisibleVariantsForMainVariant(Product $mainVariant, int $domainId): int
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+        );
+
+        return $this->productRepository->getCountOfVisibleVariantsForMainVariant(
+            $mainVariant,
+            $domainId,
+            $defaultPricingGroup
+        );
     }
 }
