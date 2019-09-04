@@ -169,7 +169,7 @@ class OrderRepository extends BaseOrderRepository
         $queryBuilder->setParameters([
             'exportStatus' => Order::EXPORT_SUCCESS,
             'orderStatuses' => [OrderStatus::TYPE_DONE, OrderStatus::TYPE_CANCELED],
-            'dateTime' => new DateTime('-15 minutes'),
+            'dateTime' => new DateTime('-5 minutes'),
         ]);
 
         return $queryBuilder->getQuery()
