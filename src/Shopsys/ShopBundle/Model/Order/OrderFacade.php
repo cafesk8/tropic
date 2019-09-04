@@ -290,6 +290,7 @@ class OrderFacade extends BaseOrderFacade
         $customer = $order->getCustomer();
         if ($customer !== null) {
             $order->setCustomerTransferId($customer->getTransferId());
+            $order->setCustomerEan($customer->getEan());
             $this->em->flush($order);
         }
 

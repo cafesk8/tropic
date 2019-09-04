@@ -201,6 +201,13 @@ class Order extends BaseOrder
     private $customerTransferId;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, length=13)
+     */
+    private $customerEan;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -536,6 +543,22 @@ class Order extends BaseOrder
     public function setCustomerTransferId(?string $customerTransferId): void
     {
         $this->customerTransferId = $customerTransferId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomerEan(): ?string
+    {
+        return $this->customerEan;
+    }
+
+    /**
+     * @param string|null $customerEan
+     */
+    public function setCustomerEan(?string $customerEan): void
+    {
+        $this->customerEan = $customerEan;
     }
 
     /**
