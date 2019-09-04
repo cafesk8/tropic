@@ -28,12 +28,15 @@
             margin-right: 0;
         }
 
-        @media @query-vl {
+        @media @query-sm {
+            flex-direction: row;
+        }
+
+        @media @query-lg {
             margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
         }
 
-        @media @query-xl {
-            flex-direction: row;
+        @media @query-vl {
             width: calc(~"@{calc-base}/2");
             margin: 0 @list-article-main-item-gap @list-article-main-item-gap 0;
         }
