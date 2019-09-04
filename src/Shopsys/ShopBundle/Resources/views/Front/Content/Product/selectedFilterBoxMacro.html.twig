@@ -5,6 +5,17 @@
                 <div class="box-filter__title">
                     {{ 'Vybrané filtry'|trans }}
                 </div>
+                {% if filterForm.minimalPrice.vars.data|length > 0 %}
+                    {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.minimalPrice.vars.id) }}
+                {% endif %}
+                {% if filterForm.maximalPrice.vars.data|length > 0 %}
+                    {{ _self.filterRow('Cena do'|trans, filterForm.maximalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.maximalPrice.vars.id) }}
+                {% endif %}
+                {% if filterForm.brands.vars.data|length > 0 %}
+                    {% for brand in filterForm.brands.vars.data %}
+                        {{ _self.filterRow('Značka'|trans, brand.name, filterForm.brands.vars.id ~ '_' ~ brand.id) }}
+                    {% endfor %}
+                {% endif %}
                 {% if filterForm.brands.vars.data|length > 0 %}
                     {% for brand in filterForm.brands.vars.data %}
                         {{ _self.filterRow('Značka'|trans, brand.name, filterForm.brands.vars.id ~ '_' ~ brand.id) }}
