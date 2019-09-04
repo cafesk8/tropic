@@ -69,6 +69,8 @@ class CustomerTransferMapper
         $userData->ean = $customerTransferResponseItemData->getBranchNumber();
         $userData->domainId = $domainId;
         $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $userData->ean = $this->findEan($customerTransferResponseItemData->getEans());
+        $userData->memberOfBushmanClub = true;
 
         $billingAddressData = $customerData->billingAddressData;
         $billingAddressData->city = $customerTransferResponseItemData->getCity();
@@ -88,5 +90,18 @@ class CustomerTransferMapper
         $customerData->userData = $userData;
 
         return $customerData;
+    }
+
+    /**
+     * @param array $eans
+     * @return string|null
+     */
+    private function findEan(array $eans): ?string
+    {
+        if (count($eans) === 0) {
+            return null;
+        }
+
+        return end($eans);
     }
 }

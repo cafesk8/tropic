@@ -81,6 +81,11 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
     private $companyTaxNumber;
 
     /**
+     * @var string[]
+     */
+    private $eans;
+
+    /**
      * @param array $restData
      */
     public function __construct(array $restData)
@@ -99,6 +104,7 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
         $this->companyName = $address['Company'] !== null ? TransformString::emptyToNull(trim($address['Company'])) : null;
         $this->companyNumber = $restData['ICO'] !== null ? TransformString::emptyToNull(trim($restData['ICO'])) : null;
         $this->companyTaxNumber = $restData['DIC'] !== null ? TransformString::emptyToNull(trim($restData['DIC'])) : null;
+        $this->eans = $restData['IdCards'];
     }
 
     /**
@@ -211,5 +217,13 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
     public function getCompanyTaxNumber(): ?string
     {
         return $this->companyTaxNumber;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getEans(): array
+    {
+        return $this->eans;
     }
 }
