@@ -4,9 +4,9 @@ services:
         autoconfigure: true
         public: false
 
-#    Shopsys\ShopBundle\Model\Customer\Transfer\CustomerImportCronModule:
-#        tags:
-#            - { name: shopsys.cron, hours: '3', minutes: '00', instanceName: customers}
+    Shopsys\ShopBundle\Model\Customer\Transfer\CustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
 
     Shopsys\ShopBundle\Model\GoPay\GoPayAvailablePaymentsCronModule:
         arguments:

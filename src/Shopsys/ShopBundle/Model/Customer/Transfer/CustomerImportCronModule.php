@@ -71,7 +71,13 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $restResponse = $this->restClient->get('/api/Eshop/Customers');
+        $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
+
+        if ($transfer->getLastStartAt() === false) {
+            $restResponse = $this->restClient->get('/api/Eshop/Customers');
+        } else {
+            $restResponse = $this->restClient->get('/api/Eshop/ChangedCustomers');
+        }
 
         $restResponseData = $restResponse->getData();
         $transferDataItems = [];
