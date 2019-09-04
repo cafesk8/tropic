@@ -62,6 +62,13 @@
                 hoverIntentSetting.getSelector().removeClass(hoverIntentSetting.getClassForOpen());
             });
         }
+
+        // hide all opened intent after click wherever instead of element with hover intent
+        $('body').click(function (event) {
+            if ($(event.target).closest('.js-hover-intent').length === 0) {
+                hideAllOpenedIntent();
+            }
+        });
     };
 
     Shopsys.register.registerCallback(function ($container) {
