@@ -11,8 +11,8 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
-use Shopsys\ShopBundle\Model\Order\OrderFacade;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,13 +24,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PersonalInfoFormType extends AbstractType
 {
     public const VALIDATION_GROUP_COMPANY_CUSTOMER = 'companyCustomer';
     public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
+    public const VALIDATION_GROUP_PHONE_PLUS_REQUIRED = 'phonePlusRequired';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
@@ -43,11 +43,6 @@ class PersonalInfoFormType extends AbstractType
     private $heurekaFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Order\OrderFacade
-     */
-    private $orderFacade;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
     private $domain;
@@ -56,14 +51,12 @@ class PersonalInfoFormType extends AbstractType
      * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade $heurekaFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      */
-    public function __construct(CountryFacade $countryFacade, HeurekaFacade $heurekaFacade, Domain $domain, OrderFacade $orderFacade)
+    public function __construct(CountryFacade $countryFacade, HeurekaFacade $heurekaFacade, Domain $domain)
     {
         $this->countryFacade = $countryFacade;
         $this->heurekaFacade = $heurekaFacade;
         $this->domain = $domain;
-        $this->orderFacade = $orderFacade;
     }
 
     /**
@@ -118,10 +111,11 @@ class PersonalInfoFormType extends AbstractType
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
-                    new Constraints\Callback([$this, 'validateTelephone']),
-                ],
-                'attr' => [
-                    'class' => 'js-personal-info-telephone',
+                    new Constraints\Regex([
+                        'pattern' => '/^\+{1}[^\+]+$/',
+                        'message' => 'Telefonní číslo musí začínat znakem +',
+                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED, self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
+                    ]),
                 ],
             ])
             ->add('companyCustomer', CheckboxType::class, ['required' => false])
@@ -259,10 +253,11 @@ class PersonalInfoFormType extends AbstractType
                         'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
                     ]),
-                    new Constraints\Callback([$this, 'validateTelephone']),
-                ],
-                'attr' => [
-                    'class' => 'js-personal-info-delivery-telephone',
+                    new Constraints\Regex([
+                        'pattern' => '/^\+{1}[^\+]+$/',
+                        'message' => 'Telefonní číslo musí začínat znakem +',
+                        'groups' => [self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
+                    ]),
                 ],
             ])
             ->add('deliveryStreet', TextType::class, [
@@ -340,17 +335,6 @@ class PersonalInfoFormType extends AbstractType
     }
 
     /**
-     * @param string|null $telephone
-     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
-     */
-    public function validateTelephone(?string $telephone, ExecutionContextInterface $context): void
-    {
-        if ($this->orderFacade->isTelephoneValid($telephone) === false) {
-            $context->addViolation('Telefonní číslo musí začínat znakem +');
-        }
-    }
-
-    /**
      * @return string
      */
     public function getBlockPrefix()
@@ -386,6 +370,10 @@ class PersonalInfoFormType extends AbstractType
 
                     if ($this->isPickupPlaceAndStoreNull($orderData) === true) {
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
+                    }
+
+                    if (DomainHelper::isGermanDomain($this->domain)) {
+                        $validationGroups[] = self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED;
                     }
 
                     return $validationGroups;

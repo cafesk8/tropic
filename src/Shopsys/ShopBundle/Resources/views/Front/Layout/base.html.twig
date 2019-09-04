@@ -16,7 +16,9 @@
         <![endif]-->
 
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/frontend/styles/print' ~ getDomain().id ~ '_' ~ getCssVersion() ~ '.css') }}" media="print">
-
+        <script>
+            var isGermanDomain = '{{ isGermanyDomain() }}' == 1;
+        </script>
         {# bootstrap/tooltip.js must be imported before bootstrap/popover.js #}
         {{ importJavascripts([
             'bundles/bmatznerjquery/js/jquery.min.js',
