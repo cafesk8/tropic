@@ -116,6 +116,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
                 $productData->youtubeVideoId = '_fNVmKtS8og';
             }
 
+            $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+
             $product = $this->createProduct(self::PRODUCT_PREFIX . $productNo, $productData);
 
             if ($product->getCatnum() !== null) {
