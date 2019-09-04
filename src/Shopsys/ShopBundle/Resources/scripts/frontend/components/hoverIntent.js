@@ -46,6 +46,7 @@
                 interval: hoverIntentSetting.getInterval(),
                 timeout: hoverIntentSetting.getTimeout(),
                 over: function () {
+                    hideAllOpenedIntent();
                     $(this).addClass(hoverIntentSetting.getClassForOpen());
                 },
                 out: function () {
@@ -55,6 +56,12 @@
                 }
             });
         });
+
+        function hideAllOpenedIntent () {
+            hoverIntentSettings.forEach(function (hoverIntentSetting) {
+                hoverIntentSetting.getSelector().removeClass(hoverIntentSetting.getClassForOpen());
+            });
+        }
     };
 
     Shopsys.register.registerCallback(function ($container) {
