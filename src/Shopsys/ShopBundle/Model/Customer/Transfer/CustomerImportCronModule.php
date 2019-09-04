@@ -99,6 +99,8 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
             );
         }
 
+        $this->customerTransferValidator->validate($itemData);
+
         $customer = $this->customerFacade->findUserByEmailAndDomain(
             $itemData->getEmail(),
             DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$itemData->getCountryCode()]
@@ -108,8 +110,6 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
             $this->logger->addInfo(sprintf('Customer with transfer ID `%s` now found, will be skipped', $itemData->getDataIdentifier()));
             return;
         }
-
-        $this->customerTransferValidator->validate($itemData);
 
         $customerData = $this->customerTransferMapper->mapTransferDataToCustomerData($itemData, $customer);
 
