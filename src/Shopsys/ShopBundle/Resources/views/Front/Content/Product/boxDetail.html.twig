@@ -111,7 +111,7 @@
                                     <a
                                         href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}"
                                         class="box-detail__variants__title__link underline-small"
-                                        onclick="Shopsys.window({ content: '{{ render(controller('ShopsysShopBundle:Front/Article:detailForModal', { 'id': productSizeArticleId }))|escape('js') }}' }); return false;"
+                                        onclick="Shopsys.window({ content: '{{ render(controller('ShopsysShopBundle:Front/Article:detailForModal', { 'id': productSizeArticleId }))|escape('js') }}', cssClass: 'window-popup--wide' }); return false;"
                                     >
                                         {{ 'Jak vybrat správnou velikost?'}}
                                     </a>
