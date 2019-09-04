@@ -481,4 +481,3 @@ services:
     Shopsys\ShopBundle\Twig\FriendlyDateTimeFormatterExtension:
         tags:
             - { name: twig.extension }
-

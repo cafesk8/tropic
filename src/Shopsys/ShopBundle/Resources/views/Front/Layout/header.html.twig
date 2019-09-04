@@ -98,7 +98,11 @@
 
                 <div class="box-dropdown js-hover-intent">
                     <div class="box-dropdown__select">
-                        {{ 'Váš účet'|trans }}
+                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                            {{ 'Váš účet'|trans }}
+                        {% else %}
+                            {{ 'Přihlaš se'|trans }}
+                        {% endif %}
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
                         <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
                     </div>
