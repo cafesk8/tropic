@@ -23,7 +23,7 @@
 
             {% for regionName, stores in storesIndexedByRegion %}
                 {% if regionName|length != 0 %}
-                    <h2 id="{{ regionName|webalize }}">{{ regionName }} ({{ stores|length }})</h2>
+                    <h2 class="in-title" id="{{ regionName|webalize }}">{{ regionName }}&nbsp;({{ stores|length }})</h2>
                 {% endif %}
                 <ul class="list-stores">
                     {% for store in stores %}
