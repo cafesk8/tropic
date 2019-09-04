@@ -213,8 +213,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData|null $productTransferResponseItemVariantData
      * @return \Shopsys\ShopBundle\Model\Product\Product
      */
-    private function processProductItemWithVariants(ProductTransferResponseItemData $productTransferResponseItemData, ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData = null): Product
-    {
+    private function processProductItemWithVariants(
+        ProductTransferResponseItemData $productTransferResponseItemData,
+        ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData = null
+    ): Product {
         $parameterColor = null;
         $parameterSize = null;
 
