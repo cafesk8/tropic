@@ -14,7 +14,6 @@ use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
-use Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferResponseItemDataException;
 use Shopsys\ShopBundle\Model\Transfer\Transfer;
@@ -44,11 +43,6 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
     private $productPriceRecalculator;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade
-     */
-    private $productManualInputPriceFacade;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
      */
     private $pricingGroupSettingFacade;
@@ -59,7 +53,6 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ProductPriceTransferValidator $productPriceTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
-     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade $productManualInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
@@ -68,7 +61,6 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
         ProductPriceTransferValidator $productPriceTransferValidator,
         ProductFacade $productFacade,
         ProductPriceRecalculator $productPriceRecalculator,
-        ProductManualInputPriceFacade $productManualInputPriceFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade
     ) {
         parent::__construct($transferCronModuleDependency);
@@ -76,7 +68,6 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
         $this->productPriceTransferValidator = $productPriceTransferValidator;
         $this->productFacade = $productFacade;
         $this->productPriceRecalculator = $productPriceRecalculator;
-        $this->productManualInputPriceFacade = $productManualInputPriceFacade;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
     }
 
@@ -139,10 +130,10 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
 
         $this->productFacade->setActionPriceForProduct($product, $actionPrice, $productTransferResponseItemData->getDomainId());
 
-        $this->productManualInputPriceFacade->refresh(
+        $this->productFacade->refreshProductManualInputPricesForDomain(
             $product,
-            $pricingGroup,
-            $productTransferResponseItemData->getPrice()
+            [$pricingGroup->getId() => $productTransferResponseItemData->getPrice()],
+            $productTransferResponseItemData->getDomainId()
         );
 
         // ProductPriceRecalculator::recalculateOneProductPrices uses cached pricing groups,

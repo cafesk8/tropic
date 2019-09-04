@@ -495,6 +495,22 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
+     * @param int $domainId
+     */
+    public function refreshProductManualInputPricesForDomain(Product $product, array $manualInputPrices, int $domainId)
+    {
+        foreach ($this->pricingGroupRepository->getPricingGroupsByDomainId($domainId) as $pricingGroup) {
+            $this->productManualInputPriceFacade->refresh(
+                $product,
+                $pricingGroup,
+                $manualInputPrices[$pricingGroup->getId()] ?? null
+            );
+        }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView|null
      */
     public function getYoutubeView(Product $product): ?YoutubeView
