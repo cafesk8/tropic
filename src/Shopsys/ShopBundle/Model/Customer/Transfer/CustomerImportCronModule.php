@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
-use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\Customer\Transfer\Exception\InvalidCustomerTransferResponseItemDataException;
 
 class CustomerImportCronModule extends AbstractTransferImportCronModule
@@ -23,12 +23,7 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
     private $restClient;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferMapper
-     */
-    private $customerTransferMapper;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
      */
     private $customerFacade;
 
@@ -40,20 +35,17 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
-     * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferMapper $customerTransferMapper
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         RestClient $restClient,
-        CustomerTransferMapper $customerTransferMapper,
         CustomerFacade $customerFacade,
         CustomerTransferValidator $customerTransferValidator
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->restClient = $restClient;
-        $this->customerTransferMapper = $customerTransferMapper;
         $this->customerFacade = $customerFacade;
         $this->customerTransferValidator = $customerTransferValidator;
     }
@@ -101,6 +93,7 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
 
         $this->customerTransferValidator->validate($itemData);
 
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $this->customerFacade->findUserByEmailAndDomain(
             $itemData->getEmail(),
             DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$itemData->getCountryCode()]
@@ -111,10 +104,13 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
             return;
         }
 
-        $customerData = $this->customerTransferMapper->mapTransferDataToCustomerData($itemData, $customer);
-
-        $this->customerFacade->editByCustomer($customer->getId(), $customerData);
-        $this->logger->addInfo(sprintf('Customer with transfer ID `%s` was edited', $itemData->getDataIdentifier()));
+        if ($customer->getTransferId() === null) {
+            $this->customerFacade->editCustomerTransferId($customer, $itemData->getDataIdentifier());
+            $this->logger->addInfo(sprintf(
+                'Customer with transfer ID `%s`, transfer ID has been edited',
+                $itemData->getDataIdentifier()
+            ));
+        }
     }
 
     /**

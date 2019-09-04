@@ -138,6 +138,14 @@ class User extends BaseUser
     }
 
     /**
+     * @param string $transferId
+     */
+    public function setTransferId(string $transferId): void
+    {
+        $this->transferId = $transferId;
+    }
+
+    /**
      * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      * @param string $password
      */
