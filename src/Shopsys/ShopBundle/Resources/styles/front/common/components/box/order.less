@@ -12,14 +12,18 @@
     flex-direction: column;
     margin-top: @box-order-top-gap;
 
-    @media @query-xl {
+    @media @query-vl {
         flex-direction: row;
+    }
+
+    @media @query-xl {
+        padding: 0 @web-padding-big;
     }
 
     &__info {
         margin-bottom: @margin-gap;
 
-        @media @query-xl {
+        @media @query-vl {
             width: @box-order-info-width;
         }
 
@@ -48,7 +52,7 @@
     &__cart {
         margin-bottom: @margin-gap;
 
-        @media @query-xl {
+        @media @query-vl {
             width: @box-order-cart-width + @box-order-cart-gap;
         }
     }
