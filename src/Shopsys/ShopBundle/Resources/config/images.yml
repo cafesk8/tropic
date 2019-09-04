@@ -49,7 +49,7 @@
     multiple: true
     sizes:
         -   name: ~
-            width: 410
+            width: 690
             height: ~
             crop: false
             occurrence: 'Front-end: Main image in product detail'
