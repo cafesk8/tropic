@@ -28,15 +28,17 @@
                         } }) }}
                         <span class="css-radio__image"></span>
                     </span>
-                    <span class="box-chooser__item__title">
-                        <span class="box-chooser__item__title__name">
-                            {{ choice.data.name }}
-                        </span>
-                        {% if imageExists(choice.data) %}
-                            <span class="box-chooser__item__image">
-                                {{ image(choice.data, { lazy: false }) }}
+                    <span class="box-chooser__item__content">
+                        <span class="box-chooser__item__title">
+                            <span class="box-chooser__item__title__name">
+                                {{ choice.data.name }}
                             </span>
-                        {% endif %}
+                            {% if imageExists(choice.data) %}
+                                <span class="box-chooser__item__image">
+                                    {{ image(choice.data, { lazy: false }) }}
+                                </span>
+                            {% endif %}
+                        </span>
                         {% if choice.data.description %}
                             <span class="box-chooser__item__title__description">
                                 ({{ choice.data.description }})
@@ -101,15 +103,17 @@
                         {{ form_widget(child, { attr: { class: 'css-radio js-order-payment-input' ~ (isGoPayBankTransfer ? ' js-gopay-bank-transfer-input' : ''), 'data-id': choice.data.id} }) }}
                         <span class="css-radio__image"></span>
                     </span>
-                    <span class="box-chooser__item__title">
-                        <span class="box-chooser__item__title__name">
-                            {{ choice.data.name }}
-                        </span>
-                        {% if imageExists(choice.data) %}
-                            <span class="box-chooser__item__image">
-                                {{ image(choice.data, { lazy: false }) }}
+                    <span class="box-chooser__item__content">
+                        <span class="box-chooser__item__title">
+                            <span class="box-chooser__item__title__name">
+                                {{ choice.data.name }}
                             </span>
-                        {% endif %}
+                            {% if imageExists(choice.data) %}
+                                <span class="box-chooser__item__image">
+                                    {{ image(choice.data, { lazy: false }) }}
+                                </span>
+                            {% endif %}
+                        </span>
                         {% if choice.data.description %}
                             <span class="box-chooser__item__title__description">
                                 ({{ choice.data.description }})

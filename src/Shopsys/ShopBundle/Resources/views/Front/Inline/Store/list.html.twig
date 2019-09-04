@@ -1,14 +1,17 @@
-<div>
-    <div>
-        <h3>{{ 'Vyberte prodejnu'|trans }}</h3>
+
+    <div class="box-popup-add__content__title">
+        <span class="box-popup-add__content__title__text double-lined">
+            {{ 'Vyberte prodejnu'|trans }}
+        </span>
     </div>
-    <div>
-        <div>
-            {% include '@ShopsysShop/Front/Inline/Common/pickupPlaces.html.twig' with {
-                pickupPlaces: stores,
-                orderFormFieldClass: 'js-store-input',
-                chosenPickupPlace: chosenStore
-            } %}
+    <div class="box-pickup-place__results">
+        <div class="box-pick-up-place__list">
+            <div class="list-pick-up-place">
+                {% include '@ShopsysShop/Front/Inline/Common/pickupPlaces.html.twig' with {
+                    pickupPlaces: stores,
+                    orderFormFieldClass: 'js-store-input',
+                    chosenPickupPlace: chosenStore
+                } %}
+            </div>
         </div>
     </div>
-</div>

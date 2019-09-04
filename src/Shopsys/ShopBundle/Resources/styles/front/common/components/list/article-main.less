@@ -16,6 +16,10 @@
         margin-bottom: @list-article-main-bottom-gap;
     }
 
+    @media @query-xl {
+        padding: 0 @web-padding-big;
+    }
+
     &__item {
         display: flex;
         flex-direction: column;
@@ -42,15 +46,16 @@
         }
 
         &__image {
-            width: @list-article-main-image-width;
-            max-width: 100%;
-            margin: 0 auto;
+            min-height: 500px;
+            width: 100%;
 
             font-size: 0;
-            background-color: @color-f;
+            
+            @media @query-lg {
+                max-width: @list-article-main-image-width;
+                min-height: @list-article-main-image-height;
+                margin: 0 auto;
 
-            img {
-                max-height: @list-article-main-image-height;
             }
         }
 

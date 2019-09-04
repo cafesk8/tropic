@@ -15,7 +15,7 @@
                 </a>
             </li>
             {% if currentCategory is defined %}
-                {% if loop.index == 2 %}
+                {% if loop.index == 2 and currentCategory.rightBannerText is not null %}
                     <li class="list-categories__item">
                         <span class="list-categories__item__text">
                             {{ currentCategory.rightBannerText }}
@@ -23,7 +23,7 @@
                     </li>
                 {% endif %}
 
-                {% if loop.index == 5 %}
+                {% if loop.index == 5 and currentCategory.leftBannerText is not null %}
                     <li class="list-categories__item">
                         <span class="list-categories__item__text list-categories__item__text--text-right">
                             {{ currentCategory.leftBannerText }}
