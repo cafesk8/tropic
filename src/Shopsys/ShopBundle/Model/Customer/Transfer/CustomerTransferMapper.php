@@ -50,13 +50,9 @@ class CustomerTransferMapper
      */
     public function mapTransferDataToCustomerData(
         CustomerTransferResponseItemData $customerTransferResponseItemData,
-        ?User $customer
+        User $customer
     ): CustomerData {
-        if ($customer === null) {
-            $customerData = $this->customerDataFactory->create();
-        } else {
-            $customerData = $this->customerDataFactory->createFromUser($customer);
-        }
+        $customerData = $this->customerDataFactory->createFromUser($customer);
 
         /** @var $userData \Shopsys\ShopBundle\Model\Customer\UserData */
         $userData = $customerData->userData;

@@ -104,18 +104,17 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
             DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$itemData->getCountryCode()]
         );
 
-        $isNew = $customer === null;
-        $this->customerTransferValidator->validate($itemData, $isNew);
+        if ($customer === null) {
+            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` now found, will be skipped', $itemData->getDataIdentifier()));
+            return;
+        }
+
+        $this->customerTransferValidator->validate($itemData);
 
         $customerData = $this->customerTransferMapper->mapTransferDataToCustomerData($itemData, $customer);
 
-        if ($isNew === true) {
-            $this->customerFacade->create($customerData);
-            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` was created', $itemData->getDataIdentifier()));
-        } else {
-            $this->customerFacade->editByCustomer($customer->getId(), $customerData);
-            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` was edited', $itemData->getDataIdentifier()));
-        }
+        $this->customerFacade->editByCustomer($customer->getId(), $customerData);
+        $this->logger->addInfo(sprintf('Customer with transfer ID `%s` was edited', $itemData->getDataIdentifier()));
     }
 
     /**
