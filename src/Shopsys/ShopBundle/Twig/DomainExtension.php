@@ -17,16 +17,16 @@ use Twig\TwigFunction;
 class DomainExtension extends BaseDomainExtension
 {
     private const DOMAINS_ICON_BY_DOMAIN_ID = [
-        1 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Czech_Republic.png',
-        2 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Slovakia.png',
-        3 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Germany.png',
-        //4 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Italy.png',
-        //5 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Netherlands.png',
-        //6 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Austria.png',
-        //7 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Poland.png',
-        //8 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Hungary.png',
-        //9 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_England.png',
-        //10 => 'https://cdn2.iconfinder.com/data/icons/world-flag-icons/256/Flag_of_Russia.png',
+        1 => '/assets/frontend/images/flags/czech-republic.png',
+        2 => '/assets/frontend/images/flags/slovakia.png',
+        3 => '/assets/frontend/images/flags/germany.png',
+        //4 => '/assets/frontend/images/flags/italy.png',
+        //5 => '/assets/frontend/images/flags/netherlands.png',
+        //6 => '/assets/frontend/images/flags/austria.png',
+        //7 => '/assets/frontend/images/flags/poland.png',
+        //8 => '/assets/frontend/images/flags/hungary.png',
+        //9 => '/assets/frontend/images/flags/united-kingdom.png',
+        //10 => '/assets/frontend/images/flags/russia.png',
     ];
 
     private const TRANSLATED_DOMAIN_NAME_BY_DOMAIN_ID = [
