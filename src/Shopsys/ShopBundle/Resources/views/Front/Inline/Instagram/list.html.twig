@@ -13,7 +13,7 @@
                     <a href="{{ instagramTemplateObject.link }}" title="{{ instagramTemplateObject.title }}" target="_blank">
                 {% endif %}
 
-                <img src="{{ instagramTemplateObject.url }}" alt="{{ instagramTemplateObject.title }}">
+                <img src="{{ asset('assets/frontend/images/design/placeholder.gif') }}" data-original="{{ instagramTemplateObject.url }}" alt="{{ instagramTemplateObject.title }}" class="js-lazy-load">
 
                 {% if instagramTemplateObject.link is not null %}
                     </a>
