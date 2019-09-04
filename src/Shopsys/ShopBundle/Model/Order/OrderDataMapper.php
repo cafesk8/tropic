@@ -62,7 +62,6 @@ class OrderDataMapper extends BaseOrderDataMapper
         $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
         $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
 
-        $frontOrderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
 
         $frontOrderData->deliveryCompanyName = $pickupPlace->getName();
@@ -94,7 +93,6 @@ class OrderDataMapper extends BaseOrderDataMapper
 
         $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
 
-        $frontOrderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
 
         $frontOrderData->deliveryCompanyName = $store->getName();
