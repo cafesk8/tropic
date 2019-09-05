@@ -75,15 +75,15 @@
                                                 <div class="table-cart__cell__price__primary">
                                                     {{ cartItemPrice.unitPrice.priceWithVat|price }}
                                                 </div>
-                                            </div>
-                                            {% if promoCode is not null %}
+                                                {% if promoCode is not null %}
                                                 <div class="table-cart__cell__discount">
                                                     {% if cartItemDiscounts[index] is not null %}
-                                                        &nbsp;{{ promoCode.code }}
-                                                        {{ cartItemDiscounts[index].priceWithVat|price }}
+                                                    &nbsp;{{ promoCode.code }}
+                                                    {{ cartItemDiscounts[index].priceWithVat|price }}
                                                     {% endif %}
                                                 </div>
-                                            {% endif %}
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
 
