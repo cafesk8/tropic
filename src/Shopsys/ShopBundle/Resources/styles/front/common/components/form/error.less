@@ -5,7 +5,7 @@
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    
+
     cursor: default;
 
     @media @query-md {
@@ -16,6 +16,12 @@
     &--under {
         display: inline;
         width: 100%;
+        top: 0;
+
+        .form-choice &,
+        .form-line__input--full & {
+            top: 10px;
+        }
     }
 
     .box-chooser & {

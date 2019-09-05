@@ -4,18 +4,18 @@
 {{ form_errors(form) }}
 <div class="wrap-article__row">
     <div class="wrap-article__row__half">
-        {{ form_row(form.name, { label: 'Full name'|trans, attr: { tabindex: 1 }  }) }}
+        {{ form_row(form.name, { label: 'Full name'|trans, attr: { tabindex: 1 }, errors_attr: { class: 'form-error--under' }  }) }}
     </div>
     <div class="wrap-article__row__half">
-        {{ form_row(form.email, { label: 'E-mail'|trans, attr: { tabindex: 3 }  }) }}
+        {{ form_row(form.email, { label: 'E-mail'|trans, attr: { tabindex: 3 }, errors_attr: { class: 'form-error--under' }  }) }}
     </div>
 </div>
 <div class="wrap-article__row">
     <div class="wrap-article__row__half">
-        {{ form_row(form.surname, { label: 'Příjmení'|trans, attr: { tabindex: 2 }  }) }}
+        {{ form_row(form.surname, { label: 'Příjmení'|trans, attr: { tabindex: 2 }, errors_attr: { class: 'form-error--under' }  }) }}
     </div>
     <div class="wrap-article__row__half">
-        {{ form_row(form.telephone, { label: 'Telefon'|trans, attr: { tabindex: 4 }  }) }}
+        {{ form_row(form.telephone, { label: 'Telefon'|trans, attr: { tabindex: 4 }, errors_attr: { class: 'form-error--under' }  }) }}
     </div>
 </div>
 <div class="wrap-article__row">
@@ -25,10 +25,10 @@
                 <label class="input__label" for="{{ form.message.vars.id }}">
                     {{ 'Message'|trans }}
                 </label>
-                {{ form_widget(form.message, { rowClass: 'form-line-block', errors_attr: { class: 'form-error--line-block' }, attr: { tabindex: 5 } }) }}
+                {{ form_widget(form.message, { attr: { tabindex: 5 } }) }}
             </div>
             <div class="form-line__error">
-                {{ form_errors(form.message) }}
+                {{ form_errors(form.message, { errors_attr: { class: 'form-error--under' }} ) }}
             </div>
         </div>
     </div>
@@ -41,9 +41,9 @@
                 form.privacyPolicy,
                 {
                     label:  'I agree with  <a href="%url%" target="_blank">privacy policy</a>.'|trans({'%url%': articleUrl}),
-                    errors_attr: { class: 'form-error--choice' },
+                    errors_attr: { class: 'form-error--under' },
                     rawLabel:true,
-                    rowClass: 'form-line-block'
+                    rowClass: 'form-line-block',
                 }
             )}}
         {% else %}
@@ -51,8 +51,7 @@
                 form.privacyPolicy,
                 {
                     label:  'I agree with privacy policy.'|trans,
-                    errors_attr: { class: 'form-error--choice' },
-                    rowClass: 'form-line-block'
+                    errors_attr: { class: 'form-error--under' }
                 }
             )}}
         {% endif %}
