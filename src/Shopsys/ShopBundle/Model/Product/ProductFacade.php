@@ -279,6 +279,25 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->em->flush();
+
+        $this->updateTotalProductStockQuantity($product);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     */
+    private function updateTotalProductStockQuantity(Product $product): void
+    {
+        $totalStockQuantity = 0;
+        foreach ($product->getStocksWithoutZeroQuantityOnStore() as $productStoreStock) {
+            $totalStockQuantity += $productStoreStock->getStockQuantity() ?? 0;
+        }
+        $product->setStockQuantity($totalStockQuantity);
+        $this->em->flush($product);
+
+        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
+        $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
+        $this->em->flush($product);
     }
 
     /**

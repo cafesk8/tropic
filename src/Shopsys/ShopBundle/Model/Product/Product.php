@@ -411,4 +411,12 @@ class Product extends BaseProduct
     {
         $this->mallExportedAt = new DateTime();
     }
+
+    /**
+     * @param int $stockQuantity
+     */
+    public function setStockQuantity(int $stockQuantity): void
+    {
+        $this->stockQuantity = $stockQuantity;
+    }
 }
