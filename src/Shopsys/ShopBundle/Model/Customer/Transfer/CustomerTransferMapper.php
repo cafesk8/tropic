@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\User;
@@ -102,6 +103,6 @@ class CustomerTransferMapper
             return null;
         }
 
-        return end($eans);
+        return TransformString::emptyToNull(end($eans));
     }
 }
