@@ -3,6 +3,7 @@
 @list-variants-item-padding: 5px;
 @list-variants-item-gap-with-image: 8px;
 @list-variants-item-bg: @color-f;
+@list-variants-item-bg-hover: #d4ebd0;
 @list-variants-item-bg-active: @color-green;
 @list-variants-item-border-color: @color-green;
 @list-variants-item-disabled-font-color: #cecdcd;
@@ -37,6 +38,10 @@
         color: @color-brown-light-2;
         background-color: @list-variants-item-bg;
         border: 3px solid @list-variants-item-border-color;
+
+        &:hover {
+            background-color: @list-variants-item-bg-hover;
+        }
 
         &.active {
             color: @color-f;
