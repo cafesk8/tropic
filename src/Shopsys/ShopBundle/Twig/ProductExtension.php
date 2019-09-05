@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
-use Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\ShopBundle\Model\Category\CategoryFacade;
-use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
-use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Twig\TwigFunction;
 
 class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
@@ -19,26 +15,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
      */
     protected $productCachedAttributesFacade;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
-     */
-    private $productFacade;
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
-     */
-    public function __construct(
-        CategoryFacade $categoryFacade,
-        ProductCachedAttributesFacade $productCachedAttributesFacade,
-        ProductFacade $productFacade
-    ) {
-        parent::__construct($categoryFacade, $productCachedAttributesFacade);
-
-        $this->productFacade = $productFacade;
-    }
 
     /**
      * @return array
@@ -135,17 +111,11 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param int $productId
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @return string
      */
-    public function getProductParameters(int $productId): string
+    public function getProductParameters(Product $product): string
     {
-        try {
-            $product = $this->productFacade->getById($productId);
-        } catch (ProductNotFoundException $productNotFoundException) {
-            return '';
-        }
-
         $parametersForProduct = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
 
         if ($parametersForProduct === null) {

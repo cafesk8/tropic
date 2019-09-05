@@ -40,8 +40,11 @@
         $container.filterAllNodes('.js-take-gift')
             .change(function () {
                 var isCurrentChecked = $(this).is(':checked');
+                var cartItemProductId = $(this).attr('data-cart-product-id');
                 $('.js-take-gift').each(function () {
-                    $(this).prop('checked', false);
+                    if ($(this).attr('data-cart-product-id') === cartItemProductId) {
+                        $(this).prop('checked', false);
+                    }
                 });
 
                 $(this).prop('checked', isCurrentChecked);
