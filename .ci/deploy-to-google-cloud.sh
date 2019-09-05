@@ -36,10 +36,6 @@ yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.sp
 yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${FIRST_DOMAIN_HOSTNAME}
 yq write --inplace kubernetes/ingress.yml spec.rules[1].host ${SECOND_DOMAIN_HOSTNAME}
 
-# Set domain name into ingress tls patch so ingress can listen on domain name
-yq write --inplace kubernetes/kustomize/overlays/production/ingress-patch.yaml spec.tls[0].hosts[+] ${FIRST_DOMAIN_HOSTNAME}
-yq write --inplace kubernetes/kustomize/overlays/production/ingress-patch.yaml spec.tls[1].hosts[+] ${SECOND_DOMAIN_HOSTNAME}
-
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${FIRST_DOMAIN_HOSTNAME}
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${SECOND_DOMAIN_HOSTNAME}
