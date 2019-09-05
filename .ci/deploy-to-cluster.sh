@@ -48,16 +48,6 @@ yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
 
-if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
-    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
-    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
-    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_3}
-#else
-#    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/from-to-www-redirect" "true"
-#    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/auth-type" basic
-#    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/auth-secret" shopsys
-#    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/auth-realm" "Authentication Required - ok"
-fi
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_1}
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_2}
@@ -140,12 +130,7 @@ yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES
 yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
 
-if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
-    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist null
-    yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address null
-else
-    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
-fi
+yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
 
 # Set migration database IPs
 yq write --inplace app/config/parameters.yml parameters.migration_database_host mysql
