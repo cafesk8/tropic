@@ -14,6 +14,7 @@ metadata:
 spec:
     tls:
     -   hosts: ~
+        secretName: tls-certificate
     rules:
     -   host: ~
         http:
