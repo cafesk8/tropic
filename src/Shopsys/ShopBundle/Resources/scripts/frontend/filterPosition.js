@@ -23,7 +23,7 @@
 
     Shopsys.filterPosition.setFilterPosition = function () {
         var newPosition = 0;
-        var position = $('.js-product-list');
+        var position = $('.js-product-list').position();
 
         if ($(window).width() < windowWidthLimit && position !== undefined && position.top !== undefined) {
             newPosition = position.top;
