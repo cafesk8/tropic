@@ -9,10 +9,10 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
+use Shopsys\ShopBundle\Component\CardEan\CardEanGenerator;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
-use Shopsys\ShopBundle\Model\Customer\EanFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -49,9 +49,9 @@ class RegistrationController extends FrontBaseController
     private $articleFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\EanFacade
+     * @var \Shopsys\ShopBundle\Component\CardEan\CardEanGenerator
      */
-    private $eanFacade;
+    private $cardEanGenerator;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -59,7 +59,7 @@ class RegistrationController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
-     * @param \Shopsys\ShopBundle\Model\Customer\EanFacade $eanFacade
+     * @param \Shopsys\ShopBundle\Component\CardEan\CardEanGenerator $cardEanGenerator
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(
@@ -68,7 +68,7 @@ class RegistrationController extends FrontBaseController
         CustomerFacade $customerFacade,
         Authenticator $authenticator,
         LegalConditionsFacade $legalConditionsFacade,
-        EanFacade $eanFacade,
+        CardEanGenerator $cardEanGenerator,
         ArticleFacade $articleFacade
     ) {
         $this->domain = $domain;
@@ -76,7 +76,7 @@ class RegistrationController extends FrontBaseController
         $this->customerFacade = $customerFacade;
         $this->authenticator = $authenticator;
         $this->legalConditionsFacade = $legalConditionsFacade;
-        $this->eanFacade = $eanFacade;
+        $this->cardEanGenerator = $cardEanGenerator;
         $this->articleFacade = $articleFacade;
     }
 
@@ -103,7 +103,7 @@ class RegistrationController extends FrontBaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userData = $form->getData();
-            $userData->ean = $this->eanFacade->getNewGeneratedEan();
+            $userData->ean = $this->cardEanGenerator->generate();
 
             $user = $this->customerFacade->register($userData);
             $this->authenticator->loginUser($user, $request);

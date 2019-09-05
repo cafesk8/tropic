@@ -51,5 +51,4 @@ class CardEan
     {
         return $this->ean;
     }
-
 }

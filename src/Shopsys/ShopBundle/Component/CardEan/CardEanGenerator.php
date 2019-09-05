@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Shopsys\ShopBundle\Model\Customer;
+namespace Shopsys\ShopBundle\Component\CardEan;
 
-class EanFacade
+class CardEanGenerator
 {
-    public const EAN_RANGE_START = 100000000000;
-    public const EAN_RANGE_END = 999999999999;
+    private const EAN_RANGE_START = 100000000000;
+    private const EAN_RANGE_END = 999999999999;
 
     /**
      * @return string
      */
-    public function getNewGeneratedEan(): string
+    public function generate(): string
     {
         $code = (string)mt_rand(self::EAN_RANGE_START, self::EAN_RANGE_END);
         $code .= $this->getCheckDigit($code);
