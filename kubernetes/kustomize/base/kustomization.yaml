@@ -15,6 +15,7 @@ resources:
 -   ../../services/webserver-php-fpm.yml
 -   ../../ingress.yml
 -   ../../namespace.yml
+-   ../../nginx-configMap.yml
 namespace: ~
 configMapGenerator:
     -   name: domains-urls
@@ -23,7 +24,6 @@ configMapGenerator:
     -   name: parameters
         files:
         -   ../../../app/config/parameters.yml
-
     -   name: nginx-configuration
         files:
         -   ../../../docker/nginx/s3/nginx.conf
