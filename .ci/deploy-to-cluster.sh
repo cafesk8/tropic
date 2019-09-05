@@ -138,7 +138,13 @@ yq write --inplace app/config/parameters.yml parameters.database_password ${POST
 yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES_DATABASE_PORT}
 yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
-yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
+
+if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
+    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist null
+    yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address null
+else
+    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
+fi
 
 # Set migration database IPs
 yq write --inplace app/config/parameters.yml parameters.migration_database_host mysql
