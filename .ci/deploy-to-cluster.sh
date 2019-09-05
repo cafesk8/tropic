@@ -44,10 +44,19 @@ yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1
 yq write --inplace kubernetes/ingress.yml spec.rules[1].host ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.rules[2].host ${DOMAIN_HOSTNAME_3}
 
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[0] ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[1] ${DOMAIN_HOSTNAME_2}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[2] ${DOMAIN_HOSTNAME_3}
+yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_1}
+yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
+yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
 
+if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
+    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
+    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
+    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_3}
+else
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/auth-type" basic
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/auth-secret" shopsys
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."nginx.ingress.kubernetes.io/auth-realm" "Authentication Required - ok"
+fi
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_1}
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_2}
