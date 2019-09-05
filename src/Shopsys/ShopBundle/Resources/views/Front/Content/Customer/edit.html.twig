@@ -83,19 +83,19 @@
                             {{ form_row(form.billingAddressData.companyName, { label: 'Company'|trans}) }}
                             {{ form_row(form.billingAddressData.companyNumber, { label: 'Company number'|trans}) }}
                             {{ form_row(form.billingAddressData.companyTaxNumber, { label: 'Tax number'|trans}) }}
-
-                            <div class="wrap-box margin-top-20">
-                                <h2 class="wrap-box__title">{{ 'Address'|trans }}</h2>
-
-                                <div class="wrap-box__in">
-                                    {{ form_row(form.billingAddressData.street, { label: 'Street'|trans}) }}
-                                    {{ form_row(form.billingAddressData.city, { label: 'City'|trans}) }}
-                                    {{ form_row(form.billingAddressData.postcode, { label: 'Postcode'|trans}) }}
-                                    {{ form_row(form.billingAddressData.country, { label: 'Country'|trans}) }}
-                                </div>
-                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="wrap-box margin-top-20">
+                <h2 class="wrap-box__title">{{ 'Address'|trans }}</h2>
+
+                <div class="wrap-box__in">
+                    {{ form_row(form.billingAddressData.street, { label: 'Street'|trans}) }}
+                    {{ form_row(form.billingAddressData.city, { label: 'City'|trans}) }}
+                    {{ form_row(form.billingAddressData.postcode, { label: 'Postcode'|trans}) }}
+                    {{ form_row(form.billingAddressData.country, { label: 'Country'|trans}) }}
                 </div>
             </div>
 
