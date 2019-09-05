@@ -29,7 +29,7 @@
     &__select {
         display: block;
         position: relative;
-        padding: @box-dropdown-padding-vertical 40px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
+        padding: @box-dropdown-padding-vertical 38px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
 
         border-radius: @radius;
         background-color: @box-dropdown-bg;
@@ -39,6 +39,10 @@
         text-transform: uppercase;
         text-decoration: none;
         white-space: nowrap;
+
+        @media @query-md {
+            padding: @box-dropdown-padding-vertical 40px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
+        }
 
         .box-dropdown--without-arrow & {
             padding-right: @box-dropdown-padding-horizontal;
