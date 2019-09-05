@@ -119,8 +119,8 @@
                                 {% else %}
                                     <div class="in-free-transport in-free-transport--dark">
                                         <div class="in-free-transport__title">
-                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }}<br>
-                                            {{ 'máte'|trans }} <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
+                                            <br> <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
                                         </div>
                                         <div class="in-free-transport__pipe">
                                             <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
