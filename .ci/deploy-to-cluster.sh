@@ -48,6 +48,16 @@ yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
 
+if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
+    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
+    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
+    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_3}
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/from-to-www-redirect\"" "true"
+else
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-type\"" basic
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-secret\"" shopsys
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-realm\"" "Authentication Required - ok"
+fi
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_1}
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_2}
@@ -130,7 +140,14 @@ yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES
 yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
 yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
 
-yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
+if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
+    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist nullPlaceholder
+    yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address nullPlaceholder
+    sed -i 's/nullPlaceholder/null/' app/config/parameters.yml
+else
+    yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address "no-reply@shopsys.com"
+    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
+fi
 
 # Set migration database IPs
 yq write --inplace app/config/parameters.yml parameters.migration_database_host mysql
