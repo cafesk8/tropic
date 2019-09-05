@@ -47,9 +47,6 @@ yq write --inplace kubernetes/ingress.yml spec.rules[2].host ${DOMAIN_HOSTNAME_3
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[0] ${DOMAIN_HOSTNAME_1}
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[1] ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[2] ${DOMAIN_HOSTNAME_3}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[3] www.${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[4] www.${DOMAIN_HOSTNAME_2}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[5] www.${DOMAIN_HOSTNAME_3}
 
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_1}
