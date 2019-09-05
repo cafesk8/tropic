@@ -114,7 +114,7 @@ class PersonalInfoFormType extends AbstractType
                     new Constraints\Regex([
                         'pattern' => '/^\+{1}[^\+]+$/',
                         'message' => 'Telefonní číslo musí začínat znakem +',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED, self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
+                        'groups' => [self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
                     ]),
                 ],
             ])
