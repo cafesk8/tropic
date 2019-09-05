@@ -21,4 +21,20 @@ class ProductVariantFacade extends BaseProductVariantFacade
 
         return $mainVariant;
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $variant
+     */
+    public function removeVariant(Product $variant): void
+    {
+        $mainVariant = $variant->getMainVariant();
+        $variant->unsetMainVariant();
+
+        $this->em->flush([$mainVariant, $variant]);
+
+        if (count($mainVariant->getVariants()) === 0) {
+            $this->em->remove($mainVariant);
+            $this->em->flush();
+        }
+    }
 }
