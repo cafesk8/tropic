@@ -42,6 +42,19 @@ class UserRepository extends BaseUserRepository
     }
 
     /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
+     */
+    public function getCustomersWithoutDeliveryAddress(int $limit): array
+    {
+        return $this->createUserQueryBuilder()
+            ->andWhere('u.deliveryAddress IS NULL')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function createUserQueryBuilder(): QueryBuilder

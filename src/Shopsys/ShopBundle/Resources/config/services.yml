@@ -518,3 +518,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer: '@Shopsys\ShopBundle\Model\Product\Search\ProductFilterDataToQueryTransformer'
 
     Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@Shopsys\ShopBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'
+
+    Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactory: '@Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory'

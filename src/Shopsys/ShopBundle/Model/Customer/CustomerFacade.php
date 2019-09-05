@@ -127,7 +127,22 @@ class CustomerFacade extends BaseCustomerFacade
         /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $this->getUserById($userId);
         $user->markAsFailedExported();
+    }
 
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
+     */
+    public function getCustomersWithoutDeliveryAddress(int $limit): array
+    {
+        return $this->userRepository->getCustomersWithoutDeliveryAddress($limit);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     */
+    public function flush(User $user): void
+    {
         $this->em->flush($user);
     }
 }
