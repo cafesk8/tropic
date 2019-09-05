@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
+use Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Category\CategoryFacade;
+use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Twig\TwigFunction;
 
 class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
@@ -15,6 +19,26 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
      */
     protected $productCachedAttributesFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     */
+    public function __construct(
+        CategoryFacade $categoryFacade,
+        ProductCachedAttributesFacade $productCachedAttributesFacade,
+        ProductFacade $productFacade
+    ) {
+        parent::__construct($categoryFacade, $productCachedAttributesFacade);
+
+        $this->productFacade = $productFacade;
+    }
 
     /**
      * @return array
@@ -33,6 +57,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'getProductAdeptPrice',
                 [$this, 'getProductAdeptPrice']
+            ),
+            new TwigFunction(
+                'productParameters',
+                [$this, 'getProductParameters']
             ),
         ];
     }
@@ -104,5 +132,40 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductAdeptPrice(Product $product): ?ProductPrice
     {
         return $this->productCachedAttributesFacade->getProductAdeptPrice($product);
+    }
+
+    /**
+     * @param int $productId
+     * @return string
+     */
+    public function getProductParameters(int $productId): string
+    {
+        try {
+            $product = $this->productFacade->getById($productId);
+        } catch (ProductNotFoundException $productNotFoundException) {
+            return '';
+        }
+
+        $parametersForProduct = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
+
+        if ($parametersForProduct === null) {
+            return '';
+        }
+
+        $parameters = [];
+
+        if ($parametersForProduct->getFirstDistinguishingParameterValue() !== null) {
+            $parameters[] = sprintf('%s: %s', $parametersForProduct->getFirstDistinguishingParameterName(), $parametersForProduct->getFirstDistinguishingParameterValue());
+        }
+
+        if ($parametersForProduct->getSecondDistinguishingParameterValue() !== null) {
+            $parameters[] = sprintf('%s: %s', $parametersForProduct->getSecondDistinguishingParameterName(), $parametersForProduct->getSecondDistinguishingParameterValue());
+        }
+
+        if (count($parameters) === 0) {
+            return '';
+        }
+
+        return sprintf('(%s)', implode(', ', $parameters));
     }
 }
