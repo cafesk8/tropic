@@ -45,6 +45,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Model/Product/ProductFacade.php'
 
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:
             - '*/tests/ShopBundle/Functional/EntityExtension/EntityExtensionTest.php'
