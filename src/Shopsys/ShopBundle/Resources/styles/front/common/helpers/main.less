@@ -80,6 +80,13 @@
 
         background-color: @color-orange;
     }
+
+    &:hover {
+        &:before {
+            bottom: 0;
+            transition: bottom @transition;
+        }
+    }
 }
 
 .double-lined {
