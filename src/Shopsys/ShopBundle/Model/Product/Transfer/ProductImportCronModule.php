@@ -173,14 +173,19 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
 
         $this->productTransferValidator->validate($productTransferResponseItemData);
 
+        $variantsCount = count($productTransferResponseItemData->getVariants());
         $this->productTree = [];
 
-        if (count($productTransferResponseItemData->getVariants()) > 0) {
+        if ($variantsCount > 0) {
+            $lastProduct = null;
             foreach ($productTransferResponseItemData->getVariants() as $productVariantsItemData) {
-                $this->processProductItemWithVariants($productTransferResponseItemData, $productVariantsItemData);
+                $lastProduct = $this->processProductItemWithVariants($productTransferResponseItemData, $productVariantsItemData);
             }
-
-            $this->createProductTree();
+            if ($variantsCount === 1 && $lastProduct !== null) {
+                $this->updateIfProductIsVariant($lastProduct);
+            } else {
+                $this->createProductTree();
+            }
         } else {
             $this->processProductItemWithVariants($productTransferResponseItemData);
         }
@@ -213,8 +218,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData|null $productTransferResponseItemVariantData
      * @return \Shopsys\ShopBundle\Model\Product\Product
      */
-    private function processProductItemWithVariants(ProductTransferResponseItemData $productTransferResponseItemData, ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData = null): Product
-    {
+    private function processProductItemWithVariants(
+        ProductTransferResponseItemData $productTransferResponseItemData,
+        ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData = null
+    ): Product {
         $parameterColor = null;
         $parameterSize = null;
 
@@ -299,5 +306,17 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private function findMainVariantGroup(Product $mainVariant): ?MainVariantGroup
     {
         return $mainVariant !== null ? $mainVariant->getMainVariantGroup() : null;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $variant
+     */
+    private function updateIfProductIsVariant(Product $variant): void
+    {
+        if ($variant->isVariant() === false) {
+            return;
+        }
+
+        $this->productVariantFacade->removeVariant($variant);
     }
 }
