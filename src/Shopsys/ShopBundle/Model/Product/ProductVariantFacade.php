@@ -31,10 +31,5 @@ class ProductVariantFacade extends BaseProductVariantFacade
         $variant->unsetMainVariant();
 
         $this->em->flush([$mainVariant, $variant]);
-
-        if (count($mainVariant->getVariants()) === 0) {
-            $this->em->remove($mainVariant);
-            $this->em->flush();
-        }
     }
 }
