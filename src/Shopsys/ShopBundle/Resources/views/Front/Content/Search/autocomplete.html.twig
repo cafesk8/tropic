@@ -68,6 +68,10 @@
                         </span>
                     </a>
                 </li>
+            {% else %}
+                <li class="search-hint__product__item">
+                    {{ 'Vyhledávání neodpovídá žádný produkt'|trans }}
+                </li>
             {% endfor %}
         </ul>
     </div>
