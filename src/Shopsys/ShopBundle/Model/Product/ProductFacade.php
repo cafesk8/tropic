@@ -272,7 +272,7 @@ class ProductFacade extends BaseProductFacade
             $storeStock = $this->productStoreStockFactory->create(
                 $product,
                 $this->storeFacade->getById($storeId),
-                $stockQuantity
+                ($stockQuantity !== null && $stockQuantity >= 0) ? $stockQuantity : 0
             );
 
             $product->addStoreStock($storeStock);
