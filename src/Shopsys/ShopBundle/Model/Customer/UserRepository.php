@@ -80,4 +80,20 @@ class UserRepository extends BaseUserRepository
 
         return $queryBuilder;
     }
+
+    /**
+     * @param string $ean
+     * @return bool
+     */
+    public function eanUsed(string $ean): bool
+    {
+        $user = $this->getUserRepository()->findOneBy(['ean' => $ean]);
+
+        $eanUsed = false;
+        if ($user !== null) {
+            $eanUsed = true;
+        }
+
+        return $eanUsed;
+    }
 }

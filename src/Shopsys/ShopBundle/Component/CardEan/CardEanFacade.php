@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Component\CardEan;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\ShopBundle\Component\CardEan\Exception\ReachMaxCardEanUniqueResolveAttemptException;
+use Shopsys\ShopBundle\Model\Customer\UserRepository;
 
 class CardEanFacade
 {
@@ -27,18 +28,26 @@ class CardEanFacade
     private $cardEanRepository;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\UserRepository
+     */
+    private $userRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanGenerator $cardEanGenerator
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanRepository $cardEanRepository
+     * @param \Shopsys\ShopBundle\Model\Customer\UserRepository $userRepository
      */
     public function __construct(
         EntityManagerInterface $em,
         CardEanGenerator $cardEanGenerator,
-        CardEanRepository $cardEanRepository
+        CardEanRepository $cardEanRepository,
+        UserRepository $userRepository
     ) {
         $this->em = $em;
         $this->cardEanGenerator = $cardEanGenerator;
         $this->cardEanRepository = $cardEanRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -60,7 +69,10 @@ class CardEanFacade
 
             $newEan = $this->cardEanGenerator->generate();
             $eanExists = $this->cardEanRepository->eanExists($newEan);
-        } while ($eanExists === true);
+            $eanUsed = $this->userRepository->eanUsed($newEan);
+
+            $isNewEanUnique = $eanExists === false && $eanUsed === false;
+        } while ($isNewEanUnique === false);
 
         return $this->create($newEan);
     }
