@@ -17,12 +17,22 @@ use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusTranslation;
  */
 class OrderStatus extends BaseOrderStatus
 {
+    public const SMS_ALERT_5_DAY_BEFORE = 'smsAlert5dayBefore';
+    public const SMS_ALERT_2_DAY_BEFORE = 'smsAlert2dayBefore';
+
     /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $transferStatus;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $smsAlertType;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusData $orderStatusData
@@ -32,6 +42,7 @@ class OrderStatus extends BaseOrderStatus
     {
         parent::__construct($orderStatusData, $type);
         $this->transferStatus = $orderStatusData->transferStatus;
+        $this->smsAlertType = $orderStatusData->smsAlertType;
     }
 
     /**
@@ -41,6 +52,7 @@ class OrderStatus extends BaseOrderStatus
     {
         parent::edit($orderStatusData);
         $this->transferStatus = $orderStatusData->transferStatus;
+        $this->smsAlertType = $orderStatusData->smsAlertType;
     }
 
     /**
@@ -49,5 +61,13 @@ class OrderStatus extends BaseOrderStatus
     public function getTransferStatus(): ?string
     {
         return $this->transferStatus;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSmsAlertType(): ?string
+    {
+        return $this->smsAlertType;
     }
 }

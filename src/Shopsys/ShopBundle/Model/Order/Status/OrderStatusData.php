@@ -12,4 +12,9 @@ class OrderStatusData extends BaseOrderStatusData
      * @var string|null
      */
     public $transferStatus;
+
+    /**
+     * @var string|null
+     */
+    public $smsAlertType;
 }

@@ -48,5 +48,7 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->mallStatus = $order->getMallStatus();
         $orderData->statusCheckedAt = $order->getStatusCheckedAt();
         $orderData->gtmCoupon = $order->getGtmCoupon();
+        $orderData->store = $order->getStore();
+        $orderData->pickupPlace = $order->getPickupPlace();
     }
 }

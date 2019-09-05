@@ -310,6 +310,8 @@ class OrderController extends FrontBaseController
                     );
                 }
 
+                $this->orderFacade->sendSms($order);
+
                 $this->session->set(self::SESSION_CREATED_ORDER, $order->getId());
 
                 return $this->redirectToRoute('front_order_sent');

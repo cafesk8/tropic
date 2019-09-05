@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use GoPay\Definition\Response\PaymentStatus;
 use GoPay\Http\Response;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -39,7 +40,10 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Mall\MallImportOrderClient;
+use Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory;
+use Shopsys\ShopBundle\Component\SmsManager\SmsMessageFactory;
 use Shopsys\ShopBundle\Model\Gtm\GtmHelper;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
@@ -77,6 +81,16 @@ class OrderFacade extends BaseOrderFacade
     private $gtmHelper;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory
+     */
+    private $smsManagerFactory;
+
+    /**
+     * @var \Shopsys\ShopBundle\Component\SmsManager\SmsMessageFactory
+     */
+    private $smsMessageFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderRepository $orderRepository
@@ -107,6 +121,8 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\ShopBundle\Component\Mall\MallImportOrderClient $mallImportOrderClient
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmHelper $gtmHelper
+     * @param \Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory $smsManagerFactory
+     * @param \Shopsys\ShopBundle\Model\Order\SmsMessageFactory $smsMessageFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -138,7 +154,9 @@ class OrderFacade extends BaseOrderFacade
         ProductGiftPriceCalculation $productGiftPriceCalculation,
         VatFacade $vatFacade,
         MallImportOrderClient $mallImportOrderClient,
-        GtmHelper $gtmHelper
+        GtmHelper $gtmHelper,
+        SmsManagerFactory $smsManagerFactory,
+        SmsMessageFactory $smsMessageFactory
     ) {
         parent::__construct(
             $em,
@@ -173,6 +191,8 @@ class OrderFacade extends BaseOrderFacade
         $this->vatFacade = $vatFacade;
         $this->mallImportOrderClient = $mallImportOrderClient;
         $this->gtmHelper = $gtmHelper;
+        $this->smsManagerFactory = $smsManagerFactory;
+        $this->smsMessageFactory = $smsMessageFactory;
     }
 
     /**
@@ -392,6 +412,7 @@ class OrderFacade extends BaseOrderFacade
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = $this->orderRepository->getById($orderId);
         $originalMallStatus = $order->getMallStatus();
+        $originalOrderStatus = $order->getStatus();
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $updatedOrder */
         $updatedOrder = parent::edit($orderId, $orderData);
@@ -400,6 +421,28 @@ class OrderFacade extends BaseOrderFacade
             $this->mallImportOrderClient->changeStatus($updatedOrder->getMallStatus(), $updatedOrder->getMallStatus());
         }
 
+        if ($originalOrderStatus !== $updatedOrder->getStatus()) {
+            $this->sendSms($updatedOrder);
+        }
+
         return $updatedOrder;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     */
+    public function sendSms(Order $order): void
+    {
+        if ($order->getDomainId() !== DomainHelper::CZECH_DOMAIN) {
+            return;
+        }
+
+        $smsMessage = $this->smsMessageFactory->getSmsMessageForOrder($order);
+        if ($smsMessage !== null) {
+            try {
+                $this->smsManagerFactory->getManager()->send($smsMessage);
+            } catch (Exception $ex) {
+            }
+        }
     }
 }

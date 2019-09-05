@@ -1,0 +1,11 @@
+{% extends '@!ShopsysFramework/Admin/Content/OrderStatus/listGrid.html.twig' %}
+
+{% block grid_value_cell_id_smsAlertType %}
+    {% if value == constant('Shopsys\\ShopBundle\\Model\\Order\\Status\\OrderStatus::SMS_ALERT_5_DAY_BEFORE') %}
+        {{ 'SMS alert 5 dní do vyzvednutí'|trans }}
+    {% elseif value == constant('Shopsys\\ShopBundle\\Model\\Order\\Status\\OrderStatus::SMS_ALERT_2_DAY_BEFORE') %}
+        {{ 'SMS alert 2 dny do vyzvednutí'|trans }}
+    {% else %}
+        {{ 'Bez SMS alertu'|trans }}
+    {% endif %}
+{% endblock %}

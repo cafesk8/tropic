@@ -116,6 +116,12 @@ class PersonalInfoFormType extends AbstractType
                         'message' => 'Telefonní číslo musí začínat znakem +',
                         'groups' => [self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
                     ]),
+                    new Constraints\Regex([
+                        // https://regex101.com/r/tyKloi/1
+                        // https://en.wikipedia.org/wiki/E.164
+                        'pattern' => '/^\+?[1-9]\d{1,14}$/',
+                        'message' => 'Telefonní číslo musí být platné',
+                    ]),
                 ],
             ])
             ->add('companyCustomer', CheckboxType::class, ['required' => false])
@@ -257,6 +263,12 @@ class PersonalInfoFormType extends AbstractType
                         'pattern' => '/^\+{1}[^\+]+$/',
                         'message' => 'Telefonní číslo musí začínat znakem +',
                         'groups' => [self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
+                    ]),
+                    new Constraints\Regex([
+                        // https://regex101.com/r/tyKloi/1
+                        // https://en.wikipedia.org/wiki/E.164
+                        'pattern' => '/^\+?[1-9]\d{1,14}$/',
+                        'message' => 'Telefonní číslo musí být platné',
                     ]),
                 ],
             ])

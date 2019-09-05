@@ -524,3 +524,9 @@ services:
     Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper: '@Shopsys\ShopBundle\Model\Order\FrontOrderDataMapper'
 
     Shopsys\FrameworkBundle\Model\Country\CountryDataFactory: '@Shopsys\ShopBundle\Model\Country\CountryDataFactory'
+
+    SimPod\SmsManager\ApiSmsManager: ~
+
+    Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory:
+      arguments:
+        $apiKey: '%smsManagerApiKey%'

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8ea5235a7ddceaff34a6dce5c99402f",
+    "content-hash": "83144367b963bbfc025fb498e10a4172",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -261,6 +261,66 @@
                 "filesystem"
             ],
             "time": "2017-07-08T17:59:38+00:00"
+        },
+        {
+            "name": "beberlei/assert",
+            "version": "v3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "65b8152224aef7d3c197d5db05211d4319711b66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/65b8152224aef7d3c197d5db05211d4319711b66",
+                "reference": "65b8152224aef7d3c197d5db05211d4319711b66",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-intl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-simplexml": "*",
+                "php": "^7"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "*",
+                "phpstan/phpstan-shim": "*",
+                "phpunit/phpunit": ">=6.0.0 <8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                },
+                "files": [
+                    "lib/Assert/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "time": "2019-08-23T17:56:26+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -980,6 +1040,64 @@
                 "performance"
             ],
             "time": "2019-05-27T17:52:04+00:00"
+        },
+        {
+            "name": "consistence/consistence",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/consistence/consistence.git",
+                "reference": "802a1150a754b908be0b28a2db8180a64bb70a08"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/consistence/consistence/zipball/802a1150a754b908be0b28a2db8180a64bb70a08",
+                "reference": "802a1150a754b908be0b28a2db8180a64bb70a08",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.0"
+            },
+            "require-dev": {
+                "consistence/coding-standard": "2.4",
+                "jakub-onderka/php-console-highlighter": "0.3.2",
+                "jakub-onderka/php-parallel-lint": "1.0",
+                "phing/phing": "2.16.1",
+                "phpunit/phpunit": "6.5.12"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Consistence\\": [
+                        "src"
+                    ]
+                },
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vašek Purchart",
+                    "email": "me@vasekpurchart.cz",
+                    "homepage": "http://vasekpurchart.cz"
+                }
+            ],
+            "description": "Consistence - consistent approach and additions to PHP's functionality",
+            "keywords": [
+                "array",
+                "check",
+                "enum",
+                "format",
+                "strict",
+                "time",
+                "type"
+            ],
+            "time": "2018-09-05T08:55:19+00:00"
         },
         {
             "name": "craue/formflow-bundle",
@@ -7450,6 +7568,59 @@
                 "zbozi"
             ],
             "time": "2019-07-15T14:17:51+00:00"
+        },
+        {
+            "name": "simpod/sms-manager",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simPod/SMSManager.git",
+                "reference": "141f53f68e92362a36cd2a3e92eaa16987d247a2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simPod/SMSManager/zipball/141f53f68e92362a36cd2a3e92eaa16987d247a2",
+                "reference": "141f53f68e92362a36cd2a3e92eaa16987d247a2",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^3.1",
+                "consistence/consistence": "^1.0",
+                "ext-dom": "*",
+                "ext-simplexml": "*",
+                "guzzlehttp/guzzle": "^6.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^5.0",
+                "phpstan/phpstan": "^0.10.5",
+                "phpstan/phpstan-beberlei-assert": "^0.10.0",
+                "phpstan/phpstan-phpunit": "^0.10.0",
+                "phpstan/phpstan-strict-rules": "^0.10.1",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SimPod\\SmsManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Podlipsky",
+                    "email": "simon@podlipsky.net"
+                }
+            ],
+            "description": "PHP library for sending SMS via SmsManager.cz",
+            "keywords": [
+                "sms",
+                "smsmanager"
+            ],
+            "time": "2018-12-01T09:34:03+00:00"
         },
         {
             "name": "snc/redis-bundle",

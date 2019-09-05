@@ -103,3 +103,5 @@ parameters:
             container_id: TEST
             container_environment: null
             datalayer_locale: cs
+
+    smsManagerApiKey: 3e17f29771088c3e8bd74b78f040c4aad4e9a3e5
