@@ -34,8 +34,13 @@
     }
 
     &__additional {
-        padding: 67px @box-order-additional-gap 38px @box-order-additional-gap;
+        padding: 20px 15px 10px 15px;
+
         margin-bottom: 20px;
+
+        @media @query-md {
+            padding: 67px @box-order-additional-gap 38px @box-order-additional-gap;
+        }
 
         &__title {
             display: block;
