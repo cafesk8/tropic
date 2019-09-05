@@ -21,6 +21,8 @@
                     <h2 class="wrap-box__title">{{ 'Personal data'|trans }}</h2>
                     <div class="wrap-box__in">
                         <img src="{{ barcodeImageByUser(customer) }}" alt="{{ 'Identifikační údaj zakazníka'|trans }}">
+                        <br/>
+                        ({{ customer.ean }})
                         {{ form_row(form.userData.firstName, { label: 'First name'|trans}) }}
                         {{ form_row(form.userData.lastName, { label: 'Last name'|trans}) }}
                         {{ form_row(form.userData.telephone, { label: 'Telephone'|trans}) }}
