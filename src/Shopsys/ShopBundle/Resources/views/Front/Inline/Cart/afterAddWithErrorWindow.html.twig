@@ -1,20 +1,27 @@
 <div class="box-popup-add">
-    <div class="box-popup-add__action">
-
-        <ul>
-        {% for error in errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
+    <div class="box-popup-add__content">
+        <div class="box-popup-add__content__title">
+            <span class="box-popup-add__content__title__text double-lined">
+                {{ 'Oops! Error occurred.'|trans }}
+            </span>
+        </div>
+        <ul class="list-simple">
+            {% for error in errors %}
+                <li class="list-simple__item">{{ error }}</li>
+            {% endfor %}
         </ul>
-
+    </div>
+    <div class="box-popup-add__action">
         <div class="box-popup-add__action__buttons">
-            {# TODO PRG: bind same function like to cross sign at right top #}
-            <div class="box-popup-add__action__buttons__back js-window-button-close">
+            <div class="box-popup-add__action__buttons__back">
                 <i class="svg svg-triangle"></i>
-                <a href="#" class="box-popup-add__action__buttons__back__link underline-small">
+                <a href="#" class="box-popup-add__action__buttons__back__link underline-small js-window-button-close">
                     {{ 'Zpět do e-shopu'|trans }}
                 </a>
             </div>
+            <a href="{{ url('front_cart') }}" class="btn btn--success btn--large">
+                {{ 'Přejít do košíku'|trans }}
+            </a>
         </div>
     </div>
 </div>
