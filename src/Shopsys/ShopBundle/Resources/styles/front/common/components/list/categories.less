@@ -41,7 +41,20 @@
         }
 
         .list-categories--four-on-row & {
-            width: calc(~"@{calc-base}/4 - @{list-categories-item-gap}");
+            width: calc(~"@{calc-base}/2 - @{list-categories-item-gap}");
+            max-height: 300px;
+
+            img {
+                max-height: 150px;
+            }
+
+            @media @query-md {
+                width: calc(~"@{calc-base}/4 - @{list-categories-item-gap}");
+
+                img {
+                    max-height: 200px;
+                }
+            }
         }
 
         img {
