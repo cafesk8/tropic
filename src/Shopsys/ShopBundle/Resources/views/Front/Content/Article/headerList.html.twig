@@ -5,3 +5,17 @@
         </a>
     </li>
 {% endfor %}
+{% if firstHeaderArticle is not null %}
+    <li class="top-bar__menu__item">
+        <a href="{{ url('front_article_detail', { id: firstHeaderArticle.id }) }}" class="top-bar__menu__item__link">
+            {{ firstHeaderArticle.name }}
+        </a>
+    </li>
+{% endif %}
+{% if secondHeaderArticle is not null %}
+    <li class="top-bar__menu__item">
+        <a href="{{ url('front_article_detail', { id: secondHeaderArticle.id }) }}" class="top-bar__menu__item__link">
+            {{ secondHeaderArticle.name }}
+        </a>
+    </li>
+{% endif %}
