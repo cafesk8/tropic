@@ -17,6 +17,8 @@ class ArticleSettingsFormType extends AbstractType
     public const FIELD_BUSHMAN_ARTICLE = 'bushmanClubArticle';
     public const FIELD_OUR_STORY_ARTICLE = 'ourStoryArticle';
     public const FIELD_OUR_VALUES_ARTICLE = 'ourValuesArticle';
+    public const FIELD_FIRST_HEADER_ARTICLE = 'firstHeaderArticle';
+    public const FIELD_SECOND_HEADER_ARTICLE = 'secondHeaderArticle';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Article\ArticleFacade
@@ -70,6 +72,24 @@ class ArticleSettingsFormType extends AbstractType
                 'placeholder' => t('-- Choose article --'),
                 'label' => t('Banner Naše hodnoty'),
                 'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Naše hodnoty'),
+            ])
+            ->add(self::FIELD_FIRST_HEADER_ARTICLE, ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('První článek v horním menu'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako první v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
+            ])
+            ->add(self::FIELD_SECOND_HEADER_ARTICLE, ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('Druhý článek v horním menu'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako druhý v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
             ]);
 
         $builder

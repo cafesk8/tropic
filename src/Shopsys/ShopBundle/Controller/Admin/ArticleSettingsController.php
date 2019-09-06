@@ -47,11 +47,15 @@ class ArticleSettingsController extends AdminBaseController
         $bushmanClubArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $selectedDomainId);
         $ourValuesArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_VALUES_ARTICLE_ID, $selectedDomainId);
         $ourStoryArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_STORY_ARTICLE_ID, $selectedDomainId);
+        $firstHeaderArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $selectedDomainId);
+        $secondHeaderArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $selectedDomainId);
 
         $form = $this->createForm(ArticleSettingsFormType::class, [
             ArticleSettingsFormType::FIELD_BUSHMAN_ARTICLE => $bushmanClubArticle,
             ArticleSettingsFormType::FIELD_OUR_VALUES_ARTICLE => $ourValuesArticle,
             ArticleSettingsFormType::FIELD_OUR_STORY_ARTICLE => $ourStoryArticle,
+            ArticleSettingsFormType::FIELD_FIRST_HEADER_ARTICLE => $firstHeaderArticle,
+            ArticleSettingsFormType::FIELD_SECOND_HEADER_ARTICLE => $secondHeaderArticle,
         ], [
             'domain_id' => $selectedDomainId,
         ]);
@@ -61,6 +65,8 @@ class ArticleSettingsController extends AdminBaseController
             $bushmanClubArticle = $form->getData()[ArticleSettingsFormType::FIELD_BUSHMAN_ARTICLE];
             $ourValuesArticle = $form->getData()[ArticleSettingsFormType::FIELD_OUR_VALUES_ARTICLE];
             $ourStoryArticle = $form->getData()[ArticleSettingsFormType::FIELD_OUR_STORY_ARTICLE];
+            $firstHeaderArticle = $form->getData()[ArticleSettingsFormType::FIELD_FIRST_HEADER_ARTICLE];
+            $secondHeaderArticle = $form->getData()[ArticleSettingsFormType::FIELD_SECOND_HEADER_ARTICLE];
 
             $this->articleFacade->setArticleOnDomainInSettings(
                 $bushmanClubArticle,
@@ -77,6 +83,18 @@ class ArticleSettingsController extends AdminBaseController
             $this->articleFacade->setArticleOnDomainInSettings(
                 $ourStoryArticle,
                 Setting::OUR_STORY_ARTICLE_ID,
+                $selectedDomainId
+            );
+
+            $this->articleFacade->setArticleOnDomainInSettings(
+                $firstHeaderArticle,
+                Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
+                $selectedDomainId
+            );
+
+            $this->articleFacade->setArticleOnDomainInSettings(
+                $secondHeaderArticle,
+                Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
                 $selectedDomainId
             );
 
