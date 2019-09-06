@@ -102,9 +102,9 @@ class CustomerFacade extends BaseCustomerFacade
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Order\Order[]
      */
-    public function getNotExportedCustomersBatch(int $limit): array
+    public function getNotExportedMembersOfBushmanClubCustomersBatch(int $limit): array
     {
-        return $this->userRepository->getNotExportedCustomersBatch($limit);
+        return $this->userRepository->getNotExportedMembersOfBushmanClubCustomersBatch($limit);
     }
 
     /**
