@@ -83,6 +83,7 @@ class ProductAvailabilityRecalculatorTest extends TransactionFunctionalTestCase
 
         $productId = 1;
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
         $product = $productFacade->getById($productId);
 
         $productData = $productDataFactory->createFromProduct($product);
@@ -91,6 +92,9 @@ class ProductAvailabilityRecalculatorTest extends TransactionFunctionalTestCase
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
         $productData->outOfStockAvailability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_ON_REQUEST);
+        foreach ($product->getStoreStocks() as $storeStock) {
+            $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = 0;
+        }
 
         $productFacade->edit($productId, $productData);
         $productAvailabilityRecalculator->runAllScheduledRecalculations();
