@@ -263,7 +263,6 @@ class CreateDatabaseCommand extends BaseCreateDatabaseCommand
             $this->connection = $this->getDefaultConnection();
         }
 
-
         return $this->connection;
     }
 
