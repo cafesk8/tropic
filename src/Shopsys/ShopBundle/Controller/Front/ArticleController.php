@@ -92,7 +92,7 @@ class ArticleController extends FrontBaseController
     {
         $articles = $this->articleFacade->getVisibleArticlesOnCurrentDomainByPlacementAndLimit(Article::PLACEMENT_TOP_MENU, self::LIMIT_FOR_HEADER_ARTICLES);
 
-        return $this->render('@ShopsysShop/Front/Content/Article/headerList.twig', [
+        return $this->render('@ShopsysShop/Front/Content/Article/headerList.html.twig', [
             'articles' => $articles,
         ]);
     }
