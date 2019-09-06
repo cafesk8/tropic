@@ -198,6 +198,6 @@ class ProductTransferMapper
         $productData->catnum = $productTransferResponseItemData->getTransferNumber();
         $productData->usingStock = true;
         $productData->stockQuantity = 0;
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_HIDE;
     }
 }

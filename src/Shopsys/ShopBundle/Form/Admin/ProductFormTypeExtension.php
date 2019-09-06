@@ -183,6 +183,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
+        $this->extendStockQuantity($builder->get('displayAvailabilityGroup')->get('stockGroup'));
 
         $builder->get('basicInformationGroup')
             ->add('generateToHsSportXmlFeed', YesNoType::class, [
@@ -355,6 +356,17 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $pricesGroupBuilder->add($productCalculatedPricesGroup);
 
         return $pricesGroupBuilder;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationGroup
+     */
+    private function extendStockQuantity(FormBuilderInterface $basicInformationGroup): void
+    {
+        $stockQuantityFieldOptions = $basicInformationGroup->get('stockQuantity')->getOptions();
+        $stockQuantityFieldOptions['disabled'] = true;
+        $stockQuantityFieldType = get_class($basicInformationGroup->get('stockQuantity')->getType()->getInnerType());
+        $basicInformationGroup->add('stockQuantity', $stockQuantityFieldType, $stockQuantityFieldOptions);
     }
 
     /**

@@ -53,7 +53,6 @@ class StoreStockTransferMapper
             $productData->stockQuantityByStoreId = [];
         }
 
-        $productData->stockQuantity = 0;
         foreach ($productTransferResponseItemData->getSitesQuantity() as $stockQuantity) {
             $store = $this->storeFacade->findByExternalNumber($stockQuantity->getSiteNumber());
 
@@ -65,7 +64,6 @@ class StoreStockTransferMapper
             }
 
             $productData->stockQuantityByStoreId[$store->getId()] = $stockQuantity->getQuantity();
-            $productData->stockQuantity += $stockQuantity->getQuantity();
         }
 
         return $productData;
