@@ -17,4 +17,9 @@ class OrderStatusData extends BaseOrderStatusData
      * @var string|null
      */
     public $smsAlertType;
+
+    /**
+     * @var bool|null
+     */
+    public $checkOrderReadyStatus;
 }

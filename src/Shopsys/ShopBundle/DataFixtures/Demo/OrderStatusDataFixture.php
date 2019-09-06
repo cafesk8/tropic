@@ -6,7 +6,9 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
-use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade;
+use Shopsys\ShopBundle\Model\Order\Status\OrderStatus;
+use Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory;
+use Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade;
 
 class OrderStatusDataFixture extends AbstractReferenceFixture
 {
@@ -14,18 +16,31 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
     public const ORDER_STATUS_IN_PROGRESS = 'order_status_in_progress';
     public const ORDER_STATUS_DONE = 'order_status_done';
     public const ORDER_STATUS_CANCELED = 'order_status_canceled';
+    public const ORDER_STATUS_ALMOST_READY = 'order_status_almost_ready';
+    public const ORDER_STATUS_ALMOST_READY_STORE = 'order_status_almost_ready_store';
+    public const ORDER_STATUS_READY = 'order_status_ready';
+    public const ORDER_STATUS_READY_STORE = 'order_status_ready_store';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade
+     * @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade
      */
     protected $orderStatusFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
+     * @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory
      */
-    public function __construct(OrderStatusFacade $orderStatusFacade)
-    {
+    private $orderStatusDataFactory;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
+     * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory $orderStatusDataFactory
+     */
+    public function __construct(
+        OrderStatusFacade $orderStatusFacade,
+        OrderStatusDataFactory $orderStatusDataFactory
+    ) {
         $this->orderStatusFacade = $orderStatusFacade;
+        $this->orderStatusDataFactory = $orderStatusDataFactory;
     }
 
     /**
@@ -37,6 +52,42 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
         $this->createOrderStatusReference(2, self::ORDER_STATUS_IN_PROGRESS);
         $this->createOrderStatusReference(3, self::ORDER_STATUS_DONE);
         $this->createOrderStatusReference(4, self::ORDER_STATUS_CANCELED);
+
+        $orderStatusData = $this->orderStatusDataFactory->create();
+        $orderStatusData->name = [
+            'cs' => 'Částečné vykrytí',
+            'sk' => 'Částečné vykrytí',
+            'de' => 'Částečné vykrytí',
+        ];
+        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_ALMOST_READY);
+        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_ALMOST_READY);
+
+        $orderStatusData = $this->orderStatusDataFactory->create();
+        $orderStatusData->name = [
+            'cs' => 'Částečné vykrytí - OM',
+            'sk' => 'Částečné vykrytí - OM',
+            'de' => 'Částečné vykrytí - OM',
+        ];
+        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_ALMOST_READY_STORE);
+        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_ALMOST_READY_STORE);
+
+        $orderStatusData = $this->orderStatusDataFactory->create();
+        $orderStatusData->name = [
+            'cs' => 'Vykrytá',
+            'sk' => 'Vykrytá',
+            'de' => 'Vykrytá',
+        ];
+        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_READY);
+        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY);
+
+        $orderStatusData = $this->orderStatusDataFactory->create();
+        $orderStatusData->name = [
+            'cs' => 'Vykrytá - OM',
+            'sk' => 'Vykrytá - OM',
+            'de' => 'Vykrytá - OM',
+        ];
+        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_READY_STORE);
+        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY_STORE);
     }
 
     /**

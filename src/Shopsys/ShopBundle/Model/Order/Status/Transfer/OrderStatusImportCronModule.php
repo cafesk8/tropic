@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Status\Transfer;
 
+use DateTime;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseCodeException;
 use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
@@ -112,24 +113,24 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             );
         }
         $order = $this->getOrder($orderStatusTransferResponseItemData);
-        $orderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
-        $orderData = $this->orderDataFactory->createFromOrder($order);
-
-        if ($order->getStatus() === $orderStatus) {
+        /** @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus */
+        $orderStatus = $order->getStatus();
+        if ($orderStatus->isCheckOrderReadyStatus() === true) {
+            $this->checkOrderReadyStatus($order);
             return;
         }
 
-        $oldOrderStatusName = $order->getStatus()->getName('cs');
-        $orderData->status = $orderStatus;
-        $orderData->statusCheckedAt = new \DateTime();
-        $order = $this->orderFacade->edit($order->getId(), $orderData);
+        $newOrderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
 
-        $this->logger->addInfo(sprintf(
-            'Order status of order with ID `%s` has been changed from `%s` to `%s`',
-            $order->getId(),
-            $oldOrderStatusName,
-            $order->getStatus()->getName('cs')
-        ));
+        if ($orderStatus->isOrderStatusReady() && $newOrderStatus->getType() === OrderStatus::TYPE_IN_PROGRESS) {
+            return;
+        }
+
+        if ($orderStatus === $newOrderStatus) {
+            return;
+        }
+
+        $this->changeOrderStatus($order, $newOrderStatus);
     }
 
     /**
@@ -209,5 +210,94 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         }
 
         return $orderStatus;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     */
+    private function checkOrderReadyStatus(Order $order): void
+    {
+        $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
+
+        if ($orderItemTransferData === null) {
+            return;
+        }
+
+        $orderStatus = null;
+        $isOrderSendToStore = $order->getStoreExternalNumber() !== null;
+        if ($orderItemTransferData->isOrderReady() === true) {
+            $orderStatusType = $isOrderSendToStore === true ? OrderStatus::TYPE_READY_STORE : OrderStatus::TYPE_READY;
+            $orderStatus = $this->orderStatusFacade->getByType($orderStatusType);
+        } else {
+            $isAlmostReady = $this->checkAlmostReadyByItems($orderItemTransferData->getItems());
+            if ($isAlmostReady === true) {
+                $orderStatusType = $isOrderSendToStore === true ? OrderStatus::TYPE_ALMOST_READY_STORE : OrderStatus::TYPE_ALMOST_READY;
+                $orderStatus = $this->orderStatusFacade->getByType($orderStatusType);
+            }
+        }
+
+        if ($order->getStatus() === $orderStatus || $orderStatus === null) {
+            return;
+        }
+
+        $this->changeOrderStatus($order, $orderStatus);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderQuantityStatusTransferResponseItemData|null
+     */
+    private function getOrderQuantityStatusTransferResponse(Order $order): ?OrderQuantityStatusTransferResponseItemData
+    {
+        $domainId = $order->getDomainId();
+        $source = DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$domainId];
+        $orderNumber = $order->getNumber();
+        $apiMethodUrl = sprintf('api/Eshop/GetOrdersQuantityStatus?Source=%s&Numbers=%s', $source, $orderNumber);
+
+        $restClient = $this->multidomainRestClient->getByDomainId($domainId);
+        try {
+            $restResponse = $restClient->get($apiMethodUrl);
+        } catch (UnexpectedResponseCodeException $exception) {
+            $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
+            $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
+            return null;
+        }
+
+        $responseData = $restResponse->getData();
+        return new OrderQuantityStatusTransferResponseItemData($responseData['StatusList'][0]);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus
+     */
+    private function changeOrderStatus(Order $order, OrderStatus $orderStatus): void
+    {
+        $orderData = $this->orderDataFactory->createFromOrder($order);
+        $oldOrderStatusName = $order->getStatus()->getName('cs');
+        $orderData->status = $orderStatus;
+        $orderData->statusCheckedAt = new DateTime();
+        $order = $this->orderFacade->edit($order->getId(), $orderData);
+
+        $this->logger->addInfo(sprintf(
+            'Order status of order with ID `%s` has been changed from `%s` to `%s`',
+            $order->getId(),
+            $oldOrderStatusName,
+            $order->getStatus()->getName('cs')
+        ));
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderItemQuantityTransferResponseDataItem[] $items
+     * @return bool
+     */
+    private function checkAlmostReadyByItems(array $items): bool
+    {
+        $preparedItemCount = 0;
+        foreach ($items as $item) {
+            $preparedItemCount += $item->getPreparedCount();
+        }
+
+        return $preparedItemCount > 0;
     }
 }

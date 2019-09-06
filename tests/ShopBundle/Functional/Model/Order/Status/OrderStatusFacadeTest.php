@@ -24,6 +24,7 @@ class OrderStatusFacadeTest extends TransactionFunctionalTestCase
 
         $orderStatusData = new OrderStatusData();
         $orderStatusData->name = ['cs' => 'name'];
+        $orderStatusData->checkOrderReadyStatus = false;
         $orderStatusToDelete = $orderStatusFacade->create($orderStatusData);
         /** @var \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus $orderStatusToReplaceWith */
         $orderStatusToReplaceWith = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
