@@ -112,7 +112,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
 
         $this->productPriceTransferValidator->validate($productTransferResponseItemData);
 
-        $product = $this->productFacade->findOneByEan($productTransferResponseItemData->getBarcode());
+        $product = $this->productFacade->findOneNotMainVariantByEan($productTransferResponseItemData->getBarcode());
 
         if ($product === null) {
             $this->logger->addError(

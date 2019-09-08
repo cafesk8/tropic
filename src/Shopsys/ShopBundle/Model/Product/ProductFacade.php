@@ -417,9 +417,9 @@ class ProductFacade extends BaseProductFacade
      * @param string $ean
      * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */
-    public function findOneByEan(string $ean): ?Product
+    public function findOneNotMainVariantByEan(string $ean): ?Product
     {
-        return $this->productRepository->findOneByEan($ean);
+        return $this->productRepository->findOneNotMainVariantByEan($ean);
     }
 
     /**
