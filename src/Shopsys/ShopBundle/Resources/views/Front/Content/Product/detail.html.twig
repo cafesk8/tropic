@@ -55,12 +55,12 @@
             <div class="web__container web__container--big-padding">
                 <div class="box-articles">
                     <div class="box-articles__title-big">
-                        {{ 'Produkt byl v těchto příbězích'|trans }}
+                        {{ 'Inspiraci hledej v příbězích'|trans }}
                     </div>
                     <div class="box-articles__title-small">
-                        {{ 'Podívejte se, kde všude'|trans }}
-                        {{ product.name }}
-                        {{ 'byl v hlavní roli'|trans }}
+                        {{ 'V hlavní roli'|trans }}
+                        {{ product.name }}.
+                        {{ 'Přečti si více'|trans }}
                     </div>
                     {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: productBlogArticles } %}
                     <div class="box-articles__bottom">
