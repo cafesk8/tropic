@@ -213,9 +213,17 @@ class ProductRepository extends BaseProductRepository
      * @param string $ean
      * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */
-    public function findOneByEan(string $ean): ?Product
+    public function findOneNotMainVariantByEan(string $ean): ?Product
     {
-        return $this->getProductRepository()->findOneBy(['ean' => $ean]);
+        return $this->getProductRepository()
+            ->createQueryBuilder('p')
+            ->where('p.ean = :ean')
+            ->andWhere('p.variantType != :mainVariantType')
+            ->setParameters([
+                'ean' => $ean,
+                'mainVariantType' => Product::VARIANT_TYPE_MAIN,
+            ])
+            ->getQuery()->getOneOrNullResult();
     }
 
     /**

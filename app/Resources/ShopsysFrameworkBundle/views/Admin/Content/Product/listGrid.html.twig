@@ -1,0 +1,7 @@
+{% extends '@!ShopsysFramework/Admin/Content/Product/listGrid.html.twig' %}
+
+{% block grid_value_cell_id_price %}
+    {% if row.p.variantType != VARIANT_TYPE_MAIN %}
+        {{ value|priceWithCurrencyAdmin }}
+    {% endif %}
+{% endblock %}
