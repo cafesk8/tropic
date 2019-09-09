@@ -3,7 +3,7 @@
     Shopsys = window.Shopsys || {};
     Shopsys.FooterLink = Shopsys.FooterLink || {};
 
-    Shopsys.FooterLink.init = function() {
+    Shopsys.FooterLink.init = function () {
         $footerLinkTitle = $('.js-footer-link-title');
         var footerLinkWrapperSelector = '.js-footer-link-wrapper';
         var footerLinkContentSelector = '.js-footer-link-content';

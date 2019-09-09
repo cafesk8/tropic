@@ -79,7 +79,17 @@
                 {% if product.mainVariantGroup is not null %}
                     <div class="js-product-variant-detail-wrapper">
                         <div class="js-product-variant-detail-select-info">
-                            {{ 'Pro zobrazení parametrů si vyberte z velikostí.'|trans }}
+                            <h3 class="in-user-text__title in-user-text__title--center">{{ 'Parametry' }}</h3>
+                            <div class="in-user-text">
+                                <p class="padding-left-20">{{ 'Pro zobrazení parametrů si vyber z velikostí.'|trans }}</p>
+                            </div>
+
+                            <div class="padding-bottom-50">
+                                <div class="box-detail__tags__row padding-left-20">
+                                    {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
+                                </div>
+                            </div>
+
                         </div>
                         {% for variant in variants %}
                             <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
@@ -137,18 +147,24 @@
                     {% endif %}
                 </div>
                 <div class="box-detail__tags__row">
-                    <div class="box-detail__tags__title">{{ 'Najdete v kategoriích'|trans }}</div>
-                    <div class="box-detail__tags__values">
-                        <div class="list-tags">
-                            {% for productCategoryDomain in productVisibleProductCategoryDomains %}
-                                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
-                                    {{ productCategoryDomain.category.name }}
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
                 </div>
             </div>
         </div>
     {% endif %}
+{% endmacro %}
+
+{% macro productCategoryDomains(productVisibleProductCategoryDomains) %}
+
+    <div class="box-detail__tags__title">{{ 'Najdete v kategoriích'|trans }}</div>
+    <div class="box-detail__tags__values">
+        <div class="list-tags">
+            {% for productCategoryDomain in productVisibleProductCategoryDomains %}
+                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
+                    {{ productCategoryDomain.category.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
 {% endmacro %}
