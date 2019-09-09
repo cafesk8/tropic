@@ -13,3 +13,5 @@ services:
     Shopsys\ShopBundle\Twig\DomainExtension:
         arguments:
             - '%shopsys.domain_images_url_prefix%'
+
+    Shopsys\ShopBundle\Twig\PriceExtension: ~
