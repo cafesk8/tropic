@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFacade;
+use Shopsys\ShopBundle\Model\Article\ArticleSettingData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,10 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleSettingsFormType extends AbstractType
 {
-    public const FIELD_BUSHMAN_ARTICLE = 'bushmanClubArticle';
-    public const FIELD_OUR_STORY_ARTICLE = 'ourStoryArticle';
-    public const FIELD_OUR_VALUES_ARTICLE = 'ourValuesArticle';
-
     /**
      * @var \Shopsys\FrameworkBundle\Model\Article\ArticleFacade
      */
@@ -44,7 +41,7 @@ class ArticleSettingsFormType extends AbstractType
         ]);
 
         $builderSettingsGroup
-            ->add(self::FIELD_BUSHMAN_ARTICLE, ChoiceType::class, [
+            ->add('bushmanClubArticle', ChoiceType::class, [
                 'required' => false,
                 'choices' => $articles,
                 'choice_label' => 'name',
@@ -53,7 +50,7 @@ class ArticleSettingsFormType extends AbstractType
                 'label' => t('(Banner) Bushman Club'),
                 'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu, a také jako odkaz pro banner Bushman club'),
             ])
-            ->add(self::FIELD_OUR_STORY_ARTICLE, ChoiceType::class, [
+            ->add('ourStoryArticle', ChoiceType::class, [
                 'required' => false,
                 'choices' => $articles,
                 'choice_label' => 'name',
@@ -62,7 +59,7 @@ class ArticleSettingsFormType extends AbstractType
                 'label' => t('Banner Náš příběh'),
                 'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Náš příběh'),
             ])
-            ->add(self::FIELD_OUR_VALUES_ARTICLE, ChoiceType::class, [
+            ->add('ourValuesArticle', ChoiceType::class, [
                 'required' => false,
                 'choices' => $articles,
                 'choice_label' => 'name',
@@ -70,6 +67,24 @@ class ArticleSettingsFormType extends AbstractType
                 'placeholder' => t('-- Choose article --'),
                 'label' => t('Banner Naše hodnoty'),
                 'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Naše hodnoty'),
+            ])
+            ->add('firstArticleOnHeaderMenu', ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('První článek v horním menu'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako první v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
+            ])
+            ->add('secondArticleOnHeaderMenu', ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('Druhý článek v horním menu'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako druhý v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
             ]);
 
         $builder
@@ -86,6 +101,7 @@ class ArticleSettingsFormType extends AbstractType
             ->setRequired('domain_id')
             ->setAllowedTypes('domain_id', 'int')
             ->setDefaults([
+                'data_class' => ArticleSettingData::class,
                 'attr' => ['novalidate' => 'novalidate'],
             ]);
     }

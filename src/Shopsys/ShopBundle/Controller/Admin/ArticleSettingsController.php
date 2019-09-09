@@ -10,7 +10,9 @@ use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Admin\ArticleSettingsFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
+use Shopsys\ShopBundle\Model\Article\ArticleSettingDataFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleSettingsController extends AdminBaseController
 {
@@ -25,58 +27,69 @@ class ArticleSettingsController extends AdminBaseController
     private $articleFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleSettingDataFactory
+     */
+    private $articleSettingDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleSettingDataFactory $articleSettingDataFactory
      */
     public function __construct(
         AdminDomainTabsFacade $adminDomainTabsFacade,
-        ArticleFacade $articleFacade
+        ArticleFacade $articleFacade,
+        ArticleSettingDataFactory $articleSettingDataFactory
     ) {
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
         $this->articleFacade = $articleFacade;
+        $this->articleSettingDataFactory = $articleSettingDataFactory;
     }
 
     /**
      * @Route("/bushman-club/setting/")
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function settingAction(Request $request)
+    public function settingAction(Request $request): Response
     {
         $selectedDomainId = $this->adminDomainTabsFacade->getSelectedDomainId();
 
-        $bushmanClubArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $selectedDomainId);
-        $ourValuesArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_VALUES_ARTICLE_ID, $selectedDomainId);
-        $ourStoryArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_STORY_ARTICLE_ID, $selectedDomainId);
+        $articleSettingData = $this->articleSettingDataFactory->createFromSettingDataByDomainId($selectedDomainId);
 
-        $form = $this->createForm(ArticleSettingsFormType::class, [
-            ArticleSettingsFormType::FIELD_BUSHMAN_ARTICLE => $bushmanClubArticle,
-            ArticleSettingsFormType::FIELD_OUR_VALUES_ARTICLE => $ourValuesArticle,
-            ArticleSettingsFormType::FIELD_OUR_STORY_ARTICLE => $ourStoryArticle,
-        ], [
+        $form = $this->createForm(ArticleSettingsFormType::class, $articleSettingData, [
             'domain_id' => $selectedDomainId,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $bushmanClubArticle = $form->getData()[ArticleSettingsFormType::FIELD_BUSHMAN_ARTICLE];
-            $ourValuesArticle = $form->getData()[ArticleSettingsFormType::FIELD_OUR_VALUES_ARTICLE];
-            $ourStoryArticle = $form->getData()[ArticleSettingsFormType::FIELD_OUR_STORY_ARTICLE];
-
             $this->articleFacade->setArticleOnDomainInSettings(
-                $bushmanClubArticle,
+                $articleSettingData->bushmanClubArticle,
                 Setting::BUSHMAN_CLUB_ARTICLE_ID,
                 $selectedDomainId
             );
 
             $this->articleFacade->setArticleOnDomainInSettings(
-                $ourValuesArticle,
+                $articleSettingData->ourValuesArticle,
                 Setting::OUR_VALUES_ARTICLE_ID,
                 $selectedDomainId
             );
 
             $this->articleFacade->setArticleOnDomainInSettings(
-                $ourStoryArticle,
+                $articleSettingData->ourStoryArticle,
                 Setting::OUR_STORY_ARTICLE_ID,
+                $selectedDomainId
+            );
+
+            $this->articleFacade->setArticleOnDomainInSettings(
+                $articleSettingData->firstArticleOnHeaderMenu,
+                Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
+                $selectedDomainId
+            );
+
+            $this->articleFacade->setArticleOnDomainInSettings(
+                $articleSettingData->secondArticleOnHeaderMenu,
+                Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
                 $selectedDomainId
             );
 

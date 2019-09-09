@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Article\Article;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +20,18 @@ class ArticleController extends FrontBaseController
     private $articleFacade;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
-    public function __construct(ArticleFacade $articleFacade)
+    private $domain;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function __construct(ArticleFacade $articleFacade, Domain $domain)
     {
         $this->articleFacade = $articleFacade;
+        $this->domain = $domain;
     }
 
     /**
@@ -92,8 +101,10 @@ class ArticleController extends FrontBaseController
     {
         $articles = $this->articleFacade->getVisibleArticlesOnCurrentDomainByPlacementAndLimit(Article::PLACEMENT_TOP_MENU, self::LIMIT_FOR_HEADER_ARTICLES);
 
-        return $this->render('@ShopsysShop/Front/Content/Article/headerList.twig', [
+        return $this->render('@ShopsysShop/Front/Content/Article/headerList.html.twig', [
             'articles' => $articles,
+            'firstHeaderArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $this->domain->getId()),
+            'secondHeaderArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $this->domain->getId()),
         ]);
     }
 }
