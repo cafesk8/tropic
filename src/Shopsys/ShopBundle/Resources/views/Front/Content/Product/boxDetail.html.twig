@@ -1,5 +1,6 @@
-{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle) %}
+{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    {% import '@ShopsysShop/Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
@@ -289,4 +290,16 @@
             </div>
         </div>
     </div>
+    {{ boxTabs.productTabs(
+        product,
+        variants,
+        productMainCategory,
+        false,
+        mainVariants,
+        youtubeDetail,
+        productSizeArticleId,
+        accessories,
+        accessoriesHeadline,
+        productVisibleProductCategoryDomains
+    )}}
 {% endmacro %}
