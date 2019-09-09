@@ -62,14 +62,14 @@ class OrderExportCronModule extends AbstractTransferExportCronModule
      */
     protected function getDataForExport(): array
     {
-        $notExportedOrders = $this->orderFacade->getNotExportedOrdersBatch(self::ORDER_EXPORT_BATCH_SIZE);
-        $ordersToExport = [];
+        $ordersReadyForExport = $this->orderFacade->getReadyOrdersForExportBatch(self::ORDER_EXPORT_BATCH_SIZE);
+        $ordersForExport = [];
 
-        foreach ($notExportedOrders as $notExportedOrder) {
-            $ordersToExport[$notExportedOrder->getId()] = $this->orderExportMapper->mapToArray($notExportedOrder);
+        foreach ($ordersReadyForExport as $orderReadyForExport) {
+            $ordersForExport[$orderReadyForExport->getId()] = $this->orderExportMapper->mapToArray($orderReadyForExport);
         }
 
-        return $ordersToExport;
+        return $ordersForExport;
     }
 
     /**

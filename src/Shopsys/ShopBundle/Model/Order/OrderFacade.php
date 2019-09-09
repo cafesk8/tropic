@@ -324,9 +324,9 @@ class OrderFacade extends BaseOrderFacade
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Order\Order[]
      */
-    public function getNotExportedOrdersBatch(int $limit): array
+    public function getReadyOrdersForExportBatch(int $limit): array
     {
-        return $this->orderRepository->getNotExportedOrdersBatch($limit);
+        return $this->orderRepository->getReadyOrdersForExportBatch($limit);
     }
 
     /**
