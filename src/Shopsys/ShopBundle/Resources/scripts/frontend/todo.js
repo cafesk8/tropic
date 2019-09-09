@@ -15,10 +15,10 @@
     // search auto focus on popup activation
     $searchButtonOpener = $('.js-search-opener');
     $searchButtonOpener.on('mouseover', function () {
-            setTimeout( function() {
-                $searchButtonOpener.find('input[type=text]').focus();
-                console.log('e');
-            }, 500
+        setTimeout(function () {
+            $searchButtonOpener.find('input[type=text]').focus();
+            console.log('e');
+        }, 500
         );
     });
 
