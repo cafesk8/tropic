@@ -8,10 +8,11 @@
     <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
         <div class="box-detail__image">
             {% set galleryImages = getImages(product) %}
-            {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null  %}
+            {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null %}
             <div class="box-detail__image__main">
                 {% if imageExists(product) %}
-                    <a href="{{ imageUrl(product, 'original') }}" class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
+                    <a href="{{ imageUrl(product, 'original') }}"
+                       class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
                         {{ image(product, { itemprop: 'image', lazy: true }) }}
                     </a>
                 {% else %}
@@ -26,7 +27,8 @@
                     <div class="box-gallery__images">
                         {% for galleryImage in galleryImages %}
                             <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
-                                <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-gallery__item__link js-gallery-slide-link">
+                                <a href="{{ imageUrl(galleryImage, 'original') }}"
+                                   class="box-gallery__item__link js-gallery-slide-link">
                                     {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
                                 </a>
                             </div>
@@ -47,7 +49,9 @@
                                     class="box-gallery__item__link js-youtube-video-play"
                                     onclick="Shopsys.window({ content: $('.js-youtube-video-box').html(), cssClass: 'window-popup--youtube' }); return false;"
                                 >
-                                    <img src="{{ youtubeDetail.getThumbnailUrl() }}" alt="{{ youtubeDetail.getVideoTitle() }}" title="{{ youtubeDetail.getVideoTitle() }}">
+                                    <img src="{{ youtubeDetail.getThumbnailUrl() }}"
+                                         alt="{{ youtubeDetail.getVideoTitle() }}"
+                                         title="{{ youtubeDetail.getVideoTitle() }}">
                                     <span class="box-gallery__item__link--play-circle"></span>
                                     <span class="box-gallery__item__link--play-triangl"></span>
                                 </a>
@@ -55,26 +59,22 @@
                                 <div class="display-none js-youtube-video-box">
                                     <div class="youtubeWrapper">
                                         <iframe
-                                                width="560"
-                                                height="315"
-                                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
-                                                frameborder="0"
-                                                allowfullscreen
+                                            width="560"
+                                            height="315"
+                                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                            frameborder="0"
+                                            allowfullscreen
                                         ></iframe>
                                     </div>
                                 </div>
-
                             </div>
                         {% endif %}
                     </div>
                 </div>
             {% endif %}
         </div>
-        <div class="box-detail__info">
-            {% block breadcrumbDetail %}
-                {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
-            {% endblock %}
 
+        <div class="box-detail__info">
             <div class="box-detail__info__title" itemprop="name">
                 {{ product.getSeoH1(domain.id)|default(product.name) }}
             </div>
@@ -93,7 +93,8 @@
                                 {% for mainVariantGroupProduct in mainVariants %}
                                     {% set productDistinguishingParameterValue = productDistinguishingParameterValue(mainVariantGroupProduct) %}
                                     {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
-                                        <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active'}}" data-id="{{ mainVariantGroupProduct.id }}">
+                                        <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active' }}"
+                                            data-id="{{ mainVariantGroupProduct.id }}">
                                             {{ image(mainVariantGroupProduct, {size: 'thumbnail', lazy: true}) }}
                                             <span class="list-variants__item__name">
                                                 {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
@@ -114,14 +115,14 @@
                                         class="box-detail__variants__title__link underline-small"
                                         onclick="Shopsys.window({ content: '{{ render(controller('ShopsysShopBundle:Front/Article:detailForModal', { 'id': productSizeArticleId }))|escape('js') }}', cssClass: 'window-popup--wide' }); return false;"
                                     >
-                                        {{ 'Jak vybrat správnou velikost?'}}
+                                        {{ 'Jak vybrat správnou velikost?' }}
                                     </a>
                                 </div>
                                 <ul class="list-variants">
                                     {% if product.id in allDistinguishingParameterValuesForProducts|keys %}
                                         {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
-                                            <li class="list-variants__item {{ variantId is null ? 'disabled'}} js-product-variant-select-button"
-                                            data-id="{{ variantId }}">{{ parameterValue }}</li>
+                                            <li class="list-variants__item {{ variantId is null ? 'disabled' }} js-product-variant-select-button"
+                                                data-id="{{ variantId }}">{{ parameterValue }}</li>
                                         {% endfor %}
                                     {% endif %}
                                 </ul>
@@ -139,10 +140,8 @@
                         <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
                             {% if not variant.calculatedSellingDenied %}
                                 {% set sellingPrice = getProductSellingPrice(variant) %}
-                                <div itemprop="offers"
-                                itemscope
-                                itemtype="http://schema.org/Offer"
-                                class="box-detail-add__prices">
+                                <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
+                                     class="box-detail-add__prices">
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
                                         {{ sellingPrice.priceWithVat|price }}
                                     </div>
@@ -154,15 +153,10 @@
                                             {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
                                         </div>
                                     {% endif %}
-                                    <meta itemprop="priceCurrency"
-                                    content="{{ currencyCode(domain.id) }}"
-                                    >
-                                    <meta itemprop="price"
-                                    content="{{ sellingPrice.priceWithVat|moneyFormat }}"
-                                    >
+                                    <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                                    <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
                                     <link itemprop="availability"
-                                    href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                    >
+                                          href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                                 </div>
                                 {% if getProductAdeptPrice(variant) is not null %}
                                     <div class="box-detail-add__club">
@@ -177,7 +171,9 @@
                                         </span>
                                         {% if bushmanClubArticle is not null %}
                                             {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                            {{ '<a href="%url%" class="box-detail-add__club__link underline-small" target="_blank">BUSHMAN Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
+                                            <a href="{{ articleUrl }}"
+                                               class="box-detail-add__club__link underline-small"
+                                               target="_blank">{{ 'BUSHMAN Clubu'|trans }}</a>
                                         {% else %}
                                             {{ 'BUSHMAN Clubu'|trans }}
                                         {% endif %}
@@ -217,15 +213,9 @@
                                             {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
                                         </div>
                                     {% endif %}
-                                    <meta itemprop="priceCurrency"
-                                          content="{{ currencyCode(domain.id) }}"
-                                    >
-                                    <meta itemprop="price"
-                                          content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
-                                    >
-                                    <link itemprop="availability"
-                                          href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                    >
+                                    <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                                    <meta itemprop="price" content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}">
+                                    <link itemprop="availability" href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                                 </div>
                                 {% if getProductAdeptPrice(product) is not null %}
                                     <div class="box-detail-add__club">
@@ -240,7 +230,9 @@
                                         </span>
                                         {% if bushmanClubArticle is not null %}
                                             {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                            {{ '<a href="%url%" class="box-detail-add__club__link underline-small" target="_blank">BUSHMAN Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
+                                            <a href="{{ articleUrl }}"
+                                               class="box-detail-add__club__link underline-small"
+                                               target="_blank">{{ 'BUSHMAN Clubu'|trans }}</a>
                                         {% else %}
                                             {{ 'BUSHMAN Clubu'|trans }}
                                         {% endif %}
@@ -267,12 +259,14 @@
                             {% endif %}
                         </div>
                         <div class="box-detail__gift__info">
-                            <a href="{{ url('front_product_detail', { id: product.gift.id }) }}" class="box-detail__gift__info__title">
+                            <a href="{{ url('front_product_detail', { id: product.gift.id }) }}"
+                               class="box-detail__gift__info__title">
                                 {{ 'Dárek'|trans }}
                                 {{ product.gift.name }}
                             </a>
                             <div class="box-detail__gift__info__text">
-                                {{ 'Ke každému nákupu dárek v hodnotě'|trans}} <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>
+                                {{ 'Ke každému nákupu dárek v hodnotě'|trans }}
+                                <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>
                             </div>
                         </div>
                     </div>
@@ -289,17 +283,19 @@
                 #}
             </div>
         </div>
+
+        {{ boxTabs.productTabs(
+            product,
+            variants,
+            productMainCategory,
+            false,
+            mainVariants,
+            youtubeDetail,
+            productSizeArticleId,
+            accessories,
+            accessoriesHeadline,
+            productVisibleProductCategoryDomains
+        ) }}
     </div>
-    {{ boxTabs.productTabs(
-        product,
-        variants,
-        productMainCategory,
-        false,
-        mainVariants,
-        youtubeDetail,
-        productSizeArticleId,
-        accessories,
-        accessoriesHeadline,
-        productVisibleProductCategoryDomains
-    )}}
+
 {% endmacro %}

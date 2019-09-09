@@ -12,13 +12,9 @@
 @box-detail-gift-image-size: 50px;
 
 .box-detail {
+    position: relative;
     display: flex;
     flex-direction: column;
-
-    @media @query-lg {
-        .clearfix();
-        flex-direction: row;
-    }
 
     &__image {
         display: flex;
@@ -50,7 +46,9 @@
         margin-bottom: @margin-gap;
 
         @media @query-lg {
-            float: right;
+            position: absolute;
+            top: 0;
+            right: 0;
             width: @box-detail-info-width;
             margin-left: @box-detail-info-gap;
         }

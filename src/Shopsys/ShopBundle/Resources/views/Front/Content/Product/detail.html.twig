@@ -14,7 +14,9 @@
     {{ product.getSeoTitle(domain.id)|default(product.name) }}
 {% endblock %}
 
-{% block breadcrumb %}{% endblock %}
+{% block breadcrumbDetail %}
+    {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
+{% endblock %}
 
 {% block main_content %}
     <div class="web__line">
