@@ -33,6 +33,14 @@ class CartItem extends BaseCartItem
     private $mainCartItem;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Cart\Cart
+     *
+     * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Cart\Cart", inversedBy="items")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     */
+    protected $cart;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $quantity
