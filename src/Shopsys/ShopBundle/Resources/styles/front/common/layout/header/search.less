@@ -15,14 +15,10 @@
         padding: @search-padding;
     }
 
-    .box-search & {
-        padding: 0;
-    }
-
     &__form {
         display: flex;
 
-        @media @query-lg {
+        @media @query-vl {
             width: @search-width;
         }
 
@@ -40,9 +36,23 @@
             }
         }
 
+        .box-search & {
+            flex-direction: column;
+
+            @media @query-md {
+                flex-direction: row;
+            }
+        }
+
         &__input {
-            flex: 1;
+            width: 100%;
             position: relative;
+
+            .box-search & {
+                @media @query-md {
+                    width: 60%;
+                }
+            }
 
             .input {
                 width: 100%;
@@ -56,10 +66,12 @@
                 border-bottom: 1px solid @color-base;
 
                 .box-search & {
+                    width: 100%;
+                    margin-bottom: 10px;
                     line-height: @search-input-height;
                     padding: 0 10px;
+                }
             }
-        }
         }
 
         &__button {
