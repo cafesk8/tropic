@@ -93,6 +93,12 @@ class ArticleSettingsController extends AdminBaseController
                 $selectedDomainId
             );
 
+            $this->articleFacade->setArticleOnDomainInSettings(
+                $articleSettingData->thirdArticleOnHeaderMenu,
+                Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
+                $selectedDomainId
+            );
+
             $this->getFlashMessageSender()->addSuccessFlashTwig(t('Nastavení bylo uloženo.'));
             return $this->redirectToRoute('admin_articlesettings_setting');
         }

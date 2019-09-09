@@ -34,6 +34,7 @@ class ArticleSettingDataFactory
         $articleSettingData->ourStoryArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_STORY_ARTICLE_ID, $domainId);
         $articleSettingData->firstArticleOnHeaderMenu = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $domainId);
         $articleSettingData->secondArticleOnHeaderMenu = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $domainId);
+        $articleSettingData->thirdArticleOnHeaderMenu = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $domainId);
 
         return $articleSettingData;
     }

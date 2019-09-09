@@ -67,7 +67,42 @@ class ArticleSettingsFormType extends AbstractType
                 'placeholder' => t('-- Choose article --'),
                 'label' => t('Banner Naše hodnoty'),
                 'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Naše hodnoty'),
-            ])
+            ]);
+
+        $builderArticleOnHeaderGroup = $this->createArticleOnHeaderPosition($builder, $articles);
+
+        $builder
+            ->add($builderSettingsGroup)
+            ->add($builderArticleOnHeaderGroup)
+            ->add('save', SubmitType::class);
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setRequired('domain_id')
+            ->setAllowedTypes('domain_id', 'int')
+            ->setDefaults([
+                'data_class' => ArticleSettingData::class,
+                'attr' => ['novalidate' => 'novalidate'],
+            ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Article\Article[] $articles
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function createArticleOnHeaderPosition(FormBuilderInterface $builder, array $articles): FormBuilderInterface
+    {
+        $builderArticleOnHeaderGroup = $builder->create('article_on_header_setting', GroupType::class, [
+            'label' => t('Články v horním menu'),
+        ]);
+
+        $builderArticleOnHeaderGroup
             ->add('firstArticleOnHeaderMenu', ChoiceType::class, [
                 'required' => false,
                 'choices' => $articles,
@@ -85,24 +120,17 @@ class ArticleSettingsFormType extends AbstractType
                 'placeholder' => t('-- Choose article --'),
                 'label' => t('Druhý článek v horním menu'),
                 'icon_title' => t('Vyberte článek, který se zobrazí jako druhý v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
+            ])
+            ->add('thirdArticleOnHeaderMenu', ChoiceType::class, [
+                'required' => false,
+                'choices' => $articles,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'placeholder' => t('-- Choose article --'),
+                'label' => t('Treti článek v horním menu'),
+                'icon_title' => t('Vyberte článek, který se zobrazí jako čtvrtý v horním menu hned za Blogem'),
             ]);
 
-        $builder
-            ->add($builderSettingsGroup)
-            ->add('save', SubmitType::class);
-    }
-
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver
-            ->setRequired('domain_id')
-            ->setAllowedTypes('domain_id', 'int')
-            ->setDefaults([
-                'data_class' => ArticleSettingData::class,
-                'attr' => ['novalidate' => 'novalidate'],
-            ]);
+        return $builderArticleOnHeaderGroup;
     }
 }

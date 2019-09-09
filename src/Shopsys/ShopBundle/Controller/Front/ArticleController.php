@@ -58,39 +58,17 @@ class ArticleController extends FrontBaseController
         ]);
     }
 
-    public function menuAction()
+    /**
+     * @param string $placement
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function footerMenuAction(string $placement): Response
     {
-        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_TOP_MENU);
-
-        return $this->render('@ShopsysShop/Front/Content/Article/menu.html.twig', [
-            'articles' => $articles,
-        ]);
-    }
-
-    public function footerShoppingAction()
-    {
-        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_SHOPPING);
+        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain($placement);
 
         return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
             'articles' => $articles,
-        ]);
-    }
-
-    public function footerAboutAction()
-    {
-        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_ABOUT);
-
-        return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
-            'articles' => $articles,
-        ]);
-    }
-
-    public function footerServicesAction()
-    {
-        $articles = $this->articleFacade->getVisibleArticlesForPlacementOnCurrentDomain(Article::PLACEMENT_SERVICES);
-
-        return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
-            'articles' => $articles,
+            'isPlacementAboutUs' => Article::PLACEMENT_ABOUT === $placement,
         ]);
     }
 

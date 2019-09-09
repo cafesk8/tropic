@@ -1,5 +1,5 @@
 front_about_us_info:
-    path: /about-us/
+    path: /contact/
     defaults: { _controller: ShopsysShopBundle:Front\AboutUs:info }
 
 front_cart:

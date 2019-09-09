@@ -35,4 +35,9 @@ class ArticleSettingData
      * @var \Shopsys\ShopBundle\Model\Article\Article|null
      */
     public $secondArticleOnHeaderMenu;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Article\Article|null
+     */
+    public $thirdArticleOnHeaderMenu;
 }

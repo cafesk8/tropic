@@ -60,6 +60,8 @@ class MultidomainArticleSettingDataFixture extends AbstractReferenceFixture impl
         $firstHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $secondHeaderArticle */
         $secondHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
+        /** @var \Shopsys\ShopBundle\Model\Article\Article $thirdHeaderArticle */
+        $thirdHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
 
         $this->articleFacade->setArticleOnDomainInSettings(
             $bushmanClubArticle,
@@ -88,6 +90,12 @@ class MultidomainArticleSettingDataFixture extends AbstractReferenceFixture impl
         $this->articleFacade->setArticleOnDomainInSettings(
             $secondHeaderArticle,
             Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
+            $domainId
+        );
+
+        $this->articleFacade->setArticleOnDomainInSettings(
+            $thirdHeaderArticle,
+            Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
             $domainId
         );
     }

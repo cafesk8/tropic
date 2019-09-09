@@ -48,6 +48,12 @@ class ArticleSettingDataFixture extends AbstractReferenceFixture implements Depe
             Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
             Domain::FIRST_DOMAIN_ID
         );
+
+        $this->articleFacade->setArticleOnDomainInSettings(
+            $secondHeaderArticle,
+            Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
+            Domain::FIRST_DOMAIN_ID
+        );
     }
 
     /**

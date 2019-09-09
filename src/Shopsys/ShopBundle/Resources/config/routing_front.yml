@@ -167,10 +167,6 @@ front_store_list:
     defaults: { _controller: ShopsysShopBundle:Front\Store:list }
     condition: "request.isXmlHttpRequest()"
 
-front_contact_index:
-    path: /contact/
-    defaults: { _controller: ShopsysShopBundle:Front\AboutUs:info }
-
 front_store_index:
     path: /stores/
     defaults: { _controller: ShopsysShopBundle:Front\Store:index }
