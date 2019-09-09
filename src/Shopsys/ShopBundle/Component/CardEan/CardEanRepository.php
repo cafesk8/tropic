@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Component\CardEan;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Shopsys\ShopBundle\Component\CardEan\Exception\NotFreeCardEansException;
 
 class CardEanRepository
 {
@@ -53,5 +54,19 @@ class CardEanRepository
         }
 
         return $exists;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Component\CardEan\CardEan
+     */
+    public function getOnePregeneratedEan(): CardEan
+    {
+        $cardEan = $this->getCardEanRepository()->findOneBy([]);
+
+        if ($cardEan === null) {
+            throw new NotFreeCardEansException();
+        }
+
+        return $cardEan;
     }
 }

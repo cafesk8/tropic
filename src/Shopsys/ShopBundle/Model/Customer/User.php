@@ -231,4 +231,12 @@ class User extends BaseUser
             return t('Chyba při přenosu');
         }
     }
+
+    /**
+     * @param string|null $ean
+     */
+    public function setEan(?string $ean): void
+    {
+        $this->ean = $ean;
+    }
 }
