@@ -49,7 +49,18 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->type = $payment->getType();
         $paymentData->goPayPaymentMethod = $payment->getGoPayPaymentMethod();
         $paymentData->externalId = $payment->getExternalId();
+        $paymentData->cashOnDelivery = $payment->isCashOnDelivery();
 
         return $paymentData;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData
+     */
+    protected function fillNew(BasePaymentData $paymentData): void
+    {
+        parent::fillNew($paymentData);
+
+        $paymentData->cashOnDelivery = false;
     }
 }
