@@ -141,11 +141,23 @@ class OrderRepository extends BaseOrderRepository
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Order\Order[]
      */
-    public function getNotExportedOrdersBatch(int $limit): array
+    public function getReadyOrdersForExportBatch(int $limit): array
     {
+        /**
+         * not registrated customer: order is exported without (not existent) waiting for customer ID from IS
+         * registrated non-member of Bushman club: order is exported without (not existent) waiting for customer ID from IS
+         * registrated member of Bushman club: order is exported after import of customer ID from IS
+         */
+
         return $this->createOrderQueryBuilder()
             ->andWhere('o.exportStatus = :exportStatus')
             ->setParameter('exportStatus', Order::EXPORT_NOT_YET)
+            ->andWhere('
+                (o.customer IS NULL)
+                OR (o.customer IS NOT NULL AND c.memberOfBushmanClub = FALSE)
+                OR (c.transferId IS NOT NULL AND c.memberOfBushmanClub = TRUE)
+            ')
+            ->leftJoin('o.customer', 'c')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

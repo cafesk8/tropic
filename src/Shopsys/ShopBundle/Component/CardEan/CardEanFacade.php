@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Component\CardEan;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\ShopBundle\Component\CardEan\Exception\CardEanCouldNotBeSetToUserException;
 use Shopsys\ShopBundle\Component\CardEan\Exception\ReachMaxCardEanUniqueResolveAttemptException;
 use Shopsys\ShopBundle\Model\Customer\UserRepository;
 
 class CardEanFacade
 {
     private const MAX_URL_UNIQUE_RESOLVE_ATTEMPT = 1000;
+    private const MAX_SET_EAN_TO_USER_ATTEMPTS = 10;
 
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
@@ -89,5 +93,43 @@ class CardEanFacade
         $this->em->flush($cardEan);
 
         return $cardEan;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     */
+    public function addPrereneratedEanToUserAndFlush(User $user)
+    {
+        $attempt = 0;
+        $eanIsSetToUser = false;
+        $exception = null;
+
+        do {
+            try {
+                $this->em->beginTransaction();
+
+                $cardEan = $this->cardEanRepository->getOnePregeneratedEan();
+                $user->setEan($cardEan->getEan());
+
+                $this->em->remove($cardEan);
+                $this->em->flush([$cardEan, $user]);
+
+                $this->em->commit();
+
+                $eanIsSetToUser = true;
+            } catch (Exception $exception) {
+                $this->em->rollback();
+                $attempt++;
+            }
+        } while ($eanIsSetToUser === false && $attempt < self::MAX_SET_EAN_TO_USER_ATTEMPTS);
+
+        if ($eanIsSetToUser === false) {
+            $exceptionMessage = '';
+            if ($exception !== null) {
+                $exceptionMessage = get_class($exception) . ': ' . $exception->getMessage();
+            }
+
+            throw new CardEanCouldNotBeSetToUserException($exceptionMessage);
+        }
     }
 }
