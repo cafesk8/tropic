@@ -530,3 +530,9 @@ services:
     Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory:
       arguments:
         $apiKey: '%smsManagerApiKey%'
+
+    Shopsys\ShopBundle\Model\Order\MassAction\CsvExportMassAction: ~
+
+    Shopsys\FrameworkBundle\Controller\Admin\OrderController:
+        class: Shopsys\ShopBundle\Controller\Admin\OrderController
+        tags: ['controller.service_arguments']

@@ -813,4 +813,23 @@ class Order extends BaseOrder
     {
         return $this->gtmCoupon;
     }
+
+    /**
+     * @return string
+     */
+    public function getNumberFromStreet(): string
+    {
+        $streetExplodedBySpaces = explode(' ', $this->street);
+        return array_pop($streetExplodedBySpaces);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStreetWihoutNumber(): string
+    {
+        $streetExplodedBySpaces = explode(' ', $this->street);
+        array_pop($streetExplodedBySpaces);
+        return implode(' ', $streetExplodedBySpaces);
+    }
 }
