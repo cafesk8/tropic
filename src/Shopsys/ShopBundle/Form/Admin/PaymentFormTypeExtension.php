@@ -9,6 +9,7 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class PaymentFormTypeExtension extends AbstractTypeExtension
@@ -60,6 +61,10 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                 'attr' => [
                     'class' => 'js-payment-gopay-payment-method',
                 ],
+            ])
+            ->add('externalId', TextType::class, [
+                'label' => 'ID z IS',
+                'required' => false,
             ]);
     }
 

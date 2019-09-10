@@ -48,6 +48,7 @@ class PaymentDataFactory extends BasePaymentDataFactory
 
         $paymentData->type = $payment->getType();
         $paymentData->goPayPaymentMethod = $payment->getGoPayPaymentMethod();
+        $paymentData->externalId = $payment->getExternalId();
 
         return $paymentData;
     }
