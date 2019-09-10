@@ -164,3 +164,11 @@ services:
     Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade: ~
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
+
+    Shopsys\ShopBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig: ~
+
+    Shopsys\FrameworkBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig'
+
+    Shopsys\ShopBundle\Model\AdvancedSearchOrder\Filter\OrderTransportFilter: ~
+
+    Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@Shopsys\ShopBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
