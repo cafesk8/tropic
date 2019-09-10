@@ -2,7 +2,6 @@
 {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 {% import '@ShopsysShop/Front/Content/Product/boxDetail.html.twig' as boxDetail %}
-{% import '@ShopsysShop/Front/Content/Product/boxTabs.html.twig' as boxTabs %}
 
 {% set domain = getDomain() %}
 {% set accessoriesHeadline = 'Dolaďte svůj outfit'|trans %}
@@ -15,44 +14,19 @@
     {{ product.getSeoTitle(domain.id)|default(product.name) }}
 {% endblock %}
 
-{% block breadcrumb %}{% endblock %}
+{% block breadcrumbDetail %}
+    {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
+{% endblock %}
 
 {% block main_content %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <div itemscope itemtype="http://schema.org/Product">
                 <div class="js-product-variant-group">
-                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle) }}
+                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
 
                     {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId, bushmanClubArticle) }}
-                    {% endfor %}
-
-                    {{ boxTabs.productTabs(
-                        product,
-                        allVariants,
-                        productMainCategory,
-                        true,
-                        mainVariants,
-                        youtubeDetail,
-                        productSizeArticleId,
-                        accessories,
-                        accessoriesHeadline,
-                        productVisibleProductCategoryDomains
-                    )}}
-                    {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                        {{ boxTabs.productTabs(
-                            mainVariant,
-                            allVariants,
-                            productMainCategory,
-                            false,
-                            mainVariants,
-                            youtubeDetailForMainVariants[mainVariant.id],
-                            productSizeArticleId,
-                            accessories,
-                            accessoriesHeadline,
-                            productVisibleProductCategoryDomains
-                        )}}
+                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId, bushmanClubArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
                     {% endfor %}
                 </div>
             </div>
