@@ -97,6 +97,10 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                     new Constraints\NotBlank(['message' => 'Vyplňte prosím počet dnů do dodání']),
                     new Constraints\GreaterThanOrEqual(['value' => 0, 'message' => 'Počet dnů do dodání musí být větší nebo roven nule']),
                 ],
+            ])
+            ->add('externalId', TextType::class, [
+                'label' => 'ID z IS',
+                'required' => false,
             ]);
 
         $builder->add($this->getBalikobotAndStoreGroup($builder));

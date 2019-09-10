@@ -47,6 +47,7 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->initialDownload = $transport->isInitialDownload();
         $transportData->countries = $transport->getCountries();
         $transportData->mallType = $transport->getMallType();
+        $transportData->externalId = $transport->getExternalId();
 
         if ($transport->isChooseStore()) {
             $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;

@@ -81,6 +81,13 @@ class Transport extends BaseTransport
     private $deliveryDays;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $externalId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -95,6 +102,7 @@ class Transport extends BaseTransport
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
         $this->deliveryDays = $transportData->deliveryDays;
+        $this->externalId = $transportData->externalId;
     }
 
     /**
@@ -112,6 +120,7 @@ class Transport extends BaseTransport
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
         $this->deliveryDays = $transportData->deliveryDays;
+        $this->externalId = $transportData->externalId;
     }
 
     /**
@@ -222,5 +231,13 @@ class Transport extends BaseTransport
     public function getDeliveryDays(): int
     {
         return $this->deliveryDays;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
     }
 }

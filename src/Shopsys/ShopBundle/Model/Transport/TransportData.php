@@ -49,6 +49,11 @@ class TransportData extends BaseTransportData
      */
     public $deliveryDays;
 
+    /**
+     * @var string|null
+     */
+    public $externalId;
+
     public function __construct()
     {
         parent::__construct();
