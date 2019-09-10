@@ -6,6 +6,8 @@
             and domain.id is not constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN')
             and getDeliveryDate() is not null  %}
 
+        {% set showNotAvailable = product.stockQuantity < 1 %}
+
         {% if showDeliveryDate %}
             {% set expectedDeliveryDate = getDeliveryDate() %}
             {% set friendlyDayInterval = expectedDeliveryDate.diff(date()) %}
@@ -15,8 +17,8 @@
                 {{ expectedDeliveryDate|date('j. n.') }}
             {% endif %}
             {{ 'u&nbsp;tebe'|trans|raw }}
-        {% else %}
-            {{ product.calculatedAvailability.name }}
+        {% elseif showNotAvailable %}
+            <span class="color-orange">{{ 'Momentálně nedostupné'|trans }}</span>
         {% endif %}
     </span>
 {% endmacro %}

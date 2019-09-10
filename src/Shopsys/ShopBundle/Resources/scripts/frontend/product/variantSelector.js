@@ -44,7 +44,7 @@
             $variantDetailWrapper.filterAllNodes('.js-product-variant-detail-select-info, .js-product-variant-detail')
                 .addClass('display-none');
             $variantDetailWrapper.filterAllNodes(variantDetailSelector).removeClass('display-none');
-            $variantDetailWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"]')
+            $variantDetailWrapper.filterAllNodes('.js-product-detail-add-variant-button button[type="submit"][data-hard-disabled="0"]')
                 .removeAttr('disabled')
                 .removeClass('btn--disabled');
 

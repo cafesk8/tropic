@@ -11,8 +11,8 @@
     {% endif %}
 
     {% if type == 'large' %}
-        {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--large btn--full-width', disabled: disabled}}) }}
+        {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--large btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
     {% else %}
-        {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--full-width', disabled: disabled}}) }}
+        {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
     {% endif %}
 {{ form_end(form) }}
