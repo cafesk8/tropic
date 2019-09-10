@@ -212,7 +212,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
         $validationGroupForShipperService = [];
         $placeholderMessage = t('Výchozí služba dopravce');
 
-        if (count($shipperServices) > 0) {
+        if (count($shipperServices) > 1) {
             $validationGroupForShipperService[] = new Constraints\NotBlank([
                 'message' => 'Musíte vybrat službu dopravce',
                 'groups' => [self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE],
