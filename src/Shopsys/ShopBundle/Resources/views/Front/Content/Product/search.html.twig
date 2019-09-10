@@ -41,7 +41,7 @@
                             {% endif %}
                             {% if paginationResult.results|length > 0 %}
                                 <a href="#" class="in-tab__head__item underline js-tabs-button" data-tab-id="products">
-                                    {{ 'Produkty'|trans }} ({{ paginationResult.results|length }})
+                                    {{ 'Produkty'|trans }} ({{ paginationResult.totalCount }})
                                 </a>
                             {% endif %}
                         </div>
