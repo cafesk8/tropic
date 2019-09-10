@@ -76,3 +76,7 @@ services:
         class: Shopsys\ShopBundle\Form\WysiwygTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Ivory\CKEditorBundle\Form\Type\CKEditorType }
+
+    Shopsys\ShopBundle\Form\Admin\CountryFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Country\CountryFormType }
