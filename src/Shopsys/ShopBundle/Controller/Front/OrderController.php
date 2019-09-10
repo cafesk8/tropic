@@ -273,16 +273,12 @@ class OrderController extends FrontBaseController
         // FormData are filled during isValid() call
         $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
 
-        if ($transport !== null && $transport->isPickupPlace()) {
-            if ($orderData->pickupPlace !== null) {
-                if ($transport->getBalikobotShipper() !== $orderData->pickupPlace->getBalikobotShipper() ||
-                    $transport->getBalikobotShipperService() !== $orderData->pickupPlace->getBalikobotShipperService()
-                ) {
-                    $orderData->transport = null;
-                    $orderData->pickupPlace = null;
-                    $transport = null;
-                    $form->get('transport')->setData(null);
-                }
+        if ($transport !== null && $transport->isPickupPlaceType()) {
+            if ($orderData->pickupPlace === null) {
+                $orderData->transport = null;
+                $orderData->pickupPlace = null;
+                $transport = null;
+                $form->get('transport')->setData(null);
             }
         }
 
@@ -412,16 +408,12 @@ class OrderController extends FrontBaseController
 
         $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
 
-        if ($transport !== null && $transport->isPickupPlace()) {
+        if ($transport !== null && $transport->isPickupPlaceType()) {
             if ($orderData->pickupPlace !== null) {
-                if ($transport->getBalikobotShipper() !== $orderData->pickupPlace->getBalikobotShipper() ||
-                    $transport->getBalikobotShipperService() !== $orderData->pickupPlace->getBalikobotShipperService()
-                ) {
-                    $orderData->transport = null;
-                    $orderData->pickupPlace = null;
-                    $transport = null;
-                    $form->get('transport')->setData(null);
-                }
+                $orderData->transport = null;
+                $orderData->pickupPlace = null;
+                $transport = null;
+                $form->get('transport')->setData(null);
             }
         }
 

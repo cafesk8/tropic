@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Model\Transport\PickupPlace;
 
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\Exception\PickupPlaceNotFoundException;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class PickupPlaceIdToEntityTransformer implements DataTransformerInterface
 {
@@ -51,7 +50,7 @@ class PickupPlaceIdToEntityTransformer implements DataTransformerInterface
         try {
             $pickupPlace = $this->pickupPlaceFacade->getById((int)$pickupPlaceId);
         } catch (PickupPlaceNotFoundException $notFoundException) {
-            throw new TransformationFailedException('Pickup place not found', null, $notFoundException);
+            return null;
         }
 
         return $pickupPlace;
