@@ -27,7 +27,7 @@
         // show more button
         $gallery.filterAllNodes('.js-gallery-item-more').on('click', function (e) {
             e.preventDefault();
-            $(this).addClass('display-none');
+            $('.js-gallery-item-more').addClass('display-none');
             $gallery.filterAllNodes('.js-gallery-item').removeClass('display-none');
             $gallery.filterAllNodes('.js-lazy-load').each(function () {
                 var $lazyloadedImage = $(this);
