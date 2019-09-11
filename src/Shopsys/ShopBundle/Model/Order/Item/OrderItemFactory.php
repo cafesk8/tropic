@@ -132,6 +132,7 @@ class OrderItemFactory extends BaseOrderItemFactory
         );
 
         $orderProductGift->setGift($gift);
+        $orderProductGift->setEan($gift->getEan());
         $orderProductGift->setTotalPrice($totalPrice);
 
         return $orderProductGift;
