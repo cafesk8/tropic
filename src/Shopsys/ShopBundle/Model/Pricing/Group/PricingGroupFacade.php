@@ -52,4 +52,13 @@ class PricingGroupFacade extends BasePricingGroupFacade
     {
         return $this->pricingGroupRepository->getByNameAndDomainId($name, $domainId);
     }
+
+    /**
+     * @param float $discount
+     * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null
+     */
+    public function findByDiscount(float $discount): ?PricingGroup
+    {
+        return $this->pricingGroupRepository->findByDiscount($discount);
+    }
 }

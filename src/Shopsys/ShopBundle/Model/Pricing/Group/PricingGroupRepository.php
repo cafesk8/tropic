@@ -24,4 +24,13 @@ class PricingGroupRepository extends BasePricingGroupRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param float $discount
+     * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null
+     */
+    public function findByDiscount(float $discount): ?PricingGroup
+    {
+        return $this->getPricingGroupRepository()->findOneBy(['discount' => $discount]);
+    }
 }

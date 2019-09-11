@@ -19,6 +19,7 @@ class PricingGroup extends BasePricingGroup
     public const PRICING_GROUP_ADEPT = 'adept';
     public const PRICING_GROUP_CLASSIC = 'classic';
     public const PRICING_GROUP_REAL_BUSHMAN = 'real_bushman';
+    public const PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN = 'temporary_seven_percent';
 
     /**
      * @var string|null

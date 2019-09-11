@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Customer;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
@@ -12,6 +13,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User as BaseUser;
 use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Customer\Exception\UnsupportedCustomerExportStatusException;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -83,6 +85,18 @@ class User extends BaseUser
     private $exportedAt;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan",
+     *     mappedBy="customer",
+     *     cascade={"remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $userTransferIdAndEan;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
@@ -100,6 +114,7 @@ class User extends BaseUser
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
         $this->exportStatus = $userData->exportStatus;
+        $this->userTransferIdAndEan = new ArrayCollection();
     }
 
     /**
@@ -246,5 +261,25 @@ class User extends BaseUser
     public function setEan(?string $ean): void
     {
         $this->ean = $ean;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]
+     */
+    public function getUserTransferIdAndEan()
+    {
+        return $this->userTransferIdAndEan->toArray();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $transferIdAndEan
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null $newPricingGroup
+     */
+    public function updateTransferEanAndPricingGroup(UserTransferIdAndEan $transferIdAndEan, ?PricingGroup $newPricingGroup)
+    {
+        $this->transferId = $transferIdAndEan->getTransferId();
+        $this->ean = $transferIdAndEan->getEan();
+        $this->pricingGroup = $newPricingGroup;
+        $this->memberOfBushmanClub = true;
     }
 }

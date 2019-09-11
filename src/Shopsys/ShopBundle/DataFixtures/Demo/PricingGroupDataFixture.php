@@ -19,6 +19,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     public const PRICING_GROUP_ADEPT_DOMAIN = 'pricing_group_adept_domain';
     public const PRICING_GROUP_CLASSIC_DOMAIN = 'pricing_group_classic_domain';
     public const PRICING_GROUP_REAL_BUSHMAN_DOMAIN = 'pricing_group_real_bushman_domain';
+    public const PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN = 'pricing_group_temporary_seven_percent_domain';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
@@ -94,6 +95,15 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REAL_BUSHMAN;
         $pricingGroupData->discount = (float)0.85;
         $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN, true, [
+            1 => Money::create('49999'),
+            2 => Money::create('1999.99'),
+            3 => Money::create('1999.99'),
+        ]);
+
+        $pricingGroupData->name = '7%';
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN;
+        $pricingGroupData->discount = (float)0.93;
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN, true, [
             1 => Money::create('49999'),
             2 => Money::create('1999.99'),
             3 => Money::create('1999.99'),
