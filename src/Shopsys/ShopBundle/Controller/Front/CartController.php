@@ -198,6 +198,7 @@ class CartController extends FrontBaseController
             'promoCode' => $orderPreview->getPromoCode(),
             'topProducts' => $topProducts,
             'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainElasticFacade->getVariantsIndexedByMainVariantId($topProducts),
+            'locale' => $this->domain->getLocale(),
         ]);
     }
 

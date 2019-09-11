@@ -112,11 +112,12 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string $locale
      * @return string
      */
-    public function getProductParameters(Product $product): string
+    public function getProductParameters(Product $product, string $locale): string
     {
-        $parametersForProduct = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
+        $parametersForProduct = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product, $locale);
 
         if ($parametersForProduct === null) {
             return '';

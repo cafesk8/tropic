@@ -10,7 +10,7 @@
             <td style="font-weight: bold;">
                 {{ item.name }}
                 {% if (item.isTypeProduct is same as (true) or item.isTypeGift is same as (true)) and item.product is not null %}
-                    {{ productParameters(item.product) }}
+                    {{ productParameters(item.product, orderLocale) }}
                 {% endif %}
             </td>
             <td style="text-align: right;">{{ item.quantity|formatNumber(orderLocale) }} {{ item.unitName }}</td>

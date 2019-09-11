@@ -174,7 +174,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             $this->cachedProductDistinguishingParameterValueFacade->findProductDistinguishingParameterValue($product, $locale);
 
         if ($productDistinguishingParameterValue === null) {
-            $productDistinguishingParameterValue = $this->createProductDistinguishingParameterValue($product);
+            $productDistinguishingParameterValue = $this->createProductDistinguishingParameterValue($product, $locale);
             $this->cachedProductDistinguishingParameterValueFacade->saveToCache($product, $locale, $productDistinguishingParameterValue);
         }
 
@@ -182,12 +182,13 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string $locale
      * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
-    private function createProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
+    private function createProductDistinguishingParameterValue(Product $product, string $locale): ProductDistinguishingParameterValue
     {
-        $productParameterValues = $this->getProductParameterValues($product);
+        $productParameterValues = $this->getProductParameterValues($product, $locale);
 
         $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
         $mainVariantGroup = $mainVariant->getMainVariantGroup();
@@ -206,7 +207,8 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
         $productDistinguishingParameterValue = new ProductDistinguishingParameterValue(
             $firstDistinguishingParameterValue,
-            $secondDistinguishingParameterValue
+            $secondDistinguishingParameterValue,
+            $locale
         );
 
         return $productDistinguishingParameterValue;

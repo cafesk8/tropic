@@ -29,18 +29,22 @@ class ProductDistinguishingParameterValue
     private $secondDistinguishingParameterName;
 
     /**
-     * @param string|null $firstDistinguishingParameterValue
-     * @param string|null $secondDistinguishingParameterValue
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null $firstDistinguishingParameterValue
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null $secondDistinguishingParameterValue
+     * @param string $locale
      */
-    public function __construct(?ProductParameterValue $firstDistinguishingParameterValue, ?ProductParameterValue $secondDistinguishingParameterValue)
-    {
+    public function __construct(
+        ?ProductParameterValue $firstDistinguishingParameterValue,
+        ?ProductParameterValue $secondDistinguishingParameterValue,
+        string $locale
+    ) {
         if ($firstDistinguishingParameterValue !== null) {
             $this->firstDistinguishingParameterValue = $firstDistinguishingParameterValue->getValue()->getText();
-            $this->firstDistinguishingParameterName = $firstDistinguishingParameterValue->getParameter()->getName();
+            $this->firstDistinguishingParameterName = $firstDistinguishingParameterValue->getParameter()->getName($locale);
         }
         if ($secondDistinguishingParameterValue !== null) {
             $this->secondDistinguishingParameterValue = $secondDistinguishingParameterValue->getValue()->getText();
-            $this->secondDistinguishingParameterName = $secondDistinguishingParameterValue->getParameter()->getName();
+            $this->secondDistinguishingParameterName = $secondDistinguishingParameterValue->getParameter()->getName($locale);
         }
     }
 
