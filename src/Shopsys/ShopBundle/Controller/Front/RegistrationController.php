@@ -107,9 +107,7 @@ class RegistrationController extends FrontBaseController
             /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
             $user = $this->customerFacade->register($userData);
 
-            if ($user->isMemberOfBushmanClub()) {
-                $this->cardEanFacade->addPrereneratedEanToUserAndFlush($user);
-            }
+            $this->cardEanFacade->addPrereneratedEanToUserAndFlush($user);
 
             $this->authenticator->loginUser($user, $request);
 
