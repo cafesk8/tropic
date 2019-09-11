@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
  * @ORM\Table(
  *     name="users",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="email_domain", columns={"email", "domain_id"})
+ *         @ORM\UniqueConstraint(name="email_domain", columns={"email", "domain_id", "ean"})
  *     },
  *     indexes={
  *         @ORM\Index(columns={"email"})
@@ -57,7 +57,7 @@ class User extends BaseUser
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true, unique=true, length=13)
+     * @ORM\Column(type="string", nullable=true, length=13)
      */
     private $ean;
 
