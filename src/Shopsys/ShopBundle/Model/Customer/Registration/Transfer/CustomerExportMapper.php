@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Customer\Registration\Transfer;
 use DateTime;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
+use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\Customer\User;
 
 class CustomerExportMapper
@@ -18,8 +19,18 @@ class CustomerExportMapper
 
     private const EMPTY_VALUE = 'empty';
 
-    public function __construct()
+    /**
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
+     */
+    private $countryFacade;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
+     */
+    public function __construct(CountryFacade $countryFacade)
     {
+        $this->countryFacade = $countryFacade;
+
         $this->lastNumber = time();
     }
 
@@ -54,6 +65,7 @@ class CustomerExportMapper
                     'Street' => self::EMPTY_VALUE,
                     'City' => self::EMPTY_VALUE,
                     'ZIP' => self::EMPTY_VALUE,
+                    'Country' => $this->getCountryPropertyContent($user),
                 ],
                 'Phone' => $user->getTelephone() ?? '1',
                 'Email' => $user->getEmail(),
@@ -67,5 +79,27 @@ class CustomerExportMapper
         ];
 
         return $headerArray;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @return string
+     */
+    private function getCountryPropertyContent(User $user): string
+    {
+        $countryCode = DomainHelper::COUNTRY_CODE_BY_DOMAIN_ID[$user->getDomainId()];
+
+        /** @var \Shopsys\ShopBundle\Model\Country\Country $country */
+        $country = $this->countryFacade->findByCode($countryCode);
+
+        if ($country !== null) {
+            if ($country->getExternalId() !== null) {
+                return $country->getExternalId();
+            } elseif ($country->getCode() !== null) {
+                return $country->getCode();
+            }
+        }
+
+        return '';
     }
 }

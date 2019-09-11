@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
@@ -19,7 +18,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
@@ -34,6 +32,11 @@ use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 /**
  * @ORM\Table(name="orders")
  * @ORM\Entity
+ *
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport getTransport()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
+ * @method \Shopsys\ShopBundle\Model\Country\Country getCountry()
+ * @method \Shopsys\ShopBundle\Model\Country\Country getDeliveryCountry()
  */
 class Order extends BaseOrder
 {
@@ -760,37 +763,5 @@ class Order extends BaseOrder
     public function getGtmCoupon(): ?string
     {
         return $this->gtmCoupon;
-    }
-
-    /**
-     * @return \Shopsys\ShopBundle\Model\Transport\Transport
-     */
-    public function getTransport(): Transport
-    {
-        return parent::getTransport();
-    }
-
-    /**
-     * @return \Shopsys\ShopBundle\Model\Payment\Payment
-     */
-    public function getPayment(): Payment
-    {
-        return parent::getPayment();
-    }
-
-    /**
-     * @return \Shopsys\ShopBundle\Model\Country\Country
-     */
-    public function getCountry(): Country
-    {
-        return parent::getCountry();
-    }
-
-    /**
-     * @return \Shopsys\ShopBundle\Model\Country\Country|null
-     */
-    public function getDeliveryCountry(): ?Country
-    {
-        return parent::getDeliveryCountry();
     }
 }
