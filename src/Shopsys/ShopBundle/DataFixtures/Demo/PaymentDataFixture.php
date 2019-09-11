@@ -45,6 +45,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     public function load(ObjectManager $manager)
     {
+        /** @var \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData */
         $paymentData = $this->paymentDataFactory->create();
         $paymentData->type = Payment::TYPE_BASIC;
         $paymentData->name = [
@@ -86,6 +87,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('1.95'),
         ];
         $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $paymentData->cashOnDelivery = true;
         $this->createPayment(self::PAYMENT_CASH_ON_DELIVERY, $paymentData, [TransportDataFixture::TRANSPORT_CZECH_POST]);
 
         $paymentData = $this->paymentDataFactory->create();
