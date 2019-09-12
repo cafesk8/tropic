@@ -3,9 +3,10 @@
 @list-variants-item-padding: 5px;
 @list-variants-item-gap-with-image: 8px;
 @list-variants-item-bg: @color-f;
-@list-variants-item-bg-hover: #d4ebd0;
+@list-variants-item-bg-hover: @color-f;
 @list-variants-item-bg-active: @color-green;
-@list-variants-item-border-color: @color-green;
+@list-variants-item-border-color: #d3d2d2;
+@list-variants-item-border-color-hover: @color-green;
 @list-variants-item-disabled-font-color: #cecdcd;
 
 @list-variants-item-with-image-width: 84px;
@@ -41,11 +42,13 @@
 
         &:hover {
             background-color: @list-variants-item-bg-hover;
+            border: 3px solid @list-variants-item-border-color-hover;
         }
 
         &.active {
             color: @color-f;
             background-color: @list-variants-item-bg-active;
+            border: 3px solid @list-variants-item-border-color-hover;
         }
 
         &.disabled {
@@ -56,6 +59,7 @@
 
         &__label {
             display: block;
+            padding: 0 5px;
             margin: 0 -@list-variants-item-padding;
             width: calc(~"100% + 2*@{list-variants-item-padding}");
             height: @list-variants-item-size - 4px;
@@ -137,6 +141,7 @@
 input[type=checkbox]:checked + .list-variants__item {
     color: @color-f;
     background-color: @list-variants-item-bg-active;
+    border: 3px solid @list-variants-item-border-color-hover;
 }
 
 input[type=checkbox]:checked + .list-variants__item-color {
