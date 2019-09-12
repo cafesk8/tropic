@@ -78,7 +78,7 @@ class OrderExportMapper
             'CustomerNote' => $order->getNote(),
         ];
 
-        if ($order->isDeliveryAddressSameAsBillingAddress() === false) {
+        if ($order->isDeliveryAddressSameAsBillingAddress() === false && $order->getStoreExternalNumber() === null) {
             $headerArray['DeliveryAdress'] = [
                 'SureName' => $order->getDeliveryFirstName(),
                 'ForeName' => $order->getDeliveryLastName(),
