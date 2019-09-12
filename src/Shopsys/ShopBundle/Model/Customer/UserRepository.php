@@ -31,12 +31,11 @@ class UserRepository extends BaseUserRepository
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
-    public function getNotExportedMembersOfBushmanClubCustomersBatch(int $limit): array
+    public function getNotExportedCustomersBatch(int $limit): array
     {
         return $this->createUserQueryBuilder()
             ->andWhere('u.exportStatus = :exportStatus')
             ->setParameter('exportStatus', User::EXPORT_NOT_YET)
-            ->andWhere('u.memberOfBushmanClub = true')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

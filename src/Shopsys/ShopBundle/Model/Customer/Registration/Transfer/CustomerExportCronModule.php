@@ -63,7 +63,7 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
      */
     protected function getDataForExport(): array
     {
-        $notExportedCustomers = $this->customerFacade->getNotExportedMembersOfBushmanClubCustomersBatch(self::CUSTOMER_EXPORT_BATCH_SIZE);
+        $notExportedCustomers = $this->customerFacade->getNotExportedCustomersBatch(self::CUSTOMER_EXPORT_BATCH_SIZE);
 
         $customersToExport = [];
 
