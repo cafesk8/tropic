@@ -701,6 +701,7 @@ class Order extends BaseOrder
      */
     private function setDeliveryAddressNewly(OrderData $orderData): void
     {
+        $this->deliveryCompanyName = $orderData->deliveryCompanyName;
         $this->deliveryFirstName = $orderData->deliveryFirstName;
         $this->deliveryLastName = $orderData->deliveryLastName;
         $this->email = $orderData->email;
