@@ -104,12 +104,10 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter telephone number',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Length([
                         'max' => 20,
                         'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Regex([
                         'pattern' => '/^\+{1}[^\+]+$/',
