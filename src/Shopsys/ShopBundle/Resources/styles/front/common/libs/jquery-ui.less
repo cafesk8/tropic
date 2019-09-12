@@ -1,13 +1,14 @@
 @ui-slider-bg: @color-f;
 @ui-slider-height: 8px;
 @ui-slider-handle-height: 18px;
-@ui-slider-handle-position: -7px;
+@ui-slider-handle-position: -8px;
 @ui-slider-primary-color: @color-orange;
 
 .ui-slider {
     display: block;
     height: @ui-slider-height;
     position: relative;
+    top: 1px;
 
     background-color: @ui-slider-bg;
     border: 3px solid @color-border;
@@ -16,7 +17,7 @@
 .ui-slider-range {
     height: @ui-slider-height;
     position: absolute;
-    top: -2px;
+    top: -3px;
 
     background-color: @ui-slider-bg;
     border: 3px solid @ui-slider-primary-color;

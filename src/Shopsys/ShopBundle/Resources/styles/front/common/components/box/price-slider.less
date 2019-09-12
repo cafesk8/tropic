@@ -13,6 +13,19 @@
             position: relative;
             width: 50%;
 
+            input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+              color: @color-base;
+              opacity: 1; /* Firefox */
+            }
+
+            input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: @color-base;
+            }
+
+            input::-ms-input-placeholder { /* Microsoft Edge */
+                color: @color-base;
+            }
+
             &--left {
                 margin-right: @box-price-slider-inputs-gap/2;
             }
