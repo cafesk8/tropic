@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
-use Shopsys\FrameworkBundle\Component\Utils\Utils;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory as BaseCustomerDataFactory;
@@ -26,8 +25,9 @@ class CustomerDataFactory extends BaseCustomerDataFactory
 
         $customerData = $this->createFromUser($user);
 
-        $customerData->userData->firstName = Utils::ifNull($user->getFirstName(), $order->getFirstName());
-        $customerData->userData->lastName = Utils::ifNull($user->getLastName(), $order->getLastName());
+        $customerData->userData->firstName = $order->getFirstName();
+        $customerData->userData->lastName = $order->getLastName();
+        $customerData->userData->telephone = $order->getTelephone();
         $customerData->billingAddressData = $this->getAmendedBillingAddressDataByOrder($order, $billingAddress);
 
         if ($order->getTransport()->isPickupPlace() === false && $order->getTransport()->isChooseStore() === false) {
