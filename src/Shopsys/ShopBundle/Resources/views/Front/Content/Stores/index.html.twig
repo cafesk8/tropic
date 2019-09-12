@@ -11,7 +11,7 @@
                 {{ 'Prodejny'|trans }}
             </h1>
 
-            <div class="in-tab__wrap">
+            <div class="in-tab__wrap in-tab__wrap--no-border">
                 <div class="in-tab__head text-left">
                     {% for regionId, regionText in regions %}
                         <a href="#{{ regionId|webalize }}" class="in-tab__head__item in-tab__head__item--bottom-gap underline js-anchor-link">
@@ -34,8 +34,9 @@
                                 </div>
                                 <div class="list-stores__item__info">
                                     <div class="list-stores__item__info__name">
-                                        {{ store.name }}
-
+                                        <span class="list-stores__item__info__name__main">
+                                            {{ store.name }}
+                                        </span>
                                         <span class="list-stores__item__info__name__additional">
                                             {{ store.street }}
                                         </span>
