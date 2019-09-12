@@ -76,29 +76,46 @@
                     </div>
                 {% endif %}
 
-                {% if product.mainVariantGroup is not null %}
-                    <div class="js-product-variant-detail-wrapper">
-                        <div class="js-product-variant-detail-select-info">
-                            <h3 class="in-user-text__title in-user-text__title--center">{{ 'Parametry' }}</h3>
-                            <div class="in-user-text">
-                                <p class="padding-left-20">{{ 'Pro zobrazení parametrů si vyber z velikostí.'|trans }}</p>
-                            </div>
+                {% if productParameterValues > 0 %}
 
-                            <div class="padding-bottom-50">
-                                <div class="box-detail__tags__row padding-left-20">
-                                    {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
-                                </div>
-                            </div>
-
-                        </div>
-                        {% for variant in variants %}
-                            <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
-                                {{ _self.parameters(variant, parametersHeadline, productVisibleProductCategoryDomains) }}
-                            </div>
-                        {% endfor %}
+                    <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
+                        <a href="#" class="in-tab__content__title__link underline">
+                            {{ parametersHeadline }}
+                        </a>
+                        <i class="svg svg-triangle"></i>
                     </div>
-                {% else %}
-                    {{ _self.parameters(product, parametersHeadline, productVisibleProductCategoryDomains) }}
+
+                    <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
+                        <h3 class="in-user-text__title in-user-text__title--center">
+                            {{ parametersHeadline }}
+                        </h3>
+
+                        {% if product.mainVariantGroup is not null %}
+                            <div class="js-product-variant-detail-wrapper">
+                                <div class="js-product-variant-detail-select-info">
+                                    <div class="in-user-text">
+                                        <p class="padding-left-20">{{ 'Pro zobrazení parametrů si vyber z velikostí.'|trans }}</p>
+                                    </div>
+
+                                    <div class="padding-bottom-50">
+                                        <div class="box-detail__tags__row padding-left-20">
+                                            {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {% for variant in variants %}
+                                    <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
+                                        {{ _self.parameters(variant, parametersHeadline, productVisibleProductCategoryDomains) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ _self.parameters(product, parametersHeadline, productVisibleProductCategoryDomains) }}
+                        {% endif %}
+
+                    </div>
+
                 {% endif %}
 
                 {{ designHiddenStuff.hiddenTabs() }}
@@ -115,16 +132,6 @@
 {% macro parameters(product, parametersHeadline, productVisibleProductCategoryDomains) %}
     {% set productParameterValues = getProductParameterValues(product) %}
     {% if productParameterValues|length > 0 %}
-        <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
-            <a href="#" class="in-tab__content__title__link underline">
-                {{ parametersHeadline }}
-            </a>
-            <i class="svg svg-triangle"></i>
-        </div>
-        <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
-            <h3 class="in-user-text__title in-user-text__title--center">
-                {{ parametersHeadline }}
-            </h3>
             <div class="box-detail__params">
                 <div class="box-detail__params__row">
                     {% if productParameterValues > 0 %}
@@ -150,7 +157,6 @@
                     {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
                 </div>
             </div>
-        </div>
     {% endif %}
 {% endmacro %}
 
