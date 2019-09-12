@@ -100,7 +100,6 @@ class CustomerController extends FrontBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $customerData = $form->getData();
 
-            $this->customerFacade->changeCountryIdToCountryInCustomerDataDeliveryAddress($customerData);
             $this->customerFacade->editByCustomer($user->getId(), $customerData);
 
             $this->getFlashMessageSender()->addSuccessFlash(t('Your data had been successfully updated'));

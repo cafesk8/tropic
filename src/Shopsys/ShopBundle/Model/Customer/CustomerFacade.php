@@ -98,17 +98,6 @@ class CustomerFacade extends BaseCustomerFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData
-     */
-    public function changeCountryIdToCountryInCustomerDataDeliveryAddress(CustomerData $customerData): void
-    {
-        $countryIdOrCountry = $customerData->deliveryAddressData->country;
-        if (!($countryIdOrCountry instanceof Country)) {
-            $customerData->deliveryAddressData->country = $this->countryFacade->getById($countryIdOrCountry);
-        }
-    }
-
-    /**
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Order\Order[]
      */
