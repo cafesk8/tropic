@@ -215,30 +215,6 @@ class PersonalInfoFormType extends AbstractType
                     'property_path' => 'deliveryAddressSameAsBillingAddress',
                 ])
                 ->addModelTransformer(new InverseTransformer()))
-            ->add('deliveryFirstName', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please enter first name of contact person',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 60,
-                        'maxMessage' => 'First name of contact person cannot be longer then {{ limit }} characters',
-                    ]),
-                ],
-            ])
-            ->add('deliveryLastName', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please enter last name of contact person',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 30,
-                        'maxMessage' => 'Last name of contact person cannot be longer than {{ limit }} characters',
-                    ]),
-                ],
-            ])
             ->add('deliveryCompanyName', TextType::class, [
                 'required' => false,
                 'constraints' => [
@@ -246,29 +222,6 @@ class PersonalInfoFormType extends AbstractType
                         'max' => 100,
                         'maxMessage' => 'Company name cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED],
-                    ]),
-                ],
-            ])
-            ->add('deliveryTelephone', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please enter telephone number',
-                    ]),
-                    new Constraints\Length([
-                        'max' => 20,
-                        'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                    ]),
-                    new Constraints\Regex([
-                        'pattern' => '/^\+{1}[^\+]+$/',
-                        'message' => 'Telefonní číslo musí začínat znakem +',
-                        'groups' => [self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED],
-                    ]),
-                    new Constraints\Regex([
-                        // https://regex101.com/r/tyKloi/1
-                        // https://en.wikipedia.org/wiki/E.164
-                        'pattern' => '/^\+?[1-9]\d{1,14}$/',
-                        'message' => 'Telefonní číslo musí být platné',
                     ]),
                 ],
             ])
