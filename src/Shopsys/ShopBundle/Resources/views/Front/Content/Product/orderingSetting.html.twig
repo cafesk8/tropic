@@ -1,13 +1,18 @@
 <div class="box-order-type">
     {% for orderingModeId, orderingModeName in orderingModesNames %}
-        <a
-            href="#"
-            class="box-order-type__item js-product-list-ordering-mode
-            {{ activeOrderingModeId == orderingModeId ? 'active' : 'underline-small' }}"
-            data-cookie-name="{{ cookieName }}"
-            data-ordering-mode="{{ orderingModeId }}"
-        >
-            {{ orderingModeName }}
-        </a>
+        {% if activeOrderingModeId == orderingModeId %}
+            <span class="box-order-type__item active">
+                {{ orderingModeName }}
+            </span>
+        {% else %}
+            <a
+                href="#"
+                class="box-order-type__item js-product-list-ordering-mode underline-small"
+                data-cookie-name="{{ cookieName }}"
+                data-ordering-mode="{{ orderingModeId }}"
+            >
+                {{ orderingModeName }}
+            </a>
+        {% endif %}
     {% endfor %}
 </div>
