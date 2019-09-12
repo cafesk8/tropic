@@ -37,6 +37,8 @@ class OrderDataMapper extends BaseOrderDataMapper
         /** @var \Shopsys\ShopBundle\Model\Order\OrderData $orderData */
         $orderData = parent::getOrderDataFromFrontOrderData($frontOrderData);
 
+        $orderData->deliveryAddressSameAsBillingAddress = false;
+
         if ($orderData->transport !== null && $orderData->transport->isPickupPlace() && $frontOrderData->pickupPlace !== null) {
             $orderData->pickupPlace = $frontOrderData->pickupPlace;
             $this->setOrderDeliveryAddressDataByPickUpPlace($orderData, $frontOrderData, $orderData->pickupPlace);
@@ -61,8 +63,6 @@ class OrderDataMapper extends BaseOrderDataMapper
     {
         $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
         $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
-
-        $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
 
         $frontOrderData->deliveryCompanyName = $pickupPlace->getName();
         $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
@@ -92,8 +92,6 @@ class OrderDataMapper extends BaseOrderDataMapper
         $orderData->deliveryFirstName = $frontOrderData->deliveryFirstName;
 
         $orderData->deliveryLastName = $frontOrderData->deliveryLastName;
-
-        $orderData->deliveryAddressSameAsBillingAddress = $frontOrderData->deliveryAddressSameAsBillingAddress;
 
         $frontOrderData->deliveryCompanyName = $store->getName();
         $orderData->deliveryCompanyName = $frontOrderData->deliveryCompanyName;
