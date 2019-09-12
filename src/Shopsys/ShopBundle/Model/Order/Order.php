@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Component\Utils\Utils;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
@@ -364,10 +365,10 @@ class Order extends BaseOrder
     protected function setBillingAddress(BaseOrderData $orderData)
     {
         $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
-        $this->firstName = $orderData->firstName;
-        $this->lastName = $orderData->lastName;
+        $this->firstName = Utils::ifNull($orderData->firstName, $orderData->deliveryFirstName);
+        $this->lastName = Utils::ifNull($orderData->lastName, $orderData->deliveryLastName);
+        $this->telephone = Utils::ifNull($orderData->telephone, $orderData->deliveryTelephone);
         $this->companyName = $orderData->companyName;
-        $this->telephone = $orderData->telephone;
         $this->street = $orderData->street;
         $this->city = $orderData->city;
         $this->postcode = $orderData->postcode;
