@@ -39,7 +39,7 @@ class UserFormType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'attr' => ['readonly' => true],
-                'required' => false,
+                'required' => true,
             ])
             ->add('telephone', TextType::class, [
                 'required' => false,
