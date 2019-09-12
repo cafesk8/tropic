@@ -53,7 +53,7 @@
                                         {% if productDistinguishingParameterValue.secondDistinguishingParameterValue is not null %}
                                             <span class="cart-detail__item__content__size">
                                                 {{ productDistinguishingParameterValue.secondDistinguishingParameterName }}
-                                                <span class="in-badge in-bage--outline">{{ productDistinguishingParameterValue.secondDistinguishingParameterValue }}</span>
+                                                <span class="in-badge">{{ productDistinguishingParameterValue.secondDistinguishingParameterValue }}</span>
                                             </span>
                                         {% endif %}
                                     </div>
@@ -88,7 +88,7 @@
                                 {% else %}
                                     <div class="in-free-transport">
                                         <div class="in-free-transport__title">
-                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }} 
+                                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }}
                                             <br><span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
                                         </div>
                                         <div class="in-free-transport__pipe">

@@ -43,7 +43,7 @@
                                                 {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[advertProduct.id]) %}
                                                 {% if advertProduct.id in secondDistinguishingParameters|keys %}
                                                     {% for parameterValue, variantId in secondDistinguishingParameters[advertProduct.id] %}
-                                                        <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
+                                                        <span class="in-badge">{{ parameterValue }}</span>
                                                     {% endfor %}
                                                 {% endif %}
                                             {% endif %}

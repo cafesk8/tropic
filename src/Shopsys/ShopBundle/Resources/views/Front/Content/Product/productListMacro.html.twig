@@ -62,7 +62,7 @@
                                     {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
                                     {% if product.id in secondDistinguishingParameters|keys %}
                                         {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
-                                            <span class="in-badge in-badge--product-list in-badge--outline">{{ parameterValue }}</span>
+                                            <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
                                         {% endfor %}
                                     {% endif %}
                                 {% endif %}
@@ -168,7 +168,7 @@
                                             {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
                                             {% if product.id in secondDistinguishingParameters|keys %}
                                                 {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
-                                                    <span class="in-badge in-badge--outline">{{ parameterValue }}</span>
+                                                    <span class="in-badge">{{ parameterValue }}</span>
                                                 {% endfor %}
                                             {% endif %}
                                         {% endif %}
