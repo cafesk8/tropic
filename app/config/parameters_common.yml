@@ -46,5 +46,6 @@ parameters:
         Shopsys\FrameworkBundle\Model\Customer\BillingAddress: Shopsys\ShopBundle\Model\Customer\BillingAddress
         Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress: Shopsys\ShopBundle\Model\Customer\DeliveryAddress
         Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus: Shopsys\ShopBundle\Model\Order\Status\OrderStatus
+        Shopsys\FrameworkBundle\Model\Country\Country: Shopsys\ShopBundle\Model\Country\Country
     build-version: '0000000000000000'
     securityBcryptCost: 12

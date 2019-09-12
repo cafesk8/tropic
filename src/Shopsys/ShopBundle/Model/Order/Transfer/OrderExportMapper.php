@@ -61,7 +61,7 @@ class OrderExportMapper
                     'Street' => TransformString::emptyToNull($order->getStreet()) ?? 'empty',
                     'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
                     'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? 'empty',
-                    'Country' => $order->getCountry() !== null ? $order->getCountry()->getCode() : '',
+                    'Country' => $this->getCountryPropertyContent($order),
                     'BranchNumber' => '', // it is allowed only for delivery address (see IS documentation)
                 ],
                 'ICO' => $order->getCompanyNumber(),
@@ -73,8 +73,8 @@ class OrderExportMapper
             'Total' => $order->getTotalPriceWithVat()->getAmount(),
             'OrderDiscount' => 0.0,
             'ShippingPrice' => $order->getTransportAndPaymentPrice()->getPriceWithVat()->getAmount(),
-            'PaymentMetod' => $order->getPaymentName(),
-            'ShippingMetod' => $order->getStoreExternalNumber() ?? $order->getTransportName(),
+            'PaymentMetod' => $order->getPayment()->getExternalId() ?? $order->getPaymentName(),
+            'ShippingMetod' => $this->getShippingMethodPropertyContent($order),
             'CustomerNote' => $order->getNote(),
         ];
 
@@ -86,12 +86,64 @@ class OrderExportMapper
                 'Street' => $order->getDeliveryStreet(),
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
-                'Country' => $order->getDeliveryCountry() !== null ? $order->getCountry()->getCode() : '',
+                'Country' => $this->getDeliveryCountryPropertyContent($order),
                 'BranchNumber' => '', //IS was not able to tell us, what they use it for
             ];
         }
 
         return $headerArray;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return string
+     */
+    private function getCountryPropertyContent(Order $order): string
+    {
+        if ($order->getCountry()->getExternalId() !== null) {
+            $countryPropertyContent = $order->getCountry()->getExternalId();
+        } elseif ($order->getCountry()->getCode() !== null) {
+            $countryPropertyContent = $order->getCountry()->getCode();
+        } else {
+            $countryPropertyContent = '';
+        }
+
+        return $countryPropertyContent;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return string
+     */
+    private function getShippingMethodPropertyContent(Order $order): string
+    {
+        if ($order->getStoreExternalNumber() !== null) {
+            $shippingMethodPropertyContent = $order->getStoreExternalNumber();
+        } elseif ($order->getTransport()->getExternalId() !== null) {
+            $shippingMethodPropertyContent = $order->getTransport()->getExternalId();
+        } else {
+            $shippingMethodPropertyContent = $order->getTransportName();
+        }
+
+        return $shippingMethodPropertyContent;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return string
+     */
+    private function getDeliveryCountryPropertyContent(Order $order): string
+    {
+        $deliveryCountryPropertyContent = '';
+        if ($order->getDeliveryCountry() !== null) {
+            if ($order->getDeliveryCountry()->getExternalId() !== null) {
+                $deliveryCountryPropertyContent = $order->getDeliveryCountry()->getExternalId();
+            } elseif ($order->getDeliveryCountry()->getCode() !== null) {
+                $deliveryCountryPropertyContent = $order->getDeliveryCountry()->getCode();
+            }
+        }
+
+        return $deliveryCountryPropertyContent;
     }
 
     /**

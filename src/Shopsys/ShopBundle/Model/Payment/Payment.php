@@ -36,6 +36,13 @@ class Payment extends BasePayment
     private $goPayPaymentMethod;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $externalId;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData
      */
     public function __construct(BasePaymentData $paymentData)
@@ -44,6 +51,7 @@ class Payment extends BasePayment
 
         $this->type = $paymentData->type;
         $this->setGoPayPaymentMethod($paymentData);
+        $this->externalId = $paymentData->externalId;
     }
 
     /**
@@ -55,6 +63,7 @@ class Payment extends BasePayment
 
         $this->type = $paymentData->type;
         $this->setGoPayPaymentMethod($paymentData);
+        $this->externalId = $paymentData->externalId;
     }
 
     /**
@@ -104,5 +113,13 @@ class Payment extends BasePayment
         if ($this->type === self::TYPE_GOPAY) {
             $this->goPayPaymentMethod = $paymentData->goPayPaymentMethod;
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExternalId(): ?string
+    {
+        return $this->externalId;
     }
 }

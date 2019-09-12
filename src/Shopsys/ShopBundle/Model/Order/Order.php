@@ -20,6 +20,7 @@ use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
 use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
@@ -31,6 +32,11 @@ use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 /**
  * @ORM\Table(name="orders")
  * @ORM\Entity
+ *
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport getTransport()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
+ * @method \Shopsys\ShopBundle\Model\Country\Country getCountry()
+ * @method \Shopsys\ShopBundle\Model\Country\Country getDeliveryCountry()
  */
 class Order extends BaseOrder
 {

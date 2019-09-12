@@ -29,6 +29,12 @@ class DomainHelper
         self::GERMAN_COUNTRY_CODE => self::GERMAN_DOMAIN,
     ];
 
+    public const COUNTRY_CODE_BY_DOMAIN_ID = [
+        self::CZECH_DOMAIN => self::CZECH_COUNTRY_CODE,
+        self::SLOVAK_DOMAIN => self::SLOVAK_COUNTRY_CODE,
+        self::GERMAN_DOMAIN => self::GERMAN_COUNTRY_CODE,
+    ];
+
     public const COUNTRY_CODE_BY_LOCALE = [
         self::CZECH_LOCALE => self::CZECH_COUNTRY_CODE,
         self::SLOVAK_LOCALE => self::SLOVAK_COUNTRY_CODE,

@@ -18,6 +18,11 @@ class PaymentData extends BasePaymentData
      */
     public $goPayPaymentMethod;
 
+    /**
+     * @var string|null
+     */
+    public $externalId;
+
     public function __construct()
     {
         parent::__construct();
