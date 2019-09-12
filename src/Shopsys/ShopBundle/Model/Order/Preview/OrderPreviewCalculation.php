@@ -123,6 +123,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             }
         }
 
+        $productsAndGiftsTotalPrice = (clone $productsPrice)->add($totalGiftPrice);
+
         $orderPreview = new OrderPreview(
             $quantifiedProducts,
             $quantifiedItemsPrices,
@@ -136,7 +138,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $roundingPrice,
             $promoCodeDiscountPercent,
             $totalPriceWithoutGiftCertificate,
-            $giftsInCart
+            $giftsInCart,
+            $productsAndGiftsTotalPrice
         );
         $orderPreview->setPromoCode($promoCode);
         $orderPreview->setTotalDiscount($totalDiscount);

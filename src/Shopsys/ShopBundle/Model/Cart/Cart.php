@@ -147,12 +147,13 @@ class Cart extends BaseCart
 
     /**
      * @param int $giftId
+     * @param int $cartItemId
      * @return bool
      */
-    public function isProductGiftSelected(int $giftId): bool
+    public function isProductGiftSelected(int $giftId, int $cartItemId): bool
     {
         foreach ($this->getGifts() as $cartGift) {
-            if ($cartGift->getProduct()->getId() === $giftId) {
+            if ($cartGift->getProduct()->getId() === $giftId && $cartGift->getGiftByProduct()->getId() === $cartItemId) {
                 return true;
             }
         }

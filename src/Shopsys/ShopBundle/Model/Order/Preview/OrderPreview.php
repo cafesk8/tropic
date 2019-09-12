@@ -33,6 +33,11 @@ class OrderPreview extends BaseOrderPreview
     private $totalPriceWithoutGiftCertificate;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    protected $productsAndGiftsTotalPrice;
+
+    /**
      * @param array $quantifiedProductsByIndex
      * @param array $quantifiedItemsPricesByIndex
      * @param array $quantifiedItemsDiscountsByIndex
@@ -46,6 +51,7 @@ class OrderPreview extends BaseOrderPreview
      * @param string|null $promoCodeDiscountPercent
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPriceWithoutGiftCertificate
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $gifts
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $productsAndGiftsTotalPrice
      */
     public function __construct(
         array $quantifiedProductsByIndex,
@@ -60,7 +66,8 @@ class OrderPreview extends BaseOrderPreview
         ?Price $roundingPrice = null,
         ?string $promoCodeDiscountPercent = null,
         ?Price $totalPriceWithoutGiftCertificate = null,
-        array $gifts = []
+        array $gifts = [],
+        ?Price $productsAndGiftsTotalPrice = null
     ) {
         parent::__construct(
             $quantifiedProductsByIndex,
@@ -78,6 +85,7 @@ class OrderPreview extends BaseOrderPreview
 
         $this->totalPriceWithoutGiftCertificate = $totalPriceWithoutGiftCertificate;
         $this->gifts = $gifts;
+        $this->productsAndGiftsTotalPrice = $productsAndGiftsTotalPrice;
     }
 
     /**
@@ -142,5 +150,13 @@ class OrderPreview extends BaseOrderPreview
     public function setQuantifiedItemsPricesByIndex(array $quantifiedItemsPricesByIndex): void
     {
         $this->quantifiedItemsPricesByIndex = $quantifiedItemsPricesByIndex;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    public function getProductsAndGiftsTotalPrice(): Price
+    {
+        return $this->productsAndGiftsTotalPrice;
     }
 }
