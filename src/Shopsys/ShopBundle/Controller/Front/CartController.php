@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class CartController extends FrontBaseController
+class  CartController extends FrontBaseController
 {
     public const AFTER_ADD_WINDOW_ACCESSORIES_LIMIT = 3;
 
