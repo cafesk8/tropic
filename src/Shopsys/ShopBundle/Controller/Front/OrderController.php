@@ -278,7 +278,6 @@ class OrderController extends FrontBaseController
                 $orderData->transport = null;
                 $orderData->pickupPlace = null;
                 $transport = null;
-                $form->get('transport')->setData(null);
             }
         }
 
@@ -413,7 +412,6 @@ class OrderController extends FrontBaseController
                 $orderData->transport = null;
                 $orderData->pickupPlace = null;
                 $transport = null;
-                $form->get('transport')->setData(null);
             }
         }
 
