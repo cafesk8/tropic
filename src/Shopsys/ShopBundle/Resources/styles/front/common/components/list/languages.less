@@ -1,4 +1,4 @@
-@list-languages-width: 800px;
+@list-languages-width: 920px;
 @list-languages-image-size: 21px;
 @list-languages-item-bottom-gap: 36px;
 @list-languages-gap: 56px;
@@ -25,7 +25,11 @@
         @media @query-vl {
             margin-bottom: @list-languages-item-bottom-gap;
             width: auto;
-            padding-right: 20px;
+            padding-right: 56px;
+
+            &:nth-child(6){
+                padding-right: 0;
+            }
 
             &:nth-child(7){
                 padding-left: 25px;
