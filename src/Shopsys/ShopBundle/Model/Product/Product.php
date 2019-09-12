@@ -22,6 +22,8 @@ use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
  */
 class Product extends BaseProduct
 {
+    public const DECREASE_REAL_STOCK_QUANTITY_BY = 5;
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
      *

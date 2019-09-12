@@ -41,6 +41,7 @@ use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
+use Shopsys\ShopBundle\Model\Product\Product as ChildProduct;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
@@ -292,6 +293,13 @@ class ProductFacade extends BaseProductFacade
         foreach ($product->getStocksWithoutZeroQuantityOnStore() as $productStoreStock) {
             $totalStockQuantity += $productStoreStock->getStockQuantity() ?? 0;
         }
+
+        $totalStockQuantity -= ChildProduct::DECREASE_REAL_STOCK_QUANTITY_BY;
+
+        if ($totalStockQuantity < 0) {
+            $totalStockQuantity = 0;
+        }
+
         $product->setStockQuantity($totalStockQuantity);
         $this->em->flush($product);
 
