@@ -77,6 +77,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_DONE);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'fakt. První 1';
+        $orderData->city = 'fakt. Ostrava';
+        $orderData->postcode = '71200';
         $orderData->deliveryFirstName = 'Jiří';
         $orderData->deliveryLastName = 'Ševčík';
         $orderData->email = 'no-reply@shopsys.com';
@@ -85,7 +89,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Ostrava';
         $orderData->deliveryPostcode = '71200';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -102,6 +106,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
+        $orderData->street = 'fakt. Druhá 2';
+        $orderData->city = 'fatk. Ostrava';
+        $orderData->postcode = '71300';
         $orderData->deliveryFirstName = 'Iva';
         $orderData->deliveryLastName = 'Jačková';
         $orderData->email = 'no-reply@shopsys.com';
@@ -110,7 +118,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Ostrava';
         $orderData->deliveryPostcode = '71300';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -130,6 +138,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_CZECH_POST);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH_ON_DELIVERY);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'fakt. Třetí 3';
+        $orderData->city = 'fakt. Ostrava';
+        $orderData->postcode = '71200';
         $orderData->deliveryFirstName = 'Jan';
         $orderData->deliveryLastName = 'Adamovský';
         $orderData->email = 'no-reply@shopsys.com';
@@ -138,7 +150,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Ostrava';
         $orderData->deliveryPostcode = '71200';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -155,6 +167,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PPL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_IN_PROGRESS);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
+        $orderData->street = 'fakt. Čtvrtá 4';
+        $orderData->city = 'fakt. Ostrava';
+        $orderData->postcode = '70030';
         $orderData->deliveryFirstName = 'Iveta';
         $orderData->deliveryLastName = 'Prvá';
         $orderData->email = 'no-reply@shopsys.com';
@@ -163,7 +179,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Ostrava';
         $orderData->deliveryPostcode = '70030';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -179,6 +195,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_DONE);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'fakt. Pátá 55';
+        $orderData->city = 'Ostrava';
+        $orderData->postcode = '71200';
         $orderData->deliveryFirstName = 'Jana';
         $orderData->deliveryLastName = 'Janíčková';
         $orderData->email = 'no-reply@shopsys.com';
@@ -206,6 +226,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PPL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'Šestá 39';
+        $orderData->city = 'Pardubice';
+        $orderData->postcode = '58941';
         $orderData->deliveryFirstName = 'Dominik';
         $orderData->deliveryLastName = 'Hašek';
         $orderData->email = 'no-reply@shopsys.com';
@@ -235,6 +259,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_CANCELED);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'Sedmá 1488';
+        $orderData->city = 'Opava';
+        $orderData->postcode = '85741';
         $orderData->deliveryFirstName = 'Jiří';
         $orderData->deliveryLastName = 'Sovák';
         $orderData->email = 'no-reply@shopsys.com';
@@ -260,6 +288,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_CZECH_POST);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH_ON_DELIVERY);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_DONE);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
+        $orderData->street = 'Osmá 1';
+        $orderData->city = 'Praha';
+        $orderData->postcode = '30258';
         $orderData->deliveryFirstName = 'Josef';
         $orderData->deliveryLastName = 'Somr';
         $orderData->email = 'no-reply@shopsys.com';
@@ -286,6 +318,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_CANCELED);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'fakt. Desátá 10';
+        $orderData->city = 'fakt. Plzeň';
+        $orderData->deliveryPostcode = '30010';
         $orderData->deliveryFirstName = 'Ivan';
         $orderData->deliveryLastName = 'Horník';
         $orderData->email = 'no-reply@shopsys.com';
@@ -294,7 +330,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Plzeň';
         $orderData->deliveryPostcode = '30010';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -310,6 +346,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PPL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'Cihelní 5';
+        $orderData->city = 'Liberec';
+        $orderData->postcode = '65421';
         $orderData->deliveryFirstName = 'Adam';
         $orderData->deliveryLastName = 'Bořič';
         $orderData->email = 'no-reply@shopsys.com';
@@ -333,6 +373,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_IN_PROGRESS);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $orderData->deliveryFirstName = 'Evžen';
         $orderData->deliveryLastName = 'Farný';
         $orderData->email = 'no-reply@shopsys.com';
@@ -341,7 +382,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Hodonín';
         $orderData->deliveryPostcode = '69501';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -358,6 +399,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_DONE);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $orderData->deliveryFirstName = 'Ivana';
         $orderData->deliveryLastName = 'Janečková';
         $orderData->email = 'no-reply@shopsys.com';
@@ -366,7 +408,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Lednice';
         $orderData->deliveryPostcode = '69144';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -382,6 +424,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_CZECH_POST);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH_ON_DELIVERY);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
+        $orderData->street = 'Adresní 6';
+        $orderData->city = 'Opava';
+        $orderData->postcode = '72589';
         $orderData->deliveryFirstName = 'Pavel';
         $orderData->deliveryLastName = 'Novák';
         $orderData->email = 'no-reply@shopsys.com';
@@ -407,6 +453,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PPL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_DONE);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $orderData->deliveryFirstName = 'Pavla';
         $orderData->deliveryLastName = 'Adámková';
         $orderData->email = 'no-reply@shopsys.com';
@@ -415,7 +462,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Praha';
         $orderData->deliveryPostcode = '30015';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -433,6 +480,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_IN_PROGRESS);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $orderData->deliveryFirstName = 'Adam';
         $orderData->deliveryLastName = 'Žitný';
         $orderData->email = 'no-reply@shopsys.com';
@@ -441,7 +489,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Plzeň';
         $orderData->deliveryPostcode = '30010';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
@@ -458,6 +506,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PPL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);
+        $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $orderData->street = 'fakt. Křivá 11';
+        $orderData->city = 'fakt. Jablonec';
+        $orderData->postcode = '78952';
         $orderData->deliveryFirstName = 'Radim';
         $orderData->deliveryLastName = 'Svátek';
         $orderData->email = 'no-reply@shopsys.com';
@@ -466,7 +518,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->deliveryCity = 'Jablonec';
         $orderData->deliveryPostcode = '78952';
         $orderData->deliveryCountry = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
-        $orderData->deliveryAddressSameAsBillingAddress = true;
+        $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->companyName = 'BestCompanyEver, s.r.o.';
         $orderData->companyNumber = '555555';
         $orderData->note = 'Doufám, že vše dorazí v pořádku a co nejdříve :)';
