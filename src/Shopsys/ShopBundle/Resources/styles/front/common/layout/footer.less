@@ -155,6 +155,14 @@
         font-family: @font-alt;
         font-size: @font-size-small;
 
+        &__link {
+            color: @color-brown;
+
+            &:hover {
+                color: @color-base;
+            }
+        }
+
         &__image {
             display: inline-block;
             margin-bottom: -5px;
@@ -166,12 +174,6 @@
         @media @query-lg {
             flex: 0 100%/2;
             text-align: right;
-        }
-    }
-
-    a {
-        &:hover {
-            color: @color-f;
         }
     }
 }
