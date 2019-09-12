@@ -127,6 +127,8 @@ class CustomerFacade extends BaseCustomerFacade
         /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $this->getUserById($userId);
         $user->markAsFailedExported();
+
+        $this->flush($user);
     }
 
     /**
