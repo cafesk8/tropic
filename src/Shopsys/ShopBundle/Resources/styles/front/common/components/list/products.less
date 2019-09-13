@@ -139,9 +139,16 @@
             }
 
             &__availability {
-
                 color: @color-brown-light;
                 font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
 
                 &__spacer {
                     display: block;
