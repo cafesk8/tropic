@@ -236,6 +236,13 @@ class Order extends BaseOrder
     private $gtmCoupon;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $memberOfBushmanClub;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -302,6 +309,7 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
+        $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
     }
 
     /**
@@ -331,6 +339,7 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
+        $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
 
         return $orderEditResult;
     }
@@ -559,6 +568,22 @@ class Order extends BaseOrder
     public function setCustomerEan(?string $customerEan): void
     {
         $this->customerEan = $customerEan;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMemberOfBushmanClub(): bool
+    {
+        return $this->memberOfBushmanClub;
+    }
+
+    /**
+     * @param bool $memberOfBushmanClub
+     */
+    public function setMemberOfBushmanClub(bool $memberOfBushmanClub): void
+    {
+        $this->memberOfBushmanClub = $memberOfBushmanClub;
     }
 
     /**

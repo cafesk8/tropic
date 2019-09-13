@@ -74,11 +74,17 @@ class OrderData extends BaseOrderData
      */
     public $mallStatus;
 
+    /**
+     * @var bool
+     */
+    public $memberOfBushmanClub;
+
     public function __construct()
     {
         parent::__construct();
         $this->updatedAt = new DateTime();
         $this->statusCheckedAt = new DateTime();
+        $this->memberOfBushmanClub = false;
     }
 
     /**
