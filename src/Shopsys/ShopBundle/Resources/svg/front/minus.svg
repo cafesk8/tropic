@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -15,14 +15,14 @@
    y="0px"
    viewBox="0 0 512 512"
    xml:space="preserve"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="minus.svg"
    width="512"
-   height="512"
-   inkscape:version="0.92.4 (33fec40, 2019-01-16)"><metadata
-   id="metadata39"><rdf:RDF><cc:Work
+   height="512"><metadata
+   id="metadata73"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
-   id="defs37" /><sodipodi:namedview
+   id="defs71" /><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
    borderopacity="1"
@@ -31,82 +31,131 @@
    guidetolerance="10"
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
-   inkscape:window-width="1600"
-   inkscape:window-height="780"
-   id="namedview35"
+   inkscape:window-width="1536"
+   inkscape:window-height="801"
+   id="namedview69"
    showgrid="false"
-   inkscape:zoom="0.35119048"
-   inkscape:cx="-409.69491"
-   inkscape:cy="282.77327"
-   inkscape:window-x="0"
-   inkscape:window-y="27"
+   inkscape:zoom="0.47981328"
+   inkscape:cx="245.929"
+   inkscape:cy="243.84486"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
    inkscape:window-maximized="1"
    inkscape:current-layer="Capa_1" />
-<rect
-   y="231.61905"
-   width="512"
-   height="48.761894"
-   id="rect2"
-   x="0"
-   style="stroke-width:12.19047356" />
 <g
-   id="g4"
-   transform="translate(0,470)">
+   id="g3"
+   transform="matrix(1.0409508,0,0,1.0409508,1.07068e-5,1.07068e-5)">
+	<g
+   id="g5">
+		<path
+   d="m 465.167,211.613 -224.957,0 -213.52,0 c -8.424,0 -26.69,11.439 -26.69,34.316 0,22.877 18.267,34.316 26.69,34.316 l 213.52,0 224.959,0 c 8.421,0 26.689,-11.439 26.689,-34.316 0,-22.877 -18.268,-34.316 -26.691,-34.316 z"
+   id="path7"
+   inkscape:connector-curvature="0" />
+	</g>
+	<g
+   id="g9">
+	</g>
+	<g
+   id="g11">
+	</g>
+	<g
+   id="g13">
+	</g>
+	<g
+   id="g15">
+	</g>
+	<g
+   id="g17">
+	</g>
+	<g
+   id="g19">
+	</g>
+	<g
+   id="g21">
+	</g>
+	<g
+   id="g23">
+	</g>
+	<g
+   id="g25">
+	</g>
+	<g
+   id="g27">
+	</g>
+	<g
+   id="g29">
+	</g>
+	<g
+   id="g31">
+	</g>
+	<g
+   id="g33">
+	</g>
+	<g
+   id="g35">
+	</g>
+	<g
+   id="g37">
+	</g>
 </g>
 <g
-   id="g6"
-   transform="translate(0,470)">
+   id="g39"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g8"
-   transform="translate(0,470)">
+   id="g41"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g10"
-   transform="translate(0,470)">
+   id="g43"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g12"
-   transform="translate(0,470)">
+   id="g45"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g14"
-   transform="translate(0,470)">
+   id="g47"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g16"
-   transform="translate(0,470)">
+   id="g49"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g18"
-   transform="translate(0,470)">
+   id="g51"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g20"
-   transform="translate(0,470)">
+   id="g53"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g22"
-   transform="translate(0,470)">
+   id="g55"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g24"
-   transform="translate(0,470)">
+   id="g57"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g26"
-   transform="translate(0,470)">
+   id="g59"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g28"
-   transform="translate(0,470)">
+   id="g61"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g30"
-   transform="translate(0,470)">
+   id="g63"
+   transform="translate(0,20.141998)">
 </g>
 <g
-   id="g32"
-   transform="translate(0,470)">
+   id="g65"
+   transform="translate(0,20.141998)">
+</g>
+<g
+   id="g67"
+   transform="translate(0,20.141998)">
 </g>
 </svg>

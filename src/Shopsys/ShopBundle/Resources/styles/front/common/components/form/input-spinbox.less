@@ -1,14 +1,15 @@
 @form-input-spinbox-padding-vertical: 3px;
 @form-input-spinbox-buttons-width: 30px;
-@form-input-spinbox-height: 60px;
-@form-input-spinbox-input-width: 83px;
+@form-input-spinbox-height: 56px;
+@form-input-spinbox-input-width: 80px;
 
 .form-input-spinbox {
     display: inline-block;
     vertical-align: middle;
     position: relative;
     padding: @form-input-spinbox-padding-vertical @form-input-spinbox-buttons-width @form-input-spinbox-padding-vertical 3px;
-
+    margin-bottom: 5px;
+    
     border: 2px solid @color-border;
 
     .box-detail__add-basket &,
@@ -29,7 +30,7 @@
 
     &__input {
         width: @form-input-spinbox-input-width + @form-input-spinbox-padding-vertical;
-        padding: @form-input-spinbox-height/2 0 0 5px;
+        padding: @form-input-spinbox-height/2 0 5px 5px;
         height: @form-input-spinbox-height - 2 * @form-input-spinbox-padding-vertical;
         line-height: @form-input-spinbox-height - 2 * @form-input-spinbox-padding-vertical;
         text-align: left;
@@ -46,17 +47,18 @@
         height: @form-input-spinbox-height/2;
         line-height: @form-input-spinbox-height/2;
         text-align: center;
+        padding-top: 3px;
         padding-bottom: 3px;
 
         background-color: @color-f;
-        color: @color-gray-dark;
+        color: #979797;
         font-size: 13px;
         cursor: pointer;
 
         &--minus {
             top: auto;
             bottom: 0;
-            padding-top: 2px;
+            padding-top: 1px;
 
             font-size: 13px;
         }
