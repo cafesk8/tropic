@@ -34,6 +34,7 @@
                             <div class="table-cart js-cart">
                                 {% for index, cartItem in cartItems %}
                                     {% set cartItemPrice = cartItemPrices[index] %}
+                                    {% set cartItemUrl = url('front_product_detail', {id: cartItem.product.id}) %}
                                     <div class="table-cart__row js-cart-item">
                                         <div class="table-cart__row__left">
                                             <div class="table-cart__cell__number">
@@ -42,12 +43,12 @@
                                                 </span>
                                             </div>
                                             <div class="table-cart__cell__image">
-                                                <a href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.product.name }}">
+                                                <a href="{{ cartItemUrl }}" title="{{ cartItem.product.name }}">
                                                     {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'biggerThumbnail', lazy: true }) }}
                                                 </a>
                                             </div>
                                             <div class="table-cart__cell__name js-cart-item-name">
-                                                <a class="table-cart__cell__name__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="{{ cartItem.name }}">
+                                                <a class="table-cart__cell__name__title" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
                                                     {{ cartItem.name }}
                                                 </a>
                                                 {{ distinguishingParameter.writeParameters(cartItem.product, 'table-cart__cell__name__text') }}

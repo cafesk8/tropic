@@ -24,13 +24,14 @@
                     <ul class="box-special-offer__products">
                         {% for advertProduct in advertProducts %}
                             {% set sellingPrice = getProductSellingPrice(advertProduct) %}
+                            {% set url = url('front_product_detail', {'id': advertProduct.id}) %}
                             <li class="box-special-offer__products__item">
-                                <a class="box-special-offer__products__item__image" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">
+                                <a class="box-special-offer__products__item__image" href="{{ url }}" title="{{ advertProduct.name }}">
                                     {{ image(advertProduct, { size: 'biggerThumbnail', alt: advertProduct.name, lazy: true }) }}
                                 </a>
                                 <div class="box-special-offer__products__item__content">
-                                    <a href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">
-                                        <div class="box-special-offer__products__item__content__title" href="{{ url('front_product_detail', {'id': advertProduct.id}) }}" title="{{ advertProduct.name }}">{{ advertProduct.name }}</div>
+                                    <a href="{{ url }}" title="{{ advertProduct.name }}">
+                                        <div class="box-special-offer__products__item__content__title" href="{{ url }}" title="{{ advertProduct.name }}">{{ advertProduct.name }}</div>
                                         <span class="box-special-offer__products__item__content__price"> {{ sellingPrice.priceWithVat|price }}
                                             {% if sellingPrice.isActionPrice %}
                                                 <span class="box-special-offer__products__item__content__price__old">{{ sellingPrice.defaultProductPrice.priceWithVat|price }}</span>

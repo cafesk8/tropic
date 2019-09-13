@@ -3,10 +3,11 @@
 <div class="box-list__wrap">
     <div class="box-list__panel js-product-list-panel">
         <div class="box-filter js-product-filter">
+            {% set categoryUrl = url('front_product_list', { id: category.id }) %}
             {{ productFilterForm.filterForm(
                 filterForm,
-                url('front_product_list', { id: category.id }),
-                url('front_product_list', { id: category.id }),
+                categoryUrl,
+                categoryUrl,
                 null,
                 'product_list',
                 productFilterCountData,

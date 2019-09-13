@@ -29,9 +29,10 @@
                             <div class="js-blog-list-with-paginator">
                                 <ul class="list-articles-blog js-list">
                                     {% for blogArticle in blogArticlePaginationResult.results %}
+                                        {% set url = url('front_blogarticle_detail', {'id': blogArticle.id}) %}
                                         <li class="list-articles-blog__item list-articles-blog__item--full-size">
                                             <div class="list-articles-blog__item__image">
-                                                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles-blog__item__image__link" title="{{ blogArticle.name }}">
+                                                <a href="{{ url }}" class="list-articles-blog__item__image__link" title="{{ blogArticle.name }}">
                                                     {{ image(blogArticle, { size: 'list', alt: blogArticle.name, lazy: true }) }}
                                                 </a>
                                             </div>
@@ -41,7 +42,7 @@
                                                         {{ lastBlogCategoryForBlogArticlesByBlogArticleId[blogArticle.id].name }}
                                                     </span>
                                                 </div>
-                                                <a href="{{ url('front_blogarticle_detail', {'id': blogArticle.id}) }}" class="list-articles-blog__item__content__title">
+                                                <a href="{{ url }}" class="list-articles-blog__item__content__title">
                                                     <span class="underline-text">{{ blogArticle.name }}</span>
                                                 </a>
                                                 <div class="list-articles-blog__item__content__text">
