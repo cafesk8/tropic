@@ -12,7 +12,7 @@
             {% endif %}
         </span>
 
-        {% set stocksWithoutZeroQuantityOnStoreCount = product.stocksWithoutZeroQuantityOnStore|length %}
+        {% set stocksWithoutZeroQuantityOnStoreCount = product.stocksWithoutZeroQuantityOnPickupPlaceStore|length %}
         {% if stocksWithoutZeroQuantityOnStoreCount > 0 %}
             <span class="box-detail__availability__text">
                 {{ 'nebo ihned na '}}
@@ -36,7 +36,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for storeWithStock in product.stocksWithoutZeroQuantityOnStore %}
+                {% for storeWithStock in product.stocksWithoutZeroQuantityOnPickupPlaceStore %}
                     <tr>
                         <td>{{ storeWithStock.store.name }}</td>
                     </tr>

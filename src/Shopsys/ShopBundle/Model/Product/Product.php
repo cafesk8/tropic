@@ -342,6 +342,20 @@ class Product extends BaseProduct
     }
 
     /**
+     * @return \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
+     */
+    public function getStocksWithoutZeroQuantityOnPickupPlaceStore(): array
+    {
+        return array_filter(
+            $this->storeStocks->toArray(),
+            function (ProductStoreStock $productStoreStock) {
+                return $productStoreStock->getStockQuantity() > 0
+                    && $productStoreStock->getStore()->isPickupPlace() === true;
+            }
+        );
+    }
+
+    /**
      * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
      */
     public function getGift(): ?self
