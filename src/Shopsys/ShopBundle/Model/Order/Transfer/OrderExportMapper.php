@@ -62,7 +62,7 @@ class OrderExportMapper
                     'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
                     'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? 'empty',
                     'Country' => $this->getCountryPropertyContent($order),
-                    'BranchNumber' => '', // it is allowed only for delivery address (see IS documentation)
+                    'BranchNumber' => $order->isMemberOfBushmanClub(),
                 ],
                 'ICO' => $order->getCompanyNumber(),
                 'DIC' => $order->getCompanyTaxNumber(),
