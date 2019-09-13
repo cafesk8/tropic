@@ -243,7 +243,12 @@
         flex-direction: column-reverse;
 
         @media @query-lg {
+            width: calc(~"@{calc-base} - @{box-detail-info-width}");
             flex-direction: row;
+        }
+
+        @media @query-xl {
+            width: 100%;
         }
     }
 
