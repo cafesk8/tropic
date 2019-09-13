@@ -6,11 +6,13 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\CategoryController as BaseCategoryController;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider;
 use Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
+use Shopsys\ShopBundle\Component\Redis\RedisFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,18 +26,32 @@ class CategoryController extends BaseCategoryController
     private $categoryBlogArticleFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Redis\RedisFacade
+     */
+    private $redisFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface $categoryDataFactory
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
+     * @param \Shopsys\ShopBundle\Component\Redis\RedisFacade $redisFacade
      */
-    public function __construct(CategoryFacade $categoryFacade, CategoryDataFactoryInterface $categoryDataFactory, SessionInterface $session, Domain $domain, BreadcrumbOverrider $breadcrumbOverrider, CategoryBlogArticleFacade $categoryBlogArticleFacade)
-    {
+    public function __construct(
+        CategoryFacade $categoryFacade,
+        CategoryDataFactoryInterface $categoryDataFactory,
+        SessionInterface $session,
+        Domain $domain,
+        BreadcrumbOverrider $breadcrumbOverrider,
+        CategoryBlogArticleFacade $categoryBlogArticleFacade,
+        RedisFacade $redisFacade
+    ) {
         parent::__construct($categoryFacade, $categoryDataFactory, $session, $domain, $breadcrumbOverrider);
 
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
+        $this->redisFacade = $redisFacade;
     }
 
     /**
@@ -69,6 +85,8 @@ class CategoryController extends BaseCategoryController
                     'url' => $this->generateUrl('admin_category_edit', ['id' => $category->getId()]),
                 ]
             );
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+
             return $this->redirectToRoute('admin_category_list');
         }
 
@@ -112,6 +130,7 @@ class CategoryController extends BaseCategoryController
                     'url' => $this->generateUrl('admin_category_edit', ['id' => $category->getId()]),
                 ]
             );
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
 
             return $this->redirectToRoute('admin_category_list');
         }
@@ -123,5 +142,53 @@ class CategoryController extends BaseCategoryController
         return $this->render('@ShopsysFramework/Admin/Content/Category/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/category/delete/{id}", requirements={"id" = "\d+"})
+     * @CsrfProtection
+     * @param int $id
+     */
+    public function deleteAction($id)
+    {
+        try {
+            $fullName = $this->categoryFacade->getById($id)->getName();
+
+            $this->categoryFacade->deleteById($id);
+
+            $this->getFlashMessageSender()->addSuccessFlashTwig(
+                t('Category <strong>{{ name }}</strong> deleted'),
+                [
+                    'name' => $fullName,
+                ]
+            );
+
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+        } catch (\Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException $ex) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Selected category doesn\'t exist.'));
+        }
+
+        return $this->redirectToRoute('admin_category_list');
+    }
+
+    /**
+     * @Route("/category/save-order/", methods={"post"})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function saveOrderAction(Request $request)
+    {
+        $categoriesOrderingData = $request->get('categoriesOrderingData');
+
+        $parentIdByCategoryId = [];
+        foreach ($categoriesOrderingData as $categoryOrderingData) {
+            $categoryId = (int)$categoryOrderingData['categoryId'];
+            $parentId = $categoryOrderingData['parentId'] === '' ? null : (int)$categoryOrderingData['parentId'];
+            $parentIdByCategoryId[$categoryId] = $parentId;
+        }
+
+        $this->categoryFacade->editOrdering($parentIdByCategoryId);
+        $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+
+        return new Response('OK - dummy');
     }
 }
