@@ -155,7 +155,14 @@
                 {% else %}
                     {% set continueButtonText = 'Odeslat objednávku'|trans %}
                 {% endif %}
-                {{  form_widget(formSubmit, { label: continueButtonText, attr: { class: 'btn btn--success btn--full-width box-preview__button'}}) }}
+                <button type="submit" id="{{ formSubmit.vars.id }}" name="{{ formSubmit.vars.full_name }}" class="btn btn--success btn--full-width box-preview__button btn">
+                    {% if orderStep > 2 %}
+                        <i class="svg svg-checked box-preview__button__icon"></i>
+                    {% endif %}
+
+                    {{ continueButtonText }}
+                </button>
+                {% do formSubmit.setRendered %}
             {% endif %}
 
             <div class="in-action__back">
@@ -170,8 +177,11 @@
                         {{ 'Zpět do košíku'|trans }}
                     </a>
                 {% elseif orderStep == 3 %}
-                    <button type="submit" name="flow_order_transition" value="back" class="in-action__link underline js-no-validate-button">
-                        {{ 'Back to shipping and payment selection'|trans }}
+                    <button type="submit" name="flow_order_transition" value="back" class="in-action__link js-no-validate-button">
+                        <i class="svg svg-triangle"></i>
+                        <span class="underline">
+                            {{ 'Zpět'|trans }}
+                        </span>
                     </button>
                 {% endif %}
             </div>
