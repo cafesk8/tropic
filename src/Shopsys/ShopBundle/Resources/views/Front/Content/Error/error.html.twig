@@ -6,7 +6,8 @@
 
 {% block content %}
     {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
-
+    <div class="web__line">
+        <div class="web__container">
     {% if status_code == 404 %}
         <div class="box-promo-image box-promo-image--error">
             <img src="{{ asset('assets/frontend/images/homepage_ideo_bann_1.jpg') }}" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
@@ -42,7 +43,8 @@
             </div>
         </div>
     {% endif %}
-
+        </div>
+    </div>
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
