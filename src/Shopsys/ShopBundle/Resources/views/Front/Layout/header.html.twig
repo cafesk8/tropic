@@ -56,19 +56,19 @@
     <div class="web__container">
         <header class="header {{ block('headerClass') }}">
             <div class="header__menu dont-print">
-                {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
-                <div class="all-categories js-hover-intent">
-                    <span class="all-categories__title">
-                        {{ 'Všechny kategorie'|trans }}
-                    </span>
-                    <span class="all-categories__arrow"></span>
+                {% cache 'categories_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                    {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
+                    <div class="all-categories js-hover-intent">
+                        <span class="all-categories__title">
+                            {{ 'Všechny kategorie'|trans }}
+                        </span>
+                        <span class="all-categories__arrow"></span>
 
-                    <span class="all-categories__content">
-                        {% cache 'categories_hover_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                        <span class="all-categories__content">
                             {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
-                        {% endcache %}
-                    </span>
-                </div>
+                        </span>
+                    </div>
+                {% endcache %}
             </div>
 
             <div class="header__logo">
@@ -86,8 +86,8 @@
                         <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
                     </div>
                     <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
-                        {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
-                        {% cache 'categories_mobile_hover_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                        {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                            {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
                             {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
                         {% endcache %}
                     </div>

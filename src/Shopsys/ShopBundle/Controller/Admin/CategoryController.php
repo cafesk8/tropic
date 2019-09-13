@@ -85,7 +85,7 @@ class CategoryController extends BaseCategoryController
                     'url' => $this->generateUrl('admin_category_edit', ['id' => $category->getId()]),
                 ]
             );
-            $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
 
             return $this->redirectToRoute('admin_category_list');
         }
@@ -130,7 +130,7 @@ class CategoryController extends BaseCategoryController
                     'url' => $this->generateUrl('admin_category_edit', ['id' => $category->getId()]),
                 ]
             );
-            $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
 
             return $this->redirectToRoute('admin_category_list');
         }
@@ -163,7 +163,7 @@ class CategoryController extends BaseCategoryController
                 ]
             );
 
-            $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+            $this->redisFacade->clearCacheByPattern('twig:', 'categories');
         } catch (\Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException $ex) {
             $this->getFlashMessageSender()->addErrorFlash(t('Selected category doesn\'t exist.'));
         }
@@ -187,7 +187,7 @@ class CategoryController extends BaseCategoryController
         }
 
         $this->categoryFacade->editOrdering($parentIdByCategoryId);
-        $this->redisFacade->clearCacheByPattern('twig:', 'categories*_hover');
+        $this->redisFacade->clearCacheByPattern('twig:', 'categories');
 
         return new Response('OK - dummy');
     }
