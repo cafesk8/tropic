@@ -8,41 +8,41 @@
     {{ render(controller('ShopsysShopBundle:Front/Breadcrumb:index', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
     <div class="web__line">
         <div class="web__container">
-    {% if status_code == 404 %}
-        <div class="box-promo-image box-promo-image--error">
-            <img src="{{ asset('assets/frontend/images/homepage_ideo_bann_1.jpg') }}" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
-            <div class="box-promo-image__title double-lined-hard double-lined-hard--error">
-                <span class="box-promo-image__title__text">
-                    {{ 'Je nám líto'|trans }}<br>
-                    {{ 'požadovaná stránk na našem'|trans }}<br>
-                    {{ 'webu neexistuje'|trans }}
-                </span>
-            </div>
-            <div class="box-promo-image__content">
-                <div class="box-promo-image__content__button">
-                    <a href="{{ url('front_homepage') }}" class="btn btn--secondary">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
+            {% if status_code == 404 %}
+                <div class="box-promo-image box-promo-image--error">
+                    <img src="{{ asset('assets/frontend/images/homepage_ideo_bann_1.jpg') }}" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
+                    <div class="box-promo-image__title double-lined-hard double-lined-hard--error">
+                        <span class="box-promo-image__title__text">
+                            {{ 'Je nám líto'|trans }}<br>
+                            {{ 'požadovaná stránk na našem'|trans }}<br>
+                            {{ 'webu neexistuje'|trans }}
+                        </span>
+                    </div>
+                    <div class="box-promo-image__content">
+                        <div class="box-promo-image__content__button">
+                            <a href="{{ url('front_homepage') }}" class="btn btn--secondary">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="box-promo-image box-promo-image--error">
-            <img src="{{ asset('assets/frontend/images/homepage_ideo_bann_1.jpg') }}" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
-            <div class="box-promo-image__title double-lined-hard">
-                <span class="box-promo-image__title__text">
-                    {{ 'Oops! Error occurred.'|trans }}
-                </span>
-            </div>
-            <div class="box-promo-image__content">
-                <div class="box-promo-image__content__description">
-                    {{ 'Uh-oh, uh-oh. And specially <strong>"%status_code% %status_text%"</strong>, as if it was on purpose!'|transHtml({ '%status_code%': status_code, '%status_text%': status_text }) }}<br>
-                    {{ 'Please excuse this error, we are working on fixing it. If needed, contact us on %mail% or by phone %phone%.'|trans({ '%mail%': getShopInfoEmail(), '%phone%': getShopInfoPhoneNumber() }) }}
+            {% else %}
+                <div class="box-promo-image box-promo-image--error">
+                    <img src="{{ asset('assets/frontend/images/homepage_ideo_bann_1.jpg') }}" alt="{{ 'Je nám líto, požadovaná stránka na našem webu neexistuje.'|trans }}">
+                    <div class="box-promo-image__title double-lined-hard">
+                        <span class="box-promo-image__title__text">
+                            {{ 'Oops! Error occurred.'|trans }}
+                        </span>
+                    </div>
+                    <div class="box-promo-image__content">
+                        <div class="box-promo-image__content__description">
+                            {{ 'Uh-oh, uh-oh. And specially <strong>"%status_code% %status_text%"</strong>, as if it was on purpose!'|transHtml({ '%status_code%': status_code, '%status_text%': status_text }) }}<br>
+                            {{ 'Please excuse this error, we are working on fixing it. If needed, contact us on %mail% or by phone %phone%.'|trans({ '%mail%': getShopInfoEmail(), '%phone%': getShopInfoPhoneNumber() }) }}
+                        </div>
+                        <div class="box-promo-image__content__button">
+                            <a href="{{ url('front_homepage') }}" class="btn btn--secondary">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="box-promo-image__content__button">
-                    <a href="{{ url('front_homepage') }}" class="btn btn--secondary">{{ 'Pokračujte na úvodní stránku'|trans }}</a>
-                </div>
-            </div>
-        </div>
-    {% endif %}
+            {% endif %}
         </div>
     </div>
     {% block last_visited_products %}
