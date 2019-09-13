@@ -93,7 +93,11 @@
                     </div>
                 </div>
 
-                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-hover-intent js-search-opener">
+                <div
+                    class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-hover-intent js-search-opener"
+                    data-hover-intent-interval="100"
+                    data-hover-intent-timeout="100"
+                >
                     <div class="box-dropdown__select">
                         <i class="header__right__search__icon-search svg svg-search"></i>
                     </div>
@@ -102,7 +106,7 @@
                     </div>
                 </div>
 
-                <div class="box-dropdown js-hover-intent">
+                <div class="box-dropdown js-hover-intent" data-hover-intent-interval="100" data-hover-intent-timeout="100">
                     <div class="box-dropdown__select">
                         {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                             {{ 'Váš účet'|trans }}
