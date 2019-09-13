@@ -201,6 +201,13 @@ class Order extends BaseOrder
     private $customerTransferId;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, length=13)
+     */
+    private $customerEan;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=false)
@@ -227,6 +234,13 @@ class Order extends BaseOrder
      * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $gtmCoupon;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $memberOfBushmanClub;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
@@ -295,6 +309,7 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
+        $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
     }
 
     /**
@@ -324,6 +339,7 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
+        $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
 
         return $orderEditResult;
     }
@@ -536,6 +552,38 @@ class Order extends BaseOrder
     public function setCustomerTransferId(?string $customerTransferId): void
     {
         $this->customerTransferId = $customerTransferId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomerEan(): ?string
+    {
+        return $this->customerEan;
+    }
+
+    /**
+     * @param string|null $customerEan
+     */
+    public function setCustomerEan(?string $customerEan): void
+    {
+        $this->customerEan = $customerEan;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMemberOfBushmanClub(): bool
+    {
+        return $this->memberOfBushmanClub;
+    }
+
+    /**
+     * @param bool $memberOfBushmanClub
+     */
+    public function setMemberOfBushmanClub(bool $memberOfBushmanClub): void
+    {
+        $this->memberOfBushmanClub = $memberOfBushmanClub;
     }
 
     /**

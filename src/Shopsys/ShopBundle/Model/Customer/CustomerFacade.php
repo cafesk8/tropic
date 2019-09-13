@@ -147,4 +147,17 @@ class CustomerFacade extends BaseCustomerFacade
     {
         $this->em->flush($user);
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @param string $transferId
+     * @return \Shopsys\ShopBundle\Model\Customer\User
+     */
+    public function editCustomerTransferId(User $user, string $transferId): User
+    {
+        $user->setTransferId($transferId);
+        $this->em->flush($user);
+
+        return $user;
+    }
 }

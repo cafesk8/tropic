@@ -62,7 +62,7 @@ class OrderExportMapper
                     'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
                     'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? 'empty',
                     'Country' => $this->getCountryPropertyContent($order),
-                    'BranchNumber' => '', // it is allowed only for delivery address (see IS documentation)
+                    'BranchNumber' => $order->isMemberOfBushmanClub(),
                 ],
                 'ICO' => $order->getCompanyNumber(),
                 'DIC' => $order->getCompanyTaxNumber(),
@@ -89,6 +89,10 @@ class OrderExportMapper
                 'Country' => $this->getDeliveryCountryPropertyContent($order),
                 'BranchNumber' => '', //IS was not able to tell us, what they use it for
             ];
+        }
+
+        if ($order->getCustomerEan() !== null) {
+            $headerArray['Customer']['IdCards'][] = $order->getCustomerEan();
         }
 
         return $headerArray;

@@ -50,5 +50,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->gtmCoupon = $order->getGtmCoupon();
         $orderData->store = $order->getStore();
         $orderData->pickupPlace = $order->getPickupPlace();
+        $orderData->memberOfBushmanClub = $order->isMemberOfBushmanClub();
     }
 }

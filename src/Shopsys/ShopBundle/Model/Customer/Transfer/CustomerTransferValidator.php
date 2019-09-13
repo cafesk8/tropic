@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
-use Shopsys\FrameworkBundle\Form\Constraints\UniqueEmail;
 use Shopsys\ShopBundle\Component\Transfer\Exception\TransferInvalidDataException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -31,20 +30,9 @@ class CustomerTransferValidator
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData $customerTransferResponseItemData
-     * @param bool $isNewCustomer
      */
-    public function validate(CustomerTransferResponseItemData $customerTransferResponseItemData, bool $isNewCustomer)
+    public function validate(CustomerTransferResponseItemData $customerTransferResponseItemData)
     {
-        $emailConstraints = [
-            new NotBlank(),
-            new Type(['type' => 'string']),
-            new Length(['max' => 255]),
-        ];
-
-        if ($isNewCustomer === true) {
-            $emailConstraints[] = new UniqueEmail(['domainId' => $customerTransferResponseItemData->getDomainId()]);
-        }
-
         $violations = $this->validator->validate($customerTransferResponseItemData, new Collection([
             'allowExtraFields' => true,
             'fields' => [
@@ -66,7 +54,11 @@ class CustomerTransferValidator
                     new Type(['type' => 'string']),
                     new Length(['max' => 255]),
                 ],
-                'email' => $emailConstraints,
+                'email' => [
+                    new NotBlank(),
+                    new Type(['type' => 'string']),
+                    new Length(['max' => 255]),
+                ],
                 'phone' => [
                     new Type(['type' => 'string']),
                 ],
