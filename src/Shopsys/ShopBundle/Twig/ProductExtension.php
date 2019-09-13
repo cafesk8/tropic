@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
+use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
 use Twig\TwigFunction;
 
@@ -15,6 +19,26 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
      */
     protected $productCachedAttributesFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
+     */
+    private $parameterFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     */
+    public function __construct(
+        CategoryFacade $categoryFacade,
+        ProductCachedAttributesFacade $productCachedAttributesFacade,
+        ParameterFacade $parameterFacade
+    ) {
+        parent::__construct($categoryFacade, $productCachedAttributesFacade);
+
+        $this->parameterFacade = $parameterFacade;
+    }
 
     /**
      * @return array
@@ -37,6 +61,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'productParameters',
                 [$this, 'getProductParameters']
+            ),
+            new TwigFunction(
+                'getParameterValueById',
+                [$this, 'getParameterValueById']
             ),
         ];
     }
@@ -138,5 +166,14 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return sprintf('(%s)', implode(', ', $parameters));
+    }
+
+    /**
+     * @param int $id
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
+     */
+    public function getParameterValueById(string $id): ParameterValue
+    {
+        return $this->parameterFacade->getParameterValueById((int)$id);
     }
 }

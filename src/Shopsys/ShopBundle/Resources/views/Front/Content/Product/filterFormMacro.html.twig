@@ -74,7 +74,7 @@
                     {% for colorForm in filterForm.colors %}
                         {{ form_widget(colorForm, {attr: { class: 'display-none', 'data-filter-name-with-entity-id': filterForm.colors.vars.id ~ '_' ~ colorForm.vars.value }}) }}
                         <li class="list-variants__item-color {{ colorForm.vars.checked ? 'active' }}" style="background-color: {{ colorForm.vars.label }};">
-                            <label for="{{ colorForm.vars.id }}" class="list-variants__item-color__label">
+                            <label for="{{ colorForm.vars.id }}" class="list-variants__item-color__label" title="{{ getParameterValueById(colorForm.vars.value).text }}">
                                 <i class="svg svg-checked"></i>
                             </label>
                         </li>
