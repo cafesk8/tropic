@@ -1,6 +1,6 @@
 <div id="js-cart-box" data-reload-url="{{ url('front_cart_box') }}">
 
-    <div class="box-dropdown box-dropdown--open-light box-dropdown--no-right-gap js-dropdown
+    <div class="box-dropdown box-dropdown--min-width box-dropdown--open-light box-dropdown--no-right-gap js-dropdown
         {% if cart is not null %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}"
         {% if cart is null %} data-type="link" {% endif %}
         >
