@@ -64,7 +64,7 @@
                     <span class="all-categories__arrow"></span>
 
                     <span class="all-categories__content">
-                        {% cache 'categories_hover' {time: 60 * 60 * 24} %}
+                        {% cache 'categories_hover_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
                             {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
                         {% endcache %}
                     </span>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
                         {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
-                        {% cache 'categories_mobile_hover' {time: 60 * 60 * 24} %}
+                        {% cache 'categories_mobile_hover_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
                             {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
                         {% endcache %}
                     </div>
