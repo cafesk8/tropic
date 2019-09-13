@@ -194,19 +194,21 @@ class PersonalInfoFormType extends AbstractType
                     ]),
                     new Constraints\Length(['max' => 6, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
                 ],
-            ])
-            ->add('country', ChoiceType::class, [
-                'choices' => $countries,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please choose country',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
-                    ]),
-                ],
-            ])
-            ->add($builder
+            ]);
+        if (DomainHelper::isGermanDomain($this->domain) === false) {
+            $builder->add('country', ChoiceType::class, [
+                    'choices' => $countries,
+                    'choice_label' => 'name',
+                    'choice_value' => 'id',
+                    'constraints' => [
+                        new Constraints\NotBlank([
+                            'message' => 'Please choose country',
+                            'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
+                        ]),
+                    ],
+                ]);
+        }
+        $builder->add($builder
                 ->create('billingAddressFilled', CheckboxType::class, [
                     'required' => false,
                     'value' => false,

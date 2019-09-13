@@ -246,6 +246,9 @@ class OrderController extends FrontBaseController
         $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
         if ($user instanceof User) {
             $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $user);
+            $frontOrderFormData->country = $user->getBillingAddress()->getCountry();
+        } else {
+            $frontOrderFormData->country = $this->countryFacade->getHackedCountry();
         }
         $domainId = $this->domain->getId();
         $frontOrderFormData->domainId = $domainId;

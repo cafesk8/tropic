@@ -127,10 +127,6 @@ class TransportAndPaymentFormType extends AbstractType
                     'class' => 'js-transport-country',
                 ],
             ]);
-        } else {
-            $builder->add('country', HiddenType::class, [
-                'data' => $country === null ? null : $country->getId(),
-            ]);
         }
 
         $builder
