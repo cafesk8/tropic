@@ -1,6 +1,9 @@
+@box-contact-padding: 30px;
+
 @box-contact-left-width: 45%;
 @box-contact-right-width: calc(~"@{calc-base} - @{box-contact-left-width}");
-@box-contact-padding: 30px;
+@box-contact-right-title-width: 210px;
+
 
 .box-contact {
     display: flex;
@@ -24,7 +27,6 @@
         }
     }
 
-    @box-contact-right-title-width: 200px;
     &__right {
         display: flex;
         flex-direction: column;
@@ -50,6 +52,7 @@
             @media @query-md {
                 flex-direction: row;
                 width: @box-contact-right-title-width;
+                padding-right: 50px;
             }
         }
 
