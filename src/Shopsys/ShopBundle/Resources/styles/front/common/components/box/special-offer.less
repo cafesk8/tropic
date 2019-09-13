@@ -129,6 +129,7 @@
         .reset-ul();
         display: flex;
         flex-direction: column;
+        z-index: 1;
 
         &__item {
             display: flex;
@@ -138,7 +139,7 @@
             margin-bottom: @box-special-offer-product-item-bottom-gap;
 
             &:hover {
-                box-shadow: 0 2px 20px 0 rgba(0,0,0,0.1);
+                box-shadow: @shadow;
             }
 
             &__image {

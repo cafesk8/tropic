@@ -23,6 +23,7 @@
 
     .slick-list {
         overflow: hidden;
+        padding: 15px 10px;
     }
 
     .slick-track {
@@ -77,6 +78,10 @@
         width: calc(~"@{calc-base}/@{list-top-products-item-count}");
 
         color: @color-brown;
+
+        &:hover {
+            box-shadow: @shadow;
+        }
 
         &__in {
             padding: 0 @list-top-products-item-padding 3px @list-top-products-item-padding;
