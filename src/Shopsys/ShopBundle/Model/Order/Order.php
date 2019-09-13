@@ -817,19 +817,19 @@ class Order extends BaseOrder
     /**
      * @return string
      */
-    public function getNumberFromStreet(): string
+    public function getDeliveryNumberFromStreet(): string
     {
-        $streetExplodedBySpaces = explode(' ', $this->street);
-        return array_pop($streetExplodedBySpaces);
+        $deliveryStreetExplodedBySpaces = explode(' ', $this->deliveryStreet);
+        return array_pop($deliveryStreetExplodedBySpaces);
     }
 
     /**
      * @return string
      */
-    public function getStreetWihoutNumber(): string
+    public function getDeliveryStreetWihoutNumber(): string
     {
-        $streetExplodedBySpaces = explode(' ', $this->street);
-        array_pop($streetExplodedBySpaces);
-        return implode(' ', $streetExplodedBySpaces);
+        $deliveryStreetExplodedBySpaces = explode(' ', $this->deliveryStreet);
+        array_pop($deliveryStreetExplodedBySpaces);
+        return implode(' ', $deliveryStreetExplodedBySpaces);
     }
 }

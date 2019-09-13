@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Shopsys\ShopBundle\Model\Order\MassAction;
 
+use Shopsys\ShopBundle\Component\String\StringHelper;
 use Shopsys\ShopBundle\Model\Order\Order;
 use Shopsys\ShopBundle\Model\Order\OrderFacade;
 
@@ -52,7 +53,7 @@ class CsvExportMassAction implements OrderMassAction
     {
         $phoneNumber = $order->getDeliveryTelephone() ?? $order->getTelephone();
 
-        $totalPriceWithVat = $order->getTotalPriceWithVat()->getAmount();
+        $totalPriceWithVat = StringHelper::replaceDotByComma($order->getTotalPriceWithVat()->getAmount());
         $isCashOnDeliveryPayment = $order->getPayment()->isCashOnDelivery();
 
         return [
@@ -60,9 +61,9 @@ class CsvExportMassAction implements OrderMassAction
             $this->encodeCsv($order->getDeliveryFirstName()),
             $this->encodeCsv($order->getDeliveryCompanyName()),
             $this->encodeCsv($order->getDeliveryCity()),
-            $this->encodeCsv($order->getStreetWihoutNumber()),
+            $this->encodeCsv($order->getDeliveryStreetWihoutNumber()),
             $this->encodeCsv($order->getDeliveryPostcode()),
-            $this->encodeCsv($order->getNumberFromStreet()),
+            $this->encodeCsv($order->getDeliveryNumberFromStreet()),
             $this->encodeCsv($phoneNumber),
             $this->encodeCsv($totalPriceWithVat),
             $this->encodeCsv($isCashOnDeliveryPayment ? $totalPriceWithVat : self::ZERO_PRICE_WITH_VAT),
