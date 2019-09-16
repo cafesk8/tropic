@@ -74,6 +74,13 @@ class CustomerExportMapper
                 ],
             ],
             'DeliveryAdress' => [
+                'SureName' => self::EMPTY_VALUE,
+                'ForeName' => self::EMPTY_VALUE,
+                'Company' => self::EMPTY_VALUE,
+                'Street' => self::EMPTY_VALUE,
+                'City' => self::EMPTY_VALUE,
+                'ZIP' => self::EMPTY_VALUE,
+                'Country' => self::EMPTY_VALUE,
                 'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
             ],
             'Total' => 0,
