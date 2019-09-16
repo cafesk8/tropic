@@ -121,21 +121,19 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         $parameterValuesWithProductIds = [];
         $productWithVariantIds = [];
         foreach ($allVariants as $variant) {
-            $productParameterValues = $this->getProductParameterValues($variant);
+            $distinguishingParameterValue = $this->getProductDistinguishingParameterValue($variant);
+            $secondDistinguishingParameterValue = $distinguishingParameterValue->getSecondDistinguishingParameterValue();
 
             $productWithVariantIds[$variant->getMainVariant()->getId()][] = $variant->getId();
 
-            foreach ($productParameterValues as $productParameterValue) {
-                /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
-                $mainVariant = $variant->getMainVariant();
+            if ($secondDistinguishingParameterValue === null) {
+                continue;
+            }
 
-                if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
-                    $parameterValuesWithProductIds[$productParameterValue->getValue()->getText()][] = $variant->getId();
+            $parameterValuesWithProductIds[$secondDistinguishingParameterValue][] = $variant->getId();
 
-                    if (in_array($productParameterValue->getValue(), $distinguishingParameterValues, true) === false) {
-                        $distinguishingParameterValues[] = $productParameterValue->getValue()->getText();
-                    }
-                }
+            if (in_array($secondDistinguishingParameterValue, $distinguishingParameterValues, true) === false) {
+                $distinguishingParameterValues[] = $secondDistinguishingParameterValue;
             }
         }
 
