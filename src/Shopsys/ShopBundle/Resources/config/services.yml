@@ -491,7 +491,9 @@ services:
 
     Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade: '@Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade'
 
-    Shopsys\ShopBundle\Component\Mall\MallImportOrderClient: ~
+    Shopsys\ShopBundle\Component\Mall\MallImportOrderClient:
+        arguments:
+            $includeTestOrders: '%mall_includeTestOrders%'
 
     Shopsys\ShopBundle\Component\Setting\Setting: ~
     Shopsys\FrameworkBundle\Component\Setting\Setting: '@Shopsys\ShopBundle\Component\Setting\Setting'

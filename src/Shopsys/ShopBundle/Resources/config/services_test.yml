@@ -155,7 +155,9 @@ services:
 
     Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade: '@Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade'
 
-    Shopsys\ShopBundle\Component\Mall\MallImportOrderClient: ~
+    Shopsys\ShopBundle\Component\Mall\MallImportOrderClient:
+        arguments:
+            $includeTestOrders: '%mall_includeTestOrders%'
 
     Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfigFactory'
 

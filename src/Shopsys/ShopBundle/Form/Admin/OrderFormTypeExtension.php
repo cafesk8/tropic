@@ -57,18 +57,59 @@ class OrderFormTypeExtension extends AbstractTypeExtension
             $builderBasicInformationGroup
                 ->add('mallStatus', ChoiceType::class, [
                     'label' => t('Mall status'),
-                    'choices' => [
-                        t('Zrušena, nefakturována') => Order::STATUS_CANCELLED,
-                        t('Doručena, vyfakturována') => Order::STATUS_DELIVERED,
-                        t('Otevřena') => Order::STATUS_OPEN,
-                        t('Nedoručena, nefakturována') => Order::STATUS_RETURNED,
-                        t('Odeslána, nefakturována') => Order::STATUS_SHIPPED,
-                        t('Odesílána, nefakturována') => Order::STATUS_SHIPPING,
-                    ],
+                    'choices' => $this->getPossibleMallStatus($order->getMallStatus()),
                     'position' => [
                         'after' => 'status',
                     ],
                 ]);
+        }
+    }
+
+    /**
+     * @param string|null $currentStatus
+     * @return string[]
+     */
+    private function getPossibleMallStatus(?string $currentStatus): array
+    {
+        if ($currentStatus === null) {
+            return [];
+        }
+
+        if ($currentStatus === Order::STATUS_OPEN) {
+            return [
+                t('Otevřena') => Order::STATUS_OPEN,
+                t('Zrušena') => Order::STATUS_CANCELLED,
+                t('Odesílána') => Order::STATUS_SHIPPING,
+            ];
+        }
+        if ($currentStatus === Order::STATUS_SHIPPING) {
+            return [
+                t('Odesílána') => Order::STATUS_SHIPPING,
+                t('Zrušena') => Order::STATUS_CANCELLED,
+                t('Odeslána') => Order::STATUS_SHIPPED,
+            ];
+        }
+        if ($currentStatus === Order::STATUS_SHIPPED) {
+            // Order::STATUS_RETURNED
+            return [
+                t('Odeslána') => Order::STATUS_SHIPPED,
+                t('Nedoručena') => Order::STATUS_RETURNED,
+            ];
+        }
+        if ($currentStatus === Order::STATUS_RETURNED) {
+            return [
+                t('Nedoručena') => Order::STATUS_RETURNED,
+            ];
+        }
+        if ($currentStatus === Order::STATUS_CANCELLED) {
+            return [
+                t('Zrušena') => Order::STATUS_CANCELLED,
+            ];
+        }
+        if ($currentStatus === Order::STATUS_DELIVERED) {
+            return [
+                t('Doručena') => Order::STATUS_DELIVERED,
+            ];
         }
     }
 

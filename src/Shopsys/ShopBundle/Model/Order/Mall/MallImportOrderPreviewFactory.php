@@ -64,7 +64,7 @@ class MallImportOrderPreviewFactory
         $quantifiedProducts = $this->getQuantifiedProducts($mallOrderDetail);
 
         $orderPreview = $this->orderPreviewFactory->create(
-            $this->currencyFacade->findByCode($mallOrderDetail[Order::KEY_CURRENCY_ID]),
+            $this->currencyFacade->findByCode($mallOrderDetail->getCurrencyId()),
             DomainHelper::CZECH_DOMAIN,
             $quantifiedProducts,
             $orderData->transport,
@@ -84,7 +84,7 @@ class MallImportOrderPreviewFactory
         return array_map(function (array $mallOrderItem) {
             return new QuantifiedProduct(
                 $this->productFacade->getById($mallOrderItem[Order::KEY_ID]),
-                $mallOrderItem[Order::KEY_ID]
+                $mallOrderItem[Order::KEY_ITEM_QUANTITY]
             );
         }, $mallOrderDetail->getItems());
     }

@@ -45,6 +45,7 @@ use Shopsys\ShopBundle\Component\Mall\MallImportOrderClient;
 use Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory;
 use Shopsys\ShopBundle\Component\SmsManager\SmsMessageFactory;
 use Shopsys\ShopBundle\Model\Gtm\GtmHelper;
+use Shopsys\ShopBundle\Model\Order\Mall\Exception\StatusChangException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
@@ -406,7 +407,7 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param int $orderId
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @return \Shopsys\ShopBundle\Model\Order\Order
      */
     public function edit($orderId, BaseOrderData $orderData)
@@ -420,7 +421,11 @@ class OrderFacade extends BaseOrderFacade
         $updatedOrder = parent::edit($orderId, $orderData);
 
         if ($originalMallStatus !== $updatedOrder->getMallStatus()) {
-            $this->mallImportOrderClient->changeStatus($updatedOrder->getMallStatus(), $updatedOrder->getMallStatus());
+            try {
+                $this->mallImportOrderClient->changeStatus((int)$updatedOrder->getMallOrderId(), $originalMallStatus, $updatedOrder->getMallStatus());
+            } catch (Exception $ex) {
+                throw new StatusChangException($ex);
+            }
         }
 
         if ($originalOrderStatus !== $updatedOrder->getStatus()) {

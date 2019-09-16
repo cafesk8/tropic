@@ -126,7 +126,7 @@ class MallImportOrderDataMapper
         $orderData->lastName = $mallCustomerNameSplitBySpace[array_key_last($mallCustomerNameSplitBySpace)];
         $orderData->email = $mallOrderDetail->getEmail();
         $orderData->telephone = $mallOrderDetail->getPhone();
-        $orderData->companyName = $mallOrderDetail->getCompany();
+        $orderData->companyName = trim($mallOrderDetail->getCompany()) !== '' ? $mallOrderDetail->getCompany() : null;
         $orderData->companyNumber = null;
         $orderData->companyTaxNumber = null;
         $orderData->street = $mallOrderDetail->getStreet();
@@ -153,7 +153,7 @@ class MallImportOrderDataMapper
         $orderData->itemsWithoutTransportAndPayment = $orderItemsWithoutTransportAndPaymentData;
         $orderData->createdAt = new DateTime();
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
-        $orderData->currency = $this->currencyFacade->findByCode($mallOrderDetail[Order::KEY_CURRENCY_ID]);
+        $orderData->currency = $this->currencyFacade->findByCode($mallOrderDetail->getCurrencyId());
         $orderData->createdAsAdministrator = null;
         $orderData->createdAsAdministratorName = null;
 
@@ -169,7 +169,7 @@ class MallImportOrderDataMapper
      */
     private function createOrderItem(array $mallOrderItem): OrderItemData
     {
-        $product = $this->productFacade->getById($mallOrderItem[Order::KEY_ITEM_ID]);
+        $product = $this->productFacade->getById($mallOrderItem[Order::KEY_ID]);
 
         /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItemData $orderItem */
         $orderItemData = $this->orderItemDataFactory->create();

@@ -68,6 +68,6 @@ class MallImportOrderFactory
         $order = $this->orderFacade->createOrder($orderData, $orderPreview);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getProductItems());
 
-        $this->mallImportOrderClient->changeStatus($mallOrderDetail->getOrderId(), Order::STATUS_OPEN, true);
+        $this->mallImportOrderClient->changeStatus((int)$mallOrderDetail->getOrderId(), Order::STATUS_OPEN, Order::STATUS_OPEN, true);
     }
 }

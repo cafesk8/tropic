@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Component\Grid\DataSourceInterface;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderWithRowManipulatorDataSource;
 use Shopsys\FrameworkBundle\Controller\Admin\OrderController as BaseOrderController;
+use Shopsys\FrameworkBundle\Form\Admin\Order\OrderFormType;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
@@ -19,6 +20,7 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\ShopBundle\Form\Admin\OrderMassActionFormType;
+use Shopsys\ShopBundle\Model\Order\Mall\Exception\StatusChangException;
 use Shopsys\ShopBundle\Model\Order\MassAction\CsvExportMassAction;
 use Shopsys\ShopBundle\Model\Order\MassAction\OrderMassActionData;
 use Shopsys\ShopBundle\Model\Order\MassAction\OrderMassActionFacade;
@@ -77,6 +79,62 @@ class OrderController extends BaseOrderController
 
         $this->orderMassActionFacade = $orderMassActionFacade;
         $this->csvExportMassAction = $csvExportMassAction;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id
+     */
+    public function editAction(Request $request, $id)
+    {
+        /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+        $order = $this->orderFacade->getById($id);
+
+        /** @var \Shopsys\ShopBundle\Model\Order\OrderData $orderData */
+        $orderData = $this->orderDataFactory->createFromOrder($order);
+
+        $form = $this->createForm(OrderFormType::class, $orderData, ['order' => $order]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $order = $this->orderFacade->edit($id, $orderData);
+
+                $this->getFlashMessageSender()->addSuccessFlashTwig(
+                    t('Order Nr. <strong><a href="{{ url }}">{{ number }}</a></strong> modified'),
+                    [
+                        'number' => $order->getNumber(),
+                        'url' => $this->generateUrl('admin_order_edit', ['id' => $order->getId()]),
+                    ]
+                );
+                return $this->redirectToRoute('admin_order_list');
+            } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\UserNotFoundException $e) {
+                $this->getFlashMessageSender()->addErrorFlash(
+                    t('Entered customer not found, please check entered data.')
+                );
+            } catch (\Shopsys\FrameworkBundle\Model\Mail\Exception\MailException $e) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Unable to send updating e-mail'));
+            } catch (StatusChangException $statusChangException) {
+                $this->getFlashMessageSender()->addErrorFlash(
+                    t('Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%).', [
+                        '%errorMessage%' => $statusChangException->getMessage(),
+                    ])
+                );
+                $orderData->mallStatus = $order->getMallStatus();
+                $form = $this->createForm(OrderFormType::class, $orderData, ['order' => $order]);
+            }
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+        }
+
+        $this->breadcrumbOverrider->overrideLastItem(t('Editing order - Nr. %number%', ['%number%' => $order->getNumber()]));
+
+        return $this->render('@ShopsysFramework/Admin/Content/Order/edit.html.twig', [
+            'form' => $form->createView(),
+            'order' => $order,
+        ]);
     }
 
     /**
