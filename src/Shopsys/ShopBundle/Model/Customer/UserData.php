@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
 
 class UserData extends BaseUserData
@@ -28,8 +29,15 @@ class UserData extends BaseUserData
      */
     public $exportStatus = User::EXPORT_NOT_YET;
 
+    /**
+     * @var \DateTime
+     */
+    public $pricingGroupUpdatedAt;
+
     public function __construct()
     {
         parent::__construct();
+
+        $this->pricingGroupUpdatedAt = new DateTime();
     }
 }

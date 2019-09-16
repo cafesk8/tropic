@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository as BaseUserRepository;
@@ -94,5 +95,21 @@ class UserRepository extends BaseUserRepository
         }
 
         return $eanUsed;
+    }
+
+    /**
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
+     */
+    public function getBatchToPricingGroupUpdate(int $limit): array
+    {
+        $queryBuilder = $this->createUserQueryBuilder()
+            ->where('u.pricingGroupUpdatedAt < :dateTime')
+            ->setParameter('dateTime', new DateTime('-5 minutes'))
+            ->orderBy('u.pricingGroupUpdatedAt', 'ASC')
+            ->addOrderBy('u.id', 'ASC')
+            ->setMaxResults($limit);
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

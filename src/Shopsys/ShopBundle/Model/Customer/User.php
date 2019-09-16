@@ -97,6 +97,13 @@ class User extends BaseUser
     private $userTransferIdAndEan;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $pricingGroupUpdatedAt;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
@@ -114,6 +121,7 @@ class User extends BaseUser
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
         $this->exportStatus = $userData->exportStatus;
+        $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
         $this->userTransferIdAndEan = new ArrayCollection();
     }
 
@@ -126,6 +134,7 @@ class User extends BaseUser
         parent::edit($userData, $encoderFactory);
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
+        $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
     }
 
     /**
@@ -281,5 +290,13 @@ class User extends BaseUser
         $this->ean = $transferIdAndEan->getEan();
         $this->pricingGroup = $newPricingGroup;
         $this->memberOfBushmanClub = true;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPricingGroupUpdatedAt(): \DateTime
+    {
+        return $this->pricingGroupUpdatedAt;
     }
 }

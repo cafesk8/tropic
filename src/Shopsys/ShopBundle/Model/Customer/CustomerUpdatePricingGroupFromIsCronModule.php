@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
-use Exception;
-use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
-use Symfony\Bridge\Monolog\Logger;
+use DateTime;
+use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseCodeException;
+use Shopsys\ShopBundle\Component\Rest\RestClient;
+use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
+use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
+use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
+use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
+use Shopsys\ShopBundle\Model\Order\Status\Transfer\Exception\InvalidOrderStatusTransferResponseItemDataException;
 
-class CustomerUpdatePricingGroupFromIsCronModule implements IteratedCronModuleInterface
+class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportCronModule
 {
-    private const BATCH_SIZE = 100;
-
-    /**
-     * @var \Symfony\Bridge\Monolog\Logger
-     */
-    private $logger;
+    private const TRANSFER_IDENTIFIER = 'import_customers_pricing_groups';
+    private const CUSTOMER_BATCH_SIZE = 50;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
@@ -23,58 +26,113 @@ class CustomerUpdatePricingGroupFromIsCronModule implements IteratedCronModuleIn
     private $customerFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\CustomerTransferFacade
+     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
      */
-    private $customerTransferFacade;
+    private $restClient;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
+     */
+    private $customerDataFactory;
+
+    /**
+     * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
-     * @param \Shopsys\ShopBundle\Model\Customer\CustomerTransferFacade $customerTransferFacade
+     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      */
-    public function __construct(CustomerFacade $customerFacade, CustomerTransferFacade $customerTransferFacade)
-    {
+    public function __construct(
+        TransferCronModuleDependency $transferCronModuleDependency,
+        CustomerFacade $customerFacade,
+        RestClient $restClient,
+        CustomerDataFactory $customerDataFactory
+    ) {
+        parent::__construct($transferCronModuleDependency);
+
         $this->customerFacade = $customerFacade;
-        $this->customerTransferFacade = $customerTransferFacade;
+        $this->restClient = $restClient;
+        $this->customerDataFactory = $customerDataFactory;
     }
 
     /**
-     * @param \Symfony\Bridge\Monolog\Logger $logger
+     * @return string
      */
-    public function setLogger(Logger $logger)
+    protected function getTransferIdentifier(): string
     {
-        $this->logger = $logger;
+        return self::TRANSFER_IDENTIFIER;
     }
 
-    public function wakeUp()
+    /**
+     * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse
+     */
+    protected function getTransferResponse(): TransferResponse
     {
-    }
-
-    public function iterate()
-    {
-        $customers = $this->customerFacade->getAllUsers();
-
-        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
-        foreach ($customers as $idx => $customer) {
-            try {
-                $this->logger->addInfo(sprintf('Find pricing group for user with id `%s`.', $customer->getId()));
-                $this->customerTransferFacade->updatePricingGroupFromIs($customer);
-
-                if ($idx === self::BATCH_SIZE) {
-                    return true;
-                }
-            } catch (Exception $exception) {
-                $this->logger->addError(
-                    sprintf(
-                        'Updated pricing group for customer id %s was aborted. Reason of this error: %s',
-                        $customer->getId(),
-                        $exception->getMessage()
-                    )
-                );
+        $customers = $this->customerFacade->getBatchToPricingGroupUpdate(self::CUSTOMER_BATCH_SIZE);
+        $allTransferDataItems = [];
+        foreach ($customers as $customer) {
+            foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
+                $allTransferDataItems[] = $this->getTransferItemsFromResponse($transferIdAndEan);
             }
+        }
+
+        return new TransferResponse(200, $allTransferDataItems);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface $customerInfoResponseItemData
+     */
+    protected function processTransferItemData(TransferResponseItemDataInterface $customerInfoResponseItemData): void
+    {
+        if (!($customerInfoResponseItemData instanceof CustomerInfoResponseItemData)) {
+            throw new InvalidOrderStatusTransferResponseItemDataException(
+                sprintf('Invalid argument passed into method. Instance of `%s` was expected', CustomerInfoResponseItemData::class)
+            );
+        }
+
+        $this->customerFacade->updatePricingGroupByIsResponse($customerInfoResponseItemData);
+        $this->changeCustomerPricingGroupUpdatedAt($customerInfoResponseItemData->getTransferIdAndEan()->getCustomer());
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isNextIterationNeeded(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
+     * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData|null
+     */
+    private function getTransferItemsFromResponse(UserTransferIdAndEan $userTransferIdAndEan): ?CustomerInfoResponseItemData
+    {
+        $apiMethodUrl = sprintf('/api/Eshop/CustomerInfo?Number=%s&Email=%s', $userTransferIdAndEan->getEan(), $userTransferIdAndEan->getCustomer()->getEmail());
+
+        try {
+            $restResponse = $this->restClient->get($apiMethodUrl);
+
+            return new CustomerInfoResponseItemData($restResponse->getData(), $userTransferIdAndEan);
+        } catch (UnexpectedResponseCodeException $exception) {
+            $this->changeCustomerPricingGroupUpdatedAt($userTransferIdAndEan->getCustomer());
+            $this->logger->addWarning(sprintf('Customer info for User with ean `%s` and email %s not found', $userTransferIdAndEan->getEan(), $userTransferIdAndEan->getCustomer()->getEmail()));
+            return null;
         }
     }
 
-    public function sleep()
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     */
+    private function changeCustomerPricingGroupUpdatedAt(User $user): void
     {
+        $customerData = $this->customerDataFactory->createFromUser($user);
+
+        /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
+        $userData->pricingGroupUpdatedAt = new DateTime();
+
+        $customerData->userData = $userData;
+
+        $this->customerFacade->editByCustomer($user->getId(), $customerData);
     }
 }
