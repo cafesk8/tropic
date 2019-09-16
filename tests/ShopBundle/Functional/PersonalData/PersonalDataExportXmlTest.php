@@ -152,17 +152,17 @@ class PersonalDataExportXmlTest extends TransactionFunctionalTestCase
         $orderData->email = 'no-reply@shopsys.com';
         $orderData->createdAt = new \DateTime('2018-04-13');
         $orderData->domainId = self::DOMAIN_ID_FIRST;
-        $orderData->deliveryLastName = 'Bořič';
-        $orderData->deliveryFirstName = 'Adam';
-        $orderData->deliveryCity = 'Liberec';
-        $orderData->deliveryStreet = 'Cihelní 5';
-        $orderData->deliveryCompanyName = 'Shopsys';
-        $orderData->deliveryPostcode = 65421;
-        $orderData->deliveryTelephone = '+420987654321';
+        $orderData->lastName = 'Bořič';
+        $orderData->firstName = 'Adam';
+        $orderData->city = 'Liberec';
+        $orderData->street = 'Cihelní 5';
+        $orderData->companyName = 'Shopsys';
+        $orderData->postcode = 65421;
+        $orderData->telephone = '+420987654321';
         $orderData->companyTaxNumber = 123456;
         $orderData->companyNumber = 123456;
         $orderData->deliveryAddressSameAsBillingAddress = true;
-        $orderData->deliveryCountry = $country;
+        $orderData->country = $country;
 
         $order = new Order($orderData, '1523596513', 'hash');
 

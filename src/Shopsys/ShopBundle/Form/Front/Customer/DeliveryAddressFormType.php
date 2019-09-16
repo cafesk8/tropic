@@ -63,44 +63,6 @@ class DeliveryAddressFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('firstName', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please enter first name of contact person',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
-                    ]),
-                    new Constraints\Length([
-                        'max' => 60,
-                        'maxMessage' => 'First name of contact person cannot be longer then {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
-                    ]),
-                ],
-            ])
-            ->add('lastName', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Constraints\NotBlank([
-                        'message' => 'Please enter last name of contact person',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
-                    ]),
-                    new Constraints\Length([
-                        'max' => 30,
-                        'maxMessage' => 'Last name of contact person cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
-                    ]),
-                ],
-            ])
-            ->add('telephone', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Constraints\Length([
-                        'max' => 20,
-                        'maxMessage' => 'Telephone number cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS],
-                    ]),
-                ],
-            ])
             ->add('street', TextType::class, [
                 'required' => true,
                 'constraints' => [

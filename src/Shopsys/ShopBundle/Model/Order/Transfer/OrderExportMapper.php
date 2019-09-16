@@ -16,6 +16,8 @@ class OrderExportMapper
 {
     private const MALL_SOURCE = 'MALL';
 
+    private const EMPTY_VALUE = 'empty';
+
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Rounding
      */
@@ -58,11 +60,10 @@ class OrderExportMapper
                     'SureName' => $order->getLastName(),
                     'ForeName' => $order->getFirstName(),
                     'Company' => $order->getCompanyName(),
-                    'Street' => TransformString::emptyToNull($order->getStreet()) ?? 'empty',
-                    'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
-                    'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? 'empty',
+                    'Street' => TransformString::emptyToNull($order->getStreet()) ?? self::EMPTY_VALUE,
+                    'City' => TransformString::emptyToNull($order->getCity()) ?? self::EMPTY_VALUE,
+                    'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? self::EMPTY_VALUE,
                     'Country' => $this->getCountryPropertyContent($order),
-                    'BranchNumber' => $order->isMemberOfBushmanClub(),
                 ],
                 'ICO' => $order->getCompanyNumber(),
                 'DIC' => $order->getCompanyTaxNumber(),
@@ -78,7 +79,7 @@ class OrderExportMapper
             'CustomerNote' => $order->getNote(),
         ];
 
-        if ($order->isDeliveryAddressSameAsBillingAddress() === false) {
+        if ($order->isDeliveryAddressSameAsBillingAddress() === false && $order->getStoreExternalNumber() === null) {
             $headerArray['DeliveryAdress'] = [
                 'SureName' => $order->getDeliveryFirstName(),
                 'ForeName' => $order->getDeliveryLastName(),
@@ -87,7 +88,18 @@ class OrderExportMapper
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
                 'Country' => $this->getDeliveryCountryPropertyContent($order),
-                'BranchNumber' => '', //IS was not able to tell us, what they use it for
+                'BranchNumber' => $order->isMemberOfBushmanClub() ? '1' : '0',
+            ];
+        } else {
+            $headerArray['DeliveryAdress'] = [
+                'SureName' => self::EMPTY_VALUE,
+                'ForeName' => self::EMPTY_VALUE,
+                'Company' => self::EMPTY_VALUE,
+                'Street' => self::EMPTY_VALUE,
+                'City' => self::EMPTY_VALUE,
+                'ZIP' => self::EMPTY_VALUE,
+                'Country' => self::EMPTY_VALUE,
+                'BranchNumber' => $order->isMemberOfBushmanClub() ? '1' : '0',
             ];
         }
 

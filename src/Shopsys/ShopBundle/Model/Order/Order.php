@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Component\Utils\Utils;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
@@ -45,16 +46,16 @@ class Order extends BaseOrder
     public const EXPORT_ERROR = 'export_error';
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60, nullable=true)
      */
     protected $firstName;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     protected $lastName;
 
@@ -66,9 +67,9 @@ class Order extends BaseOrder
     protected $email;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     protected $telephone;
 
@@ -87,9 +88,23 @@ class Order extends BaseOrder
     protected $companyTaxNumber;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $street;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    protected $city;
+
+    /**
      * @var string
      *
-     * @ORM\Column(type="string", length=6)
+     * @ORM\Column(type="string", length=6, nullable=true)
      */
     protected $postcode;
 
@@ -350,29 +365,14 @@ class Order extends BaseOrder
     protected function setBillingAddress(BaseOrderData $orderData)
     {
         $this->deliveryAddressSameAsBillingAddress = $orderData->deliveryAddressSameAsBillingAddress;
-        if ($orderData->deliveryAddressSameAsBillingAddress) {
-            $this->firstName = $orderData->deliveryFirstName;
-            $this->lastName = $orderData->deliveryLastName;
-            $this->companyName = $orderData->deliveryCompanyName;
-            $this->telephone = $orderData->deliveryTelephone ?? '';
-            $this->street = $orderData->deliveryStreet;
-            $this->city = $orderData->deliveryCity;
-            $this->postcode = $orderData->deliveryPostcode;
-            $this->country = $orderData->deliveryCountry;
-        } else {
-            $this->firstName = $orderData->firstName ?? '';
-            $this->lastName = $orderData->lastName ?? '';
-            $this->companyName = $orderData->companyName;
-            $this->telephone = $orderData->telephone ?? '';
-            $this->street = $orderData->street ?? '';
-            $this->city = $orderData->city ?? '';
-            $this->postcode = $orderData->postcode ?? '';
-            $this->country = $orderData->country;
-        }
-
-        $this->firstName = $this->firstName === '' ? $this->deliveryFirstName : $this->firstName;
-        $this->lastName = $this->lastName === '' ? $this->deliveryLastName : $this->lastName;
-        $this->telephone = $this->telephone === '' ? $this->deliveryTelephone : $this->telephone;
+        $this->firstName = Utils::ifNull($orderData->firstName, $orderData->deliveryFirstName);
+        $this->lastName = Utils::ifNull($orderData->lastName, $orderData->deliveryLastName);
+        $this->telephone = Utils::ifNull($orderData->telephone, $orderData->deliveryTelephone);
+        $this->companyName = $orderData->companyName;
+        $this->street = $orderData->street;
+        $this->city = $orderData->city;
+        $this->postcode = $orderData->postcode;
+        $this->country = $orderData->country;
     }
 
     /**
@@ -701,10 +701,11 @@ class Order extends BaseOrder
      */
     private function setDeliveryAddressNewly(OrderData $orderData): void
     {
-        $this->deliveryFirstName = $orderData->deliveryFirstName;
-        $this->deliveryLastName = $orderData->deliveryLastName;
+        $this->deliveryCompanyName = $orderData->deliveryCompanyName;
+        $this->deliveryFirstName = $orderData->deliveryFirstName ?? $orderData->firstName;
+        $this->deliveryLastName = $orderData->deliveryLastName ?? $orderData->lastName;
         $this->email = $orderData->email;
-        $this->deliveryTelephone = $orderData->deliveryTelephone;
+        $this->deliveryTelephone = $orderData->deliveryTelephone ?? $orderData->telephone;
         $this->deliveryStreet = $orderData->deliveryStreet;
         $this->deliveryCity = $orderData->deliveryCity;
         $this->deliveryPostcode = $orderData->deliveryPostcode;
