@@ -122,11 +122,11 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 
         $newOrderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
 
-        if ($orderStatus->isOrderStatusReady() && $newOrderStatus->getType() === OrderStatus::TYPE_IN_PROGRESS) {
+        if ($orderStatus === $newOrderStatus) {
             return;
         }
 
-        if ($orderStatus === $newOrderStatus) {
+        if ($orderStatus->isOrderStatusReady() && $newOrderStatus->isCheckOrderReadyStatus() === true) {
             return;
         }
 
