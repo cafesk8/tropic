@@ -62,7 +62,6 @@ class OrderExportMapper
                     'City' => TransformString::emptyToNull($order->getCity()) ?? 'empty',
                     'ZIP' => TransformString::emptyToNull($order->getPostcode()) ?? 'empty',
                     'Country' => $this->getCountryPropertyContent($order),
-                    'BranchNumber' => $order->isMemberOfBushmanClub(),
                 ],
                 'ICO' => $order->getCompanyNumber(),
                 'DIC' => $order->getCompanyTaxNumber(),
@@ -87,9 +86,9 @@ class OrderExportMapper
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
                 'Country' => $this->getDeliveryCountryPropertyContent($order),
-                'BranchNumber' => '', //IS was not able to tell us, what they use it for
             ];
         }
+        $headerArray['DeliveryAdress']['BranchNumber'] = $order->isMemberOfBushmanClub() ? '1' : '0';
 
         if ($order->getCustomerEan() !== null) {
             $headerArray['Customer']['IdCards'][] = $order->getCustomerEan();

@@ -66,13 +66,15 @@ class CustomerExportMapper
                     'City' => self::EMPTY_VALUE,
                     'ZIP' => self::EMPTY_VALUE,
                     'Country' => $this->getCountryPropertyContent($user),
-                    'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
                 ],
                 'Phone' => $user->getTelephone() ?? '1',
                 'Email' => $user->getEmail(),
                 'IdCards' => [
                     $user->getEan(),
                 ],
+            ],
+            'DeliveryAdress' => [
+                'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
             ],
             'Total' => 0,
             'PaymentMetod' => self::EMPTY_VALUE,
