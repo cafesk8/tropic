@@ -160,9 +160,19 @@ services:
         arguments:
             - '@snc_redis.distinguishing_parameters'
 
+    shopsys.shop.component.friendly_url.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
+        arguments:
+            - '@snc_redis.friendly_url'
+
     Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade:
         arguments:
             - '@shopsys.shop.product.distinguishing_parameters.cache_provider'
+
+    Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlCacheFacade:
+        arguments:
+            - '@shopsys.shop.component.friendly_url.cache_provider'
 
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@Shopsys\ShopBundle\Model\Category\CategoryDataFactory'
 
@@ -403,6 +413,8 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagGridFactory: '@Shopsys\ShopBundle\Model\Product\Flag\FlagGridFactory'
 
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade'
+
+    Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository: '@Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository'
 
     Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@Shopsys\ShopBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator'
 

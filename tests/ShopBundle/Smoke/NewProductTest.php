@@ -69,11 +69,6 @@ class NewProductTest extends FunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Product\Availability\Availability $availability */
         $availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
 
-        /** @var \Symfony\Component\DomCrawler\Field\InputFormField[] $nameForms */
-        $nameForms = $form->get('product_form[name]');
-        foreach ($nameForms as $nameForm) {
-            $nameForm->setValue('testProduct');
-        }
         $form['product_form[basicInformationGroup][catnum]'] = '123456';
         $form['product_form[basicInformationGroup][partno]'] = '123456';
         $form['product_form[basicInformationGroup][ean]'] = '123456';
