@@ -26,6 +26,31 @@ class ParameterRepository extends BaseParameterRepository
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getProductParameterValuesByProductSortedByNameQueryBuilder(\Shopsys\FrameworkBundle\Model\Product\Product $product, $locale)
+    {
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('ppv')
+            ->from(ProductParameterValue::class, 'ppv')
+            ->join('ppv.parameter', 'p')
+            ->join('p.translations', 'pt')
+            ->where('ppv.product = :product_id')
+            ->andWhere('pt.locale = :locale')
+            ->andWhere('p.visibleOnFrontend = true')
+            ->andWhere()
+            ->setParameters([
+                'product_id' => $product->getId(),
+                'locale' => $locale,
+            ])
+            ->orderBy('pt.name');
+
+        return $queryBuilder;
+    }
+
+    /**
      * @param int $limit
      * @param int $offset
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[]
