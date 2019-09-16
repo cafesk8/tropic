@@ -9,13 +9,15 @@ use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation as BaseProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
+ */
 class ProductPriceCalculation extends BaseProductPriceCalculation
 {
     /**
@@ -85,15 +87,29 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
      */
     protected function calculateProductPriceForPricingGroup(Product $product, PricingGroup $pricingGroup)
     {
-        $manualInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $pricingGroup);
-        if ($manualInputPrice !== null) {
-            $inputPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
-        } else {
-            $inputPrice = Money::zero();
+        $defaultPricingGroup = $this->pricingGroupFacade->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $pricingGroup->getDomainId())
+        );
+
+        $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroups($product, [
+            $pricingGroup,
+            $defaultPricingGroup,
+        ]);
+
+        $inputPrice = Money::zero();
+        $defaultPrice = Money::zero();
+
+        foreach ($manualInputPrices as $manualInputPrice) {
+            if ($manualInputPrice !== null) {
+                if ($manualInputPrice->getPricingGroup() === $defaultPricingGroup) {
+                    $inputPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
+                } else {
+                    $defaultPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
+                }
+            }
         }
 
         $actionPrice = $product->getActionPrice($pricingGroup->getDomainId());
-
         if ($actionPrice !== null && $inputPrice->isGreaterThan($actionPrice)) {
             $inputPrice = $actionPrice;
         }
@@ -104,32 +120,12 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $product->getVat()
         );
 
-        return new ProductPrice($basePrice, false, $this->calculateDefaultPrice($product, $pricingGroup));
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @throws \Shopsys\FrameworkBundle\Component\Setting\Exception\SettingValueNotFoundException
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
-     */
-    private function calculateDefaultPrice(Product $product, PricingGroup $pricingGroup): Price
-    {
-        $defaultPricingGroup = $this->pricingGroupFacade->getById(
-            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $pricingGroup->getDomainId())
-        );
-
-        $manualInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $defaultPricingGroup);
-        if ($manualInputPrice !== null) {
-            $inputPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
-        } else {
-            $inputPrice = Money::zero();
-        }
-
-        return $this->basePriceCalculation->calculateBasePrice(
-            $inputPrice,
+        $defaultPrice = $this->basePriceCalculation->calculateBasePrice(
+            $defaultPrice,
             $this->pricingSetting->getInputPriceType(),
             $product->getVat()
         );
+
+        return new ProductPrice($basePrice, false, $defaultPrice);
     }
 }

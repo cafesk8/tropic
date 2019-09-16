@@ -410,6 +410,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade'
 
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository: '@Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository'
+
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagGridFactory: '@Shopsys\ShopBundle\Model\Product\Flag\FlagGridFactory'
 
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade'
