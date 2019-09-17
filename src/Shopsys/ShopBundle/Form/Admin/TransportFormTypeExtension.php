@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade;
 use Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
+use Shopsys\ShopBundle\Model\Transport\Transport;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -26,10 +27,6 @@ class TransportFormTypeExtension extends AbstractTypeExtension
 {
     public const VALIDATION_GROUP_BALIKOBOT = 'balikobot';
     public const VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE = 'balikobot_shipper_service';
-
-    public const PERSONAL_TAKE_TYPE_NONE = 'none';
-    public const PERSONAL_TAKE_TYPE_BALIKOBOT = 'baikobot';
-    public const PERSONAL_TAKE_TYPE_STORE = 'store';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperFacade
@@ -119,7 +116,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            if ((string)$data['balikobotGroup']['personalTakeType'] === self::PERSONAL_TAKE_TYPE_BALIKOBOT) {
+            if ((string)$data['balikobotGroup']['personalTakeType'] === Transport::PERSONAL_TAKE_TYPE_BALIKOBOT) {
                 $balikobotShipper = $data['balikobotGroup']['balikobotShipper'];
                 $this->addDependendElement($form, $balikobotShipper);
             }
@@ -139,7 +136,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             /** @var \Shopsys\ShopBundle\Model\Transport\TransportData $transportData */
             $transportData = $form->getData();
 
-            if ($transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_BALIKOBOT) {
+            if ($transportData->personalTakeType === Transport::PERSONAL_TAKE_TYPE_BALIKOBOT) {
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT;
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE;
             }
@@ -169,9 +166,9 @@ class TransportFormTypeExtension extends AbstractTypeExtension
         $builderBalikobotGroup->add('personalTakeType', ChoiceType::class, [
             'label' => t('Použít'),
             'choices' => [
-                t('Bez osobního převzetí') => self::PERSONAL_TAKE_TYPE_NONE,
-                t('Balíkobot') => self::PERSONAL_TAKE_TYPE_BALIKOBOT,
-                t('Prodejny Bushman') => self::PERSONAL_TAKE_TYPE_STORE,
+                t('Bez osobního převzetí') => Transport::PERSONAL_TAKE_TYPE_NONE,
+                t('Balíkobot') => Transport::PERSONAL_TAKE_TYPE_BALIKOBOT,
+                t('Prodejny Bushman') => Transport::PERSONAL_TAKE_TYPE_STORE,
             ],
             'attr' => [
                 'class' => 'js-transport-personal-take',

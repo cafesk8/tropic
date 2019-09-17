@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Transport;
 
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
-use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 class TransportData extends BaseTransportData
 {
@@ -59,7 +58,7 @@ class TransportData extends BaseTransportData
         parent::__construct();
         $this->pickupPlace = false;
         $this->initialDownload = false;
-        $this->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_NONE;
+        $this->personalTakeType = Transport::PERSONAL_TAKE_TYPE_NONE;
         $this->deliveryDays = 0;
     }
 }

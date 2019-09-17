@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Model\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactory as BaseTransportDataFactory;
-use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
 
 class TransportDataFactory extends BaseTransportDataFactory
 {
@@ -48,14 +47,7 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->countries = $transport->getCountries();
         $transportData->mallType = $transport->getMallType();
         $transportData->externalId = $transport->getExternalId();
-
-        if ($transport->isChooseStore()) {
-            $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
-        } elseif ($transport->isBalikobot()) {
-            $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
-        } else {
-            $transportData->personalTakeType = TransportFormTypeExtension::PERSONAL_TAKE_TYPE_NONE;
-        }
+        $transportData->personalTakeType = $transport->getPersonalTakeType();
         $transportData->deliveryDays = $transport->getDeliveryDays();
     }
 }
