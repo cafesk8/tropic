@@ -21,9 +21,9 @@ use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
 class ProductMallExportMapper
 {
+    public const STOCK_QUANTITY_FUSE = 2;
     private const CZECH_LOCALE = DomainHelper::CZECH_LOCALE;
     private const CZECH_DOMAIN = DomainHelper::CZECH_DOMAIN;
-    private const STOCK_QUANTITY_FUSE = 2;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser
@@ -282,6 +282,10 @@ class ProductMallExportMapper
     private function findStockQuantity(Product $product): ?int
     {
         $defaultStore = $this->storeFacade->findDefaultStore();
+
+        if ($defaultStore === null && $product->isMainVariant() === true) {
+            return $product->getTotalStockQuantityOfProductVariantsForMall();
+        }
 
         if ($defaultStore === null && $product->getStockQuantity() !== null) {
             return $product->getStockQuantity() - self::STOCK_QUANTITY_FUSE;

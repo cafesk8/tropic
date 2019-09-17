@@ -183,7 +183,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
-        $this->extendStockQuantity($builder->get('displayAvailabilityGroup')->get('stockGroup'));
 
         $builder->get('basicInformationGroup')
             ->add('generateToHsSportXmlFeed', YesNoType::class, [
@@ -361,17 +360,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationGroup
      */
-    private function extendStockQuantity(FormBuilderInterface $basicInformationGroup): void
-    {
-        $stockQuantityFieldOptions = $basicInformationGroup->get('stockQuantity')->getOptions();
-        $stockQuantityFieldOptions['disabled'] = true;
-        $stockQuantityFieldType = get_class($basicInformationGroup->get('stockQuantity')->getType()->getInnerType());
-        $basicInformationGroup->add('stockQuantity', $stockQuantityFieldType, $stockQuantityFieldOptions);
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $basicInformationGroup
-     */
     private function extendCatnum(FormBuilderInterface $basicInformationGroup): void
     {
         $catnumFieldOptions = $basicInformationGroup->get('catnum')->getOptions();
@@ -440,6 +428,23 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'label' => t('Exportováno do Mall.cz'),
                 'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getMallExportedAt()) : '~',
             ]);
+
+        $stockGroup = $displayAvailabilityGroup->get('stockGroup');
+
+        $stockQuantity = 0;
+        if ($product !== null) {
+            if ($product->isMainVariant() === true) {
+                $stockQuantity = $product->getTotalStockQuantityOfProductVariants();
+            } else {
+                $stockQuantity = $product->getStockQuantity();
+            }
+        }
+
+        $stockGroup->remove('stockQuantity');
+        $stockGroup->add('stockQuantity', DisplayOnlyType::class, [
+            'label' => t('Skladem'),
+            'data' => $stockQuantity,
+        ]);
     }
 
     /**
