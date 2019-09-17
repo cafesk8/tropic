@@ -43,6 +43,13 @@ class Payment extends BasePayment
     private $externalId;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $cashOnDelivery;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData
      */
     public function __construct(BasePaymentData $paymentData)
@@ -52,6 +59,7 @@ class Payment extends BasePayment
         $this->type = $paymentData->type;
         $this->setGoPayPaymentMethod($paymentData);
         $this->externalId = $paymentData->externalId;
+        $this->cashOnDelivery = $paymentData->cashOnDelivery;
     }
 
     /**
@@ -64,6 +72,7 @@ class Payment extends BasePayment
         $this->type = $paymentData->type;
         $this->setGoPayPaymentMethod($paymentData);
         $this->externalId = $paymentData->externalId;
+        $this->cashOnDelivery = $paymentData->cashOnDelivery;
     }
 
     /**
@@ -121,5 +130,13 @@ class Payment extends BasePayment
     public function getExternalId(): ?string
     {
         return $this->externalId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCashOnDelivery(): bool
+    {
+        return $this->cashOnDelivery;
     }
 }

@@ -23,6 +23,11 @@ class PaymentData extends BasePaymentData
      */
     public $externalId;
 
+    /**
+     * @var bool
+     */
+    public $cashOnDelivery;
+
     public function __construct()
     {
         parent::__construct();

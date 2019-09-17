@@ -14,4 +14,13 @@ class StringHelper
     {
         return trim(str_replace(PHP_EOL, ' ', $string));
     }
+
+    /**
+     * @param string $inString
+     * @return string
+     */
+    public static function replaceDotByComma(string $inString): string
+    {
+        return str_replace('.', ',', $inString);
+    }
 }

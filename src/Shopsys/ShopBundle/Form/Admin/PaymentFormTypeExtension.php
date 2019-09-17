@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Form\Admin\Payment\PaymentFormType;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade;
 use Shopsys\ShopBundle\Model\Payment\Payment;
@@ -65,6 +66,10 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
             ->add('externalId', TextType::class, [
                 'label' => 'ID z IS',
                 'required' => false,
+            ])
+            ->add('cashOnDelivery', YesNoType::class, [
+                'required' => false,
+                'label' => t('Dobírka'),
             ]);
     }
 

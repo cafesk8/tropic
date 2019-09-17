@@ -530,3 +530,17 @@ services:
     Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory:
       arguments:
         $apiKey: '%smsManagerApiKey%'
+
+    Shopsys\ShopBundle\Model\Order\MassAction\CsvExportMassAction: ~
+
+    Shopsys\FrameworkBundle\Controller\Admin\OrderController:
+        class: Shopsys\ShopBundle\Controller\Admin\OrderController
+        tags: ['controller.service_arguments']
+
+    Shopsys\ShopBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig: ~
+
+    Shopsys\FrameworkBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig'
+
+    Shopsys\ShopBundle\Model\AdvancedSearchOrder\Filter\OrderTransportFilter: ~
+
+    Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@Shopsys\ShopBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
