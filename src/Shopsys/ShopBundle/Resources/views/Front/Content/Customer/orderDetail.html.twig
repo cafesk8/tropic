@@ -30,7 +30,58 @@
             </div>
         </div>
 
-        <div class="wrap-box wrap-box--narrow">
+        {% if order.deliveryStreet is not null %}
+            <div class="wrap-box wrap-box--narrow">
+                <h2 class="wrap-box__title">{{ 'Shipping address'|trans }}</h2>
+                <div class="wrap-box__in">
+                    <table class="table-params">
+                        {% if order.deliveryFirstName is not null %}
+                            <tr>
+                                <th>{{ 'First name'|trans }}: </th>
+                                <td>{{ order.deliveryFirstName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.deliveryLastName is not null %}
+                            <tr>
+                                <th>{{ 'Last name'|trans }}: </th>
+                                <td>{{ order.deliveryLastName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.deliveryCompanyName is not null %}
+                            <tr>
+                                <th>{{ 'Company'|trans }}: </th>
+                                <td>{{ order.deliveryCompanyName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.deliveryTelephone is not null %}
+                            <tr>
+                                <th>{{ 'Telephone'|trans }}: </th>
+                                <td>{{ order.deliveryTelephone }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>{{ 'Street'|trans }}: </th>
+                            <td>{{ order.deliveryStreet }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'City'|trans }}: </th>
+                            <td>{{ order.deliveryCity }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Postcode'|trans }}: </th>
+                            <td>{{ order.deliveryPostcode }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Country'|trans }}: </th>
+                            <td>{{ order.deliveryCountry.name }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if order.street is not null and not order.isPersonalTakeType %}
+            <div class="wrap-box wrap-box--narrow">
                 <h2 class="wrap-box__title">{{ 'Billing address'|trans }}</h2>
                 <div class="wrap-box__in">
                     <table class="table-params">
@@ -83,55 +134,6 @@
                         <tr>
                             <th>{{ 'Country'|trans }}: </th>
                             <td>{{ order.country.name }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-        {% if order.deliveryStreet is not null %}
-            <div class="wrap-box wrap-box--narrow">
-                <h2 class="wrap-box__title">{{ 'Shipping address'|trans }}</h2>
-                <div class="wrap-box__in">
-                    <table class="table-params">
-                        {% if order.deliveryFirstName is not null %}
-                            <tr>
-                                <th>{{ 'First name'|trans }}: </th>
-                                <td>{{ order.deliveryFirstName }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if order.deliveryLastName is not null %}
-                            <tr>
-                                <th>{{ 'Last name'|trans }}: </th>
-                                <td>{{ order.deliveryLastName }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if order.deliveryCompanyName is not null %}
-                            <tr>
-                                <th>{{ 'Company'|trans }}: </th>
-                                <td>{{ order.deliveryCompanyName }}</td>
-                            </tr>
-                        {% endif %}
-                        {% if order.deliveryTelephone is not null %}
-                            <tr>
-                                <th>{{ 'Telephone'|trans }}: </th>
-                                <td>{{ order.deliveryTelephone }}</td>
-                            </tr>
-                        {% endif %}
-                        <tr>
-                            <th>{{ 'Street'|trans }}: </th>
-                            <td>{{ order.deliveryStreet }}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ 'City'|trans }}: </th>
-                            <td>{{ order.deliveryCity }}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ 'Postcode'|trans }}: </th>
-                            <td>{{ order.deliveryPostcode }}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ 'Country'|trans }}: </th>
-                            <td>{{ order.deliveryCountry.name }}</td>
                         </tr>
                     </table>
                 </div>

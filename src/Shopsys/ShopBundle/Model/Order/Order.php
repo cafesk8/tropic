@@ -21,7 +21,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
 use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
@@ -29,6 +28,7 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
+use Shopsys\ShopBundle\Model\Transport\Transport;
 
 /**
  * @ORM\Table(name="orders")
@@ -833,6 +833,17 @@ class Order extends BaseOrder
         $deliveryStreetExplodedBySpaces = explode(' ', $this->deliveryStreet);
         array_pop($deliveryStreetExplodedBySpaces);
         return implode(' ', $deliveryStreetExplodedBySpaces);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPersonalTakeType(): bool
+    {
+        return in_array($this->personalTakeType, [
+            Transport::PERSONAL_TAKE_TYPE_BALIKOBOT,
+            Transport::PERSONAL_TAKE_TYPE_STORE,
+        ], true);
     }
 
     /**
