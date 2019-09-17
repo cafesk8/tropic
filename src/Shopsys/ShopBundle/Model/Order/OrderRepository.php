@@ -144,19 +144,14 @@ class OrderRepository extends BaseOrderRepository
     public function getReadyOrdersForExportBatch(int $limit): array
     {
         /**
-         * not registrated customer: order is exported without (not existent) waiting for customer ID from IS
-         * registrated non-member of Bushman club: order is exported without (not existent) waiting for customer ID from IS
-         * registrated member of Bushman club: order is exported after import of customer ID from IS
+         * not registrated customer: order is exported without waiting for (not existent) customer ID from IS
+         * registrated customer: order is exported after import of customer ID from IS
          */
 
         return $this->createOrderQueryBuilder()
             ->andWhere('o.exportStatus = :exportStatus')
             ->setParameter('exportStatus', Order::EXPORT_NOT_YET)
-            ->andWhere('
-                (o.customer IS NULL)
-                OR (o.customer IS NOT NULL AND c.memberOfBushmanClub = FALSE)
-                OR (c.transferId IS NOT NULL AND c.memberOfBushmanClub = TRUE)
-            ')
+            ->andWhere('o.customer IS NULL OR c.transferId IS NOT NULL')
             ->leftJoin('o.customer', 'c')
             ->setMaxResults($limit)
             ->getQuery()
