@@ -27,10 +27,11 @@ class PricingGroupRepository extends BasePricingGroupRepository
 
     /**
      * @param float $discount
+     * @param int $userDomainId
      * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null
      */
-    public function findByDiscount(float $discount): ?PricingGroup
+    public function findByDiscount(float $discount, int $userDomainId): ?PricingGroup
     {
-        return $this->getPricingGroupRepository()->findOneBy(['discount' => $discount]);
+        return $this->getPricingGroupRepository()->findOneBy(['discount' => $discount, 'domainId' => $userDomainId]);
     }
 }

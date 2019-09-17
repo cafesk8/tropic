@@ -15,7 +15,7 @@ class Version20190916122060 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->sql('INSERT INTO "transfers" ("identifier", "name", "in_progress", "frequency", "enabled")
-            VALUES (\'import_customers_pricing_groups\', \'Import cenových skupin\', \'0\', \'Jednou za den\', \'1\');');
+            VALUES (\'import_customers_pricing_groups\', \'Import přiřazení cenových skupin k zákazníkům\', \'0\', \'Jednou za den\', \'1\');');
     }
 
     /**

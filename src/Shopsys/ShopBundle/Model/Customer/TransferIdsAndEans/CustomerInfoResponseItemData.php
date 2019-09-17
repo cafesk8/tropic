@@ -76,7 +76,7 @@ class CustomerInfoResponseItemData implements TransferResponseItemDataInterface
     /**
      * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan
      */
-    public function getTransferIdAndEan(): \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan
+    public function getTransferIdAndEan(): UserTransferIdAndEan
     {
         return $this->transferIdAndEan;
     }

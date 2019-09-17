@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
-class MigrateCustomers extends Command
+class MigrateCustomersCommand extends Command
 {
     /**
      * @var string

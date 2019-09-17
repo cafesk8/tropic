@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
@@ -14,8 +15,6 @@ use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use Shopsys\ShopBundle\Model\Country\CountryFacade;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -157,7 +156,7 @@ class CustomerFacade extends BaseCustomerFacade
      */
     public function updateTransferIdAndEanAndPricingGroup(UserTransferIdAndEan $transferIdAndEan, float $discountByCoefficientForEan): void
     {
-        $newPricingGroup = $this->pricingGroupFacade->findByDiscount($discountByCoefficientForEan);
+        $newPricingGroup = $this->pricingGroupFacade->findByDiscount($discountByCoefficientForEan, $transferIdAndEan->getCustomer()->getDomainId());
 
         if ($newPricingGroup === null) {
             return;
@@ -169,27 +168,44 @@ class CustomerFacade extends BaseCustomerFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData $customerInfoResponseItemData
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $currentPricingGroup
+     * @param float $coefficient
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
      */
-    public function updatePricingGroupByIsResponse(CustomerInfoResponseItemData $customerInfoResponseItemData): void
+    public function updatePricingGroupByIsResponse(PricingGroup $currentPricingGroup, float $coefficient, UserTransferIdAndEan $userTransferIdAndEan): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $currentPricingGroup */
-        $currentPricingGroup = $customerInfoResponseItemData->getTransferIdAndEan()->getCustomer()->getPricingGroup();
-
-        if ($currentPricingGroup->getDiscount() === null || $customerInfoResponseItemData->getCoefficient() < $currentPricingGroup->getDiscount()) {
+        if ($currentPricingGroup->getDiscount() === null || $coefficient <= $currentPricingGroup->getDiscount()) {
             $this->updateTransferIdAndEanAndPricingGroup(
-                $customerInfoResponseItemData->getTransferIdAndEan(),
-                $customerInfoResponseItemData->getCoefficient()
+                $userTransferIdAndEan,
+                $coefficient
             );
         }
+
+        $this->changeCustomerPricingGroupUpdatedAt($userTransferIdAndEan->getCustomer());
     }
 
     /**
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
-    public function getBatchToPricingGroupUpdate(int $limit): array
+    public function getBatchForPricingGroupUpdate(int $limit): array
     {
-        return $this->userRepository->getBatchToPricingGroupUpdate($limit);
+        return $this->userRepository->getBatchForPricingGroupUpdate($limit);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     */
+    public function changeCustomerPricingGroupUpdatedAt(User $user): void
+    {
+        $customerData = $this->customerDataFactory->createFromUser($user);
+
+        /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
+        $userData->pricingGroupUpdatedAt = new DateTime();
+
+        $customerData->userData = $userData;
+
+        $this->editByCustomer($user->getId(), $customerData);
     }
 }

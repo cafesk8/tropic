@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
-use DateTime;
 use Shopsys\ShopBundle\Component\Rest\Exception\UnexpectedResponseCodeException;
-use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferService;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
 use Shopsys\ShopBundle\Model\Order\Status\Transfer\Exception\InvalidOrderStatusTransferResponseItemDataException;
 
 class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportCronModule
@@ -26,32 +24,24 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
     private $customerFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
+     * @var \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferService
      */
-    private $restClient;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
-     */
-    private $customerDataFactory;
+    private $customerTransferService;
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
-     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
-     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferService $customerTransferService
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         CustomerFacade $customerFacade,
-        RestClient $restClient,
-        CustomerDataFactory $customerDataFactory
+        CustomerTransferService $customerTransferService
     ) {
         parent::__construct($transferCronModuleDependency);
 
         $this->customerFacade = $customerFacade;
-        $this->restClient = $restClient;
-        $this->customerDataFactory = $customerDataFactory;
+        $this->customerTransferService = $customerTransferService;
     }
 
     /**
@@ -67,11 +57,16 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $customers = $this->customerFacade->getBatchToPricingGroupUpdate(self::CUSTOMER_BATCH_SIZE);
+        $customers = $this->customerFacade->getBatchForPricingGroupUpdate(self::CUSTOMER_BATCH_SIZE);
         $allTransferDataItems = [];
         foreach ($customers as $customer) {
             foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
-                $allTransferDataItems[] = $this->getTransferItemsFromResponse($transferIdAndEan);
+                try {
+                    $allTransferDataItems[] = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan);
+                } catch (UnexpectedResponseCodeException $unexpectedResponseCodeException) {
+                    $this->customerFacade->changeCustomerPricingGroupUpdatedAt($transferIdAndEan->getCustomer());
+                    $this->logger->addWarning(sprintf('Customer info for User with ean `%s` and email %s not found', $transferIdAndEan->getEan(), $transferIdAndEan->getCustomer()->getEmail()));
+                }
             }
         }
 
@@ -89,8 +84,11 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
             );
         }
 
-        $this->customerFacade->updatePricingGroupByIsResponse($customerInfoResponseItemData);
-        $this->changeCustomerPricingGroupUpdatedAt($customerInfoResponseItemData->getTransferIdAndEan()->getCustomer());
+        $this->customerFacade->updatePricingGroupByIsResponse(
+            $customerInfoResponseItemData->getTransferIdAndEan()->getCustomer()->getPricingGroup(),
+            $customerInfoResponseItemData->getCoefficient(),
+            $customerInfoResponseItemData->getTransferIdAndEan()
+        );
     }
 
     /**
@@ -99,40 +97,5 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
     protected function isNextIterationNeeded(): bool
     {
         return true;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
-     * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData|null
-     */
-    private function getTransferItemsFromResponse(UserTransferIdAndEan $userTransferIdAndEan): ?CustomerInfoResponseItemData
-    {
-        $apiMethodUrl = sprintf('/api/Eshop/CustomerInfo?Number=%s&Email=%s', $userTransferIdAndEan->getEan(), $userTransferIdAndEan->getCustomer()->getEmail());
-
-        try {
-            $restResponse = $this->restClient->get($apiMethodUrl);
-
-            return new CustomerInfoResponseItemData($restResponse->getData(), $userTransferIdAndEan);
-        } catch (UnexpectedResponseCodeException $exception) {
-            $this->changeCustomerPricingGroupUpdatedAt($userTransferIdAndEan->getCustomer());
-            $this->logger->addWarning(sprintf('Customer info for User with ean `%s` and email %s not found', $userTransferIdAndEan->getEan(), $userTransferIdAndEan->getCustomer()->getEmail()));
-            return null;
-        }
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Customer\User $user
-     */
-    private function changeCustomerPricingGroupUpdatedAt(User $user): void
-    {
-        $customerData = $this->customerDataFactory->createFromUser($user);
-
-        /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
-        $userData = $customerData->userData;
-        $userData->pricingGroupUpdatedAt = new DateTime();
-
-        $customerData->userData = $userData;
-
-        $this->customerFacade->editByCustomer($user->getId(), $customerData);
     }
 }
