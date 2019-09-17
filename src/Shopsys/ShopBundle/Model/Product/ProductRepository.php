@@ -116,6 +116,7 @@ class ProductRepository extends BaseProductRepository
             ->leftJoin('p.mainVariant', 'pmv')
             ->andWhere('p.variantType = :variant')
             ->andWhere('pmv.mainVariantGroup = :mainVariantGroup')
+            ->andWhere('p.mallExport = true')
             ->setParameter('variant', Product::VARIANT_TYPE_VARIANT)
             ->setParameter('mainVariantGroup', $mainVariantGroup);
 
