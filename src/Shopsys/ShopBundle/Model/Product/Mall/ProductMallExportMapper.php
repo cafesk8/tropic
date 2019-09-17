@@ -139,7 +139,7 @@ class ProductMallExportMapper
             }
         }
 
-        $mallProduct->setShortdesc($product->getShortDescription(self::CZECH_DOMAIN));
+        $mallProduct->setShortdesc(mb_substr($product->getShortDescription(self::CZECH_DOMAIN), 0, 295));
         $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
 
         return $mallProduct;
