@@ -41,6 +41,11 @@ class DeliveryDateFacade
     private $domain;
 
     /**
+     * @var int|null
+     */
+    private $fastestTransportDeliveryDays;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\ShopBundle\Model\Transport\DeliveryDate\WorkdayService $workdayService
@@ -68,9 +73,10 @@ class DeliveryDateFacade
     public function getExpectedDeliveryDate(?Transport $transport = null): DateTime
     {
         if ($transport === null) {
-            return $this->calculateDeliveryDate(
-                $this->getFastestTransportDeliveryDays()
-            );
+            if ($this->fastestTransportDeliveryDays === null) {
+                $this->fastestTransportDeliveryDays = $this->getFastestTransportDeliveryDays();
+            }
+            return $this->calculateDeliveryDate($this->fastestTransportDeliveryDays);
         }
 
         return $this->calculateDeliveryDate(
