@@ -258,6 +258,13 @@ class Order extends BaseOrder
     private $memberOfBushmanClub;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $personalTakeType;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -271,7 +278,7 @@ class Order extends BaseOrder
     ) {
         parent::__construct($orderData, $orderNumber, $urlHash, $user);
 
-        $this->transport = $orderData->transport;
+        $this->setTransport($orderData);
         $this->payment = $orderData->payment;
 
         $this->setDeliveryAddressNewly($orderData);
@@ -305,19 +312,6 @@ class Order extends BaseOrder
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
         $this->updatedAt = $orderData->updatedAt;
-
-        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
-        $transport = $this->transport;
-
-        if ($this->transport !== null && $transport->isPickupPlace()) {
-            $this->pickupPlace = $orderData->pickupPlace;
-        }
-
-        if ($this->transport !== null && $transport->isChooseStore() && $orderData->store !== null) {
-            $this->store = $orderData->store;
-            $this->storeExternalNumber = $orderData->store->getExternalNumber();
-        }
-
         $this->exportStatus = $orderData->exportStatus;
         $this->exportedAt = $orderData->exportedAt;
         $this->mallOrderId = $orderData->mallOrderId;
@@ -587,6 +581,14 @@ class Order extends BaseOrder
     }
 
     /**
+     * @return string
+     */
+    public function getPersonalTakeType(): string
+    {
+        return $this->personalTakeType;
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
@@ -831,5 +833,27 @@ class Order extends BaseOrder
         $deliveryStreetExplodedBySpaces = explode(' ', $this->deliveryStreet);
         array_pop($deliveryStreetExplodedBySpaces);
         return implode(' ', $deliveryStreetExplodedBySpaces);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     */
+    private function setTransport(BaseOrderData $orderData): void
+    {
+        $this->transport = $orderData->transport;
+
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
+        $transport = $this->transport;
+        if ($transport === null) {
+            return;
+        }
+
+        $this->personalTakeType = $transport->getPersonalTakeType();
+        if ($transport->isPickupPlace() === true) {
+            $this->pickupPlace = $orderData->pickupPlace;
+        } elseif ($transport->isChooseStore() === true && $orderData->store !== null) {
+            $this->store = $orderData->store;
+            $this->storeExternalNumber = $this->store->getExternalNumber();
+        }
     }
 }

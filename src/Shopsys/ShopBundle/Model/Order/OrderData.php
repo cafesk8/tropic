@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
+use Shopsys\ShopBundle\Model\Transport\Transport;
 
 class OrderData extends BaseOrderData
 {
@@ -79,12 +80,18 @@ class OrderData extends BaseOrderData
      */
     public $memberOfBushmanClub;
 
+    /**
+     * @var string|null
+     */
+    public $personalTakeType;
+
     public function __construct()
     {
         parent::__construct();
         $this->updatedAt = new DateTime();
         $this->statusCheckedAt = new DateTime();
         $this->memberOfBushmanClub = false;
+        $this->personalTakeType = Transport::PERSONAL_TAKE_TYPE_NONE;
     }
 
     /**

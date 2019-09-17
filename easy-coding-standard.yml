@@ -48,6 +48,9 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Model/Product/ProductFacade.php'
 
+        ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
+            - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
+
         Shopsys\CodingStandards\Sniffs\ValidVariableNameSniff:
             - '*/tests/ShopBundle/Functional/EntityExtension/EntityExtensionTest.php'
             - '*/tests/ShopBundle/Test/Codeception/_generated/AcceptanceTesterActions.php'
