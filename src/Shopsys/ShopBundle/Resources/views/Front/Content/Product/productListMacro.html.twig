@@ -45,7 +45,9 @@
                                             <div class="list-products__item__info__price__item__old">
                                                 {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
                                             </div>
-                                            ({{ productSellingPrice.pricePercentageDifference|formatPercent }})
+                                            <div class="list-products__item__info__price__item__discount">
+                                                ({{ productSellingPrice.pricePercentageDifference|formatPercent }})
+                                            </div>
                                         {% endif %}
                                     </div>
                                     <div class="list-products__item__info__price__item">
