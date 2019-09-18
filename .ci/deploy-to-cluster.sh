@@ -52,7 +52,7 @@ if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_3}
-    yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/from-to-www-redirect\"" "true"
+    yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/from-to-www-redirect\"" "\"true\""
 else
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-type\"" basic
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-secret\"" shopsys
@@ -171,6 +171,7 @@ yq write --inplace app/config/parameters.yml parameters.transfer_de_password ${T
 # Mall api key
 yq write --inplace app/config/parameters.yml parameters.mall_apiKey ${MALL_API_KEY}
 yq write --inplace app/config/parameters.yml parameters.mall_isProductionMode ${MALL_IS_PRODUCTION_MODE}
+yq write --inplace app/config/parameters.yml parameters.mall_includeTestOrders ${MALL_INCLUDE_TEST_ORDERS}
 
 #GTM
 yq write --inplace app/config/parameters.yml parameters[gtm.config].cs.enabled ${GTM_CS_ENABLED}
