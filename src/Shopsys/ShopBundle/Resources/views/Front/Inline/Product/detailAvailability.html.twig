@@ -6,9 +6,11 @@
             {% if product.calculatedSellingDenied %}
                 {{ 'Product no longer on sale'|trans }}
             {% else %}
-                <span class="box-detail__info__availability__date">
-                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
-                </span>
+                {% if isGermanyDomain() is same as (false) %}
+                    <span class="box-detail__info__availability__date">
+                        {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                    </span>
+                {% endif %}
             {% endif %}
         </span>
 
