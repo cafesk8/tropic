@@ -621,6 +621,11 @@ class OrderController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
             'pageContent' => $this->orderFacade->getOrderSentPageContent($order->getId()),
             'order' => $order,
+            'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
+                $this->domain->getId(),
+                $this->domain->getLocale(),
+                self::HOMEPAGE_ARTICLES_LIMIT
+            ),
         ]);
     }
 
