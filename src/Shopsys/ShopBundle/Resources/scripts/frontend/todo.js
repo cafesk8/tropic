@@ -17,7 +17,6 @@
     $searchButtonOpener.on('mouseover', function () {
         setTimeout(function () {
             $searchButtonOpener.find('input[type=text]').focus();
-            console.log('e');
         }, 500
         );
     });
