@@ -82,7 +82,9 @@
         }
 
         &--with-variants:hover {
-            margin-bottom: -20px;
+            @media @query-lg {
+                margin-bottom: -20px;
+            }
         }
 
         &__in {
@@ -252,7 +254,9 @@
             }
 
             .list-products__item--with-variants:hover & {
-                display: flex;
+                @media @query-lg {
+                    display: flex;
+                }
             }
 
             &__image {
