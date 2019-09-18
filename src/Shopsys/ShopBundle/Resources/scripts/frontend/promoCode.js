@@ -16,6 +16,9 @@
                 }
             });
 
+            // Prevent more (toggling) listeners because of more times calling `Shopsys.register.registerNewContent()`
+            $('.js-promo-code-toggle-checkbox').off('change');
+
             // toggle promo code in cart preview
             $('.js-promo-code-toggle-checkbox').on('change', function (event) {
                 $(this).toggleClass('active');
