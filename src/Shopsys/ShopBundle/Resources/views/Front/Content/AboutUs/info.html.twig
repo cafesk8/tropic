@@ -13,10 +13,12 @@
             <div class="box-contact">
                 <div class="box-contact__left">
                     <div class="box-contact__block">
-                        <div class="box-contact__block__text">
-                            <i class="svg svg-phone"></i>
-                            {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
-                        </div>
+                        {% if getShopInfoPhoneNumber() is not null %}
+                            <a href="tel:{{ getShopInfoPhoneNumber() }}" class="box-contact__block__text">
+                                <i class="svg svg-phone"></i>
+                                {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                            </a>
+                        {% endif %}
                         <div class="box-contact__block__info">
                             {{ getShopInfoPhoneHours() }}
                         </div>
