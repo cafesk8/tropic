@@ -185,6 +185,7 @@ yq write --inplace app/config/parameters.yml parameters[gtm.config].de.container
 yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.goid ${GOPAY_CS_GO_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.clientId ${GOPAY_CS_CLIENT_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.clientSecret ${GOPAY_CS_CLIENT_SECRET}
+yq write --inplace app/config/parameters.yml parameters[gopay.config].isProductionMode ${GOPAY_IS_PRODUCTION_MODE}
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
