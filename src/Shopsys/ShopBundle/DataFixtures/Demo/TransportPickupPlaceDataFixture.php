@@ -8,6 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Generator;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\ShopBundle\Component\String\StringHelper;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceData;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceFacade;
 
@@ -54,7 +55,7 @@ class TransportPickupPlaceDataFixture extends AbstractReferenceFixture implement
             $pickupPlaceData->name = 'Testovací pobočka ' . $index;
             $pickupPlaceData->city = $this->faker->city;
             $pickupPlaceData->street = $this->faker->streetAddress;
-            $pickupPlaceData->postCode = $this->faker->postcode;
+            $pickupPlaceData->postCode = StringHelper::removeWhitespaces($this->faker->postcode);
             $pickupPlaceData->countryCode = 'CZ';
 
             $pickupPlacesData[] = $pickupPlaceData;

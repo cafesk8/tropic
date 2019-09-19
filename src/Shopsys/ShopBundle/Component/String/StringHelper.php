@@ -23,4 +23,14 @@ class StringHelper
     {
         return str_replace('.', ',', $inString);
     }
+
+    /**
+     * @param string $string
+     * @param string $inString
+     * @return string
+     */
+    public static function removeWhitespaces(string $string): string
+    {
+        return preg_replace('/\s+/', '', $string);
+    }
 }

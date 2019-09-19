@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Component\Balikobot\Pickup;
 
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
+use Shopsys\ShopBundle\Component\String\StringHelper;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceData;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceFacade;
@@ -123,7 +124,7 @@ class DownloadPickupPlacesCronModule implements SimpleCronModuleInterface
         $pickupPlaceData->name = $pickupPlaceResponseData['name'];
         $pickupPlaceData->city = $pickupPlaceResponseData['city'];
         $pickupPlaceData->street = $pickupPlaceResponseData['street'];
-        $pickupPlaceData->postCode = $pickupPlaceResponseData['zip'];
+        $pickupPlaceData->postCode = StringHelper::removeWhitespaces($pickupPlaceResponseData['zip']);
         $pickupPlaceData->countryCode = $pickupPlaceResponseData['country'];
 
         return $pickupPlaceData;
