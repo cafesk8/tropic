@@ -102,9 +102,11 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null) {
                 if ($manualInputPrice->getPricingGroup() === $defaultPricingGroup) {
-                    $inputPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
-                } else {
                     $defaultPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
+                }
+
+                if ($manualInputPrice->getPricingGroup() === $pricingGroup) {
+                    $inputPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
                 }
             }
         }
