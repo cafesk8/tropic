@@ -124,6 +124,14 @@
         background-color: @color-f;
         border-bottom: 1px solid @color-gray;
 
+        &--two-lines-mobile {
+            flex-direction: column;
+
+            @media @query-md {
+                flex-direction: row;
+            }
+        }
+
         &__status {
             font-size: 18px;
             white-space: nowrap;
@@ -139,6 +147,14 @@
             font-weight: 400;
             white-space: nowrap;
             padding: 4px 5px 0 5px;
+
+            .box-detail__availability--two-lines-mobile & {
+                padding-left: 0;
+
+                @media @query-md {
+                    padding-left: 5px;
+                }
+            }
         }
 
         &__stores {
