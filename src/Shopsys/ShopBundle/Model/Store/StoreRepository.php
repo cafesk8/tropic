@@ -84,10 +84,11 @@ class StoreRepository
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Store\Store
      */
-    public function getStoreForDomainById(int $storeId, int $domainId): Store
+    public function getStoreForDomainAndForStoreListById(int $storeId, int $domainId): Store
     {
         $store = $this->getAllForDomainQueryBuilder($domainId)
             ->andWhere('s.id = :storeId')
+            ->andWhere('s.showOnStoreList = true')
             ->setParameter('storeId', $storeId)
             ->getQuery()->getOneOrNullResult();
 
@@ -122,12 +123,13 @@ class StoreRepository
      * @param int $domainId
      * @return string[]
      */
-    public function findRegionNames(int $domainId): array
+    public function findRegionNamesForStoreList(int $domainId): array
     {
         $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
         $queryBuilder->select('s.region')
             ->addSelect('COUNT(s) as storesCount')
             ->andWhere('s.region IS NOT NULL')
+            ->andWhere('s.showOnStoreList = true')
             ->groupBy('s.region');
 
         $regionsArray = $queryBuilder->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
@@ -146,10 +148,11 @@ class StoreRepository
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Store\Store[][]
      */
-    public function findStoresIndexedByRegion(int $domainId): array
+    public function findStoresForStoreListIndexedByRegion(int $domainId): array
     {
         $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
         $queryBuilder
+            ->andWhere('s.showOnStoreList = true')
             ->orderBy('s.region', 'ASC')
             ->addOrderBy('s.position', 'ASC');
 
