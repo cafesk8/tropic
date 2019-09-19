@@ -94,6 +94,7 @@ class CustomerController extends FrontBaseController
 
         $form = $this->createForm(CustomerFormType::class, $customerData, [
             'domain_id' => $this->domain->getId(),
+            'user' => $user,
         ]);
         $form->handleRequest($request);
 

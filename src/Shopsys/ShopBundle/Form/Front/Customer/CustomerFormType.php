@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Front\Customer;
 
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,6 +39,7 @@ class CustomerFormType extends AbstractType
             ])
             ->add('deliveryAddressData', DeliveryAddressFormType::class, [
                 'domain_id' => $options['domain_id'],
+                'user' => $options['user'],
             ])
             ->add('save', SubmitType::class);
     }
@@ -50,6 +52,8 @@ class CustomerFormType extends AbstractType
         $resolver
             ->setRequired('domain_id')
             ->addAllowedTypes('domain_id', 'int')
+            ->setRequired('user')
+            ->addAllowedTypes('user', User::class)
             ->setDefaults([
                 'empty_data' => $this->customerDataFactory->create(),
                 'attr' => ['novalidate' => 'novalidate'],

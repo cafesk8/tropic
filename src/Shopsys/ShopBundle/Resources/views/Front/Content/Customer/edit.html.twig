@@ -117,10 +117,12 @@
                             {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans}) }}
                             {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans}) }}
 
-                            {% if app.user.deliveryAddress is null %}
+                            {% if isGermanyDomain() %}
                                 {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans}) }}
                             {% else %}
-                                {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans, attr: { disabled: 'disabled' } }) }}
+                                <div class="display-none">
+                                    {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans }) }}
+                                </div>
                             {% endif %}
 
                         </div>

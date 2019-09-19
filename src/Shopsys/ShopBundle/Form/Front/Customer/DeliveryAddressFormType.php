@@ -8,11 +8,11 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -49,8 +49,6 @@ class DeliveryAddressFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
-
         $builder
             ->add('addressFilled', CheckboxType::class, ['required' => false])
             ->add('companyName', TextType::class, [
@@ -107,24 +105,28 @@ class DeliveryAddressFormType extends AbstractType
             ]);
 
         if (DomainHelper::isGermanDomain($this->domain) === true) {
-            $builder
-                ->add('country', ChoiceType::class, [
-                    'required' => true,
-                    'choices' => $countries,
-                    'choice_label' => 'name',
-                    'choice_value' => 'id',
-                ]);
+            /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
+            $user = $options['user'];
+            if ($user->getDeliveryAddress() === null || $user->getDeliveryAddress()->getCountry() === null) {
+                $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
+            } else {
+                $countries = [$user->getDeliveryAddress()->getCountry()];
+            }
         } else {
-            $countryCode = DomainHelper::getCountryCodeByLocale($this->domain->getLocale());
-
-            /** @var \Shopsys\FrameworkBundle\Model\Country\Country $country */
-            $country = $this->countryFacade->getByCode($countryCode);
-
-            $builder
-                ->add('country', HiddenType::class, [
-                    'data' => $country->getId(),
-                ]);
+            $countries = [
+                $this->countryFacade->findByCode(
+                    DomainHelper::getCountryCodeByLocale($this->domain->getLocale())
+                ),
+            ];
         }
+
+        $builder
+            ->add('country', ChoiceType::class, [
+                'required' => true,
+                'choices' => $countries,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+            ]);
     }
 
     /**
@@ -135,6 +137,8 @@ class DeliveryAddressFormType extends AbstractType
         $resolver
             ->setRequired('domain_id')
             ->addAllowedTypes('domain_id', 'int')
+            ->setRequired('user')
+            ->addAllowedTypes('user', User::class)
             ->setDefaults([
                 'data_class' => DeliveryAddressData::class,
                 'attr' => ['novalidate' => 'novalidate'],
