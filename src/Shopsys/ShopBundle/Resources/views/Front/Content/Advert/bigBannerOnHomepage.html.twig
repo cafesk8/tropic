@@ -35,6 +35,7 @@
                                         <span class="box-special-offer__products__item__content__price"> {{ sellingPrice.priceWithVat|price }}
                                             {% if sellingPrice.isActionPrice %}
                                                 <span class="box-special-offer__products__item__content__price__old">{{ sellingPrice.defaultProductPrice.priceWithVat|price }}</span>
+                                                <span class="box-special-offer__products__item__content__price__discount">({{ sellingPrice.pricePercentageDifference|formatPercent }})</span>
                                             {% endif %}
                                         </span>
                                         <span class="box-special-offer__products__item__content__size">

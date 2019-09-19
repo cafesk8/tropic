@@ -52,6 +52,16 @@ class ProductPrice extends BaseProductPrice
     }
 
     /**
+     * @return int
+     */
+    public function getPricePercentageDifference(): int
+    {
+        $percents = $this->getActionPriceDifference()->divide($this->defaultProductPrice->priceWithVat->getAmount(), 6)->multiply(100)->getAmount();
+
+        return (int)$percents;
+    }
+
+    /**
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
     public function defaultProductPrice(): Price
