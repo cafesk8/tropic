@@ -544,3 +544,11 @@ services:
     Shopsys\ShopBundle\Model\AdvancedSearchOrder\Filter\OrderTransportFilter: ~
 
     Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@Shopsys\ShopBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
+
+    Shopsys\ShopBundle\Component\Log\SlowLogSubscriber:
+        arguments:
+            - '@monolog.logger.slow'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Shopsys\FrameworkBundle\Component\Log\SlowLogSubscriber: '@Shopsys\ShopBundle\Component\Log\SlowLogSubscriber'
