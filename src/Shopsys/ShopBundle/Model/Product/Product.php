@@ -13,7 +13,9 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
+use Shopsys\ShopBundle\Model\Product\Exception\ProductIsNotMainVariantException;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
+use Shopsys\ShopBundle\Model\Product\Mall\ProductMallExportMapper;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
 
 /**
@@ -434,5 +436,39 @@ class Product extends BaseProduct
     public function setStockQuantity(int $stockQuantity): void
     {
         $this->stockQuantity = $stockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalStockQuantityOfProductVariants(): int
+    {
+        if ($this->isMainVariant() === false) {
+            throw new ProductIsNotMainVariantException($this->getId());
+        }
+
+        $mainVariantTotalStockQuantity = 0;
+
+        foreach ($this->variants as $variant) {
+            $mainVariantTotalStockQuantity += $variant->getStockQuantity();
+        }
+
+        return $mainVariantTotalStockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalStockQuantityOfProductVariantsForMall(): int
+    {
+        $totalStockQuantityOfProductVariants = $this->getTotalStockQuantityOfProductVariants();
+
+        $totalStockQuantityOfProductVariants -= count($this->getVariants()) * ProductMallExportMapper::STOCK_QUANTITY_FUSE;
+
+        if ($totalStockQuantityOfProductVariants < 0) {
+            return 0;
+        }
+
+        return $totalStockQuantityOfProductVariants;
     }
 }

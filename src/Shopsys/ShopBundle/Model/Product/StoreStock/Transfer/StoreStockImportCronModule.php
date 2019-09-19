@@ -110,7 +110,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
 
         $this->storeStockTransferValidator->validate($storeStockTransferResponseItemData);
 
-        $product = $this->productFacade->findByEan($storeStockTransferResponseItemData->getBarcode());
+        $product = $this->productFacade->findOneNotMainVariantByEan($storeStockTransferResponseItemData->getBarcode());
 
         if ($product === null) {
             $this->logger->addError(
