@@ -49,7 +49,6 @@
             }
         });
 
-        event.stopImmediatePropagation();
         event.preventDefault();
     };
 
