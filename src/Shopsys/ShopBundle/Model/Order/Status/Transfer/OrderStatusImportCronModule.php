@@ -86,6 +86,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $allTransferDataItems = [];
         foreach ($orderNumbersByDomain as $domainId => $orderNumbers) {
             foreach ($orderNumbers as $orderNumber) {
+                $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
                 $source = DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$domainId];
                 $transferDataItems = $this->getTransferItemsFromResponse(
                     $source,
@@ -155,7 +156,6 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         try {
             $restResponse = $restClient->get($apiMethodUrl);
         } catch (UnexpectedResponseCodeException $exception) {
-            $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
             $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
             return [];
         }
