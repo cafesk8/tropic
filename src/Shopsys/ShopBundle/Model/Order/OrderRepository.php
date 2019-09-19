@@ -150,10 +150,14 @@ class OrderRepository extends BaseOrderRepository
 
         return $this->createOrderQueryBuilder()
             ->andWhere('o.exportStatus = :exportStatus')
-            ->setParameter('exportStatus', Order::EXPORT_NOT_YET)
             ->andWhere('o.customer IS NULL OR c.transferId IS NOT NULL')
+            ->andWhere('o.goPayId IS NULL or o.goPayStatus = :goPayStatus')
             ->leftJoin('o.customer', 'c')
             ->setMaxResults($limit)
+            ->setParameters([
+                'exportStatus' => Order::EXPORT_NOT_YET,
+                'goPayStatus' => PaymentStatus::PAID,
+            ])
             ->getQuery()
             ->getResult();
     }
