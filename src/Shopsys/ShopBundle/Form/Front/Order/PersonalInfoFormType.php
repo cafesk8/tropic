@@ -72,7 +72,6 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter first name',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Length([
                         'max' => 60,
@@ -84,12 +83,10 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter last name',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                     new Constraints\Length([
                         'max' => 30,
                         'maxMessage' => 'Last name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BILLING_ADDRESS_FILLED],
                     ]),
                 ],
             ])
