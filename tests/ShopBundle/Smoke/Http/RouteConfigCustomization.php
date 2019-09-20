@@ -433,6 +433,11 @@ class RouteConfigCustomization
             ->customizeByRouteName('front_blogcategory_detail', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Use ID 2 as default blog category.')
                     ->setParameter('id', 2);
+            })
+            ->customizeByRouteName('front_bushmanshop_redirect', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Redirect old shop url without friendly url record.')
+                    ->setParameter('urlParam', '123')
+                    ->setExpectedStatusCode(404);
             });
     }
 

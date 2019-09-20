@@ -24,6 +24,11 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
     private $friendlyUrlCacheFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository
+     */
+    protected $friendlyUrlRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
      * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlUniqueResultFactory $friendlyUrlUniqueResultFactory
@@ -95,5 +100,14 @@ class FriendlyUrlFacade extends BaseFriendlyUrlFacade
         $this->em->flush($friendlyUrls);
 
         $this->friendlyUrlCacheFacade->saveToCache($mainFriendlyUrl);
+    }
+
+    /**
+     * @param string $slug
+     * @return \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl|null
+     */
+    public function findFriendlyUrlBySlugAndDomainId(string $slug): ?FriendlyUrl
+    {
+        return $this->friendlyUrlRepository->findFriendlyUrlBySlugAndDomainId($slug, $this->domain->getCurrentDomainConfig()->getId());
     }
 }

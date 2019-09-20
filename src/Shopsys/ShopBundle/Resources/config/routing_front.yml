@@ -174,3 +174,9 @@ front_store_index:
 front_store_detail:
     path: /stores/detail/{storeId}
     defaults: { _controller: ShopsysShopBundle:Front\Store:detail }
+
+front_bushmanshop_redirect:
+    path: /cz/{urlParam}
+    defaults: { _controller: ShopsysShopBundle:Front\BushmanShopRedirect:index }
+    requirements:
+        urlParam: "[\\p{L}\\p{N}/\\s.-]+"
