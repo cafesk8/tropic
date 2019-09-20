@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
-use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
+use Shopsys\ShopBundle\Model\Transport\Exception\InvalidPersonalTakeTypeException;
 
 /**
  * @ORM\Table(name="transports")
@@ -16,6 +16,10 @@ use Shopsys\ShopBundle\Form\Admin\TransportFormTypeExtension;
  */
 class Transport extends BaseTransport
 {
+    public const PERSONAL_TAKE_TYPE_NONE = 'none';
+    public const PERSONAL_TAKE_TYPE_BALIKOBOT = 'balikobot';
+    public const PERSONAL_TAKE_TYPE_STORE = 'store';
+
     /**
      * @var bool
      *
@@ -88,21 +92,29 @@ class Transport extends BaseTransport
     private $externalId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    public $personalTakeType;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
     {
         parent::__construct($transportData);
-        $this->balikobot = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $this->balikobot = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
-        $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
+        $this->chooseStore = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_STORE;
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
         $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
+        $this->setPersonalTakeType($transportData->personalTakeType);
     }
 
     /**
@@ -111,16 +123,17 @@ class Transport extends BaseTransport
     public function edit(BaseTransportData $transportData): void
     {
         parent::edit($transportData);
-        $this->balikobot = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $this->balikobot = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
-        $this->chooseStore = $transportData->personalTakeType === TransportFormTypeExtension::PERSONAL_TAKE_TYPE_STORE;
+        $this->chooseStore = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_STORE;
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
         $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
+        $this->setPersonalTakeType($transportData->personalTakeType);
     }
 
     /**
@@ -239,5 +252,28 @@ class Transport extends BaseTransport
     public function getExternalId(): ?string
     {
         return $this->externalId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPersonalTakeType(): string
+    {
+        return $this->personalTakeType;
+    }
+
+    /**
+     * @param string $type
+     */
+    private function setPersonalTakeType(string $type): void
+    {
+        if (in_array($type, [
+            self::PERSONAL_TAKE_TYPE_NONE,
+            self::PERSONAL_TAKE_TYPE_BALIKOBOT,
+            self::PERSONAL_TAKE_TYPE_STORE,
+        ], true) === false) {
+            throw new InvalidPersonalTakeTypeException('Invalid transport personal take type `%s`', $type);
+        }
+        $this->personalTakeType = $type;
     }
 }

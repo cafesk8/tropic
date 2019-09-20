@@ -46,7 +46,7 @@
         };
 
         this.reloadDependendInputs = function () {
-            if ($transportForm.find('.js-transport-personal-take').val() === Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Admin\\TransportFormTypeExtension::PERSONAL_TAKE_TYPE_BALIKOBOT')) {
+            if ($transportForm.find('.js-transport-personal-take').val() === Shopsys.constant('\\Shopsys\\ShopBundle\\Model\\Transport\\Transport::PERSONAL_TAKE_TYPE_BALIKOBOT')) {
                 $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').removeClass('display-none');
             } else {
                 $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').addClass('display-none');
