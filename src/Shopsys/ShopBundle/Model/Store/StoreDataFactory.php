@@ -63,6 +63,7 @@ class StoreDataFactory
         $storeData->email = $store->getEmail();
         $storeData->region = $store->getRegion();
         $storeData->externalNumber = $store->getExternalNumber();
+        $storeData->showOnStoreList = $store->isShowOnStoreList();
     }
 
     /**

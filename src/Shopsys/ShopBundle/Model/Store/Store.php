@@ -129,6 +129,13 @@ class Store implements PickupPlaceInterface
     protected $externalNumber;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $showOnStoreList;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
      */
     public function __construct(StoreData $storeData)
@@ -148,6 +155,7 @@ class Store implements PickupPlaceInterface
         $this->email = $storeData->email;
         $this->region = $storeData->region;
         $this->externalNumber = $storeData->externalNumber;
+        $this->showOnStoreList = $storeData->showOnStoreList;
     }
 
     /**
@@ -179,6 +187,7 @@ class Store implements PickupPlaceInterface
         $this->email = $storeData->email;
         $this->region = $storeData->region;
         $this->externalNumber = $storeData->externalNumber;
+        $this->showOnStoreList = $storeData->showOnStoreList;
     }
 
     /**
@@ -323,5 +332,13 @@ class Store implements PickupPlaceInterface
     public function getExternalNumber(): ?string
     {
         return $this->externalNumber;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowOnStoreList(): bool
+    {
+        return $this->showOnStoreList;
     }
 }

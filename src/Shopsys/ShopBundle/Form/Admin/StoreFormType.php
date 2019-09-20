@@ -133,6 +133,10 @@ class StoreFormType extends AbstractType
                 'constraints' => [
                     new Constraints\Length(['max' => 50, 'maxMessage' => 'Externí ID nesmí být delší než {{ limit }} znaků']),
                 ],
+            ])
+            ->add('showOnStoreList', YesNoType::class, [
+                'required' => false,
+                'label' => t('Zobrazit na stránce prodejen'),
             ]);
 
         return $builderBasicInformationGroup;

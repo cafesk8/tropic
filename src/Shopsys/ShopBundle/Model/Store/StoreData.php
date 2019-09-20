@@ -88,9 +88,15 @@ class StoreData
      */
     public $externalNumber;
 
+    /**
+     * @var bool
+     */
+    public $showOnStoreList;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();
         $this->pickupPlace = false;
+        $this->showOnStoreList = true;
     }
 }

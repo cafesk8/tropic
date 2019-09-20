@@ -88,9 +88,9 @@ class StoreFacade
      * @param int $storeId
      * @return \Shopsys\ShopBundle\Model\Store\Store
      */
-    public function getStoreForDomainById(int $storeId): Store
+    public function getStoreForDomainAndForStoreListById(int $storeId): Store
     {
-        return $this->storeRepository->getStoreForDomainById($storeId, $this->domain->getId());
+        return $this->storeRepository->getStoreForDomainAndForStoreListById($storeId, $this->domain->getId());
     }
 
     /**
@@ -172,16 +172,16 @@ class StoreFacade
     /**
      * @return string[]
      */
-    public function findRegionNames(): array
+    public function findRegionNamesForStoreList(): array
     {
-        return $this->storeRepository->findRegionNames($this->domain->getId());
+        return $this->storeRepository->findRegionNamesForStoreList($this->domain->getId());
     }
 
     /**
      * @return \Shopsys\ShopBundle\Model\Store\Store[][]
      */
-    public function findStoresIndexedByRegion(): array
+    public function findStoresForStoreListIndexedByRegion(): array
     {
-        return $this->storeRepository->findStoresIndexedByRegion($this->domain->getId());
+        return $this->storeRepository->findStoresForStoreListIndexedByRegion($this->domain->getId());
     }
 }

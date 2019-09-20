@@ -62,8 +62,8 @@ class StoreController extends FrontBaseController
     public function indexAction(): Response
     {
         return $this->render('@ShopsysShop/Front/Content/Stores/index.html.twig', [
-            'regions' => $this->storeFacade->findRegionNames(),
-            'storesIndexedByRegion' => $this->storeFacade->findStoresIndexedByRegion(),
+            'regions' => $this->storeFacade->findRegionNamesForStoreList(),
+            'storesIndexedByRegion' => $this->storeFacade->findStoresForStoreListIndexedByRegion(),
         ]);
     }
 
@@ -73,7 +73,7 @@ class StoreController extends FrontBaseController
      */
     public function detailAction(int $storeId): Response
     {
-        $store = $this->storeFacade->getStoreForDomainById($storeId);
+        $store = $this->storeFacade->getStoreForDomainAndForStoreListById($storeId);
 
         return $this->render('@ShopsysShop/Front/Content/Stores/detail.html.twig', [
             'store' => $store,
