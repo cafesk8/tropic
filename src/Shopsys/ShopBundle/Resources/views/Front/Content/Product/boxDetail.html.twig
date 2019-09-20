@@ -183,7 +183,8 @@
                                     {% if not variant.calculatedSellingDenied %}
                                         {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
                                             product: variant,
-                                            type: 'large'
+                                            type: 'large',
+                                            disabled: true
                                         })) }}
                                     {% else %}
                                         <div>
