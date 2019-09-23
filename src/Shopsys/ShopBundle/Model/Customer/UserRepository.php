@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Customer;
 
 use DateTime;
+use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository as BaseUserRepository;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
 
 class UserRepository extends BaseUserRepository
 {
@@ -75,6 +77,12 @@ class UserRepository extends BaseUserRepository
         QuickSearchFormData $quickSearchData
     ) {
         $queryBuilder = parent::getCustomerListQueryBuilderByQuickSearchData($domainId, $quickSearchData);
+
+        if ($quickSearchData->text !== null && $quickSearchData->text !== '') {
+            $queryBuilder->leftJoin(UserTransferIdAndEan::class, 'uti', Join::WITH, 'uti.customer = u')
+                ->orWhere('NORMALIZE(uti.ean) LIKE NORMALIZE(:text)')
+                ->orWhere('NORMALIZE(u.ean) LIKE NORMALIZE(:text)');
+        }
 
         $queryBuilder->addSelect('u.exportStatus');
 
