@@ -197,7 +197,7 @@
                         {% if not product.isMainVariant %}
                             <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
                                 {% if not product.calculatedSellingDenied %}
-                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large', disabled: true})) }}
+                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large' })) }}
                                 {% else %}
                                     <div>
                                         {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
