@@ -52,32 +52,14 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $mainVariant
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
      */
-    protected function calculateMainVariantPrice(Product $mainVariant, $domainId, PricingGroup $pricingGroup)
+    public function calculatePrice(Product $product, $domainId, PricingGroup $pricingGroup)
     {
-        $variants = $this->productRepository->getAllSellableVariantsByMainVariant(
-            $mainVariant,
-            $domainId,
-            $pricingGroup
-        );
-        if (count($variants) === 0) {
-            $message = 'Main variant ID = ' . $mainVariant->getId() . ' has no sellable variants.';
-            throw new \Shopsys\FrameworkBundle\Model\Product\Pricing\Exception\MainVariantPriceCalculationException($message);
-        }
-
-        $variantPrices = [];
-        foreach ($variants as $variant) {
-            $variantPrices[] = $this->calculatePrice($variant, $domainId, $pricingGroup);
-        }
-
-        $minVariantPrice = $this->getMinimumPriceByPriceWithoutVat($variantPrices);
-        $from = $this->arePricesDifferent($variantPrices);
-
-        return new ProductPrice($minVariantPrice, $from);
+        return $this->calculateProductPriceForPricingGroup($product, $pricingGroup);
     }
 
     /**
@@ -91,29 +73,33 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $pricingGroup->getDomainId())
         );
 
-        $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroups($product, [
+        $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [
             $pricingGroup,
             $defaultPricingGroup,
-        ]);
+        ], $pricingGroup->getDomainId());
 
         $inputPrice = Money::zero();
         $defaultPrice = Money::zero();
+        $productActionPrice = Money::zero();
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null) {
-                if ($manualInputPrice->getPricingGroup() === $defaultPricingGroup) {
-                    $defaultPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
+                ['inputPrice' => $calculatedInputPrice, 'pricingGroupId' => $pricingGroupId, 'actionPrice' => $actionPrice] = $manualInputPrice;
+
+                $productActionPrice = $actionPrice ? Money::create($actionPrice) : Money::zero();
+
+                if ($pricingGroupId === $defaultPricingGroup->getId() && $calculatedInputPrice !== null) {
+                    $defaultPrice = Money::create($calculatedInputPrice) ?? Money::zero();
                 }
 
-                if ($manualInputPrice->getPricingGroup() === $pricingGroup) {
-                    $inputPrice = $manualInputPrice->getInputPrice() ?? Money::zero();
+                if ($pricingGroupId === $pricingGroup->getId() && $calculatedInputPrice !== null) {
+                    $inputPrice = Money::create($calculatedInputPrice) ?? Money::zero();
                 }
             }
         }
 
-        $actionPrice = $product->getActionPrice($pricingGroup->getDomainId());
-        if ($actionPrice !== null && $inputPrice->isGreaterThan($actionPrice)) {
-            $inputPrice = $actionPrice;
+        if ($productActionPrice->isZero() === false && $inputPrice->isGreaterThan($productActionPrice)) {
+            $inputPrice = $productActionPrice;
         }
 
         $basePrice = $this->basePriceCalculation->calculateBasePrice(

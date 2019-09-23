@@ -136,115 +136,76 @@
                 {% endif %}
 
                 <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-detail-wrapper">
-                    {% for variant in variants if variant in product.variants %}
-                        <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
-                            {% if not variant.calculatedSellingDenied %}
-                                {% set sellingPrice = getProductSellingPrice(variant) %}
-                                <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
-                                     class="box-detail-add__prices">
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                        {{ sellingPrice.priceWithVat|price }}
-                                    </div>
-                                    {% if sellingPrice.isActionPrice %}
-                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-                                            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
-                                        </div>
-                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-                                            {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
-                                        </div>
-                                    {% endif %}
-                                    <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
-                                    <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
-                                    <link itemprop="availability"
-                                          href="{{ variant.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
+                    <div>
+                        {% set sellingPrice = getProductSellingPrice(product) %}
+                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
+                             class="box-detail-add__prices">
+                            <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+                                {{ sellingPrice.priceWithVat|price }}
+                            </div>
+                            {% if sellingPrice.isActionPrice %}
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+                                    {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
                                 </div>
-                                {% if getProductAdeptPrice(variant) is not null %}
-                                    <div class="box-detail-add__club">
-                                        <span class="box-detail-add__club__text">
-                                            {{ 'Nebo'|trans }}
-                                        </span>
-                                        <span class="box-detail-add__club__price">
-                                            {{ getProductAdeptPrice(variant).priceWithVat|price }}
-                                        </span>
-                                        <span class="box-detail-add__club__text">
-                                            {{ 'pro členy'|trans }}
-                                        </span>
-                                        {% if bushmanClubArticle is not null %}
-                                            {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                            <a href="{{ articleUrl }}"
-                                               class="box-detail-add__club__link underline-small"
-                                               target="_blank">{{ 'BUSHMAN Clubu'|trans }}</a>
-                                        {% else %}
-                                            {{ 'BUSHMAN Clubu'|trans }}
-                                        {% endif %}
-                                    </div>
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+                                    {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+                                </div>
+                            {% endif %}
+                            <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                            <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
+                            <link itemprop="availability"
+                                  href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
+                        </div>
+                        {% if getProductAdeptPrice(product) is not null %}
+                            <div class="box-detail-add__club">
+                                <span class="box-detail-add__club__text">
+                                    {{ 'Nebo'|trans }}
+                                </span>
+                                <span class="box-detail-add__club__price">
+                                    {{ getProductAdeptPrice(product).priceWithVat|price }}
+                                </span>
+                                <span class="box-detail-add__club__text">
+                                    {{ 'pro členy'|trans }}
+                                </span>
+                                {% if bushmanClubArticle is not null %}
+                                    {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
+                                    <a href="{{ articleUrl }}"
+                                       class="box-detail-add__club__link underline-small"
+                                       target="_blank">{{ 'BUSHMAN Clubu'|trans }}</a>
+                                {% else %}
+                                    {{ 'BUSHMAN Clubu'|trans }}
                                 {% endif %}
+                            </div>
+                        {% endif %}
+                        {% for variant in variants if variant in product.variants %}
+                            <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
                                 <div class="js-product-detail-add-variant-button">
-                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
-                                        product: variant,
-                                        type: 'large'
-                                    })) }}
-                                </div>
-                            {% else %}
-                                <div>
-                                    {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-
-                    {% if not product.isMainVariant %}
-                        <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
-                            {% if not product.calculatedSellingDenied %}
-                                {% set sellingPrice = getProductSellingPrice(product) %}
-                                <div itemprop="offers"
-                                     itemscope
-                                     itemtype="http://schema.org/Offer"
-                                     class="box-detail-add__prices">
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                        {{ sellingPrice.priceWithVat|price }}
-                                    </div>
-                                    {% if sellingPrice.isActionPrice %}
-                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-                                            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
-                                        </div>
-                                        <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-                                            {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+                                    {% if not variant.calculatedSellingDenied %}
+                                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
+                                            product: variant,
+                                            type: 'large',
+                                            disabled: true
+                                        })) }}
+                                    {% else %}
+                                        <div>
+                                            {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
                                         </div>
                                     {% endif %}
-                                    <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
-                                    <meta itemprop="price" content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}">
-                                    <link itemprop="availability" href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                                 </div>
-                                {% if getProductAdeptPrice(product) is not null %}
-                                    <div class="box-detail-add__club">
-                                        <span class="box-detail-add__club__text">
-                                            {{ 'Nebo'|trans }}
-                                        </span>
-                                        <span class="box-detail-add__club__price">
-                                            {{ getProductAdeptPrice(product).priceWithVat|price }}
-                                        </span>
-                                        <span class="box-detail-add__club__text">
-                                            {{ 'pro členy'|trans }}
-                                        </span>
-                                        {% if bushmanClubArticle is not null %}
-                                            {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                            <a href="{{ articleUrl }}"
-                                               class="box-detail-add__club__link underline-small"
-                                               target="_blank">{{ 'BUSHMAN Clubu'|trans }}</a>
-                                        {% else %}
-                                            {{ 'BUSHMAN Clubu'|trans }}
-                                        {% endif %}
+                            </div>
+                        {% endfor %}
+                        {% if not product.isMainVariant %}
+                            <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
+                                {% if not product.calculatedSellingDenied %}
+                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large' })) }}
+                                {% else %}
+                                    <div>
+                                        {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
                                     </div>
                                 {% endif %}
-                                {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large'})) }}
-                            {% else %}
-                                <div>
-                                    {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
                 {% if product.gift is not null
                     and product.gift.calculatedHidden is same as (false) and product.gift.hidden is same as (false)

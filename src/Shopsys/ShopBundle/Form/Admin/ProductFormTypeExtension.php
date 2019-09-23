@@ -327,6 +327,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private function getPricesGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
     {
         $pricesGroupBuilder = $builder->get('pricesGroup');
+        $pricesGroupBuilder->setDisabled(true);
 
         $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');
         $productCalculatedPricesGroup->remove('manualInputPricesByPricingGroupId');

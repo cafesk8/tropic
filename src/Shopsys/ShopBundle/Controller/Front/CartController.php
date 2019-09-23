@@ -285,14 +285,17 @@ class CartController extends FrontBaseController
             'action' => $this->generateUrl('front_cart_add_product'),
         ]);
 
-        $disabled = $disabled || $product->getStockQuantity() < 1;
+        $hardDisabled = $product->getStockQuantity() < 1;
+        if ($hardDisabled === true) {
+            $disabled = true;
+        }
 
         return $this->render('@ShopsysShop/Front/Inline/Cart/addProduct.html.twig', [
             'form' => $form->createView(),
             'product' => $product,
             'type' => $type,
             'disabled' => $disabled,
-            'hardDisabled' => $disabled ? '1' : '0',
+            'hardDisabled' => $hardDisabled === true ? '1' : '0',
         ]);
     }
 
