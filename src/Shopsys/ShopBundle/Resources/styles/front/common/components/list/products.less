@@ -13,6 +13,8 @@
 
 @list-products-item-variants-arrow-size: 15px;
 @list-products-item-variants-height: 70px;
+@list-products-item-variants-min-width: 232px;
+@list-products-item-variants-image-width: 49px;
 
 @list-products-item-count-sm: 2;
 @list-products-item-count-md: 2;
@@ -231,6 +233,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 align-items: stretch;
+                min-width: @list-products-item-variants-min-width!important; // force due to hover during load
             }
 
             &__arrow {
@@ -273,6 +276,7 @@
                 margin: 0 10px 0 0;
                 padding: 0;
                 height: @list-products-item-variants-height - 5px;
+                width: @list-products-item-variants-image-width!important; // force due to hover during load
 
                 font-size: 0;
                 border: 1px solid @color-gray;
