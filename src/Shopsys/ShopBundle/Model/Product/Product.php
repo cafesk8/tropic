@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
@@ -344,15 +345,17 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @return \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
      */
-    public function getStocksWithoutZeroQuantityOnPickupPlaceStore(): array
+    public function getStocksWithoutZeroQuantityOnPickupPlaceStore(Domain $domain): array
     {
         return array_filter(
             $this->storeStocks->toArray(),
-            function (ProductStoreStock $productStoreStock) {
+            function (ProductStoreStock $productStoreStock) use ($domain) {
                 return $productStoreStock->getStockQuantity() > 0
-                    && $productStoreStock->getStore()->isPickupPlace() === true;
+                    && $productStoreStock->getStore()->isPickupPlace() === true
+                    && $productStoreStock->getStore()->getDomainId() === $domain->getId();
             }
         );
     }
