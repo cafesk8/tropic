@@ -117,7 +117,7 @@
                             {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans}) }}
                             {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans}) }}
 
-                            {% if isGermanyDomain() %}
+                            {% if isGermanyDomain() is same as (true) %}
                                 {{ form_row(form.deliveryAddressData.country, { label: 'Country'|trans}) }}
                             {% else %}
                                 <div class="display-none">

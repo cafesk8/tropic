@@ -4,7 +4,7 @@
         {% set deliveryDate = getDeliveryDate() %}
         {% set showDeliveryDate = product.usingStock
             and product.stockQuantity > 0
-            and domain.id is not constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN')
+            and isGermanyDomain() is same as (false)
             and deliveryDate is not null  %}
 
         {% set showNotAvailable = product.stockQuantity < 1 %}
