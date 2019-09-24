@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\String\TransformString;
+use Shopsys\ShopBundle\Model\Transport\PickupPlace\Exception\PickupPlaceNotFoundException;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,12 +37,15 @@ class PickupPlaceController extends FrontBaseController
         $pickupPlaces = $this->pickupPlaceFacade->getAllForTransportId($transportId);
 
         $chosenPickupPlace = null;
-        if ($pickupPlaceId > 0) {
-            $chosenPickupPlace = $this->pickupPlaceFacade->getById((int)$pickupPlaceId);
+        try {
+            if ($pickupPlaceId > 0) {
+                $chosenPickupPlace = $this->pickupPlaceFacade->getById((int)$pickupPlaceId);
 
-            if (in_array($chosenPickupPlace, $pickupPlaces, true) === false) {
-                $chosenPickupPlace = null;
+                if (in_array($chosenPickupPlace, $pickupPlaces, true) === false) {
+                    $chosenPickupPlace = null;
+                }
             }
+        } catch (PickupPlaceNotFoundException $exception) {
         }
 
         return $this->render('@ShopsysShop/Front/Inline/PickupPlace/pickupPlaceSearch.html.twig', [
