@@ -32,7 +32,6 @@ class ArticleFormTypeExtension extends AbstractTypeExtension
             'required' => true,
             'choices' => [
                 t('in upper menu') => Article::PLACEMENT_TOP_MENU,
-                t('in footer') => Article::PLACEMENT_FOOTER,
                 t('without positioning') => Article::PLACEMENT_NONE,
                 t('o nákupu') => Article::PLACEMENT_SHOPPING,
                 t('o nás') => Article::PLACEMENT_ABOUT,
