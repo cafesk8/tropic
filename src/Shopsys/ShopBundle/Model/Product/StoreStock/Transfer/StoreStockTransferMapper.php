@@ -8,6 +8,7 @@ use Shopsys\ShopBundle\Component\Transfer\Logger\TransferLogger;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
+use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
 class StoreStockTransferMapper
@@ -57,9 +58,11 @@ class StoreStockTransferMapper
             $store = $this->storeFacade->findByExternalNumber($stockQuantity->getSiteNumber());
 
             if ($store === null) {
-                $transferLogger->addError(
-                    sprintf('Store with external number `%s` not found while updating product store stock quantities.', $stockQuantity->getSiteNumber())
-                );
+                if (in_array($stockQuantity->getSiteNumber(), Store::SPECIAL_STORES_NOT_ON_ESHOP, true) === false) {
+                    $transferLogger->addError(
+                        sprintf('Store with external number `%s` not found while updating product store stock quantities for product with ID `%s`.', $stockQuantity->getSiteNumber(), $product->getId())
+                    );
+                }
                 continue;
             }
 

@@ -15,6 +15,11 @@ use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceInterface;
 class Store implements PickupPlaceInterface
 {
     /**
+     * Those stores have special function and we are not downloading their stock quantities
+     */
+    public const SPECIAL_STORES_NOT_ON_ESHOP = ['1010', '0039', '0040'];
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer")
