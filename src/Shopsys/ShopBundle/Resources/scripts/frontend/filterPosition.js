@@ -8,17 +8,19 @@
     var windowWidthLimit = 1024;
 
     Shopsys.filterPosition.init = function ($container) {
-        $(productFilterOpenerSelector).click(function (e) {
-            e.preventDefault();
+        if ($container.find('.js-product-filter-opener').length > 0) {
+            $(productFilterOpenerSelector).click(function (e) {
+                e.preventDefault();
 
-            $(productListPanelSelector).toggleClass('active');
-            $('.js-product-filter').toggleClass('active-mobile');
-            Shopsys.filterPosition.setFilterPosition();
-        });
+                $(productListPanelSelector).toggleClass('active');
+                $('.js-product-filter').toggleClass('active-mobile');
+                Shopsys.filterPosition.setFilterPosition();
+            });
 
-        $(window).resize(function () {
-            Shopsys.filterPosition.setFilterPosition();
-        });
+            $(window).resize(function () {
+                Shopsys.filterPosition.setFilterPosition();
+            });
+        }
     };
 
     Shopsys.filterPosition.setFilterPosition = function () {

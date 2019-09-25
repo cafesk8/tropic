@@ -6,10 +6,10 @@
                     {{ 'Vybrané filtry'|trans }}
                 </div>
                 {% if filterForm.minimalPrice.vars.data|length > 0 %}
-                    {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.minimalPrice.vars.id) }}
+                    {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.minimalPrice.vars.id, true) }}
                 {% endif %}
                 {% if filterForm.maximalPrice.vars.data|length > 0 %}
-                    {{ _self.filterRow('Cena do'|trans, filterForm.maximalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.maximalPrice.vars.id) }}
+                    {{ _self.filterRow('Cena do'|trans, filterForm.maximalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.maximalPrice.vars.id, true) }}
                 {% endif %}
                 {% if filterForm.sizes.vars.data|length > 0 %}
                     {% for size in filterForm.sizes.vars.data %}
@@ -54,9 +54,9 @@
     </div>
 {% endmacro %}
 
-{% macro filterRow(formName, formValueName, formId) %}
+{% macro filterRow(formName, formValueName, formId, isRangeFilter) %}
     <div class="box-filter__selected__item">
         {{ formName }}: <strong>{{ formValueName }}</strong>
-        <i class="svg svg-remove js-selected-filters-box-uncheck" data-filter-form-id="{{ formId }}"></i>
+        <i class="svg svg-remove {% if isRangeFilter %}js-filter-box-uncheck-range{% else %}js-selected-filters-box-uncheck{% endif %}" data-filter-form-id="{{ formId }}"></i>
     </div>
 {% endmacro %}
