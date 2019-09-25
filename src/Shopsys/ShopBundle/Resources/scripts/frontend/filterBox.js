@@ -24,6 +24,11 @@
             });
         }
 
+        $('#js-selected-filters-box').toggleClass(
+            'display-none',
+            $filterRangeUncheckLinks.length === 0 && $filterUncheckButtons.length === 0
+        );
+
         function uncheckCheckboxAndRefreshContent ($filterUncheckButton, $formInput) {
             $filterUncheckButton.click(function () {
 
