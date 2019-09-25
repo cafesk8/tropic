@@ -1,4 +1,5 @@
 {% macro filterBox(filterForm, resetUrl, filterFormSubmitted) %}
+    {% set domainId = getDomain().id %}
     <div id="js-selected-filters-box">
         {% if filterFormSubmitted %}
             <div class="box-filter__selected">
@@ -6,10 +7,10 @@
                     {{ 'Vybrané filtry'|trans }}
                 </div>
                 {% if filterForm.minimalPrice.vars.data|length > 0 %}
-                    {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.minimalPrice.vars.id, true) }}
+                    {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolByDomainId(domainId), filterForm.minimalPrice.vars.id, true) }}
                 {% endif %}
                 {% if filterForm.maximalPrice.vars.data|length > 0 %}
-                    {{ _self.filterRow('Cena do'|trans, filterForm.maximalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolDefault(), filterForm.maximalPrice.vars.id, true) }}
+                    {{ _self.filterRow('Cena do'|trans, filterForm.maximalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolByDomainId(domainId), filterForm.maximalPrice.vars.id, true) }}
                 {% endif %}
                 {% if filterForm.sizes.vars.data|length > 0 %}
                     {% for size in filterForm.sizes.vars.data %}
