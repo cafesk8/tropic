@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+<div class="wrap-divider wrap-divider--bottom">
+    <div class="form-group">
+        <div class="form-group__title">
+            {{ 'Settings'|trans }}
+        </div>
+        {{ form_row(form.defaultFreeTransportAndPaymentFlag, { 'label': 'Příznak pro dopravu zdarma'|trans }) }}
+    </div>
+    <div class="margin-top-25">
+        {{ form_widget(form.save, { label: 'Save changes'|trans}) }}
+    </div>
+</div>
+{{ form_end(form) }}

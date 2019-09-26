@@ -328,6 +328,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade: '@Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade'
 
+    Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade: '@Shopsys\ShopBundle\Model\Product\Flag\FlagFacade'
+
     Shopsys\FrameworkBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory: '@Shopsys\ShopBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory'
 
     Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDetailFriendlyUrlDataProvider:

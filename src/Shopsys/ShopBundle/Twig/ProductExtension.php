@@ -6,12 +6,10 @@ namespace Shopsys\ShopBundle\Twig;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
-use Shopsys\FrameworkBundle\Model\Product\Flag\Flag;
-use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
-use Shopsys\ShopBundle\Component\Setting\Setting;
+use Shopsys\ShopBundle\Model\Product\Flag\FlagFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
@@ -41,23 +39,18 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     private $domain;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\Setting\Setting
-     */
-    private $setting;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
      */
     private $flagFacade;
 
     /**
+     * ProductExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -65,7 +58,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         ParameterFacade $parameterFacade,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         Domain $domain,
-        Setting $setting,
         FlagFacade $flagFacade
     ) {
         parent::__construct($categoryFacade, $productCachedAttributesFacade);
@@ -73,7 +65,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         $this->parameterFacade = $parameterFacade;
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->domain = $domain;
-        $this->setting = $setting;
         $this->flagFacade = $flagFacade;
     }
 
@@ -227,24 +218,15 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductFlagsWithFreeTransportAndPaymentFlag(ProductPrice $productPrice, Product $product, int $limit): array
     {
         $productFlagsIndexedByPosition = $product->getFlagsIndexedByPosition($limit);
-        $freeTransportFlag = $this->getFreeTransportAndPaymentFlag();
+        $freeTransportFlag = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
         if ($freeTransportFlag !== null && $this->freeTransportAndPaymentFacade->isFree($productPrice->getPriceWithVat(), $this->domain->getId())) {
             $productFlagsIndexedByPosition[$freeTransportFlag->getPosition()] = $freeTransportFlag;
+            sort($productFlagsIndexedByPosition);
             if ($limit !== null && count($productFlagsIndexedByPosition) > $limit) {
                 array_pop($productFlagsIndexedByPosition); //remove last flags from array
             }
         }
 
         return $productFlagsIndexedByPosition;
-    }
-
-    /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\Flag|null
-     */
-    private function getFreeTransportAndPaymentFlag(): ?Flag
-    {
-        $freeTransportFlagId = $this->setting->get(Setting::FREE_TRANSPORT_FLAG);
-
-        return $freeTransportFlagId === null ? null : $this->flagFacade->getById($freeTransportFlagId);
     }
 }
