@@ -2,7 +2,7 @@
 
     <div class="box-dropdown box-dropdown--min-width box-dropdown--open-light box-dropdown--no-right-gap js-dropdown
         {% if cart is not null %}js-hover-intent{% else %}box-dropdown--without-arrow{% endif %}"
-        {% if cart is null %} data-type="link" {% endif %}
+        data-type="{% if cart is null %}link{% else %}link-on-mobile{% endif %}"
         >
 
         <a href="{{ path('front_cart') }}" class="box-dropdown__select">
