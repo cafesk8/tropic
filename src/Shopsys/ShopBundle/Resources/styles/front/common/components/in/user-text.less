@@ -17,27 +17,20 @@
 
     a {
         position: relative;
+        display: inline;
+        padding-bottom: 10px;
         text-decoration: none;
 
         color: @color-base;
-
-        &:before {
-            content: '';
-            position: absolute;
-            display: block;
-            height: 1px;
-            width: 100%;
-            left: 0;
-            bottom: -2px;
-
-            background-color: @color-orange;
-            transition: bottom @transition;
-        }
+        background-image: linear-gradient(to top, @color-orange 1px, @color-f 100%);
+        background-position: 0 28px;
+        background-repeat: repeat-x;
+        background-size: 2px 1px;
+        transition: background-position @transition;
 
         &:hover {
-            &:before {
-                bottom: 0;
-            }
+            background-position: 0 23px;
+            transition: background-position @transition;
         }
     }
 
