@@ -9,6 +9,8 @@
         <div class="box-detail__image">
             {% set galleryImages = getImages(product) %}
             {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null %}
+            {% set sellingPrice = getProductSellingPrice(product) %}
+
             <div class="box-detail__image__main">
                 {% if imageExists(product) %}
                     <a href="{{ imageUrl(product, 'original') }}"
@@ -19,8 +21,7 @@
                     {{ noimage({ alt: product.name }) }}
                 {% endif %}
             </div>
-
-            {{ productFlags.list(product.getFlags(showFlagsMaxCount), '') }}
+            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), '') }}
 
             {% if showGallery %}
                 <div class="box-gallery dont-print js-gallery">
@@ -137,7 +138,6 @@
 
                 <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-detail-wrapper">
                     <div>
-                        {% set sellingPrice = getProductSellingPrice(product) %}
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
                              class="box-detail-add__prices">
                             <div class="box-detail-add__prices__item box-detail-add__prices__item--main">

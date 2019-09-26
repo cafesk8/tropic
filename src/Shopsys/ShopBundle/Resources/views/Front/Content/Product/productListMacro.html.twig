@@ -20,18 +20,17 @@
                 {% if product.mainVariantGroup is not null %} list-products__item--with-variants {% endif %}
                 js-list-products-item">
                 <div class="list-products__item__in">
+                    {% set productSellingPrice = getProductSellingPrice(product) %}
                     <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products__item__block">
                         <div class="list-products__item__image dont-print">
                             {{ image(product, { size: 'list', alt: product.name, lazy: true }) }}
-                            {{ productFlags.list(product.getFlags(1), 'in-flag--in-list') }}
+                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(productSellingPrice, product, 1), 'in-flag--in-list') }}
                         </div>
 
                         <div class="list-products__item__info">
                             <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
                                 {{ product.name|striptags|raw }}
                             </{{ productHeadingTagName|default('h2') }}>
-
-                            {% set productSellingPrice = getProductSellingPrice(product) %}
 
                             {% if productSellingPrice is not null %}
                                 <div class="list-products__item__info__price">
