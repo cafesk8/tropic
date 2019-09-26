@@ -611,7 +611,7 @@ class ProductFacade extends BaseProductFacade
     public function getVariantsForProduct(Product $product, int $domainId): array
     {
         $defaultPricingGroup = $this->pricingGroupRepository->getById(
-            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
         );
 
         return $this->productRepository->getAllSellableVariantsByMainVariant(
