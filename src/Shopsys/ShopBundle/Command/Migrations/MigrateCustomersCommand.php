@@ -135,6 +135,10 @@ class MigrateCustomersCommand extends Command
      */
     private function importCustomer(CustomerTransferResponseItemData $customersTransferItem): void
     {
+        if ($customersTransferItem->getEmail() === null) {
+            return;
+        }
+
         $customer = $this->customerFacade->findUserByEmailAndDomain(
             $customersTransferItem->getEmail(),
             DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$customersTransferItem->getCountryCode()]
@@ -142,16 +146,14 @@ class MigrateCustomersCommand extends Command
 
         $isNew = $customer === null;
 
-        $this->customerTransferValidator->validate($customersTransferItem, $isNew);
-        $customerData = $this->customerWithPricingGroupsTransferMapper->mapTransferDataToCustomerData($customersTransferItem, $customer);
-
-        if ($isNew === true) {
-            /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
-            $customer = $this->customerFacade->create($customerData);
-        } else {
-            $this->customerFacade->editByCustomer($customer->getId(), $customerData);
+        if ($isNew === false) {
+            return;
         }
 
+        $this->customerTransferValidator->validate($customersTransferItem, $isNew);
+        $customerData = $this->customerWithPricingGroupsTransferMapper->mapTransferDataToCustomerData($customersTransferItem, $customer);
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
+        $customer = $this->customerFacade->create($customerData);
         $customer->markAsExported();
         $this->em->flush($customer);
 
