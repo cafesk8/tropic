@@ -12,8 +12,8 @@
         $(this).click(function (event) {
             Shopsys.DropDown.hideAllSubmenus();
 
-            if($(this).data('type') == 'link-on-mobile'){
-                if($(window).width() < Shopsys.responsive.SM){
+            if ($(this).data('type') == 'link-on-mobile') {
+                if ($(window).width() < Shopsys.responsive.SM) {
                     event.stopPropagation();
                 }
             } else if ($(this).data('type') != 'link') {
