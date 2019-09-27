@@ -48,12 +48,13 @@ yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
 
+yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.hostname ${DOMAIN_HOSTNAME_1}
+
 if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_3}
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/from-to-www-redirect\"" "\"true\""
-    yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.hostname ${DOMAIN_HOSTNAME_1}
 else
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-type\"" basic
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-secret\"" shopsys
