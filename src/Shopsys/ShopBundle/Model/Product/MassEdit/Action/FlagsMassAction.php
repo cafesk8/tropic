@@ -110,6 +110,12 @@ class FlagsMassAction implements MassEditActionInterface
     public function getValueFormOptions(string $operation): array
     {
         $flags = $this->flagFacade->getAll();
+        $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        if (in_array($defaultFlagForFreeTransportAndPayment, $flags, true)) {
+            $key = array_search($defaultFlagForFreeTransportAndPayment, $flags, true);
+
+            unset($flags[$key]);
+        }
 
         return [
             'required' => true,

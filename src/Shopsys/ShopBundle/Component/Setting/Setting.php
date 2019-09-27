@@ -17,4 +17,5 @@ class Setting extends BaseSetting
     public const FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID = 'firstArticleOnHeaderMenuArticleId';
     public const SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID = 'secondArticleOnHeaderMenuArticleId';
     public const THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID = 'thirdArticleOnHeaderMenuArticleId';
+    public const FREE_TRANSPORT_FLAG = 'freeTransportFlagId';
 }

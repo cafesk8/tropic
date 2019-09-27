@@ -300,6 +300,20 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param int $limit
+     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     */
+    public function getFlagsIndexedByPosition(int $limit): array
+    {
+        $flagsIndexedByPosition = [];
+        foreach ($this->getFlags($limit) as $flag) {
+            $flagsIndexedByPosition[$flag->getPosition()] = $flag;
+        }
+
+        return $flagsIndexedByPosition;
+    }
+
+    /**
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */

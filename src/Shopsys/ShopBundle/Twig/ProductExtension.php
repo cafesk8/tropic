@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Product\Flag\FlagFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
+use Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Twig\TwigFunction;
 
 class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
@@ -26,18 +29,43 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     private $parameterFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade
+     */
+    private $freeTransportAndPaymentFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
+     */
+    private $flagFacade;
+
+    /**
+     * ProductExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        ParameterFacade $parameterFacade
+        ParameterFacade $parameterFacade,
+        FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
+        Domain $domain,
+        FlagFacade $flagFacade
     ) {
         parent::__construct($categoryFacade, $productCachedAttributesFacade);
 
         $this->parameterFacade = $parameterFacade;
+        $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
+        $this->domain = $domain;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -65,6 +93,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'getParameterValueById',
                 [$this, 'getParameterValueById']
+            ),
+            new TwigFunction(
+                'getProductFlagsWithFreeTransportAndPaymentFlag',
+                [$this, 'getProductFlagsWithFreeTransportAndPaymentFlag']
             ),
         ];
     }
@@ -175,5 +207,26 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getParameterValueById(string $id): ParameterValue
     {
         return $this->parameterFacade->getParameterValueById((int)$id);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice $productPrice
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $limit
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\Flag[]
+     */
+    public function getProductFlagsWithFreeTransportAndPaymentFlag(ProductPrice $productPrice, Product $product, int $limit): array
+    {
+        $productFlagsIndexedByPosition = $product->getFlagsIndexedByPosition($limit);
+        $freeTransportFlag = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        if ($freeTransportFlag !== null && $this->freeTransportAndPaymentFacade->isFree($productPrice->getPriceWithVat(), $this->domain->getId())) {
+            $productFlagsIndexedByPosition[$freeTransportFlag->getPosition()] = $freeTransportFlag;
+            sort($productFlagsIndexedByPosition);
+            if ($limit !== null && count($productFlagsIndexedByPosition) > $limit) {
+                array_pop($productFlagsIndexedByPosition); //remove last flags from array
+            }
+        }
+
+        return $productFlagsIndexedByPosition;
     }
 }
