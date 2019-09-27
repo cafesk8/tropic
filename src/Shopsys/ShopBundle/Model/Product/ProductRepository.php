@@ -26,9 +26,10 @@ class ProductRepository extends BaseProductRepository
     {
         return $this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
             ->andWhere('p.id IN(:productIds)')
-            ->andWhere('p.variantType = :variantTypeMain')
+            ->andWhere('p.variantType = :variantTypeMain OR p.variantType = :variantTypeNone')
             ->setParameter('productIds', $ids)
             ->setParameter('variantTypeMain', Product::VARIANT_TYPE_MAIN)
+            ->setParameter('variantTypeNone', Product::VARIANT_TYPE_NONE)
             ->getQuery()
             ->execute();
     }
