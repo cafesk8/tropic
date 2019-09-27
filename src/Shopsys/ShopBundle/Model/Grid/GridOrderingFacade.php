@@ -1,9 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-
 namespace Shopsys\ShopBundle\Model\Grid;
-
 
 use Shopsys\FrameworkBundle\Component\Grid\Ordering\GridOrderingFacade as BaseGridOrderingFacade;
 
@@ -25,6 +24,4 @@ class GridOrderingFacade extends BaseGridOrderingFacade
             $this->em->flush($entity); //flush with entity because Gedmo\Sortable\SortableListener update position
         }
     }
-
-
 }
