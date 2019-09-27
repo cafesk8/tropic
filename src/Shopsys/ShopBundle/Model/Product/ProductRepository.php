@@ -300,4 +300,12 @@ class ProductRepository extends BaseProductRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getAllMainVariantProducts(): array
+    {
+        return $this->getProductRepository()->findBy(['variantType' => Product::VARIANT_TYPE_MAIN]);
+    }
 }

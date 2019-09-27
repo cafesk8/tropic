@@ -620,4 +620,12 @@ class ProductFacade extends BaseProductFacade
             $defaultPricingGroup
         );
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getAllMainVariantProducts(): array
+    {
+        return $this->productRepository->getAllMainVariantProducts();
+    }
 }

@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
 use Shopsys\ShopBundle\Model\Product\Product;
 
@@ -30,24 +31,22 @@ class ParameterRepository extends BaseParameterRepository
      * @param string $locale
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function getProductParameterValuesByProductSortedByNameQueryBuilder(\Shopsys\FrameworkBundle\Model\Product\Product $product, $locale)
+    protected function getProductParameterValuesByProductSortedByNameQueryBuilder(BaseProduct $product, $locale)
     {
-        $queryBuilder = $this->em->createQueryBuilder()
-            ->select('ppv')
-            ->from(ProductParameterValue::class, 'ppv')
-            ->join('ppv.parameter', 'p')
-            ->join('p.translations', 'pt')
-            ->where('ppv.product = :product_id')
-            ->andWhere('pt.locale = :locale')
-            ->andWhere('p.visibleOnFrontend = true')
-            ->andWhere()
-            ->setParameters([
-                'product_id' => $product->getId(),
-                'locale' => $locale,
-            ])
-            ->orderBy('pt.name');
+        return parent::getProductParameterValuesByProductSortedByNameQueryBuilder($product, $locale)
+            ->andWhere('p.visibleOnFrontend = true');
+    }
 
-        return $queryBuilder;
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
+     */
+    public function getAllProductParameterValuesByProductSortedByName(BaseProduct $product, $locale): array
+    {
+        return parent::getProductParameterValuesByProductSortedByNameQueryBuilder($product, $locale)
+            ->getQuery()
+            ->execute();
     }
 
     /**
