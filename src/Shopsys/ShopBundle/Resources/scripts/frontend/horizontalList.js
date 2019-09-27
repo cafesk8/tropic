@@ -115,7 +115,7 @@
     Shopsys.register.registerCallback(Shopsys.horizontalList.init);
 
     $(window).resize(function () {
-        Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.horizontalList.init', Shopsys.horizontalList.init, 200);
+        Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.horizontalList.init', Shopsys.horizontalList.init($(this)), 200);
     });
 
 })(jQuery);

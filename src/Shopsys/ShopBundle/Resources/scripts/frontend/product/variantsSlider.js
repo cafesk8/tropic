@@ -30,7 +30,7 @@
     Shopsys.register.registerCallback(Shopsys.variantsSlider.init);
 
     $(window).resize(function () {
-        Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.variantsSlider.init', Shopsys.variantsSlider.init, 200);
+        Shopsys.timeout.setTimeoutAndClearPrevious('Shopsys.variantsSlider.init', Shopsys.variantsSlider.init($(this)), 200);
     });
 
 })(jQuery);
