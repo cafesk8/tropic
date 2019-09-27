@@ -330,6 +330,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade: '@Shopsys\ShopBundle\Model\Product\Flag\FlagFacade'
 
+    Shopsys\FrameworkBundle\Component\Grid\Ordering\GridOrderingFacade: '@Shopsys\ShopBundle\Model\Grid\GridOrderingFacade'
+
     Shopsys\FrameworkBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory: '@Shopsys\ShopBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory'
 
     Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDetailFriendlyUrlDataProvider:

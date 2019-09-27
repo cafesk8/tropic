@@ -23,6 +23,7 @@ use Shopsys\ShopBundle\Form\Transformers\RemoveProductTransformer;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
+use Shopsys\ShopBundle\Model\Product\Flag\FlagFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductData;
 use Shopsys\ShopBundle\Twig\DateTimeFormatterExtension;
@@ -86,6 +87,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $dateTimeFormatterExtension;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
+     */
+    private $flagFacade;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -96,6 +102,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\ShopBundle\Twig\ProductExtension $productExtension
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(
         ParameterFacade $parameterFacade,
@@ -106,7 +113,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         PricingGroupFacade $pricingGroupFacade,
         ProductExtension $productExtension,
         GoogleClient $googleClient,
-        DateTimeFormatterExtension $dateTimeFormatterExtension
+        DateTimeFormatterExtension $dateTimeFormatterExtension,
+        FlagFacade $flagFacade
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
@@ -117,6 +125,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
         $this->productExtension = $productExtension;
         $this->googleClient = $googleClient;
+        $this->flagFacade = $flagFacade;
     }
 
     /**
@@ -133,7 +142,24 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Produkt je hotový'),
             ]);
+        $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        $builderBasicInformationGroup->add('flags', ChoiceType::class, [
+            'choices' => $this->flagFacade->getAll(),
+            'choice_label' => 'name',
+            'choice_value' => 'id',
+            'multiple' => true,
+            'expanded' => true,
+            'label' => t('Flags'),
+            'choice_attr' => function ($flag) use ($defaultFlagForFreeTransportAndPayment) {
+                if ($flag === $defaultFlagForFreeTransportAndPayment) {
+                    return [
+                        'disabled' => true,
+                    ];
+                }
 
+                return [];
+            },
+        ]);
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
             'label' => t('Stock in stores'),
         ]);
