@@ -270,6 +270,7 @@ class OrderController extends FrontBaseController
         /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = $frontOrderFormData->transport;
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
 
         $isValid = $orderFlow->isValid($form);

@@ -178,8 +178,8 @@ class CartController extends FrontBaseController
 
         /** @var \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
-        $productsAndGiftsTotalPrice = $orderPreview->getProductsAndGiftsTotalPrice();
-        $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsAndGiftsTotalPrice->getPriceWithVat(), $domainId);
+        $productsPrice = $orderPreview->getProductsPrice();
+        $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $topProducts = $this->topProductFacade->getAllOfferedProducts($this->domain->getId(), $this->currentCustomer->getPricingGroup());
 
         $this->gtmFacade->onCartPage($orderPreview);
@@ -190,11 +190,11 @@ class CartController extends FrontBaseController
             'cartGiftsByProductId' => $cartGiftsByProductId,
             'form' => $form->createView(),
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
-            'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsAndGiftsTotalPrice->getPriceWithVat(), $domainId),
+            'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
             'remainingPriceWithVat' => $remainingPriceWithVat,
             'cartItemDiscounts' => $orderPreview->getQuantifiedItemsDiscounts(),
-            'productsPrice' => $productsAndGiftsTotalPrice,
-            'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsAndGiftsTotalPrice->getPriceWithVat(), $domainId),
+            'productsPrice' => $productsPrice,
+            'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
             'promoCode' => $orderPreview->getPromoCode(),
             'topProducts' => $topProducts,
             'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainElasticFacade->getVariantsIndexedByMainVariantId($topProducts),

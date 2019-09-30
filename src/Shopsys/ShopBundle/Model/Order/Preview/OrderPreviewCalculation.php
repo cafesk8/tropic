@@ -104,11 +104,12 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
         $productsPrice = $this->getProductsPrice($quantifiedItemsPrices, $quantifiedItemsDiscounts);
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
+        $productsPrice = $productsPrice->add($totalGiftPrice);
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
         $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscounts, $promoCode);
-        $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice, $totalGiftPrice);
+        $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
 
         $totalPrice = $totalPriceWithoutGiftCertificate;
         if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
@@ -123,8 +124,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             }
         }
 
-        $productsAndGiftsTotalPrice = (clone $productsPrice)->add($totalGiftPrice);
-
         $orderPreview = new OrderPreview(
             $quantifiedProducts,
             $quantifiedItemsPrices,
@@ -138,8 +137,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $roundingPrice,
             $promoCodeDiscountPercent,
             $totalPriceWithoutGiftCertificate,
-            $giftsInCart,
-            $productsAndGiftsTotalPrice
+            $giftsInCart
         );
         $orderPreview->setPromoCode($promoCode);
         $orderPreview->setTotalDiscount($totalDiscount);
@@ -152,21 +150,15 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalGiftsPrice
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
     protected function calculateTotalPrice(
         Price $productsPrice,
         ?Price $transportPrice = null,
         ?Price $paymentPrice = null,
-        ?Price $roundingPrice = null,
-        ?Price $totalGiftsPrice = null
+        ?Price $roundingPrice = null
     ): Price {
         $totalPrice = parent::calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
-
-        if ($totalGiftsPrice !== null) {
-            $totalPrice = $totalPrice->add($totalGiftsPrice);
-        }
 
         return $totalPrice;
     }
