@@ -47,7 +47,15 @@
                 timeout: hoverIntentSetting.getTimeout(),
                 over: function () {
                     hideAllOpenedIntent();
-                    $(this).addClass(hoverIntentSetting.getClassForOpen());
+
+                    if($(this).data('type') == "link-on-mobile"){
+                        // this removes unneeded opening element when it is only link on mobile
+                        if($(window).width() > Shopsys.responsive.SM) {
+                            $(this).addClass(hoverIntentSetting.getClassForOpen());
+                        }
+                    }else{
+                        $(this).addClass(hoverIntentSetting.getClassForOpen());
+                    }
                 },
                 out: function () {
                     if ($(this).find('input:focus').size() === 0) {

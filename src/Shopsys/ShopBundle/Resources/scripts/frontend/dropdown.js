@@ -16,7 +16,9 @@
                 if ($(window).width() < Shopsys.responsive.SM) {
                     event.stopPropagation();
                 }
-            } else if ($(this).data('type') != 'link') {
+            } else if ($(this).data('type') == 'link') {
+                event.stopPropagation();
+            } else {
                 $(this).toggleClass('open');
                 event.stopPropagation();
             }
