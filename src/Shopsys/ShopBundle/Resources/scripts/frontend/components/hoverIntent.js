@@ -48,12 +48,12 @@
                 over: function () {
                     hideAllOpenedIntent();
 
-                    if($(this).data('type') == "link-on-mobile"){
+                    if ($(this).data('type') == 'link-on-mobile') {
                         // this removes unneeded opening element when it is only link on mobile
-                        if($(window).width() > Shopsys.responsive.SM) {
+                        if ($(window).width() > Shopsys.responsive.SM) {
                             $(this).addClass(hoverIntentSetting.getClassForOpen());
                         }
-                    }else{
+                    } else {
                         $(this).addClass(hoverIntentSetting.getClassForOpen());
                     }
                 },
