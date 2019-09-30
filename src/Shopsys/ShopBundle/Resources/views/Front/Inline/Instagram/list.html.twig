@@ -12,9 +12,7 @@
                 {% if instagramTemplateObject.link is not null %}
                     <a href="{{ instagramTemplateObject.link }}" title="{{ instagramTemplateObject.title }}" target="_blank">
                 {% endif %}
-
-                <img src="{{ asset('assets/frontend/images/design/placeholder.gif') }}" data-original="{{ instagramTemplateObject.url }}" alt="{{ instagramTemplateObject.title }}" class="js-lazy-load">
-
+                    <div class="list-images-line__item__block" style="background: url('{{ instagramTemplateObject.url }}'); background-position: center; background-size: cover; background-repeat: none;" title="{{ instagramTemplateObject.title }}"></div>
                 {% if instagramTemplateObject.link is not null %}
                     </a>
                 {% endif %}
