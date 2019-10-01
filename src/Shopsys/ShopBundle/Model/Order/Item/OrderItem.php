@@ -7,6 +7,8 @@ namespace Shopsys\ShopBundle\Model\Order\Item;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Order\Item\Exception\WrongItemTypeException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
+use Shopsys\FrameworkBundle\Model\Order\Order;
+use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
 /**
@@ -35,6 +37,40 @@ class OrderItem extends BaseOrderItem
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $ean;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $preparedQuantity;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param string $name
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
+     * @param string $vatPercent
+     * @param int $quantity
+     * @param string $type
+     * @param string|null $unitName
+     * @param string|null $catnum
+     * @param int|null $preparedQuantity
+     */
+    public function __construct(
+        Order $order,
+        string $name,
+        Price $price,
+        string $vatPercent,
+        int $quantity,
+        string $type,
+        ?string $unitName,
+        ?string $catnum,
+        ?int $preparedQuantity = 0
+    ) {
+        parent::__construct($order, $name, $price, $vatPercent, $quantity, $type, $unitName, $catnum);
+
+        $this->preparedQuantity = $preparedQuantity;
+    }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
@@ -139,5 +175,21 @@ class OrderItem extends BaseOrderItem
     public function isTypeGiftCertification(): bool
     {
         return $this->type === self::TYPE_GIFT_CERTIFICATE;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPreparedQuantity(): int
+    {
+        return $this->preparedQuantity;
+    }
+
+    /**
+     * @param int $preparedQuantity
+     */
+    public function setPreparedQuantity(int $preparedQuantity): void
+    {
+        $this->preparedQuantity = $preparedQuantity;
     }
 }

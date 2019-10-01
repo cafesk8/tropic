@@ -12,4 +12,9 @@ class OrderItemData extends BaseOrderItemData
      * @var string|null
      */
     protected $ean;
+
+    /**
+     * @var int|null
+     */
+    public $preparedQuantity;
 }
