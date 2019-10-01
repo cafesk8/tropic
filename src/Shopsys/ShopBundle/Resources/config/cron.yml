@@ -8,6 +8,11 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
 
+    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule:
+        class: Shopsys\ShopBundle\Model\Feed\DailyFeedCronModule
+        tags:
+            - { name: shopsys.cron, hours: '*/6', minutes: '0' }
+
     Shopsys\ShopBundle\Model\GoPay\GoPayAvailablePaymentsCronModule:
         arguments:
             - '%gopay.config%'
