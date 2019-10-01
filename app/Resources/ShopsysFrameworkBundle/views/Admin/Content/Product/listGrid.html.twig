@@ -2,6 +2,10 @@
 
 {% block grid_value_cell_id_price %}
     {% if row.p.variantType != VARIANT_TYPE_MAIN %}
-        {{ value|priceWithCurrencyAdmin }}
+        {% if value is not null %}
+            {{ value|priceWithCurrencyAdmin }}
+        {% else %}
+            {{ 'Nepřenesena'|trans }}
+        {% endif %}
     {% endif %}
 {% endblock %}
