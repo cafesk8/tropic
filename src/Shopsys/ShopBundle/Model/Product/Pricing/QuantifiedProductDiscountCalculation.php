@@ -25,13 +25,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         if ($promoCode !== null && $promoCode->isUseNominalDiscount() === true) {
 
             /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $totalItemsPrice */
-            $totalItemsPrice = array_reduce($quantifiedItemsPrices, function (Price $totalItemsPrice, QuantifiedItemPrice $quantifiedItemsPrice) {
-                if ($quantifiedItemsPrice === null) {
-                    return $totalItemsPrice;
-                }
-
-                return $totalItemsPrice->add($quantifiedItemsPrice->getTotalPrice());
-            }, Price::zero());
+            $totalItemsPrice = $this->calculateTotalItemsPrice($quantifiedItemsPrices);
 
             if ($totalItemsPrice->getPriceWithVat()->isGreaterThan(Money::zero())) {
                 $discountPercentForOrder = $promoCode->getNominalDiscount()->divide($totalItemsPrice->getPriceWithVat()->getAmount(), 12)->multiply(100)->getAmount();
@@ -48,5 +42,26 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         }
 
         return $quantifiedItemsDiscounts;
+    }
+
+    /**
+     * @param array $quantifiedItemsPrices
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    private function calculateTotalItemsPrice(array $quantifiedItemsPrices): Price
+    {
+        $totalItemsPrice = array_reduce(
+            $quantifiedItemsPrices,
+            function (Price $totalItemsPrice, QuantifiedItemPrice $quantifiedItemsPrice) {
+                if ($quantifiedItemsPrice === null) {
+                    return $totalItemsPrice;
+                }
+
+                return $totalItemsPrice->add($quantifiedItemsPrice->getTotalPrice());
+            },
+            Price::zero()
+        );
+
+        return $totalItemsPrice;
     }
 }
