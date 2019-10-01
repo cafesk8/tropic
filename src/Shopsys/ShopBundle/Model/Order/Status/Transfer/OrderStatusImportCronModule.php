@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Component\Transfer\Exception\TransferException;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade;
 use Shopsys\ShopBundle\Model\Order\Order;
 use Shopsys\ShopBundle\Model\Order\OrderDataFactory;
 use Shopsys\ShopBundle\Model\Order\OrderFacade;
@@ -47,24 +48,32 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
     private $orderDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade
+     */
+    private $orderItemFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
      * @param \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade $orderItemFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         MultidomainRestClient $multidomainRestClient,
         OrderFacade $orderFacade,
         OrderStatusFacade $orderStatusFacade,
-        OrderDataFactory $orderDataFactory
+        OrderDataFactory $orderDataFactory,
+        OrderItemFacade $orderItemFacade
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->multidomainRestClient = $multidomainRestClient;
         $this->orderFacade = $orderFacade;
         $this->orderStatusFacade = $orderStatusFacade;
         $this->orderDataFactory = $orderDataFactory;
+        $this->orderItemFacade = $orderItemFacade;
     }
 
     /**
@@ -117,7 +126,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         /** @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus */
         $orderStatus = $order->getStatus();
         if ($orderStatus->isCheckOrderReadyStatus() === true) {
-            $this->checkOrderReadyStatus($order);
+            $this->processOrderReadyStatusAndOrderItemQuantities($order);
             return;
         }
 
@@ -215,13 +224,15 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
      */
-    private function checkOrderReadyStatus(Order $order): void
+    private function processOrderReadyStatusAndOrderItemQuantities(Order $order): void
     {
         $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
 
         if ($orderItemTransferData === null) {
             return;
         }
+
+        $this->setOrderItemPreparedQuantities($orderItemTransferData->getItems());
 
         $orderStatus = null;
         $isOrderSendToStore = $order->getStoreExternalNumber() !== null;
@@ -299,5 +310,15 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         }
 
         return $preparedItemCount > 0;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderItemQuantityTransferResponseDataItem[] $orderItemQuantityTransferResponseDataItems
+     */
+    private function setOrderItemPreparedQuantities(array $orderItemQuantityTransferResponseDataItems): void
+    {
+        foreach ($orderItemQuantityTransferResponseDataItems as $item) {
+            $this->orderItemFacade->setOrderItemPreparedQuantity($item->getEan(), $item->getPreparedCount());
+        }
     }
 }
