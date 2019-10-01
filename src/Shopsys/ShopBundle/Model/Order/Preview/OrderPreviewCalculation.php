@@ -113,7 +113,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
         $totalPrice = $totalPriceWithoutGiftCertificate;
         if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            $totalPriceWithVat = $promoCode->certificateValue;
+            $totalPriceWithVat = $promoCode->getCertificateValue();
             $totalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($totalPriceWithVat, $this->vatFacade->getDefaultVat());
             $totalPriceWithoutVat = $totalPriceWithVat->subtract($totalVatAmount);
 
@@ -257,7 +257,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     protected function calculateTotalDiscount(array $quantifiedItemsDiscounts, ?PromoCode $promoCode): Price
     {
         if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            return new Price($promoCode->certificateValue, $promoCode->certificateValue);
+            return new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
         }
 
         return array_reduce($quantifiedItemsDiscounts, function ($totalDiscount, $quantifiedItemsDiscount) {

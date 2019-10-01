@@ -41,7 +41,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         $quantifiedItemsDiscounts = [];
         foreach ($quantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
             $quantifiedItemsDiscount = null;
-            if ($promoCode !== null && $promoCode->type === PromoCodeData::TYPE_PROMO_CODE) {
+            if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_PROMO_CODE) {
                 $quantifiedItemsDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
             }
             $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemsDiscount;

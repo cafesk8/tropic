@@ -101,21 +101,21 @@ class PromoCode extends BasePromoCode
      *
      * @ORM\Column(type="string")
      */
-    public $type;
+    private $type;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      *
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
-    public $certificateValue;
+    private $certificateValue;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    public $certificateSku;
+    private $certificateSku;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
