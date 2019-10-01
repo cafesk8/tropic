@@ -20,18 +20,18 @@ class LoginPage extends AbstractPage
         $this->tester->amOnPage('/admin/');
         $this->tester->fillFieldByName('admin_login_form[username]', $username);
         $this->tester->fillFieldByName('admin_login_form[password]', $password);
-        $this->tester->clickByText('Přihlásit se');
+        $this->tester->clickByTranslationAdmin('Log in');
     }
 
     public function loginAsAdmin()
     {
         $this->login(self::ADMIN_USERNAME, self::ADMIN_PASSWORD);
-        $this->tester->see('Nástěnka');
+        $this->tester->seeTranslationAdmin('Dashboard');
     }
 
     public function assertLoginFailed()
     {
-        $this->tester->see('Přihlášení se nepodařilo.');
+        $this->tester->seeTranslationAdmin('Log in failed.');
         $this->tester->seeCurrentPageEquals('/admin/');
     }
 }

@@ -9,8 +9,8 @@ use Tests\ShopBundle\Acceptance\acceptance\PageObject\AbstractPage;
 
 class ProductDetailPage extends AbstractPage
 {
-    public const PRODUCT_DETAIL_QUANTITY_INPUT = '.js-product-detail-main-add-to-cart-wrapper input[name="add_product_form[quantity]"]';
-    public const PRODUCT_DETAIL_MAIN_WRAPPER = '.js-product-detail-main-add-to-cart-wrapper';
+    protected const PRODUCT_DETAIL_QUANTITY_INPUT = '.js-product-detail-main-add-to-cart-wrapper input[name="add_product_form[quantity]"]';
+    protected const PRODUCT_DETAIL_MAIN_WRAPPER = '.js-product-detail-main-add-to-cart-wrapper';
 
     /**
      * @param int $quantity
@@ -21,7 +21,7 @@ class ProductDetailPage extends AbstractPage
             self::PRODUCT_DETAIL_QUANTITY_INPUT,
             $quantity
         );
-        $this->tester->clickByText('Vložit do košíku', WebDriverBy::cssSelector(self::PRODUCT_DETAIL_MAIN_WRAPPER));
+        $this->tester->clickByTranslationFrontend('Add to cart', 'messages', [], WebDriverBy::cssSelector(self::PRODUCT_DETAIL_MAIN_WRAPPER));
         $this->tester->waitForAjax();
         $this->tester->wait(1); // animation of popup window
     }
