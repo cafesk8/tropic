@@ -86,4 +86,9 @@ class PromoCodeData extends BasePromoCodeData
      * @var string|null
      */
     public $certificateSku;
+
+    /**
+     * @var string|null
+     */
+    public $usageType;
 }

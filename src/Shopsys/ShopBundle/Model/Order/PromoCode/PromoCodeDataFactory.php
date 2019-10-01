@@ -41,6 +41,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->useNominalDiscount = false;
         $promoCodeData->type = PromoCodeData::TYPE_PROMO_CODE;
         $promoCodeData->certificateValue = Money::zero();
+        $promoCodeData->usageType = PromoCode::USAGE_TYPE_ALL;
 
         return $promoCodeData;
     }
@@ -79,5 +80,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->type = $promoCode->getType();
         $promoCodeData->certificateValue = $promoCode->getCertificateValue();
         $promoCodeData->certificateSku = $promoCode->getCertificateSku();
+        $promoCodeData->usageType = $promoCode->getUsageType();
     }
 }
