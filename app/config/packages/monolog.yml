@@ -12,11 +12,6 @@ monolog:
             type: stream
             path: "%shopsys.log_stream%"
             level: debug
-        cron:
-            type: stream
-            path: "%shopsys.log_stream%"
-            channels: cron
-            level: debug
         slow:
             type: stream
             path: "%shopsys.log_stream%"
