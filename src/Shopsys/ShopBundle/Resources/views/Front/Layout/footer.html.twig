@@ -35,7 +35,10 @@
                                 <div class="box-contact__block">
                                     <div class="box-contact__block__text">
                                         <i class="svg svg-phone"></i>
-                                        {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
+                                        {{ 'Volejte na '|trans }}
+                                        <a class="box-contact__block__text__link underline" href="tel:{{ getShopInfoPhoneNumber() }}">
+                                            {{ getShopInfoPhoneNumber() }}
+                                        </a>
                                     </div>
                                     <div class="box-contact__block__info">
                                         {{ getShopInfoPhoneHours() }}
