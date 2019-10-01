@@ -204,6 +204,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             }
         }
 
+        if ($product !== null && $product->isNoneVariant() === true) {
+            $this->addGiftGroup($builder);
+        }
+
         if ($product !== null && $product->isVariant()) {
             $this->extendVariantGroup($builder->get('variantGroup'), $product);
         }

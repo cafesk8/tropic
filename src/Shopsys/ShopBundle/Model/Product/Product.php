@@ -488,4 +488,12 @@ class Product extends BaseProduct
 
         return $totalStockQuantityOfProductVariants;
     }
+
+    /**
+     * @return bool
+     */
+    public function isNoneVariant(): bool
+    {
+        return $this->variantType === self::VARIANT_TYPE_NONE;
+    }
 }
