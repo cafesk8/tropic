@@ -1,4 +1,4 @@
-<div class="box-images-line">
+<div class="box-images-line js-instagram-scroll-point">
     <div class="box-images-line__title">
         {{ 'Bushmanství obrazem'|trans }}
         <a href="{{ instagramLink }}" class="box-images-line__title__link btn btn--secondary btn--small">
@@ -12,7 +12,12 @@
                 {% if instagramTemplateObject.link is not null %}
                     <a href="{{ instagramTemplateObject.link }}" title="{{ instagramTemplateObject.title }}" target="_blank">
                 {% endif %}
-                    <div class="list-images-line__item__block" style="background: url('{{ instagramTemplateObject.url }}'); background-position: center; background-size: cover; background-repeat: none;" title="{{ instagramTemplateObject.title }}"></div>
+                    <div
+                        class="list-images-line__item__block js-lazy-load-on-background"
+                        style="background: url({{ imagePlaceholder() }}); background-position: center; background-size: cover; background-repeat: none;"
+                        title="{{ instagramTemplateObject.title }}"
+                        data-original="{{ instagramTemplateObject.url }}"
+                    ></div>
                 {% if instagramTemplateObject.link is not null %}
                     </a>
                 {% endif %}
