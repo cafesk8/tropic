@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Mall\MallFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use Shopsys\ShopBundle\Model\Product\Mall\Exception\InvalidProductForMallExportException;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
@@ -139,7 +140,12 @@ class ProductMallExportMapper
             }
         }
 
-        $mallProduct->setShortdesc(mb_substr($product->getShortDescription(self::CZECH_DOMAIN), 0, 295));
+        $shortDescription = $product->getShortDescription(self::CZECH_DOMAIN);
+        if ($shortDescription === null) {
+            throw new InvalidProductForMallExportException('Short description not set');
+        }
+
+        $mallProduct->setShortdesc(mb_substr($shortDescription, 0, 295));
         $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
 
         return $mallProduct;
@@ -153,7 +159,11 @@ class ProductMallExportMapper
     {
         /** @var \MPAPI\Entity\Products\Variant $mallVariant */
         $mallVariant = $this->mapBasicInformation($variant, true);
-        $mallVariant->setShortdesc($variant->getMainVariant()->getShortDescription(self::CZECH_DOMAIN));
+        $shortDescription = $variant->getMainVariant()->getShortDescription(self::CZECH_DOMAIN);
+        if ($shortDescription === null) {
+            throw new InvalidProductForMallExportException('Short description not set');
+        }
+        $mallVariant->setShortdesc($shortDescription);
         $mallVariant->setLongdesc($variant->getMainVariant()->getDescription(self::CZECH_DOMAIN));
 
         return $mallVariant;
@@ -187,9 +197,9 @@ class ProductMallExportMapper
         $mallProduct->setStatus(MallProduct::STATUS_ACTIVE);
         if ($product->isUsingStock()) {
             $stockQuantity = $this->findStockQuantity($product);
-            if ($stockQuantity !== null && $stockQuantity > 0) {
-                $mallProduct->setInStock($stockQuantity);
-            }
+            $mallProduct->setInStock($stockQuantity);
+        } else {
+            throw new InvalidProductForMallExportException('Product not using stock');
         }
 
         // Minimum priority in Mall has to be 1
@@ -200,7 +210,13 @@ class ProductMallExportMapper
         }
 
         $firstInLoop = false;
-        foreach ($this->imageFacade->getImagesByEntityIndexedById($product, null) as $image) {
+        $images = $this->imageFacade->getImagesByEntityIndexedById($product, null);
+
+        if (count($images) === 0) {
+            throw new InvalidProductForMallExportException('No image');
+        }
+
+        foreach ($images as $image) {
             $mallProduct->addMedia($this->imageFacade->getImageUrl($domainConfig, $image, 'original'), $firstInLoop === false);
             $firstInLoop = true;
         }
@@ -234,7 +250,11 @@ class ProductMallExportMapper
         $mallProduct = $this->mapBasicInformation($product, false);
         $mallProduct->setId('group-' . $product->getMainVariantGroup()->getId());
 
-        $mallProduct->setShortdesc($product->getShortDescription(self::CZECH_DOMAIN));
+        $shortDescription = $product->getShortDescription(self::CZECH_DOMAIN);
+        if ($shortDescription === null) {
+            throw new InvalidProductForMallExportException('Short description not set');
+        }
+        $mallProduct->setShortdesc($shortDescription);
         $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
 
         $distinguishingParameters = $this->getDistinguishingParametersForProduct($product);
@@ -279,7 +299,7 @@ class ProductMallExportMapper
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return int|null
      */
-    private function findStockQuantity(Product $product): ?int
+    private function findStockQuantity(Product $product): int
     {
         $defaultStore = $this->storeFacade->findDefaultStore();
 
@@ -288,20 +308,22 @@ class ProductMallExportMapper
         }
 
         if ($defaultStore === null && $product->getStockQuantity() !== null) {
-            return $product->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
+            $stockQuantityForExport = $product->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
+            return $stockQuantityForExport > 0 ? $stockQuantityForExport : 0;
         }
 
         if ($defaultStore === null && $product->getStockQuantity() === null) {
-            return null;
+            return 0;
         }
 
         foreach ($product->getStoreStocks() as $productStoreStocks) {
             if ($productStoreStocks->getStore()->getId() === $defaultStore->getId() && $productStoreStocks->getStockQuantity() !== null) {
-                return $productStoreStocks->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
+                $stockQuantityForExport = $productStoreStocks->getStockQuantity() - self::STOCK_QUANTITY_FUSE;
+                return $stockQuantityForExport > 0 ? $stockQuantityForExport : 0;
             }
         }
 
-        return null;
+        return 0;
     }
 
     /**

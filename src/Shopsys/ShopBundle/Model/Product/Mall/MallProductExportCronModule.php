@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Product\Mall;
 
 use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
 use Shopsys\ShopBundle\Component\Mall\MallFacade;
+use Shopsys\ShopBundle\Model\Product\Mall\Exception\InvalidProductForMallExportException;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -87,16 +88,24 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
         $exportedProducts = [];
 
         foreach ($productsToExport as $product) {
-            $preparedProductToExport = $this->productMallExportMapper->mapProductOrMainVariantGroup($product);
-            if ($preparedProductToExport === null) {
-                continue;
-            }
+            try {
+                $preparedProductToExport = $this->productMallExportMapper->mapProductOrMainVariantGroup($product);
 
-            $isCreatedOrUpdated = $this->mallFacade->createOrUpdateProduct($preparedProductToExport);
+                if ($preparedProductToExport === null) {
+                    continue;
+                }
 
-            if ($isCreatedOrUpdated === true) {
-                $this->logger->addInfo(sprintf('Product with ID `%s` was exported to Mall.cz', $product->getId()));
+                $isCreatedOrUpdated = $this->mallFacade->createOrUpdateProduct($preparedProductToExport);
+
+                if ($isCreatedOrUpdated === true) {
+                    $this->logger->addInfo(sprintf('Product with ID `%s` was exported to Mall.cz', $product->getId()));
+                    $exportedProducts[] = $product;
+                }
+            } catch (InvalidProductForMallExportException $ex) {
+                $this->logger->addInfo(sprintf('Product with ID `%s` was exported to Mall.cz. Error: `%s`', $product->getId(), $ex->getMessage()));
                 $exportedProducts[] = $product;
+
+                // TODO We can save this errors into some db tables and we can show errors in some part of admin
             }
         }
 

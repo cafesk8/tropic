@@ -36,6 +36,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Controller/Admin/OrderController.php'
+            - '*/src/Shopsys/ShopBundle/Model/Product/Mall/ProductMallExportMapper.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
