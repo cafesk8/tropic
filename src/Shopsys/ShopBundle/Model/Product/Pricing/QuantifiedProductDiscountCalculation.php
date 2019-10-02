@@ -22,6 +22,10 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
     public function calculateDiscounts(array $quantifiedItemsPrices, ?string $discountPercent, ?PromoCode $promoCode = null): array
     {
         $quantifiedItemsDiscounts = $this->initQuantifiedItemsDiscounts($quantifiedItemsPrices);
+        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            return $quantifiedItemsDiscounts;
+        }
+
         $filteredQuantifiedItemsPrices = $this->filterQuantifiedItemsPricesByPromoCode($quantifiedItemsPrices, $promoCode);
 
         $discountPercentForOrder = $discountPercent !== null ? $discountPercent : '0';
@@ -35,10 +39,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         }
 
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
-            $quantifiedItemsDiscount = null;
-            if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_PROMO_CODE) {
-                $quantifiedItemsDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
-            }
+            $quantifiedItemsDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
             $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemsDiscount;
         }
 
