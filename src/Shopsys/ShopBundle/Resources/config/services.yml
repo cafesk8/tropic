@@ -576,3 +576,11 @@ services:
           - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade: '@Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade'
+
+    Shopsys\ShopBundle\Model\Order\Mail\OrderMail: ~
+
+    Shopsys\FrameworkBundle\Model\Order\Mail\OrderMail: '@Shopsys\ShopBundle\Model\Order\Mail\OrderMail'
+
+    Shopsys\FrameworkBundle\Controller\Admin\MailController:
+        class: Shopsys\ShopBundle\Controller\Admin\MailController
+        tags: ['controller.service_arguments']
