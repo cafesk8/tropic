@@ -123,10 +123,14 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             );
         }
         $order = $this->getOrder($orderStatusTransferResponseItemData);
+
+        $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
+        $this->setOrderItemPreparedQuantities($order, $orderItemTransferData->getItems());
+
         /** @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus */
         $orderStatus = $order->getStatus();
         if ($orderStatus->isCheckOrderReadyStatus() === true) {
-            $this->processOrderReadyStatusAndOrderItemQuantities($order);
+            $this->processOrderReadyStatusAndOrderItemQuantities($order, $orderItemTransferData);
             return;
         }
 
@@ -223,16 +227,13 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderQuantityStatusTransferResponseItemData|null $orderItemTransferData
      */
-    private function processOrderReadyStatusAndOrderItemQuantities(Order $order): void
+    private function processOrderReadyStatusAndOrderItemQuantities(Order $order, ?OrderQuantityStatusTransferResponseItemData $orderItemTransferData): void
     {
-        $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
-
         if ($orderItemTransferData === null) {
             return;
         }
-
-        $this->setOrderItemPreparedQuantities($orderItemTransferData->getItems());
 
         $orderStatus = null;
         $isOrderSendToStore = $order->getStoreExternalNumber() !== null;
@@ -313,12 +314,13 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderItemQuantityTransferResponseDataItem[] $orderItemQuantityTransferResponseDataItems
      */
-    private function setOrderItemPreparedQuantities(array $orderItemQuantityTransferResponseDataItems): void
+    private function setOrderItemPreparedQuantities(Order $order, array $orderItemQuantityTransferResponseDataItems): void
     {
         foreach ($orderItemQuantityTransferResponseDataItems as $item) {
-            $this->orderItemFacade->setOrderItemPreparedQuantity($item->getEan(), $item->getPreparedCount());
+            $this->orderItemFacade->setOrderItemPreparedQuantity($order, $item->getEan(), $item->getPreparedCount());
         }
     }
 }

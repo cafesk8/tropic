@@ -221,11 +221,15 @@ class OrderRepository extends BaseOrderRepository
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $ean
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem|null
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
      */
-    public function findOrderItemByEan(string $ean): ?OrderItem
+    public function findOrderItemsByEan(Order $order, string $ean): array
     {
-        return $this->getOrderItemRepository()->findOneBy(['ean' => $ean]);
+        return $this->getOrderItemRepository()->findBy([
+            'order' => $order,
+            'ean' => $ean,
+        ]);
     }
 }

@@ -847,7 +847,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return array
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
      */
     public function getPreparedProductItems(): array
     {
