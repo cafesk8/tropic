@@ -22,6 +22,7 @@ use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
+use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,6 +97,11 @@ class CartController extends FrontBaseController
     private $gtmFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
+     */
+    private $currentPromoCodeFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -108,6 +114,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      */
     public function __construct(
         ProductAccessoryFacade $productAccessoryFacade,
@@ -121,7 +128,8 @@ class CartController extends FrontBaseController
         ProductGiftFacade $productGiftFacade,
         TopProductFacade $topProductFacade,
         ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade,
-        GtmFacade $gtmFacade
+        GtmFacade $gtmFacade,
+        CurrentPromoCodeFacade $currentPromoCodeFacade
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -135,6 +143,7 @@ class CartController extends FrontBaseController
         $this->topProductFacade = $topProductFacade;
         $this->productOnCurrentDomainElasticFacade = $productOnCurrentDomainElasticFacade;
         $this->gtmFacade = $gtmFacade;
+        $this->currentPromoCodeFacade = $currentPromoCodeFacade;
     }
 
     /**
@@ -181,12 +190,13 @@ class CartController extends FrontBaseController
         $productsPrice = $orderPreview->getProductsPrice();
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $topProducts = $this->topProductFacade->getAllOfferedProducts($this->domain->getId(), $this->currentCustomer->getPricingGroup());
-
+        $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
+        $this->currentPromoCodeFacade->checkProductActionPriceType($quantifiedItemsPrices);
         $this->gtmFacade->onCartPage($orderPreview);
         return $this->render('@ShopsysShop/Front/Content/Cart/index.html.twig', [
             'cart' => $cart,
             'cartItems' => $cartItems,
-            'cartItemPrices' => $orderPreview->getQuantifiedItemsPrices(),
+            'cartItemPrices' => $quantifiedItemsPrices,
             'cartGiftsByProductId' => $cartGiftsByProductId,
             'form' => $form->createView(),
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),

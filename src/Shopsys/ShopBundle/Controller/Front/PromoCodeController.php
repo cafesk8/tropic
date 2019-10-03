@@ -128,6 +128,16 @@ class PromoCodeController extends FrontBaseController
                     '%price%' => $this->priceExtension->priceFilter($promoCode->getMinOrderValue()),
                 ]),
             ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNoActionPriceUsageException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón nelze aplikovat na zlevněné zboží.'),
+            ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeWithActionPriceUsageException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón nelze aplikovat na nezlevněné zboží.'),
+            ]);
         }
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));
 
