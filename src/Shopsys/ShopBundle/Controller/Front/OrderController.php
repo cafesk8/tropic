@@ -36,6 +36,7 @@ use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
+use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -540,6 +541,10 @@ class OrderController extends FrontBaseController
     {
         $orderId = $this->session->get(self::SESSION_CREATED_ORDER, null);
         $this->session->remove(self::SESSION_CREATED_ORDER);
+
+        if ($this->session->has(CurrentPromoCodeFacade::SESSION_CART_PRODUCT_PRICES_TYPE) === true) {
+            $this->session->remove(CurrentPromoCodeFacade::SESSION_CART_PRODUCT_PRICES_TYPE);
+        }
 
         if ($orderId === null) {
             return $this->redirectToRoute('front_cart');
