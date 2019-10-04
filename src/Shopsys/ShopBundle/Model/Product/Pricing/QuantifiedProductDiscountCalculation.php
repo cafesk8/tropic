@@ -38,8 +38,8 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         }
 
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
-            $quantifiedItemsDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
-            $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemsDiscount;
+            $quantifiedItemDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
+            $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemDiscount;
         }
 
         return $quantifiedItemsDiscounts;
