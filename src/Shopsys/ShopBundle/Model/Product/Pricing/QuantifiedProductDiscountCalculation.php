@@ -22,14 +22,15 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
     public function calculateDiscounts(array $quantifiedItemsPrices, ?string $discountPercent, ?PromoCode $promoCode = null): array
     {
         $quantifiedItemsDiscounts = $this->initQuantifiedItemsDiscounts($quantifiedItemsPrices);
-        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+        $isCertificate = $promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE;
+        if ($promoCode === null || $isCertificate === true) {
             return $quantifiedItemsDiscounts;
         }
 
         $filteredQuantifiedItemsPrices = $this->filterQuantifiedItemsPricesByPromoCode($quantifiedItemsPrices, $promoCode);
 
         $discountPercentForOrder = $discountPercent !== null ? $discountPercent : '0';
-        if ($promoCode !== null && $promoCode->isUseNominalDiscount() === true) {
+        if ($promoCode->isUseNominalDiscount() === true) {
             /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $totalItemsPrice */
             $totalItemsPrice = $this->calculateTotalItemsPrice($filteredQuantifiedItemsPrices);
 
@@ -83,15 +84,11 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
     /**
      * @param array $quantifiedItemsPrices
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
      */
-    private function filterQuantifiedItemsPricesByPromoCode(array $quantifiedItemsPrices, ?PromoCode $promoCode): array
+    private function filterQuantifiedItemsPricesByPromoCode(array $quantifiedItemsPrices, PromoCode $promoCode): array
     {
-        if ($promoCode === null) {
-            return $quantifiedItemsPrices;
-        }
-
         return array_filter(
             $quantifiedItemsPrices,
             function (QuantifiedItemPrice $quantifiedItemsPrice) use ($promoCode) {
