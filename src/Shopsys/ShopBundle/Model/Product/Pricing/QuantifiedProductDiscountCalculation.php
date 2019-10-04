@@ -37,9 +37,28 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             );
         }
 
+        $maxQuantifiedItemPriceIndex = null;
+        $discountNominalAmount = Money::zero();
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
             $quantifiedItemDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
             $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemDiscount;
+            $discountNominalAmount = $discountNominalAmount->add($quantifiedItemDiscount->getPriceWithVat());
+
+            if ($maxQuantifiedItemPriceIndex === null) {
+                $maxQuantifiedItemPriceIndex = $quantifiedItemIndex;
+            } elseif ($quantifiedItemsDiscounts[$maxQuantifiedItemPriceIndex]->getPriceWithVat()->isLessThan($quantifiedItemDiscount->getPriceWithVat())) {
+                $maxQuantifiedItemPriceIndex = $quantifiedItemIndex;
+            }
+        }
+
+        if ($promoCode->isUseNominalDiscount() === true && $discountNominalAmount->equals($promoCode->getNominalDiscount()) === false) {
+            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $maxQuantifiedItemPrice */
+            $nominalDiscountDifferenceAmount = $promoCode->getNominalDiscount()->subtract($discountNominalAmount);
+            $maxQuantifiedItemPrice = $quantifiedItemsDiscounts[$maxQuantifiedItemPriceIndex];
+            $maxQuantifiedItemPrice = $maxQuantifiedItemPrice->add(
+                new Price($nominalDiscountDifferenceAmount, $nominalDiscountDifferenceAmount)
+            );
+            $quantifiedItemsDiscounts[$maxQuantifiedItemPriceIndex] = $maxQuantifiedItemPrice;
         }
 
         return $quantifiedItemsDiscounts;
