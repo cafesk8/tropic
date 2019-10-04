@@ -31,12 +31,10 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
         $discountPercentForOrder = $discountPercent !== null ? $discountPercent : '0';
         if ($promoCode->isUseNominalDiscount() === true) {
-            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $totalItemsPrice */
-            $totalItemsPrice = $this->calculateTotalItemsPrice($filteredQuantifiedItemsPrices);
-
-            if ($totalItemsPrice->getPriceWithVat()->isGreaterThan(Money::zero())) {
-                $discountPercentForOrder = $promoCode->getNominalDiscount()->divide($totalItemsPrice->getPriceWithVat()->getAmount(), 12)->multiply(100)->getAmount();
-            }
+            $discountPercentForOrder = $this->calculateDiscountPercentFromNominalDiscount(
+                $promoCode,
+                $filteredQuantifiedItemsPrices
+            );
         }
 
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
@@ -105,5 +103,28 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 return true;
             }
         );
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $filteredQuantifiedItemsPrices
+     * @return string
+     */
+    private function calculateDiscountPercentFromNominalDiscount(
+        ?PromoCode $promoCode,
+        array $filteredQuantifiedItemsPrices
+    ): string {
+        $discountPercentForOrder = '0';
+        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $totalItemsPrice */
+        $totalItemsPrice = $this->calculateTotalItemsPrice($filteredQuantifiedItemsPrices);
+
+        if ($totalItemsPrice->getPriceWithVat()->isGreaterThan(Money::zero())) {
+            $discountPercentForOrder = $promoCode->getNominalDiscount()
+                ->divide($totalItemsPrice->getPriceWithVat()->getAmount(), 12)
+                ->multiply(100)
+                ->getAmount();
+        }
+
+        return $discountPercentForOrder;
     }
 }
