@@ -186,7 +186,7 @@ class ProductController extends FrontBaseController
         $accessories = $this->productOnCurrentDomainFacade->getAccessoriesForProduct($product);
         $domainId = $this->domain->getId();
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
-        $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
+        $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product, $this->domain->getId());
         $youtubeDetailForMainVariants = $this->productFacade->getYoutubeViewForMainVariants($mainVariantGroupProducts);
 
         if (count($mainVariantGroupProducts) > 0) {

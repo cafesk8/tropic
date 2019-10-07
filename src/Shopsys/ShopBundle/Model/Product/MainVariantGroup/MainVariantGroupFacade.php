@@ -28,7 +28,7 @@ class MainVariantGroupFacade
     private $domain;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\ShopBundle\Model\Customer\CurrentCustomer
      */
     private $currentCustomer;
 
@@ -86,15 +86,16 @@ class MainVariantGroupFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getProductsForMainVariantGroup(Product $product): array
+    public function getProductsForMainVariantGroup(Product $product, int $domainId): array
     {
         return $this->mainVariantGroupRepository->getProductsForMainVariantGroup(
             $product,
-            $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
+            $domainId,
+            $this->currentCustomer->getPricingGroupOrDefaultPricingGroup($domainId)
         );
     }
 

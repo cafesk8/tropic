@@ -262,7 +262,7 @@ class ProductMallExportMapper
         $variants = $this->productFacade->getVariantsForMainVariantGroup($product->getMainVariantGroup(), self::CZECH_DOMAIN);
 
         if (count($variants) <= 0) {
-            $variants = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
+            $variants = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product, DomainHelper::CZECH_DOMAIN);
             if (count($variants) <= 0) {
                 return null;
             }

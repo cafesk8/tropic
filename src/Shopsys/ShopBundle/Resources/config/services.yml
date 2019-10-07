@@ -577,3 +577,7 @@ services:
 
 
     Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@Shopsys\ShopBundle\Model\Feed\FeedExportFactory'
+
+    Shopsys\ShopBundle\Model\Customer\CurrentCustomer: ~
+
+    Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer: '@Shopsys\ShopBundle\Model\Customer\CurrentCustomer'
