@@ -638,4 +638,37 @@ class ProductFacade extends BaseProductFacade
     {
         parent::saveParameters($product, $productParameterValuesData);
     }
+
+    /**
+     * @param int $domainId
+     * @return int[]
+     */
+    public function hideVariantsWithDifferentPriceForDomain(int $domainId): array
+    {
+        $defaultPricingGroup = $this->pricingGroupRepository->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
+        );
+
+        $hiddenVariantsIds = [];
+
+        $mainVariantIdsWithDifferentPrices = $this->productRepository->getMainVariantIdsWithDifferentPrice($domainId, $defaultPricingGroup);
+
+        foreach ($mainVariantIdsWithDifferentPrices as $mainVariantIdWithDifferentPrices) {
+            $variantsToHide = $this->productRepository->getVariantsWithDifferentPriceForMainVariant(
+                $mainVariantIdWithDifferentPrices['mainVariantId'],
+                Money::create($mainVariantIdWithDifferentPrices['defaultPrice']),
+                $defaultPricingGroup
+            );
+
+            foreach ($variantsToHide as $variantToHide) {
+                $hiddenVariantsIds[] = $variantToHide->getId();
+                $variantToHide->setProductAsHidden();
+                $this->em->flush($variantToHide);
+                $this->productHiddenRecalculator->calculateHiddenForProduct($variantToHide);
+            }
+        }
+
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
+        return $hiddenVariantsIds;
+    }
 }

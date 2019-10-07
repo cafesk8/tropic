@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -336,5 +339,69 @@ class ProductRepository extends BaseProductRepository
             ->andWhere('p.id IN(:productIds)')
             ->setParameter('productIds', $productIds)
             ->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return array
+     */
+    public function getMainVariantIdsWithDifferentPrice(int $domainId, PricingGroup $pricingGroup): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('main_variant_id', 'mainVariantId');
+        $resultSetMapping->addScalarResult('default_price', 'defaultPrice');
+
+        $queryBuilder = $this->em->createNativeQuery(
+            'SELECT 
+                    p.main_variant_id as main_variant_id,
+                    (
+                        SELECT sub_ip.input_price
+                        FROM products sub_p
+                        JOIN product_manual_input_prices sub_ip ON sub_ip.product_id = sub_p.id AND sub_ip.pricing_group_id = :pricingGroup
+                        JOIN product_visibilities sub_pv ON sub_p.id = sub_pv.product_id AND sub_pv.pricing_group_id = :pricingGroup AND sub_pv.domain_id = :domainId
+                        WHERE p.main_variant_id = sub_p.main_variant_id 
+                        AND sub_pv.visible = true
+                        GROUP BY sub_ip.input_price
+                        ORDER BY COUNT(*) DESC, sub_ip.input_price DESC
+                        LIMIT 1
+                    ) as default_price
+                FROM products p
+                JOIN product_manual_input_prices ip ON ip.product_id = p.id AND ip.pricing_group_id = :pricingGroup
+                JOIN product_visibilities pv ON p.id = pv.product_id AND pv.pricing_group_id = :pricingGroup AND pv.domain_id = :domainId
+                WHERE p.main_variant_id IS NOT NULL
+                AND pv.visible = true
+                GROUP BY p.main_variant_id
+                HAVING COUNT(DISTINCT ip.input_price) > 1',
+            $resultSetMapping
+        );
+
+        $queryBuilder->setParameters([
+            'pricingGroup' => $pricingGroup,
+            'domainId' => $domainId,
+        ]);
+
+        return $queryBuilder->getResult();
+    }
+
+    /**
+     * @param int $mainVariantId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $defaultPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsWithDifferentPriceForMainVariant(int $mainVariantId, Money $defaultPrice, PricingGroup $pricingGroup): array
+    {
+        $variantsToHide = $this->getProductRepository()->createQueryBuilder('p')
+            ->join(ProductManualInputPrice::class, 'pmip', Join::WITH, 'pmip.product = p.id AND pmip.pricingGroup = :pricingGroup')
+            ->where('p.mainVariant = :mainVariant')
+            ->andWhere('pmip.inputPrice != :defaultInputPrice')
+            ->setParameters([
+                'mainVariant' => $mainVariantId,
+                'pricingGroup' => $pricingGroup,
+                'defaultInputPrice' => $defaultPrice->getAmount(),
+            ])->getQuery()->getResult();
+
+        return $variantsToHide;
     }
 }

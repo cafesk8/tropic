@@ -511,6 +511,12 @@ class Product extends BaseProduct
         return $this->variantType === self::VARIANT_TYPE_NONE;
     }
 
+    public function setProductAsHidden(): void
+    {
+        $this->hidden = true;
+        $this->markForVisibilityRecalculation();
+    }
+
     /**
      * @return string
      */

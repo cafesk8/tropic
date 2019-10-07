@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Pricing\Transfer;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
@@ -48,12 +49,18 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
     private $pricingGroupSettingFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ProductPriceTransferValidator $productPriceTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -61,7 +68,8 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
         ProductPriceTransferValidator $productPriceTransferValidator,
         ProductFacade $productFacade,
         ProductPriceRecalculator $productPriceRecalculator,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        Domain $domain
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->multidomainRestClient = $multidomainRestClient;
@@ -69,6 +77,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
         $this->productFacade = $productFacade;
         $this->productPriceRecalculator = $productPriceRecalculator;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->domain = $domain;
     }
 
     /**
@@ -152,6 +161,18 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
     protected function isNextIterationNeeded(): bool
     {
         return false;
+    }
+
+    public function end(): void
+    {
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $hiddenVariantIds = $this->productFacade->hideVariantsWithDifferentPriceForDomain($domainId);
+            $this->logger->addWarning('Variants were hidden because of different price.', [
+                'variants' => $hiddenVariantIds,
+                'domainId' => $domainId,
+            ]);
+        }
+        parent::end();
     }
 
     /**
