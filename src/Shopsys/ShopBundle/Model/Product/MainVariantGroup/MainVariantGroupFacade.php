@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product\MainVariantGroup;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -28,7 +29,7 @@ class MainVariantGroupFacade
     private $domain;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
      */
     private $currentCustomer;
 
@@ -86,16 +87,30 @@ class MainVariantGroupFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @param int $domainId
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getProductsForMainVariantGroup(Product $product, int $domainId): array
+    public function getProductsForMainVariantGroup(Product $product): array
+    {
+        return $this->mainVariantGroupRepository->getProductsForMainVariantGroup(
+            $product,
+            $this->domain->getId(),
+            $this->currentCustomer->getPricingGroup()
+        );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsForMainVariantGroupByProductAndDomainIdAndPricingGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
     {
         return $this->mainVariantGroupRepository->getProductsForMainVariantGroup(
             $product,
             $domainId,
-            $this->currentCustomer->getPricingGroupOrDefaultPricingGroup($domainId)
+            $pricingGroup
         );
     }
 
