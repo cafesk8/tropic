@@ -79,8 +79,8 @@
                                                 {% if promoCode is not null %}
                                                 <div class="table-cart__cell__discount">
                                                     {% if cartItemDiscounts[index] is not null %}
-                                                    &nbsp;{{ promoCode.code }}
-                                                    {{ cartItemDiscounts[index].priceWithVat|price }}
+                                                    &nbsp;{{ promoCode.code }}&nbsp;
+                                                    -{{ cartItemDiscounts[index].priceWithVat|price }}
                                                     {% endif %}
                                                 </div>
                                                 {% endif %}

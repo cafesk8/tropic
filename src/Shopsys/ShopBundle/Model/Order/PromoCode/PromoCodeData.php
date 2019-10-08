@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 
 class PromoCodeData extends BasePromoCodeData
@@ -88,12 +87,8 @@ class PromoCodeData extends BasePromoCodeData
      */
     public $certificateSku;
 
-    public function __construct()
-    {
-        $this->percent = 0;
-        $this->nominalDiscount = Money::zero();
-        $this->useNominalDiscount = false;
-        $this->type = self::TYPE_PROMO_CODE;
-        $this->certificateValue = Money::zero();
-    }
+    /**
+     * @var string|null
+     */
+    public $usageType;
 }

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeUsageTypeException;
 
 /**
  * @ORM\Table(name="promo_codes")
@@ -18,6 +19,10 @@ class PromoCode extends BasePromoCode
 {
     public const MAX_CODES_GENERATE = 9999;
     public const MASS_GENERATED_CODE_LENGTH = 6;
+
+    public const USAGE_TYPE_ALL = 'all';
+    public const USAGE_TYPE_WITH_ACTION_PRICE = 'withActionPrice';
+    public const USAGE_TYPE_NO_ACTION_PRICE = 'noActionPrice';
 
     /**
      * @var int
@@ -101,21 +106,28 @@ class PromoCode extends BasePromoCode
      *
      * @ORM\Column(type="string")
      */
-    public $type;
+    private $type;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      *
      * @ORM\Column(type="money", precision=20, scale=6, nullable=true)
      */
-    public $certificateValue;
+    private $certificateValue;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    public $certificateSku;
+    private $certificateSku;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $usageType;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
@@ -138,6 +150,7 @@ class PromoCode extends BasePromoCode
         $this->type = $promoCodeData->type;
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
+        $this->setUsageType($promoCodeData->usageType);
     }
 
     /**
@@ -160,6 +173,7 @@ class PromoCode extends BasePromoCode
         $this->type = $promoCodeData->type;
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
+        $this->setUsageType($promoCodeData->usageType);
     }
 
     /**
@@ -293,5 +307,24 @@ class PromoCode extends BasePromoCode
     public function getCertificateSku(): ?string
     {
         return $this->certificateSku;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsageType(): string
+    {
+        return $this->usageType;
+    }
+
+    /**
+     * @param string $usageType
+     */
+    public function setUsageType(string $usageType): void
+    {
+        if (in_array($usageType, [self::USAGE_TYPE_ALL, self::USAGE_TYPE_NO_ACTION_PRICE, self::USAGE_TYPE_WITH_ACTION_PRICE], true) === false) {
+            throw new InvalidPromoCodeUsageTypeException(sprintf('Invalid promo code use type `%s`', $usageType));
+        }
+        $this->usageType = $usageType;
     }
 }

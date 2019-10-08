@@ -116,24 +116,7 @@ class PromoCodeController extends FrontBaseController
                 'message' => t('{{title}} byl již vyčerpán.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
-            if ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() !== null) { // FROM and TO dates are filled
-                $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
-                    '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
-                    '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
-                    '{{title}}' => $this->getErrorMessageTitle($promoCode),
-                ]);
-            } elseif ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() === null) { // Only FROM date is filled
-                $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}.', [
-                    '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidFrom(), $request->getLocale()),
-                    '{{title}}' => $this->getErrorMessageTitle($promoCode),
-                ]);
-            } else { // Only TO date is filled
-                $message = t('{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}.', [
-                    '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate($promoCode->getValidTo(), $request->getLocale()),
-                    '{{title}}' => $this->getErrorMessageTitle($promoCode),
-                ]);
-            }
-
+            $message = $this->getPromoCodeIsNotValidMessage($request, $promoCode);
             return new JsonResponse([
                 'result' => false,
                 'message' => $message,
@@ -144,6 +127,16 @@ class PromoCodeController extends FrontBaseController
                 'message' => t('Pro využití slevového kódu musíte nakoupit aspoň za %price%.', [
                     '%price%' => $this->priceExtension->priceFilter($promoCode->getMinOrderValue()),
                 ]),
+            ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNoActionPriceUsageException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón nelze aplikovat na zlevněné zboží.'),
+            ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeWithActionPriceUsageException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón nelze aplikovat na nezlevněné zboží.'),
             ]);
         }
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));
@@ -174,5 +167,45 @@ class PromoCodeController extends FrontBaseController
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code removed from order'));
 
         return $this->redirectToRoute('front_cart');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @return string
+     */
+    private function getPromoCodeIsNotValidMessage(Request $request, PromoCode $promoCode): string
+    {
+        if ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() !== null) { // FROM and TO dates are filled
+            $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}.', [
+                '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate(
+                    $promoCode->getValidFrom(),
+                    $request->getLocale()
+                ),
+                '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate(
+                    $promoCode->getValidTo(),
+                    $request->getLocale()
+                ),
+                '{{title}}' => $this->getErrorMessageTitle($promoCode),
+            ]);
+        } elseif ($promoCode->getValidFrom() !== null && $promoCode->getValidTo() === null) { // Only FROM date is filled
+            $message = t('{{title}} nemůžete uplatnit. Jeho platnost je od {{validityFrom}}.', [
+                '{{validityFrom}}' => $this->dateTimeFormatterExtension->formatDate(
+                    $promoCode->getValidFrom(),
+                    $request->getLocale()
+                ),
+                '{{title}}' => $this->getErrorMessageTitle($promoCode),
+            ]);
+        } else { // Only TO date is filled
+            $message = t('{{title}} nemůžete uplatnit. Jeho platnost byla do {{validityTo}}.', [
+                '{{validityTo}}' => $this->dateTimeFormatterExtension->formatDate(
+                    $promoCode->getValidTo(),
+                    $request->getLocale()
+                ),
+                '{{title}}' => $this->getErrorMessageTitle($promoCode),
+            ]);
+        }
+
+        return $message;
     }
 }
