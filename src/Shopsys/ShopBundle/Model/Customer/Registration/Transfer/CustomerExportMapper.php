@@ -59,21 +59,50 @@ class CustomerExportMapper
             'CreatingDateTime' => (new DateTime())->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
                 'ID' => '',
-                'Adress' => [
-                    'SureName' => $user->getLastName(),
-                    'ForeName' => $user->getFirstName(),
-                    'Street' => self::EMPTY_VALUE,
-                    'City' => self::EMPTY_VALUE,
-                    'ZIP' => self::EMPTY_VALUE,
-                    'Country' => $this->getCountryPropertyContent($user),
-                ],
+                'Adress' => $this->mapBillingAddress($user),
                 'Phone' => $user->getTelephone() ?? '1',
                 'Email' => $user->getEmail(),
                 'IdCards' => [
                     $user->getEan(),
                 ],
             ],
-            'DeliveryAdress' => [
+            'DeliveryAdress' => $this->mapDeliveryAddress($user),
+            'Total' => 0,
+            'PaymentMetod' => self::EMPTY_VALUE,
+            'ShippingMetod' => self::EMPTY_VALUE,
+        ];
+
+        return $headerArray;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @return array
+     */
+    private function mapBillingAddress(User $user): array
+    {
+        $billingAddress = $user->getBillingAddress();
+
+        return [
+            'SureName' => $user->getLastName(),
+            'ForeName' => $user->getFirstName(),
+            'Street' => $this->getPassedValueOrEmptyForNull($billingAddress->getStreet()),
+            'City' => $this->getPassedValueOrEmptyForNull($billingAddress->getCity()),
+            'ZIP' => $this->getPassedValueOrEmptyForNull($billingAddress->getPostcode()),
+            'Country' => $this->getCountryPropertyContent($user),
+        ];
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @return array
+     */
+    private function mapDeliveryAddress(User $user): array
+    {
+        $deliveryAddress = $user->getDeliveryAddress();
+
+        if ($deliveryAddress === null) {
+            return [
                 'SureName' => self::EMPTY_VALUE,
                 'ForeName' => self::EMPTY_VALUE,
                 'Company' => self::EMPTY_VALUE,
@@ -82,13 +111,28 @@ class CustomerExportMapper
                 'ZIP' => self::EMPTY_VALUE,
                 'Country' => self::EMPTY_VALUE,
                 'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
-            ],
-            'Total' => 0,
-            'PaymentMetod' => self::EMPTY_VALUE,
-            'ShippingMetod' => self::EMPTY_VALUE,
-        ];
+            ];
+        }
 
-        return $headerArray;
+        return [
+            'SureName' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getFirstName()),
+            'ForeName' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getLastName()),
+            'Company' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getCompanyName()),
+            'Street' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getStreet()),
+            'City' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getCity()),
+            'ZIP' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getPostcode()),
+            'Country' => $this->getDeliveryAddressCountryPropertyContent($user),
+            'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
+        ];
+    }
+
+    /**
+     * @param string|null $value
+     * @return string
+     */
+    private function getPassedValueOrEmptyForNull(?string $value): string
+    {
+        return $value ?? self::EMPTY_VALUE;
     }
 
     /**
@@ -111,5 +155,29 @@ class CustomerExportMapper
         }
 
         return '';
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @return string
+     */
+    private function getDeliveryAddressCountryPropertyContent(User $user): string
+    {
+        $deliveryAddress = $user->getDeliveryAddress();
+
+        if ($deliveryAddress === null || $deliveryAddress->getCountry() === null) {
+            return self::EMPTY_VALUE;
+        }
+
+        /** @var \Shopsys\ShopBundle\Model\Country\Country $country */
+        $country = $deliveryAddress->getCountry();
+
+        if ($country->getExternalId() !== null) {
+            return $country->getExternalId();
+        } elseif ($country->getCode() !== null) {
+            return $country->getCode();
+        }
+
+        return self::EMPTY_VALUE;
     }
 }
