@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Feed;
 
+use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule as BaseDailyFeedCronModule;
 
 class DailyFeedCronModule extends BaseDailyFeedCronModule
@@ -46,5 +47,31 @@ class DailyFeedCronModule extends BaseDailyFeedCronModule
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sleep(): void
+    {
+        $lastSeekId = $this->currentFeedExport !== null ? $this->currentFeedExport->getLastSeekId() : null;
+
+        if ($lastSeekId !== null) {
+            $this->currentFeedExport->sleep();
+        }
+
+        $currentFeedName = $this->feedExportCreationDataQueue->getCurrentFeedName();
+        $currentDomain = $this->feedExportCreationDataQueue->getCurrentDomain();
+
+        $this->setting->set(Setting::FEED_NAME_TO_CONTINUE, $currentFeedName);
+        $this->setting->set(Setting::FEED_DOMAIN_ID_TO_CONTINUE, $currentDomain->getId());
+        $this->setting->set(Setting::FEED_ITEM_ID_TO_CONTINUE, $lastSeekId);
+
+        $this->logger->addDebug(sprintf(
+            'Going to sleep... Will continue with feed "%s" on "%s", processing from ID %d.',
+            $currentFeedName,
+            $currentDomain->getName(),
+            $lastSeekId
+        ));
     }
 }

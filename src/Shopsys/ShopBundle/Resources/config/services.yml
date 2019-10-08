@@ -574,6 +574,3 @@ services:
         class: Shopsys\ShopBundle\Model\Security\LoginListener
         tags:
           - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
-
-
-    Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@Shopsys\ShopBundle\Model\Feed\FeedExportFactory'
