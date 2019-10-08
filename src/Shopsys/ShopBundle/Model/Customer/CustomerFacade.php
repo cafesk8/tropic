@@ -208,4 +208,17 @@ class CustomerFacade extends BaseCustomerFacade
 
         $this->editByCustomer($user->getId(), $customerData);
     }
+
+    /**
+     * @param int $userId
+     */
+    public function becomeBushmanClubMember(int $userId): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
+        $user = $this->getUserById($userId);
+
+        $user->becomeBushmanClubMember();
+
+        $this->em->flush($user);
+    }
 }

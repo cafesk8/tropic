@@ -299,4 +299,10 @@ class User extends BaseUser
     {
         return $this->pricingGroupUpdatedAt;
     }
+
+    public function becomeBushmanClubMember(): void
+    {
+        $this->memberOfBushmanClub = true;
+        $this->setExportStatus(self::EXPORT_NOT_YET);
+    }
 }
