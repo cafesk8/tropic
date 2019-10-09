@@ -6,8 +6,10 @@ namespace Shopsys\ShopBundle\Form\Front\Customer;
 
 use Shopsys\FrameworkBundle\Form\Constraints\FieldsAreNotIdentical;
 use Shopsys\FrameworkBundle\Form\Constraints\NotIdenticalToEmailLocalPart;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Customer\UserData;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -63,6 +65,16 @@ class UserFormType extends AbstractType
                 ],
                 'invalid_message' => 'Passwords do not match',
             ]);
+
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
+        $customer = $options['user'];
+
+        if ($customer->isMemberOfBushmanClub() === false) {
+            $builder
+                ->add('memberOfBushmanClub', CheckboxType::class, [
+                    'required' => true,
+                ]);
+        }
     }
 
     /**
@@ -70,23 +82,26 @@ class UserFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => UserData::class,
-            'attr' => ['novalidate' => 'novalidate'],
-            'constraints' => [
-                new FieldsAreNotIdentical([
-                    'field1' => 'email',
-                    'field2' => 'password',
-                    'errorPath' => 'password',
-                    'message' => 'Password cannot be same as e-mail',
-                ]),
-                new NotIdenticalToEmailLocalPart([
-                    'password' => 'password',
-                    'email' => 'email',
-                    'errorPath' => 'password',
-                    'message' => 'Password cannot be same as part of e-mail before at sign',
-                ]),
-            ],
+        $resolver
+            ->setRequired('user')
+            ->addAllowedTypes('user', User::class)
+            ->setDefaults([
+                'data_class' => UserData::class,
+                'attr' => ['novalidate' => 'novalidate'],
+                'constraints' => [
+                    new FieldsAreNotIdentical([
+                        'field1' => 'email',
+                        'field2' => 'password',
+                        'errorPath' => 'password',
+                        'message' => 'Password cannot be same as e-mail',
+                    ]),
+                    new NotIdenticalToEmailLocalPart([
+                        'password' => 'password',
+                        'email' => 'email',
+                        'errorPath' => 'password',
+                        'message' => 'Password cannot be same as part of e-mail before at sign',
+                    ]),
+                ],
         ]);
     }
 }

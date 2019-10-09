@@ -11,7 +11,6 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
-use Shopsys\ShopBundle\Form\Front\Customer\BushmanClubFormType;
 use Shopsys\ShopBundle\Form\Front\Customer\CustomerFormType;
 use Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,9 +99,6 @@ class CustomerController extends FrontBaseController
         ]);
         $form->handleRequest($request);
 
-        $bushmanClubForm = $this->createForm(BushmanClubFormType::class);
-        $bushmanClubForm->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $customerData = $form->getData();
 
@@ -116,16 +112,8 @@ class CustomerController extends FrontBaseController
             $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
-        if ($bushmanClubForm->isSubmitted() && $bushmanClubForm->isValid()) {
-            $this->customerFacade->becomeBushmanClubMember($user->getId());
-
-            $this->getFlashMessageSender()->addSuccessFlash(t('Stal ses členem BUSHMAN clubu'));
-            return $this->redirectToRoute('front_customer_edit');
-        }
-
         return $this->render('@ShopsysShop/Front/Content/Customer/edit.html.twig', [
             'form' => $form->createView(),
-            'bushmanClubForm' => $bushmanClubForm->createView(),
             'bushmanClubPointPeriods' => $this->bushmanClubPointPeriodSettings->getPeriods(),
             'customer' => $user,
         ]);

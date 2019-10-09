@@ -12,24 +12,7 @@
 {% block main_content %}
 <div class="web__line">
     <div class="web__container web__container--big-padding">
-
         <h1 class="in-title in-title--big in-title--center">{{ 'Personal data'|trans }}</h1>
-
-        <div class="wrap-box">
-            <h2 class="wrap-box__title">{{ 'BUSHMAN club'|trans }}</h2>
-            <div class="wrap-box__in">
-                {% if customer.memberOfBushmanClub %}
-                    <p>{{ 'Jsi členem BUSHMAN clubu' }}</p>
-                {% else %}
-                    {{ form_start(bushmanClubForm) }}
-                    {{ form_errors(bushmanClubForm) }}
-                    {{ form_widget(bushmanClubForm.save, { label: 'Stát se členem BUSHMAN clubu'|trans}) }}
-                    <p>{{ 'Po kliku na tlačítko se staneš členem BUSHMAN clubu'|trans }}</p>
-                    {{ form_end(bushmanClubForm) }}
-                {% endif %}
-            </div>
-        </div>
-
         {{ form_start(form) }}
             {{ form_errors(form) }}
 
@@ -48,6 +31,17 @@
                         <p>
                             {{ 'To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us.'|trans }}
                         </p>
+                    </div>
+                </div>
+
+                <div class="wrap-box">
+                    <h2 class="wrap-box__title">{{ 'BUSHMAN club'|trans }}</h2>
+                    <div class="wrap-box__in">
+                        {% if customer.memberOfBushmanClub %}
+                            {{ 'Jsi členem BUSHMAN clubu'|trans }}
+                        {% else %}
+                            {{ form_row(form.userData.memberOfBushmanClub, { label: 'Chci se stát členem BUSHMAN clubu'|trans}) }}
+                        {% endif %}
                     </div>
                 </div>
 

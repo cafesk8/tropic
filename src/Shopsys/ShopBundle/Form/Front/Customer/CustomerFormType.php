@@ -33,7 +33,9 @@ class CustomerFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userData', UserFormType::class)
+            ->add('userData', UserFormType::class, [
+                'user' => $options['user'],
+            ])
             ->add('billingAddressData', BillingAddressFormType::class, [
                 'domain_id' => $options['domain_id'],
             ])

@@ -135,6 +135,8 @@ class User extends BaseUser
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
         $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
+
+        $this->setExportStatus(self::EXPORT_NOT_YET);
     }
 
     /**
@@ -298,11 +300,5 @@ class User extends BaseUser
     public function getPricingGroupUpdatedAt(): \DateTime
     {
         return $this->pricingGroupUpdatedAt;
-    }
-
-    public function becomeBushmanClubMember(): void
-    {
-        $this->memberOfBushmanClub = true;
-        $this->setExportStatus(self::EXPORT_NOT_YET);
     }
 }
