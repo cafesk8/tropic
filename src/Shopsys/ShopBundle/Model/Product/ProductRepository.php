@@ -9,6 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -302,10 +303,38 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
+     * @param string $parameterType
+     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllMainVariantProducts(): array
+    public function getAllMainVariantProductsWithoutSkOrDeParameters(string $parameterType, int $limit): array
     {
-        return $this->getProductRepository()->findBy(['variantType' => Product::VARIANT_TYPE_MAIN]);
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('IDENTITY(ppv.product) as id')
+            ->from(ProductParameterValue::class, 'ppv')
+            ->join(Parameter::class, 'p', Join::WITH, 'ppv.parameter = p.id AND p.type = :parameterType')
+            ->setParameter('parameterType', $parameterType)
+            ->groupBy('ppv.product, ppv.parameter')
+            ->having('COUNT(IDENTITY(ppv)) < 3')
+            ->setMaxResults($limit);
+
+        $productIdsInArray = $queryBuilder->getQuery()->getScalarResult();
+        $productIds = array_column($productIdsInArray, 'id');
+
+        return $this->findByIds($productIds);
+    }
+
+    /**
+     * @param array $productIds
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    private function findByIds(array $productIds): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('p')
+            ->from(Product::class, 'p')
+            ->andWhere('p.id IN(:productIds)')
+            ->setParameter('productIds', $productIds)
+            ->getQuery()->getResult();
     }
 }

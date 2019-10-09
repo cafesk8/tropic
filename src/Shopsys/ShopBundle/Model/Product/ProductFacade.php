@@ -622,10 +622,12 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param string $parameterType
+     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllMainVariantProducts(): array
+    public function getAllMainVariantProductsWithoutSkOrDeParameters(string $parameterType, int $limit): array
     {
-        return $this->productRepository->getAllMainVariantProducts();
+        return $this->productRepository->getAllMainVariantProductsWithoutSkOrDeParameters($parameterType, $limit);
     }
 }
