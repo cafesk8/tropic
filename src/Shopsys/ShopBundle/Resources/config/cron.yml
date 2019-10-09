@@ -55,9 +55,9 @@ services:
         tags:
             - { name: shopsys.cron, hours: '1', minutes: '00', readableFrequency: 'v 01:00 a při změně dopravy' }
 
-    Shopsys\ShopBundle\Model\Customer\CustomerUpdatePricingGroupFromIsCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '23', minutes: '50', readableFrequency: 'v 23:50' }
+    #Shopsys\ShopBundle\Model\Customer\CustomerUpdatePricingGroupFromIsCronModule:
+    #    tags:
+    #        - { name: shopsys.cron, hours: '23', minutes: '50', readableFrequency: 'v 23:50' }
 
     Shopsys\ShopBundle\Model\Order\Mall\OrderImportCronModule:
       tags:
