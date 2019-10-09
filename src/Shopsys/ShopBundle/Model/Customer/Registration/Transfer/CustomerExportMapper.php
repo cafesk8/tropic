@@ -58,7 +58,7 @@ class CustomerExportMapper
             'Number' => $this->lastNumber++,
             'CreatingDateTime' => (new DateTime())->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
-                'ID' => '',
+                'ID' => $user->getTransferId() ?? '',
                 'Adress' => $this->mapBillingAddress($user),
                 'Phone' => $user->getTelephone() ?? '1',
                 'Email' => $user->getEmail(),
