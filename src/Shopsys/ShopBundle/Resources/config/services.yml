@@ -222,6 +222,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@Shopsys\ShopBundle\Model\Product\Brand\BrandFacade'
 
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@Shopsys\ShopBundle\Model\Product\Brand\BrandRepository'
+
     Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector: ~
 
     Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader: ~
