@@ -1,0 +1,28 @@
+{% set preparedProductItems = order.preparedProductItems %}
+
+{% if preparedProductItems|length > 0 %}
+    <table>
+        <tr>
+            <th>{% trans into orderLocale %}Name{% endtrans %}</th>
+            <th>{% trans into orderLocale %}Dostupné množství k odběru{% endtrans %}</th>
+            <th>{% trans into orderLocale %}Unit price including VAT{% endtrans %}</th>
+            <th>{% trans into orderLocale %}Total item price including VAT{% endtrans %}</th>
+        </tr>
+
+        {% for item in preparedProductItems %}
+            {% if item.preparedQuantity > 0 and item.typeProduct is same as (true) %}
+                <tr>
+                    <td style="font-weight: bold;">
+                        {{ item.name }}
+                        {% if (item.isTypeProduct is same as (true) or item.isTypeGift is same as (true)) and item.product is not null %}
+                            {{ productParameters(item.product, orderLocale) }}
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right;">{{ item.preparedQuantity|formatNumber(orderLocale) }} {{ item.unitName }}</td>
+                    <td style="text-align: right;">{{ item.priceWithVat|priceTextWithCurrencyByCurrencyIdAndLocale(order.currency.id, orderLocale) }}</td>
+                    <td style="text-align: right;">{{ orderItemTotalPricesById[item.id].priceWithVat|priceTextWithCurrencyByCurrencyIdAndLocale(order.currency.id, orderLocale) }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endif %}

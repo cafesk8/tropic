@@ -847,6 +847,20 @@ class Order extends BaseOrder
     }
 
     /**
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
+     */
+    public function getPreparedProductItems(): array
+    {
+        return array_filter(
+            $this->items->toArray(),
+            function (OrderItem $orderItem) {
+                /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem */
+                return $orderItem->isTypeProduct() === true && $orderItem->getPreparedQuantity() > 0;
+            }
+        );
+    }
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
      */
     private function setTransport(BaseOrderData $orderData): void

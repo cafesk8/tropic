@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order;
 
 use DateTime;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
+use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
@@ -17,6 +19,14 @@ use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 
 class OrderRepository extends BaseOrderRepository
 {
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    private function getOrderItemRepository(): EntityRepository
+    {
+        return $this->em->getRepository(OrderItem::class);
+    }
+
     /**
      * @param \DateTime $fromDate
      * @return \Shopsys\ShopBundle\Model\Order\Order[]
@@ -208,5 +218,18 @@ class OrderRepository extends BaseOrderRepository
         }
 
         return $order;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param string $ean
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
+     */
+    public function findOrderItemsByEan(Order $order, string $ean): array
+    {
+        return $this->getOrderItemRepository()->findBy([
+            'order' => $order,
+            'ean' => $ean,
+        ]);
     }
 }
