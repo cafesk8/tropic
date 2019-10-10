@@ -69,6 +69,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->openingHours = 'Po-Ne / 10,00 - 20,00';
         $storeData->externalNumber = '0039';
         $storeData->pickupPlace = true;
+        $storeData->franchisor = true;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $this->createStore($storeData, self::REFERENCE_STORE_BRNO_FUTURUM);
 
@@ -82,6 +83,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->externalNumber = '0040';
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $storeData->pickupPlace = true;
+        $storeData->franchisor = false;
         $this->createStore($storeData, self::REFERENCE_STORE_OSTRAVA_AVION);
 
         $storeData->description = $description;
