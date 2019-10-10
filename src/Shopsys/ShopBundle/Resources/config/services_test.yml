@@ -178,3 +178,5 @@ services:
     Shopsys\ShopBundle\Model\AdvancedSearchOrder\Filter\OrderTransportFilter: ~
 
     Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@Shopsys\ShopBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Heureka\HeurekaFeedItemFactory'
