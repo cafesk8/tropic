@@ -71,6 +71,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@Shopsys\ShopBundle\Model\Product\Brand\BrandFacade'
+
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
     Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig'

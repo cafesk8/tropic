@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product\Brand;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand as BaseBrand;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandData as BaseBrandData;
+use Shopsys\ShopBundle\Model\Product\Brand\Exception\BrandDeletionForbiddenException;
 use Shopsys\ShopBundle\Model\Product\Brand\Exception\InvalidBrandTypeException;
 
 /**
@@ -60,5 +61,12 @@ class Brand extends BaseBrand
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function checkForDelete(): void
+    {
+        if ($this->type === self::TYPE_MAIN_BUSHMAN) {
+            throw new BrandDeletionForbiddenException(sprintf('Brand with id `%s` deletion is forbidden', $this->id));
+        }
     }
 }

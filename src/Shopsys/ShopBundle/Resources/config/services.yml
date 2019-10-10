@@ -220,6 +220,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@Shopsys\ShopBundle\Model\Product\Brand\BrandFacade'
+
     Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector: ~
 
     Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader: ~
