@@ -591,3 +591,5 @@ services:
         tags: ['controller.service_arguments']
 
     Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Heureka\HeurekaFeedItemFactory'
+
+    Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
