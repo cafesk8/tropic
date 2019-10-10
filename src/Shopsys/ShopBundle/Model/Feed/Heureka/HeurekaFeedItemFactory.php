@@ -63,7 +63,7 @@ class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
             $productName,
             $mainProduct->getDescription($domainConfig->getId()),
             $this->productDataBatchLoader->getProductUrl($product, $domainConfig),
-            $this->productDataBatchLoader->getProductImageUrl($product, $domainConfig),
+            $this->productDataBatchLoader->getProductImageUrl($mainProduct, $domainConfig),
             $brandName,
             $product->getEan(),
             $product->getCalculatedAvailability()->getDispatchTime(),

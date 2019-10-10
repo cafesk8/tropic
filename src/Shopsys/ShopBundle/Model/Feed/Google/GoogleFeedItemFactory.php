@@ -65,7 +65,7 @@ class GoogleFeedItemFactory extends BaseGoogleFeedItemFactory
             $product->getEan(),
             $product->getPartno(),
             $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig),
-            $this->productUrlsBatchLoader->getProductImageUrl($product, $domainConfig),
+            $this->productUrlsBatchLoader->getProductImageUrl($mainProduct, $domainConfig),
             $product->getCalculatedSellingDenied(),
             $this->getPrice($product, $domainConfig),
             $this->getCurrency($domainConfig)
