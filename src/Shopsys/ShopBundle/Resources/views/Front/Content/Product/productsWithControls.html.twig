@@ -18,10 +18,15 @@
         <div class="box-list__filter-opener">
             <span class="btn js-product-filter-opener">{{ 'Filtrovat produkty'|trans }}</span>
         </div>
+        {% set entityName = 'products'|trans %}
+        {{ paginator.paginatorNavigation(paginationResult, entityName) }}
+
         {{ productList.list(paginationResult.results, variantsIndexedByMainVariantId, mainVariantsIndexedByMainVariantGroup) }}
 
         <div class="text-center margin-bottom-20">
             {{ paginator.loadMoreButton(paginationResult) }}
         </div>
+
+        {{ paginator.paginatorNavigation(paginationResult, entityName) }}
     </div>
 
