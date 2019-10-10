@@ -12,28 +12,28 @@ use Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory as B
 use Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaProductDataBatchLoader;
 use Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
-use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Feed\FeedHelper;
 
 class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
 {
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
+     * @var \Shopsys\ShopBundle\Model\Feed\FeedHelper
      */
-    private $productCachedAttributesFacade;
+    private $feedHelper;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaProductDataBatchLoader $heurekaProductDataBatchLoader
      * @param \Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryFacade $heurekaCategoryFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Feed\FeedHelper $feedHelper
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
         HeurekaProductDataBatchLoader $heurekaProductDataBatchLoader,
         HeurekaCategoryFacade $heurekaCategoryFacade,
         CategoryFacade $categoryFacade,
-        ProductCachedAttributesFacade $productCachedAttributesFacade
+        FeedHelper $feedHelper
     ) {
         parent::__construct(
             $productPriceCalculationForUser,
@@ -41,7 +41,7 @@ class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
             $heurekaCategoryFacade,
             $categoryFacade
         );
-        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
+        $this->feedHelper = $feedHelper;
     }
 
     /**
@@ -54,7 +54,8 @@ class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
         $mainVariantId = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $mainProduct = $product->isVariant() ? $product->getMainVariant() : $product;
 
-        $productName = $this->createProductName($product, $domainConfig);
+        $brandName = $this->getBrandName($product);
+        $productName = $this->feedHelper->createProductName($product, $domainConfig, $brandName);
 
         return new HeurekaFeedItem(
             $product->getId(),
@@ -63,7 +64,7 @@ class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
             $mainProduct->getDescription($domainConfig->getId()),
             $this->productDataBatchLoader->getProductUrl($product, $domainConfig),
             $this->productDataBatchLoader->getProductImageUrl($product, $domainConfig),
-            $this->getBrandName($product),
+            $brandName,
             $product->getEan(),
             $product->getCalculatedAvailability()->getDispatchTime(),
             $this->getPrice($product, $domainConfig),
@@ -71,30 +72,5 @@ class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
             $this->productDataBatchLoader->getProductParametersByName($product, $domainConfig),
             $this->productDataBatchLoader->getProductCpc($product, $domainConfig)
         );
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return string
-     */
-    private function createProductName(Product $product, DomainConfig $domainConfig): string
-    {
-        $productName = $product->getName($domainConfig->getLocale());
-
-        if ($product->getVariantType() === Product::VARIANT_TYPE_NONE) {
-            return $productName;
-        }
-
-        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue(
-            $product,
-            $domainConfig->getLocale()
-        );
-
-        $brandName = $this->getBrandName($product);
-        $colorValue = $productDistinguishingParameterValue->getFirstDistinguishingParameterValue();
-        $sizeValue = $productDistinguishingParameterValue->getSecondDistinguishingParameterValue();
-
-        return sprintf('%s %s %s %s', $brandName, $productName, $colorValue, $sizeValue);
     }
 }

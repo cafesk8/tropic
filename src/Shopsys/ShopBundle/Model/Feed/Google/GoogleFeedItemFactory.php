@@ -12,37 +12,37 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItem as BaseGoogleFeedItem;
 use Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory as BaseGoogleFeedItemFactory;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
-use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Feed\FeedHelper;
 
 class GoogleFeedItemFactory extends BaseGoogleFeedItemFactory
 {
-    /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
-     */
-    private $productCachedAttributesFacade;
-
     /**
      * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
      */
     private $categoryFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Feed\FeedHelper
+     */
+    private $feedHelper;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
-     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Feed\FeedHelper $feedHelper
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
         CurrencyFacade $currencyFacade,
         ProductUrlsBatchLoader $productUrlsBatchLoader,
-        ProductCachedAttributesFacade $productCachedAttributesFacade,
-        CategoryFacade $categoryFacade
+        CategoryFacade $categoryFacade,
+        FeedHelper $feedHelper
     ) {
         parent::__construct($productPriceCalculationForUser, $currencyFacade, $productUrlsBatchLoader);
-        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->feedHelper = $feedHelper;
     }
 
     /**
@@ -53,7 +53,8 @@ class GoogleFeedItemFactory extends BaseGoogleFeedItemFactory
     public function create(Product $product, DomainConfig $domainConfig): BaseGoogleFeedItem
     {
         $mainProduct = $product->isVariant() ? $product->getMainVariant() : $product;
-        $productName = $this->createProductName($product, $domainConfig);
+        $brandName = $this->getBrandName($product);
+        $productName = $this->feedHelper->createProductName($product, $domainConfig, $brandName);
         $categoryFullPath = $this->getCategoryFullPath($product, $domainConfig);
 
         $googleFeedItem = new GoogleFeedItem(
@@ -74,31 +75,6 @@ class GoogleFeedItemFactory extends BaseGoogleFeedItemFactory
         $googleFeedItem->setCategoryFullPath($categoryFullPath);
 
         return $googleFeedItem;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return string
-     */
-    private function createProductName(Product $product, DomainConfig $domainConfig): string
-    {
-        $productName = $product->getName($domainConfig->getLocale());
-
-        if ($product->getVariantType() === Product::VARIANT_TYPE_NONE) {
-            return $productName;
-        }
-
-        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue(
-            $product,
-            $domainConfig->getLocale()
-        );
-
-        $brandName = $this->getBrandName($product);
-        $colorValue = $productDistinguishingParameterValue->getFirstDistinguishingParameterValue();
-        $sizeValue = $productDistinguishingParameterValue->getSecondDistinguishingParameterValue();
-
-        return sprintf('%s %s %s %s', $brandName, $productName, $colorValue, $sizeValue);
     }
 
     /**
