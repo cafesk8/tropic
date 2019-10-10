@@ -64,6 +64,7 @@ class StoreDataFactory
         $storeData->region = $store->getRegion();
         $storeData->externalNumber = $store->getExternalNumber();
         $storeData->showOnStoreList = $store->isShowOnStoreList();
+        $storeData->franchisor = $store->isFranchisor();
     }
 
     /**

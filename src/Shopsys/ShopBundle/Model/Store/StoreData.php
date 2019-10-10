@@ -93,10 +93,16 @@ class StoreData
      */
     public $showOnStoreList;
 
+    /**
+     * @var bool
+     */
+    public $franchisor;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();
         $this->pickupPlace = false;
         $this->showOnStoreList = true;
+        $this->franchisor = false;
     }
 }
