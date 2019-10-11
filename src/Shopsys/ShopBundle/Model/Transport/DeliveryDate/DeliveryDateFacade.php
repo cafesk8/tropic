@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
+use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Transport\Transport;
 
 class DeliveryDateFacade
@@ -67,28 +68,31 @@ class DeliveryDateFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
      * @return \DateTime
      */
-    public function getExpectedDeliveryDate(?Transport $transport = null): DateTime
+    public function getExpectedDeliveryDate(Product $product, ?Transport $transport = null): DateTime
     {
         if ($transport === null) {
             if ($this->fastestTransportDeliveryDays === null) {
                 $this->fastestTransportDeliveryDays = $this->getFastestTransportDeliveryDays();
             }
-            return $this->calculateDeliveryDate($this->fastestTransportDeliveryDays);
+            return $this->calculateDeliveryDate($this->fastestTransportDeliveryDays, $product);
         }
 
         return $this->calculateDeliveryDate(
-            $transport->getDeliveryDays()
+            $transport->getDeliveryDays(),
+            $product
         );
     }
 
     /**
      * @param int $deliveryDays
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \DateTime
      */
-    private function calculateDeliveryDate(int $deliveryDays): DateTime
+    private function calculateDeliveryDate(int $deliveryDays, Product $product): DateTime
     {
         $now = new DateTime();
         $startingDateTime = new DateTime();
@@ -97,6 +101,8 @@ class DeliveryDateFacade
         if ($now > $orderDeadline) {
             $startingDateTime = $startingDateTime->add(DateInterval::createFromDateString('1 day'));
         }
+
+        $this->addTwoDaysForNonStoredProductInCentralStore($product, $startingDateTime);
 
         return $this->workdayService->getFirstWorkdayAfterGivenWorkdaysCount(
             $startingDateTime,
@@ -153,5 +159,17 @@ class DeliveryDateFacade
         );
 
         return $transports;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \DateTime $dateTime
+     */
+    private function addTwoDaysForNonStoredProductInCentralStore(Product $product, DateTime $dateTime): void
+    {
+        $productStoreStocks = $product->getStocksWithoutZeroQuantityOnCentralStore();
+        if (count($productStoreStocks) === 0) {
+            $dateTime->add(new \DateInterval('P2D')); // add 2 days for expected delivery date
+        }
     }
 }
