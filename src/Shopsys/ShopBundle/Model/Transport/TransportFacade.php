@@ -8,9 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Transport\Exception\TransportPriceNotFoundException;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade as BaseTransportFacade;
@@ -212,5 +215,25 @@ class TransportFacade extends BaseTransportFacade
         }
 
         return null;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getTransportPricesWithVatIndexedByTransportId(Currency $currency): array
+    {
+        $transportPricesWithVatByTransportId = [];
+        $transports = $this->getAllIncludingDeleted();
+        foreach ($transports as $transport) {
+            try {
+                $transportPrice = $this->transportPriceCalculation->calculateIndependentPrice($transport, $currency);
+                $transportPricesWithVatByTransportId[$transport->getId()] = $transportPrice->getPriceWithVat();
+            } catch (TransportPriceNotFoundException $exception) {
+                $transportPricesWithVatByTransportId[$transport->getId()] = Money::zero();
+            }
+        }
+
+        return $transportPricesWithVatByTransportId;
     }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Payment;
 
+use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Payment\Exception\PaymentPriceNotFoundException;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade as BasePaymentFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 
 class PaymentFacade extends BasePaymentFacade
@@ -41,5 +44,25 @@ class PaymentFacade extends BasePaymentFacade
         }
 
         return null;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getPaymentPricesWithVatIndexedByPaymentId(Currency $currency): array
+    {
+        $paymentPricesWithVatByPaymentId = [];
+        $payments = $this->getAllIncludingDeleted();
+        foreach ($payments as $payment) {
+            try {
+                $paymentPrice = $this->paymentPriceCalculation->calculateIndependentPrice($payment, $currency);
+                $paymentPricesWithVatByPaymentId[$payment->getId()] = $paymentPrice->getPriceWithVat();
+            } catch (PaymentPriceNotFoundException $exception) {
+                $paymentPricesWithVatByPaymentId[$payment->getId()] = Money::zero();
+            }
+        }
+
+        return $paymentPricesWithVatByPaymentId;
     }
 }
