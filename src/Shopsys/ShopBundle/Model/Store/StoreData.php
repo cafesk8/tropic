@@ -98,11 +98,17 @@ class StoreData
      */
     public $franchisor;
 
+    /**
+     * @var bool
+     */
+    public $centralStore;
+
     public function __construct()
     {
         $this->images = new ImageUploadData();
         $this->pickupPlace = false;
         $this->showOnStoreList = true;
         $this->franchisor = false;
+        $this->centralStore = false;
     }
 }

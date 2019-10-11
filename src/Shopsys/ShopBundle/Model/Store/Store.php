@@ -148,6 +148,13 @@ class Store implements PickupPlaceInterface
     private $franchisor;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $centralStore;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Store\StoreData $storeData
      */
     public function __construct(StoreData $storeData)
@@ -169,6 +176,7 @@ class Store implements PickupPlaceInterface
         $this->externalNumber = $storeData->externalNumber;
         $this->showOnStoreList = $storeData->showOnStoreList;
         $this->franchisor = $storeData->franchisor;
+        $this->centralStore = $storeData->centralStore;
     }
 
     /**
@@ -202,6 +210,7 @@ class Store implements PickupPlaceInterface
         $this->externalNumber = $storeData->externalNumber;
         $this->showOnStoreList = $storeData->showOnStoreList;
         $this->franchisor = $storeData->franchisor;
+        $this->centralStore = $storeData->centralStore;
     }
 
     /**
@@ -362,5 +371,13 @@ class Store implements PickupPlaceInterface
     public function isFranchisor(): bool
     {
         return $this->franchisor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCentralStore(): bool
+    {
+        return $this->centralStore;
     }
 }

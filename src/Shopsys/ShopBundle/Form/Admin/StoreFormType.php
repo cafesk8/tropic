@@ -141,6 +141,10 @@ class StoreFormType extends AbstractType
             ->add('franchisor', YesNoType::class, [
                 'required' => false,
                 'label' => t('Je prodejna franchisa'),
+            ])
+            ->add('centralStore', YesNoType::class, [
+                'required' => false,
+                'label' => t('Je sklad centrální'),
             ]);
 
         return $builderBasicInformationGroup;
