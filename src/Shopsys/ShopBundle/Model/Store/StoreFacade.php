@@ -10,8 +10,6 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
 class StoreFacade
 {
-    public const DEFAULT_STORE_EXTERNAL_ID = '10001';
-
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -105,9 +103,9 @@ class StoreFacade
     /**
      * @return \Shopsys\ShopBundle\Model\Store\Store|null
      */
-    public function findDefaultStore(): ?Store
+    public function findCentralStore(): ?Store
     {
-        return $this->storeRepository->findByExternalNumber(self::DEFAULT_STORE_EXTERNAL_ID);
+        return $this->storeRepository->findCentralStore();
     }
 
     /**

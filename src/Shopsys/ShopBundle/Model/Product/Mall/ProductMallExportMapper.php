@@ -314,7 +314,7 @@ class ProductMallExportMapper
      */
     private function findStockQuantity(Product $product): int
     {
-        $defaultStore = $this->storeFacade->findDefaultStore();
+        $defaultStore = $this->storeFacade->findCentralStore();
 
         if ($defaultStore === null && $product->isMainVariant() === true) {
             return $product->getTotalStockQuantityOfProductVariantsForMall();
