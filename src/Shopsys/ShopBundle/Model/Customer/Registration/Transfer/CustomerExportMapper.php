@@ -60,6 +60,8 @@ class CustomerExportMapper
             'Customer' => [
                 'ID' => $user->getTransferId() ?? '',
                 'Adress' => $this->mapBillingAddress($user),
+                'ICO' => $this->getPassedValueOrEmptyForNull($user->getBillingAddress()->getCompanyNumber()),
+                'DIC' => $this->getPassedValueOrEmptyForNull($user->getBillingAddress()->getCompanyTaxNumber()),
                 'Phone' => $user->getTelephone() ?? '1',
                 'Email' => $user->getEmail(),
                 'IdCards' => [
@@ -86,6 +88,7 @@ class CustomerExportMapper
         return [
             'SureName' => $user->getLastName(),
             'ForeName' => $user->getFirstName(),
+            'Company' => $this->getPassedValueOrEmptyForNull($billingAddress->getCompanyName()),
             'Street' => $this->getPassedValueOrEmptyForNull($billingAddress->getStreet()),
             'City' => $this->getPassedValueOrEmptyForNull($billingAddress->getCity()),
             'ZIP' => $this->getPassedValueOrEmptyForNull($billingAddress->getPostcode()),
