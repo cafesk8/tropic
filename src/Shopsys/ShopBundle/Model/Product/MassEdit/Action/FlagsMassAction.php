@@ -8,10 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
-use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\ShopBundle\Model\Product\MassEdit\MassEditActionInterface;
-use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class FlagsMassAction implements MassEditActionInterface
@@ -28,44 +25,20 @@ class FlagsMassAction implements MassEditActionInterface
     private $flagFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
-     */
-    private $productDataFactory;
-
-    /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface
-     */
-    private $productCategoryDomainFactory;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler
-     */
-    private $productPriceRecalculationScheduler;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
      */
     public function __construct(
         FlagFacade $flagFacade,
-        ProductDataFactory $productDataFactory,
-        EntityManagerInterface $entityManager,
-        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
+        EntityManagerInterface $entityManager
     ) {
         $this->flagFacade = $flagFacade;
-        $this->productDataFactory = $productDataFactory;
         $this->entityManager = $entityManager;
-        $this->productCategoryDomainFactory = $productCategoryDomainFactory;
-        $this->productPriceRecalculationScheduler = $productPriceRecalculationScheduler;
     }
 
     /**
@@ -155,12 +128,12 @@ class FlagsMassAction implements MassEditActionInterface
     private function performOperationAdd(IterableResult $productsIterableResult, $value): void
     {
         foreach ($productsIterableResult as $row) {
-            $product = $row[0];
             /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
-            $productData = $this->productDataFactory->createFromProduct($product);
-            if (!in_array($value, $productData->flags, true)) {
-                $productData->flags[] = $value;
-                $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+            $product = $row[0];
+            $flags = $product->getFlags()->toArray();
+            if (!in_array($value, $flags, true)) {
+                $flags[] = $value;
+                $product->editFlags($flags);
                 $this->entityManager->flush($product);
             }
         }
@@ -173,13 +146,13 @@ class FlagsMassAction implements MassEditActionInterface
     private function performOperationRemove(IterableResult $productsIterableResult, $value): void
     {
         foreach ($productsIterableResult as $row) {
-            $product = $row[0];
             /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
-            $productData = $this->productDataFactory->createFromProduct($product);
-            $key = array_search($value, $productData->flags, true);
+            $product = $row[0];
+            $flags = $product->getFlags()->toArray();
+            $key = array_search($value, $flags, true);
             if ($key !== false) {
-                unset($productData->flags[$key]);
-                $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+                unset($flags[$key]);
+                $product->editFlags($flags);
                 $this->entityManager->flush($product);
             }
         }
@@ -192,11 +165,10 @@ class FlagsMassAction implements MassEditActionInterface
     private function performOperationSet(IterableResult $productsIterableResult, $value): void
     {
         foreach ($productsIterableResult as $row) {
-            $product = $row[0];
             /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
-            $productData = $this->productDataFactory->createFromProduct($product);
-            $productData->flags = [$value];
-            $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+            $product = $row[0];
+            $flags = [$value];
+            $product->editFlags($flags);
             $this->entityManager->flush($product);
         }
     }

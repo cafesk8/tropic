@@ -184,6 +184,14 @@ class Product extends BaseProduct
     }
 
     /**
+     * @inheritDoc
+     */
+    public function editFlags(array $flags): void
+    {
+        parent::editFlags($flags);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      */
     protected function createDomains(ProductData $productData)
