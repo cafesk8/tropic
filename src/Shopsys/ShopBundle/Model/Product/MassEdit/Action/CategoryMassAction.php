@@ -9,13 +9,12 @@ use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\ShopBundle\Model\Category\Category;
+use Shopsys\ShopBundle\Model\Category\CategoryRepository;
 use Shopsys\ShopBundle\Model\Product\MassEdit\MassEditActionInterface;
 use Shopsys\ShopBundle\Model\Product\Product;
-use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -31,11 +30,6 @@ class CategoryMassAction implements MassEditActionInterface
      * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
      */
     private $categoryFacade;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
-     */
-    private $productDataFactory;
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -58,43 +52,40 @@ class CategoryMassAction implements MassEditActionInterface
     private $productFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler
-     */
-    private $productPriceRecalculationScheduler;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade
      */
     protected $productVisibilityFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryRepository
+     */
+    private $categoryRepository;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryRepository $categoryRepository
      */
     public function __construct(
         CategoryFacade $categoryFacade,
-        ProductDataFactory $productDataFactory,
         EntityManagerInterface $entityManager,
         Domain $domain,
         ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
         ProductFacade $productFacade,
-        ProductPriceRecalculationScheduler $productPriceRecalculationScheduler,
-        ProductVisibilityFacade $productVisibilityFacade
+        ProductVisibilityFacade $productVisibilityFacade,
+        CategoryRepository $categoryRepository
     ) {
         $this->categoryFacade = $categoryFacade;
-        $this->productDataFactory = $productDataFactory;
         $this->entityManager = $entityManager;
         $this->domain = $domain;
         $this->productCategoryDomainFactory = $productCategoryDomainFactory;
         $this->productFacade = $productFacade;
-        $this->productPriceRecalculationScheduler = $productPriceRecalculationScheduler;
         $this->productVisibilityFacade = $productVisibilityFacade;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -178,10 +169,10 @@ class CategoryMassAction implements MassEditActionInterface
     private function performOperationAdd(IterableResult $productsIterableResult, $value): void
     {
         foreach ($productsIterableResult as $row) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
             $product = $row[0];
             $this->addCategoryToProduct($product, $value);
             $product->markForVisibilityRecalculation();
-            $this->productFacade->appendParentCategoriesByProduct($product);
         }
         $this->entityManager->flush();
         $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
@@ -194,6 +185,7 @@ class CategoryMassAction implements MassEditActionInterface
     private function performOperationRemove(IterableResult $productsIterableResult, $value): void
     {
         foreach ($productsIterableResult as $row) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
             $product = $row[0];
             $this->removeCategoryFromProduct($product, $value);
             $product->markForVisibilityRecalculation();
@@ -209,10 +201,10 @@ class CategoryMassAction implements MassEditActionInterface
     private function performOperationSet(IterableResult $productsIterableResult, $value): void
     {
         foreach ($productsIterableResult as $row) {
+            /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
             $product = $row[0];
             $this->setCategoryToProduct($product, $value);
             $product->markForVisibilityRecalculation();
-            $this->productFacade->appendParentCategoriesByProduct($product);
         }
         $this->entityManager->flush();
         $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
@@ -224,21 +216,25 @@ class CategoryMassAction implements MassEditActionInterface
      */
     private function addCategoryToProduct(Product $product, Category $category): void
     {
-        $productData = $this->productDataFactory->createFromProduct($product);
-        $isSomeCategoryAddedToProduct = false;
+        $categoriesByDomainId = $product->getCategoriesIndexedByDomainId();
+        $path = $this->categoryRepository->getPath($category);
 
         foreach ($this->domain->getAllIds() as $domainId) {
-            if (!array_key_exists($domainId, $productData->categoriesByDomainId)
-                || !in_array($category, $productData->categoriesByDomainId[$domainId], true)
+            if (array_key_exists($domainId, $categoriesByDomainId) === false
+                || in_array($category, $categoriesByDomainId[$domainId], true) === false
             ) {
-                $productData->categoriesByDomainId[$domainId][] = $category;
-                $isSomeCategoryAddedToProduct = true;
+                $categoriesByDomainId[$domainId][] = $category;
+            }
+
+            // add category parents too
+            foreach ($path as $parentCategory) {
+                if (in_array($parentCategory, $categoriesByDomainId[$domainId], true) === false) {
+                    $categoriesByDomainId[$domainId][] = $parentCategory;
+                }
             }
         }
 
-        if ($isSomeCategoryAddedToProduct === true) {
-            $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
-        }
+        $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
     }
 
     /**
@@ -256,10 +252,10 @@ class CategoryMassAction implements MassEditActionInterface
      */
     private function setCategoryToProduct(Product $product, Category $category): void
     {
-        $productData = $this->productDataFactory->createFromProduct($product);
+        $categoriesByDomainId = $product->getCategoriesIndexedByDomainId();
         foreach ($this->domain->getAllIds() as $domainId) {
-            $productData->categoriesByDomainId[$domainId] = [$category];
-            $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+            $categoriesByDomainId[$domainId][] = $category;
+            $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
         }
     }
 }
