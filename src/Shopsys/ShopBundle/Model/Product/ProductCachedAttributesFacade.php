@@ -213,12 +213,13 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
      * @return \DateTime
      */
-    public function getExpectedDeliveryDate(?Transport $transport = null): DateTime
+    public function getExpectedDeliveryDate(Product $product, ?Transport $transport = null): DateTime
     {
-        return $this->deliveryDateFacade->getExpectedDeliveryDate($transport);
+        return $this->deliveryDateFacade->getExpectedDeliveryDate($product, $transport);
     }
 
     /**

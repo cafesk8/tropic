@@ -174,4 +174,12 @@ class StoreRepository
         $storesIndexedByRegion[''] = $storesWithoutRegion;
         return $storesIndexedByRegion;
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public function findCentralStore(): ?Store
+    {
+        return $this->getStoreRepository()->findOneBy(['centralStore' => true]);
+    }
 }

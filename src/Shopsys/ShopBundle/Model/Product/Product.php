@@ -353,7 +353,7 @@ class Product extends BaseProduct
         return array_filter(
             $this->storeStocks->toArray(),
             function (ProductStoreStock $productStoreStock) {
-                return $productStoreStock->getStockQuantity() > 0;
+                return $productStoreStock->getStockQuantity() > 0 && $productStoreStock->getStore()->isFranchisor() === false;
             }
         );
     }
@@ -370,6 +370,20 @@ class Product extends BaseProduct
                 return $productStoreStock->getStockQuantity() > 0
                     && $productStoreStock->getStore()->isPickupPlace() === true
                     && $productStoreStock->getStore()->getDomainId() === $domain->getId();
+            }
+        );
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
+     */
+    public function getStocksWithoutZeroQuantityOnCentralStore(): array
+    {
+        return array_filter(
+            $this->storeStocks->toArray(),
+            function (ProductStoreStock $productStoreStock) {
+                return $productStoreStock->getStockQuantity() > 0
+                    && $productStoreStock->getStore()->isCentralStore();
             }
         );
     }
