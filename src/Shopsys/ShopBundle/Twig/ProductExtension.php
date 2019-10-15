@@ -120,26 +120,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getProductDisplayName(Product $product)
-    {
-        $productDisplayName = parent::getProductDisplayName($product);
-
-        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getProductListDisplayName(Product $product)
-    {
-        $productDisplayName = parent::getProductListDisplayName($product);
-
-        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
-    }
-
-    /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $productListDisplayName
      * @return string
