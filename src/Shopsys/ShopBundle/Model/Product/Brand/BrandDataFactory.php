@@ -33,6 +33,7 @@ class BrandDataFactory extends BaseBrandDataFactory
     {
         $brandData = new BrandData();
         $this->fillNew($brandData);
+        $brandData->type = Brand::TYPE_DEFAULT;
 
         return $brandData;
     }
@@ -45,6 +46,7 @@ class BrandDataFactory extends BaseBrandDataFactory
     {
         $brandData = new BrandData();
         $this->fillFromBrand($brandData, $brand);
+        $brandData->type = $brand->getType();
 
         return $brandData;
     }

@@ -496,4 +496,12 @@ class Product extends BaseProduct
     {
         return $this->variantType === self::VARIANT_TYPE_NONE;
     }
+
+    /**
+     * @return string
+     */
+    public function getVariantType(): string
+    {
+        return $this->variantType;
+    }
 }

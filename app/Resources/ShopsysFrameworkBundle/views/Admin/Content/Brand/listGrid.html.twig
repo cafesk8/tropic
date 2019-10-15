@@ -1,0 +1,13 @@
+{% extends '@!ShopsysFramework/Admin/Content/Brand/listGrid.html.twig' %}
+
+{% block grid_action_cell_type_delete %}
+        {% if row.b.type == constant('Shopsys\\ShopBundle\\Model\\Product\\Brand\\Brand::TYPE_MAIN_BUSHMAN') %}
+        <span title="{{ 'Tuhle značku není možné smazat. Jde o značku, která je automaticky přiřazena všem produktem.'|trans }}"
+            class="js-tooltip cursor-help in-icon in-icon--info" data-toggle="tooltip" data-placement="bottom"
+        >
+            <i class="svg svg-info"></i>
+        </span>
+    {% else %}
+        {{ gridView.renderBlock('grid_action_cell', {actionColumn: actionColumn, row: row}) }}
+    {% endif %}
+{% endblock %}

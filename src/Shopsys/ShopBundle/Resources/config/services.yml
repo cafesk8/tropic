@@ -176,6 +176,7 @@ services:
 
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@Shopsys\ShopBundle\Model\Category\CategoryDataFactory'
 
+
     Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\UserDataFactory'
 
     Shopsys\FrameworkBundle\Model\Customer\CustomerFacade: '@Shopsys\ShopBundle\Model\Customer\CustomerFacade'
@@ -212,13 +213,20 @@ services:
 
     Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface: '@Shopsys\ShopBundle\Model\Payment\PaymentDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader: '@Shopsys\ShopBundle\Model\Product\Collection\ProductUrlsBatchLoader'
+
     Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\ProductDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
 
+
     Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@Shopsys\ShopBundle\Model\Product\Brand\BrandFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@Shopsys\ShopBundle\Model\Product\Brand\BrandRepository'
 
     Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector: ~
 
@@ -584,3 +592,9 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\MailController:
         class: Shopsys\ShopBundle\Controller\Admin\MailController
         tags: ['controller.service_arguments']
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Heureka\HeurekaFeedItemFactory'
+
+    Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
+
+    Shopsys\ShopBundle\Model\Feed\FeedHelper: ~
