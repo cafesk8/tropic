@@ -189,8 +189,7 @@ class ProductParameterMassAction implements MassEditActionInterface
             }
         }
         if ($changed === true) {
-            $productData->parameters = $productParameterValuesData;
-            $this->productFacade->edit($product->getId(), $productData);
+            $this->productFacade->saveParameters($product, $productParameterValuesData);
         }
     }
 
@@ -211,7 +210,7 @@ class ProductParameterMassAction implements MassEditActionInterface
         }
         if ($changed === true) {
             $productData->parameters = $productParameterValuesData;
-            $this->productFacade->edit($product->getId(), $productData);
+            $this->productFacade->saveParameters($product, $productParameterValuesData);
         }
     }
 
