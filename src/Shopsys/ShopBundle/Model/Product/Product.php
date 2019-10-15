@@ -128,6 +128,13 @@ class Product extends BaseProduct
     private $updatedAt;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $baseName;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -147,6 +154,7 @@ class Product extends BaseProduct
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->updatedAt = $productData->updatedAt;
+        $this->baseName = $productData->baseName;
     }
 
     /**
@@ -168,6 +176,7 @@ class Product extends BaseProduct
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
+        $this->baseName = $productData->baseName;
     }
 
     /**
@@ -545,5 +554,13 @@ class Product extends BaseProduct
     public function getVariantType(): string
     {
         return $this->variantType;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBaseName(): ?string
+    {
+        return $this->baseName;
     }
 }

@@ -192,6 +192,7 @@ class ProductTransferMapper
     ): void {
         $productData->transferNumber = $transferNumber;
         $productData->name['cs'] = $productTransferResponseItemData->getName();
+        $productData->baseName = $productTransferResponseItemData->getName();
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
         $productData->ean = $productTransferResponseItemVariantData->getEan();
