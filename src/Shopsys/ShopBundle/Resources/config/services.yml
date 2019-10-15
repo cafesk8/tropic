@@ -602,3 +602,9 @@ services:
     Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
 
     Shopsys\ShopBundle\Model\Feed\FeedHelper: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository: '@Shopsys\ShopBundle\Model\Product\Flag\FlagRepository'
+
+    Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductFlagFilter: ~
+
+    Shopsys\FrameworkBundle\Model\Model\AdvancedSearch\Filter\ProductFlagFilter: '@Shopsys\ShopBundle\Model\Model\AdvancedSearch\Filter\ProductFlagFilter'
