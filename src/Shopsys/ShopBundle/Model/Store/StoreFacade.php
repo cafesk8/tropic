@@ -7,6 +7,8 @@ namespace Shopsys\ShopBundle\Model\Store;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 
 class StoreFacade
 {
@@ -36,24 +38,32 @@ class StoreFacade
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
+     */
+    private $transferFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Store\StoreRepository $storeRepository
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFactory $storeFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      */
     public function __construct(
         EntityManagerInterface $em,
         StoreRepository $storeRepository,
         ImageFacade $imageFacade,
         StoreFactory $storeFactory,
-        Domain $domain
+        Domain $domain,
+        TransferFacade $transferFacade
     ) {
         $this->em = $em;
         $this->storeRepository = $storeRepository;
         $this->imageFacade = $imageFacade;
         $this->storeFactory = $storeFactory;
         $this->domain = $domain;
+        $this->transferFacade = $transferFacade;
     }
 
     /**
@@ -120,6 +130,7 @@ class StoreFacade
         $this->em->flush();
 
         $this->uploadImage($store, $storeData);
+        $this->resetStockImportCronModule();
 
         return $store;
     }
@@ -131,8 +142,14 @@ class StoreFacade
      */
     public function edit(Store $store, StoreData $storeData): Store
     {
+        $isStoreFranchiseChanged = $store->isFranchisor() !== $storeData->franchisor;
         $store->edit($storeData);
         $this->uploadImage($store, $storeData);
+
+        // reset transfer only in change
+        if ($isStoreFranchiseChanged) {
+            $this->resetStockImportCronModule();
+        }
 
         return $store;
     }
@@ -147,12 +164,18 @@ class StoreFacade
         $this->em->flush();
     }
 
+    private function resetStockImportCronModule(): void
+    {
+        $this->transferFacade->resetTransferByTransferId(StoreStockImportCronModule::TRANSFER_IDENTIFIER);
+    }
+
     /**
      * @param int $storeId
      */
     public function delete(int $storeId): void
     {
         $store = $this->storeRepository->getById($storeId);
+        $this->resetStockImportCronModule();
 
         $this->em->remove($store);
         $this->em->flush();

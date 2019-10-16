@@ -54,6 +54,17 @@ class TransferFacade
 
     /**
      * @param string $identifier
+     * @param \DateTime $lastStartAt
+     */
+    public function resetTransferByTransferId(string $identifier): void
+    {
+        $transfer = $this->transferRepository->getByIdentifier($identifier);
+        $transfer->setLastStartAt(null);
+        $this->em->flush($transfer);
+    }
+
+    /**
+     * @param string $identifier
      * @return bool
      */
     public function isEnabled(string $identifier): bool
