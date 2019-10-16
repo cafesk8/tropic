@@ -284,11 +284,14 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
                 foreach ($notVariants as $notVariant) {
                     $existingMainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
                 }
+                $existingMainVariant->updateNamesWithColor((string)$colorValue);
                 $this->productFacade->flushMainVariant($existingMainVariant);
                 $mainVariants[] = $existingMainVariant;
             } else {
                 $newMainVariant = array_shift($secondParameterValuesWithProducts);
-                $mainVariants[] = $this->productVariantFacade->createVariant($newMainVariant, $secondParameterValuesWithProducts);
+                $createdNewMainVariant = $this->productVariantFacade->createVariant($newMainVariant, $secondParameterValuesWithProducts);
+                $this->productFacade->updateProductNamesWithColor($createdNewMainVariant, (string)$colorValue);
+                $mainVariants[] = $createdNewMainVariant;
             }
         }
 

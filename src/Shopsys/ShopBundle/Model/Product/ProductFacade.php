@@ -620,4 +620,15 @@ class ProductFacade extends BaseProductFacade
         $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
         return $hiddenVariantsIds;
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $color
+     */
+    public function updateProductNamesWithColor(Product $product, string $color): void
+    {
+        $product->updateNamesWithColor($color);
+
+        $this->em->flush($product);
+    }
 }

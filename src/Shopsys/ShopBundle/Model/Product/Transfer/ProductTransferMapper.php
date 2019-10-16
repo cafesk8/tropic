@@ -100,6 +100,8 @@ class ProductTransferMapper
             $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
         }
 
+        $productData->baseName = $productTransferResponseItemData->getName();
+
         $productName = $this->getProductName($productTransferResponseItemData, $productTransferResponseItemVariantData);
         $productData->name['cs'] = $productName;
         $productData->name['sk'] = $productName;
@@ -220,7 +222,6 @@ class ProductTransferMapper
         ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData
     ): void {
         $productData->transferNumber = $transferNumber;
-        $productData->baseName = $productTransferResponseItemData->getName();
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
         $productData->ean = $productTransferResponseItemVariantData->getEan();

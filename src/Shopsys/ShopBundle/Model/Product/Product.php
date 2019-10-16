@@ -563,4 +563,15 @@ class Product extends BaseProduct
     {
         return $this->baseName;
     }
+
+    /**
+     * @param string $color
+     */
+    public function updateNamesWithColor(string $color): void
+    {
+        $newName = sprintf('%s %s', $this->getBaseName(), $color);
+        foreach (['cs', 'sk', 'de'] as $locale) {
+            $this->translation($locale)->setName($newName);
+        }
+    }
 }
