@@ -142,4 +142,12 @@ class Transfer
     {
         return $this->enabled;
     }
+
+    /**
+     * @param \DateTime|null $lastStartAt
+     */
+    public function setLastStartAt(?\DateTime $lastStartAt): void
+    {
+        $this->lastStartAt = $lastStartAt;
+    }
 }
