@@ -76,7 +76,7 @@ class OrderExportMapper
             'ShippingPrice' => $order->getTransportAndPaymentPrice()->getPriceWithVat()->getAmount(),
             'PaymentMetod' => $order->getPayment()->getExternalId() ?? $order->getPaymentName(),
             'ShippingMetod' => $this->getShippingMethodPropertyContent($order),
-            'CustomerNote' => $order->getNote(),
+            'CustomerNote' => $this->getCustomerNote($order),
         ];
 
         if ($order->isDeliveryAddressSameAsBillingAddress() === false && $order->getStoreExternalNumber() === null) {
@@ -108,6 +108,20 @@ class OrderExportMapper
         }
 
         return $headerArray;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return string|null
+     */
+    private function getCustomerNote(Order $order): ?string
+    {
+        $customerNote = $order->getNote();
+        if ($order->getPromoCodeCode() !== null) {
+            $customerNote = 'Kód slevového kupónu: ' . $order->getPromoCodeCode() . "\n\n" . $customerNote;
+        }
+
+        return $customerNote;
     }
 
     /**

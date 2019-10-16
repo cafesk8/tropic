@@ -85,6 +85,16 @@ class OrderData extends BaseOrderData
      */
     public $personalTakeType;
 
+    /**
+     * @var string|null
+     */
+    public $gtmCoupon;
+
+    /**
+     * @var string|null
+     */
+    public $promoCodeCode;
+
     public function __construct()
     {
         parent::__construct();
@@ -93,9 +103,4 @@ class OrderData extends BaseOrderData
         $this->memberOfBushmanClub = false;
         $this->personalTakeType = Transport::PERSONAL_TAKE_TYPE_NONE;
     }
-
-    /**
-     * @var string|null
-     */
-    public $gtmCoupon;
 }

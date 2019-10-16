@@ -265,6 +265,13 @@ class Order extends BaseOrder
     private $personalTakeType;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $promoCodeCode;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -319,6 +326,7 @@ class Order extends BaseOrder
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
+        $this->promoCodeCode = $orderData->promoCodeCode;
     }
 
     /**
@@ -349,6 +357,7 @@ class Order extends BaseOrder
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
+        $this->promoCodeCode = $orderData->promoCodeCode;
 
         return $orderEditResult;
     }
@@ -880,5 +889,13 @@ class Order extends BaseOrder
             $this->store = $orderData->store;
             $this->storeExternalNumber = $this->store->getExternalNumber();
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPromoCodeCode(): ?string
+    {
+        return $this->promoCodeCode;
     }
 }

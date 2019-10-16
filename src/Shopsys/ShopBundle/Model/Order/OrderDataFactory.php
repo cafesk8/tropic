@@ -52,5 +52,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->pickupPlace = $order->getPickupPlace();
         $orderData->memberOfBushmanClub = $order->isMemberOfBushmanClub();
         $orderData->personalTakeType = $order->getPersonalTakeType();
+        $orderData->promoCodeCode = $order->getPromoCodeCode();
     }
 }

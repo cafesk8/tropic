@@ -270,7 +270,7 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @return \Shopsys\FrameworkBundle\Model\Order\Order
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
@@ -278,6 +278,10 @@ class OrderFacade extends BaseOrderFacade
         $enteredValidPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
         $this->gtmHelper->amendGtmCouponToOrderData($orderData, $enteredValidPromoCode, $orderPreview);
+
+        if ($enteredValidPromoCode !== null) {
+            $orderData->promoCodeCode = $enteredValidPromoCode->getCode();
+        }
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
