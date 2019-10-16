@@ -56,12 +56,12 @@ class CategoryController extends FrontBaseController
      */
     public function hoverMenuAction(): Response
     {
-        $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleChildrenForParent(
+        $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(
             $this->categoryFacade->getRootCategory(),
             $this->domain->getCurrentDomainConfig()
         );
 
-        $categoriesForFirstColumn = $this->categoryFacade->getAllVisibleCategoriesForFirstColumnByDomainId($this->domain->getId());
+        $categoriesForFirstColumn = $this->categoryFacade->getAllVisibleAndListableCategoriesForFirstColumnByDomainId($this->domain->getId());
 
         return $this->render('@ShopsysShop/Front/Content/Category/hoverMenu.html.twig', [
             'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,

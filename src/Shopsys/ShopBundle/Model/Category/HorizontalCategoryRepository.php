@@ -9,12 +9,12 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 class HorizontalCategoryRepository
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryRepository
      */
     private $categoryRepository;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryRepository $categoryRepository
      */
     public function __construct(CategoryRepository $categoryRepository)
     {
@@ -27,7 +27,7 @@ class HorizontalCategoryRepository
      */
     public function getCategoriesForHorizontalMenu(int $domainId): array
     {
-        $queryBuilder = $this->categoryRepository->getAllVisibleByDomainIdQueryBuilder($domainId);
+        $queryBuilder = $this->categoryRepository->getAllVisibleAndListableByDomainIdQueryBuilder($domainId);
         $queryBuilder->andWhere('c.displayedInHorizontalMenu = TRUE');
 
         return $queryBuilder->getQuery()->execute();

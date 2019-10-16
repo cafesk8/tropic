@@ -608,3 +608,5 @@ services:
     Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductFlagFilter: ~
 
     Shopsys\FrameworkBundle\Model\Model\AdvancedSearch\Filter\ProductFlagFilter: '@Shopsys\ShopBundle\Model\Model\AdvancedSearch\Filter\ProductFlagFilter'
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory: '@Shopsys\ShopBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory'

@@ -317,13 +317,14 @@ class Product extends BaseProduct
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
-    public function getProductCategoriesByDomainId(int $domainId): array
+    public function getListableProductCategoriesByDomainId(int $domainId): array
     {
         $productCategories = [];
 
         foreach ($this->getProductCategoryDomainsByDomainIdIndexedByCategoryId($domainId) as $categoryDomain) {
+            /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
             $category = $categoryDomain->getCategory();
-            if ($category->isVisible($domainId)) {
+            if ($category->isVisible($domainId) && $category->isListable()) {
                 $productCategories[$category->getId()] = $category;
             }
         }

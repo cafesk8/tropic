@@ -31,6 +31,13 @@ class Category extends BaseCategory
      *
      * @ORM\Column(type="boolean")
      */
+    private $listable;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
     private $preListingCategory;
 
     /**
@@ -62,6 +69,7 @@ class Category extends BaseCategory
         parent::__construct($categoryData);
 
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
+        $this->listable = $categoryData->listable;
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
@@ -78,6 +86,7 @@ class Category extends BaseCategory
         parent::edit($categoryData);
 
         $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
+        $this->listable = $categoryData->listable;
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
@@ -202,5 +211,21 @@ class Category extends BaseCategory
         foreach ($categoryData->rightBannerTexts as $locale => $text) {
             $this->translation($locale)->setRightBannerText($text);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isListable(): bool
+    {
+        return $this->listable;
+    }
+
+    /**
+     * @param bool $listable
+     */
+    public function setListable(bool $listable): void
+    {
+        $this->listable = $listable;
     }
 }
