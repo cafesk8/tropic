@@ -279,6 +279,8 @@ services:
 
     Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter: ~
 
+    Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductParameterFilter: ~
+
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
     Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: '@Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig'
@@ -361,6 +363,8 @@ services:
     Shopsys\ShopBundle\Model\Product\MassEdit\Action\HiddenMassAction: ~
 
     Shopsys\ShopBundle\Model\Product\MassEdit\Action\CategoryMassAction: ~
+
+    Shopsys\ShopBundle\Model\Product\MassEdit\Action\ProductParameterMassAction: ~
 
     Shopsys\ShopBundle\Model\Product\MassEdit\Action\GiftMassAction: ~
 

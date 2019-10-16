@@ -630,4 +630,12 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getAllMainVariantProductsWithoutSkOrDeParameters($parameterType, $limit);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function saveParameters(BaseProduct $product, array $productParameterValuesData)
+    {
+        parent::saveParameters($product, $productParameterValuesData);
+    }
 }
