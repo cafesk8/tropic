@@ -102,7 +102,6 @@
                                                     <label class="css-checkbox__image" for="{{ form.chosenGifts[cartItem.product.id][giftVariant.gift.id].vars.id }}">
                                                         {{ 'Chceš dárek' }}
                                                         {{ giftVariant.gift.name }}
-                                                        {{ productParameters(giftVariant.gift, locale) }}
                                                         {{ 'v hodnotě' }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }} {{ 'za ' }} {{ giftVariant.price|price }} {{ '?' }}
                                                     </label>
                                                 </div>

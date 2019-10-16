@@ -14,9 +14,6 @@
                 <tr>
                     <td style="font-weight: bold;">
                         {{ item.name }}
-                        {% if (item.isTypeProduct is same as (true) or item.isTypeGift is same as (true)) and item.product is not null %}
-                            {{ productParameters(item.product, orderLocale) }}
-                        {% endif %}
                     </td>
                     <td style="text-align: right;">{{ item.preparedQuantity|formatNumber(orderLocale) }} {{ item.unitName }}</td>
                     <td style="text-align: right;">{{ item.priceWithVat|priceTextWithCurrencyByCurrencyIdAndLocale(order.currency.id, orderLocale) }}</td>
