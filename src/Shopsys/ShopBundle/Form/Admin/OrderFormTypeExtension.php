@@ -63,6 +63,22 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                     ],
                 ]);
         }
+
+        if ($order !== null) {
+            $builderBasicInformationGroup
+                ->add('payment', DisplayOnlyType::class, [
+                    'label' => t('Typ platby'),
+                    'data' => $order->getPayment()->getName(),
+                ]);
+
+            if ($order->getPayment()->isGoPay() === true) {
+                $builderBasicInformationGroup
+                    ->add('gopayStatus', DisplayOnlyType::class, [
+                        'label' => t('Stav platby GoPay'),
+                        'data' => $order->getGoPayStatus(),
+                    ]);
+            }
+        }
     }
 
     /**
