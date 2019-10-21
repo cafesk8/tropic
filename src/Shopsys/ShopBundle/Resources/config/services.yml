@@ -622,3 +622,5 @@ services:
         class: Shopsys\ShopBundle\Model\HeurekaCategory\HeurekaCategoryDownloader
         arguments:
             - '%shopsys.product_feed.heureka_bundle.heureka_category_feed_url%'
+
+    Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Zbozi\FeedItem\ZboziFeedItemFactory'
