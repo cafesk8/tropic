@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorFacade;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
+use Shopsys\ShopBundle\Form\Admin\TransferIssueSearchFormType;
 use Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +67,18 @@ class TransferIssueController extends AdminBaseController
 
         $queryBuilder = $this->transferIssueFacade->getTransferIssuesQueryBuilderForDataGrid();
 
+        $form = $this->createForm(TransferIssueSearchFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $filteredTransfer = $form->getData()['transfer'];
+
+            if ($filteredTransfer !== null) {
+                $queryBuilder
+                    ->andWhere('ti.transfer = :transfer')
+                    ->setParameter('transfer', $filteredTransfer);
+            }
+        }
         $dataSource = new QueryBuilderDataSource($queryBuilder, 'ti.id');
 
         $grid = $this->gridFactory->create('transferIssueList', $dataSource);
@@ -82,6 +95,7 @@ class TransferIssueController extends AdminBaseController
         $this->transferIssueFacade->logTransferIssuesVisitByAdministrator($administrator);
 
         return $this->render('ShopsysShopBundle:Admin/Content/Transfer/Issue:list.html.twig', [
+            'form' => $form->createView(),
             'gridView' => $grid->createView(),
         ]);
     }

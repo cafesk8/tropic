@@ -10,5 +10,21 @@
 {% endblock %}
 
 {% block main_content %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="form-group wrap-border">
+        <div class="form-group__title">
+            {{ 'Hledání v přenosech'|trans }}
+        </div>
+
+        {{ form_row(form.transfer, { label: 'Identifikátor přenosu'|trans }) }}
+        <div class="text-right margin-top-10">
+            {{ form_widget(form.submit, { label: 'Vyhledat'|trans }) }}
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
     {{ gridView.render() }}
 {% endblock %}
