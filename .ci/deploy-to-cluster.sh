@@ -198,18 +198,6 @@ yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientS
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
 
-RUNNING_POD_EXIST=1
-WEBSERVER_PHP_FPM_POD=$(kubectl get pods --namespace=${PROJECT_NAME} -l app=webserver-php-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}') || RUNNING_POD_EXIST=0
-
-if [ $FIRST_DEPLOY -eq "0" ]; then
-    # Running webserver-php-fpm pod.
-    # For first deploy you cant apply maintenance page
-    if [ $RUNNING_POD_EXIST -eq "1" ]; then
-        echo "Turning maintenance page on for running pod"
-        kubectl exec ${WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} ./phing maintenance-on
-    fi
-fi
-
 kubectl create namespace $PROJECT_NAME || echo "$PROJECT_NAME namespace already existing"
 
 # deploy secret from ~/.docker/config.json if not present
@@ -232,7 +220,6 @@ EXIT_CODE=0
 # wait for new pod to be initialized and if it fails send result to /dev/null and save output code to a varaible.
 kubectl rollout status --namespace=${PROJECT_NAME} deployment/webserver-php-fpm --watch || EXIT_CODE=$?
 
-# if rollout status failed, it will turn maintenance on previous running instance and outputs logs of a new version that failed
 if [ $EXIT_CODE -eq "0" ]; then
     echo "Rollout succesful"
 else
@@ -245,14 +232,6 @@ else
         echo "Echoing logs of upgrade-application container"
         kubectl logs ${CRASHED_WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} -c upgrade-application
     fi
-
-    exit 1
 fi
 
-# For first deploy you cant apply maintenance page
-if [ $RUNNING_POD_EXIST -eq "1" ]; then
-    echo "Turning maintenance page off for running pod"
-    kubectl exec ${WEBSERVER_PHP_FPM_POD} --namespace=${PROJECT_NAME} ./phing maintenance-off || echo "There is no running previous pod"
-fi
-
-exit 0
+exit $EXIT_CODE

@@ -66,6 +66,10 @@ spec:
                     runAsUser: 33
                 imagePullPolicy: Always
                 workingDir: /var/www/html
+                lifecycle:
+                    postStart:
+                        exec:
+                            command: ["/var/www/html/phing", "maintenance-off"]
                 volumeMounts:
                 -   name: source-codes
                     mountPath: /var/www/html
@@ -105,6 +109,6 @@ spec:
                     preStop:
                         exec:
                             command:
-                            -   nginx -s quit
+                            -   sleep 15 && nginx -s quit
             imagePullSecrets:
             -   name: dockerhub
