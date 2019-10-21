@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Transfer\Issue;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class TransferIssueFacade
 {
@@ -14,11 +15,18 @@ class TransferIssueFacade
     protected $em;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @var \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueRepository
      */
-    public function __construct(EntityManagerInterface $em)
+    private $transferIssueRepository;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueRepository $transferIssueRepository
+     */
+    public function __construct(EntityManagerInterface $em, TransferIssueRepository $transferIssueRepository)
     {
         $this->em = $em;
+        $this->transferIssueRepository = $transferIssueRepository;
     }
 
     /**
@@ -35,5 +43,13 @@ class TransferIssueFacade
         if (!empty($toFlush)) {
             $this->em->flush($toFlush);
         }
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getTransferIssuesQueryBuilderForDataGrid(): QueryBuilder
+    {
+        return $this->transferIssueRepository->getTransferIssuesQueryBuilderForDataGrid();
     }
 }
