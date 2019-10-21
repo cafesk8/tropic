@@ -51,6 +51,11 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     private $startAt;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade
+     */
+    private $transferIssueFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      */
     public function __construct(TransferCronModuleDependency $transferCronModuleDependency)
@@ -61,6 +66,7 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
         $this->validator = $transferCronModuleDependency->getValidator();
         $this->transferLoggerFactory = $transferCronModuleDependency->getTransferLoggerFactory();
         $this->transferConfig = $transferCronModuleDependency->getTransferConfig();
+        $this->transferIssueFacade = $transferCronModuleDependency->getTransferIssueFacade();
     }
 
     /**
@@ -109,6 +115,7 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
             $this->transferFacade->setAsInProgress($this->getTransferIdentifier());
             $needNextIteration = $this->runTransfer();
 
+            $this->transferIssueFacade->createMultiple($this->logger->getAllTransferIssuesDataAndCleanQueue());
             $this->em->clear();
 
             return $needNextIteration;

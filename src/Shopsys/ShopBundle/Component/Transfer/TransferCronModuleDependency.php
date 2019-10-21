@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Component\Transfer;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade;
 use Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory;
+use Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade;
 use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -43,12 +44,18 @@ class TransferCronModuleDependency
     private $transferConfig;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade
+     */
+    private $transferIssueFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
      * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
      * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      * @param \Shopsys\ShopBundle\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferConfig $transferConfig
+     * @param \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade $transferIssueFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -56,7 +63,8 @@ class TransferCronModuleDependency
         ValidatorInterface $validator,
         TransferFacade $transferFacade,
         TransferLoggerFactory $transferLoggerFactory,
-        TransferConfig $transferConfig
+        TransferConfig $transferConfig,
+        TransferIssueFacade $transferIssueFacade
     ) {
         $this->em = $em;
         $this->sqlLoggerFacade = $sqlLoggerFacade;
@@ -64,6 +72,7 @@ class TransferCronModuleDependency
         $this->transferFacade = $transferFacade;
         $this->transferLoggerFactory = $transferLoggerFactory;
         $this->transferConfig = $transferConfig;
+        $this->transferIssueFacade = $transferIssueFacade;
     }
 
     /**
@@ -112,5 +121,13 @@ class TransferCronModuleDependency
     public function getTransferConfig(): TransferConfig
     {
         return $this->transferConfig;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade
+     */
+    public function getTransferIssueFacade(): TransferIssueFacade
+    {
+        return $this->transferIssueFacade;
     }
 }

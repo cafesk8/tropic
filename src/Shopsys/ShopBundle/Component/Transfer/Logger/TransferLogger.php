@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Transfer\Logger;
 
+use Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData;
+use Shopsys\ShopBundle\Model\Transfer\Transfer;
 use Symfony\Bridge\Monolog\Logger;
 
 class TransferLogger
 {
     /**
-     * @var string
+     * @var \Shopsys\ShopBundle\Model\Transfer\Transfer
      */
-    private $transferIdentifier;
+    private $transfer;
 
     /**
      * @var \Symfony\Bridge\Monolog\Logger
@@ -19,15 +21,21 @@ class TransferLogger
     private $logger;
 
     /**
-     * @param string $transferIdentifier
+     * @var \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData[]
+     */
+    private $transferIssuesData;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Transfer\Transfer $transfer
      * @param \Symfony\Bridge\Monolog\Logger $logger
      */
     public function __construct(
-        $transferIdentifier,
+        Transfer $transfer,
         Logger $logger
     ) {
-        $this->transferIdentifier = $transferIdentifier;
+        $this->transfer = $transfer;
         $this->logger = $logger;
+        $this->transferIssuesData = [];
     }
 
     /**
@@ -55,6 +63,7 @@ class TransferLogger
     public function addWarning($message, array $context = []): void
     {
         $this->logger->addDebug($this->getLoggerMessage($message), $context);
+        $this->addTransferIssueDataToQueue($message);
     }
 
     /**
@@ -64,6 +73,7 @@ class TransferLogger
     public function addError($message, array $context = []): void
     {
         $this->logger->addError($this->getLoggerMessage($message), $context);
+        $this->addTransferIssueDataToQueue($message);
     }
 
     /**
@@ -72,6 +82,25 @@ class TransferLogger
      */
     private function getLoggerMessage($message): string
     {
-        return 'Transfer "' . $this->transferIdentifier . '": ' . $message;
+        return 'Transfer "' . $this->transfer->getIdentifier() . '": ' . $message;
+    }
+
+    /**
+     * @param string $message
+     */
+    private function addTransferIssueDataToQueue(string $message): void
+    {
+        $this->transferIssuesData[] = new TransferIssueData($this->transfer, $message);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData[]
+     */
+    public function getAllTransferIssuesDataAndCleanQueue(): array
+    {
+        $transferIssuesData = $this->transferIssuesData;
+        $this->transferIssuesData = [];
+
+        return $transferIssuesData;
     }
 }
