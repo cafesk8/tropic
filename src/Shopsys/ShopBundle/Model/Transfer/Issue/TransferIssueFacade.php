@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Transfer\Issue;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Shopsys\ShopBundle\Model\Administrator\Administrator;
 
 class TransferIssueFacade
 {
@@ -51,5 +53,23 @@ class TransferIssueFacade
     public function getTransferIssuesQueryBuilderForDataGrid(): QueryBuilder
     {
         return $this->transferIssueRepository->getTransferIssuesQueryBuilderForDataGrid();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Administrator\Administrator $administrator
+     */
+    public function logTransferIssuesVisitByAdministrator(Administrator $administrator): void
+    {
+        $administrator->setLastTransferIssuesVisit(new DateTime());
+        $this->em->flush($administrator);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Administrator\Administrator $administrator
+     * @return int
+     */
+    public function getUnseenTransferIssuesCount(Administrator $administrator): int
+    {
+        return $this->transferIssueRepository->getUnseenTransferIssuesCount($administrator);
     }
 }

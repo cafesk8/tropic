@@ -79,6 +79,8 @@ class TransferIssueController extends AdminBaseController
 
         $this->administratorGridFacade->restoreAndRememberGridLimit($administrator, $grid);
 
+        $this->transferIssueFacade->logTransferIssuesVisitByAdministrator($administrator);
+
         return $this->render('ShopsysShopBundle:Admin/Content/Transfer/Issue:list.html.twig', [
             'gridView' => $grid->createView(),
         ]);

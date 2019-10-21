@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Administrator;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Administrator\Administrator as BaseAdministrator;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorData as BaseAdministratorData;
@@ -26,6 +27,13 @@ class Administrator extends BaseAdministrator
      * @ORM\Column(type="json", nullable=false)
      */
     private $roles;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastTransferIssuesVisit;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Administrator\AdministratorData $administratorData
@@ -56,5 +64,21 @@ class Administrator extends BaseAdministrator
     public function getRoles()
     {
         return array_merge(parent::getRoles(), $this->roles);
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getLastTransferIssuesVisit(): ?DateTime
+    {
+        return $this->lastTransferIssuesVisit;
+    }
+
+    /**
+     * @param \DateTime|null $lastTransferIssuesVisit
+     */
+    public function setLastTransferIssuesVisit(?DateTime $lastTransferIssuesVisit): void
+    {
+        $this->lastTransferIssuesVisit = $lastTransferIssuesVisit;
     }
 }
