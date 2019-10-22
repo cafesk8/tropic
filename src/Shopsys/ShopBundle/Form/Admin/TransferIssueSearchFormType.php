@@ -38,9 +38,9 @@ class TransferIssueSearchFormType extends AbstractType
             ->add('transfer', ChoiceType::class, [
                 'required' => false,
                 'choices' => $transfers,
-                'choice_label' => 'identifier',
+                'choice_label' => 'name',
                 'choice_value' => 'id',
-                'placeholder' => t('-- Vyberte identifikátor přenosu --'),
+                'placeholder' => t('-- Vyberte přenos --'),
             ])
             ->add('submit', SubmitType::class);
     }
