@@ -63,7 +63,7 @@ class TransferLogger
     public function addWarning($message, array $context = []): void
     {
         $this->logger->addDebug($this->getLoggerMessage($message), $context);
-        $this->addTransferIssueDataToQueue($message);
+        $this->addTransferIssueDataToQueue($message, $context);
     }
 
     /**
@@ -73,7 +73,7 @@ class TransferLogger
     public function addError($message, array $context = []): void
     {
         $this->logger->addError($this->getLoggerMessage($message), $context);
-        $this->addTransferIssueDataToQueue($message);
+        $this->addTransferIssueDataToQueue($message, $context);
     }
 
     /**
@@ -87,10 +87,15 @@ class TransferLogger
 
     /**
      * @param string $message
+     * @param array $context
      */
-    private function addTransferIssueDataToQueue(string $message): void
+    private function addTransferIssueDataToQueue(string $message, array $context): void
     {
-        $this->transferIssuesData[] = new TransferIssueData($this->transfer, $message);
+        $transferIssueMessage = $message;
+        if (!empty($context)) {
+            $transferIssueMessage .= sprintf(' (context: %s)', json_encode($context));
+        }
+        $this->transferIssuesData[] = new TransferIssueData($this->transfer, $transferIssueMessage);
     }
 
     /**
