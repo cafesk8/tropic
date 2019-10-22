@@ -40,6 +40,7 @@ use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Product as ChildProduct;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
@@ -625,10 +626,43 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $color
      */
-    public function updateProductNamesWithColor(Product $product, string $color): void
+    public function updateCzechProductNamesWithColor(Product $product, string $color): void
     {
-        $product->updateNamesWithColor($color);
+        $product->updateCzechNamesWithColor($color);
 
         $this->em->flush($product);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     */
+    public function fillNotCzechVariantNamesFromMainVariantNames(Product $product, ParameterFacade $parameterFacade): void
+    {
+        if ($product->isMainVariant() === false) {
+            return;
+        }
+
+        $namesByLocale = $product->getNames();
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $variant */
+        foreach ($product->getVariants() as $variant) {
+            $variantSizeParameterValue = $parameterFacade->findSizeProductParameterValueByProductId($variant->getId());
+            if ($variantSizeParameterValue === null) {
+                return;
+            }
+
+            foreach ($namesByLocale as $locale => $name) {
+                if ($locale !== 'cs') {
+                    $variant->updateNameWithSize(
+                        $locale,
+                        $name,
+                        $variantSizeParameterValue->getValue()->getText()
+                    );
+                }
+            }
+
+            $this->em->flush();
+        }
     }
 }
