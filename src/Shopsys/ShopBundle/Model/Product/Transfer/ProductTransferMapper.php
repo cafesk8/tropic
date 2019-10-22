@@ -104,8 +104,6 @@ class ProductTransferMapper
 
         $productName = $this->getProductName($productTransferResponseItemData, $productTransferResponseItemVariantData);
         $productData->name['cs'] = $productName;
-        $productData->name['sk'] = $productName;
-        $productData->name['de'] = $productName;
 
         return $productData;
     }
