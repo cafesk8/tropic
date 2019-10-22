@@ -356,9 +356,9 @@ class ProductFacade extends BaseProductFacade
      * @param int $page
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getMainVariantsWithEan(int $limit, int $page): array
+    public function getMainVariantsWithCatnum(int $limit, int $page): array
     {
-        return $this->productRepository->getMainVariantsWithEan($limit, $page);
+        return $this->productRepository->getMainVariantsWithCatnum($limit, $page);
     }
 
     /**

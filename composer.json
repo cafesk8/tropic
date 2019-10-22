@@ -38,6 +38,7 @@
         "ext-pdo_pgsql": "*",
         "ext-redis": "*",
         "ext-xml": "*",
+        "ext-dom": "*",
         "arvenil/ninja-mutex": "0.6.0 as 0.4.1",
         "bmatzner/jquery-bundle": "^2.2.2",
         "bmatzner/jquery-ui-bundle": "^1.10.3",

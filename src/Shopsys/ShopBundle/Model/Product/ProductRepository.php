@@ -157,6 +157,22 @@ class ProductRepository extends BaseProductRepository
     /**
      * @param int $limit
      * @param int $page
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getWithCatnumQueryBuilder(int $limit, int $page): QueryBuilder
+    {
+        $offset = $limit * $page;
+
+        return $this->getProductQueryBuilder()
+            ->where('p.catnum IS NOT NULL')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->orderBy('p.id', 'ASC');
+    }
+
+    /**
+     * @param int $limit
+     * @param int $page
      * @return array
      */
     public function getWithEan(int $limit, int $page): array
@@ -169,9 +185,9 @@ class ProductRepository extends BaseProductRepository
      * @param int $page
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getMainVariantsWithEan(int $limit, int $page): array
+    public function getMainVariantsWithCatnum(int $limit, int $page): array
     {
-        return $this->getWithEanQueryBuilder($limit, $page)
+        return $this->getWithCatnumQueryBuilder($limit, $page)
             ->andWhere('p.variantType = :mainVariantType')
             ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->getQuery()->getResult();
