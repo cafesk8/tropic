@@ -10,7 +10,6 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
-use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface;
@@ -68,16 +67,6 @@ class ProductFacade extends BaseProductFacade
     private $storeFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
-     */
-    private $productDataFactory;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository
-     */
-    private $categoryRepository;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade
      */
     private $cachedProductDistinguishingParameterValueFacade;
@@ -123,12 +112,10 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -156,8 +143,6 @@ class ProductFacade extends BaseProductFacade
         CurrentCustomer $currentCustomer,
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
-        ProductDataFactory $productDataFactory,
-        CategoryRepository $categoryRepository,
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
         GoogleClient $googleClient,
         PricingGroupFacade $pricingGroupFacade,
@@ -191,8 +176,6 @@ class ProductFacade extends BaseProductFacade
         $this->currentCustomer = $currentCustomer;
         $this->productStoreStockFactory = $productStoreStockFactory;
         $this->storeFacade = $storeFacade;
-        $this->productDataFactory = $productDataFactory;
-        $this->categoryRepository = $categoryRepository;
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
         $this->googleClient = $googleClient;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -336,59 +319,25 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     */
-    public function appendParentCategoriesByProduct(Product $product): void
-    {
-        $productData = $this->productDataFactory->createFromProduct($product);
-
-        foreach ($this->domain->getAll() as $domainConfig) {
-            if (array_key_exists($domainConfig->getId(), $productData->categoriesByDomainId) === false) {
-                return;
-            }
-            $this->appendParentCategories($productData, $domainConfig->getId());
-        }
-        $this->edit($product->getId(), $productData);
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
-     * @param int $domainId
-     */
-    private function appendParentCategories(ProductData $productData, int $domainId): void
-    {
-        $newCategories = [];
-        foreach ($productData->categoriesByDomainId[$domainId] as $category) {
-            $path = $this->categoryRepository->getPath($category);
-            foreach ($path as $parentCategory) {
-                if ($parentCategory->getParent() !== null) {
-                    $newCategories[$parentCategory->getId()] = $parentCategory;
-                }
-            }
-            $productData->categoriesByDomainId[$domainId] = $newCategories;
-        }
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
      */
     public function removeProductCategoryDomainByProductAndCategory(Product $product, Category $category): void
     {
-        $productData = $this->productDataFactory->createFromProduct($product);
+        $categoriesByDomainId = $product->getCategoriesIndexedByDomainId();
         $isSomeCategoryRemoveFromProduct = false;
         foreach ($this->domain->getAllIds() as $domainId) {
             $key = false;
-            if (array_key_exists($domainId, $productData->categoriesByDomainId)) {
-                $key = array_search($category, $productData->categoriesByDomainId[$domainId], true);
+            if (array_key_exists($domainId, $categoriesByDomainId)) {
+                $key = array_search($category, $categoriesByDomainId[$domainId], true);
             }
             if ($key !== false) {
-                unset($productData->categoriesByDomainId[$domainId][$key]);
+                unset($categoriesByDomainId[$domainId][$key]);
                 $isSomeCategoryRemoveFromProduct = true;
             }
         }
 
         if ($isSomeCategoryRemoveFromProduct === true) {
-            $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+            $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
         }
     }
 

@@ -171,6 +171,27 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
+     * @param \Shopsys\ShopBundle\Model\Category\Category[][] $categoriesByDomainId
+     */
+    public function editCategoriesByDomainId(
+        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
+        array $categoriesByDomainId
+    ): void {
+        if (!$this->isVariant()) {
+            $this->setCategories($productCategoryDomainFactory, $categoriesByDomainId);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function editFlags(array $flags): void
+    {
+        parent::editFlags($flags);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      */
     protected function createDomains(ProductData $productData)
