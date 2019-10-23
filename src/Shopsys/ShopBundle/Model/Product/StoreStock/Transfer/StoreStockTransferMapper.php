@@ -39,21 +39,16 @@ class StoreStockTransferMapper
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferResponseItemData $productTransferResponseItemData
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Component\Transfer\Logger\TransferLogger $transferLogger
-     * @param string $importType
      * @return \Shopsys\ShopBundle\Model\Product\ProductData
      */
     public function mapTransferDataToProductData(
         StoreStockTransferResponseItemData $productTransferResponseItemData,
         Product $product,
-        TransferLogger $transferLogger,
-        string $importType
+        TransferLogger $transferLogger
     ): ProductData {
         $productData = $this->productDataFactory->createFromProduct($product);
 
-        if ($importType === StoreStockImportCronModule::IMPORT_TYPE_IMPORT_ALL) {
-            $productData->stockQuantityByStoreId = [];
-        }
-
+        $productData->stockQuantityByStoreId = [];
         foreach ($productTransferResponseItemData->getSitesQuantity() as $stockQuantity) {
             $store = $this->storeFacade->findByExternalNumber($stockQuantity->getSiteNumber());
 
