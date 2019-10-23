@@ -129,7 +129,10 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     private function isPromoCodeValidInItsValidDates(PromoCode $promoCode): bool
     {
         $validFrom = $promoCode->getValidFrom();
+
         $validTo = $promoCode->getValidTo();
+        $validTo->setTime(23, 59, 59);
+
         $now = new DateTime();
 
         if ($validFrom === null && $validTo === null) {
