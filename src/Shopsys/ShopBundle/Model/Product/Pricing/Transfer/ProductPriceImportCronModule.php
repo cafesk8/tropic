@@ -10,7 +10,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
-use Shopsys\ShopBundle\Component\Rest\RestResponse;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
@@ -176,30 +175,14 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Transfer\Transfer $transfer
-     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
-     * @return \Shopsys\ShopBundle\Component\Rest\RestResponse
-     */
-    private function getRestResponse(Transfer $transfer, RestClient $restClient): RestResponse
-    {
-        if ($transfer->getLastStartAt() === null) {
-            return $restClient->get('/api/Eshop/ArticlePrices');
-        }
-
-        return $restClient->get('/api/Eshop/ChangedArticlePrices');
-    }
-
-    /**
      * @param int $domainId
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @return array
      */
     private function getTransferItemsFromResponse(int $domainId, RestClient $restClient)
     {
-        $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
-
         $transferDataItems = [];
-        $restResponse = $this->getRestResponse($transfer, $restClient);
+        $restResponse = $restClient->get('/api/Eshop/ArticlePrices');
         foreach ($restResponse->getData() as $restData) {
             foreach ($restData as $restDataItem) {
                 $transferDataItems[] = new ProductPriceTransferResponseItemData($restDataItem, $domainId);
