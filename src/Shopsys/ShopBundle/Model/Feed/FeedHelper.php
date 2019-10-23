@@ -19,10 +19,6 @@ class FeedHelper
     {
         $productName = $product->getName($domainConfig->getLocale());
 
-        if ($product->getVariantType() === Product::VARIANT_TYPE_NONE) {
-            return $productName;
-        }
-
         return sprintf('%s %s', $brandName, $productName);
     }
 }
