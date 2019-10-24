@@ -100,7 +100,36 @@ class ProductTransferMapper
             $productData->parameters = array_merge($productData->parameters, $sizeProductParameterValueData);
         }
 
+        $productData->baseName = $productTransferResponseItemData->getName();
+
+        $productName = $this->getProductName($productTransferResponseItemData, $productTransferResponseItemVariantData);
+        $productData->name['cs'] = $productName;
+
         return $productData;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemData $productTransferResponseItemData
+     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData|null $productTransferResponseItemVariantData
+     * @return string
+     */
+    private function getProductName(
+        ProductTransferResponseItemData $productTransferResponseItemData,
+        ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData
+    ): string {
+        $productName = $productTransferResponseItemData->getName();
+
+        if ($productTransferResponseItemVariantData !== null) {
+            if ($productTransferResponseItemVariantData->getColorName() !== null) {
+                $productName .= ' ' . $productTransferResponseItemVariantData->getColorName();
+            }
+
+            if ($productTransferResponseItemVariantData->getSizeName() !== null) {
+                $productName .= ' ' . $productTransferResponseItemVariantData->getSizeName();
+            }
+        }
+
+        return $productName;
     }
 
     /**
@@ -191,7 +220,6 @@ class ProductTransferMapper
         ?ProductTransferResponseItemVariantData $productTransferResponseItemVariantData
     ): void {
         $productData->transferNumber = $transferNumber;
-        $productData->name['cs'] = $productTransferResponseItemData->getName();
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $productTransferResponseItemData->getDescription();
         $productData->availability = $this->availabilityFacade->getDefaultInStockAvailability();
         $productData->ean = $productTransferResponseItemVariantData->getEan();

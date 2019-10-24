@@ -87,10 +87,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'getProductAdeptPrice']
             ),
             new TwigFunction(
-                'productParameters',
-                [$this, 'getProductParameters']
-            ),
-            new TwigFunction(
                 'getParameterValueById',
                 [$this, 'getParameterValueById']
             ),
@@ -117,26 +113,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
         return $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getProductDisplayName(Product $product)
-    {
-        $productDisplayName = parent::getProductDisplayName($product);
-
-        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getProductListDisplayName(Product $product)
-    {
-        $productDisplayName = parent::getProductListDisplayName($product);
-
-        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
     }
 
     /**
@@ -168,36 +144,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductAdeptPrice(Product $product): ?ProductPrice
     {
         return $this->productCachedAttributesFacade->getProductAdeptPrice($product);
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @param string $locale
-     * @return string
-     */
-    public function getProductParameters(Product $product, string $locale): string
-    {
-        $parametersForProduct = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product, $locale);
-
-        if ($parametersForProduct === null) {
-            return '';
-        }
-
-        $parameters = [];
-
-        if ($parametersForProduct->getFirstDistinguishingParameterValue() !== null) {
-            $parameters[] = sprintf('%s: %s', $parametersForProduct->getFirstDistinguishingParameterName(), $parametersForProduct->getFirstDistinguishingParameterValue());
-        }
-
-        if ($parametersForProduct->getSecondDistinguishingParameterValue() !== null) {
-            $parameters[] = sprintf('%s: %s', $parametersForProduct->getSecondDistinguishingParameterName(), $parametersForProduct->getSecondDistinguishingParameterValue());
-        }
-
-        if (count($parameters) === 0) {
-            return '';
-        }
-
-        return sprintf('(%s)', implode(', ', $parameters));
     }
 
     /**
