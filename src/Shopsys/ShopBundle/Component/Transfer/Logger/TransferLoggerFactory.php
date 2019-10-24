@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Transfer\Logger;
 
-use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 use Symfony\Bridge\Monolog\Logger;
 
 class TransferLoggerFactory
@@ -20,21 +19,12 @@ class TransferLoggerFactory
     private $defaultLogger;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
-     */
-    private $transferFacade;
-
-    /**
      * @param \Symfony\Bridge\Monolog\Logger $defaultLogger
-     * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      */
-    public function __construct(
-        Logger $defaultLogger,
-        TransferFacade $transferFacade
-    ) {
+    public function __construct(Logger $defaultLogger)
+    {
         $this->defaultLogger = $defaultLogger;
         $this->transferLoggers = [];
-        $this->transferFacade = $transferFacade;
     }
 
     /**
@@ -44,10 +34,8 @@ class TransferLoggerFactory
      */
     private function create($transferIdentifier, Logger $logger): TransferLogger
     {
-        $transfer = $this->transferFacade->getByIdentifier($transferIdentifier);
-
         return new TransferLogger(
-            $transfer,
+            $transferIdentifier,
             $logger
         );
     }

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Transfer\Issue;
 
-use Shopsys\ShopBundle\Model\Transfer\Transfer;
-
 class TransferIssueData
 {
     /**
-     * @var \Shopsys\ShopBundle\Model\Transfer\Transfer
+     * @var string
      */
-    public $transfer;
+    public $transferIdentifier;
 
     /**
      * @var string
@@ -19,12 +17,12 @@ class TransferIssueData
     public $message;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Transfer\Transfer $transfer
+     * @param string $transferIdentifier
      * @param string $message
      */
-    public function __construct(Transfer $transfer, string $message)
+    public function __construct(string $transferIdentifier, string $message)
     {
-        $this->transfer = $transfer;
+        $this->transferIdentifier = $transferIdentifier;
         $this->message = $message;
     }
 }

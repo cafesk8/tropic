@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Component\Transfer\Logger;
 
 use Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData;
-use Shopsys\ShopBundle\Model\Transfer\Transfer;
 use Symfony\Bridge\Monolog\Logger;
 
 class TransferLogger
 {
     /**
-     * @var \Shopsys\ShopBundle\Model\Transfer\Transfer
+     * @var string
      */
-    private $transfer;
+    private $transferIdentifier;
 
     /**
      * @var \Symfony\Bridge\Monolog\Logger
@@ -26,14 +25,14 @@ class TransferLogger
     private $transferIssuesData;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Transfer\Transfer $transfer
+     * @param string $transferIdentifier
      * @param \Symfony\Bridge\Monolog\Logger $logger
      */
     public function __construct(
-        Transfer $transfer,
+        string $transferIdentifier,
         Logger $logger
     ) {
-        $this->transfer = $transfer;
+        $this->transferIdentifier = $transferIdentifier;
         $this->logger = $logger;
         $this->transferIssuesData = [];
     }
@@ -82,7 +81,7 @@ class TransferLogger
      */
     private function getLoggerMessage($message): string
     {
-        return 'Transfer "' . $this->transfer->getIdentifier() . '": ' . $message;
+        return 'Transfer "' . $this->transferIdentifier . '": ' . $message;
     }
 
     /**
@@ -95,7 +94,7 @@ class TransferLogger
         if (!empty($context)) {
             $transferIssueMessage .= sprintf(' (context: %s)', json_encode($context));
         }
-        $this->transferIssuesData[] = new TransferIssueData($this->transfer, $transferIssueMessage);
+        $this->transferIssuesData[] = new TransferIssueData($this->transferIdentifier, $transferIssueMessage);
     }
 
     /**

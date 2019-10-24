@@ -45,11 +45,12 @@ class TransferIssue
     private $createdAt;
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Transfer\Transfer $transfer
      * @param \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData $transferIssueData
      */
-    public function __construct(TransferIssueData $transferIssueData)
+    public function __construct(Transfer $transfer, TransferIssueData $transferIssueData)
     {
-        $this->transfer = $transferIssueData->transfer;
+        $this->transfer = $transfer;
         $this->message = $transferIssueData->message;
         $this->createdAt = new \DateTime();
     }

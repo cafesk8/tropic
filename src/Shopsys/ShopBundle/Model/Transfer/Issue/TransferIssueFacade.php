@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\ShopBundle\Model\Administrator\Administrator;
+use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 
 class TransferIssueFacade
 {
@@ -22,13 +23,23 @@ class TransferIssueFacade
     private $transferIssueRepository;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
+     */
+    private $transferFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueRepository $transferIssueRepository
+     * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      */
-    public function __construct(EntityManagerInterface $em, TransferIssueRepository $transferIssueRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        TransferIssueRepository $transferIssueRepository,
+        TransferFacade $transferFacade
+    ) {
         $this->em = $em;
         $this->transferIssueRepository = $transferIssueRepository;
+        $this->transferFacade = $transferFacade;
     }
 
     /**
@@ -37,8 +48,16 @@ class TransferIssueFacade
     public function createMultiple(array $transferIssuesData): void
     {
         $toFlush = [];
+        $transfersByTransferIdentifier = [];
         foreach ($transferIssuesData as $transferIssueData) {
-            $transferIssue = new TransferIssue($transferIssueData);
+            $transferIdentifier = $transferIssueData->transferIdentifier;
+            if (isset($transfersByTransferIdentifier[$transferIdentifier])) {
+                $transfer = $transfersByTransferIdentifier[$transferIdentifier];
+            } else {
+                $transfer = $this->transferFacade->getByIdentifier($transferIdentifier);
+                $transfersByTransferIdentifier[$transferIdentifier] = $transfer;
+            }
+            $transferIssue = new TransferIssue($transfer, $transferIssueData);
             $this->em->persist($transferIssue);
             $toFlush[] = $transferIssue;
         }
