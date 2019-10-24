@@ -15,8 +15,6 @@ use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferRe
 class StoreStockImportCronModule extends AbstractTransferImportCronModule
 {
     public const TRANSFER_IDENTIFIER = 'import_product_store_stock';
-    public const IMPORT_TYPE_IMPORT_ALL = 'import_type_import_all';
-    public const IMPORT_TYPE_IMPORT_UPDATES = 'import_type_import_updates';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient
@@ -37,11 +35,6 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
-
-    /**
-     * @var string
-     */
-    private $importType = self::IMPORT_TYPE_IMPORT_ALL;
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
@@ -77,17 +70,9 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
-
         $this->logger->addInfo('Starting downloading stock quantities from IS');
 
-        if ($transfer->getLastStartAt() === null) {
-            $restResponse = $this->restClient->get('/api/Eshop/StockQuantityBySites');
-            $this->importType = self::IMPORT_TYPE_IMPORT_ALL;
-        } else {
-            $restResponse = $this->restClient->get('/api/Eshop/ChangedStockQuantityBySites');
-            $this->importType = self::IMPORT_TYPE_IMPORT_UPDATES;
-        }
+        $restResponse = $this->restClient->get('/api/Eshop/StockQuantityBySites');
 
         $transferDataItems = [];
         foreach ($restResponse->getData() as $restData) {
@@ -122,8 +107,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
         $productData = $this->storeStockTransferMapper->mapTransferDataToProductData(
             $storeStockTransferResponseItemData,
             $product,
-            $this->logger,
-            $this->importType
+            $this->logger
         );
 
         $this->productFacade->edit($product->getId(), $productData);
