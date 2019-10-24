@@ -136,8 +136,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $product = $options['product'];
         /* @var $product \Shopsys\FrameworkBundle\Model\Product\Product|null */
 
-        $this->disableNameFieldForVariantProduct($builder, $product);
-
         $builderBasicInformationGroup = $builder->get('basicInformationGroup');
         $builderBasicInformationGroup
             ->add('finished', YesNoType::class, [
@@ -212,6 +210,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         if ($product !== null && $product->isVariant()) {
             $this->extendVariantGroup($builder->get('variantGroup'), $product);
+            $builder->get('name')->setDisabled(true);
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
@@ -515,20 +514,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builder->add($videoGroup);
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
-     */
-    private function disableNameFieldForVariantProduct(FormBuilderInterface $builder, ?Product $product): void
-    {
-        if ($product !== null && $product->isVariant() === true) {
-            $nameFieldOptions = $builder->get('name')->getOptions();
-            $nameFieldOptions['disabled'] = true;
-            $nameFieldType = get_class($builder->get('name')->getType()->getInnerType());
-            $builder->add('name', $nameFieldType, $nameFieldOptions);
-        }
     }
 
     /**

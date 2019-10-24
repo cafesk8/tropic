@@ -637,7 +637,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
-    public function fillNotCzechVariantNamesFromMainVariantNames(Product $product, ParameterFacade $parameterFacade): void
+    public function fillVariantNamesFromMainVariantNames(Product $product, ParameterFacade $parameterFacade): void
     {
         if ($product->isMainVariant() === false) {
             return;
@@ -653,7 +653,7 @@ class ProductFacade extends BaseProductFacade
             }
 
             foreach ($namesByLocale as $locale => $name) {
-                if ($locale !== 'cs') {
+                if ($name !== null) {
                     $variant->updateNameWithSize(
                         $locale,
                         $name,

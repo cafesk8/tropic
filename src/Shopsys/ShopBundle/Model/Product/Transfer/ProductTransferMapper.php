@@ -103,7 +103,7 @@ class ProductTransferMapper
         $productData->baseName = $productTransferResponseItemData->getName();
 
         $productName = $this->getProductName($productTransferResponseItemData, $productTransferResponseItemVariantData);
-        $productData->name['cs'] = $productName;
+        $productData->name[DomainHelper::CZECH_LOCALE] = $productName;
 
         return $productData;
     }

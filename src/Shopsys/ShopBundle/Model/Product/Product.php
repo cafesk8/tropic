@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Exception\ProductIsNotMainVariantException;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\Mall\ProductMallExportMapper;
@@ -570,7 +571,7 @@ class Product extends BaseProduct
     public function updateCzechNamesWithColor(string $color): void
     {
         $newName = sprintf('%s %s', $this->getBaseName(), $color);
-        $this->setName('cs', $newName);
+        $this->setName(DomainHelper::CZECH_LOCALE, $newName);
     }
 
     /**

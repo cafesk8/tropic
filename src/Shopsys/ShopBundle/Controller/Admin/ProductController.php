@@ -256,7 +256,7 @@ class ProductController extends BaseProductController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->productFacade->edit($id, $form->getData());
-            $this->productFacade->fillNotCzechVariantNamesFromMainVariantNames($product, $this->parameterFacade);
+            $this->productFacade->fillVariantNamesFromMainVariantNames($product, $this->parameterFacade);
 
             $this->getFlashMessageSender()->addSuccessFlashTwig(
                 t('Product <strong>{{ product|productDisplayName }}</strong> modified'),
