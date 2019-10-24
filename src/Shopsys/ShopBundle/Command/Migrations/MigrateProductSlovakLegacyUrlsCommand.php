@@ -101,7 +101,6 @@ class MigrateProductSlovakLegacyUrlsCommand extends Command
                         );
                         $symfonyStyleIo->success(sprintf('Legacy slug `%s` for product with catnum `%s` has been added', $legacySlug, $product->getCatnum()));
                     }
-
                 } catch (ProductUrlLegacySlugDoesNotExistException $legacySlugDoesNotExistException) {
                     $symfonyStyleIo->warning(sprintf('Legacy slug for product with catnum `%s` does not exist in the provided data source', $product->getCatnum()));
                 } catch (FriendlyUrlExistsException $friendlyUrlExistsException) {
