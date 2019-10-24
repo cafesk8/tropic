@@ -80,3 +80,5 @@ parameters:
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty:
             - '*/src/Shopsys/ShopBundle/Model/Gtm/Data/*'
+
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\FunctionCallSignatureSniff.Indent: ~
