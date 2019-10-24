@@ -49,6 +49,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductSlovakLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Model/Product/ProductFacade.php'
+            - '*/src/Shopsys/ShopBundle/Model/Product/Product.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
