@@ -99,6 +99,13 @@ class Transport extends BaseTransport
     public $personalTakeType;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $trackingUrlPattern;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -115,6 +122,7 @@ class Transport extends BaseTransport
         $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
         $this->setPersonalTakeType($transportData->personalTakeType);
+        $this->trackingUrlPattern = $transportData->trackingUrlPattern;
     }
 
     /**
@@ -134,6 +142,7 @@ class Transport extends BaseTransport
         $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
         $this->setPersonalTakeType($transportData->personalTakeType);
+        $this->trackingUrlPattern = $transportData->trackingUrlPattern;
     }
 
     /**
@@ -275,5 +284,13 @@ class Transport extends BaseTransport
             throw new InvalidPersonalTakeTypeException('Invalid transport personal take type `%s`', $type);
         }
         $this->personalTakeType = $type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTrackingUrlPattern(): ?string
+    {
+        return $this->trackingUrlPattern;
     }
 }

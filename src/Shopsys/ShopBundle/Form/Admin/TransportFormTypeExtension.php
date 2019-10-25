@@ -98,6 +98,11 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             ->add('externalId', TextType::class, [
                 'label' => 'ID z IS',
                 'required' => false,
+            ])
+            ->add('trackingUrlPattern', TextType::class, [
+                'label' => t('Tvar odkazu pro sledování zásilky'),
+                'icon_title' => t('Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s'),
+                'required' => false,
             ]);
 
         $builder->add($this->getBalikobotAndStoreGroup($builder));
