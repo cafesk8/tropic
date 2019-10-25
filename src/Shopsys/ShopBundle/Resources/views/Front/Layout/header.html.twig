@@ -3,56 +3,51 @@
     {% set shopInfoPhoneNumber = getShopInfoPhoneNumber() %}
     {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
     {% set shopInfoEmail = getShopInfoEmail() %}
-    <div class="top-bar">
-        <div class="top-bar__in">
-
-            <ul class="top-bar__menu">
-                {{ render(controller('ShopsysShopBundle:Front/Article:headerList')) }}
-                <li class="top-bar__menu__item">
-                    <a href="{{ url(
-                        'front_blogcategory_detail', {
-                            'id': constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')
-                        }
-                    ) }}"
-                       class="top-bar__menu__item__link"
-                    >
-                        {{ 'Blog'|trans }}
-                    </a>
-                </li>
-                {% set thirdArticleOnHeader = getArticleBySettingValue(constant('Shopsys\\ShopBundle\\Component\\Setting\\Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID')) %}
-                {% if thirdArticleOnHeader is not null %}
+    <div class="web__container web__container--transparent">
+        <div class="top-bar">
+            <div class="top-bar__in">
+                <ul class="top-bar__menu top-bar__menu--mobile-visible">
                     <li class="top-bar__menu__item">
-                        <a href="{{ url('front_article_detail', { id: thirdArticleOnHeader.id }) }}" class="top-bar__menu__item__link">
-                            {{ thirdArticleOnHeader.name }}
+                        <span class="top-bar__menu__item__text">
+                            <a class="top-bar__menu__item__text__phone" href="tel:{{ shopInfoPhoneNumber }}">
+                                <strong>{{ shopInfoPhoneNumber }}</strong>
+                            </a>
+                            {{ shopInfoPhoneHours }}
+                        </span>
+                    </li>
+                </ul>
+
+                <ul class="top-bar__menu">
+                    {{ render(controller('ShopsysShopBundle:Front/Article:headerList')) }}
+                    <li class="top-bar__menu__item">
+                        <a href="{{ url(
+                            'front_blogcategory_detail', {
+                                'id': constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')
+                            }
+                        ) }}"
+                        class="top-bar__menu__item__link"
+                        >
+                            {{ 'Blog'|trans }}
                         </a>
                     </li>
-                {% endif %}
-                <li class="top-bar__menu__item">
-                    <a href="{{ url('front_store_index') }}" class="top-bar__menu__item__link">
-                        {{ 'Prodejny'|trans }}
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="top-bar__menu top-bar__menu--right">
-                <li class="top-bar__menu__item">
-                    <span class="top-bar__menu__item__text">
-                        <strong class="top-bar__menu__item__text__title">
-                            {{ 'Buď bushman a měj výhodnější'|trans }}
-                        </strong>
-                        <br class="top-bar__menu__next-line">
-                        <strong class="top-bar__menu__item__text__mobile">
-                            {{ 'využij výhodnější'|trans}}
-                        </strong>
-                        <strong>
-                            &nbsp;{{ ' ceny a podmínky nákupu'|trans}}
-                        </strong>
-                    </span>
-                </li>
-            </ul>
+                    {% set thirdArticleOnHeader = getArticleBySettingValue(constant('Shopsys\\ShopBundle\\Component\\Setting\\Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID')) %}
+                    {% if thirdArticleOnHeader is not null %}
+                        <li class="top-bar__menu__item">
+                            <a href="{{ url('front_article_detail', { id: thirdArticleOnHeader.id }) }}" class="top-bar__menu__item__link">
+                                {{ thirdArticleOnHeader.name }}
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="top-bar__menu__item">
+                        <a href="{{ url('front_store_index') }}" class="top-bar__menu__item__link">
+                            {{ 'Prodejny'|trans }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="web__container">
+    <div class="web__container web__container--border-radius-top">
         <header class="header {{ block('headerClass') }}">
             <div class="header__menu dont-print">
                 {% cache 'categories_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}

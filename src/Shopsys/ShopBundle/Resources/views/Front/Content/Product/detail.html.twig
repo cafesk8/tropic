@@ -20,7 +20,7 @@
 
 {% block main_content %}
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             <div itemscope itemtype="http://schema.org/Product">
                 <div class="js-product-variant-group">
                     {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
@@ -35,7 +35,7 @@
 
     {% if accessories|length > 0 %}
         <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 <div class="box-accessories">
                     <h2 class="in-title in-title--big in-title--center box-accessories__title">
                         {{ accessoriesHeadline }}
@@ -52,7 +52,7 @@
 
     {% if productBlogArticles|length > 0 %}
         <div class="web__line">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 <div class="box-articles">
                     <div class="box-articles__title-big">
                         {{ 'Inspiraci hledej v příbězích'|trans }}
@@ -72,7 +72,7 @@
     {% endif %}
 
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
         </div>
     </div>

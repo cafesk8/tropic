@@ -26,7 +26,7 @@
 
         {% if category.legendaryCategory %}
             <div class="web__line">
-                <div class="web__container web__container--big-padding">
+                <div class="web__container">
                     <div class="box-category">
                         <div class="box-category__description in-user-text">
                             {{ category.getDescription(domain.id)|raw }}
@@ -37,7 +37,7 @@
         {% endif %}
 {#
         <div class="web__line">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 <div class="list-grid-images">
                     <ul class="list-grid-images__category-advantages">
                         <li class="list-grid-images__category-advantages__item">
@@ -83,7 +83,7 @@
             {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
         {% endif %}
         <div class="web__line">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
                     {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                         <div class="box-list__panel js-product-list-panel">
@@ -113,7 +113,7 @@
 
         {% if category.legendaryCategory != true %}
             <div class="web__line">
-                <div class="web__container web__container--big-padding web__container--top-line">
+                <div class="web__container web__container--top-line">
                     <div class="box-list__bottom">
                         <div class="box-list__bottom__description">
                             <div class="box-list__bottom__title">
@@ -141,7 +141,7 @@
         {% endblock %}
 
         <div class="web__line">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
             </div>
         </div>

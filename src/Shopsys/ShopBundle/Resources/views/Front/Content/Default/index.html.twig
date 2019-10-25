@@ -24,7 +24,7 @@
 
     {{ render(controller('ShopsysShopBundle:Front/Advert:banner')) }}
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' %}
         </div>
     </div>
@@ -32,7 +32,7 @@
 
     {% if topProducts is not empty %}
         <div class="web__line">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 <div id="top-products" class="box-top-products">
                     <div class="box-top-products__title">
                         {{ 'Bushmani mají nejraději'|trans }}
@@ -123,7 +123,7 @@
     </div>
 
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             <div class="box-articles">
                 <div class="box-articles__title-big">
                     {{ 'Načerpej inspiraci'|trans }}
@@ -144,7 +144,7 @@
     {% endblock %}
 
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
         </div>
     </div>

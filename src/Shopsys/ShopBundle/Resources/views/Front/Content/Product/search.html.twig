@@ -13,7 +13,7 @@
 
 {% block main_content %}
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             <div class="box-search">
                 <div class="box-search__title">
                     {{ 'Výsledky výrazu:'|trans }}
@@ -52,13 +52,13 @@
     {% endif %}
 
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': foundCategories, 'cssClass': 'list-categories--four-on-row', 'title': 'Nalezené kategorie'|trans, 'showText': false } %}
         </div>
     </div>
 
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
                 {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                     <div class="box-list__panel js-product-list-panel">
