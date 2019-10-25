@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Shopsys\ShopBundle\Model\GoPay;
 
-use GoPay\Definition\Response\PaymentStatus;
 use GoPay\Http\Response;
 use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -102,7 +101,7 @@ class GoPayFacadeOnCurrentDomain
      */
     public function checkOrderGoPayStatus(Order $order): void
     {
-        if ($order->getGoPayStatus() === PaymentStatus::PAID) {
+        if ($order->isGopayPaid() === true) {
             return;
         }
 
@@ -124,6 +123,6 @@ class GoPayFacadeOnCurrentDomain
      */
     public function isOrderGoPayUnpaid(Order $order): bool
     {
-        return $order->getPayment()->isGoPay() && $order->getGoPayStatus() !== PaymentStatus::PAID;
+        return $order->getPayment()->isGoPay() && $order->isGopayPaid() === false;
     }
 }
