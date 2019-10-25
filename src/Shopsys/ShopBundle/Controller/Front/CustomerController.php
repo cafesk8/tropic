@@ -129,6 +129,7 @@ class CustomerController extends FrontBaseController
         /** @var \Shopsys\FrameworkBundle\Model\Customer\User $user */
         $user = $this->getUser();
 
+        /** @var \Shopsys\ShopBundle\Model\Order\Order[] $orders */
         $orders = $this->orderFacade->getCustomerOrderList($user);
         return $this->render('@ShopsysShop/Front/Content/Customer/orders.html.twig', [
             'orders' => $orders,
@@ -165,14 +166,14 @@ class CustomerController extends FrontBaseController
 
             $user = $this->getUser();
             try {
-                /** @var \Shopsys\FrameworkBundle\Model\Order\Order $order */
+                /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
                 $order = $this->orderFacade->getByOrderNumberAndUser($orderNumber, $user);
             } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Order not found'));
                 return $this->redirectToRoute('front_customer_orders');
             }
         } else {
-            /** @var \Shopsys\FrameworkBundle\Model\Order\Order $order */
+            /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         }
 

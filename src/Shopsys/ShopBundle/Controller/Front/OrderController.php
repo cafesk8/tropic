@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Exception;
+use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -797,6 +798,44 @@ class OrderController extends FrontBaseController
         } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
+    }
+
+    /**
+     * @param string $urlHash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function repeatGoPayPaymentAction(string $urlHash): Response
+    {
+        try {
+            $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
+        } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nebyla nalezena.'));
+
+            return $this->redirectToRoute('front_homepage');
+        }
+
+        $goPayData = null;
+
+        if ($order->getPayment()->isGoPay() && $order->getGoPayId() !== PaymentStatus::PAID) {
+            $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
+
+            try {
+                $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
+
+                $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
+            } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+            }
+        } else {
+            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka je již zaplacená.'));
+
+            return $this->redirectToRoute('front_homepage');
+        }
+
+        return $this->render('@ShopsysShop/Front/Content/Order/repeatGoPayPayment.html.twig', [
+            'order' => $order,
+            'goPayData' => $goPayData,
+        ]);
     }
 
     /**

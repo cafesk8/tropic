@@ -20,7 +20,15 @@
                 <table class="table-params">
                     <tr>
                         <th>{{ 'Status'|trans }}: </th>
-                        <td>{{ order.status.name }}</td>
+                        <td>
+                            {{ order.status.name }}
+                            {% if order.payment.goPay == true and order.gopayPaid == false %}
+                                <br />
+                                <a href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
+                                    {{ 'Opakovat platbu'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <th>{{ 'Creation date'|trans }}: </th>

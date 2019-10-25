@@ -325,7 +325,7 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Use ID 1 as default brand.')
                     ->setParameter('id', 1);
             })
-            ->customizeByRouteName('front_customer_order_detail_unregistered', function (RouteConfig $config) {
+            ->customizeByRouteName(['front_customer_order_detail_unregistered', 'front_order_repeat_gopay_payment'], function (RouteConfig $config) {
                 /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
                 $order = $this->getPersistentReference(OrderDataFixture::ORDER_PREFIX . '1');
 
