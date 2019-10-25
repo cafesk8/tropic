@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -80,6 +81,11 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                     ]);
             }
         }
+        $builderBasicInformationGroup
+            ->add('trackingNumber', TextType::class, [
+                'label' => t('Číslo pro sledování zásilky'),
+                'required' => false,
+            ]);
 
         $this->extendConstraintsOfBillingDataGroup($builder->get('billingDataGroup'));
         $this->extendConstraintsOfShippingDataGroup($builder->get('shippingAddressGroup')->get('deliveryAddressFields'));

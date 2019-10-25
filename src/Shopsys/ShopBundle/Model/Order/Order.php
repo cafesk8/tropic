@@ -272,6 +272,13 @@ class Order extends BaseOrder
     private $promoCodeCode;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $trackingNumber;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -327,6 +334,7 @@ class Order extends BaseOrder
         $this->gtmCoupon = $orderData->gtmCoupon;
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
         $this->promoCodeCode = $orderData->promoCodeCode;
+        $this->trackingNumber = $orderData->trackingNumber;
     }
 
     /**
@@ -358,6 +366,7 @@ class Order extends BaseOrder
         $this->gtmCoupon = $orderData->gtmCoupon;
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
         $this->promoCodeCode = $orderData->promoCodeCode;
+        $this->trackingNumber = $orderData->trackingNumber;
 
         return $orderEditResult;
     }
@@ -897,5 +906,13 @@ class Order extends BaseOrder
     public function getPromoCodeCode(): ?string
     {
         return $this->promoCodeCode;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTrackingNumber(): ?string
+    {
+        return $this->trackingNumber;
     }
 }

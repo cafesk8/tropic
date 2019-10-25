@@ -53,5 +53,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->memberOfBushmanClub = $order->isMemberOfBushmanClub();
         $orderData->personalTakeType = $order->getPersonalTakeType();
         $orderData->promoCodeCode = $order->getPromoCodeCode();
+        $orderData->trackingNumber = $order->getTrackingNumber();
     }
 }
