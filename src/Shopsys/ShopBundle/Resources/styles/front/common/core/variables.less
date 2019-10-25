@@ -5,22 +5,22 @@
 @path-design: '../images';
 @path-font: '../fonts';
 
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed:300,400,500,700&display=swap&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap&subset=latin-ext');
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,700&display=swap&subset=latin-ext');
 
 // Fonts
-@font-base: 'IBM Plex Sans Condensed', sans-serif;
+@font-base: 'Roboto Condensed', sans-serif;
 @font-alt: 'IBM Plex Sans', sans-serif;
 @font: @font-base;
 
-@font-size-extra-small: 11px;
-@font-size-small: 12px;
-@font-size: 14px;
-@font-size-big: 19px;
+@font-size-extra-small: 12px;
+@font-size-small: 14px;
+@font-size: 15px;
+@font-size-big: 18px;
 @font-size-mobile: 13px;
 
 // Layout
-@web-width: 1420px;
+@web-width: 1200px;
 @web-padding: 10px;
 @web-padding-big: 120px;
 @web-panel-width: 260px;
@@ -64,22 +64,24 @@
 
 //// Classic colors of design
 @color-blue: #009bd9;
-@color-green: #7bbd70;
+@color-green: #C0E314;
 @color-red: #eb5013;
 
-@color-gray: #efefef;
-@color-gray-dark: #c9c8c8;
+@color-black: #181a22;
+@color-pink: #ff91fa;
+@color-gray: #8991a3;
+@color-gray-dark: #384149;
 @color-orange: #e79c00;
-@color-brown: #433e3e;
+@color-brown: #6c6868;
 @color-brown-light: #6d6868;
 @color-brown-light-2: #646464;
 
 //// Context colors
 ////// Base color of text
-@color-base: @color-0;
+@color-base: @color-black;
 
 ////// Color, which is main in design (used in titles or links, other significant places)
-@color-primary: @color-orange;
+@color-primary: @color-black;
 
 ////// Color, which is additional in design (second main color)
 @color-add: @color-green;
@@ -88,16 +90,16 @@
 @color-light: #efefef;
 
 ////// Color for common prices
-@color-price: @color-a;
+@color-price: @color-gray-dark;
 ////// Color for more visible prices (main price)
-@color-price-main: @color-base;
-@color-price-old: @color-brown-light;
-@color-price-save: #d95c1d;
-@color-price-discount: #db581f;
+@color-price-main: @color-pink;
+@color-price-old: @color-brown;
+@color-price-save: @color-pink;
+@color-price-discount: @color-pink;
 
 ////// Color for main links and its hover color
-@color-link: @color-brown;
-@color-link-hover: @color-base;
+@color-link: @color-black;
+@color-link-hover: @color-black;
 
 ////// Special colors
 @color-info: @color-green;
@@ -107,7 +109,7 @@
 ////// Color for inactive text (muted)
 @color-inactive: @color-a;
 ////// Base color of border
-@color-border: @color-d;
+@color-border: @color-light;
 ////// Base color for background of components
 @color-box: @color-light;
 
