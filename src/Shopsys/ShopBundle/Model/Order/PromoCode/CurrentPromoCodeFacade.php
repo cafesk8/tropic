@@ -131,7 +131,9 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         $validFrom = $promoCode->getValidFrom();
 
         $validTo = $promoCode->getValidTo();
-        $validTo->setTime(23, 59, 59);
+        if ($validTo !== null) {
+            $validTo->setTime(23, 59, 59);
+        }
 
         $now = new DateTime();
 
