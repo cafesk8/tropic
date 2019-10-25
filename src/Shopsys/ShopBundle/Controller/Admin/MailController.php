@@ -18,6 +18,8 @@ class MailController extends BaseMailController
 
         $orderStatusVariablesLables[OrderMail::VARIABLE_PREPARED_PRODUCTS] =
             t('Seznam již dostupného zboží v objednávce (název, dostupné množství, cena za jednotku s DPH, celková cena za položku s DPH)');
+        $orderStatusVariablesLables[OrderMail::VARIABLE_TRACKING_URL] = t('Odkaz pro sledování zásilky');
+        $orderStatusVariablesLables[OrderMail::VARIABLE_TRACKING_NUMBER] = t('Číslo pro sledování zásilky');
 
         return $orderStatusVariablesLables;
     }
