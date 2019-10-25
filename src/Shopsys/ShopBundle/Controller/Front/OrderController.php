@@ -807,6 +807,7 @@ class OrderController extends FrontBaseController
     public function repeatGoPayPaymentAction(string $urlHash): Response
     {
         try {
+            /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nebyla nalezena.'));
@@ -816,20 +817,19 @@ class OrderController extends FrontBaseController
 
         $goPayData = null;
 
-        if ($order->getPayment()->isGoPay() && $order->getGoPayId() !== PaymentStatus::PAID) {
-            $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
-
-            try {
-                $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
-
-                $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
-            } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
-                $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
-            }
-        } else {
+        if ($order->isGopayPaid() !== false) {
             $this->getFlashMessageSender()->addErrorFlash(t('Objednávka je již zaplacená.'));
-
             return $this->redirectToRoute('front_homepage');
+        }
+
+        $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
+
+        try {
+            $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
+
+            $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
+        } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
 
         return $this->render('@ShopsysShop/Front/Content/Order/repeatGoPayPayment.html.twig', [
