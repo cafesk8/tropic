@@ -34,6 +34,7 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
  * @ORM\Table(name="orders")
  * @ORM\Entity
  *
+ * @property \Shopsys\ShopBundle\Model\Transport\Transport $transport
  * @method \Shopsys\ShopBundle\Model\Transport\Transport getTransport()
  * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
  * @method \Shopsys\ShopBundle\Model\Country\Country getCountry()
@@ -914,5 +915,17 @@ class Order extends BaseOrder
     public function getTrackingNumber(): ?string
     {
         return $this->trackingNumber;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTrackingUrl(): ?string
+    {
+        if ($this->trackingNumber !== null && $this->transport->getTrackingUrlPattern() !== null) {
+            return sprintf($this->transport->getTrackingUrlPattern(), $this->trackingNumber);
+        }
+
+        return null;
     }
 }
