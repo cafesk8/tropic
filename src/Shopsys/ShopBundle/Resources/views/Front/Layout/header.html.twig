@@ -65,7 +65,7 @@
                     <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
                         {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
                             {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
-                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu', { dropdownMenu: false })) }}
                         {% endcache %}
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                     </div>
 
                     {#  
-                        https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36534
+                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36534
                         Header item dropdown for login
 
                         <div class="box-dropdown js-hover-intent">
@@ -148,17 +148,29 @@
 
             <div class="header__menu dont-print">
                 {% cache 'categories_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
-                    {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
-                    <div class="all-categories js-hover-intent">
-                        <span class="all-categories__title">
-                            {{ 'Všechny kategorie'|trans }}
-                        </span>
-                        <span class="all-categories__arrow"></span>
+                    {#
+                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36538
+                        Main 3 categories from menu
 
-                        <span class="all-categories__content">
-                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
-                        </span>
-                    </div>
+                        {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
+                    #}
+                    {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                    
+                    {#
+                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36536
+                        Header menu all categories
+
+                        <div class="all-categories js-hover-intent">
+                            <span class="all-categories__title">
+                                {{ 'Všechny kategorie'|trans }}
+                            </span>
+                            <span class="all-categories__arrow"></span>
+
+                            <span class="all-categories__content">
+                                {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                            </span>
+                        </div>
+                    #}
                 {% endcache %}
             </div>
         </header>

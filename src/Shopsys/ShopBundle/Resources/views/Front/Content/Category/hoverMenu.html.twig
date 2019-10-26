@@ -1,53 +1,74 @@
-{% macro rightContent(categoriesWithLazyLoadedVisibleChildren, categoriesIdsForFirstColumn) %}
+{% macro rightContent(categoriesWithLazyLoadedVisibleChildren, categoriesIdsForFirstColumn, modificationCLass = '', dropdownMenu) %}
     {% if categoriesWithLazyLoadedVisibleChildren|length > 0 %}
-        <div class="list-menu">
+        <ul class="list-menu {{ modificationCLass }}">
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% set category = categoryWithLazyLoadedVisibleChildren.category %}
+                {% set hasChildren = categoryWithLazyLoadedVisibleChildren.children|length > 0 %}
                 {% if category.id not in categoriesIdsForFirstColumn %}
-                    {% if category.level == 1 %}<ul class="list-menu__column">{% endif %}
-                    <li class="{{ category.level == 1 ? 'list-menu__title' : 'list-menu__item' }}">
-                        <a href="{{ url('front_product_list', { id: category.id }) }}"
-                           class="list-menu__item__link {% if category.level == 1 %}underline{% else %}list-menu__item__link--level-{{ category.level }}{% endif %}">
-                            {{ category.name }}
-                        </a>
-                    </li>
-                    {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, categoriesIdsForFirstColumn) }}
-                    {% if category.level == 1 %}</ul>{% endif %}
+                    {% if category.level == 1 %}
+                        <li class="list-menu__item list-menu__item--main {% if hasChildren and dropdownMenu %}js-hover-intent{% endif %}">
+                            <div class="list-menu__item__select">
+                                <a href="{{ url('front_product_list', { id: category.id }) }}"
+                                class="list-menu__item__link{% if hasChildren %} list-menu__item__link--with-dropdown{% endif %} list-menu__item__link--level-{{ category.level }}">
+                                    {{ category.name }}
+                                </a>
+                            </div>
+                            {% if hasChildren %}
+                                <div class="list-menu__item__options">
+                                    {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, categoriesIdsForFirstColumn, 'list-menu--without-margin') }}
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% elseif category.level > 1%}
+                        <li class="list-menu__item">
+                            <a href="{{ url('front_product_list', { id: category.id }) }}"
+                            class="list-menu__item__link list-menu__item__link--level-{{ category.level }}">
+                                {{ category.name }}
+                            </a>
+                            {% if hasChildren %}
+                                {{ _self.rightContent(categoryWithLazyLoadedVisibleChildren.children, categoriesIdsForFirstColumn, 'list-menu--without-margin list-menu--submenu') }}
+                            {% endif %}
+                        </li>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
-        </div>
+        </ul>
     {% endif %}
 {% endmacro %}
 
-<div class="all-categories__content__left">
-    <ul class="list-menu__column-single">
-        {% for category in categoriesForFirstColumn %}
+{# 
+    TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36537
+    Left content from all categories content
+ #}
+{% if 1==2 %}
+    <div class="all-categories__content__left">
+        <ul class="list-menu__column-single">
+            {% for category in categoriesForFirstColumn %}
+                <li class="list-menu__title">
+                    <a href="{{ url('front_product_list', { id: category.id }) }}" class="list-menu__item__link underline">
+                        {{ category.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        {# Design - temporary hidden #}
+        {% if 1==2 %}
+        <ul class="list-menu__column-single list-menu__column-single--with-icon">
             <li class="list-menu__title">
-                <a href="{{ url('front_product_list', { id: category.id }) }}" class="list-menu__item__link underline">
-                    {{ category.name }}
+                <i class="svg svg-mail"></i>
+                <a href="#" class="list-menu__item__link underline js-not-implemented-yet">
+                    {{ 'Dárkové certifikáty'|trans }}
                 </a>
             </li>
-        {% endfor %}
-    </ul>
-    {# Design - temporary hidden #}
-    {% if 1==2 %}
-    <ul class="list-menu__column-single list-menu__column-single--with-icon">
-        <li class="list-menu__title">
-            <i class="svg svg-mail"></i>
-            <a href="#" class="list-menu__item__link underline js-not-implemented-yet">
-                {{ 'Dárkové certifikáty'|trans }}
-            </a>
-        </li>
-        <li class="list-menu__title">
-            <i class="svg svg-mail"></i>
-            <a href="#" class="list-menu__item__link underline js-not-implemented-yet">
-                {{ 'Outlet'|trans }}
-            </a>
-        </li>
-    </ul>
-    {% endif %}
-</div>
+            <li class="list-menu__title">
+                <i class="svg svg-mail"></i>
+                <a href="#" class="list-menu__item__link underline js-not-implemented-yet">
+                    {{ 'Outlet'|trans }}
+                </a>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
+{% endif %}
 
-<div class="all-categories__content__right">
-    {{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, categoriesIdsForFirstColumn) }}
-</div>
+{{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, categoriesIdsForFirstColumn, '', dropdownMenu) }}

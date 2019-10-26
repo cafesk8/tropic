@@ -9,9 +9,19 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    margin: 10px 0;
+    padding-left: 0;
 
     @media @query-vl {
         flex-direction: row;
+    }
+
+    &--submenu {
+        padding-left: 20px;
+    }
+
+    &--without-margin {
+        margin: 0;
     }
 
     &--footer {
@@ -76,24 +86,82 @@
     }
 
     &__item {
-        display: inline-block;
-        line-height: @list-menu-item-height + 4px;
-        height: @list-menu-item-height;
-        padding-right: @list-menu-columns-gap;
+        position: relative;
+        display: block;
         width: 100%;
+        padding-right: @list-menu-columns-gap;
 
         white-space: nowrap;
+
+        &--main {
+            display: inline-block;
+            width: auto;
+            padding: 0 20px;
+
+            @media @query-vl {
+                padding: 0 @list-menu-columns-gap 0 0;
+            }
+        }
+
+        &__select {
+            .open & {
+                background-color: @color-f;
+                border-radius: @radius @radius 0 0;
+            }
+        }
+
+        &__options {
+            @media @query-vl {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: @list-menu-item-height;
+                z-index: @z-index-above;
+                padding: 10px 0;
+
+                background-color: @color-f;
+                border-radius: 0 @radius @radius @radius;
+
+                .open & {
+                    display: block;
+                }
+            }
+        }
 
         &__link {
             position: relative;
             height: @list-menu-item-height;
             line-height: @list-menu-item-height;
-            padding: 0;
-            margin-right: 10px;
 
             color: @color-base;
             font-size: @font-size;
             text-decoration: none;
+            transition: none;
+
+            @media @query-vl {
+                padding: 0 10px;
+            }
+
+            &:hover {
+                color: @color-f;
+                text-decoration: underline;
+            }
+
+            &--with-dropdown {
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+
+            &--level-1 {
+                color: @color-f;
+                font-size: 16px;
+                font-weight: 700;;
+            }
+
+            .open & {
+                color: @color-base;
+            }
 
             .list-menu__column-single & {
                 text-transform: none;
