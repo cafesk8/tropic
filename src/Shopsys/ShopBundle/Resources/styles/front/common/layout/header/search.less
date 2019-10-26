@@ -1,40 +1,13 @@
-@search-button-width: 80px;
-@search-form-height: @input-height;
-@search-width: 650px;
-@search-padding: 26px 42px;
-@search-padding-mobile: 13px 20px;
-@search-input-height: 48px;
+@search-button-width: 56px;
+@search-input-height: 46px;
 
 .search {
     position: relative;
-    padding: @search-padding-mobile;
-
-    background: @color-gray;
-
-    @media @query-lg {
-        padding: @search-padding;
-    }
 
     &__form {
         display: flex;
 
-        @media @query-vl {
-            width: @search-width;
-        }
-
-        .box-dropdown & {
-            @media @query-md {
-                width: 400px;
-            }
-
-            @media @query-lg {
-                width: 520px;
-            }
-
-            @media @query-vl {
-                width: @search-width;
-            }
-        }
+        border: 2px solid @color-border;
 
         .box-search & {
             flex-direction: column;
@@ -59,11 +32,12 @@
                 height: @search-input-height;
                 line-height: 32px;
                 padding-top: 0;
+                padding-left: 17px;
 
-                font-size: 24px;
-                color: @color-base;
+                font-size: 16px;
+                color: @color-brown;
                 border: none;
-                border-bottom: 1px solid @color-base;
+                border-radius: @radius-small;
 
                 .box-search & {
                     width: 100%;
@@ -74,12 +48,34 @@
             }
         }
 
-        &__button {
-            display: none;
+        &__submit {
+            display: flex;
             width: @search-button-width;
-            height: @search-form-height;
-            line-height: @search-form-height;
-            padding: 0;
+
+            &__button {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                cursor: pointer;
+                font-size: @font-size-big;
+
+                .svg {
+                    height: @font-size-big;
+                }
+            }
         }
+    }
+
+    &__autocomplete {
+        position: absolute;
+        width: 100%;
+        top: @search-input-height;
+        left: 0;
+        z-index: @z-index-above;
+        padding: 20px;
+
+        background-color: @color-light;
     }
 }

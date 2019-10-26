@@ -49,6 +49,103 @@
     </div>
     <div class="web__container web__container--border-radius-top">
         <header class="header {{ block('headerClass') }}">
+            <div class="header__logo">
+                {% block logo %}
+                <a class="logo" href="{{ url('front_homepage') }}">
+                    <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
+                </a>
+                {% endblock %}
+            </div>
+
+            <div class="header__right dont-print">
+                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__menu js-hover-intent">
+                    <div class="box-dropdown__select">
+                        <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
+                    </div>
+                    <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
+                        {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                            {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
+                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
+                        {% endcache %}
+                    </div>
+                </div>
+
+                <div class="header__right__search">
+                    {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}
+                </div>
+
+                <div class="header__right__actions">
+
+                    <div class="header__right__item">
+                        <a class="header__right__item__link" href="{{ url('front_registration_register') }}">{{ 'Registrace'|trans }}</a>
+                    </div>
+
+                    <div class="header__right__item">
+                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                            <a class="header__right__item__link" href="{{ url('front_customer_edit') }}">
+                                {{ 'Váš účet'|trans }}
+                            </a>
+                        {% else %}
+                            <a class="header__right__item__link" href="{{ url('front_login') }}">
+                                {{ 'Přihlášení'|trans }}
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    {#  
+                        https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36534
+                        Header item dropdown for login
+
+                        <div class="box-dropdown js-hover-intent">
+                            <div class="box-dropdown__select">
+                                {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                                    {{ 'Váš účet'|trans }}
+                                {% else %}
+                                    {{ 'Přihlas se'|trans }}
+                                {% endif %}
+                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
+                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
+                            </div>
+                            <div class="box-dropdown__options
+                                {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                                    box-dropdown__options--logged
+                                {% else %}
+                                    box-dropdown__options--login
+                                {% endif %}
+                                js-dropdown-options">
+                                {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                                    <div class="box-dropdown__options__item js-dropdown-item'">
+                                        <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
+                                            <span class="underline">
+                                                {{ app.user.firstName }} {{ app.user.lastName }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="box-dropdown__options__item js-dropdown-item'">
+                                        <a href="{{ url('front_customer_orders') }}" class="menu-iconic__item__link">
+                                            <span class="underline">
+                                                {{ 'My orders'|trans }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="box-dropdown__options__item js-dropdown-item'">
+                                        <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="menu-iconic__item__link menu-iconic__item__link--last js-logout-link-desktop">
+                                            <span class="underline">
+                                                {{ 'Log out'|trans }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    {{ render(controller('ShopsysShopBundle:Front/Login:windowForm')) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    #}
+
+                    {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}
+                </div>
+            </div>
+
             <div class="header__menu dont-print">
                 {% cache 'categories_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
                     {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
@@ -63,85 +160,6 @@
                         </span>
                     </div>
                 {% endcache %}
-            </div>
-
-            <div class="header__logo">
-                {% block logo %}
-                <a class="logo" href="{{ url('front_homepage') }}">
-                    <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
-                </a>
-                {% endblock %}
-            </div>
-
-            <div class="header__right dont-print">
-
-                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__menu js-hover-intent">
-                    <div class="box-dropdown__select">
-                        <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
-                    </div>
-                    <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
-                        {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
-                            {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
-                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
-                        {% endcache %}
-                    </div>
-                </div>
-
-                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__search js-hover-intent js-search-opener">
-                    <div class="box-dropdown__select">
-                        <i class="header__right__search__icon-search svg svg-search"></i>
-                    </div>
-                    <div class="box-dropdown__options box-dropdown__options--search js-dropdown-options">
-                        {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}
-                    </div>
-                </div>
-
-                <div class="box-dropdown js-hover-intent">
-                    <div class="box-dropdown__select">
-                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                            {{ 'Váš účet'|trans }}
-                        {% else %}
-                            {{ 'Přihlas se'|trans }}
-                        {% endif %}
-                        <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
-                        <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
-                    </div>
-                    <div class="box-dropdown__options
-                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                            box-dropdown__options--logged
-                        {% else %}
-                            box-dropdown__options--login
-                        {% endif %}
-                         js-dropdown-options">
-                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                            <div class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
-                                    <span class="underline">
-                                        {{ app.user.firstName }} {{ app.user.lastName }}
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_customer_orders') }}" class="menu-iconic__item__link">
-                                    <span class="underline">
-                                        {{ 'My orders'|trans }}
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="box-dropdown__options__item js-dropdown-item'">
-                                <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="menu-iconic__item__link menu-iconic__item__link--last js-logout-link-desktop">
-                                    <span class="underline">
-                                        {{ 'Log out'|trans }}
-                                    </span>
-                                </a>
-                            </div>
-                        {% else %}
-                            {{ render(controller('ShopsysShopBundle:Front/Login:windowForm')) }}
-                        {% endif %}
-                    </div>
-                </div>
-
-                {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}
             </div>
         </header>
     </div>

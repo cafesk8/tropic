@@ -6,18 +6,18 @@
                     type="text"
                     name="{{ SEARCH_TEXT_PARAMETER }}"
                     value="{{ searchText|escape('html_attr') }}"
-                    placeholder="{{ 'Searching'|trans }}"
+                    placeholder="{{ 'Najděte si něco na sebe…'|trans }}"
                     class="input search__input"
                     id="js-search-autocomplete-input"
                     autocomplete="off"
                     data-autocomplete-url="{{ url('front_search_autocomplete') }}"
                 />
             </div>
-            {% if renderButton %}
-                <div class="box-search__button">
-                    <input type="submit" name="" class="btn btn--success" value="{{ 'Hledat znovu'|trans }}" >
-                </div>
-            {% endif %}
+            <div class="search__form__submit">
+                <button class="search__form__submit__button btn-no-style" type="submit">
+                    <i class="svg svg-search"></i>
+                </button>
+            </div>
         </div>
         <div id="js-search-autocomplete-results"></div>
     </form>
