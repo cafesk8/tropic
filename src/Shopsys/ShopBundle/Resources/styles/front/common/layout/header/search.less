@@ -39,6 +39,21 @@
                 border: none;
                 border-radius: @radius-small;
 
+                &::-webkit-input-placeholder { /* Edge */
+                    color: @color-brown;
+                    opacity: 1;
+                }
+                  
+                &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+                    color: @color-brown;
+                    opacity: 1;
+                }
+                  
+                &::placeholder {
+                    color: @color-brown;
+                    opacity: 1;
+                }
+
                 .box-search & {
                     width: 100%;
                     margin-bottom: 10px;

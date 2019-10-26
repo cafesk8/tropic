@@ -52,6 +52,7 @@ class CategoryController extends FrontBaseController
     }
 
     /**
+     * @param bool $dropdownMenu
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function hoverMenuAction(bool $dropdownMenu = true): Response

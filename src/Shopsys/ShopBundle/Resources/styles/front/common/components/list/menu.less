@@ -1,7 +1,7 @@
 @list-menu-padding-right: 25px;
 @list-menu-arrow-size: 25px;
 @list-menu-columns-count: 3;
-@list-menu-columns-gap: 18px;
+@list-menu-columns-gap: 8px;
 @list-menu-item-height: 36px;
 
 // global settings
@@ -89,7 +89,6 @@
         position: relative;
         display: block;
         width: 100%;
-        padding-right: @list-menu-columns-gap;
 
         white-space: nowrap;
 
@@ -117,7 +116,7 @@
                 left: 0;
                 top: @list-menu-item-height;
                 z-index: @z-index-above;
-                padding: 10px 0;
+                padding: 5px 0;
 
                 background-color: @color-f;
                 border-radius: 0 @radius @radius @radius;
@@ -139,7 +138,7 @@
             transition: none;
 
             @media @query-vl {
-                padding: 0 10px;
+                padding: 0 15px;
             }
 
             &:hover {
