@@ -103,18 +103,18 @@
     sizes:
         -   name: square
             width: 380
-            height: 290
-            crop: false
+            height: 230
+            crop: true
             occurrence: 'Front-end: Banner square on homepage'
         -   name: rectangle
-            width: 380
-            height: 600
-            crop: false
+            width: 1180
+            height: 387
+            crop: true
             occurrence: 'Front-end: Banner rectangle on homepage'
         -   name: bigBanner
             width: 190
             height: 460
-            crop: false
+            crop: true
             occurrence: 'Front-end: Big banner, six position on homepage'
 
 -   name: brand
