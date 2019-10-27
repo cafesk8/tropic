@@ -1,6 +1,6 @@
-@list-article-main-content-bg: @color-orange;
-@list-article-main-image-width: 254px;
-@list-article-main-image-height: 383px;
+@list-article-main-content-bg: @color-gray-dark;
+@list-article-main-image-width: 293px;
+@list-article-main-image-height: 293px;
 @list-article-main-button-max-width: 172px;
 @list-article-main-item-gap: 20px;
 @list-article-main-bottom-gap: 40px;
@@ -62,7 +62,7 @@
             padding: 20px 30px;
 
             @media @query-vl {
-                padding: 52px 60px 52px 65px;
+                padding: 42px;
             }
 
             @media @query-xl {
@@ -70,23 +70,20 @@
             }
 
             &__title {
-                line-height: 36px;
-                margin-bottom: 10px;
+                line-height: 30px;
+                margin-bottom: 4px;
 
                 color: @color-f;
-                font-family: @font-alt;
-                font-size: 24px;
+                font-size: @font-size-big;
                 font-weight: 700;
                 text-transform: uppercase;
             }
 
             &__text {
                 line-height: 24px;
-                margin-bottom: 30px;
+                margin-bottom: 26px;
 
                 color: @color-f;
-                font-family: @font-alt;
-                font-size: 16px;
             }
 
             &__bottom {
@@ -99,7 +96,8 @@
                 &__button {
                     max-width: @list-article-main-button-max-width;
 
-                    background-color: @color-brown;
+                    text-transform: uppercase;
+                    font-size: @font-size-small;
                 }
             }
         }

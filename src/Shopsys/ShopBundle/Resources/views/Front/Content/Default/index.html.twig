@@ -106,26 +106,20 @@
 
     <div class="web__line">
         <div class="web__container">
-            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
-        </div>
-    </div>
-
-    <div class="web__line">
-        <div class="web__container">
             <ul class="list-article-main">
                 <li class="list-article-main__item">
                     <div class="list-article-main__item__image" style="background: url({{ asset('assets/frontend/images/homepage_ideo_bann_2.jpg') }}); background-position: center; background-size: cover; background-repeat: no-repeat;">
                     </div>
                     <div class="list-article-main__item__content">
                         <div class="list-article-main__item__content__title">
-                            {{ '22 let s vámi'|trans }}
+                            {{ 'Specialisti na běh'|trans }}
                         </div>
                         <div class="list-article-main__item__content__text">
-                            {{ 'Tvoříme praktické a pohodlné oblečení pro každodenní expedice. Ty mu dáváš příběh a tvoříš vzpomínky s ním spojené. Věříš naší tradici a kvalitě?'|trans }}
+                            {{ 'Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké.'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
                             {% if ourStoryArticle is not null %}
-                                <a class="list-article-main__item__content__bottom__button btn" href="{{ url('front_article_detail', { id: ourStoryArticle.id }) }}" class="btn">{{ 'Ke kořenům'|trans }}</a>
+                                <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_article_detail', { id: ourStoryArticle.id }) }}" class="btn">{{ 'Vše pro běhání'|trans }}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -135,19 +129,25 @@
                     </div>
                     <div class="list-article-main__item__content">
                         <div class="list-article-main__item__content__title">
-                            {{ 'Naše hodnoty'|trans }}
+                            {{ 'Poradíme s plaváním'|trans }}
                         </div>
                         <div class="list-article-main__item__content__text">
-                            {{ 'Není ti jedno, jak žiješ, co děláš a co po tobě zůstane? Ani nám. Svět možná nespasíme, ale za pokus to stojí a bude to jízda. Vyrazíš s námi?'|trans }}
+                            {{ 'Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám.'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
                             {% if ourValuesArticle is not null %}
-                                <a class="list-article-main__item__content__bottom__button btn" href="{{ url('front_article_detail', { id: ourValuesArticle.id }) }}" class="btn">{{ 'K hodnotám'|trans }}</a>
+                                <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_article_detail', { id: ourValuesArticle.id }) }}" class="btn">{{ 'Plavecké potřeby'|trans }}</a>
                             {% endif %}
                         </div>
                     </div>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
+            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
         </div>
     </div>
 
