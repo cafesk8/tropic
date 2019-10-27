@@ -28,15 +28,22 @@
             {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' %}
         </div>
     </div>
-    {{ render(controller('ShopsysShopBundle:Front/Advert:bigBannerOnHomepage')) }}
+
+    {#  
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36543
+        Big banner on homepage
+
+        {{ render(controller('ShopsysShopBundle:Front/Advert:bigBannerOnHomepage')) }}
+    
+    #}
 
     {% if topProducts is not empty %}
         <div class="web__line">
             <div class="web__container">
                 <div id="top-products" class="box-top-products">
-                    <div class="box-top-products__title">
-                        {{ 'Bushmani mají nejraději'|trans }}
-                    </div>
+                    <h1 class="box-top-products__title">
+                        {{ 'Vybíráme to nejlepší na říjen'|trans }}
+                    </h1>
                     {# Design - temporary hidden #}
                     {% if 1==2 %}
                     <ul class="box-top-products__tabs">
@@ -65,11 +72,16 @@
                     <div class="box-top-products__in">
                         {{ productList.horizontalList(topProducts, variantsIndexedByMainVariantId, "list-top-products", 'h3', 'top-products') }}
                     </div>
-                    {% if legendaryCategoryId is not null%}
-                        <div class="box-top-products__bottom">
-                            <a href="{{ url('front_product_list', { id: legendaryCategoryId }) }}" class="box-top-products__bottom__link underline">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
-                        </div>
-                    {% endif %}
+                    {#
+                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36545
+                        Button for show all products
+
+                        {% if legendaryCategoryId is not null%}
+                            <div class="box-top-products__bottom">
+                                <a href="{{ url('front_product_list', { id: legendaryCategoryId }) }}" class="box-top-products__bottom__link underline">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
+                            </div>
+                        {% endif %}
+                    #}
                 </div>
             </div>
         </div>
