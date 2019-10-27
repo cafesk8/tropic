@@ -104,6 +104,21 @@
         align-items: center;
         justify-content: flex-end;
         width: @header-right-actions-width;
+
+        &__item {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+    
+            &__link {
+                font-weight: 700;
+                color: @color-gray-dark;
+    
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
     }
 
     &__search {
@@ -126,21 +141,6 @@
             transform: rotate(90deg);
 
             font-size: @header-search-icon-size;
-        }
-    }
-
-    &__item {
-        display: flex;
-        align-items: center;
-        margin-left: 15px;
-
-        &__link {
-            font-weight: 700;
-            color: @color-gray-dark;
-
-            &:hover {
-                text-decoration: underline;
-            }
         }
     }
 }
