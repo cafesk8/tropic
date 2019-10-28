@@ -2,11 +2,11 @@
 
 {% if products|length > 0 %}
     <div class="web__line">
-        <div class="web__container web__container--light">
+        <div class="web__container">
             <div class="box-last-visited">
-                <div class="box-last-visited__title">
+                <h2 class="box-last-visited__title">
                     {{ 'Naposledy prohlížené produkty'|trans }}
-                </div>
+                </h2>
 
                 {{ productList.horizontalList(products, variantsIndexedByMainVariantId, "list-last-visited", 'h3', 'last-visited') }}
             </div>

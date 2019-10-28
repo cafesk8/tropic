@@ -145,11 +145,16 @@
         </div>
     </div>
 
-    <div class="web__line">
-        <div class="web__container">
-            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
+    {#
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36553
+        Big banner
+
+        <div class="web__line">
+            <div class="web__container">
+                {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
+            </div>
         </div>
-    </div>
+    #}
 
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
