@@ -1,12 +1,11 @@
-@box-breadcrumb-padding-horizontal: 17px;
+@box-breadcrumb-padding-horizontal: 12px;
 @box-breadcrumb-padding-vertical: 15px;
-@box-breadcrumb-font-size: 16px;
+@box-breadcrumb-font-size: @font-size-small;
 @box-breadcrumb-top-move: -11px;
-@box-breadcrumb-bottom-gap: 25px;
+@box-breadcrumb-bottom-gap: 40px;
 
 .box-breadcrumb {
     margin-bottom: @box-breadcrumb-bottom-gap;
-    text-align: center;
 
     font-size: 0;
 
@@ -27,19 +26,10 @@
         color: @color-base;
         font-size: @box-breadcrumb-font-size;
         font-weight: 700;
-        text-transform: uppercase;
-        text-decoration: none;
 
-        &--home {
-            padding-right: 6px;
-            margin-bottom: @box-breadcrumb-padding-vertical;
-
-            color: @color-orange;
-            font-size: 14px;
-
-            .box-detail & {
-                display: none;
-            }
+        &--current {
+            font-weight: 400;
+            color: @color-gray;
         }
 
         &--separator {
@@ -54,8 +44,10 @@
 
             .svg {
                 transform: rotate(-90deg);
+                opacity: 0.2;
 
-                font-size: 6px;
+                font-size: 9px;
+                color: @color-gray-dark;
             }
         }
 
