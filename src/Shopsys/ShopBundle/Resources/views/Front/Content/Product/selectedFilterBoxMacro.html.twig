@@ -1,9 +1,9 @@
 {% macro filterBox(filterForm, resetUrl, filterFormSubmitted) %}
     {% set domainId = getDomain().id %}
-    <div id="js-selected-filters-box">
+    <div id="js-selected-filters-box" class="box-filter__top">
         {% if filterFormSubmitted %}
             <div class="box-filter__selected">
-                <div class="box-filter__title">
+                <div class="box-filter__title box-filter__title--small-gap">
                     {{ 'Vybrané filtry'|trans }}
                 </div>
                 {% if filterForm.minimalPrice.vars.data|length > 0 %}

@@ -1,12 +1,12 @@
 @list-variants-item-size: 30px;
-@list-variants-item-gap: 11px;
+@list-variants-item-gap: 10px;
 @list-variants-item-padding: 5px;
 @list-variants-item-gap-with-image: 8px;
 @list-variants-item-bg: @color-f;
 @list-variants-item-bg-hover: @color-f;
-@list-variants-item-bg-active: @color-green;
-@list-variants-item-border-color: #d3d2d2;
-@list-variants-item-border-color-hover: @color-green;
+@list-variants-item-bg-active: @color-add;
+@list-variants-item-border-color: @color-border;
+@list-variants-item-border-color-hover: @color-add;
 @list-variants-item-disabled-font-color: #cecdcd;
 
 @list-variants-item-with-image-width: 84px;
@@ -26,6 +26,8 @@
     }
 
     &__item {
+        display: flex;
+        align-items: center;
         min-width: @list-variants-item-size;
         height: @list-variants-item-size;
         line-height: @list-variants-item-size - 4px;
@@ -38,23 +40,25 @@
         cursor: pointer;
         color: @color-brown-light-2;
         background-color: @list-variants-item-bg;
-        border: 3px solid @list-variants-item-border-color;
+        border: 2px solid @list-variants-item-border-color;
+        border-radius: @radius-small;
 
         &:hover {
             background-color: @list-variants-item-bg-hover;
-            border: 3px solid @list-variants-item-border-color-hover;
+            border: 2px solid @list-variants-item-border-color-hover;
         }
 
         &.active {
-            color: @color-f;
+            color: @color-base;
             background-color: @list-variants-item-bg-active;
-            border: 3px solid @list-variants-item-border-color-hover;
+            box-shadow: @box-shadow;
+            border: 0.9px solid rgba(0,0,0,0.1);
         }
 
         &.disabled {
             color: @list-variants-item-disabled-font-color;
-            background-color: transparent;
-            border: 3px solid @color-gray-dark;
+            background-color: @color-light;
+            border: 2px solid @color-border;
         }
 
         &__label {
@@ -80,7 +84,7 @@
 
             cursor: pointer;
             background-color: transparent;
-            border: 3px solid @color-gray-dark;
+            border: 2px solid @color-gray-dark;
 
             img {
                 max-height: @list-variants-item-with-image-picture-size;
@@ -91,7 +95,7 @@
 
             &.active {
                 background-color: @color-f;
-                border: 3px solid @list-variants-item-border-color-hover;
+                border: 2px solid @list-variants-item-border-color-hover;
 
                 img {
                     filter: brightness(1);
@@ -112,6 +116,8 @@
         line-height: @list-variants-item-size - 4px;
         margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
         text-align: center;
+
+        border-radius: @radius;
 
         .svg {
             display: none;
@@ -139,9 +145,10 @@
 }
 
 input[type=checkbox]:checked + .list-variants__item {
-    color: @color-f;
+    color: @color-base;
     background-color: @list-variants-item-bg-active;
-    border: 3px solid @list-variants-item-border-color-hover;
+    box-shadow: @box-shadow;
+    border: 0.9px solid rgba(0,0,0,0.1);
 }
 
 input[type=checkbox]:checked + .list-variants__item-color {

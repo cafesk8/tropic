@@ -1,8 +1,9 @@
-@ui-slider-bg: @color-f;
+@ui-slider-bg: @color-add;
 @ui-slider-height: 8px;
 @ui-slider-handle-height: 18px;
 @ui-slider-handle-position: -8px;
-@ui-slider-primary-color: @color-orange;
+@ui-slider-primary-color: @color-add;
+
 
 .ui-slider {
     display: block;
@@ -10,8 +11,8 @@
     position: relative;
     top: 1px;
 
-    background-color: @ui-slider-bg;
-    border: 3px solid @color-border;
+    background-color: @color-f;
+    border: 2px solid @color-border;
 }
 
 .ui-slider-range {
@@ -20,7 +21,8 @@
     top: -3px;
 
     background-color: @ui-slider-bg;
-    border: 3px solid @ui-slider-primary-color;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: @box-shadow;
 }
 
 .ui-slider-handle {
@@ -32,6 +34,9 @@
     margin-left: -@ui-slider-handle-height/2;
 
     background-color: @ui-slider-primary-color;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: @box-shadow;
+    border-radius: @radius-small;
     cursor: pointer;
 
     &:hover {

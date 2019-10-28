@@ -8,6 +8,7 @@
         display: flex;
 
         border: 2px solid @color-border;
+        border-radius: @radius-small;
 
         .box-search & {
             flex-direction: column;
@@ -31,13 +32,13 @@
                 width: 100%;
                 height: @search-input-height;
                 line-height: 32px;
-                padding-top: 0;
-                padding-left: 17px;
+                padding: 0 0 0 17px;
 
                 font-size: 16px;
                 color: @color-brown;
                 border: none;
                 border-radius: @radius-small;
+                box-shadow: none;
 
                 &::-webkit-input-placeholder { /* Edge */
                     color: @color-brown;
