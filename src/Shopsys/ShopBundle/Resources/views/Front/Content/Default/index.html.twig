@@ -160,19 +160,29 @@
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
 
-    <div class="web__line">
-        <div class="web__container">
-            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-        </div>
-    </div>
+    {#
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36555
+        Refenreces
 
-    <div class="web__line">
-        <div class="web__container web__container--no-padding">
-            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                {{ instagramFeed() }}
-            {% endcache %}
+        <div class="web__line">
+            <div class="web__container">
+                {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
+            </div>
         </div>
-    </div>
+    #}
+
+    {#
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36554
+        Instagram list image 
+
+        <div class="web__line">
+            <div class="web__container web__container--no-padding">
+                {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                    {{ instagramFeed() }}
+                {% endcache %}
+            </div>
+        </div>
+    #}
 
     {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
 
