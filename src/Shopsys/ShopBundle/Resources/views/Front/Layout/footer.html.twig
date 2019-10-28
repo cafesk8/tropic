@@ -2,55 +2,59 @@
     <div class="footer">
         {% block footer__links %}
             <div class="web__line">
-                <div class="web__container web__container--light">
+                <div class="web__container web__container--dark web__container--border-radius-bottom">
                     <div class="footer-top">
                         <div class="footer-top__info">
-                            <ul class="list-socials">
-                                <li class="list-socials__item">
-                                    <a class="list-socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
-                                        <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
-                                        <span class="list-socials__item__text">
-                                            {{ 'Facebook'|trans }}
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="list-socials__item">
-                                    <a class="list-socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
-                                        <i class="list-socials__item__icon list-socials__item__icon--instagram svg svg-instagram"></i>
-                                        <span class="list-socials__item__text">
-                                            {{ 'Instagram'|trans }}
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="list-socials__item">
-                                    <a class="list-socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
-                                        <i class="list-socials__item__icon list-socials__item__icon--youtube svg svg-youtube"></i>
-                                        <span class="list-socials__item__text">
-                                            {{ 'Youtube'|trans }}
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="footer-top__contact">
-                                <div class="box-contact__block">
-                                    <div class="box-contact__block__text">
-                                        <i class="svg svg-phone"></i>
-                                        {{ 'Volejte na '|trans }}
-                                        <a class="box-contact__block__text__link underline" href="tel:{{ getShopInfoPhoneNumber() }}">
-                                            {{ getShopInfoPhoneNumber() }}
+                            <div class="footer-top__socials">
+                                <ul class="list-socials">
+                                    <li class="list-socials__item">
+                                        <a class="list-socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
+                                            <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
+                                            <span class="list-socials__item__text">
+                                                {{ 'Facebook'|trans }}
+                                            </span>
                                         </a>
+                                    </li>
+                                    <li class="list-socials__item">
+                                        <a class="list-socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
+                                            <i class="list-socials__item__icon list-socials__item__icon--instagram svg svg-instagram"></i>
+                                            <span class="list-socials__item__text">
+                                                {{ 'Instagram'|trans }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="list-socials__item">
+                                        <a class="list-socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
+                                            <i class="list-socials__item__icon list-socials__item__icon--youtube svg svg-youtube"></i>
+                                            <span class="list-socials__item__text">
+                                                {{ 'Youtube'|trans }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="footer-top__contact">
+                                <div class="box-contact">
+                                    <div class="box-contact__block">
+                                        <div class="box-contact__block__text">
+                                            <i class="svg svg-phone"></i>
+                                            {{ 'Volejte na '|trans }}
+                                            <a class="box-contact__block__text__link" href="tel:{{ getShopInfoPhoneNumber() }}">
+                                                {{ getShopInfoPhoneNumber() }}
+                                            </a>
+                                        </div>
+                                        <div class="box-contact__block__info">
+                                            {{ getShopInfoPhoneHours() }}
+                                        </div>
                                     </div>
-                                    <div class="box-contact__block__info">
-                                        {{ getShopInfoPhoneHours() }}
-                                    </div>
-                                </div>
-                                <div class="box-contact__block">
-                                    <div class="box-contact__block__text">
-                                        <i class="svg svg-mail"></i>
-                                        <a class="box-contact__block__text__link underline" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
-                                    </div>
-                                    <div class="box-contact__block__info">
-                                        {{ 'Odpovíme Vám v co nejkratší možné době.'|trans }}
+                                    <div class="box-contact__block">
+                                        <div class="box-contact__block__text">
+                                            <i class="svg svg-mail"></i>
+                                            <a class="box-contact__block__text__link" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>
+                                        </div>
+                                        <div class="box-contact__block__info">
+                                            {{ 'Odpovíme Vám v co nejkratší možné době.'|trans }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -88,27 +92,24 @@
                 </div>
             </div>
 
-            <div class="web__line">
-                <div class="web__container">
-                    {% include '@ShopsysShop/Front/Inline/Common/domainSelector.html.twig' %}
+            {#
+                TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36559
+                List of language items
+                <div class="web__line">
+                    <div class="web__container">
+                        {% include '@ShopsysShop/Front/Inline/Common/domainSelector.html.twig' %}
+                    </div>
                 </div>
-            </div>
+            #}
         {% endblock %}
 
         <div class="web__line">
-            <footer class="web__container footer-bottom">
+            <footer class="web__container web__container--transparent footer-bottom">
                 <div class="footer-bottom__copyright dont-print">
-                    {{ 'Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena.'|trans }}
-                </div>
-                <div class="footer-bottom__info dont-print">
-                    {{ 'Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat'|trans }}<br>
-                    {{ 'přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin.'|trans }}
+                    {{ 'Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena.'|trans }}
                 </div>
                 <div class="footer-bottom__shopsys dont-print">
-                    {{ 'Shopsys'|trans }}
-                    <a href="https://www.shopsys.com" title="{{ 'Tvorba e-shopů na míru'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
-                        <span class="underline-small">{{ 'Tvorba e-shopů na míru'|trans }}</a>
-                    </a>
+                    {{ 'E-shop na míru od'|trans }}
                     <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
                         <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
                     </a>

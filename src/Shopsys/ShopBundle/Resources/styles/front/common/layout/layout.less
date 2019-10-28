@@ -49,11 +49,17 @@ img {
     &__container {
         .clearfix();
         padding: 0 10px;
+        margin: 0 10px;
 
         background-color: @color-f;
 
         @media @query-vl {
             padding: 0 @web-padding;
+        }
+
+        @media @query-xl {
+            width: @web-width;
+            margin: 0 auto;
         }
 
         &--transparent {
@@ -62,6 +68,10 @@ img {
 
         &--border-radius-top {
             border-radius: @radius @radius 0 0;
+        }
+
+        &--border-radius-bottom {
+            border-radius: 0 0 @radius @radius;
         }
 
         &--top-line {
@@ -76,17 +86,8 @@ img {
             padding: 0;
         }
 
-        &--light {
-            background: @color-gray;
-        }
-
         &--dark {
-            background: @color-brown;
-        }
-
-        @media @query-xl {
-            width: @web-width;
-            margin: 0 auto;
+            background: @color-primary;
         }
     }
 

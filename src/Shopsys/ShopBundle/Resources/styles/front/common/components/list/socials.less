@@ -7,13 +7,14 @@
         width: 100%;
         flex-direction: column;
 
-        background-color: @color-f;
+        background-color: @color-primary;
         border-radius: @radius;
+        border: 2px solid @color-gray-dark;
     }
 
     @media @query-vl {
         flex-direction: row;
-        width: calc(~"100% - @{footer-top-social-gap}");
+        width: 100%;
     }
 
     @media @query-xl {
@@ -27,17 +28,19 @@
         align-items: center;
         text-align: center;
 
-        border-bottom: 1px solid @color-gray;
         color: @color-brown;
+        border-bottom: 2px solid @color-gray-dark;
 
         @media @query-vl {
             width: calc(~"@{calc-base}/3");
 
-            border-right: 1px solid @color-gray;
+            border-right: 2px solid @color-gray-dark;
+            border-bottom: 0;
         }
 
         &:last-child {
             border-right: 0;
+            border-bottom: 0;
         }
 
         &__link {
@@ -47,15 +50,19 @@
             line-height: @footer-top-social-height;
             width: 100%;
 
-            font-size: @font-size;
+            font-size: @font-size-small;
             font-weight: bold;
-            color: @color-base;
+            color: @color-f;
             text-transform: uppercase;
             text-decoration: none;
 
             @media @query-xl {
                 height: @footer-top-social-height;
                 flex-direction: row;
+            }
+
+            &:hover {
+                color: @color-f;
             }
         }
 
@@ -64,7 +71,7 @@
             margin-right: 12px;
 
             font-size: 30px;
-            color: @color-brown;
+            color: @color-gray-dark;;
 
             &--facebook {
                 .list-socials__item:hover & {
@@ -81,7 +88,7 @@
             &--youtube {
                 padding-top: 3px;
 
-                font-size: 35px;
+                font-size: 33px;
 
                 .list-socials__item:hover & {
                     color: @color-youtube;
