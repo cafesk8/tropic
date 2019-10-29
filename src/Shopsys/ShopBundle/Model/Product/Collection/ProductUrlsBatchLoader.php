@@ -24,6 +24,17 @@ class ProductUrlsBatchLoader extends BaseProductUrlsBatchLoader
             }
         }
 
-        parent::loadForProducts($productsWithMainVariants, $domainConfig);
+        $productUrlsById = $this->productCollectionFacade->getAbsoluteUrlsIndexedByProductId($productsWithMainVariants, $domainConfig);
+        $productImageUrlsById = $this->productCollectionFacade->getImagesUrlsIndexedByProductId($productsWithMainVariants, $domainConfig);
+
+        foreach ($productsWithMainVariants as $product) {
+            $key = $this->getKey($product, $domainConfig);
+            $productId = $product->getId();
+
+            if (array_key_exists($productId, $productUrlsById)) {
+                $this->loadedProductUrls[$key] = $productUrlsById[$productId];
+            }
+            $this->loadedProductImageUrls[$key] = $productImageUrlsById[$productId];
+        }
     }
 }
