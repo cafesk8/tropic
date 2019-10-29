@@ -1,7 +1,7 @@
 @custom-inputs-margin-left: 30px;
 @custom-inputs-filter-margin-left: 25px;
 @custom-inputs-font-size: 16px;
-@custom-inputs-icon-size: 18px;
+@custom-inputs-icon-size: 20px;
 @custom-inputs-link-color: @color-base;
 @custom-inputs-link-color-hover: @color-orange;
 
@@ -24,7 +24,7 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
         display: inline-block;
         vertical-align: middle;
         padding-left: @custom-inputs-margin-left;
-        line-height: @custom-inputs-font-size;
+        line-height: @custom-inputs-icon-size + 3px;
 
         font-size: @custom-inputs-font-size;
         cursor: pointer;
@@ -47,6 +47,7 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
 
             &:before {
                 background-position-x: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -1px 2px rgba(0, 0, 0, 0.3);
             }
         }
     }
@@ -57,6 +58,7 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
 
             &:before {
                 background-position-x: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -1px 2px rgba(0, 0, 0, 0.3);
             }
         }
     }
@@ -67,6 +69,15 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
 
             &:before {
                 background-position-y: bottom;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        &:disabled {
+            & + .css-checkbox__image, & + .css-radio__image {
+                &:before {
+                    box-shadow: none;
+                }
             }
         }
     }
@@ -74,16 +85,27 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
     &:disabled {
 
         & + .css-checkbox__image, & + .css-radio__image {
-
             &:before {
                 cursor: no-drop;
                 background-position-x: right;
+            }
+
+            &:hover {
+                &:before {
+                    box-shadow: none;
+                }
             }
         }
 
         & ~ .css-checkbox__image, & ~ .css-radio__image {
             cursor: no-drop;
             color: @color-inactive;
+
+            &:hover {
+                &:before {
+                    box-shadow: none;
+                }
+            }
         }
     }
 
@@ -116,6 +138,7 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
 
     &:before {
         background-image: url('@{path-design}/custom_checkbox.png');
+        border-radius: @radius-small;
     }
 }
 
@@ -123,5 +146,6 @@ input[type=checkbox].css-radio, input[type=radio].css-radio {
 
     &:before {
         background-image: url('@{path-design}/custom_radio.png');
+        border-radius: 50%;
     }
 }
