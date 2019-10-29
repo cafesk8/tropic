@@ -24,7 +24,11 @@ class DailyFeedCronModule extends BaseDailyFeedCronModule
             $this->currentFeedExport = $this->createCurrentFeedExport();
         }
 
-        $this->currentFeedExport->generateBatch();
+        try {
+            $this->currentFeedExport->generateBatch();
+        } catch (\Exception $ex) {
+            $this->logger->addError($ex->getMessage());
+        }
 
         if ($this->currentFeedExport->isFinished()) {
             $feedInfo = $this->currentFeedExport->getFeedInfo();
