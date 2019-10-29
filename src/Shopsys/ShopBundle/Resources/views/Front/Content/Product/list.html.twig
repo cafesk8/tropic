@@ -160,23 +160,55 @@
             </div>
         {% endif %}
 
+        {# 
+            TODO PRG: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36606
+            Pridať vypis blogu na produkt list
+
+            <div class="web__line">
+                <div class="web__container">
+                    <div class="box-articles">
+                        <h1 class="box-articles__title-big">
+                            {{ 'Shopsys magazín'|trans }}
+                        </h1>
+                        <div class="box-articles__title-small">
+                            {{ 'Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu'|trans }}
+                        </div>
+                        {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: blogArticles } %}
+                        <div class="box-articles__bottom">
+                            <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        #}
+
         {% block last_visited_products %}
             {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
         {% endblock %}
 
-        <div class="web__line">
-            <div class="web__container">
-                {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-            </div>
-        </div>
+        {#
+            TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36555
+            Refenreces
 
-        <div class="web__line">
-            <div class="web__container web__container--no-padding">
-                {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                    {{ instagramFeed() }}
-                {% endcache %}
+            <div class="web__line">
+                <div class="web__container">
+                    {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
+                </div>
             </div>
-        </div>
+        #}
+
+        {#
+            TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36554
+            Instagram list image 
+
+            <div class="web__line">
+                <div class="web__container web__container--no-padding">
+                    {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                        {{ instagramFeed() }}
+                    {% endcache %}
+                </div>
+            </div>
+        #}
 
         {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
 
