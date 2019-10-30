@@ -420,7 +420,8 @@ class OrderFacade extends BaseOrderFacade
         $order = $this->orderRepository->getById($orderId);
         $originalMallStatus = $order->getMallStatus();
         $originalOrderStatus = $order->getStatus();
-
+        $orderData->orderPayment->name = $orderData->orderPayment->payment->getName();
+        $orderData->orderTransport->name = $orderData->orderTransport->transport->getName();
         /** @var \Shopsys\ShopBundle\Model\Order\Order $updatedOrder */
         $updatedOrder = parent::edit($orderId, $orderData);
 
