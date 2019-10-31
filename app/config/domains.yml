@@ -1,12 +1,4 @@
 domains:
     -   id: 1
-        name: "Bushman CZ"
+        name: "Ready Made B2C"
         locale: cs
-
-    -   id: 2
-        name: "Bushman SK"
-        locale: sk
-
-    -   id: 3
-        name: "Bushman DE"
-        locale: de
