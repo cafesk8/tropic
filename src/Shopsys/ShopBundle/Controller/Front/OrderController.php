@@ -46,6 +46,7 @@ use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
+use Shopsys\ShopBundle\Model\Security\CustomerLoginHandler;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -310,8 +311,17 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        if ($this->session->has(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY)) {
+            $orderFlow->mergePreviouslySavedFormDataWithLoggedUserData($user);
+        }
+
         $orderFlow->bind($frontOrderFormData);
         $orderFlow->saveSentStepData();
+
+        if ($this->session->has(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY)) {
+            $this->session->remove(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY);
+            $orderFlow->nextStep();
+        }
 
         $form = $orderFlow->createForm();
 

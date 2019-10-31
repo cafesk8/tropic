@@ -96,6 +96,9 @@ class PersonalInfoFormType extends AbstractType
                     new Email(['message' => 'Please enter valid e-mail']),
                     new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
                 ],
+                'attr' => [
+                    'class' => 'js-order-personal-info-form-email',
+                ],
             ])
             ->add('telephone', TextType::class, [
                 'constraints' => [

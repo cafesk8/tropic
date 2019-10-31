@@ -190,3 +190,9 @@ front_order_register_customer:
     defaults: { _controller: ShopsysShopBundle:Front\Order:registerCustomer }
     requirements:
         orderId: \d+
+
+front_login_notice:
+    path: /login/notice
+    defaults: { _controller: ShopsysShopBundle:Front\Login:notice }
+    methods: [POST]
+    condition: "request.isXmlHttpRequest()"
