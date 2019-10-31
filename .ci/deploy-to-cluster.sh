@@ -41,6 +41,7 @@ yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_1}
 
 yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[1].value ${DOMAIN_HOSTNAME_1}
+yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[2].value ""
 
 if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
