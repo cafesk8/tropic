@@ -698,6 +698,7 @@ class OrderController extends FrontBaseController
     public function paidAction(string $urlHash): Response
     {
         try {
+            /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
@@ -721,9 +722,17 @@ class OrderController extends FrontBaseController
             }
         }
 
+        if ($this->isUserLoggedOrRegistered($order->getEmail()) === false) {
+            $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
+                'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $order->getId()]),
+                NewPasswordFormType::OPTION_REPEATED => false,
+            ]);
+        }
+
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
             'pageContent' => $this->orderFacade->getOrderSentPageContent($order->getId()),
             'order' => $order,
+            'registrationForm' => $registrationForm !== null ? $registrationForm->createView() : null,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),
