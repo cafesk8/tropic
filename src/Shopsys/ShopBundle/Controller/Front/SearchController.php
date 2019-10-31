@@ -59,17 +59,15 @@ class SearchController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param bool $withButton
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function boxAction(Request $request, bool $withButton = false): Response
+    public function boxAction(Request $request): Response
     {
         $searchText = $request->query->get(ProductController::SEARCH_TEXT_PARAMETER);
 
         return $this->render('@ShopsysShop/Front/Content/Search/searchBox.html.twig', [
             'searchText' => $searchText,
             'SEARCH_TEXT_PARAMETER' => ProductController::SEARCH_TEXT_PARAMETER,
-            'renderButton' => $withButton,
         ]);
     }
 }
