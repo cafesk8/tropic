@@ -974,6 +974,14 @@ class Order extends BaseOrder
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User $customer
+     */
+    public function setCustomer(User $customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
      * @return string|null
      */
     public function getTrackingNumber(): ?string

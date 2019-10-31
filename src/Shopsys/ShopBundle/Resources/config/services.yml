@@ -548,6 +548,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactory: '@Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory: '@Shopsys\ShopBundle\Model\Customer\BillingAddressDataFactory'
+
     Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper: '@Shopsys\ShopBundle\Model\Order\FrontOrderDataMapper'
 
     Shopsys\FrameworkBundle\Model\Country\CountryDataFactory: '@Shopsys\ShopBundle\Model\Country\CountryDataFactory'

@@ -184,3 +184,9 @@ front_bushmanshop_redirect:
     defaults: { _controller: ShopsysShopBundle:Front\BushmanShopRedirect:index }
     requirements:
         urlParam: "[\\p{L}\\p{N}/\\s.-]+"
+
+front_order_register_customer:
+    path: /order/register-customer/{orderId}
+    defaults: { _controller: ShopsysShopBundle:Front\Order:registerCustomer }
+    requirements:
+        orderId: \d+

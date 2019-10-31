@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecur
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper;
@@ -458,5 +459,15 @@ class OrderFacade extends BaseOrderFacade
             } catch (Exception $ex) {
             }
         }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Customer\User $customer
+     */
+    public function setCustomerToOrder(Order $order, User $customer): void
+    {
+        $order->setCustomer($customer);
+        $this->em->flush($order);
     }
 }

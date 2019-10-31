@@ -6,12 +6,15 @@ namespace Shopsys\ShopBundle\Model\Customer;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Customer\BillingAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade as BaseCustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
+use Shopsys\FrameworkBundle\Model\Customer\UserData;
 use Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
@@ -232,5 +235,42 @@ class CustomerFacade extends BaseCustomerFacade
         $customerData->userData = $userData;
 
         $this->editByCustomer($user->getId(), $customerData);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
+     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData|null $deliveryAddressData
+     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressData|null $billingAddressData
+     * @return \Shopsys\ShopBundle\Model\Customer\User
+     */
+    public function registerCustomerWithAddress(UserData $userData, DeliveryAddressData $deliveryAddressData, ?BillingAddressData $billingAddressData): \Shopsys\FrameworkBundle\Model\Customer\User
+    {
+        $userByEmailAndDomain = $this->findUserByEmailAndDomain($userData->email, $userData->domainId);
+        $deliveryAddress = $this->deliveryAddressFactory->create($deliveryAddressData);
+
+        $billingAddress = null;
+
+        if ($billingAddressData !== null) {
+            $billingAddress = $this->billingAddressFactory->create($billingAddressData);
+        }
+
+        $user = $this->userFactory->create(
+            $userData,
+            $billingAddress,
+            $deliveryAddress,
+            $userByEmailAndDomain
+        );
+
+        if ($billingAddress !== null) {
+            $this->em->persist($billingAddress);
+        }
+
+        $this->em->persist($deliveryAddress);
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $this->customerMailFacade->sendRegistrationMail($user);
+
+        return $user;
     }
 }

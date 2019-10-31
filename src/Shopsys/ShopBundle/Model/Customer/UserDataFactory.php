@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer;
 
+use DateTime;
 use Shopsys\FrameworkBundle\Model\Customer\User as BaseUser;
 use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
 use Shopsys\FrameworkBundle\Model\Customer\UserDataFactory as BaseUserDataFactory;
+use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 
 class UserDataFactory extends BaseUserDataFactory
@@ -62,5 +64,24 @@ class UserDataFactory extends BaseUserDataFactory
         $userData->memberOfBushmanClub = $user->isMemberOfBushmanClub();
         $userData->ean = $user->getEan();
         $userData->pricingGroupUpdatedAt = $user->getPricingGroupUpdatedAt();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param string $password
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Customer\UserData
+     */
+    public function createUserDataFromOrder(Order $order, string $password, int $domainId): UserData
+    {
+        $userData = $this->createForDomainId($domainId);
+        $userData->firstName = $order->getFirstName();
+        $userData->lastName = $order->getLastName();
+        $userData->email = $order->getEmail();
+        $userData->telephone = $order->getTelephone();
+        $userData->createdAt = new DateTime();
+        $userData->password = $password;
+
+        return $userData;
     }
 }

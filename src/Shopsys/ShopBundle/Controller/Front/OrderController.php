@@ -8,6 +8,7 @@ use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
+use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
@@ -20,12 +21,18 @@ use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Security\Authenticator;
+use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
+use Shopsys\ShopBundle\Form\Front\Customer\Password\NewPasswordFormType;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
 use Shopsys\ShopBundle\Form\Front\Order\OrderFlow;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
+use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
+use Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory;
+use Shopsys\ShopBundle\Model\Customer\UserDataFactory;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
@@ -161,6 +168,31 @@ class OrderController extends FrontBaseController
     private $gtmFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
+     */
+    private $customerFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\UserDataFactory
+     */
+    private $userDataFactory;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Security\Authenticator
+     */
+    private $authenticator;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\BillingAddressDataFactory
+     */
+    private $billingAddressDataFactory;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory
+     */
+    private $deliveryAddressDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -183,6 +215,11 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
+     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -206,7 +243,12 @@ class OrderController extends FrontBaseController
         PayPalFacade $payPalFacade,
         CountryFacade $countryFacade,
         BlogArticleFacade $blogArticleFacade,
-        GtmFacade $gtmFacade
+        GtmFacade $gtmFacade,
+        CustomerFacade $customerFacade,
+        UserDataFactory $userDataFactory,
+        Authenticator $authenticator,
+        BillingAddressDataFactory $billingAddressDataFactory,
+        DeliveryAddressDataFactory $deliveryAddressDataFactory
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -230,6 +272,11 @@ class OrderController extends FrontBaseController
         $this->countryFacade = $countryFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->gtmFacade = $gtmFacade;
+        $this->customerFacade = $customerFacade;
+        $this->userDataFactory = $userDataFactory;
+        $this->authenticator = $authenticator;
+        $this->billingAddressDataFactory = $billingAddressDataFactory;
+        $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
     }
 
     public function indexAction()
@@ -580,6 +627,15 @@ class OrderController extends FrontBaseController
             }
         }
 
+        $registrationForm = null;
+
+        if ($goPayData === null && $payPalApprovalLink === null && $this->isUserLoggedOrRegistered($order->getEmail()) === false) {
+            $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
+                'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $orderId]),
+                NewPasswordFormType::OPTION_REPEATED => false,
+            ]);
+        }
+
         $this->gtmFacade->onOrderSentPage($order);
 
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
@@ -587,12 +643,52 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
             'payPalApprovalLink' => $payPalApprovalLink,
+            'registrationForm' => $registrationForm !== null ? $registrationForm->createView() : null,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),
                 self::HOMEPAGE_ARTICLES_LIMIT
             ),
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $orderId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function registerCustomerAction(Request $request, int $orderId): Response
+    {
+        $form = $this->createForm(NewPasswordFormType::class, null, [
+            NewPasswordFormType::OPTION_REPEATED => false,
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            $newPassword = $formData['newPassword'];
+            $order = $this->orderFacade->getById($orderId);
+
+            $userData = $this->userDataFactory->createUserDataFromOrder($order, $newPassword, $this->domain->getId());
+            $deliveryAddressData = $this->deliveryAddressDataFactory->createFromOrder($order);
+
+            $billingAddressData = null;
+            if ($order->isDeliveryAddressSameAsBillingAddress() === false) {
+                $billingAddressData = $this->billingAddressDataFactory->createFromOrder($order);
+            }
+
+            /** @var \Shopsys\ShopBundle\Model\Customer\User $newlyRegisteredUser */
+            $newlyRegisteredUser = $this->customerFacade->registerCustomerWithAddress($userData, $deliveryAddressData, $billingAddressData);
+
+            $this->orderFacade->setCustomerToOrder($order, $newlyRegisteredUser);
+
+            $this->authenticator->loginUser($newlyRegisteredUser, $request);
+            $this->getFlashMessageSender()->addSuccessFlash(t('You have been successfully registered.'));
+            return $this->redirectToRoute('front_customer_orders');
+        }
+
+        return $this->redirectToRoute('front_cart');
     }
 
     /**
@@ -720,5 +816,15 @@ class OrderController extends FrontBaseController
         if ($mailTemplate->isSendMail()) {
             $this->orderMailFacade->sendEmail($order);
         }
+    }
+
+    /**
+     * @param string $email
+     * @return bool
+     */
+    private function isUserLoggedOrRegistered(string $email): bool
+    {
+        return $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER) ||
+            $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId() !== null);
     }
 }
