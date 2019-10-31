@@ -35,10 +35,6 @@ yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTem
 yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTemplate.spec.template.spec.initContainers[0].image ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
 yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTemplate.spec.template.spec.initContainers[1].image ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
 
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].image ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[0].image ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].image ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
-
 # Set domain name into ingress controller so ingress can listen on domain name
 yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1}
 
