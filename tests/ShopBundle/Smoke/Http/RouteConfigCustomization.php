@@ -287,6 +287,11 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->setExpectedStatusCode(302);
             })
+            ->customizeByRouteName(['front_order_register_customer'], function (RouteConfig $config) {
+                $debugNote = 'Registration on 4th order step should redirect by 302 because this action processes form.';
+                $config->changeDefaultRequestDataSet($debugNote)
+                    ->setExpectedStatusCode(302);
+            })
             ->customizeByRouteName(['front_order_paid', 'front_order_not_paid'], function (RouteConfig $config) {
                 $debugNote = 'Order paid and not paid URLs needs urlHash as parameter.';
                 $config->changeDefaultRequestDataSet($debugNote)

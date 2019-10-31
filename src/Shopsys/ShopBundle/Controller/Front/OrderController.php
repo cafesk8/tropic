@@ -632,7 +632,6 @@ class OrderController extends FrontBaseController
         if ($goPayData === null && $payPalApprovalLink === null && $this->isUserLoggedOrRegistered($order->getEmail()) === false) {
             $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
                 'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $orderId]),
-                NewPasswordFormType::OPTION_REPEATED => false,
             ]);
         }
 
@@ -659,9 +658,7 @@ class OrderController extends FrontBaseController
      */
     public function registerCustomerAction(Request $request, int $orderId): Response
     {
-        $form = $this->createForm(NewPasswordFormType::class, null, [
-            NewPasswordFormType::OPTION_REPEATED => false,
-        ]);
+        $form = $this->createForm(NewPasswordFormType::class, null);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -725,7 +722,6 @@ class OrderController extends FrontBaseController
         if ($this->isUserLoggedOrRegistered($order->getEmail()) === false) {
             $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
                 'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $order->getId()]),
-                NewPasswordFormType::OPTION_REPEATED => false,
             ]);
         }
 
