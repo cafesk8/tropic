@@ -35,8 +35,24 @@ class TransferIssueRepository
             ->from(TransferIssue::class, 'ti')
             ->join('ti.transfer', 't')
             ->orderBy('ti.createdAt', 'DESC')
-            ->addOrderBy('ti.id', 'DESC')
-            ->setMaxResults(self::LIMIT_TRANSFER_ISSUES_COUNT);
+            ->addOrderBy('ti.id', 'DESC');
+    }
+
+    public function deleteExcessiveTransferIssues()
+    {
+        $oldIssues = $this->em
+            ->createQueryBuilder()
+            ->select('ti')
+            ->from(TransferIssue::class, 'ti')
+            ->setFirstResult(self::LIMIT_TRANSFER_ISSUES_COUNT)
+            ->orderBy('ti.createdAt', 'DESC')
+            ->getQuery()
+            ->execute();
+
+        foreach ($oldIssues as $oldIssue) {
+            $this->em->remove($oldIssue);
+        }
+        $this->em->flush($oldIssues);
     }
 
     /**

@@ -64,6 +64,8 @@ class TransferIssueFacade
         if (!empty($toFlush)) {
             $this->em->flush($toFlush);
         }
+
+        $this->transferIssueRepository->deleteExcessiveTransferIssues();
     }
 
     /**
