@@ -6,4 +6,4 @@
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
     header('Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate');
 
-    echo file_get_contents(__DIR__ . '/maintenance.html');
+    echo file_get_contents(__DIR__ . '/../src/Shopsys/ShopBundle/Resources/views/maintenance.html.twig');

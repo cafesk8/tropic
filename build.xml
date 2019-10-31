@@ -39,4 +39,38 @@
         <phingcall target="tests-functional"/>
         <phingcall target="tests-smoke"/>
     </target>
+
+    <target name="maintenance-off" description="Turns the maintenance page off.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:maintenance" />
+            <arg value="disable" />
+        </exec>
+    </target>
+
+    <target name="maintenance-on" description="Turns the maintenance page on.">
+        <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
+            <arg value="${path.bin-console}" />
+            <arg value="shopsys:maintenance" />
+            <arg value="enable" />
+        </exec>
+    </target>
+
+    <target name="db-migrations-count-with-maintenance" description="Get count of database migrations to execute and enable maintenance mode if needed.">
+        <exec executable="${path.php.executable}" checkreturn="true" outputProperty="migrationCounts">
+            <arg value="${path.bin-console}"/>
+            <arg value="shopsys:migrations:count"/>
+        </exec>
+        <if>
+            <contains string="${migrationCounts}" substring="Count of migrations to execute: 0" />
+            <then>
+                <echo message="There is no need to enable maintenance mode" />
+            </then>
+            <else>
+                <phingcall target="maintenance-on" />
+            </else>
+        </if>
+    </target>
+
+    <target name="build-deploy-part-2-db-dependent" depends="product-search-migrate-structure,redis-check,db-migrations-count-with-maintenance,db-migrations,domains-data-create,friendly-urls-generate,domains-urls-replace,grunt,error-pages-generate,warmup,clean-redis-old" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
 </project>

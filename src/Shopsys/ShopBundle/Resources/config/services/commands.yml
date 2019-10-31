@@ -13,3 +13,7 @@ services:
             - '%kernel.project_dir%'
 
     Shopsys\FrameworkBundle\Command\RedisCleanCacheOldCommand: ~
+
+    Shopsys\ShopBundle\Command\MaintenanceModeCommand:
+        arguments:
+            - '@shopsys.shop.maintenance_cache_provider'

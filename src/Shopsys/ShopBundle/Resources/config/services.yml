@@ -577,3 +577,15 @@ services:
 
 
     Shopsys\FrameworkBundle\Model\Feed\FeedExportFactory: '@Shopsys\ShopBundle\Model\Feed\FeedExportFactory'
+
+    shopsys.shop.maintenance_cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
+        arguments:
+            - '@snc_redis.global'
+
+    Shopsys\ShopBundle\Component\Maintenance\MaintenanceModeSubscriber:
+        arguments:
+            - '@shopsys.shop.maintenance_cache_provider'
+        tags:
+            - { name: kernel.event_subscriber }
