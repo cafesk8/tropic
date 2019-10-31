@@ -41,20 +41,13 @@ yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobT
 
 # Set domain name into ingress controller so ingress can listen on domain name
 yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/ingress.yml spec.rules[1].host ${DOMAIN_HOSTNAME_2}
-yq write --inplace kubernetes/ingress.yml spec.rules[2].host ${DOMAIN_HOSTNAME_3}
 
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
-yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
 
 yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[1].value ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[2].value "${DOMAIN_HOSTNAME_2}; ${DOMAIN_HOSTNAME_3};"
 
 if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
-    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
-    yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_3}
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/from-to-www-redirect\"" "\"true\""
 else
     yq write --inplace kubernetes/ingress.yml metadata.annotations."\"nginx.ingress.kubernetes.io/auth-type\"" basic
@@ -63,16 +56,12 @@ else
 fi
 # Set domain into webserver hostnames
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_2}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${DOMAIN_HOSTNAME_3}
 
 # set ip_addresses for external databases service endpoints
 yq write --inplace kubernetes/endpoints/postgres.yml subsets[0].addresses[0].ip ${POSTGRES_DATABASE_IP_ADDRESS}
 yq write --inplace kubernetes/endpoints/elasticsearch.yml subsets[0].addresses[0].ip ${ELASTICSEARCH_IP_ADDRESS_HOST}
 yq write --inplace kubernetes/endpoints/elasticsearch.yml subsets[0].ports[0].port ${ELASTICSEARCH_HOST_PORT}
 yq write --inplace kubernetes/services/elasticsearch.yml spec.ports[0].port ${ELASTICSEARCH_HOST_PORT}
-
-yq write --inplace kubernetes/endpoints/mysql-import.yml subsets[0].addresses[0].ip ${MIGRATION_DATABASE_HOST}
 
 # Add a mask for trusted proxies so that load balanced traffic is trusted and headers from outside of the network are not lost
 yq write --inplace app/config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
@@ -83,8 +72,6 @@ yq write --inplace kubernetes/kustomize/base/kustomization.yaml namespace ${PROJ
 
 # Set domain urls
 yq write --inplace app/config/domains_urls.yml domains_urls[0].url https://${DOMAIN_HOSTNAME_1}
-yq write --inplace app/config/domains_urls.yml domains_urls[1].url https://${DOMAIN_HOSTNAME_2}
-yq write --inplace app/config/domains_urls.yml domains_urls[2].url https://${DOMAIN_HOSTNAME_3}
 
 # set ENV variables into pods using php-fpm image
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].env[0].value ${S3_API_HOST}
@@ -149,32 +136,11 @@ if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     sed -i 's/nullPlaceholder/null/' app/config/parameters.yml
 else
     yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address "no-reply@shopsys.com"
-    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist[+] "/@bushman.+$/"
 fi
-
-# Set migration database IPs
-yq write --inplace app/config/parameters.yml parameters.migration_database_host mysql
-yq write --inplace app/config/parameters.yml parameters.migration_database_name ${MIGRATION_DATABASE_NAME}
-yq write --inplace app/config/parameters.yml parameters.migration_database_password ${MIGRATION_DATABASE_PASSWORD}
-yq write --inplace app/config/parameters.yml parameters.migration_database_port ${MIGRATION_DATABASE_PORT}
-yq write --inplace app/config/parameters.yml parameters.migration_database_user ${MIGRATION_DATABASE_USER}
 
 # set Balikobot credentials
 yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
 yq write --inplace app/config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
-
-# set IS credentials
-yq write --inplace app/config/parameters.yml parameters.transfer_cs_username ${TRANSFER_CS_USERNAME}
-yq write --inplace app/config/parameters.yml parameters.transfer_cs_password ${TRANSFER_CS_PASSWORD}
-yq write --inplace app/config/parameters.yml parameters.transfer_sk_username ${TRANSFER_SK_USERNAME}
-yq write --inplace app/config/parameters.yml parameters.transfer_sk_password ${TRANSFER_SK_PASSWORD}
-yq write --inplace app/config/parameters.yml parameters.transfer_de_username ${TRANSFER_DE_USERNAME}
-yq write --inplace app/config/parameters.yml parameters.transfer_de_password ${TRANSFER_DE_PASSWORD}
-
-# Mall api key
-yq write --inplace app/config/parameters.yml parameters.mall_apiKey ${MALL_API_KEY}
-yq write --inplace app/config/parameters.yml parameters.mall_isProductionMode ${MALL_IS_PRODUCTION_MODE}
-yq write --inplace app/config/parameters.yml parameters.mall_includeTestOrders ${MALL_INCLUDE_TEST_ORDERS}
 
 #GTM
 yq write --inplace app/config/parameters.yml parameters[gtm.config].cs.enabled ${GTM_CS_ENABLED}
