@@ -47,6 +47,12 @@ class DomainHelper
         self::GERMAN_DOMAIN => 'BSHDE',
     ];
 
+    public const DOMAIN_ID_TO_LOCALE = [
+        self::CZECH_DOMAIN => self::CZECH_LOCALE,
+        self::SLOVAK_DOMAIN => self::SLOVAK_LOCALE,
+        self::GERMAN_DOMAIN => self::GERMAN_LOCALE,
+    ];
+
     /**
      * @param string $locale
      * @return string

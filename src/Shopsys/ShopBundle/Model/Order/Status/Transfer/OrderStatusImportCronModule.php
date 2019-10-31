@@ -289,7 +289,9 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $oldOrderStatusName = $order->getStatus()->getName('cs');
         $orderData->status = $orderStatus;
         $orderData->statusCheckedAt = new DateTime();
-        $order = $this->orderFacade->edit($order->getId(), $orderData);
+
+        $locale = DomainHelper::DOMAIN_ID_TO_LOCALE[$order->getDomainId()];
+        $order = $this->orderFacade->edit($order->getId(), $orderData, $locale);
 
         $this->logger->addInfo(sprintf(
             'Order status of order with ID `%s` has been changed from `%s` to `%s`',

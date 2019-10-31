@@ -412,16 +412,17 @@ class OrderFacade extends BaseOrderFacade
     /**
      * @param int $orderId
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
+     * @param string|null $locale
      * @return \Shopsys\ShopBundle\Model\Order\Order
      */
-    public function edit($orderId, BaseOrderData $orderData)
+    public function edit($orderId, BaseOrderData $orderData, ?string $locale = null)
     {
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = $this->orderRepository->getById($orderId);
         $originalMallStatus = $order->getMallStatus();
         $originalOrderStatus = $order->getStatus();
-        $orderData->orderPayment->name = $orderData->orderPayment->payment->getName();
-        $orderData->orderTransport->name = $orderData->orderTransport->transport->getName();
+        $orderData->orderPayment->name = $orderData->orderPayment->payment->getName($locale);
+        $orderData->orderTransport->name = $orderData->orderTransport->transport->getName($locale);
         /** @var \Shopsys\ShopBundle\Model\Order\Order $updatedOrder */
         $updatedOrder = parent::edit($orderId, $orderData);
 
