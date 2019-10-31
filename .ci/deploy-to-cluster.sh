@@ -109,20 +109,6 @@ yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTem
 yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[4].value ${REDIS_PREFIX}
 yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[5].value ${ELASTIC_SEARCH_INDEX_PREFIX}
 
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].env[0].value ${S3_API_HOST}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].env[1].value ${S3_API_USERNAME}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].env[2].value ${S3_API_PASSWORD}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].env[3].value ${S3_API_BUCKET_NAME}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].env[4].value ${REDIS_PREFIX}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.containers[0].env[5].value ${ELASTIC_SEARCH_INDEX_PREFIX}
-
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[0].value ${S3_API_HOST}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[1].value ${S3_API_USERNAME}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[2].value ${S3_API_PASSWORD}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[3].value ${S3_API_BUCKET_NAME}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[4].value ${REDIS_PREFIX}
-yq write --inplace kubernetes/cron/php-fpm-cron-executor-customers.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[5].value ${ELASTIC_SEARCH_INDEX_PREFIX}
-
 # Set database IPs
 yq write --inplace app/config/parameters.yml parameters.database_name ${POSTGRES_DATABASE_NAME}
 yq write --inplace app/config/parameters.yml parameters.database_password ${POSTGRES_DATABASE_PASSWORD}
