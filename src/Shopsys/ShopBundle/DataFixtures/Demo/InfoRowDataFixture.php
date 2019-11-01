@@ -32,7 +32,7 @@ class InfoRowDataFixture extends AbstractReferenceFixture
         $this->infoRowFacade->setInfoRow(
             true,
             'Upozornenie pre našich zákazníkov, táto verzia e-shopu obsahuje testovacie dáta.',
-            2
+            1
         );
     }
 }
