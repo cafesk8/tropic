@@ -2,3 +2,6 @@ domains:
     -   id: 1
         name: "Ready Made B2C"
         locale: cs
+    -   id: 2
+        name: "Ready Made B2C"
+        locale: sk

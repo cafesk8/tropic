@@ -1,3 +1,5 @@
 domains_urls:
     -   id: 1
         url: http://127.0.0.1:8000
+    -   id: 1
+        url: http://127.0.0.2:8000
