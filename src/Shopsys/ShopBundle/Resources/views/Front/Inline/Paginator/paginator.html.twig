@@ -1,14 +1,16 @@
-{% macro paginatorNavigation(paginationResult, entityName, pageQueryParameter = 'page') %}
+{% macro paginatorNavigation(paginationResult, entityName, pageQueryParameter = 'page', paginationInfo = true) %}
     <div class="in-paging">
         {% set route = getRoute() %}
         {% set routeParams = getAllRequestParams() %}
         {% set pageCount = paginationResult.pageCount %}
-        <strong class="in-paging__info">
-            {{ 'Displaying'|trans }} {{ entityName|default('records'|trans)|trim }}
-            {{ paginationResult.fromItem }} - <span class="js-pagination-to-item">{{ paginationResult.toItem }}</span>
-            {{ 'from'|trans }}
-            <span class="js-paging-total-count">{{ paginationResult.totalCount }}</span>
-        </strong>
+        {% if paginationInfo %}
+            <strong class="in-paging__info">
+                {{ 'Displaying'|trans }} {{ entityName|default('records'|trans)|trim }}
+                {{ paginationResult.fromItem }} - <span class="js-pagination-to-item">{{ paginationResult.toItem }}</span>
+                {{ 'from'|trans }}
+                <span class="js-paging-total-count">{{ paginationResult.totalCount }}</span>
+            </strong>
+        {% endif %}
 
         <div class="in-paging__control">
             {% if pageCount > 1 %}

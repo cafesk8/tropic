@@ -1,8 +1,7 @@
-@in-paging-size: 24px;
+@in-paging-size: 30px;
+@in-paging-item-gap: 10px;
 
 .in-paging {
-    margin-bottom: @margin-gap;
-
     @media @query-md {
         display: flex;
         align-items: center;
@@ -20,6 +19,7 @@
     &__control {
         flex: 3;
         text-align: center;
+        margin: 0 -@in-paging-item-gap / 2;
 
         font-size: 0;
 
@@ -33,34 +33,49 @@
             min-width: @in-paging-size;
             height: @in-paging-size;
             line-height: @in-paging-size;
-            margin: 0 1px;
+            margin: 0 @in-paging-item-gap / 2;
             text-align: center;
 
-            font-size: @font-size;
+            font-size: 16px;
+            border-radius: @radius-small;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
 
             &--num {
                 text-decoration: none;
-                background: @color-light;
-                color: @color-base;
+                background: @color-gray;
+                border: 1px solid rgba(0,0,0,0.1);
+                color: @color-f;
 
                 &:hover {
-                    background: darken(@color-light, 5%);
+                    background: darken(@color-gray, 5%);
+                    color: @color-f;
                 }
 
                 &--active {
-                    background: @color-primary;
-                    color: @color-f;
+                    background: @color-f;
+                    color: @color-base;
+                    border: 1px solid @color-border-dark;
 
                     &:hover {
-                        background: @color-primary;
+                        background: @color-f;
+                        color: @color-base;
                     }
                 }
             }
 
+            &--separate {
+                min-width: auto;
+
+                font-weight: 700;
+                box-shadow: none;
+            }
+
             &--arrow {
+                display: none;
                 text-decoration: none;
                 background: @color-light;
                 color: @color-base;
+                border: 1px solid @color-border-dark;
 
                 &:hover {
                     background: darken(@color-light, 5%);

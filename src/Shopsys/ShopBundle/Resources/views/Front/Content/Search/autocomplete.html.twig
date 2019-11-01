@@ -1,86 +1,88 @@
-<div class="search-hint" id="js-search-autocomplete-list">
-    <div class="search-hint__left">
-        <div class="search-hint__title">
-            {{ 'Kategorie'|trans }} ({{ categoriesPaginationResult.totalCount }})
-        </div>
-        <ul class="search-hint__category">
-            {% for category in categoriesPaginationResult.results %}
-                <li class="search-hint__category__item">
-                    <a href="{{ url('front_product_list', { id: category.id }) }}" class="search-hint__category__link">
-                        <span class="search-hint__category__image">
-                            <i class="svg svg-folder"></i>
+<div class="search__autocomplete">
+    <div class="search-hint" id="js-search-autocomplete-list">
+        <div class="search-hint__left">
+            <div class="search-hint__title">
+                {{ 'Kategorie'|trans }} ({{ categoriesPaginationResult.totalCount }})
+            </div>
+            <ul class="search-hint__category">
+                {% for category in categoriesPaginationResult.results %}
+                    <li class="search-hint__category__item">
+                        <a href="{{ url('front_product_list', { id: category.id }) }}" class="search-hint__category__link">
+                            <span class="search-hint__category__image">
+                                <i class="svg svg-folder"></i>
+                            </span>
+                            <span class="search-hint__category__name js-search-autocomplete-item-label">{{ category.name }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {# Design - temporary hidden #}
+            {% if 1==2 %}
+            <div class="search-hint__divider"></div>
+            <div class="search-hint__title display-none-mobile js-not-implemented-yet">
+                {{ 'Články'|trans }} ( 2 )
+            </div>
+            <ul class="search-hint__article">
+                <li class="search-hint__article__item js-not-implemented-yet">
+                    <a href="#" class="search-hint__article__link">
+                        <span class="search-hint__article__image">
+                            <i class="svg svg-list"></i>
                         </span>
-                        <span class="search-hint__category__name js-search-autocomplete-item-label">{{ category.name }}</span>
+                        <span class="search-hint__article__name js-search-autocomplete-item-label"><span class="highlight">Exped</span>iční oddělení</span>
                     </a>
                 </li>
-            {% endfor %}
-        </ul>
-        {# Design - temporary hidden #}
-        {% if 1==2 %}
-        <div class="search-hint__divider"></div>
-        <div class="search-hint__title display-none-mobile js-not-implemented-yet">
-            {{ 'Články'|trans }} ( 2 )
+                <li class="search-hint__article__item js-not-implemented-yet">
+                    <a href="#" class="search-hint__article__link">
+                        <span class="search-hint__article__image">
+                            <i class="svg svg-list"></i>
+                        </span>
+                        <span class="search-hint__article__name js-search-autocomplete-item-label">Náročná <span class="highlight">exped</span>iční cesta vše pořádně prověřila</span>
+                    </a>
+                </li>
+            </ul>
+            {% endif %}
         </div>
-        <ul class="search-hint__article">
-            <li class="search-hint__article__item js-not-implemented-yet">
-                <a href="#" class="search-hint__article__link">
-                    <span class="search-hint__article__image">
-                        <i class="svg svg-list"></i>
-                    </span>
-                    <span class="search-hint__article__name js-search-autocomplete-item-label"><span class="highlight">Exped</span>iční oddělení</span>
-                </a>
-            </li>
-            <li class="search-hint__article__item js-not-implemented-yet">
-                <a href="#" class="search-hint__article__link">
-                    <span class="search-hint__article__image">
-                        <i class="svg svg-list"></i>
-                    </span>
-                    <span class="search-hint__article__name js-search-autocomplete-item-label">Náročná <span class="highlight">exped</span>iční cesta vše pořádně prověřila</span>
-                </a>
-            </li>
-        </ul>
+        <div class="search-hint__right">
+            <div class="search-hint__title">
+                {{ 'Produkty'|trans }} ({{ productsPaginationResult.totalCount }})
+            </div>
+            <ul class="search-hint__product">
+                {% for product in productsPaginationResult.results %}
+                    <li class="search-hint__product__item">
+                        <a href="{{ url('front_product_detail', { id: product.id }) }}" class="search-hint__product__item__link">
+                            <span class="search-hint__product__item__image">
+                                <img src="{{ imageUrl(product, 'thumbnail') }}" title="{{ product.name }}" width="30" />
+                            </span>
+                            <span class="search-hint__product__item__name js-search-autocomplete-item-label">
+                                {{ product.name }}
+                                {% if not product.calculatedSellingDenied %}
+                                    <span class="search-hint__product__item__price">
+                                        {% set sellingPrice = getProductSellingPrice(product) %}
+                                        {{ sellingPrice.priceWithVat|price }}
+                                        {% if sellingPrice.isActionPrice %}
+                                            <span class="search-hint__product__item__price search-hint__product__item__price--old">
+                                                {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="search-hint__product__item">
+                        {{ 'Vyhledávání neodpovídá žádný produkt'|trans }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="search-hint__bottom">
+        {% if categoriesPaginationResult.totalCount > 0 or productsPaginationResult.totalCount > 0 %}
+            <a href="{{ searchUrl }}" class="btn btn--secondary search-hint__bottom__button">
+                {{ 'Zobrazit všechny výsledky'|trans }}
+            </a>
         {% endif %}
     </div>
-    <div class="search-hint__right">
-        <div class="search-hint__title">
-            {{ 'Produkty'|trans }} ({{ productsPaginationResult.totalCount }})
-        </div>
-        <ul class="search-hint__product">
-            {% for product in productsPaginationResult.results %}
-                <li class="search-hint__product__item">
-                    <a href="{{ url('front_product_detail', { id: product.id }) }}" class="search-hint__product__item__link">
-                        <span class="search-hint__product__item__image">
-                            <img src="{{ imageUrl(product, 'thumbnail') }}" title="{{ product.name }}" width="30" />
-                        </span>
-                        <span class="search-hint__product__item__name js-search-autocomplete-item-label">
-                            {{ product.name }}
-                            {% if not product.calculatedSellingDenied %}
-                                <span class="search-hint__product__item__price">
-                                    {% set sellingPrice = getProductSellingPrice(product) %}
-                                    {{ sellingPrice.priceWithVat|price }}
-                                    {% if sellingPrice.isActionPrice %}
-                                        <span class="search-hint__product__item__price search-hint__product__item__price--old">
-                                            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
-                                        </span>
-                                    {% endif %}
-                                </span>
-                            {% endif %}
-                        </span>
-                    </a>
-                </li>
-            {% else %}
-                <li class="search-hint__product__item">
-                    {{ 'Vyhledávání neodpovídá žádný produkt'|trans }}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
-<div class="search-hint__bottom">
-    {% if categoriesPaginationResult.totalCount > 0 or productsPaginationResult.totalCount > 0 %}
-        <a href="{{ searchUrl }}" class="btn btn--secondary search-hint__bottom__button">
-            {{ 'Zobrazit všechny výsledky'|trans }}
-        </a>
-    {% endif %}
 </div>

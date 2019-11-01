@@ -1,12 +1,14 @@
 @header-cart-width: 38px;
 @header-height: 35px;
-@header-height-gap: 30px;
 @header-mobile-button-size: 28px;
 @header-mobile-button-info-size: 16px;
 @header-mobile-button-dropdown-position: @web-header-mobile-dropdown-position;
 @header-search-icon-size: 18px;
 @header-logo-width: 250px;
 @header-logo-width-small: 169px;
+@header-search-width: 490px;
+@header-search-width-small: 400px;
+@header-right-actions-width: 344px;
 
 .header {
     position: relative;
@@ -14,23 +16,14 @@
     flex-wrap: wrap;
     align-items: center;
     min-height: @header-height;
-    padding: @header-height-gap/2 0 0 0;
-
-    @media @query-vl {
-        margin-bottom: 30px;
-        padding: @header-height-gap 0;
-    }
+    padding: 12px 0 20px;
 
     &--small {
         border-bottom: 1px solid @color-gray;
 
         @media @query-lg {
-            padding: @header-height-gap/2 @web-padding-big 0 @web-padding-big;
+            padding: 20px @web-padding 0 @web-padding;
         }
-    }
-
-    &--no-gap {
-        margin-bottom: 0;
     }
 }
 
@@ -42,19 +35,22 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: calc(~"@{calc-base}/3");
-        margin-top: 0;
+        width: 100%;
+        margin-top: 10px;
+        padding: 0 15px;
+
+        background-color: @color-primary;
+        border-radius: @radius;
     }
 }
 
 // Left part of header with logo
 .header__logo {
     width: 100%;
-    text-align: center;
+    text-align: left;
 
     @media @query-vl {
-        width: calc(~"@{calc-base}/3");
-        order: 2;
+        flex: 1;
     }
 
     .header--small & {
@@ -83,9 +79,7 @@
     margin-bottom: 20px;
 
     @media @query-vl {
-        flex: 1;
-        width: calc(~"@{calc-base}/3");
-        order: 3;
+        width: auto;
         justify-content: flex-end;
         margin: 0;
     }
@@ -96,7 +90,36 @@
         }
     }
 
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        width: @header-right-actions-width;
+
+        &__item {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+    
+            &__link {
+                font-weight: 700;
+                color: @color-gray-dark;
+    
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
     &__search {
+        width: @header-search-width-small;
+    
+        @media @query-xl {
+            width: @header-search-width;
+        }
+
         &__icon-menu {
             position: relative;
             line-height: @header-search-icon-size;

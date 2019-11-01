@@ -16,7 +16,7 @@
     {{ render(controller('ShopsysShopBundle:Front/Script:embedOrderSentPageScripts', {order: order})) }}
     {{ render(controller('ShopsysShopBundle:Front/Script:embedOrderSentPageGoogleAnalyticsScript', {order: order})) }}
 
-    <div class="web__container web__container--big-padding">
+    <div class="web__container">
         <div class="web__main">
             <div class="web__main__content js-main-content">
             <!-- script to display on order sent page -->
@@ -77,7 +77,7 @@
     {% endif %}
 
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             <div class="box-articles">
                 <div class="box-articles__title-big">
                     {{ 'Načerpejte inspiraci'|trans }}
@@ -100,7 +100,5 @@
             {% endcache %}
         </div>
     </div>
-
-    {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
 
 {% endblock %}

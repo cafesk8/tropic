@@ -30,7 +30,7 @@ class ProductController extends FrontBaseController
 {
     public const SEARCH_TEXT_PARAMETER = 'q';
     public const PAGE_QUERY_PARAMETER = 'page';
-    public const PRODUCTS_PER_PAGE = 12;
+    public const PRODUCTS_PER_PAGE = 18;
     private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
     private const LIST_BLOG_ARTICLES_LIMIT = 1;
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;

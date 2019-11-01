@@ -1,21 +1,40 @@
 @box-filter-padding: 30px;
-@box-filter-title-bottom-gap: 12px;
+@box-filter-title-bottom-gap: 22px;
 @box-filter-section-gap: 50px;
 @box-filter-width: @box-list-panel-width;
 @box-filter-gap: @box-list-panel-gap;
-@box-filter-selected-cross-size: 13px;
+@box-filter-selected-cross-size: 11px;
 
 .box-filter {
     width: @box-filter-width;
     margin-right: @box-filter-gap;
     margin-bottom: @margin-gap;
-    padding: @box-filter-padding;
 
-    border: 3px solid @color-gray;
-    background-color: @color-gray;
+    background-color: @color-f;
+
+    @media @query-vl {
+        background-color: transparent;
+    }
 
     &.active-mobile {
-        width: calc(~"100% - @{web-padding}");
+        width: calc(~"100% - @{web-padding-small} * 2");
+
+        @media @query-vl {
+            width: 100%;
+        }
+    }
+
+    &__top {
+        margin-bottom: 16px;
+        padding: @box-filter-padding;
+
+        background-color: @color-light;
+        border-radius: @radius;
+    }
+
+    &__bottom {
+        border: 3px solid @color-light;
+        border-radius: @radius;
     }
 
     &__title {
@@ -28,23 +47,25 @@
         font-weight: 700;
         text-transform: uppercase;
         text-decoration: none;
+
+        &--small-gap {
+            margin-bottom: 12px;
+        }
     }
 
     &__selected {
         display: flex;
         flex-direction: column;
-        margin: -@box-filter-padding -@box-filter-padding @box-filter-padding -@box-filter-padding;
-        padding: @box-filter-padding;
-
-        background-color: @color-f;
 
         &__item {
             position: relative;
-            margin-bottom: 4px;
-            padding: 6px 12px;
+            margin-bottom: 5px;
+            padding: 8px 9px 7px 12px;
 
-            color: @color-brown-light-2;
-            background-color: @color-gray;
+            font-size: 13px;;
+            border-radius: @radius-small;
+            color: @color-base;
+            background-color: @color-f;
 
             .svg {
                 position: absolute;
@@ -53,28 +74,27 @@
 
                 cursor: pointer;
                 font-size: @box-filter-selected-cross-size;
+                color: @color-gray;
             }
         }
 
         &__remove {
-            margin-top: 15px;
+            margin-top: 10px;
 
             &__link {
-                color: @color-base;
-                font-family: @font;
-                font-weight: 700;
+                color: @color-gray-dark;
+                font-size: 14px;
                 text-transform: uppercase;
                 text-decoration: none;
             }
         }
     }
 
-    &__price {
-        margin-bottom: @box-filter-section-gap;
-    }
-
     &__choice {
-        margin-bottom: @box-filter-section-gap;
+        padding: 26px @box-filter-padding 20px @box-filter-padding;
+        margin-bottom: -1px;
+
+        border-bottom: 1px solid @color-border;
 
         &__title {
             display: inline-block;

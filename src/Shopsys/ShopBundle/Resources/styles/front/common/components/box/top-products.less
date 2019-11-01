@@ -1,24 +1,25 @@
 @box-top-products-bottom-gap: 47px;
-@box-top-products-title-bottom-gap: 30px;
+@box-top-products-title-bottom-gap: 0;
 @box-top-products-tabs-bottom-gap: 50px;
 
 .box-top-products {
     display: flex;
     flex-direction: column;
+    padding-bottom: 17px;
+    padding-top: 61px;
     margin-bottom: @box-top-products-bottom-gap;
     text-align: center;
 
+    border-bottom: 1px solid @color-border;
+    border-top: 1px solid @color-border;
+
     &__title {
         display: block;
-        line-height: 40px;
         text-align: center;
+        line-height: 43px;
         margin-bottom: @box-top-products-title-bottom-gap;
 
-        color: @color-brown;
-        font-family: @font-alt;
-        font-size: 36px;
-        font-weight: 700;
-        text-transform: uppercase;
+        color: @color-base;
     }
 
     &__tabs {

@@ -18,25 +18,30 @@
     </h1>
 {% endblock %}
 
-{% block headerClass %}header--no-gap{% endblock %}
-
 {% block main_content %}
 
     {{ render(controller('ShopsysShopBundle:Front/Advert:banner')) }}
     <div class="web__line">
-        <div class="web__container web__container--big-padding">
+        <div class="web__container">
             {% include '@ShopsysShop/Front/Content/Benefits/list.html.twig' %}
         </div>
     </div>
-    {{ render(controller('ShopsysShopBundle:Front/Advert:bigBannerOnHomepage')) }}
+
+    {#  
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36543
+        Big banner on homepage
+
+        {{ render(controller('ShopsysShopBundle:Front/Advert:bigBannerOnHomepage')) }}
+    
+    #}
 
     {% if topProducts is not empty %}
         <div class="web__line">
-            <div class="web__container web__container--big-padding">
+            <div class="web__container">
                 <div id="top-products" class="box-top-products">
-                    <div class="box-top-products__title">
-                        {{ 'Bushmani mají nejraději'|trans }}
-                    </div>
+                    <h1 class="box-top-products__title">
+                        {{ 'Vybíráme to nejlepší na říjen'|trans }}
+                    </h1>
                     {# Design - temporary hidden #}
                     {% if 1==2 %}
                     <ul class="box-top-products__tabs">
@@ -65,11 +70,16 @@
                     <div class="box-top-products__in">
                         {{ productList.horizontalList(topProducts, variantsIndexedByMainVariantId, "list-top-products", 'h3', 'top-products') }}
                     </div>
-                    {% if legendaryCategoryId is not null%}
-                        <div class="box-top-products__bottom">
-                            <a href="{{ url('front_product_list', { id: legendaryCategoryId }) }}" class="box-top-products__bottom__link underline">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
-                        </div>
-                    {% endif %}
+                    {#
+                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36545
+                        Button for show all products
+
+                        {% if legendaryCategoryId is not null%}
+                            <div class="box-top-products__bottom">
+                                <a href="{{ url('front_product_list', { id: legendaryCategoryId }) }}" class="box-top-products__bottom__link underline">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
+                            </div>
+                        {% endif %}
+                    #}
                 </div>
             </div>
         </div>
@@ -77,7 +87,18 @@
 
     <div class="web__line">
         <div class="web__container">
-            {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
+            <div class="box-articles">
+                <h1 class="box-articles__title-big">
+                    {{ 'Shopsys magazín'|trans }}
+                </h1>
+                <div class="box-articles__title-small">
+                    {{ 'Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu'|trans }}
+                </div>
+                {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: homepageBlogArticles } %}
+                <div class="box-articles__bottom">
+                    <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -89,14 +110,14 @@
                     </div>
                     <div class="list-article-main__item__content">
                         <div class="list-article-main__item__content__title">
-                            {{ '22 let s vámi'|trans }}
+                            {{ 'Specialisti na běh'|trans }}
                         </div>
                         <div class="list-article-main__item__content__text">
-                            {{ 'Tvoříme praktické a pohodlné oblečení pro každodenní expedice. Ty mu dáváš příběh a tvoříš vzpomínky s ním spojené. Věříš naší tradici a kvalitě?'|trans }}
+                            {{ 'Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké.'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
                             {% if ourStoryArticle is not null %}
-                                <a class="list-article-main__item__content__bottom__button btn" href="{{ url('front_article_detail', { id: ourStoryArticle.id }) }}" class="btn">{{ 'Ke kořenům'|trans }}</a>
+                                <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_article_detail', { id: ourStoryArticle.id }) }}" class="btn">{{ 'Vše pro běhání'|trans }}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -106,14 +127,14 @@
                     </div>
                     <div class="list-article-main__item__content">
                         <div class="list-article-main__item__content__title">
-                            {{ 'Naše hodnoty'|trans }}
+                            {{ 'Poradíme s plaváním'|trans }}
                         </div>
                         <div class="list-article-main__item__content__text">
-                            {{ 'Není ti jedno, jak žiješ, co děláš a co po tobě zůstane? Ani nám. Svět možná nespasíme, ale za pokus to stojí a bude to jízda. Vyrazíš s námi?'|trans }}
+                            {{ 'Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám.'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
                             {% if ourValuesArticle is not null %}
-                                <a class="list-article-main__item__content__bottom__button btn" href="{{ url('front_article_detail', { id: ourValuesArticle.id }) }}" class="btn">{{ 'K hodnotám'|trans }}</a>
+                                <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_article_detail', { id: ourValuesArticle.id }) }}" class="btn">{{ 'Plavecké potřeby'|trans }}</a>
                             {% endif %}
                         </div>
                     </div>
@@ -122,41 +143,43 @@
         </div>
     </div>
 
-    <div class="web__line">
-        <div class="web__container web__container--big-padding">
-            <div class="box-articles">
-                <div class="box-articles__title-big">
-                    {{ 'Načerpej inspiraci'|trans }}
-                </div>
-                <div class="box-articles__title-small">
-                    {{ 'Zážitky z cest si nenecháváme pro sebe'|trans }}
-                </div>
-                {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: homepageBlogArticles } %}
-                <div class="box-articles__bottom">
-                    <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
-                </div>
+    {#
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36553
+        Big banner
+
+        <div class="web__line">
+            <div class="web__container">
+                {% include '@ShopsysShop/Front/Inline/PromoImage/index.html.twig' with {cssClass: '', bushmanClubArticle: bushmanClubArticle } only %}
             </div>
         </div>
-    </div>
+    #}
 
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
 
-    <div class="web__line">
-        <div class="web__container web__container--big-padding">
-            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-        </div>
-    </div>
+    {#
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36555
+        Refenreces
 
-    <div class="web__line">
-        <div class="web__container web__container--no-padding">
-            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                {{ instagramFeed() }}
-            {% endcache %}
+        <div class="web__line">
+            <div class="web__container">
+                {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
+            </div>
         </div>
-    </div>
+    #}
 
-    {% include '@ShopsysShop/Front/Content/Motto/line.html.twig' %}
+    {#
+        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36554
+        Instagram list image 
+
+        <div class="web__line">
+            <div class="web__container web__container--no-padding">
+                {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
+                    {{ instagramFeed() }}
+                {% endcache %}
+            </div>
+        </div>
+    #}
 
 {% endblock %}

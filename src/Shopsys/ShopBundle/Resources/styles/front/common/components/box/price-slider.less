@@ -3,27 +3,46 @@
 .box-price-slider {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+
+    border-radius: @radius-small;
 
     &__form {
         display: flex;
         flex-direction: row;
 
-        &__input {
-            position: relative;
-            width: 50%;
+        &__item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: @calc-base / 2;
 
-            input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-              color: @color-base;
-              opacity: 1; /* Firefox */
+            &__text {
+                padding-right: 4px;
+
+                font-size: @font-size-small;
+                color: @color-gray;
             }
 
-            input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-                color: @color-base;
-            }
+            input {
+                font-size: @font-size-small;
+                font-weight: 700;
 
-            input::-ms-input-placeholder { /* Microsoft Edge */
-                color: @color-base;
+                &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                    color: @color-base;
+                    opacity: 1; /* Firefox */
+                    font-weight: 700;
+                }
+    
+                &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+                    color: @color-base;
+                    font-weight: 700;
+                }
+    
+                &::-ms-input-placeholder { /* Microsoft Edge */
+                    color: @color-base;
+                    font-weight: 700;
+                }
             }
 
             &--left {

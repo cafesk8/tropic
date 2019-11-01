@@ -1,7 +1,7 @@
-@box-dropdown-bg: @color-gray;
+@box-dropdown-bg: @color-add;
 @box-dropdown-bg-hover: darken(@box-dropdown-bg, 5%);
 
-@box-dropdown-padding-horizontal: 16px;
+@box-dropdown-padding-horizontal: 18px;
 @box-dropdown-padding-horizontal-small: 11px;
 @box-dropdown-padding-vertical: 10px;
 @box-dropdown-padding-vertical-small: 10px;
@@ -20,7 +20,7 @@
 .box-dropdown {
     display: block;
     position: relative;
-    margin: 0 5px;
+    margin: 0 35px;
 
     cursor: pointer;
 
@@ -37,21 +37,19 @@
     &__select {
         display: block;
         position: relative;
-        padding: @box-dropdown-padding-vertical 38px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
+        padding: @box-dropdown-padding-vertical 36px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
         height: @box-dropdown-item-height;
 
-        border-radius: @radius;
+        border-radius: @radius-small;
+        border: 1px solid rgba(0,0,0,0.1);
         background-color: @box-dropdown-bg;
+        box-shadow: @box-shadow;
         color: @color-base;
         font-weight: bold;
         font-size: @box-dropdown-font-size;
         text-transform: uppercase;
         text-decoration: none;
         white-space: nowrap;
-
-        @media @query-md {
-            padding: @box-dropdown-padding-vertical 40px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
-        }
 
         .box-dropdown--without-arrow & {
             padding-right: @box-dropdown-padding-horizontal;
@@ -64,11 +62,13 @@
         .open & {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
+            border: 1px solid @color-add;
+            box-shadow: none;
         }
 
         .open.box-dropdown--open-light & {
             background-color: @color-f;
-            box-shadow: inset 0px 0px 0px 3px @color-gray;
+            box-shadow: inset 0px 0px 0px 2px @color-add;
         }
 
         &:after {
@@ -76,9 +76,9 @@
             content: '';
             position: absolute;
             height: @box-dropdown-open-bottom-gap;
-            width: 100%;
             top: 100%;
-            right: 0;
+            right: -1px;
+            left: -1px;
             z-index: @z-index-menu;
 
             background-color: @box-dropdown-bg;
@@ -91,11 +91,12 @@
                 background-color: @color-f;
                 z-index: @z-index-menu + 1;
                 height: @box-dropdown-open-bottom-gap;
-                top: calc(100% - 3.5px);
+                top: calc(100% - 2px);
                 right: 0px;
-                width: calc(100% - 5px);
-                border-right: 3px solid @color-gray;
-                border-left: 3px solid @color-gray;
+                left: -1px;
+                width: calc(100% - 4px);
+                border-right: 3px solid @color-add;
+                border-left: 3px solid @color-add;
             }
         }
 
@@ -104,15 +105,12 @@
             display: inline-block;
             width: @box-dropdown-arrow-size;
             height: @box-dropdown-arrow-size;
-            top: 17px;
+            top: 50%;
+            transform: translateY(-50%);
             right: 15px;
 
             color: @box-dropdown-arrow-color;
             font-size: @box-dropdown-arrow-size;
-
-            .open & {
-                top: 18px;
-            }
 
             &--down {
                 .svg;
@@ -126,7 +124,7 @@
             &--up {
                 .svg;
                 .svg-triangle;
-                transform: rotate(180deg);
+                transform: rotate(180deg) translateY(50%);
 
                 display: none;
 
@@ -149,7 +147,7 @@
             right: 0;
             z-index: @z-index-menu;
 
-            border: 3px solid @color-gray;
+            border: 3px solid @color-add;
             border-radius: @radius;
             border-top-right-radius: 0;
         }

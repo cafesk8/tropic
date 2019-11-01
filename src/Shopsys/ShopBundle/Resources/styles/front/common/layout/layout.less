@@ -10,6 +10,8 @@ img {
     width: 100%;
     min-height: 100%;
 
+    background-color: @color-light;
+
     .is-safari & {
         display: block;
     }
@@ -45,39 +47,43 @@ img {
     }
 
     &__container {
-        padding: 0 10px;
+        .clearfix();
+        padding: 0 @web-padding-small;
+        margin: 0 10px;
+
+        background-color: @color-f;
+
+        @media @query-vl {
+            padding: 0 @web-padding;
+        }
+
+        @media @query-xl {
+            width: @web-width;
+            margin: 0 auto;
+        }
+
+        &--transparent {
+            background-color: transparent;
+        }
+
+        &--border-radius-top {
+            border-radius: @radius @radius 0 0;
+        }
+
+        &--border-radius-bottom {
+            border-radius: 0 0 @radius @radius;
+        }
 
         &--top-line {
             border-top: 1px solid @color-gray;
-        }
-
-        @media @query-vl {
-            padding: 0 5px;
-
-            &--small-padding {
-                padding: 0 @web-padding;
-            }
-
-            &--big-padding {
-                padding: 0 @web-padding-big;
-            }
         }
 
         &--no-padding {
             padding: 0;
         }
 
-        &--light {
-            background: @color-gray;
-        }
-
         &--dark {
-            background: @color-brown;
-        }
-
-        @media @query-xl {
-            width: @web-width;
-            margin: 0 auto;
+            background: @color-primary;
         }
     }
 

@@ -1,26 +1,32 @@
 <ul class="list-benefits {{ cssClass|default('') }}">
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
-            <i class="svg svg-leaf"></i>
+            <i class="svg svg-exchange"></i>
         </span>
         <span class="list-benefits__item__text">
-            {{ 'Vyrábíme zodpovědně'|trans }}
+            {{ 'Vrácení zdarma <strong>do 30 dnů</strong>'|trans|raw }}
         </span>
     </li>
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
-            <i class="svg svg-compass"></i>
+            <i class="svg svg-delivery-truck"></i>
         </span>
         <span class="list-benefits__item__text">
-            {{ 'Používáme přírodní materiály'|trans }}
+            {{ 'Doprava zdarma při nákupu <strong>nad 2 500 Kč</strong>'|trans|raw }}
         </span>
     </li>
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
-            <i class="svg svg-hand"></i>
+            <i class="svg svg-towel"></i>
         </span>
         <span class="list-benefits__item__text">
-            {{ 'Tvoříme vlastní styl '|trans }}
+            {#
+                TODO PRG: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36549
+            #}
+            {% trans %}
+                Vyzkoušení zdarma na
+                <a class="list-benefits__item__text__link js-not-implemented-yet" href="">prodejně v Praze</a>
+            {% endtrans %}
         </span>
     </li>
 </ul>

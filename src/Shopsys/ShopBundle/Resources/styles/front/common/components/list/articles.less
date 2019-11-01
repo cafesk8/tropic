@@ -17,7 +17,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
 
         @media @query-md {
             width: 100%/2;
@@ -70,6 +70,10 @@
         &__image {
             width: 100%;
             text-align: center;
+            overflow: hidden;
+
+            font-size: 0;
+            border-radius: @radius;
 
             @media @query-xl {
                 width: @list-articles-item-image-width;
@@ -95,10 +99,10 @@
 
             &__title {
                 margin-top: 10px;
-                margin-bottom: 27px;
-                line-height: 32px;
+                margin-bottom: 5px;
+                line-height: 30px;
 
-                color: @color-base;
+                color: @color-gray-dark;
                 font-size: 18px;
                 font-weight: 700;
                 text-decoration: none;
@@ -110,12 +114,10 @@
             }
 
             &__text {
-                line-height: 26px;
+                line-height: 24px;
                 margin-bottom: 10px;
 
-                color: @color-brown;
-                font-family: @font-alt;
-                font-size: 16px;
+                color: @color-gray-dark;
             }
 
             &__date {

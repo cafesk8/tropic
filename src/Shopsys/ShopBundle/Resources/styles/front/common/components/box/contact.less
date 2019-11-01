@@ -8,11 +8,12 @@
 .box-contact {
     display: flex;
     flex-direction: column;
-    margin-bottom: 30px;
 
-    border: 3px solid @color-gray;
+    @media @query-lg {
+        margin-bottom: 18px;
+    }
 
-    @media @query-md {
+    @media @query-vl {
         flex-direction: row;
     }
 
@@ -68,6 +69,11 @@
 
     &__block {
         margin-bottom: 40px;
+        padding-right: 10px;
+
+        @media @query-vl {
+            width: @calc-base / 2;
+        }
 
         &--no-bottom-gap {
             margin-bottom: 0;
@@ -76,31 +82,42 @@
         &__text {
             line-height: 30px;
 
-            color: @color-base;
-            font-size: 19px;
+            color: @color-f;
+            font-size: 16px;
             font-weight: bold;
+
+            @media @query-xl {
+                font-size: 19px;
+            }
 
             .svg {
                 position: relative;
                 bottom: -10px;
+                margin-top: -10px;
                 margin-right: 6px;
 
                 font-size: 30px;
+                color: @color-gray-dark;
             }
 
             &__link {
-                color: @color-base;
+                color: @color-f;
                 text-decoration: none;
+
+                &:hover {
+                    color: @color-f;
+                    text-decoration: underline;
+                }
             }
         }
 
         &__info {
-            margin-top: 10px;
+            margin-top: 3px;
             line-height: 30px;
 
-            font-family: @font-alt;
-            font-size: @font-size;
-            color: @color-brown;
+            color: @color-f;
+            font-size: @font-size-small;
+            opacity: 0.5;
         }
     }
 }

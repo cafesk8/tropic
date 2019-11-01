@@ -52,9 +52,10 @@ class CategoryController extends FrontBaseController
     }
 
     /**
+     * @param bool $dropdownMenu
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function hoverMenuAction(): Response
+    public function hoverMenuAction(bool $dropdownMenu = true): Response
     {
         $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleChildrenForParent(
             $this->categoryFacade->getRootCategory(),
@@ -69,6 +70,7 @@ class CategoryController extends FrontBaseController
             'categoriesIdsForFirstColumn' => array_map(function (Category $category) {
                 return $category->getId();
             }, $categoriesForFirstColumn),
+            'dropdownMenu' => $dropdownMenu,
         ]);
     }
 

@@ -1,10 +1,10 @@
 // Default button
-@btn-height: @form-item-height;
+@btn-height: 40px;
 @btn-padding-vertical: 0;
-@btn-padding-horizontal: 19px;
+@btn-padding-horizontal: 24px;
 @btn-color: @color-f;
 @btn-color-hover: @color-f;
-@btn-bg: @color-brown;
+@btn-bg: @color-gray;
 @btn-bg-hover: darken(@btn-bg, 5%);
 
 .btn {
@@ -15,16 +15,17 @@
     vertical-align:middle;
     display: inline-block;
     transition: @transition background, @transition color;
-    text-transform: uppercase;
     text-align: center;
 
-    border: 0;
+    border-radius: @radius-small;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: @box-shadow;
     color: @btn-color;
     background: @btn-bg;
     cursor: pointer;
     font-weight: bold;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
     outline: 0;
 
     &:hover {
@@ -36,9 +37,9 @@
 //// Modifications - color
 .btn {
     // call to action button
-    @btn-success-color: @color-f;
-    @btn-success-color-hover: @color-f;
-    @btn-success-bg: @color-green;
+    @btn-success-color: @color-base;
+    @btn-success-color-hover: @color-base;
+    @btn-success-bg: @color-add;
     @btn-success-bg-hover: darken(@btn-success-bg, 5%);
 
     &--success {

@@ -1,8 +1,7 @@
 @box-list-description-line-height: 30px;
 @box-list-description-font-size: 18px;
 
-@box-list-title-font-size: 36px;
-@box-list-title-margin-bottom: 25px;
+@box-list-title-margin-bottom: 20px;
 
 @box-list-panel-width: 261px;
 @box-list-panel-gap: 49px;
@@ -10,15 +9,25 @@
 @box-list-bottom-gap: 62px;
 
 .box-list {
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+
+        &__column {
+            padding-right: @margin-gap;
+
+            &--right {
+                padding-right: 0;
+                margin-left: auto;
+            }
+        }
+    }
     &__title {
         display: block;
         margin-bottom: @box-list-title-margin-bottom;
-        text-align: center;
 
-        color: @color-brown;
-        font-family: @font-alt;
-        font-size: @box-list-title-font-size;
-        font-weight: 700;
+        color: @color-base;
     }
 
     &__wrap {
@@ -62,6 +71,7 @@
 
     &__filter-opener {
         text-align: center;
+        margin-bottom: @margin-gap;
 
         @media @query-vl {
             display: none;
@@ -136,6 +146,61 @@
 
         &__text {
             margin-bottom: 20px;
+        }
+    }
+
+    &__actions {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: @margin-gap;
+
+        @media @query-md {
+            flex-direction: row;
+        }
+
+        @media @query-vl {
+            flex-direction: column;
+        }
+
+        @media @query-xl {
+            flex-direction: row;
+        }
+
+        &__button {
+            text-align: center;
+            margin-bottom: @margin-gap;
+
+            @media @query-md {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+    
+            @media @query-vl {
+                position: static;
+                transform: none;
+            }
+
+            @media @query-xl {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        &__pagination {
+            @media @query-md {
+                margin: 6px 0 6px auto;
+            }
+    
+            @media @query-vl {
+                margin: 0;
+            }
+
+            @media @query-xl {
+                margin: 6px 0 6px auto;
+            }
         }
     }
 }

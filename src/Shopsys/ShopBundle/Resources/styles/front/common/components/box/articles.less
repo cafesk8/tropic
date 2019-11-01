@@ -2,40 +2,37 @@
     &__title-big {
         display: block;
         text-align: center;
-        line-height: 47px;
+        line-height: 43px;
+        margin-bottom: 8px;
 
-        color: @color-brown;
-        font-family: @font-alt;
-        font-size: 36px;
-        font-weight: 700;
-        text-transform: uppercase;
+        color: @color-base;
     }
 
     &__title-small {
         display: block;
-        line-height: 24px;
-        margin-top: 4px;
+        line-height: 18px;
         text-align: center;
         margin-bottom: 22px;
 
         color: @color-brown;
+        font-size: @font-size-extra-small;
         font-family: @font-alt;
-        font-size: 16px;
+        text-transform: uppercase;
 
         @media @query-vl {
-            margin-bottom: 62px;
+            margin-bottom: 69px;
         }
     }
 
     &__bottom {
         text-align: center;
-        margin-bottom: 67px;
+        margin-bottom: 61px;
 
         &__link {
             line-height: 18px;
 
-            color: @color-base;
-            font-size: @font-size;
+            color: @color-gray-dark;
+            font-size: @font-size-small;
             text-decoration: none;
             text-transform: uppercase;
         }

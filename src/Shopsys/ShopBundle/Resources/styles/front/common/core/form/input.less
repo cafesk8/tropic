@@ -1,16 +1,20 @@
-@input-height: 60px;
+@input-height: 40px;
 @input-textarea-height: @input-height * 3;
 @input-width: 100%;
-@input-padding-top: 22px;
+@input-padding-vertical: 5px;
 @input-padding-horizontal: 10px;
 @input-font-size: 16px;
 @input-font-size-label: 12px;
-@input-font-color: @color-0;
-@input-border-size: 2px;
+@input-font-color: @color-base;
+@input-border-size: 1px;
 
-@input-border-color: #cccbcb;
+@select-arrow-width: 40px;
+@select-inner-padding: 15px;
+
+@input-border-color: @color-border-dark;
 @input-error-border-color: @color-red;
 @input-background: @color-f;
+@input-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
 @input-disabled-background: #eff1f2;
 
 .input {
@@ -18,9 +22,11 @@
     max-width: 100%;
     height: @input-height;
     line-height: @input-height/2;
-    padding: @input-padding-top @input-padding-horizontal 0 @input-padding-horizontal;
+    padding: @input-padding-vertical @input-padding-horizontal;
 
     border: @input-border-size solid @input-border-color;
+    border-radius: @radius-small;
+    box-shadow: @input-box-shadow;
     color: @input-font-color;
     font-size: @input-font-size;
     background: @input-background;
@@ -52,7 +58,7 @@
     &--textarea {
         height: @input-textarea-height;
         line-height: 20px;
-        padding: @input-padding-top @input-padding-horizontal 5px @input-padding-horizontal;
+        padding: @input-padding-vertical @input-padding-horizontal;
     }
 
     &:focus {
@@ -112,4 +118,21 @@ input::-webkit-inner-spin-button {
 
 textarea {
     resize: vertical;
+}
+
+select {
+    width: 100%;
+    padding: 0 @select-arrow-width 0 @select-inner-padding;
+    line-height: @input-height - 2 * @input-border-size;
+    height: @input-height;
+    
+    border-radius: @radius-small;
+    border: 1px solid @color-border-dark;
+    font-size: 13px;
+    color: @input-font-color;
+    background-color: @input-background;
+    box-shadow: @input-box-shadow;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }

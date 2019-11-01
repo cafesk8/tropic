@@ -1,13 +1,13 @@
-@selectric-font-size:           @font-size;
-@selectric-main-color:          @input-border-color;            // Color used in border
-@selectric-secondary-color:     @color-0;                       // Color used in button
-@selectric-arrow-color:         @color-0;                       // Color used in button arrow
+@selectric-font-size:           13px;
+@selectric-main-color:          @color-border-dark;            // Color used in border
+@selectric-secondary-color:     @color-base;                       // Color used in button
+@selectric-arrow-color:         @color-gray;                       // Color used in button arrow
 @selectric-text-color:          @input-font-color;                       // Color used in label
 @selectric-bg-color:            @input-background;              // Background color
 @selectric-height:              @input-height;                  // Outer height
-@selectric-spacing:             10px;                           // Label left padding
-@selectric-border-width:        3px;                            // Outer border width
-@selectric-inner-height:        @input-height;                  // Inner height
+@selectric-spacing:             @select-inner-padding;                           // Label left padding
+@selectric-border-width:        @input-border-size;                            // Outer border width
+@selectric-inner-height:        @select-arrow-width;                  // Inner height
 @selectric-border-color-hover:  @input-border-color;
 
 .selectric-wrapper {
@@ -20,12 +20,18 @@
 }
 
 .selectric {
-    border: @selectric-border-width solid @selectric-main-color;
-    background: @selectric-bg-color;
     position: relative;
 
+    border: @selectric-border-width solid @selectric-main-color;
+    border-radius: @radius-small;
+    background: @selectric-bg-color;
+    box-shadow: @input-box-shadow;
+
+    .selectric-open & {
+        border-radius: @radius-small @radius-small 0 0;
+    }
+
     .label {
-        padding-top: 10px;
         display: block;
         white-space: nowrap;
         overflow: hidden;
@@ -56,6 +62,11 @@
             font-size: 11px;
             font-weight: 700;
             transform: rotate(90deg);
+            transition: @transition;
+
+            .selectric-open & {
+                transform: rotate(-90deg);
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
-@cart-icon-width: 24px;
-@cart-icon-gap: 10px;
+@cart-icon-size: 27px;
+@cart-icon-gap: 17px;
 @cart-number-size: 14px;
 
 .cart {
@@ -20,16 +20,19 @@
             margin-left: @cart-icon-gap;
 
             text-transform: none;
+            font-size: 16px;;
         }
     }
 
     &__icon {
         position: relative;
         width: 20px;
+        margin-top: -6px;
+        margin-left: -9px;
+        height: @cart-icon-size;
         text-align: left;
 
-        font-size: 22px;
-        margin-bottom: -9px;
+        font-size: @cart-icon-size;
 
         @media @query-lg {
             float: left;
@@ -39,16 +42,17 @@
             position: absolute;
             display: block;
             height: @cart-number-size;
-            line-height: @cart-number-size;
-            width: @cart-number-size;
-            top: 1px;
-            right: -9px;
+            line-height: @cart-number-size + 1px;
+            min-width: @cart-number-size;
+            padding: 0 4px;
+            top: -1px;
+            right: -11px;
             text-align: center;
 
             color: @color-f;
             font-size: 11px;
-            border-radius: 50%;
-            background-color: @color-green;
+            border-radius: 20px;
+            background-color: @color-primary;
         }
     }
 }
