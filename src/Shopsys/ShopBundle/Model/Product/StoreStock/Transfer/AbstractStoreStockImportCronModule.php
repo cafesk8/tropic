@@ -12,29 +12,27 @@ use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferResponseItemDataException;
 
-class StoreStockImportCronModule extends AbstractTransferImportCronModule
+abstract class AbstractStoreStockImportCronModule extends AbstractTransferImportCronModule
 {
-    public const TRANSFER_IDENTIFIER = 'import_product_store_stock';
-
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient
      */
-    private $restClient;
+    protected $restClient;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferMapper
      */
-    private $storeStockTransferMapper;
+    protected $storeStockTransferMapper;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferValidator
      */
-    private $storeStockTransferValidator;
+    protected $storeStockTransferValidator;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
-    private $productFacade;
+    protected $productFacade;
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
@@ -60,10 +58,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
     /**
      * @return string
      */
-    protected function getTransferIdentifier(): string
-    {
-        return self::TRANSFER_IDENTIFIER;
-    }
+    abstract protected function getApiUrl(): string;
 
     /**
      * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse
@@ -72,7 +67,7 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
     {
         $this->logger->addInfo('Starting downloading stock quantities from IS');
 
-        $restResponse = $this->restClient->get('/api/Eshop/StockQuantityBySites');
+        $restResponse = $this->restClient->get($this->getApiUrl());
 
         $transferDataItems = [];
         foreach ($restResponse->getData() as $restData) {
@@ -107,7 +102,8 @@ class StoreStockImportCronModule extends AbstractTransferImportCronModule
         $productData = $this->storeStockTransferMapper->mapTransferDataToProductData(
             $storeStockTransferResponseItemData,
             $product,
-            $this->logger
+            $this->logger,
+            $this->getTransferIdentifier()
         );
 
         $this->productFacade->edit($product->getId(), $productData);

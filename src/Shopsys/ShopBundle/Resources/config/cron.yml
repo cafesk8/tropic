@@ -51,9 +51,13 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
 
-    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockImportCronModule:
+    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllStoreStockImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '03', minutes: '00' }
+
+    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
 
     Shopsys\ShopBundle\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule:
         tags:
