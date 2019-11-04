@@ -16,41 +16,38 @@ use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInter
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferResponseItemDataException;
-use Shopsys\ShopBundle\Model\Transfer\Transfer;
 
-class ProductPriceImportCronModule extends AbstractTransferImportCronModule
+abstract class AbstractProductPriceImportCronModule extends AbstractTransferImportCronModule
 {
-    public const TRANSFER_IDENTIFIER = 'import_product_prices';
-
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\RestClient
      */
-    private $multidomainRestClient;
+    protected $multidomainRestClient;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ProductPriceTransferValidator
      */
-    private $productPriceTransferValidator;
+    protected $productPriceTransferValidator;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
-    private $productFacade;
+    protected $productFacade;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator
      */
-    private $productPriceRecalculator;
+    protected $productPriceRecalculator;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
      */
-    private $pricingGroupSettingFacade;
+    protected $pricingGroupSettingFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
-    private $domain;
+    protected $domain;
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
@@ -82,10 +79,7 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
     /**
      * @return string
      */
-    protected function getTransferIdentifier(): string
-    {
-        return self::TRANSFER_IDENTIFIER;
-    }
+    abstract protected function getApiUrl(): string;
 
     /**
      * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse
@@ -179,10 +173,10 @@ class ProductPriceImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
      * @return array
      */
-    private function getTransferItemsFromResponse(int $domainId, RestClient $restClient)
+    protected function getTransferItemsFromResponse(int $domainId, RestClient $restClient)
     {
         $transferDataItems = [];
-        $restResponse = $restClient->get('/api/Eshop/ArticlePrices');
+        $restResponse = $restClient->get($this->getApiUrl());
         foreach ($restResponse->getData() as $restData) {
             foreach ($restData as $restDataItem) {
                 $transferDataItems[] = new ProductPriceTransferResponseItemData($restDataItem, $domainId);
