@@ -36,39 +36,4 @@
     {% endif %}
 {% endmacro %}
 
-{# 
-    TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36537
-    Left content from all categories content
- #}
-{% if 1==2 %}
-    <div class="all-categories__content__left">
-        <ul class="list-menu__column-single">
-            {% for category in categoriesForFirstColumn %}
-                <li class="list-menu__title">
-                    <a href="{{ url('front_product_list', { id: category.id }) }}" class="list-menu__item__link underline">
-                        {{ category.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-        {# Design - temporary hidden #}
-        {% if 1==2 %}
-        <ul class="list-menu__column-single list-menu__column-single--with-icon">
-            <li class="list-menu__title">
-                <i class="svg svg-mail"></i>
-                <a href="#" class="list-menu__item__link underline js-not-implemented-yet">
-                    {{ 'Dárkové certifikáty'|trans }}
-                </a>
-            </li>
-            <li class="list-menu__title">
-                <i class="svg svg-mail"></i>
-                <a href="#" class="list-menu__item__link underline js-not-implemented-yet">
-                    {{ 'Outlet'|trans }}
-                </a>
-            </li>
-        </ul>
-        {% endif %}
-    </div>
-{% endif %}
-
 {{ _self.rightContent(categoriesWithLazyLoadedVisibleChildren, categoriesIdsForFirstColumn, '', dropdownMenu) }}

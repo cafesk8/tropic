@@ -1,5 +1,6 @@
 @search-button-width: 56px;
 @search-input-height: 46px;
+@search-input-height-small: 36px;
 
 .search {
     position: relative;
@@ -7,8 +8,12 @@
     &__form {
         display: flex;
 
-        border: 2px solid @color-border;
         border-radius: @radius-small;
+        background-color: @color-f;
+
+        @media @query-lg {
+            border: 2px solid @color-border;
+        }
 
         .box-search & {
             flex-direction: column;
@@ -30,7 +35,7 @@
 
             .input {
                 width: 100%;
-                height: @search-input-height;
+                height: @search-input-height-small;
                 line-height: 32px;
                 padding: 0 0 0 17px;
 
@@ -39,6 +44,10 @@
                 border: none;
                 border-radius: @radius-small;
                 box-shadow: none;
+
+                @media @query-vl {
+                    height: @search-input-height;
+                }
 
                 &::-webkit-input-placeholder { /* Edge */
                     color: @color-brown;
@@ -87,11 +96,15 @@
     &__autocomplete {
         position: absolute;
         width: 100%;
-        top: @search-input-height;
+        top: @search-input-height-small;
         left: 0;
         z-index: @z-index-above;
         padding: 20px;
 
         background-color: @color-light;
+
+        @media @query-vl {
+            top: @search-input-height;
+        }
     }
 }

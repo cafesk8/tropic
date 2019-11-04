@@ -58,53 +58,40 @@
             </div>
 
             <div class="header__right dont-print">
-                <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding header__right__menu js-hover-intent">
-                    <div class="box-dropdown__select">
-                        <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
-                    </div>
-                    <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
-                        {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
-                            {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
-                            {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu', { dropdownMenu: false })) }}
-                        {% endcache %}
+                <div class="header__right__menu">
+                    <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding js-hover-intent">
+                        <div class="box-dropdown__select">
+                            <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
+                        </div>
+                        <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
+                            {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                                {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
+                                {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu', { dropdownMenu: false })) }}
+                            {% endcache %}
+                        </div>
                     </div>
                 </div>
 
                 <div class="header__right__search">
-                    {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}
+                    <div class="box-dropdown box-dropdown--search box-dropdown--without-arrow box-dropdown--small-padding js-hover-intent js-search-opener">
+                        <div class="box-dropdown__select">
+                            <i class="svg svg-search"></i>
+                        </div>
+                        <div class="box-dropdown__options box-dropdown__options--search js-dropdown-options">
+                            {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}
+                        </div>
+                    </div>
                 </div>
 
                 <div class="header__right__actions">
-
                     <div class="header__right__actions__item">
-                        <a class="header__right__actions__item__link" href="{{ url('front_registration_register') }}">{{ 'Registrace'|trans }}</a>
-                    </div>
-
-                    <div class="header__right__actions__item">
-                        {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                            <a class="header__right__actions__item__link" href="{{ url('front_customer_edit') }}">
-                                {{ 'Váš účet'|trans }}
-                            </a>
-                        {% else %}
-                            <a class="header__right__actions__item__link" href="{{ url('front_login') }}">
-                                {{ 'Přihlášení'|trans }}
-                            </a>
-                        {% endif %}
-                    </div>
-
-                    {#  
-                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36534
-                        Header item dropdown for login
-
-                        <div class="box-dropdown js-hover-intent">
+                        <div class="box-dropdown box-dropdown--without-background box-dropdown--without-arrow js-hover-intent">
                             <div class="box-dropdown__select">
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                                     {{ 'Váš účet'|trans }}
                                 {% else %}
-                                    {{ 'Přihlas se'|trans }}
+                                    {{ 'Přihlášení'|trans }}
                                 {% endif %}
-                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
-                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
                             </div>
                             <div class="box-dropdown__options
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
@@ -129,7 +116,7 @@
                                         </a>
                                     </div>
                                     <div class="box-dropdown__options__item js-dropdown-item'">
-                                        <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="menu-iconic__item__link menu-iconic__item__link--last js-logout-link-desktop">
+                                        <a href="{{ url('front_logout', { _csrf_token: csrf_token('frontend_logout')}) }}" class="menu-iconic__item__link js-logout-link-desktop">
                                             <span class="underline">
                                                 {{ 'Log out'|trans }}
                                             </span>
@@ -140,37 +127,17 @@
                                 {% endif %}
                             </div>
                         </div>
-                    #}
+                    </div>
 
-                    {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}
+                    <div class="header__right__actions__item">
+                        {{ render(controller('ShopsysShopBundle:Front/Cart:box')) }}
+                    </div>
                 </div>
             </div>
 
             <div class="header__menu dont-print">
                 {% cache 'categories_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
-                    {#
-                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36538
-                        Main 3 categories from menu
-
-                        {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenu')) }}
-                    #}
                     {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
-                    
-                    {#
-                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36536
-                        Header menu all categories
-
-                        <div class="all-categories js-hover-intent">
-                            <span class="all-categories__title">
-                                {{ 'Všechny kategorie'|trans }}
-                            </span>
-                            <span class="all-categories__arrow"></span>
-
-                            <span class="all-categories__content">
-                                {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu')) }}
-                            </span>
-                        </div>
-                    #}
                 {% endcache %}
             </div>
         </header>

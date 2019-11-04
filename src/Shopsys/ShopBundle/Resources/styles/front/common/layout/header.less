@@ -4,6 +4,8 @@
 @header-mobile-button-info-size: 16px;
 @header-mobile-button-dropdown-position: @web-header-mobile-dropdown-position;
 @header-search-icon-size: 18px;
+@header-item-gap: 34px;
+@header-item-gap-small: 10px;
 @header-logo-width: 250px;
 @header-logo-width-small: 169px;
 @header-search-width: 490px;
@@ -16,7 +18,11 @@
     flex-wrap: wrap;
     align-items: center;
     min-height: @header-height;
-    padding: 12px 0 20px;
+    padding: 12px 0 0;
+
+    @media @query-vl {
+        padding: 12px 0 20px;
+    }
 
     &--small {
         border-bottom: 1px solid @color-gray;
@@ -72,6 +78,7 @@
 
 // Right part of header with user and cart info
 .header__right {
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -85,6 +92,9 @@
     }
 
     &__menu {
+        display: flex;
+        align-items: center;
+
         @media @query-vl {
             display: none!important;
         }
@@ -95,27 +105,28 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-end;
-        width: @header-right-actions-width;
+
+        @media @query-vl {
+            width: @header-right-actions-width;
+        }
 
         &__item {
-            display: flex;
-            align-items: center;
-            margin-left: 15px;
-    
-            &__link {
-                font-weight: 700;
-                color: @color-gray-dark;
-    
-                &:hover {
-                    text-decoration: underline;
-                }
+            margin-left: @header-item-gap-small;
+
+            @media @query-lg {
+                margin-left: @header-item-gap - 18px;
             }
         }
     }
 
     &__search {
-        width: @header-search-width-small;
-    
+        margin-left: @header-item-gap-small;
+        
+        @media @query-lg {
+            margin-left: @header-item-gap;
+            width: @header-search-width-small;
+        }
+
         @media @query-xl {
             width: @header-search-width;
         }

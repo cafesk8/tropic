@@ -3,22 +3,20 @@
     {{ form_start(form, {attr: {class: 'js-front-login-window'}}) }}
     {{ form_errors(form) }}
         <div class="box-login__title">
-            {{ 'Jste bushman? Přihlaste se'|trans }}
+            {{ 'Přihlaste se'|trans }}
         </div>
         <div class="display-none in-message in-message--alert js-login-validation-errors"></div>
         <div class="box-login__item">
-            <label class="input__label">{{ 'E-mail'|trans }}</label>
-            {{ form_widget(form.email, { rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
+            {{ form_widget(form.email, { attr: { placeholder: 'E-mail'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
         <div class="box-login__item box-login__item--move-top">
-            <label class="input__label">{{ 'Password'|trans }}</label>
-            {{ form_widget(form.password, { attr: { placeholder: '******** 6 nebo více znaků'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
+            {{ form_widget(form.password, { attr: { placeholder: 'Heslo'|trans }, rowClass: 'input input--big', errors_attr: { class: 'form-error--line-block' } }) }}
         </div>
 
         {% do form.rememberMe.setRendered %}
 
         <div class="box-login__buttons">
-            {{ form_widget(form.login, {label: 'Přihlásit se'|trans, attr: {class: 'btn box-login__buttons__login'}}) }}
+            {{ form_widget(form.login, {label: 'Přihlásit se'|trans, attr: {class: 'btn btn--success'}}) }}
             <div class="box-login__buttons__lost">
                 <a href="{{ url('front_registration_reset_password') }}" class="box-login__buttons__lost__link underline">
                 {{ 'Zapomenuté heslo?'|trans }}</a>
@@ -28,7 +26,6 @@
 </div>
 <div class="box-login__social">
     <div class="box-login__social__title box-login__social__title--without-buttons">
-        {{ 'Chceš se stát bushmanem?'|trans }}
         <a href="{{ url('front_registration_register') }}" class="box-login__social__title__link underline">{{ 'Registruj se'|trans }}</a>
     </div>
     {# Design - temporary hidden #}

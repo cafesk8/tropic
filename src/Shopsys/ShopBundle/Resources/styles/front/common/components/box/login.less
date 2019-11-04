@@ -1,5 +1,5 @@
 @box-login-button-height: 50px;
-@box-login-width: 400px;
+@box-login-width: 380px;
 @box-login-padding: 40px;
 @box-login-padding-mobile: 20px;
 
@@ -12,7 +12,7 @@
     width: 100%;
     padding: @box-login-padding-mobile;
 
-    background: @color-gray;
+    background-color: @color-box;
 
     @media @query-md {
         padding: @box-login-padding;
@@ -29,6 +29,7 @@
 
     &__item {
         position: relative;
+        margin-bottom: 10px;
 
         &--move-top {
             margin-top: -@input-border-size;
@@ -62,16 +63,6 @@
         @media @query-lg {
             flex-direction: row;
             text-align: left;
-        }
-
-        &__login {
-            height: @box-login-button-height;
-            padding: calc(~"(@{box-login-button-height}-@{font-size})/2") 25px;
-
-            background-color: @color-orange;
-            color: @color-f;
-            font-size: @font-size;
-            text-transform: uppercase;
         }
 
         &__lost {

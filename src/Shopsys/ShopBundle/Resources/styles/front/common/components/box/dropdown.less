@@ -1,5 +1,5 @@
 @box-dropdown-bg: @color-add;
-@box-dropdown-bg-hover: darken(@box-dropdown-bg, 5%);
+@box-dropdown-bg-hover: @color-box;
 
 @box-dropdown-padding-horizontal: 18px;
 @box-dropdown-padding-horizontal-small: 11px;
@@ -20,13 +20,8 @@
 .box-dropdown {
     display: block;
     position: relative;
-    margin: 0 35px;
 
     cursor: pointer;
-
-    &--no-right-gap {
-        margin-right: 0;
-    }
 
     &--min-width {
         @media @query-lg {
@@ -47,7 +42,6 @@
         color: @color-base;
         font-weight: bold;
         font-size: @box-dropdown-font-size;
-        text-transform: uppercase;
         text-decoration: none;
         white-space: nowrap;
 
@@ -59,16 +53,29 @@
             padding: @box-dropdown-padding-vertical-small @box-dropdown-padding-horizontal-small;
         }
 
+        .box-dropdown--without-background & {
+            background-color: transparent;
+            border: 1px solid transparent;
+            box-shadow: none;
+        }
+
         .open & {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
-            border: 1px solid @color-add;
+            border: 1px solid @color-box;
             box-shadow: none;
+            background-color: @box-dropdown-bg-hover;
         }
 
         .open.box-dropdown--open-light & {
             background-color: @color-f;
-            box-shadow: inset 0px 0px 0px 2px @color-add;
+            box-shadow: inset 0px 0px 0px 2px @color-box;
+        }
+
+        .box-dropdown--search & {
+            @media @query-lg {
+                display: none;
+            }
         }
 
         &:after {
@@ -85,18 +92,21 @@
 
             .open & {
                 display: block;
+
+                background-color: @box-dropdown-bg-hover;
             }
 
             .open.box-dropdown--open-light & {
-                background-color: @color-f;
                 z-index: @z-index-menu + 1;
                 height: @box-dropdown-open-bottom-gap;
                 top: calc(100% - 2px);
                 right: 0px;
                 left: -1px;
                 width: calc(100% - 4px);
-                border-right: 3px solid @color-add;
-                border-left: 3px solid @color-add;
+
+                background-color: @color-f;
+                border-right: 3px solid @color-box;
+                border-left: 3px solid @color-box;
             }
         }
 
@@ -140,6 +150,8 @@
         display: none;
         cursor: default;
 
+        background-color: @color-f;
+
         .open & {
             display: block;
             position: absolute;
@@ -147,9 +159,20 @@
             right: 0;
             z-index: @z-index-menu;
 
-            border: 3px solid @color-add;
+            border: 3px solid @color-box;
             border-radius: @radius;
             border-top-right-radius: 0;
+        }
+
+        .box-dropdown--search & {
+            border-top-right-radius: @radius;
+            
+            @media @query-lg {
+                position: static;
+                display: block;
+
+                border: 0;
+            }
         }
 
         &__item {
@@ -195,14 +218,7 @@
             }
 
             @media @query-lg {
-                right: -500px;
                 width: auto;
-            }
-
-            @media @query-vl {
-                left: -520px;
-                right: 0px;
-                width: 740px;
             }
         }
 
