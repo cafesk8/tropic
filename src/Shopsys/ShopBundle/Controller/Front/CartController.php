@@ -23,7 +23,7 @@ use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
-use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade;
+use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,9 +77,9 @@ class CartController extends FrontBaseController
     private $tokenManager;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade
      */
-    private $productGiftFacade;
+    private $productGiftInCartFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade
@@ -110,7 +110,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
-     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade $productGiftFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade $productGiftInCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
@@ -125,7 +125,7 @@ class CartController extends FrontBaseController
         OrderPreviewFactory $orderPreviewFactory,
         ErrorExtractor $errorExtractor,
         CsrfTokenManagerInterface $tokenManager,
-        ProductGiftFacade $productGiftFacade,
+        ProductGiftInCartFacade $productGiftInCartFacade,
         TopProductFacade $topProductFacade,
         ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade,
         GtmFacade $gtmFacade,
@@ -139,7 +139,7 @@ class CartController extends FrontBaseController
         $this->orderPreviewFactory = $orderPreviewFactory;
         $this->errorExtractor = $errorExtractor;
         $this->tokenManager = $tokenManager;
-        $this->productGiftFacade = $productGiftFacade;
+        $this->productGiftInCartFacade = $productGiftInCartFacade;
         $this->topProductFacade = $topProductFacade;
         $this->productOnCurrentDomainElasticFacade = $productOnCurrentDomainElasticFacade;
         $this->gtmFacade = $gtmFacade;
@@ -155,7 +155,7 @@ class CartController extends FrontBaseController
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
         $this->correctCartItemQuantitiesByStore($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
-        $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cartItems);
+        $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
 
         $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $cart);
 
@@ -166,7 +166,7 @@ class CartController extends FrontBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
-                $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cart->getItems());
+                $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cart->getItems());
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
 
                 if (!$request->get(self::RECALCULATE_ONLY_PARAMETER_NAME, false)) {
