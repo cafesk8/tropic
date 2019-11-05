@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Command;
 
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Order\OrderFacade;
@@ -64,25 +65,33 @@ class SendOrderMailsCommand extends Command
         $ordersCreatedInRange = $this->orderFacade->getAllCreatedInRange($from, $to);
         foreach ($ordersCreatedInRange as $order) {
             $currentOrderStatus = $order->getStatus();
-            if ($currentOrderStatus === $newOrderStatus) {
-                $this->orderMailFacade->sendEmail($order);
-                $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $newOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
-            } else {
-                $order->setStatus($newOrderStatus);
-                $this->orderMailFacade->sendEmail($order);
-                $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $newOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
-                $order->setStatus($currentOrderStatus);
-                $this->orderMailFacade->sendEmail($order);
-                $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $currentOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
+            try {
+                if ($currentOrderStatus === $newOrderStatus) {
+                    $this->orderMailFacade->sendEmail($order);
+                    $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $newOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
+                } else {
+                    $order->setStatus($newOrderStatus);
+                    $this->orderMailFacade->sendEmail($order);
+                    $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $newOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
+                    $order->setStatus($currentOrderStatus);
+                    $this->orderMailFacade->sendEmail($order);
+                    $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $currentOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
+                }
+            } catch (MailException $mailException) {
+                $symfonyStyleIo->warning(sprintf('Problem with sending mail for order no. %s: %s', $order->getNumber(), $mailException->getMessage()));
             }
         }
 
         $ordersUpdatedButNotCreatedInRange = $this->orderFacade->getAllUpdatedButNotCreatedSince($from);
         foreach ($ordersUpdatedButNotCreatedInRange as $order) {
             $currentOrderStatus = $order->getStatus();
-            if ($currentOrderStatus !== $newOrderStatus) {
-                $this->orderMailFacade->sendEmail($order);
-                $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $currentOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
+            try {
+                if ($currentOrderStatus !== $newOrderStatus) {
+                    $this->orderMailFacade->sendEmail($order);
+                    $symfonyStyleIo->success(sprintf('Mail sent for order no. "%s" and status "%s"', $order->getNumber(), $currentOrderStatus->getName(DomainHelper::CZECH_LOCALE)));
+                }
+            } catch (MailException $mailException) {
+                $symfonyStyleIo->warning(sprintf('Problem with sending mail for order no. %s: %s', $order->getNumber(), $mailException->getMessage()));
             }
         }
     }
