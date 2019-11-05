@@ -234,38 +234,4 @@ class OrderRepository extends BaseOrderRepository
             'ean' => $ean,
         ]);
     }
-
-    /**
-     * @param \DateTime $from
-     * @param \DateTime $to
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
-     */
-    public function getAllCreatedInRange(DateTime $from, DateTime $to): array
-    {
-        return $this->getOrderListQueryBuilder()
-            ->andWhere('o.createdAt >= :from AND o.createdAt <= :to')
-            ->setParameters([
-                'from' => $from,
-                'to' => $to,
-            ])
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @param \DateTime $since
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
-     */
-    public function getAllUpdatedButNotCreatedSince(DateTime $since): array
-    {
-        return $this->getOrderListQueryBuilder()
-            ->andWhere('o.createdAt <= :created')
-            ->andWhere('o.updatedAt >= :since')
-            ->setParameters([
-                'created' => $since,
-                'since' => $since,
-            ])
-            ->getQuery()
-            ->getResult();
-    }
 }

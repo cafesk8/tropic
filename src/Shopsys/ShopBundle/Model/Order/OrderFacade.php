@@ -458,23 +458,4 @@ class OrderFacade extends BaseOrderFacade
             }
         }
     }
-
-    /**
-     * @param \DateTime $from
-     * @param \DateTime $to
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
-     */
-    public function getAllCreatedInRange(DateTime $from, DateTime $to): array
-    {
-        return $this->orderRepository->getAllCreatedInRange($from, $to);
-    }
-
-    /**
-     * @param \DateTime $since
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
-     */
-    public function getAllUpdatedButNotCreatedSince(DateTime $since): array
-    {
-        return $this->orderRepository->getAllUpdatedButNotCreatedSince($since);
-    }
 }
