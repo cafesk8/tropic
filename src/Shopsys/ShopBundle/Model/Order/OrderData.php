@@ -95,6 +95,11 @@ class OrderData extends BaseOrderData
      */
     public $promoCodeCode;
 
+    /**
+     * @var string|null
+     */
+    public $trackingNumber;
+
     public function __construct()
     {
         parent::__construct();

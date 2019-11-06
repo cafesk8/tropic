@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Order\Order;
 class OrderMail extends BaseOrderMail
 {
     public const VARIABLE_PREPARED_PRODUCTS = '{preparedProducts}';
+    public const VARIABLE_TRACKING_NUMBER = '{tracking_number}';
+    public const VARIABLE_TRACKING_URL = '{tracking_url}';
 
     /**
      * @return array
@@ -18,7 +20,12 @@ class OrderMail extends BaseOrderMail
     {
         $templateVariables = parent::getTemplateVariables();
 
-        $templateVariables[] = self::VARIABLE_PREPARED_PRODUCTS;
+        array_push(
+            $templateVariables,
+            self::VARIABLE_PREPARED_PRODUCTS,
+            self::VARIABLE_TRACKING_NUMBER,
+            self::VARIABLE_TRACKING_URL
+        );
 
         return $templateVariables;
     }
@@ -32,6 +39,8 @@ class OrderMail extends BaseOrderMail
         $variableReplacements = parent::getVariablesReplacementsForBody($order);
 
         $variableReplacements[self::VARIABLE_PREPARED_PRODUCTS] = $this->getPreparedProductsHtmlTable($order);
+        $variableReplacements[self::VARIABLE_TRACKING_NUMBER] = $order->getTrackingNumber() ?? t('neznámé');
+        $variableReplacements[self::VARIABLE_TRACKING_URL] = $order->getTrackingUrl() ?? t('neznámá');
 
         return $variableReplacements;
     }

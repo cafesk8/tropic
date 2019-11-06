@@ -53,6 +53,11 @@ class TransportData extends BaseTransportData
      */
     public $externalId;
 
+    /**
+     * @var string|null
+     */
+    public $trackingUrlPattern;
+
     public function __construct()
     {
         parent::__construct();
