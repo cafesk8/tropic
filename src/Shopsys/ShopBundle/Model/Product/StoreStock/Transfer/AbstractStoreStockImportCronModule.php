@@ -100,7 +100,10 @@ abstract class AbstractStoreStockImportCronModule extends AbstractTransferImport
 
         if ($product === null) {
             $this->logger->addError(
-                sprintf('Product with EAN `%s` has not been found while updating store stock quantities', $storeStockTransferResponseItemData->getBarcode())
+                'Product has not been found while updating store stock quantities',
+                [
+                    'EAN' => $storeStockTransferResponseItemData->getBarcode(),
+                ]
             );
             return;
         }

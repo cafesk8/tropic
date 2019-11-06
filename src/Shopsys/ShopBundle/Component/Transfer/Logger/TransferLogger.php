@@ -25,6 +25,11 @@ class TransferLogger
     private $transferIssuesData;
 
     /**
+     * @var string
+     */
+    private $transferIssuesGroupId;
+
+    /**
      * @param string $transferIdentifier
      * @param \Symfony\Bridge\Monolog\Logger $logger
      */
@@ -35,6 +40,7 @@ class TransferLogger
         $this->transferIdentifier = $transferIdentifier;
         $this->logger = $logger;
         $this->transferIssuesData = [];
+        $this->transferIssuesGroupId = uniqid($transferIdentifier . '_');
     }
 
     /**
@@ -91,10 +97,11 @@ class TransferLogger
     private function addTransferIssueDataToQueue(string $message, array $context): void
     {
         $transferIssueMessage = $message;
+        $contextString = null;
         if (!empty($context)) {
-            $transferIssueMessage .= sprintf(' (context: %s)', json_encode($context));
+            $contextString = json_encode($context);
         }
-        $this->transferIssuesData[] = new TransferIssueData($this->transferIdentifier, $transferIssueMessage);
+        $this->transferIssuesData[] = new TransferIssueData($this->transferIdentifier, $transferIssueMessage, $this->transferIssuesGroupId, $contextString);
     }
 
     /**

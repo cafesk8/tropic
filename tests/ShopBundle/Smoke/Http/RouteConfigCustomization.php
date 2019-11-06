@@ -260,6 +260,10 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Promocode with prefix mass delete')
                     ->setParameter('prefix', PromoCodeDataFixture::PROMO_CODE_PREFIX_SUMMER)
                     ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName('admin_transferissue_detailedlist', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Message parameter is required')
+                    ->setParameter('message', 'Test message');
             });
     }
 

@@ -93,4 +93,13 @@ class TransferIssueFacade
     {
         return $this->transferIssueRepository->getUnseenTransferIssuesCount($administrator);
     }
+
+    /**
+     * @param string $groupId
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid(string $groupId): QueryBuilder
+    {
+        return $this->transferIssueRepository->getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid($groupId);
+    }
 }

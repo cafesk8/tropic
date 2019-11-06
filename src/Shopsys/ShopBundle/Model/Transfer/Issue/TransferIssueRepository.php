@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Model\Administrator\Administrator;
 
 class TransferIssueRepository
 {
-    public const LIMIT_TRANSFER_ISSUES_COUNT = 20000;
+    public const LIMIT_TRANSFER_ISSUES_COUNT = 200000;
 
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
@@ -31,11 +31,12 @@ class TransferIssueRepository
     public function getTransferIssuesQueryBuilderForDataGrid(): QueryBuilder
     {
         return $this->em->createQueryBuilder()
-            ->select('ti, t')
+            ->select('ti.message AS message, COUNT(ti.id) AS count, MAX(ti.groupId) as groupId, MAX(ti.id) AS id, MAX(ti.createdAt) AS createdAt, COUNT(ti.context) AS contextCount, MAX(t.name) AS transferName, MAX(t.identifier) AS transferIdentifier')
             ->from(TransferIssue::class, 'ti')
             ->join('ti.transfer', 't')
-            ->orderBy('ti.createdAt', 'DESC')
-            ->addOrderBy('ti.id', 'DESC');
+            ->orderBy('MAX(ti.createdAt)', 'DESC')
+            ->addOrderBy('MAX(ti.id)', 'DESC')
+            ->groupBy('ti.message, t.id, ti.groupId');
     }
 
     public function deleteExcessiveTransferIssues()
@@ -72,5 +73,20 @@ class TransferIssueRepository
         }
 
         return (int)$queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param string $groupId
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid(string $groupId): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select('ti')
+            ->from(TransferIssue::class, 'ti')
+            ->where('ti.context IS NOT NULL')
+            ->andWhere('ti.groupId = :groupId')
+            ->orderBy('ti.createdAt', 'DESC')
+            ->setParameter('groupId', $groupId);
     }
 }

@@ -79,16 +79,18 @@ class TransferIssueController extends AdminBaseController
                     ->setParameter('transfer', $filteredTransfer);
             }
         }
-        $dataSource = new QueryBuilderDataSource($queryBuilder, 'ti.id');
+        $dataSource = new QueryBuilderDataSource($queryBuilder, 'id');
 
         $grid = $this->gridFactory->create('transferIssueList', $dataSource);
         $grid->enablePaging();
         $grid->setDefaultOrder('createdAt DESC, id');
 
-        $grid->addColumn('transferName', 't.name', t('Název přenosu'), true);
-        $grid->addColumn('transferIdentifier', 't.identifier', t('Interní identifikátor přenosu'), true);
-        $grid->addColumn('message', 'ti.message', t('Text zprávy'));
-        $grid->addColumn('createdAt', 'ti.createdAt', t('Datum a čas'), true);
+        $grid->addColumn('transferName', 'transferName', t('Název přenosu'), true);
+        $grid->addColumn('transferIdentifier', 'transferIdentifier', t('Interní identifikátor přenosu'), true);
+        $grid->addColumn('message', 'message', t('Text zprávy'));
+        $grid->addColumn('createdAt', 'createdAt', t('Datum a čas'), true);
+
+        $grid->setTheme('@ShopsysShop/Admin/Content/Transfer/Issue/listGrid.html.twig');
 
         $this->administratorGridFacade->restoreAndRememberGridLimit($administrator, $grid);
 
@@ -97,6 +99,35 @@ class TransferIssueController extends AdminBaseController
         return $this->render('ShopsysShopBundle:Admin/Content/Transfer/Issue:list.html.twig', [
             'form' => $form->createView(),
             'gridView' => $grid->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/transfer-issues/detail/{groupId}/{message}")
+     * @param string $groupId
+     * @param string $message
+     * @throws \Shopsys\FrameworkBundle\Component\Grid\Exception\DuplicateColumnIdException
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function detailedListAction(string $groupId, string $message): Response
+    {
+        $administrator = $this->getUser();
+        /* @var $administrator \Shopsys\ShopBundle\Model\Administrator\Administrator */
+
+        $queryBuilder = $this->transferIssueFacade->getTransferIssuesWithContextByGroupIdQueryBuilderForDataGrid($groupId);
+        $dataSource = new QueryBuilderDataSource($queryBuilder, 'id');
+        $grid = $this->gridFactory->create('transferIssueAggregatedList', $dataSource);
+        $grid->enablePaging();
+        $grid->setDefaultOrder('createdAt DESC, id');
+
+        $grid->addColumn('context', 'ti.context', t('Upřesňující informace'));
+        $grid->addColumn('createdAt', 'ti.createdAt', t('Datum a čas'), true);
+
+        $this->administratorGridFacade->restoreAndRememberGridLimit($administrator, $grid);
+
+        return $this->render('ShopsysShopBundle:Admin/Content/Transfer/Issue:detailedList.html.twig', [
+            'gridView' => $grid->createView(),
+            'message' => $message,
         ]);
     }
 }
