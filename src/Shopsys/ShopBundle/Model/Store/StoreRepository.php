@@ -107,6 +107,7 @@ class StoreRepository
     {
         $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
         $queryBuilder->andWhere('s.pickupPlace = true');
+        $queryBuilder->orderBy('s.position, s.name', 'asc');
 
         return $queryBuilder->getQuery()->getResult();
     }

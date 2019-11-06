@@ -396,7 +396,7 @@ class Product extends BaseProduct
      */
     public function getStocksWithoutZeroQuantityOnPickupPlaceStore(Domain $domain): array
     {
-        return array_filter(
+        $productStoreStocks = array_filter(
             $this->storeStocks->toArray(),
             function (ProductStoreStock $productStoreStock) use ($domain) {
                 return $productStoreStock->getStockQuantity() > 0
@@ -404,6 +404,30 @@ class Product extends BaseProduct
                     && $productStoreStock->getStore()->getDomainId() === $domain->getId();
             }
         );
+
+        usort($productStoreStocks, function (ProductStoreStock $productStoreStock1, ProductStoreStock $productStoreStock2) {
+            $store1Position = $productStoreStock1->getStore()->getPosition();
+            $store2Position = $productStoreStock2->getStore()->getPosition();
+
+            if ($store1Position !== null && $store2Position !== null) {
+                return $store1Position <=> $store2Position;
+            }
+
+            if ($store1Position !== null && $store2Position === null) {
+                return -1;
+            }
+
+            if ($store1Position === null && $store2Position !== null) {
+                return 1;
+            }
+
+            $store1Name = $productStoreStock1->getStore()->getName();
+            $store2Name = $productStoreStock2->getStore()->getName();
+
+            return $store1Name <=> $store2Name;
+        });
+
+        return $productStoreStocks;
     }
 
     /**
