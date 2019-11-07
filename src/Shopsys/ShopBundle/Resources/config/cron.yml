@@ -8,11 +8,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
 
-    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule:
-        class: Shopsys\ShopBundle\Model\Feed\DailyFeedCronModule
-        tags:
-            - { name: shopsys.cron, hours: '*/6', minutes: '0' }
-
     Shopsys\ShopBundle\Model\GoPay\GoPayAvailablePaymentsCronModule:
         arguments:
             - '%gopay.config%'
@@ -78,3 +73,16 @@ services:
     Shopsys\ShopBundle\Model\Product\Mall\MallProductDeleteCronModule:
         tags:
             - { name: shopsys.cron, hours: '23', minutes: '00' }
+
+    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule:
+        class: Shopsys\ShopBundle\Model\Feed\DailyFeedCronModule
+        tags:
+            - { name: shopsys.cron, hours: '*/6', minutes: '0' }
+
+    Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '10' }
+
+    Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '4', minutes: '0' }
