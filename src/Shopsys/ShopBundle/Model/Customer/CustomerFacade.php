@@ -185,12 +185,11 @@ class CustomerFacade extends BaseCustomerFacade
     }
 
     /**
-     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
-    public function getBatchForPricingGroupUpdate(int $limit): array
+    public function getForPricingGroupUpdate(): array
     {
-        return $this->userRepository->getBatchForPricingGroupUpdate($limit);
+        return $this->userRepository->getForPricingGroupUpdate();
     }
 
     /**
