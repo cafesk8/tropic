@@ -72,9 +72,9 @@
         <div class="web__line">
             <div class="web__container">
                 <div class="box-articles">
-                    <div class="box-articles__title-big">
+                    <h1 class="box-articles__title-big">
                         {{ 'Mohlo by vás zajímat'|trans }}
-                    </div>
+                    </h1>
                     <div class="box-articles__title-small"></div>
                     {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
                     <div class="box-articles__bottom">
@@ -86,20 +86,6 @@
     {% endif %}
 
     {% block last_visited_products %}{% endblock %}
-
-
-    <div class="web__line">
-        <div class="web__container">
-            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-        </div>
-    </div>
-
-    <div class="web__line">
-        <div class="web__container web__container--no-padding">
-            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                {{ instagramFeed() }}
-            {% endcache %}
-        </div>
     </div>
 
 {% endblock %}
