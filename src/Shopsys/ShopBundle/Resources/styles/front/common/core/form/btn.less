@@ -88,14 +88,14 @@
 
 //// Modifications - size
 .btn {
+    @btn-large-padding-vertical: 4px;
     @btn-large-padding-horizontal: 25px;
     @btn-large-padding-horizontal-mobile: 20px;
 
     &--large {
-        padding-left: @btn-large-padding-horizontal-mobile;
-        padding-right: @btn-large-padding-horizontal-mobile;
+        padding: @btn-large-padding-vertical @btn-large-padding-horizontal-mobile;
 
-        font-size: 16px;
+        font-size: 20px;
 
         @media @query-md {
             padding-left: @btn-large-padding-horizontal;

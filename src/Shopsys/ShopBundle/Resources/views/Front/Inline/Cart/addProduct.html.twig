@@ -1,18 +1,22 @@
 {{ form_start(form, {attr: {class: 'js-add-product dont-print', 'data-ajax-url': url('front_cart_add_product_ajax'), 'multipleForm': true}}) }}
-    <span class="form-input-spinbox js-spinbox">
-        {{ form_widget(form.quantity, { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
-        <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">+</button>
-        <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">-</button>
-    </span>
+    <div class="box-detail-add__action">
+        <div class="box-detail-add__action__spinbox">
+            <span class="form-input-spinbox js-spinbox">
+                {{ form_widget(form.quantity, { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
+                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+            </span>
+        </div>
 
-    {% set cssClass = '' %}
-    {% if disabled is same as (true) %}
-        {% set cssClass = 'btn--disabled' %}
-    {% endif %}
+        {% set cssClass = '' %}
+        {% if disabled is same as (true) %}
+            {% set cssClass = 'btn--disabled' %}
+        {% endif %}
 
-    {% if type == 'large' %}
-        {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--large btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
-    {% else %}
-        {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
-    {% endif %}
+        {% if type == 'large' %}
+            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ ' btn--success btn--large box-detail-add__action__button', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+        {% else %}
+            {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+        {% endif %}
+    </div>
 {{ form_end(form) }}

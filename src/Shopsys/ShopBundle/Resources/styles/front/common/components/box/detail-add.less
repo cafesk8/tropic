@@ -5,12 +5,11 @@
     &__prices {
         display: flex;
         flex-direction: column;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
 
         @media @query-lg {
             flex-direction: row;
             align-items: baseline;
-            margin-bottom: 2px;
         }
 
         &__item {
@@ -39,26 +38,22 @@
         }
     }
 
-    &__club {
-        margin-bottom: 16px;
+    &__action {
+        display: flex;
+        flex-direction: row;
 
-        &__price {
-            color: @color-base;
+        &__spinbox {
+            margin-right: 10px;
         }
 
-        &__text {
-            color: @color-brown-light;
-            font-size: 14px;
-            font-weight: 400;
-            white-space: nowrap;
-        }
+        &__button {
+            .svg {
+                position: relative;
+                top: 6px;
+                margin-right: 10px;
 
-        &__link {
-            color: @color-brown-light;
-            font-size: 14px;
-            font-weight: 700;
-            white-space: nowrap;
-            text-decoration: none;
+                font-size: 27px;
+            }
         }
     }
 }
