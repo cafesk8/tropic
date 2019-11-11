@@ -88,6 +88,13 @@ class Product extends BaseProduct
     protected $gift;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
+     *
+     * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift", mappedBy="products", cascade={"persist"}, fetch="EXTRA_LAZY")
+     */
+    protected $productGifts;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -617,5 +624,22 @@ class Product extends BaseProduct
     private function setName(string $locale, string $name): void
     {
         $this->translation($locale)->setName($name);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
+     */
+    public function getActiveProductGiftsByDomainId(int $domainId): array
+    {
+        $productGifts = [];
+
+        foreach ($this->productGifts as $productGift) {
+            if ($productGift->getDomainId() === $domainId && $productGift->isActive() === true) {
+                $productGifts[] = $productGift;
+            }
+        }
+
+        return $productGifts;
     }
 }
