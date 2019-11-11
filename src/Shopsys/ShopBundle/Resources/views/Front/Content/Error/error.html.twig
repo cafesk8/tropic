@@ -48,13 +48,6 @@
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
-
-    <div class="web__line">
-        <div class="web__container web__container--no-padding">
-            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                {{ instagramFeed() }}
-            {% endcache %}
-        </div>
     </div>
 
 {% endblock %}

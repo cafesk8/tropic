@@ -148,7 +148,7 @@
             {% set label = name|humanize %}
         {%- endif -%}
     {%- endif -%}
-    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label }}</button>
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|raw }}</button>
 {% endblock button_widget %}
 
 {% block choice_widget_collapsed -%}

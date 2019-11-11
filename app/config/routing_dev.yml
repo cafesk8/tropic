@@ -6,5 +6,9 @@ _profiler:
     resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
     prefix: /_profiler
 
+_styleguide:
+    path: /_styleguide
+    defaults: { _controller: ShopsysShopBundle:Front\Styleguide:index }
+
 _main:
     resource: routing.yml

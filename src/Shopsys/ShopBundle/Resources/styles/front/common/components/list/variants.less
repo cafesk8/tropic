@@ -1,7 +1,7 @@
 @list-variants-item-size: 30px;
 @list-variants-item-gap: 10px;
 @list-variants-item-padding: 5px;
-@list-variants-item-gap-with-image: 8px;
+@list-variants-item-gap-with-image: 10px;
 @list-variants-item-bg: @color-f;
 @list-variants-item-bg-hover: @color-f;
 @list-variants-item-bg-active: @color-add;
@@ -38,7 +38,7 @@
         font-size: 13px;
         font-weight: 700;
         cursor: pointer;
-        color: @color-brown-light-2;
+        color: @color-base;
         background-color: @list-variants-item-bg;
         border: 2px solid @list-variants-item-border-color;
         border-radius: @radius-small;
@@ -74,6 +74,8 @@
         &__name {
             display: block;
             word-wrap: break-word;
+
+            font-size: @font-size-small;
         }
 
         &__with-image {
@@ -84,7 +86,8 @@
 
             cursor: pointer;
             background-color: transparent;
-            border: 2px solid @color-gray-dark;
+            border: 1px solid @color-light;
+            border-radius: @radius-small;
 
             img {
                 max-height: @list-variants-item-with-image-picture-size;
@@ -94,6 +97,8 @@
             }
 
             &.active {
+                padding: 9px 9px 7px 9px;
+
                 background-color: @color-f;
                 border: 2px solid @list-variants-item-border-color-hover;
 

@@ -16,6 +16,10 @@
         right: @in-flag-in-list-position-right;
     }
 
+    &--static {
+        position: relative;
+    }
+
     &__item {
         float: right;
         clear: right;
@@ -37,6 +41,11 @@
             padding-top: 20px;
 
             font-size: @in-flag-item-font-size-small;
+        }
+
+        .in-flag--static & {
+            float: left;
+            clear: none;
         }
     }
 }
