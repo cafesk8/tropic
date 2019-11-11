@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer\Registration\Transfer;
 
-use Shopsys\ShopBundle\Component\Rest\RestClient;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
 use Shopsys\ShopBundle\Component\String\StringHelper;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferExportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
@@ -17,9 +18,9 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
     private const CUSTOMER_EXPORT_BATCH_SIZE = 100;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
+     * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
-    private $restClient;
+    private $multidomainRestClient;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
@@ -33,19 +34,19 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
-     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
+     * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\Registration\Transfer\CustomerExportMapper $customerExportMapper
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
-        RestClient $restClient,
+        MultidomainRestClient $multidomainRestClient,
         CustomerFacade $customerFacade,
         CustomerExportMapper $customerExportMapper
     ) {
         parent::__construct($transferCronModuleDependency);
 
-        $this->restClient = $restClient;
+        $this->multidomainRestClient = $multidomainRestClient;
         $this->customerFacade = $customerFacade;
         $this->customerExportMapper = $customerExportMapper;
     }
@@ -80,7 +81,11 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
      */
     protected function getTransferResponse(array $orderCustomerData): TransferResponse
     {
-        $restResponse = $this->restClient->post('api/Eshop/NewOrder', $orderCustomerData);
+        $source = $orderCustomerData['Header']['Source'];
+        $domainId = DomainHelper::TRANSFER_SOURCE_TO_DOMAIN_ID[$source];
+        $restClient = $this->multidomainRestClient->getByDomainId($domainId);
+
+        $restResponse = $restClient->post('api/Eshop/NewOrder', $orderCustomerData);
 
         sleep(1);
 
