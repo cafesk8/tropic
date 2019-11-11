@@ -1,4 +1,3 @@
-@box-order-type-bottom-gap: 20px;
 @box-order-type-font-size: 13px;
 @box-order-type-item-gap: 38px;
 @box-order-type-item-height: 40px;
@@ -6,20 +5,17 @@
 
 .box-order-type {
     .clearfix();
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    margin-bottom: @box-order-type-bottom-gap;
+    margin-bottom: 30px;
 
     @media @query-lg {
+        flex-direction: row;
         justify-content: flex-end;
-    }
-
-    &__text {
-        margin-right: 20px;
-
-        font-weight: 700;
+        align-items: center;
+        margin-bottom: 0;
     }
 
     &__select {
