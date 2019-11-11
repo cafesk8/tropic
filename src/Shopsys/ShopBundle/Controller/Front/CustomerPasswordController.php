@@ -95,7 +95,7 @@ class CustomerPasswordController extends FrontBaseController
             return $this->redirectToRoute('front_homepage');
         }
 
-        $form = $this->createForm(NewPasswordFormType::class, null);
+        $form = $this->createForm(NewPasswordFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
