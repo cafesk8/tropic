@@ -663,6 +663,7 @@ class ProductFacade extends BaseProductFacade
             }
 
             $this->em->flush();
+            $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $variant->getId(), $variant->getNames());
         }
     }
 }
