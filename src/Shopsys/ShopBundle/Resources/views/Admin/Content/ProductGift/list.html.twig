@@ -1,0 +1,17 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+
+{% block title %}- {{ 'Seznam dárků'|trans }}{% endblock %}
+{% block h1 %}{{ 'Seznam dárků'|trans }}{% endblock %}
+
+{% block btn %}
+    <a href="{{ url('admin_productgift_new') }}" class="btn btn--plus wrap-bar__btn">
+        <i class="btn__icon">+</i>
+        {{ 'Vytvořit nový dárek'|trans }}
+    </a>
+{% endblock %}
+
+{% block main_content %}
+    {{ render(controller('ShopsysFrameworkBundle:Admin/Domain:domainTabs')) }}
+
+    {{ gridView.render() }}
+{% endblock %}
