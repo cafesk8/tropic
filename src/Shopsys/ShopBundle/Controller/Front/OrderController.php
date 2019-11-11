@@ -729,6 +729,8 @@ class OrderController extends FrontBaseController
             }
         }
 
+        $registrationForm = null;
+
         if ($this->isUserLoggedOrRegistered($order->getEmail()) === false) {
             $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
                 'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $order->getId()]),
