@@ -207,14 +207,30 @@ class OrderFlow extends FormFlow
 
         $newFormAddressData = $oldFormAddressData;
 
-        if ($oldFormAddressData['firstName'] === '') $newFormAddressData['firstName'] = $user->getFirstName();
-        if ($oldFormAddressData['lastName'] === '') $newFormAddressData['lastName'] = $user->getLastName();
-        if ($oldFormAddressData['email'] === '') $newFormAddressData['email'] = $user->getEmail();
-        if ($oldFormAddressData['telephone'] === '') $newFormAddressData['telephone'] = $user->getTelephone();
-        if ($oldFormAddressData['street'] === '') $newFormAddressData['street'] = $user->getDeliveryAddress()->getStreet();
-        if ($oldFormAddressData['city'] === '') $newFormAddressData['city'] = $user->getDeliveryAddress()->getCity();
-        if ($oldFormAddressData['postcode'] === '') $newFormAddressData['postcode'] = $user->getDeliveryAddress()->getPostcode();
-        if ($oldFormAddressData['country'] === '') $newFormAddressData['country'] = $user->getDeliveryAddress()->getCountry();
+        if ($oldFormAddressData['firstName'] === '') {
+            $newFormAddressData['firstName'] = $user->getFirstName();
+        }
+        if ($oldFormAddressData['lastName'] === '') {
+            $newFormAddressData['lastName'] = $user->getLastName();
+        }
+        if ($oldFormAddressData['email'] === '') {
+            $newFormAddressData['email'] = $user->getEmail();
+        }
+        if ($oldFormAddressData['telephone'] === '') {
+            $newFormAddressData['telephone'] = $user->getTelephone();
+        }
+        if ($oldFormAddressData['street'] === '') {
+            $newFormAddressData['street'] = $user->getDeliveryAddress()->getStreet();
+        }
+        if ($oldFormAddressData['city'] === '') {
+            $newFormAddressData['city'] = $user->getDeliveryAddress()->getCity();
+        }
+        if ($oldFormAddressData['postcode'] === '') {
+            $newFormAddressData['postcode'] = $user->getDeliveryAddress()->getPostcode();
+        }
+        if ($oldFormAddressData['country'] === '') {
+            $newFormAddressData['country'] = $user->getDeliveryAddress()->getCountry();
+        }
 
         $newFormAddressData = $this->mergeFormCompanyDataWithLoggedUserCompanyData($oldFormAddressData, $newFormAddressData, $user);
 
@@ -232,14 +248,28 @@ class OrderFlow extends FormFlow
     private function mergeFormCompanyDataWithLoggedUserCompanyData(array $oldFormAddressData, array $newFormAddressData, User $user)
     {
         if ($user->getBillingAddress()->isCompanyCustomer()) {
-            if ($oldFormAddressData['companyName'] === '') $newFormAddressData['companyName'] = $user->getBillingAddress()->getCompanyName();
-            if ($oldFormAddressData['companyNumber'] === '') $newFormAddressData['companyNumber'] = $user->getBillingAddress()->getCompanyNumber();
-            if ($oldFormAddressData['companyTaxNumber'] === '') $newFormAddressData['companyTaxNumber'] = $user->getBillingAddress()->getCompanyTaxNumber();
+            if ($oldFormAddressData['companyName'] === '') {
+                $newFormAddressData['companyName'] = $user->getBillingAddress()->getCompanyName();
+            }
+            if ($oldFormAddressData['companyNumber'] === '') {
+                $newFormAddressData['companyNumber'] = $user->getBillingAddress()->getCompanyNumber();
+            }
+            if ($oldFormAddressData['companyTaxNumber'] === '') {
+                $newFormAddressData['companyTaxNumber'] = $user->getBillingAddress()->getCompanyTaxNumber();
+            }
 
-            if ($oldFormAddressData['street'] === '') $newFormAddressData['street'] = $user->getBillingAddress()->getStreet();
-            if ($oldFormAddressData['city'] === '') $newFormAddressData['city'] = $user->getBillingAddress()->getCity();
-            if ($oldFormAddressData['postcode'] === '') $newFormAddressData['postcode'] = $user->getBillingAddress()->getPostcode();
-            if ($oldFormAddressData['country'] === '') $newFormAddressData['country'] = $user->getBillingAddress()->getCountry();
+            if ($oldFormAddressData['street'] === '') {
+                $newFormAddressData['street'] = $user->getBillingAddress()->getStreet();
+            }
+            if ($oldFormAddressData['city'] === '') {
+                $newFormAddressData['city'] = $user->getBillingAddress()->getCity();
+            }
+            if ($oldFormAddressData['postcode'] === '') {
+                $newFormAddressData['postcode'] = $user->getBillingAddress()->getPostcode();
+            }
+            if ($oldFormAddressData['country'] === '') {
+                $newFormAddressData['country'] = $user->getBillingAddress()->getCountry();
+            }
         }
 
         return $newFormAddressData;

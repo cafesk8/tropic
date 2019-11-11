@@ -27,6 +27,11 @@ class CustomerLoginHandler extends BaseCustomerLoginHandler
      */
     private $session;
 
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter $router
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderFlowFacade $orderFlowFacade
+     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
+     */
     public function __construct(CurrentDomainRouter $router, OrderFlowFacade $orderFlowFacade, SessionInterface $session)
     {
         parent::__construct($router);
@@ -49,6 +54,7 @@ class CustomerLoginHandler extends BaseCustomerLoginHandler
         }
         return parent::onAuthenticationSuccess($request, $token);
     }
+
     /**
      * @param string|null $referer
      * @return bool

@@ -33,6 +33,8 @@ class LoginController extends FrontBaseController
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(Authenticator $authenticator, CustomerFacade $customerFacade, Domain $domain)
     {
