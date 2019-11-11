@@ -23,6 +23,10 @@ class DomainHelper
     public const SLOVAK_COUNTRY_CODE = 'SK';
     public const GERMAN_COUNTRY_CODE = 'DE';
 
+    public const SOURCE_LPKCZ = 'LPKCZ';
+    public const SOURCE_BSHTR = 'BSHTR';
+    public const SOURCE_BSHDE = 'BSHDE';
+
     public const DOMAIN_ID_BY_COUNTRY_CODE = [
         self::CZECH_COUNTRY_CODE => self::CZECH_DOMAIN,
         self::SLOVAK_COUNTRY_CODE => self::SLOVAK_DOMAIN,
@@ -42,9 +46,15 @@ class DomainHelper
     ];
 
     public const DOMAIN_ID_TO_TRANSFER_SOURCE = [
-        self::CZECH_DOMAIN => 'LPKCZ',
-        self::SLOVAK_DOMAIN => 'BSHTR',
-        self::GERMAN_DOMAIN => 'BSHDE',
+        self::CZECH_DOMAIN => self::SOURCE_LPKCZ,
+        self::SLOVAK_DOMAIN => self::SOURCE_BSHTR,
+        self::GERMAN_DOMAIN => self::SOURCE_BSHDE,
+    ];
+
+    public const TRANSFER_SOURCE_TO_DOMAIN_ID = [
+        self::SOURCE_LPKCZ => self::CZECH_DOMAIN,
+        self::SOURCE_BSHTR => self::SLOVAK_DOMAIN,
+        self::SOURCE_BSHDE => self::GERMAN_DOMAIN,
     ];
 
     public const DOMAIN_ID_TO_LOCALE = [
