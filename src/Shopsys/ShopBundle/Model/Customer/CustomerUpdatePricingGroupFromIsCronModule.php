@@ -95,6 +95,6 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
      */
     protected function isNextIterationNeeded(): bool
     {
-        return true;
+        return false;
     }
 }
