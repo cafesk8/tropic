@@ -11,6 +11,7 @@ use Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift;
 use Shopsys\ShopBundle\Model\Product\ProductGift\ProductGiftData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -28,6 +29,10 @@ class ProductGiftFormType extends AbstractType
         $gift = $productGift === null ? null : $productGift->getGift();
 
         $builder
+            ->add('title', TextType::class, [
+                'required' => false,
+                'label' => t('Nepovinný název pro administraci'),
+            ])
             ->add('active', YesNoType::class, [
                 'required' => true,
                 'label' => t('Aktivní'),

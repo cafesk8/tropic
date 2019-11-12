@@ -25,4 +25,9 @@ class ProductGiftData
      * @var bool|null
      */
     public $active;
+
+    /**
+     * @var string|null
+     */
+    public $title;
 }

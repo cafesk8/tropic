@@ -53,6 +53,7 @@ class ProductGiftDataFactory
         $productGiftData->products = $productGift->getProducts();
         $productGiftData->domainId = $productGift->getDomainId();
         $productGiftData->active = $productGift->isActive();
+        $productGiftData->title = $productGift->getTitle();
     }
 
     /**

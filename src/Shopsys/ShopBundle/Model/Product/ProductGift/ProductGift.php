@@ -53,6 +53,13 @@ class ProductGift
     private $active;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $title;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductGift\ProductGiftData $productGiftData
      */
     public function __construct(ProductGiftData $productGiftData)
@@ -61,6 +68,7 @@ class ProductGift
         $this->products = $productGiftData->products;
         $this->domainId = $productGiftData->domainId;
         $this->active = (bool)$productGiftData->active;
+        $this->title = $productGiftData->title;
     }
 
     /**
@@ -72,6 +80,7 @@ class ProductGift
         $this->products = $productGiftData->products;
         $this->domainId = $productGiftData->domainId;
         $this->active = (bool)$productGiftData->active;
+        $this->title = $productGiftData->title;
     }
 
     /**
@@ -112,5 +121,13 @@ class ProductGift
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
     }
 }

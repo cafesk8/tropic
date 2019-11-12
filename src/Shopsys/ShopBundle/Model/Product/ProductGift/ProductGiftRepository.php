@@ -66,7 +66,7 @@ class ProductGiftRepository
     public function getAllForDomainQueryBuilder(int $domainId): QueryBuilder
     {
         return $this->em->createQueryBuilder()
-            ->select('t.name, pg.active, pg.id')
+            ->select('pg.id, pg.title, t.name, pg.active')
             ->from(ProductGift::class, 'pg')
             ->join('pg.gift', 'g')
             ->join(ProductTranslation::class, 't', Join::WITH, 'g = t.translatable AND t.locale = :locale')
@@ -74,6 +74,7 @@ class ProductGiftRepository
             ->setParameters([
                 'domainId' => $domainId,
                 'locale' => DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId],
-            ]);
+            ])
+            ->orderBy('pg.title, t.name');
     }
 }
