@@ -212,8 +212,8 @@
                     and product.gift.calculatedSellingDenied is same as (false) and product.gift.sellingDenied is same as (false) %}
                     <div class="box-detail__gift">
                         <div class="box-detail__gift__image">
-                            {% if imageExists(product.gift) %}
-                                {{ image(product.gift, { size: 'gift' }) }}
+                            {% if imageExists(product.gift.productForCreatingImageAccordingToVariant) %}
+                                {{ image(product.gift.productForCreatingImageAccordingToVariant, { size: 'gift' }) }}
                             {% else %}
                                 {{ noimage({ alt: product.gift.name }) }}
                             {% endif %}
