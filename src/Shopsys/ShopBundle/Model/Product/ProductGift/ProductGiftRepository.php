@@ -63,7 +63,7 @@ class ProductGiftRepository
      * @param int $domainId
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getAllForDomainQueryBuilder(int $domainId): QueryBuilder
+    public function getQueryBuilderForAdminProductGiftGrid(int $domainId): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('pg.id, pg.title, t.name, pg.active')

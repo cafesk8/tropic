@@ -55,7 +55,7 @@ class ProductGiftGridFactory
      */
     public function create(): Grid
     {
-        $queryBuilder = $this->productGiftRepository->getAllForDomainQueryBuilder(
+        $queryBuilder = $this->productGiftRepository->getQueryBuilderForAdminProductGiftGrid(
             $this->adminDomainTabsFacade->getSelectedDomainId()
         );
 
