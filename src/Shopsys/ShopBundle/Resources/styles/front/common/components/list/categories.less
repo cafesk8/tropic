@@ -1,6 +1,4 @@
 @list-categories-item-gap: 20px;
-@list-categories-item-button-position: 45px;
-@list-categories-item-button-position-small: 21px;
 
 @list-categories-columns-count: 3;
 @list-categories-small-btn-height: @btn-height - 16;
@@ -11,29 +9,37 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-bottom: 87px;
     margin-left: -@list-categories-item-gap;
 
     &__title {
         margin-bottom: 30px;
 
         font-family: @font-alt;
-        font-size: 18px;
+        font-size: 18px; 
         font-weight: 700;
         text-transform: uppercase;
     }
 
     &__link {
         position: relative;
-        display: block;
+        overflow: hidden;
+        text-align: center;
+        
+        border-radius: @radius;
+
+        @media @query-lg {
+            width: 100%;
+        }
     }
 
     &__item {
-        display: inline-block;
+        display: flex;
+        justify-content: center;
         width: 100%;
-        text-align: center;
         margin-left: @list-categories-item-gap;
-        margin-bottom: @list-categories-item-gap;
+        margin-bottom: @list-categories-item-gap * 2;
+
+        font-size: 0;
 
         @media @query-lg {
             width: calc(~"@{calc-base}/@{list-categories-columns-count} - @{list-categories-item-gap}");
@@ -57,26 +63,15 @@
             }
         }
 
-        img {
-            margin: 0 auto;
-        }
-
-        &:hover {
-            .btn {
-                background-color: @btn-bg-hover;
-            }
-        }
-
         &__text {
-            display: inline-block;
+            display: flex;
+            align-items: center;
             line-height: 26px;
             padding: 0 31px;
             text-align: center;
 
-            color: @color-brown;
-            font-family: @font-alt;
+            color: @color-base;
             font-size: 14px;
-            font-weight: 700;
 
             @media @query-md {
                 line-height: 30px;
@@ -87,7 +82,6 @@
             @media @query-vl {
                 line-height: 36px;
                 text-align: left;
-                padding-top: 20px;
 
                 font-size: 24px;
             }
@@ -104,26 +98,17 @@
 
 
     &__button {
-        display: block;
         position: absolute;
+        bottom: 0;
+        display: block;
         width: 100%;
-        bottom: @list-categories-item-button-position-small;
         text-align: center;
+        text-transform: uppercase;
+        padding: 10px;
 
-        @media @query-mobile {
-            .btn {
-                height: @list-categories-small-btn-height;
-                line-height: @list-categories-small-btn-height;
-                min-height: @list-categories-small-btn-height;
-            }
-        }
-
-        @media @query-vl {
-            bottom: @list-categories-item-button-position;
-        }
-
-        @media @query-xl {
-            bottom: @list-categories-item-button-position;
-        }
+        background-color: @color-primary;
+        color: @color-f;
+        font-size: 16px;
+        font-weight: 700;
     }
 }

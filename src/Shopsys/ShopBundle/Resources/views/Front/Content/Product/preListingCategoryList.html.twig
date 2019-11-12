@@ -20,46 +20,6 @@
                     {{ category.getSeoH1(domain.id)|default(category.name) }}
                 </div>
 
-{#
-                <div class="list-grid-images">
-                    <ul class="list-grid-images__columns">
-                        <li class="list-grid-images__columns__item">
-                            <a href="#" class="list-grid-images__columns__link js-not-implemented-yet">
-                                <img src="https://placeimg.com/380/210/any/grayscale" alt="Pro pořádné chlapy">
-                                <div class="list-grid-images__button list-grid-images__button--small-gap-under">
-                                     <span class="btn btn--secondary">{{ 'Nová kolekce'|trans }}</span>
-                                </div>
-                            </a>
-                            <span class="list-grid-images__columns__text">
-                                {{ 'Kalhoty jsou dnes opravdu nezbytným základem šatníku každé ženy.'|trans }}
-                            </span>
-                        </li>
-                        <li class="list-grid-images__columns__item">
-                            <a href="#" class="list-grid-images__columns__link js-not-implemented-yet">
-                                <img src="https://placeimg.com/380/210/any/grayscale" alt="Pro pořádné chlapy">
-                                <div class="list-grid-images__button list-grid-images__button--small-gap-under">
-                                     <span class="btn btn--secondary">{{ 'Sety & Outfity'|trans }}</span>
-                                </div>
-                            </a>
-                            <span class="list-grid-images__columns__text">
-                                {{ 'Naštěstí je dnes tento kousek naprostou klasikou dámského šatníku'|trans }}
-                            </span>
-                        </li>
-                        <li class="list-grid-images__columns__item">
-                            <a href="#" class="list-grid-images__columns__link js-not-implemented-yet">
-                                <img src="https://placeimg.com/380/210/any/grayscale" alt="Pro pořádné chlapy">
-                                <div class="list-grid-images__button list-grid-images__button--small-gap-under">
-                                     <span class="btn btn--secondary">{{ 'Legendární kousky'|trans }}</span>
-                                </div>
-                            </a>
-                            <span class="list-grid-images__columns__text">
-                                {{ 'Nezáleží na tom, pro jakou příležitost kalhoty sháníte, u nás jsou v nabídce.'|trans }}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-#}
-
                 {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
             </div>
         </div>
@@ -71,21 +31,22 @@
     {% if categoriesBlogArticles|length > 0 %}
         <div class="web__line">
             <div class="web__container">
-                <div class="box-articles">
+                <div class="box-articles box-articles--with-border">
                     <h2 class="box-articles__title-big">
                         {{ 'Mohlo by vás zajímat'|trans }}
                     </h2>
                     <div class="box-articles__title-small"></div>
                     {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
-                    <div class="box-articles__bottom">
+                    <div class="box-articles__bottom box-articles__bottom--small-gap">
                         <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
                     </div>
                 </div>
             </div>
         </div>
     {% endif %}
-
-    {% block last_visited_products %}{% endblock %}
-    </div>
+    
+    {% block last_visited_products %}
+        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
+    {% endblock %}
 
 {% endblock %}
