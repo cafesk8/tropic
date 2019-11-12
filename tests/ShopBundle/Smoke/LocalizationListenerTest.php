@@ -52,7 +52,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
     /**
      * @group multidomain
      */
-    public function testProductDetailOnThirthDomainHasEnglishLocale()
+    public function testProductDetailOnThirdDomainHasEnglishLocale()
     {
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
