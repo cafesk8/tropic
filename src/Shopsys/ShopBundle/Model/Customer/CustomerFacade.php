@@ -162,7 +162,8 @@ class CustomerFacade extends BaseCustomerFacade
             return;
         }
 
-        $customer = $transferIdAndEan->getCustomer();
+        $customerId = $transferIdAndEan->getCustomer()->getId();
+        $customer = $this->getUserById($customerId);
         $customer->updateTransferEanAndPricingGroup($transferIdAndEan, $newPricingGroup);
         $this->flush($customer);
     }
