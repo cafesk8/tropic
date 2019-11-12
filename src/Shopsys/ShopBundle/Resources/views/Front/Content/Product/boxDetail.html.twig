@@ -2,7 +2,7 @@
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import '@ShopsysShop/Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% set domain = getDomain() %}
-    {% set showGalleryMaxCount = 5 %}
+    {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
 
     <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
@@ -54,8 +54,9 @@
                                         <img src="{{ youtubeDetail.getThumbnailUrl() }}"
                                             alt="{{ youtubeDetail.getVideoTitle() }}"
                                             title="{{ youtubeDetail.getVideoTitle() }}">
-                                        <span class="box-gallery__item__link--play-circle"></span>
-                                        <span class="box-gallery__item__link--play-triangl"></span>
+                                        <div class="box-gallery__item__link__play">
+                                            <div class="box-gallery__item__link__play__icon"></div>
+                                        </div>
                                     </a>
 
                                     <div class="display-none js-youtube-video-box">

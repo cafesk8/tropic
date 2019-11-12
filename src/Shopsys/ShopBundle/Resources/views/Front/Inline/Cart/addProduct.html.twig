@@ -16,7 +16,7 @@
         {% if type == 'large' %}
             {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ ' btn--success btn--large box-detail-add__action__button', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
         {% else %}
-            {{ form_widget(form.add, {label: 'Add to cart'|trans, attr: {class: cssClass ~ ' btn--success btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
+            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ ' btn--success btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
         {% endif %}
     </div>
 {{ form_end(form) }}

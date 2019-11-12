@@ -20,104 +20,84 @@
         or productParameterValues > 0
     %}
     <div class="box-detail__content {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
-        <div class="in-tab js-anchor-tabs">
-            <div class="in-tab__wrap">
-                <div class="in-tab__head dont-print">
+        <div class="in-tab in-tab--full-width js-anchor-tabs">
+            <div class="in-tab__content">
+                <div class="in-tab__content__left">
                     {% if product.getDescription(domain.id) %}
-                        <a href="#" class="in-tab__head__item underline js-tabs-button" data-tab-id="description">
-                            {{ descriptionHeadline }}
-                        </a>
-                    {% endif %}
-                    {% if productParameterValues > 0 %}
-                        <a href="#" class="in-tab__head__item underline js-tabs-button" data-tab-id="parameters">
-                            {{ parametersHeadline }}
-                        </a>
-                    {% endif %}
-                    {{ designHiddenStuff.hiddenTabHeader() }}
-                    {% if accessories|length > 0 %}
-                        <a href="#" class="in-tab__head__item underline js-tabs-button" data-tab-id="accessories">
-                            {{ accessoriesHeadline }}
-                        </a>
+                        <div class="in-tab__content__title js-tabs-button active" data-tab-id="description">
+                            <a href="#" class="in-tab__content__title__link underline">
+                                {{ descriptionHeadline }}
+                            </a>
+                            <i class="svg svg-triangle"></i>
+                        </div>
+                        <div class="in-tab__content__item js-tabs-content active" data-tab-id="description">
+                            <div class="in-user-text" itemprop="description">
+                                {% if product.getDescription(domain.id) %}
+                                    <p>
+                                        {{ product.getDescription(domain.id)|raw }}
+                                    </p>
+
+                                    {% if youtubeDetail is not null %}
+                                        <div class="youtubeWrapper">
+                                            <iframe
+                                                    width="560"
+                                                    height="315"
+                                                    src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                                    frameborder="0"
+                                                    allowfullscreen
+                                            ></iframe>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
-            </div>
-            <div class="in-tab__content">
-                {% if product.getDescription(domain.id) %}
-                    <div class="in-tab__content__title js-tabs-button active" data-tab-id="description">
-                        <a href="#" class="in-tab__content__title__link underline">
-                            {{ descriptionHeadline }}
-                        </a>
-                        <i class="svg svg-triangle"></i>
-                    </div>
-                    <div class="in-tab__content__item js-tabs-content active" data-tab-id="description">
-                        <div class="in-user-text" itemprop="description">
-                            <h3 class="in-user-text__title in-user-text__title--center">
-                                {{ 'Popis'|trans }} {{ product.name }}
+
+                <div class="in-tab__content__right">
+                    {% if productParameterValues > 0 %}
+
+                        <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
+                            <a href="#" class="in-tab__content__title__link underline">
+                                {{ parametersHeadline }}
+                            </a>
+                            <i class="svg svg-triangle"></i>
+                        </div>
+
+                        <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
+                            <h3 class="in-user-text__title">
+                                {{ parametersHeadline }}
                             </h3>
 
-                            {% if product.getDescription(domain.id) %}
-                                <p>
-                                    {{ product.getDescription(domain.id)|raw }}
-                                </p>
-
-                                {% if youtubeDetail is not null %}
-                                    <div class="youtubeWrapper">
-                                        <iframe
-                                                width="560"
-                                                height="315"
-                                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
-                                                frameborder="0"
-                                                allowfullscreen
-                                        ></iframe>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if productParameterValues > 0 %}
-
-                    <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
-                        <a href="#" class="in-tab__content__title__link underline">
-                            {{ parametersHeadline }}
-                        </a>
-                        <i class="svg svg-triangle"></i>
-                    </div>
-
-                    <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
-                        <h3 class="in-user-text__title in-user-text__title--center">
-                            {{ parametersHeadline }}
-                        </h3>
-
-                        {% if product.mainVariantGroup is not null %}
-                            <div class="js-product-variant-detail-wrapper">
-                                <div class="js-product-variant-detail-select-info">
-                                    <div class="in-user-text">
-                                        <p class="padding-left-20">{{ 'Pro zobrazení parametrů si vyber z velikostí.'|trans }}</p>
-                                    </div>
-
-                                    <div class="padding-bottom-50">
-                                        <div class="box-detail__tags__row padding-left-20">
-                                            {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
+                            {% if product.mainVariantGroup is not null %}
+                                <div class="js-product-variant-detail-wrapper">
+                                    <div class="js-product-variant-detail-select-info">
+                                        <div class="in-user-text">
+                                            <p class="padding-left-20">{{ 'Pro zobrazení parametrů si vyber z velikostí.'|trans }}</p>
                                         </div>
-                                    </div>
 
+                                        <div class="padding-bottom-50">
+                                            <div class="box-detail__tags__row padding-left-20">
+                                                {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    {% for variant in variants %}
+                                        {% set productParameterValuesForVariant = getProductParameterValues(variant) %}
+                                        <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
+                                            {{ _self.parameters(variant, productParameterValuesForVariant, parametersHeadline, productVisibleProductCategoryDomains) }}
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                {% for variant in variants %}
-                                    {% set productParameterValuesForVariant = getProductParameterValues(variant) %}
-                                    <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
-                                        {{ _self.parameters(variant, productParameterValuesForVariant, parametersHeadline, productVisibleProductCategoryDomains) }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
-                        {% endif %}
+                            {% else %}
+                                {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
+                            {% endif %}
 
-                    </div>
+                        </div>
 
-                {% endif %}
+                    {% endif %}
+                </div>
 
                 {{ designHiddenStuff.hiddenTabs() }}
 

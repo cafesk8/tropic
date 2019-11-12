@@ -31,9 +31,11 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        margin-bottom: 40px;
 
         @media @query-lg {
             width: @box-detail-content-width-small;
+            margin-bottom: 0;
         }
 
         @media @query-xl {
@@ -279,7 +281,6 @@
     &__params {
         display: flex;
         flex-direction: column;
-        padding: @box-detail-info-padding;
         padding-top: 5px;
         margin-bottom: 50px;
 

@@ -4,7 +4,7 @@
 {% import '@ShopsysShop/Front/Content/Product/boxDetail.html.twig' as boxDetail %}
 
 {% set domain = getDomain() %}
-{% set accessoriesHeadline = 'Dolaďte svůj outfit'|trans %}
+{% set accessoriesHeadline = 'Související zboží'|trans %}
 
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}

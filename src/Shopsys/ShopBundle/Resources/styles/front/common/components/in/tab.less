@@ -5,6 +5,7 @@
 @in-tab-head-bottom-gap: 60px;
 @in-tab-head-bottom-gap-small: 30px;
 @in-tab-arrow-size: 10px;
+@in-tab-content-item-gap: 80px;
 
 .in-tab {
     @media @query-xl {
@@ -70,6 +71,25 @@
     }
 
     &__content {
+        @media @query-vl {
+            display: flex;
+            margin-left: -@in-tab-content-item-gap;
+        }
+
+        &__left {
+            @media @query-vl {
+                width: @calc-base / 2;
+                margin-left: @in-tab-content-item-gap;
+            }
+        }
+
+        &__right {
+            @media @query-vl {
+                width: @calc-base / 2;
+                margin-left: @in-tab-content-item-gap;
+            }
+        }
+
         &__title {
             display: block;
             position: relative;
