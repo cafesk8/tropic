@@ -66,15 +66,17 @@ class ProductGiftRepository
     public function getQueryBuilderForAdminProductGiftGrid(int $domainId): QueryBuilder
     {
         return $this->em->createQueryBuilder()
-            ->select('pg.id, pg.title, t.name, pg.active')
+            ->select('pg.id, pg.title, t.name, COUNT(p) AS productsCount, pg.active')
             ->from(ProductGift::class, 'pg')
             ->join('pg.gift', 'g')
+            ->join('pg.products', 'p')
             ->join(ProductTranslation::class, 't', Join::WITH, 'g = t.translatable AND t.locale = :locale')
             ->andWhere('pg.domainId = :domainId')
             ->setParameters([
                 'domainId' => $domainId,
                 'locale' => DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId],
             ])
-            ->orderBy('pg.title, t.name');
+            ->orderBy('pg.title, t.name')
+            ->groupBy('pg.id, pg.title, t.name, pg.active');
     }
 }

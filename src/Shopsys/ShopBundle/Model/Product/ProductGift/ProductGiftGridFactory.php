@@ -66,6 +66,7 @@ class ProductGiftGridFactory
 
         $grid->addColumn('title', 'pg.title', t('Název dárku'));
         $grid->addColumn('name', 't.name', t('Název dárku - produktu'));
+        $grid->addColumn('productsCount', 'productsCount', t('Počet produktů dárku'));
         $grid->addColumn('active', 'pg.active', t('Aktivní'));
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
