@@ -8,7 +8,7 @@
         </div>
         <div class="box-popup-add__content__product">
             <div class="box-popup-add__content__product__image">
-                {{ image(cartItem.product, { size: 'thumbnail', lazy: false }) }}
+                {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
             </div>
             <div class="box-popup-add__content__product__pieces display-none">
                 {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
