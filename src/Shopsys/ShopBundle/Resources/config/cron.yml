@@ -4,35 +4,15 @@ services:
         autoconfigure: true
         public: false
 
-    Shopsys\ShopBundle\Model\Customer\Transfer\ChangedCustomerImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
-
-    Shopsys\ShopBundle\Model\Customer\Transfer\CzechCustomerImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
-
-    Shopsys\ShopBundle\Model\Customer\Transfer\SlovakCustomerImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
-
-    Shopsys\ShopBundle\Model\Customer\Transfer\GermanCustomerImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+    ###########################
+    ## DEFAULT CRON INSTANCE ##
+    ###########################
 
     Shopsys\ShopBundle\Model\GoPay\GoPayAvailablePaymentsCronModule:
         arguments:
             - '%gopay.config%'
         tags:
             - { name: shopsys.cron, hours: '3', minutes: '50', readableFrequency: '1x za den' }
-
-    Shopsys\ShopBundle\Model\GoPay\OrderGoPayStatusUpdateCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '15', readableFrequency: '1x za hodinu' }
-
-    Shopsys\ShopBundle\Model\PayPal\OrderPayPalStatusUpdateCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '15', readableFrequency: '1x za hodinu' }
 
     Shopsys\ShopBundle\Model\Product\Transfer\ProductImportCronModule:
         tags:
@@ -43,18 +23,6 @@ services:
             - { name: shopsys.cron, hours: '01', minutes: '30' }
 
     Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ChangedProductPriceImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
-    Shopsys\ShopBundle\Model\Customer\Registration\Transfer\CustomerExportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
-    Shopsys\ShopBundle\Model\Order\Transfer\OrderExportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
-    Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderStatusImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
 
@@ -106,3 +74,43 @@ services:
         class: Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule
         tags:
             - { name: shopsys.cron, hours: '4', minutes: '0' }
+
+    #############################
+    ## CUSTOMERS CRON INSTANCE ##
+    #############################
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\ChangedCustomerImportCronModule:
+      tags:
+        - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\CzechCustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\SlovakCustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\GermanCustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\GoPay\OrderGoPayStatusUpdateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableFrequency: '1x za hodinu' }
+
+    Shopsys\ShopBundle\Model\PayPal\OrderPayPalStatusUpdateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableFrequency: '1x za hodinu' }
+
+    Shopsys\ShopBundle\Model\Customer\Registration\Transfer\CustomerExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers }
+
+    Shopsys\ShopBundle\Model\Order\Transfer\OrderExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers }
+
+    Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderStatusImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers }
