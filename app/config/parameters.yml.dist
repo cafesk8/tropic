@@ -86,7 +86,7 @@ parameters:
 
     migrate_product_images_dir: 'migration-data/product-images'
 
-    googleApiKey: AIzaSyDI31ip9EdLYk2bm_mcpmYDqi8hbqb5GbU
+    googleApiKey: AIzaSyAAb1NdI0BZZjvEByXYh_9Bi5Iu0d6i_fE
 
     gtm.config:
         cs:
