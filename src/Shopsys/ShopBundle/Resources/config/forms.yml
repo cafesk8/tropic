@@ -40,6 +40,8 @@ services:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Transport\TransportFormType }
 
     Shopsys\ShopBundle\Form\Admin\ProductFormTypeExtension:
+        arguments:
+            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.admin'
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType }
 

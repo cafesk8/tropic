@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Google_Service_Exception;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
@@ -92,6 +94,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $flagFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -103,6 +110,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         ParameterFacade $parameterFacade,
@@ -114,7 +122,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ProductExtension $productExtension,
         GoogleClient $googleClient,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        FlashMessageSender $flashMessageSender
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
@@ -126,6 +135,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->productExtension = $productExtension;
         $this->googleClient = $googleClient;
         $this->flagFacade = $flagFacade;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -526,9 +536,15 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             return;
         }
 
-        $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
-        if ($youtubeResponse->getPageInfo()->getTotalResults() === 0) {
-            $context->addViolation('Vložené youtube id neobsahuje žádné video.');
+        try {
+            $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
+            if ($youtubeResponse->getPageInfo()->getTotalResults() === 0) {
+                $context->addViolation('Vložené ID Youtube videa neobsahuje žádné video.');
+            }
+        } catch (Google_Service_Exception $googleServiceException) {
+            $this->flashMessageSender->addInfoFlash(t('Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
+            $this->flashMessageSender->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
+            $this->flashMessageSender->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
         }
     }
 }
