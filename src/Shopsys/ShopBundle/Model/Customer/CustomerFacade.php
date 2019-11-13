@@ -198,6 +198,7 @@ class CustomerFacade extends BaseCustomerFacade
      */
     public function changeCustomerPricingGroupUpdatedAt(User $user): void
     {
+        $user = $this->userRepository->getUserById($user->getId());
         $customerData = $this->customerDataFactory->createFromUser($user);
 
         /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
