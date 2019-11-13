@@ -40,8 +40,8 @@
     sizes:
         -   name: ~
             width: 380
-            height: 290
-            crop: false
+            height: 272
+            crop: true
             occurrence: 'Front-end: Product list by category'
 
 -   name: product

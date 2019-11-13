@@ -6,241 +6,214 @@
     {% set showFlagsMaxCount = 3 %}
 
     <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
-        <div class="box-detail__image">
-            {% set galleryImages = getImages(product) %}
-            {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null %}
-            {% set sellingPrice = getProductSellingPrice(product) %}
+        <div class="box-detail__product">
+            <div class="box-detail__image">
+                {% set galleryImages = getImages(product) %}
+                {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null %}
+                {% set sellingPrice = getProductSellingPrice(product) %}
 
-            <div class="box-detail__image__main">
-                {% if imageExists(product) %}
-                    <a href="{{ imageUrl(product, 'original') }}"
-                       class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
-                        {{ image(product, { itemprop: 'image', lazy: true }) }}
-                    </a>
-                {% else %}
-                    {{ noimage({ alt: product.name }) }}
-                {% endif %}
-            </div>
-            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), '') }}
-
-            {% if showGallery %}
-                <div class="box-gallery dont-print js-gallery">
-                    <div class="box-gallery__images">
-                        {% for galleryImage in galleryImages %}
-                            <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
-                                <a href="{{ imageUrl(galleryImage, 'original') }}"
-                                   class="box-gallery__item__link js-gallery-slide-link">
-                                    {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
-                                </a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="box-gallery__links">
-                        {% if galleryImages|length > showGalleryMaxCount %}
-                            <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
-                                <a href="#" class="box-gallery__item__link underline">
-                                    {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if youtubeDetail is not null %}
-                            <div class="box-gallery__item box-gallery__item--video">
-                                <a
-                                    href="#"
-                                    class="box-gallery__item__link js-youtube-video-play"
-                                    onclick="Shopsys.window({ content: $('.js-youtube-video-box').html(), cssClass: 'window-popup--youtube' }); return false;"
-                                >
-                                    <img src="{{ youtubeDetail.getThumbnailUrl() }}"
-                                         alt="{{ youtubeDetail.getVideoTitle() }}"
-                                         title="{{ youtubeDetail.getVideoTitle() }}">
-                                    <span class="box-gallery__item__link--play-circle"></span>
-                                    <span class="box-gallery__item__link--play-triangl"></span>
-                                </a>
-
-                                <div class="display-none js-youtube-video-box">
-                                    <div class="youtubeWrapper">
-                                        <iframe
-                                            width="560"
-                                            height="315"
-                                            src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
-                                            frameborder="0"
-                                            allowfullscreen
-                                        ></iframe>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
+                <div class="box-detail__image__main">
+                    {% if imageExists(product) %}
+                        <a href="{{ imageUrl(product, 'original') }}"
+                        class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
+                            {{ image(product, { itemprop: 'image', lazy: true }) }}
+                        </a>
+                    {% else %}
+                        {{ noimage({ alt: product.name }) }}
+                    {% endif %}
                 </div>
-            {% endif %}
-        </div>
+                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), '') }}
 
-        <div class="box-detail__info">
-            <div class="box-detail__info__title" itemprop="name">
-                {{ product.getSeoH1(domain.id)|default(product.name) }}
-            </div>
-
-            <div class="box-detail__info__description">
-                {{ product.getShortDescription(domain.id)|raw }}
-            </div>
-            <div class="box-detail__wrap">
-                {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant is same as (true) %}
-                    <div class="box-detail__variants">
-                        {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
-                            <div class="box-detail__variants__title">
-                                {{ 'Vyberte variantu'|trans }}
-                            </div>
-                            <ul class="list-variants">
-                                {% for mainVariantGroupProduct in mainVariants %}
-                                    {% set productDistinguishingParameterValue = productDistinguishingParameterValue(mainVariantGroupProduct) %}
-                                    {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
-                                        <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active' }}"
-                                            data-id="{{ mainVariantGroupProduct.id }}">
-                                            {{ image(mainVariantGroupProduct, {size: 'thumbnail', lazy: true}) }}
-                                            <span class="list-variants__item__name">
-                                                {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
-                                            </span>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-
-                        {% if product.isMainVariant is same as (true) %}
-                            {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
-                            {% if allDistinguishingParameterValuesForProducts is not empty %}
-                                <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
-                                    {{ 'Vyberte velikost'|trans }}
-                                    <a
-                                        href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}"
-                                        class="box-detail__variants__title__link underline-small"
-                                        onclick="Shopsys.window({ content: '{{ render(controller('ShopsysShopBundle:Front/Article:detailForModal', { 'id': productSizeArticleId }))|escape('js') }}', cssClass: 'window-popup--wide' }); return false;"
-                                    >
-                                        {{ 'Jak vybrat správnou velikost?' }}
+                {% if showGallery %}
+                    <div class="box-gallery dont-print js-gallery">
+                        <div class="box-gallery__images">
+                            {% for galleryImage in galleryImages %}
+                                <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                                    <a href="{{ imageUrl(galleryImage, 'original') }}"
+                                    class="box-gallery__item__link js-gallery-slide-link">
+                                        {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
                                     </a>
                                 </div>
-                                <ul class="list-variants">
-                                    {% if product.id in allDistinguishingParameterValuesForProducts|keys %}
-                                        {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
-                                            <li class="list-variants__item {{ variantId is null ? 'disabled' }} js-product-variant-select-button"
-                                                data-id="{{ variantId }}">{{ parameterValue }}</li>
-                                        {% endfor %}
-                                    {% endif %}
-                                </ul>
+                            {% endfor %}
+                        </div>
+                        <div class="box-gallery__links">
+                            {% if galleryImages|length > showGalleryMaxCount %}
+                                <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                                    <a href="#" class="box-gallery__item__link underline">
+                                        {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                                    </a>
+                                </div>
                             {% endif %}
-                        {% endif %}
+                            {% if youtubeDetail is not null %}
+                                <div class="box-gallery__item box-gallery__item--video">
+                                    <a
+                                        href="#"
+                                        class="box-gallery__item__link js-youtube-video-play"
+                                        onclick="Shopsys.window({ content: $('.js-youtube-video-box').html(), cssClass: 'window-popup--youtube' }); return false;"
+                                    >
+                                        <img src="{{ youtubeDetail.getThumbnailUrl() }}"
+                                            alt="{{ youtubeDetail.getVideoTitle() }}"
+                                            title="{{ youtubeDetail.getVideoTitle() }}">
+                                        <div class="box-gallery__item__link__play">
+                                            <div class="box-gallery__item__link__play__icon"></div>
+                                        </div>
+                                    </a>
+
+                                    <div class="display-none js-youtube-video-box">
+                                        <div class="youtubeWrapper">
+                                            <iframe
+                                                width="560"
+                                                height="315"
+                                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
+                                                frameborder="0"
+                                                allowfullscreen
+                                            ></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 {% endif %}
+            </div>
 
-                {% if product.calculatedAvailability %}
-                    {% include '@ShopsysShop/Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
-                {% endif %}
+            <div class="box-detail__info">
+                <h2 class="box-detail__info__title" itemprop="name">
+                    {{ product.getSeoH1(domain.id)|default(product.name) }}
+                </h2>
 
-                <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-detail-wrapper">
-                    <div>
-                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
-                             class="box-detail-add__prices">
-                            <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                {{ sellingPrice.priceWithVat|price }}
-                            </div>
-                            {% if sellingPrice.isActionPrice %}
-                                <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-                                    {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                <div class="box-detail__info__code">
+                    {{ 'Kód produktu'|trans }}: {{ product.partno }}
+                </div>
+
+                <div class="box-detail__wrap">
+                    {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant is same as (true) %}
+                        <div class="box-detail__variants">
+                            {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
+                                <div class="box-detail__variants__title">
+                                    {{ 'Vyberte variantu'|trans }}
                                 </div>
-                                <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-                                    {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
-                                </div>
+                                <ul class="list-variants">
+                                    {% for mainVariantGroupProduct in mainVariants %}
+                                        {% set productDistinguishingParameterValue = productDistinguishingParameterValue(mainVariantGroupProduct) %}
+                                        {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
+                                            <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active' }}"
+                                                data-id="{{ mainVariantGroupProduct.id }}">
+                                                {{ image(mainVariantGroupProduct, {size: 'thumbnail', lazy: true}) }}
+                                                <span class="list-variants__item__name">
+                                                    {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
+                                                </span>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
                             {% endif %}
-                            <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
-                            <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
-                            <link itemprop="availability"
-                                  href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
-                        </div>
-                        {% if getProductAdeptPrice(product) is not null %}
-                            <div class="box-detail-add__club">
-                                <span class="box-detail-add__club__text">
-                                    {{ 'Nebo'|trans }}
-                                </span>
-                                <span class="box-detail-add__club__price">
-                                    {{ getProductAdeptPrice(product).priceWithVat|price }}
-                                </span>
-                                <span class="box-detail-add__club__text">
-                                    {{ 'pro členy'|trans }}
-                                </span>
-                                {% if bushmanClubArticle is not null %}
-                                    {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                    <a href="{{ articleUrl }}"
-                                       class="box-detail-add__club__link underline-small"
-                                       target="_blank">{{ 'BUSHMAN Clubu'|trans }}</a>
-                                {% else %}
-                                    {{ 'BUSHMAN Clubu'|trans }}
+
+                            {% if product.isMainVariant is same as (true) %}
+                                {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
+                                {% if allDistinguishingParameterValuesForProducts is not empty %}
+                                    <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
+                                        {{ 'Vyberte velikost'|trans }}
+                                        <a
+                                            href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}"
+                                            class="box-detail__variants__title__link underline-small"
+                                            onclick="Shopsys.window({ content: '{{ render(controller('ShopsysShopBundle:Front/Article:detailForModal', { 'id': productSizeArticleId }))|escape('js') }}', cssClass: 'window-popup--wide' }); return false;"
+                                        >
+                                            {{ 'Jak vybrat správnou velikost?' }}
+                                        </a>
+                                    </div>
+                                    <ul class="list-variants">
+                                        {% if product.id in allDistinguishingParameterValuesForProducts|keys %}
+                                            {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
+                                                <li class="list-variants__item {{ variantId is null ? 'disabled' }} js-product-variant-select-button"
+                                                    data-id="{{ variantId }}">{{ parameterValue }}</li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
                                 {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-detail-wrapper">
+                        <div>
+                            {% if product.calculatedAvailability %}
+                                {% include '@ShopsysShop/Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
+                            {% endif %}
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
+                                class="box-detail-add__prices">
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+                                    {{ sellingPrice.priceWithVat|price }}
+                                </div>
+                                {% if sellingPrice.isActionPrice %}
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+                                        {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                    </div>
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+                                        {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+                                    </div>
+                                {% endif %}
+                                <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                                <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
+                                <link itemprop="availability"
+                                    href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                             </div>
-                        {% endif %}
-                        {% for variant in variants if variant in product.variants %}
-                            <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
-                                <div class="js-product-detail-add-variant-button">
-                                    {% if not variant.calculatedSellingDenied %}
-                                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
-                                            product: variant,
-                                            type: 'large',
-                                            disabled: true
-                                        })) }}
+                            
+                            {% for variant in variants if variant in product.variants %}
+                                <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
+                                    <div class="js-product-detail-add-variant-button">
+                                        {% if not variant.calculatedSellingDenied %}
+                                            {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {
+                                                product: variant,
+                                                type: 'large',
+                                                disabled: true
+                                            })) }}
+                                        {% else %}
+                                            <div>
+                                                {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if not product.isMainVariant %}
+                                <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
+                                    {% if not product.calculatedSellingDenied %}
+                                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large' })) }}
                                     {% else %}
                                         <div>
                                             {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
                                         </div>
                                     {% endif %}
                                 </div>
-                            </div>
-                        {% endfor %}
-                        {% if not product.isMainVariant %}
-                            <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
-                                {% if not product.calculatedSellingDenied %}
-                                    {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: product, type: 'large' })) }}
-                                {% else %}
-                                    <div>
-                                        {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-                {% if product.gift is not null
-                    and product.gift.calculatedHidden is same as (false) and product.gift.hidden is same as (false)
-                    and product.gift.calculatedSellingDenied is same as (false) and product.gift.sellingDenied is same as (false) %}
-                    <div class="box-detail__gift">
-                        <div class="box-detail__gift__image">
-                            {% if imageExists(product.gift) %}
-                                {{ image(product.gift, { size: 'gift' }) }}
-                            {% else %}
-                                {{ noimage({ alt: product.gift.name }) }}
                             {% endif %}
                         </div>
-                        <div class="box-detail__gift__info">
-                            <a href="{{ url('front_product_detail', { id: product.gift.id }) }}"
-                               class="box-detail__gift__info__title">
-                                {{ 'Dárek'|trans }}
-                                {{ product.gift.name }}
-                            </a>
-                            <div class="box-detail__gift__info__text">
-                                {{ 'Ke každému nákupu dárek v hodnotě'|trans }}
-                                <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>
+                    </div>
+                    {% if product.gift is not null
+                        and product.gift.calculatedHidden is same as (false) and product.gift.hidden is same as (false)
+                        and product.gift.calculatedSellingDenied is same as (false) and product.gift.sellingDenied is same as (false) %}
+                        <div class="box-detail__gift">
+                            <div class="box-detail__gift__image">
+                                {% if imageExists(product.gift) %}
+                                    {{ image(product.gift, { size: 'gift' }) }}
+                                {% else %}
+                                    {{ noimage({ alt: product.gift.name }) }}
+                                {% endif %}
+                            </div>
+                            <div class="box-detail__gift__info">
+                                <a href="{{ url('front_product_detail', { id: product.gift.id }) }}"
+                                class="box-detail__gift__info__title">
+                                    {{ 'Dárek'|trans }}
+                                    {{ product.gift.name }}
+                                </a>
+                                <div class="box-detail__gift__info__text">
+                                    {{ 'Ke každému nákupu dárek v hodnotě'|trans }}
+                                    <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endif %}
-                {#
-                <div class="box-detail__action">
-                    <div class="box-detail__action__title js-not-implemented-yet">
-                        {{ 'AKCE'|trans }}
-                    </div>
-                    <div class="box-detail__action__text">
-                        {{ 'Kupte bundu a na všehna trička máte '}} <span class="box-detail__action__text__highlight"> 20% {{ 'slevu'|trans }}</span>
-                    </div>
+                    {% endif %}
                 </div>
-                #}
             </div>
         </div>
 

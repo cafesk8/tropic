@@ -10,14 +10,14 @@
 
 {% block main_content %}
 <div class="web__line">
-    <div class="web__container margin-bottom-20">
+    <div class="web__container">
         <h1 class="in-title in-title--big in-title--center">{{ 'My orders'|trans }}</h1>
         {% if orders|length == 0 %}
             <div class="in-message in-message--info">
                 {{ 'No order so far.'|trans }}
             </div>
         {% else %}
-            <div class="in-scroll box-orders">
+            <div class="in-scroll box-orders margin-bottom-20">
                 <div class="in-scroll__in">
                     <table class="table-main box-orders__table">
                         <tr>

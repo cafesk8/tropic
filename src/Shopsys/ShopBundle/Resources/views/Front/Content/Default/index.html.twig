@@ -42,44 +42,9 @@
                     <h1 class="box-top-products__title">
                         {{ 'Vybíráme to nejlepší na říjen'|trans }}
                     </h1>
-                    {# Design - temporary hidden #}
-                    {% if 1==2 %}
-                    <ul class="box-top-products__tabs">
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Muži'|trans }}
-                            </a>
-                        </li>
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Ženy'|trans }}
-                            </a>
-                        </li>
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Děti'|trans }}
-                            </a>
-                        </li>
-                        <li class="box-top-products__tabs__item js-not-implemented-yet">
-                            <a href="#" class="box-top-products__tabs__item__link underline">
-                                {{ 'Doplňky'|trans }}
-                            </a>
-                        </li>
-                    </ul>
-                    {% endif %}
                     <div class="box-top-products__in">
                         {{ productList.horizontalList(topProducts, variantsIndexedByMainVariantId, "list-top-products", 'h3', 'top-products') }}
                     </div>
-                    {#
-                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36545
-                        Button for show all products
-
-                        {% if legendaryCategoryId is not null%}
-                            <div class="box-top-products__bottom">
-                                <a href="{{ url('front_product_list', { id: legendaryCategoryId }) }}" class="box-top-products__bottom__link underline">{{ 'Prozkoumat všechny legendární produkty'|trans }}</a>
-                            </div>
-                        {% endif %}
-                    #}
                 </div>
             </div>
         </div>
@@ -88,9 +53,9 @@
     <div class="web__line">
         <div class="web__container">
             <div class="box-articles">
-                <h1 class="box-articles__title-big">
+                <h2 class="box-articles__title-big">
                     {{ 'Shopsys magazín'|trans }}
-                </h1>
+                </h2>
                 <div class="box-articles__title-small">
                     {{ 'Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu'|trans }}
                 </div>
@@ -157,29 +122,5 @@
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
-
-    {#
-        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36555
-        Refenreces
-
-        <div class="web__line">
-            <div class="web__container">
-                {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-            </div>
-        </div>
-    #}
-
-    {#
-        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36554
-        Instagram list image 
-
-        <div class="web__line">
-            <div class="web__container web__container--no-padding">
-                {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                    {{ instagramFeed() }}
-                {% endcache %}
-            </div>
-        </div>
-    #}
 
 {% endblock %}

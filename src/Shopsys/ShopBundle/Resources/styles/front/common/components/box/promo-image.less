@@ -11,10 +11,6 @@
         padding: 78px 115px 61px 115px;
     }
 
-    &--product-list {
-        padding: 40px 33px;
-    }
-
     img {
         position: absolute;
         display: block;
@@ -50,13 +46,6 @@
         display: flex;
         flex-direction: column;
 
-        .box-promo-image--product-list & {
-            @media @query-xl {
-                flex-direction: row;
-                justify-content: flex-end;
-            }
-        }
-
         &__description {
             position: relative;
             margin-bottom: 27px;
@@ -65,16 +54,6 @@
             color: @color-f;
             font-family: @font-alt;
             font-size: 18px;
-
-            .box-promo-image--product-list & {
-                align-self: flex-end;
-                width: 100%;
-                margin-bottom: 0;
-
-                @media @query-xl {
-                    width: 100%/2;
-                }
-            }
 
             br {
                 display: none;
@@ -87,10 +66,6 @@
 
         &__button {
             position: relative;
-
-            .box-promo-image--product-list & {
-                align-self: flex-end;
-            }
         }
     }
 }

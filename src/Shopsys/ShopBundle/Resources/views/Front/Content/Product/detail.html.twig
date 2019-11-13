@@ -4,7 +4,7 @@
 {% import '@ShopsysShop/Front/Content/Product/boxDetail.html.twig' as boxDetail %}
 
 {% set domain = getDomain() %}
-{% set accessoriesHeadline = 'Dolaďte svůj outfit'|trans %}
+{% set accessoriesHeadline = 'Související zboží'|trans %}
 
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
@@ -37,7 +37,7 @@
         <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
             <div class="web__container">
                 <div class="box-accessories">
-                    <h2 class="in-title in-title--big in-title--center box-accessories__title">
+                    <h2 class="box-accessories__title">
                         {{ accessoriesHeadline }}
                     </h2>
                     {{ productList.horizontalList(accessories, [], "list-accessories-products", 'h3', 'accessories-products') }}
@@ -46,24 +46,20 @@
         </div>
     {% endif %}
 
-    {% block last_visited_products %}
-        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
-    {% endblock %}
-
     {% if productBlogArticles|length > 0 %}
         <div class="web__line">
             <div class="web__container">
-                <div class="box-articles">
-                    <div class="box-articles__title-big">
+                <div class="box-articles box-articles--with-border">
+                    <h2 class="box-articles__title-big">
                         {{ 'Inspiraci hledej v příbězích'|trans }}
-                    </div>
+                    </h2>
                     <div class="box-articles__title-small">
                         {{ 'V hlavní roli'|trans }}
                         {{ product.name }}.
                         {{ 'Přečti si více'|trans }}:
                     </div>
                     {% include '@ShopsysShop/Front/Content/Article/list.html.twig' with { blogArticles: productBlogArticles } %}
-                    <div class="box-articles__bottom">
+                    <div class="box-articles__bottom box-articles__bottom--small-gap">
                         <a href="{{ url('front_blogcategory_detail', { id: constant('Shopsys\\ShopBundle\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
                     </div>
                 </div>
@@ -71,18 +67,8 @@
         </div>
     {% endif %}
 
-    <div class="web__line">
-        <div class="web__container">
-            {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-        </div>
-    </div>
-
-    <div class="web__line">
-        <div class="web__container web__container--no-padding">
-            {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                {{ instagramFeed() }}
-            {% endcache %}
-        </div>
-    </div>
+    {% block last_visited_products %}
+        {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
+    {% endblock %}
 
 {% endblock %}

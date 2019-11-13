@@ -23,7 +23,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Vložit do košíku")')->count()
+            $crawler->filter('html:contains("Přidat do košíku")')->count()
         );
     }
 
@@ -45,14 +45,14 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Pridať do košíka")')->count()
+            $crawler->filter('html:contains("Přidat do košíku")')->count()
         );
     }
 
     /**
      * @group multidomain
      */
-    public function testProductDetailOnThirthDomainHasEnglishLocale()
+    public function testProductDetailOnThirdDomainHasEnglishLocale()
     {
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
@@ -67,7 +67,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("In den Warenkorb")')->count()
+            $crawler->filter('html:contains("Přidat do košíku")')->count()
         );
     }
 }

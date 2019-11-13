@@ -12,20 +12,35 @@
     &__row {
         display: flex;
         flex-wrap: wrap;
-        flex-direction: row;
+        flex-direction: column;
+
+        @media @query-sm {
+            margin-bottom: @margin-gap;
+        }
+
+        @media @query-lg {
+            flex-direction: row;
+        }
 
         &__column {
             padding-right: @margin-gap;
 
-            &--right {
+            &--order {
+                display: flex;
+                align-items: flex-start;
                 padding-right: 0;
-                margin-left: auto;
+                padding-top: 10px;
+
+                @media @query-lg {
+                    margin-left: auto;
+                    padding-top: 19px;
+                }
             }
         }
     }
     &__title {
         display: block;
-        margin-bottom: @box-list-title-margin-bottom;
+        margin-bottom: 0;
 
         color: @color-base;
     }
@@ -66,6 +81,8 @@
 
         @media @query-vl {
             width: calc(~"100% - (@{box-list-panel-width} + @{box-list-panel-gap})");
+
+            border-top: 1px solid @color-border;
         }
     }
 

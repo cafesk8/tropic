@@ -14,7 +14,7 @@
 @input-border-color: @color-border-dark;
 @input-error-border-color: @color-red;
 @input-background: @color-f;
-@input-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+@input-box-shadow: @box-shadow-outer;
 @input-disabled-background: #eff1f2;
 
 .input {
@@ -26,7 +26,7 @@
 
     border: @input-border-size solid @input-border-color;
     border-radius: @radius-small;
-    box-shadow: @input-box-shadow;
+    box-shadow: @box-shadow-outer;
     color: @input-font-color;
     font-size: @input-font-size;
     background: @input-background;
@@ -131,7 +131,7 @@ select {
     font-size: 13px;
     color: @input-font-color;
     background-color: @input-background;
-    box-shadow: @input-box-shadow;
+    box-shadow: @box-shadow-outer;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

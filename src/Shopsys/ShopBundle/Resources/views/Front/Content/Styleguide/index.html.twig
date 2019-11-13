@@ -1,0 +1,234 @@
+{% extends '@ShopsysShop/Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block main_content %}
+
+<div class="web__line">
+    <div class="web__container">
+        <h1>Styleguide for developers</h1>
+        <p>From here you can copy and paste html code, understand, how html structure looks like or see, what type of components are available for more usage.</p>
+
+        <h2>Main colors</h2>
+        <p>Here you can see main colors for styling</p>
+
+        <h2>Colors:</h2>
+        <div class="wrap-code">
+            <div class="in-flag in-flag--static">
+                <div class="in-flag__item" style="background-color: #009bd9">#009bd9</div>
+                <div class="in-flag__item" style="background-color: #c0e314">#c0e314</div>
+                <div class="in-flag__item" style="background-color: #eb5013">#eb5013</div>
+                <div class="in-flag__item" style="background-color: #181a22">#181a22</div>
+                <div class="in-flag__item" style="background-color: #ff91fa">#ff91fa</div>
+                <div class="in-flag__item" style="background-color: #8991a3">#8991a3</div>
+                <div class="in-flag__item" style="background-color: #e79c00">#e79c00</div>
+            </div>
+        </div>
+
+        <h2>Flags:</h2>
+        <div class="wrap-code">
+            <h3>Sizes:</h3>
+            <div class="in-flag in-flag--static">
+                <div class="in-flag__item" style="background-color: #009bd9">Normal</div>
+            </div>
+            <div class="in-flag in-flag--static">
+                <div class="in-flag__item in-flag__item--smaller-text" style="background-color: #009bd9">Smaller text</div>
+            </div>
+        </div>
+
+        <h2>Typography</h2>
+        <p>Here you can see default elements. You can also use classes <strong>h1, h2, h3</strong></p>
+
+        <div class="wrap-code">
+            <h1>Heading H1</h1>
+            <h2>Heading H2</h2>
+            <h3>Heading H3</h3>
+        </div>
+
+        <h2>Buttons</h2>
+        <p>Here you can see buttons and their modifications</p>
+
+        <div class="wrap-code">
+            <h3>Colors:</h3>
+            <div class="margin-bottom-5">
+                <span class="btn">Default button</span>
+            </div>
+            <div class="margin-bottom-5">
+                <span class="btn btn--success">Success button</span>
+                <span class="btn btn--primary">Primary button</span>
+                <span class="btn btn--secondary">Secondary button</span>
+                <span class="btn btn--disabled">Disabled button</span>
+            </div>
+
+            <br>
+
+            <h3>Sizes:</h3>
+            <div class="margin-bottom-5">
+                <span class="btn">Button</span>
+                <span class="btn btn--small">Small</span>
+                <span class="btn btn--large">Large</span>
+                <br><br>
+                <span class="btn btn--full-width">Full width</span>
+                <br><br>
+                <span class="btn btn--with-input">With input</span>
+                <button class="btn-no-style" type="button">Without style</button>
+            </div>
+
+            <br>
+
+            <h3>Toggle text in button or everywhere else</h3>
+            <p>
+                Class <strong>in-toggle</strong> and its elements can help you to change text while
+                you click on it using <strong>active</strong> class on button
+            </p>
+            <div class="margin-bottom-5 js-toggle-container">
+                <a href="javascript:;" class="btn btn--success in-toggle js-toggle-button">
+                    <span class="closed">Show content</span>
+                    <span class="open">Hide content</span>
+                </a>
+                <div class="js-toggle-content display-none">
+                    Hidden content
+                </div>
+            </div>
+        </div>
+
+        <h2>Forms</h2>
+        <div class="wrap-code">
+            <span class="form-input-spinbox js-spinbox">
+                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">
+                    <i class="svg svg-minus"></i>
+                </button>
+                <input type="text" class="form-input-spinbox__input input-no-style js-spinbox-input" data-spinbox-min="1" value="1">
+                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">
+                    <i class="svg svg-plus"></i>
+                </button>
+            </span>
+
+            <br><br>
+
+            <label class="form-choice">
+                <span class="form-choice__line">
+                    <input type="checkbox" class="css-checkbox">
+                    <span class="css-checkbox__image">
+                        Text for checkbox
+                    </span>
+                </span>
+            </label>
+
+            <label class="form-choice">
+                <span class="form-choice__line">
+                    <input type="radio" class="css-radio">
+                    <span class="css-radio__image">
+                        Text for radio
+                    </span>
+                </span>
+            </label>
+        </div>
+
+        <h2>Form line</h2>
+        <div class="wrap-code">
+            <div class="form-line">
+                <div class="form-line__block">
+                    <input type="text" class="input input--with-placeholder adaptive-placeholder" id="test1">
+                    <label placeholder="Classic input" alt="Classic input" for="test1"></label>
+                    <span class="form-line__required form-input-required">*</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Form columns</h2>
+        <div class="wrap-code">
+            <p>
+                For inputs you can use <strong>form-columns</strong>. We have currently columns with 1 modification 
+                <strong>form-columns__item--full</strong> for input as a full width.
+            </p>
+            <div class="form-columns">
+                <div class="form-columns__item form-columns__item--full">
+                    <div class="form-line">
+                        <div class="form-line__block">
+                            <input class="input" placeholder="{{ 'Vaše hodnocení'|trans }}">
+                            <span class="form-line__required form-input-required">*</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-columns">
+                <div class="form-columns__item">
+                    <div class="form-line">
+                        <div class="form-line__block">
+                            <input class="input" placeholder="{{ 'Vaše hodnocení'|trans }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-columns__item">
+                    <div class="form-line">
+                        <div class="form-line__block">
+                            <input class="input" placeholder="{{ 'Vaše hodnocení'|trans }}">
+                            <span class="form-line__required form-input-required">*</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Lists</h2>
+        <p>Here you can see lists and their modifications</p>
+
+        <div class="wrap-code">
+            <h3>Default list without class modification</h3>
+            <ul>
+                <li>List item</li>
+                <li>List item</li>
+                <li>List item</li>
+                <li>List item</li>
+            </ul>
+            
+            <br><br>
+
+            <h3>Simple list with class "list-simple"</h3>
+            <p>
+                If you want use this list, you have to add class <strong>list-simple</strong> for list and class <strong>list-simple__item</strong> for items
+            </p>
+            <ul class="list-simple">
+                <li class="list-simple__item">List item</li>
+                <li class="list-simple__item">List item</li>
+                <li class="list-simple__item">List item</li>
+                <li class="list-simple__item">List item</li>
+            </ul>
+        </div>
+
+        <h2>Tables</h2>
+        <div class="wrap-code">
+        
+            <h3>Basic style for params table</h3>
+            <table class="table-params">
+                <tbody>
+                    <tr>
+                        <th>Technologie</th>
+                        <td>LED</td>
+                    </tr>
+                    <tr>
+                        <th>Úhlopříčka</th>
+                        <td>27"</td>
+                    </tr>
+                    <tr>
+                        <th>Hmotnost (g)</th>
+                        <td>342</td>
+                    </tr>
+                    <tr>
+                        <th>USB</th>
+                        <td>Ano</td>
+                    </tr>
+                    <tr>
+                        <th>HDMI</th>
+                        <td>Ano</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

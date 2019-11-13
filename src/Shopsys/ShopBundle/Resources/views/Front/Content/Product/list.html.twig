@@ -28,85 +28,13 @@
                             {{ category.getSeoH1(domain.id)|default(category.name) }}
                         </h1>
                     </div>
-                    <div class="box-list__row__column box-list__row__column--right">
+                    <div class="box-list__row__column box-list__row__column--order">
                         {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForList')) }}
                     </div>
                 </div>
             </div>
         </div>
-
-        {#
-            TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36563
-            Category description
-
-            {% if category.legendaryCategory %}
-                <div class="web__line">
-                    <div class="web__container">
-                        <div class="box-category">
-                            <div class="box-category__description in-user-text">
-                                {{ category.getDescription(domain.id)|raw }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-        #}
-{#
-        <div class="web__line">
-            <div class="web__container">
-                <div class="list-grid-images">
-                    <ul class="list-grid-images__category-advantages">
-                        <li class="list-grid-images__category-advantages__item">
-                            <img class="list-grid-images__category-advantages__item__image left" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__category-advantages__item__button right">
-                                <span class="double-lined">
-                                    {{ 'Praktické'|trans }}
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-grid-images__category-advantages__item">
-                            <img class="list-grid-images__category-advantages__item__image center" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__category-advantages__item__button center">
-                                <span class="double-lined">
-                                    {{ 'Zipy, které vydrží'|trans }}
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-grid-images__category-advantages__item left">
-                            <img class="list-grid-images__category-advantages__item__image right" src="https://placeimg.com/285/100/any" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__category-advantages__item__button left">
-                                <span class="double-lined">
-                                    {{ 'Roky ověřené'|trans }}
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-grid-images__category-advantages__item center">
-                            <img class="list-grid-images__category-advantages__item__image center" src="https://placeimg.com/285/100/any" class="" alt="Pro pořádné chlapy">
-                            <div class="list-grid-images__category-advantages__item__button center">
-                                <span class="double-lined">
-                                    {{ 'Praktické a stylové'|trans }}
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-#}
-        {#
-            TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36562
-            List of subcategories
-
-            {% if visibleChildren is not empty %}
-            <div class="web__line">
-                <div class="web__container">
-                    <h2>{{ 'List of subcategories'|trans }}</h2>
-
-                    {% include '@ShopsysShop/Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
-                </div>
-            </div>
-            {% endif %}
-        #}
+       
         <div class="web__line">
             <div class="web__container">
                 <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
@@ -167,9 +95,9 @@
             <div class="web__line">
                 <div class="web__container">
                     <div class="box-articles">
-                        <h1 class="box-articles__title-big">
+                        <h2 class="box-articles__title-big">
                             {{ 'Shopsys magazín'|trans }}
-                        </h1>
+                        </h2>
                         <div class="box-articles__title-small">
                             {{ 'Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu'|trans }}
                         </div>
@@ -185,30 +113,6 @@
         {% block last_visited_products %}
             {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
         {% endblock %}
-
-        {#
-            TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36555
-            Refenreces
-
-            <div class="web__line">
-                <div class="web__container">
-                    {% include '@ShopsysShop/Front/Content/References/list.html.twig' %}
-                </div>
-            </div>
-        #}
-
-        {#
-            TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36554
-            Instagram list image 
-
-            <div class="web__line">
-                <div class="web__container web__container--no-padding">
-                    {% cache getInstagramCacheId() {time: getInstagramCacheTime()} %}
-                        {{ instagramFeed() }}
-                    {% endcache %}
-                </div>
-            </div>
-        #}
 
     </div>
 {% endblock %}

@@ -1,35 +1,19 @@
-{#
-    TODO PRG: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36564
-    Ordering list
 
-    <div class="box-order-type">
-        {% for orderingModeId, orderingModeName in orderingModesNames %}
-            {% if activeOrderingModeId == orderingModeId %}
-                <span class="box-order-type__item active">
-                    {{ orderingModeName }}
-                </span>
-            {% else %}
-                <a
-                    href="#"
-                    class="box-order-type__item js-product-list-ordering-mode underline-small"
-                    data-cookie-name="{{ cookieName }}"
-                    data-ordering-mode="{{ orderingModeId }}"
-                >
-                    {{ orderingModeName }}
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
-#}
-
-<div class="box-order-type js-not-implemented-yet">
-    <span class="box-order-type__text">{{ 'Řazení'|trans }}</span>
-    <div class="box-order-type__select">
-        <select>
-            <option value="dfsdf">Doporučené</option>
-            <option value="Doporučené">Doporučené Doporučené Doporučené</option>
-            <option value="Doporučené">Doporučené</option>
-            <option value="Doporučené">Doporučené</option>
-        </select>
-    </div>
+<div class="box-order-type">
+    {% for orderingModeId, orderingModeName in orderingModesNames %}
+        {% if activeOrderingModeId == orderingModeId %}
+            <span class="box-order-type__item active">
+                {{ orderingModeName }}
+            </span>
+        {% else %}
+            <a
+                href="#"
+                class="box-order-type__item js-product-list-ordering-mode"
+                data-cookie-name="{{ cookieName }}"
+                data-ordering-mode="{{ orderingModeId }}"
+            >
+                {{ orderingModeName }}
+            </a>
+        {% endif %}
+    {% endfor %}
 </div>
