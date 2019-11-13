@@ -86,7 +86,8 @@ parameters:
 
     migrate_product_images_dir: 'migration-data/product-images'
 
-    googleApiKey: AIzaSyDI31ip9EdLYk2bm_mcpmYDqi8hbqb5GbU
+    #API Key owned by @malyMiso
+    googleApiKey: AIzaSyCgJiyuJ4hrcC6W1eot6nPiM0YzZ9ZnE-Y
 
     gtm.config:
         cs:
