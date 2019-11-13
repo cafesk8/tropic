@@ -14,6 +14,10 @@
         flex-wrap: wrap;
         flex-direction: column;
 
+        @media @query-sm {
+            margin-bottom: @margin-gap;
+        }
+
         @media @query-lg {
             flex-direction: row;
         }
@@ -23,18 +27,20 @@
 
             &--order {
                 display: flex;
-                align-items: center;
+                align-items: flex-start;
                 padding-right: 0;
+                padding-top: 10px;
 
                 @media @query-lg {
                     margin-left: auto;
+                    padding-top: 19px;
                 }
             }
         }
     }
     &__title {
         display: block;
-        margin-bottom: @box-list-title-margin-bottom;
+        margin-bottom: 0;
 
         color: @color-base;
     }

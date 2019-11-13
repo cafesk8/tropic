@@ -1,5 +1,6 @@
-@box-gallery-images-width: 290px;
+@box-gallery-images-width: 270px;
 @box-gallery-item-size: 85px;
+@box-gallery-item-video-size: 70px;
 @box-gallery-item-gap: 5px;
 @box-gallery-side-gap: 125px;
 @box-gallery-font-size: @font-size-small;
@@ -24,15 +25,10 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        max-width: 100%;
-        width: @box-gallery-images-width;
+        max-width: @box-gallery-images-width;
         min-height: @box-gallery-item-size;
         margin-bottom: 20px;
         margin-left: -@box-gallery-item-gap;
-
-        @media @query-vl {
-            margin-bottom: 0;
-        }
     }
 
     &__links {
@@ -40,6 +36,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: center;
+        padding-left: 10px;
     }
 
     &__item {
@@ -53,14 +50,6 @@
         border-radius: @radius-small;
         font-size: 0;
 
-        &:first-child {
-            margin-left: 0;
-        }
-
-        &:last-child {
-            margin-right: 0;
-        }
-
         &:hover {
             border: @box-gallery-item-border-size-hover solid @color-add;
 
@@ -68,46 +57,6 @@
                 width: @box-gallery-item-size - @box-gallery-item-border-size-hover*2;
                 height: @box-gallery-item-size - @box-gallery-item-border-size-hover*2;
             }
-        }
-
-        &__link {
-            position: relative;
-            display: inline-block;
-            width: @box-gallery-item-size - @box-gallery-item-border-size*2;
-            height: @box-gallery-item-size - @box-gallery-item-border-size*2;
-
-            .box-gallery__item--video & {
-                width: 70px;
-                height: 70px;
-
-                &__play {
-                    position: absolute;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 23px;
-                    height: 23px;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-
-                    background-color: @color-orange;
-                    border-radius: 50%;
-                
-                    &__icon {
-                        width: 0;
-                        height: 0;
-
-                        border-style: solid;
-                        border-width: 5px 0 5px 10px;
-                        border-color: transparent transparent transparent @color-f;
-                    }
-                }
-            }
-        }
-
-        img {
-            .center-image();
         }
 
         &--more {
@@ -137,6 +86,13 @@
             align-items: center;
             justify-content: center;
 
+            &:hover {
+                .box-gallery__item__link {
+                    width: @box-gallery-item-video-size;
+                    height: @box-gallery-item-video-size;
+                }
+            }
+
             &:before {
                 content: '';
                 position: absolute;
@@ -147,6 +103,46 @@
 
                 background-color: @color-border;
             }
+        }
+
+        &__link {
+            position: relative;
+            display: inline-block;
+            width: @box-gallery-item-size - @box-gallery-item-border-size*2;
+            height: @box-gallery-item-size - @box-gallery-item-border-size*2;
+
+            .box-gallery__item--video & {
+                width: @box-gallery-item-video-size;
+                height: @box-gallery-item-video-size;
+
+                &__play {
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 23px;
+                    height: 23px;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    background-color: @color-orange;
+                    border-radius: 50%;
+                
+                    &__icon {
+                        width: 0;
+                        height: 0;
+
+                        border-style: solid;
+                        border-width: 5px 0 5px 10px;
+                        border-color: transparent transparent transparent @color-f;
+                    }
+                }
+            }
+        }
+
+        img {
+            .center-image();
         }
     }
 }

@@ -1,12 +1,12 @@
-<h1 class="in-title in-title--big in-title--center">
-    {% if article.seoH1 is not null %}
-        {{ article.seoH1 }}
-    {% else %}
-        {{ article.name }}
-    {% endif %}
-</h1>
 <div class="web__line">
     <div class="web__container modal">
+        <h1 class="in-title in-title--big in-title--center">
+            {% if article.seoH1 is not null %}
+                {{ article.seoH1 }}
+            {% else %}
+                {{ article.name }}
+            {% endif %}
+        </h1>
         <div class="in-article__container modal">
             <div class="in-article__date">{{ article.createdAt|date('j.n.Y') }}</div>
             <div class="in-article__text in-user-text">
