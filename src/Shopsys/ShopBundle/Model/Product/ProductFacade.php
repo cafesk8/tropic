@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Google_Service_Exception;
+use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -88,6 +90,11 @@ class ProductFacade extends BaseProductFacade
     private $setting;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -117,6 +124,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -147,7 +155,8 @@ class ProductFacade extends BaseProductFacade
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
         GoogleClient $googleClient,
         PricingGroupFacade $pricingGroupFacade,
-        Setting $setting
+        Setting $setting,
+        LoggerInterface $logger
     ) {
         parent::__construct(
             $em,
@@ -181,6 +190,7 @@ class ProductFacade extends BaseProductFacade
         $this->googleClient = $googleClient;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->setting = $setting;
+        $this->logger = $logger;
     }
 
     /**
@@ -485,14 +495,24 @@ class ProductFacade extends BaseProductFacade
     {
         $youtubeDetail = null;
         if ($product->getYoutubeVideoId() !== null) {
-            $youtubeResponse = $this->googleClient->getVideoList($product->getYoutubeVideoId());
-            if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
-                /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
-                $youtubeVideoItem = $youtubeResponse->getItems()[0];
-                $youtubeDetail = new YoutubeView(
-                    $product->getYoutubeVideoId(),
-                    $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
-                    $youtubeVideoItem->getSnippet()->getTitle()
+            try {
+                $youtubeResponse = $this->googleClient->getVideoList($product->getYoutubeVideoId());
+                if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
+                    /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
+                    $youtubeVideoItem = $youtubeResponse->getItems()[0];
+                    $youtubeDetail = new YoutubeView(
+                        $product->getYoutubeVideoId(),
+                        $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
+                        $youtubeVideoItem->getSnippet()->getTitle()
+                    );
+                }
+            } catch (Google_Service_Exception $googleServiceException) {
+                $this->logger->warning(
+                    'Not showing Youtube video on product detail due to Google_Service_Exception',
+                    [
+                        'exception message' => $googleServiceException->getMessage(),
+                        'productId' => $product->getId(),
+                    ]
                 );
             }
         }
