@@ -142,7 +142,9 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
         }
 
         if ($this->transferFacade->isEnabled($this->getTransferIdentifier()) === false) {
-            $this->logger->addInfo('Transfer `%s` is skipped, because it is not enabled');
+            $this->logger->addInfo(sprintf('Transfer `%s` is skipped, because it is not enabled', $this->getTransferIdentifier()));
+
+            return true;
         }
 
         return false;
