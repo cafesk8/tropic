@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block main_content %}
+    {% set domainId = getDomain().id %}
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <h1 class="in-title in-title--big in-title--center">
@@ -43,7 +44,11 @@
             <div class="wrap-article">
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half padding-right-20">
-                        <img src="{{ asset('/assets/frontend/images/design/contact.png')}}">
+                        {% if domainId == 2 %}
+                            <img src="{{ asset('/assets/frontend/images/design/contact-sk.jpg')}}">
+                        {% else %}
+                            <img src="{{ asset('/assets/frontend/images/design/contact.png')}}">
+                        {% endif %}
                     </div>
                     <div class="wrap-article__row__half">
                         <div class="wrap-article__row">
@@ -53,9 +58,16 @@
                         </div>
                         <div class="wrap-article__row padding-bottom-20">
                             <div class="wrap-article__row__half">
-                                {{ 'Administrativní areál BUSHMAN'|trans }}<br>
-                                {{ 'Městečko - Nespeky č.p. 75'|trans }}<br>
-                                {{ '257 22 Čerčany'|trans }}<br>
+                                {% if domainId == 2 %}
+                                    {{ 'Bushman Trade s.r.o.'|trans }}<br>
+                                    {{ 'Stará Vajnorská 11'|trans }}<br>
+                                    {{ '831 04 Bratislava'|trans }}<br>
+                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br>
+                                {% else %}
+                                    {{ 'Administrativní areál BUSHMAN'|trans }}<br>
+                                    {{ 'Městečko - Nespeky č.p. 75'|trans }}<br>
+                                    {{ '257 22 Čerčany'|trans }}<br>
+                                {% endif %}
                             </div>
                             <div class="wrap-article__row__half">
                                 {{ 'Pondělí až pátek 9–15 hod'|trans }}<br>
@@ -69,33 +81,52 @@
                                 <h4>{{ 'Sídlo'|trans }}</h4>
                             </div>
                         </div>
-                        <div class="wrap-article__row padding-bottom-20">
-                            <div class="wrap-article__row__half">
-                                {{ 'Bushman Company a.s.'|trans }}<br>
-                                {{ 'Lazarská 5/1719, 110 00 Praha 1'|trans }}<br>
-                                {{ 'IČ: 26052679, DIČ: CZ26052679'|trans }}<br>
+                        {% if domainId == 2 %}
+                            <div class="wrap-article__row">
+                                <div class="wrap-article__row__half">
+                                    {{ 'Bushman Trade s.r.o.'|trans }}<br>
+                                    {{ 'Stará Vajnorská 11'|trans }}<br>
+                                    {{ '831 04 Bratislava'|trans }}<br>
+                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br>
+                                </div>
+                                <div class="wrap-article__row__half">
+                                    {{ 'Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B.'|trans }}
+                                </div>
                             </div>
-                            <div class="wrap-article__row__half">
-                                {{ 'Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl B, vložka 8948.'|trans }}
+                        {% else %}
+                            <div class="wrap-article__row padding-bottom-20">
+                                <div class="wrap-article__row__half">
+                                    {{ 'Bushman Company a.s.'|trans }}<br>
+                                    {{ 'Lazarská 5/1719, 110 00 Praha 1'|trans }}<br>
+                                    {{ 'IČ: 26052679, DIČ: CZ26052679'|trans }}<br>
+                                </div>
+                                <div class="wrap-article__row__half">
+                                    {{ 'Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl B, vložka 8948.'|trans }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="wrap-article__row">
-                            <div class="wrap-article__row__half">
-                                {{ 'LP Komfort s.r.o.'|trans }}<br>
-                                {{ 'Lazarská 5/1719, 110 00 Praha 1'|trans }}<br>
-                                {{ 'IČ: 25618601, DIČ: CZ25618601'|trans }}<br>
+                            <div class="wrap-article__row">
+                                <div class="wrap-article__row__half">
+                                    {{ 'LP Komfort s.r.o.'|trans }}<br>
+                                    {{ 'Lazarská 5/1719, 110 00 Praha 1'|trans }}<br>
+                                    {{ 'IČ: 25618601, DIČ: CZ25618601'|trans }}<br>
+                                </div>
+                                <div class="wrap-article__row__half">
+                                    {{ 'Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 55269.'|trans }}
+                                </div>
                             </div>
-                            <div class="wrap-article__row__half">
-                                {{ 'Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 55269.'|trans }}
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             <div class="wrap-article">
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.5853368987177!2d14.673543315559575!3d49.850248479397116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b871241bc86ab%3A0xb8fdb42aee6cdd!2sBushman+Company+a.s.!5e0!3m2!1scs!2scz!4v1564350162889!5m2!1scs!2scz" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        {% if domainId == 2 %}
+                            {% set mapSource = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10640.142207168987!2d17.1655044!3d48.1866665!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdb45bc57390ef3c6!2sBushman%20Factory-Outlet!5e0!3m2!1scs!2scz!4v1573820168929!5m2!1scs!2scz' %}
+                        {% else %}
+                            {% set mapSource = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.5853368987177!2d14.673543315559575!3d49.850248479397116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b871241bc86ab%3A0xb8fdb42aee6cdd!2sBushman+Company+a.s.!5e0!3m2!1scs!2scz!4v1564350162889!5m2!1scs!2scz' %}
+                        {% endif %}
+                        <iframe src="{{ mapSource }}" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
