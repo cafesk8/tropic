@@ -2135,7 +2135,7 @@ msgid "There was an error while saving. The order isn't saved."
 msgstr "Pri ukladaní sa vyskytla chyba. Objednávka sa neuloží."
 
 msgid "There were problems during payment of created order with number %orderNumber%."
-msgstr "Pri platbe vytvorenej objednávky s číslom% orderNumber% sa vyskytli problémy."
+msgstr "Pri platbe vytvorenej objednávky s číslom %orderNumber% sa vyskytli problémy."
 
 msgid "This account doesn't exist or password is incorrect"
 msgstr "Tento účet neexistuje alebo je nesprávne heslo"
