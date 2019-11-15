@@ -18,7 +18,7 @@
             </a>
         </div>
     </div>
-    {% if isMultiple is same as (true) %}
+    {% if isMultiple is defined and isMultiple is same as (true) %}
         <div class="js-product-picker-all" data-js-instance-id="{{ jsInstanceId }}">
             <br>
             <span class="btn js-product-picker-add-all">{{ 'Přidat všechny položky z níže vyhledaných a zavřít'|trans }}</span>
