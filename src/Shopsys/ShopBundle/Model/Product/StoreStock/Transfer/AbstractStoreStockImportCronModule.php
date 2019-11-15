@@ -15,6 +15,8 @@ use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferRe
 
 abstract class AbstractStoreStockImportCronModule extends AbstractTransferImportCronModule
 {
+    public const TRANSFER_IDENTIFIER = '';
+
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
@@ -136,5 +138,13 @@ abstract class AbstractStoreStockImportCronModule extends AbstractTransferImport
         }
 
         return $transferDataItems;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getTransferIdentifier(): string
+    {
+        return static::TRANSFER_IDENTIFIER;
     }
 }

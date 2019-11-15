@@ -7,7 +7,9 @@ namespace Shopsys\ShopBundle\Model\Store;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
-use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllCzechStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllGermanStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule;
 use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule;
 use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 
@@ -167,7 +169,9 @@ class StoreFacade
 
     private function resetStockImportCronModules(): void
     {
-        $this->transferFacade->resetTransferByTransferId(AllStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+        $this->transferFacade->resetTransferByTransferId(AllCzechStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+        $this->transferFacade->resetTransferByTransferId(AllSlovakStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+        $this->transferFacade->resetTransferByTransferId(AllGermanStoreStockImportCronModule::TRANSFER_IDENTIFIER);
         $this->transferFacade->resetTransferByTransferId(ChangedStoreStockImportCronModule::TRANSFER_IDENTIFIER);
     }
 
