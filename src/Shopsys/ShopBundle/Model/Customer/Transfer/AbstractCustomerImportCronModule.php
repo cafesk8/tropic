@@ -13,26 +13,25 @@ use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInter
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\Customer\Transfer\Exception\InvalidCustomerTransferResponseItemDataException;
-use Shopsys\ShopBundle\Model\Transfer\Transfer;
 
-class CustomerImportCronModule extends AbstractTransferImportCronModule
+abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCronModule
 {
-    public const TRANSFER_IDENTIFIER = 'import_customers';
+    public const TRANSFER_IDENTIFIER = '';
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
-    private $multidomainRestClient;
+    protected $multidomainRestClient;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
      */
-    private $customerFacade;
+    protected $customerFacade;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator
      */
-    private $customerTransferValidator;
+    protected $customerTransferValidator;
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
@@ -57,7 +56,7 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
      */
     protected function getTransferIdentifier(): string
     {
-        return self::TRANSFER_IDENTIFIER;
+        return static::TRANSFER_IDENTIFIER;
     }
 
     /**
@@ -65,18 +64,16 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
-
         $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::CZECH_DOMAIN . '`');
-        $czechTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getCzechRestClient(), $transfer);
+        $czechTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getCzechRestClient());
         $transferDataItems = $czechTransferDataItems;
 
         $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::SLOVAK_DOMAIN . '`');
-        $slovakTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getSlovakRestClient(), $transfer);
+        $slovakTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getSlovakRestClient());
         $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
 
         $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::GERMAN_DOMAIN . '`');
-        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getGermanRestClient(), $transfer);
+        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getGermanRestClient());
         $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
 
         return new TransferResponse(200, $transferDataItems);
@@ -126,16 +123,11 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
 
     /**
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
-     * @param \Shopsys\ShopBundle\Model\Transfer\Transfer $transfer
      * @return \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData[]
      */
-    private function getTransferItemsFromResponse(RestClient $restClient, Transfer $transfer)
+    protected function getTransferItemsFromResponse(RestClient $restClient)
     {
-        if ($transfer->getLastStartAt() === null) {
-            $restResponse = $restClient->get('/api/Eshop/Customers');
-        } else {
-            $restResponse = $restClient->get('/api/Eshop/ChangedCustomers');
-        }
+        $restResponse = $restClient->get($this->getApiUrl());
 
         $restResponseData = $restResponse->getData();
         $transferDataItems = [];
@@ -145,4 +137,9 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
 
         return $transferDataItems;
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getApiUrl(): string;
 }

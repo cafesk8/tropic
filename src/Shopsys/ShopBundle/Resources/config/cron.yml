@@ -4,9 +4,21 @@ services:
         autoconfigure: true
         public: false
 
-    Shopsys\ShopBundle\Model\Customer\Transfer\CustomerImportCronModule:
+    Shopsys\ShopBundle\Model\Customer\Transfer\ChangedCustomerImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\CzechCustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\SlovakCustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+
+    Shopsys\ShopBundle\Model\Customer\Transfer\GermanCustomerImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
 
     Shopsys\ShopBundle\Model\GoPay\GoPayAvailablePaymentsCronModule:
         arguments:
