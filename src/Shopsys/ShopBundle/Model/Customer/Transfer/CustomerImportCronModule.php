@@ -103,7 +103,7 @@ class CustomerImportCronModule extends AbstractTransferImportCronModule
         );
 
         if ($customer === null) {
-            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` now found, will be skipped', $itemData->getDataIdentifier()));
+            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` not found, will be skipped', $itemData->getDataIdentifier()));
             return;
         }
 
