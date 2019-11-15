@@ -632,4 +632,19 @@ class Product extends BaseProduct
 
         return $productGifts;
     }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     */
+    public function getGifts(int $domainId): array
+    {
+        $gifts = [];
+        $activeProductGiftsByDomainId = $this->getActiveProductGiftsByDomainId($domainId);
+        foreach ($activeProductGiftsByDomainId as $activeProductGift) {
+            $gifts[] = $activeProductGift->getGift();
+        }
+
+        return $gifts;
+    }
 }
