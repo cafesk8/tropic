@@ -155,7 +155,6 @@ class Product extends BaseProduct
         $this->transferNumber = $productData->transferNumber;
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->mainVariantGroup = $productData->mainVariantGroup;
-        $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
@@ -178,7 +177,6 @@ class Product extends BaseProduct
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
-        $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
@@ -449,14 +447,6 @@ class Product extends BaseProduct
                     && $productStoreStock->getStore()->isCentralStore();
             }
         );
-    }
-
-    /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
-     */
-    public function getGift(): ?self
-    {
-        return $this->gift;
     }
 
     /**

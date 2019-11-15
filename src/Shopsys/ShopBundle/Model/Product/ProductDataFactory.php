@@ -137,7 +137,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->transferNumber = $product->getTransferNumber();
         $productData->distinguishingParameter = $product->getDistinguishingParameter();
         $productData->mainVariantGroup = $product->getMainVariantGroup();
-        $productData->gift = $product->getGift();
         $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
         $productData->finished = $product->isFinished();
         $productData->youtubeVideoId = $product->getYoutubeVideoId();
