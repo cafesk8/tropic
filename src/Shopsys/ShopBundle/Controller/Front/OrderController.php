@@ -25,6 +25,7 @@ use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
+use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Form\Front\Customer\Password\NewPasswordFormType;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
 use Shopsys\ShopBundle\Form\Front\Order\OrderFlow;
@@ -194,6 +195,11 @@ class OrderController extends FrontBaseController
     private $deliveryAddressDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\CardEan\CardEanFacade
+     */
+    private $cardEanFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -221,6 +227,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
      * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
+     * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -249,7 +256,8 @@ class OrderController extends FrontBaseController
         UserDataFactory $userDataFactory,
         Authenticator $authenticator,
         BillingAddressDataFactory $billingAddressDataFactory,
-        DeliveryAddressDataFactory $deliveryAddressDataFactory
+        DeliveryAddressDataFactory $deliveryAddressDataFactory,
+        CardEanFacade $cardEanFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -278,6 +286,7 @@ class OrderController extends FrontBaseController
         $this->authenticator = $authenticator;
         $this->billingAddressDataFactory = $billingAddressDataFactory;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
+        $this->cardEanFacade = $cardEanFacade;
     }
 
     public function indexAction()
@@ -696,6 +705,7 @@ class OrderController extends FrontBaseController
             $newlyRegisteredUser = $this->customerFacade->registerCustomerWithAddress($userData, $deliveryAddressData, $billingAddressData);
 
             $this->orderFacade->setCustomerToOrder($order, $newlyRegisteredUser);
+            $this->cardEanFacade->addPrereneratedEanToUserAndFlush($newlyRegisteredUser);
 
             $this->authenticator->loginUser($newlyRegisteredUser, $request);
             $this->getFlashMessageSender()->addSuccessFlash(t('You have been successfully registered.'));
