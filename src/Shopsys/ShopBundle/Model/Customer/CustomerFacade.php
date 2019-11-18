@@ -243,12 +243,15 @@ class CustomerFacade extends BaseCustomerFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressData|null $billingAddressData
      * @return \Shopsys\ShopBundle\Model\Customer\User
      */
-    public function registerCustomerWithAddress(UserData $userData, DeliveryAddressData $deliveryAddressData, ?BillingAddressData $billingAddressData): \Shopsys\FrameworkBundle\Model\Customer\User
+    public function registerCustomerWithAddress(UserData $userData, ?DeliveryAddressData $deliveryAddressData, ?BillingAddressData $billingAddressData): \Shopsys\FrameworkBundle\Model\Customer\User
     {
         $userByEmailAndDomain = $this->findUserByEmailAndDomain($userData->email, $userData->domainId);
-        $deliveryAddress = $this->deliveryAddressFactory->create($deliveryAddressData);
-
+        $deliveryAddress = null;
         $billingAddress = null;
+
+        if ($deliveryAddressData !== null) {
+            $deliveryAddress = $this->deliveryAddressFactory->create($deliveryAddressData);
+        }
 
         if ($billingAddressData !== null) {
             $billingAddress = $this->billingAddressFactory->create($billingAddressData);

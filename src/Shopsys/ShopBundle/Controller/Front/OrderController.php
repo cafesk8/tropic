@@ -678,9 +678,16 @@ class OrderController extends FrontBaseController
             $order = $this->orderFacade->getById($orderId);
 
             $userData = $this->userDataFactory->createUserDataFromOrder($order, $newPassword, $this->domain->getId());
-            $deliveryAddressData = $this->deliveryAddressDataFactory->createFromOrder($order);
 
+            $deliveryAddressData = null;
             $billingAddressData = null;
+            /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
+            $transport = $order->getTransport();
+
+            if ($transport->isPickupPlaceType() === false) {
+                $deliveryAddressData = $this->deliveryAddressDataFactory->createFromOrder($order);
+            }
+
             if ($order->isDeliveryAddressSameAsBillingAddress() === false) {
                 $billingAddressData = $this->billingAddressDataFactory->createFromOrder($order);
             }
@@ -842,6 +849,6 @@ class OrderController extends FrontBaseController
     private function isUserLoggedOrRegistered(string $email): bool
     {
         return $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER) ||
-            $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId() !== null);
+            $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId()) !== null;
     }
 }
