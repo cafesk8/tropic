@@ -65,6 +65,22 @@
                 padding-left: 40px;
             }
 
+            .form-line {
+                flex-direction: column;
+
+                @media @query-lg {
+                    flex-direction: row;
+                }
+
+                .form-line__input {
+                    max-width: 100%;
+
+                    @media @query-lg {
+                        max-width: 360px;
+                    }
+                }
+            }
+
             &__input {
                 margin-bottom: 20px;
 
