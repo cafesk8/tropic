@@ -51,14 +51,12 @@
                                 <input type="hidden" name="name" value="{{ order.email }}">
 
                                 <div class="box-order-done__club__form">
-                                    <div class="form-line">
-                                        <div class="form-line__input box-order-done__club__form__input">
-                                            {{ form_row(registrationForm.newPassword.first, { label: 'Password'|trans }) }}
-                                            {{ form_row(registrationForm.newPassword.second, { label: 'Password again'|trans }) }}
-                                        </div>
-                                        <div class="form-line__button box-order-done__club__form__button-holder">
-                                            {{ form_widget(registrationForm.submit, { label: 'Vytvořit účet'|trans, attr: { 'class': 'btn btn--success btn--with-input box-order-done__club__form__button' } }) }}
-                                        </div>
+                                    <div class="box-order-done__club__form__input">
+                                        {{ form_row(registrationForm.newPassword.first, { label: 'Password'|trans }) }}
+                                        {{ form_row(registrationForm.newPassword.second, { label: 'Password again'|trans }) }}
+                                    </div>
+                                    <div class="box-order-done__club__form__button-holder">
+                                        {{ form_widget(registrationForm.submit, { label: 'Vytvořit účet'|trans, attr: { 'class': 'btn btn--success btn--with-input box-order-done__club__form__button' } }) }}
                                     </div>
                                 </div>
                             {{ form_end(registrationForm) }}
