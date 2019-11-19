@@ -16,6 +16,8 @@ use Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -32,6 +34,16 @@ class CustomerFacade extends BaseCustomerFacade
     private $pricingGroupFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade
+     */
+    private $userTransferIdAndEanFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory
+     */
+    private $userTransferIdAndEanDataFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserRepository $userRepository
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
@@ -42,6 +54,8 @@ class CustomerFacade extends BaseCustomerFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface $userFactory
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade $userTransferIdAndEanFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory $userTransferIdAndEanDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -53,11 +67,15 @@ class CustomerFacade extends BaseCustomerFacade
         DeliveryAddressFactoryInterface $deliveryAddressFactory,
         BillingAddressDataFactoryInterface $billingAddressDataFactory,
         UserFactoryInterface $userFactory,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        UserTransferIdAndEanFacade $userTransferIdAndEanFacade,
+        UserTransferIdAndEanDataFactory $userTransferIdAndEanDataFactory
     ) {
         parent::__construct($em, $userRepository, $customerDataFactory, $encoderFactory, $customerMailFacade, $billingAddressFactory, $deliveryAddressFactory, $billingAddressDataFactory, $userFactory);
 
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->userTransferIdAndEanFacade = $userTransferIdAndEanFacade;
+        $this->userTransferIdAndEanDataFactory = $userTransferIdAndEanDataFactory;
     }
 
     /**
@@ -146,6 +164,12 @@ class CustomerFacade extends BaseCustomerFacade
     {
         $user->setTransferId($transferId);
         $this->em->flush($user);
+
+        $ean = $user->getEan();
+        if ($ean !== null && !$this->userTransferIdAndEanFacade->isTransferIdAndEanExists($user, $transferId, $user->getEan())) {
+            $userTransferIdAndEanData = $this->userTransferIdAndEanDataFactory->createFromCustomerAndTransferIdAndEan($user, $transferId, $ean);
+            $this->userTransferIdAndEanFacade->create($userTransferIdAndEanData);
+        }
 
         return $user;
     }
