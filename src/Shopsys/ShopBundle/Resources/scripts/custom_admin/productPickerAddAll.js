@@ -45,14 +45,17 @@
                 data: $form.serialize(),
                 dataType: 'html',
                 success: function (data) {
-                    var productIdsWithNames = JSON.parse(data);
+                    var parsedData = JSON.parse(data);
+                    if (typeof (parsedData.errorMessage) !== 'undefined') {
+                        $('.js-product-picker-all').html(parsedData.errorMessage);
+                    } else if (typeof (parsedData.products) !== 'undefined') {
+                        var instanceId = $wrapper.attr('data-js-instance-id');
+                        var productsPicker = window.parent.Shopsys.productsPicker.instances[instanceId];
 
-                    var instanceId = $wrapper.attr('data-js-instance-id');
-                    var productsPicker = window.parent.Shopsys.productsPicker.instances[instanceId];
+                        callbackForProcessAllItems(productsPicker, parsedData.products);
 
-                    callbackForProcessAllItems(productsPicker, productIdsWithNames);
-
-                    Shopsys.productsPicker.close();
+                        Shopsys.productsPicker.close();
+                    }
                 }
             });
         };

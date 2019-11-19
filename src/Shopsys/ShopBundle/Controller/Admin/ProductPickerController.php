@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 use Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController as BaseProductPickerController;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
+use Shopsys\ShopBundle\Model\Product\MassEdit\MassEditFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,9 +83,19 @@ class ProductPickerController extends BaseProductPickerController
             $queryBuilder = $this->productListAdminFacade->getQueryBuilderByQuickSearchData($quickSearchData);
         }
 
-        $queryBuilder->select('p.id, pt.name');
+        $countOfFoundProducts = $queryBuilder->select('COUNT(p)')->getQuery()->getSingleScalarResult();
+        if ($countOfFoundProducts > MassEditFacade::MASS_EDIT_MAX_LIMIT) {
+            $content = json_encode([
+                'errorMessage' => t('Maximální počet produktů pro hromadnou operaci je %max%. Počet nalezených produktů je %found%. Vyhledejte menší počet produktů a hromadnou operaci opakujte.', [
+                    '%max%' => MassEditFacade::MASS_EDIT_MAX_LIMIT,
+                    '%found%' => $countOfFoundProducts,
+                ]),
+            ]);
+        } else {
+            $queryBuilder->select('p.id, pt.name');
+            $content = json_encode(['products' => $queryBuilder->getQuery()->getResult()]);
+        }
 
-        $content = json_encode($queryBuilder->getQuery()->getResult());
         return new Response($content);
     }
 }
