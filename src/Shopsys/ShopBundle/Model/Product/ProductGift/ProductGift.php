@@ -65,7 +65,7 @@ class ProductGift
     public function __construct(ProductGiftData $productGiftData)
     {
         $this->gift = $productGiftData->gift;
-        $this->products = $productGiftData->products;
+        $this->setProducts($productGiftData->products, $productGiftData->gift);
         $this->domainId = $productGiftData->domainId;
         $this->active = (bool)$productGiftData->active;
         $this->title = $productGiftData->title;
@@ -77,10 +77,26 @@ class ProductGift
     public function edit(ProductGiftData $productGiftData)
     {
         $this->gift = $productGiftData->gift;
-        $this->products = $productGiftData->products;
+        $this->setProducts($productGiftData->products, $productGiftData->gift);
         $this->domainId = $productGiftData->domainId;
         $this->active = (bool)$productGiftData->active;
         $this->title = $productGiftData->title;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $gift
+     */
+    private function setProducts(array $products, Product $gift): void
+    {
+        $filteredProducts = [];
+        foreach ($products as $product) {
+            if ($product !== $gift) {
+                $filteredProducts[] = $product;
+            }
+        }
+
+        $this->products = $filteredProducts;
     }
 
     /**
