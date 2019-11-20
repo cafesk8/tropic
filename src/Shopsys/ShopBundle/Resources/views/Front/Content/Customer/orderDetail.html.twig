@@ -22,7 +22,7 @@
                         <th>{{ 'Status'|trans }}: </th>
                         <td>
                             {{ order.status.name }}
-                            {% if order.payment.goPay == true and order.gopayPaid == false %}
+                            {% if order.payment.goPay is same as (true) and order.gopayPaid == false %}
                                 <br />
                                 <a href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
                                     {{ 'Opakovat platbu'|trans }}
