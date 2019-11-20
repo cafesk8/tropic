@@ -129,7 +129,7 @@
                         <div class="{{ listCssClass }}__item__in">
                             <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass }}__item__block">
                                 <div class="{{ listCssClass }}__item__image dont-print">
-                                    {{ image(product, { size: 'list', alt: product.name, lazy: true }) }}
+                                    {{ image(product.productForCreatingImageAccordingToVariant, { size: 'list', alt: product.name, lazy: true }) }}
                                 </div>
 
                                 <div class="{{ listCssClass }}__item__info">
