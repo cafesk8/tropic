@@ -34,6 +34,17 @@
                     </div>
                 </div>
 
+                <div class="wrap-box">
+                    <h2 class="wrap-box__title">{{ 'BUSHMAN club'|trans }}</h2>
+                    <div class="wrap-box__in">
+                        {% if customer.memberOfBushmanClub %}
+                            {{ 'Jsi členem BUSHMAN clubu'|trans }}
+                        {% else %}
+                            {{ form_row(form.userData.memberOfBushmanClub, { label: 'Chci se stát členem BUSHMAN clubu'|trans}) }}
+                        {% endif %}
+                    </div>
+                </div>
+
                 {#
                 <div class="wrap-box">
                     <h2 class="wrap-box__title">{{ 'Body v bushman klubu'|trans }}</h2>

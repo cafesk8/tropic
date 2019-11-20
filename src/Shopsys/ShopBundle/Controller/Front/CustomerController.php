@@ -89,6 +89,7 @@ class CustomerController extends FrontBaseController
             return $this->redirectToRoute('front_login');
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $this->getUser();
         $customerData = $this->customerDataFactory->createFromUser($user);
 
