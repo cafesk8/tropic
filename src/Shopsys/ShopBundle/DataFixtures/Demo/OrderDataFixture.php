@@ -77,7 +77,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         /** @var \Shopsys\ShopBundle\Model\Order\OrderData $orderData */
         $orderData = $this->orderDataFactory->create();
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
-        $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
+        $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_GOPAY);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_DONE);
         $orderData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $orderData->street = 'fakt. První 1';

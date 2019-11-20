@@ -19,6 +19,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
     public const PAYMENT_CARD = 'payment_card';
     public const PAYMENT_CASH_ON_DELIVERY = 'payment_cash_on_delivery';
     public const PAYMENT_CASH = 'payment_cash';
+    public const PAYMENT_GOPAY = Payment::TYPE_GOPAY;
 
     /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade */
     protected $paymentFacade;
@@ -135,7 +136,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
         $paymentData->hidden = false;
-        $this->createPayment(Payment::TYPE_GOPAY, $paymentData, [
+        $this->createPayment(self::PAYMENT_GOPAY, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,
             TransportDataFixture::TRANSPORT_PPL_DE,
@@ -245,6 +246,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             TransportDataFixture::class,
             VatDataFixture::class,
             CurrencyDataFixture::class,
+            GoPayDataFixture::class,
         ];
     }
 }

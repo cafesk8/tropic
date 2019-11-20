@@ -298,11 +298,6 @@ class RouteConfigCustomization
                     ->setParameter('urlHash', 'notExistingUrlHash')
                     ->setExpectedStatusCode(302);
             })
-            ->customizeByRouteName(['front_order_gopay_status_notify'], function (RouteConfig $config) {
-                $debugNote = 'Order with GoPay payment notify action is redirected.';
-                $config->changeDefaultRequestDataSet($debugNote)
-                    ->setExpectedStatusCode(302);
-            })
             ->customizeByRouteName('front_logout', function (RouteConfig $config) {
                 $debugNote = 'Add CSRF token for logout action (configured in app/security.yml) during test execution.';
                 $config->changeDefaultRequestDataSet($debugNote)
