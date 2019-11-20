@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Customer\Registration\Transfer;
 
 use DateTime;
+use Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
@@ -12,11 +13,6 @@ use Shopsys\ShopBundle\Model\Customer\User;
 
 class CustomerExportMapper
 {
-    /**
-     * @var int
-     */
-    private $lastNumber;
-
     private const EMPTY_VALUE = 'empty';
 
     /**
@@ -25,13 +21,18 @@ class CustomerExportMapper
     private $countryFacade;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
+     * @var \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository
      */
-    public function __construct(CountryFacade $countryFacade)
+    private $orderNumberSequenceRepository;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
+     */
+    public function __construct(CountryFacade $countryFacade, OrderNumberSequenceRepository $orderNumberSequenceRepository)
     {
         $this->countryFacade = $countryFacade;
-
-        $this->lastNumber = time();
+        $this->orderNumberSequenceRepository = $orderNumberSequenceRepository;
     }
 
     /**
@@ -55,7 +56,7 @@ class CustomerExportMapper
     {
         $headerArray = [
             'Source' => DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$user->getDomainId()],
-            'Number' => $this->lastNumber++,
+            'Number' => $this->orderNumberSequenceRepository->getNextNumber(),
             'CreatingDateTime' => (new DateTime())->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
                 'ID' => $user->getTransferId() ?? '',
