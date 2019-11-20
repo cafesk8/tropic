@@ -114,4 +114,12 @@ class TransferLogger
 
         return $transferIssuesData;
     }
+
+    /**
+     * @return int
+     */
+    public function getAllTransferIssuesDataCount(): int
+    {
+        return count($this->transferIssuesData);
+    }
 }

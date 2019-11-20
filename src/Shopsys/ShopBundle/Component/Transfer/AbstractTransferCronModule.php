@@ -53,7 +53,7 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     /**
      * @var \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueFacade
      */
-    private $transferIssueFacade;
+    protected $transferIssueFacade;
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
