@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\StoreStock\Transfer;
 
+use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
@@ -14,10 +15,12 @@ use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferRe
 
 abstract class AbstractStoreStockImportCronModule extends AbstractTransferImportCronModule
 {
+    public const TRANSFER_IDENTIFIER = '';
+
     /**
-     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
+     * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
-    protected $restClient;
+    protected $multidomainRestClient;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferMapper
@@ -36,20 +39,20 @@ abstract class AbstractStoreStockImportCronModule extends AbstractTransferImport
 
     /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
-     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
+     * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferMapper $storeStockTransferMapper
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferValidator $storeStockTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
-        RestClient $restClient,
+        MultidomainRestClient $multidomainRestClient,
         StoreStockTransferMapper $storeStockTransferMapper,
         StoreStockTransferValidator $storeStockTransferValidator,
         ProductFacade $productFacade
     ) {
         parent::__construct($transferCronModuleDependency);
-        $this->restClient = $restClient;
+        $this->multidomainRestClient = $multidomainRestClient;
         $this->storeStockTransferMapper = $storeStockTransferMapper;
         $this->storeStockTransferValidator = $storeStockTransferValidator;
         $this->productFacade = $productFacade;
@@ -65,16 +68,19 @@ abstract class AbstractStoreStockImportCronModule extends AbstractTransferImport
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $this->logger->addInfo('Starting downloading stock quantities from IS');
+        $this->logger->addInfo('Downloading stock quantities from IS for Czech domain');
+        $czechTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getCzechRestClient());
+        $transferDataItems = $czechTransferDataItems;
 
-        $restResponse = $this->restClient->get($this->getApiUrl());
+        $this->logger->addInfo('Downloading stock quantities from IS for Slovak domain');
+        $slovakTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getSlovakRestClient());
+        $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
 
-        $transferDataItems = [];
-        foreach ($restResponse->getData() as $restData) {
-            $transferDataItems[] = new StoreStockTransferResponseItemData($restData);
-        }
+        $this->logger->addInfo('Downloading stock quantities from IS for German domain');
+        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getGermanRestClient());
+        $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
 
-        return new TransferResponse($restResponse->getCode(), $transferDataItems);
+        return new TransferResponse(200, $transferDataItems);
     }
 
     /**
@@ -117,5 +123,28 @@ abstract class AbstractStoreStockImportCronModule extends AbstractTransferImport
     protected function isNextIterationNeeded(): bool
     {
         return false;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
+     * @return array
+     */
+    protected function getTransferItemsFromResponse(RestClient $restClient)
+    {
+        $transferDataItems = [];
+        $restResponse = $restClient->get($this->getApiUrl());
+        foreach ($restResponse->getData() as $restData) {
+            $transferDataItems[] = new StoreStockTransferResponseItemData($restData);
+        }
+
+        return $transferDataItems;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getTransferIdentifier(): string
+    {
+        return static::TRANSFER_IDENTIFIER;
     }
 }

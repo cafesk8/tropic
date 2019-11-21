@@ -26,7 +26,15 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
 
-    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllStoreStockImportCronModule:
+    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllCzechStoreStockImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '03', minutes: '00' }
+
+    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '03', minutes: '00' }
+
+    Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllGermanStoreStockImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '03', minutes: '00' }
 

@@ -50,10 +50,6 @@ class StoreStockTransferMapper
     ): ProductData {
         $productData = $this->productDataFactory->createFromProduct($product);
 
-        if ($transferIdentifier === AllStoreStockImportCronModule::TRANSFER_IDENTIFIER) {
-            $productData->stockQuantityByStoreId = [];
-        }
-
         foreach ($productTransferResponseItemData->getSitesQuantity() as $stockQuantity) {
             $store = $this->storeFacade->findByExternalNumber($stockQuantity->getSiteNumber());
 
