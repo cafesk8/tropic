@@ -24,7 +24,7 @@ use Shopsys\ShopBundle\Model\Order\Status\Transfer\Exception\InvalidOrderStatusT
 
 class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 {
-    private const TRANSFER_IDENTIFIER = 'import_order_statuses';
+    public const TRANSFER_IDENTIFIER = 'import_order_statuses';
     private const ORDER_BATCH_SIZE = 50;
 
     /**
@@ -169,7 +169,12 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         try {
             $restResponse = $restClient->get($apiMethodUrl);
         } catch (UnexpectedResponseCodeException $exception) {
-            $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
+            $this->logger->addWarning(
+                'Order not found',
+                [
+                    'number' => $orderNumber,
+                ]
+            );
             return [];
         }
 
@@ -271,7 +276,12 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             $restResponse = $restClient->get($apiMethodUrl);
         } catch (UnexpectedResponseCodeException $exception) {
             $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
-            $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
+            $this->logger->addWarning(
+                'Order not found',
+                [
+                    'number' => $orderNumber,
+                ]
+            );
             return null;
         }
 

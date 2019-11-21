@@ -118,7 +118,10 @@ abstract class AbstractProductPriceImportCronModule extends AbstractTransferImpo
 
         if ($product === null) {
             $this->logger->addError(
-                sprintf('Product with EAN `%s` has not been found while updating prices', $productTransferResponseItemData->getBarcode())
+                'Product has not been found while updating prices',
+                [
+                    'EAN' => $productTransferResponseItemData->getBarcode(),
+                ]
             );
             return;
         }

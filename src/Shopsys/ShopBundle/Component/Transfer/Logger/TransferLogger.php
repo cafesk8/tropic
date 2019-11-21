@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Transfer\Logger;
 
+use Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData;
 use Symfony\Bridge\Monolog\Logger;
 
 class TransferLogger
@@ -19,15 +20,27 @@ class TransferLogger
     private $logger;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData[]
+     */
+    private $transferIssuesData;
+
+    /**
+     * @var string
+     */
+    private $transferIssuesGroupId;
+
+    /**
      * @param string $transferIdentifier
      * @param \Symfony\Bridge\Monolog\Logger $logger
      */
     public function __construct(
-        $transferIdentifier,
+        string $transferIdentifier,
         Logger $logger
     ) {
         $this->transferIdentifier = $transferIdentifier;
         $this->logger = $logger;
+        $this->transferIssuesData = [];
+        $this->transferIssuesGroupId = uniqid($transferIdentifier . '_');
     }
 
     /**
@@ -55,6 +68,7 @@ class TransferLogger
     public function addWarning($message, array $context = []): void
     {
         $this->logger->addDebug($this->getLoggerMessage($message), $context);
+        $this->addTransferIssueDataToQueue($message, $context);
     }
 
     /**
@@ -64,6 +78,7 @@ class TransferLogger
     public function addError($message, array $context = []): void
     {
         $this->logger->addError($this->getLoggerMessage($message), $context);
+        $this->addTransferIssueDataToQueue($message, $context);
     }
 
     /**
@@ -73,5 +88,38 @@ class TransferLogger
     private function getLoggerMessage($message): string
     {
         return 'Transfer "' . $this->transferIdentifier . '": ' . $message;
+    }
+
+    /**
+     * @param string $message
+     * @param array $context
+     */
+    private function addTransferIssueDataToQueue(string $message, array $context): void
+    {
+        $transferIssueMessage = $message;
+        $contextString = null;
+        if (!empty($context)) {
+            $contextString = json_encode($context);
+        }
+        $this->transferIssuesData[] = new TransferIssueData($this->transferIdentifier, $transferIssueMessage, $this->transferIssuesGroupId, $contextString);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueData[]
+     */
+    public function getAllTransferIssuesDataAndCleanQueue(): array
+    {
+        $transferIssuesData = $this->transferIssuesData;
+        $this->transferIssuesData = [];
+
+        return $transferIssuesData;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllTransferIssuesDataCount(): int
+    {
+        return count($this->transferIssuesData);
     }
 }

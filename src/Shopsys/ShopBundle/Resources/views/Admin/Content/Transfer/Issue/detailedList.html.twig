@@ -1,0 +1,15 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+
+{% block title %}- {{ 'Upřesňující informace pro chybu v přenosu'|trans }}{% endblock %}
+{% block h1 %}{{ 'Upřesňující informace pro chybu v přenosu'|trans }} {% endblock %}
+
+{% block btn %}
+    <a href="{{ url('admin_transferissue_list') }}" class="btn wrap-bar__btn">
+        {{ 'Zpět na seznam problémů v přenosech'|trans }}
+    </a>
+{% endblock %}
+
+{% block main_content %}
+    <h2>{{ 'Chybová hláška:'|trans }} "{{ message }}"</h2>
+    {{ gridView.render() }}
+{% endblock %}

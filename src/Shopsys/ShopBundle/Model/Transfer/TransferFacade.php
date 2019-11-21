@@ -82,4 +82,12 @@ class TransferFacade
     {
         return $this->transferRepository->getByIdentifier($identifier);
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transfer\Transfer[]
+     */
+    public function getAll(): array
+    {
+        return $this->transferRepository->getAll();
+    }
 }
