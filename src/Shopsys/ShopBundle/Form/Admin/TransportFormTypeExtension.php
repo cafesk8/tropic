@@ -121,8 +121,8 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             $data = $event->getData();
             $form = $event->getForm();
 
-            if ((string)$data['balikobotGroup']['personalTakeType'] === Transport::PERSONAL_TAKE_TYPE_BALIKOBOT) {
-                $balikobotShipper = $data['balikobotGroup']['balikobotShipper'];
+            if ((string)$data['transportTypeGroup']['transportType'] === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT) {
+                $balikobotShipper = $data['transportTypeGroup']['balikobotShipper'];
                 $this->addDependendElement($form, $balikobotShipper);
             }
         });
@@ -141,7 +141,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             /** @var \Shopsys\ShopBundle\Model\Transport\TransportData $transportData */
             $transportData = $form->getData();
 
-            if ($transportData->personalTakeType === Transport::PERSONAL_TAKE_TYPE_BALIKOBOT) {
+            if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT) {
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT;
                 $validationGroups[] = self::VALIDATION_GROUP_BALIKOBOT_SHIPPER_SERVICE;
             }
@@ -164,23 +164,24 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      */
     private function getBalikobotAndStoreGroup(FormBuilderInterface $builder): FormBuilderInterface
     {
-        $builderBalikobotGroup = $builder->create('balikobotGroup', GroupType::class, [
-            'label' => t('Možnosti pro osobní převzetí'),
+        $builderTransportTypeGroup = $builder->create('transportTypeGroup', GroupType::class, [
+            'label' => t('Možnosti dopravy'),
             'position' => ['after' => 'basicInformation'],
         ]);
-        $builderBalikobotGroup->add('personalTakeType', ChoiceType::class, [
-            'label' => t('Použít'),
+        $builderTransportTypeGroup->add('transportType', ChoiceType::class, [
+            'label' => t('Typ dopravy'),
             'choices' => [
-                t('Bez osobního převzetí') => Transport::PERSONAL_TAKE_TYPE_NONE,
-                t('Balíkobot') => Transport::PERSONAL_TAKE_TYPE_BALIKOBOT,
-                t('Prodejny Bushman') => Transport::PERSONAL_TAKE_TYPE_STORE,
+                t('Bez osobního převzetí') => Transport::TYPE_NONE,
+                t('Balíkobot') => Transport::TYPE_PERSONAL_TAKE_BALIKOBOT,
+                t('Prodejny Bushman') => Transport::TYPE_PERSONAL_TAKE_STORE,
+                t('E-mailem') => Transport::TYPE_EMAIL,
             ],
             'attr' => [
-                'class' => 'js-transport-personal-take',
+                'class' => 'js-transport-type',
             ],
         ]);
 
-        return $builderBalikobotGroup;
+        return $builderTransportTypeGroup;
     }
 
     /**
@@ -189,9 +190,9 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      */
     private function addDependendElement(FormInterface $form, ?string $balikobotShipper): void
     {
-        $builderBalikobotGroup = $form->get('balikobotGroup');
+        $builderTransportTypeGroup = $form->get('transportTypeGroup');
 
-        $builderBalikobotGroup->add('balikobotShipper', ChoiceType::class, [
+        $builderTransportTypeGroup->add('balikobotShipper', ChoiceType::class, [
             'required' => false,
             'label' => t('Dopravce'),
             'data' => $balikobotShipper,
@@ -227,7 +228,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             $placeholderMessage = t('Vyberte prosím službu dopravce');
         }
 
-        $builderBalikobotGroup->add('balikobotShipperService', ChoiceType::class, [
+        $builderTransportTypeGroup->add('balikobotShipperService', ChoiceType::class, [
             'required' => false,
             'placeholder' => $placeholderMessage,
             'label' => t('Služba dopravce'),

@@ -263,7 +263,7 @@ class Order extends BaseOrder
      *
      * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $personalTakeType;
+    private $transportType;
 
     /**
      * @var string|null
@@ -602,9 +602,9 @@ class Order extends BaseOrder
     /**
      * @return string
      */
-    public function getPersonalTakeType(): string
+    public function getTransportType(): string
     {
-        return $this->personalTakeType;
+        return $this->transportType;
     }
 
     /**
@@ -859,9 +859,9 @@ class Order extends BaseOrder
      */
     public function isPersonalTakeType(): bool
     {
-        return in_array($this->personalTakeType, [
-            Transport::PERSONAL_TAKE_TYPE_BALIKOBOT,
-            Transport::PERSONAL_TAKE_TYPE_STORE,
+        return in_array($this->transportType, [
+            Transport::TYPE_PERSONAL_TAKE_BALIKOBOT,
+            Transport::TYPE_PERSONAL_TAKE_STORE,
         ], true);
     }
 
@@ -892,7 +892,7 @@ class Order extends BaseOrder
             return;
         }
 
-        $this->personalTakeType = $transport->getPersonalTakeType();
+        $this->transportType = $transport->getTransportType();
         if ($transport->isPickupPlace() === true) {
             $this->pickupPlace = $orderData->pickupPlace;
         } elseif ($transport->isChooseStore() === true && $orderData->store !== null) {

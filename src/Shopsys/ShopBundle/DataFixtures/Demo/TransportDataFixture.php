@@ -79,7 +79,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'de' => 'PPL',
         ];
         $transportData->deliveryDays = 1;
-        $transportData->personalTakeType = Transport::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
@@ -130,7 +130,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'de' => 'PPL',
         ];
         $transportData->deliveryDays = 3;
-        $transportData->personalTakeType = Transport::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
@@ -150,7 +150,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'de' => 'PPL',
         ];
         $transportData->deliveryDays = 1;
-        $transportData->personalTakeType = Transport::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;

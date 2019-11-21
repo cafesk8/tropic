@@ -31,7 +31,7 @@ class TransportData extends BaseTransportData
     /**
      * @var string
      */
-    public $personalTakeType;
+    public $transportType;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Country\Country[]
@@ -63,7 +63,7 @@ class TransportData extends BaseTransportData
         parent::__construct();
         $this->pickupPlace = false;
         $this->initialDownload = false;
-        $this->personalTakeType = Transport::PERSONAL_TAKE_TYPE_NONE;
+        $this->transportType = Transport::TYPE_NONE;
         $this->deliveryDays = 0;
     }
 }

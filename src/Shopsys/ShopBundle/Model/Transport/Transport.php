@@ -16,9 +16,10 @@ use Shopsys\ShopBundle\Model\Transport\Exception\InvalidPersonalTakeTypeExceptio
  */
 class Transport extends BaseTransport
 {
-    public const PERSONAL_TAKE_TYPE_NONE = 'none';
-    public const PERSONAL_TAKE_TYPE_BALIKOBOT = 'balikobot';
-    public const PERSONAL_TAKE_TYPE_STORE = 'store';
+    public const TYPE_NONE = 'none';
+    public const TYPE_PERSONAL_TAKE_BALIKOBOT = 'balikobot';
+    public const TYPE_PERSONAL_TAKE_STORE = 'store';
+    public const TYPE_EMAIL = 'e-mail';
 
     /**
      * @var bool
@@ -96,7 +97,7 @@ class Transport extends BaseTransport
      *
      * @ORM\Column(type="string", length=50, nullable=false)
      */
-    public $personalTakeType;
+    public $transportType;
 
     /**
      * @var string|null
@@ -111,17 +112,17 @@ class Transport extends BaseTransport
     public function __construct(BaseTransportData $transportData)
     {
         parent::__construct($transportData);
-        $this->balikobot = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $this->balikobot = $transportData->transportType === self::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
-        $this->chooseStore = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_STORE;
+        $this->chooseStore = $transportData->transportType === self::TYPE_PERSONAL_TAKE_STORE;
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
         $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
-        $this->setPersonalTakeType($transportData->personalTakeType);
+        $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
     }
 
@@ -131,17 +132,17 @@ class Transport extends BaseTransport
     public function edit(BaseTransportData $transportData): void
     {
         parent::edit($transportData);
-        $this->balikobot = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_BALIKOBOT;
+        $this->balikobot = $transportData->transportType === self::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $this->balikobotShipper = $transportData->balikobotShipper;
         $this->balikobotShipperService = $transportData->balikobotShipperService;
         $this->pickupPlace = $transportData->pickupPlace;
         $this->initialDownload = $transportData->initialDownload;
-        $this->chooseStore = $transportData->personalTakeType === self::PERSONAL_TAKE_TYPE_STORE;
+        $this->chooseStore = $transportData->transportType === self::TYPE_PERSONAL_TAKE_STORE;
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
         $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
-        $this->setPersonalTakeType($transportData->personalTakeType);
+        $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
     }
 
@@ -266,24 +267,25 @@ class Transport extends BaseTransport
     /**
      * @return string
      */
-    public function getPersonalTakeType(): string
+    public function getTransportType(): string
     {
-        return $this->personalTakeType;
+        return $this->transportType;
     }
 
     /**
      * @param string $type
      */
-    private function setPersonalTakeType(string $type): void
+    private function setTransportType(string $type): void
     {
         if (in_array($type, [
-            self::PERSONAL_TAKE_TYPE_NONE,
-            self::PERSONAL_TAKE_TYPE_BALIKOBOT,
-            self::PERSONAL_TAKE_TYPE_STORE,
+            self::TYPE_NONE,
+            self::TYPE_PERSONAL_TAKE_BALIKOBOT,
+            self::TYPE_PERSONAL_TAKE_STORE,
+            self::TYPE_EMAIL,
         ], true) === false) {
-            throw new InvalidPersonalTakeTypeException('Invalid transport personal take type `%s`', $type);
+            throw new InvalidPersonalTakeTypeException('Invalid transport type `%s`', $type);
         }
-        $this->personalTakeType = $type;
+        $this->transportType = $type;
     }
 
     /**
