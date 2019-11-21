@@ -16,6 +16,8 @@ use Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory;
+use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -32,6 +34,16 @@ class CustomerFacade extends BaseCustomerFacade
     private $pricingGroupFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade
+     */
+    private $userTransferIdAndEanFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory
+     */
+    private $userTransferIdAndEanDataFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserRepository $userRepository
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
@@ -42,6 +54,8 @@ class CustomerFacade extends BaseCustomerFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface $userFactory
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade $userTransferIdAndEanFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory $userTransferIdAndEanDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -53,11 +67,15 @@ class CustomerFacade extends BaseCustomerFacade
         DeliveryAddressFactoryInterface $deliveryAddressFactory,
         BillingAddressDataFactoryInterface $billingAddressDataFactory,
         UserFactoryInterface $userFactory,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        UserTransferIdAndEanFacade $userTransferIdAndEanFacade,
+        UserTransferIdAndEanDataFactory $userTransferIdAndEanDataFactory
     ) {
         parent::__construct($em, $userRepository, $customerDataFactory, $encoderFactory, $customerMailFacade, $billingAddressFactory, $deliveryAddressFactory, $billingAddressDataFactory, $userFactory);
 
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->userTransferIdAndEanFacade = $userTransferIdAndEanFacade;
+        $this->userTransferIdAndEanDataFactory = $userTransferIdAndEanDataFactory;
     }
 
     /**
@@ -147,6 +165,12 @@ class CustomerFacade extends BaseCustomerFacade
         $user->setTransferId($transferId);
         $this->em->flush($user);
 
+        $ean = $user->getEan();
+        if ($ean !== null && !$this->userTransferIdAndEanFacade->isTransferIdAndEanExists($user, $transferId, $user->getEan())) {
+            $userTransferIdAndEanData = $this->userTransferIdAndEanDataFactory->createFromCustomerAndTransferIdAndEan($user, $transferId, $ean);
+            $this->userTransferIdAndEanFacade->create($userTransferIdAndEanData);
+        }
+
         return $user;
     }
 
@@ -162,19 +186,20 @@ class CustomerFacade extends BaseCustomerFacade
             return;
         }
 
-        $customer = $transferIdAndEan->getCustomer();
+        $customerId = $transferIdAndEan->getCustomer()->getId();
+        $customer = $this->getUserById($customerId);
         $customer->updateTransferEanAndPricingGroup($transferIdAndEan, $newPricingGroup);
         $this->flush($customer);
     }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $currentPricingGroup
-     * @param float $coefficient
+     * @param float|null $coefficient
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
      */
-    public function updatePricingGroupByIsResponse(PricingGroup $currentPricingGroup, float $coefficient, UserTransferIdAndEan $userTransferIdAndEan): void
+    public function updatePricingGroupByIsResponse(PricingGroup $currentPricingGroup, ?float $coefficient, UserTransferIdAndEan $userTransferIdAndEan): void
     {
-        if ($currentPricingGroup->getDiscount() === null || $coefficient <= $currentPricingGroup->getDiscount()) {
+        if ($coefficient !== null && ($currentPricingGroup->getDiscount() === null || $coefficient <= $currentPricingGroup->getDiscount())) {
             $this->updateTransferIdAndEanAndPricingGroup(
                 $userTransferIdAndEan,
                 $coefficient
@@ -185,12 +210,11 @@ class CustomerFacade extends BaseCustomerFacade
     }
 
     /**
-     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
-    public function getBatchForPricingGroupUpdate(int $limit): array
+    public function getForPricingGroupUpdate(): array
     {
-        return $this->userRepository->getBatchForPricingGroupUpdate($limit);
+        return $this->userRepository->getForPricingGroupUpdate();
     }
 
     /**
@@ -198,6 +222,7 @@ class CustomerFacade extends BaseCustomerFacade
      */
     public function changeCustomerPricingGroupUpdatedAt(User $user): void
     {
+        $user = $this->userRepository->getUserById($user->getId());
         $customerData = $this->customerDataFactory->createFromUser($user);
 
         /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */

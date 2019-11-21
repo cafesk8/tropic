@@ -16,7 +16,6 @@ use Shopsys\ShopBundle\Model\Order\Status\Transfer\Exception\InvalidOrderStatusT
 class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportCronModule
 {
     private const TRANSFER_IDENTIFIER = 'import_customers_pricing_groups';
-    private const CUSTOMER_BATCH_SIZE = 50;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
@@ -57,7 +56,7 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $customers = $this->customerFacade->getBatchForPricingGroupUpdate(self::CUSTOMER_BATCH_SIZE);
+        $customers = $this->customerFacade->getForPricingGroupUpdate();
         $allTransferDataItems = [];
         foreach ($customers as $customer) {
             foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
@@ -96,6 +95,6 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
      */
     protected function isNextIterationNeeded(): bool
     {
-        return true;
+        return false;
     }
 }
