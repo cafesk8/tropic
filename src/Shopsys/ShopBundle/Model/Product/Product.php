@@ -27,6 +27,8 @@ use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
 class Product extends BaseProduct
 {
     public const DECREASE_REAL_STOCK_QUANTITY_BY = 5;
+    public const PRODUCT_TYPE_GIFT_CERTIFICATE_500 = 'gift_certificate_500';
+    public const PRODUCT_TYPE_GIFT_CERTIFICATE_1000 = 'gift_certificate_1000';
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
@@ -135,6 +137,13 @@ class Product extends BaseProduct
     protected $baseName;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $productType;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -154,6 +163,7 @@ class Product extends BaseProduct
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->updatedAt = $productData->updatedAt;
         $this->baseName = $productData->baseName;
+        $this->productType = $productData->productType;
     }
 
     /**
@@ -175,6 +185,7 @@ class Product extends BaseProduct
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->baseName = $productData->baseName;
+        $this->productType = $productData->productType;
     }
 
     /**
@@ -664,5 +675,13 @@ class Product extends BaseProduct
         }
 
         return $this->getDescription($domainId);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProductType(): ?string
+    {
+        return $this->productType;
     }
 }

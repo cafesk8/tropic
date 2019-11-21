@@ -79,6 +79,11 @@ class ProductData extends BaseProductData
      */
     public $baseName;
 
+    /**
+     * @var string|null
+     */
+    public $productType;
+
     public function __construct()
     {
         parent::__construct();
