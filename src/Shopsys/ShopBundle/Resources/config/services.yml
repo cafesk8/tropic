@@ -366,8 +366,6 @@ services:
 
     Shopsys\ShopBundle\Model\Product\MassEdit\Action\ProductParameterMassAction: ~
 
-    Shopsys\ShopBundle\Model\Product\MassEdit\Action\GiftMassAction: ~
-
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'
 
     Shopsys\ShopBundle\Twig\BushmanClubPointsExtension:

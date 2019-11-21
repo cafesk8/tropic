@@ -1,0 +1,10 @@
+{% extends '@ShopsysFramework/Admin/Grid/Grid.html.twig' %}
+
+{% block grid_no_data %}
+    {{ 'Žádné dárky nenalezeny.'|trans }}
+{% endblock %}
+
+{% block grid_pager_totalcount %}
+    {% set entityName = 'productGifts'|trans %}
+    {{ parent() }}
+{% endblock %}

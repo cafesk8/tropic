@@ -45,11 +45,6 @@ class ProductData extends BaseProductData
     public $actionPrices;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Product|null
-     */
-    public $gift;
-
-    /**
      * @var bool
      */
     public $generateToHsSportXmlFeed;

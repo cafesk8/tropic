@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Gift;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\ShopBundle\Model\Product\Product;
 
-class ProductGiftFacade
+class ProductGiftInCartFacade
 {
     /**
      * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation
@@ -15,12 +16,18 @@ class ProductGiftFacade
     private $productGiftCalculation;
 
     /**
-     * ProductGiftFacade constructor.
-     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftCalculation
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
-    public function __construct(ProductGiftPriceCalculation $productGiftCalculation)
+    private $domain;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftCalculation
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function __construct(ProductGiftPriceCalculation $productGiftCalculation, Domain $domain)
     {
         $this->productGiftCalculation = $productGiftCalculation;
+        $this->domain = $domain;
     }
 
     /**
@@ -34,15 +41,20 @@ class ProductGiftFacade
         /** @var \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem $cartItem */
         foreach ($cartItems as $cartItem) {
             if ($cartItem->getProduct()->isVariant() === true) {
-                /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
-                $gift = $cartItem->getProduct()->getMainVariant()->getGift();
+                $productGifts = $cartItem->getProduct()->getMainVariant()->getActiveProductGiftsByDomainId($this->domain->getId());
             } else {
-                /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
-                $gift = $cartItem->getProduct()->getGift();
+                $productGifts = $cartItem->getProduct()->getActiveProductGiftsByDomainId($this->domain->getId());
             }
 
-            if ($this->isGiftMarketable($gift)) {
-                $giftsVariantsByProductId[$cartItem->getProduct()->getId()] = $this->getGiftVariants($gift, $cartItem);
+            foreach ($productGifts as $productGift) {
+                /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
+                $gift = $productGift->getGift();
+
+                if ($this->isGiftMarketable($gift)) {
+                    foreach ($this->getGiftVariants($gift, $cartItem) as $giftVariantIndex => $giftVariant) {
+                        $giftsVariantsByProductId[$cartItem->getProduct()->getId()][$giftVariantIndex] = $giftVariant;
+                    }
+                }
             }
         }
 

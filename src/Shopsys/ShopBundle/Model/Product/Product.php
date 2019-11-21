@@ -88,6 +88,13 @@ class Product extends BaseProduct
     protected $gift;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
+     *
+     * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift", mappedBy="products", cascade={"persist"}, fetch="EXTRA_LAZY")
+     */
+    protected $productGifts;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -148,7 +155,6 @@ class Product extends BaseProduct
         $this->transferNumber = $productData->transferNumber;
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->mainVariantGroup = $productData->mainVariantGroup;
-        $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
@@ -171,7 +177,6 @@ class Product extends BaseProduct
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
-        $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
@@ -445,14 +450,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
-     */
-    public function getGift(): ?self
-    {
-        return $this->gift;
-    }
-
-    /**
      * @return \Shopsys\ShopBundle\Model\Product\Product
      */
     public function getMainVariant(): BaseProduct
@@ -617,5 +614,37 @@ class Product extends BaseProduct
     private function setName(string $locale, string $name): void
     {
         $this->translation($locale)->setName($name);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
+     */
+    public function getActiveProductGiftsByDomainId(int $domainId): array
+    {
+        $productGifts = [];
+
+        foreach ($this->productGifts as $productGift) {
+            if ($productGift->getDomainId() === $domainId && $productGift->isActive() === true) {
+                $productGifts[] = $productGift;
+            }
+        }
+
+        return $productGifts;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     */
+    public function getGifts(int $domainId): array
+    {
+        $gifts = [];
+        $activeProductGiftsByDomainId = $this->getActiveProductGiftsByDomainId($domainId);
+        foreach ($activeProductGiftsByDomainId as $activeProductGift) {
+            $gifts[] = $activeProductGift->getGift();
+        }
+
+        return $gifts;
     }
 }
