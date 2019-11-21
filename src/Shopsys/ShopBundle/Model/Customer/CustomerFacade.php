@@ -194,12 +194,12 @@ class CustomerFacade extends BaseCustomerFacade
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $currentPricingGroup
-     * @param float $coefficient
+     * @param float|null $coefficient
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
      */
-    public function updatePricingGroupByIsResponse(PricingGroup $currentPricingGroup, float $coefficient, UserTransferIdAndEan $userTransferIdAndEan): void
+    public function updatePricingGroupByIsResponse(PricingGroup $currentPricingGroup, ?float $coefficient, UserTransferIdAndEan $userTransferIdAndEan): void
     {
-        if ($currentPricingGroup->getDiscount() === null || $coefficient <= $currentPricingGroup->getDiscount()) {
+        if ($coefficient !== null && ($currentPricingGroup->getDiscount() === null || $coefficient <= $currentPricingGroup->getDiscount())) {
             $this->updateTransferIdAndEanAndPricingGroup(
                 $userTransferIdAndEan,
                 $coefficient
