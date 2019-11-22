@@ -4,7 +4,7 @@
 echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
 
 # Create unique docker image tag with commit hash
-DOCKER_IMAGE_TAG=${APPLICATION_ENVIRONMENT}-commit-${GIT_COMMIT}
+DOCKER_IMAGE_TAG=${APPLICATION_ENVIRONMENT}-commit-${GIT_COMMIT}-$(date +"%s")
 
 ## Docker image for application php-fpm container
 docker image pull ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG} || (
