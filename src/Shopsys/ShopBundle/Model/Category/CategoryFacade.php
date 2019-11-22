@@ -124,7 +124,7 @@ class CategoryFacade extends BaseCategoryFacade
      */
     public function findMallCategoryForProduct(Product $product, int $domainId): ?string
     {
-        return $this->categoryRepository->findMallCategoryForProduct($product, $domainId);
+        return $this->categoryRepository->findMallCategoryForProduct($product->isVariant() ? $product->getMainVariant() : $product, $domainId);
     }
 
     /**

@@ -647,4 +647,30 @@ class Product extends BaseProduct
 
         return $gifts;
     }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getShortDescriptionConsideringVariant(int $domainId): ?string
+    {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getShortDescription($domainId);
+        }
+
+        return $this->getShortDescription($domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getDescriptionConsideringVariant(int $domainId): ?string
+    {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getDescription($domainId);
+        }
+
+        return $this->getDescription($domainId);
+    }
 }

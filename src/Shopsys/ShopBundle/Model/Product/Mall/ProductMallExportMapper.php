@@ -161,19 +161,19 @@ class ProductMallExportMapper
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $variant
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \MPAPI\Entity\Products\Variant
      */
-    private function mapVariant(Product $variant): Variant
+    private function mapVariant(Product $product): Variant
     {
         /** @var \MPAPI\Entity\Products\Variant $mallVariant */
-        $mallVariant = $this->mapBasicInformation($variant, true);
-        $shortDescription = $variant->getMainVariant()->getShortDescription(self::CZECH_DOMAIN);
+        $mallVariant = $this->mapBasicInformation($product, true);
+        $shortDescription = $product->getShortDescriptionConsideringVariant(self::CZECH_DOMAIN);
         if ($shortDescription === null) {
             throw new InvalidProductForMallExportException('Short description not set');
         }
         $mallVariant->setShortdesc($shortDescription);
-        $mallVariant->setLongdesc($variant->getMainVariant()->getDescription(self::CZECH_DOMAIN));
+        $mallVariant->setLongdesc($product->getDescriptionConsideringVariant(self::CZECH_DOMAIN));
 
         return $mallVariant;
     }
@@ -185,18 +185,17 @@ class ProductMallExportMapper
      */
     private function mapBasicInformation(Product $product, bool $isVariant): AbstractArticleEntity
     {
+        $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
         if ($isVariant === false) {
             $mallProduct = new MallProduct();
             $mallProduct->setVat($product->getVat()->getPercent());
             $mallProduct->setBrandId('BUSHMAN');
 
-            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
             if ($mallCategoryId !== null) {
                 $mallProduct->setCategoryId($mallCategoryId);
             }
         } else {
             $mallProduct = new Variant();
-            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product->getMainVariant(), self::CZECH_DOMAIN);
         }
 
         $domainConfig = $this->domain->getDomainConfigById(self::CZECH_DOMAIN);
