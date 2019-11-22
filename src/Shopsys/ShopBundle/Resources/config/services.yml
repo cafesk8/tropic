@@ -634,3 +634,5 @@ services:
             - '@shopsys.shop.maintenance_cache_provider'
         tags:
             - { name: kernel.event_subscriber }
+
+    Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@Shopsys\ShopBundle\Model\Security\FrontLogoutHandler'

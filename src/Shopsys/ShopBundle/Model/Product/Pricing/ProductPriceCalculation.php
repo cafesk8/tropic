@@ -114,6 +114,13 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $product->getVat()
         );
 
-        return new ProductPrice($basePrice, false, $defaultPrice);
+        return new ProductPrice(
+            $basePrice,
+            false,
+            $pricingGroup,
+            $defaultPricingGroup,
+            $product,
+            $defaultPrice
+        );
     }
 }
