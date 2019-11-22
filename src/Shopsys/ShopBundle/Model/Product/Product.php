@@ -29,6 +29,10 @@ class Product extends BaseProduct
     public const DECREASE_REAL_STOCK_QUANTITY_BY = 5;
     public const PRODUCT_TYPE_GIFT_CERTIFICATE_500 = 'gift_certificate_500';
     public const PRODUCT_TYPE_GIFT_CERTIFICATE_1000 = 'gift_certificate_1000';
+    public const PRODUCT_TYPES_GIFT_CERTIFICATES = [
+        self::PRODUCT_TYPE_GIFT_CERTIFICATE_500,
+        self::PRODUCT_TYPE_GIFT_CERTIFICATE_1000,
+    ];
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
@@ -683,5 +687,13 @@ class Product extends BaseProduct
     public function getProductType(): ?string
     {
         return $this->productType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductTypeGiftCertificate(): bool
+    {
+        return in_array($this->productType, self::PRODUCT_TYPES_GIFT_CERTIFICATES, true);
     }
 }

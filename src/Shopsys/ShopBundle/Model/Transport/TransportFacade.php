@@ -151,12 +151,13 @@ class TransportFacade extends BaseTransportFacade
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @param bool $isTransportEmailType
      * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
      */
-    public function getVisibleByDomainIdAndCountry(int $domainId, array $visiblePaymentsOnDomain, ?Country $country)
+    public function getVisibleByDomainIdAndCountryAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, ?Country $country, bool $isTransportEmailType)
     {
         /** @var \Shopsys\ShopBundle\Model\Transport\Transport[] $visibleTransports */
-        $visibleTransports = $this->getVisibleByDomainId($domainId, $visiblePaymentsOnDomain);
+        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $isTransportEmailType);
 
         if ($country === null) {
             return $visibleTransports;
@@ -181,6 +182,19 @@ class TransportFacade extends BaseTransportFacade
     {
         $transports = $this->transportRepository->getAllByDomainId($domainId);
         $transports = $this->filterTransportsWithoutPickUpPlaces($transports);
+
+        return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @param bool $isTransportEmailType
+     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     */
+    private function getVisibleByDomainIdAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, bool $isTransportEmailType)
+    {
+        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $isTransportEmailType);
 
         return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
     }

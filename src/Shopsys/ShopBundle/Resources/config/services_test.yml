@@ -184,3 +184,7 @@ services:
     Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
 
     Shopsys\ShopBundle\Model\Feed\FeedHelper: ~
+
+    Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcher: ~
+
+    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher: '@Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcher'

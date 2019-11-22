@@ -11,6 +11,8 @@ use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem as BaseCartItem;
 use Shopsys\ShopBundle\Model\Product\Product;
 
 /**
+ * @method \Shopsys\ShopBundle\Model\Product\Product getProduct()
+ *
  * @ORM\Table(name="cart_items")
  * @ORM\Entity
  */

@@ -131,7 +131,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[]
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function getItems()
     {
