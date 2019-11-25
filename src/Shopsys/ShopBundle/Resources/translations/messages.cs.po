@@ -1639,7 +1639,7 @@ msgstr "Vytisknout"
 msgid "Pro lidi s životním názorem, který nás spojuje.“"
 msgstr ""
 
-msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
+msgid "Pro plochy 1, 2, 3, 4 - čtverec (397x306px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
 msgstr ""
 
 msgid "Pro termín doručení a dostupnost na prodejnách si vyberte z velikostí."
@@ -2793,4 +2793,3 @@ msgstr ""
 
 msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
 msgstr ""
-

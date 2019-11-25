@@ -1657,8 +1657,8 @@ msgstr "Vytlačiť"
 msgid "Pro lidi s životním názorem, který nás spojuje.“"
 msgstr "Pre ľudí so životným názorom, ktorý nás spája. \""
 
-msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
-msgstr "Pre plochy 1, 2, 3, 4 - štvorec (380x290px), pre plochu 5 - obdĺžnik na výšku (380x600px), pre plochu 6 - veľký obdĺžnik na šírku (190x460px)."
+msgid "Pro plochy 1, 2, 3, 4 - čtverec (397x306), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
+msgstr "Pre plochy 1, 2, 3, 4 - štvorec (397x306), pre plochu 5 - obdĺžnik na výšku (380x600px), pre plochu 6 - veľký obdĺžnik na šírku (190x460px)."
 
 msgid "Pro termín doručení a dostupnost na prodejnách si vyberte z velikostí."
 msgstr "Pre termín a dostupnosť na predaj si vyberte z veľkostí."
