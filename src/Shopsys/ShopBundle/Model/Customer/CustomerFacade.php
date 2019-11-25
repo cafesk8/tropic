@@ -272,7 +272,10 @@ class CustomerFacade extends BaseCustomerFacade
             $this->em->persist($billingAddress);
         }
 
-        $this->em->persist($deliveryAddress);
+        if ($deliveryAddress !== null) {
+            $this->em->persist($deliveryAddress);
+        }
+
         $this->em->persist($user);
         $this->em->flush();
 
