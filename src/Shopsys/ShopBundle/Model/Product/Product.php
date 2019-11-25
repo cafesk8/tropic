@@ -80,14 +80,6 @@ class Product extends BaseProduct
     protected $flags;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Product|null
-     *
-     * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Product\Product")
-     * @ORM\JoinColumn(name="gift_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     */
-    protected $gift;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift", mappedBy="products", cascade={"persist"}, fetch="EXTRA_LAZY")
