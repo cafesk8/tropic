@@ -105,7 +105,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
             ]);
 
-        $builder->add($this->getBalikobotAndStoreGroup($builder));
+        $builder->add($this->getTransportTypeGroup($builder));
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
 
@@ -162,7 +162,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getBalikobotAndStoreGroup(FormBuilderInterface $builder): FormBuilderInterface
+    private function getTransportTypeGroup(FormBuilderInterface $builder): FormBuilderInterface
     {
         $builderTransportTypeGroup = $builder->create('transportTypeGroup', GroupType::class, [
             'label' => t('Možnosti dopravy'),
