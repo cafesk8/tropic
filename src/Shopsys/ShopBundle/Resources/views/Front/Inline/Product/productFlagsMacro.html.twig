@@ -4,7 +4,13 @@
         <div class="in-flag dont-print {{ classAddition }}">
             {% for productFlag in productFlags %}
                 <span
-                    class="in-flag__item{% if productFlag.name|length > 7 %} in-flag__item--middle-text{% elseif productFlag.name|length > 8 %} in-flag__item--smaller-text{% endif %}"
+                    class="in-flag__item
+                    {% if productFlag.name|length == 8 %}
+                        in-flag__item--middle-text
+                    {% elseif productFlag.name|length > 8 %}
+                        in-flag__item--smaller-text
+                    {% endif %}
+                    "
                     style="background-color: {{ productFlag.rgbColor }};"
                 >
                     {{ productFlag.name }}

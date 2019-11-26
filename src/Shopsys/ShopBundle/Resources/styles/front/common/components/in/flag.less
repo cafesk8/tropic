@@ -4,7 +4,7 @@
 @in-flag-item-font-size: 18px;
 @in-flag-item-font-size-middle: 17px;
 @in-flag-item-font-size-small: 16px;
-@in-flag-item-font-size-mobile: 12px;
+@in-flag-item-font-size-mobile: 10px;
 @in-flag-in-list-position-top: 0;
 @in-flag-in-list-position-right: 0;
 
@@ -44,7 +44,7 @@
         }
 
         &--middle-text {
-            line-height: @in-flag-item-font-size-mobile;
+            line-height: @in-flag-item-size-small;
 
             font-size: @in-flag-item-font-size-mobile;
 
@@ -56,6 +56,7 @@
         }
 
         &--smaller-text {
+            padding-top: 13px;
             line-height: @in-flag-item-font-size-mobile;
 
             font-size: @in-flag-item-font-size-mobile;
@@ -65,6 +66,7 @@
                 line-height: @in-flag-item-font-size-small;
 
                 font-size: @in-flag-item-font-size-small;
+                word-wrap: break-word;
             }
         }
     }
