@@ -9,7 +9,9 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart as BaseCart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
+use Shopsys\ShopBundle\Model\Cart\Exception\MaxPromoProductCartItemsReachedException;
 use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 
 /**
  * @ORM\Table(name="carts")
@@ -17,6 +19,8 @@ use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
  */
 class Cart extends BaseCart
 {
+    public const MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART = 1;
+
     /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money
      */
@@ -66,6 +70,49 @@ class Cart extends BaseCart
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
+     * @param mixed[] $selectedPromoProductsItems
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
+     */
+    public function updatePromoProductsItems(CartItemFactoryInterface $cartItemFactory, array $promoProductsForCart, array $selectedPromoProductsItems): array
+    {
+        $cartPromoProductsItems = [];
+
+        $countOfSelected = 0;
+
+        foreach ($selectedPromoProductsItems as $index => $idAndIsSelected) {
+            foreach ($idAndIsSelected as $promoProductId => $isSelected) {
+                if ($isSelected === true) {
+                    if ($countOfSelected >= self::MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART) {
+                        throw new MaxPromoProductCartItemsReachedException();
+                    }
+
+                    $countOfSelected++;
+
+                    /** @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProductForCart */
+                    $promoProductForCart = $promoProductsForCart[$promoProductId];
+
+                    $promoProductCartItem = $cartItemFactory->create(
+                        $this,
+                        $promoProductForCart->getProduct(),
+                        1,
+                        $promoProductForCart->getPrice(),
+                        null,
+                        null,
+                        $promoProductForCart
+                    );
+                    $this->addItem($promoProductCartItem);
+
+                    $cartPromoProductsItems[] = $promoProductCartItem;
+                }
+            }
+        }
+
+        return $cartPromoProductsItems;
+    }
+
+    /**
      * @param $productId
      * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem
      */
@@ -92,6 +139,20 @@ class Cart extends BaseCart
         }
 
         return $removedGifts;
+    }
+
+    /**
+     * @return array
+     */
+    public function removeAllPromoProductsAndGetThem(): array
+    {
+        $removedPromoProductsItems = [];
+        foreach ($this->getPromoProductItems() as $promoProductItem) {
+            $this->removeItemById($promoProductItem->getId());
+            $removedPromoProductsItems[] = $promoProductItem;
+        }
+
+        return $removedPromoProductsItems;
     }
 
     /**
@@ -133,11 +194,30 @@ class Cart extends BaseCart
     /**
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
+    public function getPromoProductItems()
+    {
+        $promoProductCartItems = [];
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem */
+        foreach ($this->items->toArray() as $cartItem) {
+            if ($cartItem->getPromoProduct() !== null) {
+                $promoProductCartItems[] = $cartItem;
+            }
+        }
+
+        return $promoProductCartItems;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[]
+     */
     public function getItems()
     {
         $cartItems = [];
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem */
         foreach ($this->items->toArray() as $cartItem) {
-            if ($cartItem->getGiftByProduct() === null) {
+            if ($cartItem->getGiftByProduct() === null
+            && $cartItem->getPromoProduct() === null
+            ) {
                 $cartItems[] = $cartItem;
             }
         }
@@ -154,6 +234,23 @@ class Cart extends BaseCart
     {
         foreach ($this->getGifts() as $cartGift) {
             if ($cartGift->getProduct()->getId() === $giftId && $cartGift->getGiftByProduct()->getId() === $cartItemId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int $giftId
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct
+     * @param int $cartItemId
+     * @return bool
+     */
+    public function isPromoProductSelected(PromoProduct $promoProduct): bool
+    {
+        foreach ($this->getPromoProductItems() as $promoProductCartItem) {
+            if ($promoProductCartItem->getPromoProduct() === $promoProduct) {
                 return true;
             }
         }

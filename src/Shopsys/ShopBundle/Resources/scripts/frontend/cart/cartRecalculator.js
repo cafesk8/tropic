@@ -51,6 +51,21 @@
 
                 reloadWithDelay(1000);
             });
+
+        $container.filterAllNodes('.js-cart-take-promo-product')
+            .change(function () {
+                var isCurrentChecked = $(this).is(':checked');
+                var cartItemPromoProductId = $(this).attr('data-cart-promo-product-id');
+                $('.js-cart-take-promo-product').each(function () {
+                    if ($(this).attr('data-cart-promo-product-id') !== cartItemPromoProductId) {
+                        $(this).prop('checked', false);
+                    }
+                });
+
+                $(this).prop('checked', isCurrentChecked);
+
+                reloadWithDelay(1000);
+            });
     };
 
     Shopsys.cartRecalculator.reload = function () {

@@ -281,6 +281,56 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
+     */
+    public function getPromoProducts(): array
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            return [];
+        }
+
+        return $cart->getPromoProductItems();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
+     * @param mixed[] $selectedPromoProducts
+     */
+    public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException();
+        }
+
+        $this->removeAllPromoProductsItems($cart);
+
+        $promoProductItems = $cart->updatePromoProductsItems($this->cartItemFactory, $promoProductsInCart, $selectedPromoProducts);
+        foreach ($promoProductItems as $promoProductItem) {
+            $this->em->persist($promoProductItem);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     */
+    private function removeAllPromoProductsItems(Cart $cart): void
+    {
+        $allRemovedPromoProductItems = $cart->removeAllPromoProductsAndGetThem();
+        foreach ($allRemovedPromoProductItems as $removedPromoProductItem) {
+            $this->em->remove($removedPromoProductItem);
+        }
+        $this->em->flush();
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
      * @param int $quantity
      * @return bool
