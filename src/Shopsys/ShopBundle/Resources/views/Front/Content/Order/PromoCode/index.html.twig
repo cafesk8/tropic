@@ -9,10 +9,12 @@
                     </span>
                 </label>
             </div>
-            <div class="box-preview__coupone__input js-promo-code-toggle-content">
-                <label for="orderCoupone" class="input__label">{{ 'Zadejte kód'|trans }}</label>
-                <input type="text" id="js-promo-code-input" class="input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
-                <button class="box-preview__coupone__input__button btn btn--success btn--small" id="js-promo-code-submit-button" type="button">{{ 'Použít'|trans }}</button>
+            <div class="display-none js-promo-code-toggle-content">
+                <label for="orderCoupone" class="box-preview__coupone__text input__label">{{ 'Zadejte kód'|trans }}</label>
+                <div class="box-preview__coupone__code">
+                    <input type="text" id="js-promo-code-input" class="box-preview__coupone__code__input input" data-apply-code-url="{{ url('front_promo_code_apply') }}">
+                    <button class="box-preview__coupone__code__button btn btn--success btn--with-input" id="js-promo-code-submit-button" type="button">{{ 'Použít'|trans }}</button>
+                </div>
             </div>
         </div>
     </div>

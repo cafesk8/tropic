@@ -1,37 +1,32 @@
 {% extends '@ShopsysShop/Front/Content/Order/step.html.twig' %}
 
-{% block h1 %}{% endblock %}
-
 {% block content %}
-<div class="web__line">
-    <div class="web__container">
+    <div class="web__line">
+        <div class="web__container web__container--transparent">
+            {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '2'} only %}
+        </div>
+    </div>
 
-        <h1 class="in-title in-title--big in-title--center">
-            {{ 'Doprava a platba'|trans }}
-        </h1>
+    <div class="web__line">
+        <div class="web__container web__container--border-radius">
+        {% if isGermanyDomain() is same as (true) %}
+                {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
+            {% endif %}
 
-       {% if isGermanyDomain() is same as (true) %}
-            {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
-        {% endif %}
-
-        <div class="box-order">
-            <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
-                <div class="box-order__info__top">
-                    {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '2'} only %}
+            <div class="box-order">
+                <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
+                    {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
                 </div>
 
-                {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
-            </div>
-
-            <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
-                {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
-                    transportId: transport is empty ? null : transport.id,
-                    paymentId: payment is empty ? null : payment.id,
-                    orderStep: '2',
-                    formSubmit: form.save
-                })) }}
+                <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
+                    {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
+                        transportId: transport is empty ? null : transport.id,
+                        paymentId: payment is empty ? null : payment.id,
+                        orderStep: '2',
+                        formSubmit: form.save
+                    })) }}
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
