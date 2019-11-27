@@ -22,7 +22,7 @@
             // toggle promo code in cart preview
             $('.js-promo-code-toggle-checkbox').on('change', function (event) {
                 $(this).toggleClass('active');
-                $('.js-promo-code-toggle-content').toggleClass('active');
+                $('.js-promo-code-toggle-content').slideToggle();
             });
         };
 

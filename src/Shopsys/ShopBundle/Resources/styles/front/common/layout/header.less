@@ -25,10 +25,10 @@
     }
 
     &--small {
-        border-bottom: 1px solid @color-gray;
-
+        margin-bottom: 29px;
+        
         @media @query-lg {
-            padding: 20px @web-padding 0 @web-padding;
+            padding: 15px 0 0;
         }
     }
 }
@@ -60,18 +60,11 @@
     }
 
     .header--small & {
-        width: 100%;
-        order: 1;
-        text-align: center;
-        margin: 0 auto 10px auto;
-
-        @media @query-md {
-            width: @header-logo-width-small;
-            text-align: left;
-        }
+        width: @header-logo-width-small;
+        margin: 0 auto 15px auto;
 
         @media @query-vl {
-            margin: 0 0 10px 0;
+            margin: 0;
         }
     }
 }
@@ -155,61 +148,38 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    order: 2;
+
+    font-size: @font-size-extra-small;
+    font-family: @font-alt;
+    color: @color-brown-dark;
 
     @media @query-vl {
-        flex: 1;
         flex-direction: row;
-        width: calc(~"@{calc-base}/3");
-        order: 3;
+        width: auto;
         justify-content: flex-end;
-        margin-top: 0;
-    }
-
-    &__text {
-        line-height: 24px;
-        margin-bottom: 0;
-        text-align: center;
-
-        color: @color-brown;
-        font-size: @font-size;
-        font-family: @font-alt;
-
-        @media @query-md {
-            margin-bottom: -10px;
-        }
-
-        @media @query-lg {
-            margin-bottom: 15px;
-        }
-
-        @media @query-vl {
-            padding-right: 30px;
-            text-align: left;
-        }
     }
 
     &__phone {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
 
-        @media @query-lg {
-            margin-top: -15px;
-            margin-right: -10px;
+        font-weight: 700;
+        text-decoration: none;
+
+        @media @query-vl {
+            margin-bottom: 0;
         }
 
-        .svg {
-            position: relative;
-            top: 12px;
-            padding-right: 10px;
-
-            font-size: 33px;
+        &:hover {
+            text-decoration: underline;
         }
+    }
 
-        &__number {
-            color: @color-base;
-            font-size: 19px;
-            font-weight: 700;
-            text-decoration: none;
+    &__text {
+        text-align: center;
+        
+        @media @query-vl {
+            text-align: left;
+            padding-left: 10px;
         }
     }
 }

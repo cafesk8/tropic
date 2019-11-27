@@ -22,13 +22,13 @@
 
 
 <div class="box-preview">
-    <div class="box-preview__title">
+    <h2 class="in-title in-title--small in-title--dark">
         {{ 'Vaše objednávka'|trans }}
-    </div>
+    </h2>
     {% if orderStep == "1" %}
         {{ render(controller('ShopsysShopBundle:Front/PromoCode:index')) }}
     {% endif %}
-    <div class="box-preview__row box-preview__row--no-bottom">
+    <div class="box-preview__row box-preview__row--no-bottom box-preview__row--without-radius">
         {% if orderStep > 1 %}
             <ul class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
@@ -117,6 +117,9 @@
                 <tr class="table-cart-preview__total__row">
                     <td class="table-cart-preview__total__cell">
                     </td>
+                    <td class="table-cart-preview__total__price-secondary">
+                        {{ orderPreview.totalPrice.priceWithoutVat|price }}&nbsp;{{ 'bez DPH'|trans }}
+                    </td>
                 </tr>
             </table>
         </div>
@@ -167,18 +170,15 @@
 
             <div class="in-action__back">
                 {% if orderStep == 1 %}
-                    <i class="svg svg-triangle"></i>
                     <a href="{{ url('front_homepage') }}" class="in-action__link underline">
                         {{ 'Zpět do e-shopu'|trans }}
                     </a>
                 {% elseif orderStep == 2 %}
-                    <i class="svg svg-triangle"></i>
                     <a href="{{ url('front_cart') }}" class="in-action__link underline">
                         {{ 'Zpět do košíku'|trans }}
                     </a>
                 {% elseif orderStep == 3 %}
                     <button type="submit" name="flow_order_transition" value="back" class="in-action__link js-no-validate-button">
-                        <i class="svg svg-triangle"></i>
                         <span class="underline">
                             {{ 'Zpět'|trans }}
                         </span>

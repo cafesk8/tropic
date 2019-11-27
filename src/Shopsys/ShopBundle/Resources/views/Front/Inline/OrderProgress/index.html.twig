@@ -1,25 +1,13 @@
 <ul class="box-progress box-progress--step{{ step }}">
     <li class="box-progress__item {% if step == 1 %}box-progress__item--active{% elseif step > 1 %}box-progress__item--done{% endif %}{% if step == 2 %} box-progress__item--previous-active{% endif %}">
-        <span class="box-progress__item__inner">
-            <span class="box-progress__item__title
-                {% if step == 1 %} underline underline--hard{% endif %}
-                ">1. {{ 'Nákupní košík'|trans }}</span>
-        </span>
+        1. {{ 'Košík'|trans }}
     </li>
     <li class="box-progress__item box-progress__item--separator "><i class="svg svg-triangle"></i></li>
     <li class="box-progress__item {% if step == 2 %}box-progress__item--active{% elseif step > 2 %}box-progress__item--done{% endif %}{% if step == 3 %} box-progress__item--previous-active{% endif %}">
-        <span class="box-progress__item__inner">
-            <span class="box-progress__item__title
-                {% if step == 2 %} underline underline--hard{% endif %}
-                ">2. {{ 'Doprava a platba'|trans }}</span>
-        </span>
+        2. {{ 'Doprava a platba'|trans }}
     </li>
     <li class="box-progress__item box-progress__item--separator "><i class="svg svg-triangle"></i></li>
     <li class="box-progress__item {% if step == 3 %}box-progress__item--active{% endif %}">
-        <span class="box-progress__item__inner">
-            <span class="box-progress__item__title
-                {% if step == 3 %} underline underline--hard{% endif %}
-            ">3. {{ 'Dodací údaje'|trans }}</span>
-        </span>
+        3. {{ 'Dodací údaje'|trans }}
     </li>
 </ul>

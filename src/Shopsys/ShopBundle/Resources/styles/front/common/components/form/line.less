@@ -1,5 +1,5 @@
 @form-line-width-label: 160px;
-@form-line-width-input: 360px;
+@form-line-width-input: 400px;
 @form-line-gap-between: 10px;
 @form-line-margin-bottom: 11px;
 @form-line-label-field-gap-mobile: 5px;
@@ -10,14 +10,22 @@
     margin: 0 0 @form-line-margin-bottom;
     padding: 0;
 
-    @media @query-md {
+    @media @query-lg {
         flex-direction: row;
     }
 
     &__input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         position: relative;
         width: 100%;
-        max-width: @form-line-width-input;
+        margin-bottom: 5px;
+
+        @media @query-lg {
+            max-width: @form-line-width-input;
+            margin-bottom: 0;
+        }
 
         &--full {
             max-width: 100%;
@@ -32,11 +40,13 @@
     &__error {
         position: relative;
         width: 100%;
+        padding-left: 66px;
 
         font-size: 0;
         
         @media @query-lg {
             width: calc(~"@{calc-base} - @{form-line-width-input}");
+            padding-left: 0;
         }
     }
 

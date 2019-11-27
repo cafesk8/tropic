@@ -1,10 +1,9 @@
 @input-height: 40px;
 @input-textarea-height: @input-height * 3;
-@input-width: 100%;
 @input-padding-vertical: 5px;
 @input-padding-horizontal: 10px;
 @input-font-size: @font-size-small;
-@input-font-size-label: 12px;
+@input-font-size-label: @font-size-small;
 @input-font-color: @color-base;
 @input-border-size: 1px;
 
@@ -17,8 +16,10 @@
 @input-box-shadow: @box-shadow-outer;
 @input-disabled-background: #eff1f2;
 
+@input-label-width: 66px;
+
 .input {
-    width: @input-width;
+    flex: 1;
     max-width: 100%;
     height: @input-height;
     line-height: @input-height/2;
@@ -29,7 +30,7 @@
     box-shadow: @box-shadow-outer;
     color: @input-font-color;
     font-size: @input-font-size;
-    background: @input-background;
+    background-color: @input-background;
 
     &--big {
         height: 60px;
@@ -45,13 +46,10 @@
     }
 
     &__label {
-        position: absolute;
-        top: 7px;
-        left: 11px;
+        width: @input-label-width;
+        padding-right: 10px;
 
-        color: @color-brown-light;
         font-size: @input-font-size-label;
-        text-transform: uppercase;
         z-index: 1;
     }
 
@@ -63,6 +61,7 @@
 
     &:focus {
         outline: 0;
+        border: 1px solid @color-primary;
     }
 
     .form-input-error & ,
@@ -70,7 +69,6 @@
         padding-right: 25px;
 
         border-color: @input-error-border-color;
-        box-shadow: none;
 
         &:focus {
             border-color: @input-error-border-color;

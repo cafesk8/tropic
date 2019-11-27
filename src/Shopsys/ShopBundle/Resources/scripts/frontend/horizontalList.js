@@ -16,7 +16,7 @@
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],
                 'accessories-products': [1, 2, 3, 3, 4],
-                'basket-additionals': [1, 2, 3, 3, 3]
+                'basket-additionals': [1, 2, 3, 2, 3]
             };
 
             var selectedType = types[galleryType];

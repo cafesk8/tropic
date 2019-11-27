@@ -2,7 +2,7 @@
 @table-cart-image-gap: 15px;
 @table-cart-image-gap-vertical: 22px;
 @table-cart-row-left-width: 60%;
-@table-cart-row-bottom-gap-mobile: 30px;
+@table-cart-row-bottom-gap-mobile: 10px;
 @table-cart-spinbox-width: 120px;
 @table-cart-price-width: 164px;
 
@@ -16,7 +16,7 @@
         flex-direction: column;
         margin-bottom: @table-cart-row-bottom-gap-mobile;
 
-        border-top: 3px solid @color-border;
+        border-bottom: 3px solid @color-border;
 
         @media @query-md {
             flex-direction: row;
@@ -72,8 +72,10 @@
         }
 
         &__name {
+            flex: 1;
+
             @media @query-lg {
-                padding-left: 25px;
+                padding: 0 10px;
             }
 
             &__title {
@@ -101,9 +103,16 @@
         &__spinbox {
             text-align: center;
             width: @table-cart-spinbox-width;
-            margin-bottom: -20px;
+            margin-bottom: 10px;
+
+            @media @query-md {
+                margin-bottom: -20px;
+            }
 
             &__link {
+                display: block;
+                margin-top: 8px;
+
                 color: @color-brown-light;
                 font-size: @font-size-small;
                 text-decoration: underline;

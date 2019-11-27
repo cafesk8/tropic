@@ -16,20 +16,45 @@
 {% block infoRow %}
 {% endblock %}
 
+{% block header %}
+    {% set shopInfoPhoneNumber = getShopInfoPhoneNumber() %}
+    {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
+
+    <div class="web__container web__container--transparent">
+        <header class="header header--small">
+            <div class="header__logo">
+                {% block logo %}
+                    <a class="logo" href="{{ url('front_homepage') }}">
+                        <img src="{{ asset('assets/frontend/images/logo-small.png') }}" alt="{{ 'Online shop'|trans }}">
+                        <span class="logo__text">{{ 'Framework'|trans }}</span>
+                    </a>
+                {% endblock %}
+            </div>
+            <div class="header__contact dont-print">
+                <div class="header__contact__phone">
+                    <a href="tel:{{ shopInfoPhoneNumber }}">{{ shopInfoPhoneNumber }}</a>
+                </div>
+                <div class="header__contact__text">
+                    {{ 'Ozvěte se nejlépe ve všední dny mezi'|trans }} {{ shopInfoPhoneHours }}.
+                </div>
+            </div>
+        </header>
+    </div>
+{% endblock %}
+
 {% block main_content %}
     <div class="web__line">
-        <div class="web__container">
-            <h1 class="in-title in-title--big in-title--center">
-                {{ 'Nákupní košík'|trans }}
-            </h1>
+        <div class="web__container web__container--transparent">
+            {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '1'} only %}
+        </div>
+    </div>
 
+    <div class="web__line">
+        <div class="web__container web__container--border-radius-top">
             {% if cart is not null %}
                 {{ form_start(form, { attr: { class: 'js-no-validate js-cart-form' }}) }}
                     <div class="box-order">
                         <div class="box-order__info">
-                            <div class="box-order__info__top">
-                                {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '1'} only %}
-                            </div>
                             {{ form_errors(form) }}
                             <div class="table-cart js-cart">
                                 {% for index, cartItem in cartItems %}
@@ -58,7 +83,6 @@
                                             <div class="table-cart__cell__spinbox">
                                                 <span class="form-input-spinbox js-spinbox">
                                                     {{ form_widget(form.quantities[cartItem.id], { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
-                                                    <label class="form-input-spinbox__label">{{ 'Kusů'|trans }}</label>
                                                     <div class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></div>
                                                     <div class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></div>
                                                 </span>
