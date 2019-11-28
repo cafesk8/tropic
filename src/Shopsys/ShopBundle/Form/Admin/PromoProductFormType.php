@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\ProductType;
-use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductData;
 use Shopsys\ShopBundle\Twig\PriceExtension;
 use Symfony\Component\Form\AbstractType;
@@ -47,10 +46,6 @@ class PromoProductFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /* @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct|null $promoProduct */
-        $promoProduct = $options['promoProduct'];
-        $product = $promoProduct === null ? null : $promoProduct->getProduct();
-
         $currencySymbol = $this->priceExtension->getCurrencyCodeByDomainId($this->adminDomainTabsFacade->getSelectedDomainId());
 
         $builder
@@ -91,8 +86,6 @@ class PromoProductFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired('promoProduct')
-            ->setAllowedTypes('promoProduct', [PromoProduct::class, 'null'])
             ->setDefaults([
                 'data_class' => PromoProductData::class,
                 'attr' => ['novalidate' => 'novalidate'],

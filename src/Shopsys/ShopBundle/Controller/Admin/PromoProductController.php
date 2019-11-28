@@ -66,9 +66,7 @@ class PromoProductController extends AdminBaseController
         $selectedDomainId = $this->adminDomainTabsFacade->getSelectedDomainId();
         $promoProductData = $this->promoProductDataFactory->createForDomainId($selectedDomainId);
 
-        $form = $this->createForm(PromoProductFormType::class, $promoProductData, [
-            'promoProduct' => null,
-        ]);
+        $form = $this->createForm(PromoProductFormType::class, $promoProductData);
 
         $form->handleRequest($request);
 
@@ -116,9 +114,7 @@ class PromoProductController extends AdminBaseController
 
         $promoProductData = $this->promoProductDataFactory->createFromPromoProduct($promoProduct);
 
-        $form = $this->createForm(PromoProductFormType::class, $promoProductData, [
-            'promoProduct' => $promoProduct,
-        ]);
+        $form = $this->createForm(PromoProductFormType::class, $promoProductData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
