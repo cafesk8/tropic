@@ -260,10 +260,7 @@ class CartController extends FrontBaseController
             $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }
 
-        /** @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct */
-        foreach ($promoProductsForCart as $promoProduct) {
-            $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
-        }
+        $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
 
         return $cartFormData;
     }
@@ -278,10 +275,7 @@ class CartController extends FrontBaseController
      */
     private function updateCartFormDataPromoProducts($cartFormData, array $promoProductsForCart, ?Cart $cart = null): array
     {
-        /** @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct */
-        foreach ($promoProductsForCart as $promoProduct) {
-            $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
-        }
+        $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
 
         return $cartFormData;
     }
