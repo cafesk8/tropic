@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
+use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -314,7 +315,7 @@ class OrderController extends FrontBaseController
 
                 try {
                     $this->sendMail($order);
-                } catch (\Shopsys\FrameworkBundle\Model\Mail\Exception\MailException $e) {
+                } catch (Exception $e) {
                     $this->getFlashMessageSender()->addErrorFlash(
                         t('Unable to send some e-mails, please contact us for order verification.')
                     );
