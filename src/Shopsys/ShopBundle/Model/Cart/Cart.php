@@ -132,7 +132,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @return array
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function removeAllGift(): array
     {
@@ -146,7 +146,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @return array
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function removeAllPromoProductsAndGetThem(): array
     {
@@ -181,7 +181,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function getGifts()
     {
