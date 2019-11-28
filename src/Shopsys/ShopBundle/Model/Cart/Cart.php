@@ -90,6 +90,10 @@ class Cart extends BaseCart
 
                     $countOfSelected++;
 
+                    if (!isset($promoProductsForCart[$promoProductId])) {
+                        continue;
+                    }
+
                     /** @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProductForCart */
                     $promoProductForCart = $promoProductsForCart[$promoProductId];
 
