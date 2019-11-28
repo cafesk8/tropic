@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\ShopBundle\Form\Admin\PromoProductFormType;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\Exception\PromoProductNotFoundException;
@@ -160,6 +161,8 @@ class PromoProductController extends AdminBaseController
     }
 
     /**
+     * @CsrfProtection
+     *
      * @Route("/product/promo-product/delete/{id}")
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response

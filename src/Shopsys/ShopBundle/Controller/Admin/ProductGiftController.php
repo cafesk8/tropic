@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\ShopBundle\Form\Admin\ProductGiftFormType;
 use Shopsys\ShopBundle\Model\Product\ProductGift\Exception\ProductGiftNotFoundException;
@@ -160,6 +161,8 @@ class ProductGiftController extends AdminBaseController
     }
 
     /**
+     * @CsrfProtection
+     *
      * @Route("/product/product-gift/delete/{id}")
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
