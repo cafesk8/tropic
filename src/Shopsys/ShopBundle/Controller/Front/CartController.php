@@ -240,7 +240,7 @@ class CartController extends FrontBaseController
     /**
      * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[] $cartItems
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
-     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProductsForCart
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
      * @return mixed[]
      */
@@ -266,10 +266,8 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[] $cartItems
-     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
-     * @param mixed $cartFormData
-     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProductsForCart
+     * @param $cartFormData
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
      * @return mixed[]
      */
