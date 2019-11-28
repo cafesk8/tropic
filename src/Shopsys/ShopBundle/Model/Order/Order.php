@@ -26,6 +26,7 @@ use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusExcepti
 use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 use Shopsys\ShopBundle\Model\Transport\Transport;
@@ -715,6 +716,54 @@ class Order extends BaseOrder
         }
 
         return $giftItems;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function fillOrderPromoProducts(OrderPreview $orderPreview, OrderItemFactoryInterface $orderItemFactory, Domain $domain): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $promoProductCartItem */
+        foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
+            $product = $promoProductCartItem->getProduct();
+            $promoProduct = $promoProductCartItem->getPromoProduct();
+
+            if (!$product instanceof Product) {
+                $message = 'Object "' . get_class($product) . '" is not valid for order creation.';
+                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
+            }
+
+            if (!$promoProduct instanceof PromoProduct) {
+                $message = 'Object "' . get_class($promoProduct) . '" is not valid for order creation.';
+                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
+            }
+
+            if (!$orderItemFactory instanceof OrderItemFactory) {
+                $message = 'Object "' . get_class($orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
+                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
+            }
+
+            $promoProductOrderItemPrice = new Price($promoProductCartItem->getWatchedPrice(), $promoProductCartItem->getWatchedPrice());
+            $promoProductOrderItemTotalPrice = new Price(
+                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity()),
+                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity())
+            );
+
+            $orderItemFactory->createPromoProduct(
+                $this,
+                $product->getName($domain->getLocale()),
+                $promoProductOrderItemPrice,
+                $product->getVat()->getPercent(),
+                $promoProductCartItem->getQuantity(),
+                $product->getUnit()->getName($domain->getLocale()),
+                $product->getCatnum(),
+                $product,
+                $promoProductOrderItemTotalPrice,
+                $promoProduct
+            );
+        }
     }
 
     /**
