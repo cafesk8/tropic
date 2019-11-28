@@ -8,7 +8,6 @@ use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
-use Shopsys\FrameworkBundle\Model\Localization\Localization;
 
 class PromoProductGridFactory
 {
@@ -16,11 +15,6 @@ class PromoProductGridFactory
      * @var \Shopsys\FrameworkBundle\Component\Grid\GridFactory
      */
     protected $gridFactory;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Localization\Localization
-     */
-    protected $localization;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductRepository
@@ -35,18 +29,15 @@ class PromoProductGridFactory
     /**
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductRepository $promoProductRepository
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
-     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(
         PromoProductRepository $promoProductRepository,
         GridFactory $gridFactory,
-        Localization $localization,
         AdminDomainTabsFacade $adminDomainTabsFacade
     ) {
         $this->promoProductRepository = $promoProductRepository;
         $this->gridFactory = $gridFactory;
-        $this->localization = $localization;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
