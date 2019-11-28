@@ -22,6 +22,8 @@ use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart findCartOfCurrentCustomer()
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
  */
 class CartFacade extends BaseCartFacade
 {
@@ -191,7 +193,6 @@ class CartFacade extends BaseCartFacade
             $this->currentCustomer->getPricingGroup()
         );
 
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
 
         $productQuantityInCart = 0;
@@ -215,7 +216,6 @@ class CartFacade extends BaseCartFacade
      */
     public function updateGifts(array $productGiftInCart, array $selectedGifts): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -249,7 +249,6 @@ class CartFacade extends BaseCartFacade
      */
     public function getGifts(): array
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -285,7 +284,6 @@ class CartFacade extends BaseCartFacade
      */
     public function getPromoProducts(): array
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -301,7 +299,6 @@ class CartFacade extends BaseCartFacade
      */
     public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
