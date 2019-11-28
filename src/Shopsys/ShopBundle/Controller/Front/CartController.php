@@ -185,7 +185,7 @@ class CartController extends FrontBaseController
                 $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cart->getItems());
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
 
-                $cartGiftsByProductId = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId);
+                $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId);
                 $this->cartFacade->updatePromoProducts($promoProductsForCart, $form->getData()['chosenPromoProducts']);
 
                 $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
