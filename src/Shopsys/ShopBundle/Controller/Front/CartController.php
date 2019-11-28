@@ -205,7 +205,7 @@ class CartController extends FrontBaseController
         }
 
         $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId);
-        $cartFormData = $this->updateCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
+        $cartFormData = $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
         $form = $this->createForm(CartFormType::class, $cartFormData);
         $form->handleRequest($request);
 
@@ -260,7 +260,7 @@ class CartController extends FrontBaseController
             $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }
 
-        return $this->updateCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
+        return $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
     }
 
     /**
@@ -269,7 +269,7 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
      * @return mixed[]
      */
-    private function updateCartFormDataPromoProducts($cartFormData, array $promoProductsForCart, ?Cart $cart = null): array
+    private function setCartFormDataPromoProducts($cartFormData, array $promoProductsForCart, ?Cart $cart = null): array
     {
         $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
 
