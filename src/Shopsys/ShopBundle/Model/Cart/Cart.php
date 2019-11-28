@@ -183,7 +183,7 @@ class Cart extends BaseCart
     /**
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
-    public function getGifts()
+    public function getGifts(): array
     {
         $cartGifts = [];
         foreach ($this->items->toArray() as $cartItem) {
@@ -198,7 +198,7 @@ class Cart extends BaseCart
     /**
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
-    public function getPromoProductItems()
+    public function getPromoProductItems(): array
     {
         $promoProductCartItems = [];
         /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem */
