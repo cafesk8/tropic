@@ -301,8 +301,7 @@ class CartController extends FrontBaseController
     {
         $chosenPromoProducts = [];
         foreach ($promoProductsInCart as $promoProduct) {
-            $chosenPromoProducts[$promoProduct->getId()][$promoProduct->getId()] =
-                $cart !== null && $cart->isPromoProductSelected($promoProduct);
+            $chosenPromoProducts[$promoProduct->getId()] = $cart !== null && $cart->isPromoProductSelected($promoProduct);
         }
 
         return $chosenPromoProducts;

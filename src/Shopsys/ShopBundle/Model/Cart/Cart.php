@@ -81,35 +81,33 @@ class Cart extends BaseCart
 
         $countOfSelected = 0;
 
-        foreach ($selectedPromoProductsItems as $index => $idAndIsSelected) {
-            foreach ($idAndIsSelected as $promoProductId => $isSelected) {
-                if ($isSelected === true) {
-                    if ($countOfSelected >= self::MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART) {
-                        throw new MaxPromoProductCartItemsReachedException();
-                    }
-
-                    $countOfSelected++;
-
-                    if (!isset($promoProductsForCart[$promoProductId])) {
-                        continue;
-                    }
-
-                    /** @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProductForCart */
-                    $promoProductForCart = $promoProductsForCart[$promoProductId];
-
-                    $promoProductCartItem = $cartItemFactory->create(
-                        $this,
-                        $promoProductForCart->getProduct(),
-                        1,
-                        $promoProductForCart->getPrice(),
-                        null,
-                        null,
-                        $promoProductForCart
-                    );
-                    $this->addItem($promoProductCartItem);
-
-                    $cartPromoProductsItems[] = $promoProductCartItem;
+        foreach ($selectedPromoProductsItems as $promoProductId => $isSelected) {
+            if ($isSelected === true) {
+                if ($countOfSelected >= self::MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART) {
+                    throw new MaxPromoProductCartItemsReachedException();
                 }
+
+                $countOfSelected++;
+
+                if (!isset($promoProductsForCart[$promoProductId])) {
+                    continue;
+                }
+
+                /** @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProductForCart */
+                $promoProductForCart = $promoProductsForCart[$promoProductId];
+
+                $promoProductCartItem = $cartItemFactory->create(
+                    $this,
+                    $promoProductForCart->getProduct(),
+                    1,
+                    $promoProductForCart->getPrice(),
+                    null,
+                    null,
+                    $promoProductForCart
+                );
+                $this->addItem($promoProductCartItem);
+
+                $cartPromoProductsItems[] = $promoProductCartItem;
             }
         }
 
