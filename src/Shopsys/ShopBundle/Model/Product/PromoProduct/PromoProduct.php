@@ -15,7 +15,7 @@ use Shopsys\ShopBundle\Model\Product\Product;
 class PromoProduct
 {
     /**
-     * @var int|null
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -75,9 +75,9 @@ class PromoProduct
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
