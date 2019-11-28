@@ -1,3 +1,7 @@
+front_healtz:
+    path: /healtz
+    defaults: { _controller: ShopsysShopBundle:Front\Healtz:index }
+
 front_cart_add_product:
     path: /cart/addProduct/
     defaults: { _controller: ShopsysShopBundle:Front\Cart:addProduct }
