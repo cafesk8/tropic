@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -47,19 +48,21 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
-    public function checkCartModifications(Cart $cart): void
+    public function checkCartModifications(Cart $cart, ?User $user = null): void
     {
         parent::checkCartModifications($cart);
 
-        $this->checkValidityOfEnteredPromoCode($cart);
+        $this->checkValidityOfEnteredPromoCode($cart, $user);
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
-    public function checkValidityOfEnteredPromoCode(Cart $cart): void
+    public function checkValidityOfEnteredPromoCode(Cart $cart, ?User $user = null): void
     {
         $enteredCode = $this->session->get(CurrentPromoCodeFacade::PROMO_CODE_SESSION_KEY);
 
@@ -68,7 +71,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         }
 
         try {
-            $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts());
+            $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $user);
         } catch (\Exception $exception) {
             $this->flashMessageSender->addErrorFlash(
                 t('Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho.')

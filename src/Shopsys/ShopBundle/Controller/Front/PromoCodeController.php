@@ -103,8 +103,11 @@ class PromoCodeController extends FrontBaseController
         /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
 
+        /** @var \Shopsys\ShopBundle\Model\Customer\User|null $user */
+        $user = $this->getUser();
+
         try {
-            $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts());
+            $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts(), $user);
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,
@@ -137,6 +140,16 @@ class PromoCodeController extends FrontBaseController
             return new JsonResponse([
                 'result' => false,
                 'message' => t('Slevový kupón nelze aplikovat na nezlevněné zboží.'),
+            ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón mohou aplikovat pouze přihlášení zákazníci.'),
+            ]);
+        } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Slevový kupón mohou aplikovat pouze přihlášení členové Bushman clubu.'),
             ]);
         }
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));

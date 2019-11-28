@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
@@ -253,6 +254,27 @@ class CartFacade extends BaseCartFacade
         }
 
         return $cart->getGifts();
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier
+     * @return \Shopsys\FrameworkBundle\Model\Cart\Cart|null
+     */
+    public function findCartByCustomerIdentifier(CustomerIdentifier $customerIdentifier)
+    {
+        $cart = $this->cartRepository->findByCustomerIdentifier($customerIdentifier);
+
+        if ($cart !== null) {
+            $this->cartWatcherFacade->checkCartModifications($cart, $customerIdentifier->getUser());
+
+            if ($cart->isEmpty()) {
+                $this->deleteCart($cart);
+
+                return null;
+            }
+        }
+
+        return $cart;
     }
 
     /**

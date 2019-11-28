@@ -9,6 +9,9 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
+use Shopsys\ShopBundle\Model\Customer\User;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
@@ -60,14 +63,15 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     /**
      * @param string $enteredCode
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $totalWatchedPriceOfProducts
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
-    public function setEnteredPromoCode($enteredCode, ?Money $totalWatchedPriceOfProducts = null): void
+    public function setEnteredPromoCode($enteredCode, ?Money $totalWatchedPriceOfProducts = null, ?User $user = null): void
     {
         if ($totalWatchedPriceOfProducts == null) {
             $totalWatchedPriceOfProducts = Money::zero();
         }
 
-        $this->checkPromoCodeValidity($enteredCode, $totalWatchedPriceOfProducts);
+        $this->checkPromoCodeValidity($enteredCode, $totalWatchedPriceOfProducts, $user);
 
         parent::setEnteredPromoCode($enteredCode);
     }
@@ -75,8 +79,9 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     /**
      * @param string $enteredCode
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalWatchedPriceOfProducts
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
-    public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts): void
+    public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?User $user = null): void
     {
         /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
@@ -96,6 +101,8 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         } elseif ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_WITH_ACTION_PRICE && $productPricesType === self::CART_PRODUCT_ACTION_PRICE_TYPE_ANY) {
             throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeWithActionPriceUsageException($enteredCode);
         }
+
+        $this->checkPromoCodeUserTypeValidity($promoCode, $user);
     }
 
     /**
@@ -150,5 +157,20 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         }
 
         return $now < $validTo;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
+     */
+    private function checkPromoCodeUserTypeValidity(PromoCode $promoCode, ?User $user = null)
+    {
+        if ($promoCode->isUserTypeLogged() === true && $user === null) {
+            throw new PromoCodeIsOnlyForLoggedCustomers($promoCode->getCode());
+        }
+
+        if ($promoCode->isUserTypeBushmanClubMembers() === true && ($user === null || $user->isMemberOfBushmanClub() === false)) {
+            throw new PromoCodeIsOnlyForLoggedBushmanClubMembers($promoCode->getCode());
+        }
     }
 }

@@ -24,6 +24,10 @@ class PromoCode extends BasePromoCode
     public const USAGE_TYPE_WITH_ACTION_PRICE = 'withActionPrice';
     public const USAGE_TYPE_NO_ACTION_PRICE = 'noActionPrice';
 
+    public const USER_TYPE_ALL = 'all_users';
+    public const USER_TYPE_LOGGED = 'logged_users';
+    public const USER_TYPE_BUSHMAN_CLUB_MEMBERS = 'bushman_club_member_users';
+
     /**
      * @var int
      *
@@ -130,6 +134,13 @@ class PromoCode extends BasePromoCode
     private $usageType;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $userType;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -151,6 +162,7 @@ class PromoCode extends BasePromoCode
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUsageType($promoCodeData->usageType);
+        $this->setUserType($promoCodeData->userType);
     }
 
     /**
@@ -174,6 +186,7 @@ class PromoCode extends BasePromoCode
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUsageType($promoCodeData->usageType);
+        $this->setUserType($promoCodeData->userType);
     }
 
     /**
@@ -326,5 +339,49 @@ class PromoCode extends BasePromoCode
             throw new InvalidPromoCodeUsageTypeException(sprintf('Invalid promo code use type `%s`', $usageType));
         }
         $this->usageType = $usageType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserType(): string
+    {
+        return $this->userType;
+    }
+
+    /**
+     * @param string $userType
+     */
+    public function setUserType(string $userType): void
+    {
+        if (in_array($userType, [self::USER_TYPE_ALL, self::USER_TYPE_LOGGED, self::USER_TYPE_BUSHMAN_CLUB_MEMBERS], true) === false) {
+            throw new InvalidPromoCodeUsageTypeException(sprintf('Invalid promo code user type `%s`', $userType));
+        }
+
+        $this->userType = $userType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserTypeAll(): bool
+    {
+        return $this->userType === self::USER_TYPE_ALL;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserTypeLogged(): bool
+    {
+        return $this->userType === self::USER_TYPE_LOGGED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserTypeBushmanClubMembers(): bool
+    {
+        return $this->userType === self::USER_TYPE_BUSHMAN_CLUB_MEMBERS;
     }
 }
