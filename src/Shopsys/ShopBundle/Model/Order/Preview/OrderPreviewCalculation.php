@@ -143,7 +143,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $roundingPrice,
             $promoCodeDiscountPercent,
             $totalPriceWithoutGiftCertificate,
-            $giftsInCart
+            $giftsInCart,
+            $promoProductsInCart
         );
         $orderPreview->setPromoCode($promoCode);
         $orderPreview->setTotalDiscount($totalDiscount);
