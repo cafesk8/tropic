@@ -260,9 +260,7 @@ class CartController extends FrontBaseController
             $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }
 
-        $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
-
-        return $cartFormData;
+        return $this->updateCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
     }
 
     /**
