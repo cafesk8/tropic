@@ -42,8 +42,7 @@ class HealtzController extends FrontBaseController
      */
     public function indexAction(): Response
     {
-        if (
-            $this->entityManager->getConnection()->ping() === false
+        if ($this->entityManager->getConnection()->ping() === false
             || $this->swiftMailer->getTransport()->ping() === false
         ) {
             return new Response('', Response::HTTP_SERVICE_UNAVAILABLE);
