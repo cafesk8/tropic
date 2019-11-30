@@ -59,6 +59,17 @@
 
     <div class="web__line">
         <div class="web__container">
+            <div class="box-list__row">
+                <div class="box-list__row__column"></div>
+                <div class="box-list__row__column box-list__row__column--order">
+                    {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForSearch')) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container">
             <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
                 {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                     <div class="box-list__panel js-product-list-panel">
@@ -78,7 +89,6 @@
                 {% endif %}
 
                 <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                    {{ render(controller('ShopsysShopBundle:Front/Product:selectOrderingModeForSearch')) }}
                     {% include '@ShopsysShop/Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
                 </div>
             </div>

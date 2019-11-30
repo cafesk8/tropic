@@ -1,3 +1,5 @@
+@wrap-article-item-gap: 10px;
+
 .wrap-article {
     display: flex;
     flex-direction: column;
@@ -11,9 +13,14 @@
     &__row {
         display: flex;
         flex-direction: column;
+        margin-left: -@wrap-article-item-gap;
 
         @media @query-md {
             flex-direction: row;
+        }
+
+        &--center {
+            justify-content: center;
         }
 
         .form-line {
@@ -27,13 +34,15 @@
 
         &__full {
             width: 100%;
+            padding-left: @wrap-article-item-gap;
         }
 
         &__half {
             width: 100%;
+            padding-left: @wrap-article-item-gap;
 
             @media @query-md {
-                width: 100%/2;
+                width: @calc-base/2;
             }
         }
     }

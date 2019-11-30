@@ -25,44 +25,6 @@
                     <div class="box-order-done__text">
                         {{ pageContent|raw }}
                     </div>
-                    {#
-                    <div class="box-order-done__club">
-                        <div class="box-order-done__club__title">
-                            {{ 'Stačí zadat heslo a příště už nic'|trans }} <br>
-                            {{ 'zadávat nemusíte'|trans }}
-                        </div>
-                        <div class="box-order-done__club__text">
-                            {{ 'Jako člen Bushman Clubu budete mít přístup k'|trans }}
-                            <strong>{{ 'historii svých objednávek,'|trans }}</strong>
-                            {{ 'možnost získat'|trans }} <br>
-                            {{ '25 let záruku zdarma, objednat směnnou zásilku nebo '|trans }}
-                            <strong>{{ 'získat 3% slevu'|trans }}</strong>
-                            {{ 'na celý sortiment'|trans }}.
-                        </div>
-                        {# Save password and user name hack.
-                        * The browsers need field with name 'name' to store login (password stored by field with type password).
-                        * I can't create a field with a specific name in symfony.
-                        * IE and Edge store login by type hidden, other by type text or email.
-
-                        <input type="text" name="name" value="{{ order.email }}" style="display: none;">
-                        <input type="hidden" name="name" value="{{ order.email }}">
-
-                        <div class="box-order-done__club__form js-not-implemented-yet">
-                            <div class="form-line">
-                                <div class="form-line__input box-order-done__club__form__input">
-                                    <label for="registration_form_password_first" class="input__label required">
-                                        {{ 'Heslo'|trans }}
-                                        <span class="form-input-required">*</span>
-                                    </label>
-                                    <input type="password" id="registration_form_password_first" name="registration_form[password][first]" required="required" autocomplete="off" class="input form-input-error">
-                                </div>
-                                <div class="form-line__button box-order-done__club__form__button-holder">
-                                    <button type="submit" name="" class="btn btn--success btn--with-input box-order-done__club__form__button">{{ 'Vytvořit účet'|trans }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    #}
                 </div>
             </div>
         </div>
