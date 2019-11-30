@@ -14,17 +14,19 @@
             {% endif %}
 
             <div class="box-order">
-                <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
-                    {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
-                </div>
+                <div class="box-order__wrap">
+                    <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
+                        {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
+                    </div>
 
-                <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
-                    {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
-                        transportId: transport is empty ? null : transport.id,
-                        paymentId: payment is empty ? null : payment.id,
-                        orderStep: '2',
-                        formSubmit: form.save
-                    })) }}
+                    <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
+                        {{ render(controller('ShopsysShopBundle:Front/Order:preview', {
+                            transportId: transport is empty ? null : transport.id,
+                            paymentId: payment is empty ? null : payment.id,
+                            orderStep: '2',
+                            formSubmit: form.save
+                        })) }}
+                    </div>
                 </div>
             </div>
         </div>
