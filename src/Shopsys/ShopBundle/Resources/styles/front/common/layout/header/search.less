@@ -27,12 +27,6 @@
             width: 100%;
             position: relative;
 
-            .box-search & {
-                @media @query-md {
-                    width: 60%;
-                }
-            }
-
             .input {
                 width: 100%;
                 height: @search-input-height-small;
@@ -62,13 +56,6 @@
                 &::placeholder {
                     color: @color-brown;
                     opacity: 1;
-                }
-
-                .box-search & {
-                    width: 100%;
-                    margin-bottom: 10px;
-                    line-height: @search-input-height;
-                    padding: 0 10px;
                 }
             }
         }

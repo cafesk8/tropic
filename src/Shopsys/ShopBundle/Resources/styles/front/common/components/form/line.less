@@ -20,20 +20,14 @@
         align-items: center;
         position: relative;
         width: 100%;
-        margin-bottom: 5px;
 
         @media @query-lg {
             max-width: @form-line-width-input;
-            margin-bottom: 0;
         }
 
         &--full {
             max-width: 100%;
             width: 100%;
-
-            @media @query-md {
-                width: calc(~"100% - 5px");
-            }
         }
     }
 
@@ -41,12 +35,12 @@
         position: relative;
         width: 100%;
         padding-left: 66px;
+        margin-top: 5px;
 
         font-size: 0;
         
         @media @query-lg {
             width: calc(~"@{calc-base} - @{form-line-width-input}");
-            padding-left: 0;
         }
     }
 
