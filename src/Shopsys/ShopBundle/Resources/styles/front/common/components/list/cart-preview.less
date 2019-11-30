@@ -1,4 +1,4 @@
-@list-cart-preview-image-size: 71px;
+@list-cart-preview-image-size: 60px;
 @list-cart-preview-amount-width: 50px;
 @list-cart-preview-name-width: 110px;
 @list-cart-preview-item-bottom-gap: 25px;
@@ -23,10 +23,12 @@
 
         &__image {
             width: @list-cart-preview-image-size;
-            position: relative;
+            height: @list-cart-preview-image-size;
+            line-height: @list-cart-preview-image-size;
 
             img {
-                .center-image();
+                display: inline-block;
+                vertical-align: middle;
             }
         }
 
@@ -43,6 +45,8 @@
         }
 
         &__name {
+            display: flex;
+            align-items: center;
             width: @list-cart-preview-name-width;
 
             &__title {

@@ -1,5 +1,5 @@
 @form-input-spinbox-padding-vertical: 3px;
-@form-input-spinbox-buttons-width: 37px;
+@form-input-spinbox-buttons-width: 29px;
 @form-input-spinbox-height: 48px;
 @form-input-spinbox-input-width: 102px;
 @form-inpit-spinbox-button-icon-size: @font-size;
@@ -39,6 +39,10 @@
         color: @color-base;
         font-size: 20px;
         font-weight: 700;
+
+        &:focus {
+            border: 0;
+        }
     }
 
     &__btn {
@@ -46,7 +50,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        top: 0;
+        top: 0.5px;
         right: 0;
         width: @form-input-spinbox-buttons-width;
         height: @form-input-spinbox-height;

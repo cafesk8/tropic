@@ -2309,7 +2309,7 @@ msgid "Variants"
 msgstr "Varianty"
 
 msgid "Vaše objednávka"
-msgstr "Tvoja objednávka"
+msgstr "Vaša objednávka"
 
 msgid "Vaše velikost"
 msgstr "Tvoja veľkosť"
