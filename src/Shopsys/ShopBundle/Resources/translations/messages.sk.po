@@ -509,7 +509,7 @@ msgid "Dnes"
 msgstr "Dnes"
 
 msgid "Do"
-msgstr "Robiť"
+msgstr "Do"
 
 msgid "Do Bushman Clubu"
 msgstr "Do Bushman Clubu"
