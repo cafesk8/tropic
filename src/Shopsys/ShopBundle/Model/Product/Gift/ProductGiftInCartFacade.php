@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Product\Gift;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\ShopBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 class ProductGiftInCartFacade
 {
@@ -21,13 +22,20 @@ class ProductGiftInCartFacade
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(ProductGiftPriceCalculation $productGiftCalculation, Domain $domain)
+    public function __construct(ProductGiftPriceCalculation $productGiftCalculation, Domain $domain, ProductFacade $productFacade)
     {
         $this->productGiftCalculation = $productGiftCalculation;
         $this->domain = $domain;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -50,7 +58,7 @@ class ProductGiftInCartFacade
                 /** @var \Shopsys\ShopBundle\Model\Product\Product $gift */
                 $gift = $productGift->getGift();
 
-                if ($this->isGiftMarketable($gift)) {
+                if ($this->productFacade->isProductMarketable($gift)) {
                     foreach ($this->getGiftVariants($gift, $cartItem) as $giftVariantIndex => $giftVariant) {
                         $giftsVariantsByProductId[$cartItem->getProduct()->getId()][$giftVariantIndex] = $giftVariant;
                     }
@@ -71,7 +79,7 @@ class ProductGiftInCartFacade
         $giftVariantsByProductId = [];
         if ($productGift->isMainVariant() && count($productGift->getVariants()) > 0) {
             foreach ($productGift->getVariants() as $giftVariant) {
-                if ($this->isGiftMarketable($giftVariant) === false) {
+                if ($this->productFacade->isProductMarketable($giftVariant) === false) {
                     continue;
                 }
 
@@ -92,15 +100,5 @@ class ProductGiftInCartFacade
         }
 
         return $giftVariantsByProductId;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product|null $gift
-     * @return bool
-     */
-    private function isGiftMarketable(?Product $gift): bool
-    {
-        return $gift !== null && $gift->isHidden() === false && $gift->getCalculatedHidden() === false &&
-            $gift->isSellingDenied() === false && $gift->getCalculatedSellingDenied() === false;
     }
 }

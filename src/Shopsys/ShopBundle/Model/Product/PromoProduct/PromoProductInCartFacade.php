@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Product\PromoProduct;
 
 use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 class PromoProductInCartFacade
 {
@@ -20,13 +21,20 @@ class PromoProductInCartFacade
     private $cartFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductRepository $promoProductRepository
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(PromoProductRepository $promoProductRepository, CartFacade $cartFacade)
+    public function __construct(PromoProductRepository $promoProductRepository, CartFacade $cartFacade, ProductFacade $productFacade)
     {
         $this->promoProductRepository = $promoProductRepository;
         $this->cartFacade = $cartFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -49,7 +57,9 @@ class PromoProductInCartFacade
 
         foreach ($promoProducts as $promoProduct) {
             foreach ($promoProduct->getProductsAccordingToVariant() as $product) {
-                $promoProductsForCart[$promoProduct->getId()][$product->getId()] = $promoProduct;
+                if ($this->productFacade->isProductMarketable($product) === true) {
+                    $promoProductsForCart[$promoProduct->getId()][$product->getId()] = $promoProduct;
+                }
             }
         }
 
