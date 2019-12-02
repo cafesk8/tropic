@@ -196,7 +196,12 @@ class OrderExportMapper
     private function prepareItems(Order $order): array
     {
         $orderItems = [];
-        $items = array_merge($order->getProductItems(), $order->getGiftItems(), $order->getGiftCertificationItems());
+        $items = array_merge(
+            $order->getProductItems(),
+            $order->getGiftItems(),
+            $order->getGiftCertificationItems(),
+            $order->getPromoProductItems()
+        );
 
         /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
         foreach ($items as $item) {

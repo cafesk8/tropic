@@ -719,6 +719,21 @@ class Order extends BaseOrder
     }
 
     /**
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]
+     */
+    public function getPromoProductItems()
+    {
+        $promoProductItems = [];
+        foreach ($this->items as $item) {
+            if ($item->isTypePromoProduct()) {
+                $promoProductItems[] = $item;
+            }
+        }
+
+        return $promoProductItems;
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
