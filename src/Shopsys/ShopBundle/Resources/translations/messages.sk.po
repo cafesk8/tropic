@@ -2728,6 +2728,9 @@ msgstr "pre poriadnych chlapov"
 msgid "pro členy"
 msgstr "pre členov"
 
+msgid "products"
+msgstr "produktov"
+
 msgid "přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin."
 msgstr "prijatú tržbu u správcu dane online, v prípade technického výpadku potom najneskôr do 48 hodín."
 
