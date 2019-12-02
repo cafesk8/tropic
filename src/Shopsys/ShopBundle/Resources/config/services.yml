@@ -636,7 +636,3 @@ services:
             - { name: kernel.event_subscriber }
 
     Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@Shopsys\ShopBundle\Model\Security\FrontLogoutHandler'
-
-    Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcher: ~
-
-    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher: '@Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcher'

@@ -58,13 +58,10 @@ class TransportRepository extends BaseTransportRepository
             ->join(TransportDomain::class, 'td', Join::WITH, 't.id = td.transport AND td.domainId = :domainId')
             ->setParameter('domainId', $domainId);
 
-        if ($isTransportEmailType === true) {
-            $queryBuilder->andWhere('t.transportType = :transportEmailType');
-        } else {
+        if ($isTransportEmailType !== true) {
             $queryBuilder->andWhere('t.transportType != :transportEmailType');
+            $queryBuilder->setParameter('transportEmailType', Transport::TYPE_EMAIL);
         }
-
-        $queryBuilder->setParameter('transportEmailType', Transport::TYPE_EMAIL);
 
         return $queryBuilder->getQuery()->getResult();
     }

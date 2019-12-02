@@ -82,13 +82,4 @@ class CartWatcherFacade extends BaseCartWatcherFacade
             $this->currentPromoCodeFacade->removeEnteredPromoCode();
         }
     }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
-     * @return bool
-     */
-    public function isEmailTransportCart(Cart $cart): bool
-    {
-        return $this->cartWatcher->isEmailTransportCart($cart);
-    }
 }

@@ -295,8 +295,14 @@ class CartFacade extends BaseCartFacade
      */
     public function isEmailTransportCart(): bool
     {
-        return $this->cartWatcherFacade->isEmailTransportCart(
-            $this->getCartOfCurrentCustomerCreateIfNotExists()
-        );
+        $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->isProductTypeGiftCertificate()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
