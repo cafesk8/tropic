@@ -113,21 +113,26 @@
 
                                 {% endfor %}
 
-                                {% for promoProduct in promoProducts %}
-                                    <div class="table-cart__gifts__item">
-                                        {{ form_widget(form.chosenPromoProducts[promoProduct.id], {
-                                            attr: {
-                                                class: 'css-checkbox js-cart-take-promo-product',
-                                                'data-cart-promo-product-id': promoProduct.id
-                                            }
-                                        }) }}
-                                        <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id].vars.id }}">
-                                            {{ 'Chceš promo produkt' }}
-                                            {{ promoProduct.product.name }}
-                                            {{ 'za zvýhodněnou cenu' }} {{ promoProduct.price|price }}{{ '?' }}
-                                        </label>
-                                    </div>
-                                {% endfor %}
+                                {% if promoProducts|length > 0 %}
+                                    <div class="table-cart__row"></div>
+                                    <br>
+                                    <h3>{{ 'Promo produkty k objednávce'|trans }}</h3>
+                                    {% for promoProduct in promoProducts %}
+                                        <div class="table-cart__gifts__item">
+                                            {{ form_widget(form.chosenPromoProducts[promoProduct.id], {
+                                                attr: {
+                                                    class: 'css-checkbox js-cart-take-promo-product',
+                                                    'data-cart-promo-product-id': promoProduct.id
+                                                }
+                                            }) }}
+                                            <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id].vars.id }}">
+                                                {{ 'Chceš promo produkt' }}
+                                                {{ promoProduct.product.name }}
+                                                {{ 'za zvýhodněnou cenu' }} {{ promoProduct.price|price }}{{ '?' }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
                                 {% do form.chosenPromoProducts.setRendered %}
 
                             </div>
