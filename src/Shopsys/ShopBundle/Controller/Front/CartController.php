@@ -300,8 +300,11 @@ class CartController extends FrontBaseController
     private function getChosenPromoProducts(array $promoProductsInCart, ?Cart $cart = null): array
     {
         $chosenPromoProducts = [];
-        foreach ($promoProductsInCart as $promoProduct) {
-            $chosenPromoProducts[$promoProduct->getId()] = $cart !== null && $cart->isPromoProductSelected($promoProduct);
+        foreach ($promoProductsInCart as $promoProductId => $promoProductByProductId) {
+            foreach ($promoProductByProductId as $productId => $promoProduct) {
+                $chosenPromoProducts[$promoProductId][$productId] =
+                    $cart !== null && $cart->isPromoProductSelected($promoProduct, $productId);
+            }
         }
 
         return $chosenPromoProducts;

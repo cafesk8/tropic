@@ -113,4 +113,18 @@ class PromoProduct
     {
         return $this->minimalCartPrice;
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsAccordingToVariant(): array
+    {
+        $product = $this->getProduct();
+
+        if ($product->isMainVariant() === true) {
+            return $product->getVariants();
+        } else {
+            return [$product];
+        }
+    }
 }

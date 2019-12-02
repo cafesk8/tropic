@@ -88,7 +88,7 @@ class PromoProductRepository
     {
         return $this->em->createQueryBuilder()
             ->select('pp')
-            ->from(PromoProduct::class, 'pp', 'pp.id')
+            ->from(PromoProduct::class, 'pp')
             ->andWhere('pp.minimalCartPrice <= :minimalCartPrice')
             ->andWhere('pp.price IS NOT NULL')
             ->andWhere('pp.minimalCartPrice IS NOT NULL')

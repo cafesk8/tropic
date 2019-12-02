@@ -40,10 +40,20 @@ class PromoProductInCartFacade
             return [];
         }
 
-        return $this->promoProductRepository->getPromoProductsWithMinimalCartPrice(
+        $promoProducts = $this->promoProductRepository->getPromoProductsWithMinimalCartPrice(
             $cart->getTotalWatchedPriceOfProducts(),
             $domainId
         );
+
+        $promoProductsForCart = [];
+
+        foreach ($promoProducts as $promoProduct) {
+            foreach ($promoProduct->getProductsAccordingToVariant() as $product) {
+                $promoProductsForCart[$promoProduct->getId()][$product->getId()] = $promoProduct;
+            }
+        }
+
+        return $promoProductsForCart;
     }
 
     /**

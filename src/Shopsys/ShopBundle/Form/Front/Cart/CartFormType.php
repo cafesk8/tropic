@@ -63,7 +63,10 @@ class CartFormType extends AbstractType
                 ],
             ])
             ->add('chosenPromoProducts', CollectionType::class, [
-                'entry_type' => CheckboxType::class,
+                'entry_type' => CollectionType::class,
+                'entry_options' => [
+                    'entry_type' => CheckboxType::class,
+                ],
             ])
             ->add('submit', SubmitType::class);
 

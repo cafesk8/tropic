@@ -19,6 +19,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
@@ -33,6 +34,11 @@ class CartFacade extends BaseCartFacade
     protected $flashMessageSender;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
@@ -45,6 +51,7 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -58,7 +65,8 @@ class CartFacade extends BaseCartFacade
         ProductPriceCalculationForUser $productPriceCalculation,
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
-        CartWatcherFacade $cartWatcherFacade
+        CartWatcherFacade $cartWatcherFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct(
             $em,
@@ -75,6 +83,7 @@ class CartFacade extends BaseCartFacade
         );
 
         $this->flashMessageSender = $flashMessageSender;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -307,7 +316,12 @@ class CartFacade extends BaseCartFacade
 
         $this->removeAllPromoProductsItems($cart);
 
-        $promoProductItems = $cart->updatePromoProductsItems($this->cartItemFactory, $promoProductsInCart, $selectedPromoProducts);
+        $promoProductItems = $cart->updatePromoProductsItems(
+            $this->cartItemFactory,
+            $this->productFacade,
+            $promoProductsInCart,
+            $selectedPromoProducts
+        );
         foreach ($promoProductItems as $promoProductItem) {
             $this->em->persist($promoProductItem);
         }
