@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\ShopBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory;
 use Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade;
@@ -32,15 +33,23 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
     private $orderStatusDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusDataFactory $orderStatusDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         OrderStatusFacade $orderStatusFacade,
-        OrderStatusDataFactory $orderStatusDataFactory
+        OrderStatusDataFactory $orderStatusDataFactory,
+        Domain $domain
     ) {
         $this->orderStatusFacade = $orderStatusFacade;
         $this->orderStatusDataFactory = $orderStatusDataFactory;
+        $this->domain = $domain;
     }
 
     /**
@@ -88,6 +97,8 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
         ];
         $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_READY_STORE);
         $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY_STORE);
+
+        $this->addTranslationsToOrderStatusReturned();
     }
 
     /**
@@ -103,5 +114,16 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
     ) {
         $orderStatus = $this->orderStatusFacade->getById($orderStatusId);
         $this->addReference($referenceName, $orderStatus);
+    }
+
+    private function addTranslationsToOrderStatusReturned(): void
+    {
+        $orderStatusReturned = $this->orderStatusFacade->getByType(OrderStatus::TYPE_RETURNED);
+        $orderStatusDataReturned = $this->orderStatusDataFactory->createFromOrderStatus($orderStatusReturned);
+        $name = $orderStatusReturned->getName('en');
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $orderStatusDataReturned->name[$domainConfig->getLocale()] = $name;
+        }
+        $this->orderStatusFacade->edit($orderStatusReturned->getId(), $orderStatusDataReturned);
     }
 }

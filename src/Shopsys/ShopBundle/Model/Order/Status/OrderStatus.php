@@ -24,6 +24,7 @@ class OrderStatus extends BaseOrderStatus
     public const TYPE_ALMOST_READY_STORE = 6;
     public const TYPE_READY = 7;
     public const TYPE_READY_STORE = 8;
+    public const TYPE_RETURNED = 9;
 
     /**
      * @var string|null
@@ -110,6 +111,7 @@ class OrderStatus extends BaseOrderStatus
             self::TYPE_ALMOST_READY_STORE,
             self::TYPE_READY,
             self::TYPE_READY_STORE,
+            self::TYPE_RETURNED,
         ], true)) {
             $this->type = $type;
         } else {

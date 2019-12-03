@@ -13,7 +13,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
-use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
+use Shopsys\ShopBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 
@@ -191,7 +191,7 @@ class OrderRepository extends BaseOrderRepository
 
         $queryBuilder->setParameters([
             'exportStatus' => Order::EXPORT_SUCCESS,
-            'orderStatuses' => [OrderStatus::TYPE_DONE, OrderStatus::TYPE_CANCELED],
+            'orderStatuses' => [OrderStatus::TYPE_DONE, OrderStatus::TYPE_CANCELED, OrderStatus::TYPE_RETURNED],
             'dateTime' => new DateTime('-5 minutes'),
         ]);
 
