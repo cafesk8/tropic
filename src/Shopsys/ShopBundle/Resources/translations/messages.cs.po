@@ -643,6 +643,9 @@ msgstr ""
 msgid "Dostupné množství k odběru"
 msgstr ""
 
+msgid "Dostupné množství k odběru"
+msgstr ""
+
 msgid "Download"
 msgstr "Stáhnout"
 
@@ -1081,6 +1084,9 @@ msgstr ""
 msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr ""
 
+msgid "Klikněte zde pro zopakování úhrady objednávky"
+msgstr ""
+
 msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr ""
 
@@ -1435,6 +1441,9 @@ msgstr "Počet položek"
 msgid "Number of orders"
 msgstr "Počet objednávek"
 
+msgid "Nyní budete přesměrováni na platební bránu GoPay."
+msgstr ""
+
 msgid "Nákupní košík"
 msgstr ""
 
@@ -1457,6 +1466,12 @@ msgid "O nákupu"
 msgstr ""
 
 msgid "O nás"
+msgstr ""
+
+msgid "Objednávka je již zaplacená."
+msgstr ""
+
+msgid "Objednávka nebyla nalezena."
 msgstr ""
 
 msgid "Objednávka z Mall.cz"
@@ -1524,6 +1539,9 @@ msgstr "Pouze zkontrolované produkty"
 
 msgid "Oops! Error occurred."
 msgstr "Ajaj! Nastala chyba."
+
+msgid "Opakovat platbu"
+msgstr ""
 
 msgid "Opening hours"
 msgstr "Otevírací doba"
@@ -2470,6 +2488,9 @@ msgstr ""
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr ""
 
+msgid "Tvar odkazu pro sledování zásilky"
+msgstr ""
+
 msgid "Tvorba e-shopů na míru"
 msgstr ""
 
@@ -2502,6 +2523,9 @@ msgstr "URL adresy"
 
 msgid "Uh-oh, uh-oh. And specially <strong>\"%status_code% %status_text%\"</strong>, as if it was on purpose!"
 msgstr "To je tedy nemilé. A zrovna <strong>\"%status_code% %status_text%\"</strong>, to je jak naschvál!"
+
+msgid "Uhrazení objednávky č. %orderNumber% platební kartou."
+msgstr ""
 
 msgid "Ulice"
 msgstr ""
@@ -2609,6 +2633,27 @@ msgid "Video"
 msgstr ""
 
 msgid "Viditelný na homepage"
+msgstr ""
+
+msgid "Vidět administrátory"
+msgstr ""
+
+msgid "Vidět cenotvorbu"
+msgstr ""
+
+msgid "Vidět marketing"
+msgstr ""
+
+msgid "Vidět nastavení"
+msgstr ""
+
+msgid "Vidět objednávky"
+msgstr ""
+
+msgid "Vidět zboží a kategorie"
+msgstr ""
+
+msgid "Vidět zákazníky"
 msgstr ""
 
 msgid "Vidět administrátory"
@@ -2848,6 +2893,9 @@ msgstr "Zadej kód"
 msgid "Zadejte město nebo PSČ:"
 msgstr "Zadej město nebo PSČ:"
 
+msgid "Zaplatit"
+msgstr ""
+
 msgid "Zapomenuté heslo?"
 msgstr ""
 
@@ -2900,6 +2948,9 @@ msgid "Zobrazit všechny výsledky"
 msgstr ""
 
 msgid "Zobrazovat"
+msgstr ""
+
+msgid "Zobrazovat v menu a dalších výpisech"
 msgstr ""
 
 msgid "Zobrazovat v menu a dalších výpisech"
@@ -3143,6 +3194,9 @@ msgid "Úvod"
 msgstr ""
 
 msgid "účastníků"
+msgstr ""
+
+msgid "Česko"
 msgstr ""
 
 msgid "Česko"

@@ -1093,6 +1093,9 @@ msgstr "Ku koreňom"
 msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr "Kliknutím na tlačidlo Odoslať objednávku"
 
+msgid "Klikněte zde pro zopakování úhrady objednávky"
+msgstr "Kliknite tu pre zopakovanie úhrady objednávky"
+
 msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr "Kolega Novák má dobrú češtinu. Pošlite mu tiež tú kľúčenku. Môžem potvrdiť vyššie uvedené recenzie. Bunda je naozaj kvalitná, dobre sa nosí a aj po týždni som necítil pot ani hlinu."
 
@@ -1474,6 +1477,9 @@ msgstr "Počet položiek"
 msgid "Number of orders"
 msgstr "Počet objednávok"
 
+msgid "Nyní budete přesměrováni na platební bránu GoPay."
+msgstr "Teraz budete presmerovaný na platobnú bránu GoPay."
+
 msgid "Nákupní košík"
 msgstr "Nákupný košík"
 
@@ -1497,6 +1503,12 @@ msgstr "O nákupe"
 
 msgid "O nás"
 msgstr "O nás"
+
+msgid "Objednávka je již zaplacená."
+msgstr "Objednávka je už zaplatená."
+
+msgid "Objednávka nebyla nalezena."
+msgstr "Objednávka nebola nájdená."
 
 msgid "Objednávka z Mall.cz"
 msgstr "Objednávka z Mall.cz"
@@ -1563,6 +1575,9 @@ msgstr "Iba kontrolované výrobky"
 
 msgid "Oops! Error occurred."
 msgstr "Och! Vyskytla sa chyba."
+
+msgid "Opakovat platbu"
+msgstr "Opakovať platbu"
 
 msgid "Opening hours"
 msgstr "Otváracia doba"
@@ -2512,6 +2527,9 @@ msgstr "URL adresy "
 msgid "Uh-oh, uh-oh. And specially <strong>\"%status_code% %status_text%\"</strong>, as if it was on purpose!"
 msgstr "Oh. A hlavne <strong> \"% status_code%% status_text%\" </strong>, ako keby to bolo zámerne!"
 
+msgid "Uhrazení objednávky č. %orderNumber% platební kartou."
+msgstr "Uhradenie objednávky č.%orderNumber% platobnou kartou."
+
 msgid "Ulice"
 msgstr "Ulica"
 
@@ -2859,6 +2877,9 @@ msgstr "Zadaj kód"
 
 msgid "Zadejte město nebo PSČ:"
 msgstr "Zadaj mesto alebo PSČ:"
+
+msgid "Zaplatit"
+msgstr "Zaplatiť"
 
 msgid "Zapomenuté heslo?"
 msgstr "Zabudnuté heslo?"
