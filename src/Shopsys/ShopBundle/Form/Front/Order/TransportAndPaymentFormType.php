@@ -118,12 +118,12 @@ class TransportAndPaymentFormType extends AbstractType
 
         $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
 
-        $isEmailTransportCart = $this->cartFacade->isEmailTransportCart();
+        $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
         $transports = $this->transportFacade->getVisibleByDomainIdAndCountryAndTransportEmailType(
             $options['domain_id'],
             $payments,
             $country,
-            $isEmailTransportCart
+            $showEmailTransportInCart
         );
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);

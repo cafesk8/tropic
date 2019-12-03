@@ -151,13 +151,13 @@ class TransportFacade extends BaseTransportFacade
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
-     * @param bool $isTransportEmailType
+     * @param bool $showEmailTransportInCart
      * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
      */
-    public function getVisibleByDomainIdAndCountryAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, ?Country $country, bool $isTransportEmailType)
+    public function getVisibleByDomainIdAndCountryAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, ?Country $country, bool $showEmailTransportInCart)
     {
         /** @var \Shopsys\ShopBundle\Model\Transport\Transport[] $visibleTransports */
-        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $isTransportEmailType);
+        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart);
 
         if ($country === null) {
             return $visibleTransports;
@@ -189,12 +189,12 @@ class TransportFacade extends BaseTransportFacade
     /**
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
-     * @param bool $isTransportEmailType
+     * @param bool $showEmailTransportInCart
      * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
      */
-    private function getVisibleByDomainIdAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, bool $isTransportEmailType)
+    private function getVisibleByDomainIdAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, bool $showEmailTransportInCart)
     {
-        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $isTransportEmailType);
+        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart);
 
         return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
     }

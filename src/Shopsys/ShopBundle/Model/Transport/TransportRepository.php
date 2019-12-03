@@ -49,16 +49,16 @@ class TransportRepository extends BaseTransportRepository
 
     /**
      * @param int $domainId
-     * @param bool $isTransportEmailType
+     * @param bool $showEmailTransportInCart
      * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
      */
-    public function getAllByDomainIdAndTransportEmailType(int $domainId, bool $isTransportEmailType)
+    public function getAllByDomainIdAndTransportEmailType(int $domainId, bool $showEmailTransportInCart)
     {
         $queryBuilder = $this->getQueryBuilderForAll()
             ->join(TransportDomain::class, 'td', Join::WITH, 't.id = td.transport AND td.domainId = :domainId')
             ->setParameter('domainId', $domainId);
 
-        if ($isTransportEmailType !== true) {
+        if ($showEmailTransportInCart === false) {
             $queryBuilder->andWhere('t.transportType != :transportEmailType');
             $queryBuilder->setParameter('transportEmailType', Transport::TYPE_EMAIL);
         }
