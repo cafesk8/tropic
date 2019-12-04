@@ -4,6 +4,8 @@
 @box-preview-padding: 30px 40px 0 40px;
 @box-preview-padding-small: 15px 20px 0 20px;
 
+@box-preview-coupone-code-button-width: 92px;
+
 .box-preview {
     display: flex;
     flex-direction: column;
@@ -11,53 +13,52 @@
 
     background-color: @box-preview-bg;
 
-    @media @query-md{
-        width: @box-preview-width + @box-preview-gap;
-    }
-
     @media @query-vl {
         padding-left: @box-preview-gap;
-    }
-
-    &__title {
-        line-height: 20px;
-        margin-bottom: 15px;
-
-        color: @color-brown-light;
-        font-size: 15px;
-        font-family: @font-alt;
-        font-weight: 700;
-        text-transform: uppercase;
     }
 
     &__row {
         padding: @box-preview-padding-small;
 
         background-color: @color-f;
-        border: 3px solid @color-gray;
+
+        @media @query-md {
+            border: 3px solid @color-border;
+        }
 
         @media @query-vl {
             padding: @box-preview-padding;
         }
 
         &--dark {
-            background-color: @color-gray;
             padding-bottom: 20px;
+
+            background-color: @color-light;
         }
 
         &--no-bottom {
             border-bottom: 0;
+            border-radius: @radius @radius 0 0;
         }
 
         &--thin-top-border {
-            border-top: 2px solid @color-gray;
+            padding-top: 14px;
+
+            border-top: 1px solid @color-border;
+            border-radius: 0 0 @radius @radius;
         }
+
+        &--without-radius {
+            border-radius: 0;
+        }
+    }
+
+    &__back {
+        margin-bottom: 2px;
     }
 
     &__coupone {
         &__title {
-            margin-bottom: 13px;
-
             color: @color-base;
 
             &__label {
@@ -66,32 +67,36 @@
             }
         }
 
-        &__input {
-            display: none;
+        &__text {
+            display: block;
+            margin-top: 10px;
+        }
 
-            &.active {
-                display: block;
-                position: relative;
-            }
+        &__code {
+            display: flex;
+            flex-direction: row;
 
-            .input {
-                width: 100%;
+            &__input {
+                width: calc(~"100% - @{box-preview-coupone-code-button-width}");
+                
+                border-right: 0;
+                border-radius: @radius-small 0 0 @radius-small;
             }
 
             &__button {
-                position: absolute;
-                top: 13px;
-                right: 15px;
+                width: @box-preview-coupone-code-button-width;
+
+                border-radius: 0 @radius-small @radius-small 0;
             }
         }
     }
 
     &__conditions {
         text-align: center;
-        line-height: 22px;
+        line-height: 24px;
         margin-bottom: 20px;
 
-        color: @color-brown-light;
+        color: @color-base;
         font-size: 14px;
         font-family: @font-alt;
 
@@ -102,16 +107,22 @@
     }
 
     &__button {
-        margin-bottom: 30px;
-        padding: 0 10px;
+        margin-bottom: 24px;
+        padding: 5px 10px;
 
         text-decoration: uppercase;
-        font-size: 18px;
+        text-transform: uppercase;
+        font-size: 20px;
 
         &__icon {
-            position: relative;
-            top: 2px;
-            right: 5px;
+            display: none;
+
+            @media @query-sm {
+                display: inline-block;
+                position: relative;
+                top: 2px;
+                right: 5px;
+            }
         }
     }
 }

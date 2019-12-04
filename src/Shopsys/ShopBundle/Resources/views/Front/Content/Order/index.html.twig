@@ -29,23 +29,22 @@
     {% set shopInfoPhoneNumber = getShopInfoPhoneNumber() %}
     {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
 
-    <div class="web__container">
+    <div class="web__container web__container--transparent">
         <header class="header header--small">
             <div class="header__logo">
                 {% block logo %}
                     <a class="logo" href="{{ url('front_homepage') }}">
-                        <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
+                        <img src="{{ asset('assets/frontend/images/logo-small.png') }}" alt="{{ 'Online shop'|trans }}">
+                        <span class="logo__text">{{ 'Framework'|trans }}</span>
                     </a>
                 {% endblock %}
             </div>
             <div class="header__contact dont-print">
-                <div class="header__contact__text">
-                    {{ 'Potřebujete poradit s dokončením objednávky?'|trans }}<br>
-                    {{ shopInfoPhoneHours }}
-                </div>
                 <div class="header__contact__phone">
-                    <i class="svg svg-phone"></i>
-                    <a href="tel:{{ shopInfoPhoneNumber }}" class="header__contact__phone__number underline">{{ shopInfoPhoneNumber }}</a>
+                    <a href="tel:{{ shopInfoPhoneNumber }}">{{ shopInfoPhoneNumber }}</a>
+                </div>
+                <div class="header__contact__text">
+                    {{ 'Ozvěte se nejlépe ve všední dny mezi'|trans }} {{ shopInfoPhoneHours }}.
                 </div>
             </div>
         </header>

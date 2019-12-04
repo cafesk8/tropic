@@ -1,4 +1,4 @@
-@box-pick-up-place-in-max-width: 500px;
+@box-pick-up-place-button-width: 106px;
 
 .box-pickup-place {
     height: 70%;
@@ -7,71 +7,27 @@
     &__search {
         margin: 20px 0;
 
-        &__wrap {
-            width: 100%;
-
-            @media @query-sm {
-                display: flex;
-            }
-        }
-
-        &__in {
-            position: relative;
-            width: 100%;
-            margin-bottom: 10px;
-
-            @media @query-sm {
-                flex: 0 1 @box-pick-up-place-in-max-width;
-                max-width: @box-pick-up-place-in-max-width;
-                margin-bottom: 0;
-            }
-        }
-
-        &__action {
-            width: 100%;
-
-            @media @query-sm {
-                flex: 0 0 auto;
-                width: auto;
-                padding-left: 10px;
-            }
-
-            .btn {
-                width: 100%;
-                min-height: @input-height;
-                line-height: 1;
-
-                @media @query-sm {
-                    width: auto;
-                }
-            }
-        }
-
-        /* search in */
-        &__title {
-            margin-bottom: 4px;
-
-            font-size: 14px;
-            font-weight: 700;
+        &__text {
+            margin-bottom: 5px;
         }
 
         &__input {
-            width: 100%;
+            display: flex;
+            flex-direction: row;
 
             input {
-                width: 100%;
+                width: calc(~"100% - @{box-pick-up-place-button-width}");
+
+                border-radius: @radius-small 0 0 @radius-small;
+                border-right: 0;
             }
-        }
 
-        &__button {
-            position: absolute;
-            right: 0;
-            top: 0;
-
-            button {
-                width: auto;
-                min-height: @form-item-height;
-                line-height: 1;
+            &__button {
+                width: @box-pick-up-place-button-width;
+    
+                button {
+                    border-radius: 0 @radius-small @radius-small 0;
+                }
             }
         }
     }

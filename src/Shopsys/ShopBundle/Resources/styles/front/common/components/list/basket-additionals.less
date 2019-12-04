@@ -36,16 +36,16 @@
         top: calc(~"@{list-basket-additionals-item-image-size}/2");
 
         cursor: pointer;
-        color: @color-orange;
+        color: @color-gray-dark;
         font-size: @list-basket-additionals-arrow-size;
         height: @list-basket-additionals-arrow-size + 2px;
 
         &:hover {
-            color: darken(@color-orange, 10%);
+            color: @color-primary;
         }
 
         &.slick-disabled {
-            color: @color-brown;
+            color: @color-gray-dark;
             opacity: 0.2;
         }
 
@@ -97,11 +97,10 @@
             margin-bottom: @list-basket-additionals-item-image-bottom-gap;
             height: @list-basket-additionals-item-image-size;
             width: @list-basket-additionals-item-image-size;
+            max-width: 100%;
 
             img {
                 .center-image();
-                max-width: @list-basket-additionals-item-image-size;
-                max-height: @list-basket-additionals-item-image-size;
             }
         }
 
@@ -116,7 +115,8 @@
                 margin-bottom: 0;
                 overflow: hidden;
 
-                font-size: 18px;
+                font-weight: 400;
+                color: @color-gray-dark;
             }
 
             &__availability {

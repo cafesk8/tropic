@@ -3,7 +3,7 @@
 @box-chooser-check-width: 20px;
 @box-chooser-image-width: 40px;
 @box-chooser-image-height: 30px;
-@box-chooser-price-width: 80px;
+@box-chooser-price-width: 90px;
 @box-chooser-title-width: ~"calc(100% - @{box-chooser-check-width} - @{box-chooser-image-width} - @{box-chooser-price-width} - 2 * @{box-chooser-item-padding})";
 
 @box-chooser-bottom-gap: 10px;
@@ -17,10 +17,11 @@
 .box-chooser {
     margin-bottom: @box-chooser-bottom-gap;
     padding: @box-chooser-padding-mobile;
-    background-color: @color-gray;
+    border: 3px solid @color-border;
+    border-radius: @radius;
 
     @media @query-lg {
-        padding: @box-chooser-padding;
+        padding: 10px @box-chooser-padding @box-chooser-padding;
     }
 
     &__title {
@@ -32,20 +33,16 @@
         align-items: center;
         flex-wrap: wrap;
         width: 100%;
-        margin-bottom: 10px;
-        padding: 0 @box-chooser-item-padding;
+        padding: 5px @box-chooser-item-padding;
 
         cursor: pointer;
 
         @media @query-lg {
             flex-wrap: nowrap;
-            align-items: flex-start;
         }
 
         &__check {
-            align-self: flex-start;
-            padding-top: 10px;
-            font-size: 0;
+            display: block;
         }
 
         &__image {
@@ -67,17 +64,23 @@
         &__title {
             display: flex;
             flex-direction: row;
-            align-items: flex-start;
+            align-items: center;
             padding: 0 10px;
             line-height: 38px;
 
             font-size: 15px;
 
             &__name {
-                min-width: 200px;
+                width: calc(~"100% - @{box-chooser-image-width}");
                 padding-right: 10px;
+                line-height: normal;
 
                 font-weight: 400;
+
+                @media @query-sm {
+                    min-width: 200px;
+                    max-width: 0;
+                }
 
                 .box-chooser__item--active & {
                     font-weight: 800;
@@ -101,7 +104,7 @@
 
         &__price {
             text-align: right;
-            width: 100%;
+            margin-left: auto;
 
             color: @color-brown;
             font-family: @font-alt;
@@ -110,6 +113,8 @@
 
             @media @query-lg {
                 width: @box-chooser-price-width;
+                padding-left: 10px;
+                margin-left: none;
             }
 
             .box-chooser__item--active & {

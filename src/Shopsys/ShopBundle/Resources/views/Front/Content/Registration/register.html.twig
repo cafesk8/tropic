@@ -53,21 +53,27 @@
                         {{ form_row(form.password.second, { label: 'Password again'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                 </div>
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__full">
-                        <div class="form-line">
-                            {{ form_widget(form.memberOfBushmanClub, { attr: {class: 'css-checkbox'}}) }}
-                            <label class="css-checkbox__image" for="{{ form.memberOfBushmanClub.vars.id }}">
-                                {% if bushmanClubArticle is not null %}
-                                    {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                    {{ 'Chci být členem <a href="%url%" target="_blank">Bushman Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
-                                {% else %}
-                                    {{ 'Chci být členem Bushman Clubu'|trans }}
-                                {% endif %}
-                            </label>
+                {#
+                    TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-38287
+
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__full">
+                            <div class="form-line">
+                                {{ form_widget(form.memberOfBushmanClub, { attr: {class: 'css-checkbox'}}) }}
+                                <label class="css-checkbox__image" for="{{ form.memberOfBushmanClub.vars.id }}">
+                                    {% if bushmanClubArticle is not null %}
+                                        {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
+                                        {{ 'Chci být členem <a href="%url%" target="_blank">Bushman Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
+                                    {% else %}
+                                        {{ 'Chci být členem Bushman Clubu'|trans }}
+                                    {% endif %}
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
+                #}
+                {% do form.memberOfBushmanClub.setRendered %}
+                
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">

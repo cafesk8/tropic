@@ -1,55 +1,97 @@
 @box-progress-steps-count: 5;
 @box-progress-padding-horizontal: 17px;
 @box-progress-padding-vertical: 15px;
+@box-progress-item-width: 240px;
+@box-progress-item-separator-width: 60px;
+@box-progress-item-height: 40px;
 
 .box-progress {
     .reset-ul();
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    margin-bottom: -4px;
+    margin: 0 -@web-padding-small 30px;
 
-    &--step1 {
-        margin-bottom: -6px;
+    @media @query-lg {
+        flex-direction: row;
     }
 
     &__item {
+        position: relative;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 11px;
 
-        color: @color-brown-light;
-        font-weight: 700;
+        color: @color-base;
+        font-size: @font-size;
+        background-color: @color-f;
+        text-transform: uppercase;
 
-        &--active {
-            color: @color-base;
+        @media @query-lg {
+            justify-content: center;
+            width: @box-progress-item-width;
+            height: @box-progress-item-height;
+            padding: 0;
+
+            border-radius: 50px;
+            border: 1px solid @color-base;
+            background-color: transparent;
         }
 
-        &--done {
-            color: @color-brown;
-        }
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
 
-        &--separator {
-            position: relative;
-            margin: 0 @box-progress-padding-horizontal 18px @box-progress-padding-horizontal;
+            background-color: @color-border;
 
-            .svg {
-                transform: rotate(-90deg);
-
-                font-size: 6px;
+            @media @query-lg {
+                display: none;
             }
         }
 
-        &__inner {
-            padding: 10px;
-            width: 100%;
-            text-align: center;
-            margin: -10px 0 10px 0;
-
-            font-size: 12px;
+        &--active {
+            font-weight: 700;
 
             @media @query-lg {
-                font-size: 16px;
+                background-color: @color-f;
+                border: 0;
+            }
+
+            &:before {
+                height: 3px;
+                background-color: @color-add;
+            }
+        }
+
+        &--done {
+            @media @query-lg {
+                border: 3px solid @color-add;
+                background-color: @color-f;
+            }
+        }
+
+        &--separator {
+            display: none;
+
+            @media @query-lg {
+                display: flex;
+                width: @box-progress-item-separator-width;
+
+                border: 0;
+
+                .svg {
+                    transform: rotate(-90deg);
+
+                    font-size: 8px;
+                    color: #8991a3;
+                }
             }
         }
     }

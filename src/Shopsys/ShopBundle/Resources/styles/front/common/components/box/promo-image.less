@@ -1,23 +1,37 @@
 @box-promo-image-height: 462px;
 
 .box-promo-image {
-    position: relative;
-    height: @box-promo-image-height;
-    padding: 40px 33px;
-    margin-bottom: 20px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 50px;
 
-    @media @query-md {
-        padding: 78px 115px 61px 115px;
+    @media @query-lg {
+        flex-direction: row;
+        height: @box-promo-image-height;
+        text-align: left;
     }
 
-    img {
-        position: absolute;
-        display: block;
-        top: 0;
-        left: 0;
-        width: @web-width;
-        max-width: none;
+    &__left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        order: 2;
+
+        @media @query-lg {
+            flex: 1;
+            order: 1;
+        }
+    }
+
+    &__right {
+        order: 1;
+
+        @media @query-lg {
+            flex: 1;
+            order: 2;
+        }
     }
 
     &__title {
@@ -29,16 +43,11 @@
             line-height: 42px;
             margin-bottom: 42px;
 
-            color: @color-f;
             font-size: 26px;
             font-weight: bold;
 
             @media @query-md {
                 font-size: 30px;
-            }
-
-            .box-promo-image--error & {
-                max-width: 450px;
             }
         }
     }
@@ -51,7 +60,6 @@
             margin-bottom: 27px;
             line-height: 30px;
 
-            color: @color-f;
             font-family: @font-alt;
             font-size: 18px;
 
