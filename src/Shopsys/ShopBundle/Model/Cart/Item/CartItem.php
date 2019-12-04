@@ -46,7 +46,7 @@ class CartItem extends BaseCartItem
     /**
      * @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct|null
      *
-     * @ORM\OneToOne(targetEntity="Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct")
+     * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct")
      * @ORM\JoinColumn(nullable=true, name="promo_product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $promoProduct;
