@@ -686,4 +686,14 @@ class ProductFacade extends BaseProductFacade
             $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $variant->getId(), $variant->getNames());
         }
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
+     * @return bool
+     */
+    public function isProductMarketable(?Product $product): bool
+    {
+        return $product !== null && $product->isHidden() === false && $product->getCalculatedHidden() === false &&
+            $product->isSellingDenied() === false && $product->getCalculatedSellingDenied() === false;
+    }
 }

@@ -1,0 +1,18 @@
+{% extends '@ShopsysFramework/Admin/Grid/Grid.html.twig' %}
+
+{% block grid_no_data %}
+    {{ 'Žádné promo produkty nenalezeny.'|trans }}
+{% endblock %}
+
+{% block grid_pager_totalcount %}
+    {% set entityName = 'promo products'|trans %}
+    {{ parent() }}
+{% endblock %}
+
+{% block grid_value_cell_id_price %}
+    {{ value|priceWithAdminDomainTabDomainCurrency }}
+{% endblock %}
+
+{% block grid_value_cell_id_minimalCartPrice %}
+    {{ value|priceWithAdminDomainTabDomainCurrency }}
+{% endblock %}

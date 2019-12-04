@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 
 /**
  * @ORM\Table(name="order_items")
@@ -22,6 +23,8 @@ class OrderItem extends BaseOrderItem
     public const TYPE_PROMO_CODE = 'promo_code';
 
     public const TYPE_GIFT = 'gift';
+
+    public const TYPE_PROMO_PRODUCT = 'promo_product';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem|null
@@ -44,6 +47,14 @@ class OrderItem extends BaseOrderItem
      * @ORM\Column(type="integer")
      */
     private $preparedQuantity;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct|null
+     *
+     * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct")
+     * @ORM\JoinColumn(nullable=true, name="promo_product_id", referencedColumnName="id", onDelete="CASCADE", unique=false)
+     */
+    private $promoProduct;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
@@ -191,5 +202,31 @@ class OrderItem extends BaseOrderItem
     public function setPreparedQuantity(int $preparedQuantity): void
     {
         $this->preparedQuantity = $preparedQuantity;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct
+     */
+    public function setPromoProduct(Product $product, PromoProduct $promoProduct): void
+    {
+        $this->checkTypePromoProduct();
+        $this->product = $product;
+        $this->promoProduct = $promoProduct;
+    }
+
+    protected function checkTypePromoProduct(): void
+    {
+        if (!$this->isTypePromoProduct()) {
+            throw new WrongItemTypeException(self::TYPE_PROMO_PRODUCT, $this->type);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypePromoProduct(): bool
+    {
+        return $this->type === self::TYPE_PROMO_PRODUCT;
     }
 }

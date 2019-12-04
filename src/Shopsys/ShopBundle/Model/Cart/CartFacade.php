@@ -19,9 +19,12 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart findCartOfCurrentCustomer()
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
  */
 class CartFacade extends BaseCartFacade
 {
@@ -29,6 +32,11 @@ class CartFacade extends BaseCartFacade
      * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
      */
     protected $flashMessageSender;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
@@ -43,6 +51,7 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -56,7 +65,8 @@ class CartFacade extends BaseCartFacade
         ProductPriceCalculationForUser $productPriceCalculation,
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
-        CartWatcherFacade $cartWatcherFacade
+        CartWatcherFacade $cartWatcherFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct(
             $em,
@@ -73,6 +83,7 @@ class CartFacade extends BaseCartFacade
         );
 
         $this->flashMessageSender = $flashMessageSender;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -191,7 +202,6 @@ class CartFacade extends BaseCartFacade
             $this->currentCustomer->getPricingGroup()
         );
 
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
 
         $productQuantityInCart = 0;
@@ -215,7 +225,6 @@ class CartFacade extends BaseCartFacade
      */
     public function updateGifts(array $productGiftInCart, array $selectedGifts): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -249,7 +258,6 @@ class CartFacade extends BaseCartFacade
      */
     public function getGifts(): array
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -278,6 +286,59 @@ class CartFacade extends BaseCartFacade
         }
 
         return $cart;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
+     */
+    public function getPromoProducts(): array
+    {
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            return [];
+        }
+
+        return $cart->getPromoProductItems();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
+     * @param mixed[] $selectedPromoProducts
+     */
+    public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
+    {
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException();
+        }
+
+        $this->removeAllPromoProductsItems($cart);
+
+        $promoProductItems = $cart->updatePromoProductsItems(
+            $this->cartItemFactory,
+            $this->productFacade,
+            $promoProductsInCart,
+            $selectedPromoProducts
+        );
+        foreach ($promoProductItems as $promoProductItem) {
+            $this->em->persist($promoProductItem);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     */
+    private function removeAllPromoProductsItems(Cart $cart): void
+    {
+        $allRemovedPromoProductItems = $cart->removeAllPromoProductsAndGetThem();
+        foreach ($allRemovedPromoProductItems as $removedPromoProductItem) {
+            $this->em->remove($removedPromoProductItem);
+        }
+        $this->em->flush();
     }
 
     /**

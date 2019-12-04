@@ -365,6 +365,7 @@ class OrderFacade extends BaseOrderFacade
         parent::fillOrderItems($order, $orderPreview);
 
         $order->fillOrderGifts($orderPreview, $this->orderItemFactory, $this->productGiftPriceCalculation, $this->domain);
+        $order->fillOrderPromoProducts($orderPreview, $this->orderItemFactory, $this->domain);
 
         $promoCode = $orderPreview->getPromoCode();
         if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
