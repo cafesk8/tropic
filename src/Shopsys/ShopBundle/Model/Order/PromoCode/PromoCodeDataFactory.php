@@ -43,6 +43,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->certificateValue = Money::zero();
         $promoCodeData->usageType = PromoCode::USAGE_TYPE_ALL;
         $promoCodeData->userType = PromoCode::USER_TYPE_ALL;
+        $promoCodeData->combinable = false;
 
         return $promoCodeData;
     }
@@ -83,5 +84,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->certificateSku = $promoCode->getCertificateSku();
         $promoCodeData->usageType = $promoCode->getUsageType();
         $promoCodeData->userType = $promoCode->getUserType();
+        $promoCodeData->combinable = $promoCode->isCombinable();
     }
 }

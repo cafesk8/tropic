@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
@@ -97,6 +98,10 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'multiple' => false,
             'expanded' => false,
             'required' => true,
+        ]);
+
+        $basicInformationsFormGroup->add('combinable', YesNoType::class, [
+            'label' => t('Kombinovatelný'),
         ]);
 
         $this->addPromoCodeOrCertificateField($builder, $basicInformationsFormGroup);
