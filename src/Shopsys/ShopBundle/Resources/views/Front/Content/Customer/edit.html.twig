@@ -20,9 +20,11 @@
                 <div class="wrap-box">
                     <h2 class="wrap-box__title">{{ 'Personal data'|trans }}</h2>
                     <div class="wrap-box__in">
-                        <img src="{{ barcodeImageByUser(customer) }}" alt="{{ 'Identifikační údaj zakazníka'|trans }}">
-                        <br/>
-                        ({{ customer.ean }})
+                        {# 
+                        TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-38109  
+                            <img src="{{ barcodeImageByUser(customer) }}" alt="{{ 'Identifikační údaj zakazníka'|trans }}">
+                            ({{ customer.ean }})
+                        #}
                         {{ form_row(form.userData.firstName, { label: 'First name'|trans}) }}
                         {{ form_row(form.userData.lastName, { label: 'Last name'|trans}) }}
                         {{ form_row(form.userData.telephone, { label: 'Telephone'|trans}) }}
@@ -61,13 +63,21 @@
                 <div class="wrap-box">
                     <h2 class="wrap-box__title">{{ 'Changing password'|trans }}</h2>
                     <div class="wrap-box__in" id="{{ form.userData.password.vars.id }}">
-                        {{ form_row(form.userData.password.first, { label: 'Password'|trans}) }}
-                        <i class="svg svg-info in-icon in-icon--info form-line__info js-tooltip"
-                            data-toggle="tooltip"
-                            data-placement="right"
-                            title=""
-                            data-original-title="{{ 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans }}">
-                         </i>
+                        <div class="form-line">
+                            <div class="form-line__input">
+                                <label class="input__label">{{ 'Heslo'|trans }}</label>
+                                {{ form_widget(form.userData.password.first, { label: 'Password'|trans}) }}
+                                <i class="svg svg-info in-icon in-icon--info form-line__info js-tooltip"
+                                    data-toggle="tooltip"
+                                    data-placement="right"
+                                    title=""
+                                    data-original-title="{{ 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans }}">
+                                </i>
+                            </div>
+                            <div class="form-line__error">
+                                {{ form_errors(form.userData.password.first, { label: 'Password'|trans}) }}
+                            </div>
+                        </div>
                         {{ form_row(form.userData.password.second, { label: 'Password again'|trans}) }}
                     </div>
                 </div>
@@ -132,7 +142,7 @@
                 </div>
             </div>
 
-            <div class="text-right">
+            <div class="text-right margin-bottom-20">
                 {{ form_widget(form.save, { label: 'Save changes'|trans}) }}
             </div>
 
