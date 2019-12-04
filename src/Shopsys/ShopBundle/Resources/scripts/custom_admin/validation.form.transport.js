@@ -5,7 +5,7 @@
             'groups': function () {
                 var groups = [Shopsys.constant('\\Shopsys\\FrameworkBundle\\Form\\ValidationGroup::VALIDATION_GROUP_DEFAULT')];
 
-                if ($transportForm.find('.js-transport-personal-take').val() === Shopsys.constant('\\Shopsys\\ShopBundle\\Model\\Transport\\Transport::PERSONAL_TAKE_TYPE_BALIKOBOT')) {
+                if ($transportForm.find('.js-transport-type').val() === Shopsys.constant('\\Shopsys\\ShopBundle\\Model\\Transport\\Transport::TYPE_PERSONAL_TAKE_BALIKOBOT')) {
                     groups.push(Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Admin\\TransportFormTypeExtension::VALIDATION_GROUP_BALIKOBOT'));
                 }
 

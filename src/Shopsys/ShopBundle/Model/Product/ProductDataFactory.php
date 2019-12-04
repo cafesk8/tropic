@@ -144,5 +144,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->mallExportedAt = $product->getMallExportedAt();
         $productData->updatedAt = $product->getUpdatedAt();
         $productData->baseName = $product->getBaseName();
+        $productData->productType = $product->getProductType();
     }
 }

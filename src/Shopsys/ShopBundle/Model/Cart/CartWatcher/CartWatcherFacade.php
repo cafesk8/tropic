@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Shopsys\ShopBundle\Model\Cart\CartWatcherFacade;
+namespace Shopsys\ShopBundle\Model\Cart\CartWatcher;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
@@ -14,6 +14,9 @@ use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcher $cartWatcher
+ */
 class CartWatcherFacade extends BaseCartWatcherFacade
 {
     /**

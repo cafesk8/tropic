@@ -20,6 +20,9 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
+ */
 class CartFacade extends BaseCartFacade
 {
     /**
@@ -285,5 +288,21 @@ class CartFacade extends BaseCartFacade
     private function canUpdateCartItemQuantity(CartItem $cartItem, int $quantity): bool
     {
         return $cartItem->getProduct()->isUsingStock() && $quantity > $cartItem->getProduct()->getStockQuantity() === true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function showEmailTransportInCart(): bool
+    {
+        $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->isProductTypeGiftCertificate() === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
