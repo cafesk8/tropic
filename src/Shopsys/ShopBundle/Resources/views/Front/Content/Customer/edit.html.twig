@@ -20,9 +20,18 @@
                 <div class="wrap-box">
                     <h2 class="wrap-box__title">{{ 'Personal data'|trans }}</h2>
                     <div class="wrap-box__in">
-                        <img src="{{ barcodeImageByUser(customer) }}" alt="{{ 'Identifikační údaj zakazníka'|trans }}">
-                        <br/>
-                        ({{ customer.ean }})<br>
+                        <div class="in-bar-code">
+                            <div class="in-bar-code__title">
+                                {{ 'Tvoje osobní číslo'|trans }}
+                            </div>
+                            <div class="in-bar-code__number">
+                                {{ customer.ean }}
+                            </div>
+                            <div class="in-bar-code__image">
+                                <img src="{{ barcodeImageByUser(customer) }}" alt="{{ 'Identifikační údaj zakazníka'|trans }}">
+                            </div>
+                        </div>
+
                         {{ customer.pricingGroup.name }} ({{ customer.pricingGroup.discountPercent|formatPercent }})
                         {{ form_row(form.userData.firstName, { label: 'First name'|trans}) }}
                         {{ form_row(form.userData.lastName, { label: 'Last name'|trans}) }}
