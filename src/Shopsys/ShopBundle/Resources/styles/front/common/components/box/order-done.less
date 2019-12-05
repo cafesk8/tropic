@@ -20,6 +20,7 @@
         line-height: 30px;
 
         font-size: 18px;
+        color: @color-brown;
 
         &__highlight {
             background: @color-gray;
@@ -27,15 +28,17 @@
     }
 
     &__club {
-        margin: 0 auto;
+        margin: 0 auto 50px auto;
         max-width: 790px;
         padding: 25px;
 
         background-color: @color-gray;
+        color: @color-brown;
 
         @media @query-md {
             padding: 50px 74px;
         }
+
 
         &__title {
             width: 100%;
@@ -58,19 +61,44 @@
         }
 
         &__form {
+            display: flex;
+            flex-direction: column;
+
             @media @query-md {
                 padding-left: 40px;
             }
 
+            @media @query-lg {
+                flex-direction: row;
+            }
+
             &__input {
                 margin-bottom: 20px;
+                width: 100%;
 
                 @media @query-lg {
                     margin-bottom: 0px;
+                    width: calc(~"100% - 210px");
+                }
+
+                .form-line {
+                    flex-direction: column;
+                }
+
+                .form-line__error {
+                    width: 100%;
+                }
+
+                .form-error {
+                    display: block;
+                    transform: none;
+                    top: 0;
                 }
             }
 
             &__button-holder {
+                display: flex;
+                align-items: center;
                 padding-left: 0;
 
                 @media @query-lg {
@@ -80,7 +108,7 @@
 
             &__button {
                 font-size: 18px;
-                padding: 0 30px;
+                padding: 0 28px;
             }
         }
     }

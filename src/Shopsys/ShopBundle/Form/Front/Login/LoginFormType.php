@@ -28,6 +28,10 @@ class LoginFormType extends AbstractType
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(),
                 ],
+                'data' => $options['email'],
+                'attr' => [
+                    'class' => 'js-login-window-form-email',
+                ],
             ])
             ->add('password', PasswordType::class, [
                 'constraints' => [
@@ -54,8 +58,11 @@ class LoginFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'attr' => ['novalidate' => 'novalidate'],
-        ]);
+        $resolver
+            ->setRequired('email')
+            ->setAllowedTypes('email', ['string', 'null'])
+            ->setDefaults([
+                'attr' => ['novalidate' => 'novalidate'],
+            ]);
     }
 }

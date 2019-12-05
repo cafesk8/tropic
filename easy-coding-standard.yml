@@ -92,3 +92,6 @@ parameters:
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.UnusedProperty:
             - '*/src/Shopsys/ShopBundle/Model/Transfer/Issue/TransferIssue.php'
+
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff:
+            - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'

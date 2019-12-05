@@ -48,8 +48,8 @@ security:
                 username_parameter: "front_login_form[email]"
                 password_parameter: "front_login_form[password]"
                 csrf_parameter: "front_login_form[_token]"
-                success_handler: Shopsys\FrameworkBundle\Model\Security\CustomerLoginHandler
-                failure_handler: Shopsys\FrameworkBundle\Model\Security\CustomerLoginHandler
+                success_handler: Shopsys\ShopBundle\Model\Security\CustomerLoginHandler
+                failure_handler: Shopsys\ShopBundle\Model\Security\CustomerLoginHandler
                 remember_me: true
             remember_me:
                 secret: "%secret%"

@@ -33,7 +33,12 @@
                         <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
                     {% endif %}
 
-                    {{ form_row(form.email, { label: 'E-mail'|trans }) }}
+                    {{ form_row(form.email, { label: 'E-mail'|trans, attr: {
+                        'data-is-logged-customer': is_granted('ROLE_LOGGED_CUSTOMER'),
+                        'data-url': url('front_login_notice')
+                    } }) }}
+
+                    <div class="clear js-order-personal-info-form-email"></div>
 
                 </fieldset>
 

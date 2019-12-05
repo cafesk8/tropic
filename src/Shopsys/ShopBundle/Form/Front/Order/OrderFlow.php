@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Form\Front\Order;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\StepInterface;
 use Shopsys\FrameworkBundle\Model\Country\Country;
+use Shopsys\ShopBundle\Model\Customer\User;
 
 class OrderFlow extends FormFlow
 {
@@ -188,5 +189,89 @@ class OrderFlow extends FormFlow
         $requestParameters['flow_order_step'] = $step->getNumber();
         $requestParameters[$step->getFormType()] = $stepData;
         $request->replace($requestParameters);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     */
+    public function mergePreviouslySavedFormDataWithLoggedUserData(User $user): void
+    {
+        $orderFormData = $this->retrieveStepData();
+
+        $orderStepWithAddressData = 3;
+
+        if (!array_key_exists($orderStepWithAddressData, $orderFormData)) {
+            return;
+        }
+        $oldFormAddressData = $orderFormData[$orderStepWithAddressData];
+
+        $newFormAddressData = $oldFormAddressData;
+
+        if ($oldFormAddressData['firstName'] === '') {
+            $newFormAddressData['firstName'] = $user->getFirstName();
+        }
+        if ($oldFormAddressData['lastName'] === '') {
+            $newFormAddressData['lastName'] = $user->getLastName();
+        }
+        if ($oldFormAddressData['email'] === '') {
+            $newFormAddressData['email'] = $user->getEmail();
+        }
+        if ($oldFormAddressData['telephone'] === '') {
+            $newFormAddressData['telephone'] = $user->getTelephone();
+        }
+        if ($oldFormAddressData['street'] === '') {
+            $newFormAddressData['street'] = $user->getDeliveryAddress()->getStreet();
+        }
+        if ($oldFormAddressData['city'] === '') {
+            $newFormAddressData['city'] = $user->getDeliveryAddress()->getCity();
+        }
+        if ($oldFormAddressData['postcode'] === '') {
+            $newFormAddressData['postcode'] = $user->getDeliveryAddress()->getPostcode();
+        }
+        if ($oldFormAddressData['country'] === '') {
+            $newFormAddressData['country'] = $user->getDeliveryAddress()->getCountry();
+        }
+
+        $newFormAddressData = $this->mergeFormCompanyDataWithLoggedUserCompanyData($oldFormAddressData, $newFormAddressData, $user);
+
+        $orderFormData[$orderStepWithAddressData] = $newFormAddressData;
+
+        $this->saveStepData($orderFormData);
+    }
+
+    /**
+     * @param array $oldFormAddressData
+     * @param array $newFormAddressData
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @return array
+     */
+    private function mergeFormCompanyDataWithLoggedUserCompanyData(array $oldFormAddressData, array $newFormAddressData, User $user)
+    {
+        if ($user->getBillingAddress()->isCompanyCustomer()) {
+            if ($oldFormAddressData['companyName'] === '') {
+                $newFormAddressData['companyName'] = $user->getBillingAddress()->getCompanyName();
+            }
+            if ($oldFormAddressData['companyNumber'] === '') {
+                $newFormAddressData['companyNumber'] = $user->getBillingAddress()->getCompanyNumber();
+            }
+            if ($oldFormAddressData['companyTaxNumber'] === '') {
+                $newFormAddressData['companyTaxNumber'] = $user->getBillingAddress()->getCompanyTaxNumber();
+            }
+
+            if ($oldFormAddressData['street'] === '') {
+                $newFormAddressData['street'] = $user->getBillingAddress()->getStreet();
+            }
+            if ($oldFormAddressData['city'] === '') {
+                $newFormAddressData['city'] = $user->getBillingAddress()->getCity();
+            }
+            if ($oldFormAddressData['postcode'] === '') {
+                $newFormAddressData['postcode'] = $user->getBillingAddress()->getPostcode();
+            }
+            if ($oldFormAddressData['country'] === '') {
+                $newFormAddressData['country'] = $user->getBillingAddress()->getCountry();
+            }
+        }
+
+        return $newFormAddressData;
     }
 }
