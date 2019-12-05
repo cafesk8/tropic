@@ -131,7 +131,7 @@
                                                 }) }}
                                                 <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id][productId].vars.id }}">
                                                     {{ 'Chceš promo produkt' }}
-                                                    {{ promoProduct.product.name }}
+                                                    {{ getProductById(productId).name }}
                                                     {{ 'za zvýhodněnou cenu' }} {{ promoProduct.price|price }}{{ '?' }}
                                                 </label>
                                             </div>
