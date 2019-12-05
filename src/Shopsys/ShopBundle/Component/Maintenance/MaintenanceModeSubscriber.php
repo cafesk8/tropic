@@ -74,5 +74,7 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
                 ]
             )
         );
+
+        $responseEvent->stopPropagation();
     }
 }
