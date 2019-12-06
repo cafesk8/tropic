@@ -76,6 +76,9 @@
 
         &__select {
             .open & {
+                position: relative;
+                z-index: @z-index-above + 1;
+
                 background-color: @color-f;
                 border-radius: @radius @radius 0 0;
             }
@@ -92,6 +95,7 @@
 
                 background-color: @color-f;
                 border-radius: 0 @radius @radius @radius;
+                box-shadow: @box-shadow-outer;
 
                 .open & {
                     display: block;
