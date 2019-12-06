@@ -1,5 +1,7 @@
 @box-price-slider-inputs-gap: 10px;
 
+@box-price-slider-form-text-width: 25px;
+
 .box-price-slider {
     display: flex;
     flex-direction: column;
@@ -19,13 +21,14 @@
 
             &__text {
                 padding-right: 4px;
+                width: @box-price-slider-form-text-width;
 
                 font-size: @font-size-small;
                 color: @color-gray;
             }
 
             input {
-                width: 100%;
+                max-width: calc(~"100% - @{box-price-slider-form-text-width}");
                 
                 font-size: @font-size-small;
                 font-weight: 700;
