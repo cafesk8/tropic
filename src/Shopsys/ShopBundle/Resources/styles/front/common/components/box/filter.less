@@ -18,6 +18,7 @@
 
     &.active-mobile {
         width: calc(~"100% - @{web-padding-small} * 2");
+        margin-right: 0;
 
         @media @query-vl {
             width: 100%;
@@ -28,12 +29,12 @@
         margin-bottom: 16px;
         padding: @box-filter-padding;
 
-        background-color: @color-light;
+        background-color: @color-box;
         border-radius: @radius;
     }
 
     &__bottom {
-        border: 3px solid @color-light;
+        border: 3px solid @color-border;
         border-radius: @radius;
     }
 
@@ -60,7 +61,7 @@
         &__item {
             position: relative;
             margin-bottom: 5px;
-            padding: 8px 9px 7px 12px;
+            padding: 8px 27px 7px 12px;
 
             font-size: 13px;;
             border-radius: @radius-small;

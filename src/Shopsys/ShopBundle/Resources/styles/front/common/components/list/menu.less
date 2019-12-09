@@ -76,6 +76,9 @@
 
         &__select {
             .open & {
+                position: relative;
+                z-index: @z-index-above + 1;
+
                 background-color: @color-f;
                 border-radius: @radius @radius 0 0;
             }
@@ -86,12 +89,13 @@
                 display: none;
                 position: absolute;
                 left: 0;
-                top: @list-menu-item-height;
+                top: @list-menu-item-height - 1px;
                 z-index: @z-index-above;
                 padding: 5px 0;
 
                 background-color: @color-f;
                 border-radius: 0 @radius @radius @radius;
+                box-shadow: @box-shadow-outer;
 
                 .open & {
                     display: block;

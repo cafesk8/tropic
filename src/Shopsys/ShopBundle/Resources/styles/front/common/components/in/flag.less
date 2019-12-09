@@ -1,5 +1,6 @@
 @in-flag-item-top-gap: 12px;
 @in-flag-item-size: 70px;
+@in-flag-item-size-small: 46px;
 @in-flag-item-font-size: 18px;
 @in-flag-item-font-size-small: 16px;
 @in-flag-in-list-position-top: 0;
@@ -24,23 +25,33 @@
         float: right;
         clear: right;
         display: block;
-        width: @in-flag-item-size;
-        height: @in-flag-item-size;
-        line-height: @in-flag-item-size;
+        width: @in-flag-item-size-small;
+        height: @in-flag-item-size-small;
+        line-height: @in-flag-item-size-small;
         margin-top: @in-flag-item-top-gap;
         text-align: center;
 
         overflow: hidden;
         border-radius: 50%;
         color: @color-f;
-        font-size: @in-flag-item-font-size;
+        font-size: 10px;
         font-weight: 700;
+
+        @media @query-md {
+            width: @in-flag-item-size;
+            height: @in-flag-item-size;
+            line-height: @in-flag-item-size;
+
+            font-size: @in-flag-item-font-size;
+        }
 
         &--smaller-text {
             line-height: @in-flag-item-font-size-small;
             padding-top: 20px;
 
-            font-size: @in-flag-item-font-size-small;
+            @media @query-md {
+                font-size: @in-flag-item-font-size-small;
+            }
         }
 
         .in-flag--static & {
