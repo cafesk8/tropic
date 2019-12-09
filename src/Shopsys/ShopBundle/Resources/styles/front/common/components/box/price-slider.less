@@ -12,6 +12,7 @@
     &__form {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
 
         &__item {
             display: flex;
@@ -51,11 +52,11 @@
             }
 
             &--left {
-                margin-right: @box-price-slider-inputs-gap/2;
+                padding-right: @box-price-slider-inputs-gap/2;
             }
 
             &--right {
-                margin-left: @box-price-slider-inputs-gap/2;
+                padding-left: @box-price-slider-inputs-gap/2;
             }
         }
     }
