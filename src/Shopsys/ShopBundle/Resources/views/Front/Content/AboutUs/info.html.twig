@@ -51,31 +51,26 @@
                         {% endif %}
                     </div>
                     <div class="wrap-article__row__half">
-                        <div class="wrap-article__row">
-                            <div class="wrap-article__row__full">
-                                <h4>{{ 'Provozovna'|trans }}</h4>
+                        {% if domainId != 2 %}
+                            <div class="wrap-article__row">
+                                <div class="wrap-article__row__full">
+                                    <h4>{{ 'Provozovna'|trans }}</h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="wrap-article__row padding-bottom-20">
-                            <div class="wrap-article__row__half">
-                                {% if domainId == 2 %}
-                                    {{ 'Bushman Trade s.r.o.'|trans }}<br>
-                                    {{ 'Stará Vajnorská 11'|trans }}<br>
-                                    {{ '831 04 Bratislava'|trans }}<br>
-                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br>
-                                {% else %}
+                            <div class="wrap-article__row padding-bottom-20">
+                                <div class="wrap-article__row__half">
                                     {{ 'Administrativní areál BUSHMAN'|trans }}<br>
                                     {{ 'Městečko - Nespeky č.p. 75'|trans }}<br>
                                     {{ '257 22 Čerčany'|trans }}<br>
-                                {% endif %}
+                                </div>
+                                <div class="wrap-article__row__half">
+                                    {{ 'Pondělí až pátek 9–15 hod'|trans }}<br>
+                                    {{ 'tel.: +420 317 712 400'|trans }}<br>
+                                    {{ 'fax: +420 317 712 499'|trans }}<br>
+                                    {{ 'office@bushman.cz'|trans }}<br>
+                                </div>
                             </div>
-                            <div class="wrap-article__row__half">
-                                {{ 'Pondělí až pátek 9–15 hod'|trans }}<br>
-                                {{ 'tel.: +420 317 712 400'|trans }}<br>
-                                {{ 'fax: +420 317 712 499'|trans }}<br>
-                                {{ 'office@bushman.cz'|trans }}<br>
-                            </div>
-                        </div>
+                        {% endif %}
                         <div class="wrap-article__row">
                             <div class="wrap-article__row__full">
                                 <h4>{{ 'Sídlo'|trans }}</h4>
@@ -87,7 +82,9 @@
                                     {{ 'Bushman Trade s.r.o.'|trans }}<br>
                                     {{ 'Stará Vajnorská 11'|trans }}<br>
                                     {{ '831 04 Bratislava'|trans }}<br>
-                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br>
+                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br><br>
+                                    {{ 'Tel'|trans }}: <a href="tel:00421908767330" class="underline-small">{{ '00421/908767330'|trans }}</a><br><br>
+                                    <a href="mailto:obchod@bushman.sk" class="underline-small">{{ 'obchod@bushman.sk'|trans }}</a><br>
                                 </div>
                                 <div class="wrap-article__row__half">
                                     {{ 'Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B.'|trans }}
