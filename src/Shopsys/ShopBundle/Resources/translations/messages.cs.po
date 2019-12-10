@@ -643,9 +643,6 @@ msgstr ""
 msgid "Dostupné množství k odběru"
 msgstr ""
 
-msgid "Dostupné množství k odběru"
-msgstr ""
-
 msgid "Download"
 msgstr "Stáhnout"
 
@@ -2488,7 +2485,7 @@ msgstr ""
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr ""
 
-msgid "Tvar odkazu pro sledování zásilky"
+msgid "Tvoje osobní číslo"
 msgstr ""
 
 msgid "Tvorba e-shopů na míru"
@@ -2633,27 +2630,6 @@ msgid "Video"
 msgstr ""
 
 msgid "Viditelný na homepage"
-msgstr ""
-
-msgid "Vidět administrátory"
-msgstr ""
-
-msgid "Vidět cenotvorbu"
-msgstr ""
-
-msgid "Vidět marketing"
-msgstr ""
-
-msgid "Vidět nastavení"
-msgstr ""
-
-msgid "Vidět objednávky"
-msgstr ""
-
-msgid "Vidět zboží a kategorie"
-msgstr ""
-
-msgid "Vidět zákazníky"
 msgstr ""
 
 msgid "Vidět administrátory"
@@ -2953,9 +2929,6 @@ msgstr ""
 msgid "Zobrazovat v menu a dalších výpisech"
 msgstr ""
 
-msgid "Zobrazovat v menu a dalších výpisech"
-msgstr ""
-
 msgid "Zpět"
 msgstr ""
 
@@ -3194,9 +3167,6 @@ msgid "Úvod"
 msgstr ""
 
 msgid "účastníků"
-msgstr ""
-
-msgid "Česko"
 msgstr ""
 
 msgid "Česko"

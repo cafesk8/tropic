@@ -2494,6 +2494,9 @@ msgstr "Tučný nadpis"
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr ""
 
+msgid "Tvoje osobní číslo"
+msgstr "Tvoje osobné číslo"
+
 msgid "Tvorba e-shopů na míru"
 msgstr "Tvorba e-shopov na mieru"
 
