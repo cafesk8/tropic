@@ -137,7 +137,7 @@
     <div class="box-detail__tags__values">
         <div class="list-tags">
             {% for productCategoryDomain in productVisibleProductCategoryDomains %}
-                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag list-tags__tag--outline">
+                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag">
                     {{ productCategoryDomain.category.name }}
                 </a>
             {% endfor %}

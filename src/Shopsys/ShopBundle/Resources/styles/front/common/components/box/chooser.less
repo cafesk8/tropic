@@ -93,12 +93,15 @@
 
             &__description {
                 display: block;
-                width: 100%;
+                width: calc(~"100% - @{box-chooser-image-width}");
                 padding-left: 10px;
-                line-height: 22px;
-                margin-top: -10px;
+                line-height: 13px;
 
                 color: @box-chooser-description-color;
+
+                @media @query-md {
+                    width: 100%;
+                }
             }
         }
 
