@@ -43,6 +43,18 @@
             font-size: @in-flag-item-font-size;
         }
 
+        .domain3 & {
+            line-height: @in-flag-item-size-small - 3;
+
+            font-size: @in-flag-item-font-size-mobile - 3;
+
+            @media @query-md {
+                line-height: @in-flag-item-size - 3;
+
+                font-size: @in-flag-item-font-size - 3;
+            }
+        }
+
         &--middle-text {
             line-height: @in-flag-item-size-small;
 
@@ -52,6 +64,18 @@
                 line-height: @in-flag-item-size;
 
                 font-size: @in-flag-item-font-size-middle;
+            }
+
+            .domain3 & {
+                line-height: @in-flag-item-size-small - 3;
+
+                font-size: @in-flag-item-font-size-mobile - 3;
+
+                @media @query-md {
+                    line-height: @in-flag-item-size - 3;
+
+                    font-size: @in-flag-item-font-size-middle - 3;
+                }
             }
         }
 
@@ -67,6 +91,16 @@
 
                 font-size: @in-flag-item-font-size-small;
                 word-wrap: break-word;
+            }
+
+            .domain3 & {
+                font-size: @in-flag-item-font-size-mobile - 3;
+
+                @media @query-md {
+                    line-height: @in-flag-item-font-size-small - 3;
+
+                    font-size: @in-flag-item-font-size-small - 3;
+                }
             }
         }
     }
