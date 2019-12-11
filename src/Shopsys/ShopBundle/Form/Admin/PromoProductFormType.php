@@ -63,7 +63,7 @@ class PromoProductFormType extends AbstractType
                 'scale' => 6,
                 'required' => false,
                 'label' => t('Cena promo produktu s DPH (v %currencySymbol%)', [
-                    '%currencySymbol%' => $currencySymbol
+                    '%currencySymbol%' => $currencySymbol,
                 ]),
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
@@ -74,7 +74,7 @@ class PromoProductFormType extends AbstractType
                 'scale' => 6,
                 'required' => false,
                 'label' => t('Minimální cena košíku s DPH (v %currencySymbol%)', [
-                    '%currencySymbol%' => $currencySymbol
+                    '%currencySymbol%' => $currencySymbol,
                 ]),
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
