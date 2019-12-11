@@ -62,7 +62,9 @@ class PromoProductFormType extends AbstractType
             ->add('price', MoneyType::class, [
                 'scale' => 6,
                 'required' => false,
-                'label' => t(sprintf('Cena promo produktu s DPH (v %s)', $currencySymbol)),
+                'label' => t('Cena promo produktu s DPH (v %currencySymbol%)', [
+                    '%currencySymbol%' => $currencySymbol
+                ]),
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
@@ -71,7 +73,9 @@ class PromoProductFormType extends AbstractType
             ->add('minimalCartPrice', MoneyType::class, [
                 'scale' => 6,
                 'required' => false,
-                'label' => t(sprintf('Minimální cena košíku s DPH (v %s)', $currencySymbol)),
+                'label' => t('Minimální cena košíku s DPH (v %currencySymbol%)', [
+                    '%currencySymbol%' => $currencySymbol
+                ]),
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
