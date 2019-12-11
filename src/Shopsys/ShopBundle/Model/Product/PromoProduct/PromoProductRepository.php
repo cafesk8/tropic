@@ -11,6 +11,7 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\ProductTranslation;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\Exception\PromoProductNotFoundException;
 
 class PromoProductRepository
@@ -82,9 +83,10 @@ class PromoProductRepository
     /**
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $minimalCartPrice
      * @param int $domainId
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      * @return \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[]
      */
-    public function getPromoProductsWithMinimalCartPrice(Money $minimalCartPrice, int $domainId): array
+    public function getPromoProductsWithMinimalCartPrice(Money $minimalCartPrice, int $domainId, ?User $user): array
     {
         return $this->em->createQueryBuilder()
             ->select('pp')
@@ -93,11 +95,26 @@ class PromoProductRepository
             ->andWhere('pp.price IS NOT NULL')
             ->andWhere('pp.minimalCartPrice IS NOT NULL')
             ->andWhere('pp.domainId = :domainId')
+            ->andWhere('pp.type IN (:types)')
             ->setParameters([
                 'minimalCartPrice' => $minimalCartPrice->getAmount(),
                 'domainId' => $domainId,
+                'types' => $this->getPromoProductTypesByUser($user),
             ])
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
+     * @return string[]
+     */
+    private function getPromoProductTypesByUser(?User $user): array
+    {
+        if ($user === null || !$user->isMemberOfBushmanClub()) {
+            return [PromoProduct::TYPE_ALL];
+        }
+
+        return array_values(PromoProduct::getTypesIndexedByTitles());
     }
 }
