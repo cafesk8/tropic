@@ -16,3 +16,7 @@
 {% block grid_value_cell_id_minimalCartPrice %}
     {{ value|priceWithAdminDomainTabDomainCurrency }}
 {% endblock %}
+
+{% block grid_value_cell_id_type %}
+    {{ titlesIndexedByType[value] }}
+{% endblock %}

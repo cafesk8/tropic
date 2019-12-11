@@ -58,13 +58,16 @@ class PromoProductGridFactory
         $grid->addColumn('name', 'p.name', t('Název výchozího produktu'));
         $grid->addColumn('price', 'pp.price', t('Cena promo produktu'));
         $grid->addColumn('minimalCartPrice', 'pp.minimalCartPrice', t('Minimální cena košíku'));
+        $grid->addColumn('type', 'pp.type', t('Platí pro'));
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
         $grid->addEditActionColumn('admin_promoproduct_edit', ['id' => 'pg.id']);
         $grid->addDeleteActionColumn('admin_promoproduct_delete', ['id' => 'pg.id'])
             ->setConfirmMessage(t('Opravdu chcete odstranit tento promo produkt?'));
 
-        $grid->setTheme('@ShopsysShop/Admin/Content/PromoProduct/listGrid.html.twig');
+        $grid->setTheme('@ShopsysShop/Admin/Content/PromoProduct/listGrid.html.twig', [
+            'titlesIndexedByType' => PromoProduct::getTitlesIndexedByType(),
+        ]);
 
         return $grid;
     }

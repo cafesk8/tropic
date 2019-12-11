@@ -67,7 +67,7 @@ class PromoProductRepository
     public function getQueryBuilderForAdminPromoProductGrid(int $domainId): QueryBuilder
     {
         return $this->em->createQueryBuilder()
-            ->select('pp.id, t.name, pp.price, pp.minimalCartPrice')
+            ->select('pp.id, t.name, pp.price, pp.minimalCartPrice, pp.type')
             ->from(PromoProduct::class, 'pp')
             ->join('pp.product', 'p')
             ->join(ProductTranslation::class, 't', Join::WITH, 'p = t.translatable AND t.locale = :locale')

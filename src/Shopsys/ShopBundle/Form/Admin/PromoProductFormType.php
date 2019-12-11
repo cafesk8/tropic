@@ -7,9 +7,11 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\ProductType;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductData;
 use Shopsys\ShopBundle\Twig\PriceExtension;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -80,6 +82,13 @@ class PromoProductFormType extends AbstractType
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
                 ],
+            ])
+            ->add('type', ChoiceType::class, [
+                'label' => t('Platí pro'),
+                'required' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => PromoProduct::getTypesIndexedByTitles(),
             ])
             ->add('save', SubmitType::class);
     }

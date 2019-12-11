@@ -49,5 +49,6 @@ class PromoProductDataFactory
         $promoProductData->product = $promoProduct->getProduct();
         $promoProductData->price = $promoProduct->getPrice();
         $promoProductData->minimalCartPrice = $promoProduct->getMinimalCartPrice();
+        $promoProductData->type = $promoProduct->getType();
     }
 }
