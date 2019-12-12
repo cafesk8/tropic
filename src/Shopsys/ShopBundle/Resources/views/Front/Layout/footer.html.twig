@@ -1,13 +1,16 @@
 {% block footer %}
     <div class="footer">
         {% block footer__links %}
+            {% set domainId = getDomain().id %}
+            {% set facebookLinks = ['', 'https://www.facebook.com/BushmanCesko', 'https://www.facebook.com/BushmanCesko', 'https://www.facebook.com/BushmanDeutschland/'] %}
+
             <div class="web__line">
                 <div class="web__container web__container--light web__container--big-padding">
                     <div class="footer-top">
                         <div class="footer-top__info">
                             <ul class="list-socials">
                                 <li class="list-socials__item">
-                                    <a class="list-socials__item__link" href="https://www.facebook.com/BushmanCesko" target="_blank">
+                                    <a class="list-socials__item__link" href="{{ facebookLinks[domainId] }}" target="_blank">
                                         <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
                                         <span class="list-socials__item__text">
                                             {{ 'Facebook'|trans }}
