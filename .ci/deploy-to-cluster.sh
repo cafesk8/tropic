@@ -48,9 +48,6 @@ yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_2}
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_3}
 
-yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[1].value ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[2].value "${DOMAIN_HOSTNAME_2}; ${DOMAIN_HOSTNAME_3};"
-
 if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_2}
@@ -194,6 +191,9 @@ yq write --inplace app/config/parameters.yml parameters[gopay.config].isProducti
 yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.goid ${GOPAY_SK_GO_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientId ${GOPAY_SK_CLIENT_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientSecret ${GOPAY_SK_CLIENT_SECRET}
+
+#SMTP
+yq write --inplace app/config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
