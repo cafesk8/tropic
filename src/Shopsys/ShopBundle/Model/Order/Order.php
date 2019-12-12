@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Order;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Utils\Utils;
@@ -999,5 +1000,17 @@ class Order extends BaseOrder
         }
 
         return null;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isGopayPaid(): ?bool
+    {
+        if ($this->goPayId === null) {
+            return null;
+        }
+
+        return $this->goPayStatus === PaymentStatus::PAID;
     }
 }

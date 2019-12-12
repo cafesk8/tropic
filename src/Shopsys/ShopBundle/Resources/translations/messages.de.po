@@ -1090,6 +1090,9 @@ msgstr ""
 msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr ""
 
+msgid "Klikněte zde pro zopakování úhrady objednávky"
+msgstr ""
+
 msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr "Ein Kollege Novák kann gut tschechisch. Schicken Sie ihm auch den Schlüsselring. Ich kann die obigen Bewertungen bestätigen. Die Jacke ist wirklich gut, gut getragen und selbst nach einer Woche fühlte ich mich nicht verschwitzt oder schmutzig."
 
@@ -1390,6 +1393,9 @@ msgstr ""
 msgid "Nepovinný název pro administraci"
 msgstr ""
 
+msgid "Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
+msgstr ""
+
 msgid "Nepovinný údaj"
 msgstr ""
 
@@ -1471,6 +1477,9 @@ msgstr "Anzahl der Artikel"
 msgid "Number of orders"
 msgstr "Anzahl der Bestellungen"
 
+msgid "Nyní budete přesměrováni na platební bránu GoPay."
+msgstr ""
+
 msgid "Nákupní košík"
 msgstr "Warenkorb"
 
@@ -1494,6 +1503,12 @@ msgstr "Über den Einkauf"
 
 msgid "O nás"
 msgstr "Über uns"
+
+msgid "Objednávka je již zaplacená."
+msgstr ""
+
+msgid "Objednávka nebyla nalezena."
+msgstr ""
 
 msgid "Objednávka z Mall.cz"
 msgstr ""
@@ -1560,6 +1575,9 @@ msgstr "Nur geprüfte Produkte"
 
 msgid "Oops! Error occurred."
 msgstr "Hoppla! Es ist ein Fehler aufgetreten."
+
+msgid "Opakovat platbu"
+msgstr ""
 
 msgid "Opening hours"
 msgstr "Öffnungszeiten"
@@ -2254,6 +2272,12 @@ msgstr ""
 msgid "Slevový kupón nelze aplikovat na zlevněné zboží."
 msgstr ""
 
+msgid "Slevový kupón nelze aplikovat na nezlevněné zboží."
+msgstr ""
+
+msgid "Slevový kupón nelze aplikovat na zlevněné zboží."
+msgstr ""
+
 msgid "Slevový kód"
 msgstr ""
 
@@ -2473,6 +2497,9 @@ msgstr ""
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr ""
 
+msgid "Tvar odkazu pro sledování zásilky"
+msgstr ""
+
 msgid "Tvorba e-shopů na míru"
 msgstr ""
 
@@ -2505,6 +2532,9 @@ msgstr "URL-Adressen"
 
 msgid "Uh-oh, uh-oh. And specially <strong>\"%status_code% %status_text%\"</strong>, as if it was on purpose!"
 msgstr "Oh, oh. Und speziell <strong> \"%status_code%%status_text%\" </strong>, als ob es absichtlich wäre!"
+
+msgid "Uhrazení objednávky č. %orderNumber% platební kartou."
+msgstr ""
 
 msgid "Ulice"
 msgstr "Straße"
@@ -2854,6 +2884,9 @@ msgstr "Gib den Code ein"
 msgid "Zadejte město nebo PSČ:"
 msgstr "Ort oder Postleitzahl eingeben:"
 
+msgid "Zaplatit"
+msgstr ""
+
 msgid "Zapomenuté heslo?"
 msgstr "Passwort vergessen?"
 
@@ -2876,6 +2909,9 @@ msgid "Zipy, které vydrží"
 msgstr "Reißverschlüsse, die dauern"
 
 msgid "Zkonečných stavů nelze měnit stav objednávky"
+msgstr ""
+
+msgid "Zlevněné produkty"
 msgstr ""
 
 msgid "Zlevněné produkty"

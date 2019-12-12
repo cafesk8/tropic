@@ -42,11 +42,14 @@ class GoPayOrderMapper
      */
     public function createGoPayPaymentData(Order $order, ?string $goPayBankSwift): array
     {
+        $orderPayment = $order->getPayment();
+        $defaultPaymentInstrument = $orderPayment->getGoPayPaymentMethod() !== null ? $orderPayment->getGoPayPaymentMethod()->getIdentifier() : '';
+
         $goPayPaymentItemsData = $this->createGoPayPaymentItemsData($order);
         $router = $this->domainRouterFactory->getRouter($order->getDomainId());
         $payment = [
             'payer' => [
-                'default_payment_instrument' => $order->getPayment()->getGoPayPaymentMethod()->getIdentifier(),
+                'default_payment_instrument' => $defaultPaymentInstrument,
                 'allowed_payment_instruments' => $this->goPayPaymentMethodFacade->getAllTypeIdentifiers(),
                 'contact' => $this->createContactData($order),
             ],
