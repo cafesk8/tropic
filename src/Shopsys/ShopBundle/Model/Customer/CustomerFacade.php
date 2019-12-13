@@ -251,7 +251,7 @@ class CustomerFacade extends BaseCustomerFacade
     ): User {
         $userByEmailAndDomain = $this->findUserByEmailAndDomain($userData->email, $userData->domainId);
         $deliveryAddress = null;
-        $billingAddress = null;
+        $billingAddress = $this->billingAddressFactory->create($this->billingAddressDataFactory->create());
 
         if ($deliveryAddressData !== null) {
             $deliveryAddress = $this->deliveryAddressFactory->create($deliveryAddressData);
