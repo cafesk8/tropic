@@ -125,6 +125,9 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $order = $this->getOrder($orderStatusTransferResponseItemData);
 
         $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
+        if ($orderItemTransferData === null) {
+            return;
+        }
         $this->setOrderItemPreparedQuantities($order, $orderItemTransferData->getItems());
 
         /** @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus */
@@ -280,6 +283,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
                 'Order not found',
                 [
                     'number' => $orderNumber,
+                    'error_message' => $exception->getMessage(),
                 ]
             );
             return null;
