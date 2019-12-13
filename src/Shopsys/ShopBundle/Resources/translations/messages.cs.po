@@ -2548,6 +2548,9 @@ msgstr "Nepodařilo se nám odstranit položku z košíku. Zřejmě vypršela pl
 msgid "Unable to send some e-mails, please contact us for order verification."
 msgstr "Nepodařilo se nám odeslat některé e-maily, pro ověření objednávky nás, prosím, kontaktuj."
 
+msgid "Unable to send some e-mails, please contact us for registration verification."
+msgstr "Nepodařilo se nám odeslat některé e-maily, pro ověření registrace nás, prosím, kontaktuj."
+
 msgid "Unable to send updating e-mail"
 msgstr ""
 

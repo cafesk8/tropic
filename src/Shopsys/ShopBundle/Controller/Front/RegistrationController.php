@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
+use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -54,13 +56,19 @@ class RegistrationController extends FrontBaseController
     private $cardEanFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade
+     */
+    private $customerMailFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface $userDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      */
     public function __construct(
         Domain $domain,
@@ -69,7 +77,8 @@ class RegistrationController extends FrontBaseController
         Authenticator $authenticator,
         LegalConditionsFacade $legalConditionsFacade,
         CardEanFacade $cardEanFacade,
-        ArticleFacade $articleFacade
+        ArticleFacade $articleFacade,
+        CustomerMailFacade $customerMailFacade
     ) {
         $this->domain = $domain;
         $this->userDataFactory = $userDataFactory;
@@ -78,6 +87,7 @@ class RegistrationController extends FrontBaseController
         $this->legalConditionsFacade = $legalConditionsFacade;
         $this->cardEanFacade = $cardEanFacade;
         $this->articleFacade = $articleFacade;
+        $this->customerMailFacade = $customerMailFacade;
     }
 
     /**
@@ -105,7 +115,14 @@ class RegistrationController extends FrontBaseController
             $userData = $form->getData();
 
             /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
-            $user = $this->customerFacade->register($userData);
+            $user = $this->customerFacade->registerCustomerWithAddress($userData, null, null);
+            try {
+                $this->customerMailFacade->sendRegistrationMail($user);
+            } catch (\Swift_SwiftException | MailException $exception) {
+                $this->getFlashMessageSender()->addErrorFlash(
+                    t('Unable to send some e-mails, please contact us for registration verification.')
+                );
+            }
 
             $this->cardEanFacade->addPrereneratedEanToUserAndFlush($user);
 

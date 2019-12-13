@@ -2551,6 +2551,9 @@ msgstr "Artikel kann nicht aus dem Warenkorb entfernt werden. Der Link zum Entfe
 msgid "Unable to send some e-mails, please contact us for order verification."
 msgstr "Einige E-Mails können nicht gesendet werden. Bitte kontaktiere uns, um die Bestellung zu bestätigen."
 
+msgid "Unable to send some e-mails, please contact us for registration verification."
+msgstr "Einige E-Mails können nicht gesendet werden. Bitte kontaktiere uns, um die Registrierung zu bestätigen."
+
 msgid "Unable to send updating e-mail"
 msgstr ""
 

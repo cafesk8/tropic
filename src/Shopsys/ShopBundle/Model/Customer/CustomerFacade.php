@@ -279,8 +279,6 @@ class CustomerFacade extends BaseCustomerFacade
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->customerMailFacade->sendRegistrationMail($user);
-
         return $user;
     }
 }

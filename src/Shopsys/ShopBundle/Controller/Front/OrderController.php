@@ -9,8 +9,10 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory;
+use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
 use Shopsys\FrameworkBundle\Model\Order\Order;
@@ -200,6 +202,11 @@ class OrderController extends FrontBaseController
     private $cardEanFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade
+     */
+    private $customerMailFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -228,6 +235,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
      * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -257,7 +265,8 @@ class OrderController extends FrontBaseController
         Authenticator $authenticator,
         BillingAddressDataFactory $billingAddressDataFactory,
         DeliveryAddressDataFactory $deliveryAddressDataFactory,
-        CardEanFacade $cardEanFacade
+        CardEanFacade $cardEanFacade,
+        CustomerMailFacade $customerMailFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -287,6 +296,7 @@ class OrderController extends FrontBaseController
         $this->billingAddressDataFactory = $billingAddressDataFactory;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
         $this->cardEanFacade = $cardEanFacade;
+        $this->customerMailFacade = $customerMailFacade;
     }
 
     public function indexAction()
@@ -703,6 +713,13 @@ class OrderController extends FrontBaseController
 
             /** @var \Shopsys\ShopBundle\Model\Customer\User $newlyRegisteredUser */
             $newlyRegisteredUser = $this->customerFacade->registerCustomerWithAddress($userData, $deliveryAddressData, $billingAddressData);
+            try {
+                $this->customerMailFacade->sendRegistrationMail($newlyRegisteredUser);
+            } catch (\Swift_SwiftException | MailException $exception) {
+                $this->getFlashMessageSender()->addErrorFlash(
+                    t('Unable to send some e-mails, please contact us for registration verification.')
+                );
+            }
 
             $this->orderFacade->setCustomerToOrder($order, $newlyRegisteredUser);
             $this->cardEanFacade->addPrereneratedEanToUserAndFlush($newlyRegisteredUser);

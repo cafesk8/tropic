@@ -2557,6 +2557,9 @@ msgstr "Položku nie je možné odstrániť z košíka. Odkaz na jeho odstránen
 msgid "Unable to send some e-mails, please contact us for order verification."
 msgstr "Nie je možné odoslať žiadné e-maily, kontaktuj nás kvôli overeniu objednávky."
 
+msgid "Unable to send some e-mails, please contact us for registration verification."
+msgstr "Nie je možné odoslať žiadné e-maily, kontaktuj nás kvôli overeniu registrácie."
+
 msgid "Unable to send updating e-mail"
 msgstr "Nie je možné odoslať aktualizačný e-mail"
 
