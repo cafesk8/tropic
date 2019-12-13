@@ -3,7 +3,7 @@
 @list-products-item-image-size: 260px;
 @list-products-item-image-bottom-gap: 20px;
 @list-products-item-image-top-gap: 20px;
-@list-products-item-title-line-height: @font-size-small+4px;
+@list-products-item-title-line-height: 24px;
 @list-products-item-title-rows: 2;
 @list-products-item-gap: 17px/2;
 @list-products-item-font-size: 18px;
@@ -134,8 +134,8 @@
 
             &__title {
                 display: block;
-                height: 48px;
-                line-height: 24px;
+                height: @list-products-item-title-rows*@list-products-item-title-line-height;
+                line-height: @list-products-item-title-line-height;
                 margin-bottom: 0;
                 overflow: hidden;
 
