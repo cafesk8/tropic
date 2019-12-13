@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\Product\PromoProduct;
 
 use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
+use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 class PromoProductInCartFacade
@@ -40,9 +41,10 @@ class PromoProductInCartFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
      * @param int $domainId
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      * @return \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[]
      */
-    public function getPromoProductsForCart(?Cart $cart, int $domainId): array
+    public function getPromoProductsForCart(?Cart $cart, int $domainId, ?User $user): array
     {
         if ($cart === null) {
             return [];
@@ -50,7 +52,8 @@ class PromoProductInCartFacade
 
         $promoProducts = $this->promoProductRepository->getPromoProductsWithMinimalCartPrice(
             $cart->getTotalWatchedPriceOfProducts(),
-            $domainId
+            $domainId,
+            $user
         );
 
         $promoProductsForCart = [];

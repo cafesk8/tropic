@@ -25,4 +25,14 @@ class PromoProductData
      * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
     public $minimalCartPrice;
+
+    /**
+     * @var string|null
+     */
+    public $type;
+
+    public function __construct()
+    {
+        $this->type = PromoProduct::TYPE_ALL;
+    }
 }

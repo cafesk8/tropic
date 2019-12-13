@@ -14,6 +14,9 @@ use Shopsys\ShopBundle\Model\Product\Product;
  */
 class PromoProduct
 {
+    public const TYPE_ALL = 'all';
+    public const TYPE_BUSHMAN_CLUB_MEMBERS_ONLY = 'bushmanClubMembersOnly';
+
     /**
      * @var int
      *
@@ -53,6 +56,13 @@ class PromoProduct
     private $minimalCartPrice;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $type;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductData $promoProductData
      */
     public function __construct(PromoProductData $promoProductData)
@@ -61,6 +71,7 @@ class PromoProduct
         $this->product = $promoProductData->product;
         $this->price = $promoProductData->price;
         $this->minimalCartPrice = $promoProductData->minimalCartPrice;
+        $this->type = $promoProductData->type;
     }
 
     /**
@@ -72,6 +83,7 @@ class PromoProduct
         $this->product = $promoProductData->product;
         $this->price = $promoProductData->price;
         $this->minimalCartPrice = $promoProductData->minimalCartPrice;
+        $this->type = $promoProductData->type;
     }
 
     /**
@@ -126,5 +138,32 @@ class PromoProduct
         } else {
             return [$product];
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getTypesIndexedByTitles(): array
+    {
+        return array_flip(self::getTitlesIndexedByType());
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getTitlesIndexedByType(): array
+    {
+        return [
+            self::TYPE_ALL => t('všechny zákazníky'),
+            self::TYPE_BUSHMAN_CLUB_MEMBERS_ONLY => t('pouze členy bushman clubu'),
+        ];
     }
 }
