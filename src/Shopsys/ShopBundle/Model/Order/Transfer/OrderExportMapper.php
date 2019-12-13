@@ -208,8 +208,8 @@ class OrderExportMapper
             $orderItems[] = [
                 'BarCode' => $item->getEan(),
                 'Name' => $item->getName(),
-                'Quantity' => $item->getQuantity(),
-                'FullPrice' => $item->getPriceWithVat()->getAmount(),
+                'Quantity' => $item->isTypeGiftCertification() ? ($item->getQuantity() * -1) : $item->getQuantity(), // If item is Gift certification we need to send negative quantity
+                'FullPrice' => $this->getOrderItemFullPrice($item),
                 'Discount' => $this->getOrderItemDiscount($item),
             ];
         }
@@ -232,5 +232,18 @@ class OrderExportMapper
         }
 
         return '0.0';
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item
+     * @return string
+     */
+    private function getOrderItemFullPrice(OrderItem $item): string
+    {
+        if ($item->isTypeGiftCertification() && $item->getPriceWithVat()->isNegative()) {
+            return $item->getPriceWithVat()->multiply(-1)->getAmount();
+        }
+
+        return $item->getPriceWithVat()->getAmount();
     }
 }
