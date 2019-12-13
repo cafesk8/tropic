@@ -219,17 +219,20 @@ class OrderFlow extends FormFlow
         if ($oldFormAddressData['telephone'] === '') {
             $newFormAddressData['telephone'] = $user->getTelephone();
         }
-        if ($oldFormAddressData['street'] === '') {
-            $newFormAddressData['street'] = $user->getDeliveryAddress()->getStreet();
-        }
-        if ($oldFormAddressData['city'] === '') {
-            $newFormAddressData['city'] = $user->getDeliveryAddress()->getCity();
-        }
-        if ($oldFormAddressData['postcode'] === '') {
-            $newFormAddressData['postcode'] = $user->getDeliveryAddress()->getPostcode();
-        }
-        if ($oldFormAddressData['country'] === '') {
-            $newFormAddressData['country'] = $user->getDeliveryAddress()->getCountry();
+
+        if ($user->getDeliveryAddress() !== null) {
+            if ($oldFormAddressData['street'] === '') {
+                $newFormAddressData['street'] = $user->getDeliveryAddress()->getStreet();
+            }
+            if ($oldFormAddressData['city'] === '') {
+                $newFormAddressData['city'] = $user->getDeliveryAddress()->getCity();
+            }
+            if ($oldFormAddressData['postcode'] === '') {
+                $newFormAddressData['postcode'] = $user->getDeliveryAddress()->getPostcode();
+            }
+            if ($oldFormAddressData['country'] === '') {
+                $newFormAddressData['country'] = $user->getDeliveryAddress()->getCountry();
+            }
         }
 
         $newFormAddressData = $this->mergeFormCompanyDataWithLoggedUserCompanyData($oldFormAddressData, $newFormAddressData, $user);
