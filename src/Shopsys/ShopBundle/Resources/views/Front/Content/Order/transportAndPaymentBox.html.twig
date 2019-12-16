@@ -55,13 +55,13 @@
                         {% endif %}
                         <div class="js-pickup-place-detail js-pickup-place-tooltip js-pickup-place-detail-{{ choice.data.id }}"
                              title="{{ pickupPlaceName }}">
-                            <strong class="js-pickup-place-detail-name">
+                            <span class="js-pickup-place-detail-name">
                                 {{ pickupPlaceName }}
-                            </strong>
+                            </span>
                             <button
                                 type="button"
                                 data-id="{{ choice.data.id }}"
-                                class="js-pickup-place-change-button link-style btn-no-style{% if pickupPlaceName is same as ('') or checked == false %} display-none{% endif %}"
+                                class="box-chooser__item__pickup-button js-pickup-place-change-button link-style btn-no-style{% if pickupPlaceName is same as ('') or checked == false %} display-none{% endif %}"
                                 data-form-field-class="{% if choice.data.isPickupPlace() %}js-pickup-place-input{% elseif choice.data.isChooseStore() %}js-store-input{% endif %}"
                             >
                                 {{ 'Vybrat'|trans }}
