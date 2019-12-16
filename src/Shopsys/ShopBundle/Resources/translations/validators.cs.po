@@ -32,7 +32,7 @@ msgid "Hodiny musí být v rozmezí od 0 do 23"
 msgstr ""
 
 msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
-msgstr ""
+msgstr "Hodnota nesmí byt delší než {{ limit }} znaků"
 
 msgid "Identification number cannot be longer then {{ limit }} characters"
 msgstr "IČ nesmí být delší než {{ limit }} znaků"
@@ -125,7 +125,7 @@ msgid "Please enter identification number"
 msgstr "Vyplň IČ"
 
 msgid "Please enter last name"
-msgstr "Vyplňte svoje příjmení"
+msgstr "Vyplň svoje příjmení"
 
 msgid "Please enter last name of contact person"
 msgstr "Vyplň příjmení kontaktní osoby"
@@ -200,7 +200,7 @@ msgid "Telefonní číslo musí začínat znakem +"
 msgstr ""
 
 msgid "Telephone number cannot be longer than {{ limit }} characters"
-msgstr "Telefon nesmí být delší než {{ limit }} znaků"
+msgstr "Telefonní číslo nesmí být delší než {{ limit }} znaků"
 
 msgid "This e-mail is already registered"
 msgstr "Tento e-mail je u nás již registrován"
@@ -215,31 +215,31 @@ msgid "Vyberte prosím pobočku"
 msgstr "Vyber pobočku"
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
-msgstr ""
+msgstr "Vyplň SKU dárkového certifikátu."
 
 msgid "Vyplňte prosím deadline pro přijímání objednávek"
-msgstr ""
+msgstr "Vyplň deadline pro přijímání objednávek"
 
 msgid "Vyplňte prosím jméno"
-msgstr ""
+msgstr "Vyplň jméno"
 
 msgid "Vyplňte prosím množství."
 msgstr "Vyplň množství."
 
 msgid "Vyplňte prosím nominální hodnotu dárkového certifikátu."
-msgstr ""
+msgstr "Vyplň nominální hodnotu dárkového certifikátu."
 
 msgid "Vyplňte prosím nominální hodnotu slevy."
 msgstr "Vyplň nominální hodnotu slevy."
 
 msgid "Vyplňte prosím počet dnů do dodání"
-msgstr ""
+msgstr "Vyplň počet dnů do dodání"
 
 msgid "Vyplňte prosím příjmení"
-msgstr ""
+msgstr "Vyplň příjmení"
 
 msgid "Vyplňte prosím text tlačítka"
-msgstr "Vyplň prosím text tlačítka"
+msgstr "Vyplň text tlačítka"
 
 msgid "Vyplňte, prosím, PSČ prodejny"
 msgstr "Vyplň PSČ prodejny"
@@ -264,4 +264,3 @@ msgstr "Zadej celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmí být delší než {{ limit }} znaků"
-

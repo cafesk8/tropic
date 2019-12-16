@@ -206,7 +206,7 @@ msgid "Uploaded image is to large ({{ size }} {{ suffix }}). Maximum size of an 
 msgstr "Nahraný obrázok je veľký ({{ size }} {{ suffix }}). Maximálna veľkosť obrázka je {{ limit }} {{ suffix }}."
 
 msgid "Vložené ID Youtube videa neobsahuje žádné video."
-msgstr ""
+msgstr "Vložené ID Youtube videa neobsahuje žiadne video."
 
 msgid "Vložené youtube id neobsahuje žádné video."
 msgstr "Vložené youtube id neobsahuje žiadne video."
@@ -264,4 +264,3 @@ msgstr "Zadaj prosím celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmie byť dlhšie ako {{limit}} znakov"
-
