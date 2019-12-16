@@ -106,6 +106,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
         $productsPrice = $this->getProductsPrice($quantifiedItemsPrices, $quantifiedItemsDiscounts);
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
+        $totalPromoProductPrice = $this->getTotalPromoProductsPrice($promoProductsInCart);
+        $productsPrice = $productsPrice->add($totalPromoProductPrice);
         $productsPrice = $productsPrice->add($totalGiftPrice);
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
@@ -114,9 +116,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
 
         $totalPrice = $totalPriceWithoutGiftCertificate;
-
-        $totalPromoProductPrice = $this->getTotalPromoProductsPrice($promoProductsInCart);
-        $totalPrice = $totalPrice->add($totalPromoProductPrice);
 
         if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
             $totalPriceWithVat = $promoCode->getCertificateValue();
