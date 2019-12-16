@@ -40,10 +40,19 @@
 
     &__action {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+
+        @media @query-sm {
+            flex-direction: row;
+        }
 
         &__spinbox {
             margin-right: 10px;
+            margin-bottom: 10px;
+
+            @media @query-sm {
+                margin-bottom: 0;
+            }
         }
 
         &__button {
