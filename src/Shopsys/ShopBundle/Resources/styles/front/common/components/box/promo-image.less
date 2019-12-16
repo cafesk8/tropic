@@ -3,11 +3,15 @@
 .box-promo-image {
     position: relative;
     height: @box-promo-image-height;
-    padding: 40px 33px;
+    padding: 40px 26px;
     margin-bottom: 20px;
     overflow: hidden;
 
     @media @query-md {
+        padding: 78px 85px 61px 85px;
+    }
+
+    @media @query-lg {
         padding: 78px 115px 61px 115px;
     }
 
@@ -44,6 +48,10 @@
             .box-promo-image--error & {
                 max-width: 450px;
             }
+
+            .domain3 & {
+                font-size: 28px;
+            }
         }
     }
     &__content {
@@ -59,12 +67,15 @@
 
         &__description {
             position: relative;
-            margin-bottom: 27px;
             line-height: 30px;
-
+            margin-bottom: 12px;
             color: @color-f;
             font-family: @font-alt;
             font-size: 18px;
+
+            @media @query-md {
+                margin-bottom: 27px;
+            }
 
             .box-promo-image--product-list & {
                 align-self: flex-end;

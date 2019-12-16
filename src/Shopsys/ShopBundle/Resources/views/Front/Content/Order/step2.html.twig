@@ -10,15 +10,18 @@
             {{ 'Doprava a platba'|trans }}
         </h1>
 
-       {% if isGermanyDomain() is same as (true) %}
-            {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
-        {% endif %}
 
         <div class="box-order">
             <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
                 <div class="box-order__info__top">
                     {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '2'} only %}
                 </div>
+
+                {% if isGermanyDomain() is same as (true) %}
+                    <div class="box-chooser">
+                        {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
+                    </div>
+                {% endif %}
 
                 {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
             </div>

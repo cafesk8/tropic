@@ -60,7 +60,7 @@
                             <label class="css-checkbox__image" for="{{ form.memberOfBushmanClub.vars.id }}">
                                 {% if bushmanClubArticle is not null %}
                                     {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                    {{ 'Chci být členem <a href="%url%" target="_blank">Bushman Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
+                                    {{ 'Chci být členem <a href="%url%" target="_blank"><span class="underline-small">Bushman Clubu</span></a>.'|trans({'%url%': articleUrl})|raw }}
                                 {% else %}
                                     {{ 'Chci být členem Bushman Clubu'|trans }}
                                 {% endif %}

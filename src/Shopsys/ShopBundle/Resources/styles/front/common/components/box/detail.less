@@ -117,12 +117,16 @@
 
     &__availability {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         padding: @box-detail-info-padding/2 @box-detail-info-padding;
 
         font-weight: bold;
         background-color: @color-f;
         border-bottom: 1px solid @color-gray;
+
+        @media @query-md {
+            flex-direction: row;
+        }
 
         &--two-lines-mobile {
             flex-direction: column;
