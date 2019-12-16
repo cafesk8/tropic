@@ -61,7 +61,7 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
         foreach ($customers as $customer) {
             foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
                 try {
-                    $allTransferDataItems[] = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan);
+                    $allTransferDataItems[] = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan, $customer->getDomainId());
                 } catch (UnexpectedResponseCodeException $unexpectedResponseCodeException) {
                     $this->customerFacade->changeCustomerPricingGroupUpdatedAt($transferIdAndEan->getCustomer());
                     $this->logger->addWarning(sprintf('Customer info for User with ean `%s` and email %s not found', $transferIdAndEan->getEan(), $transferIdAndEan->getCustomer()->getEmail()));

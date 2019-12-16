@@ -67,10 +67,15 @@ class RestClient
 
     /**
      * @param string $url
+     * @param string[] $parameters
      * @return \Shopsys\ShopBundle\Component\Rest\RestResponse
      */
-    public function get(string $url): RestResponse
+    public function get(string $url, array $parameters = []): RestResponse
     {
+        if (count($parameters) > 0) {
+            $url .= '?' . http_build_query($parameters, '');
+        }
+
         $response = $this->request(self::METHOD_GET, $url);
 
         if ($response->getCode() !== self::EXPECTED_CODE_GET) {

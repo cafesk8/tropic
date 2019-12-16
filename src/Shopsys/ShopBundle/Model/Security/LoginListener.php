@@ -83,7 +83,7 @@ class LoginListener extends BaseLoginListener
             $customer = $event->getAuthenticationToken()->getUser();
 
             foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
-                $customerInfoResponseItemData = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan);
+                $customerInfoResponseItemData = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan, $customer->getDomainId());
                 if ($customerInfoResponseItemData !== null) {
                     $this->customerFacade->updatePricingGroupByIsResponse(
                         $customerInfoResponseItemData->getTransferIdAndEan()->getCustomer()->getPricingGroup(),
