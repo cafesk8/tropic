@@ -41,7 +41,7 @@
                     {% endfor %}
                 {% endif %}
                 {% if orderPreview.gifts is not empty %}
-                    <li>{{ 'Dárky k vaší objednávce:' }}</li>
+                    <li>{{ 'Dárky k vaší objednávce:'|trans }}</li>
                     {% for gift in orderPreview.gifts %}
                         {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice) }}
                     {% endfor %}
