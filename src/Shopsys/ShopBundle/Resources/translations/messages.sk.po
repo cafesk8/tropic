@@ -43,6 +43,9 @@ msgstr "-- Vyberte pozíciu článku --"
 msgid "-- Vyberte přenos --"
 msgstr ""
 
+msgid "00421/908767330"
+msgstr ""
+
 msgid "1 - čtverec"
 msgstr "1 - štvorec"
 
@@ -363,6 +366,9 @@ msgstr "Chcete sa stať Bushmanom?"
 
 msgid "Chceš se stát bushmanem?"
 msgstr "Chceš sa stať bushmanom?"
+
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
+msgstr ""
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
 msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\"> Bushman Clubu </a>."
@@ -838,6 +844,9 @@ msgstr "GLS"
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr "Generovať tento produkt do HS-SPORT XML feedu"
 
+msgid "Geprüfter webshop"
+msgstr ""
+
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -912,6 +921,9 @@ msgstr "Hromadné vytvorenie zľavových kupónov"
 
 msgid "Hromadné úpravy"
 msgstr "Hromadné úpravy"
+
+msgid "Händlerbund Mitglied"
+msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Súhlasím so <a href=\"%termsAndConditionsUrl%\" target=\"_blank\"> zmluvnými podmienkami </a> a <a href=\"%privacyPolicyUrl%\" target=\"_blank\"> pravidlami ochrany osobných údajov </a>."
@@ -1732,6 +1744,9 @@ msgstr "Platný do"
 msgid "Platný od"
 msgstr "Platný od"
 
+msgid "Platí pro"
+msgstr ""
+
 msgid "Please check the correctness of all data filled."
 msgstr "Určite máš všetky údaje vyplnené správne."
 
@@ -2382,6 +2397,9 @@ msgstr ""
 
 msgid "Tax number"
 msgstr "IČ DPH"
+
+msgid "Tel"
+msgstr ""
 
 msgid "Telefon"
 msgstr "Telefón"
@@ -3091,6 +3109,9 @@ msgstr "o nákupe"
 msgid "o nás"
 msgstr "o nás"
 
+msgid "obchod@bushman.sk"
+msgstr ""
+
 msgid "obchodními podmínkami"
 msgstr "obchodnými podmienkami"
 
@@ -3102,6 +3123,9 @@ msgstr "na sklade"
 
 msgid "osobních údajů"
 msgstr "osobných údajov"
+
+msgid "pouze členy bushman clubu"
+msgstr ""
 
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našom"
@@ -3165,6 +3189,9 @@ msgstr "vytvoriť niečo obyčajne prirodzeného, a pritom poriadneho."
 
 msgid "využij výhodnější"
 msgstr "využi výhodnejšie"
+
+msgid "všechny zákazníky"
+msgstr ""
 
 msgid "webu neexistuje"
 msgstr "webu neexistuje"

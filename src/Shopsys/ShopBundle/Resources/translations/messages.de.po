@@ -43,6 +43,9 @@ msgstr "-- Artikelposition wählen --"
 msgid "-- Vyberte přenos --"
 msgstr ""
 
+msgid "00421/908767330"
+msgstr ""
+
 msgid "1 - čtverec"
 msgstr "1 - Quadrat"
 
@@ -364,7 +367,7 @@ msgstr "Willst du Bushman werden?"
 msgid "Chceš se stát bushmanem?"
 msgstr ""
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
 msgstr ""
 
 msgid "Chci být členem Bushman Clubu"
@@ -835,6 +838,9 @@ msgstr "GLS"
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr ""
 
+msgid "Geprüfter webshop"
+msgstr ""
+
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -909,6 +915,9 @@ msgstr "Massenerstellung von Rabattgutscheinen"
 
 msgid "Hromadné úpravy"
 msgstr "Massenbearbeitung"
+
+msgid "Händlerbund Mitglied"
+msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Ich stimme den <a href=\"%termsAndConditionsUrl%\" target=\"_blank\"> Nutzungsbedingungen </a> und den <a href=\"%privacyPolicyUrl%\" target=\"_blank\"> Datenschutzbestimmungen </a> zu."
@@ -1729,6 +1738,9 @@ msgstr "Gültig bis"
 msgid "Platný od"
 msgstr "Gültig ab"
 
+msgid "Platí pro"
+msgstr ""
+
 msgid "Please check the correctness of all data filled."
 msgstr "Bitte überprüfe die Richtigkeit aller Angaben."
 
@@ -2376,6 +2388,9 @@ msgstr "TOPTRANS"
 
 msgid "Tax number"
 msgstr "Steuernummer"
+
+msgid "Tel"
+msgstr ""
 
 msgid "Telefon"
 msgstr "Telefon"
@@ -3088,6 +3103,9 @@ msgstr "über den Kauf"
 msgid "o nás"
 msgstr "über uns"
 
+msgid "obchod@bushman.sk"
+msgstr ""
+
 msgid "obchodními podmínkami"
 msgstr ""
 
@@ -3098,6 +3116,9 @@ msgid "on stock"
 msgstr "Auf Lager"
 
 msgid "osobních údajů"
+msgstr ""
+
+msgid "pouze členy bushman clubu"
 msgstr ""
 
 msgid "požadovaná stránk na našem"
@@ -3164,6 +3185,9 @@ msgid "vytvořit něco obyčejně přirozeného, a přitom pořádného."
 msgstr ""
 
 msgid "využij výhodnější"
+msgstr ""
+
+msgid "všechny zákazníky"
 msgstr ""
 
 msgid "webu neexistuje"

@@ -40,6 +40,9 @@ msgstr "-- Vyber umístění článku --"
 msgid "-- Vyberte přenos --"
 msgstr ""
 
+msgid "00421/908767330"
+msgstr ""
+
 msgid "1 - čtverec"
 msgstr ""
 
@@ -352,7 +355,7 @@ msgstr "Chceš opravdu smazat tyto slevové kupóny?"
 msgid "Chceš se stát bushmanem?"
 msgstr ""
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
 msgstr ""
 
 msgid "Chci být členem Bushman Clubu"
@@ -835,6 +838,9 @@ msgstr ""
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr ""
 
+msgid "Geprüfter webshop"
+msgstr ""
+
 msgid "Go to cart"
 msgstr "Přejít do košíku"
 
@@ -911,6 +917,9 @@ msgid "Hromadné vytvoření slevových kupónů"
 msgstr ""
 
 msgid "Hromadné úpravy"
+msgstr ""
+
+msgid "Händlerbund Mitglied"
 msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
@@ -1717,6 +1726,9 @@ msgstr ""
 msgid "Platný od"
 msgstr ""
 
+msgid "Platí pro"
+msgstr ""
+
 msgid "Please check the correctness of all data filled."
 msgstr "Určitě máš všechny údaje vyplněné správně?"
 
@@ -2364,6 +2376,9 @@ msgstr "DIČ"
 
 msgid "Technical parameters"
 msgstr "Technické parametry"
+
+msgid "Tel"
+msgstr ""
 
 msgid "Telefon"
 msgstr ""
@@ -3052,6 +3067,9 @@ msgstr ""
 msgid "o nás"
 msgstr ""
 
+msgid "obchod@bushman.sk"
+msgstr ""
+
 msgid "obchodními podmínkami"
 msgstr ""
 
@@ -3062,6 +3080,9 @@ msgid "on stock"
 msgstr "na skladě"
 
 msgid "osobních údajů"
+msgstr ""
+
+msgid "pouze členy bushman clubu"
 msgstr ""
 
 msgid "požadovaná stránk na našem"
@@ -3110,6 +3131,9 @@ msgid "vytvořit něco obyčejně přirozeného, a přitom pořádného."
 msgstr ""
 
 msgid "využij výhodnější"
+msgstr ""
+
+msgid "všechny zákazníky"
 msgstr ""
 
 msgid "webu neexistuje"
