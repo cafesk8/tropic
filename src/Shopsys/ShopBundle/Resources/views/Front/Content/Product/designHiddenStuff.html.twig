@@ -412,7 +412,7 @@
                     {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
                         <div class="box-detail__variants__title">
                             {{ 'Vyberte variantu'|trans }}
-                            <a href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}" class="box-detail__variants__title__link underline-small">{{ 'Jak vybrat správnou velikost?'}}</a>
+                            <a href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}" class="box-detail__variants__title__link underline-small">{{ 'Jak vybrat správnou velikost?'|trans }}</a>
                         </div>
                         <ul class="list-variants">
                             {% for mainVariantGroupProduct in mainVariants %}
