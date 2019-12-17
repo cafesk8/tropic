@@ -696,4 +696,14 @@ class ProductFacade extends BaseProductFacade
         return $product !== null && $product->isHidden() === false && $product->getCalculatedHidden() === false &&
             $product->isSellingDenied() === false && $product->getCalculatedSellingDenied() === false;
     }
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getMainVariantsWithEan(int $limit, int $page): array
+    {
+        return $this->productRepository->getMainVariantsWithEan($limit, $page);
+    }
 }

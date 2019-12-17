@@ -420,4 +420,17 @@ class ProductRepository extends BaseProductRepository
 
         return $variantsToHide;
     }
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getMainVariantsWithEan(int $limit, int $page): array
+    {
+        return $this->getWithEanQueryBuilder($limit, $page)
+            ->andWhere('p.variantType = :mainVariantType')
+            ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
+            ->getQuery()->getResult();
+    }
 }

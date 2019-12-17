@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Command\Migrations;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\ShopBundle\Command\Migration\Exception\ProductUrlLegacySlugDoesNotExistException;
-use Shopsys\ShopBundle\Command\Migrations\DataProvider\MigrateProductSlovakLegacyUrlsDataProvider;
+use Shopsys\ShopBundle\Command\Migration\Exception\CompleteProductUrlLegacySlugDoesNotExistException;
+use Shopsys\ShopBundle\Command\Migrations\DataProvider\MigrateProductGermanLegacyUrlsDataProvider;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Router\FriendlyUrl\Exception\FriendlyUrlExistsException;
 use Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class MigrateProductSlovakLegacyUrlsCommand extends Command
+class MigrateProductGermanLegacyUrlsCommand extends Command
 {
     private const BATCH_LIMIT = 10;
 
@@ -38,7 +38,7 @@ class MigrateProductSlovakLegacyUrlsCommand extends Command
     /**
      * @var string[]
      */
-    private $legacySlugsIndexedByCatnum = [];
+    private $completeLegacySlugsIndexedByEan = [];
 
     /**
      * @var \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade
@@ -61,7 +61,7 @@ class MigrateProductSlovakLegacyUrlsCommand extends Command
         $this->productFacade = $productFacade;
         $this->friendlyUrlFacade = $friendlyUrlFacade;
 
-        $this->legacySlugsIndexedByCatnum = MigrateProductSlovakLegacyUrlsDataProvider::getLegacySlugsIndexedByCatnum();
+        $this->completeLegacySlugsIndexedByEan = MigrateProductGermanLegacyUrlsDataProvider::getCompleteLegacySlugsIndexedByEan();
     }
 
     /**
@@ -82,7 +82,7 @@ class MigrateProductSlovakLegacyUrlsCommand extends Command
 
         $page = 0;
         do {
-            $products = $this->productFacade->getMainVariantsWithCatnum(self::BATCH_LIMIT, $page);
+            $products = $this->productFacade->getMainVariantsWithEan(self::BATCH_LIMIT, $page);
             $productsCount = count($products);
             $page++;
 
@@ -90,21 +90,20 @@ class MigrateProductSlovakLegacyUrlsCommand extends Command
 
             foreach ($products as $product) {
                 try {
-                    $legacySlugs = $this->getLegacySlugs($product->getCatnum());
+                    $completeLegacySlug = $this->getCompleteLegacySlugByEan($product->getEan());
 
-                    foreach ($legacySlugs as $legacySlug) {
-                        $this->friendlyUrlFacade->addNotMainFriendlyUrl(
-                            'front_product_detail',
-                            $product->getId(),
-                            DomainHelper::SLOVAK_DOMAIN,
-                            $legacySlug
-                        );
-                        $symfonyStyleIo->success(sprintf('Legacy slug `%s` for product with catnum `%s` has been added', $legacySlug, $product->getCatnum()));
-                    }
-                } catch (ProductUrlLegacySlugDoesNotExistException $legacySlugDoesNotExistException) {
-                    $symfonyStyleIo->warning(sprintf('Legacy slug for product with catnum `%s` does not exist in the provided data source', $product->getCatnum()));
+                    $this->friendlyUrlFacade->addNotMainFriendlyUrl(
+                        'front_product_detail',
+                        $product->getId(),
+                        DomainHelper::GERMAN_DOMAIN,
+                        $completeLegacySlug
+                    );
+
+                    $symfonyStyleIo->success(sprintf('Legacy slug `%s` for product with EAN `%s` has been added', $completeLegacySlug, $product->getEan()));
+                } catch (CompleteProductUrlLegacySlugDoesNotExistException $legacySlugDoesNotExistException) {
+                    $symfonyStyleIo->warning(sprintf('Legacy incomplete slug for product with EAN `%s` does not exist', $product->getEan()));
                 } catch (FriendlyUrlExistsException $friendlyUrlExistsException) {
-                    $symfonyStyleIo->warning(sprintf('Legacy slug for product with catnum `%s` already exists', $product->getCatnum()));
+                    $symfonyStyleIo->warning(sprintf('Legacy complete slug for product with EAN `%s` exists', $product->getEan()));
                 }
             }
 
@@ -114,15 +113,15 @@ class MigrateProductSlovakLegacyUrlsCommand extends Command
     }
 
     /**
-     * @param string $productCatnum
-     * @return string[]
+     * @param string $ean
+     * @return string
      */
-    private function getLegacySlugs(string $productCatnum): array
+    private function getCompleteLegacySlugByEan(string $ean): string
     {
-        if (!isset($this->legacySlugsIndexedByCatnum[$productCatnum]) || empty($this->legacySlugsIndexedByCatnum[$productCatnum])) {
-            throw new ProductUrlLegacySlugDoesNotExistException();
+        if (isset($this->completeLegacySlugsIndexedByEan[$ean]) === false) {
+            throw new CompleteProductUrlLegacySlugDoesNotExistException();
         }
 
-        return $this->legacySlugsIndexedByCatnum[$productCatnum];
+        return $this->completeLegacySlugsIndexedByEan[$ean];
     }
 }
