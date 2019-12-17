@@ -26,7 +26,7 @@ use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
  */
 class Product extends BaseProduct
 {
-    public const DECREASE_REAL_STOCK_QUANTITY_BY = 0;
+    public const DECREASE_REAL_STOCK_QUANTITY_BY = 2;
     public const PRODUCT_TYPE_GIFT_CERTIFICATE_500 = 'gift_certificate_500';
     public const PRODUCT_TYPE_GIFT_CERTIFICATE_1000 = 'gift_certificate_1000';
     public const PRODUCT_TYPES_GIFT_CERTIFICATES = [
