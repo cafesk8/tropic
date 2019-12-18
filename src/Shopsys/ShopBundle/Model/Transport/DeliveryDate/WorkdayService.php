@@ -15,6 +15,8 @@ class WorkdayService
     private const FIXED_HOLIDAYS_BY_LOCALE = [
         'cs' => ['01.01.', '01.05.', '08.05.', '05.07.', '06.07.', '28.09.', '28.10.', '17.11.', '24.12.', '25.12.', '26.12.'],
         'sk' => ['01.01.', '06.01.', '01.05.', '08.05.', '05.07.', '29.08.', '01.09.', '15.09.', '01.11.', '17.11.', '24.12.', '25.12.', '26.12.'],
+        // Patrik wanted to add Czech holidays for German domain to show delivery date on German domain preparations and solve it in early future
+        'de' => ['01.01.', '01.05.', '08.05.', '05.07.', '06.07.', '28.09.', '28.10.', '17.11.', '24.12.', '25.12.', '26.12.'],
     ];
     private const HOLIDAYS_FORMAT = 'd.m.';
 

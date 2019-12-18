@@ -4,7 +4,6 @@
         {% set deliveryDate = getDeliveryDate(product) %}
         {% set showDeliveryDate = product.usingStock
             and product.stockQuantity > 0
-            and isGermanyDomain() is same as (false)
             and deliveryDate is not null  %}
 
         {% set showNotAvailable = product.stockQuantity < 1 %}
