@@ -96,7 +96,7 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
         /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $this->customerFacade->findUserByEmailAndDomain(
             $itemData->getEmail(),
-            DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$itemData->getCountryCode()]
+            $itemData->getDomainId()
         );
 
         if ($customer === null) {
