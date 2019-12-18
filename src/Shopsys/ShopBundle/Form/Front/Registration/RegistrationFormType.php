@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints;
 
 class RegistrationFormType extends AbstractType
 {
-    private const VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER = 'bushmanClubMember';
+    public const VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER = 'bushmanClubMember';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
