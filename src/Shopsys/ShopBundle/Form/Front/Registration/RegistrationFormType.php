@@ -62,7 +62,7 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $userData = $this->getUserDataBuilder($builder);
-        $deliveryAddressData = $this->getDeliveryAddressDataBuilder($builder);
+        $deliveryAddressData = $this->getDeliveryAddressDataBuilder($builder, $options);
 
         $builder
             ->add($userData)
@@ -82,7 +82,7 @@ class RegistrationFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $defaults = [
             'data_class' => CustomerData::class,
             'attr' => ['novalidate' => 'novalidate'],
             TimedFormTypeExtension::OPTION_ENABLED => true,
@@ -113,7 +113,12 @@ class RegistrationFormType extends AbstractType
 
                 return $validationGroups;
             },
-        ]);
+        ];
+
+        $resolver
+            ->setRequired('domain_id')
+            ->addAllowedTypes('domain_id', 'int')
+            ->setDefaults($defaults);
     }
 
     /**
@@ -169,9 +174,10 @@ class RegistrationFormType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getDeliveryAddressDataBuilder(FormBuilderInterface $builder): FormBuilderInterface
+    private function getDeliveryAddressDataBuilder(FormBuilderInterface $builder, array $options): FormBuilderInterface
     {
         $deliveryAddressDataBuilder = $builder->create('deliveryAddressData', FormType::class, [
             'data_class' => DeliveryAddressData::class,
@@ -229,21 +235,22 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ]);
-        $this->addCountryChoiceForGermanDomain($deliveryAddressDataBuilder);
+        $this->addCountryChoiceForGermanDomain($deliveryAddressDataBuilder, $options);
 
         return $deliveryAddressDataBuilder;
     }
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $deliveryAddressDataBuilder
+     * @param array $options
      */
-    private function addCountryChoiceForGermanDomain(FormBuilderInterface $deliveryAddressDataBuilder): void
+    private function addCountryChoiceForGermanDomain(FormBuilderInterface $deliveryAddressDataBuilder, array $options): void
     {
         if (DomainHelper::isGermanDomain($this->domain)) {
             $deliveryAddressDataBuilder
                 ->add('country', ChoiceType::class, [
                     'required' => true,
-                    'choices' => $this->countryFacade->getAll(),
+                    'choices' => $this->countryFacade->getAllEnabledOnDomain($options['domain_id']),
                     'choice_label' => 'name',
                     'choice_value' => 'id',
                     'constraints' => [

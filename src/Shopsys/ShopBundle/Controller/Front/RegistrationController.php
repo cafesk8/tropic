@@ -13,8 +13,8 @@ use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
-use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\Customer\CustomerDataFactory;
+use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -60,8 +60,16 @@ class RegistrationController extends FrontBaseController
      */
     private $customerDataFactory;
 
-
-
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
+     * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
+     * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+     */
     public function __construct(
         Domain $domain,
         CustomerFacade $customerFacade,
@@ -101,7 +109,9 @@ class RegistrationController extends FrontBaseController
         $domainId = $this->domain->getId();
         $customerData = $this->customerDataFactory->createForDomainId($domainId);
 
-        $form = $this->createForm(RegistrationFormType::class, $customerData);
+        $form = $this->createForm(RegistrationFormType::class, $customerData, [
+            'domain_id' => $domainId,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
