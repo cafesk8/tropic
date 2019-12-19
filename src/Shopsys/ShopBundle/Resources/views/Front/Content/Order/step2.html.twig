@@ -12,7 +12,7 @@
 
 
         <div class="box-order">
-            <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
+            <div id="{{ form.vars.id }}" class="box-order__info">
                 <div class="box-order__info__top">
                     {% include '@ShopsysShop/Front/Inline/OrderProgress/index.html.twig' with {step: '2'} only %}
                 </div>
@@ -23,7 +23,9 @@
                     </div>
                 {% endif %}
 
-                {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
+                <div class="js-order-box">
+                    {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
+                </div>
             </div>
 
             <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
