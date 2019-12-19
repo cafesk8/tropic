@@ -225,7 +225,7 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank([
-                        'message' => 'Please enter postcode',
+                        'message' => 'Please enter zip code',
                         'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
                     ]),
                     new Constraints\Length([
