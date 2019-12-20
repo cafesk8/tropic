@@ -160,6 +160,9 @@ msgstr "Zadaj platné množstvo"
 msgid "Please enter zip code"
 msgstr "Zadaj PSČ"
 
+msgid "Please select country"
+msgstr ""
+
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 msgstr "Pokiaľ chceš informačný riadok používateľom zobraziť, musíš ho vyplniť"
 
@@ -264,3 +267,4 @@ msgstr "Zadaj prosím celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmie byť dlhšie ako {{limit}} znakov"
+

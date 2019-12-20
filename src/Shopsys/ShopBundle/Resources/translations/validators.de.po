@@ -145,6 +145,9 @@ msgstr "Bitte gib eine gültige Menge ein"
 msgid "Please enter zip code"
 msgstr "Bitte gib die Postleitzahl ein"
 
+msgid "Please select country"
+msgstr ""
+
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 msgstr "Wenn du die Informationsleiste den Benutzern abbilden willst, musst du sie ausfüllen"
 
@@ -243,3 +246,4 @@ msgstr "Bitte gib eine ganze Zahl ein."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "Die Postleitzahl darf nicht länger als {{limit}} Zeichen sein"
+

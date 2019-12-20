@@ -352,6 +352,12 @@ msgstr "Změna hesla"
 msgid "Chcete opravdu smazat tyto slevové kupóny?"
 msgstr "Chceš opravdu smazat tyto slevové kupóny?"
 
+msgid "Chceš dárek"
+msgstr ""
+
+msgid "Chceš promo produkt"
+msgstr ""
+
 msgid "Chceš se stát bushmanem?"
 msgstr ""
 
@@ -655,6 +661,9 @@ msgstr "Stáhnout"
 msgid "Download the personal information"
 msgstr "Stáhnout zákaznické údaje"
 
+msgid "Došlo ke změnám v košíku. Prosím, překontrolujte si produkty."
+msgstr ""
+
 msgid "Druhý článek v horním menu"
 msgstr ""
 
@@ -686,6 +695,9 @@ msgid "Dárkový certifikát 500 Kč"
 msgstr ""
 
 msgid "Dárky"
+msgstr ""
+
+msgid "Dárky k vaší objednávce:"
 msgstr ""
 
 msgid "Děkujeme Vám"
@@ -1020,6 +1032,9 @@ msgstr ""
 
 msgid "Jak na výměnu velikosti?"
 msgstr "Chceš vyměnit velikost?"
+
+msgid "Jak vybrat správnou velikost?"
+msgstr ""
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Jako zástupný znak pro číslo sledování zásilky zadej %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
@@ -2006,6 +2021,9 @@ msgid "Přeneseno"
 msgstr ""
 
 msgid "Přečti si více"
+msgstr ""
+
+msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
 msgstr ""
 
 msgid "Přidat"
@@ -3127,6 +3145,9 @@ msgstr ""
 msgid "ušetříte"
 msgstr "ušetříš"
 
+msgid "v hodnotě"
+msgstr ""
+
 msgid "v měně dle zvolené domény"
 msgstr ""
 
@@ -3144,6 +3165,12 @@ msgstr ""
 
 msgid "without positioning"
 msgstr "bez umístění"
+
+msgid "za"
+msgstr ""
+
+msgid "za zvýhodněnou cenu"
+msgstr ""
 
 msgid "zadávat nemusíte"
 msgstr "zadávat nemusíš"
@@ -3240,3 +3267,4 @@ msgstr ""
 
 msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
 msgstr ""
+

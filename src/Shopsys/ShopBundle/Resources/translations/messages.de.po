@@ -364,6 +364,12 @@ msgstr "Möchtest du diese Rabattgutscheine wirklich löschen?"
 msgid "Chcete se stát Bushmanem?"
 msgstr "Willst du Bushman werden?"
 
+msgid "Chceš dárek"
+msgstr ""
+
+msgid "Chceš promo produkt"
+msgstr ""
+
 msgid "Chceš se stát bushmanem?"
 msgstr "Willst du Bushman werden?"
 
@@ -658,6 +664,9 @@ msgstr "Herunterladen"
 msgid "Download the personal information"
 msgstr "Lade die persönlichen Informationen herunter"
 
+msgid "Došlo ke změnám v košíku. Prosím, překontrolujte si produkty."
+msgstr ""
+
 msgid "Druhý článek v horním menu"
 msgstr "Der zweite Artikel im oberen Menü"
 
@@ -690,6 +699,9 @@ msgstr "Geschenkgutschein"
 
 msgid "Dárky"
 msgstr "Geschenke"
+
+msgid "Dárky k vaší objednávce:"
+msgstr ""
 
 msgid "Děkujeme Vám"
 msgstr "Vielen Dank"
@@ -1014,6 +1026,9 @@ msgstr "IČO: 51704501, IČ DPH: SK2120761621"
 
 msgid "Jak na výměnu velikosti?"
 msgstr "Wie tausche ich die Größe um?"
+
+msgid "Jak vybrat správnou velikost?"
+msgstr ""
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Gib %s als Platzhalter für die Tracking-Nummer ein, z. B. https://tracking.ulozenka.cz/?_fid=%s"
@@ -2025,6 +2040,9 @@ msgstr "Übertragen"
 
 msgid "Přečti si více"
 msgstr "Lese mehr"
+
+msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
+msgstr ""
 
 msgid "Přidat"
 msgstr "Hinzufügen"
@@ -3178,6 +3196,9 @@ msgstr "bei&nbsp;dir"
 msgid "ušetříte"
 msgstr "du sparst"
 
+msgid "v hodnotě"
+msgstr ""
+
 msgid "v měně dle zvolené domény"
 msgstr "in der Währung der ausgewählten Domain"
 
@@ -3198,6 +3219,12 @@ msgstr "Seite existiert nicht"
 
 msgid "without positioning"
 msgstr "ohne Positionierung"
+
+msgid "za"
+msgstr ""
+
+msgid "za zvýhodněnou cenu"
+msgstr ""
 
 msgid "zadávat nemusíte"
 msgstr "du musst nicht eingeben"
@@ -3297,3 +3324,4 @@ msgstr "БЪЛГАРИЯ"
 
 msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
 msgstr "„Als ich das BUSHMAN-Projekt gestartet habe, wollte ich"
+

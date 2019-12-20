@@ -364,6 +364,12 @@ msgstr "Chceš naozaj vymazať tieto zľavové kupóny?"
 msgid "Chcete se stát Bushmanem?"
 msgstr "Chcete sa stať Bushmanom?"
 
+msgid "Chceš dárek"
+msgstr ""
+
+msgid "Chceš promo produkt"
+msgstr ""
+
 msgid "Chceš se stát bushmanem?"
 msgstr "Chceš sa stať bushmanom?"
 
@@ -658,6 +664,9 @@ msgstr "Stiahnuť"
 msgid "Download the personal information"
 msgstr "Stiahnite si osobné informácie"
 
+msgid "Došlo ke změnám v košíku. Prosím, překontrolujte si produkty."
+msgstr ""
+
 msgid "Druhý článek v horním menu"
 msgstr "Druhý článok v hornom menu"
 
@@ -693,6 +702,9 @@ msgstr "Darčekový certifikát"
 
 msgid "Dárky"
 msgstr "Darčeky"
+
+msgid "Dárky k vaší objednávce:"
+msgstr ""
 
 msgid "Děkujeme Vám"
 msgstr "Ďakujeme Ti"
@@ -1017,6 +1029,9 @@ msgstr "IČO: 51704501, IČ DPH: SK2120761621"
 
 msgid "Jak na výměnu velikosti?"
 msgstr "Chceš vymeniť veľkosť?"
+
+msgid "Jak vybrat správnou velikost?"
+msgstr ""
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Ako zástupný znak pre číslo sledovania zásielky zadajte% s, teda napr. https://tracking.ulozenka.cz/?_fid=%s"
@@ -2031,6 +2046,9 @@ msgstr "Prenesené"
 
 msgid "Přečti si více"
 msgstr "Prečítaj si viac"
+
+msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
+msgstr ""
 
 msgid "Přidat"
 msgstr "Pridať"
@@ -3178,6 +3196,9 @@ msgstr "u&nbsp;teba"
 msgid "ušetříte"
 msgstr "ušetríš"
 
+msgid "v hodnotě"
+msgstr ""
+
 msgid "v měně dle zvolené domény"
 msgstr "v mene podľa zvolenej domény"
 
@@ -3198,6 +3219,12 @@ msgstr "webu neexistuje"
 
 msgid "without positioning"
 msgstr "bez polohovania"
+
+msgid "za"
+msgstr ""
+
+msgid "za zvýhodněnou cenu"
+msgstr ""
 
 msgid "zadávat nemusíte"
 msgstr "zadávať nemusíš"
