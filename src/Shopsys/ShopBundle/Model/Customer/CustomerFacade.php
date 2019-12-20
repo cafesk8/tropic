@@ -6,12 +6,11 @@ namespace Shopsys\ShopBundle\Model\Customer;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Customer\BillingAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade as BaseCustomerFacade;
-use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User;
@@ -239,45 +238,37 @@ class CustomerFacade extends BaseCustomerFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData|null $deliveryAddressData
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressData|null $billingAddressData
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData
      * @return \Shopsys\ShopBundle\Model\Customer\User
      */
-    public function registerCustomerWithAddress(
-        UserData $userData,
-        ?DeliveryAddressData $deliveryAddressData,
-        ?BillingAddressData $billingAddressData
-    ): User {
+    public function registerCustomer(CustomerData $customerData): User
+    {
+        /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
         $userByEmailAndDomain = $this->findUserByEmailAndDomain($userData->email, $userData->domainId);
+
+        $billingAddress = $this->billingAddressFactory->create($customerData->billingAddressData);
         $deliveryAddress = null;
-        $billingAddress = $this->billingAddressFactory->create($this->billingAddressDataFactory->create());
-
-        if ($deliveryAddressData !== null) {
-            $deliveryAddress = $this->deliveryAddressFactory->create($deliveryAddressData);
+        if ($userData->memberOfBushmanClub) {
+            $deliveryAddressData = $customerData->deliveryAddressData;
+            $deliveryAddressData->addressFilled = true;
+            $deliveryAddress = $this->deliveryAddressFactory->create($customerData->deliveryAddressData);
+            $this->em->persist($deliveryAddress);
         }
 
-        if ($billingAddressData !== null) {
-            $billingAddress = $this->billingAddressFactory->create($billingAddressData);
-        }
-
+        /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $this->userFactory->create(
-            $userData,
+            $customerData->userData,
             $billingAddress,
             $deliveryAddress,
             $userByEmailAndDomain
         );
 
-        if ($billingAddress !== null) {
-            $this->em->persist($billingAddress);
-        }
-
-        if ($deliveryAddress !== null) {
-            $this->em->persist($deliveryAddress);
-        }
-
+        $this->em->persist($billingAddress);
         $this->em->persist($user);
         $this->em->flush();
+
+        $this->customerMailFacade->sendRegistrationMail($user);
 
         return $user;
     }

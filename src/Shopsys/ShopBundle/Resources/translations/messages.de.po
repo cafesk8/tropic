@@ -367,7 +367,7 @@ msgstr "Willst du Bushman werden?"
 msgid "Chceš se stát bushmanem?"
 msgstr "Willst du Bushman werden?"
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Club</span></a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
 msgstr "Ich möchte Mitglied im <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Club</span></a>."
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."

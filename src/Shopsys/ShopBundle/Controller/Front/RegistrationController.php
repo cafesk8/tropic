@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
-use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
@@ -14,6 +13,7 @@ use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
+use Shopsys\ShopBundle\Model\Customer\CustomerDataFactory;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +24,6 @@ class RegistrationController extends FrontBaseController
      * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
      */
     private $customerFacade;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface
-     */
-    private $userDataFactory;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -61,33 +56,38 @@ class RegistrationController extends FrontBaseController
     private $customerMailFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
+     */
+    private $customerDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface $userDataFactory
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      */
     public function __construct(
         Domain $domain,
-        UserDataFactoryInterface $userDataFactory,
         CustomerFacade $customerFacade,
         Authenticator $authenticator,
         LegalConditionsFacade $legalConditionsFacade,
         CardEanFacade $cardEanFacade,
         ArticleFacade $articleFacade,
-        CustomerMailFacade $customerMailFacade
+        CustomerMailFacade $customerMailFacade,
+        CustomerDataFactory $customerDataFactory
     ) {
         $this->domain = $domain;
-        $this->userDataFactory = $userDataFactory;
         $this->customerFacade = $customerFacade;
         $this->authenticator = $authenticator;
         $this->legalConditionsFacade = $legalConditionsFacade;
         $this->cardEanFacade = $cardEanFacade;
         $this->articleFacade = $articleFacade;
         $this->customerMailFacade = $customerMailFacade;
+        $this->customerDataFactory = $customerDataFactory;
     }
 
     /**
@@ -106,16 +106,19 @@ class RegistrationController extends FrontBaseController
      */
     public function registerAction(Request $request)
     {
-        $userData = $this->userDataFactory->createForDomainId($this->domain->getId());
+        $domainId = $this->domain->getId();
+        $customerData = $this->customerDataFactory->createForDomainId($domainId);
 
-        $form = $this->createForm(RegistrationFormType::class, $userData);
+        $form = $this->createForm(RegistrationFormType::class, $customerData, [
+            'domain_id' => $domainId,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userData = $form->getData();
+            $customerData = $form->getData();
 
             /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
-            $user = $this->customerFacade->registerCustomerWithAddress($userData, null, null);
+            $user = $this->customerFacade->registerCustomer($customerData);
             try {
                 $this->customerMailFacade->sendRegistrationMail($user);
             } catch (\Swift_SwiftException | MailException $exception) {
@@ -138,8 +141,8 @@ class RegistrationController extends FrontBaseController
 
         return $this->render('@ShopsysShop/Front/Content/Registration/register.html.twig', [
             'form' => $form->createView(),
-            'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($this->domain->getId()),
-            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
+            'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($domainId),
+            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $domainId),
         ]);
     }
 }

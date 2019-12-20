@@ -87,4 +87,17 @@ class CustomerDataFactory extends BaseCustomerDataFactory
 
         return $deliveryAddressData;
     }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     */
+    public function createForDomainId(int $domainId): CustomerData
+    {
+        return new CustomerData(
+            $this->billingAddressDataFactory->create(),
+            $this->deliveryAddressDataFactory->create(),
+            $this->userDataFactory->createForDomainId($domainId)
+        );
+    }
 }
