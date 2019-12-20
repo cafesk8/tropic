@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade as BaseCartFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFactory;
 use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
+use Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
@@ -124,10 +125,14 @@ class CartFacade extends BaseCartFacade
             return $correctedCartQuantitiesByCartItemId;
         }
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
-            $cartItem = $cart->getItemById($cartItemId);
+            try {
+                $cartItem = $cart->getItemById($cartItemId);
 
-            if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
-                $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
+                    $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                }
+            } catch (InvalidCartItemException $exception) {
+                $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
         }
 
@@ -149,12 +154,16 @@ class CartFacade extends BaseCartFacade
         $modifyFormData = [];
 
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
-            $cartItem = $cart->getItemById($cartItemId);
+            try {
+                $cartItem = $cart->getItemById($cartItemId);
 
-            if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
-                $modifyFormData[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
-            } else {
-                $modifyFormData[$cartItemId] = $quantity;
+                if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
+                    $modifyFormData[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                } else {
+                    $modifyFormData[$cartItemId] = $quantity;
+                }
+            } catch (InvalidCartItemException $exception) {
+                $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
         }
 
