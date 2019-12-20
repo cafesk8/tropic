@@ -638,3 +638,7 @@ services:
             - { name: kernel.event_subscriber }
 
     Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@Shopsys\ShopBundle\Model\Security\FrontLogoutHandler'
+
+    Shopsys\ShopBundle\Component\Error\LogoutExceptionSubscriber:
+        arguments:
+            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
