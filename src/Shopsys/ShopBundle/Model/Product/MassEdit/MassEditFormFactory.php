@@ -89,6 +89,7 @@ class MassEditFormFactory
         }
 
         $formBuilder->add('submit', SubmitType::class);
+        $formBuilder->add('submitAndExport', SubmitType::class);
 
         $form = $formBuilder->getForm();
         $form->submit($ruleViewData);

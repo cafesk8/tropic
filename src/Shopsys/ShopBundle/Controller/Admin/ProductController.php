@@ -22,8 +22,10 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListAdminFacade;
 use Shopsys\FrameworkBundle\Model\Product\MassAction\ProductMassActionFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
+use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportCronModule;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 use Shopsys\FrameworkBundle\Twig\ProductExtension;
+use Shopsys\ShopBundle\Component\Cron\CronModuleFacade;
 use Shopsys\ShopBundle\Form\Admin\VariantFormTypeExtension;
 use Shopsys\ShopBundle\Model\Product\MassEdit\MassEditFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
@@ -50,6 +52,11 @@ class ProductController extends BaseProductController
     private $parameterFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Component\Cron\CronModuleFacade
+     */
+    private $cronModuleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\MassAction\ProductMassActionFacade $productMassActionFacade
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
@@ -66,6 +73,7 @@ class ProductController extends BaseProductController
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\ShopBundle\Model\Product\MassEdit\MassEditFacade $massEditFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Component\Cron\CronModuleFacade $cronModuleFacade
      */
     public function __construct(
         ProductMassActionFacade $productMassActionFacade,
@@ -83,12 +91,14 @@ class ProductController extends BaseProductController
         Setting $setting,
         AvailabilityFacade $availabilityFacade,
         MassEditFacade $massEditFacade,
-        ParameterFacade $parameterFacade
+        ParameterFacade $parameterFacade,
+        CronModuleFacade $cronModuleFacade
     ) {
         parent::__construct($productMassActionFacade, $gridFactory, $productFacade, $productDataFactory, $breadcrumbOverrider, $administratorGridFacade, $productListAdminFacade, $advancedSearchProductFacade, $productVariantFacade, $productExtension, $domain, $unitFacade, $setting, $availabilityFacade);
 
         $this->massEditFacade = $massEditFacade;
         $this->parameterFacade = $parameterFacade;
+        $this->cronModuleFacade = $cronModuleFacade;
     }
 
     /**
@@ -160,12 +170,19 @@ class ProductController extends BaseProductController
 
         $grid = $this->getGrid($queryBuilder);
 
-        if ($massEditForm->get('submit')->isClicked()) {
+        if ($massEditForm->get('submit')->isClicked() || $massEditForm->get('submitAndExport')->isClicked()) {
             $this->performMassEdit(
                 array_map('intval', $grid->getSelectedRowIds()),
                 $massEditForm->getData(),
                 $queryBuilder
             );
+
+            if ($massEditForm->get('submitAndExport')->isClicked()) {
+                $this->cronModuleFacade->scheduleModuleByServiceId(ProductSearchExportCronModule::class);
+                $this->getFlashMessageSender()->addInfoFlash(
+                    t('Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut')
+                );
+            }
 
             return $this->redirect($request->headers->get('referer', $this->generateUrl('admin_product_list')));
         }

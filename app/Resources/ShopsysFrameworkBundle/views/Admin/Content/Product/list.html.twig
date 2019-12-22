@@ -78,6 +78,7 @@
                             {% include '@ShopsysShop/Admin/Content/Product/MassEdit/massEditFormPartial.html.twig' with {massEditForm: massEditForm} %}
                         </div>
                         {{ form_widget(massEditForm.submit, { label: 'Make modification'|trans, attr: { class: 'btn btn--medium js-mass-edit-submit' } }) }}
+                        {{ form_widget(massEditForm.submitAndExport, { label: 'Uprav hned'|trans, attr: { class: 'btn btn--medium js-mass-edit-submit' } }) }}
                     </div>
                 </div>
             </div>
