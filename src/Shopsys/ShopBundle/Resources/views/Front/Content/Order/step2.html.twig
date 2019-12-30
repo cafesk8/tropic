@@ -14,6 +14,9 @@
             {% endif %}
 
             <div class="box-order">
+                <div class="box-order__message">
+                    {{ form_errors(form) }}
+                </div>
                 <div class="box-order__wrap">
                     <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
                         {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}

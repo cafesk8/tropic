@@ -11,114 +11,119 @@
         <div class="web__container web__container--border-radius">
 
             <div class="box-order">
+                <div class="box-order__message">
+                    {{ form_errors(form) }}
+                </div>
                 <div class="box-order__wrap">
                     <div class="box-order__info">
-                        <h2 class="in-title in-title--small in-title--dark">
-                            {{ 'Dodací údaje'|trans }}
-                        </h2>
-                        <div class="box-order__info__content">    
-                            {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
+                        <div class="box-order__info__item">
+                            <h2 class="in-title in-title--small in-title--dark">
+                                {{ 'Dodací údaje'|trans }}
+                            </h2>
+                            <div class="box-order__info__content">    
+                                {% set isSelectedPickupPlaceTransport = transport is not empty and (transport.isPickupPlace or transport.isChooseStore) %}
 
-                            {{ form_row(form.firstName, { label: 'First name'|trans }) }}
-                            {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
-                            {{ form_row(form.telephone, { label: 'Telephone'|trans }) }}
-                            {% if isGermanyDomain() is same as (true) %}
-                                <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
-                            {% endif %}
-
-                            {{ form_row(form.email, { label: 'E-mail'|trans }) }}
-
-                        </div>
-                        <h2 class="in-title in-title--small in-title--dark">
-                            {{ 'Doručit na adresu'|trans }}
-                        </h2>
-                        
-                        {% if isSelectedPickupPlaceTransport is same as (true) %}
-                            {% set pickupPlaceData = pickupPlace %}
-                            {% if transport.isChooseStore is same as (true) %}
-                                {% set pickupPlaceData = store %}
-                            {% endif %}
-
-                            <div class="box-order__info__content">
-                                <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
-                                <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
-                                <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
-                                <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
-                                {% do form.deliveryCompanyName.setRendered %}
-                                {% do form.deliveryStreet.setRendered %}
-                                {% do form.deliveryCity.setRendered %}
-                                {% do form.deliveryPostcode.setRendered %}
-                                {% do form.deliveryCountry.setRendered %}
-                            </div>
-                        {% else %}
-                            <div id="js-delivery-address-fields" class="margin-top-20">
-                                {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
+                                {{ form_row(form.firstName, { label: 'First name'|trans }) }}
+                                {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
+                                {{ form_row(form.telephone, { label: 'Telephone'|trans }) }}
                                 {% if isGermanyDomain() is same as (true) %}
-                                    <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                                    <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
                                 {% endif %}
-                                {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
-                                {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
-                                {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
 
-                                {% if isGermanyDomain() is same as (true) %}
-                                    {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
-                                    <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
-                                {% else %}
+                                {{ form_row(form.email, { label: 'E-mail'|trans }) }}
+
+                            </div>
+                            <h2 class="in-title in-title--small in-title--dark">
+                                {{ 'Doručit na adresu'|trans }}
+                            </h2>
+                            
+                            {% if isSelectedPickupPlaceTransport is same as (true) %}
+                                {% set pickupPlaceData = pickupPlace %}
+                                {% if transport.isChooseStore is same as (true) %}
+                                    {% set pickupPlaceData = store %}
+                                {% endif %}
+
+                                <div class="box-order__info__content">
+                                    <span>{{ "Název pobočky"|trans }}</span>&nbsp;{{ pickupPlaceData.name }} <br/>
+                                    <span>{{ "Ulice"|trans }}</span>&nbsp;{{ pickupPlaceData.street }} <br/>
+                                    <span>{{ "Město"|trans }}</span>&nbsp;{{ pickupPlaceData.city }} <br/>
+                                    <span>{{ "PSČ"|trans }}</span>&nbsp;{{ pickupPlaceData.postcode }} <br/>
+                                    {% do form.deliveryCompanyName.setRendered %}
+                                    {% do form.deliveryStreet.setRendered %}
+                                    {% do form.deliveryCity.setRendered %}
+                                    {% do form.deliveryPostcode.setRendered %}
                                     {% do form.deliveryCountry.setRendered %}
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                        <div class="margin-top-10">
-                            {{ form_widget(form.companyCustomer, {
-                                attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
-                            }}
-                            <label for="{{ form.companyCustomer.vars.id }}" class="css-checkbox__image">
-                                {{ 'I buy on company behalf'|trans }}
-                            </label>
-                        </div>
-                        <div id="js-company-fields" class="margin-top-10">
-                            <h2 class="in-title in-title--small in-title--dark">
-                                {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
-                            </h2>
-                            <div class="box-order__info__content">
-                                {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
-                                {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
-                                {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
-                            </div>
-                        </div>
+                                </div>
+                            {% else %}
+                                <div id="js-delivery-address-fields" class="margin-top-20">
+                                    {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
+                                    {% if isGermanyDomain() is same as (true) %}
+                                        <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                                    {% endif %}
+                                    {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
+                                    {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
+                                    {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
 
-                        <div class="margin-top-10">
-                            {{ form_widget(form.billingAddressFilled, {
-                                attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
-                            }}
-                            <label for="{{ form.billingAddressFilled.vars.id }}" class="css-checkbox__image">
-                                {{ 'Chci zadat jiné fakturační údaje'|trans }}
-                            </label>
-                        </div>
-                        <div id="js-billing-address-fields" class="margin-top-10">
-                            <h2 class="in-title in-title--small in-title--dark">
-                                {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
-                            </h2>
-                            <div class="box-order__info__content">
-                                {{ form_row(form.street, { label: 'Street'|trans }) }}
-                                {{ form_row(form.city, { label: 'City'|trans }) }}
-                                {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
-                                {{ form_row(form.country, { label: 'Country'|trans }) }}
+                                    {% if isGermanyDomain() is same as (true) %}
+                                        {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
+                                        <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
+                                    {% else %}
+                                        {% do form.deliveryCountry.setRendered %}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            <div class="margin-top-10">
+                                {{ form_widget(form.companyCustomer, {
+                                    attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-company-fields' }})
+                                }}
+                                <label for="{{ form.companyCustomer.vars.id }}" class="css-checkbox__image">
+                                    {{ 'I buy on company behalf'|trans }}
+                                </label>
                             </div>
-                        </div>
+                            <div id="js-company-fields" class="margin-top-10">
+                                <h2 class="in-title in-title--small in-title--dark">
+                                    {{ 'Company data'|trans }} <span class="heading-addition">{{ '(If I buy on the company behalf)'|trans }}</span>
+                                </h2>
+                                <div class="box-order__info__content">
+                                    {{ form_row(form.companyName, { label: 'Company name'|trans }) }}
+                                    {{ form_row(form.companyNumber, { label: 'Company number'|trans }) }}
+                                    {{ form_row(form.companyTaxNumber, { label: 'Tax number'|trans }) }}
+                                </div>
+                            </div>
 
-                        <div class="margin-top-10">
-                            <input type="checkbox" id="order_note" name="order_note" class="css-checkbox js-checkbox-toggle" data-checkbox-toggle-container-id="js-order-note" value="">
-                            <label for="order_note" class="css-checkbox__image">
-                                {{ 'Přidám poznámku k objednávce'|trans }}
-                            </label>
-                        </div>
-                        <div id="js-order-note" class="margin-top-10">
-                            <h2 class="in-title in-title--small in-title--dark">
-                                {{ 'Note'|trans }}
-                            </h2>
-                            <div class="box-order__info__content">
-                                {{ form_row(form.note, { label: 'Contact us'|trans }) }}
+                            <div class="margin-top-10">
+                                {{ form_widget(form.billingAddressFilled, {
+                                    attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-billing-address-fields' }})
+                                }}
+                                <label for="{{ form.billingAddressFilled.vars.id }}" class="css-checkbox__image">
+                                    {{ 'Chci zadat jiné fakturační údaje'|trans }}
+                                </label>
+                            </div>
+                            <div id="js-billing-address-fields" class="margin-top-10">
+                                <h2 class="in-title in-title--small in-title--dark">
+                                    {{ 'Billing data'|trans }} <span class="heading-addition">{{ '(Tato adresa bude na daňovém dokladu. Pokud nebude vyplněna, použije se doručovací adresa.)'|trans }}</span>
+                                </h2>
+                                <div class="box-order__info__content">
+                                    {{ form_row(form.street, { label: 'Street'|trans }) }}
+                                    {{ form_row(form.city, { label: 'City'|trans }) }}
+                                    {{ form_row(form.postcode, { label: 'Postcode'|trans }) }}
+                                    {{ form_row(form.country, { label: 'Country'|trans }) }}
+                                </div>
+                            </div>
+
+                            <div class="margin-top-10">
+                                <input type="checkbox" id="order_note" name="order_note" class="css-checkbox js-checkbox-toggle" data-checkbox-toggle-container-id="js-order-note" value="">
+                                <label for="order_note" class="css-checkbox__image">
+                                    {{ 'Přidám poznámku k objednávce'|trans }}
+                                </label>
+                            </div>
+                            <div id="js-order-note" class="margin-top-10">
+                                <h2 class="in-title in-title--small in-title--dark">
+                                    {{ 'Note'|trans }}
+                                </h2>
+                                <div class="box-order__info__content">
+                                    {{ form_row(form.note, { label: 'Contact us'|trans }) }}
+                                </div>
                             </div>
                         </div>
                     </div>
