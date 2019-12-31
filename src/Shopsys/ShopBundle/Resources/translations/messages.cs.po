@@ -1735,8 +1735,8 @@ msgstr ""
 msgid "Platnost"
 msgstr ""
 
-msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
-msgstr "Platnost slevového kupónu vypršela. Zkontroluj si ho."
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
+msgstr "Platnost slevového kupónu \"%code%\" vypršela. Zkontroluj si ho."
 
 msgid "Platný do"
 msgstr ""

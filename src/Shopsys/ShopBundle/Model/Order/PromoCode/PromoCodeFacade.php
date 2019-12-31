@@ -10,6 +10,9 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade as BasePromoCo
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById($promoCodeId)
+ */
 class PromoCodeFacade extends BasePromoCodeFacade
 {
     private const MASS_CREATE_BATCH_SIZE = 200;

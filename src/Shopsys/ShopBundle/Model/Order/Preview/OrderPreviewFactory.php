@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Preview;
 
+use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Customer\User;
@@ -51,11 +52,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
     public function createForCurrentUser(?Transport $transport = null, ?Payment $payment = null)
     {
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($this->domain->getId());
-        $validEnteredPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
-        $validEnteredPromoCodePercent = null;
-        if ($validEnteredPromoCode !== null) {
-            $validEnteredPromoCodePercent = $validEnteredPromoCode->getPercent();
-        }
+        $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
 
         return $this->create(
             $currency,
@@ -64,10 +61,11 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $transport,
             $payment,
             $this->currentCustomer->findCurrentUser(),
-            $validEnteredPromoCodePercent,
-            $validEnteredPromoCode,
+            null,
+            null,
             $this->cartFacade->getGifts(),
-            $this->cartFacade->getPromoProducts()
+            $this->cartFacade->getPromoProducts(),
+            $validEnteredPromoCodes
         );
     }
 
@@ -82,6 +80,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $giftsInCart
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $promoProductsInCart
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $validEnteredPromoCodes
      * @return \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview
      */
     public function create(
@@ -94,8 +93,12 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $validEnteredPromoCode = null,
         ?array $giftsInCart = [],
-        ?array $promoProductsInCart = []
+        ?array $promoProductsInCart = [],
+        array $validEnteredPromoCodes = []
     ): OrderPreview {
+        if ($promoCodeDiscountPercent !== null || $validEnteredPromoCode !== null) {
+            throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$validEnteredPromoCode" argument is supported, you need to use "$promoCodes" array instead');
+        }
         return $this->orderPreviewCalculation->calculatePreview(
             $currency,
             $domainId,
@@ -106,7 +109,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $promoCodeDiscountPercent,
             $validEnteredPromoCode,
             $giftsInCart,
-            $promoProductsInCart
+            $promoProductsInCart,
+            $validEnteredPromoCodes
         );
     }
 }
