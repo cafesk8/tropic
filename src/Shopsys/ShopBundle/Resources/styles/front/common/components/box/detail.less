@@ -138,12 +138,15 @@
 
     &__availability {
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
 
         font-weight: bold;
         background-color: @color-f;
 
         &__status {
+            padding-right: 5px;
+            
             font-size: 18px;
             white-space: nowrap;
         }
@@ -157,7 +160,7 @@
             font-size: 14px;
             font-weight: 400;
             white-space: nowrap;
-            padding: 4px 5px 0 5px;
+            padding: 4px 5px 0 0;
 
             .box-detail__availability--two-lines-mobile & {
                 padding-left: 0;
