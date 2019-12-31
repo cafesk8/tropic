@@ -20,12 +20,14 @@
     right: 0;
     bottom: 0;
     padding: @box-cookies-gap/2;
-    widht: 100%;
+    width: 100%;
     height: @box-cookies-height-mobile;
     will-change: transform;
 
     background: @box-cookies-background;
     transition: @transition transform;
+    border: 3px solid @color-black;
+    border-radius: @radius @radius 0 0;
 
     @media @query-md {
         height: @box-cookies-height;
