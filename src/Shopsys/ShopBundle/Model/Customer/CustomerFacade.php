@@ -249,8 +249,8 @@ class CustomerFacade extends BaseCustomerFacade
 
         $billingAddress = $this->billingAddressFactory->create($customerData->billingAddressData);
         $deliveryAddress = null;
-        if ($userData->memberOfBushmanClub) {
-            $deliveryAddressData = $customerData->deliveryAddressData;
+        $deliveryAddressData = $customerData->deliveryAddressData;
+        if ($userData->memberOfBushmanClub || $deliveryAddressData->addressFilled === true) {
             $deliveryAddressData->addressFilled = true;
             $deliveryAddress = $this->deliveryAddressFactory->create($customerData->deliveryAddressData);
             $this->em->persist($deliveryAddress);

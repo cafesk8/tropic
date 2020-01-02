@@ -8,7 +8,6 @@ use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
-use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
@@ -33,9 +32,8 @@ use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
 use Shopsys\ShopBundle\Form\Front\Order\OrderFlow;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
+use Shopsys\ShopBundle\Model\Customer\CustomerDataFactory;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
-use Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory;
-use Shopsys\ShopBundle\Model\Customer\UserDataFactory;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
@@ -177,24 +175,9 @@ class OrderController extends FrontBaseController
     private $customerFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\UserDataFactory
-     */
-    private $userDataFactory;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Security\Authenticator
      */
     private $authenticator;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Customer\BillingAddressDataFactory
-     */
-    private $billingAddressDataFactory;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory
-     */
-    private $deliveryAddressDataFactory;
 
     /**
      * @var \Shopsys\ShopBundle\Component\CardEan\CardEanFacade
@@ -205,6 +188,11 @@ class OrderController extends FrontBaseController
      * @var \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade
      */
     private $customerMailFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
+     */
+    private $customerDataFactory;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
@@ -230,12 +218,10 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
-     * @param \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
-     * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -261,12 +247,10 @@ class OrderController extends FrontBaseController
         BlogArticleFacade $blogArticleFacade,
         GtmFacade $gtmFacade,
         CustomerFacade $customerFacade,
-        UserDataFactory $userDataFactory,
         Authenticator $authenticator,
-        BillingAddressDataFactory $billingAddressDataFactory,
-        DeliveryAddressDataFactory $deliveryAddressDataFactory,
         CardEanFacade $cardEanFacade,
-        CustomerMailFacade $customerMailFacade
+        CustomerMailFacade $customerMailFacade,
+        CustomerDataFactory $customerDataFactory
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -291,12 +275,10 @@ class OrderController extends FrontBaseController
         $this->blogArticleFacade = $blogArticleFacade;
         $this->gtmFacade = $gtmFacade;
         $this->customerFacade = $customerFacade;
-        $this->userDataFactory = $userDataFactory;
         $this->authenticator = $authenticator;
-        $this->billingAddressDataFactory = $billingAddressDataFactory;
-        $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
         $this->cardEanFacade = $cardEanFacade;
         $this->customerMailFacade = $customerMailFacade;
+        $this->customerDataFactory = $customerDataFactory;
     }
 
     public function indexAction()
@@ -695,24 +677,9 @@ class OrderController extends FrontBaseController
 
             $newPassword = $formData['newPassword'];
             $order = $this->orderFacade->getById($orderId);
-
-            $userData = $this->userDataFactory->createUserDataFromOrder($order, $newPassword, $this->domain->getId());
-
-            $deliveryAddressData = null;
-            $billingAddressData = null;
-            /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
-            $transport = $order->getTransport();
-
-            if ($transport->isPickupPlaceType() === false) {
-                $deliveryAddressData = $this->deliveryAddressDataFactory->createFromOrder($order);
-            }
-
-            if ($order->isDeliveryAddressSameAsBillingAddress() === false) {
-                $billingAddressData = $this->billingAddressDataFactory->createFromOrder($order);
-            }
-
+            $customerData = $this->customerDataFactory->createFromOrder($order, $newPassword, $this->domain->getId());
             /** @var \Shopsys\ShopBundle\Model\Customer\User $newlyRegisteredUser */
-            $newlyRegisteredUser = $this->customerFacade->registerCustomerWithAddress($userData, $deliveryAddressData, $billingAddressData);
+            $newlyRegisteredUser = $this->customerFacade->registerCustomer($customerData);
             try {
                 $this->customerMailFacade->sendRegistrationMail($newlyRegisteredUser);
             } catch (\Swift_SwiftException | MailException $exception) {
