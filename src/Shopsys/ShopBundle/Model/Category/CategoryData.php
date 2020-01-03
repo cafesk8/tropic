@@ -16,6 +16,11 @@ class CategoryData extends BaseCategoryData
     /**
      * @var bool
      */
+    public $listable = true;
+
+    /**
+     * @var bool
+     */
     public $preListingCategory = false;
 
     /**

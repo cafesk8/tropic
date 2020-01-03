@@ -10,7 +10,7 @@ use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Grid\MoneyConvertingDataSourceDecorator;
-use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderWithRowManipulatorDataSource;
+use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
 use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
 use Shopsys\FrameworkBundle\Controller\Admin\CustomerController as BaseCustomerController;
 use Shopsys\FrameworkBundle\Form\Admin\Customer\CustomerFormType;
@@ -26,7 +26,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods;
-use Shopsys\ShopBundle\Model\Customer\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -171,11 +170,7 @@ class CustomerController extends BaseCustomerController
      */
     private function getCustomerGrid(QueryBuilder $queryBuilder): Grid
     {
-        $innerDataSource = new QueryBuilderWithRowManipulatorDataSource($queryBuilder, 'u.id', function (array $row) {
-            $row['exportStatusName'] = User::getExportStatusNameByExportStatus($row['exportStatus']);
-            return $row;
-        });
-
+        $innerDataSource = new QueryBuilderDataSource($queryBuilder, 'u.id');
         $dataSource = new MoneyConvertingDataSourceDecorator($innerDataSource, ['ordersSumPrice']);
 
         $grid = $this->gridFactory->create('customerList', $dataSource);
@@ -184,7 +179,7 @@ class CustomerController extends BaseCustomerController
 
         $grid->addColumn('name', 'name', t('Full name'), true);
         $grid->addColumn('city', 'city', t('City'), true);
-        $grid->addColumn('telephone', 'telephone', t('Telephone'), true);
+        $grid->addColumn('telephone', 'u.telephone', t('Telephone'), true);
         $grid->addColumn('email', 'u.email', t('E-mail'), true);
         $grid->addColumn('pricingGroup', 'pricingGroup', t('Pricing group'), true);
         $grid->addColumn('orders_count', 'ordersCount', t('Number of orders'), true)->setClassAttribute('text-right');
@@ -202,7 +197,7 @@ class CustomerController extends BaseCustomerController
             );
         }
 
-        $grid->addColumn('export_status_name', 'exportStatusName', t('Stav exportu do IS'), true);
+        $grid->addColumn('export_status', 'u.exportStatus', t('Stav exportu do IS'));
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
         $grid->addEditActionColumn('admin_customer_edit', ['id' => 'id']);

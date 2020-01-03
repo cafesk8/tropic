@@ -158,7 +158,7 @@
                                 <link itemprop="availability"
                                     href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                             </div>
-                            
+
                             {% for variant in variants if variant in product.variants %}
                                 <div class="{% if loop.first %}js-product-variant-first-price {% else %} display-none {% endif %} js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
                                     <div class="js-product-detail-add-variant-button">
@@ -189,30 +189,31 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% if product.gift is not null
-                        and product.gift.calculatedHidden is same as (false) and product.gift.hidden is same as (false)
-                        and product.gift.calculatedSellingDenied is same as (false) and product.gift.sellingDenied is same as (false) %}
-                        <div class="box-detail__gift">
-                            <div class="box-detail__gift__image">
-                                {% if imageExists(product.gift) %}
-                                    {{ image(product.gift, { size: 'gift' }) }}
-                                {% else %}
-                                    {{ noimage({ alt: product.gift.name }) }}
-                                {% endif %}
-                            </div>
-                            <div class="box-detail__gift__info">
-                                <a href="{{ url('front_product_detail', { id: product.gift.id }) }}"
-                                class="box-detail__gift__info__title">
-                                    {{ 'Dárek'|trans }}
-                                    {{ product.gift.name }}
-                                </a>
-                                <div class="box-detail__gift__info__text">
-                                    {{ 'Ke každému nákupu dárek v hodnotě'|trans }}
-                                    <strong> {{ getProductSellingPrice(product.gift).priceWithVat|price }}</strong>
+                    {% for gift in product.gifts(domain.id) %}
+                        {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
+                            and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
+                            <div class="box-detail__gift">
+                                <div class="box-detail__gift__image">
+                                    {% if imageExists(gift.productForCreatingImageAccordingToVariant) %}
+                                        {{ image(gift.productForCreatingImageAccordingToVariant, { size: 'gift' }) }}
+                                    {% else %}
+                                        {{ noimage({ alt: gift.name }) }}
+                                    {% endif %}
+                                </div>
+                                <div class="box-detail__gift__info">
+                                    <a href="{{ url('front_product_detail', { id: gift.id }) }}"
+                                       class="box-detail__gift__info__title">
+                                        {{ 'Dárek'|trans }}
+                                        {{ gift.name }}
+                                    </a>
+                                    <div class="box-detail__gift__info__text">
+                                        {{ 'Ke každému nákupu dárek v hodnotě'|trans }}
+                                        <strong> {{ getProductSellingPrice(gift).priceWithVat|price }}</strong>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@ class InstagramExtension extends AbstractExtension
 {
     private const CACHE_TIME_SECOND = 60 * 60;
 
-    private const CACHE_ID = 'instagramFeed';
+    private const CACHE_ID = 'instagramFeedV2';
 
     /**
      * @var \Symfony\Component\Templating\EngineInterface

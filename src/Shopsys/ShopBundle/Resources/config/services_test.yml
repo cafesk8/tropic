@@ -39,7 +39,7 @@ services:
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@Shopsys\ShopBundle\Model\Category\CategoryDataFactory'
 
     Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
-        class: Shopsys\ShopBundle\Model\Cart\CartWatcherFacade\CartWatcherFacade
+        class: Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade
         arguments:
             - '@shopsys.shop.component.flash_message.sender.front'
 
@@ -70,6 +70,10 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@Shopsys\ShopBundle\Model\Product\Brand\BrandFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@Shopsys\ShopBundle\Model\Product\Brand\BrandRepository'
 
     Shopsys\ShopBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
 
@@ -174,3 +178,9 @@ services:
     Shopsys\ShopBundle\Model\AdvancedSearchOrder\Filter\OrderTransportFilter: ~
 
     Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@Shopsys\ShopBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Heureka\HeurekaFeedItemFactory'
+
+    Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
+
+    Shopsys\ShopBundle\Model\Feed\FeedHelper: ~

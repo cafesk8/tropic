@@ -6,11 +6,9 @@
             {% if product.calculatedSellingDenied %}
                 {{ 'Product no longer on sale'|trans }}
             {% else %}
-                {% if isGermanyDomain() is same as (false) %}
-                    <span class="box-detail__info__availability__date">
-                        {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
-                    </span>
-                {% endif %}
+                <span class="box-detail__info__availability__date">
+                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                </span>
             {% endif %}
         </span>
 
@@ -18,17 +16,17 @@
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
             <span class="box-detail__availability__text">
                 {{ 'nebo ihned na '}}
-            </span>
-            <a
-                    href="#"
-                    class="box-detail__availability__stores underline-small"
-                    onclick="Shopsys.window({ content: $('.js-availability-table_{{ product.id }}').html() }); return false;"
-            >
+                <a
+                href="#"
+                class="box-detail__availability__stores underline-small"
+                onclick="Shopsys.window({ content: $('.js-availability-table_{{ product.id }}').html() }); return false;"
+                >
                 {% transchoice stocksWithoutZeroQuantityOnPickupPlaceStore|length with { '%stocksWithoutZeroQuantityOnStoreCount%': stocksWithoutZeroQuantityOnPickupPlaceStore|length } %}
-                    {1} %stocksWithoutZeroQuantityOnStoreCount% prodejně|
-                    [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% prodejnách
+                {1} %stocksWithoutZeroQuantityOnStoreCount% prodejně|
+                [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% prodejnách
                 {% endtranschoice %}
             </a>
+            </span>
         {% endif %}
         <div class="display-none js-availability-table_{{ product.id }}">
             <table class="table-main full-width">

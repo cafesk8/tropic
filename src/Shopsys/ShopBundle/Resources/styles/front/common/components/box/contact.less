@@ -4,6 +4,7 @@
 @box-contact-right-width: calc(~"@{calc-base} - @{box-contact-left-width}");
 @box-contact-right-title-width: 210px;
 
+@box-small-logo-size: 90px;
 
 .box-contact {
     display: flex;
@@ -118,6 +119,19 @@
             color: @color-f;
             font-size: @font-size-small;
             opacity: 0.5;
+            font-family: @font-alt;
+
+            &__small-logos {
+                text-align: center;
+
+                @media @query-lg {
+                    text-align: left;
+                }
+
+                img {
+                    width: @box-small-logo-size;
+                }
+            }
         }
     }
 }

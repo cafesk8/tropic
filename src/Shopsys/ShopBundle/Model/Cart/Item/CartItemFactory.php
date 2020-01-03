@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem as BaseCartItem;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactory as BaseCartItemFactory;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 
 class CartItemFactory extends BaseCartItemFactory
 {
@@ -19,6 +20,7 @@ class CartItemFactory extends BaseCartItemFactory
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
      * @param \Shopsys\FrameworkBundle\Model\Product\Product|null $gift
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem|null $mainCartItem
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\PromoProduct|null $promoProduct
      * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem
      */
     public function create(
@@ -27,8 +29,9 @@ class CartItemFactory extends BaseCartItemFactory
         int $quantity,
         ?Money $watchedPrice,
         ?Product $gift = null,
-        ?CartItem $mainCartItem = null
+        ?CartItem $mainCartItem = null,
+        ?PromoProduct $promoProduct = null
     ): BaseCartItem {
-        return new CartItem($cart, $product, $quantity, $watchedPrice, $gift, $mainCartItem);
+        return new CartItem($cart, $product, $quantity, $watchedPrice, $gift, $mainCartItem, $promoProduct);
     }
 }

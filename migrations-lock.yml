@@ -730,3 +730,117 @@
 20190926183742:
     class: Shopsys\ShopBundle\Migrations\Version20190926183742
     skip: false
+20191001161248:
+    class: Shopsys\ShopBundle\Migrations\Version20191001161248
+    skip: false
+20191001120151:
+    class: Shopsys\ShopBundle\Migrations\Version20191001120151
+    skip: false
+20191010144727:
+    class: Shopsys\ShopBundle\Migrations\Version20191010144727
+    skip: false
+20191010152544:
+    class: Shopsys\ShopBundle\Migrations\Version20191010152544
+    skip: false
+20191011081124:
+    class: Shopsys\ShopBundle\Migrations\Version20191011081124
+    skip: false
+20191016103820:
+    class: Shopsys\ShopBundle\Migrations\Version20191016103820
+    skip: false
+20191015152425:
+    class: Shopsys\ShopBundle\Migrations\Version20191015152425
+    skip: false
+20191017110413:
+    class: Shopsys\ShopBundle\Migrations\Version20191017110413
+    skip: false
+20191015064042:
+    class: Shopsys\ShopBundle\Migrations\Version20191015064042
+    skip: false
+20191015122122:
+    class: Shopsys\ShopBundle\Migrations\Version20191015122122
+    skip: false
+20191024090301:
+    class: Shopsys\ShopBundle\Migrations\Version20191024090301
+    skip: false
+20191104150100:
+    class: Shopsys\ShopBundle\Migrations\Version20191104150100
+    skip: false
+20191104153028:
+    class: Shopsys\ShopBundle\Migrations\Version20191104153028
+    skip: false
+20191025102929:
+    class: Shopsys\ShopBundle\Migrations\Version20191025102929
+    skip: false
+20191025105521:
+    class: Shopsys\ShopBundle\Migrations\Version20191025105521
+    skip: false
+20191115161548:
+    class: Shopsys\ShopBundle\Migrations\Version20191115161548
+    skip: false
+20191115151235:
+    class: Shopsys\ShopBundle\Migrations\Version20191115151235
+    skip: false
+20191018102438:
+    class: Shopsys\ShopBundle\Migrations\Version20191018102438
+    skip: false
+20191021155942:
+    class: Shopsys\ShopBundle\Migrations\Version20191021155942
+    skip: false
+20191107115334:
+    class: Shopsys\ShopBundle\Migrations\Version20191107115334
+    skip: false
+20191119185742:
+    class: Shopsys\ShopBundle\Migrations\Version20191119185742
+    skip: false
+20191111115119:
+    class: Shopsys\ShopBundle\Migrations\Version20191111115119
+    skip: false
+20191111124321:
+    class: Shopsys\ShopBundle\Migrations\Version20191111124321
+    skip: false
+20191112183136:
+    class: Shopsys\ShopBundle\Migrations\Version20191112183136
+    skip: false
+20191125071730:
+    class: Shopsys\ShopBundle\Migrations\Version20191125071730
+    skip: false
+20191128144359:
+    class: Shopsys\ShopBundle\Migrations\Version20191128144359
+    skip: false
+20191121080802:
+    class: Shopsys\ShopBundle\Migrations\Version20191121080802
+    skip: false
+20191121102655:
+    class: Shopsys\ShopBundle\Migrations\Version20191121102655
+    skip: false
+20191126125916:
+    class: Shopsys\ShopBundle\Migrations\Version20191126125916
+    skip: false
+20191127074408:
+    class: Shopsys\ShopBundle\Migrations\Version20191127074408
+    skip: false
+20191128125127:
+    class: Shopsys\ShopBundle\Migrations\Version20191128125127
+    skip: false
+20191202072350:
+    class: Shopsys\ShopBundle\Migrations\Version20191202072350
+    skip: false
+20191202072351:
+    class: Shopsys\ShopBundle\Migrations\Version20191202072351
+    skip: false
+20191202072352:
+    class: Shopsys\ShopBundle\Migrations\Version20191202072352
+    skip: false
+20191204074458:
+    class: Shopsys\ShopBundle\Migrations\Version20191204074458
+    skip: false
+20191203071823:
+    class: Shopsys\ShopBundle\Migrations\Version20191203071823
+    skip: false
+20191211154052:
+    class: Shopsys\ShopBundle\Migrations\Version20191211154052
+    skip: false
+20191217085921:
+    class: Shopsys\ShopBundle\Migrations\Version20191217085921
+    skip: false

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\ShopBundle\Form\Front\Login\LoginFormType;
+use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends FrontBaseController
 {
@@ -18,11 +22,25 @@ class LoginController extends FrontBaseController
     private $authenticator;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
      */
-    public function __construct(Authenticator $authenticator)
+    private $customerFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function __construct(Authenticator $authenticator, CustomerFacade $customerFacade, Domain $domain)
     {
         $this->authenticator = $authenticator;
+        $this->customerFacade = $customerFacade;
+        $this->domain = $domain;
     }
 
     /**
@@ -47,20 +65,47 @@ class LoginController extends FrontBaseController
         ]);
     }
 
-    public function windowFormAction()
+    /**
+     * @param string|null $email
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function windowFormAction(?string $email = null): Response
     {
         return $this->render('@ShopsysShop/Front/Content/Login/windowForm.html.twig', [
             'form' => $this->getLoginForm()->createView(),
+            'email' => $email,
         ]);
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @param string|null $email
+     * @return \Symfony\Component\Form\FormInterface
      */
-    private function getLoginForm()
+    private function getLoginForm(?string $email = null): FormInterface
     {
         return $this->createForm(LoginFormType::class, null, [
             'action' => $this->generateUrl('front_login_check'),
+            'email' => $email,
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function noticeAction(Request $request): Response
+    {
+        if (!$this->isGranted(Roles::ROLE_LOGGED_CUSTOMER)) {
+            $email = $request->get('email');
+            $user = $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId());
+
+            if ($user !== null) {
+                return $this->render('@ShopsysShop/Front/Content/Login/notice.html.twig', [
+                    'email' => $email,
+                ]);
+            }
+        }
+
+        return new Response();
     }
 }

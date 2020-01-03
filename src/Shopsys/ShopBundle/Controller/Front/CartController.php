@@ -22,8 +22,10 @@ use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
-use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade;
+use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
+use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductInCartFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -76,9 +78,9 @@ class CartController extends FrontBaseController
     private $tokenManager;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade
      */
-    private $productGiftFacade;
+    private $productGiftInCartFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade
@@ -96,6 +98,16 @@ class CartController extends FrontBaseController
     private $gtmFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade
+     */
+    private $currentPromoCodeFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductInCartFacade
+     */
+    private $promoProductInCartFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -104,10 +116,12 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
-     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftFacade $productGiftFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade $productGiftInCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductInCartFacade $promoProductInCartFacade
      */
     public function __construct(
         ProductAccessoryFacade $productAccessoryFacade,
@@ -118,10 +132,12 @@ class CartController extends FrontBaseController
         OrderPreviewFactory $orderPreviewFactory,
         ErrorExtractor $errorExtractor,
         CsrfTokenManagerInterface $tokenManager,
-        ProductGiftFacade $productGiftFacade,
+        ProductGiftInCartFacade $productGiftInCartFacade,
         TopProductFacade $topProductFacade,
         ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade,
-        GtmFacade $gtmFacade
+        GtmFacade $gtmFacade,
+        CurrentPromoCodeFacade $currentPromoCodeFacade,
+        PromoProductInCartFacade $promoProductInCartFacade
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -131,10 +147,12 @@ class CartController extends FrontBaseController
         $this->orderPreviewFactory = $orderPreviewFactory;
         $this->errorExtractor = $errorExtractor;
         $this->tokenManager = $tokenManager;
-        $this->productGiftFacade = $productGiftFacade;
+        $this->productGiftInCartFacade = $productGiftInCartFacade;
         $this->topProductFacade = $topProductFacade;
         $this->productOnCurrentDomainElasticFacade = $productOnCurrentDomainElasticFacade;
         $this->gtmFacade = $gtmFacade;
+        $this->currentPromoCodeFacade = $currentPromoCodeFacade;
+        $this->promoProductInCartFacade = $promoProductInCartFacade;
     }
 
     /**
@@ -146,19 +164,33 @@ class CartController extends FrontBaseController
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
         $this->correctCartItemQuantitiesByStore($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
-        $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cartItems);
+        /** @var \Shopsys\ShopBundle\Model\Customer\User|null $user */
+        $user = $this->getUser();
 
-        $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $cart);
+        $domainId = $this->domain->getId();
+
+        $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
+        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $user);
+
+        $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $promoProductsForCart, $cart);
 
         $form = $this->createForm(CartFormType::class, $cartFormData);
         $form->handleRequest($request);
+
+        $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
 
         $invalidCart = false;
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
-                $cartGiftsByProductId = $this->productGiftFacade->getProductGiftInCartByProductId($cart->getItems());
+
+                $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cart->getItems());
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
+
+                $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $user);
+                $this->cartFacade->updatePromoProducts($promoProductsForCart, $form->getData()['chosenPromoProducts']);
+
+                $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
 
                 if (!$request->get(self::RECALCULATE_ONLY_PARAMETER_NAME, false)) {
                     return $this->redirectToRoute('front_order_index');
@@ -174,20 +206,25 @@ class CartController extends FrontBaseController
             $this->getFlashMessageSender()->addErrorFlash(t('Please make sure that you entered right quantity of all items in cart.'));
         }
 
-        $domainId = $this->domain->getId();
+        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $user);
+        $cartFormData = $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
+        $form = $this->createForm(CartFormType::class, $cartFormData);
+        $form->handleRequest($request);
 
         /** @var \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $productsPrice = $orderPreview->getProductsPrice();
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $topProducts = $this->topProductFacade->getAllOfferedProducts($this->domain->getId(), $this->currentCustomer->getPricingGroup());
-
+        $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
+        $this->currentPromoCodeFacade->checkProductActionPriceType($quantifiedItemsPrices);
         $this->gtmFacade->onCartPage($orderPreview);
         return $this->render('@ShopsysShop/Front/Content/Cart/index.html.twig', [
             'cart' => $cart,
             'cartItems' => $cartItems,
-            'cartItemPrices' => $orderPreview->getQuantifiedItemsPrices(),
+            'cartItemPrices' => $quantifiedItemsPrices,
             'cartGiftsByProductId' => $cartGiftsByProductId,
+            'promoProducts' => $promoProductsForCart,
             'form' => $form->createView(),
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
             'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
@@ -205,12 +242,17 @@ class CartController extends FrontBaseController
     /**
      * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[] $cartItems
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
      * @return mixed[]
      */
-    private function getCartFormData(array $cartItems, array $productGiftsInCart, ?Cart $cart = null): array
+    private function getCartFormData(array $cartItems, array $productGiftsInCart, array $promoProductsForCart, ?Cart $cart = null): array
     {
-        $cartFormData = ['quantities' => [], 'chosenGifts' => []];
+        $cartFormData = [
+            'quantities' => [],
+            'chosenGifts' => [],
+            'chosenPromoProducts' => [],
+        ];
         foreach ($cartItems as $cartItem) {
             $cartFormData['quantities'][$cartItem->getId()] = $cartItem->getQuantity();
         }
@@ -219,6 +261,19 @@ class CartController extends FrontBaseController
         foreach ($productGiftsInCart as $productGiftInCart) {
             $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }
+
+        return $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
+    }
+
+    /**
+     * @param $cartFormData
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
+     * @return mixed[]
+     */
+    private function setCartFormDataPromoProducts($cartFormData, array $promoProductsForCart, ?Cart $cart = null): array
+    {
+        $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
 
         return $cartFormData;
     }
@@ -237,6 +292,24 @@ class CartController extends FrontBaseController
         }
 
         return $chosenGifts;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
+     * @return mixed[]
+     */
+    private function getChosenPromoProducts(array $promoProductsInCart, ?Cart $cart = null): array
+    {
+        $chosenPromoProducts = [];
+        foreach ($promoProductsInCart as $promoProductId => $promoProductByProductId) {
+            foreach ($promoProductByProductId as $productId => $promoProduct) {
+                $chosenPromoProducts[$promoProductId][$productId] =
+                    $cart !== null && $cart->isPromoProductSelected($promoProduct, $productId);
+            }
+        }
+
+        return $chosenPromoProducts;
     }
 
     /**

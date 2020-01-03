@@ -15,10 +15,27 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            ConfigureMenuEvent::SIDE_MENU_PRODUCTS => 'configureProductsMenu',
             ConfigureMenuEvent::SIDE_MENU_PRICING => 'configurePricingMenu',
             ConfigureMenuEvent::SIDE_MENU_MARKETING => 'configureMarketingMenu',
             ConfigureMenuEvent::SIDE_MENU_SETTINGS => 'configureSettingsMenu',
         ];
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\ConfigureMenuEvent $event
+     */
+    public function configureProductsMenu(ConfigureMenuEvent $event): void
+    {
+        $productsMenu = $event->getMenu();
+
+        $productGiftMenu = $productsMenu->addChild('admin_productgift_list', ['route' => 'admin_productgift_list', 'label' => t('Dárky')]);
+        $productGiftMenu->addChild('new', ['route' => 'admin_productgift_new', 'label' => t('Nový dárek'), 'display' => false]);
+        $productGiftMenu->addChild('edit', ['route' => 'admin_productgift_edit', 'label' => t('Editace dárku'), 'display' => false]);
+
+        $promoProductMenu = $productsMenu->addChild('admin_promoproduct_list', ['route' => 'admin_promoproduct_list', 'label' => t('Promo produkty')]);
+        $promoProductMenu->addChild('new', ['route' => 'admin_promoproduct_new', 'label' => t('Nový promo produkt'), 'display' => false]);
+        $promoProductMenu->addChild('edit', ['route' => 'admin_promoproduct_edit', 'label' => t('Editace promo produktu'), 'display' => false]);
     }
 
     /**

@@ -135,6 +135,8 @@ class User extends BaseUser
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
         $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
+
+        $this->setExportStatus(self::EXPORT_NOT_YET);
     }
 
     /**

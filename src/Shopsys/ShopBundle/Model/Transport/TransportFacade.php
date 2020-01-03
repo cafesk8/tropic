@@ -8,9 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Transport\Exception\TransportPriceNotFoundException;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade as BaseTransportFacade;
@@ -79,7 +82,7 @@ class TransportFacade extends BaseTransportFacade
     public function create(TransportData $transportData): Transport
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
-        if ($transportData->personalTakeType === Transport::PERSONAL_TAKE_TYPE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
+        if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
             $transportData->initialDownload = true;
         } else {
@@ -99,7 +102,7 @@ class TransportFacade extends BaseTransportFacade
     public function edit(BaseTransport $transport, TransportData $transportData): void
     {
         $transportData->balikobotShipperService = $transportData->balikobotShipperService === null ? null : (string)$transportData->balikobotShipperService;
-        if ($transportData->personalTakeType === Transport::PERSONAL_TAKE_TYPE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
+        if ($transportData->transportType === Transport::TYPE_PERSONAL_TAKE_BALIKOBOT && $this->pickupFacade->isPickUpPlaceShipping($transportData->balikobotShipper, $transportData->balikobotShipperService)) {
             $transportData->pickupPlace = true;
 
             if ($transport->isBalikobotChanged($transportData) === true) {
@@ -148,12 +151,13 @@ class TransportFacade extends BaseTransportFacade
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @param bool $showEmailTransportInCart
      * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
      */
-    public function getVisibleByDomainIdAndCountry(int $domainId, array $visiblePaymentsOnDomain, ?Country $country)
+    public function getVisibleByDomainIdAndCountryAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, ?Country $country, bool $showEmailTransportInCart)
     {
         /** @var \Shopsys\ShopBundle\Model\Transport\Transport[] $visibleTransports */
-        $visibleTransports = $this->getVisibleByDomainId($domainId, $visiblePaymentsOnDomain);
+        $visibleTransports = $this->getVisibleByDomainIdAndTransportEmailType($domainId, $visiblePaymentsOnDomain, $showEmailTransportInCart);
 
         if ($country === null) {
             return $visibleTransports;
@@ -178,6 +182,19 @@ class TransportFacade extends BaseTransportFacade
     {
         $transports = $this->transportRepository->getAllByDomainId($domainId);
         $transports = $this->filterTransportsWithoutPickUpPlaces($transports);
+
+        return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @param bool $showEmailTransportInCart
+     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     */
+    private function getVisibleByDomainIdAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, bool $showEmailTransportInCart)
+    {
+        $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart);
 
         return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
     }
@@ -212,5 +229,25 @@ class TransportFacade extends BaseTransportFacade
         }
 
         return null;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getTransportPricesWithVatIndexedByTransportId(Currency $currency): array
+    {
+        $transportPricesWithVatByTransportId = [];
+        $transports = $this->getAllIncludingDeleted();
+        foreach ($transports as $transport) {
+            try {
+                $transportPrice = $this->transportPriceCalculation->calculateIndependentPrice($transport, $currency);
+                $transportPricesWithVatByTransportId[$transport->getId()] = $transportPrice->getPriceWithVat();
+            } catch (TransportPriceNotFoundException $exception) {
+                $transportPricesWithVatByTransportId[$transport->getId()] = Money::zero();
+            }
+        }
+
+        return $transportPricesWithVatByTransportId;
     }
 }

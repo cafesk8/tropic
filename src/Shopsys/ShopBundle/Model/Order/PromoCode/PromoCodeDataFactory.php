@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory as BasePromoCodeDataFactory;
@@ -35,6 +36,13 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->domainId = $this->adminDomainTabsFacade->getSelectedDomainId();
         $promoCodeData->massGenerate = false;
         $promoCodeData->quantity = 0;
+        $promoCodeData->percent = 0;
+        $promoCodeData->nominalDiscount = Money::zero();
+        $promoCodeData->useNominalDiscount = false;
+        $promoCodeData->type = PromoCodeData::TYPE_PROMO_CODE;
+        $promoCodeData->certificateValue = Money::zero();
+        $promoCodeData->usageType = PromoCode::USAGE_TYPE_ALL;
+        $promoCodeData->userType = PromoCode::USER_TYPE_ALL;
 
         return $promoCodeData;
     }
@@ -73,5 +81,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->type = $promoCode->getType();
         $promoCodeData->certificateValue = $promoCode->getCertificateValue();
         $promoCodeData->certificateSku = $promoCode->getCertificateSku();
+        $promoCodeData->usageType = $promoCode->getUsageType();
+        $promoCodeData->userType = $promoCode->getUserType();
     }
 }

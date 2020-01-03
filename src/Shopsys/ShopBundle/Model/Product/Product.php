@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
+use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Exception\ProductIsNotMainVariantException;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
 use Shopsys\ShopBundle\Model\Product\Mall\ProductMallExportMapper;
@@ -25,7 +26,13 @@ use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
  */
 class Product extends BaseProduct
 {
-    public const DECREASE_REAL_STOCK_QUANTITY_BY = 5;
+    public const DECREASE_REAL_STOCK_QUANTITY_BY = 2;
+    public const PRODUCT_TYPE_GIFT_CERTIFICATE_500 = 'gift_certificate_500';
+    public const PRODUCT_TYPE_GIFT_CERTIFICATE_1000 = 'gift_certificate_1000';
+    public const PRODUCT_TYPES_GIFT_CERTIFICATES = [
+        self::PRODUCT_TYPE_GIFT_CERTIFICATE_500,
+        self::PRODUCT_TYPE_GIFT_CERTIFICATE_1000,
+    ];
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
@@ -79,12 +86,11 @@ class Product extends BaseProduct
     protected $flags;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Product|null
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
      *
-     * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Product\Product")
-     * @ORM\JoinColumn(name="gift_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift", mappedBy="products", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
-    protected $gift;
+    protected $productGifts;
 
     /**
      * @var bool
@@ -128,6 +134,20 @@ class Product extends BaseProduct
     private $updatedAt;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $baseName;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $productType;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -140,13 +160,14 @@ class Product extends BaseProduct
         $this->transferNumber = $productData->transferNumber;
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->mainVariantGroup = $productData->mainVariantGroup;
-        $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->updatedAt = $productData->updatedAt;
+        $this->baseName = $productData->baseName;
+        $this->productType = $productData->productType;
     }
 
     /**
@@ -162,12 +183,34 @@ class Product extends BaseProduct
         parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
-        $this->gift = $productData->gift;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
+        $this->baseName = $productData->baseName;
+        $this->productType = $productData->productType;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
+     * @param \Shopsys\ShopBundle\Model\Category\Category[][] $categoriesByDomainId
+     */
+    public function editCategoriesByDomainId(
+        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
+        array $categoriesByDomainId
+    ): void {
+        if (!$this->isVariant()) {
+            $this->setCategories($productCategoryDomainFactory, $categoriesByDomainId);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function editFlags(array $flags): void
+    {
+        parent::editFlags($flags);
     }
 
     /**
@@ -317,13 +360,14 @@ class Product extends BaseProduct
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
-    public function getProductCategoriesByDomainId(int $domainId): array
+    public function getListableProductCategoriesByDomainId(int $domainId): array
     {
         $productCategories = [];
 
         foreach ($this->getProductCategoryDomainsByDomainIdIndexedByCategoryId($domainId) as $categoryDomain) {
+            /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
             $category = $categoryDomain->getCategory();
-            if ($category->isVisible($domainId)) {
+            if ($category->isVisible($domainId) && $category->isListable()) {
                 $productCategories[$category->getId()] = $category;
             }
         }
@@ -353,7 +397,7 @@ class Product extends BaseProduct
         return array_filter(
             $this->storeStocks->toArray(),
             function (ProductStoreStock $productStoreStock) {
-                return $productStoreStock->getStockQuantity() > 0;
+                return $productStoreStock->getStockQuantity() > 0 && $productStoreStock->getStore()->isFranchisor() === false;
             }
         );
     }
@@ -364,7 +408,7 @@ class Product extends BaseProduct
      */
     public function getStocksWithoutZeroQuantityOnPickupPlaceStore(Domain $domain): array
     {
-        return array_filter(
+        $productStoreStocks = array_filter(
             $this->storeStocks->toArray(),
             function (ProductStoreStock $productStoreStock) use ($domain) {
                 return $productStoreStock->getStockQuantity() > 0
@@ -372,14 +416,44 @@ class Product extends BaseProduct
                     && $productStoreStock->getStore()->getDomainId() === $domain->getId();
             }
         );
+
+        usort($productStoreStocks, function (ProductStoreStock $productStoreStock1, ProductStoreStock $productStoreStock2) {
+            $store1Position = $productStoreStock1->getStore()->getPosition();
+            $store2Position = $productStoreStock2->getStore()->getPosition();
+
+            if ($store1Position !== null && $store2Position !== null) {
+                return $store1Position <=> $store2Position;
+            }
+
+            if ($store1Position !== null && $store2Position === null) {
+                return -1;
+            }
+
+            if ($store1Position === null && $store2Position !== null) {
+                return 1;
+            }
+
+            $store1Name = $productStoreStock1->getStore()->getName();
+            $store2Name = $productStoreStock2->getStore()->getName();
+
+            return $store1Name <=> $store2Name;
+        });
+
+        return $productStoreStocks;
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     * @return \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
      */
-    public function getGift(): ?self
+    public function getStocksWithoutZeroQuantityOnCentralStore(): array
     {
-        return $this->gift;
+        return array_filter(
+            $this->storeStocks->toArray(),
+            function (ProductStoreStock $productStoreStock) {
+                return $productStoreStock->getStockQuantity() > 0
+                    && $productStoreStock->getStore()->isCentralStore();
+            }
+        );
     }
 
     /**
@@ -495,5 +569,131 @@ class Product extends BaseProduct
     public function isNoneVariant(): bool
     {
         return $this->variantType === self::VARIANT_TYPE_NONE;
+    }
+
+    public function setProductAsHidden(): void
+    {
+        $this->hidden = true;
+        $this->markForVisibilityRecalculation();
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantType(): string
+    {
+        return $this->variantType;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBaseName(): ?string
+    {
+        return $this->baseName;
+    }
+
+    /**
+     * @param string $color
+     */
+    public function updateCzechNamesWithColor(string $color): void
+    {
+        $newName = sprintf('%s %s', $this->getBaseName(), $color);
+        $this->setName(DomainHelper::CZECH_LOCALE, $newName);
+    }
+
+    /**
+     * @param string $locale
+     * @param string $baseName
+     * @param string $size
+     * @param string $color
+     */
+    public function updateNameWithSize(string $locale, string $baseName, string $size): void
+    {
+        $nameWithSize = sprintf('%s %s', $baseName, $size);
+        $this->setName($locale, $nameWithSize);
+    }
+
+    /**
+     * @param string $locale
+     * @param string $name
+     */
+    private function setName(string $locale, string $name): void
+    {
+        $this->translation($locale)->setName($name);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
+     */
+    public function getActiveProductGiftsByDomainId(int $domainId): array
+    {
+        $productGifts = [];
+
+        foreach ($this->productGifts as $productGift) {
+            if ($productGift->getDomainId() === $domainId && $productGift->isActive() === true) {
+                $productGifts[] = $productGift;
+            }
+        }
+
+        return $productGifts;
+    }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     */
+    public function getGifts(int $domainId): array
+    {
+        $gifts = [];
+        $activeProductGiftsByDomainId = $this->getActiveProductGiftsByDomainId($domainId);
+        foreach ($activeProductGiftsByDomainId as $activeProductGift) {
+            $gifts[] = $activeProductGift->getGift();
+        }
+
+        return $gifts;
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getShortDescriptionConsideringVariant(int $domainId): ?string
+    {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getShortDescription($domainId);
+        }
+
+        return $this->getShortDescription($domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return string|null
+     */
+    public function getDescriptionConsideringVariant(int $domainId): ?string
+    {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getDescription($domainId);
+        }
+
+        return $this->getDescription($domainId);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProductType(): ?string
+    {
+        return $this->productType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductTypeGiftCertificate(): bool
+    {
+        return in_array($this->productType, self::PRODUCT_TYPES_GIFT_CERTIFICATES, true);
     }
 }

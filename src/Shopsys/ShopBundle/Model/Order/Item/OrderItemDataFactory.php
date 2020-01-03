@@ -15,7 +15,11 @@ class OrderItemDataFactory extends BaseOrderItemDataFactory
      */
     public function create(): BaseOrderItemData
     {
-        return new OrderItemData();
+        $orderItemData = new OrderItemData();
+
+        $this->fillNew($orderItemData);
+
+        return $orderItemData;
     }
 
     /**
@@ -29,5 +33,13 @@ class OrderItemDataFactory extends BaseOrderItemDataFactory
         $this->addFieldsByOrderItemType($orderItemData, $orderItem);
 
         return $orderItemData;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemData $orderItemData
+     */
+    private function fillNew(OrderItemData $orderItemData): void
+    {
+        $orderItemData->preparedQuantity = 0;
     }
 }

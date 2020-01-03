@@ -4,33 +4,36 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
-use Shopsys\ShopBundle\Component\Rest\RestClient;
+use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
 
 class CustomerTransferService
 {
     /**
-     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
+     * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
-    private $restClient;
+    private $multidomainRestClient;
 
     /**
-     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $restClient
+     * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      */
-    public function __construct(RestClient $restClient)
+    public function __construct(MultidomainRestClient $multidomainRestClient)
     {
-        $this->restClient = $restClient;
+        $this->multidomainRestClient = $multidomainRestClient;
     }
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
+     * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData|null
      */
-    public function getTransferItemsFromResponse(UserTransferIdAndEan $userTransferIdAndEan): ?CustomerInfoResponseItemData
+    public function getTransferItemsFromResponse(UserTransferIdAndEan $userTransferIdAndEan, int $domainId): ?CustomerInfoResponseItemData
     {
-        $apiMethodUrl = sprintf('/api/Eshop/CustomerInfo?Number=%s&Email=%s', $userTransferIdAndEan->getEan(), $userTransferIdAndEan->getCustomer()->getEmail());
-        $restResponse = $this->restClient->get($apiMethodUrl);
+        $restResponse = $this->multidomainRestClient->getByDomainId($domainId)->get('/api/Eshop/CustomerInfo', [
+            'Number' => $userTransferIdAndEan->getEan(),
+            'Email' => $userTransferIdAndEan->getCustomer()->getEmail(),
+        ]);
 
         return new CustomerInfoResponseItemData($restResponse->getData(), $userTransferIdAndEan);
     }

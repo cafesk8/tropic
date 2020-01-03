@@ -57,7 +57,7 @@
             {{ form_errors(form, { errors_attr: errors_attr } ) }}
             {{ block('icon') }}
         </div>
-    <div>
+    </div>
 {% endblock checkbox_row %}
 
 {% block textarea_row -%}
@@ -68,6 +68,8 @@
         </div>
         <div class="form-line__error">
             {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default('form-error--line'))}) %}
+        </div>
+        <div class="form-line__error">
             {{ form_errors(form, { errors_attr: errors_attr } ) }}
         </div>
     </div>

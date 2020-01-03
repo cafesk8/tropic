@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactory as BaseDeliveryAddressDataFactory;
+use Shopsys\FrameworkBundle\Model\Order\Order;
 
 class DeliveryAddressDataFactory extends BaseDeliveryAddressDataFactory
 {
@@ -61,5 +62,23 @@ class DeliveryAddressDataFactory extends BaseDeliveryAddressDataFactory
         $deliveryAddressData->city = $billingAddressData->city;
         $deliveryAddressData->postcode = $billingAddressData->postcode;
         $deliveryAddressData->country = $billingAddressData->country;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @return \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData
+     */
+    public function createFromOrder(Order $order): DeliveryAddressData
+    {
+        $deliveryAddressData = $this->create();
+
+        $deliveryAddressData->addressFilled = true;
+        $deliveryAddressData->companyName = $order->getDeliveryCompanyName();
+        $deliveryAddressData->street = $order->getDeliveryStreet();
+        $deliveryAddressData->city = $order->getDeliveryCity();
+        $deliveryAddressData->postcode = $order->getDeliveryPostcode();
+        $deliveryAddressData->country = $order->getDeliveryCountry();
+
+        return $deliveryAddressData;
     }
 }

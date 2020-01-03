@@ -45,11 +45,6 @@ class ProductData extends BaseProductData
     public $actionPrices;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Product|null
-     */
-    public $gift;
-
-    /**
      * @var bool
      */
     public $generateToHsSportXmlFeed;
@@ -78,6 +73,16 @@ class ProductData extends BaseProductData
      * @var \DateTime
      */
     public $updatedAt;
+
+    /**
+     * @var string|null
+     */
+    public $baseName;
+
+    /**
+     * @var string|null
+     */
+    public $productType;
 
     public function __construct()
     {

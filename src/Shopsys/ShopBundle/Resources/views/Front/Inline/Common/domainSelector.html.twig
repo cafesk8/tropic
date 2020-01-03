@@ -2,7 +2,7 @@
 <ul class="list-languages">
     {% if locale != constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::CZECH_LOCALE') %}
         <li class="list-languages__item">
-            <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/czech.png') }}" alt="{{ 'Slovensko'|trans }}">
+            <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/czech.png') }}" alt="{{ 'Česko'|trans }}">
             <a class="list-languages__item__link underline" href="{{ findUrlByDomainId('front_homepage', [], 1)}}">
                 {{ 'Česko'|trans }}
             </a>
@@ -11,7 +11,7 @@
     {% if locale != constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::SLOVAK_LOCALE') %}
         <li class="list-languages__item">
             <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/slovakia.png') }}" alt="{{ 'Slovensko'|trans }}">
-            <a class="list-languages__item__link underline" href="https://www.bushmanoriginal.sk/">
+            <a class="list-languages__item__link underline" href="{{ findUrlByDomainId('front_homepage', [], 2)}}">
                 {{ 'Slovensko'|trans }}
             </a>
         </li>

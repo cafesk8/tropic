@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Controller\Admin\ProductController as BaseProductController;
+use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Form\Admin\Product\VariantFormType;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
@@ -20,12 +21,15 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListAdminFacade;
 use Shopsys\FrameworkBundle\Model\Product\MassAction\ProductMassActionFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
+use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportCronModule;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 use Shopsys\FrameworkBundle\Twig\ProductExtension;
+use Shopsys\ShopBundle\Component\Cron\CronModuleFacade;
 use Shopsys\ShopBundle\Form\Admin\VariantFormTypeExtension;
 use Shopsys\ShopBundle\Model\Product\MassEdit\MassEditFacade;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,9 +42,24 @@ class ProductController extends BaseProductController
     private $massEditFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    protected $productFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
+     */
+    private $parameterFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Component\Cron\CronModuleFacade
+     */
+    private $cronModuleFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\MassAction\ProductMassActionFacade $productMassActionFacade
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface $productDataFactory
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
@@ -53,6 +72,8 @@ class ProductController extends BaseProductController
      * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\ShopBundle\Model\Product\MassEdit\MassEditFacade $massEditFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Component\Cron\CronModuleFacade $cronModuleFacade
      */
     public function __construct(
         ProductMassActionFacade $productMassActionFacade,
@@ -69,11 +90,15 @@ class ProductController extends BaseProductController
         UnitFacade $unitFacade,
         Setting $setting,
         AvailabilityFacade $availabilityFacade,
-        MassEditFacade $massEditFacade
+        MassEditFacade $massEditFacade,
+        ParameterFacade $parameterFacade,
+        CronModuleFacade $cronModuleFacade
     ) {
         parent::__construct($productMassActionFacade, $gridFactory, $productFacade, $productDataFactory, $breadcrumbOverrider, $administratorGridFacade, $productListAdminFacade, $advancedSearchProductFacade, $productVariantFacade, $productExtension, $domain, $unitFacade, $setting, $availabilityFacade);
 
         $this->massEditFacade = $massEditFacade;
+        $this->parameterFacade = $parameterFacade;
+        $this->cronModuleFacade = $cronModuleFacade;
     }
 
     /**
@@ -145,12 +170,19 @@ class ProductController extends BaseProductController
 
         $grid = $this->getGrid($queryBuilder);
 
-        if ($massEditForm->get('submit')->isClicked()) {
+        if ($massEditForm->get('submit')->isClicked() || $massEditForm->get('submitAndExport')->isClicked()) {
             $this->performMassEdit(
                 array_map('intval', $grid->getSelectedRowIds()),
                 $massEditForm->getData(),
                 $queryBuilder
             );
+
+            if ($massEditForm->get('submitAndExport')->isClicked()) {
+                $this->cronModuleFacade->scheduleModuleByServiceId(ProductSearchExportCronModule::class);
+                $this->getFlashMessageSender()->addInfoFlash(
+                    t('Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut')
+                );
+            }
 
             return $this->redirect($request->headers->get('referer', $this->generateUrl('admin_product_list')));
         }
@@ -225,5 +257,46 @@ class ProductController extends BaseProductController
         $grid->addColumn('finished', 'p.finished', t('Produkt je hotový'), true);
 
         return $grid;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     */
+    public function editAction(Request $request, $id)
+    {
+        $product = $this->productFacade->getById($id);
+        $productData = $this->productDataFactory->createFromProduct($product);
+
+        $form = $this->createForm(ProductFormType::class, $productData, ['product' => $product]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->productFacade->edit($id, $form->getData());
+            $this->productFacade->fillVariantNamesFromMainVariantNames($product, $this->parameterFacade);
+
+            $this->getFlashMessageSender()->addSuccessFlashTwig(
+                t('Product <strong>{{ product|productDisplayName }}</strong> modified'),
+                [
+                    'product' => $product,
+                ]
+            );
+
+            return $this->redirectToRoute('admin_product_edit', ['id' => $product->getId()]);
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+        }
+
+        $this->breadcrumbOverrider->overrideLastItem(t('Editing product - %name%', ['%name%' => $this->productExtension->getProductDisplayName($product)]));
+
+        $viewParameters = [
+            'form' => $form->createView(),
+            'product' => $product,
+            'domains' => $this->domain->getAll(),
+        ];
+
+        return $this->render('@ShopsysFramework/Admin/Content/Product/edit.html.twig', $viewParameters);
     }
 }

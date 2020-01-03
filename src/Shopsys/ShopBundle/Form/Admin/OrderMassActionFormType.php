@@ -33,7 +33,8 @@ class OrderMassActionFormType extends AbstractType
                     t('CSV Export') => OrderMassActionData::ACTION_CSV_EXPORT,
                 ],
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class)
+            ->add('submitAndExport', SubmitType::class);
     }
 
     /**

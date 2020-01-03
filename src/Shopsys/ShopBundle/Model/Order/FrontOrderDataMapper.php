@@ -29,7 +29,7 @@ class FrontOrderDataMapper extends BaseFrontOrderDataMapper
      */
     public function prefillFrontFormData(FrontOrderData $frontOrderData, User $user, ?Order $order)
     {
-        parent::prefillFrontFormData($frontOrderData, $user, $order);
+        $this->prefillFrontFormDataFromCustomer($frontOrderData, $user);
 
         $deliveryAddress = $user->getDeliveryAddress();
 

@@ -106,17 +106,15 @@ class UserRepository extends BaseUserRepository
     }
 
     /**
-     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
-    public function getBatchForPricingGroupUpdate(int $limit): array
+    public function getForPricingGroupUpdate(): array
     {
         $queryBuilder = $this->createUserQueryBuilder()
-            ->where('u.pricingGroupUpdatedAt < :dateTime')
-            ->setParameter('dateTime', new DateTime('-12 hours'))
-            ->orderBy('u.pricingGroupUpdatedAt', 'ASC')
-            ->addOrderBy('u.id', 'ASC')
-            ->setMaxResults($limit);
+            ->where('u.lastLogin > :dateTime')
+            ->setParameter('dateTime', new DateTime('-30 days'))
+            ->orderBy('u.lastLogin', 'ASC')
+            ->addOrderBy('u.id', 'ASC');
 
         return $queryBuilder->getQuery()->getResult();
     }

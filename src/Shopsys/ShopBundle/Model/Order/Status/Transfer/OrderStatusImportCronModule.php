@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Component\Transfer\Exception\TransferException;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
+use Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade;
 use Shopsys\ShopBundle\Model\Order\Order;
 use Shopsys\ShopBundle\Model\Order\OrderDataFactory;
 use Shopsys\ShopBundle\Model\Order\OrderFacade;
@@ -23,7 +24,7 @@ use Shopsys\ShopBundle\Model\Order\Status\Transfer\Exception\InvalidOrderStatusT
 
 class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 {
-    private const TRANSFER_IDENTIFIER = 'import_order_statuses';
+    public const TRANSFER_IDENTIFIER = 'import_order_statuses';
     private const ORDER_BATCH_SIZE = 50;
 
     /**
@@ -47,24 +48,32 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
     private $orderDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade
+     */
+    private $orderItemFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
      * @param \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade $orderItemFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         MultidomainRestClient $multidomainRestClient,
         OrderFacade $orderFacade,
         OrderStatusFacade $orderStatusFacade,
-        OrderDataFactory $orderDataFactory
+        OrderDataFactory $orderDataFactory,
+        OrderItemFacade $orderItemFacade
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->multidomainRestClient = $multidomainRestClient;
         $this->orderFacade = $orderFacade;
         $this->orderStatusFacade = $orderStatusFacade;
         $this->orderDataFactory = $orderDataFactory;
+        $this->orderItemFacade = $orderItemFacade;
     }
 
     /**
@@ -114,10 +123,17 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             );
         }
         $order = $this->getOrder($orderStatusTransferResponseItemData);
+
+        $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
+        if ($orderItemTransferData === null) {
+            return;
+        }
+        $this->setOrderItemPreparedQuantities($order, $orderItemTransferData->getItems());
+
         /** @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus */
         $orderStatus = $order->getStatus();
         if ($orderStatus->isCheckOrderReadyStatus() === true) {
-            $this->checkOrderReadyStatus($order);
+            $this->processOrderReadyStatusAndOrderItemQuantities($order, $orderItemTransferData);
             return;
         }
 
@@ -156,7 +172,12 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         try {
             $restResponse = $restClient->get($apiMethodUrl);
         } catch (UnexpectedResponseCodeException $exception) {
-            $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
+            $this->logger->addWarning(
+                'Order not found',
+                [
+                    'number' => $orderNumber,
+                ]
+            );
             return [];
         }
 
@@ -214,11 +235,10 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderQuantityStatusTransferResponseItemData|null $orderItemTransferData
      */
-    private function checkOrderReadyStatus(Order $order): void
+    private function processOrderReadyStatusAndOrderItemQuantities(Order $order, ?OrderQuantityStatusTransferResponseItemData $orderItemTransferData): void
     {
-        $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
-
         if ($orderItemTransferData === null) {
             return;
         }
@@ -259,7 +279,13 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             $restResponse = $restClient->get($apiMethodUrl);
         } catch (UnexpectedResponseCodeException $exception) {
             $this->orderFacade->updateStatusCheckedAtByNumber($orderNumber);
-            $this->logger->addWarning(sprintf('Order with number `%s` not found', $orderNumber));
+            $this->logger->addWarning(
+                'Order not found',
+                [
+                    'number' => $orderNumber,
+                    'error_message' => $exception->getMessage(),
+                ]
+            );
             return null;
         }
 
@@ -277,7 +303,9 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $oldOrderStatusName = $order->getStatus()->getName('cs');
         $orderData->status = $orderStatus;
         $orderData->statusCheckedAt = new DateTime();
-        $order = $this->orderFacade->edit($order->getId(), $orderData);
+
+        $locale = DomainHelper::DOMAIN_ID_TO_LOCALE[$order->getDomainId()];
+        $order = $this->orderFacade->edit($order->getId(), $orderData, $locale);
 
         $this->logger->addInfo(sprintf(
             'Order status of order with ID `%s` has been changed from `%s` to `%s`',
@@ -299,5 +327,16 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         }
 
         return $preparedItemCount > 0;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Status\Transfer\OrderItemQuantityTransferResponseDataItem[] $orderItemQuantityTransferResponseDataItems
+     */
+    private function setOrderItemPreparedQuantities(Order $order, array $orderItemQuantityTransferResponseDataItems): void
+    {
+        foreach ($orderItemQuantityTransferResponseDataItems as $item) {
+            $this->orderItemFacade->setOrderItemPreparedQuantity($order, $item->getEan(), $item->getPreparedCount());
+        }
     }
 }

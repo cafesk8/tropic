@@ -10,21 +10,34 @@ use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade as BaseCartFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFactory;
 use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
+use Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart findCartOfCurrentCustomer()
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
+ */
 class CartFacade extends BaseCartFacade
 {
     /**
      * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
      */
     protected $flashMessageSender;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
@@ -39,6 +52,7 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -52,7 +66,8 @@ class CartFacade extends BaseCartFacade
         ProductPriceCalculationForUser $productPriceCalculation,
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
-        CartWatcherFacade $cartWatcherFacade
+        CartWatcherFacade $cartWatcherFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct(
             $em,
@@ -69,6 +84,7 @@ class CartFacade extends BaseCartFacade
         );
 
         $this->flashMessageSender = $flashMessageSender;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -109,10 +125,14 @@ class CartFacade extends BaseCartFacade
             return $correctedCartQuantitiesByCartItemId;
         }
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
-            $cartItem = $cart->getItemById($cartItemId);
+            try {
+                $cartItem = $cart->getItemById($cartItemId);
 
-            if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
-                $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
+                    $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                }
+            } catch (InvalidCartItemException $exception) {
+                $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
         }
 
@@ -134,12 +154,16 @@ class CartFacade extends BaseCartFacade
         $modifyFormData = [];
 
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
-            $cartItem = $cart->getItemById($cartItemId);
+            try {
+                $cartItem = $cart->getItemById($cartItemId);
 
-            if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
-                $modifyFormData[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
-            } else {
-                $modifyFormData[$cartItemId] = $quantity;
+                if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
+                    $modifyFormData[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                } else {
+                    $modifyFormData[$cartItemId] = $quantity;
+                }
+            } catch (InvalidCartItemException $exception) {
+                $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
         }
 
@@ -187,7 +211,6 @@ class CartFacade extends BaseCartFacade
             $this->currentCustomer->getPricingGroup()
         );
 
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
 
         $productQuantityInCart = 0;
@@ -211,7 +234,6 @@ class CartFacade extends BaseCartFacade
      */
     public function updateGifts(array $productGiftInCart, array $selectedGifts): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -245,7 +267,6 @@ class CartFacade extends BaseCartFacade
      */
     public function getGifts(): array
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
@@ -256,6 +277,80 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier
+     * @return \Shopsys\FrameworkBundle\Model\Cart\Cart|null
+     */
+    public function findCartByCustomerIdentifier(CustomerIdentifier $customerIdentifier)
+    {
+        $cart = $this->cartRepository->findByCustomerIdentifier($customerIdentifier);
+
+        if ($cart !== null) {
+            $this->cartWatcherFacade->checkCartModifications($cart, $customerIdentifier->getUser());
+
+            if ($cart->isEmpty()) {
+                $this->deleteCart($cart);
+
+                return null;
+            }
+        }
+
+        return $cart;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
+     */
+    public function getPromoProducts(): array
+    {
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            return [];
+        }
+
+        return $cart->getPromoProductItems();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
+     * @param mixed[] $selectedPromoProducts
+     */
+    public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
+    {
+        $cart = $this->findCartOfCurrentCustomer();
+
+        if ($cart === null) {
+            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException();
+        }
+
+        $this->removeAllPromoProductsItems($cart);
+
+        $promoProductItems = $cart->updatePromoProductsItems(
+            $this->cartItemFactory,
+            $this->productFacade,
+            $promoProductsInCart,
+            $selectedPromoProducts
+        );
+        foreach ($promoProductItems as $promoProductItem) {
+            $this->em->persist($promoProductItem);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     */
+    private function removeAllPromoProductsItems(Cart $cart): void
+    {
+        $allRemovedPromoProductItems = $cart->removeAllPromoProductsAndGetThem();
+        foreach ($allRemovedPromoProductItems as $removedPromoProductItem) {
+            $this->em->remove($removedPromoProductItem);
+        }
+        $this->em->flush();
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
      * @param int $quantity
      * @return bool
@@ -263,5 +358,21 @@ class CartFacade extends BaseCartFacade
     private function canUpdateCartItemQuantity(CartItem $cartItem, int $quantity): bool
     {
         return $cartItem->getProduct()->isUsingStock() && $quantity > $cartItem->getProduct()->getStockQuantity() === true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function showEmailTransportInCart(): bool
+    {
+        $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->isProductTypeGiftCertificate() === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

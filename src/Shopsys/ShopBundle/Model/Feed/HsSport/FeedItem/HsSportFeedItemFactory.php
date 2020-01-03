@@ -85,7 +85,7 @@ class HsSportFeedItemFactory
             $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainConfig->getId())->getCode(),
             $this->getAllImagesUrlsByProduct($product, $domainConfig),
             $this->getCategoriesStringsFromCategories(
-                $product->getProductCategoriesByDomainId($domainConfig->getId()),
+                $product->getListableProductCategoriesByDomainId($domainConfig->getId()),
                 $domainConfig
             ),
             $hsSportVariantItems

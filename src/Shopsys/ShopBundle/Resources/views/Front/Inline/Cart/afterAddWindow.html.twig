@@ -8,7 +8,7 @@
         </div>
         <div class="box-popup-add__content__product">
             <div class="box-popup-add__content__product__image">
-                {{ image(cartItem.product, { size: 'thumbnail', lazy: false }) }}
+                {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
             </div>
             <div class="box-popup-add__content__product__pieces display-none">
                 {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
@@ -17,16 +17,18 @@
                 <span class="box-popup-add__content__product__name__title">
                     {{ cartItem.product.name }}
                 </span>
-                <span class="box-popup-add__content__product__name__price">
-                    <span class="box-popup-add__content__product__name__price__main">
-                        {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
-                    </span>
-                    {% if quantifiedItemPrice.unitPrice.isActionPrice %}
-                        <span class="box-popup-add__content__product__name__price__old">
-                            {{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}
+                {% if quantifiedItemPrice is not null %}
+                    <span class="box-popup-add__content__product__name__price">
+                        <span class="box-popup-add__content__product__name__price__main">
+                            {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
                         </span>
-                    {% endif %}
-                </span>
+                        {% if quantifiedItemPrice.unitPrice.isActionPrice %}
+                            <span class="box-popup-add__content__product__name__price__old">
+                                {{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}
+                            </span>
+                        {% endif %}
+                    </span>
+                {% endif %}
                 {% set distinguishingParameters = productDistinguishingParameterValue(cartItem.product) %}
 
                 {% if distinguishingParameters.firstDistinguishingParameterValue is not null %}

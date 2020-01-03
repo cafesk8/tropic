@@ -18,6 +18,11 @@ class FlagFacade extends BaseFlagFacade
     private $setting;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagRepository
+     */
+    protected $flagRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository $flagRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFactory $flagFactory
@@ -60,5 +65,15 @@ class FlagFacade extends BaseFlagFacade
         }
 
         parent::deleteById($flagId);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\Flag[]
+     */
+    public function getAllExceptFreeTransportFlag(): array
+    {
+        return $this->flagRepository->getAllExceptIds([
+            $this->setting->get(Setting::FREE_TRANSPORT_FLAG),
+        ]);
     }
 }

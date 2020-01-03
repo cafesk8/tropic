@@ -66,7 +66,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $this->currentCustomer->findCurrentUser(),
             $validEnteredPromoCodePercent,
             $validEnteredPromoCode,
-            $this->cartFacade->getGifts()
+            $this->cartFacade->getGifts(),
+            $this->cartFacade->getPromoProducts()
         );
     }
 
@@ -80,6 +81,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param string|null $promoCodeDiscountPercent
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $giftsInCart
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @return \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview
      */
     public function create(
@@ -91,7 +93,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?User $user = null,
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $validEnteredPromoCode = null,
-        ?array $giftsInCart = []
+        ?array $giftsInCart = [],
+        ?array $promoProductsInCart = []
     ): OrderPreview {
         return $this->orderPreviewCalculation->calculatePreview(
             $currency,
@@ -102,7 +105,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $user,
             $promoCodeDiscountPercent,
             $validEnteredPromoCode,
-            $giftsInCart
+            $giftsInCart,
+            $promoProductsInCart
         );
     }
 }

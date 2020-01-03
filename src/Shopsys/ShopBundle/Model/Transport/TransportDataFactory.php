@@ -47,7 +47,8 @@ class TransportDataFactory extends BaseTransportDataFactory
         $transportData->countries = $transport->getCountries();
         $transportData->mallType = $transport->getMallType();
         $transportData->externalId = $transport->getExternalId();
-        $transportData->personalTakeType = $transport->getPersonalTakeType();
+        $transportData->transportType = $transport->getTransportType();
         $transportData->deliveryDays = $transport->getDeliveryDays();
+        $transportData->trackingUrlPattern = $transport->getTrackingUrlPattern();
     }
 }

@@ -21,9 +21,8 @@ class TransferLoggerFactory
     /**
      * @param \Symfony\Bridge\Monolog\Logger $defaultLogger
      */
-    public function __construct(
-        Logger $defaultLogger
-    ) {
+    public function __construct(Logger $defaultLogger)
+    {
         $this->defaultLogger = $defaultLogger;
         $this->transferLoggers = [];
     }

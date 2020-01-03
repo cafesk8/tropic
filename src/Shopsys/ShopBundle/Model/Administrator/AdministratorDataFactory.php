@@ -15,7 +15,10 @@ class AdministratorDataFactory extends BaseAdministratorDataFactory
      */
     public function create(): BaseAdministratorData
     {
-        return new AdministratorData();
+        $administratorData = new AdministratorData();
+        $administratorData->roles = array_values(Role::getAllRolesIndexedByTitles());
+
+        return $administratorData;
     }
 
     /**
@@ -26,6 +29,7 @@ class AdministratorDataFactory extends BaseAdministratorDataFactory
     {
         $administratorData = new AdministratorData();
         $this->fillFromAdministrator($administratorData, $administrator);
+        $administratorData->roles = $administrator->getRoles();
         return $administratorData;
     }
 }

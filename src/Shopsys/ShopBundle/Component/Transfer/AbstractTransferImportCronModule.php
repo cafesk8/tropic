@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Validator\TraceableValidator;
 
 abstract class AbstractTransferImportCronModule extends AbstractTransferCronModule
 {
+    protected const TRANSFER_ISSUES_LIMIT = 300;
+
     /**
      * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse
      */
@@ -92,6 +94,9 @@ abstract class AbstractTransferImportCronModule extends AbstractTransferCronModu
 
                 throw $exception;
             } finally {
+                if ($this->logger->getAllTransferIssuesDataCount() > static::TRANSFER_ISSUES_LIMIT) {
+                    $this->transferIssueFacade->createMultiple($this->logger->getAllTransferIssuesDataAndCleanQueue());
+                }
                 $this->em->clear();
                 // Application in DEV mode uses TraceableValidator for validation. TraceableValidator saves data from
                 // validation in memory, so it can consume quite a lot of memory, which leads to transfer crash
