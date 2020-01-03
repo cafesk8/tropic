@@ -47,8 +47,8 @@ class ArticleSettingsFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'placeholder' => t('-- Choose article --'),
-                'label' => t('(Banner) Bushman Club'),
-                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu, a také jako odkaz pro banner Bushman club'),
+                'label' => t('(Banner) Věrnostní program'),
+                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program'),
             ])
             ->add('ourStoryArticle', ChoiceType::class, [
                 'required' => false,

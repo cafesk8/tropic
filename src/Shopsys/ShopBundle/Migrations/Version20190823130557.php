@@ -24,7 +24,7 @@ class Version20190823130557 extends AbstractMigration
                 'INSERT INTO articles (position, domain_id, placement, name, hidden, created_at) VALUES (0, :domain_id, \'none\', :name, FALSE, :createdAt)',
                 [
                     'domain_id' => $domainId,
-                    'name' => 'Bushman Club',
+                    'name' => 'Věrnostní program',
                     'createdAt' => (new DateTimeImmutable())->format(DateTimeInterface::ISO8601),
                 ]
             );

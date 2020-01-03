@@ -92,7 +92,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'choices' => [
                 t('Přihlášené i nepřihlášené') => PromoCode::USER_TYPE_ALL,
                 t('Pouze přihlášené') => PromoCode::USER_TYPE_LOGGED,
-                t('Pouze přihlášené členy Bushman clubu') => PromoCode::USER_TYPE_BUSHMAN_CLUB_MEMBERS,
+                t('Pouze přihlášené členy Věrnostního programu') => PromoCode::USER_TYPE_BUSHMAN_CLUB_MEMBERS,
             ],
             'multiple' => false,
             'expanded' => false,

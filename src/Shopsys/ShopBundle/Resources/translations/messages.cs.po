@@ -10,8 +10,8 @@ msgstr ""
 msgid "%name% agrees with privacy policy."
 msgstr ""
 
-msgid "(Banner) Bushman Club"
-msgstr "(Banner) BUSHMAN Club"
+msgid "(Banner) Věrnostní program"
+msgstr ""
 
 msgid "(If I buy on the company behalf)"
 msgstr "(Pokud nakupuji na firmu)"
@@ -151,9 +151,6 @@ msgstr "Pozor! Jsi jako administrátor přihlášen za zákazníka."
 msgid "BUSHMAN E-shop - kvalitní outdoorové a volnočasové oblečení"
 msgstr ""
 
-msgid "BUSHMAN club"
-msgstr ""
-
 msgid "Back to buying"
 msgstr "Zpět k nákupu"
 
@@ -244,9 +241,6 @@ msgstr "Rubrika blogu <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byla
 msgid "Blog category <strong>{{ name }}</strong> deleted"
 msgstr "Rubrika blogu <strong>{{ name }}</strong> byla smazána"
 
-msgid "Body v bushman klubu"
-msgstr "Body v BUSHMAN Clubu"
-
 msgid "Brand"
 msgstr "Značka"
 
@@ -261,15 +255,6 @@ msgstr "Bushman Company, a. s."
 
 msgid "Bushman Trade s.r.o."
 msgstr "Bushman Trade, s. r. o."
-
-msgid "Bushman club"
-msgstr "BUSHMAN Club"
-
-msgid "Bushman club - body"
-msgstr "BUSHMAN Club - body"
-
-msgid "Bushman klubu"
-msgstr "BUSHMAN Clubu"
 
 msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
 msgstr ""
@@ -325,19 +310,16 @@ msgstr ""
 msgid "Chceš promo produkt"
 msgstr ""
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
-msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
+msgstr ""
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
-msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\">BUSHMAN Clubu</a>."
-
-msgid "Chci být členem Bushman Clubu"
-msgstr "Chci být členem BUSHMAN Clubu"
+msgid "Chci být členem Věrnostního programu"
+msgstr ""
 
 msgid "Chci reklamovat zboží"
 msgstr "Chci reklamovat zboží"
 
-msgid "Chci se stát členem BUSHMAN clubu"
+msgid "Chci se stát členem Věrnostního programu"
 msgstr ""
 
 msgid "Chci zadat doručovací adresu"
@@ -379,8 +361,8 @@ msgstr "Zavřít"
 msgid "Close (Esc)"
 msgstr "Zavřít (Esc)"
 
-msgid "Co je Bushman Klub?"
-msgstr "Co je BUSHMAN Club?"
+msgid "Co je Věrnostní program?"
+msgstr ""
 
 msgid "Co na nás říkají zákazníci"
 msgstr "Zákazníci o nás říkají:"
@@ -973,8 +955,8 @@ msgstr "Chceš vyměnit velikost?"
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Jako zástupný znak pro číslo sledování zásilky zadej %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 
-msgid "Jako člen Bushman Clubu budete mít přístup k"
-msgstr "Jako člen BUSHMAN Clubu budeš mít přístup k"
+msgid "Jako člen Věrnostního programu budete mít přístup k"
+msgstr ""
 
 msgid "Jaké služby najdete"
 msgstr "Jaké služby najdeš"
@@ -1003,7 +985,7 @@ msgstr ""
 msgid "Jméno"
 msgstr ""
 
-msgid "Jsi členem BUSHMAN clubu"
+msgid "Jsi členem Věrnostního programu"
 msgstr ""
 
 msgid "Jste bushman? Přihlaste se"
@@ -1699,8 +1681,8 @@ msgstr "Potřebuješ poradit s dokončením objednávky?"
 msgid "Pouze přihlášené"
 msgstr ""
 
-msgid "Pouze přihlášené členy Bushman clubu"
-msgstr "Pouze přihlášené členy BUSHMAN clubu"
+msgid "Pouze přihlášené členy Věrnostního programu"
+msgstr ""
 
 msgid "Pouze zkontrolované objednávky"
 msgstr ""
@@ -2143,8 +2125,8 @@ msgstr ""
 msgid "Slevový kupón mohou aplikovat pouze přihlášení zákazníci."
 msgstr ""
 
-msgid "Slevový kupón mohou aplikovat pouze přihlášení členové Bushman clubu."
-msgstr "Slevový kupón mohou aplikovat pouze přihlášení členové BUSHMAN clubu."
+msgid "Slevový kupón mohou aplikovat pouze přihlášení členové Věrnostního programu."
+msgstr ""
 
 msgid "Slevový kupón nebo certifikát"
 msgstr ""
@@ -2626,8 +2608,8 @@ msgstr "Vyber článek, který se zobrazí jako první v horním menu hned za č
 msgid "Vyberte článek, který se zobrazí jako čtvrtý v horním menu hned za Blogem"
 msgstr "Vyber článek, který se zobrazí jako čtvrtý v horním menu hned za Blogem"
 
-msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu, a také jako odkaz pro banner Bushman club"
-msgstr "Vyber článek, který se zobrazí v registraci u checkboxu, zda se zákazník chce stát členem BUSHMAN Clubu, a také jako odkaz pro banner BUSHMAN club"
+msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program"
+msgstr ""
 
 msgid "Vybrali jste si platbu převodem."
 msgstr "Máš vybranou platbu převodem."
@@ -2702,6 +2684,12 @@ msgid "Výpočet termínu dodání"
 msgstr ""
 
 msgid "Výsledky výrazu:"
+msgstr ""
+
+msgid "Věrnostní program"
+msgstr ""
+
+msgid "Věrnostní program - body"
 msgstr ""
 
 msgid "Vše co nabízíme, máme skladem"
@@ -2965,7 +2953,7 @@ msgstr "na skladě"
 msgid "osobních údajů"
 msgstr ""
 
-msgid "pouze členy bushman clubu"
+msgid "pouze členy Věrnostního programu"
 msgstr ""
 
 msgid "požadovaná stránk na našem"
@@ -3079,11 +3067,14 @@ msgstr ""
 msgid "Česká pošta"
 msgstr ""
 
-msgid "Členem Bushman Clubu"
-msgstr "Členem BUSHMAN Clubu"
+msgid "Členem Věrnostního programu"
+msgstr ""
 
-msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Bushman Clubu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
-msgstr "Článek \"%name%\" je nastaven pro zobrazení informací o BUSHMAN Clubu. Toto nastavení bude ztraceno. Opravdu si jej přeješ smazat?"
+msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Věrnostního programu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
+msgstr "Článek \"%name%\" je nastaven pro zobrazení informací o Věrnostního programu. Toto nastavení bude ztraceno. Opravdu si jej přeješ smazat?"
+
+msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Věrnostním programu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
+msgstr ""
 
 msgid "Články blogu"
 msgstr ""

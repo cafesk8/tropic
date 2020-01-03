@@ -149,7 +149,7 @@ class PromoCodeController extends FrontBaseController
         } catch (\Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers $ex) {
             return new JsonResponse([
                 'result' => false,
-                'message' => t('Slevový kupón mohou aplikovat pouze přihlášení členové Bushman clubu.'),
+                'message' => t('Slevový kupón mohou aplikovat pouze přihlášení členové Věrnostního programu.'),
             ]);
         }
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));

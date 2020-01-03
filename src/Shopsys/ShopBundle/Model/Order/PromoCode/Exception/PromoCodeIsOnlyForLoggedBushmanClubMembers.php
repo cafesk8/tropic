@@ -15,6 +15,6 @@ class PromoCodeIsOnlyForLoggedBushmanClubMembers extends Exception implements Pr
      */
     public function __construct(string $invalidPromoCode, ?Exception $previous = null)
     {
-        parent::__construct('Promo code "' . $invalidPromoCode . '" is valid only for logged bushman club members.', 0, $previous);
+        parent::__construct('Promo code "' . $invalidPromoCode . '" is valid only for logged bonus program members.', 0, $previous);
     }
 }

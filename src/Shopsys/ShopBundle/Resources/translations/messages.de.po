@@ -13,8 +13,8 @@ msgstr "#5 Ausdauer und Zeitlosigkeit"
 msgid "%name% agrees with privacy policy."
 msgstr "%name% stimmt den Datenschutzbestimmungen zu."
 
-msgid "(Banner) Bushman Club"
-msgstr "(Banner) Bushman Club"
+msgid "(Banner) Věrnostní program"
+msgstr "(Banner) Věrnostní program"
 
 msgid "(If I buy on the company behalf)"
 msgstr "(Wenn ich im Namen der Firma kaufe)"
@@ -178,14 +178,8 @@ msgstr "Kategorie zuweisen"
 msgid "Attention! You are administrator logged in as the customer."
 msgstr "Achtung! Du bist Administrator aber als Kunde angemeldet."
 
-msgid "BUSHMAN Clubu"
-msgstr "BUSHMAN Club"
-
 msgid "BUSHMAN E-shop - kvalitní outdoorové a volnočasové oblečení"
 msgstr "BUSHMAN E-shop - hochwertige Outdoor- und Freizeitbekleidung"
-
-msgid "BUSHMAN club"
-msgstr "BUSHMAN club"
 
 msgid "Back to buying"
 msgstr "Zurück zum Einkauf"
@@ -295,17 +289,8 @@ msgstr "Bushman Jarda"
 msgid "Bushman Trade s.r.o."
 msgstr "Bushman Trade s.r.o."
 
-msgid "Bushman club"
-msgstr "Bushman-Club"
-
-msgid "Bushman club - body"
-msgstr "Bushman Club Punkte"
-
 msgid "Bushman expedice aneb čtyři češi na kalahari"
 msgstr "Bushmanexpedition oder vier Tschechen auf der Kalahari"
-
-msgid "Bushman klubu"
-msgstr "von Bushman Club"
 
 msgid "Bushmani mají nejraději"
 msgstr "Bushman mag am besten"
@@ -385,14 +370,11 @@ msgstr ""
 msgid "Chceš se stát bushmanem?"
 msgstr "Willst du Bushman werden?"
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
-msgstr "Ich möchte Mitglied im <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Club</span></a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
+msgstr ""
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
-msgstr "Ich möchte Mitglied im <a href=\"%url%\" target=\"_blank\"> Bushman Club </a> werden."
-
-msgid "Chci být členem Bushman Clubu"
-msgstr "Ich möchte Mitglied im Bushman Club sein"
+msgid "Chci být členem Věrnostního programu"
+msgstr ""
 
 msgid "Chci reklamovat zboží"
 msgstr "Ich will die Ware reklamieren"
@@ -400,8 +382,8 @@ msgstr "Ich will die Ware reklamieren"
 msgid "Chci se stát bushmanem"
 msgstr "Ich will Bushman werden"
 
-msgid "Chci se stát členem BUSHMAN clubu"
-msgstr "Ich möchte Mitglied im BUSHMAN Club werden"
+msgid "Chci se stát členem Věrnostního programu"
+msgstr ""
 
 msgid "Chci zadat doručovací adresu"
 msgstr "Ich möchte eine Lieferadresse eingeben"
@@ -436,8 +418,8 @@ msgstr "Schliessen"
 msgid "Close (Esc)"
 msgstr "Schliessen (Esc)"
 
-msgid "Co je Bushman Klub?"
-msgstr "Was ist Bushman Club?"
+msgid "Co je Věrnostní program?"
+msgstr ""
 
 msgid "Co je však naprosto jisté, spolehlivě vás zahřeje."
 msgstr "Aber was absolut sicher ist, es hält dich warm."
@@ -591,9 +573,6 @@ msgstr "Heute"
 
 msgid "Do"
 msgstr "In"
-
-msgid "Do Bushman Clubu"
-msgstr "In Bushman Club"
 
 msgid "Do košíku jste přidali"
 msgstr "Du hast dem Warenkorb hinzugefügt"
@@ -1054,8 +1033,8 @@ msgstr "Wie tausche ich die Größe um?"
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Gib %s als Platzhalter für die Tracking-Nummer ein, z. B. https://tracking.ulozenka.cz/?_fid=%s"
 
-msgid "Jako člen Bushman Clubu budete mít přístup k"
-msgstr "Als Mitglied des Bushman Clubs hast du Zugang zu"
+msgid "Jako člen Věrnostního programu budete mít přístup k"
+msgstr ""
 
 msgid "Jaké služby najdete"
 msgstr "Welche Dienstleistungen findest du"
@@ -1099,8 +1078,8 @@ msgstr "Name"
 msgid "Jsem Jindra, otec všech bushmanů. Je potřeba, aby"
 msgstr "Ich bin Jindra, der Vater aller Bushmänner. Es muss sein"
 
-msgid "Jsi členem BUSHMAN clubu"
-msgstr "Du bist ein Bushman Club Mitglied"
+msgid "Jsi členem Věrnostního programu"
+msgstr ""
 
 msgid "Jste bushman? Přihlaste se"
 msgstr "Bist du Bushman? Melde dich an"
@@ -1870,8 +1849,8 @@ msgstr "Benötigst du Hilfe beim Abschließen deiner Bestellung?"
 msgid "Pouze přihlášené"
 msgstr "Nur für Angemeldete"
 
-msgid "Pouze přihlášené členy Bushman clubu"
-msgstr "Nur für registrierte Bushman Club Mitglieder"
+msgid "Pouze přihlášené členy Věrnostního programu"
+msgstr ""
 
 msgid "Pouze zkontrolované objednávky"
 msgstr "Nur geprüfte Bestellungen"
@@ -2350,8 +2329,8 @@ msgstr "Der Gutschein wurde bereits benutzt."
 msgid "Slevový kupón mohou aplikovat pouze přihlášení zákazníci."
 msgstr "Der Rabattgutschein kann nur von angemeldeten Kunden eingelöst werden."
 
-msgid "Slevový kupón mohou aplikovat pouze přihlášení členové Bushman clubu."
-msgstr "Der Rabattgutschein kann nur von registrierten Bushman Club Mitgliedern eingelöst werden."
+msgid "Slevový kupón mohou aplikovat pouze přihlášení členové Věrnostního programu."
+msgstr ""
 
 msgid "Slevový kupón nebo certifikát"
 msgstr "Rabattgutschein oder Zertifikat"
@@ -2845,6 +2824,9 @@ msgstr "Wähle den Artikel aus, der als vierter im oberen Menü direkt nach dem 
 msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu, a také jako odkaz pro banner Bushman club"
 msgstr "Wähle den Artikel aus, der in der Checkbox-Registrierung angezeigt werden soll, wenn der Kunde Bushman Club-Mitglied werden möchte, sowie als Link zum Bushman Club-Banner"
 
+msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program"
+msgstr ""
+
 msgid "Vybrali jste si platbu převodem."
 msgstr "Du hast eine Überweisungszahlung ausgewählt."
 
@@ -2937,6 +2919,12 @@ msgstr "Berechnung des Liefertermins"
 
 msgid "Výsledky výrazu:"
 msgstr "Ausdrucksergebnisse:"
+
+msgid "Věrnostní program"
+msgstr "Bushman-Club"
+
+msgid "Věrnostní program - body"
+msgstr "Věrnostní program Punkte"
 
 msgid "Vše co nabízíme, máme skladem"
 msgstr "Alles was wir anbieten ist auf Lager"
@@ -3229,7 +3217,7 @@ msgstr "Auf Lager"
 msgid "osobních údajů"
 msgstr "persönliche Informationen"
 
-msgid "pouze členy bushman clubu"
+msgid "pouze členy Věrnostního programu"
 msgstr ""
 
 msgid "požadovaná stránk na našem"
@@ -3376,8 +3364,14 @@ msgstr "Deutsche Post"
 msgid "Členem Bushman Clubu"
 msgstr "Mitglied von Bushman Club"
 
+msgid "Členem Věrnostního programu"
+msgstr ""
+
 msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Bushman Clubu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
 msgstr "Im Artikel \"%name%\" werden Informationen zum Bushman Club angezeigt. Diese Einstellung geht verloren. Möchtest du es wirklich löschen?"
+
+msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Věrnostním programu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
+msgstr ""
 
 msgid "Články"
 msgstr "Artikel"

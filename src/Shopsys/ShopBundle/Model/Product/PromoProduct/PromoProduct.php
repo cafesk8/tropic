@@ -163,7 +163,7 @@ class PromoProduct
     {
         return [
             self::TYPE_ALL => t('všechny zákazníky'),
-            self::TYPE_BUSHMAN_CLUB_MEMBERS_ONLY => t('pouze členy bushman clubu'),
+            self::TYPE_BUSHMAN_CLUB_MEMBERS_ONLY => t('pouze členy Věrnostního programu'),
         ];
     }
 }
