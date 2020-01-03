@@ -79,11 +79,20 @@ msgstr "4 - Quadrat"
 msgid "5 - obdélník na výšku"
 msgstr "5 - Hochformat Rechteck"
 
+msgid "5 - velký obdelník na šířku"
+msgstr ""
+
+msgid "6 - obdélník na výšku"
+msgstr ""
+
 msgid "6 - velký obdelník na šířku"
 msgstr "6 - grosses Rechteck landschaft"
 
 msgid "831 04 Bratislava"
 msgstr "831 04 Bratislava"
+
+msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
+msgstr ""
 
 msgid "AKCE"
 msgstr "AKTION"
@@ -313,6 +322,9 @@ msgstr "Sei ein Bushman und hab' viele Vorteile"
 msgid "Buď bushman a měj zdarma"
 msgstr "Sei ein Bushman und hab es kostenlos"
 
+msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
+msgstr ""
+
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr "<Strong> {{Quantity}} </ strong> Rabattgutscheine erstellt"
 
@@ -462,6 +474,9 @@ msgstr "Kontaktiere uns"
 
 msgid "Cookies nejsou sušenky"
 msgstr "Cookies sind keine Kekse"
+
+msgid "Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena."
+msgstr ""
 
 msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
 msgstr "Copyright Ⓒ 2019, Bushman Company, a.s. Alle rechte vorbehalten"
@@ -640,6 +655,9 @@ msgstr "Versand von Bestellung"
 msgid "Doprava zdarma"
 msgstr "Kostenloser Versand"
 
+msgid "Doprava zdarma při nákupu <strong>nad 2&nbsp;500&nbsp;Kč</strong>"
+msgstr ""
+
 msgid "Dopravce"
 msgstr "Lieferant"
 
@@ -729,6 +747,9 @@ msgstr "E-Mail mit einem Link zu der Seite mit deinen persönlichen Daten wurde 
 
 msgid "E-mailem"
 msgstr "per E-Mail"
+
+msgid "E-shop na míru od"
+msgstr ""
 
 msgid "EAN nenastaven"
 msgstr "EAN nicht angesetzt"
@@ -840,6 +861,9 @@ msgstr "Vergessenes Passwort"
 
 msgid "Fotky z dovolené jako od profesionála"
 msgstr "Urlaubsfotos wie professionell"
+
+msgid "Framework"
+msgstr ""
 
 msgid "Full name"
 msgstr "Vollständiger Name"
@@ -1027,9 +1051,6 @@ msgstr "IČO: 51704501, IČ DPH: SK2120761621"
 msgid "Jak na výměnu velikosti?"
 msgstr "Wie tausche ich die Größe um?"
 
-msgid "Jak vybrat správnou velikost?"
-msgstr ""
-
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Gib %s als Platzhalter für die Tracking-Nummer ein, z. B. https://tracking.ulozenka.cz/?_fid=%s"
 
@@ -1132,6 +1153,9 @@ msgstr "Kontakt"
 msgid "Kontaktní formulář - {{ domainName }}"
 msgstr "Kontaktformular - {{domainName}}"
 
+msgid "Košík"
+msgstr ""
+
 msgid "Kraj"
 msgstr "Bezirk"
 
@@ -1146,6 +1170,9 @@ msgstr "Stücke"
 
 msgid "Kód"
 msgstr "Code"
+
+msgid "Kód produktu"
+msgstr ""
 
 msgid "LP Komfort s.r.o."
 msgstr "LP Komfort s.r.o."
@@ -1321,6 +1348,9 @@ msgstr "Bildgröße des Uploads: Quadrat (380x290px), Hochformat (380x600px)"
 msgid "Najdete v kategoriích"
 msgstr "Was du in Kategorien findest"
 
+msgid "Najděte si něco na sebe…"
+msgstr ""
+
 msgid "Nakupte ještě za"
 msgstr "Kaufe noch für"
 
@@ -1389,6 +1419,9 @@ msgstr "Die beliebtesten Stücke"
 
 msgid "Nejčtenější články"
 msgstr "Meist gelesene Artikel"
+
+msgid "Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám."
+msgstr ""
 
 msgid "Nemáte oprávnění vidět požadovanou stránku. Požádejte svého administrátora o udělení přístupu."
 msgstr "Du bist nicht berechtigt, die von dir angeforderte Seite zu sehen. Bitte deinen Administrator, den Zugriff zu gewähren."
@@ -1672,6 +1705,9 @@ msgstr "Unsere Kunden, die dies gekauft haben, kauften auch"
 msgid "Outlet"
 msgstr "Outlet"
 
+msgid "Ozvěte se nejlépe ve všední dny mezi"
+msgstr ""
+
 msgid "PPL"
 msgstr "PPL"
 
@@ -1759,6 +1795,9 @@ msgstr "Gültig ab"
 msgid "Platí pro"
 msgstr ""
 
+msgid "Plavecké potřeby"
+msgstr ""
+
 msgid "Please check the correctness of all data filled."
 msgstr "Bitte überprüfe die Richtigkeit aller Angaben."
 
@@ -1818,6 +1857,9 @@ msgstr "Beschreibungen der Hauptbilder"
 
 msgid "Popular categories"
 msgstr "Beliebte Kategorien"
+
+msgid "Poradíme s plaváním"
+msgstr ""
 
 msgid "Postcode"
 msgstr "Postleitzahl"
@@ -1890,6 +1932,9 @@ msgstr "Drucken"
 
 msgid "Pro lidi s životním názorem, který nás spojuje.“"
 msgstr "Für Menschen mit einer Lebensperspektive, die uns verbindet. "
+
+msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x230px), pro plochu 5 - velký obdelník na šířku (1180x387px), pro plochu 6 - obdélník na výšku (190x460px)."
+msgstr ""
 
 msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
 msgstr "Für die Bereiche 1, 2, 3, 4 - Quadrat (380 x 290 Pixel), für den Bereich 5 - Rechteck in der Höhe (380 x 600 Pixel), für den Bereich 6 - großes Rechteck in der Breite (190 x 460 Pixel)."
@@ -2023,6 +2068,9 @@ msgstr "Erster Artikel im oberen Menü"
 msgid "Prázdný"
 msgstr "Leer"
 
+msgid "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
+msgstr ""
+
 msgid "Předvýpis kategorií"
 msgstr "Vorauswahl der Kategorien"
 
@@ -2046,6 +2094,9 @@ msgstr ""
 
 msgid "Přidat"
 msgstr "Hinzufügen"
+
+msgid "Přidat do košíku"
+msgstr ""
 
 msgid "Přidat nový banner"
 msgstr "Ein neues Banner hinzufügen"
@@ -2076,6 +2127,9 @@ msgstr "Mit Facebook anmelden"
 
 msgid "Přihlášené i nepřihlášené"
 msgstr "An- und abgemeldete"
+
+msgid "Přihlášení"
+msgstr ""
 
 msgid "Přihoďte si k nákupu"
 msgstr "Füge zu deinem Warenkorb hinzu"
@@ -2248,11 +2302,17 @@ msgstr "Shopsys"
 msgid "Shopsys Framework"
 msgstr "Shopsys Framework"
 
+msgid "Shopsys magazín"
+msgstr ""
+
 msgid "Silnější než kdy předtím..."
 msgstr "Stärker als je zuvor ..."
 
 msgid "Skladem"
 msgstr "Auf Lager"
+
+msgid "Skladem, ihned k odeslání"
+msgstr ""
 
 msgid "Skladovost"
 msgstr "Lagerung"
@@ -2335,8 +2395,14 @@ msgstr "Ich bin mit der Verarbeitung personenbezogener Daten einverstanden."
 msgid "Souhlasíte se sběrem cookies?"
 msgstr "Stimmst du der Sammlung von Cookies zu?"
 
+msgid "Související zboží"
+msgstr ""
+
 msgid "Special offer"
 msgstr "Sonderangebot"
+
+msgid "Specialisti na běh"
+msgstr ""
 
 msgid "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
 msgstr "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
@@ -2602,6 +2668,9 @@ msgstr "Bild hochladen"
 msgid "Upozornění"
 msgstr "Warnung"
 
+msgid "Uprav hned"
+msgstr ""
+
 msgid "Upřesňující informace"
 msgstr "Informationen Spezifikation"
 
@@ -2658,6 +2727,9 @@ msgstr "Variante <strong> {{productVariant|productDisplayName}}</strong> wurde e
 
 msgid "Variants"
 msgstr "Varianten"
+
+msgid "Vaše hodnocení"
+msgstr ""
 
 msgid "Vaše objednávka"
 msgstr "Deine Bestellung"
@@ -2718,6 +2790,9 @@ msgstr "Ich habe meine Größe zurückgegeben und hatte kostenlosen Versand. Etw
 
 msgid "Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)"
 msgstr "Rückgabe der Ware innerhalb von 14 Tagen (Widerrufsrecht)"
+
+msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
+msgstr ""
 
 msgid "Vyberte dopravce"
 msgstr "Wähle den Spediteur aus"
@@ -2788,11 +2863,17 @@ msgstr "Auswählen"
 msgid "Vybráno"
 msgstr "Ausgewählt"
 
+msgid "Vybíráme to nejlepší na říjen"
+msgstr ""
+
 msgid "Vyhledat"
 msgstr "Suchen"
 
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr "Durchsuchen von Suchen nach Nachname, Firmenname, E-Mail, Telefon und E-Mail. Es ist möglich, die Operatoren * und ? zu verwenden."
+
+msgid "Vyhledávání neodpovídá žádna kategorie"
+msgstr ""
 
 msgid "Vyhledávání neodpovídá žádný produkt"
 msgstr "Deine Suche ergab keine Treffer"
@@ -2830,6 +2911,9 @@ msgstr "Konto erstellen"
 msgid "Využijte"
 msgstr "Nutze den Vorteil"
 
+msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link js-not-implemented-yet\" href=\"\">prodejně v Praze</a>"
+msgstr ""
+
 msgid "Váš e-mail je na e-shopu registrován."
 msgstr "Ihre E-Mail ist im E-Shop registriert."
 
@@ -2856,6 +2940,9 @@ msgstr "Ausdrucksergebnisse:"
 
 msgid "Vše co nabízíme, máme skladem"
 msgstr "Alles was wir anbieten ist auf Lager"
+
+msgid "Vše pro běhání"
+msgstr ""
 
 msgid "Všechny kategorie"
 msgstr "Alle Kategorien"
@@ -2913,6 +3000,9 @@ msgstr "Gib den Code ein"
 
 msgid "Zadejte město nebo PSČ:"
 msgstr "Ort oder Postleitzahl eingeben:"
+
+msgid "Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké."
+msgstr ""
 
 msgid "Zaplatit"
 msgstr ""

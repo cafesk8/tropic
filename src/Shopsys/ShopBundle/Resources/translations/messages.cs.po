@@ -28,9 +28,6 @@ msgstr "(Tato adresa bude na daňovém dokladu)"
 msgid "(kód %code%)"
 msgstr ""
 
-msgid "******** 6 nebo více znaků"
-msgstr ""
-
 msgid "-- Choose article --"
 msgstr "-- Vyber článek --"
 
@@ -46,16 +43,7 @@ msgstr ""
 msgid "1 - čtverec"
 msgstr ""
 
-msgid "1 390 Kč"
-msgstr ""
-
-msgid "1900 Kč"
-msgstr ""
-
 msgid "2 - čtverec"
-msgstr ""
-
-msgid "22 let s vámi"
 msgstr ""
 
 msgid "25 let záruku zdarma, objednat směnnou zásilku nebo"
@@ -67,19 +55,19 @@ msgstr ""
 msgid "3 - čtverec"
 msgstr ""
 
-msgid "3099 Kč"
-msgstr ""
-
 msgid "4 - čtverec"
 msgstr ""
 
-msgid "5 - obdélník na výšku"
+msgid "5 - velký obdelník na šířku"
 msgstr ""
 
-msgid "6 - velký obdelník na šířku"
+msgid "6 - obdélník na výšku"
 msgstr ""
 
 msgid "831 04 Bratislava"
+msgstr ""
+
+msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
 msgstr ""
 
 msgid "Accessories"
@@ -130,9 +118,6 @@ msgstr "Nadřazená kategorie"
 msgid "Ano"
 msgstr ""
 
-msgid "Anonym"
-msgstr ""
-
 msgid "Aplikovat na"
 msgstr ""
 
@@ -162,9 +147,6 @@ msgstr "Přiřadit do kategorie"
 
 msgid "Attention! You are administrator logged in as the customer."
 msgstr "Pozor! Jsi jako administrátor přihlášen za zákazníka."
-
-msgid "BUSHMAN Clubu"
-msgstr ""
 
 msgid "BUSHMAN E-shop - kvalitní outdoorové a volnočasové oblečení"
 msgstr ""
@@ -223,9 +205,6 @@ msgstr ""
 msgid "Bez osobního převzetí"
 msgstr ""
 
-msgid "Bezproblémový nákup. Nakoupila jsem již po několikáté a vše na jedničku."
-msgstr ""
-
 msgid "Billing address"
 msgstr "Fakturační adresa"
 
@@ -280,9 +259,6 @@ msgstr "Hromadné úpravy dokončeny"
 msgid "Bushman Company a.s."
 msgstr "Bushman Company, a. s."
 
-msgid "Bushman Jarda"
-msgstr ""
-
 msgid "Bushman Trade s.r.o."
 msgstr "Bushman Trade, s. r. o."
 
@@ -292,19 +268,10 @@ msgstr "BUSHMAN Club"
 msgid "Bushman club - body"
 msgstr "BUSHMAN Club - body"
 
-msgid "Bushman expedice aneb čtyři češi na kalahari"
-msgstr ""
-
 msgid "Bushman klubu"
 msgstr "BUSHMAN Clubu"
 
-msgid "Bushmani mají nejraději"
-msgstr ""
-
-msgid "Bushmanství obrazem"
-msgstr ""
-
-msgid "Buď bushman a měj výhodnější"
+msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
 msgstr ""
 
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
@@ -356,9 +323,6 @@ msgid "Chceš dárek"
 msgstr ""
 
 msgid "Chceš promo produkt"
-msgstr ""
-
-msgid "Chceš se stát bushmanem?"
 msgstr ""
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
@@ -418,9 +382,6 @@ msgstr "Zavřít (Esc)"
 msgid "Co je Bushman Klub?"
 msgstr "Co je BUSHMAN Club?"
 
-msgid "Co je však naprosto jisté, spolehlivě vás zahřeje."
-msgstr ""
-
 msgid "Co na nás říkají zákazníci"
 msgstr "Zákazníci o nás říkají:"
 
@@ -455,6 +416,9 @@ msgid "Continue in order"
 msgstr "Pokračovat v objednávce"
 
 msgid "Cookies nejsou sušenky"
+msgstr ""
+
+msgid "Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena."
 msgstr ""
 
 msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
@@ -574,9 +538,6 @@ msgstr ""
 msgid "Do"
 msgstr ""
 
-msgid "Do Bushman Clubu"
-msgstr ""
-
 msgid "Do košíku jste přidali"
 msgstr "Přidáno! V košíku máš taky:"
 
@@ -619,9 +580,6 @@ msgstr "Dolaď si svůj outfit"
 msgid "Domain"
 msgstr "Doména"
 
-msgid "Doplňky"
-msgstr ""
-
 msgid "Doprava"
 msgstr ""
 
@@ -637,6 +595,9 @@ msgstr ""
 msgid "Doprava zdarma"
 msgstr ""
 
+msgid "Doprava zdarma při nákupu <strong>nad 2&nbsp;500&nbsp;Kč</strong>"
+msgstr ""
+
 msgid "Dopravce"
 msgstr ""
 
@@ -644,12 +605,6 @@ msgid "Doručena"
 msgstr ""
 
 msgid "Doručit na adresu"
-msgstr ""
-
-msgid "Dostatečně zateplená a vybavená žebrovými náplety v dolním kraji rukávů. U krku vás proti větru bude chránit stojáček."
-msgstr ""
-
-msgid "Dostupnost a datum doručení"
 msgstr ""
 
 msgid "Dostupné množství k odběru"
@@ -682,9 +637,6 @@ msgstr ""
 msgid "Dárek neexistuje"
 msgstr ""
 
-msgid "Dárkové certifikáty"
-msgstr ""
-
 msgid "Dárkový certifikát"
 msgstr ""
 
@@ -706,15 +658,6 @@ msgstr "Děkujeme ti"
 msgid "Děkujeme za vaši objednávku"
 msgstr "Děkujeme ti za tvoji objednávku"
 
-msgid "Děkuju pané Malý :)"
-msgstr ""
-
-msgid "Děkuju, klíčenku budu rád používat. Mějte se."
-msgstr ""
-
-msgid "Děti"
-msgstr ""
-
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -725,6 +668,9 @@ msgid "E-mail with a link to the page with your personal data was sent to your e
 msgstr "E-mail s odkazem na stránku s údaji o osobních údajích jsme odeslali na tvoji e-mailovou adresu."
 
 msgid "E-mailem"
+msgstr ""
+
+msgid "E-shop na míru od"
 msgstr ""
 
 msgid "EAN"
@@ -838,7 +784,7 @@ msgstr "Nemůžeš si vzpomenout na heslo?"
 msgid "Forgotten password"
 msgstr "Zapomenuté heslo"
 
-msgid "Fotky z dovolené jako od profesionála"
+msgid "Framework"
 msgstr ""
 
 msgid "Full name"
@@ -895,25 +841,16 @@ msgstr ""
 msgid "Hlavní varianta"
 msgstr ""
 
-msgid "Hledat znovu"
-msgstr ""
-
 msgid "Hledání v přenosech"
 msgstr ""
 
 msgid "Hodiny"
 msgstr ""
 
-msgid "Hodnocení"
-msgstr ""
-
 msgid "Hodnota"
 msgstr ""
 
 msgid "Hodnota certifikátu"
-msgstr ""
-
-msgid "Hodnotilo"
 msgstr ""
 
 msgid "Hodnoty parametra"
@@ -1033,9 +970,6 @@ msgstr ""
 msgid "Jak na výměnu velikosti?"
 msgstr "Chceš vyměnit velikost?"
 
-msgid "Jak vybrat správnou velikost?"
-msgstr ""
-
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Jako zástupný znak pro číslo sledování zásilky zadej %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 
@@ -1044,12 +978,6 @@ msgstr "Jako člen BUSHMAN Clubu budeš mít přístup k"
 
 msgid "Jaké služby najdete"
 msgstr "Jaké služby najdeš"
-
-msgid "Jan Novák"
-msgstr ""
-
-msgid "Jarda"
-msgstr ""
 
 msgid "Jazyk"
 msgstr ""
@@ -1072,9 +1000,6 @@ msgstr ""
 msgid "Ještě nebylo implementováno."
 msgstr ""
 
-msgid "Jindřich Melichar"
-msgstr ""
-
 msgid "Jméno"
 msgstr ""
 
@@ -1083,9 +1008,6 @@ msgstr ""
 
 msgid "Jste bushman? Přihlaste se"
 msgstr "Jsi bushman? Přihlas se."
-
-msgid "K hodnotám"
-msgstr ""
 
 msgid "Kategorie"
 msgstr ""
@@ -1096,22 +1018,13 @@ msgstr ""
 msgid "Kategorie článků"
 msgstr ""
 
-msgid "Kdo zná, ví. Kdo nezná ať rychle vyzkouší!"
-msgstr ""
-
 msgid "Ke každému nákupu dárek v hodnotě"
-msgstr ""
-
-msgid "Ke kořenům"
 msgstr ""
 
 msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr ""
 
 msgid "Klikněte zde pro zopakování úhrady objednávky"
-msgstr ""
-
-msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr ""
 
 msgid "Kolikrát použito"
@@ -1123,19 +1036,16 @@ msgstr ""
 msgid "Kontaktní formulář - {{ domainName }}"
 msgstr ""
 
+msgid "Košík"
+msgstr ""
+
 msgid "Kraj"
 msgstr ""
 
-msgid "Kupoval jsem s nedůvěrou, ale materiály a střih jsou super."
-msgstr ""
-
-msgid "Kupoval jsem si trenýrky, raději jsem si měl koupit pláštěnku."
-msgstr ""
-
-msgid "Kusů"
-msgstr ""
-
 msgid "Kód"
+msgstr ""
+
+msgid "Kód produktu"
 msgstr ""
 
 msgid "LP Komfort s.r.o."
@@ -1154,9 +1064,6 @@ msgid "Lazarská 5/1719, 110 00 Praha 1"
 msgstr ""
 
 msgid "Legendární kategorie"
-msgstr ""
-
-msgid "Lenka"
 msgstr ""
 
 msgid "Levý textový baner dole"
@@ -1179,9 +1086,6 @@ msgstr "Odhlásit se"
 
 msgid "Login"
 msgstr "Přihlášení"
-
-msgid "Luboš"
-msgstr ""
 
 msgid "Lëtzebuerg"
 msgstr ""
@@ -1211,9 +1115,6 @@ msgid "Mall status"
 msgstr ""
 
 msgid "Mall.cz"
-msgstr ""
-
-msgid "Martin"
 msgstr ""
 
 msgid "Maximální počet použití"
@@ -1261,9 +1162,6 @@ msgstr "Více informací"
 msgid "Možnosti dopravy"
 msgstr ""
 
-msgid "Muži"
-msgstr ""
-
 msgid "My orders"
 msgstr "Mé objednávky"
 
@@ -1276,9 +1174,6 @@ msgstr "Máš dopravu zdarma!"
 msgid "Máte dotaz?"
 msgstr "Máš dotaz?"
 
-msgid "Máte pravdu a velmi dobrý postřeh! Masivní zip odkazuje na péřovku a má originální prošití do tvaru našeho loga. Děkujeme za názor a tady máte klíčenku."
-msgstr ""
-
 msgid "Máte slevový kód?"
 msgstr "Máš slevový kód?"
 
@@ -1286,9 +1181,6 @@ msgid "Městečko - Nespeky č.p. 75"
 msgstr "Městečko - Nespeky č. p. 75"
 
 msgid "Město"
-msgstr ""
-
-msgid "Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr ""
 
 msgid "Nadpis produktů"
@@ -1299,6 +1191,9 @@ msgstr "Nahrávej tyto velikosti obrázků: čtverec (380x290px), obdélník na 
 
 msgid "Najdete v kategoriích"
 msgstr "Najdeš v kategoriích"
+
+msgid "Najděte si něco na sebe…"
+msgstr ""
 
 msgid "Nakupte ještě za"
 msgstr "Nakup ještě za"
@@ -1330,22 +1225,13 @@ msgstr ""
 msgid "Nastavit"
 msgstr ""
 
-msgid "Načerpej inspiraci"
-msgstr ""
-
 msgid "Načerpejte inspiraci"
 msgstr "Načerpej inspiraci"
-
-msgid "Naše hodnoty"
-msgstr ""
 
 msgid "Naše služby"
 msgstr ""
 
 msgid "Ne"
-msgstr ""
-
-msgid "Nebo"
 msgstr ""
 
 msgid "Nederland"
@@ -1363,6 +1249,9 @@ msgstr ""
 msgid "Nejčtenější články"
 msgstr "Nejčtenější články"
 
+msgid "Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám."
+msgstr ""
+
 msgid "Nemáte oprávnění vidět požadovanou stránku. Požádejte svého administrátora o udělení přístupu."
 msgstr "Nemáš oprávnění vidět požadovanou stránku. Požádej svého administrátora o udělení přístupu."
 
@@ -1370,9 +1259,6 @@ msgid "Nemůžete vybrat produkt, který je již propojen"
 msgstr "Nemůžeš vybrat produkt, který je již propojen"
 
 msgid "Nenalezeny žádné problémy."
-msgstr ""
-
-msgid "Není ti jedno, jak žiješ, co děláš a co po tobě zůstane? Ani nám. Svět možná nespasíme, ale za pokus to stojí a bude to jízda. Vyrazíš s námi?"
 msgstr ""
 
 msgid "Neomezený"
@@ -1466,9 +1352,6 @@ msgid "Number of orders"
 msgstr "Počet objednávek"
 
 msgid "Nyní budete přesměrováni na platební bránu GoPay."
-msgstr ""
-
-msgid "Nákupní košík"
 msgstr ""
 
 msgid "Název dárku"
@@ -1645,7 +1528,7 @@ msgstr ""
 msgid "Our customers who bought this bought also"
 msgstr "Bushmani k tomuto produktu nejčastěji nakupují"
 
-msgid "Outlet"
+msgid "Ozvěte se nejlépe ve všední dny mezi"
 msgstr ""
 
 msgid "PPL"
@@ -1692,9 +1575,6 @@ msgstr "Heslo musí mít alespoň šest znaků a nesmí být shodné se zadaným
 
 msgid "Password successfully changed"
 msgstr "Heslo bylo úspěšně změněno"
-
-msgid "Patrik"
-msgstr ""
 
 msgid "PayPal"
 msgstr ""
@@ -1747,6 +1627,9 @@ msgstr ""
 msgid "Platí pro"
 msgstr ""
 
+msgid "Plavecké potřeby"
+msgstr ""
+
 msgid "Please check the correctness of all data filled."
 msgstr "Určitě máš všechny údaje vyplněné správně?"
 
@@ -1766,9 +1649,6 @@ msgid "Please make sure that you entered right quantity of all items in cart."
 msgstr "Zkontroluj si, zda máš správně zadané množství veškerých položek v košíku."
 
 msgid "Podle zvolené adresy nebylo možné vyhledat žádné pobočky"
-msgstr ""
-
-msgid "Podle zákona o evidenci tržeb je prodávající povinen vystavit kupujícímu účtenku. Zároveň je povinen zaevidovat"
 msgstr ""
 
 msgid "Podívejte se, kde všude"
@@ -1804,6 +1684,9 @@ msgstr ""
 msgid "Popular categories"
 msgstr "Rozcestník kategorií"
 
+msgid "Poradíme s plaváním"
+msgstr ""
+
 msgid "Position in list"
 msgstr "Pozice na výpisu"
 
@@ -1826,9 +1709,6 @@ msgid "Použít"
 msgstr ""
 
 msgid "Použít nominální slevu"
-msgstr ""
-
-msgid "Používáme přírodní materiály"
 msgstr ""
 
 msgid "Počet generovaných kupónů"
@@ -1870,7 +1750,7 @@ msgstr "Cenová skupina"
 msgid "Print"
 msgstr "Vytisknout"
 
-msgid "Pro lidi s životním názorem, který nás spojuje.“"
+msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x230px), pro plochu 5 - velký obdelník na šířku (1180x387px), pro plochu 6 - obdélník na výšku (190x460px)."
 msgstr ""
 
 msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
@@ -1996,13 +1876,13 @@ msgstr ""
 msgid "Provést úpravu"
 msgstr ""
 
-msgid "Prozkoumat všechny legendární produkty"
-msgstr ""
-
 msgid "První článek v horním menu"
 msgstr ""
 
 msgid "Prázdný"
+msgstr ""
+
+msgid "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
 msgstr ""
 
 msgid "Předvýpis kategorií"
@@ -2029,6 +1909,9 @@ msgstr ""
 msgid "Přidat"
 msgstr ""
 
+msgid "Přidat do košíku"
+msgstr ""
+
 msgid "Přidat nový banner"
 msgstr ""
 
@@ -2041,29 +1924,20 @@ msgstr ""
 msgid "Přidám poznámku k objednávce"
 msgstr ""
 
-msgid "Přihlas se"
-msgstr ""
-
 msgid "Přihlaste se"
 msgstr "Přihlas se"
 
 msgid "Přihlásit se"
 msgstr ""
 
-msgid "Přihlásit se přes Google"
-msgstr ""
-
-msgid "Přihlásit se přes facebook"
-msgstr ""
-
 msgid "Přihlášené i nepřihlášené"
+msgstr ""
+
+msgid "Přihlášení"
 msgstr ""
 
 msgid "Přihoďte si k nákupu"
 msgstr "Přihoď si k nákupu"
-
-msgid "Přiznaný masivní zip odkazuje na již zmíněné \"péřovky\". Originální prošití do tvaru loga na zadním díle však dodává bundě jedineční vzhled, který v kombinaci s použitým celopotištěným, směsovým materiálem, vzorem imituje vazbu hrotového kepru, působí moderně a konzervativně zároveň. Přední díl zdobí drobné kovové logo."
-msgstr ""
 
 msgid "Přiřazení článků"
 msgstr ""
@@ -2079,9 +1953,6 @@ msgstr ""
 
 msgid "Quick search"
 msgstr "Rychlé hledání"
-
-msgid "Radoslav Kratochvíl"
-msgstr ""
 
 msgid "Register"
 msgstr "Registrovat"
@@ -2109,9 +1980,6 @@ msgstr "Odstranit filtr"
 
 msgid "Reset password"
 msgstr "Resetovat heslo"
-
-msgid "Rosťa"
-msgstr ""
 
 msgid "Rounding"
 msgstr "Zaokrouhlení"
@@ -2230,13 +2098,16 @@ msgstr "Způsob dopravy"
 msgid "Shipping selection"
 msgstr "Výběr dopravy"
 
-msgid "Shopsys"
-msgstr ""
-
 msgid "Shopsys Framework"
 msgstr ""
 
+msgid "Shopsys magazín"
+msgstr ""
+
 msgid "Skladem"
+msgstr ""
+
+msgid "Skladem, ihned k odeslání"
 msgstr ""
 
 msgid "Skladovost"
@@ -2317,11 +2188,17 @@ msgstr ""
 msgid "Souhlasíte se sběrem cookies?"
 msgstr "Souhlasíš se sběrem cookies?"
 
+msgid "Související zboží"
+msgstr ""
+
 msgid "Special offer"
 msgstr "Akční nabídka"
 
 msgid "Special offers"
 msgstr "Akční zboží"
+
+msgid "Specialisti na běh"
+msgstr ""
 
 msgid "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
 msgstr ""
@@ -2382,9 +2259,6 @@ msgstr ""
 
 msgid "Subscription to e-mail newsletter"
 msgstr "Přihlášení k odběru newsletteru"
-
-msgid "Super košele."
-msgstr ""
 
 msgid "Sídlo"
 msgstr ""
@@ -2476,14 +2350,8 @@ msgstr "Tento stav nemůže být smazán, protože je na něj navázaná funkce 
 msgid "This status can't be deleted. This is automatically assigned status to all new orders."
 msgstr "Tento stav nemůže být smazán. Je automaticky přiřazen ke všem novým objednávkám."
 
-msgid "To máme radost a posíláme!"
-msgstr ""
-
 msgid "To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us."
 msgstr "Abychom předešli možnosti zcizení účtu, je třeba změnu e-mailu řešit individuálně. Pokud se změnila tvoje e-mailová adresa, tak nás, prosím, kontaktuj."
-
-msgid "Tomáš Malý - Bushman specialista"
-msgstr ""
 
 msgid "Total amount of VAT"
 msgstr "Celková výše DPH"
@@ -2522,15 +2390,6 @@ msgid "Tvar odkazu pro sledování zásilky"
 msgstr ""
 
 msgid "Tvoje osobní číslo"
-msgstr ""
-
-msgid "Tvorba e-shopů na míru"
-msgstr ""
-
-msgid "Tvoříme praktické a pohodlné oblečení pro každodenní expedice. Ty mu dáváš příběh a tvoříš vzpomínky s ním spojené. Věříš naší tradici a kvalitě?"
-msgstr ""
-
-msgid "Tvoříme vlastní styl"
 msgstr ""
 
 msgid "Typ"
@@ -2599,6 +2458,9 @@ msgstr "Nahrát obrázek"
 msgid "Upozornění"
 msgstr ""
 
+msgid "Uprav hned"
+msgstr ""
+
 msgid "Upřesňující informace"
 msgstr ""
 
@@ -2646,6 +2508,9 @@ msgstr "Varianta <strong>{{ productVariant|productDisplayName }}</strong> byla �
 
 msgid "Variants"
 msgstr "Varianty"
+
+msgid "Vaše hodnocení"
+msgstr ""
 
 msgid "Vaše objednávka"
 msgstr "Vaše objednávka"
@@ -2707,11 +2572,11 @@ msgstr "Vlož nový komentář"
 msgid "Volejte na"
 msgstr "Volej na"
 
-msgid "Vracel jsem velikost a měl jsem poštovné zdarma. Na české poměry něco nevídaného. Klobou dolů."
-msgstr ""
-
 msgid "Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)"
 msgstr "Vrácení zboží ve 14denní lhůtě (odstoupení od smlouvy)"
+
+msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
+msgstr ""
 
 msgid "Vyberte dopravce"
 msgstr "Vyber dopravce"
@@ -2782,19 +2647,22 @@ msgstr ""
 msgid "Vybráno"
 msgstr ""
 
+msgid "Vybíráme to nejlepší na říjen"
+msgstr ""
+
 msgid "Vyhledat"
 msgstr ""
 
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr ""
 
+msgid "Vyhledávání neodpovídá žádna kategorie"
+msgstr ""
+
 msgid "Vyhledávání neodpovídá žádný produkt"
 msgstr ""
 
 msgid "Vyplnit dodací údaje"
-msgstr ""
-
-msgid "Vyrábíme zodpovědně"
 msgstr ""
 
 msgid "Vytvoření slevového kupónu"
@@ -2818,17 +2686,14 @@ msgstr ""
 msgid "Využijte"
 msgstr "Využij"
 
+msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link js-not-implemented-yet\" href=\"\">prodejně v Praze</a>"
+msgstr ""
+
 msgid "Váš e-mail je na e-shopu registrován."
 msgstr "Tvůj e-mail je na e-shopu registrován."
 
 msgid "Váš účet"
 msgstr "Tvůj účet"
-
-msgid "Vážím si všech"
-msgstr ""
-
-msgid "Vážím si všech 80 000 bushmanů"
-msgstr ""
 
 msgid "Výchozí služba dopravce"
 msgstr ""
@@ -2842,7 +2707,7 @@ msgstr ""
 msgid "Vše co nabízíme, máme skladem"
 msgstr "Vše, co nabízíme, máme skladem"
 
-msgid "Všechny kategorie"
+msgid "Vše pro běhání"
 msgstr ""
 
 msgid "Všechny produkty"
@@ -2907,6 +2772,9 @@ msgstr "Zadej kód"
 
 msgid "Zadejte město nebo PSČ:"
 msgstr "Zadej město nebo PSČ:"
+
+msgid "Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké."
+msgstr ""
 
 msgid "Zaplatit"
 msgstr ""
@@ -3013,14 +2881,11 @@ msgstr ""
 msgid "a údaje vám předvyplníme."
 msgstr "a údaje ti předvyplníme."
 
+msgid "bez DPH"
+msgstr ""
+
 msgid "blogArticles"
 msgstr "články blogu"
-
-msgid "bushmanů"
-msgstr ""
-
-msgid "ceny a podmínky nákupu"
-msgstr ""
 
 msgid "dopravu zdarma!"
 msgstr ""
@@ -3070,9 +2935,6 @@ msgstr ""
 msgid "naše služby"
 msgstr ""
 
-msgid "nebo"
-msgstr ""
-
 msgid "nejprve vyberte velikost"
 msgstr "nejprve vyber velikost"
 
@@ -3109,9 +2971,6 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našem"
 
-msgid "pro členy"
-msgstr ""
-
 msgid "problémů"
 msgstr ""
 
@@ -3122,9 +2981,6 @@ msgid "products"
 msgstr "zboží"
 
 msgid "promo products"
-msgstr ""
-
-msgid "přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin."
 msgstr ""
 
 msgid "records"
@@ -3149,12 +3005,6 @@ msgid "v hodnotě"
 msgstr ""
 
 msgid "v měně dle zvolené domény"
-msgstr ""
-
-msgid "vytvořit něco obyčejně přirozeného, a přitom pořádného."
-msgstr ""
-
-msgid "využij výhodnější"
 msgstr ""
 
 msgid "všechny zákazníky"
@@ -3223,9 +3073,6 @@ msgstr ""
 msgid "Úvod"
 msgstr ""
 
-msgid "účastníků"
-msgstr ""
-
 msgid "Česko"
 msgstr ""
 
@@ -3238,9 +3085,6 @@ msgstr "Členem BUSHMAN Clubu"
 msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Bushman Clubu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
 msgstr "Článek \"%name%\" je nastaven pro zobrazení informací o BUSHMAN Clubu. Toto nastavení bude ztraceno. Opravdu si jej přeješ smazat?"
 
-msgid "Články"
-msgstr ""
-
 msgid "Články blogu"
 msgstr ""
 
@@ -3250,12 +3094,6 @@ msgstr ""
 msgid "Číslo pro sledování zásilky"
 msgstr ""
 
-msgid "Šátek Etna"
-msgstr ""
-
-msgid "Ženy"
-msgstr ""
-
 msgid "Žádné dárky nenalezeny."
 msgstr ""
 
@@ -3263,8 +3101,5 @@ msgid "Žádné promo produkty nenalezeny."
 msgstr ""
 
 msgid "БЪЛГАРИЯ"
-msgstr ""
-
-msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
 msgstr ""
 
