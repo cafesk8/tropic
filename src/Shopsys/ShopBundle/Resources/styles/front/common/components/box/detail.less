@@ -139,37 +139,13 @@
     &__availability {
         display: flex;
         flex-direction: row;
-        padding: @box-detail-info-padding/2 @box-detail-info-padding;
 
         font-weight: bold;
         background-color: @color-f;
-        border-bottom: 1px solid @color-gray;
-
-        @media @query-md {
-            flex-direction: row;
-        }
-
-        &--two-lines-mobile {
-            flex-direction: column;
-
-            @media @query-md {
-                flex-direction: row;
-            }
-        }
 
         &__status {
             font-size: 18px;
             white-space: nowrap;
-
-        }
-
-        &__date {
-            .domain3 & {
-                display: block;
-                margin-top: 2px;
-
-                font-size: 13px;
-            }
         }
 
         &__next-line {
@@ -189,10 +165,6 @@
                 @media @query-md {
                     padding-left: 5px;
                 }
-            }
-
-            .domain3 & {
-                font-size: 13px;
             }
         }
 
@@ -227,7 +199,7 @@
         padding: 10px @box-detail-info-padding;
 
         background-color: @color-f;
-        border-top: 1px solid @color-gray;
+        border-top: 1px solid @color-light;
 
         &__image {
             display: flex;

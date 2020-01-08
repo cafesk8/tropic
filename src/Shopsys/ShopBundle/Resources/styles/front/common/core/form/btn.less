@@ -127,26 +127,18 @@
 
     @btn-mini-padding-horizontal-mobile: 2px;
     @btn-mini-padding-horizontal: 5px;
-    @btn-mini-height: @btn-height - 26;
+    @btn-mini-height: 16px;
 
     &--mini {
         height: @btn-mini-height;
-        line-height: @btn-mini-height;
+        line-height: @btn-mini-height - 2px;
         min-height: @btn-mini-height;
         padding: 0 @btn-mini-padding-horizontal-mobile;
 
-        font-size: 12px;
+        font-size: 11px;
 
         @media @query-lg {
             padding: 0 @btn-mini-padding-horizontal;
-        }
-    }
-
-    &--in-text {
-        margin: 0;
-
-        @media @query-vl {
-            margin: 0 10px;
         }
     }
 }

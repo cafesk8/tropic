@@ -52,11 +52,11 @@
 
                                 <div class="box-order-done__club__form">
                                     <div class="box-order-done__club__form__input">
-                                        {{ form_row(registrationForm.newPassword.first, { label: 'Password'|trans }) }}
-                                        {{ form_row(registrationForm.newPassword.second, { label: 'Password again'|trans }) }}
+                                        {{ form_row(registrationForm.newPassword.first, { label: 'Password'|trans, inputModificationClass: 'form-line__input--full' }) }}
+                                        {{ form_row(registrationForm.newPassword.second, { label: 'Password again'|trans, inputModificationClass: 'form-line__input--full' }) }}
                                     </div>
                                     <div class="box-order-done__club__form__button-holder">
-                                        {{ form_widget(registrationForm.submit, { label: 'Vytvořit účet'|trans, attr: { 'class': 'btn btn--success btn--with-input box-order-done__club__form__button' } }) }}
+                                        {{ form_widget(registrationForm.submit, { label: 'Vytvořit účet'|trans, attr: { 'class': 'btn btn--success box-order-done__club__form__button' } }) }}
                                     </div>
                                 </div>
                             {{ form_end(registrationForm) }}

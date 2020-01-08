@@ -16,7 +16,8 @@
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
             <span class="box-detail__availability__text">
                 {{ 'nebo ihned na '}}
-                <a
+            </span>
+            <a
                 href="#"
                 class="box-detail__availability__stores underline-small"
                 onclick="Shopsys.window({ content: $('.js-availability-table_{{ product.id }}').html() }); return false;"
@@ -26,7 +27,6 @@
                 [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% prodejnách
                 {% endtranschoice %}
             </a>
-            </span>
         {% endif %}
         <div class="display-none js-availability-table_{{ product.id }}">
             <table class="table-main full-width">

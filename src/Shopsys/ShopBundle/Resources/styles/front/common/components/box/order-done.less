@@ -32,13 +32,12 @@
         max-width: 790px;
         padding: 25px;
 
-        background-color: @color-gray;
+        background-color: @color-light;
         color: @color-brown;
 
         @media @query-md {
             padding: 50px 74px;
         }
-
 
         &__title {
             width: 100%;
@@ -63,14 +62,7 @@
         &__form {
             display: flex;
             flex-direction: column;
-
-            @media @query-md {
-                padding-left: 40px;
-            }
-
-            @media @query-lg {
-                flex-direction: row;
-            }
+            align-items: center;
 
             &__input {
                 margin-bottom: 20px;
@@ -99,11 +91,6 @@
             &__button-holder {
                 display: flex;
                 align-items: center;
-                padding-left: 0;
-
-                @media @query-lg {
-                    padding-left: 20px;
-                }
             }
 
             &__button {
