@@ -1,11 +1,7 @@
 {% extends '@!ShopsysFramework/Admin/Content/Product/listGrid.html.twig' %}
 
 {% block grid_value_cell_id_price %}
-    {% if row.p.variantType != VARIANT_TYPE_MAIN %}
-        {% if value is not null %}
-            {{ value|priceWithCurrencyAdmin }}
-        {% else %}
-            {{ 'Nepřenesena'|trans }}
-        {% endif %}
+    {% if row.p.variantType != VARIANT_TYPE_MAIN and value is not null %}
+        {{ value|priceWithCurrencyAdmin }}
     {% endif %}
 {% endblock %}
