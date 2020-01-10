@@ -134,7 +134,7 @@ class RegistrationFormType extends AbstractType
             ->add('firstName', TextType::class, [
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter first name']),
-                    new Constraints\Length(['max' => 60, 'maxMessage' => 'First name cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 60, 'maxMessage' => 'First name cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('lastName', TextType::class, [
@@ -147,7 +147,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(['message' => 'Please enter valid e-mail']),
-                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer than {{ limit }} characters']),
                     new UniqueEmail(['message' => 'This e-mail is already registered']),
                 ],
             ])
@@ -159,7 +159,7 @@ class RegistrationFormType extends AbstractType
                 'first_options' => [
                     'constraints' => [
                         new Constraints\NotBlank(['message' => 'Please enter password']),
-                        new Constraints\Length(['min' => 6, 'minMessage' => 'Password cannot be longer then {{ limit }} characters']),
+                        new Constraints\Length(['min' => 6, 'minMessage' => 'Password cannot be longer than {{ limit }} characters']),
                     ],
                 ],
                 'invalid_message' => 'Passwords do not match',

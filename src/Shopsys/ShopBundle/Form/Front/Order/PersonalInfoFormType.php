@@ -75,7 +75,7 @@ class PersonalInfoFormType extends AbstractType
                     ]),
                     new Constraints\Length([
                         'max' => 60,
-                        'maxMessage' => 'First name cannot be longer then {{ limit }} characters',
+                        'maxMessage' => 'First name cannot be longer than {{ limit }} characters',
                     ]),
                 ],
             ])
@@ -94,7 +94,7 @@ class PersonalInfoFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(['message' => 'Please enter valid e-mail']),
-                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 50, 'maxMessage' => 'Email cannot be longer than {{ limit }} characters']),
                 ],
                 'attr' => [
                     'class' => 'js-order-personal-info-form-email',
@@ -145,7 +145,7 @@ class PersonalInfoFormType extends AbstractType
                     ]),
                     new Constraints\Length([
                         'max' => 20,
-                        'maxMessage' => 'Identification number cannot be longer then {{ limit }} characters',
+                        'maxMessage' => 'Identification number cannot be longer than {{ limit }} characters',
                         'groups' => [self::VALIDATION_GROUP_COMPANY_CUSTOMER],
                     ]),
                 ],

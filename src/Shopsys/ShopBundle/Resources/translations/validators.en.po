@@ -10,14 +10,14 @@ msgstr ""
 msgid "Company name cannot be longer than {{ limit }} characters"
 msgstr ""
 
-msgid "Email cannot be longer then {{ limit }} characters"
+msgid "Email cannot be longer than {{ limit }} characters"
 msgstr ""
 
-msgid "First name cannot be longer then {{ limit }} characters"
+msgid "First name cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "First name of contact person cannot be longer then {{ limit }} characters"
-msgstr ""
+msgstr "First name of contact person cannot be longer than {{ limit }} characters"
 
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr ""
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Heading (H1) cannot be longer than {{ limit }} characters"
 msgstr ""
 
-msgid "Identification number cannot be longer then {{ limit }} characters"
+msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Image can be only in JPG, GIF or PNG format"
@@ -43,7 +43,7 @@ msgstr ""
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr ""
 
-msgid "Password cannot be longer then {{ limit }} characters"
+msgid "Password cannot be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Password cannot be same as e-mail"

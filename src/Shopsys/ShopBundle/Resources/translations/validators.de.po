@@ -10,13 +10,13 @@ msgstr "Der Name der Stadt darf nicht länger als {{limit}} Zeichen sein"
 msgid "Company name cannot be longer than {{ limit }} characters"
 msgstr "Der Firmenname darf nicht länger als {{limit}} Zeichen sein"
 
-msgid "Email cannot be longer then {{ limit }} characters"
+msgid "Email cannot be longer than {{ limit }} characters"
 msgstr "E-Mail darf nicht länger als {{limit}} Zeichen sein"
 
 msgid "Externí ID nesmí být delší než {{ limit }} znaků"
 msgstr "Die externe ID darf nicht länger als {{limit}} Zeichen sein"
 
-msgid "First name cannot be longer then {{ limit }} characters"
+msgid "First name cannot be longer than {{ limit }} characters"
 msgstr "Der Vorname darf nicht länger als {{limit}} Zeichen sein"
 
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
@@ -31,7 +31,7 @@ msgstr "Stunden müssen zwischen 0 und 23 liegen"
 msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
 msgstr "Der Wert darf nicht länger als {{limit}} Zeichen sein"
 
-msgid "Identification number cannot be longer then {{ limit }} characters"
+msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr "Die Identifikationsnummer darf nicht länger als {{limit}} Zeichen sein"
 
 msgid "Image can be only in JPG, GIF or PNG format"
@@ -55,7 +55,7 @@ msgstr "Der Name darf nicht länger als {{limit}} Zeichen sein"
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Die Öffnungszeiten dürfen nicht länger als {{limit}} Zeichen sein"
 
-msgid "Password cannot be longer then {{ limit }} characters"
+msgid "Password cannot be longer than {{ limit }} characters"
 msgstr "Das Passwort darf nicht länger als {{limit}} Zeichen sein"
 
 msgid "Password cannot be same as e-mail"
