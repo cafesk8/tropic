@@ -118,7 +118,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         {% if cartItem.product.id in cartGiftsByProductId|keys %}
                                             {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
                                             <div class="table-cart__gifts">
@@ -144,27 +144,27 @@
 
                                     {% endfor %}
                                     {% if promoProducts|length > 0 %}
-                                        <div class="table-cart__row"></div>
-                                        <br>
-                                        <h3>{{ 'Promo produkty k objednávce'|trans }}</h3>
-                                        {% for promoProductByPromoProductId in promoProducts %}
-                                            {% for productId, promoProduct in promoProductByPromoProductId %}
-                                                <div class="table-cart__gifts__item">
-                                                    {{ form_widget(form.chosenPromoProducts[promoProduct.id][productId], {
-                                                        attr: {
-                                                            class: 'css-checkbox js-cart-take-promo-product',
-                                                            'data-cart-promo-product-id': promoProduct.id,
-                                                            'data-cart-product-id': productId
-                                                        }
-                                                    }) }}
-                                                    <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id][productId].vars.id }}">
-                                                        {{ 'Chceš promo produkt'|trans }}
-                                                        {{ getProductById(productId).name }}
-                                                        {{ 'za zvýhodněnou cenu'|trans }} {{ promoProduct.price|price }}{{ '?' }}
-                                                    </label>
-                                                </div>
+                                        <div class="table-cart__gifts--promo">
+                                            <h3>{{ 'Promo produkty k objednávce'|trans }}</h3>
+                                            {% for promoProductByPromoProductId in promoProducts %}
+                                                {% for productId, promoProduct in promoProductByPromoProductId %}
+                                                    <div class="table-cart__gifts__item">
+                                                        {{ form_widget(form.chosenPromoProducts[promoProduct.id][productId], {
+                                                            attr: {
+                                                                class: 'css-checkbox js-cart-take-promo-product',
+                                                                'data-cart-promo-product-id': promoProduct.id,
+                                                                'data-cart-product-id': productId
+                                                            }
+                                                        }) }}
+                                                        <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id][productId].vars.id }}">
+                                                            {{ 'Chceš promo produkt'|trans }}
+                                                            {{ getProductById(productId).name }}
+                                                            {{ 'za zvýhodněnou cenu'|trans }} {{ promoProduct.price|price }}{{ '?' }}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
                                             {% endfor %}
-                                        {% endfor %}
+                                        </div>
                                     {% endif %}
                                     {% do form.chosenPromoProducts.setRendered %}
                                 </div>

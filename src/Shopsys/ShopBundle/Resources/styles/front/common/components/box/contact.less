@@ -33,7 +33,7 @@
         width: 100%;
         padding: @box-contact-padding;
 
-        background-color: @color-gray;
+        background-color: @color-light;
 
         @media @query-md {
             flex-direction: row;
@@ -81,7 +81,6 @@
         &__text {
             line-height: 30px;
 
-            color: @color-f;
             font-size: 16px;
             font-weight: bold;
 
@@ -98,25 +97,14 @@
                 font-size: 30px;
                 color: @color-gray-dark;
             }
-
-            &__link {
-                color: @color-f;
-                text-decoration: none;
-
-                &:hover {
-                    color: @color-f;
-                    text-decoration: underline;
-                }
-            }
         }
 
         &__info {
             margin-top: 3px;
             line-height: 30px;
 
-            color: @color-f;
+            color: @color-base;
             font-size: @font-size-small;
-            opacity: 0.5;
         }
     }
 }
