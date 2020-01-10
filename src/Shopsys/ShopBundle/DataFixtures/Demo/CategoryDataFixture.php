@@ -86,7 +86,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
         ];
         $categoryData->preListingCategory = true;
         $categoryData->legendaryCategory = true;
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, '
@@ -114,7 +114,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'en' => null,
         ];
         $categoryData->preListingCategory = false;
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'Television or TV is a telecommunication medium used for transmitting sound with moving images in monochrome '
@@ -131,7 +131,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Fotoaparáty',
             'de' => 'Cameras & Photo',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A camera is an optical instrument for recording or capturing images, which may be stored locally, '
@@ -147,7 +147,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Tiskárny',
             'de' => 'Printers',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A printer is a peripheral which makes a persistent human readable representation of graphics or text on paper '
@@ -162,7 +162,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Počítače & příslušenství',
             'de' => 'Personal Computers & accessories',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A personal computer (PC) is a general-purpose computer whose size, capabilities, and original sale price '
@@ -179,7 +179,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Mobilní telefony',
             'de' => 'Mobile Phones',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A telephone is a telecommunications device that permits two or more users to conduct a conversation when they are '
@@ -196,7 +196,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Kávovary',
             'de' => 'Coffee Machines',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'Coffeemakers or coffee machines are cooking appliances used to brew coffee. While there are many different types '
@@ -214,7 +214,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Knihy',
             'de' => 'Books',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A book is a set of written, printed, illustrated, or blank sheets, made of ink, paper, parchment, or other '
@@ -232,7 +232,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Hračky a další',
             'de' => 'Toys',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A toy is an item that can be used for play. Toys are generally played with by children and pets. '
@@ -248,7 +248,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Zahradní náčiní',
             'de' => 'Garden tools',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $emptyDescriptionsForAllDomains,
             [
                 Domain::FIRST_DOMAIN_ID => 'A garden tool is any one of many tools made for gardens and gardening and overlaps with the range of tools '
@@ -263,7 +263,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'sk' => 'Jídlo',
             'de' => 'Food',
         ];
-        $categoryData->descriptions = array_merge(
+        $categoryData->descriptions = array_replace(
             $this->createDomainKeyedArray(),
             [
                 Domain::FIRST_DOMAIN_ID => 'Food is any substance consumed to provide nutritional support for the body. It is usually of plant or '
