@@ -101,7 +101,8 @@
         "google/apiclient": "^2.0",
         "nette/utils": "^2.4",
         "picqer/php-barcode-generator": "^0.3.0",
-        "simpod/sms-manager": "^0.1.0"
+        "simpod/sms-manager": "^0.1.0",
+        "php-http/guzzle6-adapter": "^2.0"
     },
     "require-dev": {
         "ext-pgsql": "*",
