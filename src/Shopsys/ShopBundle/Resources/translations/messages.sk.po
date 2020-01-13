@@ -1750,8 +1750,8 @@ msgstr "Platba"
 msgid "Platnost"
 msgstr "Platnosť"
 
-msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
-msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontroluj si to."
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
+msgstr "Platnosť zľavového kupónu \"%code%\" vypršala. Prosím, skontroluj si to."
 
 msgid "Platný do"
 msgstr "Platný do"

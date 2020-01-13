@@ -301,10 +301,19 @@ class DataLayerMapper
                 'shipping' => $this->getMoneyAsString($shipping->add($payment)),
                 'shippingWithTax' => $this->getMoneyAsString($shippingWithTax->add($paymentWithTax)),
                 'shippingTax' => $this->getMoneyAsString($shippingTax->add($paymentTax)),
-                'coupon' => $order->getGtmCoupon(),
             ],
             'products' => $productsData,
         ];
+
+        $gtmCoupons = $order->getGtmCoupons();
+        if ($gtmCoupons !== null) {
+            $couponsArray = [];
+            foreach (explode(Order::PROMO_CODES_SEPARATOR, $gtmCoupons) as $key => $couponData) {
+                $couponNumber = $key + 1;
+                $couponsArray['coupon' . $couponNumber] = $couponData;
+            }
+            $dataLayerPurchase['actionField'] = array_merge($dataLayerPurchase['actionField'], $couponsArray);
+        }
 
         return $dataLayerPurchase;
     }

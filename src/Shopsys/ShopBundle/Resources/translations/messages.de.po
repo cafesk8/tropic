@@ -1747,8 +1747,8 @@ msgstr "Zahlung"
 msgid "Platnost"
 msgstr "Gültigkeit"
 
-msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
-msgstr "Der Gutschein ist abgelaufen. Bitte überprüfe es."
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
+msgstr "Der Gutschein \"%code%\" ist abgelaufen. Bitte überprüfe es."
 
 msgid "Platný do"
 msgstr "Gültig bis"

@@ -276,21 +276,18 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
-        $enteredValidPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
+        $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
-        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $enteredValidPromoCode, $orderPreview);
+        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);
 
-        if ($enteredValidPromoCode !== null) {
-            $orderData->promoCodeCode = $enteredValidPromoCode->getCode();
+        foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
+            $orderData->promoCodesCodes[] = $validEnteredPromoCode->getCode();
+            $this->currentPromoCodeFacade->usePromoCode($validEnteredPromoCode);
         }
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
-
-        if ($enteredValidPromoCode !== null) {
-            $this->currentPromoCodeFacade->usePromoCode($enteredValidPromoCode);
-        }
 
         /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $order->getCustomer();
@@ -368,17 +365,19 @@ class OrderFacade extends BaseOrderFacade
         $order->fillOrderGifts($orderPreview, $this->orderItemFactory, $this->productGiftPriceCalculation, $this->domain);
         $order->fillOrderPromoProducts($orderPreview, $this->orderItemFactory, $this->domain);
 
-        $promoCode = $orderPreview->getPromoCode();
-        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            $order->setGiftCertificate(
-                $orderPreview,
-                $this->orderItemFactory,
-                $this->numberFormatterExtension,
-                $order,
-                $promoCode,
-                $this->vatFacade->getDefaultVat()->getPercent(),
-                $this->domain->getCurrentDomainConfig()->getLocale()
-            );
+        $promoCodes = $orderPreview->getPromoCodesIndexedById();
+        foreach ($promoCodes as $promoCode) {
+            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+                $order->setGiftCertificate(
+                    $orderPreview,
+                    $this->orderItemFactory,
+                    $this->numberFormatterExtension,
+                    $order,
+                    $promoCode,
+                    $this->vatFacade->getDefaultVat()->getPercent(),
+                    $this->domain->getCurrentDomainConfig()->getLocale()
+                );
+            }
         }
     }
 

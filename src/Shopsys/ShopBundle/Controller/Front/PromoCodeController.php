@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade;
@@ -85,7 +87,6 @@ class PromoCodeController extends FrontBaseController
     public function indexAction()
     {
         return $this->render('@ShopsysShop/Front/Content/Order/PromoCode/index.html.twig', [
-            'validEnteredPromoCode' => $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull(),
             'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId($this->domain->getId()),
         ]);
     }
@@ -150,6 +151,16 @@ class PromoCodeController extends FrontBaseController
             return new JsonResponse([
                 'result' => false,
                 'message' => t('Slevový kupón mohou aplikovat pouze přihlášení členové Bushman clubu.'),
+            ]);
+        } catch (PromoCodeNotCombinableException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat.'),
+            ]);
+        } catch (PromoCodeAlreadyAppliedException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Tento slevový kupón je již v objednávce aplikován.'),
             ]);
         }
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));

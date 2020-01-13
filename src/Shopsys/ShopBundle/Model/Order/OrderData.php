@@ -86,14 +86,14 @@ class OrderData extends BaseOrderData
     public $transportType;
 
     /**
-     * @var string|null
+     * @var string[]|null
      */
-    public $gtmCoupon;
+    public $gtmCoupons;
 
     /**
-     * @var string|null
+     * @var string[]|null
      */
-    public $promoCodeCode;
+    public $promoCodesCodes;
 
     /**
      * @var string|null
@@ -107,5 +107,6 @@ class OrderData extends BaseOrderData
         $this->statusCheckedAt = new DateTime();
         $this->memberOfBushmanClub = false;
         $this->transportType = Transport::TYPE_NONE;
+        $this->promoCodesCodes = [];
     }
 }

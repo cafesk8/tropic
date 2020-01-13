@@ -76,13 +76,16 @@
                                                 <div class="table-cart__cell__price__primary">
                                                     {{ cartItemPrice.unitPrice.priceWithVat|price }}
                                                 </div>
-                                                {% if promoCode is not null %}
-                                                <div class="table-cart__cell__discount">
-                                                    {% if cartItemDiscounts[index] is not null %}
-                                                    &nbsp;{{ promoCode.code }}&nbsp;
-                                                    -{{ cartItemDiscounts[index].priceWithVat|price }}
-                                                    {% endif %}
-                                                </div>
+                                                {% if promoCodesIndexedById is not empty %}
+                                                    <div class="table-cart__cell__discount">
+                                                        {% for promoCodeId, promoCode in promoCodesIndexedById %}
+                                                            {% if cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is not null %}
+                                                                &nbsp;{{ promoCode.code }}&nbsp;
+                                                                -{{ cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index].priceWithVat|price }}
+                                                                <br>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
                                                 {% endif %}
                                             </div>
                                         </div>
