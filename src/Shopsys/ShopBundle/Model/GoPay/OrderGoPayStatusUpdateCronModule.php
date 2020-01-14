@@ -37,26 +37,26 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
     private $orderMailFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain
+     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade
      */
-    private $goPayFacade;
+    private $goPayTransactionFacade;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade $orderMailFacade
-     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacade
+     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
      */
     public function __construct(
         EntityManagerInterface $em,
         OrderFacade $orderFacade,
         OrderMailFacade $orderMailFacade,
-        GoPayFacadeOnCurrentDomain $goPayFacade
+        GoPayTransactionFacade $goPayTransactionFacade
     ) {
         $this->em = $em;
         $this->orderFacade = $orderFacade;
         $this->orderMailFacade = $orderMailFacade;
-        $this->goPayFacade = $goPayFacade;
+        $this->goPayTransactionFacade = $goPayTransactionFacade;
     }
 
     public function run(): void
@@ -73,17 +73,11 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
             $oldOrderGoPayStatus = $order->getGoPayStatus();
 
             try {
-                $goPayStatusResponse = $this->goPayFacade->getPaymentStatusResponse($order);
+                $this->goPayTransactionFacade->updateOrderTransactions($order);
             } catch (GoPayPaymentDownloadException $e) {
                 $this->logger->addError($e);
 
                 continue;
-            }
-
-            $this->logger->info($goPayStatusResponse);
-
-            if (array_key_exists('state', $goPayStatusResponse->json)) {
-                $this->orderFacade->setGoPayStatusAndFik($order, $goPayStatusResponse);
             }
 
             if ($oldOrderGoPayStatus !== $order->getGoPayStatus()) {

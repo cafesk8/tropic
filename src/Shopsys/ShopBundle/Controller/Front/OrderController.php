@@ -785,7 +785,7 @@ class OrderController extends FrontBaseController
     private function checkOrderGoPayStatus(Order $order): void
     {
         try {
-            $this->goPayFacadeOnCurrentDomain->checkOrderGoPayStatus($order);
+            $this->goPayTransactionFacade->updateOrderTransactions($order);
         } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
