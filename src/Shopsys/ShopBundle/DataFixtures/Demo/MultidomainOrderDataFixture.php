@@ -107,7 +107,7 @@ class MultidomainOrderDataFixture extends AbstractReferenceFixture implements De
         $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = $domainId;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_EUR);
-        $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
+        $orderData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
         $this->createOrder(
             $orderData,
             [
@@ -144,7 +144,7 @@ class MultidomainOrderDataFixture extends AbstractReferenceFixture implements De
         $orderData->note = 'Prosím o dodání do pátku. Děkuji.';
         $orderData->domainId = $domainId;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
-        $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
+        $orderData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
         $this->createOrder(
             $orderData,
             [
@@ -171,7 +171,7 @@ class MultidomainOrderDataFixture extends AbstractReferenceFixture implements De
         $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = $domainId;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_EUR);
-        $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
+        $orderData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
         $this->createOrder(
             $orderData,
             [
@@ -197,7 +197,7 @@ class MultidomainOrderDataFixture extends AbstractReferenceFixture implements De
         $orderData->deliveryAddressSameAsBillingAddress = false;
         $orderData->domainId = $domainId;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_EUR);
-        $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
+        $orderData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
         $this->createOrder(
             $orderData,
             [
