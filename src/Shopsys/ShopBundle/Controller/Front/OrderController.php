@@ -39,6 +39,7 @@ use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
 use Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain;
+use Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\FrontOrderData;
@@ -195,6 +196,11 @@ class OrderController extends FrontBaseController
     private $customerDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade
+     */
+    private $goPayTransactionFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -222,6 +228,7 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -250,7 +257,8 @@ class OrderController extends FrontBaseController
         Authenticator $authenticator,
         CardEanFacade $cardEanFacade,
         CustomerMailFacade $customerMailFacade,
-        CustomerDataFactory $customerDataFactory
+        CustomerDataFactory $customerDataFactory,
+        GoPayTransactionFacade $goPayTransactionFacade
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -279,6 +287,7 @@ class OrderController extends FrontBaseController
         $this->cardEanFacade = $cardEanFacade;
         $this->customerMailFacade = $customerMailFacade;
         $this->customerDataFactory = $customerDataFactory;
+        $this->goPayTransactionFacade = $goPayTransactionFacade;
     }
 
     public function indexAction()
@@ -613,13 +622,12 @@ class OrderController extends FrontBaseController
         $order = $this->orderFacade->getById($orderId);
         $goPayData = null;
 
-        if ($order->getPayment()->isGoPay() && $order->getGoPayId() === null) {
+        if ($order->getPayment()->isGoPay()) {
             $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
 
             try {
                 $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
-
-                $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
+                $this->goPayTransactionFacade->createNewTransactionByOrder($order, (string)$goPayData['goPayId']);
             } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
             }
@@ -800,9 +808,13 @@ class OrderController extends FrontBaseController
 
         $goPayData = null;
 
-        if ($order->isGopayPaid() !== false) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka je již zaplacená.'));
-            return $this->redirectToRoute('front_homepage');
+        if ($order->getPayment()->isGoPay()) {
+            if ($order->isGopayPaid() !== false) {
+                $this->getFlashMessageSender()->addErrorFlash(t('Objednávka je již zaplacená.'));
+                return $this->redirectToRoute('front_homepage');
+            }
+        } else {
+            throw $this->createNotFoundException('Order has no payment method set as GoPay');
         }
 
         $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
@@ -810,7 +822,7 @@ class OrderController extends FrontBaseController
         try {
             $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
 
-            $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
+            $this->goPayTransactionFacade->createNewTransactionByOrder($order, (string)$goPayData['goPayId']);
         } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }

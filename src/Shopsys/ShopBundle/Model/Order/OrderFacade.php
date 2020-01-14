@@ -220,16 +220,6 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @param string $goPayId
-     */
-    public function setGoPayId(Order $order, string $goPayId): void
-    {
-        $order->setGoPayId($goPayId);
-        $this->em->flush($order);
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param \GoPay\Http\Response $goPayStatusResponse
      */
     public function setGoPayStatusAndFik(Order $order, Response $goPayStatusResponse): void

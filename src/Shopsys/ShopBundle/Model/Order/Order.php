@@ -400,14 +400,6 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param string|null $goPayId
-     */
-    public function setGoPayId(?string $goPayId): void
-    {
-        $this->goPayId = $goPayId;
-    }
-
-    /**
      * @return string|null
      */
     public function getGoPayStatus(): ?string
@@ -1053,14 +1045,10 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isGopayPaid(): ?bool
+    public function isGopayPaid(): bool
     {
-        if ($this->goPayId === null) {
-            return null;
-        }
-
         return $this->goPayStatus === PaymentStatus::PAID;
     }
 
