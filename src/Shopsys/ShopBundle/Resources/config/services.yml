@@ -343,8 +343,6 @@ services:
 
     Shopsys\FrameworkBundle\Component\Grid\Ordering\GridOrderingFacade: '@Shopsys\ShopBundle\Model\Grid\GridOrderingFacade'
 
-    Shopsys\FrameworkBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory: '@Shopsys\ShopBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory'
-
     Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDetailFriendlyUrlDataProvider:
         tags:
             - {name: shopsys.friendly_url_provider}
