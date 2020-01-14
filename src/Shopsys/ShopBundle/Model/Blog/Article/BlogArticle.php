@@ -27,7 +27,7 @@ class BlogArticle extends AbstractTranslatableEntity
     protected $id;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Blog\Article\BlogArticleBlogCategoryDomain[]
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleBlogCategoryDomain[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(
      *   targetEntity="Shopsys\ShopBundle\Model\Blog\Article\BlogArticleBlogCategoryDomain",
@@ -46,7 +46,7 @@ class BlogArticle extends AbstractTranslatableEntity
     protected $translations;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDomain[]|\Doctrine\Common\Collections\ArrayCollection
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDomain[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDomain", mappedBy="blogArticle", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
@@ -81,7 +81,7 @@ class BlogArticle extends AbstractTranslatableEntity
     private $publishDate;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\Product", fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="blog_article_products")
@@ -361,7 +361,7 @@ class BlogArticle extends AbstractTranslatableEntity
 
         foreach ($domainIds as $domainId) {
             $categoryDomain = new BlogArticleDomain($this, $domainId);
-            $this->domains[] = $categoryDomain;
+            $this->domains->add($categoryDomain);
         }
 
         $this->setDomains($blogArticleData);

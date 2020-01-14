@@ -249,7 +249,7 @@ class DataLayerMapper
         $dataLayerProduct->setLabels(array_map(function ($flag) use ($locale) {
             /** @var $flag \Shopsys\ShopBundle\Model\Product\Flag\Flag */
             return $flag->getName($locale);
-        }, $product->getFlags()->toArray()));
+        }, $product->getFlags()));
     }
 
     /**

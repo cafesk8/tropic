@@ -31,7 +31,7 @@ class ProductGift
     private $gift;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\Product", inversedBy="productGifts", cascade={"persist"}, fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="product_gift_products")
@@ -84,7 +84,7 @@ class ProductGift
     }
 
     /**
-     * @param \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $gift
      */
     private function setProducts(array $products, Product $gift): void

@@ -85,7 +85,7 @@ class User extends BaseUser
     private $exportedAt;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(
      *     targetEntity="Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan",
@@ -277,7 +277,7 @@ class User extends BaseUser
     /**
      * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]
      */
-    public function getUserTransferIdAndEan()
+    public function getUserTransferIdAndEan(): array
     {
         return $this->userTransferIdAndEan->toArray();
     }
