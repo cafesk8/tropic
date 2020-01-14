@@ -36,7 +36,6 @@ class OrderRepository extends BaseOrderRepository
         $queryBuilder = $this->createOrderQueryBuilder()
             ->join(Payment::class, 'p', Join::WITH, 'o.payment = p.id')
             ->andWhere('p.type = :type AND (o.goPayStatus != :statusPaid OR o.goPayStatus IS NULL)')
-            ->andWhere('o.goPayId IS NOT NULL')
             ->andWhere('o.createdAt >= :fromDate')
             ->orderBy('o.createdAt', 'ASC')
             ->setParameter('fromDate', $fromDate)
