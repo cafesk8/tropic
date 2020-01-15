@@ -58,6 +58,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Model/Order/OrderFacade.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
