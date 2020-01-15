@@ -642,3 +642,7 @@ services:
     Shopsys\ShopBundle\Component\Error\LogoutExceptionSubscriber:
         arguments:
             $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
+
+    Shopsys\ShopBundle\Controller\Front\ErrorController:
+        arguments:
+            $environment: '%kernel.environment%'
