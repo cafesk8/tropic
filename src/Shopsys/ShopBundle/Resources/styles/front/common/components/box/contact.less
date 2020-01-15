@@ -88,6 +88,10 @@
                 font-size: 19px;
             }
 
+            .box-contact__block--white-text & {
+                color: @color-f;
+            }
+
             .svg {
                 position: relative;
                 bottom: -10px;
@@ -97,6 +101,20 @@
                 font-size: 30px;
                 color: @color-gray-dark;
             }
+
+            &__link {
+                .box-contact__block--white-text & {
+                    color: @color-f;
+                }
+
+                &:hover {
+                    text-decoration: underline;
+                    
+                    .box-contact__block--white-text & {
+                        color: @color-f;
+                    }
+                }
+            }
         }
 
         &__info {
@@ -105,6 +123,11 @@
 
             color: @color-base;
             font-size: @font-size-small;
+
+            .box-contact__block--white-text & {
+                color: @color-f;
+                opacity: 0.5;
+            }
         }
     }
 }
