@@ -313,6 +313,9 @@ msgstr "Buď bushman a maj výhodnejšie"
 msgid "Buď bushman a měj zdarma"
 msgstr "Buď bushman a maj zadarmo"
 
+msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
+msgstr ""
+
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr "Bolo vytvorené <strong> {{quantity}} </ strong> zľavových kupónov"
 
@@ -365,16 +368,16 @@ msgid "Chcete se stát Bushmanem?"
 msgstr "Chcete sa stať Bushmanom?"
 
 msgid "Chceš dárek"
-msgstr ""
+msgstr "Chceš darček"
 
 msgid "Chceš promo produkt"
-msgstr ""
+msgstr "Chceš promo produkt"
 
 msgid "Chceš se stát bushmanem?"
 msgstr "Chceš sa stať bushmanom?"
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
-msgstr ""
+msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\"> <span class = \"underline-small\"> Bushman Clubu </ span> </a>."
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
 msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\"> Bushman Clubu </a>."
@@ -665,7 +668,7 @@ msgid "Download the personal information"
 msgstr "Stiahnite si osobné informácie"
 
 msgid "Došlo ke změnám v košíku. Prosím, překontrolujte si produkty."
-msgstr ""
+msgstr "Došlo k zmenám v košíku. Prosím, prekontrolujte si produkty."
 
 msgid "Druhý článek v horním menu"
 msgstr "Druhý článok v hornom menu"
@@ -704,7 +707,7 @@ msgid "Dárky"
 msgstr "Darčeky"
 
 msgid "Dárky k vaší objednávce:"
-msgstr ""
+msgstr "Darčeky k vašej objednávke:"
 
 msgid "Děkujeme Vám"
 msgstr "Ďakujeme Ti"
@@ -1031,7 +1034,7 @@ msgid "Jak na výměnu velikosti?"
 msgstr "Chceš vymeniť veľkosť?"
 
 msgid "Jak vybrat správnou velikost?"
-msgstr ""
+msgstr "Ako vybrať správnu veľkosť?"
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Ako zástupný znak pre číslo sledovania zásielky zadajte% s, teda napr. https://tracking.ulozenka.cz/?_fid=%s"
@@ -1128,6 +1131,9 @@ msgstr "Kolega Novák má dobrú češtinu. Pošlite mu tiež tú kľúčenku. M
 
 msgid "Kolikrát použito"
 msgstr "Koľkokrát použité"
+
+msgid "Kombinovatelný"
+msgstr ""
 
 msgid "Kontakt"
 msgstr "Kontakt"
@@ -1753,6 +1759,9 @@ msgstr "Platnosť"
 msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
 msgstr "Platnosť zľavového kupónu \"%code%\" vypršala. Prosím, skontroluj si to."
 
+msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
+msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontroluj si to."
+
 msgid "Platný do"
 msgstr "Platný do"
 
@@ -1760,7 +1769,7 @@ msgid "Platný od"
 msgstr "Platný od"
 
 msgid "Platí pro"
-msgstr ""
+msgstr "Platí pre"
 
 msgid "Please check the correctness of all data filled."
 msgstr "Určite máš všetky údaje vyplnené správne."
@@ -2048,7 +2057,7 @@ msgid "Přečti si více"
 msgstr "Prečítaj si viac"
 
 msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
-msgstr ""
+msgstr "Pri pokuse o odhlásení došlo k problému. Ak sa naozaj chcete odhlásiť, prosím, skúste to ešte raz."
 
 msgid "Přidat"
 msgstr "Pridať"
@@ -2417,7 +2426,7 @@ msgid "Tax number"
 msgstr "IČ DPH"
 
 msgid "Tel"
-msgstr ""
+msgstr "Tel"
 
 msgid "Telefon"
 msgstr "Telefón"
@@ -2430,6 +2439,9 @@ msgstr "Telefón"
 
 msgid "Tenký nadpis"
 msgstr "Tenký nadpis"
+
+msgid "Tento slevový kupón je již v objednávce aplikován."
+msgstr ""
 
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr "Tento stav nie je možné zmazať, pretože je na neho naviazaná funkčnosť"
@@ -2608,6 +2620,9 @@ msgstr "Nahrať obrázok"
 msgid "Upozornění"
 msgstr "Upozornenie"
 
+msgid "Uprav hned"
+msgstr ""
+
 msgid "Upřesňující informace"
 msgstr "Upresňujúce informácie"
 
@@ -2616,6 +2631,9 @@ msgstr "Upresňujúce informácie pre prenosovú chybu"
 
 msgid "User not found."
 msgstr "Užívateľ nenájdený."
+
+msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
+msgstr ""
 
 msgid "V hlavní roli"
 msgstr "V hlavnej úlohe"
@@ -3128,7 +3146,7 @@ msgid "o nás"
 msgstr "o nás"
 
 msgid "obchod@bushman.sk"
-msgstr ""
+msgstr "obchod@bushman.sk"
 
 msgid "obchodními podmínkami"
 msgstr "obchodnými podmienkami"
@@ -3143,7 +3161,7 @@ msgid "osobních údajů"
 msgstr "osobných údajov"
 
 msgid "pouze členy bushman clubu"
-msgstr ""
+msgstr "iba členovia Bushman clubu"
 
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našom"
@@ -3197,7 +3215,7 @@ msgid "ušetříte"
 msgstr "ušetríš"
 
 msgid "v hodnotě"
-msgstr ""
+msgstr "v hodnote"
 
 msgid "v měně dle zvolené domény"
 msgstr "v mene podľa zvolenej domény"
@@ -3212,7 +3230,7 @@ msgid "využij výhodnější"
 msgstr "využi výhodnejšie"
 
 msgid "všechny zákazníky"
-msgstr ""
+msgstr "všetci zákazníci"
 
 msgid "webu neexistuje"
 msgstr "webu neexistuje"
@@ -3221,10 +3239,10 @@ msgid "without positioning"
 msgstr "bez polohovania"
 
 msgid "za"
-msgstr ""
+msgstr "za"
 
 msgid "za zvýhodněnou cenu"
-msgstr ""
+msgstr "za zvýhodnenú cenu"
 
 msgid "zadávat nemusíte"
 msgstr "zadávať nemusíš"

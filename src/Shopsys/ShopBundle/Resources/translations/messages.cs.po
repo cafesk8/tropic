@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 
 msgid "%name% agrees with privacy policy."
-msgstr ""
+msgstr "%name% souhlasí s pravidly ochrany osobních údajů."
 
 msgid "(Banner) Bushman Club"
 msgstr "(Banner) BUSHMAN Club"
@@ -38,7 +38,7 @@ msgid "-- Choose article position --"
 msgstr "-- Vyber umístění článku --"
 
 msgid "-- Vyberte přenos --"
-msgstr ""
+msgstr "-- Vyber přenos --"
 
 msgid "00421/908767330"
 msgstr ""
@@ -307,6 +307,9 @@ msgstr ""
 msgid "Buď bushman a měj výhodnější"
 msgstr ""
 
+msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
+msgstr ""
+
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr ""
 
@@ -362,7 +365,7 @@ msgid "Chceš se stát bushmanem?"
 msgstr ""
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
-msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Bushman Clubu</span></a>."
+msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">BUSHMAN Clubu</span></a>."
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
 msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\">BUSHMAN Clubu</a>."
@@ -575,7 +578,7 @@ msgid "Do"
 msgstr ""
 
 msgid "Do Bushman Clubu"
-msgstr ""
+msgstr "Do BUSHMAN Clubu"
 
 msgid "Do košíku jste přidali"
 msgstr "Přidáno! V košíku máš taky:"
@@ -662,7 +665,7 @@ msgid "Download the personal information"
 msgstr "Stáhnout zákaznické údaje"
 
 msgid "Došlo ke změnám v košíku. Prosím, překontrolujte si produkty."
-msgstr ""
+msgstr "Došlo ke změnám v košíku. Překontroluj si, prosím, produkty."
 
 msgid "Druhý článek v horním menu"
 msgstr ""
@@ -698,7 +701,7 @@ msgid "Dárky"
 msgstr ""
 
 msgid "Dárky k vaší objednávce:"
-msgstr ""
+msgstr "Dárky k tvojí objednávce:"
 
 msgid "Děkujeme Vám"
 msgstr "Děkujeme ti"
@@ -785,7 +788,7 @@ msgid "Enter e-mail"
 msgstr "Zadej e-mail"
 
 msgid "Entered customer not found, please check entered data."
-msgstr "Zadaný zákazník nebyl nalezen, zkontroluj prosím zadané údaje"
+msgstr "Zadaný zákazník nebyl nalezen, zkontroluj, prosím, zadané údaje"
 
 msgid "Error occurred"
 msgstr "Aha, tak tady je něco špatně..."
@@ -854,7 +857,7 @@ msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr ""
 
 msgid "Geprüfter webshop"
-msgstr ""
+msgstr "Testovací e-shop"
 
 msgid "Go to cart"
 msgstr "Přejít do košíku"
@@ -935,7 +938,7 @@ msgid "Hromadné úpravy"
 msgstr ""
 
 msgid "Händlerbund Mitglied"
-msgstr ""
+msgstr "Člen sdružení prodejců"
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Souhlasím s <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">obchodními podmínkami</a> a <a href=\"%privacyPolicyUrl%\" target=\"_blank\">zpracováním osobních údajů</a>."
@@ -1055,7 +1058,7 @@ msgid "Jazyk"
 msgstr ""
 
 msgid "Je nám líto"
-msgstr ""
+msgstr "Bohužel"
 
 msgid "Je nám líto, požadovaná stránka na našem webu neexistuje."
 msgstr "Bohužel, požadovaná stránka na našem webu neexistuje."
@@ -1097,7 +1100,7 @@ msgid "Kategorie článků"
 msgstr ""
 
 msgid "Kdo zná, ví. Kdo nezná ať rychle vyzkouší!"
-msgstr ""
+msgstr "Kdo zná, ví. Kdo nezná, ať rychle vyzkouší!"
 
 msgid "Ke každému nákupu dárek v hodnotě"
 msgstr ""
@@ -1109,12 +1112,15 @@ msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr ""
 
 msgid "Klikněte zde pro zopakování úhrady objednávky"
-msgstr ""
+msgstr "Klikni zde pro zopakování úhrady objednávky"
 
 msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr ""
 
 msgid "Kolikrát použito"
+msgstr ""
+
+msgid "Kombinovatelný"
 msgstr ""
 
 msgid "Kontakt"
@@ -1466,7 +1472,7 @@ msgid "Number of orders"
 msgstr "Počet objednávek"
 
 msgid "Nyní budete přesměrováni na platební bránu GoPay."
-msgstr ""
+msgstr "Nyní tě přesměrujeme na platební bránu GoPay."
 
 msgid "Nákupní košík"
 msgstr ""
@@ -1526,7 +1532,7 @@ msgid "Odebrat všechny položky z níže vyhledaných a zavřít"
 msgstr ""
 
 msgid "Odeslat na mail"
-msgstr ""
+msgstr "Odeslat na e-mail"
 
 msgid "Odeslat objednávku"
 msgstr ""
@@ -1736,7 +1742,10 @@ msgid "Platnost"
 msgstr ""
 
 msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
-msgstr "Platnost slevového kupónu \"%code%\" vypršela. Zkontroluj si ho."
+msgstr "Platnost slevového kupónu \"%code%\" vypršela. Zkontroluj si ho, prosím."
+
+msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
+msgstr "Platnost slevového kupónu vypršela. Zkontroluj si ho, prosím."
 
 msgid "Platný do"
 msgstr ""
@@ -1844,7 +1853,7 @@ msgid "Pošta bez hranic"
 msgstr ""
 
 msgid "Pravý textový baner nahoře"
-msgstr ""
+msgstr "Pravý textový banner nahoře"
 
 msgid "Prefix"
 msgstr ""
@@ -1895,7 +1904,7 @@ msgid "Prodejny"
 msgstr ""
 
 msgid "Prodejny Bushman"
-msgstr ""
+msgstr "Prodejny BUSHMAN"
 
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Do košíku bylo vloženo zboží <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }})"
@@ -1943,7 +1952,7 @@ msgid "Promo code added to order"
 msgstr "Slevový kupón jsme přidali do objednávky."
 
 msgid "Promo code invalid. Check it, please."
-msgstr "Slevový kupón není platný. Zkontroluj si ho."
+msgstr "Slevový kupón není platný. Zkontroluj si ho, prosím."
 
 msgid "Promo code removed from order"
 msgstr "Slevový kupón jsme odebrali z objednávky."
@@ -2024,7 +2033,7 @@ msgid "Přečti si více"
 msgstr ""
 
 msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
-msgstr ""
+msgstr "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chceš odhlásit, prosím, zkus to ještě jednou."
 
 msgid "Přidat"
 msgstr ""
@@ -2120,7 +2129,7 @@ msgid "Rozbalit"
 msgstr ""
 
 msgid "Rozlišující parameter"
-msgstr ""
+msgstr "Rozlišující parametr"
 
 msgid "Rozlišující parametr"
 msgstr ""
@@ -2399,7 +2408,7 @@ msgid "Technical parameters"
 msgstr "Technické parametry"
 
 msgid "Tel"
-msgstr ""
+msgstr "Tel."
 
 msgid "Telefon"
 msgstr ""
@@ -2411,6 +2420,9 @@ msgid "Telephone"
 msgstr "Telefon"
 
 msgid "Tenký nadpis"
+msgstr ""
+
+msgid "Tento slevový kupón je již v objednávce aplikován."
 msgstr ""
 
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
@@ -2599,6 +2611,9 @@ msgstr "Nahrát obrázek"
 msgid "Upozornění"
 msgstr ""
 
+msgid "Uprav hned"
+msgstr ""
+
 msgid "Upřesňující informace"
 msgstr ""
 
@@ -2607,6 +2622,9 @@ msgstr ""
 
 msgid "User not found."
 msgstr "Uživatel nebyl nalezen."
+
+msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
+msgstr ""
 
 msgid "V hlavní roli"
 msgstr ""
@@ -3104,7 +3122,7 @@ msgid "osobních údajů"
 msgstr ""
 
 msgid "pouze členy bushman clubu"
-msgstr ""
+msgstr "pouze členy BUSHMAN clubu"
 
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našem"
@@ -3116,13 +3134,13 @@ msgid "problémů"
 msgstr ""
 
 msgid "productGifts"
-msgstr ""
+msgstr "produktové dárky"
 
 msgid "products"
 msgstr "zboží"
 
 msgid "promo products"
-msgstr ""
+msgstr "promo produkty"
 
 msgid "přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin."
 msgstr ""

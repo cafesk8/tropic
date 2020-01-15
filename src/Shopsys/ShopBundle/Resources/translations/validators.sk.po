@@ -161,7 +161,7 @@ msgid "Please enter zip code"
 msgstr "Zadaj PSČ"
 
 msgid "Please select country"
-msgstr ""
+msgstr "Vyberte krajinu"
 
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 msgstr "Pokiaľ chceš informačný riadok používateľom zobraziť, musíš ho vyplniť"

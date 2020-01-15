@@ -146,7 +146,7 @@ msgid "Please enter zip code"
 msgstr "Bitte gib die Postleitzahl ein"
 
 msgid "Please select country"
-msgstr ""
+msgstr "Bitte wähle ein Land aus"
 
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 msgstr "Wenn du die Informationsleiste den Benutzern abbilden willst, musst du sie ausfüllen"
