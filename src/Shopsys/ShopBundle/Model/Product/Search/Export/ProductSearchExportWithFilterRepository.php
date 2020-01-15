@@ -23,7 +23,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
      */
     public function getProductsData(int $domainId, string $locale, int $startFrom, int $batchSize): array
     {
-        $queryBuilder = $this->createQueryBuilder($domainId, $locale)
+        $queryBuilder = $this->createQueryBuilder($domainId)
             ->setFirstResult($startFrom)
             ->setMaxResults($batchSize);
 
