@@ -35,6 +35,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportScheduler;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\GoogleApi\GoogleClient;
 use Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView;
@@ -117,6 +118,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface $productParameterValueFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface $productVisibilityFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportScheduler $productSearchExportScheduler
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
@@ -149,6 +151,7 @@ class ProductFacade extends BaseProductFacade
         ProductParameterValueFactoryInterface $productParameterValueFactory,
         ProductVisibilityFactoryInterface $productVisibilityFactory,
         ProductPriceCalculation $productPriceCalculation,
+        ProductSearchExportScheduler $productSearchExportScheduler,
         CurrentCustomer $currentCustomer,
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
@@ -180,7 +183,8 @@ class ProductFacade extends BaseProductFacade
             $productCategoryDomainFactory,
             $productParameterValueFactory,
             $productVisibilityFactory,
-            $productPriceCalculation
+            $productPriceCalculation,
+            $productSearchExportScheduler
         );
 
         $this->currentCustomer = $currentCustomer;
