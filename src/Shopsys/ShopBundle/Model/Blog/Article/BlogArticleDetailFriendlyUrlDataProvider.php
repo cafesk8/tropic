@@ -7,10 +7,10 @@ namespace Shopsys\ShopBundle\Model\Blog\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
-use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\CompilerPass\FriendlyUrlDataProviderInterface;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlData;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlDataFactoryInterface;
+use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlDataProviderInterface;
 
 class BlogArticleDetailFriendlyUrlDataProvider implements FriendlyUrlDataProviderInterface
 {
