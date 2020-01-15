@@ -10,9 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
-use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Exception\ProductIsNotMainVariantException;
@@ -149,12 +147,11 @@ class Product extends BaseProduct
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
      */
-    protected function __construct(ProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, ?array $variants = null)
+    protected function __construct(ProductData $productData, ?array $variants = null)
     {
-        parent::__construct($productData, $productCategoryDomainFactory, $variants);
+        parent::__construct($productData, $variants);
 
         $this->storeStocks = new ArrayCollection();
         $this->transferNumber = $productData->transferNumber;
@@ -171,16 +168,14 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
      */
     public function edit(
-        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        ProductData $productData,
-        ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
+        array $productCategoryDomains,
+        ProductData $productData
     ) {
-        parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
+        parent::edit($productCategoryDomains, $productData);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
@@ -193,15 +188,13 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
-     * @param \Shopsys\ShopBundle\Model\Category\Category[][] $categoriesByDomainId
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
      */
     public function editCategoriesByDomainId(
-        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        array $categoriesByDomainId
+        array $productCategoryDomains
     ): void {
         if (!$this->isVariant()) {
-            $this->setCategories($productCategoryDomainFactory, $categoriesByDomainId);
+            $this->setProductCategoryDomains($productCategoryDomains);
         }
     }
 

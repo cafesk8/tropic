@@ -23,7 +23,7 @@ class ProductFactory extends BaseProductFactory
 
         $classData = $this->entityNameResolver->resolve(Product::class);
 
-        $mainVariant = $classData::createMainVariant($data, $this->productCategoryDomainFactory, $variants);
+        $mainVariant = $classData::createMainVariant($data, $variants);
         $this->setCalculatedAvailabilityIfMissing($mainVariant);
 
         $mainProduct->setMainVariantGroup(null);

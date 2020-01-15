@@ -352,7 +352,8 @@ class ProductFacade extends BaseProductFacade
         }
 
         if ($isSomeCategoryRemoveFromProduct === true) {
-            $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
+            $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $categoriesByDomainId);
+            $product->editCategoriesByDomainId($productCategoryDomains);
         }
     }
 

@@ -234,7 +234,8 @@ class CategoryMassAction implements MassEditActionInterface
             }
         }
 
-        $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
+        $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $categoriesByDomainId);
+        $product->editCategoriesByDomainId($productCategoryDomains);
     }
 
     /**
@@ -255,7 +256,8 @@ class CategoryMassAction implements MassEditActionInterface
         $categoriesByDomainId = $product->getCategoriesIndexedByDomainId();
         foreach ($this->domain->getAllIds() as $domainId) {
             $categoriesByDomainId[$domainId][] = $category;
-            $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
         }
+        $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $categoriesByDomainId);
+        $product->editCategoriesByDomainId($productCategoryDomains);
     }
 }
