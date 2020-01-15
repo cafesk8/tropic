@@ -111,6 +111,8 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->storeStocks = [];
         $productData->generateToHsSportXmlFeed = true;
         $productData->finished = false;
+        $productData->minimumAmount = 1;
+        $productData->amountMultiplier = 1;
     }
 
     /**
@@ -145,5 +147,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->updatedAt = $product->getUpdatedAt();
         $productData->baseName = $product->getBaseName();
         $productData->productType = $product->getProductType();
+        $productData->minimumAmount = $product->getMinimumAmount();
+        $productData->amountMultiplier = $product->getAmountMultiplier();
     }
 }

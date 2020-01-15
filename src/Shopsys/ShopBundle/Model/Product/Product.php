@@ -148,6 +148,20 @@ class Product extends BaseProduct
     protected $productType;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $minimumAmount;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $amountMultiplier;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -168,6 +182,8 @@ class Product extends BaseProduct
         $this->updatedAt = $productData->updatedAt;
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
+        $this->minimumAmount = $productData->minimumAmount;
+        $this->amountMultiplier = $productData->amountMultiplier;
     }
 
     /**
@@ -190,6 +206,8 @@ class Product extends BaseProduct
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
+        $this->minimumAmount = $productData->minimumAmount;
+        $this->amountMultiplier = $productData->amountMultiplier;
     }
 
     /**
@@ -695,5 +713,21 @@ class Product extends BaseProduct
     public function isProductTypeGiftCertificate(): bool
     {
         return in_array($this->productType, self::PRODUCT_TYPES_GIFT_CERTIFICATES, true);
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmountMultiplier(): int
+    {
+        return $this->amountMultiplier;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinimumAmount(): int
+    {
+        return $this->minimumAmount;
     }
 }

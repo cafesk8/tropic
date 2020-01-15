@@ -84,6 +84,16 @@ class ProductData extends BaseProductData
      */
     public $productType;
 
+    /**
+     * @var int
+     */
+    public $minimumAmount;
+
+    /**
+     * @var int
+     */
+    public $amountMultiplier;
+
     public function __construct()
     {
         parent::__construct();
@@ -92,5 +102,7 @@ class ProductData extends BaseProductData
         $this->mallExport = false;
         $this->mallExportedAt = null;
         $this->updatedAt = new DateTime();
+        $this->minimumAmount = 1;
+        $this->amountMultiplier = 1;
     }
 }
