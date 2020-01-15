@@ -142,6 +142,9 @@ msgstr "Alle Suchergebnisse"
 msgid "Amount"
 msgstr "Menge"
 
+msgid "Amount multiples"
+msgstr "Vielfache zum Kauf"
+
 msgid "Ancestor category"
 msgstr "Übergeordnete Kategorie"
 
@@ -1242,6 +1245,12 @@ msgstr "Nachricht"
 
 msgid "Meta description"
 msgstr "Meta-Beschreibung"
+
+msgid "Minimum amount"
+msgstr "Mindestabnahmemenge"
+
+msgid "Minimum quantity and multiples"
+msgstr "Mindestmengen und Vielfache"
 
 msgid "Minimální cena košíku"
 msgstr "Mindestpreis von Warenkorb"

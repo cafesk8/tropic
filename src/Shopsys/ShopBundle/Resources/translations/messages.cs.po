@@ -106,6 +106,9 @@ msgstr "Všechny výsledky hledání"
 msgid "Amount"
 msgstr "Množství"
 
+msgid "Amount multiples"
+msgstr "Násobky pro nákup"
+
 msgid "Ancestor category"
 msgstr "Nadřazená kategorie"
 
@@ -1089,6 +1092,12 @@ msgstr "Vzkaz"
 
 msgid "Meta description"
 msgstr "Meta description"
+
+msgid "Minimum amount"
+msgstr "Minimální množství pro nákup"
+
+msgid "Minimum quantity and multiples"
+msgstr "Minimální množství a násobky"
 
 msgid "Minimální cena košíku"
 msgstr ""
