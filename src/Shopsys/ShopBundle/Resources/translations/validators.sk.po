@@ -10,13 +10,13 @@ msgstr "Názov mesta nesmie byť dlhší ako {{limit}} znakov"
 msgid "Company name cannot be longer than {{ limit }} characters"
 msgstr "Názov spoločnosti nesmie byť dlhší ako {{limit}} znakov"
 
-msgid "Email cannot be longer then {{ limit }} characters"
+msgid "Email cannot be longer than {{ limit }} characters"
 msgstr "E-mail nesmie mať viac ako {{limit}} znakov"
 
 msgid "Externí ID nesmí být delší než {{ limit }} znaků"
 msgstr "Externé ID nesmie byť dlhšie ako {{limit}} znakov"
 
-msgid "First name cannot be longer then {{ limit }} characters"
+msgid "First name cannot be longer than {{ limit }} characters"
 msgstr "Krstné meno nesmie byť dlhšie ako {{limit}} znakov"
 
 msgid "First name of contact person cannot be longer then {{ limit }} characters"
@@ -34,7 +34,7 @@ msgstr "Hodiny musia byť v rozmedzí od 0 do 23"
 msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
 msgstr "Hodnota nemôže byt dlhšia ako {{limit}} znakov"
 
-msgid "Identification number cannot be longer then {{ limit }} characters"
+msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr "Identifikačné číslo nesmie byť dlhšie ako {{limit}} znakov"
 
 msgid "Image can be only in JPG, GIF or PNG format"
@@ -61,7 +61,7 @@ msgstr "Názov nesmie obsahovať viac ako {{limit}} znakov"
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Otváracie hodiny nesmú byť dlhšie ako {{limit}} znakov"
 
-msgid "Password cannot be longer then {{ limit }} characters"
+msgid "Password cannot be longer than {{ limit }} characters"
 msgstr "Heslo nesmie byť dlhšie ako {{limit}} znakov"
 
 msgid "Password cannot be same as e-mail"
