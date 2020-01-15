@@ -1,0 +1,11 @@
+{% extends '@!ShopsysFramework/Admin/Content/Default/index.html.twig' %}
+
+{% block btn %}
+    <a href="{{ url('admin_transferissue_list') }}" class="btn wrap-bar__btn">
+        {{ 'Přehled problémů v přenosech'|trans }}
+        {% set unseenTransferIssuesCount = getUnseenTransferIssuesCount() %}
+        ({% transchoice unseenTransferIssuesCount with {'%count%': unseenTransferIssuesCount} %}
+        {0} žádný nový | {1} 1 nový | [2,4] %count% nové | [5,Inf] %count% nových
+        {% endtranschoice %})
+    </a>
+{% endblock %}

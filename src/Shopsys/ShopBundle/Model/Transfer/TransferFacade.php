@@ -54,6 +54,17 @@ class TransferFacade
 
     /**
      * @param string $identifier
+     * @param \DateTime $lastStartAt
+     */
+    public function resetTransferByTransferId(string $identifier): void
+    {
+        $transfer = $this->transferRepository->getByIdentifier($identifier);
+        $transfer->setLastStartAt(null);
+        $this->em->flush($transfer);
+    }
+
+    /**
+     * @param string $identifier
      * @return bool
      */
     public function isEnabled(string $identifier): bool
@@ -70,5 +81,13 @@ class TransferFacade
     public function getByIdentifier(string $identifier): Transfer
     {
         return $this->transferRepository->getByIdentifier($identifier);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transfer\Transfer[]
+     */
+    public function getAll(): array
+    {
+        return $this->transferRepository->getAll();
     }
 }

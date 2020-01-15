@@ -111,14 +111,14 @@
                                                     <div class="table-cart__cell__discount">
                                                         {% if cartItemDiscounts[index] is not null %}
                                                         &nbsp;{{ promoCode.code }}
-                                                        {{ cartItemDiscounts[index].priceWithVat|price }}
+                                                        -{{ cartItemDiscounts[index].priceWithVat|price }}
                                                         {% endif %}
                                                     </div>
                                                     {% endif %}
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         {% if cartItem.product.id in cartGiftsByProductId|keys %}
                                             {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
                                             <div class="table-cart__gifts">
@@ -131,10 +131,9 @@
                                                             }
                                                         }) }}
                                                         <label class="css-checkbox__image" for="{{ form.chosenGifts[cartItem.product.id][giftVariant.gift.id].vars.id }}">
-                                                            {{ 'Chceš dárek' }}
+                                                            {{ 'Chceš dárek'|trans }}
                                                             {{ giftVariant.gift.name }}
-                                                            {{ productParameters(giftVariant.gift, locale) }}
-                                                            {{ 'v hodnotě' }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }} {{ 'za ' }} {{ giftVariant.price|price }} {{ '?' }}
+                                                            {{ 'v hodnotě'|trans }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }} {{ 'za '|trans }} {{ giftVariant.price|price }} {{ '?' }}
                                                         </label>
                                                     </div>
                                                 {% endfor %}
@@ -144,6 +143,30 @@
                                         {% endif %}
 
                                     {% endfor %}
+                                    {% if promoProducts|length > 0 %}
+                                        <div class="table-cart__gifts--promo">
+                                            <h3>{{ 'Promo produkty k objednávce'|trans }}</h3>
+                                            {% for promoProductByPromoProductId in promoProducts %}
+                                                {% for productId, promoProduct in promoProductByPromoProductId %}
+                                                    <div class="table-cart__gifts__item">
+                                                        {{ form_widget(form.chosenPromoProducts[promoProduct.id][productId], {
+                                                            attr: {
+                                                                class: 'css-checkbox js-cart-take-promo-product',
+                                                                'data-cart-promo-product-id': promoProduct.id,
+                                                                'data-cart-product-id': productId
+                                                            }
+                                                        }) }}
+                                                        <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id][productId].vars.id }}">
+                                                            {{ 'Chceš promo produkt'|trans }}
+                                                            {{ getProductById(productId).name }}
+                                                            {{ 'za zvýhodněnou cenu'|trans }} {{ promoProduct.price|price }}{{ '?' }}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    {% do form.chosenPromoProducts.setRendered %}
                                 </div>
 
                                 {% if isFreeTransportAndPaymentActive %}

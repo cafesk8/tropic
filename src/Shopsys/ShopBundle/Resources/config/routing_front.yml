@@ -1,3 +1,7 @@
+front_healtz:
+    path: /healtz
+    defaults: { _controller: ShopsysShopBundle:Front\Healtz:index }
+
 front_cart_add_product:
     path: /cart/addProduct/
     defaults: { _controller: ShopsysShopBundle:Front\Cart:addProduct }
@@ -180,3 +184,15 @@ front_bushmanshop_redirect:
     defaults: { _controller: ShopsysShopBundle:Front\BushmanShopRedirect:index }
     requirements:
         urlParam: "[\\p{L}\\p{N}/\\s.-]+"
+
+front_order_register_customer:
+    path: /order/register-customer/{orderId}
+    defaults: { _controller: ShopsysShopBundle:Front\Order:registerCustomer }
+    requirements:
+        orderId: \d+
+
+front_login_notice:
+    path: /login/notice
+    defaults: { _controller: ShopsysShopBundle:Front\Login:notice }
+    methods: [POST]
+    condition: "request.isXmlHttpRequest()"

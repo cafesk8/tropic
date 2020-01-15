@@ -20,9 +20,87 @@
         line-height: 30px;
 
         font-size: 18px;
+        color: @color-brown;
 
         &__highlight {
             background: @color-gray;
+        }
+    }
+
+    &__club {
+        margin: 0 auto 50px auto;
+        max-width: 790px;
+        padding: 25px;
+
+        background-color: @color-light;
+        color: @color-brown;
+
+        @media @query-md {
+            padding: 50px 74px;
+        }
+
+        &__title {
+            width: 100%;
+            line-height: 36px;
+            text-align: center;
+            margin-bottom: 30px;
+
+            color: @color-base;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &__text {
+            line-height: 30px;
+            text-align: center;
+            margin-bottom: 38px;
+
+            font-size: 15px;
+        }
+
+        &__form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &__input {
+                margin-bottom: 20px;
+                width: 100%;
+
+                @media @query-lg {
+                    margin-bottom: 0px;
+                    width: calc(~"100% - 210px");
+                }
+
+                .form-line {
+                    flex-direction: column;
+                }
+
+                .form-line__error {
+                    width: 100%;
+                }
+
+                .form-error {
+                    display: block;
+                    transform: none;
+                    top: 0;
+                }
+            }
+
+            &__button-holder {
+                display: flex;
+                align-items: center;
+            }
+
+            &__button {
+                font-size: 18px;
+                padding: 0 28px;
+
+                .domain3 & {
+                    font-size: 16px;
+                }
+            }
         }
     }
 }

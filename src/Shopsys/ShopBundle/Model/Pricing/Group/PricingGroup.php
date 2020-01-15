@@ -88,4 +88,16 @@ class PricingGroup extends BasePricingGroup
     {
         return $this->discount;
     }
+
+    /**
+     * @return int
+     */
+    public function getDiscountPercent(): int
+    {
+        if ($this->discount === null) {
+            return 0;
+        }
+
+        return -(int)(100 - $this->discount * 100);
+    }
 }

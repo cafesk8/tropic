@@ -83,7 +83,22 @@ class OrderData extends BaseOrderData
     /**
      * @var string|null
      */
-    public $personalTakeType;
+    public $transportType;
+
+    /**
+     * @var string|null
+     */
+    public $gtmCoupon;
+
+    /**
+     * @var string|null
+     */
+    public $promoCodeCode;
+
+    /**
+     * @var string|null
+     */
+    public $trackingNumber;
 
     public function __construct()
     {
@@ -91,11 +106,6 @@ class OrderData extends BaseOrderData
         $this->updatedAt = new DateTime();
         $this->statusCheckedAt = new DateTime();
         $this->memberOfBushmanClub = false;
-        $this->personalTakeType = Transport::PERSONAL_TAKE_TYPE_NONE;
+        $this->transportType = Transport::TYPE_NONE;
     }
-
-    /**
-     * @var string|null
-     */
-    public $gtmCoupon;
 }

@@ -36,7 +36,7 @@ class CategoryBlogArticleRepository
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticle[]
      */
-    public function getByCategoryAndDomainId(Category $category, int $domainId): array
+    public function getVisibleByCategoryAndDomainId(Category $category, int $domainId): array
     {
         return $this->getCategoryBlogArticleRepository()
             ->createQueryBuilder('cba')
@@ -45,6 +45,7 @@ class CategoryBlogArticleRepository
             ->join('ba.domains', 'bad')
             ->where('bad.domainId = :domainId')
             ->andWhere('cba.category = :category')
+            ->andWhere('bad.visible = TRUE')
             ->orderBy('cba.position')
             ->setParameter('domainId', $domainId)
             ->setParameter('category', $category)

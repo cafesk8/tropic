@@ -13,6 +13,7 @@ use Shopsys\ShopBundle\Model\Product\Flag\FlagFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Twig\TwigFunction;
 
@@ -44,6 +45,11 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     private $flagFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * ProductExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
@@ -51,6 +57,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @param \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -58,7 +65,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         ParameterFacade $parameterFacade,
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         Domain $domain,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct($categoryFacade, $productCachedAttributesFacade);
 
@@ -66,6 +74,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         $this->freeTransportAndPaymentFacade = $freeTransportAndPaymentFacade;
         $this->domain = $domain;
         $this->flagFacade = $flagFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -87,16 +96,16 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'getProductAdeptPrice']
             ),
             new TwigFunction(
-                'productParameters',
-                [$this, 'getProductParameters']
-            ),
-            new TwigFunction(
                 'getParameterValueById',
                 [$this, 'getParameterValueById']
             ),
             new TwigFunction(
                 'getProductFlagsWithFreeTransportAndPaymentFlag',
                 [$this, 'getProductFlagsWithFreeTransportAndPaymentFlag']
+            ),
+            new TwigFunction(
+                'getProductById',
+                [$this, 'getProductById']
             ),
         ];
     }
@@ -117,26 +126,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
     {
         return $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getProductDisplayName(Product $product)
-    {
-        $productDisplayName = parent::getProductDisplayName($product);
-
-        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getProductListDisplayName(Product $product)
-    {
-        $productDisplayName = parent::getProductListDisplayName($product);
-
-        return $this->addParameterValueToProductDisplayName($product, $productDisplayName);
     }
 
     /**
@@ -171,36 +160,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @param string $locale
-     * @return string
-     */
-    public function getProductParameters(Product $product, string $locale): string
-    {
-        $parametersForProduct = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product, $locale);
-
-        if ($parametersForProduct === null) {
-            return '';
-        }
-
-        $parameters = [];
-
-        if ($parametersForProduct->getFirstDistinguishingParameterValue() !== null) {
-            $parameters[] = sprintf('%s: %s', $parametersForProduct->getFirstDistinguishingParameterName(), $parametersForProduct->getFirstDistinguishingParameterValue());
-        }
-
-        if ($parametersForProduct->getSecondDistinguishingParameterValue() !== null) {
-            $parameters[] = sprintf('%s: %s', $parametersForProduct->getSecondDistinguishingParameterName(), $parametersForProduct->getSecondDistinguishingParameterValue());
-        }
-
-        if (count($parameters) === 0) {
-            return '';
-        }
-
-        return sprintf('(%s)', implode(', ', $parameters));
-    }
-
-    /**
      * @param int $id
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
      */
@@ -228,5 +187,14 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return $productFlagsIndexedByPosition;
+    }
+
+    /**
+     * @param int $productId
+     * @return \Shopsys\ShopBundle\Model\Product\Product
+     */
+    public function getProductById(int $productId): Product
+    {
+        return $this->productFacade->getById($productId);
     }
 }

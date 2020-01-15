@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Model\Cart\CartFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer;
@@ -70,6 +71,11 @@ class TransportAndPaymentFormType extends AbstractType
     private $countryFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Cart\CartFacade
+     */
+    private $cartFacade;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
@@ -78,6 +84,7 @@ class TransportAndPaymentFormType extends AbstractType
      * @param \Shopsys\ShopBundle\Model\Store\StoreIdToEntityTransformer $storeIdToEntityTransformer
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      */
     public function __construct(
         TransportFacade $transportFacade,
@@ -87,7 +94,8 @@ class TransportAndPaymentFormType extends AbstractType
         PickupPlaceIdToEntityTransformer $pickupPlaceIdToEntityTransformer,
         StoreIdToEntityTransformer $storeIdToEntityTransformer,
         Domain $domain,
-        CountryFacade $countryFacade
+        CountryFacade $countryFacade,
+        CartFacade $cartFacade
     ) {
         $this->transportFacade = $transportFacade;
         $this->paymentFacade = $paymentFacade;
@@ -97,6 +105,7 @@ class TransportAndPaymentFormType extends AbstractType
         $this->storeIdToEntityTransformer = $storeIdToEntityTransformer;
         $this->domain = $domain;
         $this->countryFacade = $countryFacade;
+        $this->cartFacade = $cartFacade;
     }
 
     /**
@@ -108,7 +117,14 @@ class TransportAndPaymentFormType extends AbstractType
         $country = $this->countryFacade->getHackedCountry();
 
         $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
-        $transports = $this->transportFacade->getVisibleByDomainIdAndCountry($options['domain_id'], $payments, $country);
+
+        $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
+        $transports = $this->transportFacade->getVisibleByDomainIdAndCountryAndTransportEmailType(
+            $options['domain_id'],
+            $payments,
+            $country,
+            $showEmailTransportInCart
+        );
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);
 

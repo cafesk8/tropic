@@ -102,6 +102,10 @@ class RouteConfigCustomization
                 if ($this->isSingleDomain()) {
                     $config->skipRoute('Domain list in administration is not available when only 1 domain exists.');
                 }
+            })
+            ->customizeByRouteName('admin_accessdenied_accessdenied', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('This route serves as "access_denied_url" (see security.yml) and always redirects to a referer (or dashboard).')
+                    ->setExpectedStatusCode(302);
             });
     }
 
@@ -160,7 +164,7 @@ class RouteConfigCustomization
             ->customize(function (RouteConfig $config, RouteInfo $info) {
                 if (preg_match('~^admin_(superadmin_|translation_list$)~', $info->getRouteName())) {
                     $config->changeDefaultRequestDataSet('Only superadmin should be able to see this route.')
-                        ->setExpectedStatusCode(404);
+                        ->setExpectedStatusCode(302);
                     $config->addExtraRequestDataSet('Should be OK when logged in as "superadmin".')
                         ->setAuth(new BasicHttpAuth('superadmin', 'admin123'))
                         ->setExpectedStatusCode(200);
@@ -180,7 +184,7 @@ class RouteConfigCustomization
             })
             ->customizeByRouteName('admin_administrator_edit', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Standard admin is not allowed to edit superadmin (with ID 1)')
-                    ->setExpectedStatusCode(404);
+                    ->setExpectedStatusCode(302);
                 $config->addExtraRequestDataSet('Superadmin can edit superadmin')
                     ->setAuth(new BasicHttpAuth('superadmin', 'admin123'))
                     ->setExpectedStatusCode(200);
@@ -256,6 +260,10 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Promocode with prefix mass delete')
                     ->setParameter('prefix', PromoCodeDataFixture::PROMO_CODE_PREFIX_SUMMER)
                     ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName('admin_transferissue_detailedlist', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Message parameter is required')
+                    ->setParameter('message', 'Test message');
             });
     }
 
@@ -279,15 +287,15 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->setExpectedStatusCode(302);
             })
+            ->customizeByRouteName(['front_order_register_customer'], function (RouteConfig $config) {
+                $debugNote = 'Registration on 4th order step should redirect by 302 because this action processes form.';
+                $config->changeDefaultRequestDataSet($debugNote)
+                    ->setExpectedStatusCode(302);
+            })
             ->customizeByRouteName(['front_order_paid', 'front_order_not_paid'], function (RouteConfig $config) {
                 $debugNote = 'Order paid and not paid URLs needs urlHash as parameter.';
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->setParameter('urlHash', 'notExistingUrlHash')
-                    ->setExpectedStatusCode(302);
-            })
-            ->customizeByRouteName(['front_order_gopay_status_notify'], function (RouteConfig $config) {
-                $debugNote = 'Order with GoPay payment notify action is redirected.';
-                $config->changeDefaultRequestDataSet($debugNote)
                     ->setExpectedStatusCode(302);
             })
             ->customizeByRouteName('front_logout', function (RouteConfig $config) {
@@ -312,7 +320,7 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Use ID 1 as default brand.')
                     ->setParameter('id', 1);
             })
-            ->customizeByRouteName('front_customer_order_detail_unregistered', function (RouteConfig $config) {
+            ->customizeByRouteName(['front_customer_order_detail_unregistered', 'front_order_repeat_gopay_payment'], function (RouteConfig $config) {
                 /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
                 $order = $this->getPersistentReference(OrderDataFixture::ORDER_PREFIX . '1');
 

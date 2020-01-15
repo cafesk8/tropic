@@ -84,7 +84,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         return [
             'no-filter' => $this->categoryNoFilterTestCase(),
             'one-flag' => $this->categoryOneFlagTestCase(),
-            'one-brand' => $this->categoryOneBrandTestCase(),
+            'two-brands' => $this->categoryTwoBrandsTestCase(),
             'all-flags-all-brands' => $this->categoryAllFlagsAllBrandsTestCase(),
             'price' => $this->categoryPriceTestCase(),
             'stock' => $this->categoryStockTestCase(),
@@ -147,6 +147,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $countData->countByBrandId = [
             2 => 6,
             14 => 2,
+            25 => 2,
         ];
         $countData->countByFlagId = [
             1 => 5,
@@ -256,7 +257,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
     /**
      * @return array
      */
-    private function categoryOneBrandTestCase(): array
+    private function categoryTwoBrandsTestCase(): array
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
         $filterData = new ProductFilterData();
@@ -269,6 +270,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         ];
         $countData->countByBrandId = [
             14 => 2,
+            25 => 2,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
@@ -325,6 +327,9 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
 
         $countData = new ProductFilterCountData();
         $countData->countInStock = 4;
+        $countData->countByBrandId = [
+            25 => 1,
+        ];
         $countData->countByParameterIdAndValueId = [
             32 => [
                 7 => 4,
@@ -381,6 +386,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
         $countData->countByBrandId = [
             2 => 4,
             14 => 2,
+            25 => 2,
         ];
         $countData->countByFlagId = [
             1 => 4,

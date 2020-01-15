@@ -87,4 +87,43 @@ class CustomerDataFactory extends BaseCustomerDataFactory
 
         return $deliveryAddressData;
     }
+
+    /**
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     */
+    public function createForDomainId(int $domainId): CustomerData
+    {
+        return new CustomerData(
+            $this->billingAddressDataFactory->create(),
+            $this->deliveryAddressDataFactory->create(),
+            $this->userDataFactory->createForDomainId($domainId)
+        );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param string $newPassword
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     */
+    public function createFromOrder(Order $order, string $newPassword, int $domainId): CustomerData
+    {
+        $userData = $this->userDataFactory->createUserDataFromOrder($order, $newPassword, $domainId);
+
+        $deliveryAddressData = $this->deliveryAddressDataFactory->create();
+        $billingAddressData = null;
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
+        $transport = $order->getTransport();
+
+        if ($transport->isPickupPlaceType() === false) {
+            $deliveryAddressData = $this->deliveryAddressDataFactory->createFromOrder($order);
+        }
+
+        if ($order->isDeliveryAddressSameAsBillingAddress() === false) {
+            $billingAddressData = $this->billingAddressDataFactory->createFromOrder($order);
+        }
+
+        return new CustomerData($billingAddressData, $deliveryAddressData, $userData);
+    }
 }

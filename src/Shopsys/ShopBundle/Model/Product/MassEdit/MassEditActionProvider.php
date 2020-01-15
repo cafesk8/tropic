@@ -6,8 +6,8 @@ namespace Shopsys\ShopBundle\Model\Product\MassEdit;
 
 use Shopsys\ShopBundle\Model\Product\MassEdit\Action\CategoryMassAction;
 use Shopsys\ShopBundle\Model\Product\MassEdit\Action\FlagsMassAction;
-use Shopsys\ShopBundle\Model\Product\MassEdit\Action\GiftMassAction;
 use Shopsys\ShopBundle\Model\Product\MassEdit\Action\HiddenMassAction;
+use Shopsys\ShopBundle\Model\Product\MassEdit\Action\ProductParameterMassAction;
 
 class MassEditActionProvider
 {
@@ -20,19 +20,19 @@ class MassEditActionProvider
      * @param \Shopsys\ShopBundle\Model\Product\MassEdit\Action\HiddenMassAction $hiddenMassAction
      * @param \Shopsys\ShopBundle\Model\Product\MassEdit\Action\FlagsMassAction $flagsMassAction
      * @param \Shopsys\ShopBundle\Model\Product\MassEdit\Action\CategoryMassAction $categoryMassAction
-     * @param \Shopsys\ShopBundle\Model\Product\MassEdit\Action\GiftMassAction $giftMassAction
+     * @param \Shopsys\ShopBundle\Model\Product\MassEdit\Action\ProductParameterMassAction $productParameterMassAction
      * @throws \Shopsys\ShopBundle\Model\Product\MassEdit\Exception\MassEditActionAlreadyExistsException
      */
     public function __construct(
         HiddenMassAction $hiddenMassAction,
         FlagsMassAction $flagsMassAction,
         CategoryMassAction $categoryMassAction,
-        GiftMassAction $giftMassAction
+        ProductParameterMassAction $productParameterMassAction
     ) {
         $this->registerAction($hiddenMassAction);
         $this->registerAction($flagsMassAction);
         $this->registerAction($categoryMassAction);
-        $this->registerAction($giftMassAction);
+        $this->registerAction($productParameterMassAction);
     }
 
     /**

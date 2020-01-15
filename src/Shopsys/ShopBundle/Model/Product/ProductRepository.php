@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -153,6 +157,22 @@ class ProductRepository extends BaseProductRepository
     /**
      * @param int $limit
      * @param int $page
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getWithCatnumQueryBuilder(int $limit, int $page): QueryBuilder
+    {
+        $offset = $limit * $page;
+
+        return $this->getProductQueryBuilder()
+            ->where('p.catnum IS NOT NULL')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->orderBy('p.id', 'ASC');
+    }
+
+    /**
+     * @param int $limit
+     * @param int $page
      * @return array
      */
     public function getWithEan(int $limit, int $page): array
@@ -165,9 +185,9 @@ class ProductRepository extends BaseProductRepository
      * @param int $page
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getMainVariantsWithEan(int $limit, int $page): array
+    public function getMainVariantsWithCatnum(int $limit, int $page): array
     {
-        return $this->getWithEanQueryBuilder($limit, $page)
+        return $this->getWithCatnumQueryBuilder($limit, $page)
             ->andWhere('p.variantType = :mainVariantType')
             ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->getQuery()->getResult();
@@ -185,8 +205,8 @@ class ProductRepository extends BaseProductRepository
         $queryBuilder = $this->getAllVisibleQueryBuilder($domainConfig->getId(), $pricingGroup)
             ->addSelect('v')->join('p.vat', 'v')
             ->addSelect('b')->leftJoin('p.brand', 'b')
-            ->andWhere('p.variantType = :variantTypeMain')
-            ->setParameter('variantTypeMain', Product::VARIANT_TYPE_MAIN)
+            ->andWhere('p.variantType IN (:variantTypes)')
+            ->setParameter('variantTypes', [Product::VARIANT_TYPE_MAIN, Product::VARIANT_TYPE_NONE])
             ->andWhere('p.calculatedSellingDenied = false')
             ->andWhere('p.generateToHsSportXmlFeed = true')
             ->orderBy('p.id', 'asc')
@@ -302,10 +322,115 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
+     * @param string $parameterType
+     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllMainVariantProducts(): array
+    public function getAllMainVariantProductsWithoutSkOrDeParameters(string $parameterType, int $limit): array
     {
-        return $this->getProductRepository()->findBy(['variantType' => Product::VARIANT_TYPE_MAIN]);
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('IDENTITY(ppv.product) as id')
+            ->from(ProductParameterValue::class, 'ppv')
+            ->join(Parameter::class, 'p', Join::WITH, 'ppv.parameter = p.id AND p.type = :parameterType')
+            ->setParameter('parameterType', $parameterType)
+            ->groupBy('ppv.product, ppv.parameter')
+            ->having('COUNT(IDENTITY(ppv)) < 3')
+            ->setMaxResults($limit);
+
+        $productIdsInArray = $queryBuilder->getQuery()->getScalarResult();
+        $productIds = array_column($productIdsInArray, 'id');
+
+        return $this->findByIds($productIds);
+    }
+
+    /**
+     * @param array $productIds
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    private function findByIds(array $productIds): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('p')
+            ->from(Product::class, 'p')
+            ->andWhere('p.id IN(:productIds)')
+            ->setParameter('productIds', $productIds)
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return array
+     */
+    public function getMainVariantIdsWithDifferentPrice(int $domainId, PricingGroup $pricingGroup): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('main_variant_id', 'mainVariantId');
+        $resultSetMapping->addScalarResult('default_price', 'defaultPrice');
+
+        $queryBuilder = $this->em->createNativeQuery(
+            'SELECT 
+                    p.main_variant_id as main_variant_id,
+                    (
+                        SELECT sub_ip.input_price
+                        FROM products sub_p
+                        JOIN product_manual_input_prices sub_ip ON sub_ip.product_id = sub_p.id AND sub_ip.pricing_group_id = :pricingGroup
+                        JOIN product_visibilities sub_pv ON sub_p.id = sub_pv.product_id AND sub_pv.pricing_group_id = :pricingGroup AND sub_pv.domain_id = :domainId
+                        WHERE p.main_variant_id = sub_p.main_variant_id 
+                        AND sub_pv.visible = true
+                        GROUP BY sub_ip.input_price
+                        ORDER BY COUNT(*) DESC, sub_ip.input_price DESC
+                        LIMIT 1
+                    ) as default_price
+                FROM products p
+                JOIN product_manual_input_prices ip ON ip.product_id = p.id AND ip.pricing_group_id = :pricingGroup
+                JOIN product_visibilities pv ON p.id = pv.product_id AND pv.pricing_group_id = :pricingGroup AND pv.domain_id = :domainId
+                WHERE p.main_variant_id IS NOT NULL
+                AND pv.visible = true
+                GROUP BY p.main_variant_id
+                HAVING COUNT(DISTINCT ip.input_price) > 1',
+            $resultSetMapping
+        );
+
+        $queryBuilder->setParameters([
+            'pricingGroup' => $pricingGroup,
+            'domainId' => $domainId,
+        ]);
+
+        return $queryBuilder->getResult();
+    }
+
+    /**
+     * @param int $mainVariantId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $defaultPrice
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsWithDifferentPriceForMainVariant(int $mainVariantId, Money $defaultPrice, PricingGroup $pricingGroup): array
+    {
+        $variantsToHide = $this->getProductRepository()->createQueryBuilder('p')
+            ->join(ProductManualInputPrice::class, 'pmip', Join::WITH, 'pmip.product = p.id AND pmip.pricingGroup = :pricingGroup')
+            ->where('p.mainVariant = :mainVariant')
+            ->andWhere('pmip.inputPrice != :defaultInputPrice')
+            ->setParameters([
+                'mainVariant' => $mainVariantId,
+                'pricingGroup' => $pricingGroup,
+                'defaultInputPrice' => $defaultPrice->getAmount(),
+            ])->getQuery()->getResult();
+
+        return $variantsToHide;
+    }
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getMainVariantsWithEan(int $limit, int $page): array
+    {
+        return $this->getWithEanQueryBuilder($limit, $page)
+            ->andWhere('p.variantType = :mainVariantType')
+            ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
+            ->getQuery()->getResult();
     }
 }

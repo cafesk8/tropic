@@ -1,6 +1,8 @@
 {% block footer %}
     <div class="footer">
         {% block footer__links %}
+            {% set domainId = getDomain().id %}
+
             <div class="web__line">
                 <div class="web__container web__container--dark web__container--border-radius-bottom">
                     <div class="footer-top">
@@ -35,7 +37,7 @@
                             </div>
                             <div class="footer-top__contact">
                                 <div class="box-contact">
-                                    <div class="box-contact__block">
+                                    <div class="box-contact__block box-contact__block--white-text">
                                         <div class="box-contact__block__text">
                                             <i class="svg svg-phone"></i>
                                             {{ 'Volejte na '|trans }}
@@ -47,7 +49,7 @@
                                             {{ getShopInfoPhoneHours() }}
                                         </div>
                                     </div>
-                                    <div class="box-contact__block">
+                                    <div class="box-contact__block box-contact__block--white-text">
                                         <div class="box-contact__block__text">
                                             <i class="svg svg-mail"></i>
                                             <a class="box-contact__block__text__link" href="mailto:{{ getShopInfoEmail() }}" class="underline">{{ getShopInfoEmail() }}</a>

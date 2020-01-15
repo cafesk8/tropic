@@ -76,7 +76,7 @@ class OrderExportMapper
             'ShippingPrice' => $order->getTransportAndPaymentPrice()->getPriceWithVat()->getAmount(),
             'PaymentMetod' => $order->getPayment()->getExternalId() ?? $order->getPaymentName(),
             'ShippingMetod' => $this->getShippingMethodPropertyContent($order),
-            'CustomerNote' => $order->getNote(),
+            'CustomerNote' => $this->getCustomerNote($order),
         ];
 
         if ($order->isDeliveryAddressSameAsBillingAddress() === false && $order->getStoreExternalNumber() === null) {
@@ -108,6 +108,20 @@ class OrderExportMapper
         }
 
         return $headerArray;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return string|null
+     */
+    private function getCustomerNote(Order $order): ?string
+    {
+        $customerNote = $order->getNote();
+        if ($order->getPromoCodeCode() !== null) {
+            $customerNote = 'Kód slevového kupónu: ' . $order->getPromoCodeCode() . "\n\n" . $customerNote;
+        }
+
+        return $customerNote;
     }
 
     /**
@@ -182,15 +196,20 @@ class OrderExportMapper
     private function prepareItems(Order $order): array
     {
         $orderItems = [];
-        $items = array_merge($order->getProductItems(), $order->getGiftItems(), $order->getGiftCertificationItems());
+        $items = array_merge(
+            $order->getProductItems(),
+            $order->getGiftItems(),
+            $order->getGiftCertificationItems(),
+            $order->getPromoProductItems()
+        );
 
         /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item */
         foreach ($items as $item) {
             $orderItems[] = [
                 'BarCode' => $item->getEan(),
                 'Name' => $item->getName(),
-                'Quantity' => $item->getQuantity(),
-                'FullPrice' => $item->getPriceWithVat()->getAmount(),
+                'Quantity' => $item->isTypeGiftCertification() ? ($item->getQuantity() * -1) : $item->getQuantity(), // If item is Gift certification we need to send negative quantity
+                'FullPrice' => $this->getOrderItemFullPrice($item),
                 'Discount' => $this->getOrderItemDiscount($item),
             ];
         }
@@ -213,5 +232,18 @@ class OrderExportMapper
         }
 
         return '0.0';
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $item
+     * @return string
+     */
+    private function getOrderItemFullPrice(OrderItem $item): string
+    {
+        if ($item->isTypeGiftCertification() && $item->getPriceWithVat()->isNegative()) {
+            return $item->getPriceWithVat()->multiply(-1)->getAmount();
+        }
+
+        return $item->getPriceWithVat()->getAmount();
     }
 }

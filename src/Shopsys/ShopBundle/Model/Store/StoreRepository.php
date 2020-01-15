@@ -107,6 +107,7 @@ class StoreRepository
     {
         $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
         $queryBuilder->andWhere('s.pickupPlace = true');
+        $queryBuilder->orderBy('s.position, s.name', 'asc');
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -173,5 +174,13 @@ class StoreRepository
         ksort($storesIndexedByRegion);
         $storesIndexedByRegion[''] = $storesWithoutRegion;
         return $storesIndexedByRegion;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Store\Store|null
+     */
+    public function findCentralStore(): ?Store
+    {
+        return $this->getStoreRepository()->findOneBy(['centralStore' => true]);
     }
 }

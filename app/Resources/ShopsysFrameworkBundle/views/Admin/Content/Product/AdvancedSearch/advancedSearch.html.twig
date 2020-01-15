@@ -1,0 +1,28 @@
+{{ form_start(advancedSearchForm) }}
+    <div id="js-advanced-search-rules-box" class="box-advanced-search">
+        <div id="js-advanced-search-rules-container" data-rule-form-url="{{ url('admin_product_getruleform') }}">
+            {% include '@ShopsysFramework/Admin/Content/Product/AdvancedSearch/ruleForm.html.twig' with {rulesForm: advancedSearchForm} %}
+        </div>
+        <div class="box-advanced-search__line">
+            <input type="submit" value="{{ 'Search [verb]'|trans }}" class="btn btn--medium">
+        </div>
+        <div class="box-advanced-search__line box-advanced-search__line--dark">
+            <button type="button" class="in-iconic-link in-iconic-link--add" id="js-advanced-search-add-rule-button">
+                <i class="svg svg-circle-plus"></i>
+                {{ 'Add requirement'|trans }}
+            </button>
+
+            <a href="{{ url('admin_product_list') }}" class="in-iconic-link">
+                <i class="svg svg-circle-cross"></i>
+                {{ 'Reset filter'|trans }}
+            </a>
+        </div>
+    </div>
+    {% if isMultiple is defined and isMultiple is same as (true) %}
+        <br>
+        <div class="js-product-picker-all" data-js-instance-id="{{ jsInstanceId }}">
+            <span class="btn js-product-picker-add-all">{{ 'Přidat všechny položky z níže vyhledaných a zavřít'|trans }}</span>
+            <span class="btn js-product-picker-remove-all">{{ 'Odebrat všechny položky z níže vyhledaných a zavřít'|trans }}</span>
+        </div>
+    {% endif %}
+{{ form_end(advancedSearchForm) }}

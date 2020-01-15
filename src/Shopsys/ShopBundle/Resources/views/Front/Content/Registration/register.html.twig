@@ -16,30 +16,30 @@
             {{ form_start(form) }}
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.firstName, { label: 'First name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
+                        {{ form_row(form.userData.firstName, { label: 'First name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.lastName, { label: 'Last name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
+                        {{ form_row(form.userData.lastName, { label: 'Last name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
                     </div>
                 </div>
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">
                             <div class="form-line__input form-line__input--full">
-                                <label class="input__label" for="{{ form.email.vars.id }}">
+                                <label class="input__label" for="{{ form.userData.email.vars.id }}">
                                     {{ 'E-mail'|trans }}
                                 </label>
-                                {{ form_widget(form.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
+                                {{ form_widget(form.userData.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
                             </div>
                             <div class="form-line__error">
-                                {{ form_errors(form.email, {errors_attr: { class: 'form-error--under' }}) }}
+                                {{ form_errors(form.userData.email, {errors_attr: { class: 'form-error--under' }}) }}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.password.first, {
+                        {{ form_row(form.userData.password.first, {
                             label: 'Password'|trans,
                             attr: { class: 'form-line__input--full'},
                             errors_attr: { class: 'form-error--under' },
@@ -50,30 +50,59 @@
                         }) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.password.second, { label: 'Password again'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
+                        {{ form_row(form.userData.password.second, { label: 'Password again'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                 </div>
-                {#
-                    TODO HIDDEN: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-38287
 
-                    <div class="wrap-article__row">
-                        <div class="wrap-article__row__full">
-                            <div class="form-line">
-                                {{ form_widget(form.memberOfBushmanClub, { attr: {class: 'css-checkbox'}}) }}
-                                <label class="css-checkbox__image" for="{{ form.memberOfBushmanClub.vars.id }}">
-                                    {% if bushmanClubArticle is not null %}
-                                        {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
-                                        {{ 'Chci být členem <a href="%url%" target="_blank">Bushman Clubu</a>.'|trans({'%url%': articleUrl})|raw }}
-                                    {% else %}
-                                        {{ 'Chci být členem Bushman Clubu'|trans }}
-                                    {% endif %}
-                                </label>
-                            </div>
+                <div class="wrap-article__row">
+                    <div class="wrap-article__row__full">
+                        <div class="form-line">
+                            {{ form_widget(form.userData.memberOfBushmanClub, { attr: {class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-fields' }}) }}
+                            <label class="css-checkbox__image" for="{{ form.userData.memberOfBushmanClub.vars.id }}">
+                                {% if bushmanClubArticle is not null %}
+                                    {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
+                                    {{ 'Chci být členem <a href="%url%" target="_blank"><span class="underline-small">Věrnostního programu</span></a>.'|trans({'%url%': articleUrl})|raw }}
+                                {% else %}
+                                    {{ 'Chci být členem Věrnostního programu'|trans }}
+                                {% endif %}
+                            </label>
                         </div>
                     </div>
-                #}
-                {% do form.memberOfBushmanClub.setRendered %}
-                
+                </div>
+                <div id="js-delivery-fields">
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.deliveryAddressData.companyName, { label: 'Company name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
+                        </div>
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.deliveryAddressData.street, { label: 'Street'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
+                        </div>
+                    </div>
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
+                        </div>
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
+                        </div>
+                    </div>
+                    {% if form.deliveryAddressData.country is defined %}
+                        <div class="wrap-article__row__full">
+                            <div class="form-line">
+                                <div class="form-line__input form-line__input--full">
+                                    <label class="input__label" for="{{ form.deliveryAddressData.country.vars.id }}">
+                                        {{ 'Country'|trans }}
+                                    </label>
+                                    {{ form_widget(form.deliveryAddressData.country) }}
+                                </div>
+                                <div class="form-line__error">
+                                    {{ form_errors(form.deliveryAddressData.country, {errors_attr: { class: 'form-error--under' }}) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">

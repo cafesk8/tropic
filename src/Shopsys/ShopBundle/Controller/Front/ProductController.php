@@ -117,7 +117,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface $productOnCurrentDomainFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
@@ -200,7 +200,7 @@ class ProductController extends FrontBaseController
             'accessories' => $accessories,
             'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
-            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleProductCategoryDomains($product, $domainId),
+            'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
             'mainVariants' => $mainVariantGroupProducts,
             'youtubeDetailForMainVariants' => $youtubeDetailForMainVariants,
             'domainId' => $domainId,
@@ -227,7 +227,7 @@ class ProductController extends FrontBaseController
 
         $this->gtmFacade->onProductListByCategoryPage($category);
 
-        $visibleChildren = $this->categoryFacade->getAllVisibleChildrenByCategoryAndDomainId($category, $this->domain->getId());
+        $visibleChildren = $this->categoryFacade->getAllVisibleAndListableChildrenByCategoryAndDomainId($category, $this->domain->getId());
 
         if ($category->isPreListingCategory()) {
             return $this->render('@ShopsysShop/Front/Content/Product/preListingCategoryList.html.twig', [
@@ -399,7 +399,7 @@ class ProductController extends FrontBaseController
      */
     private function searchCategories($searchText)
     {
-        return $this->categoryFacade->getVisibleByDomainAndSearchText(
+        return $this->categoryFacade->getVisibleAndListableByDomainAndSearchText(
             $this->domain->getId(),
             $this->domain->getLocale(),
             $searchText

@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Order;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Utils\Utils;
@@ -26,6 +27,7 @@ use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusExcepti
 use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 use Shopsys\ShopBundle\Model\Transport\Transport;
@@ -34,6 +36,7 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
  * @ORM\Table(name="orders")
  * @ORM\Entity
  *
+ * @property \Shopsys\ShopBundle\Model\Transport\Transport $transport
  * @method \Shopsys\ShopBundle\Model\Transport\Transport getTransport()
  * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
  * @method \Shopsys\ShopBundle\Model\Country\Country getCountry()
@@ -262,7 +265,21 @@ class Order extends BaseOrder
      *
      * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $personalTakeType;
+    private $transportType;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $promoCodeCode;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $trackingNumber;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
@@ -319,6 +336,8 @@ class Order extends BaseOrder
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
+        $this->promoCodeCode = $orderData->promoCodeCode;
+        $this->trackingNumber = $orderData->trackingNumber;
     }
 
     /**
@@ -349,6 +368,8 @@ class Order extends BaseOrder
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupon = $orderData->gtmCoupon;
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
+        $this->promoCodeCode = $orderData->promoCodeCode;
+        $this->trackingNumber = $orderData->trackingNumber;
 
         return $orderEditResult;
     }
@@ -583,9 +604,9 @@ class Order extends BaseOrder
     /**
      * @return string
      */
-    public function getPersonalTakeType(): string
+    public function getTransportType(): string
     {
-        return $this->personalTakeType;
+        return $this->transportType;
     }
 
     /**
@@ -696,6 +717,69 @@ class Order extends BaseOrder
         }
 
         return $giftItems;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]
+     */
+    public function getPromoProductItems()
+    {
+        $promoProductItems = [];
+        foreach ($this->items as $item) {
+            if ($item->isTypePromoProduct()) {
+                $promoProductItems[] = $item;
+            }
+        }
+
+        return $promoProductItems;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function fillOrderPromoProducts(OrderPreview $orderPreview, OrderItemFactoryInterface $orderItemFactory, Domain $domain): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $promoProductCartItem */
+        foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
+            $product = $promoProductCartItem->getProduct();
+            $promoProduct = $promoProductCartItem->getPromoProduct();
+
+            if (!$product instanceof Product) {
+                $message = 'Object "' . get_class($product) . '" is not valid for order creation.';
+                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
+            }
+
+            if (!$promoProduct instanceof PromoProduct) {
+                $message = 'Object "' . get_class($promoProduct) . '" is not valid for order creation.';
+                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
+            }
+
+            if (!$orderItemFactory instanceof OrderItemFactory) {
+                $message = 'Object "' . get_class($orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
+                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
+            }
+
+            $promoProductOrderItemPrice = new Price($promoProductCartItem->getWatchedPrice(), $promoProductCartItem->getWatchedPrice());
+            $promoProductOrderItemTotalPrice = new Price(
+                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity()),
+                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity())
+            );
+
+            $orderItemFactory->createPromoProduct(
+                $this,
+                $product->getName($domain->getLocale()),
+                $promoProductOrderItemPrice,
+                $product->getVat()->getPercent(),
+                $promoProductCartItem->getQuantity(),
+                $product->getUnit()->getName($domain->getLocale()),
+                $product->getCatnum(),
+                $product,
+                $promoProductOrderItemTotalPrice,
+                $promoProduct
+            );
+        }
     }
 
     /**
@@ -840,10 +924,24 @@ class Order extends BaseOrder
      */
     public function isPersonalTakeType(): bool
     {
-        return in_array($this->personalTakeType, [
-            Transport::PERSONAL_TAKE_TYPE_BALIKOBOT,
-            Transport::PERSONAL_TAKE_TYPE_STORE,
+        return in_array($this->transportType, [
+            Transport::TYPE_PERSONAL_TAKE_BALIKOBOT,
+            Transport::TYPE_PERSONAL_TAKE_STORE,
         ], true);
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
+     */
+    public function getPreparedProductItems(): array
+    {
+        return array_filter(
+            $this->items->toArray(),
+            function (OrderItem $orderItem) {
+                /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem */
+                return $orderItem->isTypeProduct() === true && $orderItem->getPreparedQuantity() > 0;
+            }
+        );
     }
 
     /**
@@ -859,12 +957,60 @@ class Order extends BaseOrder
             return;
         }
 
-        $this->personalTakeType = $transport->getPersonalTakeType();
+        $this->transportType = $transport->getTransportType();
         if ($transport->isPickupPlace() === true) {
             $this->pickupPlace = $orderData->pickupPlace;
         } elseif ($transport->isChooseStore() === true && $orderData->store !== null) {
             $this->store = $orderData->store;
             $this->storeExternalNumber = $this->store->getExternalNumber();
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPromoCodeCode(): ?string
+    {
+        return $this->promoCodeCode;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User $customer
+     */
+    public function setCustomer(User $customer): void
+    {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTrackingNumber(): ?string
+    {
+        return $this->trackingNumber;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTrackingUrl(): ?string
+    {
+        if ($this->trackingNumber !== null && $this->transport->getTrackingUrlPattern() !== null) {
+            return sprintf($this->transport->getTrackingUrlPattern(), $this->trackingNumber);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isGopayPaid(): ?bool
+    {
+        if ($this->goPayId === null) {
+            return null;
+        }
+
+        return $this->goPayStatus === PaymentStatus::PAID;
     }
 }

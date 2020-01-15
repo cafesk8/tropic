@@ -1,5 +1,5 @@
 {% block header %}
-
+    {% set domainId = getDomain().id %}
     {% set shopInfoPhoneNumber = getShopInfoPhoneNumber() %}
     {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
     {% set shopInfoEmail = getShopInfoEmail() %}
@@ -38,11 +38,13 @@
                             </a>
                         </li>
                     {% endif %}
-                    <li class="top-bar__menu__item">
-                        <a href="{{ url('front_store_index') }}" class="top-bar__menu__item__link">
-                            {{ 'Prodejny'|trans }}
-                        </a>
-                    </li>
+                    {% if domainId != 3 %}
+                        <li class="top-bar__menu__item">
+                            <a href="{{ url('front_store_index') }}" class="top-bar__menu__item__link">
+                                {{ 'Prodejny'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

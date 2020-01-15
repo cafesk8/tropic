@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecur
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper;
@@ -270,7 +271,7 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @return \Shopsys\FrameworkBundle\Model\Order\Order
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
@@ -278,6 +279,10 @@ class OrderFacade extends BaseOrderFacade
         $enteredValidPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
         $this->gtmHelper->amendGtmCouponToOrderData($orderData, $enteredValidPromoCode, $orderPreview);
+
+        if ($enteredValidPromoCode !== null) {
+            $orderData->promoCodeCode = $enteredValidPromoCode->getCode();
+        }
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
@@ -361,6 +366,7 @@ class OrderFacade extends BaseOrderFacade
         parent::fillOrderItems($order, $orderPreview);
 
         $order->fillOrderGifts($orderPreview, $this->orderItemFactory, $this->productGiftPriceCalculation, $this->domain);
+        $order->fillOrderPromoProducts($orderPreview, $this->orderItemFactory, $this->domain);
 
         $promoCode = $orderPreview->getPromoCode();
         if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
@@ -408,15 +414,17 @@ class OrderFacade extends BaseOrderFacade
     /**
      * @param int $orderId
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
+     * @param string|null $locale
      * @return \Shopsys\ShopBundle\Model\Order\Order
      */
-    public function edit($orderId, BaseOrderData $orderData)
+    public function edit($orderId, BaseOrderData $orderData, ?string $locale = null)
     {
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = $this->orderRepository->getById($orderId);
         $originalMallStatus = $order->getMallStatus();
         $originalOrderStatus = $order->getStatus();
-
+        $orderData->orderPayment->name = $orderData->orderPayment->payment->getName($locale);
+        $orderData->orderTransport->name = $orderData->orderTransport->transport->getName($locale);
         /** @var \Shopsys\ShopBundle\Model\Order\Order $updatedOrder */
         $updatedOrder = parent::edit($orderId, $orderData);
 
@@ -451,5 +459,15 @@ class OrderFacade extends BaseOrderFacade
             } catch (Exception $ex) {
             }
         }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Customer\User $customer
+     */
+    public function setCustomerToOrder(Order $order, User $customer): void
+    {
+        $order->setCustomer($customer);
+        $this->em->flush($order);
     }
 }

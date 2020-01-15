@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
+use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
+use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
+use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
 use Shopsys\FrameworkBundle\Model\Order\Order;
@@ -19,12 +22,18 @@ use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Security\Authenticator;
+use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
+use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
+use Shopsys\ShopBundle\Form\Front\Customer\Password\NewPasswordFormType;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
 use Shopsys\ShopBundle\Form\Front\Order\OrderFlow;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Country\CountryFacade;
+use Shopsys\ShopBundle\Model\Customer\CustomerDataFactory;
+use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift;
 use Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
@@ -36,7 +45,9 @@ use Shopsys\ShopBundle\Model\Order\FrontOrderData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Order\OrderDataMapper;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
+use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
+use Shopsys\ShopBundle\Model\Security\CustomerLoginHandler;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -159,6 +170,31 @@ class OrderController extends FrontBaseController
     private $gtmFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
+     */
+    private $customerFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Security\Authenticator
+     */
+    private $authenticator;
+
+    /**
+     * @var \Shopsys\ShopBundle\Component\CardEan\CardEanFacade
+     */
+    private $cardEanFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade
+     */
+    private $customerMailFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
+     */
+    private $customerDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -181,6 +217,11 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
+     * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -204,7 +245,12 @@ class OrderController extends FrontBaseController
         PayPalFacade $payPalFacade,
         CountryFacade $countryFacade,
         BlogArticleFacade $blogArticleFacade,
-        GtmFacade $gtmFacade
+        GtmFacade $gtmFacade,
+        CustomerFacade $customerFacade,
+        Authenticator $authenticator,
+        CardEanFacade $cardEanFacade,
+        CustomerMailFacade $customerMailFacade,
+        CustomerDataFactory $customerDataFactory
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -228,6 +274,11 @@ class OrderController extends FrontBaseController
         $this->countryFacade = $countryFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->gtmFacade = $gtmFacade;
+        $this->customerFacade = $customerFacade;
+        $this->authenticator = $authenticator;
+        $this->cardEanFacade = $cardEanFacade;
+        $this->customerMailFacade = $customerMailFacade;
+        $this->customerDataFactory = $customerDataFactory;
     }
 
     public function indexAction()
@@ -261,8 +312,17 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        if ($this->session->has(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY)) {
+            $orderFlow->mergePreviouslySavedFormDataWithLoggedUserData($user);
+        }
+
         $orderFlow->bind($frontOrderFormData);
         $orderFlow->saveSentStepData();
+
+        if ($this->session->has(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY)) {
+            $this->session->remove(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY);
+            $orderFlow->nextStep();
+        }
 
         $form = $orderFlow->createForm();
 
@@ -313,7 +373,7 @@ class OrderController extends FrontBaseController
 
                 try {
                     $this->sendMail($order);
-                } catch (\Shopsys\FrameworkBundle\Model\Mail\Exception\MailException $e) {
+                } catch (Exception $e) {
                     $this->getFlashMessageSender()->addErrorFlash(
                         t('Unable to send some e-mails, please contact us for order verification.')
                     );
@@ -541,6 +601,10 @@ class OrderController extends FrontBaseController
         $orderId = $this->session->get(self::SESSION_CREATED_ORDER, null);
         $this->session->remove(self::SESSION_CREATED_ORDER);
 
+        if ($this->session->has(CurrentPromoCodeFacade::SESSION_CART_PRODUCT_PRICES_TYPE) === true) {
+            $this->session->remove(CurrentPromoCodeFacade::SESSION_CART_PRODUCT_PRICES_TYPE);
+        }
+
         if ($orderId === null) {
             return $this->redirectToRoute('front_cart');
         }
@@ -574,6 +638,14 @@ class OrderController extends FrontBaseController
             }
         }
 
+        $registrationForm = null;
+
+        if ($goPayData === null && $payPalApprovalLink === null && $this->isUserLoggedOrRegistered($order->getEmail()) === false) {
+            $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
+                'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $orderId]),
+            ]);
+        }
+
         $this->gtmFacade->onOrderSentPage($order);
 
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
@@ -581,6 +653,7 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
             'payPalApprovalLink' => $payPalApprovalLink,
+            'registrationForm' => $registrationForm !== null ? $registrationForm->createView() : null,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),
@@ -590,12 +663,50 @@ class OrderController extends FrontBaseController
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $orderId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function registerCustomerAction(Request $request, int $orderId): Response
+    {
+        $form = $this->createForm(NewPasswordFormType::class, null);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            $newPassword = $formData['newPassword'];
+            $order = $this->orderFacade->getById($orderId);
+            $customerData = $this->customerDataFactory->createFromOrder($order, $newPassword, $this->domain->getId());
+            /** @var \Shopsys\ShopBundle\Model\Customer\User $newlyRegisteredUser */
+            $newlyRegisteredUser = $this->customerFacade->registerCustomer($customerData);
+            try {
+                $this->customerMailFacade->sendRegistrationMail($newlyRegisteredUser);
+            } catch (\Swift_SwiftException | MailException $exception) {
+                $this->getFlashMessageSender()->addErrorFlash(
+                    t('Unable to send some e-mails, please contact us for registration verification.')
+                );
+            }
+
+            $this->orderFacade->setCustomerToOrder($order, $newlyRegisteredUser);
+            $this->cardEanFacade->addPrereneratedEanToUserAndFlush($newlyRegisteredUser);
+
+            $this->authenticator->loginUser($newlyRegisteredUser, $request);
+            $this->getFlashMessageSender()->addSuccessFlash(t('You have been successfully registered.'));
+            return $this->redirectToRoute('front_customer_orders');
+        }
+
+        return $this->redirectToRoute('front_cart');
+    }
+
+    /**
      * @param string $urlHash
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function paidAction(string $urlHash): Response
     {
         try {
+            /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
@@ -619,9 +730,18 @@ class OrderController extends FrontBaseController
             }
         }
 
+        $registrationForm = null;
+
+        if ($this->isUserLoggedOrRegistered($order->getEmail()) === false) {
+            $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
+                'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $order->getId()]),
+            ]);
+        }
+
         return $this->render('@ShopsysShop/Front/Content/Order/sent.html.twig', [
             'pageContent' => $this->orderFacade->getOrderSentPageContent($order->getId()),
             'order' => $order,
+            'registrationForm' => $registrationForm !== null ? $registrationForm->createView() : null,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),
@@ -661,6 +781,44 @@ class OrderController extends FrontBaseController
         } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
+    }
+
+    /**
+     * @param string $urlHash
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function repeatGoPayPaymentAction(string $urlHash): Response
+    {
+        try {
+            /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
+            $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
+        } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nebyla nalezena.'));
+
+            return $this->redirectToRoute('front_homepage');
+        }
+
+        $goPayData = null;
+
+        if ($order->isGopayPaid() !== false) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka je již zaplacená.'));
+            return $this->redirectToRoute('front_homepage');
+        }
+
+        $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
+
+        try {
+            $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
+
+            $this->orderFacade->setGoPayId($order, (string)$goPayData['goPayId']);
+        } catch (\Shopsys\ShopBundle\Model\GoPay\Exception\GoPayException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+        }
+
+        return $this->render('@ShopsysShop/Front/Content/Order/repeatGoPayPayment.html.twig', [
+            'order' => $order,
+            'goPayData' => $goPayData,
+        ]);
     }
 
     /**
@@ -714,5 +872,15 @@ class OrderController extends FrontBaseController
         if ($mailTemplate->isSendMail()) {
             $this->orderMailFacade->sendEmail($order);
         }
+    }
+
+    /**
+     * @param string $email
+     * @return bool
+     */
+    private function isUserLoggedOrRegistered(string $email): bool
+    {
+        return $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER) ||
+            $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId()) !== null;
     }
 }

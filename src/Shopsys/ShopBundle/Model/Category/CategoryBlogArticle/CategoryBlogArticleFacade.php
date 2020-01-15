@@ -78,7 +78,7 @@ class CategoryBlogArticleFacade
      */
     public function getVisibleBlogArticlesByCategoryAndDomainId(Category $category, int $domainId, int $limit): array
     {
-        $categoriesBlogArticles = $this->categoryBlogArticleRepository->getByCategoryAndDomainId($category, $domainId, $limit);
+        $categoriesBlogArticles = $this->categoryBlogArticleRepository->getVisibleByCategoryAndDomainId($category, $domainId, $limit);
 
         return $this->getBlogArticlesFromCategoriesBlogArticles($categoriesBlogArticles, true, $limit);
     }

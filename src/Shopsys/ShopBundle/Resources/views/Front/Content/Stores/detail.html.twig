@@ -26,7 +26,7 @@
                     <div class="box-contact__block box-contact__block--no-bottom-gap">
                         <div class="box-contact__block__text">
                             <i class="svg svg-mail"></i>
-                            <a class="box-contact__block__text__link underline" href="mailto:{{ store.email }}" class="underline">{{ store.email }}</a>
+                            <a class="box-contact__block__text__link" href="mailto:{{ store.email }}">{{ store.email }}</a>
                         </div>
                         <div class="box-contact__block__info">
                             {{ 'V pracovní dny odpovídáme většinou do 2 hodin'|trans }}
@@ -38,16 +38,7 @@
                         {{ 'Jaké služby najdete'|trans }}<br>
                         {{ 'na prodejně?'|trans }}
                     </div>
-                    <div class="box-contact__right__list">
-                        <ul class="list-simple">
-                            <li class="list-simple__item list-simple__item--lighter">
-                                <a href="/osobni-odber-na-prodejnach/" class="list-simple__item__link"><span class="underline-text">{{ 'Osobní odběr na prodejnách'|trans }}</span></a>
-                            </li>
-                            <li class="list-simple__item list-simple__item--lighter">
-                                <a href="/bushman-club/" class="list-simple__item__link"><span class="underline-text">{{ 'Co je Bushman Klub?'|trans }}</span></a>
-                            </li>
-                        </ul>
-                    </div>
+                    {% include '@ShopsysShop/Front/Inline/Common/servicesArticlesList.html.twig' with { bushmanClubArticle: bushmanClubArticle } %}
                 </div>
             </div>
             <div class="wrap-article">

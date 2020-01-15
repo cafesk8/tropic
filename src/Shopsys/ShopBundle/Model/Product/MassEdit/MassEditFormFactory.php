@@ -46,7 +46,8 @@ class MassEditFormFactory
         $formBuilder = $this->formFactory->createNamedBuilder($name, FormType::class, null, $options);
 
         $selectedAction = $this->massEditActionProvider->getAction($ruleViewData['subject']);
-        $selectedOperation = array_key_exists('operation', $ruleViewData) ? array_keys($selectedAction->getOperations())[0] : $ruleViewData['operation'];
+        $isSelectedOperationEmpty = array_key_exists('operation', $ruleViewData) === false || $ruleViewData['operation'] === null;
+        $selectedOperation = $isSelectedOperationEmpty ? array_keys($selectedAction->getOperations())[0] : $ruleViewData['operation'];
 
         $formBuilder
             ->add('selectType', ChoiceType::class, [
@@ -88,6 +89,7 @@ class MassEditFormFactory
         }
 
         $formBuilder->add('submit', SubmitType::class);
+        $formBuilder->add('submitAndExport', SubmitType::class);
 
         $form = $formBuilder->getForm();
         $form->submit($ruleViewData);

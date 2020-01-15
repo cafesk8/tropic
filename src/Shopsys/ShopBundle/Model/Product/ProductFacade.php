@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Google_Service_Exception;
+use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
-use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface;
@@ -41,6 +42,7 @@ use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
+use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Product as ChildProduct;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
@@ -68,16 +70,6 @@ class ProductFacade extends BaseProductFacade
     private $storeFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
-     */
-    private $productDataFactory;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository
-     */
-    private $categoryRepository;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade
      */
     private $cachedProductDistinguishingParameterValueFacade;
@@ -96,6 +88,11 @@ class ProductFacade extends BaseProductFacade
      * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
      */
     private $setting;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -123,12 +120,11 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -156,12 +152,11 @@ class ProductFacade extends BaseProductFacade
         CurrentCustomer $currentCustomer,
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
-        ProductDataFactory $productDataFactory,
-        CategoryRepository $categoryRepository,
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
         GoogleClient $googleClient,
         PricingGroupFacade $pricingGroupFacade,
-        Setting $setting
+        Setting $setting,
+        LoggerInterface $logger
     ) {
         parent::__construct(
             $em,
@@ -191,12 +186,11 @@ class ProductFacade extends BaseProductFacade
         $this->currentCustomer = $currentCustomer;
         $this->productStoreStockFactory = $productStoreStockFactory;
         $this->storeFacade = $storeFacade;
-        $this->productDataFactory = $productDataFactory;
-        $this->categoryRepository = $categoryRepository;
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
         $this->googleClient = $googleClient;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->setting = $setting;
+        $this->logger = $logger;
     }
 
     /**
@@ -336,59 +330,25 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     */
-    public function appendParentCategoriesByProduct(Product $product): void
-    {
-        $productData = $this->productDataFactory->createFromProduct($product);
-
-        foreach ($this->domain->getAll() as $domainConfig) {
-            if (array_key_exists($domainConfig->getId(), $productData->categoriesByDomainId) === false) {
-                return;
-            }
-            $this->appendParentCategories($productData, $domainConfig->getId());
-        }
-        $this->edit($product->getId(), $productData);
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
-     * @param int $domainId
-     */
-    private function appendParentCategories(ProductData $productData, int $domainId): void
-    {
-        $newCategories = [];
-        foreach ($productData->categoriesByDomainId[$domainId] as $category) {
-            $path = $this->categoryRepository->getPath($category);
-            foreach ($path as $parentCategory) {
-                if ($parentCategory->getParent() !== null) {
-                    $newCategories[$parentCategory->getId()] = $parentCategory;
-                }
-            }
-            $productData->categoriesByDomainId[$domainId] = $newCategories;
-        }
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
      */
     public function removeProductCategoryDomainByProductAndCategory(Product $product, Category $category): void
     {
-        $productData = $this->productDataFactory->createFromProduct($product);
+        $categoriesByDomainId = $product->getCategoriesIndexedByDomainId();
         $isSomeCategoryRemoveFromProduct = false;
         foreach ($this->domain->getAllIds() as $domainId) {
             $key = false;
-            if (array_key_exists($domainId, $productData->categoriesByDomainId)) {
-                $key = array_search($category, $productData->categoriesByDomainId[$domainId], true);
+            if (array_key_exists($domainId, $categoriesByDomainId)) {
+                $key = array_search($category, $categoriesByDomainId[$domainId], true);
             }
             if ($key !== false) {
-                unset($productData->categoriesByDomainId[$domainId][$key]);
+                unset($categoriesByDomainId[$domainId][$key]);
                 $isSomeCategoryRemoveFromProduct = true;
             }
         }
 
         if ($isSomeCategoryRemoveFromProduct === true) {
-            $product->edit($this->productCategoryDomainFactory, $productData, $this->productPriceRecalculationScheduler);
+            $product->editCategoriesByDomainId($this->productCategoryDomainFactory, $categoriesByDomainId);
         }
     }
 
@@ -407,9 +367,9 @@ class ProductFacade extends BaseProductFacade
      * @param int $page
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getMainVariantsWithEan(int $limit, int $page): array
+    public function getMainVariantsWithCatnum(int $limit, int $page): array
     {
-        return $this->productRepository->getMainVariantsWithEan($limit, $page);
+        return $this->productRepository->getMainVariantsWithCatnum($limit, $page);
     }
 
     /**
@@ -535,14 +495,24 @@ class ProductFacade extends BaseProductFacade
     {
         $youtubeDetail = null;
         if ($product->getYoutubeVideoId() !== null) {
-            $youtubeResponse = $this->googleClient->getVideoList($product->getYoutubeVideoId());
-            if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
-                /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
-                $youtubeVideoItem = $youtubeResponse->getItems()[0];
-                $youtubeDetail = new YoutubeView(
-                    $product->getYoutubeVideoId(),
-                    $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
-                    $youtubeVideoItem->getSnippet()->getTitle()
+            try {
+                $youtubeResponse = $this->googleClient->getVideoList($product->getYoutubeVideoId());
+                if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
+                    /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
+                    $youtubeVideoItem = $youtubeResponse->getItems()[0];
+                    $youtubeDetail = new YoutubeView(
+                        $product->getYoutubeVideoId(),
+                        $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
+                        $youtubeVideoItem->getSnippet()->getTitle()
+                    );
+                }
+            } catch (Google_Service_Exception $googleServiceException) {
+                $this->logger->warning(
+                    'Not showing Youtube video on product detail due to Google_Service_Exception',
+                    [
+                        'exception message' => $googleServiceException->getMessage(),
+                        'productId' => $product->getId(),
+                    ]
                 );
             }
         }
@@ -622,10 +592,118 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param string $parameterType
+     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAllMainVariantProducts(): array
+    public function getAllMainVariantProductsWithoutSkOrDeParameters(string $parameterType, int $limit): array
     {
-        return $this->productRepository->getAllMainVariantProducts();
+        return $this->productRepository->getAllMainVariantProductsWithoutSkOrDeParameters($parameterType, $limit);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function saveParameters(BaseProduct $product, array $productParameterValuesData)
+    {
+        parent::saveParameters($product, $productParameterValuesData);
+    }
+
+    /**
+     * @param int $domainId
+     * @return int[]
+     */
+    public function hideVariantsWithDifferentPriceForDomain(int $domainId): array
+    {
+        $defaultPricingGroup = $this->pricingGroupRepository->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
+        );
+
+        $hiddenVariantsIds = [];
+
+        $mainVariantIdsWithDifferentPrices = $this->productRepository->getMainVariantIdsWithDifferentPrice($domainId, $defaultPricingGroup);
+
+        foreach ($mainVariantIdsWithDifferentPrices as $mainVariantIdWithDifferentPrices) {
+            $variantsToHide = $this->productRepository->getVariantsWithDifferentPriceForMainVariant(
+                $mainVariantIdWithDifferentPrices['mainVariantId'],
+                Money::create($mainVariantIdWithDifferentPrices['defaultPrice']),
+                $defaultPricingGroup
+            );
+
+            foreach ($variantsToHide as $variantToHide) {
+                $hiddenVariantsIds[] = $variantToHide->getId();
+                $variantToHide->setProductAsHidden();
+                $this->em->flush($variantToHide);
+                $this->productHiddenRecalculator->calculateHiddenForProduct($variantToHide);
+            }
+        }
+
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarked();
+        return $hiddenVariantsIds;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param string $color
+     */
+    public function updateCzechProductNamesWithColor(Product $product, string $color): void
+    {
+        $product->updateCzechNamesWithColor($color);
+
+        $this->em->flush($product);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     */
+    public function fillVariantNamesFromMainVariantNames(Product $product, ParameterFacade $parameterFacade): void
+    {
+        if ($product->isMainVariant() === false) {
+            return;
+        }
+
+        $namesByLocale = $product->getNames();
+
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $variant */
+        foreach ($product->getVariants() as $variant) {
+            $variantSizeParameterValue = $parameterFacade->findSizeProductParameterValueByProductId($variant->getId());
+            if ($variantSizeParameterValue === null) {
+                return;
+            }
+
+            foreach ($namesByLocale as $locale => $name) {
+                if ($name !== null) {
+                    $variant->updateNameWithSize(
+                        $locale,
+                        $name,
+                        $variantSizeParameterValue->getValue()->getText()
+                    );
+                }
+            }
+
+            $this->em->flush();
+            $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $variant->getId(), $variant->getNames());
+        }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
+     * @return bool
+     */
+    public function isProductMarketable(?Product $product): bool
+    {
+        return $product !== null && $product->isHidden() === false && $product->getCalculatedHidden() === false &&
+            $product->isSellingDenied() === false && $product->getCalculatedSellingDenied() === false;
+    }
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getMainVariantsWithEan(int $limit, int $page): array
+    {
+        return $this->productRepository->getMainVariantsWithEan($limit, $page);
     }
 }

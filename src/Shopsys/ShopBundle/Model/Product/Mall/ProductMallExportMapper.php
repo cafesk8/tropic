@@ -9,6 +9,7 @@ use MPAPI\Entity\Products\Product as MallProduct;
 use MPAPI\Entity\Products\Variant;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Mall\MallFacade;
@@ -72,6 +73,11 @@ class ProductMallExportMapper
     private $mallFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
+     */
+    private $pricingGroupSettingFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -81,6 +87,7 @@ class ProductMallExportMapper
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFacade $storeFacade
      * @param \Shopsys\ShopBundle\Component\Mall\MallFacade $mallFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
         ProductPriceCalculationForUser $productPriceCalculationForUser,
@@ -91,7 +98,8 @@ class ProductMallExportMapper
         MainVariantGroupFacade $mainVariantGroupFacade,
         CategoryFacade $categoryFacade,
         StoreFacade $storeFacade,
-        MallFacade $mallFacade
+        MallFacade $mallFacade,
+        PricingGroupSettingFacade $pricingGroupSettingFacade
     ) {
         $this->productPriceCalculationForUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
@@ -102,6 +110,7 @@ class ProductMallExportMapper
         $this->categoryFacade = $categoryFacade;
         $this->storeFacade = $storeFacade;
         $this->mallFacade = $mallFacade;
+        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
     }
 
     /**
@@ -152,19 +161,19 @@ class ProductMallExportMapper
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $variant
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \MPAPI\Entity\Products\Variant
      */
-    private function mapVariant(Product $variant): Variant
+    private function mapVariant(Product $product): Variant
     {
         /** @var \MPAPI\Entity\Products\Variant $mallVariant */
-        $mallVariant = $this->mapBasicInformation($variant, true);
-        $shortDescription = $variant->getMainVariant()->getShortDescription(self::CZECH_DOMAIN);
+        $mallVariant = $this->mapBasicInformation($product, true);
+        $shortDescription = $product->getShortDescriptionConsideringVariant(self::CZECH_DOMAIN);
         if ($shortDescription === null) {
             throw new InvalidProductForMallExportException('Short description not set');
         }
         $mallVariant->setShortdesc($shortDescription);
-        $mallVariant->setLongdesc($variant->getMainVariant()->getDescription(self::CZECH_DOMAIN));
+        $mallVariant->setLongdesc($product->getDescriptionConsideringVariant(self::CZECH_DOMAIN));
 
         return $mallVariant;
     }
@@ -176,18 +185,17 @@ class ProductMallExportMapper
      */
     private function mapBasicInformation(Product $product, bool $isVariant): AbstractArticleEntity
     {
+        $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
         if ($isVariant === false) {
             $mallProduct = new MallProduct();
             $mallProduct->setVat($product->getVat()->getPercent());
             $mallProduct->setBrandId('BUSHMAN');
 
-            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
             if ($mallCategoryId !== null) {
                 $mallProduct->setCategoryId($mallCategoryId);
             }
         } else {
             $mallProduct = new Variant();
-            $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product->getMainVariant(), self::CZECH_DOMAIN);
         }
 
         $domainConfig = $this->domain->getDomainConfigById(self::CZECH_DOMAIN);
@@ -262,7 +270,11 @@ class ProductMallExportMapper
         $variants = $this->productFacade->getVariantsForMainVariantGroup($product->getMainVariantGroup(), self::CZECH_DOMAIN);
 
         if (count($variants) <= 0) {
-            $variants = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
+            $variants = $this->mainVariantGroupFacade->getProductsForMainVariantGroupByProductAndDomainIdAndPricingGroup(
+                $product,
+                DomainHelper::CZECH_DOMAIN,
+                $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId(DomainHelper::CZECH_DOMAIN)
+            );
             if (count($variants) <= 0) {
                 return null;
             }
@@ -301,7 +313,7 @@ class ProductMallExportMapper
      */
     private function findStockQuantity(Product $product): int
     {
-        $defaultStore = $this->storeFacade->findDefaultStore();
+        $defaultStore = $this->storeFacade->findCentralStore();
 
         if ($defaultStore === null && $product->isMainVariant() === true) {
             return $product->getTotalStockQuantityOfProductVariantsForMall();

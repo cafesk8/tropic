@@ -102,18 +102,29 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $inputPrice = $productActionPrice;
         }
 
-        $basePrice = $this->basePriceCalculation->calculateBasePrice(
-            $inputPrice,
-            $this->pricingSetting->getInputPriceType(),
-            $product->getVat()
-        );
-
         $defaultPrice = $this->basePriceCalculation->calculateBasePrice(
             $defaultPrice,
             $this->pricingSetting->getInputPriceType(),
             $product->getVat()
         );
 
-        return new ProductPrice($basePrice, false, $defaultPrice);
+        if ($product->isProductTypeGiftCertificate()) {
+            $basePrice = $defaultPrice;
+        } else {
+            $basePrice = $this->basePriceCalculation->calculateBasePrice(
+                $inputPrice,
+                $this->pricingSetting->getInputPriceType(),
+                $product->getVat()
+            );
+        }
+
+        return new ProductPrice(
+            $basePrice,
+            false,
+            $pricingGroup,
+            $defaultPricingGroup,
+            $product,
+            $defaultPrice
+        );
     }
 }

@@ -18,6 +18,7 @@
         $paymentInputs.change(Shopsys.order.updateContinueButton);
         $paymentInputs.filter(':checked').change();
         Shopsys.order.updateContinueButton();
+        Shopsys.order.checkLoginNotice();
     };
 
     Shopsys.order.addPaymentTransportRelation = function (paymentId, transportId) {
@@ -167,6 +168,32 @@
             $('#transport_and_payment_form_save').removeClass('btn--disabled');
         } else {
             $('#transport_and_payment_form_save').addClass('btn--disabled');
+        }
+    };
+
+    Shopsys.order.checkLoginNotice = function () {
+        var emailField = $('.js-order-personal-info-form-email');
+        var checkEmail = function () {
+            Shopsys.ajax({
+                loaderElement: '.js-order-personal-info-form-email',
+                type: 'POST',
+                data: { email: emailField.val() },
+                url: emailField.data('url'),
+                success: function (data) {
+                    $('.js-order-personal-info-form-email').empty().append(data);
+                }
+            });
+        };
+
+        if (!emailField.attr('data-is-logged-customer')) {
+            emailField.on('focusout', checkEmail);
+        }
+    };
+
+    Shopsys.order.copyEmail = function () {
+        var email = $('.js-order-personal-info-form-email').val();
+        if (email) {
+            $('.js-login-window-form-email').val(email);
         }
     };
 

@@ -4,7 +4,6 @@
 @box-contact-right-width: calc(~"@{calc-base} - @{box-contact-left-width}");
 @box-contact-right-title-width: 210px;
 
-
 .box-contact {
     display: flex;
     flex-direction: column;
@@ -34,7 +33,7 @@
         width: 100%;
         padding: @box-contact-padding;
 
-        background-color: @color-gray;
+        background-color: @color-light;
 
         @media @query-md {
             flex-direction: row;
@@ -82,12 +81,15 @@
         &__text {
             line-height: 30px;
 
-            color: @color-f;
             font-size: 16px;
             font-weight: bold;
 
             @media @query-xl {
                 font-size: 19px;
+            }
+
+            .box-contact__block--white-text & {
+                color: @color-f;
             }
 
             .svg {
@@ -101,12 +103,16 @@
             }
 
             &__link {
-                color: @color-f;
-                text-decoration: none;
+                .box-contact__block--white-text & {
+                    color: @color-f;
+                }
 
                 &:hover {
-                    color: @color-f;
                     text-decoration: underline;
+                    
+                    .box-contact__block--white-text & {
+                        color: @color-f;
+                    }
                 }
             }
         }
@@ -115,9 +121,13 @@
             margin-top: 3px;
             line-height: 30px;
 
-            color: @color-f;
+            color: @color-base;
             font-size: @font-size-small;
-            opacity: 0.5;
+
+            .box-contact__block--white-text & {
+                color: @color-f;
+                opacity: 0.5;
+            }
         }
     }
 }

@@ -20,12 +20,30 @@
                 <table class="table-params">
                     <tr>
                         <th>{{ 'Status'|trans }}: </th>
-                        <td>{{ order.status.name }}</td>
+                        <td>
+                            {{ order.status.name }}
+                            {% if order.payment.goPay is same as (true) and order.gopayPaid == false %}
+                                <a class="btn btn--success btn--mini" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
+                                    {{ 'Opakovat platbu'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <th>{{ 'Creation date'|trans }}: </th>
                         <td>{{ order.createdAt|formatDate }}</td>
                     </tr>
+                    {% if order.trackingNumber %}
+                        <tr>
+                            {% if order.trackingUrl %}
+                                <th>{{ 'Odkaz pro sledování zásilky'|trans }}: </th>
+                                <td><a href="{{ order.trackingUrl }}" target="_blank">{{ order.trackingNumber }}</a><td>
+                            {% else %}
+                                <th>{{ 'Číslo pro sledování zásilky'|trans }}: </th>
+                                <td>{{ order.trackingNumber }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>

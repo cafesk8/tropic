@@ -34,9 +34,14 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Form/Front/Order/TransportAndPaymentFormType.php'
             - '*/src/Shopsys/ShopBundle/Form/Admin/ProductFormTypeExtension.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
-            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductSlovakLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Controller/Admin/OrderController.php'
             - '*/src/Shopsys/ShopBundle/Model/Product/Mall/ProductMallExportMapper.php'
+            - '*/src/Shopsys/ShopBundle/Form/Admin/StoreFormType.php'
+            - '*/src/Shopsys/ShopBundle/Controller/Front/PromoCodeController.php'
+            - '*/src/Shopsys/ShopBundle/Form/Admin/PromoCodeFormTypeExtension.php'
+            - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
@@ -46,8 +51,11 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
-            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductLCzechLegacyUrlsDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductSlovakLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Model/Product/ProductFacade.php'
+            - '*/src/Shopsys/ShopBundle/Model/Product/Product.php'
+            - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
@@ -79,3 +87,13 @@ parameters:
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.WriteOnlyProperty:
             - '*/src/Shopsys/ShopBundle/Model/Gtm/Data/*'
+            - '*/src/Shopsys/ShopBundle/Model/Transfer/Issue/TransferIssue.php'
+            - '*/src/Shopsys/ShopBundle/Model/Order/Item/OrderItem.php'
+
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\FunctionCallSignatureSniff.Indent: ~
+
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff.UnusedProperty:
+            - '*/src/Shopsys/ShopBundle/Model/Transfer/Issue/TransferIssue.php'
+
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff:
+            - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'

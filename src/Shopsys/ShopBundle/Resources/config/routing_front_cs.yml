@@ -42,6 +42,10 @@ front_order_not_paid:
     path: /nezaplacena-objednavka/{urlHash}
     defaults: { _controller: ShopsysShopBundle:Front\Order:notPaid }
 
+front_order_repeat_gopay_payment:
+    path: /opakovat-platbu/{urlHash}
+    defaults: { _controller: ShopsysShopBundle:Front\Order:repeatGoPayPayment }
+
 front_order_sent:
     path: /potvrzeni-objednavky/
     defaults: { _controller: ShopsysShopBundle:Front\Order:sent }

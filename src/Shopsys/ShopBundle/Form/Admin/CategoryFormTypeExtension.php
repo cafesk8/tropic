@@ -82,6 +82,10 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $builderSettingsGroup = $builder->get('settings');
 
         $builderSettingsGroup
+            ->add('listable', YesNoType::class, [
+                'required' => false,
+                'label' => t('Zobrazovat v menu a dalších výpisech'),
+            ])
             ->add('displayedInHorizontalMenu', YesNoType::class, [
                 'required' => false,
                 'label' => t('V hlavním menu'),

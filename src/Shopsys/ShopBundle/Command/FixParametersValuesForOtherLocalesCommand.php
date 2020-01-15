@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Model\Product\ProductDataFactory;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class FixParametersValuesForOtherLocalesCommand extends Command
@@ -21,6 +22,8 @@ class FixParametersValuesForOtherLocalesCommand extends Command
     private const KEY_CREATE_PARAMETER = 'create_parameter';
     private const KEY_PARAMETER = 'parameter';
     private const KEY_CS_VALUE = 'value';
+    private const OPTION_NAME_PARAMETER_TYPE = 'parameter-type';
+    private const BATCH_SIZE = 50;
 
     /**
      * @var string
@@ -89,6 +92,9 @@ class FixParametersValuesForOtherLocalesCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Fix parameters for sk and de locales');
+        $this->setDefinition([
+            new InputOption(self::OPTION_NAME_PARAMETER_TYPE, null, InputOption::VALUE_REQUIRED, 'Parameter type: color or size'),
+        ]);
     }
 
     /**
@@ -96,12 +102,15 @@ class FixParametersValuesForOtherLocalesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $allMainVariantProducts = $this->productFacade->getAllMainVariantProducts();
+        $mainVariantProducts = $this->productFacade->getAllMainVariantProductsWithoutSkOrDeParameters(
+            $input->getOption(self::OPTION_NAME_PARAMETER_TYPE),
+            self::BATCH_SIZE
+        );
 
         $parameterSize = $this->parameterFacade->getSizeParameter();
         $parameterColor = $this->parameterFacade->getColorParameter();
 
-        foreach ($allMainVariantProducts as $mainVariantProduct) {
+        foreach ($mainVariantProducts as $mainVariantProduct) {
             $output->writeln($mainVariantProduct->getId());
             $productData = $this->productDataFactory->createFromProduct($mainVariantProduct);
 

@@ -4,9 +4,9 @@
 @table-cart-image-gap: @table-cart-item-gap;
 @table-cart-image-gap-vertical: 22px;
 @table-cart-row-left-width: 60%;
-@table-cart-row-bottom-gap-mobile: 10px;
 @table-cart-spinbox-width: 120px;
 @table-cart-price-width: 164px;
+@table-cart-gift-white-space: 15px;
 
 .table-cart {
     display: flex;
@@ -16,13 +16,11 @@
     &__row {
         display: flex;
         flex-direction: column;
-        margin-bottom: @table-cart-row-bottom-gap-mobile;
 
         border-bottom: 3px solid @color-border;
 
         @media @query-md {
             flex-direction: row;
-            margin-bottom: 0;
         }
 
         &__left {
@@ -153,8 +151,23 @@
     }
 
     &__gifts {
+        padding: @table-cart-gift-white-space 0;
+
+        border-bottom: 3px solid @color-border;
+
+        &--promo {
+            margin-top: @table-cart-gift-white-space;
+            padding: 0;
+            
+            border-bottom: 0;
+        }
+
         &__item {
-            margin-bottom: 15px;
+            margin-bottom: @table-cart-gift-white-space;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 }

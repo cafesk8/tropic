@@ -1,0 +1,17 @@
+<div class="box-contact__right__list">
+    {% set domainId = getDomain().id %}
+    <ul class="list-simple">
+        <li class="list-simple__item list-simple__item--lighter">
+            {% set personalCollentionArticleHref = '' %}
+            {% if domainId == 1 %}
+                {% set personalCollentionArticleHref = '/osobni-odber-na-prodejnach/' %}
+            {% elseif domainId == 2 %}
+                {% set personalCollentionArticleHref = '/osobny-odber-na-predajniach/' %}
+            {% endif %}
+            <a href="{{ personalCollentionArticleHref }}" class="list-simple__item__link"><span class="underline-text">{{ 'Osobní odběr na prodejnách'|trans }}</span></a>
+        </li>
+        <li class="list-simple__item list-simple__item--lighter">
+            <a href="{{ url('front_article_detail', { id: bushmanClubArticle.id }) }}" class="list-simple__item__link"><span class="underline-text">{{ 'Co je Věrnostní program?'|trans }}</span></a>
+        </li>
+    </ul>
+</div>

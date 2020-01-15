@@ -7,3 +7,7 @@
 {% block grid_value_cell_id_bushman_club_point_actual %}
     {{ bushmanClubPointsByIndex(value, 'actual') }}
 {% endblock %}
+
+{% block grid_value_cell_id_export_status %}
+    {{ userExportStatusName(value) }}
+{% endblock %}

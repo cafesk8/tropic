@@ -10,7 +10,9 @@ use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 class OrderFormTypeExtension extends AbstractTypeExtension
 {
@@ -63,6 +65,85 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                     ],
                 ]);
         }
+
+        if ($order !== null) {
+            $builderBasicInformationGroup
+                ->add('payment', DisplayOnlyType::class, [
+                    'label' => t('Typ platby'),
+                    'data' => $order->getPayment()->getName(),
+                ]);
+
+            if ($order->getPayment()->isGoPay() === true) {
+                $builderBasicInformationGroup
+                    ->add('gopayStatus', DisplayOnlyType::class, [
+                        'label' => t('Stav platby GoPay'),
+                        'data' => $order->getGoPayStatus(),
+                    ]);
+            }
+        }
+        $builderBasicInformationGroup
+            ->add('trackingNumber', TextType::class, [
+                'label' => t('Číslo pro sledování zásilky'),
+                'required' => false,
+            ]);
+
+        $this->extendConstraintsOfBillingDataGroup($builder->get('billingDataGroup'));
+        $this->extendConstraintsOfShippingDataGroup($builder->get('shippingAddressGroup')->get('deliveryAddressFields'));
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function extendConstraintsOfBillingDataGroup(FormBuilderInterface $builder): void
+    {
+        $codeFieldOptions = $builder->get('street')->getOptions();
+        $codeFieldOptions['required'] = false;
+        $codeFieldOptions['constraints'] = [
+            new Length([
+                'max' => 100,
+                'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
+            ]),
+        ];
+        $codeFieldType = get_class($builder->get('street')->getType()->getInnerType());
+        $builder->add('street', $codeFieldType, $codeFieldOptions);
+
+        $codeFieldOptions = $builder->get('city')->getOptions();
+        $codeFieldOptions['required'] = false;
+        $codeFieldOptions['constraints'] = [
+            new Length([
+                'max' => 100,
+                'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
+            ]),
+        ];
+        $codeFieldType = get_class($builder->get('city')->getType()->getInnerType());
+        $builder->add('city', $codeFieldType, $codeFieldOptions);
+
+        $codeFieldOptions = $builder->get('postcode')->getOptions();
+        $codeFieldOptions['required'] = false;
+        $codeFieldOptions['constraints'] = [
+            new Length([
+                'max' => 6,
+                'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
+            ]),
+        ];
+        $codeFieldType = get_class($builder->get('postcode')->getType()->getInnerType());
+        $builder->add('postcode', $codeFieldType, $codeFieldOptions);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function extendConstraintsOfShippingDataGroup(FormBuilderInterface $builder): void
+    {
+        $codeFieldOptions = $builder->get('deliveryPostcode')->getOptions();
+        $codeFieldOptions['constraints'] = [
+            new Length([
+                'max' => 6,
+                'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
+            ]),
+        ];
+        $codeFieldType = get_class($builder->get('deliveryPostcode')->getType()->getInnerType());
+        $builder->add('deliveryPostcode', $codeFieldType, $codeFieldOptions);
     }
 
     /**

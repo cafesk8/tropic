@@ -75,6 +75,29 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $basicInformationsFormGroup = $builder->create('basicInformationsGroup', GroupType::class, [
             'label' => t('Základní informace'),
         ]);
+        $basicInformationsFormGroup->add('usageType', ChoiceType::class, [
+            'label' => t('Aplikovat na'),
+            'choices' => [
+                t('Všechny produkty') => PromoCode::USAGE_TYPE_ALL,
+                t('Zlevněné produkty') => PromoCode::USAGE_TYPE_WITH_ACTION_PRICE,
+                t('Nezlevněné produkty') => PromoCode::USAGE_TYPE_NO_ACTION_PRICE,
+            ],
+            'multiple' => false,
+            'expanded' => false,
+            'required' => true,
+        ]);
+
+        $basicInformationsFormGroup->add('userType', ChoiceType::class, [
+            'label' => t('Aplikovat na uživatele'),
+            'choices' => [
+                t('Přihlášené i nepřihlášené') => PromoCode::USER_TYPE_ALL,
+                t('Pouze přihlášené') => PromoCode::USER_TYPE_LOGGED,
+                t('Pouze přihlášené členy Věrnostního programu') => PromoCode::USER_TYPE_BUSHMAN_CLUB_MEMBERS,
+            ],
+            'multiple' => false,
+            'expanded' => false,
+            'required' => true,
+        ]);
 
         $this->addPromoCodeOrCertificateField($builder, $basicInformationsFormGroup);
         $this->extendCodeField($builder, $basicInformationsFormGroup);

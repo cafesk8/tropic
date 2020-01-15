@@ -13,13 +13,6 @@ use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
 {
-    public function testBrandFilterChoicesFromCategoryWithNoBrands(): void
-    {
-        $brandFilterChoices = $this->getChoicesForCategoryReference(CategoryDataFixture::CATEGORY_BOOKS);
-
-        $this->assertCount(0, $brandFilterChoices);
-    }
-
     public function testBrandFilterChoicesFromCategoryWithBrands(): void
     {
         $brandFilterChoices = $this->getChoicesForCategoryReference(CategoryDataFixture::CATEGORY_ELECTRONICS);
@@ -43,7 +36,7 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
     {
         $brandFilterChoices = $this->getChoicesForSearchText('telefon');
 
-        $this->assertCount(2, $brandFilterChoices);
+        $this->assertCount(3, $brandFilterChoices);
 
         $ids = array_map(
             static function (Brand $brand) {
@@ -60,9 +53,9 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
     {
         $brandFilterChoices = $this->getChoicesForSearchText('47');
 
-        $this->assertCount(1, $brandFilterChoices);
+        $this->assertCount(2, $brandFilterChoices);
 
-        $this->assertSame(3, $brandFilterChoices[0]->getId());
+        $this->assertSame(25, $brandFilterChoices[0]->getId());
     }
 
     /**

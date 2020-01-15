@@ -44,4 +44,12 @@ class TransferRepository
 
         return $transfer;
     }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Transfer\Transfer[]
+     */
+    public function getAll(): array
+    {
+        return $this->getRepository()->findBy([], ['identifier' => 'asc']);
+    }
 }

@@ -25,6 +25,43 @@
                     <div class="box-order-done__text">
                         {{ pageContent|raw }}
                     </div>
+                    {% if registrationForm is not null %}
+                        <div class="box-order-done__club">
+                            <div class="box-order-done__club__title">
+                                {{ 'Stačí zadat heslo a příště už nic'|trans }} <br>
+                                {{ 'zadávat nemusíte'|trans }}
+                            </div>
+                            <div class="box-order-done__club__text">
+                                {{ 'Jako člen Věrnostního programu budete mít přístup k'|trans }}
+                                <strong>{{ 'historii svých objednávek,'|trans }}</strong>
+                                {{ 'možnost získat'|trans }} <br>
+                                {{ '25 let záruku zdarma, objednat směnnou zásilku nebo '|trans }}
+                                <strong>{{ 'získat 3% slevu'|trans }}</strong>
+                                {{ 'na celý sortiment'|trans }}.
+                            </div>
+                            {# Save password and user name hack.
+                            * The browsers need field with name 'name' to store login (password stored by field with type password).
+                            * I can't create a field with a specific name in symfony.
+                            * IE and Edge store login by type hidden, other by type text or email. #}
+
+                            {{ form_start(registrationForm) }}
+                                {{ form_errors(registrationForm) }}
+
+                                <input type="text" name="name" value="{{ order.email }}" style="display: none;">
+                                <input type="hidden" name="name" value="{{ order.email }}">
+
+                                <div class="box-order-done__club__form">
+                                    <div class="box-order-done__club__form__input">
+                                        {{ form_row(registrationForm.newPassword.first, { label: 'Password'|trans, inputModificationClass: 'form-line__input--full' }) }}
+                                        {{ form_row(registrationForm.newPassword.second, { label: 'Password again'|trans, inputModificationClass: 'form-line__input--full' }) }}
+                                    </div>
+                                    <div class="box-order-done__club__form__button-holder">
+                                        {{ form_widget(registrationForm.submit, { label: 'Vytvořit účet'|trans, attr: { 'class': 'btn btn--success box-order-done__club__form__button' } }) }}
+                                    </div>
+                                </div>
+                            {{ form_end(registrationForm) }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

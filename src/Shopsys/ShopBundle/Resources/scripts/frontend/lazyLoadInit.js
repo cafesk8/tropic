@@ -17,11 +17,30 @@
             // Classic lazy loading is needed, so I can't use native Slick lazy loading
             $('body').scroll();
         });
+
+        $(window).scroll(function () {
+            var positionTop = ($('.js-instagram-scroll-point').offset().top);
+            var elementHeight = $('.js-instagram-scroll-point').outerHeight();
+            var windowHeight = $(window).height();
+            var windowScroll = $(this).scrollTop() + 1000;
+
+            if (windowScroll > (positionTop + elementHeight - windowHeight)) {
+                $container.filterAllNodes('.js-lazy-load-on-background').each(function () {
+                    var $lazyloadedImage = $(this);
+                    Shopsys.lazyLoadInit.manualReplaceBackgroundImage($lazyloadedImage);
+                });
+            }
+        });
     };
 
     Shopsys.lazyLoadInit.manualReplaceSrc = function ($lazyloadedImage) {
         $lazyloadedImage.attr('src', $lazyloadedImage.attr('data-original'));
         $lazyloadedImage.removeClass('js-lazy-load');
+    };
+
+    Shopsys.lazyLoadInit.manualReplaceBackgroundImage = function ($lazyloadedImage) {
+        $lazyloadedImage.css('background', 'url(' + $lazyloadedImage.attr('data-original') + ')');
+        $lazyloadedImage.removeClass('js-lazy-load-on-background');
     };
 
     Shopsys.register.registerCallback(Shopsys.lazyLoadInit.init);

@@ -32,7 +32,7 @@ class UserFormTypeExtension extends AbstractTypeExtension
                 'data' => $user->getEan() ?? t('EAN nenastaven'),
             ])
             ->add('memberOfBushmanClub', DisplayOnlyType::class, [
-                'label' => t('Členem Bushman Clubu'),
+                'label' => t('Členem Věrnostního programu'),
                 'data' => $user->isMemberOfBushmanClub() === true ? t('Ano') : t('Ne'),
             ]);
         }

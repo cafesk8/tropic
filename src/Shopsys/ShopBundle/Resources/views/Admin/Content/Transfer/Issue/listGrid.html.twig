@@ -1,0 +1,19 @@
+{% extends '@ShopsysFramework/Admin/Grid/Grid.html.twig' %}
+
+{% block grid_no_data %}
+    {{ 'Nenalezeny žádné problémy.'|trans }}
+{% endblock %}
+
+{% block grid_pager_totalcount %}
+    {% set entityName = 'problémů'|trans %}
+    {{ parent() }}
+{% endblock %}
+
+{% block grid_value_cell_id_message %}
+    {% if row.count > 0 and row.contextCount > 0 %}
+        <a href="{{ url('admin_transferissue_detailedlist', { groupId: row.groupId, message: value }) }}">{{ value }} ({{ row.count }}x)</a>
+    {% else %}
+        {{ value }}
+    {% endif %}
+
+{% endblock %}

@@ -7,11 +7,14 @@ namespace Shopsys\ShopBundle\Model\Store;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllCzechStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllGermanStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule;
+use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 
 class StoreFacade
 {
-    public const DEFAULT_STORE_EXTERNAL_ID = '10001';
-
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
      */
@@ -38,24 +41,32 @@ class StoreFacade
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Transfer\TransferFacade
+     */
+    private $transferFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Store\StoreRepository $storeRepository
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFactory $storeFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      */
     public function __construct(
         EntityManagerInterface $em,
         StoreRepository $storeRepository,
         ImageFacade $imageFacade,
         StoreFactory $storeFactory,
-        Domain $domain
+        Domain $domain,
+        TransferFacade $transferFacade
     ) {
         $this->em = $em;
         $this->storeRepository = $storeRepository;
         $this->imageFacade = $imageFacade;
         $this->storeFactory = $storeFactory;
         $this->domain = $domain;
+        $this->transferFacade = $transferFacade;
     }
 
     /**
@@ -105,9 +116,9 @@ class StoreFacade
     /**
      * @return \Shopsys\ShopBundle\Model\Store\Store|null
      */
-    public function findDefaultStore(): ?Store
+    public function findCentralStore(): ?Store
     {
-        return $this->storeRepository->findByExternalNumber(self::DEFAULT_STORE_EXTERNAL_ID);
+        return $this->storeRepository->findCentralStore();
     }
 
     /**
@@ -122,6 +133,7 @@ class StoreFacade
         $this->em->flush();
 
         $this->uploadImage($store, $storeData);
+        $this->resetStockImportCronModules();
 
         return $store;
     }
@@ -133,8 +145,14 @@ class StoreFacade
      */
     public function edit(Store $store, StoreData $storeData): Store
     {
+        $isStoreFranchiseChanged = $store->isFranchisor() !== $storeData->franchisor;
         $store->edit($storeData);
         $this->uploadImage($store, $storeData);
+
+        // reset transfer only in change
+        if ($isStoreFranchiseChanged) {
+            $this->resetStockImportCronModules();
+        }
 
         return $store;
     }
@@ -149,12 +167,21 @@ class StoreFacade
         $this->em->flush();
     }
 
+    private function resetStockImportCronModules(): void
+    {
+        $this->transferFacade->resetTransferByTransferId(AllCzechStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+        $this->transferFacade->resetTransferByTransferId(AllSlovakStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+        $this->transferFacade->resetTransferByTransferId(AllGermanStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+        $this->transferFacade->resetTransferByTransferId(ChangedStoreStockImportCronModule::TRANSFER_IDENTIFIER);
+    }
+
     /**
      * @param int $storeId
      */
     public function delete(int $storeId): void
     {
         $store = $this->storeRepository->getById($storeId);
+        $this->resetStockImportCronModules();
 
         $this->em->remove($store);
         $this->em->flush();

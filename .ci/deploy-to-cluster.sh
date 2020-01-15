@@ -4,7 +4,7 @@
 echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
 
 # Create unique docker image tag with commit hash
-DOCKER_IMAGE_TAG=${APPLICATION_ENVIRONMENT}-commit-${GIT_COMMIT}
+DOCKER_IMAGE_TAG=${APPLICATION_ENVIRONMENT}-commit-${GIT_COMMIT}-$(date +"%s")
 
 ## Docker image for application php-fpm container
 docker image pull ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG} || (
@@ -39,9 +39,6 @@ yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTem
 yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${DOMAIN_HOSTNAME_1}
 
 yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] ${DOMAIN_HOSTNAME_1}
-
-yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[1].value ${DOMAIN_HOSTNAME_1}
-yq write --inplace kubernetes/deployments/smtp-server.yml spec.template.spec.containers[0].env[2].value ""
 
 if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
     yq write --inplace kubernetes/ingress.yml spec.tls[0].hosts[+] www.${DOMAIN_HOSTNAME_1}
@@ -133,11 +130,19 @@ yq write --inplace app/config/parameters.yml parameters[gtm.config].sk.container
 yq write --inplace app/config/parameters.yml parameters[gtm.config].de.enabled ${GTM_DE_ENABLED}
 yq write --inplace app/config/parameters.yml parameters[gtm.config].de.container_id ${GTM_DE_CONTAINER_ID}
 
-#GoPay
+#GoPay CS
 yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.goid ${GOPAY_CS_GO_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.clientId ${GOPAY_CS_CLIENT_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.clientSecret ${GOPAY_CS_CLIENT_SECRET}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].isProductionMode ${GOPAY_IS_PRODUCTION_MODE}
+
+#GoPay SK
+yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.goid ${GOPAY_SK_GO_ID}
+yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientId ${GOPAY_SK_CLIENT_ID}
+yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientSecret ${GOPAY_SK_CLIENT_SECRET}
+
+#SMTP
+yq write --inplace app/config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf

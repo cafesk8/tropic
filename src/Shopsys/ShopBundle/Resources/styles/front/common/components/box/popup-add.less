@@ -10,7 +10,7 @@
 .box-popup-add {
     display: flex;
     flex-direction: column;
-    margin: 0 -@window-popup-inner-padding;
+    margin: 0;
 
     @media @query-lg {
         flex-direction: row;
@@ -44,6 +44,10 @@
 
             &__text {
                 position: relative;
+
+                .domain3 & {
+                    font-size: 14px;
+                }
             }
         }
 
@@ -174,6 +178,10 @@
                     font-size: 16px;
                     font-weight: 400;
                     text-decoration: none;
+
+                    .domain3 & {
+                        font-size: 14px;
+                    }
                 }
 
                 .svg {

@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Form\Admin;
 
+use Google_Service_Exception;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ProductsType;
-use Shopsys\FrameworkBundle\Form\ProductType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
@@ -92,6 +93,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $flagFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
+
+    /**
      * ProductFormTypeExtension constructor.
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -103,6 +109,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\ShopBundle\Component\GoogleApi\GoogleClient $googleClient
      * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         ParameterFacade $parameterFacade,
@@ -114,7 +121,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ProductExtension $productExtension,
         GoogleClient $googleClient,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
-        FlagFacade $flagFacade
+        FlagFacade $flagFacade,
+        FlashMessageSender $flashMessageSender
     ) {
         $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
@@ -126,6 +134,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->productExtension = $productExtension;
         $this->googleClient = $googleClient;
         $this->flagFacade = $flagFacade;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -142,6 +151,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Produkt je hotový'),
             ]);
+
         $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
         $builderBasicInformationGroup->add('flags', ChoiceType::class, [
             'choices' => $this->flagFacade->getAll(),
@@ -160,6 +170,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 return [];
             },
         ]);
+
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
             'label' => t('Stock in stores'),
         ]);
@@ -196,7 +207,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         if ($product !== null && $product->getMainVariantGroup() !== null) {
             $this->createMainVariantGroup($builder, $product);
-            $this->addGiftGroup($builder);
         } else {
             if ($product !== null && $product->isMainVariant() === false) {
                 $this->addActionPriceToPricesGroup($builder);
@@ -204,12 +214,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             }
         }
 
-        if ($product !== null && $product->isNoneVariant() === true) {
-            $this->addGiftGroup($builder);
-        }
-
         if ($product !== null && $product->isVariant()) {
             $this->extendVariantGroup($builder->get('variantGroup'), $product);
+            $builder->get('name')->setDisabled(true);
         }
 
         $this->extendCatnum($builder->get('basicInformationGroup'));
@@ -218,6 +225,15 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('generateToHsSportXmlFeed', YesNoType::class, [
                 'required' => false,
                 'label' => t('Generovat tento produkt do HS-SPORT XML feedu'),
+            ])
+            ->add('productType', ChoiceType::class, [
+                'required' => false,
+                'label' => t('Typ produktu'),
+                'choices' => [
+                    t('Dárkový certifikát 500 Kč') => Product::PRODUCT_TYPE_GIFT_CERTIFICATE_500,
+                    t('Dárkový certifikát 1000 Kč') => Product::PRODUCT_TYPE_GIFT_CERTIFICATE_1000,
+                ],
+                'placeholder' => '',
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
@@ -425,26 +441,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     */
-    private function addGiftGroup(FormBuilderInterface $builder)
-    {
-        $giftGroup = $builder->create('giftGroup', GroupType::class, [
-            'label' => t('Dárek za korunu'),
-        ]);
-
-        $giftGroup->add('gift', ProductType::class, [
-            'required' => false,
-            'label' => t('Dárek'),
-            'allow_main_variants' => true,
-            'allow_variants' => true,
-            'enableRemove' => true,
-        ]);
-
-        $builder->add($giftGroup);
-    }
-
-    /**
      * @param \Symfony\Component\Form\FormBuilderInterface $displayAvailabilityGroup
      * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
      */
@@ -525,9 +521,15 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             return;
         }
 
-        $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
-        if ($youtubeResponse->getPageInfo()->getTotalResults() === 0) {
-            $context->addViolation('Vložené youtube id neobsahuje žádné video.');
+        try {
+            $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
+            if ($youtubeResponse->getPageInfo()->getTotalResults() === 0) {
+                $context->addViolation('Vložené ID Youtube videa neobsahuje žádné video.');
+            }
+        } catch (Google_Service_Exception $googleServiceException) {
+            $this->flashMessageSender->addInfoFlash(t('Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
+            $this->flashMessageSender->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
+            $this->flashMessageSender->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
         }
     }
 }

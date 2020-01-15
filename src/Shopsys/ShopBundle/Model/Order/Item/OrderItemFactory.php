@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactory as BaseOrderItemFa
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 
 class OrderItemFactory extends BaseOrderItemFactory
 {
@@ -136,5 +137,48 @@ class OrderItemFactory extends BaseOrderItemFactory
         $orderProductGift->setTotalPrice($totalPrice);
 
         return $orderProductGift;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param string $name
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
+     * @param string $vatPercent
+     * @param int $quantity
+     * @param string|null $unitName
+     * @param string|null $catnum
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPrice
+     * @param \Shopsys\ShopBundle\Model\Order\Item\PromoProduct|null $promoProduct
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     */
+    public function createPromoProduct(
+        Order $order,
+        string $name,
+        Price $price,
+        string $vatPercent,
+        int $quantity,
+        ?string $unitName,
+        ?string $catnum,
+        Product $product,
+        Price $totalPrice,
+        PromoProduct $promoProduct
+    ): BaseOrderItem {
+        $promoProductOrderItem = new OrderItem(
+            $order,
+            $name,
+            $price,
+            $vatPercent,
+            $quantity,
+            OrderItem::TYPE_PROMO_PRODUCT,
+            $unitName,
+            $catnum
+        );
+
+        $promoProductOrderItem->setPromoProduct($product, $promoProduct);
+        $promoProductOrderItem->setEan($product->getEan());
+        $promoProductOrderItem->setTotalPrice($totalPrice);
+
+        return $promoProductOrderItem;
     }
 }
