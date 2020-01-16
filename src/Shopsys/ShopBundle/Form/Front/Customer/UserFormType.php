@@ -60,7 +60,7 @@ class UserFormType extends AbstractType
                 ],
                 'first_options' => [
                     'constraints' => [
-                        new Constraints\Length(['min' => 6, 'minMessage' => 'Password cannot be longer than {{ limit }} characters']),
+                        new Constraints\Length(['min' => 6, 'minMessage' => 'Password must be longer than {{ limit }} characters']),
                     ],
                 ],
                 'invalid_message' => 'Passwords do not match',

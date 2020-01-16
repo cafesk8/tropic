@@ -55,8 +55,8 @@ msgstr "Der Name darf nicht länger als {{limit}} Zeichen sein"
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Die Öffnungszeiten dürfen nicht länger als {{limit}} Zeichen sein"
 
-msgid "Password cannot be longer than {{ limit }} characters"
-msgstr "Das Passwort darf nicht länger als {{limit}} Zeichen sein"
+msgid "Password must be longer than {{ limit }} characters"
+msgstr "Das Passwort muss mindestens {{limit}} Zeichen lang sein"
 
 msgid "Password cannot be same as e-mail"
 msgstr "Das Passwort darf nicht mit der E-Mail identisch sein"

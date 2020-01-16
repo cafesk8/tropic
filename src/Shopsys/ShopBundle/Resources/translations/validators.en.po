@@ -43,7 +43,7 @@ msgstr ""
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr ""
 
-msgid "Password cannot be longer than {{ limit }} characters"
+msgid "Password must be longer than {{ limit }} characters"
 msgstr ""
 
 msgid "Password cannot be same as e-mail"

@@ -61,7 +61,7 @@ msgstr "Název nesmí být delší než {{ limit }} znaků"
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Otevírací doba nesmí být delší než {{ limit }} znaků"
 
-msgid "Password cannot be longer than {{ limit }} characters"
+msgid "Password must be longer than {{ limit }} characters"
 msgstr "Heslo musí mít minimálně {{ limit }} znaků"
 
 msgid "Password cannot be same as e-mail"
