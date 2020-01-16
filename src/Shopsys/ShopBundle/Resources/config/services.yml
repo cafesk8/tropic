@@ -641,3 +641,7 @@ services:
     Shopsys\ShopBundle\Controller\Front\ErrorController:
         arguments:
             $environment: '%kernel.environment%'
+
+    swiftmailer.transport.real:
+        class: Swift_SmtpTransport
+        arguments: ['%mailer_host%']
