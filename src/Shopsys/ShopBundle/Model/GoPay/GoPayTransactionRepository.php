@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Model\GoPay;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\ShopBundle\Model\Order\Order;
@@ -26,9 +27,9 @@ class GoPayTransactionRepository
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
-    public function getGoPayTransactionRepository(): ObjectRepository
+    public function getGoPayTransactionRepository(): EntityRepository
     {
         return $this->em->getRepository(GoPayTransaction::class);
     }
