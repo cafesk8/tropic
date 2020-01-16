@@ -856,9 +856,6 @@ msgstr "GLS"
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr "Generiere dieses Produkt in den HS-SPORT-XML-Feed"
 
-msgid "Geprüfter webshop"
-msgstr ""
-
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -933,9 +930,6 @@ msgstr "Massenerstellung von Rabattgutscheinen"
 
 msgid "Hromadné úpravy"
 msgstr "Massenbearbeitung"
-
-msgid "Händlerbund Mitglied"
-msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Ich stimme den <a href=\"%termsAndConditionsUrl%\" target=\"_blank\"> Nutzungsbedingungen </a> und den <a href=\"%privacyPolicyUrl%\" target=\"_blank\"> Datenschutzbestimmungen </a> zu."

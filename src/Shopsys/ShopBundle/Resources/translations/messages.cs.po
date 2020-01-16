@@ -781,9 +781,6 @@ msgstr ""
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr ""
 
-msgid "Geprüfter webshop"
-msgstr ""
-
 msgid "Go to cart"
 msgstr "Přejít do košíku"
 
@@ -851,9 +848,6 @@ msgid "Hromadné vytvoření slevových kupónů"
 msgstr ""
 
 msgid "Hromadné úpravy"
-msgstr ""
-
-msgid "Händlerbund Mitglied"
 msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
@@ -1259,9 +1253,6 @@ msgid "Nepovinný název pro administraci"
 msgstr ""
 
 msgid "Nepovinný údaj"
-msgstr ""
-
-msgid "Nepřenesena"
 msgstr ""
 
 msgid "New blog article"
