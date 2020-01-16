@@ -6,6 +6,8 @@ namespace Shopsys\ShopBundle\Command\Migrations;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
+use Shopsys\ShopBundle\Command\Migrations\DataProvider\GermanCustomersWithNewsletterSubscriptionDataProvider;
 use Shopsys\ShopBundle\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
@@ -58,12 +60,23 @@ class MigrateCustomersCommand extends Command
     private $multidomainRestClient;
 
     /**
+     * @var string []
+     */
+    private $germanCustomerEmailsWithNewsletterSubscription;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade
+     */
+    private $newsletterFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
      * @param \Shopsys\ShopBundle\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade $userTransferIdAndEanFacade
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $multidomainRestClient
+     * @param \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade $newsletterFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -71,7 +84,8 @@ class MigrateCustomersCommand extends Command
         CustomerTransferValidator $customerTransferValidator,
         CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper,
         UserTransferIdAndEanFacade $userTransferIdAndEanFacade,
-        MultidomainRestClient $multidomainRestClient
+        MultidomainRestClient $multidomainRestClient,
+        NewsletterFacade $newsletterFacade
     ) {
         parent::__construct();
 
@@ -81,6 +95,8 @@ class MigrateCustomersCommand extends Command
         $this->customerWithPricingGroupsTransferMapper = $customerWithPricingGroupsTransferMapper;
         $this->userTransferIdAndEanFacade = $userTransferIdAndEanFacade;
         $this->multidomainRestClient = $multidomainRestClient;
+        $this->germanCustomerEmailsWithNewsletterSubscription = GermanCustomersWithNewsletterSubscriptionDataProvider::getGermanCustomerEmailsWithNewsletterSubscription();
+        $this->newsletterFacade = $newsletterFacade;
     }
 
     /**
@@ -139,6 +155,10 @@ class MigrateCustomersCommand extends Command
             return;
         }
 
+        if (in_array($customersTransferItem->getEmail(), $this->germanCustomerEmailsWithNewsletterSubscription, true) === false) {
+            return;
+        }
+
         $customer = $this->customerFacade->findUserByEmailAndDomain(
             $customersTransferItem->getEmail(),
             $customersTransferItem->getDomainId()
@@ -158,6 +178,8 @@ class MigrateCustomersCommand extends Command
         $this->em->flush($customer);
 
         $this->userTransferIdAndEanFacade->saveTransferIdsAndEans($customer, $customersTransferItem->getEans(), $customersTransferItem->getDataIdentifier());
+
+        $this->newsletterFacade->addSubscribedEmail($customersTransferItem->getEmail(), DomainHelper::GERMAN_DOMAIN);
 
         unset($customer, $customerData);
     }

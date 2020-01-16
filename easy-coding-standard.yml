@@ -42,6 +42,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Form/Admin/PromoCodeFormTypeExtension.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
@@ -56,6 +57,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Model/Product/Product.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
