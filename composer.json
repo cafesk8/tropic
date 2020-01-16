@@ -108,12 +108,12 @@
         "ext-pgsql": "*",
         "ext-zip": "*",
         "codeception/codeception": "^2.4.0",
-        "phpstan/phpstan": "^0.11",
+        "phpstan/phpstan": "^0.12",
         "phpunit/phpunit": "^7.0",
         "shopsys/coding-standards": "8.0.0",
         "shopsys/http-smoke-testing": "8.0.0",
-        "phpstan/phpstan-doctrine": "^0.11.2",
-        "phpstan/phpstan-phpunit": "^0.11.2"
+        "phpstan/phpstan-doctrine": "^0.12",
+        "phpstan/phpstan-phpunit": "^0.12"
     },
     "conflict": {
         "symfony/dependency-injection": "3.4.15|3.4.16",
