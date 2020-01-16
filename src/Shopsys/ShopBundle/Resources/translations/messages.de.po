@@ -3217,9 +3217,6 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "benötigte Seite auf unserer"
 
-msgid "pro pořádné chlapy"
-msgstr "für echte Männer"
-
 msgid "pro členy"
 msgstr "für Mitglieder"
 

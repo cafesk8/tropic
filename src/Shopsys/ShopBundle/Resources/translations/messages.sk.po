@@ -3223,9 +3223,6 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našom"
 
-msgid "pro pořádné chlapy"
-msgstr "pre poriadnych chlapov"
-
 msgid "pro členy"
 msgstr "pre členov"
 
