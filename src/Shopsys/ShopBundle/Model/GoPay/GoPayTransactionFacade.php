@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Shopsys\ShopBundle\Model\GoPay;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\ShopBundle\Model\Order\Order;
 
 class GoPayTransactionFacade
@@ -92,24 +91,6 @@ class GoPayTransactionFacade
         }
 
         $this->em->flush($toFlush);
-        $this->resolveOrderStatus($order);
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     */
-    protected function resolveOrderStatus(Order $order): void
-    {
-        if ($this->isOrderPaid($order)) {
-            $order->setGoPayStatus(PaymentStatus::PAID);
-        } else {
-            $lastGoPayTransaction = $this->goPayTransactionRepository->getLastTransactionByOrder($order);
-            if ($lastGoPayTransaction !== null) {
-                $order->setGoPayStatus($lastGoPayTransaction->getGoPayStatus());
-            }
-        }
-
-        $this->em->flush($order);
     }
 
     /**

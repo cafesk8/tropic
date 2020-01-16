@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Model\GoPay;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
@@ -70,7 +69,8 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
         foreach ($orders as $order) {
             $this->logger->debug('Downloading GoPay status for order with ID `' . $order->getId() . '`.');
 
-            $oldOrderGoPayStatus = $order->getGoPayStatus();
+            $oldOrderGoPayStatusIndexedByGoPaiId = $order->getGoPayTransactionsIndexedByGoPayId();
+            $oldIsOrderPaid = $order->isGopayPaid();
 
             try {
                 $this->goPayTransactionFacade->updateOrderTransactions($order);
@@ -80,24 +80,25 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
                 continue;
             }
 
-            if ($oldOrderGoPayStatus !== $order->getGoPayStatus()) {
-                $this->logger->info(
-                    sprintf(
-                        'Order with id `%d` changed GoPay status from `%s` to `%s`.',
-                        $order->getId(),
-                        $oldOrderGoPayStatus,
-                        $order->getGoPayStatus()
-                    )
-                );
+            foreach ($order->getGoPayTransactions() as $goPayTransaction) {
+                $oldStatus = $oldOrderGoPayStatusIndexedByGoPaiId[$goPayTransaction->getGoPayId()];
+                $newStatus = $goPayTransaction->getGoPayStatus();
+
+                if ($oldStatus !== $newStatus) {
+                    $this->logger->info(
+                        sprintf(
+                            'Order with id `%d` changed GoPay status from `%s` to `%s`.',
+                            $order->getId(),
+                            $oldStatus,
+                            $newStatus
+                        )
+                    );
+                }
             }
 
-            $this->logger->info(sprintf('Order with id `%d` now has GoPay status: `%s`.', $order->getId(), $order->getGoPayStatus()));
-
-            if ($oldOrderGoPayStatus !== $order->getGoPayStatus() && $order->getGoPayStatus() === PaymentStatus::PAID) {
-                if ($order->getStatus()->getMailTemplateName() !== null) {
-                    $this->logger->info('Sending order e-mail.');
-                    $this->orderMailFacade->sendEmail($order);
-                }
+            if ($oldIsOrderPaid != $order->isGopayPaid()) {
+                $this->logger->info('Sending order e-mail.');
+                $this->orderMailFacade->sendEmail($order);
             }
         }
 

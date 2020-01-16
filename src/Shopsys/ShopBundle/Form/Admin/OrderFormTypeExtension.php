@@ -77,7 +77,7 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                 $builderBasicInformationGroup
                     ->add('gopayStatus', DisplayOnlyType::class, [
                         'label' => t('Stav platby GoPay'),
-                        'data' => $order->getGoPayStatus(),
+                        'data' => $order->getGoPayTransactions(),
                     ]);
             }
         }

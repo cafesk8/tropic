@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
+use Shopsys\ShopBundle\Model\GoPay\GoPayTransaction;
 use Shopsys\ShopBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
@@ -35,7 +36,8 @@ class OrderRepository extends BaseOrderRepository
     {
         $queryBuilder = $this->createOrderQueryBuilder()
             ->join(Payment::class, 'p', Join::WITH, 'o.payment = p.id')
-            ->andWhere('p.type = :type AND (o.goPayStatus != :statusPaid OR o.goPayStatus IS NULL)')
+            ->join(GoPayTransaction::class, 'gpt', Join::WITH, 'o.id = gpt.order AND gpt.goPayStatus != :statusPaid')
+            ->andWhere('p.type = :type')
             ->andWhere('o.createdAt >= :fromDate')
             ->orderBy('o.createdAt', 'ASC')
             ->setParameter('fromDate', $fromDate)

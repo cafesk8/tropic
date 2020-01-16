@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\Model\Order;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
@@ -206,7 +205,7 @@ class OrderFacade extends BaseOrderFacade
         $order = $this->getById($orderId);
         $orderSentPageContent = parent::getOrderSentPageContent($orderId);
 
-        if ($order->getGoPayStatus() === PaymentStatus::PAID) {
+        if ($order->isGopayPaid()) {
             $orderSentPageContent = str_replace(
                 $order->getPayment()->getInstructions(),
                 t('You have successfully paid order via GoPay.'),
