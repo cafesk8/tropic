@@ -18,7 +18,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
     public const REFERENCE_STORE_OSTRAVA_AVION = 'store_ostrava_avion';
     public const REFERENCE_STORE_OSTRAVA_KAROLINA = 'store_ostrava_karolina';
     public const REFERENCE_STORE_BRATISLAVA_AUPARK = 'store_bratislava_aupark';
-    public const REFERENCE_STORE_NEMARKT = 'store_neumarkt';
+    public const REFERENCE_STORE_ELBEPARK = 'store_dresden_elbepark';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Store\StoreFacade
@@ -112,14 +112,14 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
 
         $storeData->description = $description;
         $storeData->domainId = DomainHelper::GERMAN_DOMAIN;
-        $storeData->name = 'Bushman Germany GmbH';
-        $storeData->city = 'Neumarkt';
-        $storeData->street = 'Sachsenstraße 2';
-        $storeData->postcode = '92318';
+        $storeData->name = 'Elbepark';
+        $storeData->city = 'Dresden';
+        $storeData->street = 'Peschelstraße 33';
+        $storeData->postcode = '01139';
         $storeData->openingHours = 'Mo-So / 10,00 - 21,00';
         $storeData->externalNumber = '1003';
-        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
-        $this->createStore($storeData, self::REFERENCE_STORE_NEMARKT);
+        $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_GERMANY);
+        $this->createStore($storeData, self::REFERENCE_STORE_ELBEPARK);
     }
 
     /**

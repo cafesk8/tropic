@@ -12,9 +12,9 @@ class BrandRepository extends BaseBrandRepository
     /**
      * @return \Shopsys\ShopBundle\Model\Product\Brand\Brand
      */
-    public function getMainBushmanBrand(): Brand
+    public function getMainShopsysBrand(): Brand
     {
-        $brand = $this->getBrandRepository()->findOneBy(['type' => Brand::TYPE_MAIN_BUSHMAN]);
+        $brand = $this->getBrandRepository()->findOneBy(['type' => Brand::TYPE_MAIN_SHOPSYS]);
         if ($brand === null) {
             throw new BrandNotFoundException('Main brand not found');
         }

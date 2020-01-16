@@ -17,7 +17,7 @@ use Shopsys\ShopBundle\Model\Product\Brand\Exception\InvalidBrandTypeException;
 class Brand extends BaseBrand
 {
     public const TYPE_DEFAULT = 'default';
-    public const TYPE_MAIN_BUSHMAN = 'mainBushman';
+    public const TYPE_MAIN_SHOPSYS = 'mainShopsys';
 
     /**
      * @var string
@@ -49,7 +49,7 @@ class Brand extends BaseBrand
      */
     public function setType(string $type): void
     {
-        if (in_array($type, [self::TYPE_DEFAULT, self::TYPE_MAIN_BUSHMAN], true) === false) {
+        if (in_array($type, [self::TYPE_DEFAULT, self::TYPE_MAIN_SHOPSYS], true) === false) {
             throw new InvalidBrandTypeException(sprintf('Invalid brand type `%s`', $type));
         }
         $this->type = $type;
@@ -65,7 +65,7 @@ class Brand extends BaseBrand
 
     public function checkForDelete(): void
     {
-        if ($this->type === self::TYPE_MAIN_BUSHMAN) {
+        if ($this->type === self::TYPE_MAIN_SHOPSYS) {
             throw new BrandDeletionForbiddenException(sprintf('Brand with id `%s` deletion is forbidden', $this->id));
         }
     }
