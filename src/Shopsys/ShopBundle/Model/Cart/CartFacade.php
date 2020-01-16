@@ -99,8 +99,18 @@ class CartFacade extends BaseCartFacade
             return $cartModifiedQuantitiesIndexedByCartItemId;
         }
         foreach ($cart->getItems() as $cartItem) {
-            if ($this->canUpdateCartItemQuantity($cartItem, $cartItem->getQuantity()) === true) {
-                $cartModifiedQuantitiesIndexedByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+            $newCartItemQuantity = $this->getValidCartItemQuantity($cartItem);
+
+            if ($newCartItemQuantity === 0) {
+                $this->deleteCartItem($cartItem->getId());
+                $this->flashMessageSender->addErrorFlashTwig(
+                    t('Product {{ name }} had to be removed from cart as its stock is too low'),
+                    [
+                        'name' => $cartItem->getName($this->domain->getLocale()),
+                    ]
+                );
+            } elseif ($newCartItemQuantity !== $cartItem->getQuantity()) {
+                $cartModifiedQuantitiesIndexedByCartItemId[$cartItem->getId()] = $newCartItemQuantity;
             }
         }
 
@@ -156,12 +166,7 @@ class CartFacade extends BaseCartFacade
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
             try {
                 $cartItem = $cart->getItemById($cartItemId);
-
-                if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
-                    $modifyFormData[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
-                } else {
-                    $modifyFormData[$cartItemId] = $quantity;
-                }
+                $modifyFormData[$cartItemId] = $this->getValidCartItemQuantity($cartItem, intval($quantity));
             } catch (InvalidCartItemException $exception) {
                 $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
@@ -373,5 +378,34 @@ class CartFacade extends BaseCartFacade
         }
 
         return true;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
+     * @param int|null $quantity
+     * @return int
+     */
+    private function getValidCartItemQuantity(CartItem $cartItem, ?int $quantity = null): int
+    {
+        $desiredQuantity = $quantity ?? $cartItem->getQuantity();
+        $product = $cartItem->getProduct();
+        $realMinimumAmount = $product->getMinimumAmount() % $product->getAmountMultiplier() === 0 ? $product->getMinimumAmount() : intval(ceil($product->getMinimumAmount() / $product->getAmountMultiplier()) * $product->getAmountMultiplier());
+        $realStockQuantity = $product->getStockQuantity() % $product->getAmountMultiplier() === 0 ? $product->getStockQuantity() : intval(floor($product->getStockQuantity() / $product->getAmountMultiplier()) * $product->getAmountMultiplier());
+
+        if ($product->isUsingStock()) {
+            if ($realMinimumAmount > $realStockQuantity) {
+                return 0;
+            }
+
+            if ($desiredQuantity > $realStockQuantity) {
+                return $realStockQuantity;
+            }
+        }
+
+        if ($desiredQuantity < $realMinimumAmount) {
+            return $realMinimumAmount;
+        }
+
+        return $desiredQuantity;
     }
 }

@@ -1963,6 +1963,9 @@ msgstr "Produkt <strong> {{product | productDisplayName}} </strong> bol upraven�
 msgid "Product no longer on sale"
 msgstr "Produkt sa už nepredáva"
 
+msgid "Product {{ name }} had to be removed from cart as its stock is too low"
+msgstr "Produkt {{ name }} musel byť z košíka odstránený, pretože jeho skladové zásoby sú príliš nízke"
+
 msgid "Product {{ name }} removed from cart"
 msgstr "Produkt {{name}} bol odstránený z košíka"
 
