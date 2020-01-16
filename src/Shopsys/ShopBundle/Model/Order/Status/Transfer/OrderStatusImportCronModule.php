@@ -126,9 +126,19 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 
         $orderItemTransferData = $this->getOrderQuantityStatusTransferResponse($order);
         if ($orderItemTransferData === null) {
+            $this->logger->addInfo(sprintf(
+                'Order status of order with ID `%s`: returned due to transfer data is null',
+                $order->getId()
+            ));
             return;
         }
         $this->setOrderItemPreparedQuantities($order, $orderItemTransferData->getItems());
+
+        $newOrderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
+        if ($newOrderStatus->isCanceled()) {
+            $this->changeOrderStatus($order, $newOrderStatus);
+            return;
+        }
 
         /** @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus */
         $orderStatus = $order->getStatus();
@@ -137,13 +147,19 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             return;
         }
 
-        $newOrderStatus = $this->getOrderStatus($orderStatusTransferResponseItemData);
-
         if ($orderStatus === $newOrderStatus) {
+            $this->logger->addInfo(sprintf(
+                'Order status of order with ID `%s`: returned due to order status is same as new order status',
+                $order->getId()
+            ));
             return;
         }
 
         if ($orderStatus->isOrderStatusReady() && $newOrderStatus->isCheckOrderReadyStatus() === true) {
+            $this->logger->addInfo(sprintf(
+                'Order status of order with ID `%s`: returned due to isOrderStatusReady = true and isCheckOrderReadyStatus = true and isCanceled = false',
+                $order->getId()
+            ));
             return;
         }
 
@@ -240,6 +256,10 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
     private function processOrderReadyStatusAndOrderItemQuantities(Order $order, ?OrderQuantityStatusTransferResponseItemData $orderItemTransferData): void
     {
         if ($orderItemTransferData === null) {
+            $this->logger->addInfo(sprintf(
+                'Order status of order with ID `%s`: returned due to null transfer data',
+                $order->getId()
+            ));
             return;
         }
 
@@ -257,6 +277,10 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         }
 
         if ($order->getStatus() === $orderStatus || $orderStatus === null) {
+            $this->logger->addInfo(sprintf(
+                'Order status of order with ID `%s`: returned due to same order status or null order status',
+                $order->getId()
+            ));
             return;
         }
 
