@@ -13,7 +13,6 @@ use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ShopBundle\Form\Front\Cart\AddProductFormType;
@@ -24,6 +23,7 @@ use Shopsys\ShopBundle\Model\Gtm\GtmFacade;
 use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade;
+use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductInCartFacade;
 use Symfony\Component\HttpFoundation\Request;
@@ -347,14 +347,17 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $type
      * @param bool $disabled
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addProductFormAction(Product $product, $type = 'normal', $disabled = false)
     {
-        $form = $this->createForm(AddProductFormType::class, ['productId' => $product->getId()], [
+        $form = $this->createForm(AddProductFormType::class, [
+            'productId' => $product->getId(),
+            'minimum_amount' => $product->getMinimumAmount(),
+        ], [
             'action' => $this->generateUrl('front_cart_add_product'),
         ]);
 
