@@ -183,12 +183,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\UserRepository: '@Shopsys\ShopBundle\Model\Customer\UserRepository'
 
-    Shopsys\ShopBundle\Model\Localization\Localization:
-        arguments:
-            $adminLocale: '%shopsys.admin_locale%'
-
-    Shopsys\FrameworkBundle\Model\Localization\Localization: '@Shopsys\ShopBundle\Model\Localization\Localization'
-
     Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\OrderDataFactory'
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\Item\OrderItemDataFactory'
