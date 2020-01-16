@@ -185,7 +185,7 @@ class Store implements PickupPlaceInterface
      */
     public static function create(StoreData $storeData): self
     {
-        return new static($storeData);
+        return new self($storeData);
     }
 
     /**

@@ -59,7 +59,7 @@ class ProductStoreStock
      */
     public static function create(Product $product, Store $store, ?int $stockQuantity): self
     {
-        return new static($product, $store, $stockQuantity);
+        return new self($product, $store, $stockQuantity);
     }
 
     /**

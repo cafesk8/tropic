@@ -499,6 +499,8 @@ class Order extends BaseOrder
         if ($this->exportStatus === self::EXPORT_ERROR) {
             return t('Chyba při přenosu');
         }
+
+        return '';
     }
 
     /**

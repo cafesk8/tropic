@@ -241,6 +241,8 @@ class User extends BaseUser
         if ($exportStatus === self::EXPORT_ERROR) {
             return t('Chyba při přenosu');
         }
+
+        return '';
     }
 
     /**

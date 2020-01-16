@@ -154,10 +154,6 @@ class OrderFormTypeExtension extends AbstractTypeExtension
      */
     private function getPossibleMallStatus(?string $currentStatus): array
     {
-        if ($currentStatus === null) {
-            return [];
-        }
-
         if ($currentStatus === Order::STATUS_OPEN) {
             return [
                 t('Otevřena') => Order::STATUS_OPEN,
@@ -194,6 +190,8 @@ class OrderFormTypeExtension extends AbstractTypeExtension
                 t('Doručena') => Order::STATUS_DELIVERED,
             ];
         }
+
+        return [];
     }
 
     /**
