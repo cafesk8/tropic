@@ -1534,6 +1534,9 @@ msgstr "Über den Einkauf"
 msgid "O nás"
 msgstr "Über uns"
 
+msgid "O produktu %s se dozvíte více v těchto článcích:"
+msgstr "Weitere Informationen zum Produkt %s finden Sie in diesen Artikeln:"
+
 msgid "Objednávka je již zaplacená."
 msgstr ""
 
@@ -3369,6 +3372,9 @@ msgstr "Artikel"
 
 msgid "Články blogu"
 msgstr "Blogartikel"
+
+msgid "Články k přečtení"
+msgstr "Artikel zum Lesen"
 
 msgid "Články v horním menu"
 msgstr "Artikel im oberen Menü"

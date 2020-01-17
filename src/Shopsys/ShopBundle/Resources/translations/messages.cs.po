@@ -919,9 +919,6 @@ msgstr "Na konkrétní záložce domény není možné upravovat pořadí a zano
 msgid "Informační řádek"
 msgstr ""
 
-msgid "Inspiraci hledej v příbězích"
-msgstr ""
-
 msgid "Instagram"
 msgstr ""
 
@@ -1346,6 +1343,9 @@ msgid "O nákupu"
 msgstr ""
 
 msgid "O nás"
+msgstr ""
+
+msgid "O produktu %s se dozvíte více v těchto článcích:"
 msgstr ""
 
 msgid "Objednávka je již zaplacená."
@@ -1871,9 +1871,6 @@ msgid "Přejít na výpis všech článků"
 msgstr ""
 
 msgid "Přeneseno"
-msgstr ""
-
-msgid "Přečti si více"
 msgstr ""
 
 msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
@@ -2442,9 +2439,6 @@ msgstr ""
 
 msgid "User not found."
 msgstr "Uživatel nebyl nalezen."
-
-msgid "V hlavní roli"
-msgstr ""
 
 msgid "V hlavním menu"
 msgstr ""
@@ -3068,6 +3062,9 @@ msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Věrnostním 
 msgstr ""
 
 msgid "Články blogu"
+msgstr ""
+
+msgid "Články k přečtení"
 msgstr ""
 
 msgid "Články v horním menu"

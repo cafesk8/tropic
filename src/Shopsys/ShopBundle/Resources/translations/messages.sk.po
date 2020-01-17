@@ -1546,6 +1546,9 @@ msgstr "O nákupe"
 msgid "O nás"
 msgstr "O nás"
 
+msgid "O produktu %s se dozvíte více v těchto článcích:"
+msgstr "O produkte %s sa dozviete viac v týchto článkoch:"
+
 msgid "Objednávka je již zaplacená."
 msgstr "Objednávka je už zaplatená."
 
@@ -3372,6 +3375,9 @@ msgstr "Články"
 
 msgid "Články blogu"
 msgstr "Články blogu"
+
+msgid "Články k přečtení"
+msgstr "Articles to read"
 
 msgid "Články v horním menu"
 msgstr "Články v hornom menu"
