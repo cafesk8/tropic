@@ -88,7 +88,7 @@ class ArticleDataFixture extends AbstractReferenceFixture
         $this->createArticle($articleData);
 
         $articleData->name = 'Pro obchodníky';
-        $articleData->text = 'Velkoobchodní prodej pro obchodníky provádíme již od roku 1992. Od roku 2013 umožňujeme obchodníkům s papírenským zbožím i pohodlný nákup přes tento internetový obchod. Každý zaregistrovaný zákazník vidí své aktuální ceny. O B2B mohou žádat pouze ochdodníci, kteří mají naše zboží určeno pro další prodej.';
+        $articleData->text = 'Proti slunci to vypadá, že se slunce pohybuje k západu rychleji než balónky, a možná to tak skutečně je. Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili. Z fyzikálního pohledu totiž balónky působí zcela nezajímavě. Nejvíc bezpochyby zaujmou děti - jedna malá holčička zrovna včera div nebrečela, že by snad balónky mohly prasknout. A co teprve ta stuha. Stuha, kterou je každý z trojice balónků uvázán, aby se nevypustil.';
         $articleData->placement = Article::PLACEMENT_SERVICES;
         $this->createArticle($articleData);
 
