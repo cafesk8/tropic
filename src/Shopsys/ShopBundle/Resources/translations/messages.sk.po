@@ -319,9 +319,6 @@ msgstr ""
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr "Bolo vytvorené <strong> {{quantity}} </ strong> zľavových kupónov"
 
-msgid "Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také."
-msgstr "Marec, za kachle nelez. V kvalitnom oblečení si užijete prechádzky v akomkoľvek počasí. Nemeňte svoje zvyky, my ich tiež."
-
 msgid "CSV Export"
 msgstr "CSV Export"
 
@@ -1329,9 +1326,6 @@ msgstr "Na vybrané oblečenie dávame bushmanom záruku 25 rokov"
 
 msgid "Nadpis produktů"
 msgstr "Nadpis produktov"
-
-msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně"
-msgstr "Nadčasové splynutie s prírodou. Sama viete, že aj na prechádzke so psom môžete vyzerať dobre a prirodzene"
 
 msgid "Nahrávejte velikosti obrázků: čtverec (380x290px), obdélník na výšku (380x600px)"
 msgstr "Nahrávajte veľkosti obrázkov: štvorec (380x290px), obdĺžnik na výšku (380x600px)"

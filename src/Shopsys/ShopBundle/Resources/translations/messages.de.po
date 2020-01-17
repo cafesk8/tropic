@@ -313,9 +313,6 @@ msgstr ""
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr "<Strong> {{Quantity}} </ strong> Rabattgutscheine erstellt"
 
-msgid "Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také."
-msgstr "März, ich komme nicht hinter den Herd. Trage hochwertige Kleidung, um Spaziergänge bei jedem Wetter zu genießen. Ändere nicht deine Gewohnheiten, wir machen es auch nicht."
-
 msgid "CSV Export"
 msgstr "CSV Export"
 
@@ -1320,9 +1317,6 @@ msgstr "Auf ausgewählte Kleidungsstücke gewähren wir für alle Bushmänner 25
 
 msgid "Nadpis produktů"
 msgstr "Produktüberschrift"
-
-msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně"
-msgstr "Zeitlose Harmonie mit der Natur. Du weißt, dass du bei einem Spaziergang mit deinem Hund gut und natürlich aussehen kannst"
 
 msgid "Nahrávejte velikosti obrázků: čtverec (380x290px), obdélník na výšku (380x600px)"
 msgstr "Bildgröße des Uploads: Quadrat (380x290px), Hochformat (380x600px)"
