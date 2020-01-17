@@ -31,9 +31,6 @@ msgstr ""
 msgid "-- Vyberte přenos --"
 msgstr ""
 
-msgid "00421/908767330"
-msgstr ""
-
 msgid "1 - čtverec"
 msgstr ""
 
@@ -41,9 +38,6 @@ msgid "2 - čtverec"
 msgstr ""
 
 msgid "25 let záruku zdarma, objednat směnnou zásilku nebo"
-msgstr ""
-
-msgid "257 22 Čerčany"
 msgstr ""
 
 msgid "3 - čtverec"
@@ -58,7 +52,7 @@ msgstr ""
 msgid "6 - obdélník na výšku"
 msgstr ""
 
-msgid "831 04 Bratislava"
+msgid "702 00 Ostrava"
 msgstr ""
 
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
@@ -68,9 +62,6 @@ msgid "Add"
 msgstr ""
 
 msgid "Add requirement"
-msgstr ""
-
-msgid "Administrativní areál BUSHMAN"
 msgstr ""
 
 msgid "Administrátor má právo"
@@ -215,12 +206,6 @@ msgid "Brand"
 msgstr ""
 
 msgid "Bulk editing done"
-msgstr ""
-
-msgid "Bushman Company a.s."
-msgstr ""
-
-msgid "Bushman Trade s.r.o."
 msgstr ""
 
 msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
@@ -667,12 +652,6 @@ msgstr ""
 msgid "Filtrovat produkty"
 msgstr ""
 
-msgid "Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl B, vložka 8948."
-msgstr ""
-
-msgid "Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 55269."
-msgstr ""
-
 msgid "First name"
 msgstr ""
 
@@ -823,14 +802,8 @@ msgstr ""
 msgid "Items"
 msgstr ""
 
-msgid "IČ: 25618601, DIČ: CZ25618601"
-msgstr ""
-
-msgid "IČ: 26052679, DIČ: CZ26052679"
-msgstr ""
-
-msgid "IČO: 51704501, IČ DPH: SK2120761621"
-msgstr ""
+msgid "IČ: 27790487, DIČ: CZ27790487"
+msgstr "IR: 27790487, VAT no: CZ27790487"
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr ""
@@ -886,6 +859,12 @@ msgstr ""
 msgid "Klikněte zde pro zopakování úhrady objednávky"
 msgstr ""
 
+msgid "Koksární 1096/10"
+msgstr ""
+
+msgid "Koksární 1096/10, 702 00 Ostrava"
+msgstr ""
+
 msgid "Kolikrát použito"
 msgstr ""
 
@@ -907,16 +886,10 @@ msgstr ""
 msgid "Kód produktu"
 msgstr ""
 
-msgid "LP Komfort s.r.o."
-msgstr ""
-
 msgid "Last name"
 msgstr ""
 
 msgid "Last order"
-msgstr ""
-
-msgid "Lazarská 5/1719, 110 00 Praha 1"
 msgstr ""
 
 msgid "Legendární kategorie"
@@ -1019,9 +992,6 @@ msgid "Máte dopravu zdarma!"
 msgstr ""
 
 msgid "Máte dotaz?"
-msgstr ""
-
-msgid "Městečko - Nespeky č.p. 75"
 msgstr ""
 
 msgid "Město"
@@ -1471,8 +1441,8 @@ msgstr ""
 msgid "Polska"
 msgstr ""
 
-msgid "Pondělí až pátek 9–15 hod"
-msgstr ""
+msgid "Pondělí až pátek 8:00 – 16:00"
+msgstr "Monday to Friday 8 AM - 16 PM"
 
 msgid "Popis"
 msgstr ""
@@ -1837,6 +1807,9 @@ msgstr ""
 msgid "Shopsys magazín"
 msgstr ""
 
+msgid "Shopsys s.r.o."
+msgstr ""
+
 msgid "Skladem"
 msgstr ""
 
@@ -1915,11 +1888,8 @@ msgstr ""
 msgid "Specialisti na běh"
 msgstr ""
 
-msgid "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
-msgstr ""
-
-msgid "Stará Vajnorská 11"
-msgstr ""
+msgid "Spisová značka C 51890 vedená u rejstříkového soudu v Ostravě."
+msgstr "File number C 51890 kept by the Registration Court in Ostrava."
 
 msgid "Status"
 msgstr ""
@@ -1982,9 +1952,6 @@ msgid "TOPTRANS"
 msgstr ""
 
 msgid "Tax number"
-msgstr ""
-
-msgid "Tel"
 msgstr ""
 
 msgid "Telefon"
@@ -2542,9 +2509,6 @@ msgstr ""
 msgid "ean"
 msgstr ""
 
-msgid "fax: +420 317 712 499"
-msgstr ""
-
 msgid "from"
 msgstr ""
 
@@ -2555,6 +2519,9 @@ msgid "historii svých objednávek,"
 msgstr ""
 
 msgid "in upper menu"
+msgstr ""
+
+msgid "info@shopsys.com"
 msgstr ""
 
 msgid "možnost získat"
@@ -2587,13 +2554,7 @@ msgstr ""
 msgid "o nás"
 msgstr ""
 
-msgid "obchod@bushman.sk"
-msgstr ""
-
 msgid "obchodními podmínkami"
-msgstr ""
-
-msgid "office@bushman.cz"
 msgstr ""
 
 msgid "on stock"
@@ -2629,7 +2590,7 @@ msgstr ""
 msgid "stores"
 msgstr ""
 
-msgid "tel.: +420 317 712 400"
+msgid "tel.: +420 595 177 177"
 msgstr ""
 
 msgid "u&nbsp;tebe"

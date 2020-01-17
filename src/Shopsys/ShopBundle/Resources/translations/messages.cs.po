@@ -37,9 +37,6 @@ msgstr "-- Vyber umístění článku --"
 msgid "-- Vyberte přenos --"
 msgstr ""
 
-msgid "00421/908767330"
-msgstr ""
-
 msgid "1 - čtverec"
 msgstr ""
 
@@ -47,9 +44,6 @@ msgid "2 - čtverec"
 msgstr ""
 
 msgid "25 let záruku zdarma, objednat směnnou zásilku nebo"
-msgstr ""
-
-msgid "257 22 Čerčany"
 msgstr ""
 
 msgid "3 - čtverec"
@@ -64,7 +58,7 @@ msgstr ""
 msgid "6 - obdélník na výšku"
 msgstr ""
 
-msgid "831 04 Bratislava"
+msgid "702 00 Ostrava"
 msgstr ""
 
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
@@ -84,9 +78,6 @@ msgstr "Vložit do košíku"
 
 msgid "Address"
 msgstr "Adresa"
-
-msgid "Administrativní areál BUSHMAN"
-msgstr ""
 
 msgid "Administrátor má právo"
 msgstr ""
@@ -748,12 +739,6 @@ msgstr ""
 msgid "Finish the order"
 msgstr "Dokončit objednávku"
 
-msgid "Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl B, vložka 8948."
-msgstr ""
-
-msgid "Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 55269."
-msgstr ""
-
 msgid "First name"
 msgstr "Jméno"
 
@@ -931,13 +916,7 @@ msgstr ""
 msgid "Items"
 msgstr "Položky"
 
-msgid "IČ: 25618601, DIČ: CZ25618601"
-msgstr ""
-
-msgid "IČ: 26052679, DIČ: CZ26052679"
-msgstr ""
-
-msgid "IČO: 51704501, IČ DPH: SK2120761621"
+msgid "IČ: 27790487, DIČ: CZ27790487"
 msgstr ""
 
 msgid "Jak na výměnu velikosti?"
@@ -1000,6 +979,12 @@ msgstr ""
 msgid "Klikněte zde pro zopakování úhrady objednávky"
 msgstr ""
 
+msgid "Koksární 1096/10"
+msgstr ""
+
+msgid "Koksární 1096/10, 702 00 Ostrava"
+msgstr ""
+
 msgid "Kolikrát použito"
 msgstr ""
 
@@ -1032,9 +1017,6 @@ msgstr "Poslední objednávka"
 
 msgid "Last viewed products"
 msgstr "Naposledy navštívené produkty"
-
-msgid "Lazarská 5/1719, 110 00 Praha 1"
-msgstr ""
 
 msgid "Legendární kategorie"
 msgstr ""
@@ -1645,7 +1627,7 @@ msgstr "Položka {{ name }} je skladem k dispozici v počtu {{ quantity }} ks, p
 msgid "Polska"
 msgstr ""
 
-msgid "Pondělí až pátek 9–15 hod"
+msgid "Pondělí až pátek 8:00 – 16:00"
 msgstr ""
 
 msgid "Popis"
@@ -2074,6 +2056,9 @@ msgstr ""
 msgid "Shopsys magazín"
 msgstr ""
 
+msgid "Shopsys s.r.o."
+msgstr ""
+
 msgid "Skladem"
 msgstr ""
 
@@ -2170,10 +2155,7 @@ msgstr "Akční zboží"
 msgid "Specialisti na běh"
 msgstr ""
 
-msgid "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
-msgstr ""
-
-msgid "Stará Vajnorská 11"
+msgid "Spisová značka C 51890 vedená u rejstříkového soudu v Ostravě."
 msgstr ""
 
 msgid "Status"
@@ -2241,9 +2223,6 @@ msgstr "DIČ"
 
 msgid "Technical parameters"
 msgstr "Technické parametry"
-
-msgid "Tel"
-msgstr ""
 
 msgid "Telefon"
 msgstr ""
@@ -2872,9 +2851,6 @@ msgstr ""
 msgid "excluding VAT"
 msgstr "bez DPH"
 
-msgid "fax: +420 317 712 499"
-msgstr ""
-
 msgid "from"
 msgstr "od"
 
@@ -2889,6 +2865,9 @@ msgstr "v patičce"
 
 msgid "in upper menu"
 msgstr "v horním menu"
+
+msgid "info@shopsys.com"
+msgstr ""
 
 msgid "možnost získat"
 msgstr ""
@@ -2923,13 +2902,7 @@ msgstr ""
 msgid "o nás"
 msgstr ""
 
-msgid "obchod@bushman.sk"
-msgstr ""
-
 msgid "obchodními podmínkami"
-msgstr ""
-
-msgid "office@bushman.cz"
 msgstr ""
 
 msgid "on stock"
@@ -2965,7 +2938,7 @@ msgstr ""
 msgid "stores"
 msgstr "prodejen"
 
-msgid "tel.: +420 317 712 400"
+msgid "tel.: +420 595 177 177"
 msgstr ""
 
 msgid "u&nbsp;tebe"
