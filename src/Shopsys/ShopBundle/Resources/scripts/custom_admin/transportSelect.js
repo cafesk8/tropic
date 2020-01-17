@@ -48,8 +48,10 @@
         this.reloadDependendInputs = function () {
             if ($transportForm.find('.js-transport-type').val() === Shopsys.constant('\\Shopsys\\ShopBundle\\Model\\Transport\\Transport::TYPE_PERSONAL_TAKE_BALIKOBOT')) {
                 $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').removeClass('display-none');
+                $transportForm.find('.js-transport-type').parent().siblings('.js-tooltip').show();
             } else {
                 $transportForm.filterAllNodes('.js-transport-depend-on-balikobot').closest('.form-line').addClass('display-none');
+                $transportForm.find('.js-transport-type').parent().siblings('.js-tooltip').hide();
             }
         };
     };

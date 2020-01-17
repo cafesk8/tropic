@@ -179,6 +179,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             'attr' => [
                 'class' => 'js-transport-type',
             ],
+            'icon_title' => t('Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček.'),
         ]);
 
         return $builderTransportTypeGroup;
