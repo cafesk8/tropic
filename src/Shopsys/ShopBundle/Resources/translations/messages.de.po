@@ -416,7 +416,7 @@ msgid "Close (Esc)"
 msgstr "Schliessen (Esc)"
 
 msgid "Co je Věrnostní program?"
-msgstr ""
+msgstr "Was ist das Treueprogramm?"
 
 msgid "Co je však naprosto jisté, spolehlivě vás zahřeje."
 msgstr "Aber was absolut sicher ist, es hält dich warm."
