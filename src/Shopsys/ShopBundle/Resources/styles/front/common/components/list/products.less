@@ -196,11 +196,12 @@
 
         &__variants {
             position: relative;
-            display: none;
+            display: flex;
             flex-direction: row;
             justify-content: center;
             margin: 10.5px -(@list-products-item-padding + @list-products-item-info-gap) -10.5px -(@list-products-item-padding + @list-products-item-info-gap);
-            height: @list-products-item-variants-height;
+            height: 0;
+            overflow: hidden;
 
             &__slider {
                 width: 100%;
@@ -249,7 +250,7 @@
 
             .list-products__item--with-variants:hover & {
                 @media @query-lg {
-                    display: flex;
+                    height: @list-products-item-variants-height;
                 }
             }
 
