@@ -61,11 +61,16 @@
 
             <div class="header__right dont-print">
                 <div class="header__right__menu">
-                    <div class="box-dropdown box-dropdown--without-arrow box-dropdown--small-padding js-hover-intent">
-                        <div class="box-dropdown__select">
+                    <div class="box-dropdown box-dropdown--without-arrow js-hover-intent box-dropdown--small-padding">
+                        <div class="box-dropdown__select js-responsive-toggle"
+                            data-element="js-header-burger-menu" 
+                            data-hide-on-click-out="true"
+                            data-parent-give-class="true"
+                            data-slide-toggle-disabled="true"
+                        >
                             <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
                         </div>
-                        <div class="box-dropdown__options box-dropdown__options--menu js-dropdown-options">
+                        <div class="box-dropdown__options box-dropdown__options--menu" id="js-header-burger-menu">
                             {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
                                 {{ render(controller('ShopsysShopBundle:Front/Category:horizontalMenuMobile')) }}
                                 {{ render(controller('ShopsysShopBundle:Front/Category:hoverMenu', { dropdownMenu: false })) }}
@@ -76,10 +81,15 @@
 
                 <div class="header__right__search">
                     <div class="box-dropdown box-dropdown--search box-dropdown--without-arrow box-dropdown--small-padding js-hover-intent js-search-opener">
-                        <div class="box-dropdown__select">
+                        <div class="box-dropdown__select js-responsive-toggle"
+                            data-element="js-header-search" 
+                            data-hide-on-click-out="true"
+                            data-parent-give-class="true"
+                            data-slide-toggle-disabled="true"
+                        >
                             <i class="svg svg-search"></i>
                         </div>
-                        <div class="box-dropdown__options box-dropdown__options--search js-dropdown-options">
+                        <div class="box-dropdown__options box-dropdown__options--search" id="js-header-search">
                             {{ render(controller('ShopsysShopBundle:Front/Search:box')) }}
                         </div>
                     </div>
@@ -88,7 +98,12 @@
                 <div class="header__right__actions">
                     <div class="header__right__actions__item">
                         <div class="box-dropdown box-dropdown--without-background box-dropdown--without-arrow js-hover-intent">
-                            <div class="box-dropdown__select">
+                            <div class="box-dropdown__select js-responsive-toggle"
+                                data-element="js-header-customer" 
+                                data-hide-on-click-out="true"
+                                data-parent-give-class="true"
+                                data-slide-toggle-disabled="true"
+                            >
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                                     {{ 'Váš účet'|trans }}
                                 {% else %}
@@ -100,8 +115,8 @@
                                     box-dropdown__options--logged
                                 {% else %}
                                     box-dropdown__options--login
-                                {% endif %}
-                                js-dropdown-options">
+                                {% endif %}"
+                                id="js-header-customer">
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                                     <div class="box-dropdown__options__item js-dropdown-item'">
                                         <a href="{{ url('front_customer_edit') }}" class="menu-iconic__item__link">
