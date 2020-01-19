@@ -1,5 +1,4 @@
 {% macro productAvailabilityWithDeliveryDate(product) %}
-    <span>
         {% set domain = getDomain() %}
         {% set deliveryDate = getDeliveryDate(product) %}
         {% set showDeliveryDate = product.usingStock
@@ -11,14 +10,15 @@
         {% if showDeliveryDate %}
             {% set expectedDeliveryDate = deliveryDate %}
             {% set friendlyDayInterval = expectedDeliveryDate.diff(date()) %}
-
-            {{ expectedDeliveryDate|friendlyDay }}
-            {% if friendlyDayInterval.days >= 2 %}
-                {{ expectedDeliveryDate|date('j. n.') }}
-            {% endif %}
-            {{ 'u&nbsp;tebe'|trans|raw }}
+            <span class="box-detail__availability__date">
+                {{ expectedDeliveryDate|friendlyDay }}
+                {% if friendlyDayInterval.days >= 2 %}
+                    {{ expectedDeliveryDate|date('j. n.') }}
+                {% endif %}
+                {{ 'u&nbsp;tebe'|trans|raw }}
+            </span>
         {% elseif showNotAvailable %}
-            <span class="color-orange">{{ 'Momentálně nedostupné'|trans }}</span>
+            <span class="box-detail__availability__date box-detail__availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
         {% endif %}
-    </span>
+    
 {% endmacro %}

@@ -2,13 +2,11 @@
 
 {% macro availibilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}box-detail__availability js-detail-availability js-detail-availability-{{ product.id }}">
-        <span class="box-detail__availability__status" style="color: #7bbd70;">
+        <span class="box-detail__availability__status">
             {% if product.calculatedSellingDenied %}
                 {{ 'Product no longer on sale'|trans }}
             {% else %}
-                <span class="box-detail__info__availability__date">
-                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
-                </span>
+                {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
             {% endif %}
         </span>
 
@@ -50,9 +48,9 @@
 
 {% if variants|length > 0 or product.variants|length > 0 %}
     <div class="box-detail__availability js-product-variant-detail-select-info">
-        <span class="box-detail__availability__status color-green">
-            <span class="box-detail__info__availability__date">
-                <span>{{ 'Skladem, ihned k odeslání'|trans }}</span>
+        <span class="box-detail__availability__status">
+            <span class="box-detail__availability__date">
+                {{ 'Skladem, ihned k odeslání'|trans }}
             </span>
         </span>
     </div>
