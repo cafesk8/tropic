@@ -12,6 +12,7 @@
             <div class="box-order">
                 <div class="box-order__message">
                     {{ form_errors(form) }}
+                    {{ render(controller('ShopsysShopBundle:Front/FlashMessage:index')) }}
                 </div>
                 <div class="box-order__wrap">
                     {% if isGermanyDomain() is same as (true) %}
