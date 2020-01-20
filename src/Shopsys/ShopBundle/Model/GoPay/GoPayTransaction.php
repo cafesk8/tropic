@@ -31,7 +31,7 @@ class GoPayTransaction
      * @var \Shopsys\ShopBundle\Model\Order\Order
      *
      * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Order\Order", inversedBy="goPayTransactions")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $order;
 

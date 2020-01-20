@@ -139,8 +139,7 @@ class Order extends BaseOrder
      * @ORM\OneToMany(
      *     targetEntity="Shopsys\ShopBundle\Model\GoPay\GoPayTransaction",
      *     mappedBy="order",
-     *     cascade={"persist"},
-     *     orphanRemoval=true
+     *     cascade={"remove"},
      * )
      * @ORM\OrderBy({"goPayId" = "ASC"})
      */
@@ -390,7 +389,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return string[][]
+     * @return string[]
      */
     public function getGoPayTransactionsIndexedByGoPayId(): array
     {
