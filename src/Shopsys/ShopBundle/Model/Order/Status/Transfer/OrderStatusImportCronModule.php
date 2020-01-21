@@ -305,6 +305,14 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
         $orderData->statusCheckedAt = new DateTime();
 
         $locale = DomainHelper::DOMAIN_ID_TO_LOCALE[$order->getDomainId()];
+        if ($order->isDeleted()) {
+            $this->logger->addInfo(sprintf(
+                'Order status of order with ID `%s` has not been changed because is deleted',
+                $order->getId()
+            ));
+
+            return;
+        }
         $order = $this->orderFacade->edit($order->getId(), $orderData, $locale);
 
         $this->logger->addInfo(sprintf(

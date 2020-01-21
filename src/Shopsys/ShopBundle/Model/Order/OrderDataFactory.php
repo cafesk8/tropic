@@ -47,12 +47,12 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->mallOrderId = $order->getMallOrderId();
         $orderData->mallStatus = $order->getMallStatus();
         $orderData->statusCheckedAt = $order->getStatusCheckedAt();
-        $orderData->gtmCoupons = $order->getGtmCoupons();
+        $orderData->gtmCoupons[] = $order->getGtmCoupons();
         $orderData->store = $order->getStore();
         $orderData->pickupPlace = $order->getPickupPlace();
         $orderData->memberOfBushmanClub = $order->isMemberOfBushmanClub();
         $orderData->transportType = $order->getTransportType();
-        $orderData->promoCodesCodes = $order->getPromoCodesCodes();
+        $orderData->promoCodesCodes[] = $order->getPromoCodesCodes();
         $orderData->trackingNumber = $order->getTrackingNumber();
     }
 }
