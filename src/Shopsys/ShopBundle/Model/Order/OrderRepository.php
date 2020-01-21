@@ -160,11 +160,13 @@ class OrderRepository extends BaseOrderRepository
          */
 
         return $this->createOrderQueryBuilder()
+            ->leftJoin(GoPayTransaction::class, 'gpt', Join::WITH, 'o.id = gpt.order')
             ->andWhere('o.exportStatus = :exportStatus')
             ->andWhere('o.customer IS NULL OR c.transferId IS NOT NULL')
-            ->andWhere('(p.type = :paymentTypeGoPay AND o.goPayStatus = :goPayStatusPaid) OR p.type != :paymentTypeGoPay')
+            ->andWhere('(p.type = :paymentTypeGoPay AND gpt.goPayStatus = :goPayStatusPaid) OR p.type != :paymentTypeGoPay')
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.payment', 'p')
+            ->groupBy('o.id')
             ->setMaxResults($limit)
             ->setParameters([
                 'exportStatus' => Order::EXPORT_NOT_YET,
