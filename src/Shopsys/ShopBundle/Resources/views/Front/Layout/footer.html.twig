@@ -8,7 +8,7 @@
                 <div class="web__container web__container--light web__container--big-padding">
                     <div class="footer-top">
                         <div class="footer-top__info">
-                            <ul class="list-socials">
+                            <ul class="list-socials{% if domainId == constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN') %} list-socials--two-items{% endif %}">
                                 <li class="list-socials__item">
                                     <a class="list-socials__item__link" href="{{ facebookLinks[domainId] }}" target="_blank">
                                         <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
@@ -17,6 +17,7 @@
                                         </span>
                                     </a>
                                 </li>
+                                {% if domainId != constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN') %}
                                 <li class="list-socials__item">
                                     <a class="list-socials__item__link" href="https://www.instagram.com/bushmanoriginal/" target="_blank">
                                         <i class="list-socials__item__icon list-socials__item__icon--instagram svg svg-instagram"></i>
@@ -25,6 +26,7 @@
                                         </span>
                                     </a>
                                 </li>
+                                {% endif %}
                                 <li class="list-socials__item">
                                     <a class="list-socials__item__link" href="https://www.youtube.com/channel/UCK_EpHIQ8UgwrV8QkLsdQ6w" target="_blank">
                                         <i class="list-socials__item__icon list-socials__item__icon--youtube svg svg-youtube"></i>
@@ -60,8 +62,10 @@
                                     <div class="box-contact__block">
                                         <div class="box-contact__block__info">
                                             <div class="box-contact__block__info__small-logos">
-                                                <img src="{{ asset('assets/frontend/images/geprufter_webshop.png') }}" alt="{{ 'Geprüfter webshop'|trans }}">
-                                                <img src="{{ asset('assets/frontend/images/handlerbund_mitglied.png') }}" alt="{{ 'Händlerbund Mitglied'|trans }}">
+                                                <img src="{{ asset('assets/frontend/images/geprufter_webshop.png') }}" alt="{{ 'Geprüfter webshop'|trans }}" target="_blank">
+                                                <a href="https://www.haendlerbund.de/de/mitglied/a5ee1d0e-eeb2-11e6-b388-9c5c8e4fb375-5813421957" title="{{ 'Händlerbund Mitglied'|trans }}">
+                                                    <img src="{{ asset('assets/frontend/images/handlerbund_mitglied.png') }}" alt="{{ 'Händlerbund Mitglied'|trans }}">
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
