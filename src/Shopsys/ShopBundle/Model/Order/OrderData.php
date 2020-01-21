@@ -16,9 +16,9 @@ class OrderData extends BaseOrderData
     public $goPayId;
 
     /**
-     * @var string|null
+     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]
      */
-    public $goPayStatus;
+    public $goPayTransactions;
 
     /**
      * @var string|null

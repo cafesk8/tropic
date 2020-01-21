@@ -4,13 +4,8 @@ declare(strict_types = 1);
 
 namespace Shopsys\ShopBundle\Model\GoPay;
 
-use GoPay\Http\Response;
-use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
-use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
 use Shopsys\ShopBundle\Model\Order\Order;
-use Shopsys\ShopBundle\Model\Order\OrderFacade;
 
 class GoPayFacadeOnCurrentDomain
 {
@@ -30,34 +25,18 @@ class GoPayFacadeOnCurrentDomain
     private $goPayClientFactory;
 
     /**
-     * @var \Symfony\Bridge\Monolog\Logger
-     */
-    private $logger;
-
-    /**
-     * @var \Shopsys\ShopBundle\Model\Order\OrderFacade
-     */
-    private $orderFacade;
-
-    /**
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayClientFactory $goPayClientFactory
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayOrderMapper $goPayOrderMapper
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      */
     public function __construct(
         GoPayClientFactory $goPayClientFactory,
         GoPayOrderMapper $goPayOrderMapper,
-        Domain $domain,
-        LoggerInterface $logger,
-        OrderFacade $orderFacade
+        Domain $domain
     ) {
         $this->goPayOrderMapper = $goPayOrderMapper;
         $this->domain = $domain;
         $this->goPayClientFactory = $goPayClientFactory;
-        $this->logger = $logger;
-        $this->orderFacade = $orderFacade;
     }
 
     /**
@@ -83,38 +62,24 @@ class GoPayFacadeOnCurrentDomain
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @return \GoPay\Http\Response
+     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[] $goPayTransactions
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\GoPay\GoPayResponseData[]
      */
-    public function getPaymentStatusResponse(Order $order): Response
+    public function getPaymentStatusesResponseDataByGoPayTransactionAndDomainId(array $goPayTransactions, int $domainId): array
     {
-        $domainConfig = $this->domain->getDomainConfigById($order->getDomainId());
+        $responses = [];
+        $domainConfig = $this->domain->getDomainConfigById($domainId);
         $goPayClient = $this->goPayClientFactory->createByLocale($domainConfig->getLocale());
 
-        $response = $goPayClient->getStatus($order->getGoPayId());
-
-        return $response;
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     */
-    public function checkOrderGoPayStatus(Order $order): void
-    {
-        if ($order->isGopayPaid() === true) {
-            return;
+        foreach ($goPayTransactions as $goPayTransaction) {
+            $responses[] = new GoPayResponseData(
+                $goPayClient->getStatus($goPayTransaction->getGoPayId()),
+                $goPayTransaction
+            );
         }
 
-        try {
-            $goPayStatusResponse = $this->getPaymentStatusResponse($order);
-            $this->orderFacade->setGoPayStatusAndFik($order, $goPayStatusResponse);
-        } catch (GoPayNotConfiguredException $e) {
-            $this->logger->addError($e);
-            throw $e;
-        } catch (GoPayPaymentDownloadException $e) {
-            $this->logger->addError($e);
-            throw $e;
-        }
+        return $responses;
     }
 
     /**

@@ -134,25 +134,16 @@ class Order extends BaseOrder
     protected $deliveryPostcode;
 
     /**
-     * @var string
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]
      *
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\OneToMany(
+     *     targetEntity="Shopsys\ShopBundle\Model\GoPay\GoPayTransaction",
+     *     mappedBy="order",
+     *     cascade={"remove"},
+     * )
+     * @ORM\OrderBy({"goPayId" = "ASC"})
      */
-    private $goPayId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $goPayStatus;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=39, nullable=true)
-     */
-    private $goPayFik;
+    private $goPayTransactions;
 
     /**
      * @var string|null
@@ -300,6 +291,7 @@ class Order extends BaseOrder
         $this->payment = $orderData->payment;
 
         $this->setDeliveryAddressNewly($orderData);
+        $this->goPayTransactions = new ArrayCollection();
 
         $this->note = $orderData->note;
         $this->items = new ArrayCollection();
@@ -325,8 +317,6 @@ class Order extends BaseOrder
         $this->createdAsAdministrator = $orderData->createdAsAdministrator;
         $this->createdAsAdministratorName = $orderData->createdAsAdministratorName;
 
-        $this->goPayId = $orderData->goPayId;
-        $this->goPayStatus = $orderData->goPayStatus;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
         $this->updatedAt = $orderData->updatedAt;
@@ -356,8 +346,7 @@ class Order extends BaseOrder
     ): OrderEditResult {
         $orderEditResult = parent::edit($orderData, $orderItemPriceCalculation, $orderItemFactory, $orderPriceCalculation);
 
-        $this->goPayId = $orderData->goPayId;
-        $this->goPayStatus = $orderData->goPayStatus;
+        $this->goPayTransactions = $orderData->goPayTransactions;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
         $this->pickupPlace = $orderData->pickupPlace;
@@ -392,51 +381,24 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return string|null
+     * @return \Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]
      */
-    public function getGoPayId(): ?string
+    public function getGoPayTransactions(): array
     {
-        return $this->goPayId;
+        return $this->goPayTransactions->toArray();
     }
 
     /**
-     * @param string|null $goPayId
+     * @return string[]
      */
-    public function setGoPayId(?string $goPayId): void
+    public function getGoPayTransactionsIndexedByGoPayId(): array
     {
-        $this->goPayId = $goPayId;
-    }
+        $returnArray = [];
+        foreach ($this->goPayTransactions as $transaction) {
+            $returnArray[$transaction->getGoPayId()] = $transaction->getGoPayStatus();
+        }
 
-    /**
-     * @return string|null
-     */
-    public function getGoPayStatus(): ?string
-    {
-        return $this->goPayStatus;
-    }
-
-    /**
-     * @param string $goPayStatus
-     */
-    public function setGoPayStatus(string $goPayStatus): void
-    {
-        $this->goPayStatus = $goPayStatus;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getGoPayFik(): ?string
-    {
-        return $this->goPayFik;
-    }
-
-    /**
-     * @param string|null $goPayFik
-     */
-    public function setGoPayFik(?string $goPayFik)
-    {
-        $this->goPayFik = $goPayFik;
+        return $returnArray;
     }
 
     /**
@@ -1053,15 +1015,17 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isGopayPaid(): ?bool
+    public function isGopayPaid(): bool
     {
-        if ($this->goPayId === null) {
-            return null;
+        foreach ($this->goPayTransactions->toArray() as $item) {
+            if ($item->getGoPayStatus() === PaymentStatus::PAID) {
+                return true;
+            }
         }
 
-        return $this->goPayStatus === PaymentStatus::PAID;
+        return false;
     }
 
     /**
