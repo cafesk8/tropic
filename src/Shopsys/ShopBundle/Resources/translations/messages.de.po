@@ -2426,7 +2426,7 @@ msgid "Telefon"
 msgstr "Telefon"
 
 msgid "Telefonní číslo musí začínat +XXX"
-msgstr "Die Telefonnummer muss mit + XXX beginnen"
+msgstr "Die Telefonnummer muss mit +XXX beginnen"
 
 msgid "Telephone"
 msgstr "Telefon"

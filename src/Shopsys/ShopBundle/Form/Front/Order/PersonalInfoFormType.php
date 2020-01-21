@@ -337,7 +337,9 @@ class PersonalInfoFormType extends AbstractType
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
                     }
 
-                    if (DomainHelper::isGermanDomain($this->domain)) {
+                    if (DomainHelper::isGermanDomain($this->domain)
+                        || DomainHelper::isSlovakDomain($this->domain)
+                    ) {
                         $validationGroups[] = self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED;
                     }
 
