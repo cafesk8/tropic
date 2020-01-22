@@ -1,9 +1,9 @@
 {% macro productAvailabilityWithDeliveryDate(product) %}
         {% set domain = getDomain() %}
         {% set deliveryDate = getDeliveryDate(product) %}
-        {% set showDeliveryDate = product.usingStock
-            and product.stockQuantity > 0
-            and deliveryDate is not null  %}
+        {% set showDeliveryDate = (product.usingStock
+            and product.stockQuantity > 0)
+            or deliveryDate is not null  %}
 
         {% set showNotAvailable = product.stockQuantity < 1 %}
 
