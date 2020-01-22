@@ -1939,9 +1939,6 @@ msgstr "Geschäft"
 msgid "Prodejny"
 msgstr "Geschäfte"
 
-msgid "Prodejny Bushman"
-msgstr "Bushman Geschäfte"
-
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Produkt <strong> {{name}} </strong> ({{quantity|formatNumber}} {{unitName}}) wurde dem Warenkorb hinzugefügt"
 

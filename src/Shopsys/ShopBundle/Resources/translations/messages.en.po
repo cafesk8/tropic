@@ -1514,13 +1514,10 @@ msgid "Procentuální sleva"
 msgstr ""
 
 msgid "Prodejna"
-msgstr ""
+msgstr "Store"
 
 msgid "Prodejny"
-msgstr ""
-
-msgid "Prodejny Bushman"
-msgstr ""
+msgstr "Stores"
 
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr ""

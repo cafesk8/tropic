@@ -1951,9 +1951,6 @@ msgstr "Predajňa"
 msgid "Prodejny"
 msgstr "Predajne"
 
-msgid "Prodejny Bushman"
-msgstr "Predajne Bushman"
-
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Produkt <strong> {{name}} </strong> ({{množstvo | formatNumber}} {{unitName}}) bol pridaný do košíka"
 

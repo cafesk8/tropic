@@ -1729,9 +1729,6 @@ msgstr ""
 msgid "Prodejny"
 msgstr ""
 
-msgid "Prodejny Bushman"
-msgstr ""
-
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Do košíku bylo vloženo zboží <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }})"
 
