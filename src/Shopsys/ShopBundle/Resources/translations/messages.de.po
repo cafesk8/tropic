@@ -2896,7 +2896,7 @@ msgstr "Konto erstellen"
 msgid "Využijte"
 msgstr "Nutze den Vorteil"
 
-msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link js-not-implemented-yet\" href=\"\">prodejně v Praze</a>"
+msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link\" href=\"%url%\">naší prodejně</a>"
 msgstr ""
 
 msgid "Váš e-mail je na e-shopu registrován."

@@ -20,13 +20,7 @@
             <i class="svg svg-towel"></i>
         </span>
         <span class="list-benefits__item__text">
-            {#
-                TODO PRG: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36549
-            #}
-            {% trans %}
-                Vyzkoušení zdarma na
-                <a class="list-benefits__item__text__link js-not-implemented-yet" href="">prodejně v Praze</a>
-            {% endtrans %}
+            {{ 'Vyzkoušení zdarma na <a class="list-benefits__item__text__link" href="%url%">naší prodejně</a>'|transHtml({ '%url%': url('front_store_index') })|raw }}
         </span>
     </li>
 </ul>

@@ -2902,8 +2902,8 @@ msgstr "Vytvoriť účet"
 msgid "Využijte"
 msgstr "Využi"
 
-msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link js-not-implemented-yet\" href=\"\">prodejně v Praze</a>"
-msgstr ""
+msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link\" href=\"%url%\">naší prodejně</a>"
+msgstr "Vyskúšanie zadarmo na <a class=\"list-benefits__item__text__link\" href=\"%url%\">našej predajni</a>"
 
 msgid "Váš e-mail je na e-shopu registrován."
 msgstr "Váš e-mail je na e-shope registrovaný."
