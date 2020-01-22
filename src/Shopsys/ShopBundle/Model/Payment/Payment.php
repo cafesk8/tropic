@@ -52,7 +52,7 @@ class Payment extends BasePayment
     /**
      * @var bool
      *
-     * @ORM\Column(type="bool")
+     * @ORM\Column(type="boolean")
      */
     private $hiddenByGoPay;
 
