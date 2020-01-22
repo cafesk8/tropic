@@ -50,10 +50,10 @@ msgid "Minuty musí být v rozmezí od 0 do 59"
 msgstr ""
 
 msgid "Musíte vybrat dopravce"
-msgstr "Musíš vybrat dopravce"
+msgstr "Musíte vybrat dopravce"
 
 msgid "Musíte vybrat službu dopravce"
-msgstr "Musíš vybrat službu dopravce"
+msgstr "Musíte vybrat službu dopravce"
 
 msgid "Name cannot be longer than {{ limit }} characters"
 msgstr "Název nesmí být delší než {{ limit }} znaků"
@@ -74,100 +74,100 @@ msgid "Passwords do not match"
 msgstr "Hesla se neshodují"
 
 msgid "Please choose a valid combination of transport and payment"
-msgstr "Vyber povolenou kombinaci dopravy a platby"
+msgstr "Vyberte povolenou kombinaci dopravy a platby"
 
 msgid "Please choose advertisement type"
-msgstr "Vyber druh reklamy"
+msgstr "Vyberte druh reklamy"
 
 msgid "Please choose article placement"
-msgstr "Vyber umístění článku"
+msgstr "Vyberte umístění článku"
 
 msgid "Please choose country"
-msgstr "Vyber stát"
+msgstr "Vyberte stát"
 
 msgid "Please choose payment type"
-msgstr "Vyber způsob platby"
+msgstr "Vyberte způsob platby"
 
 msgid "Please choose shipping type"
-msgstr "Vyber způsob dopravy"
+msgstr "Vyberte způsob dopravy"
 
 msgid "Please enter city"
-msgstr "Vyplň město"
+msgstr "Vyplňte město"
 
 msgid "Please enter company name"
-msgstr "Vyplň název firmy"
+msgstr "Vyplňte název firmy"
 
 msgid "Please enter content"
-msgstr "Vyplň text"
+msgstr "Vyplňte text"
 
 msgid "Please enter country of a store"
-msgstr "Vyplň stát prodejny"
+msgstr "Vyplňte stát prodejny"
 
 msgid "Please enter date of creation"
-msgstr "Vyplň datum vytvoření"
+msgstr "Vyplňte datum vytvoření"
 
 msgid "Please enter discount percentage"
-msgstr "Vyplň procento slevy"
+msgstr "Vyplňte procento slevy"
 
 msgid "Please enter e-mail"
-msgstr "Vyplň svůj e-mail"
+msgstr "Vyplňte svůj e-mail"
 
 msgid "Please enter first name"
-msgstr "Vyplň svoje jméno"
+msgstr "Vyplňte své jméno"
 
 msgid "Please enter first name of contact person"
-msgstr "Vyplň jméno kontaktní osoby"
+msgstr "Vyplňte jméno kontaktní osoby"
 
 msgid "Please enter full name"
-msgstr "Vyplň celé jméno"
+msgstr "Vyplňte celé jméno"
 
 msgid "Please enter identification number"
-msgstr "Vyplň IČ"
+msgstr "Vyplňte IČ"
 
 msgid "Please enter last name"
-msgstr "Vyplň svoje příjmení"
+msgstr "Vyplňte své příjmení"
 
 msgid "Please enter last name of contact person"
-msgstr "Vyplň příjmení kontaktní osoby"
+msgstr "Vyplňte příjmení kontaktní osoby"
 
 msgid "Please enter name"
-msgstr "Vyplň název"
+msgstr "Vyplňte název"
 
 msgid "Please enter name of a store"
-msgstr "Vyplň název prodejny"
+msgstr "Vyplňte název prodejny"
 
 msgid "Please enter password"
-msgstr "Vyplň svoje heslo"
+msgstr "Vyplňte své heslo"
 
 msgid "Please enter price in correct format (positive number with decimal separator)"
-msgstr "Zadej cenu v platném formátu (kladné číslo s desetinnou čárkou)"
+msgstr "Zadejte cenu v platném formátu (kladné číslo s desetinnou čárkou)"
 
 msgid "Please enter quantity"
-msgstr "Vyplň množství"
+msgstr "Vyplňte množství"
 
 msgid "Please enter stock in correct format (positive number >= 0)"
-msgstr "Vyplň skladovou zásobu ve správném formátu (kladné číslo >= 0)"
+msgstr "Vyplňte skladovou zásobu ve správném formátu (kladné číslo >= 0)"
 
 msgid "Please enter street"
-msgstr "Vyplň ulici"
+msgstr "Vyplňte ulici"
 
 msgid "Please enter telephone number"
-msgstr "Vyplň telefonní číslo"
+msgstr "Vyplňte telefonní číslo"
 
 msgid "Please enter valid e-mail"
-msgstr "Vyplň platný e-mail"
+msgstr "Vyplňte platný e-mail"
 
 msgid "Please enter valid quantity"
-msgstr "Zadej platné množství"
+msgstr "Zadejte platné množství"
 
 msgid "Please enter zip code"
-msgstr "Vyplň PSČ"
+msgstr "Vyplňte PSČ"
 
 msgid "Please select country"
-msgstr "Vyber stát"
+msgstr "Prosím, vyberte stát"
 
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
-msgstr "Pokud chceš informační řádek uživatelům zobrazit, musíš ho vyplnit"
+msgstr "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
 
 msgid "Position in list cannot be longer than {{ limit }} characters"
 msgstr "Pořadí na výpisu nesmí být delší než {{ limit }} znaků"
@@ -218,52 +218,52 @@ msgid "Vyberte prosím pobočku"
 msgstr "Vyber pobočku"
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
-msgstr "Vyplň SKU dárkového certifikátu."
+msgstr "Vyplňte SKU dárkového certifikátu."
 
 msgid "Vyplňte prosím deadline pro přijímání objednávek"
-msgstr "Vyplň deadline pro přijímání objednávek"
+msgstr "Vyplňte deadline pro přijímání objednávek"
 
 msgid "Vyplňte prosím jméno"
-msgstr "Vyplň jméno"
+msgstr "Vyplňte jméno"
 
 msgid "Vyplňte prosím množství."
-msgstr "Vyplň množství."
+msgstr "Vyplňte množství."
 
 msgid "Vyplňte prosím nominální hodnotu dárkového certifikátu."
-msgstr "Vyplň nominální hodnotu dárkového certifikátu."
+msgstr "Vyplňte nominální hodnotu dárkového certifikátu."
 
 msgid "Vyplňte prosím nominální hodnotu slevy."
-msgstr "Vyplň nominální hodnotu slevy."
+msgstr "Vyplňte nominální hodnotu slevy."
 
 msgid "Vyplňte prosím počet dnů do dodání"
-msgstr "Vyplň počet dnů do dodání"
+msgstr "Vyplňte počet dnů do dodání"
 
 msgid "Vyplňte prosím příjmení"
-msgstr "Vyplň příjmení"
+msgstr "Vyplňte příjmení"
 
 msgid "Vyplňte prosím text tlačítka"
-msgstr "Vyplň text tlačítka"
+msgstr "Vyplňte text tlačítka"
 
 msgid "Vyplňte, prosím, PSČ prodejny"
-msgstr "Vyplň PSČ prodejny"
+msgstr "Vyplňte PSČ prodejny"
 
 msgid "Vyplňte, prosím, město prodejny"
-msgstr "Vyplň město prodejny"
+msgstr "Vyplňte město prodejny"
 
 msgid "Vyplňte, prosím, název prodejny"
-msgstr "Vyplň název prodejny"
+msgstr "Vyplňte název prodejny"
 
 msgid "Vyplňte, prosím, ulici prodejny"
-msgstr "Vyplň ulici prodejny"
+msgstr "Vyplňte ulici prodejny"
 
 msgid "You have to agree with privacy policy"
-msgstr "Musíš souhlasit se zpracováním osobních údajů"
+msgstr "Musíte souhlasit se zpracováním osobních údajů"
 
 msgid "You have to agree with terms and conditions and privacy policy"
-msgstr "Musíš souhlasit s obchodními podmínkami a zpracováním osobních údajů"
+msgstr "Musíte souhlasit s obchodními podmínkami a zpracováním osobních údajů"
 
 msgid "Zadejte prosím celé číslo."
-msgstr "Zadej celé číslo."
+msgstr "Zadejte celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmí být delší než {{ limit }} znaků"

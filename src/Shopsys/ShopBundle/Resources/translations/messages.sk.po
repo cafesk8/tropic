@@ -470,7 +470,7 @@ msgid "Connection to PayPal gateway failed."
 msgstr "Pripojenie k bráne PayPal zlyhalo."
 
 msgid "Contact us"
-msgstr "Kontaktuj nás"
+msgstr "Kontaktujte nás"
 
 msgid "Cookies nejsou sušenky"
 msgstr "Cookies nie sú sušienky"
@@ -722,10 +722,10 @@ msgid "Dárky k vaší objednávce:"
 msgstr ""
 
 msgid "Děkujeme Vám"
-msgstr "Ďakujeme Ti"
+msgstr "Ďakujeme vám"
 
 msgid "Děkujeme za vaši objednávku"
-msgstr "Ďakujeme za tvoju objednávku"
+msgstr "Ďakujeme za vaši objednávku"
 
 msgid "Děkuju pané Malý :)"
 msgstr "Ďakujem pán Malý :)"
@@ -740,10 +740,10 @@ msgid "E-mail"
 msgstr "E-mail"
 
 msgid "E-mail with a link to the export of your personal data was sent to your e-mail address."
-msgstr "Na tvoju e-mailovú adresu bol zaslaný e-mail s odkazom na export tvojich osobných údajov."
+msgstr "Na vašu e-mailovú adresu bol zaslaný e-mail s odkazom na export vašich osobných údajov."
 
 msgid "E-mail with a link to the page with your personal data was sent to your e-mail address."
-msgstr "Na tvoju e-mailovú adresu bol zaslaný e-mail s odkazom na stránku s tvojimi osobnými údajmi."
+msgstr "Na vašu e-mailovú adresu bol zaslaný e-mail s odkazom na stránku s vašimi osobnými údajmi."
 
 msgid "E-mailem"
 msgstr "E-mailom"
@@ -833,7 +833,7 @@ msgid "Fakturační adresa"
 msgstr "Fakturačná adresa"
 
 msgid "Fill missing settings to enable creating products. More information here."
-msgstr "Vyplň chýbajúce nastavenia, aby si mohol vytvárať produkty. Viac informácií tu."
+msgstr "Vyplňte chýbajúce nastavenia, aby si mohol vytvárať produkty. Viac informácií tu."
 
 msgid "Filter by"
 msgstr "Filtrovať podľa"
@@ -1013,13 +1013,13 @@ msgid "Image with link"
 msgstr "Obrázok s odkazom"
 
 msgid "In a particular domain tab it is not possible to adjust the order and plunge of blog categories. Please go to the blog category detail or to overview of blog categories of all domains"
-msgstr "Na konkrétnej karte domény nie je možné upraviť poradie a prepad kategórií blogov. Prejdi na podrobnosti kategórie blogu alebo na prehľad kategórií blogov všetkých domén"
+msgstr "Na konkrétnej karte domény nie je možné upraviť poradie a prepad kategórií blogov. Prejdite na podrobnosti kategórie blogu alebo na prehľad kategórií blogov všetkých domén"
 
 msgid "Informační řádek"
 msgstr "Informačný riadok"
 
 msgid "Inspiraci hledej v příbězích"
-msgstr "Inšpiráciu hľadaj v príbehoch"
+msgstr "Inšpiráciu hľadajte v príbehoch"
 
 msgid "Instagram"
 msgstr "Instagram"
@@ -1277,7 +1277,7 @@ msgid "Minuty"
 msgstr "Minúty"
 
 msgid "Mohlo by vás zajímat"
-msgstr "Mohlo by ťa zaujímať"
+msgstr "Mohlo by vás zaujímať"
 
 msgid "Mohu odstoupit od smlouvy?"
 msgstr "Môžem odstúpiť od zmluvy?"
@@ -1304,19 +1304,19 @@ msgid "My orders"
 msgstr "Moje objednávky"
 
 msgid "Mám slevový poukaz nebo dárkový certifikát"
-msgstr "Mám zľavový poukaz alebo darčekový certifikát"
+msgstr "Máte zľavový poukaz alebo darčekový certifikát"
 
 msgid "Máte dopravu zdarma!"
-msgstr "Máš dopravu zadarmo!"
+msgstr "Máte dopravu zadarmo!"
 
 msgid "Máte dotaz?"
-msgstr "Máš otázku?"
+msgstr "Máte otázku?"
 
 msgid "Máte pravdu a velmi dobrý postřeh! Masivní zip odkazuje na péřovku a má originální prošití do tvaru našeho loga. Děkujeme za názor a tady máte klíčenku."
 msgstr "Máte pravdu a veľmi dobrý postreh! Masívny zips odkazuje na perovky a má originálne prešitie do tvaru nášho loga. Ďakujeme za názor a tu máte kľúčenku."
 
 msgid "Máte slevový kód?"
-msgstr "Máš zľavový kód?"
+msgstr "Máte zľavový kód?"
 
 msgid "Město"
 msgstr "Mesto"
@@ -1334,13 +1334,13 @@ msgid "Nahrávejte velikosti obrázků: čtverec (380x290px), obdélník na vý�
 msgstr "Nahrávajte veľkosti obrázkov: štvorec (380x290px), obdĺžnik na výšku (380x600px)"
 
 msgid "Najdete v kategoriích"
-msgstr "Nájdeš v kategóriach"
+msgstr "Nájdete v kategóriach"
 
 msgid "Najděte si něco na sebe…"
 msgstr ""
 
 msgid "Nakupte ještě za"
-msgstr "Nakúp ešte za"
+msgstr "Nakúpte ešte za"
 
 msgid "Nalezené kategorie"
 msgstr "Nájdené kategórie"
@@ -1349,10 +1349,10 @@ msgid "Name"
 msgstr "Názov"
 
 msgid "Napište hodnocení produktu"
-msgstr "Napíš hodnotenie produktu"
+msgstr "Napíšte hodnotenie produktu"
 
 msgid "Napište vlastní hodnocení produktu"
-msgstr "Napíš vlastné hodnotenie produktu"
+msgstr "Napíšte vlastné hodnotenie produktu"
 
 msgid "Naposledy prohlížené produkty"
 msgstr "Naposledy prezerané produkty"
@@ -2084,7 +2084,7 @@ msgid "Přeneseno"
 msgstr "Prenesené"
 
 msgid "Přečti si více"
-msgstr "Prečítaj si viac"
+msgstr "Prečítajte si viac"
 
 msgid "Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou."
 msgstr ""
@@ -2921,7 +2921,7 @@ msgid "Váš e-mail je na e-shopu registrován."
 msgstr "Váš e-mail je na e-shope registrovaný."
 
 msgid "Váš účet"
-msgstr "Tvoj účet"
+msgstr "Váš účet"
 
 msgid "Vážím si všech"
 msgstr "Vážim si všetkých"
@@ -2987,13 +2987,13 @@ msgid "You have to be logged in to enter this page"
 msgstr "Na vstup na túto stránku musíš byť prihlásený"
 
 msgid "Your cart is unfortunately empty. To create order, you have to <a href=\"%url%\">choose</a> some product first"
-msgstr "Tvoj košík je, žiaľ, prázdny. Ak chceš vytvoriť objednávku, musíš najprv <a href=\"%url%\"> vybrať </a> nejaký produkt"
+msgstr "Váš košík je, žiaľ, prázdny. Ak chcete vytvoriť objednávku, musíte najprv <a href=\"%url%\">vybrať</a> nejaký produkt"
 
 msgid "Your data had been successfully updated"
-msgstr "Tvoje údaje boli úspešne aktualizované"
+msgstr "Vaša údaje boli úspešne aktualizované"
 
 msgid "Your discount"
-msgstr "Tvoja zľava"
+msgstr "Vaša zľava"
 
 msgid "Youtube"
 msgstr "Youtube"
@@ -3008,7 +3008,7 @@ msgid "Zadejte kód"
 msgstr "Zadaj kód"
 
 msgid "Zadejte město nebo PSČ:"
-msgstr "Zadaj mesto alebo PSČ:"
+msgstr "Zadajte mesto alebo PSČ:"
 
 msgid "Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké."
 msgstr ""
@@ -3275,10 +3275,10 @@ msgid "tento text přesně vystihnul atmosféru nové strategie."
 msgstr "tento text presne vystihol atmosféru novej stratégie."
 
 msgid "u&nbsp;tebe"
-msgstr "u&nbsp;teba"
+msgstr "u&nbsp;vás"
 
 msgid "ušetříte"
-msgstr "ušetríš"
+msgstr "ušetríte"
 
 msgid "v hodnotě"
 msgstr ""
@@ -3314,7 +3314,7 @@ msgid "zadávat nemusíte"
 msgstr "zadávať nemusíš"
 
 msgid "zašlete na náš bankovní účet číslo"
-msgstr "zašli na náš bankový účet číslo"
+msgstr "zašlite na náš bankový účet číslo"
 
 msgid "zdarma"
 msgstr "zadarmo"
