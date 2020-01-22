@@ -57,14 +57,21 @@ class ProductSearchExportWithFilterRepositoryTest extends TransactionFunctionalT
             'selling_from',
             'short_description',
             'action_price',
+            'availability',
             'brand',
             'flags',
             'categories',
+            'detail_url',
             'in_stock',
             'prices',
             'parameters',
             'ordering_priority',
             'calculated_selling_denied',
+            'selling_denied',
+            'main_variant',
+            'main_variant_group_products',
+            'visibility',
+            'second_distinguishing_parameter_values',
         ];
     }
 }

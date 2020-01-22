@@ -145,12 +145,19 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
     /**
      * {@inheritdoc}
+     * Copy pasted from parent to create the proper instance of ProductFilterData - the class is overridden in this project
      */
     public function getSearchAutocompleteProducts($searchText, $limit): PaginationResult
     {
         $emptyProductFilterData = new ProductFilterData();
         $page = 1;
 
-        return $this->getPaginatedProductsForSearch($searchText, $emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit);
+        $filterQuery = $this->createListableProductsForSearchTextFilterQuery($emptyProductFilterData, ProductListOrderingConfig::ORDER_BY_RELEVANCE, $page, $limit, $searchText);
+
+        $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
+
+        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomer->getPricingGroup(), $productIds->getIds());
+
+        return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
     }
 }

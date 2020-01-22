@@ -711,4 +711,23 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getMainVariantsWithEan($limit, $page);
     }
+
+    /**
+     * @param array $products
+     * @param int $domainId
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getVariantsIndexedByPricingGroupIdAndMainVariantId(array $products, int $domainId): array
+    {
+        $variantsIndexedByPricingGroupIdAndMainVariantId = [];
+        foreach ($this->pricingGroupFacade->getByDomainId($domainId) as $pricingGroup) {
+            $variantsIndexedByPricingGroupIdAndMainVariantId[$pricingGroup->getId()] = $this->productRepository->getVariantsIndexedByMainVariantId(
+                $products,
+                $domainId,
+                $pricingGroup
+            );
+        }
+
+        return $variantsIndexedByPricingGroupIdAndMainVariantId;
+    }
 }

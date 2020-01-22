@@ -21,7 +21,7 @@
         {% set entityName = 'products'|trans %}
         {{ paginator.paginatorNavigation(paginationResult, entityName) }}
 
-        {{ productList.list(paginationResult.results, variantsIndexedByMainVariantId, mainVariantsIndexedByMainVariantGroup) }}
+        {{ productList.list(paginationResult.results) }}
 
         <div class="text-center margin-bottom-20">
             {{ paginator.loadMoreButton(paginationResult) }}

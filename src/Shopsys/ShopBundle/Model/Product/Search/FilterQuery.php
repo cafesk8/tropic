@@ -30,7 +30,7 @@ class FilterQuery extends BaseFilterQuery
 
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRICE_ASC) {
             $clone->sorting = [
-                'prices.amount' => [
+                'prices.price_with_vat' => [
                     'order' => 'asc',
                     'nested' => [
                         'path' => 'prices',

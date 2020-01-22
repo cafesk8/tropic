@@ -213,9 +213,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
 
-
-    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
-
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@Shopsys\ShopBundle\Model\Product\Brand\BrandFacade'
@@ -361,10 +358,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'
 
-    Shopsys\ShopBundle\Twig\BushmanClubPointsExtension:
-        tags:
-            - { name: twig.extension }
-
     Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods: ~
 
     Shopsys\FrameworkBundle\Controller\Admin\CustomerController:
@@ -398,10 +391,6 @@ services:
     Shopsys\ShopBundle\Component\Instagram\Instagram:
         arguments:
             - '%instagram%'
-
-    Shopsys\ShopBundle\Twig\InstagramExtension:
-        tags:
-            - { name: twig.extension }
 
     shopsys.shop.twig.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
@@ -501,14 +490,6 @@ services:
 
     Shopsys\ShopBundle\Component\Setting\Setting: ~
     Shopsys\FrameworkBundle\Component\Setting\Setting: '@Shopsys\ShopBundle\Component\Setting\Setting'
-
-    Shopsys\ShopBundle\Twig\DeliveryDateExtension:
-        tags:
-            - { name: twig.extension }
-
-    Shopsys\ShopBundle\Twig\FriendlyDateTimeFormatterExtension:
-        tags:
-            - { name: twig.extension }
 
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository'
 
@@ -645,3 +626,11 @@ services:
     swiftmailer.transport.real:
         class: Swift_SmtpTransport
         arguments: ['%mailer_host%']
+
+    Shopsys\ShopBundle\Model\Product\Search\ProductElasticsearchConverter: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchConverter: '@Shopsys\ShopBundle\Model\Product\Search\ProductElasticsearchConverter'
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewFactory'
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade'

@@ -82,7 +82,7 @@ class MainVariantGroupRepository
     }
 
     /**
-     * @param array $mainVariantGroups
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[] $mainVariantGroups
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]

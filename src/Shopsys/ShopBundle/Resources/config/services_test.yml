@@ -63,7 +63,7 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\ProductDataFactory'
 
-    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
+    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository: '@Shopsys\ShopBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
@@ -180,3 +180,5 @@ services:
     Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
 
     Shopsys\ShopBundle\Model\Feed\FeedHelper: ~
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade'
