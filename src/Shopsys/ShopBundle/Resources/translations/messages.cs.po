@@ -1079,7 +1079,7 @@ msgid "Maximální počet produktů pro hromadnou operaci je %max%. Počet nalez
 msgstr ""
 
 msgid "Maximální počet produktů, které můžete upravit pomocí hromadných operací, je {{maxProductCount}}. Máte vybráno {{selectedProductCount}} produktů"
-msgstr "Maximální počet produktů, které můžeš upravit pomocí hromadných operací, je {{maxProductCount}}. Máš vybráno {{selectedProductCount}} produktů."
+msgstr "Maximální počet produktů, které můžete upravit pomocí hromadných operací, je {{maxProductCount}}. Máte vybráno {{selectedProductCount}} produktů."
 
 msgid "Menu"
 msgstr "Menu"
@@ -1103,7 +1103,7 @@ msgid "Minuty"
 msgstr ""
 
 msgid "Mohlo by vás zajímat"
-msgstr "Mohlo by tě zajímat"
+msgstr "Mohlo by vás zajímat"
 
 msgid "Momentálně nedostupné"
 msgstr ""
@@ -1208,10 +1208,10 @@ msgid "Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili
 msgstr ""
 
 msgid "Nemáte oprávnění vidět požadovanou stránku. Požádejte svého administrátora o udělení přístupu."
-msgstr "Nemáš oprávnění vidět požadovanou stránku. Požádej svého administrátora o udělení přístupu."
+msgstr "Nemáte oprávnění vidět požadovanou stránku. Požádejte svého administrátora o udělení přístupu."
 
 msgid "Nemůžete vybrat produkt, který je již propojen"
-msgstr "Nemůžeš vybrat produkt, který je již propojen"
+msgstr "Nemůžete vybrat produkt, který je již propojen"
 
 msgid "Nenalezeny žádné problémy."
 msgstr ""
@@ -1259,7 +1259,7 @@ msgid "No blog articles found."
 msgstr "Nebyly nalezeny žádné články blogu."
 
 msgid "No order so far."
-msgstr "Dosud nemáš žádnou objednávku."
+msgstr "Dosud nemáte žádnou objednávku."
 
 msgid "No personal data for this e-mail address"
 msgstr "Pro zadaný e-mail neevidujeme žádné osobní údaje"
@@ -1589,7 +1589,7 @@ msgid "Plavecké potřeby"
 msgstr ""
 
 msgid "Please check the correctness of all data filled."
-msgstr "Určitě máš všechny údaje vyplněné správně?"
+msgstr "Určitě máte všechny údaje vyplněny správně?"
 
 msgid "Please enter promo code."
 msgstr "Zadejte slevový kupón."
@@ -1976,7 +1976,7 @@ msgid "Sbalit"
 msgstr ""
 
 msgid "Sbíráme anonymní data a měříme, abychom náš web mohli dále vylepšovat. Souhlasíte se sběrem cookies?"
-msgstr "Sbíráme anonymní data a měříme, abychom náš web mohli dále vylepšovat. Souhlasíš se sběrem cookies?"
+msgstr "Sbíráme anonymní data a měříme, abychom náš web mohli dále vylepšovat. Souhlasíte se sběrem cookies?"
 
 msgid "Search [verb]"
 msgstr "Vyhledat"
@@ -2045,7 +2045,7 @@ msgid "Shipping and payment"
 msgstr "Doprava a platba"
 
 msgid "Shipping and payment <strong>for free!</strong>"
-msgstr "Dopravu i platbu máš <strong>zdarma!</strong>"
+msgstr "Dopravu i platbu máte <strong>zdarma!</strong>"
 
 msgid "Shipping method"
 msgstr "Způsob dopravy"
@@ -2144,7 +2144,7 @@ msgid "Souhlasím se zpracováním osobních údajů."
 msgstr ""
 
 msgid "Souhlasíte se sběrem cookies?"
-msgstr "Souhlasíš se sběrem cookies?"
+msgstr "Souhlasíte se sběrem cookies?"
 
 msgid "Související zboží"
 msgstr ""
@@ -2264,10 +2264,10 @@ msgid "The link to change your password expired."
 msgstr "Platnost odkazu pro změnu hesla vypršela."
 
 msgid "The price of payment {{ paymentName }} changed during ordering process. Check your order, please."
-msgstr "V průběhu objednávkového procesu byla změněna cena platby {{ paymentName }}. Překontroluj si, prosím, objednávku."
+msgstr "V průběhu objednávkového procesu byla změněna cena platby {{ paymentName }}. Překontrolujte si, prosím, objednávku."
 
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
-msgstr "V průběhu objednávkového procesu byla změněna cena dopravy {{ transportName }}. Překontroluj si, prosím, objednávku."
+msgstr "V průběhu objednávkového procesu byla změněna cena dopravy {{ transportName }}. Překontrolujte si, prosím, objednávku."
 
 msgid "There was an error while saving. The order isn't saved."
 msgstr "Během ukládání došlo k chybě. Objednávka nebyla uložena."
@@ -2276,7 +2276,7 @@ msgid "There were problems during payment of created order with number %orderNum
 msgstr "Během placení vytvořené objednávky č. %orderNumber% došlo k potížím."
 
 msgid "This account doesn't exist or password is incorrect"
-msgstr "Máš zadané špatné uživatelské jméno nebo heslo"
+msgstr "Máte zadáno špatné uživatelské jméno nebo heslo"
 
 msgid "This blog category contains no blog articles."
 msgstr "Tato rubrika blogu neobsahuje žádné články."
@@ -2294,7 +2294,7 @@ msgid "This site uses cookies."
 msgstr "Tyto stránky používají cookies."
 
 msgid "This site uses cookies. By staying on the site you agree with that."
-msgstr "Tyto stránky používají cookies. Setrváním na stránkách s tímto souhlasíš."
+msgstr "Tyto stránky používají cookies. Setrváním na stránkách s tímto souhlasíte."
 
 msgid "This status can't be deleted, because there is a functionality bounded to it - it identifies orders that were not successfully processed."
 msgstr "Tento stav nemůže být smazán, protože je na něj navázaná funkce - označuje objednávky, které nebyly úspěšně zpracovány."
@@ -2585,7 +2585,7 @@ msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chc
 msgstr ""
 
 msgid "Vybrali jste si platbu převodem."
-msgstr "Máš vybranou platbu převodem."
+msgstr "Máte vybranou platbu převodem."
 
 msgid "Vybrané filtry"
 msgstr ""
@@ -2696,7 +2696,7 @@ msgid "You have been successfully subscribed to our newsletter."
 msgstr "Vaše přihlášeni k odběru newsletteru se podařilo. Teď už vám nic neunikne."
 
 msgid "You have successfully paid order via GoPay."
-msgstr "A je to. Objednávku máš úspěšně zaplacenou přes GoPay."
+msgstr "A je to. Objednávku máte úspěšně zaplacenou přes GoPay."
 
 msgid "You have to be logged in to enter this page"
 msgstr "Pro přístup na tuto stránku se musíte přihlásit"
@@ -2978,7 +2978,7 @@ msgid "za zvýhodněnou cenu"
 msgstr ""
 
 msgid "zadávat nemusíte"
-msgstr "zadávat nemusíš"
+msgstr "zadávat nemusíte"
 
 msgid "zašlete na náš bankovní účet číslo"
 msgstr "zašlete na náš bankovní účet číslo"

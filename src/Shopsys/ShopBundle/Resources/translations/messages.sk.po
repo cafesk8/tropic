@@ -593,7 +593,7 @@ msgid "Do Bushman Clubu"
 msgstr "Do Bushman Clubu"
 
 msgid "Do košíku jste přidali"
-msgstr "Pridané! V košíku máš tiež"
+msgstr "Pridané! V košíku máte tiež"
 
 msgid "Do you really want to delete this blog category?"
 msgstr "Naozaj chceš odstrániť túto kategóriu blogu?"
@@ -641,7 +641,7 @@ msgid "Doprava"
 msgstr "Doprava"
 
 msgid "Doprava (29.1. u vás)"
-msgstr "Doprava (29.1. u teba)"
+msgstr "Doprava (29.1. u vás)"
 
 msgid "Doprava a platba"
 msgstr "Doprava a platba"
@@ -1076,7 +1076,7 @@ msgid "Je sklad centrální"
 msgstr "Je sklad centrálny"
 
 msgid "Je čas vyrazit: tvoje objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží ti rezervujeme po dobu 5 dnů. Bushman.cz"
-msgstr "Je čas vyraziť: tvoja objednávka č. %% orderNo %% je pripravená na vyzdvihnutie na predajni %% storeName %%, tovar ti rezervujeme po dobu 5 dní. Bushman.sk"
+msgstr "Je čas vyraziť: vaša objednávka č. %% orderNo %% je pripravená na vyzdvihnutie na predajni %% storeName %%, tovar vám rezervujeme po dobu 5 dní."
 
 msgid "Ještě nebylo implementováno."
 msgstr "Ešte nebolo implementované."
@@ -1256,7 +1256,7 @@ msgid "Maximální počet produktů pro hromadnou operaci je %max%. Počet nalez
 msgstr "Maximálny počet produktov pre hromadnú operáciu je% max%. Počet nájdených produktov je% found%. Vyhľadajte menší počet produktov a hromadnú operáciu zopakujte."
 
 msgid "Maximální počet produktů, které můžete upravit pomocí hromadných operací, je {{maxProductCount}}. Máte vybráno {{selectedProductCount}} produktů"
-msgstr "Maximálny počet produktov, ktoré môžeš upraviť pomocou hromadných operácií, je {{maxProductCount}}. Máš vybrané {{selectedProductCount}} produktov"
+msgstr "Maximálny počet produktov, ktoré môžete upraviť pomocou hromadných operácií, je {{maxProductCount}}. Máte vybrané {{selectedProductCount}} produktov"
 
 msgid "Message"
 msgstr "Správa"
@@ -1424,7 +1424,7 @@ msgid "Nenalezeny žádné problémy."
 msgstr "Nenašli sa žiadne problémy."
 
 msgid "Není ti jedno, jak žiješ, co děláš a co po tobě zůstane? Ani nám. Svět možná nespasíme, ale za pokus to stojí a bude to jízda. Vyrazíš s námi?"
-msgstr "Nie je ti jedno, ako žiješ, čo robíš a čo po tebe zostane? Ani nám. Svet možno nespasíme, ale za pokus to stojí a bude to jazda. Vyrazíš s nami?"
+msgstr "Nie je ti jedno, ako žiješ, čo robíš a čo po vás zostane? Ani nám. Svet možno nespasíme, ale za pokus to stojí a bude to jazda. Vyrazíte s nami?"
 
 msgid "Neomezený"
 msgstr "Neobmedzený"
@@ -1457,7 +1457,7 @@ msgid "New store"
 msgstr "Nový obchod"
 
 msgid "Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz"
-msgstr "Nezabudni: tvoja objednávka č. %% orderNo %% bude ešte 2 dni pripravená na predajni %% storeName %%. Je čas vyraziť! Bushman.cz"
+msgstr "Nezabudni: vaša objednávka č. %% orderNo %% bude ešte 2 dni pripravená na predajni %% storeName %%. Je čas vyraziť!"
 
 msgid "Nezlevněné produkty"
 msgstr "Nezľavnené produkty"
@@ -1790,19 +1790,19 @@ msgid "Plavecké potřeby"
 msgstr ""
 
 msgid "Please check the correctness of all data filled."
-msgstr "Určite máš všetky údaje vyplnené správne."
+msgstr "Určite máte všetky údaje vyplnené správne."
 
 msgid "Please enter promo code."
-msgstr "Zadaj propagačný kód."
+msgstr "Zadajte propagačný kód."
 
 msgid "Please enter valid quantity you want to add to cart."
-msgstr "Zadaj platné množstvo, ktoré chceš pridať do košíka."
+msgstr "Zadajte platné množstvo, ktoré chceš pridať do košíka."
 
 msgid "Please excuse this error, we are working on fixing it. If needed, contact us on %mail% or by phone %phone%."
-msgstr "Za túto chybu sa ospravedlňujeme, pracujeme na tom, aby sme ju čo najskôr opravili. Prípadne nás kontaktuj na% mail% alebo telefonicky% phone%."
+msgstr "Za túto chybu sa ospravedlňujeme, pracujeme na tom, aby sme ju čo najskôr opravili. Prípadne nás kontaktujte na% mail% alebo telefonicky% phone%."
 
 msgid "Please make sure that you entered right quantity of all items in cart."
-msgstr "Uisti sa, že si zadal správne množstvo všetkých položiek v košíka."
+msgstr "Uistite sa, že si zadal správne množstvo všetkých položiek v košíka."
 
 msgid "Podle zvolené adresy nebylo možné vyhledat žádné pobočky"
 msgstr "Podľa zvolenej adresy nebolo možné vyhľadať žiadne pobočky"
@@ -1811,7 +1811,7 @@ msgid "Podle zákona o evidenci tržeb je prodávající povinen vystavit kupuj�
 msgstr "Podľa zákona o evidencii tržieb je predávajúci povinný vystaviť kupujúcemu účtenku. Zároveň je povinný zaevidovať"
 
 msgid "Podívejte se, kde všude"
-msgstr "Pozri sa, kde všade"
+msgstr "Pozrite sa, kde všade"
 
 msgid "Pokračovat v objednávce"
 msgstr "Pokračovať v objednávke"
@@ -1826,7 +1826,7 @@ msgid "Pokud nebude vyplněna nebo zatrhnura, zboží bude doručeno na faktura�
 msgstr "Pokiaľ nebude vyplnená alebo zatrhnutá, tovar bude doručený na fakturačnú adresu"
 
 msgid "Položka {{ name }} je skladem k dispozici v počtu {{ quantity }} ks, počet kusů ve Vašem košíku jsme proto upravili."
-msgstr "Položka {{name}} je skladom k dispozícii v počte {{quantity}} ks, počet kusov v Tvojom košíku sme preto upravili."
+msgstr "Položka {{name}} je skladom k dispozícii v počte {{quantity}} ks, počet kusov vo vašom košíku sme preto upravili."
 
 msgid "Polska"
 msgstr "Poľsko"
@@ -2162,7 +2162,7 @@ msgid "Registrujte se"
 msgstr "Registruj sa"
 
 msgid "Rekapitulaci jsme vám zaslali také na váš e-mail"
-msgstr "Rekapituláciu sme ti zaslali aj na tvoj e-mail"
+msgstr "Rekapituláciu sme vám zaslali aj na váš e-mail"
 
 msgid "Remember my login"
 msgstr "Zapamätať si prihlasovacie údaje"
@@ -2507,16 +2507,16 @@ msgid "Text zprávy"
 msgstr "Text správy"
 
 msgid "Thank you, your message has been sent."
-msgstr "Ďakujeme, tvoja správa bola odoslaná."
+msgstr "Ďakujeme, vaša správa bola odoslaná."
 
 msgid "The link to change your password expired."
 msgstr "Platnosť odkazu na zmenu hesla vypršala."
 
 msgid "The price of payment {{ paymentName }} changed during ordering process. Check your order, please."
-msgstr "Cena platby {{paymentName}} sa počas procesu objednávania zmenila. Skontroluj si svoju objednávku."
+msgstr "Cena platby {{paymentName}} sa počas procesu objednávania zmenila. Skontrolujte si svoju objednávku."
 
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
-msgstr "Cena poštovného {{transportName}} sa počas procesu objednávania zmenila. Skontroluj si svoju objednávku."
+msgstr "Cena poštovného {{transportName}} sa počas procesu objednávania zmenila. Skontrolujte si svoju objednávku."
 
 msgid "There was an error while saving. The order isn't saved."
 msgstr "Pri ukladaní sa vyskytla chyba. Objednávka sa neuloží."
@@ -2555,7 +2555,7 @@ msgid "To máme radost a posíláme!"
 msgstr "To máme radosť a posielame!"
 
 msgid "To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us."
-msgstr "Aby sa zabránilo možnosti odcudzenia účtu, musí sa zmena e-mailovej adresy riešiť individuálne. Ak sa tvoja e-mailová adresa zmenila, kontaktuj nás."
+msgstr "Aby sa zabránilo možnosti odcudzenia účtu, musí sa zmena e-mailovej adresy riešiť individuálne. Ak sa vaša e-mailová adresa zmenila, kontaktujte nás."
 
 msgid "Total excluding VAT"
 msgstr "Celkom bez DPH"
@@ -2588,13 +2588,13 @@ msgid "Tvar odkazu pro sledování zásilky"
 msgstr "Tvar odkazu pre sledovanie zásielky"
 
 msgid "Tvoje osobní číslo"
-msgstr "Tvoje osobné číslo"
+msgstr "Vaše osobné číslo"
 
 msgid "Tvorba e-shopů na míru"
 msgstr "Tvorba e-shopov na mieru"
 
 msgid "Tvoříme praktické a pohodlné oblečení pro každodenní expedice. Ty mu dáváš příběh a tvoříš vzpomínky s ním spojené. Věříš naší tradici a kvalitě?"
-msgstr "Tvoríme praktické a pohodlné oblečenie pre každodenné expedície. Ty mu dávaš príbeh a tvoríš spomienky s ním spojené. Veríš našej tradícii a kvalite?"
+msgstr "Tvoríme praktické a pohodlné oblečenie pre každodenné expedície. Vy mu dávate príbeh a tvoríte spomienky s ním spojené. Veríte našej tradícii a kvalite?"
 
 msgid "Tvoříme vlastní styl"
 msgstr "Tvoríme vlastný štýl"
@@ -2735,7 +2735,7 @@ msgid "Vaše objednávka"
 msgstr "Vaša objednávka"
 
 msgid "Vaše velikost"
-msgstr "Tvoja veľkosť"
+msgstr "Vaša veľkosť"
 
 msgid "Ve středu"
 msgstr "V stredu"
@@ -2960,7 +2960,7 @@ msgid "Všechny produkty"
 msgstr "Všetky produkty"
 
 msgid "We will remember your login on this computer for 30 days."
-msgstr "Tvoje prihlasovacie údaje v tomto počítači si zapamätáme 30 dní."
+msgstr "Vaše prihlasovacie údaje v tomto počítači si zapamätáme 30 dní."
 
 msgid "Yes"
 msgstr "Áno"
@@ -3188,7 +3188,7 @@ msgid "možnost získat"
 msgstr "možnosť získať"
 
 msgid "máte"
-msgstr "máš"
+msgstr "máte"
 
 msgid "na celý sortiment"
 msgstr "na celý sortiment"
@@ -3311,7 +3311,7 @@ msgid "za zvýhodněnou cenu"
 msgstr ""
 
 msgid "zadávat nemusíte"
-msgstr "zadávať nemusíš"
+msgstr "zadávať nemusíte"
 
 msgid "zašlete na náš bankovní účet číslo"
 msgstr "zašlite na náš bankový účet číslo"
