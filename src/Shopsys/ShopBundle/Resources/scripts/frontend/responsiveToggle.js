@@ -9,7 +9,7 @@
 
     Shopsys = window.Shopsys || {};
 
-    var activeButtonClass = 'active';
+    var activeButtonClass = 'open';
     var instanceCoutner = 0;
 
     Shopsys.ResponsiveToggle = function ($button, $elementToHide, hideOnClickOut) {
@@ -34,12 +34,23 @@
         };
 
         function isActive () {
-            return $button.hasClass(activeButtonClass);
+            if ($button.data('parent-give-class')) {
+                return $button.parent().hasClass(activeButtonClass);
+            } else {
+                return $button.hasClass(activeButtonClass);
+            };
         }
 
         function toggle (show) {
-            $button.toggleClass(activeButtonClass, show);
-            $elementToHide.slideToggle(show);
+            if ($button.data('parent-give-class')) {
+                $button.parent().toggleClass(activeButtonClass, show);
+            } else {
+                $button.toggleClass(activeButtonClass, show);
+            };
+
+            if (!$button.data('slide-toggle-disabled')) {
+                $elementToHide.slideToggle(show);
+            }
         }
 
         function onClickOut (event) {
@@ -57,7 +68,12 @@
                 if ($elementToHide.is(':animated')) {
                     $elementToHide.stop(true, true);
                 }
-                $button.toggleClass(activeButtonClass, defaultActive);
+
+                if ($button.data('parent-give-class')) {
+                    $button.parent().toggleClass(activeButtonClass, defaultActive);
+                } else {
+                    $button.toggleClass(activeButtonClass, defaultActive);
+                }
                 $elementToHide.css('display', '');
             }
         }
