@@ -36,7 +36,7 @@ class BrandDataFixture extends AbstractReferenceFixture
     public const BRAND_OLYMPUS = 'brand_olympus';
     public const BRAND_HYUNDAI = 'brand_hyundai';
     public const BRAND_NIKON = 'brand_nikon';
-    public const BRAND_BUSHMAN = 'brand_bushman';
+    public const BRAND_SHOPSYS = 'brand_shopsys';
 
     /** @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade */
     protected $brandFacade;
@@ -68,8 +68,8 @@ class BrandDataFixture extends AbstractReferenceFixture
                 'en' => 'This is description of brand ' . $brandData->name . '.',
             ];
 
-            if ($brandConstant === self::BRAND_BUSHMAN) {
-                $brandData->type = Brand::TYPE_MAIN_BUSHMAN;
+            if ($brandConstant === self::BRAND_SHOPSYS) {
+                $brandData->type = Brand::TYPE_MAIN_SHOPSYS;
             }
             $brand = $this->brandFacade->create($brandData);
             $this->addReference($brandConstant, $brand);
@@ -106,7 +106,7 @@ class BrandDataFixture extends AbstractReferenceFixture
             self::BRAND_OLYMPUS => 'Olympus',
             self::BRAND_HYUNDAI => 'Hyundai',
             self::BRAND_NIKON => 'Nikon',
-            self::BRAND_BUSHMAN => 'Bushman',
+            self::BRAND_SHOPSYS => 'Shopsys',
         ];
     }
 }

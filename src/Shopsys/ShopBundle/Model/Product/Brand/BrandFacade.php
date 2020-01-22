@@ -26,8 +26,8 @@ class BrandFacade extends BaseBrandFacade
     /**
      * @return \Shopsys\ShopBundle\Model\Product\Brand\Brand
      */
-    public function getMainBushmanBrand(): Brand
+    public function getMainShopsysBrand(): Brand
     {
-        return $this->brandRepository->getMainBushmanBrand();
+        return $this->brandRepository->getMainShopsysBrand();
     }
 }

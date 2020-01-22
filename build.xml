@@ -9,7 +9,7 @@
 
     <property name="is-multidomain" value="true"/>
     <property name="phpstan.level" value="1"/>
-    <property name="translations.dump.locales" value="cs sk de"/>
+    <property name="translations.dump.locales" value="cs sk en de"/>
 
     <import file="${path.framework}/build.xml"/>
 

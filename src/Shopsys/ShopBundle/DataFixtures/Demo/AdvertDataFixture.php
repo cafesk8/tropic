@@ -47,58 +47,58 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     {
         $advertData = $this->advertDataFactory->create();
         $advertData->domainId = 1;
-        $advertData->name = 'Pro pořádné chlapy';
+        $advertData->name = 'Shopsys';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'firstSquare';
-        $advertData->link = '/admin';
+        $advertData->link = 'https://www.shopsys.com';
         $advert = $this->advertFacade->create($advertData);
         $this->addReference(self::ADVERT_FIRST_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Kempování';
+        $advertData->name = 'Open-source Ecommerce Framework';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'secondSquare';
-        $advertData->link = '/admin';
+        $advertData->link = 'https://www.shopsys.com/showcase';
         $advert = $this->advertFacade->create($advertData);
         $this->addReference(self::ADVERT_SECOND_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Hvězda zahradnictví';
+        $advertData->name = 'Eshopová hvězda';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'thirdSquare';
-        $advertData->link = '/admin';
+        $advertData->link = 'https://www.shopsys.cz/shopsys-b2c-commerce-cloud';
         $advert = $this->advertFacade->create($advertData);
         $this->addReference(self::ADVERT_THIRD_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Pro pořádné chlapy';
+        $advertData->name = 'Shopsys';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'fourthSquare';
-        $advertData->link = '/admin';
+        $advertData->link = 'https://www.shopsys.cz/kontakt/';
         $advert = $this->advertFacade->create($advertData);
         $this->addReference(self::ADVERT_FOURTH_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Šití na míru';
+        $advertData->name = 'Zelí';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'fifthRectangle';
-        $advertData->link = '/admin';
+        $advertData->link = '/';
         $advert = $this->advertFacade->create($advertData);
         $this->addReference(self::ADVERT_FIFTH_RECTANGLE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Prohlédnout';
+        $advertData->name = 'Pocit';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->positionName = 'sixthRectangle';
-        $advertData->link = '/admin';
-        $advertData->smallTitle = 'Legenární kapsáče jsou zpět';
-        $advertData->bigTitle = 'Silnější než kdy předtím...';
-        $advertData->productTitle = 'Jindra má na sobě';
+        $advertData->link = '/';
+        $advertData->smallTitle = 'Když svítí slunce';
+        $advertData->bigTitle = 'Překvapit by však mohl fakt, že nikdo, snad krom toho, kdo balónky k obloze vypustil, netuší, jakou má ona stuha barvu.';
+        $advertData->productTitle = 'Ptají se často lidé.';
         $advertData->products = [
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '1'),
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '76'),

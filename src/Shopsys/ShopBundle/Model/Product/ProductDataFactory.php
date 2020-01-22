@@ -82,7 +82,7 @@ class ProductDataFactory extends BaseProductDataFactory
     {
         $productData = new ProductData();
         $this->fillNew($productData);
-        $productData->brand = $this->brandFacade->getMainBushmanBrand();
+        $productData->brand = $this->brandFacade->getMainShopsysBrand();
 
         return $productData;
     }

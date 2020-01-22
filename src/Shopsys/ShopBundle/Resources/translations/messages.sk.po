@@ -46,9 +46,6 @@ msgstr "-- Vyberte pozíciu článku --"
 msgid "-- Vyberte přenos --"
 msgstr "- Vyberte prenos -"
 
-msgid "00421/908767330"
-msgstr ""
-
 msgid "1 - čtverec"
 msgstr "1 - štvorec"
 
@@ -81,6 +78,9 @@ msgstr ""
 
 msgid "6 - velký obdelník na šířku"
 msgstr "6 - veľký obdĺžnik na šírku"
+
+msgid "702 00 Ostrava"
+msgstr ""
 
 msgid "831 04 Bratislava"
 msgstr "831 04 Bratislava"
@@ -318,9 +318,6 @@ msgstr ""
 
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr "Bolo vytvorené <strong> {{quantity}} </ strong> zľavových kupónov"
-
-msgid "Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také."
-msgstr "Marec, za kachle nelez. V kvalitnom oblečení si užijete prechádzky v akomkoľvek počasí. Nemeňte svoje zvyky, my ich tiež."
 
 msgid "CSV Export"
 msgstr "CSV Export"
@@ -880,9 +877,6 @@ msgstr "GLS"
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr "Generovať tento produkt do HS-SPORT XML feedu"
 
-msgid "Geprüfter webshop"
-msgstr ""
-
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -957,9 +951,6 @@ msgstr "Hromadné vytvorenie zľavových kupónov"
 
 msgid "Hromadné úpravy"
 msgstr "Hromadné úpravy"
-
-msgid "Händlerbund Mitglied"
-msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Súhlasím so <a href=\"%termsAndConditionsUrl%\" target=\"_blank\"> zmluvnými podmienkami </a> a <a href=\"%privacyPolicyUrl%\" target=\"_blank\"> pravidlami ochrany osobných údajov </a>."
@@ -1047,6 +1038,9 @@ msgstr "IČ: 25618601, DIČ: CZ25618601"
 
 msgid "IČ: 26052679, DIČ: CZ26052679"
 msgstr "IČ: 26052679, DIČ: CZ26052679"
+
+msgid "IČ: 27790487, DIČ: CZ27790487"
+msgstr ""
 
 msgid "IČO: 51704501, IČ DPH: SK2120761621"
 msgstr "IČO: 51704501, IČ DPH: SK2120761621"
@@ -1140,6 +1134,12 @@ msgstr "Kliknutím na tlačidlo Odoslať objednávku"
 
 msgid "Klikněte zde pro zopakování úhrady objednávky"
 msgstr "Kliknite tu pre zopakovanie úhrady objednávky"
+
+msgid "Koksární 1096/10"
+msgstr ""
+
+msgid "Koksární 1096/10, 702 00 Ostrava"
+msgstr ""
 
 msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr "Kolega Novák má dobrú češtinu. Pošlite mu tiež tú kľúčenku. Môžem potvrdiť vyššie uvedené recenzie. Bunda je naozaj kvalitná, dobre sa nosí a aj po týždni som necítil pot ani hlinu."
@@ -1315,9 +1315,6 @@ msgstr "Máte pravdu a veľmi dobrý postreh! Masívny zips odkazuje na perovky 
 msgid "Máte slevový kód?"
 msgstr "Máš zľavový kód?"
 
-msgid "Městečko - Nespeky č.p. 75"
-msgstr ""
-
 msgid "Město"
 msgstr "Mesto"
 
@@ -1329,9 +1326,6 @@ msgstr "Na vybrané oblečenie dávame bushmanom záruku 25 rokov"
 
 msgid "Nadpis produktů"
 msgstr "Nadpis produktov"
-
-msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně"
-msgstr "Nadčasové splynutie s prírodou. Sama viete, že aj na prechádzke so psom môžete vyzerať dobre a prirodzene"
 
 msgid "Nahrávejte velikosti obrázků: čtverec (380x290px), obdélník na výšku (380x600px)"
 msgstr "Nahrávajte veľkosti obrázkov: štvorec (380x290px), obdĺžnik na výšku (380x600px)"
@@ -1551,6 +1545,9 @@ msgstr "O nákupe"
 
 msgid "O nás"
 msgstr "O nás"
+
+msgid "O produktu %s se dozvíte více v těchto článcích:"
+msgstr "O produkte %s sa dozviete viac v týchto článkoch:"
 
 msgid "Objednávka je již zaplacená."
 msgstr "Objednávka je už zaplatená."
@@ -1834,6 +1831,9 @@ msgstr "Pomáhajte s nami"
 msgid "Pomáháme"
 msgstr "Pomáháme"
 
+msgid "Pondělí až pátek 8:00 – 16:00"
+msgstr "Pondelok až piatok 8:00 - 16:00"
+
 msgid "Pondělí až pátek 9–15 hod"
 msgstr "Pondelok až piatok 9-15 hod"
 
@@ -1950,9 +1950,6 @@ msgstr "Predajňa"
 
 msgid "Prodejny"
 msgstr "Predajne"
-
-msgid "Prodejny Bushman"
-msgstr "Predajne Bushman"
 
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Produkt <strong> {{name}} </strong> ({{množstvo | formatNumber}} {{unitName}}) bol pridaný do košíka"
@@ -2293,6 +2290,9 @@ msgstr "Shopsys Framework"
 msgid "Shopsys magazín"
 msgstr ""
 
+msgid "Shopsys s.r.o."
+msgstr ""
+
 msgid "Silnější než kdy předtím..."
 msgstr "Silnejší ako kedykoľvek predtým ..."
 
@@ -2395,6 +2395,9 @@ msgstr "Špeciálna ponuka"
 msgid "Specialisti na běh"
 msgstr ""
 
+msgid "Spisová značka C 51890 vedená u rejstříkového soudu v Ostravě."
+msgstr "Spisová značka C 51890 vedená u registrového súdu v Ostrave."
+
 msgid "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
 msgstr "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
 
@@ -2466,9 +2469,6 @@ msgstr ""
 
 msgid "Tax number"
 msgstr "IČ DPH"
-
-msgid "Tel"
-msgstr ""
 
 msgid "Telefon"
 msgstr "Telefón"
@@ -3157,9 +3157,6 @@ msgstr "bez DPH"
 msgid "expediční oblečení"
 msgstr "expedičné oblečenie"
 
-msgid "fax: +420 317 712 499"
-msgstr ""
-
 msgid "from"
 msgstr "z"
 
@@ -3171,6 +3168,9 @@ msgstr "história objednávok,"
 
 msgid "in upper menu"
 msgstr "v hornom menu"
+
+msgid "info@shopsys.com"
+msgstr ""
 
 msgid "možnost získat"
 msgstr "možnosť získať"
@@ -3208,14 +3208,8 @@ msgstr "o nákupe"
 msgid "o nás"
 msgstr "o nás"
 
-msgid "obchod@bushman.sk"
-msgstr ""
-
 msgid "obchodními podmínkami"
 msgstr "obchodnými podmienkami"
-
-msgid "office@bushman.cz"
-msgstr ""
 
 msgid "on stock"
 msgstr "na sklade"
@@ -3228,9 +3222,6 @@ msgstr ""
 
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našom"
-
-msgid "pro pořádné chlapy"
-msgstr "pre poriadnych chlapov"
 
 msgid "pro členy"
 msgstr "pre členov"
@@ -3265,7 +3256,7 @@ msgstr "súhlasím s"
 msgid "stores"
 msgstr "predajne"
 
-msgid "tel.: +420 317 712 400"
+msgid "tel.: +420 595 177 177"
 msgstr ""
 
 msgid "tento text přesně vystihnul atmosféru nové strategie."
@@ -3381,6 +3372,9 @@ msgstr "Články"
 
 msgid "Články blogu"
 msgstr "Články blogu"
+
+msgid "Články k přečtení"
+msgstr "Articles to read"
 
 msgid "Články v horním menu"
 msgstr "Články v hornom menu"

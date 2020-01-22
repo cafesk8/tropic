@@ -43,9 +43,6 @@ msgstr "-- Artikelposition wählen --"
 msgid "-- Vyberte přenos --"
 msgstr "--Transfer auswählen--"
 
-msgid "00421/908767330"
-msgstr ""
-
 msgid "1 - čtverec"
 msgstr "1 - Quadrat"
 
@@ -87,6 +84,9 @@ msgstr ""
 
 msgid "6 - velký obdelník na šířku"
 msgstr "6 - grosses Rechteck landschaft"
+
+msgid "702 00 Ostrava"
+msgstr ""
 
 msgid "831 04 Bratislava"
 msgstr "831 04 Bratislava"
@@ -313,9 +313,6 @@ msgstr ""
 msgid "Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů"
 msgstr "<Strong> {{Quantity}} </ strong> Rabattgutscheine erstellt"
 
-msgid "Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také."
-msgstr "März, ich komme nicht hinter den Herd. Trage hochwertige Kleidung, um Spaziergänge bei jedem Wetter zu genießen. Ändere nicht deine Gewohnheiten, wir machen es auch nicht."
-
 msgid "CSV Export"
 msgstr "CSV Export"
 
@@ -419,7 +416,7 @@ msgid "Close (Esc)"
 msgstr "Schliessen (Esc)"
 
 msgid "Co je Věrnostní program?"
-msgstr ""
+msgstr "Was ist das Treueprogramm?"
 
 msgid "Co je však naprosto jisté, spolehlivě vás zahřeje."
 msgstr "Aber was absolut sicher ist, es hält dich warm."
@@ -856,9 +853,6 @@ msgstr "GLS"
 msgid "Generovat tento produkt do HS-SPORT XML feedu"
 msgstr "Generiere dieses Produkt in den HS-SPORT-XML-Feed"
 
-msgid "Geprüfter webshop"
-msgstr ""
-
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -933,9 +927,6 @@ msgstr "Massenerstellung von Rabattgutscheinen"
 
 msgid "Hromadné úpravy"
 msgstr "Massenbearbeitung"
-
-msgid "Händlerbund Mitglied"
-msgstr ""
 
 msgid "I agree with <a href=\"%termsAndConditionsUrl%\" target=\"_blank\">terms and conditions</a> and <a href=\"%privacyPolicyUrl%\" target=\"_blank\">privacy policy</a>."
 msgstr "Ich stimme den <a href=\"%termsAndConditionsUrl%\" target=\"_blank\"> Nutzungsbedingungen </a> und den <a href=\"%privacyPolicyUrl%\" target=\"_blank\"> Datenschutzbestimmungen </a> zu."
@@ -1023,6 +1014,9 @@ msgstr "IČ: 25618601, DIČ: CZ25618601"
 
 msgid "IČ: 26052679, DIČ: CZ26052679"
 msgstr "IČ: 26052679, DIČ: CZ26052679"
+
+msgid "IČ: 27790487, DIČ: CZ27790487"
+msgstr "IR: 27790487, USt-IdNr: CZ27790487"
 
 msgid "IČO: 51704501, IČ DPH: SK2120761621"
 msgstr "IČO: 51704501, IČ DPH: SK2120761621"
@@ -1118,6 +1112,12 @@ msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr "Klicke auf \"Bestellung abschicken\""
 
 msgid "Klikněte zde pro zopakování úhrady objednávky"
+msgstr ""
+
+msgid "Koksární 1096/10"
+msgstr ""
+
+msgid "Koksární 1096/10, 702 00 Ostrava"
 msgstr ""
 
 msgid "Kolega Novák má dobrý češtin. Pošlete mu tu klíčenku taky. Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
@@ -1317,9 +1317,6 @@ msgstr "Auf ausgewählte Kleidungsstücke gewähren wir für alle Bushmänner 25
 
 msgid "Nadpis produktů"
 msgstr "Produktüberschrift"
-
-msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně"
-msgstr "Zeitlose Harmonie mit der Natur. Du weißt, dass du bei einem Spaziergang mit deinem Hund gut und natürlich aussehen kannst"
 
 msgid "Nahrávejte velikosti obrázků: čtverec (380x290px), obdélník na výšku (380x600px)"
 msgstr "Bildgröße des Uploads: Quadrat (380x290px), Hochformat (380x600px)"
@@ -1539,6 +1536,9 @@ msgstr "Über den Einkauf"
 
 msgid "O nás"
 msgstr "Über uns"
+
+msgid "O produktu %s se dozvíte více v těchto článcích:"
+msgstr "Weitere Informationen zum Produkt %s finden Sie in diesen Artikeln:"
 
 msgid "Objednávka je již zaplacená."
 msgstr ""
@@ -1825,6 +1825,9 @@ msgstr "Hilf mit"
 msgid "Pomáháme"
 msgstr "Wir helfen"
 
+msgid "Pondělí až pátek 8:00 – 16:00"
+msgstr "Montag bis Freitag von 08:00 bis 16:00 Uhr"
+
 msgid "Pondělí až pátek 9–15 hod"
 msgstr "Montag bis Freitag von 9 bis 15 Uhr"
 
@@ -1935,9 +1938,6 @@ msgstr "Geschäft"
 
 msgid "Prodejny"
 msgstr "Geschäfte"
-
-msgid "Prodejny Bushman"
-msgstr "Bushman Geschäfte"
 
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Produkt <strong> {{name}} </strong> ({{quantity|formatNumber}} {{unitName}}) wurde dem Warenkorb hinzugefügt"
@@ -2284,6 +2284,9 @@ msgstr "Shopsys Framework"
 msgid "Shopsys magazín"
 msgstr ""
 
+msgid "Shopsys s.r.o."
+msgstr ""
+
 msgid "Silnější než kdy předtím..."
 msgstr "Stärker als je zuvor ..."
 
@@ -2383,6 +2386,9 @@ msgstr "Sonderangebot"
 msgid "Specialisti na běh"
 msgstr ""
 
+msgid "Spisová značka C 51890 vedená u rejstříkového soudu v Ostravě."
+msgstr "Aktenzeichen C 51890, geführt vom Registergericht in Ostrava."
+
 msgid "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
 msgstr "Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B."
 
@@ -2454,9 +2460,6 @@ msgstr "TOPTRANS"
 
 msgid "Tax number"
 msgstr "Steuernummer"
-
-msgid "Tel"
-msgstr ""
 
 msgid "Telefon"
 msgstr "Telefon"
@@ -3166,6 +3169,9 @@ msgstr "in der Fußzeile"
 msgid "in upper menu"
 msgstr "im oberen Menü"
 
+msgid "info@shopsys.com"
+msgstr ""
+
 msgid "možnost získat"
 msgstr "Chance zu bekommen"
 
@@ -3202,9 +3208,6 @@ msgstr "über den Kauf"
 msgid "o nás"
 msgstr "über uns"
 
-msgid "obchod@bushman.sk"
-msgstr ""
-
 msgid "obchodními podmínkami"
 msgstr "Geschäftsbedingungen"
 
@@ -3222,9 +3225,6 @@ msgstr ""
 
 msgid "požadovaná stránk na našem"
 msgstr "benötigte Seite auf unserer"
-
-msgid "pro pořádné chlapy"
-msgstr "für echte Männer"
 
 msgid "pro členy"
 msgstr "für Mitglieder"
@@ -3264,6 +3264,9 @@ msgstr "Geschäfte"
 
 msgid "tel.: +420 317 712 400"
 msgstr "Tel.: +420 317 712 400"
+
+msgid "tel.: +420 595 177 177"
+msgstr ""
 
 msgid "tento text přesně vystihnul atmosféru nové strategie."
 msgstr "Dieser Text fasst die Atmosphäre der neuen Strategie genau zusammen."
@@ -3378,6 +3381,9 @@ msgstr "Artikel"
 
 msgid "Články blogu"
 msgstr "Blogartikel"
+
+msgid "Články k přečtení"
+msgstr "Artikel zum Lesen"
 
 msgid "Články v horním menu"
 msgstr "Artikel im oberen Menü"

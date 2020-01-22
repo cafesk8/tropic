@@ -189,7 +189,7 @@ class ProductMallExportMapper
         if ($isVariant === false) {
             $mallProduct = new MallProduct();
             $mallProduct->setVat($product->getVat()->getPercent());
-            $mallProduct->setBrandId('BUSHMAN');
+            $mallProduct->setBrandId('SHOPSYS');
 
             if ($mallCategoryId !== null) {
                 $mallProduct->setCategoryId($mallCategoryId);

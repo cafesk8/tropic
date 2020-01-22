@@ -173,7 +173,7 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             'choices' => [
                 t('Bez osobního převzetí') => Transport::TYPE_NONE,
                 t('Balíkobot') => Transport::TYPE_PERSONAL_TAKE_BALIKOBOT,
-                t('Prodejny Bushman') => Transport::TYPE_PERSONAL_TAKE_STORE,
+                t('Prodejny') => Transport::TYPE_PERSONAL_TAKE_STORE,
                 t('E-mailem') => Transport::TYPE_EMAIL,
             ],
             'attr' => [

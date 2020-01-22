@@ -75,14 +75,14 @@ class CategoryDataFixture extends AbstractReferenceFixture
             'en' => 'Electronics',
         ];
         $categoryData->leftBannerTexts = [
-            'cs' => 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.',
-            'sk' => null,
-            'en' => null,
+            'cs' => 'Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili',
+            'sk' => 'Nejeden filozof by mohol tvrdiť, že balóniky so slnkom závodí, ale fyzici by to iste vyvrátili',
+            'en' => 'Many philosophers could claim that balloons are competing with the sun, but physicists would surely refute it',
         ];
         $categoryData->rightBannerTexts = [
-            'cs' => 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně',
-            'sk' => null,
-            'en' => null,
+            'cs' => 'Červený se vedle modrého a zeleného zdá trochu menší, ale to je nejspíš jen optický klam',
+            'sk' => 'Červený sa vedľa modrého a zeleného zdá trochu menší, ale to je zrejme len optický klam',
+            'en' => 'Red seems a little smaller next to blue and green, but that\'s probably just an optical illusion',
         ];
         $categoryData->preListingCategory = true;
         $categoryData->legendaryCategory = true;

@@ -17,9 +17,9 @@ class Version20191010144727 extends AbstractMigration
         $this->sql('ALTER TABLE brands ADD type VARCHAR(50) NOT NULL DEFAULT \'default\'');
         $this->sql('ALTER TABLE brands ALTER type DROP DEFAULT');
 
-        $this->sql('UPDATE brands SET type = \'mainBushman\' WHERE name = \'Bushman\'');
+        $this->sql('UPDATE brands SET type = \'mainShopsys\' WHERE name = \'Shopsys\'');
 
-        $this->sql('UPDATE products SET brand_id = (SELECT id FROM brands WHERE name = \'Bushman\')');
+        $this->sql('UPDATE products SET brand_id = (SELECT id FROM brands WHERE name = \'Shopsys\')');
     }
 
     /**

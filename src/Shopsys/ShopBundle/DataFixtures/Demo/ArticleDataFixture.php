@@ -68,7 +68,7 @@ class ArticleDataFixture extends AbstractReferenceFixture
         $this->createArticle($articleData);
 
         $articleData->name = 'Historie společnosti';
-        $articleData->text = 'Počátek firmy se datuje rokem 1990, kdy její hlavní činností bylo zásobování bank a jiných firem papírenským zbožím. Dlouho u toho nezůstalo. Prudký vývoj utvrdil Papírnictví Pavlik CZ v pozici předního velkoobchodu, eskaloval v založení šestnácti vlastních prodejen – a v neposlední řadě umožnil založení vlastního eshopu.';
+        $articleData->text = 'Vítr skoro nefouká a tak by se na první pohled mohlo zdát, že se balónky snad vůbec nepohybují. Jenom tak klidně levitují ve vzduchu. Jelikož slunce jasně září a na obloze byste od východu k západu hledali mráček marně, balónky působí jako jakási fata morgána uprostřed pouště. Zkrátka široko daleko nikde nic, jen zelenkavá tráva, jasně modrá obloha a tři křiklavě barevné pouťové balónky, které se téměř nepozorovatelně pohupují ani ne moc vysoko, ani moc nízko nad zemí. Kdyby pod balónky nebyla sytě zelenkavá tráva, ale třeba suchá silnice či beton, možná by bylo vidět jejich barevné stíny - to jak přes poloprůsvitné barevné balónky prochází ostré sluneční paprsky.';
         $articleData->placement = Article::PLACEMENT_ABOUT;
         $this->createArticle($articleData);
 
@@ -88,7 +88,7 @@ class ArticleDataFixture extends AbstractReferenceFixture
         $this->createArticle($articleData);
 
         $articleData->name = 'Pro obchodníky';
-        $articleData->text = 'Velkoobchodní prodej pro obchodníky provádíme již od roku 1992. Od roku 2013 umožňujeme obchodníkům s papírenským zbožím i pohodlný nákup přes tento internetový obchod. Každý zaregistrovaný zákazník vidí své aktuální ceny. O B2B mohou žádat pouze ochdodníci, kteří mají naše zboží určeno pro další prodej.';
+        $articleData->text = 'Proti slunci to vypadá, že se slunce pohybuje k západu rychleji než balónky, a možná to tak skutečně je. Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili. Z fyzikálního pohledu totiž balónky působí zcela nezajímavě. Nejvíc bezpochyby zaujmou děti - jedna malá holčička zrovna včera div nebrečela, že by snad balónky mohly prasknout. A co teprve ta stuha. Stuha, kterou je každý z trojice balónků uvázán, aby se nevypustil.';
         $articleData->placement = Article::PLACEMENT_SERVICES;
         $this->createArticle($articleData);
 
