@@ -125,6 +125,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
         $result['main_variant_group_products'] = $this->getMainVariantGroupProductsData($product, $locale);
         $result['second_distinguishing_parameter_values'] = $this->getSecondDistinguishingParameterValues($product, $locale);
+        $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
 
         return $result;
     }

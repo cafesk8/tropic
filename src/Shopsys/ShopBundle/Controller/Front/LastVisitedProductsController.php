@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Front;
 
-use Shopsys\ShopBundle\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
-use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
+use Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade;
 use Symfony\Component\HttpFoundation\Request;
 
 class LastVisitedProductsController extends FrontBaseController
@@ -13,23 +12,16 @@ class LastVisitedProductsController extends FrontBaseController
     public const MAX_VISITED_PRODUCT_COUNT = 12;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\LastVisitedProducts\LastVisitedProductsFacade
+     * @var \Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade
      */
-    private $lastVisitedProductFacade;
+    private $listedProductViewElasticFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
+     * @param \Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade $listedProductViewElasticFacade
      */
-    private $productOnCurrentDomainFacade;
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\LastVisitedProducts\LastVisitedProductsFacade $lastVisitedProductFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
-     */
-    public function __construct(LastVisitedProductsFacade $lastVisitedProductFacade, ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade)
+    public function __construct(ListedProductViewElasticFacade $listedProductViewElasticFacade)
     {
-        $this->lastVisitedProductFacade = $lastVisitedProductFacade;
-        $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
+        $this->listedProductViewElasticFacade = $listedProductViewElasticFacade;
     }
 
     /**
@@ -38,14 +30,13 @@ class LastVisitedProductsController extends FrontBaseController
      */
     public function showAction(Request $request)
     {
-        $products = $this->lastVisitedProductFacade->getProductsFromCookieSortedByNewest(
+        $productViews = $this->listedProductViewElasticFacade->getProductsFromCookieSortedByNewest(
             $request->cookies,
             self::MAX_VISITED_PRODUCT_COUNT
         );
 
         return $this->render('@ShopsysShop/Front/Content/LastVisitedProducts/list.html.twig', [
-            'products' => $products,
-            'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($products),
+            'productViews' => $productViews,
         ]);
     }
 }

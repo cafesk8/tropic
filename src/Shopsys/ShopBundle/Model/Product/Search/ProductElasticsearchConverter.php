@@ -23,6 +23,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['prices']['price_from'] = $product['prices']['price_from'] ?? false;
         $result['main_variant_group_products'] = $product['main_variant_group_products'] ?? [];
         $result['second_distinguishing_parameter_values'] = $product['second_distinguishing_parameter_values'] ?? [];
+        $result['main_variant_id'] = $product['main_variant_id'] ?? null;
 
         return $result;
     }

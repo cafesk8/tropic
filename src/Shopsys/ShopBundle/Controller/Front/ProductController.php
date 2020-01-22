@@ -192,7 +192,7 @@ class ProductController extends FrontBaseController
             return $this->redirectToRoute('front_product_detail', ['id' => $product->getMainVariant()->getId()]);
         }
 
-        $accessories = $this->productOnCurrentDomainFacade->getAccessoriesForProduct($product);
+        $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
         $domainId = $this->domain->getId();
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
         $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);

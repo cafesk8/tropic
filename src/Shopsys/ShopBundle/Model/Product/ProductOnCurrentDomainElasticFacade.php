@@ -22,6 +22,9 @@ use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\ShopBundle\Model\Product\Parameter\Parameter;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory
+ */
 class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElasticFacade
 {
     /**
@@ -159,5 +162,16 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomer->getPricingGroup(), $productIds->getIds());
 
         return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
+    }
+
+    /**
+     * @param int[] $ids
+     * @return array
+     */
+    public function getHitsForIds(array $ids): array
+    {
+        $filterQuery = $this->filterQueryFactory->create($this->getIndexName())->filterIds(array_values($ids));
+
+        return $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
     }
 }

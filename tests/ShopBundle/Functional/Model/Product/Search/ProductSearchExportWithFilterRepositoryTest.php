@@ -69,6 +69,7 @@ class ProductSearchExportWithFilterRepositoryTest extends TransactionFunctionalT
             'calculated_selling_denied',
             'selling_denied',
             'main_variant',
+            'main_variant_id',
             'main_variant_group_products',
             'visibility',
             'second_distinguishing_parameter_values',

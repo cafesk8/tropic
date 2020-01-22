@@ -74,4 +74,21 @@ class FilterQuery extends BaseFilterQuery
 
         return $clone;
     }
+
+    /**
+     * @param array $ids
+     * @return \Shopsys\ShopBundle\Model\Product\Search\FilterQuery
+     */
+    public function filterIds(array $ids): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'terms' => [
+                '_id' => $ids,
+            ],
+        ];
+
+        return $clone;
+    }
 }

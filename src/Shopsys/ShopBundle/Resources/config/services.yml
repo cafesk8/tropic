@@ -634,3 +634,9 @@ services:
     Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewFactory'
 
     Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade: '@Shopsys\ShopBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade'
+
+    Shopsys\ShopBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade:
+        arguments:
+            - '@shopsys.shop.product.bestselling_product.cache_provider'

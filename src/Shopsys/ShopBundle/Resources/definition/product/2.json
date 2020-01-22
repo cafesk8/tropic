@@ -240,6 +240,9 @@
         "main_variant": {
           "type": "boolean"
         },
+        "main_variant_id": {
+          "type": "integer"
+        },
         "detail_url": {
           "type": "text"
         },
