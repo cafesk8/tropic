@@ -50,6 +50,7 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->goPayPaymentMethod = $payment->getGoPayPaymentMethod();
         $paymentData->externalId = $payment->getExternalId();
         $paymentData->cashOnDelivery = $payment->isCashOnDelivery();
+        $paymentData->hiddenByGoPay = $payment->isHiddenByGoPay();
 
         return $paymentData;
     }
@@ -62,5 +63,6 @@ class PaymentDataFactory extends BasePaymentDataFactory
         parent::fillNew($paymentData);
 
         $paymentData->cashOnDelivery = false;
+        $paymentData->hiddenByGoPay = false;
     }
 }
