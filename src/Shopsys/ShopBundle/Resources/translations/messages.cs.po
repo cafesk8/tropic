@@ -1328,7 +1328,7 @@ msgid "O nás"
 msgstr ""
 
 msgid "O produktu %s se dozvíte více v těchto článcích:"
-msgstr ""
+msgstr "O produktu %s se dozvíte více v těchto článcích:"
 
 msgid "Objednávka je již zaplacená."
 msgstr ""
@@ -3035,7 +3035,7 @@ msgid "Články blogu"
 msgstr ""
 
 msgid "Články k přečtení"
-msgstr ""
+msgstr "Články k přečtení"
 
 msgid "Články v horním menu"
 msgstr ""
