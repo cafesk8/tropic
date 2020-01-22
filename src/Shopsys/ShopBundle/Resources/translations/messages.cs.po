@@ -1724,10 +1724,10 @@ msgid "Procentuální sleva"
 msgstr ""
 
 msgid "Prodejna"
-msgstr ""
+msgstr "Prodejna"
 
 msgid "Prodejny"
-msgstr ""
+msgstr "Prodejny"
 
 msgid "Product <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }}) added to the cart"
 msgstr "Do košíku bylo vloženo zboží <strong>{{ name }}</strong> ({{ quantity|formatNumber }} {{ unitName }})"
