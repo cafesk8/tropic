@@ -8,11 +8,13 @@
         <div class="list-cart-preview__item__pieces">
             {{ quantity|formatNumber }} {{ product.unit.name }}
         </div>
-        <div class="list-cart-preview__item__name">
-            <span class="list-cart-preview__item__name__title">
+        <div class="list-cart-preview__item__info">
+            <span class="list-cart-preview__item__title">
                 {{ product.name }}
             </span>
-            {{ distinguishingParameter.writeParameters(product, 'list-cart-preview__item__name__text') }}
+            <div class="list-cart-preview__item__parameters">
+                {{ distinguishingParameter.writeParameters(product, 'list-cart-preview__item__parameters__text') }}
+            </div>
         </div>
         <div class="list-cart-preview__item__price">
             {{ price|price }}
