@@ -117,8 +117,8 @@ class OrderExportMapper
     private function getCustomerNote(Order $order): ?string
     {
         $customerNote = $order->getNote();
-        if ($order->getPromoCodeCode() !== null) {
-            $customerNote = 'Kód slevového kupónu: ' . $order->getPromoCodeCode() . "\n\n" . $customerNote;
+        if ($order->getPromoCodesCodes() !== null) {
+            $customerNote = 'Kódy slevových kupónů: ' . $order->getPromoCodesCodes() . "\n\n" . $customerNote;
         }
 
         return $customerNote;

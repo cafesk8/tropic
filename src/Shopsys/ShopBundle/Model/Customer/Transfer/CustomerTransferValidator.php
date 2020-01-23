@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
 use Shopsys\ShopBundle\Component\Transfer\Exception\TransferInvalidDataException;
-use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -43,7 +42,6 @@ class CustomerTransferValidator
                 ],
                 'countryCode' => [
                     new NotBlank(),
-                    new Choice(['choices' => ['CZ', 'SK', 'DE']]),
                 ],
                 'firstName' => [
                     new NotBlank(),

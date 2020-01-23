@@ -166,7 +166,7 @@ class StoreFormType extends AbstractType
                 'required' => false,
                 'label' => t('E-mail'),
                 'constraints' => [
-                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Email cannot be longer than {{ limit }} characters']),
                     new Constraints\Email(['message' => 'Please enter valid e-mail']),
                 ],
             ])

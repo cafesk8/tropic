@@ -7,7 +7,6 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Generator;
-use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User;
@@ -95,8 +94,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         $orderData->domainId = Domain::FIRST_DOMAIN_ID;
         $orderData->currency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         $orderData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
-        $orderData->goPayId = '11111';
-        $orderData->goPayStatus = PaymentStatus::CREATED;
+
         $this->createOrder(
             $orderData,
             [
@@ -107,8 +105,6 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         );
 
         $orderData = $this->orderDataFactory->create();
-        $orderData->goPayId = null;
-        $orderData->goPayStatus = null;
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
         $orderData->status = $this->getReference(OrderStatusDataFixture::ORDER_STATUS_NEW);

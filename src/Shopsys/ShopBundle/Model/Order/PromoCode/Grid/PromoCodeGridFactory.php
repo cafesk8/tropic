@@ -53,6 +53,7 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
         $grid->addColumn('number_of_uses', 'pc.numberOfUses', t('Kolikrát použito'), true);
         $grid->addColumn('usage_limit', 'pc.usageLimit', t('Maximální počet použití'), true);
         $grid->addColumn('unlimited', 'pc.unlimited', t('Neomezený'), true);
+        $grid->addColumn('combinable', 'pc.combinable', t('Kombinovatelný'), true);
         $grid->addColumn('prefix', 'pc.prefix', t('Prefix'), true);
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');

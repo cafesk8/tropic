@@ -25,7 +25,7 @@ class ResetPasswordFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter e-mail']),
                     new Email(['message' => 'Please enter valid e-mail']),
-                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Email cannot be longer then {{ limit }} characters']),
+                    new Constraints\Length(['max' => 255, 'maxMessage' => 'Email cannot be longer than {{ limit }} characters']),
                 ],
             ])
             ->add('submit', SubmitType::class);

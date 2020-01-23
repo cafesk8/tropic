@@ -37,6 +37,9 @@ msgstr "(kód VANOCE2018)"
 msgid "******** 6 nebo více znaků"
 msgstr "******** 6 alebo viac znakov"
 
+msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
+msgstr ""
+
 msgid "-- Choose article --"
 msgstr "-- Vyberte článok --"
 
@@ -471,9 +474,6 @@ msgstr "Kontaktuj nás"
 
 msgid "Cookies nejsou sušenky"
 msgstr "Cookies nie sú sušienky"
-
-msgid "Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena."
-msgstr ""
 
 msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
 msgstr "Copyright Ⓒ 2019, Bushman company, a.s. Všetky práva vyhradené."
@@ -1147,6 +1147,9 @@ msgstr "Kolega Novák má dobrú češtinu. Pošlite mu tiež tú kľúčenku. M
 msgid "Kolikrát použito"
 msgstr "Koľkokrát použité"
 
+msgid "Kombinovatelný"
+msgstr ""
+
 msgid "Kontakt"
 msgstr "Kontakt"
 
@@ -1767,6 +1770,9 @@ msgstr "Platba"
 
 msgid "Platnost"
 msgstr "Platnosť"
+
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
+msgstr ""
 
 msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
 msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontroluj si to."
@@ -2482,6 +2488,9 @@ msgstr "Telefón"
 msgid "Tenký nadpis"
 msgstr "Tenký nadpis"
 
+msgid "Tento slevový kupón je již v objednávce aplikován."
+msgstr ""
+
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr "Tento stav nie je možné zmazať, pretože je na neho naviazaná funkčnosť"
 
@@ -2667,6 +2676,9 @@ msgstr "Upresňujúce informácie pre prenosovú chybu"
 
 msgid "User not found."
 msgstr "Užívateľ nenájdený."
+
+msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
+msgstr ""
 
 msgid "V hlavní roli"
 msgstr "V hlavnej úlohe"
