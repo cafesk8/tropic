@@ -434,6 +434,10 @@ services:
 
     Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@Shopsys\ShopBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator'
 
+    Shopsys\ShopBundle\Controller\Front\CartController:
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
     Shopsys\ShopBundle\Model\Cart\CartFacade:
         arguments:
             - '@shopsys.shop.component.flash_message.sender.front'

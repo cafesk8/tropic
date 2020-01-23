@@ -706,4 +706,13 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getMainVariantsWithEan($limit, $page);
     }
+
+    /**
+     * @param int $id
+     * @return \Shopsys\ShopBundle\Model\Product\Product
+     */
+    public function getSellableById($id): ChildProduct
+    {
+        return $this->productRepository->getSellableById($id, $this->domain->getId(), $this->currentCustomer->getPricingGroup());
+    }
 }

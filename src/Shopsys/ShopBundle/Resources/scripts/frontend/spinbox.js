@@ -22,6 +22,10 @@
             var max = $(this).data('spinbox-max');
             var step = $(this).data('spinbox-step');
 
+            if (min < step) {
+                min = step;
+            }
+
             if (!value.match(/^\d+$/)) {
                 value = min;
             }

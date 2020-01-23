@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Model\Cart;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
+use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade as BaseCartFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFactory;
 use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
@@ -19,7 +20,9 @@ use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
+use Shopsys\ShopBundle\Model\Cart\Exception\OutOfStockException;
 use Shopsys\ShopBundle\Model\Cart\Item\CartItem;
+use Shopsys\ShopBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 /**
@@ -38,6 +41,11 @@ class CartFacade extends BaseCartFacade
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
+
+    /**
+     * @var array
+     */
+    private $messageCollector;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
@@ -85,6 +93,7 @@ class CartFacade extends BaseCartFacade
 
         $this->flashMessageSender = $flashMessageSender;
         $this->productFacade = $productFacade;
+        $this->messageCollector = [];
     }
 
     /**
@@ -92,6 +101,7 @@ class CartFacade extends BaseCartFacade
      */
     public function correctCartQuantitiesAccordingToStockedQuantities(): array
     {
+        $this->messageCollector = [];
         $cartModifiedQuantitiesIndexedByCartItemId = [];
 
         $cart = $this->findCartOfCurrentCustomer();
@@ -103,12 +113,6 @@ class CartFacade extends BaseCartFacade
 
             if ($newCartItemQuantity === 0) {
                 $this->deleteCartItem($cartItem->getId());
-                $this->flashMessageSender->addErrorFlashTwig(
-                    t('Product {{ name }} had to be removed from cart as its stock is too low'),
-                    [
-                        'name' => $cartItem->getName($this->domain->getLocale()),
-                    ]
-                );
             } elseif ($newCartItemQuantity !== $cartItem->getQuantity()) {
                 $cartModifiedQuantitiesIndexedByCartItemId[$cartItem->getId()] = $newCartItemQuantity;
             }
@@ -118,7 +122,7 @@ class CartFacade extends BaseCartFacade
             $this->changeQuantities($cartModifiedQuantitiesIndexedByCartItemId);
         }
 
-        return $cartModifiedQuantitiesIndexedByCartItemId;
+        return $this->messageCollector;
     }
 
     /**
@@ -137,9 +141,10 @@ class CartFacade extends BaseCartFacade
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
             try {
                 $cartItem = $cart->getItemById($cartItemId);
+                $newCartItemQuantity = $this->getValidCartItemQuantity($cartItem, (int)$quantity);
 
-                if ($this->canUpdateCartItemQuantity($cartItem, (int)$quantity) === true) {
-                    $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $cartItem->getProduct()->getStockQuantity();
+                if ($newCartItemQuantity !== $quantity) {
+                    $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $newCartItemQuantity;
                 }
             } catch (InvalidCartItemException $exception) {
                 $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
@@ -166,7 +171,7 @@ class CartFacade extends BaseCartFacade
         foreach ($cartFormDataQuantities as $cartItemId => $quantity) {
             try {
                 $cartItem = $cart->getItemById($cartItemId);
-                $modifyFormData[$cartItemId] = $this->getValidCartItemQuantity($cartItem, intval($quantity));
+                $modifyFormData[$cartItemId] = $this->getValidCartItemQuantity($cartItem, (int)$quantity);
             } catch (InvalidCartItemException $exception) {
                 $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
@@ -175,61 +180,35 @@ class CartFacade extends BaseCartFacade
         return $modifyFormData;
     }
 
-    /**
-     * @param int[] $cartModifiedQuantitiesIndexedByCartItemId
-     */
-    public function displayInfoMessageAboutCorrectedCartItemsQuantities(array $cartModifiedQuantitiesIndexedByCartItemId): void
+    public function displayInfoMessageAboutCorrectedCartItemsQuantities(): void
     {
-        if (count($cartModifiedQuantitiesIndexedByCartItemId) === 0) {
-            return;
-        }
-
-        $cart = $this->findCartOfCurrentCustomer();
-
-        if ($cart === null) {
-            return;
-        }
-
-        foreach ($cart->getItems() as $cartItem) {
-            if (array_key_exists($cartItem->getId(), $cartModifiedQuantitiesIndexedByCartItemId)) {
-                $this->flashMessageSender->addErrorFlashTwig(
-                    t('Položka {{ name }} je skladem k dispozici v počtu {{ quantity }} ks, počet kusů ve Vašem košíku jsme proto upravili.'),
-                    [
-                        'name' => $cartItem->getName($this->domain->getLocale()),
-                        'quantity' => $cartItem->getProduct()->getStockQuantity(),
-                    ]
-                );
-            }
+        foreach ($this->messageCollector as $message) {
+            $this->flashMessageSender->addErrorFlash($message);
         }
     }
 
     /**
-     * @param int $productId
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $quantity
      * @return \Shopsys\FrameworkBundle\Model\Cart\AddProductResult
      */
-    public function addProductToCart($productId, $quantity)
+    public function addProduct(Product $product, int $quantity): AddProductResult
     {
-        $product = $this->productRepository->getSellableById(
-            $productId,
-            $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
-        );
-
         $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
 
         $productQuantityInCart = 0;
+
         try {
-            $cartItemByProductId = $cart->getItemByProductId((int)$productId);
+            $cartItemByProductId = $cart->getItemByProductId($product->getId());
             $productQuantityInCart = $cartItemByProductId->getQuantity();
-        } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException $ex) {
+        } catch (InvalidCartItemException $ex) {
         }
 
         if ($product->isUsingStock() && ($productQuantityInCart + $quantity) > $product->getStockQuantity()) {
-            throw new \Shopsys\ShopBundle\Model\Cart\Exception\OutOfStockException();
+            throw new OutOfStockException();
         }
 
-        return parent::addProductToCart($productId, $quantity);
+        return parent::addProductToCart($product->getId(), $quantity);
     }
 
     /**
@@ -355,16 +334,6 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
-     * @param int $quantity
-     * @return bool
-     */
-    private function canUpdateCartItemQuantity(CartItem $cartItem, int $quantity): bool
-    {
-        return $cartItem->getProduct()->isUsingStock() && $quantity > $cartItem->getProduct()->getStockQuantity() === true;
-    }
-
-    /**
      * @return bool
      */
     public function showEmailTransportInCart(): bool
@@ -389,21 +358,44 @@ class CartFacade extends BaseCartFacade
     {
         $desiredQuantity = $quantity ?? $cartItem->getQuantity();
         $product = $cartItem->getProduct();
-        $realMinimumAmount = $product->getMinimumAmount() % $product->getAmountMultiplier() === 0 ? $product->getMinimumAmount() : intval(ceil($product->getMinimumAmount() / $product->getAmountMultiplier()) * $product->getAmountMultiplier());
-        $realStockQuantity = $product->getStockQuantity() % $product->getAmountMultiplier() === 0 ? $product->getStockQuantity() : intval(floor($product->getStockQuantity() / $product->getAmountMultiplier()) * $product->getAmountMultiplier());
+        $realMinimumAmount = $product->getRealMinimumAmount();
+        $realStockQuantity = $product->getRealStockQuantity();
 
         if ($product->isUsingStock()) {
             if ($realMinimumAmount > $realStockQuantity) {
+                $this->messageCollector[] = t('Produkt %name% musel být z košíku odstraněn, protože není skladem.', [
+                    '%name%' => $cartItem->getName($this->domain->getLocale()),
+                ]);
+
                 return 0;
             }
 
             if ($desiredQuantity > $realStockQuantity) {
+                $this->messageCollector[] = t('Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
+                    '%name%' => $cartItem->getName($this->domain->getLocale()),
+                    '%quantity%' => $realStockQuantity,
+                ]);
+
                 return $realStockQuantity;
             }
         }
 
         if ($desiredQuantity < $realMinimumAmount) {
+            $this->messageCollector[] = t('Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
+                '%name%' => $cartItem->getName($this->domain->getLocale()),
+                '%quantity%' => $realMinimumAmount,
+            ]);
+
             return $realMinimumAmount;
+        }
+
+        if ($desiredQuantity % $product->getAmountMultiplier() !== 0) {
+            $this->messageCollector[] = t('Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili.', [
+                '%name%' => $cartItem->getName($this->domain->getLocale()),
+                '%multiplier%' => $product->getAmountMultiplier(),
+            ]);
+
+            return (int)floor($desiredQuantity / $product->getAmountMultiplier()) * $product->getAmountMultiplier();
         }
 
         return $desiredQuantity;

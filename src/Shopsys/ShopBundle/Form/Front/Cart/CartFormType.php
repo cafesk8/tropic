@@ -76,11 +76,11 @@ class CartFormType extends AbstractType
             $cart = $this->cartFacade->findCartOfCurrentCustomer();
 
             if ($cart !== null) {
-                $cartModifiedQuantitiesIndexedByCartItemId = $this->cartFacade->getChangedCartQuantitiesBySentData($data['quantities']);
-                $this->cartFacade->displayInfoMessageAboutCorrectedCartItemsQuantities($cartModifiedQuantitiesIndexedByCartItemId);
+                $this->cartFacade->getChangedCartQuantitiesBySentData($data['quantities']);
             }
 
             $data['quantities'] = $this->cartFacade->getCorrectedQuantitiesBySentData($data['quantities']);
+            $this->cartFacade->displayInfoMessageAboutCorrectedCartItemsQuantities();
             $event->setData($data);
         });
     }

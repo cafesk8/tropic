@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
+use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
@@ -24,6 +25,7 @@ use Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCartFacade;
 use Shopsys\ShopBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductInCartFacade;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,6 +95,11 @@ class CartController extends FrontBaseController
     private $productOnCurrentDomainElasticFacade;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @var \Shopsys\ShopBundle\Model\Gtm\GtmFacade
      */
     private $gtmFacade;
@@ -108,6 +115,12 @@ class CartController extends FrontBaseController
     private $promoProductInCartFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
@@ -122,8 +135,10 @@ class CartController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductInCartFacade $promoProductInCartFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
+        FlashMessageSender $flashMessageSender,
         ProductAccessoryFacade $productAccessoryFacade,
         CartFacade $cartFacade,
         CurrentCustomer $currentCustomer,
@@ -137,7 +152,8 @@ class CartController extends FrontBaseController
         ProductOnCurrentDomainElasticFacade $productOnCurrentDomainElasticFacade,
         GtmFacade $gtmFacade,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
-        PromoProductInCartFacade $promoProductInCartFacade
+        PromoProductInCartFacade $promoProductInCartFacade,
+        ProductFacade $productFacade
     ) {
         $this->productAccessoryFacade = $productAccessoryFacade;
         $this->cartFacade = $cartFacade;
@@ -153,6 +169,8 @@ class CartController extends FrontBaseController
         $this->gtmFacade = $gtmFacade;
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoProductInCartFacade = $promoProductInCartFacade;
+        $this->productFacade = $productFacade;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -356,9 +374,9 @@ class CartController extends FrontBaseController
     {
         $form = $this->createForm(AddProductFormType::class, [
             'productId' => $product->getId(),
-            'minimum_amount' => $product->getMinimumAmount(),
         ], [
             'action' => $this->generateUrl('front_cart_add_product'),
+            'minimum_amount' => $product->getMinimumAmount(),
         ]);
 
         $hardDisabled = $product->getStockQuantity() < 1;
@@ -380,14 +398,15 @@ class CartController extends FrontBaseController
      */
     public function addProductAction(Request $request)
     {
-        $form = $this->createForm(AddProductFormType::class);
+        $product = $this->productFacade->getSellableById($request->request->get('add_product_form')['productId']);
+        $form = $this->createForm(AddProductFormType::class, [], ['minimum_amount' => $product->getMinimumAmount()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $formData = $form->getData();
 
-                $addProductResult = $this->cartFacade->addProductToCart((int)$formData['productId'], (int)$formData['quantity']);
+                $addProductResult = $this->cartFacade->addProduct($product, (int)$formData['quantity']);
 
                 $this->sendAddProductResultFlashMessage($addProductResult);
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $ex) {
@@ -426,14 +445,15 @@ class CartController extends FrontBaseController
      */
     public function addProductAjaxAction(Request $request)
     {
-        $form = $this->createForm(AddProductFormType::class);
+        $product = $this->productFacade->getSellableById($request->request->get('add_product_form')['productId']);
+        $form = $this->createForm(AddProductFormType::class, [], ['minimum_amount' => $product->getMinimumAmount()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $formData = $form->getData();
 
-                $addProductResult = $this->cartFacade->addProductToCart($formData['productId'], (int)$formData['quantity']);
+                $addProductResult = $this->cartFacade->addProduct($product, (int)$formData['quantity']);
 
                 $accessories = $this->productAccessoryFacade->getTopOfferedAccessories(
                     $addProductResult->getCartItem()->getProduct(),
@@ -576,8 +596,11 @@ class CartController extends FrontBaseController
     private function correctCartItemQuantitiesByStore(?Cart $cart): void
     {
         if ($cart !== null) {
-            $cartModifiedQuantitiesIndexedByCartItemId = $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
-            $this->cartFacade->displayInfoMessageAboutCorrectedCartItemsQuantities($cartModifiedQuantitiesIndexedByCartItemId);
+            $quantityCorrectionMessages = $this->cartFacade->correctCartQuantitiesAccordingToStockedQuantities();
+
+            foreach ($quantityCorrectionMessages as $message) {
+                $this->flashMessageSender->addErrorFlash($message);
+            }
         }
     }
 }
