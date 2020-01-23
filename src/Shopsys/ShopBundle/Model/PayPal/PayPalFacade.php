@@ -98,6 +98,22 @@ class PayPalFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @return bool
+     */
+    private function isBillingAddressFilledForPayPal(Order $order): bool
+    {
+        if ($order->getStreet() === null
+            || $order->getPostcode() === null
+            || $order->getCity() === null
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @return \PayPal\Api\Address
      */
     private function createBillingAddress(Order $order): Address
@@ -116,11 +132,16 @@ class PayPalFacade
      */
     private function createPayerInfo(Order $order): PayerInfo
     {
-        return (new PayerInfo())
+        $payerInfo = (new PayerInfo())
             ->setFirstName($order->getFirstName())
             ->setLastName($order->getLastName())
-            ->setBillingAddress($this->createBillingAddress($order))
             ->setEmail($order->getEmail());
+
+        if ($this->isBillingAddressFilledForPayPal($order) === true) {
+            $payerInfo->setBillingAddress($this->createBillingAddress($order));
+        }
+
+        return $payerInfo;
     }
 
     /**
