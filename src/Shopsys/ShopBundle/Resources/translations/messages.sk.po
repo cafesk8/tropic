@@ -1090,11 +1090,8 @@ msgstr "Meno"
 msgid "Jsem Jindra, otec všech bushmanů. Je potřeba, aby"
 msgstr "Som Jindra, otec všetkých bushmanov. Je potrebné, aby"
 
-msgid "Jsi členem BUSHMAN clubu"
-msgstr "Si členom BUSHMAN clubu"
-
-msgid "Jsi členem Věrnostního programu"
-msgstr ""
+msgid "Jste členem Věrnostního programu"
+msgstr "Ste členom vernostného programu"
 
 msgid "Jste bushman? Přihlaste se"
 msgstr "Si bushman? Prihlás sa"
@@ -1368,12 +1365,6 @@ msgstr "Nastavenie priradenia článkov"
 
 msgid "Nastavit"
 msgstr "Nastaviť"
-
-msgid "Načerpej inspiraci"
-msgstr "Načerpaj inšpiráciu"
-
-msgid "Načerpejte inspiraci"
-msgstr "Načerpajte inšpiráciu"
 
 msgid "Naše hodnoty"
 msgstr "Naše hodnoty"
@@ -2066,7 +2057,7 @@ msgid "Prázdný"
 msgstr "Prázdny"
 
 msgid "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
-msgstr ""
+msgstr "Predstavujeme trendy, radíme ako trénovať a ukazujeme našu firmu"
 
 msgid "Předvýpis kategorií"
 msgstr "Predvýpis kategórií"
@@ -2294,7 +2285,7 @@ msgid "Shopsys Framework"
 msgstr "Shopsys Framework"
 
 msgid "Shopsys magazín"
-msgstr ""
+msgstr "Shopsys magazín"
 
 msgid "Shopsys s.r.o."
 msgstr ""

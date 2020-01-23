@@ -1462,6 +1462,12 @@ msgstr ""
 msgid "Postcode"
 msgstr ""
 
+msgid "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
+msgstr "We present trends, advise on how to train and show our company"
+
+msgid "Price from"
+msgstr ""
+
 msgid "Pouze přihlášené"
 msgstr ""
 

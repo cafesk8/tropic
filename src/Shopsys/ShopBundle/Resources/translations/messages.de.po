@@ -1072,11 +1072,8 @@ msgstr "Name"
 msgid "Jsem Jindra, otec všech bushmanů. Je potřeba, aby"
 msgstr "Ich bin Jindra, der Vater aller Bushmänner. Es muss sein"
 
-msgid "Jsi členem Věrnostního programu"
-msgstr ""
-
-msgid "Jste bushman? Přihlaste se"
-msgstr "Bist du Bushman? Melde dich an"
+msgid "Jste členem Věrnostního programu"
+msgstr "Sie sind Mitglied des Treueprogramms"
 
 msgid "K dispozici v Hradci Králové"
 msgstr "Erhältlich in Hradec Králové"
@@ -1359,12 +1356,6 @@ msgstr "Bearbeitung von Artikelzuordnungen "
 
 msgid "Nastavit"
 msgstr "Einstellen"
-
-msgid "Načerpej inspiraci"
-msgstr "Lass dich inspirieren"
-
-msgid "Načerpejte inspiraci"
-msgstr "Lass dich inspirieren"
 
 msgid "Naše hodnoty"
 msgstr "Unsere Werte"
@@ -2054,7 +2045,7 @@ msgid "Prázdný"
 msgstr "Leer"
 
 msgid "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
-msgstr ""
+msgstr "Wir präsentieren Trends, beraten beim Training und zeigen unser Unternehmen"
 
 msgid "Předvýpis kategorií"
 msgstr "Vorauswahl der Kategorien"
@@ -2288,7 +2279,7 @@ msgid "Shopsys Framework"
 msgstr "Shopsys Framework"
 
 msgid "Shopsys magazín"
-msgstr ""
+msgstr "Shopsys Zeitschrift"
 
 msgid "Shopsys s.r.o."
 msgstr ""

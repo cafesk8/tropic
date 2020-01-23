@@ -140,7 +140,7 @@ msgid "Assign to category"
 msgstr "Přiřadit do kategorie"
 
 msgid "Attention! You are administrator logged in as the customer."
-msgstr "Pozor! Jsi jako administrátor přihlášen za zákazníka."
+msgstr "Pozor! Jste jako administrátor přihlášen za zákazníka."
 
 msgid "BUSHMAN E-shop - kvalitní outdoorové a volnočasové oblečení"
 msgstr ""
@@ -323,13 +323,13 @@ msgid "Chci zadat jiné fakturační údaje"
 msgstr ""
 
 msgid "Check the address correctness"
-msgstr "Zkontroluj si adresu"
+msgstr "Zkontrolujte si adresu"
 
 msgid "Choose"
 msgstr "Vybrat"
 
 msgid "Choose variant"
-msgstr "Vyber si variantu"
+msgstr "Vyberte si variantu"
 
 msgid "Chyba při přenosu"
 msgstr ""
@@ -344,10 +344,10 @@ msgid "Clear filter"
 msgstr "Vynulovat filtr"
 
 msgid "Click to go to product section"
-msgstr "Kliknutím přejdi do produktové sekce"
+msgstr "Kliknutím přejděte do produktové sekce"
 
 msgid "Clicking on the link below you can download in XML format your personal information, which we have in evidence in our online store %domain%."
-msgstr "Kliknutím na tlačítko níže si ve formátu XML můžeš stáhnout údaje, které k tvému e-mailu evidujeme v našem internetovém obchodu %domain%."
+msgstr "Kliknutím na tlačítko níže si ve formátu XML můžete stáhnout údaje, které k vašemu e-mailu evidujeme v našem internetovém obchodu %domain%."
 
 msgid "Close"
 msgstr "Zavřít"
@@ -704,7 +704,7 @@ msgid "Enter e-mail"
 msgstr "Zadej e-mail"
 
 msgid "Entered customer not found, please check entered data."
-msgstr "Zadaný zákazník nebyl nalezen, zkontroluj prosím zadané údaje"
+msgstr "Zadaný zákazník nebyl nalezen, zkontrolujte prosím zadané údaje"
 
 msgid "Error occurred"
 msgstr "Aha, tak tady je něco špatně..."
@@ -956,7 +956,7 @@ msgid "Jméno"
 msgstr ""
 
 msgid "Jste členem Věrnostního programu"
-msgstr ""
+msgstr "Jste členem Věrnostního programu"
 
 msgid "Kategorie"
 msgstr ""
@@ -1179,9 +1179,6 @@ msgstr ""
 
 msgid "Nastavit"
 msgstr ""
-
-msgid "Načerpejte inspiraci"
-msgstr "Načerpej inspiraci"
 
 msgid "Naše služby"
 msgstr ""
@@ -1574,7 +1571,7 @@ msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte h
 msgstr ""
 
 msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
-msgstr "Platnost slevového kupónu vypršela. Zkontroluj si ho."
+msgstr "Platnost slevového kupónu vypršela. Zkontrolujte si ho."
 
 msgid "Platný do"
 msgstr ""
@@ -1778,7 +1775,7 @@ msgid "Promo code added to order"
 msgstr "Slevový kupón jsme přidali do objednávky."
 
 msgid "Promo code invalid. Check it, please."
-msgstr "Slevový kupón není platný. Zkontroluj si ho."
+msgstr "Slevový kupón není platný. Zkontrolujte si ho."
 
 msgid "Promo code removed from order"
 msgstr "Slevový kupón jsme odebrali z objednávky."
@@ -1817,7 +1814,7 @@ msgid "Propojit produkty"
 msgstr ""
 
 msgid "Prosím, zkontrolujte zadané hodnoty"
-msgstr "Zkontroluj zadané hodnoty"
+msgstr "Zkontrolujte zadané hodnoty"
 
 msgid "Provozovna"
 msgstr ""
@@ -1838,7 +1835,7 @@ msgid "Prázdný"
 msgstr ""
 
 msgid "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
-msgstr ""
+msgstr "Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu"
 
 msgid "Předvýpis kategorií"
 msgstr ""
@@ -2057,7 +2054,7 @@ msgid "Shopsys Framework"
 msgstr ""
 
 msgid "Shopsys magazín"
-msgstr ""
+msgstr "Shopsys magazín"
 
 msgid "Shopsys s.r.o."
 msgstr ""

@@ -47,7 +47,7 @@
                     <h2 class="wrap-box__title">{{ 'Věrnostní program'|trans }}</h2>
                     <div class="wrap-box__in">
                         {% if customer.memberOfBushmanClub %}
-                            {{ 'Jsi členem Věrnostního programu'|trans }}
+                            {{ 'Jste členem Věrnostního programu'|trans }}
                         {% else %}
                             {{ form_row(form.userData.memberOfBushmanClub, { label: 'Chci se stát členem Věrnostního programu'|trans}) }}
                         {% endif %}
