@@ -2467,6 +2467,9 @@ msgstr ""
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr "Dieser Status kann nicht gelöscht werden, da die Funktionalität damit verknüpft ist"
 
+msgid "Tento způsob platby je skrytý systémem GoPay."
+msgstr "Diese Zahlungsmethode wird von GoPay ausgeblendet."
+
 msgid "Terms and conditions"
 msgstr "Allgemeine Geschäftsbedingungen"
 

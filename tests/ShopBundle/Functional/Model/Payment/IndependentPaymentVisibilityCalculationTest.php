@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\ShopBundle\Functional\Model\Payment;
 
-use Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
+use Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
@@ -31,7 +31,7 @@ class IndependentPaymentVisibilityCalculationTest extends TransactionFunctionalT
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
+        /** @var \Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
         $independentPaymentVisibilityCalculation =
             $this->getContainer()->get(IndependentPaymentVisibilityCalculation::class);
 
@@ -61,7 +61,7 @@ class IndependentPaymentVisibilityCalculationTest extends TransactionFunctionalT
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
+        /** @var \Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
         $independentPaymentVisibilityCalculation =
             $this->getContainer()->get(IndependentPaymentVisibilityCalculation::class);
 
@@ -83,7 +83,7 @@ class IndependentPaymentVisibilityCalculationTest extends TransactionFunctionalT
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
+        /** @var \Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
         $independentPaymentVisibilityCalculation =
             $this->getContainer()->get(IndependentPaymentVisibilityCalculation::class);
 
@@ -105,7 +105,7 @@ class IndependentPaymentVisibilityCalculationTest extends TransactionFunctionalT
         $em->persist($payment);
         $em->flush();
 
-        /** @var \Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
+        /** @var \Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation */
         $independentPaymentVisibilityCalculation =
             $this->getContainer()->get(IndependentPaymentVisibilityCalculation::class);
 

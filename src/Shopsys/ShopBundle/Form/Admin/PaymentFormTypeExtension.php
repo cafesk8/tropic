@@ -71,6 +71,22 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Dobírka'),
             ]);
+
+        if ($options['payment'] !== null) {
+            /** @var \Shopsys\ShopBundle\Model\Payment\Payment $payment */
+            $payment = $options['payment'];
+            if ($payment->isHiddenByGoPay()) {
+                $builderBasicInformationGroup->add('hidden', YesNoType::class, [
+                    'label' => t('Hidden'),
+                    'required' => false,
+                    'disabled' => true,
+                    'attr' => [
+                        'icon' => true,
+                        'iconTitle' => t('Tento způsob platby je skrytý systémem GoPay.'),
+                    ],
+                ]);
+            }
+        }
     }
 
     /**

@@ -25,7 +25,6 @@ class PaymentFacade extends BasePaymentFacade
         $payments = $this->paymentRepository->getByGoPayPaymentMethod($goPayPaymentMethod);
 
         foreach ($payments as $payment) {
-            $payment->hide();
             $payment->hideByGoPay();
         }
 
@@ -75,10 +74,7 @@ class PaymentFacade extends BasePaymentFacade
         $payments = $this->paymentRepository->getByGoPayPaymentMethod($goPayPaymentMethod);
 
         foreach ($payments as $payment) {
-            if ($payment->isHiddenByGoPay() && $payment->isHidden()) {
-                $payment->unHide();
-                $payment->unHideByGoPay();
-            }
+            $payment->unHideByGoPay();
         }
         $this->em->flush($payments);
     }

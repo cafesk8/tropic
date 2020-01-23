@@ -2245,6 +2245,9 @@ msgstr ""
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr ""
 
+msgid "Tento způsob platby je skrytý systémem GoPay."
+msgstr ""
+
 msgid "Terms and conditions"
 msgstr "Obchodní podmínky"
 
