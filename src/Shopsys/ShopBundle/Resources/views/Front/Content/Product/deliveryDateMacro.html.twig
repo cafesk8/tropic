@@ -1,11 +1,13 @@
 {% macro productAvailabilityWithDeliveryDate(product) %}
         {% set domain = getDomain() %}
         {% set deliveryDate = getDeliveryDate(product) %}
-        {% set showDeliveryDate = (product.usingStock
-            and product.stockQuantity > 0)
-            or deliveryDate is not null  %}
+        {% set showDeliveryDate = product.usingStock
+            and product.stockQuantity > 0
+            and deliveryDate is not null  %}
 
-        {% set showNotAvailable = product.stockQuantity < 1 %}
+        {% set showNotAvailable = product.usingStock
+            and product.stockQuantity < 1
+            and not product.outOfStockAction is same as(constant('OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY', product)) %}
 
         {% if showDeliveryDate %}
             {% set expectedDeliveryDate = deliveryDate %}
@@ -19,6 +21,7 @@
             </span>
         {% elseif showNotAvailable %}
             <span class="box-detail__availability__date box-detail__availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
+        {% else %}
+            <span class="box-detail__availability__date">{{ product.calculatedAvailability.name }}</span>
         {% endif %}
-    
 {% endmacro %}
