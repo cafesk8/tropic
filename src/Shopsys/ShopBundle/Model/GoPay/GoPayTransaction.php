@@ -53,7 +53,6 @@ class GoPayTransaction
         return $this->goPayId;
     }
 
-
     /**
      * @return string|null
      */
