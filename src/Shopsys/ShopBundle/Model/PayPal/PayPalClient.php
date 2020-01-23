@@ -9,9 +9,13 @@ use PayPal\Api\PaymentExecution;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
 use Shopsys\ShopBundle\Model\Order\Order;
+use Shopsys\ShopBundle\Model\PayPal\Exception\UnsupportedPayPalModeException;
 
 class PayPalClient
 {
+    public const MODE_SANDBOX = 'SANDBOX';
+    public const MODE_LIVE = 'LIVE';
+
     /**
      * @var \PayPal\Rest\ApiContext
      */
@@ -20,11 +24,21 @@ class PayPalClient
     /**
      * @param string $payPalClientId
      * @param string $payPalClientSecret
+     * @param string $payPalMode
      */
-    public function __construct(string $payPalClientId, string $payPalClientSecret)
+    public function __construct(string $payPalClientId, string $payPalClientSecret, string $payPalMode)
     {
+        if (in_array($payPalMode, [self::MODE_SANDBOX, self::MODE_LIVE], true) === false) {
+            throw new UnsupportedPayPalModeException();
+        }
+
         $oAuthTokenCredential = new OAuthTokenCredential($payPalClientId, $payPalClientSecret);
-        $this->apiContext = new ApiContext($oAuthTokenCredential);
+
+        $apiContext = new ApiContext($oAuthTokenCredential);
+        $apiContext->setConfig([
+            'mode' => $payPalMode,
+        ]);
+        $this->apiContext = $apiContext;
     }
 
     /**

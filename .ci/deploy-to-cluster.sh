@@ -195,6 +195,7 @@ yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientS
 #PayPal
 yq write --inplace app/config/parameters.yml parameters.payPalClientId ${PAY_PAL_CLIENT_ID}
 yq write --inplace app/config/parameters.yml parameters.payPalClientSecret ${PAY_PAL_CLIENT_SECRET}
+yq write --inplace app/config/parameters.yml parameters.payPalMode ${PAY_PAL_MODE}
 
 #SMTP
 yq write --inplace app/config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
