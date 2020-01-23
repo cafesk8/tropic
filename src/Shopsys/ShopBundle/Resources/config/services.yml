@@ -156,15 +156,13 @@ services:
 
     shopsys.shop.product.distinguishing_parameters.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.distinguishing_parameters'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.distinguishing_parameters'] }
 
     shopsys.shop.component.friendly_url.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.friendly_url'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.friendly_url'] }
 
     Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade:
         arguments:
@@ -394,9 +392,8 @@ services:
 
     shopsys.shop.twig.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.twig'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.twig'] }
 
     Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory: '@Shopsys\ShopBundle\Model\Advert\AdvertDataFactory'
 
@@ -603,9 +600,8 @@ services:
 
     shopsys.shop.maintenance_cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.global'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.global'] }
 
     Shopsys\ShopBundle\Component\Maintenance\MaintenanceModeSubscriber:
         arguments:
