@@ -12,21 +12,21 @@ spec:
         -   hosts: ~
             secretName: tls-certificate
     rules:
-        -   host: ~
+        -   host: "{{DOMAIN_HOSTNAME_1}}"
             http:
                 paths:
                     -   path: /
                         backend:
                             serviceName: webserver-php-fpm
                             servicePort: 8080
-        -   host: ~
+        -   host: "{{DOMAIN_HOSTNAME_2}}"
             http:
                 paths:
                     -   path: /
                         backend:
                             serviceName: webserver-php-fpm
                             servicePort: 8080
-        -   host: ~
+        -   host: "{{DOMAIN_HOSTNAME_3}}"
             http:
                 paths:
                     -   path: /

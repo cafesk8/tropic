@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/bash -ex
 
 # Login to Docker Hub for pushing images into register
 echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
@@ -15,6 +15,7 @@ docker image pull ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG} || (
     docker image build \
         --tag ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG} \
         --target production \
+        --no-cache \
         -f docker/php-fpm/Dockerfile \
         . &&
     docker image push ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
@@ -27,28 +28,33 @@ sed -i "s/{{GOOGLE_CLOUD_STORAGE_BUCKET_NAME}}/${GOOGLE_CLOUD_STORAGE_BUCKET_NAM
 cp app/config/domains_urls.yml.dist app/config/domains_urls.yml
 cp app/config/parameters.yml.dist app/config/parameters.yml
 
-# Replace docker images for php-fpm of application
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].image ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.initContainers[0].image ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.initContainers[1].image ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
+DOCKER_PHP_FPM_IMAGE=${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
+DOCKER_ELASTIC_IMAGE=${DOCKER_USERNAME}/elasticsearch:${DOCKER_ELASTIC_IMAGE_TAG}
+PATH_CONFIG_DIRECTORY='/var/www/html/app/config'
+GOOGLE_CLOUD_PROJECT_ID=${PROJECT_ID}
 
-# Set domain name into ingress controller so ingress can listen on domain name
-yq write --inplace kubernetes/ingress.yml spec.rules[0].host ${FIRST_DOMAIN_HOSTNAME}
-yq write --inplace kubernetes/ingress.yml spec.rules[1].host ${SECOND_DOMAIN_HOSTNAME}
-
-# Set domain into webserver hostnames
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${FIRST_DOMAIN_HOSTNAME}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.hostAliases[0].hostnames[+] ${SECOND_DOMAIN_HOSTNAME}
-
-# Set environment variables to container and initContainer for Google Cloud Storage connection
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].env[0].value ${GOOGLE_CLOUD_STORAGE_BUCKET_NAME}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].env[1].value ${PROJECT_ID}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.initContainers[1].env[0].value ${GOOGLE_CLOUD_STORAGE_BUCKET_NAME}
-yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.initContainers[1].env[1].value ${PROJECT_ID}
+FILES=$( find kubernetes -type f )
+VARS=(
+    DOMAIN_HOSTNAME_1
+    DOMAIN_HOSTNAME_2
+    DOMAIN_HOSTNAME_3
+    DOCKER_PHP_FPM_IMAGE
+    DOCKER_ELASTIC_IMAGE
+    PATH_CONFIG_DIRECTORY
+    GOOGLE_CLOUD_STORAGE_BUCKET_NAME
+    GOOGLE_CLOUD_PROJECT_ID
+)
+for FILE in $FILES; do
+  for VAR in ${VARS[@]}; do
+      sed -i "s|{{$VAR}}|${!VAR}|g" "$FILE"
+  done
+done
+unset FILES
+unset VARS
 
 # Set domain urls
-yq write --inplace app/config/domains_urls.yml domains_urls[0].url https://${FIRST_DOMAIN_HOSTNAME}
-yq write --inplace app/config/domains_urls.yml domains_urls[1].url https://${SECOND_DOMAIN_HOSTNAME}
+yq write --inplace app/config/domains_urls.yml domains_urls[0].url https://${DOMAIN_HOSTNAME_1}
+yq write --inplace app/config/domains_urls.yml domains_urls[1].url https://${DOMAIN_HOSTNAME_2}
 
 # Add a mask for trusted proxies so that load balanced traffic is trusted and headers from outside of the network are not lost
 yq write --inplace app/config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
@@ -93,4 +99,4 @@ kustomize build overlays/production | kubectl apply -f -
 
 echo "Cluster and containers are ready."
 echo "IP adderss to loadbalancer is: ${LOAD_BALANCER_IP}"
-echo -e "Hosts set to domain are: 1. https://${FIRST_DOMAIN_HOSTNAME} 2. https://${SECOND_DOMAIN_HOSTNAME}"
+echo -e "Hosts set to domain are: 1. https://${DOMAIN_HOSTNAME_1} 2. https://${DOMAIN_HOSTNAME_2}"
