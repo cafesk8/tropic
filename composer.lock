@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50a6f36e4275b29246c0d6f4c57646ea",
+    "content-hash": "1a0ce5cf1782d4b108920b16bf573f94",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -10321,6 +10321,7 @@
                 "selenium",
                 "webdriver"
             ],
+            "abandoned": "php-webdriver/webdriver",
             "time": "2019-06-13T08:02:18+00:00"
         },
         {
@@ -12630,6 +12631,71 @@
                 "standards"
             ],
             "time": "2019-12-04T04:46:47+00:00"
+        },
+        {
+            "name": "sspooky13/yaml-standards",
+            "version": "4.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sspooky13/yaml-standards.git",
+                "reference": "e1c436c3f88b4f087dfc0dffde67c3ecdbd01975"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sspooky13/yaml-standards/zipball/e1c436c3f88b4f087dfc0dffde67c3ecdbd01975",
+                "reference": "e1c436c3f88b4f087dfc0dffde67c3ecdbd01975",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~5.6 || ~7.0",
+                "sebastian/diff": "~1.4 || ~2.0 || ~3.0",
+                "symfony/console": "~3.0 || ~4.0.10",
+                "symfony/yaml": "~3.3 || ~4.0.10"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "~2.13",
+                "phing/phing": "2.16.*",
+                "phpmd/phpmd": "~2.6",
+                "phpunit/phpunit": "~5.7.27 || 6.4.*",
+                "shopsys/coding-standards": "3.1.*"
+            },
+            "bin": [
+                "bin/yaml-standards"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "YamlStandards\\": [
+                        "src"
+                    ]
+                },
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Turek",
+                    "email": "peter.turek13@gmail.com"
+                }
+            ],
+            "description": "Standards for yaml files ",
+            "homepage": "https://github.com/sspooky13/yaml-standards",
+            "keywords": [
+                "alphabetical",
+                "checker",
+                "fixer",
+                "indent",
+                "inline",
+                "standards",
+                "yaml",
+                "yaml-standards"
+            ],
+            "time": "2019-08-13T21:44:48+00:00"
         },
         {
             "name": "symplify/better-phpdoc-parser",

@@ -9,4 +9,4 @@ services:
 
     Shopsys\ShopBundle\Model\Feed\HsSport\HsSportFeed:
         tags:
-          - { name: shopsys.product_feed }
+            - { name: shopsys.product_feed }

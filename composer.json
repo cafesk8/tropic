@@ -114,7 +114,8 @@
         "shopsys/coding-standards": "8.0.x-dev",
         "shopsys/http-smoke-testing": "8.0.x-dev",
         "phpstan/phpstan-doctrine": "^0.12",
-        "phpstan/phpstan-phpunit": "^0.12"
+        "phpstan/phpstan-phpunit": "^0.12",
+        "sspooky13/yaml-standards": "^4.2.5"
     },
     "conflict": {
         "symfony/dependency-injection": "3.4.15|3.4.16",

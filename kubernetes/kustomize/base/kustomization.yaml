@@ -1,27 +1,27 @@
 resources:
--   ../../cron/php-fpm-cron-executor-default.yml
--   ../../cron/php-fpm-cron-executor-customers.yml
--   ../../endpoints/postgres.yml
--   ../../endpoints/mysql-import.yml
--   ../../endpoints/elasticsearch.yml
--   ../../deployments/redis.yml
--   ../../deployments/webserver-php-fpm.yml
--   ../../services/elasticsearch.yml
--   ../../services/postgres.yml
--   ../../services/mysql-import.yml
--   ../../services/redis.yml
--   ../../services/webserver-php-fpm.yml
--   ../../ingress.yml
--   ../../namespace.yml
--   ../../nginx-configMap.yml
+    - ../../cron/php-fpm-cron-executor-default.yml
+    - ../../cron/php-fpm-cron-executor-customers.yml
+    - ../../endpoints/postgres.yml
+    - ../../endpoints/mysql-import.yml
+    - ../../endpoints/elasticsearch.yml
+    - ../../deployments/redis.yml
+    - ../../deployments/webserver-php-fpm.yml
+    - ../../services/elasticsearch.yml
+    - ../../services/postgres.yml
+    - ../../services/mysql-import.yml
+    - ../../services/redis.yml
+    - ../../services/webserver-php-fpm.yml
+    - ../../ingress.yml
+    - ../../namespace.yml
+    - ../../nginx-configMap.yml
 namespace: ~
 configMapGenerator:
     -   name: domains-urls
         files:
-        -   ../../../app/config/domains_urls.yml
+            - ../../../app/config/domains_urls.yml
     -   name: parameters
         files:
-        -   ../../../app/config/parameters.yml
+            - ../../../app/config/parameters.yml
     -   name: nginx-configuration
         files:
-        -   ../../../docker/nginx/s3/nginx.conf
+            - ../../../docker/nginx/s3/nginx.conf
