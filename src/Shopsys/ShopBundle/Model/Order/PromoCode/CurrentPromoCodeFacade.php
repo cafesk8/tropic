@@ -10,8 +10,10 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 use Shopsys\ShopBundle\Model\Customer\User;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
@@ -43,13 +45,18 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     protected $promoCodeFacade;
 
-    public function useEnteredPromoCode(): void
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[]
+     */
+    public function getValidEnteredPromoCodes(): array
     {
-        $promoCode = $this->getValidEnteredPromoCodeOrNull();
-
-        if ($promoCode instanceof PromoCode) {
-            $this->usePromoCode($promoCode);
+        $enteredCodes = $this->getEnteredCodesFromSession();
+        $validPromoCodes = [];
+        foreach ($enteredCodes as $code) {
+            $validPromoCodes[] = $this->promoCodeFacade->findPromoCodeByCode($code);
         }
+
+        return array_filter($validPromoCodes);
     }
 
     /**
@@ -73,7 +80,17 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 
         $this->checkPromoCodeValidity($enteredCode, $totalWatchedPriceOfProducts, $user);
 
-        parent::setEnteredPromoCode($enteredCode);
+        $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
+        $codesInSession = $this->getEnteredCodesFromSession();
+        if ($promoCode === null) {
+            throw new \Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException($enteredCode);
+        } elseif (in_array($enteredCode, $codesInSession, true)) {
+            throw new PromoCodeAlreadyAppliedException($enteredCode);
+        } else {
+            $this->checkExistingPromoCodeIsCombinable($codesInSession);
+            $codesInSession[] = $enteredCode;
+            $this->session->set(static::PROMO_CODE_SESSION_KEY, $codesInSession);
+        }
     }
 
     /**
@@ -100,6 +117,8 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNoActionPriceUsageException($enteredCode);
         } elseif ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_WITH_ACTION_PRICE && $productPricesType === self::CART_PRODUCT_ACTION_PRICE_TYPE_ANY) {
             throw new \Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeWithActionPriceUsageException($enteredCode);
+        } elseif (!$promoCode->isCombinable() && count($this->getValidEnteredPromoCodes()) > 1) {
+            throw new PromoCodeNotCombinableException($enteredCode);
         }
 
         $this->checkPromoCodeUserTypeValidity($promoCode, $user);
@@ -172,5 +191,47 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         if ($promoCode->isUserTypeBushmanClubMembers() === true && ($user === null || $user->isMemberOfBushmanClub() === false)) {
             throw new PromoCodeIsOnlyForLoggedBushmanClubMembers($promoCode->getCode());
         }
+    }
+
+    /**
+     * @param string[] $promoCodes
+     */
+    private function checkExistingPromoCodeIsCombinable(array $promoCodes)
+    {
+        if (count($promoCodes) === 1) {
+            $promoCodeCode = reset($promoCodes);
+            $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+            if ($promoCode !== null && !$promoCode->isCombinable()) {
+                throw new PromoCodeNotCombinableException($promoCode->getCode());
+            }
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getEnteredCodesFromSession(): array
+    {
+        $enteredCodes = $this->session->get(static::PROMO_CODE_SESSION_KEY, []);
+
+        // to ensure backward compatibility with existing users that have only string value of promo code in their session
+        if (is_string($enteredCodes)) {
+            return [$enteredCodes];
+        }
+
+        return $enteredCodes;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function removeEnteredPromoCodeByCode(string $code): void
+    {
+        $promoCodes = $this->getEnteredCodesFromSession();
+        $key = array_search($code, $promoCodes, true);
+        if ($key !== false) {
+            unset($promoCodes[$key]);
+        }
+        $this->session->set(static::PROMO_CODE_SESSION_KEY, $promoCodes);
     }
 }

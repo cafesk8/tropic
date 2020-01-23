@@ -96,4 +96,9 @@ class PromoCodeData extends BasePromoCodeData
      * @var string|null
      */
     public $userType;
+
+    /**
+     * @var bool|null
+     */
+    public $combinable;
 }

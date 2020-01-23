@@ -10,6 +10,7 @@
             <div class="box-detail__image">
                 {% set galleryImages = getImages(product) %}
                 {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null %}
+                {# @var sellingPrice \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice #}
                 {% set sellingPrice = getProductSellingPrice(product) %}
 
                 <div class="box-detail__image__main">
@@ -145,10 +146,12 @@
                                 <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
                                     {{ sellingPrice.priceWithVat|price }}
                                 </div>
-                                {% if sellingPrice.isActionPrice %}
+                                {% if sellingPrice.priceWithVat.lessThan(sellingPrice.defaultProductPrice.priceWithVat) %}
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
                                         {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
                                     </div>
+                                {% endif %}
+                                {% if sellingPrice.isActionPrice %}
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
                                         {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
                                     </div>

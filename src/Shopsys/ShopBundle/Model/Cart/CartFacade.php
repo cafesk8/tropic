@@ -230,14 +230,13 @@ class CartFacade extends BaseCartFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftInCart
      * @param mixed[] $selectedGifts
-     * @throws \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException
      */
     public function updateGifts(array $productGiftInCart, array $selectedGifts): void
     {
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
-            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException();
+            return;
         }
 
         $this->removeAllGifts($cart);
@@ -320,7 +319,7 @@ class CartFacade extends BaseCartFacade
         $cart = $this->findCartOfCurrentCustomer();
 
         if ($cart === null) {
-            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\CartIsEmptyException();
+            return;
         }
 
         $this->removeAllPromoProductsItems($cart);

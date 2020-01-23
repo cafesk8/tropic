@@ -9,13 +9,14 @@ use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
 class OrderPreview extends BaseOrderPreview
 {
     /**
-     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[]
      */
-    private $promoCode;
+    private $promoCodesIndexedById;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Price
@@ -38,9 +39,13 @@ class OrderPreview extends BaseOrderPreview
     private $promoProductCartItems;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     */
+    private $quantifiedItemsDiscountsIndexedByPromoCodeId;
+
+    /**
      * @param array $quantifiedProductsByIndex
      * @param array $quantifiedItemsPricesByIndex
-     * @param array $quantifiedItemsDiscountsByIndex
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
      * @param \Shopsys\FrameworkBundle\Model\Transport\Transport|null $transport
@@ -48,15 +53,14 @@ class OrderPreview extends BaseOrderPreview
      * @param \Shopsys\FrameworkBundle\Model\Payment\Payment|null $payment
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
-     * @param string|null $promoCodeDiscountPercent
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPriceWithoutGiftCertificate
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $gifts
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $promoProductCartItems
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      */
     public function __construct(
         array $quantifiedProductsByIndex,
         array $quantifiedItemsPricesByIndex,
-        array $quantifiedItemsDiscountsByIndex,
         Price $productsPrice,
         Price $totalPrice,
         ?Transport $transport = null,
@@ -64,28 +68,29 @@ class OrderPreview extends BaseOrderPreview
         ?Payment $payment = null,
         ?Price $paymentPrice = null,
         ?Price $roundingPrice = null,
-        ?string $promoCodeDiscountPercent = null,
         ?Price $totalPriceWithoutGiftCertificate = null,
         array $gifts = [],
-        array $promoProductCartItems = []
+        array $promoProductCartItems = [],
+        array $quantifiedItemsDiscountsIndexedByPromoCodeId = []
     ) {
         parent::__construct(
             $quantifiedProductsByIndex,
             $quantifiedItemsPricesByIndex,
-            $quantifiedItemsDiscountsByIndex,
+            [],
             $productsPrice,
             $totalPrice,
             $transport,
             $transportPrice,
             $payment,
             $paymentPrice,
-            $roundingPrice,
-            $promoCodeDiscountPercent
+            $roundingPrice
         );
 
         $this->totalPriceWithoutGiftCertificate = $totalPriceWithoutGiftCertificate;
         $this->gifts = $gifts;
         $this->promoProductCartItems = $promoProductCartItems;
+        $this->quantifiedItemsDiscountsIndexedByPromoCodeId = $quantifiedItemsDiscountsIndexedByPromoCodeId;
+        $this->promoCodesIndexedById = [];
     }
 
     /**
@@ -105,11 +110,13 @@ class OrderPreview extends BaseOrderPreview
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
      */
-    public function setPromoCode(?PromoCode $promoCode): void
+    public function setPromoCodes(array $promoCodes): void
     {
-        $this->promoCode = $promoCode;
+        foreach ($promoCodes as $promoCode) {
+            $this->promoCodesIndexedById[$promoCode->getId()] = $promoCode;
+        }
     }
 
     /**
@@ -121,11 +128,20 @@ class OrderPreview extends BaseOrderPreview
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[]
      */
-    public function getPromoCode(): ?PromoCode
+    public function getPromoCodesIndexedById(): array
     {
-        return $this->promoCode;
+        return $this->promoCodesIndexedById;
+    }
+
+    /**
+     * @param int $promoCodeId
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode
+     */
+    public function getPromoCodeById(int $promoCodeId): PromoCode
+    {
+        return $this->promoCodesIndexedById[$promoCodeId];
     }
 
     /**
@@ -158,5 +174,37 @@ class OrderPreview extends BaseOrderPreview
     public function setQuantifiedItemsPricesByIndex(array $quantifiedItemsPricesByIndex): void
     {
         $this->quantifiedItemsPricesByIndex = $quantifiedItemsPricesByIndex;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     */
+    public function getQuantifiedItemsDiscountsIndexedByPromoCodeId(): array
+    {
+        return $this->quantifiedItemsDiscountsIndexedByPromoCodeId;
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     */
+    public function getTotalItemDiscountsIndexedByPromoCodeId(): array
+    {
+        $totalItemsDiscounts = [];
+        foreach ($this->quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
+            $promoCode = $this->getPromoCodeById($promoCodeId);
+            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+                $totalItemsDiscounts[$promoCodeId] = new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
+                continue;
+            }
+
+            $totalItemDiscount = Price::zero();
+            foreach ($quantifiedItemsDiscounts as $quantifiedItemDiscount) {
+                $addingAmount = $quantifiedItemDiscount === null ? Price::zero() : $quantifiedItemDiscount;
+                $totalItemDiscount = $totalItemDiscount->add($addingAmount);
+            }
+            $totalItemsDiscounts[$promoCodeId] = $totalItemDiscount;
+        }
+
+        return $totalItemsDiscounts;
     }
 }

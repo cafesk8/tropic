@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Order\Preview;
 
+use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation as BaseOrderPreviewCalculation;
@@ -79,6 +81,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $giftsInCart
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $promoProductsInCart
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
      * @return \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview
      */
     public function calculatePreview(
@@ -91,20 +94,22 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $promoCode = null,
         ?array $giftsInCart = [],
-        ?array $promoProductsInCart = []
+        ?array $promoProductsInCart = [],
+        array $promoCodes = []
     ): BaseOrderPreview {
+        if ($promoCodeDiscountPercent !== null || $promoCode !== null) {
+            throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$promoCode" argument is supported, you need to use "$promoCodes" array instead');
+        }
+
         $quantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(
             $quantifiedProducts,
             $domainId,
             $user
         );
-        $quantifiedItemsDiscounts = $this->quantifiedProductDiscountCalculation->calculateDiscounts(
-            $quantifiedItemsPrices,
-            $promoCodeDiscountPercent,
-            $promoCode
-        );
 
-        $productsPrice = $this->getProductsPrice($quantifiedItemsPrices, $quantifiedItemsDiscounts);
+        $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes);
+
+        $productsPrice = $this->getProductsPrice($quantifiedItemsPrices, $quantifiedItemsDiscountsIndexedByPromoCodeId);
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
         $totalPromoProductPrice = $this->getTotalPromoProductsPrice($promoProductsInCart);
         $productsPrice = $productsPrice->add($totalPromoProductPrice);
@@ -112,27 +117,14 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
-        $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscounts, $promoCode);
+        $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscountsIndexedByPromoCodeId, $promoCodes);
         $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
 
-        $totalPrice = $totalPriceWithoutGiftCertificate;
-
-        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            $totalPriceWithVat = $promoCode->getCertificateValue();
-            $totalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($totalPriceWithVat, $this->vatFacade->getDefaultVat());
-            $totalPriceWithoutVat = $totalPriceWithVat->subtract($totalVatAmount);
-
-            $certificatePrice = new Price($totalPriceWithoutVat, $totalPriceWithVat);
-            $totalPrice = $totalPriceWithoutGiftCertificate->subtract($certificatePrice);
-            if ($totalPrice->getPriceWithVat()->isNegative()) {
-                $totalPrice = Price::zero();
-            }
-        }
+        $totalPrice = $this->getTotalPrice($totalPriceWithoutGiftCertificate, $promoCodes);
 
         $orderPreview = new OrderPreview(
             $quantifiedProducts,
             $quantifiedItemsPrices,
-            $quantifiedItemsDiscounts,
             $productsPrice,
             $totalPrice,
             $transport,
@@ -140,15 +132,42 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $payment,
             $paymentPrice,
             $roundingPrice,
-            $promoCodeDiscountPercent,
             $totalPriceWithoutGiftCertificate,
             $giftsInCart,
-            $promoProductsInCart
+            $promoProductsInCart,
+            $quantifiedItemsDiscountsIndexedByPromoCodeId
         );
-        $orderPreview->setPromoCode($promoCode);
+        $orderPreview->setPromoCodes($promoCodes);
         $orderPreview->setTotalDiscount($totalDiscount);
 
         return $orderPreview;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
+     */
+    protected function getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId)
+    {
+        if (empty($quantifiedItemsDiscountsIndexedByPromoCodeId)) {
+            return $quantifiedItemsPrices;
+        }
+
+        $quantifiedItemsPricesMinusAlreadyAppliedDiscounts = [];
+        foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
+            foreach ($quantifiedItemsDiscounts as $itemId => $quantifiedItemDiscount) {
+                $totalPrice = $quantifiedItemsPrices[$itemId]->getTotalPrice();
+                $subtractAmount = $quantifiedItemDiscount === null ? Price::zero() : $quantifiedItemDiscount;
+                $quantifiedItemsPricesMinusAlreadyAppliedDiscounts[$itemId] = new QuantifiedItemPrice(
+                    $quantifiedItemsPrices[$itemId]->getUnitPrice(),
+                    $totalPrice->subtract($subtractAmount),
+                    $quantifiedItemsPrices[$itemId]->getVat()
+                );
+            }
+        }
+
+        return $quantifiedItemsPricesMinusAlreadyAppliedDiscounts;
     }
 
     /**
@@ -277,22 +296,113 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param array $quantifiedItemsDiscounts
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function calculateTotalDiscount(array $quantifiedItemsDiscounts, ?PromoCode $promoCode): Price
+    protected function calculateTotalDiscount(array $quantifiedItemsDiscountsIndexedByPromoCodeId, array $promoCodes): Price
     {
-        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            return new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
+        $totalDiscount = Price::zero();
+        foreach ($promoCodes as $promoCode) {
+            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+                $totalDiscount->add(new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue()));
+            } else {
+                $totalDiscountForPromoCode = $this->calculateTotalDiscountForPromoCode($quantifiedItemsDiscountsIndexedByPromoCodeId, $promoCode);
+
+                $totalDiscount->add($totalDiscountForPromoCode);
+            }
         }
 
-        return array_reduce($quantifiedItemsDiscounts, function ($totalDiscount, $quantifiedItemsDiscount) {
+        return $totalDiscount;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    protected function getProductsPrice(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId): Price
+    {
+        $finalPrice = Price::zero();
+
+        foreach ($quantifiedItemsPrices as $quantifiedItemPrice) {
+            $finalPrice = $finalPrice->add($quantifiedItemPrice->getTotalPrice());
+        }
+
+        foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promCodeId => $quantifiedItemsDiscounts) {
+            foreach ($quantifiedItemsDiscounts as $quantifiedItemDiscount) {
+                if ($quantifiedItemDiscount !== null) {
+                    $finalPrice = $finalPrice->subtract($quantifiedItemDiscount);
+                }
+            }
+        }
+
+        return $finalPrice;
+    }
+
+    /**
+     * @param array $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    protected function calculateTotalDiscountForPromoCode(array $quantifiedItemsDiscountsIndexedByPromoCodeId, PromoCode $promoCode): Price
+    {
+        return array_reduce($quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()], function ($totalDiscount, $quantifiedItemsDiscount) {
             if ($quantifiedItemsDiscount === null) {
                 return $totalDiscount;
             }
 
             return $totalDiscount->add($quantifiedItemsDiscount);
         }, Price::zero());
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
+     */
+    protected function getQuantifiedItemsDiscountsIndexedByPromoCodeId(array $quantifiedItemsPrices, array $promoCodes): array
+    {
+        $quantifiedItemsDiscountsIndexedByPromoCodeId = [];
+        $quantifiedItemsPricesForDiscountsCalculation = $quantifiedItemsPrices;
+        foreach ($promoCodes as $promoCode) {
+            $quantifiedItemsPricesForDiscountsCalculation = $this->getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(
+                $quantifiedItemsPricesForDiscountsCalculation,
+                $quantifiedItemsDiscountsIndexedByPromoCodeId
+            );
+            $quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()] = $this->quantifiedProductDiscountCalculation->calculateDiscounts(
+                $quantifiedItemsPricesForDiscountsCalculation,
+                $promoCode->getPercent(),
+                $promoCode
+            );
+        }
+
+        return $quantifiedItemsDiscountsIndexedByPromoCodeId;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPriceWithoutGiftCertificate
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    protected function getTotalPrice(Price $totalPriceWithoutGiftCertificate, array $promoCodes): Price
+    {
+        $certificatesPrice = Price::zero();
+        foreach ($promoCodes as $promoCode) {
+            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+                $certificatesTotalPriceWithVat = $promoCode->getCertificateValue();
+                $certificatedTotalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($certificatesTotalPriceWithVat, $this->vatFacade->getDefaultVat());
+                $certificatesTotalPriceWithoutVat = $certificatesTotalPriceWithVat->subtract($certificatedTotalVatAmount);
+
+                $certificatesPrice = $certificatesPrice->add(new Price($certificatesTotalPriceWithoutVat, $certificatesTotalPriceWithVat));
+            }
+        }
+
+        $totalPrice = $totalPriceWithoutGiftCertificate->subtract($certificatesPrice);
+        if ($totalPrice->getPriceWithVat()->isNegative()) {
+            $totalPrice = Price::zero();
+        }
+
+        return $totalPrice;
     }
 }

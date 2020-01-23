@@ -32,6 +32,7 @@ class OrderCest
 
         $orderPage->assertTransportIsNotSelected('Česká pošta - balík do ruky');
         $orderPage->selectTransport('Česká pošta - balík do ruky');
+        $me->waitForAjax();
         $orderPage->assertPaymentIsNotSelected('Dobírka');
         $orderPage->selectPayment('Dobírka');
         $me->waitForAjax();

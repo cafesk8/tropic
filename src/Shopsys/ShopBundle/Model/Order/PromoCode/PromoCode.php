@@ -141,6 +141,13 @@ class PromoCode extends BasePromoCode
     private $userType;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $combinable;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
@@ -163,6 +170,7 @@ class PromoCode extends BasePromoCode
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUsageType($promoCodeData->usageType);
         $this->setUserType($promoCodeData->userType);
+        $this->combinable = $promoCodeData->combinable;
     }
 
     /**
@@ -187,6 +195,7 @@ class PromoCode extends BasePromoCode
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUsageType($promoCodeData->usageType);
         $this->setUserType($promoCodeData->userType);
+        $this->combinable = $promoCodeData->combinable;
     }
 
     /**
@@ -383,5 +392,13 @@ class PromoCode extends BasePromoCode
     public function isUserTypeBushmanClubMembers(): bool
     {
         return $this->userType === self::USER_TYPE_BUSHMAN_CLUB_MEMBERS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCombinable(): bool
+    {
+        return $this->combinable;
     }
 }

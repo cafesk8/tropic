@@ -47,6 +47,7 @@ class Order extends BaseOrder
     public const EXPORT_SUCCESS = 'export_success';
     public const EXPORT_NOT_YET = 'export_not_yet';
     public const EXPORT_ERROR = 'export_error';
+    public const PROMO_CODES_SEPARATOR = ';';
 
     /**
      * @var string|null
@@ -133,25 +134,16 @@ class Order extends BaseOrder
     protected $deliveryPostcode;
 
     /**
-     * @var string
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]
      *
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\OneToMany(
+     *     targetEntity="Shopsys\ShopBundle\Model\GoPay\GoPayTransaction",
+     *     mappedBy="order",
+     *     cascade={"remove"},
+     * )
+     * @ORM\OrderBy({"goPayId" = "ASC"})
      */
-    private $goPayId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $goPayStatus;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=39, nullable=true)
-     */
-    private $goPayFik;
+    private $goPayTransactions;
 
     /**
      * @var string|null
@@ -249,9 +241,9 @@ class Order extends BaseOrder
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=64, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $gtmCoupon;
+    private $gtmCoupons;
 
     /**
      * @var bool
@@ -270,9 +262,9 @@ class Order extends BaseOrder
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=64, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $promoCodeCode;
+    private $promoCodesCodes;
 
     /**
      * @var string|null
@@ -299,6 +291,7 @@ class Order extends BaseOrder
         $this->payment = $orderData->payment;
 
         $this->setDeliveryAddressNewly($orderData);
+        $this->goPayTransactions = new ArrayCollection();
 
         $this->note = $orderData->note;
         $this->items = new ArrayCollection();
@@ -324,8 +317,6 @@ class Order extends BaseOrder
         $this->createdAsAdministrator = $orderData->createdAsAdministrator;
         $this->createdAsAdministratorName = $orderData->createdAsAdministratorName;
 
-        $this->goPayId = $orderData->goPayId;
-        $this->goPayStatus = $orderData->goPayStatus;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
         $this->updatedAt = $orderData->updatedAt;
@@ -334,9 +325,9 @@ class Order extends BaseOrder
         $this->mallOrderId = $orderData->mallOrderId;
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
-        $this->gtmCoupon = $orderData->gtmCoupon;
+        $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
-        $this->promoCodeCode = $orderData->promoCodeCode;
+        $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
     }
 
@@ -355,8 +346,7 @@ class Order extends BaseOrder
     ): OrderEditResult {
         $orderEditResult = parent::edit($orderData, $orderItemPriceCalculation, $orderItemFactory, $orderPriceCalculation);
 
-        $this->goPayId = $orderData->goPayId;
-        $this->goPayStatus = $orderData->goPayStatus;
+        $this->goPayTransactions = $orderData->goPayTransactions;
         $this->payPalId = $orderData->payPalId;
         $this->payPalStatus = $orderData->payPalStatus;
         $this->pickupPlace = $orderData->pickupPlace;
@@ -366,9 +356,9 @@ class Order extends BaseOrder
         $this->mallOrderId = $orderData->mallOrderId;
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
-        $this->gtmCoupon = $orderData->gtmCoupon;
+        $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
         $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
-        $this->promoCodeCode = $orderData->promoCodeCode;
+        $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
 
         return $orderEditResult;
@@ -391,51 +381,24 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return string|null
+     * @return \Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]
      */
-    public function getGoPayId(): ?string
+    public function getGoPayTransactions(): array
     {
-        return $this->goPayId;
+        return $this->goPayTransactions->toArray();
     }
 
     /**
-     * @param string|null $goPayId
+     * @return string[]
      */
-    public function setGoPayId(?string $goPayId): void
+    public function getGoPayTransactionsIndexedByGoPayId(): array
     {
-        $this->goPayId = $goPayId;
-    }
+        $returnArray = [];
+        foreach ($this->goPayTransactions as $transaction) {
+            $returnArray[$transaction->getGoPayId()] = $transaction->getGoPayStatus();
+        }
 
-    /**
-     * @return string|null
-     */
-    public function getGoPayStatus(): ?string
-    {
-        return $this->goPayStatus;
-    }
-
-    /**
-     * @param string $goPayStatus
-     */
-    public function setGoPayStatus(string $goPayStatus): void
-    {
-        $this->goPayStatus = $goPayStatus;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getGoPayFik(): ?string
-    {
-        return $this->goPayFik;
-    }
-
-    /**
-     * @param string|null $goPayFik
-     */
-    public function setGoPayFik(?string $goPayFik)
-    {
-        $this->goPayFik = $goPayFik;
+        return $returnArray;
     }
 
     /**
@@ -610,12 +573,60 @@ class Order extends BaseOrder
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+     * @param string $locale
+     */
+    public function fillOrderProducts(
+        OrderPreview $orderPreview,
+        OrderItemFactoryInterface $orderItemFactory,
+        NumberFormatterExtension $numberFormatterExtension,
+        $locale
+    ) {
+        $quantifiedItemPrices = $orderPreview->getQuantifiedItemsPrices();
+        $quantifiedItemDiscountsIndexedByPromoCodeId = $orderPreview->getQuantifiedItemsDiscountsIndexedByPromoCodeId();
+
+        foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
+            $product = $quantifiedProduct->getProduct();
+            if (!$product instanceof Product) {
+                $message = 'Object "' . get_class($product) . '" is not valid for order creation.';
+                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
+            }
+
+            $quantifiedItemPrice = $quantifiedItemPrices[$index];
+            /* @var $quantifiedItemPrice \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice */
+
+            $orderItem = $orderItemFactory->createProduct(
+                $this,
+                $product->getName($locale),
+                $quantifiedItemPrice->getUnitPrice(),
+                $product->getVat()->getPercent(),
+                $quantifiedProduct->getQuantity(),
+                $product->getUnit()->getName($locale),
+                $product->getCatnum(),
+                $product
+            );
+
+            foreach ($quantifiedItemDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemDiscounts) {
+                $quantifiedItemDiscount = $quantifiedItemDiscounts[$index];
+                /* @var $quantifiedItemDiscount \Shopsys\FrameworkBundle\Model\Pricing\Price|null */
+                if ($quantifiedItemDiscount !== null) {
+                    $promoCode = $orderPreview->getPromoCodeById($promoCodeId);
+                    $this->addOrderItemDiscount($numberFormatterExtension, $orderPreview, $orderItemFactory, $quantifiedItemDiscount, $orderItem, $locale, $promoCode);
+                }
+            }
+        }
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $quantifiedItemDiscount
      * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
      * @param string $locale
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      */
     protected function addOrderItemDiscount(
         NumberFormatterExtension $numberFormatterExtension,
@@ -623,12 +634,13 @@ class Order extends BaseOrder
         OrderItemFactoryInterface $orderItemFactory,
         Price $quantifiedItemDiscount,
         OrderItem $orderItem,
-        $locale
+        $locale,
+        ?PromoCode $promoCode = null
     ) {
-        if ($orderPreview->getPromoCode()->isUseNominalDiscount()) {
-            $discountValue = $numberFormatterExtension->formatNumber(-$orderPreview->getPromoCode()->getNominalDiscount()->getAmount()) . ' ' . $numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
+        if ($promoCode->isUseNominalDiscount()) {
+            $discountValue = $numberFormatterExtension->formatNumber(-$promoCode->getNominalDiscount()->getAmount()) . ' ' . $numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
         } else {
-            $discountValue = $numberFormatterExtension->formatPercent(-$orderPreview->getPromoCodeDiscountPercent(), $locale);
+            $discountValue = $numberFormatterExtension->formatPercent(-$promoCode->getPercent(), $locale);
         }
 
         $name = sprintf(
@@ -895,9 +907,9 @@ class Order extends BaseOrder
     /**
      * @return string|string
      */
-    public function getGtmCoupon(): ?string
+    public function getGtmCoupons(): ?string
     {
-        return $this->gtmCoupon;
+        return $this->gtmCoupons;
     }
 
     /**
@@ -969,9 +981,9 @@ class Order extends BaseOrder
     /**
      * @return string|null
      */
-    public function getPromoCodeCode(): ?string
+    public function getPromoCodesCodes(): ?string
     {
-        return $this->promoCodeCode;
+        return $this->promoCodesCodes;
     }
 
     /**
@@ -1003,14 +1015,27 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isGopayPaid(): ?bool
+    public function isGopayPaid(): bool
     {
-        if ($this->goPayId === null) {
-            return null;
+        foreach ($this->goPayTransactions->toArray() as $item) {
+            if ($item->getGoPayStatus() === PaymentStatus::PAID) {
+                return true;
+            }
         }
 
-        return $this->goPayStatus === PaymentStatus::PAID;
+        return false;
+    }
+
+    /**
+     * @param string[]|null $promoCodesCodes
+     * @return string|null
+     */
+    private function getPromoCodesString(?array $promoCodesCodes): ?string
+    {
+        $emptyCodes = $promoCodesCodes === null || count($promoCodesCodes) === 0;
+
+        return !$emptyCodes ? implode(self::PROMO_CODES_SEPARATOR, $promoCodesCodes) : null;
     }
 }

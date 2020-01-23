@@ -141,6 +141,10 @@ yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.goid ${
 yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientId ${GOPAY_SK_CLIENT_ID}
 yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientSecret ${GOPAY_SK_CLIENT_SECRET}
 
+#PayPal
+yq write --inplace app/config/parameters.yml parameters.payPalClientId ${PAY_PAL_CLIENT_ID}
+yq write --inplace app/config/parameters.yml parameters.payPalClientSecret ${PAY_PAL_CLIENT_SECRET}
+
 #SMTP
 yq write --inplace app/config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
 

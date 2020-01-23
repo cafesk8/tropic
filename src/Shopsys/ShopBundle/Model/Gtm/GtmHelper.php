@@ -73,23 +73,21 @@ class GtmHelper
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $usedPromoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $usedPromoCodes
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview|null $orderPreview
      */
-    public function amendGtmCouponToOrderData(OrderData $orderData, ?PromoCode $usedPromoCode, ?OrderPreview $orderPreview = null): void
+    public function amendGtmCouponToOrderData(OrderData $orderData, array $usedPromoCodes, ?OrderPreview $orderPreview = null): void
     {
-        if ($usedPromoCode === null) {
-            return;
+        foreach ($usedPromoCodes as $usedPromoCode) {
+            $orderData->gtmCoupons[] = sprintf(
+                '%s|%s|%s',
+                $usedPromoCode->getCode(),
+                $this->getCouponDiscountDescription($usedPromoCode),
+                $this->getPriceWithoutDiscount($usedPromoCode, $orderPreview)
+            );
         }
 
         // free transport can be place here
-
-        $orderData->gtmCoupon = sprintf(
-            '%s|%s|%s',
-            $usedPromoCode->getCode(),
-            $this->getCouponDiscountDescription($usedPromoCode),
-            $this->getPriceWithoutDiscount($usedPromoCode, $orderPreview)
-        );
     }
 
     /**

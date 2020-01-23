@@ -168,7 +168,11 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
      */
     public function getDomainId(): ?int
     {
-        return $this->countryCode !== null ? DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$this->getCountryCode()] : null;
+        if ($this->countryCode !== null && array_key_exists($this->getCountryCode(), DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE)) {
+            return DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$this->getCountryCode()];
+        }
+
+        return DomainHelper::GERMAN_DOMAIN;
     }
 
     /**

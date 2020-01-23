@@ -51,17 +51,17 @@
 
         <table id="js-order-preview-fees" class="table-cart-preview">
             <tbody>
-                {% if orderPreview.promoCode is not null %}
+                {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
                             {{ 'Sleva'|trans }}
-                            <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': orderPreview.promoCode.code }) }}
+                            <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                            - {{ orderPreview.totalDiscount.priceWithVat|price }}
+                            - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
                         </td>
                     </tr>
-                {% endif %}
+                {% endfor %}
 
                 {% if orderPreview.transport is not empty %}
                     <tr class="table-cart-preview__row">

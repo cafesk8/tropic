@@ -8,7 +8,7 @@ use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayNotConfiguredException;
 use Shopsys\ShopBundle\Model\GoPay\Exception\GoPayPaymentDownloadException;
-use Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain;
+use Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class GoPayController extends FrontBaseController
@@ -19,20 +19,20 @@ class GoPayController extends FrontBaseController
     private $orderFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain
+     * @var \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade
      */
-    private $goPayFacadeOnCurrentDomain;
+    private $goPayTransactionFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
-     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
+     * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
      */
     public function __construct(
         OrderFacade $orderFacade,
-        GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
+        GoPayTransactionFacade $goPayTransactionFacade
     ) {
         $this->orderFacade = $orderFacade;
-        $this->goPayFacadeOnCurrentDomain = $goPayFacadeOnCurrentDomain;
+        $this->goPayTransactionFacade = $goPayTransactionFacade;
     }
 
     /**
@@ -42,12 +42,13 @@ class GoPayController extends FrontBaseController
     public function goPayStatusNotifyAction(int $orderId): Response
     {
         try {
+            /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
             $order = $this->orderFacade->getById($orderId);
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
             return $this->orderNotFoundRedirect();
         }
 
-        if ($order->getGoPayId() > 0) {
+        if ($order->getPayment()->isGoPay()) {
             $this->checkOrderGoPayStatus($order);
         } else {
             return $this->orderNotFoundRedirect();
@@ -62,7 +63,7 @@ class GoPayController extends FrontBaseController
     private function checkOrderGoPayStatus(Order $order): void
     {
         try {
-            $this->goPayFacadeOnCurrentDomain->checkOrderGoPayStatus($order);
+            $this->goPayTransactionFacade->updateOrderTransactions($order);
         } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
             $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }

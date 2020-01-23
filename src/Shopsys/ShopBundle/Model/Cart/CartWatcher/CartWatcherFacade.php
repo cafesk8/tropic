@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatc
 use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcher $cartWatcher
@@ -25,29 +24,21 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     private $currentPromoCodeFacade;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
-    private $session;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
-     * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
         EntityManagerInterface $em,
         CartWatcher $cartWatcher,
         CurrentCustomer $currentCustomer,
-        CurrentPromoCodeFacade $currentPromoCodeFacade,
-        SessionInterface $session
+        CurrentPromoCodeFacade $currentPromoCodeFacade
     ) {
         parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomer);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
-        $this->session = $session;
     }
 
     /**
@@ -58,28 +49,28 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     {
         parent::checkCartModifications($cart);
 
-        $this->checkValidityOfEnteredPromoCode($cart, $user);
+        $this->checkValidityOfEnteredPromoCodes($cart, $user);
     }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
      * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
-    public function checkValidityOfEnteredPromoCode(Cart $cart, ?User $user = null): void
+    public function checkValidityOfEnteredPromoCodes(Cart $cart, ?User $user = null): void
     {
-        $enteredCode = $this->session->get(CurrentPromoCodeFacade::PROMO_CODE_SESSION_KEY);
+        $enteredCodes = $this->currentPromoCodeFacade->getEnteredCodesFromSession();
 
-        if ($enteredCode === null) {
-            return;
-        }
-
-        try {
-            $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $user);
-        } catch (\Exception $exception) {
-            $this->flashMessageSender->addErrorFlash(
-                t('Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho.')
-            );
-            $this->currentPromoCodeFacade->removeEnteredPromoCode();
+        foreach ($enteredCodes as $enteredCode) {
+            try {
+                $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $user);
+            } catch (\Exception $exception) {
+                $this->flashMessageSender->addErrorFlash(
+                    t('Platnost slevového kupónu "%code%" vypršela. Prosím, zkontrolujte ho.', [
+                        '%code%' => $enteredCode,
+                    ])
+                );
+                $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($enteredCode);
+            }
         }
     }
 }

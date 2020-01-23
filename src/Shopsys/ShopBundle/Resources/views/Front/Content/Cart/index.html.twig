@@ -107,18 +107,21 @@
                                                     <div class="table-cart__cell__price__primary">
                                                         {{ cartItemPrice.unitPrice.priceWithVat|price }}
                                                     </div>
-                                                    {% if promoCode is not null %}
-                                                    <div class="table-cart__cell__discount">
-                                                        {% if cartItemDiscounts[index] is not null %}
-                                                        &nbsp;{{ promoCode.code }}
-                                                        -{{ cartItemDiscounts[index].priceWithVat|price }}
-                                                        {% endif %}
-                                                    </div>
+                                                    {% if promoCodesIndexedById is not empty %}
+                                                        <div class="table-cart__cell__discount">
+                                                            {% for promoCodeId, promoCode in promoCodesIndexedById %}
+                                                                {% if cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is not null %}
+                                                                    &nbsp;{{ promoCode.code }}&nbsp;
+                                                                    -{{ cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index].priceWithVat|price }}
+                                                                    <br>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
                                                     {% endif %}
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         {% if cartItem.product.id in cartGiftsByProductId|keys %}
                                             {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
                                             <div class="table-cart__gifts">

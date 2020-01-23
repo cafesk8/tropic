@@ -38,8 +38,7 @@ class OrderDataFactory extends BaseOrderDataFactory
     {
         parent::fillFromOrder($orderData, $order);
 
-        $orderData->goPayId = $order->getGoPayId();
-        $orderData->goPayStatus = $order->getGoPayStatus();
+        $orderData->goPayTransactions = $order->getGoPayTransactions();
         $orderData->payPalId = $order->getPayPalId();
         $orderData->payPalStatus = $order->getPayPalStatus();
         $orderData->exportedAt = $order->getExportedAt();
@@ -47,12 +46,12 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->mallOrderId = $order->getMallOrderId();
         $orderData->mallStatus = $order->getMallStatus();
         $orderData->statusCheckedAt = $order->getStatusCheckedAt();
-        $orderData->gtmCoupon = $order->getGtmCoupon();
+        $orderData->gtmCoupons[] = $order->getGtmCoupons();
         $orderData->store = $order->getStore();
         $orderData->pickupPlace = $order->getPickupPlace();
         $orderData->memberOfBushmanClub = $order->isMemberOfBushmanClub();
         $orderData->transportType = $order->getTransportType();
-        $orderData->promoCodeCode = $order->getPromoCodeCode();
+        $orderData->promoCodesCodes[] = $order->getPromoCodesCodes();
         $orderData->trackingNumber = $order->getTrackingNumber();
     }
 }

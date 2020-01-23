@@ -7,8 +7,6 @@ namespace Shopsys\ShopBundle\Model\Order;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use GoPay\Definition\Response\PaymentStatus;
-use GoPay\Http\Response;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
@@ -207,7 +205,7 @@ class OrderFacade extends BaseOrderFacade
         $order = $this->getById($orderId);
         $orderSentPageContent = parent::getOrderSentPageContent($orderId);
 
-        if ($order->getGoPayId() !== null && $order->getGoPayStatus() === PaymentStatus::PAID) {
+        if ($order->isGopayPaid()) {
             $orderSentPageContent = str_replace(
                 $order->getPayment()->getInstructions(),
                 t('You have successfully paid order via GoPay.'),
@@ -216,30 +214,6 @@ class OrderFacade extends BaseOrderFacade
         }
 
         return $orderSentPageContent;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @param string $goPayId
-     */
-    public function setGoPayId(Order $order, string $goPayId): void
-    {
-        $order->setGoPayId($goPayId);
-        $this->em->flush($order);
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @param \GoPay\Http\Response $goPayStatusResponse
-     */
-    public function setGoPayStatusAndFik(Order $order, Response $goPayStatusResponse): void
-    {
-        if (array_key_exists('eet_code', $goPayStatusResponse->json)) {
-            $order->setGoPayFik($goPayStatusResponse->json['eet_code']['fik']);
-        }
-
-        $order->setGoPayStatus($goPayStatusResponse->json['state']);
-        $this->em->flush($order);
     }
 
     /**
@@ -276,21 +250,18 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
-        $enteredValidPromoCode = $this->currentPromoCodeFacade->getValidEnteredPromoCodeOrNull();
+        $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
-        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $enteredValidPromoCode, $orderPreview);
+        $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);
 
-        if ($enteredValidPromoCode !== null) {
-            $orderData->promoCodeCode = $enteredValidPromoCode->getCode();
+        foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
+            $orderData->promoCodesCodes[] = $validEnteredPromoCode->getCode();
+            $this->currentPromoCodeFacade->usePromoCode($validEnteredPromoCode);
         }
 
         /** @var \Shopsys\ShopBundle\Model\Order\Order $order */
         $order = parent::createOrderFromFront($orderData);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
-
-        if ($enteredValidPromoCode !== null) {
-            $this->currentPromoCodeFacade->usePromoCode($enteredValidPromoCode);
-        }
 
         /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $order->getCustomer();
@@ -368,17 +339,19 @@ class OrderFacade extends BaseOrderFacade
         $order->fillOrderGifts($orderPreview, $this->orderItemFactory, $this->productGiftPriceCalculation, $this->domain);
         $order->fillOrderPromoProducts($orderPreview, $this->orderItemFactory, $this->domain);
 
-        $promoCode = $orderPreview->getPromoCode();
-        if ($promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            $order->setGiftCertificate(
-                $orderPreview,
-                $this->orderItemFactory,
-                $this->numberFormatterExtension,
-                $order,
-                $promoCode,
-                $this->vatFacade->getDefaultVat()->getPercent(),
-                $this->domain->getCurrentDomainConfig()->getLocale()
-            );
+        $promoCodes = $orderPreview->getPromoCodesIndexedById();
+        foreach ($promoCodes as $promoCode) {
+            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+                $order->setGiftCertificate(
+                    $orderPreview,
+                    $this->orderItemFactory,
+                    $this->numberFormatterExtension,
+                    $order,
+                    $promoCode,
+                    $this->vatFacade->getDefaultVat()->getPercent(),
+                    $this->domain->getCurrentDomainConfig()->getLocale()
+                );
+            }
         }
     }
 
