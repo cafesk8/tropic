@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Admin;
 
 use Shopsys\FormTypesBundle\YesNoType;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
@@ -26,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -56,13 +58,31 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     private $priceExtension;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
+     */
+    private $adminDomainTabsFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
-    public function __construct(Domain $domain, PriceExtension $priceExtension)
+    public function __construct(Domain $domain, PriceExtension $priceExtension, AdminDomainTabsFacade $adminDomainTabsFacade)
     {
         $this->domain = $domain;
         $this->priceExtension = $priceExtension;
+        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormView $view
+     * @param \Symfony\Component\Form\FormInterface $form
+     * @param array $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['attr']['class'] = 'js-promo-code-form';
+        parent::buildView($view, $form, $options);
     }
 
     /**
@@ -72,6 +92,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
+
+        $domainId = $this->adminDomainTabsFacade->getSelectedDomainId();
 
         $basicInformationsFormGroup = $builder->create('basicInformationsGroup', GroupType::class, [
             'label' => t('Základní informace'),
@@ -107,8 +129,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $this->addPromoCodeOrCertificateField($builder, $basicInformationsFormGroup);
         $this->extendCodeField($builder, $basicInformationsFormGroup);
         $this->extendPercentField($builder, $basicInformationsFormGroup);
-        $this->addNominalDiscountFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
-        $this->addCertificateFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
+        $this->addNominalDiscountFields($basicInformationsFormGroup, $options['promo_code'], $domainId);
+        $this->addCertificateFields($basicInformationsFormGroup, $options['promo_code'], $domainId);
 
         $builder->add($basicInformationsFormGroup);
 
@@ -119,7 +141,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         if ($options['promo_code'] === null) {
             $basicInformationsFormGroup->add('domainId', DomainType::class, [
                 'required' => true,
-                'data' => $options['domain_id'],
+                'data' => $domainId,
                 'label' => t('Domain'),
             ]);
         } else {
@@ -136,7 +158,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
 
-        $builder->add($this->getRestictionGroup($builder, $options['promo_code'], $options['domain_id']));
+        $builder->add($this->getRestictionGroup($builder, $options['promo_code'], $domainId));
         $builder->add($this->getValidationGroup($builder));
 
         $builder->add('save', SubmitType::class);
@@ -148,9 +170,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['promo_code', 'domain_id', 'mass_generate'])
+            ->setRequired(['promo_code', 'mass_generate'])
             ->setAllowedTypes('promo_code', [BasePromoCode::class, 'null'])
-            ->setAllowedTypes('domain_id', 'int')
             ->setAllowedTypes('mass_generate', 'bool')
             ->setDefaults([
                 'data_class' => PromoCodeData::class,
