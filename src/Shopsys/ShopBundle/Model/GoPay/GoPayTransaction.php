@@ -61,6 +61,7 @@ class GoPayTransaction
         return $this->goPayStatus;
     }
 
+
     /**
      * @return \Shopsys\ShopBundle\Model\Order\Order
      */
