@@ -22,6 +22,9 @@ msgstr ""
 msgid "(kód %code%)"
 msgstr ""
 
+msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
+msgstr ""
+
 msgid "-- Choose article --"
 msgstr ""
 
@@ -332,9 +335,6 @@ msgid "Contact us"
 msgstr ""
 
 msgid "Cookies nejsou sušenky"
-msgstr ""
-
-msgid "Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena."
 msgstr ""
 
 msgid "Country"
@@ -868,6 +868,9 @@ msgstr ""
 msgid "Kolikrát použito"
 msgstr ""
 
+msgid "Kombinovatelný"
+msgstr ""
+
 msgid "Kontakt"
 msgstr ""
 
@@ -1393,7 +1396,7 @@ msgstr ""
 msgid "Platnost"
 msgstr ""
 
-msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
 msgstr ""
 
 msgid "Platný do"
@@ -1963,6 +1966,9 @@ msgstr ""
 msgid "Tenký nadpis"
 msgstr ""
 
+msgid "Tento slevový kupón je již v objednávce aplikován."
+msgstr ""
+
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr ""
 
@@ -2123,6 +2129,9 @@ msgid "Upřesňující informace pro chybu v přenosu"
 msgstr ""
 
 msgid "User not found."
+msgstr ""
+
+msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
 msgstr ""
 
 msgid "V hlavním menu"
@@ -2311,7 +2320,7 @@ msgstr ""
 msgid "Vytvořit účet"
 msgstr ""
 
-msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link js-not-implemented-yet\" href=\"\">prodejně v Praze</a>"
+msgid "Vyzkoušení zdarma na <a class=\"list-benefits__item__text__link\" href=\"%url%\">naší prodejně</a>"
 msgstr ""
 
 msgid "Váš e-mail je na e-shopu registrován."

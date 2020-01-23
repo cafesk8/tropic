@@ -34,6 +34,9 @@ msgstr "(Code Weihnachten 2018)"
 msgid "******** 6 nebo více znaků"
 msgstr "******** 6 oder mehr Zeichen"
 
+msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
+msgstr ""
+
 msgid "-- Choose article --"
 msgstr "-- Artikel auswählen --"
 
@@ -453,9 +456,6 @@ msgstr "Kontaktiere uns"
 
 msgid "Cookies nejsou sušenky"
 msgstr "Cookies sind keine Kekse"
-
-msgid "Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena."
-msgstr ""
 
 msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
 msgstr "Copyright Ⓒ 2019, Bushman Company, a.s. Alle rechte vorbehalten"
@@ -1126,6 +1126,9 @@ msgstr "Ein Kollege Novák kann gut tschechisch. Schicken Sie ihm auch den Schl�
 msgid "Kolikrát použito"
 msgstr "Wie oft benutzt"
 
+msgid "Kombinovatelný"
+msgstr ""
+
 msgid "Kontakt"
 msgstr "Kontakt"
 
@@ -1761,6 +1764,9 @@ msgstr "Zahlung"
 
 msgid "Platnost"
 msgstr "Gültigkeit"
+
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
+msgstr ""
 
 msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
 msgstr "Der Gutschein ist abgelaufen. Bitte überprüfe es."
@@ -2473,6 +2479,9 @@ msgstr "Telefon"
 msgid "Tenký nadpis"
 msgstr "Dünne Überschrift"
 
+msgid "Tento slevový kupón je již v objednávce aplikován."
+msgstr ""
+
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr "Dieser Status kann nicht gelöscht werden, da die Funktionalität damit verknüpft ist"
 
@@ -2661,6 +2670,9 @@ msgstr "Erweiterte Informationen für Übertragungsfehler"
 
 msgid "User not found."
 msgstr "Benutzer wurde nicht gefunden."
+
+msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
+msgstr ""
 
 msgid "V hlavní roli"
 msgstr "Hauptrolle"

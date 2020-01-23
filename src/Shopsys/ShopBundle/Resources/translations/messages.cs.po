@@ -28,6 +28,9 @@ msgstr "(Tato adresa bude na daňovém dokladu)"
 msgid "(kód %code%)"
 msgstr ""
 
+msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
+msgstr ""
+
 msgid "-- Choose article --"
 msgstr "-- Vyber článek --"
 
@@ -389,9 +392,6 @@ msgid "Continue in order"
 msgstr "Pokračovat v objednávce"
 
 msgid "Cookies nejsou sušenky"
-msgstr ""
-
-msgid "Copyright © 2019, Shopsys s.r.o. Všechna práva vyhrazena."
 msgstr ""
 
 msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
@@ -988,6 +988,9 @@ msgstr ""
 msgid "Kolikrát použito"
 msgstr ""
 
+msgid "Kombinovatelný"
+msgstr ""
+
 msgid "Kontakt"
 msgstr ""
 
@@ -1568,6 +1571,9 @@ msgid "Platba"
 msgstr ""
 
 msgid "Platnost"
+msgstr ""
+
+msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
 msgstr ""
 
 msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
@@ -2233,6 +2239,9 @@ msgstr "Telefon"
 msgid "Tenký nadpis"
 msgstr ""
 
+msgid "Tento slevový kupón je již v objednávce aplikován."
+msgstr ""
+
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr ""
 
@@ -2415,6 +2424,9 @@ msgstr ""
 
 msgid "User not found."
 msgstr "Uživatel nebyl nalezen."
+
+msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
+msgstr ""
 
 msgid "V hlavním menu"
 msgstr ""

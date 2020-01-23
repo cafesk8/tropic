@@ -55,14 +55,14 @@ msgstr "Der Name darf nicht länger als {{limit}} Zeichen sein"
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Die Öffnungszeiten dürfen nicht länger als {{limit}} Zeichen sein"
 
-msgid "Password must be longer than {{ limit }} characters"
-msgstr "Das Passwort muss mindestens {{limit}} Zeichen lang sein"
-
 msgid "Password cannot be same as e-mail"
 msgstr "Das Passwort darf nicht mit der E-Mail identisch sein"
 
 msgid "Password cannot be same as part of e-mail before at sign"
 msgstr "Das Passwort darf nicht mit der E-Mail vor dem Signieren identisch sein"
+
+msgid "Password must be longer than {{ limit }} characters"
+msgstr "Das Passwort muss mindestens {{limit}} Zeichen lang sein"
 
 msgid "Passwords do not match"
 msgstr "Passwörter stimmen nicht überein"
