@@ -17,26 +17,30 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
+ * @property \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade|null $currencyFacade
+ * @method setCurrencyFacade(\Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice calculateMainVariantPrice(\Shopsys\ShopBundle\Model\Product\Product $mainVariant, int $domainId, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup)
  */
 class ProductPriceCalculation extends BaseProductPriceCalculation
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     private $setting;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
      */
     private $pricingGroupFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
+     * @param \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         BasePriceCalculation $basePriceCalculation,
@@ -52,9 +56,9 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
      */
     public function calculatePrice(Product $product, $domainId, PricingGroup $pricingGroup)
@@ -64,7 +68,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
      */
     protected function calculateProductPriceForPricingGroup(Product $product, PricingGroup $pricingGroup)

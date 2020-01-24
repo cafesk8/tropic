@@ -10,6 +10,10 @@ use Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory as BaseAdvertDataFact
 use Shopsys\ShopBundle\Model\Advert\Product\AdvertProduct;
 use Shopsys\ShopBundle\Model\Advert\Product\AdvertProductRepository;
 
+/**
+ * @property \Shopsys\ShopBundle\Component\Image\ImageFacade|null $imageFacade
+ * @method setImageFacade(\Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade)
+ */
 class AdvertDataFactory extends BaseAdvertDataFactory
 {
     /**

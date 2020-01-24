@@ -15,7 +15,7 @@ use Shopsys\ShopBundle\Model\Category\Category;
 class CategoryBlogArticle
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\Category
+     * @var \Shopsys\ShopBundle\Model\Category\Category
      *
      * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Category\Category")
      * @ORM\JoinColumn(nullable=false, name="category_id", referencedColumnName="id", onDelete="CASCADE")

@@ -23,7 +23,7 @@ class ProductGift
     protected $id;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Product
+     * @var \Shopsys\ShopBundle\Model\Product\Product
      *
      * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Product\Product")
      * @ORM\JoinColumn(name="gift_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -85,7 +85,7 @@ class ProductGift
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $gift
+     * @param \Shopsys\ShopBundle\Model\Product\Product $gift
      */
     private function setProducts(array $products, Product $gift): void
     {

@@ -17,6 +17,13 @@ use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter getById(int $parameterId)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter create(\Shopsys\ShopBundle\Model\Product\Parameter\ParameterData $parameterData)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue getParameterValueByValueTextAndLocale(string $valueText, string $locale)
+ */
 class ParameterFacade extends BaseParameterFacade
 {
     private const PARAMETER_COLOR = [
@@ -47,7 +54,7 @@ class ParameterFacade extends BaseParameterFacade
     protected $parameterRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterDataFactory
      */
     private $parameterDataFactory;
 
@@ -58,11 +65,11 @@ class ParameterFacade extends BaseParameterFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface $parameterFactory
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface $parameterDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      */
     public function __construct(
@@ -230,7 +237,7 @@ class ParameterFacade extends BaseParameterFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @return string
      */
     public function getParameterUsedAsDistinguishingParameterExceptionProducts(Parameter $parameter): string

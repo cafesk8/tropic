@@ -7,6 +7,12 @@ namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository as BasePromoCodeRepository;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null findById(int $promoCodeId)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null findByCode(string $code)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById(int $promoCodeId)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] getAll()
+ */
 class PromoCodeRepository extends BasePromoCodeRepository
 {
     /**

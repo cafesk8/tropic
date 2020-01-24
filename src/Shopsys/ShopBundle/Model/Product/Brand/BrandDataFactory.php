@@ -14,8 +14,8 @@ use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 class BrandDataFactory extends BaseBrandDataFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(

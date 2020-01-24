@@ -29,14 +29,14 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
     protected $availabilityDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactoryInterface $availabilityDataFactory
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
     public function __construct(
         AvailabilityFacade $availabilityFacade,

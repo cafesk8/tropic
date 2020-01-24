@@ -29,6 +29,13 @@ use Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
+ * @property \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+ * @property \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
+ * @property \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+ * @method string getSsoLoginAsUserUrl(\Shopsys\ShopBundle\Model\Customer\User $user)
+ */
 class CustomerController extends BaseCustomerController
 {
     /**
@@ -37,24 +44,24 @@ class CustomerController extends BaseCustomerController
     private $bushmanClubPointPeriodSettings;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension
+     * @var \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension
      */
     private $dateTimeFormatterExtension;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface $userDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerListAdminFacade $customerListAdminFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
+     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade $loginAsUserFacade
      * @param \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      * @param \Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods $bushmanClubPointPeriodSettings
-     * @param \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      */
     public function __construct(
         UserDataFactoryInterface $userDataFactory,
@@ -145,7 +152,7 @@ class CustomerController extends BaseCustomerController
     public function listAction(Request $request): Response
     {
         $administrator = $this->getUser();
-        /* @var $administrator \Shopsys\FrameworkBundle\Model\Administrator\Administrator */
+        /* @var $administrator \Shopsys\ShopBundle\Model\Administrator\Administrator */
 
         $quickSearchForm = $this->createForm(QuickSearchFormType::class, new QuickSearchFormData());
         $quickSearchForm->handleRequest($request);

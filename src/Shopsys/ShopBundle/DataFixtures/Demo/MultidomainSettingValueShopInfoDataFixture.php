@@ -20,7 +20,7 @@ class MultidomainSettingValueShopInfoDataFixture extends AbstractReferenceFixtur
     ];
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
@@ -30,7 +30,7 @@ class MultidomainSettingValueShopInfoDataFixture extends AbstractReferenceFixtur
     protected $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(Setting $setting, Domain $domain)

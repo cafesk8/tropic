@@ -23,7 +23,7 @@ class BlogCategoryFacade
     private $blogCategoryRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade
+     * @var \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade
      */
     private $friendlyUrlFacade;
 
@@ -45,7 +45,7 @@ class BlogCategoryFacade
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryRepository $blogCategoryRepository
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFactory $blogCategoryFactory
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryWithPreloadedChildrenFactory $blogCategoryWithPreloadedChildrenFactory
      * @param \Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationScheduler $blogVisibilityRecalculationScheduler

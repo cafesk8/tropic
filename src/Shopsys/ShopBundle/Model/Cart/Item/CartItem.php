@@ -16,6 +16,8 @@ use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
  *
  * @ORM\Table(name="cart_items")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Product\Product|null $product
+ * @method bool isSimilarItemAs(\Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem)
  */
 class CartItem extends BaseCartItem
 {
@@ -36,7 +38,7 @@ class CartItem extends BaseCartItem
     private $mainCartItem;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Cart\Cart
+     * @var \Shopsys\ShopBundle\Model\Cart\Cart
      *
      * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Cart\Cart", inversedBy="items")
      * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -52,7 +54,7 @@ class CartItem extends BaseCartItem
     private $promoProduct;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $quantity
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice

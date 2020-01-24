@@ -16,12 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ArticleSettingsFormType extends AbstractType
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Article\ArticleFacade
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
      */
     private $articleFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(ArticleFacade $articleFacade)
     {

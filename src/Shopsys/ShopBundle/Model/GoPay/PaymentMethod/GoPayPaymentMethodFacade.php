@@ -22,7 +22,7 @@ class GoPayPaymentMethodFacade
     private $em;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
@@ -64,7 +64,7 @@ class GoPayPaymentMethodFacade
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayClientFactory $goPayClientFactory
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodRepository $goPayPaymentMethodRepository
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade

@@ -10,6 +10,23 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade as BasePaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository
+ * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+ * @property \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\ShopBundle\Model\Payment\PaymentRepository $paymentRepository, \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository, \Shopsys\FrameworkBundle\Model\Payment\PaymentVisibilityCalculation $paymentVisibilityCalculation, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade, \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade, \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation, \Shopsys\FrameworkBundle\Model\Payment\PaymentFactoryInterface $paymentFactory, \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceFactoryInterface $paymentPriceFactory)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment create(\Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData)
+ * @method edit(\Shopsys\ShopBundle\Model\Payment\Payment $payment, \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment getById(int $id)
+ * @method setAdditionalDataAndFlush(\Shopsys\ShopBundle\Model\Payment\Payment $payment, \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getVisibleOnCurrentDomain()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getVisibleByDomainId(int $domainId)
+ * @method updatePaymentPrices(\Shopsys\ShopBundle\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesByCurrencyId)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getAllIncludingDeleted()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getAll()
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByCurrencyId(\Shopsys\ShopBundle\Model\Payment\Payment $payment)
+ */
 class PaymentFacade extends BasePaymentFacade
 {
     /**

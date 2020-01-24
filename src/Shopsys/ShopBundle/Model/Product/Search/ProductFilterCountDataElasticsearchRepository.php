@@ -14,6 +14,12 @@ use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransfo
 use Shopsys\ShopBundle\Model\Product\Parameter\Parameter;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataInSearch(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $baseFilterQuery)
+ * @method int[] calculateFlagsPlusNumbers(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $plusFlagsQuery)
+ * @method int[] calculateBrandsPlusNumbers(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $plusFlagsQuery)
+ * @method replaceParametersPlusNumbers(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $countData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $plusParametersQuery)
+ */
 class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCountDataElasticsearchRepository
 {
     /**
@@ -28,7 +34,7 @@ class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCou
 
     /**
      * @param \Elasticsearch\Client $client
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer
+     * @param \Shopsys\ShopBundle\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer
      * @param \Shopsys\FrameworkBundle\Model\Product\Search\AggregationResultToProductFilterCountDataTransformer $aggregationResultToCountDataTransformer
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */

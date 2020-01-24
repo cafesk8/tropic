@@ -14,7 +14,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 class PaymentDataFactory extends BasePaymentDataFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */

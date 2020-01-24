@@ -27,7 +27,7 @@ class ImageExtension extends BaseImageExtension
      * @param \Symfony\Component\Asset\Package $assetsPackage
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageLocator $imageLocator
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
      */
     public function __construct($frontDesignImageUrlPrefix, Package $assetsPackage, Domain $domain, ImageLocator $imageLocator, ImageFacade $imageFacade, EngineInterface $templating)
@@ -53,7 +53,7 @@ class ImageExtension extends BaseImageExtension
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Image\Image|\Shopsys\ReadModelBundle\Image\ImageView|Object|null $imageOrEntity
+     * @param \Shopsys\ShopBundle\Component\Image\Image|\Shopsys\ReadModelBundle\Image\ImageView|Object|null $imageOrEntity
      * @param array $attributes
      * @return string
      */
@@ -79,7 +79,7 @@ class ImageExtension extends BaseImageExtension
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
      * @return string
      */
     public function getBarcodeImageByUser(User $user): string

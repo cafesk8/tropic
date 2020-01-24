@@ -20,12 +20,12 @@ class MainVariantGroupFormType extends AbstractType
     public const PRODUCTS = 'products';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     private $parameterFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(ParameterFacade $parameterFacade)
     {

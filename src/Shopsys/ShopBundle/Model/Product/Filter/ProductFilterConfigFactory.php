@@ -10,13 +10,15 @@ use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory as B
 
 /**
  * @property  \Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository
+ * @property \Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository
+ * @method __construct(\Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer, \Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository $priceRangeRepository)
  */
 class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
 {
     /**
      * @param int $domainId
      * @param string $locale
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig
      */
     public function createForCategory($domainId, $locale, Category $category): ProductFilterConfig
@@ -53,7 +55,7 @@ class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig $parent
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $parent
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[] $colorChoices
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[] $sizeChoices
      * @return \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig

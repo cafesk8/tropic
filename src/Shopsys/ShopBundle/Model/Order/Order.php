@@ -29,6 +29,31 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
  * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
  * @method \Shopsys\ShopBundle\Model\Country\Country getCountry()
  * @method \Shopsys\ShopBundle\Model\Country\Country getDeliveryCountry()
+ * @property \Shopsys\ShopBundle\Model\Customer\User|null $customer
+ * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]|\Doctrine\Common\Collections\Collection $items
+ * @property \Shopsys\ShopBundle\Model\Payment\Payment $payment
+ * @property \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $status
+ * @property \Shopsys\ShopBundle\Model\Country\Country $country
+ * @property \Shopsys\ShopBundle\Model\Country\Country|null $deliveryCountry
+ * @property \Shopsys\ShopBundle\Model\Administrator\Administrator|null $createdAsAdministrator
+ * @method editData(\Shopsys\ShopBundle\Model\Order\OrderData $orderData)
+ * @method editOrderTransport(\Shopsys\ShopBundle\Model\Order\OrderData $orderData)
+ * @method editOrderPayment(\Shopsys\ShopBundle\Model\Order\OrderData $orderData)
+ * @method setDeliveryAddress(\Shopsys\ShopBundle\Model\Order\OrderData $orderData)
+ * @method addItem(\Shopsys\ShopBundle\Model\Order\Item\OrderItem $item)
+ * @method removeItem(\Shopsys\ShopBundle\Model\Order\Item\OrderItem $item)
+ * @method setStatus(\Shopsys\ShopBundle\Model\Order\Status\OrderStatus $status)
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem getOrderPayment()
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem getOrderTransport()
+ * @method \Shopsys\ShopBundle\Model\Order\Status\OrderStatus getStatus()
+ * @method \Shopsys\ShopBundle\Model\Customer\User|null getCustomer()
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem[] getItems()
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem[] getItemsWithoutTransportAndPayment()
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem[] getTransportAndPaymentItems()
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem getItemById(int $orderItemId)
+ * @method \Shopsys\ShopBundle\Model\Country\Country|null getDeliveryCountry()
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem[] getProductItems()
+ * @method \Shopsys\ShopBundle\Model\Administrator\Administrator|null getCreatedAsAdministrator()
  */
 class Order extends BaseOrder
 {
@@ -265,7 +290,7 @@ class Order extends BaseOrder
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
     public function __construct(
         BaseOrderData $orderData,
@@ -322,7 +347,7 @@ class Order extends BaseOrder
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation $orderItemPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
      * @return \Shopsys\FrameworkBundle\Model\Order\OrderEditResult
      */
@@ -577,7 +602,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]
      */
     public function getGiftItems()
     {
@@ -623,7 +648,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]
      */
     public function getGiftCertificationItems()
     {
@@ -730,7 +755,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      */
     private function setTransport(BaseOrderData $orderData): void
     {
@@ -760,7 +785,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $customer
+     * @param \Shopsys\ShopBundle\Model\Customer\User $customer
      */
     public function setCustomer(User $customer): void
     {

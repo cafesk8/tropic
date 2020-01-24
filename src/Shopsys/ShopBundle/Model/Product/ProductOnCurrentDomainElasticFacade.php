@@ -24,6 +24,13 @@ use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory
+ * @method \Shopsys\ShopBundle\Model\Product\Product getVisibleProductById(int $productId)
+ * @method \Shopsys\ShopBundle\Model\Product\Product[] getAccessoriesForProduct(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\ShopBundle\Model\Product\Product[] getVariantsForProduct(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginatedProductsInCategory(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit, int $categoryId)
+ * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginatedProductsForSearch(string|null $searchText, \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataInCategory(int $categoryId, \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $productFilterConfig, \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataForSearch(string|null $searchText, \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $productFilterConfig, \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData)
  */
 class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElasticFacade
 {
@@ -44,15 +51,15 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
     /**
      * ProductOnCurrentDomainElasticFacade constructor.
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
+     * @param \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository $productFilterCountDataElasticsearchRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository $productFilterCountDataElasticsearchRepository
      * @param \Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager $elasticsearchStructureManager
      * @param \Shopsys\ShopBundle\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(
@@ -72,8 +79,8 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product[] $products
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getVariantsForProducts(array $products): array
     {
@@ -87,7 +94,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getVariantsIndexedByMainVariantId(array $products): array

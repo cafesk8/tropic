@@ -7,6 +7,9 @@ namespace Shopsys\ShopBundle\Model\Customer;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null $pricingGroup
+ */
 class UserData extends BaseUserData
 {
     /**

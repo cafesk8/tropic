@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GoPayController extends FrontBaseController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\OrderFacade
+     * @var \Shopsys\ShopBundle\Model\Order\OrderFacade
      */
     private $orderFacade;
 
@@ -24,7 +24,7 @@ class GoPayController extends FrontBaseController
     private $goPayTransactionFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
+     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
      */
     public function __construct(
@@ -58,7 +58,7 @@ class GoPayController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      */
     private function checkOrderGoPayStatus(Order $order): void
     {

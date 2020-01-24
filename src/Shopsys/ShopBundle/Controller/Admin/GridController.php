@@ -10,6 +10,10 @@ use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterUsedAsDistingu
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Grid\GridOrderingFacade $gridOrderingFacade
+ * @method __construct(\Shopsys\ShopBundle\Model\Grid\GridOrderingFacade $gridOrderingFacade, \Shopsys\FrameworkBundle\Component\Grid\InlineEdit\InlineEditFacade $inlineEditFacade)
+ */
 class GridController extends BaseGridController
 {
     /**

@@ -61,7 +61,7 @@ class MainVariantGroupFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $distinguishingParameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $distinguishingParameter
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup
      */
@@ -113,9 +113,9 @@ class MainVariantGroupFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsForMainVariantGroupByProductAndDomainIdAndPricingGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
@@ -128,7 +128,7 @@ class MainVariantGroupFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[]
      */
     public function getByDistinguishingParameter(Parameter $parameter): array
@@ -156,7 +156,7 @@ class MainVariantGroupFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsIndexedByMainVariantGroup(array $products, PricingGroup $pricingGroup): array

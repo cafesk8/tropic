@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader;
 class HsSportProductDataBatchLoader
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader
+     * @var \Shopsys\ShopBundle\Model\Product\Collection\ProductUrlsBatchLoader
      */
     protected $productUrlsBatchLoader;
 
@@ -21,7 +21,7 @@ class HsSportProductDataBatchLoader
     protected $productParametersBatchLoader;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
+     * @param \Shopsys\ShopBundle\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
      * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductParametersBatchLoader $productParametersBatchLoader
      */
     public function __construct(
@@ -33,7 +33,7 @@ class HsSportProductDataBatchLoader
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product[] $products
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      */
     public function loadForProducts(array $products, DomainConfig $domainConfig): void

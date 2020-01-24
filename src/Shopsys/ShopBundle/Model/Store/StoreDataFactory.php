@@ -9,12 +9,12 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 class StoreDataFactory
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\ImageFacade
+     * @var \Shopsys\ShopBundle\Component\Image\ImageFacade
      */
     private $imageFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      */
     public function __construct(ImageFacade $imageFacade)
     {

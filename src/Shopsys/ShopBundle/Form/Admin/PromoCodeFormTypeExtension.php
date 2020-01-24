@@ -269,7 +269,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param int|null $domainId
      */
     private function addNominalDiscountFields(FormBuilderInterface $builder, ?PromoCode $promoCode = null, ?int $domainId = null): void
@@ -306,7 +306,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param int|null $domainId
      */
     private function addCertificateFields(FormBuilderInterface $builder, ?PromoCode $promoCode = null, ?int $domainId = null): void
@@ -369,7 +369,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param int|null $domainId
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
@@ -421,7 +421,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param string $prefix
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param int|null $domainId
      * @return string
      */

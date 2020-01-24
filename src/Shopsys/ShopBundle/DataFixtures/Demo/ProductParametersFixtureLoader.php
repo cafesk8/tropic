@@ -18,7 +18,7 @@ class ProductParametersFixtureLoader
     protected $parameterFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter[]
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter[]
      */
     protected $parameters;
 
@@ -33,15 +33,15 @@ class ProductParametersFixtureLoader
     protected $parameterValueDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterDataFactory
      */
     protected $parameterDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface $productParameterValueDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactoryInterface $parameterValueDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface $parameterDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      */
     public function __construct(
         ParameterFacade $parameterFacade,

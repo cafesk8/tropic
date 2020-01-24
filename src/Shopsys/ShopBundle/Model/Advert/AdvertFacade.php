@@ -17,6 +17,12 @@ use Shopsys\ShopBundle\Model\Advert\Product\AdvertProduct;
 use Shopsys\ShopBundle\Model\Advert\Product\AdvertProductRepository;
 use Shopsys\ShopBundle\Model\Product\ProductRepository;
 
+/**
+ * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+ * @property \Shopsys\ShopBundle\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
+ * @method \Shopsys\ShopBundle\Model\Advert\Advert getById(int $advertId)
+ * @method \Shopsys\ShopBundle\Model\Advert\Advert|null findRandomAdvertByPositionOnCurrentDomain(string $positionName)
+ */
 class AdvertFacade extends BaseAdvertFacade
 {
     /**
@@ -30,17 +36,17 @@ class AdvertFacade extends BaseAdvertFacade
     private $currentCustomer;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductRepository
+     * @var \Shopsys\ShopBundle\Model\Product\ProductRepository
      */
     private $productRepository;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertRepository $advertRepository
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertFactoryInterface $advertFactory
-     * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
+     * @param \Shopsys\ShopBundle\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
      * @param \Shopsys\ShopBundle\Model\Advert\Product\AdvertProductRepository $advertProductRepository
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository

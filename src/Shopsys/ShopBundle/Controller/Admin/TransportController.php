@@ -16,6 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+ * @property \Shopsys\ShopBundle\Model\Transport\TransportDataFactory $transportDataFactory
+ * @property \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
+ */
 class TransportController extends BaseTransportController
 {
     /**
@@ -24,10 +29,10 @@ class TransportController extends BaseTransportController
     private $shipperServiceFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\FrameworkBundle\Model\Transport\Grid\TransportGridFactory $transportGridFactory
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface $transportDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportDataFactory $transportDataFactory
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
      * @param \Shopsys\ShopBundle\Component\Balikobot\Shipper\ShipperServiceFacade $shipperServiceFacade
      */

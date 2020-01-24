@@ -7,6 +7,10 @@ namespace Shopsys\ShopBundle\Controller\Admin;
 use Shopsys\FrameworkBundle\Controller\Admin\MailController as BaseMailController;
 use Shopsys\ShopBundle\Model\Order\Mail\OrderMail;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Order\Mail\OrderMail $orderMail
+ * @method __construct(\Shopsys\FrameworkBundle\Model\Customer\Mail\ResetPasswordMail $resetPasswordMail, \Shopsys\ShopBundle\Model\Order\Mail\OrderMail $orderMail, \Shopsys\FrameworkBundle\Model\Customer\Mail\RegistrationMail $registrationMail, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade $mailSettingFacade, \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMail $personalDataAccessMail, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail $personalDataExportMail)
+ */
 class MailController extends BaseMailController
 {
     /**

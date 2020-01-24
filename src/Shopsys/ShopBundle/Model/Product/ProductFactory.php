@@ -8,6 +8,10 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductFactory as BaseProductFactory;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Product\Product create(\Shopsys\ShopBundle\Model\Product\ProductData $data)
+ * @method setCalculatedAvailabilityIfMissing(\Shopsys\ShopBundle\Model\Product\Product $product)
+ */
 class ProductFactory extends BaseProductFactory
 {
     /**

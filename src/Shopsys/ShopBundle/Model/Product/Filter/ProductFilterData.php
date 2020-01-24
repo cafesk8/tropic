@@ -6,6 +6,10 @@ namespace Shopsys\ShopBundle\Model\Product\Filter;
 
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData as BaseProductFilterData;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Flag\Flag[] $flags
+ * @property \Shopsys\ShopBundle\Model\Product\Brand\Brand[] $brands
+ */
 class ProductFilterData extends BaseProductFilterData
 {
     /**

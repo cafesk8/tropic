@@ -37,7 +37,7 @@ class ProductFilterFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig $config */
+        /** @var \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $config */
         $config = $options['product_filter_config'];
 
         $moneyBuilder = $builder->create('money', MoneyType::class);
@@ -104,7 +104,7 @@ class ProductFilterFormType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig $config
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $config
      */
     private function addDistinguishingParameters(FormBuilderInterface $builder, ProductFilterConfig $config): void
     {

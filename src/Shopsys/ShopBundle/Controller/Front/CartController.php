@@ -93,7 +93,7 @@ class CartController extends FrontBaseController
     /**
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
+     * @param \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor $errorExtractor
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
@@ -213,7 +213,7 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[] $cartItems
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $cartItems
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
@@ -320,7 +320,7 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $type
      * @param bool $disabled
      * @return \Symfony\Component\HttpFoundation\Response
@@ -453,8 +453,8 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem $cartItem
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice|null
      */
     private function findQuantifiedItemPriceForProduct(CartItem $cartItem, OrderPreview $orderPreview): ?QuantifiedItemPrice

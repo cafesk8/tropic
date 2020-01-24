@@ -11,10 +11,23 @@ use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
 use Shopsys\ShopBundle\Model\Product\Product;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null findById(int $parameterId)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter getById(int $parameterId)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue findOrCreateParameterValueByValueTextAndLocale(string $valueText, string $locale)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue getParameterValueByValueTextAndLocale(string $valueText, string $locale)
+ * @method \Doctrine\ORM\QueryBuilder getProductParameterValuesByProductQueryBuilder(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByProduct(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByProductSortedByName(\Shopsys\ShopBundle\Model\Product\Product $product, string $locale)
+ * @method string[][] getParameterValuesIndexedByProductIdAndParameterNameForProducts(\Shopsys\ShopBundle\Model\Product\Product[] $products, string $locale)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[] getProductParameterValuesByParameter(\Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
+ */
 class ParameterRepository extends BaseParameterRepository
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue|null
      */
@@ -27,7 +40,7 @@ class ParameterRepository extends BaseParameterRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -38,7 +51,7 @@ class ParameterRepository extends BaseParameterRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
      */

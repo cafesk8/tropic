@@ -18,7 +18,7 @@ class CountryDataFixture extends AbstractReferenceFixture
     public const COUNTRY_FRANCE = 'country_france';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
      */
     protected $countryFacade;
 
@@ -28,7 +28,7 @@ class CountryDataFixture extends AbstractReferenceFixture
     protected $countryDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Model\Country\CountryDataFactoryInterface $countryDataFactory
      */
     public function __construct(CountryFacade $countryFacade, CountryDataFactoryInterface $countryDataFactory)
@@ -81,7 +81,7 @@ class CountryDataFixture extends AbstractReferenceFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryData $countryData
+     * @param \Shopsys\ShopBundle\Model\Country\CountryData $countryData
      * @param string $referenceName
      */
     protected function createCountry(CountryData $countryData, $referenceName): void

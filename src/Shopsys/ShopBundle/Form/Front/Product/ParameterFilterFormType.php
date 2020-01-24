@@ -25,7 +25,7 @@ class ParameterFilterFormType extends AbstractType implements DataTransformerInt
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig $config */
+        /** @var \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig $config */
         $config = $options['product_filter_config'];
 
         $this->parameterChoicesIndexedByParameterId = [];
@@ -63,7 +63,7 @@ class ParameterFilterFormType extends AbstractType implements DataTransformerInt
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue[][]|null $value
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[][]|null $value
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData[]|null
      */
     public function reverseTransform($value)
@@ -89,7 +89,7 @@ class ParameterFilterFormType extends AbstractType implements DataTransformerInt
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData[]|null $value
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue[][]|null
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[][]|null
      */
     public function transform($value)
     {

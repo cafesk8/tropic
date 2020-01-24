@@ -13,7 +13,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension as BaseNumberFormatter
 class NumberFormatterExtension extends BaseNumberFormatterExtension
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
@@ -25,7 +25,7 @@ class NumberFormatterExtension extends BaseNumberFormatterExtension
     /**
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \CommerceGuys\Intl\NumberFormat\NumberFormatRepositoryInterface $numberFormatRepository
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \CommerceGuys\Intl\Currency\CurrencyRepositoryInterface $intlCurrencyRepository
      */
     public function __construct(Localization $localization, NumberFormatRepositoryInterface $numberFormatRepository, CurrencyFacade $currencyFacade, CurrencyRepositoryInterface $intlCurrencyRepository)

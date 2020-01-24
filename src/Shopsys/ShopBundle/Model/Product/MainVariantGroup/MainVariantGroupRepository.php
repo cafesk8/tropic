@@ -38,7 +38,7 @@ class MainVariantGroupRepository
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function getProductsQueryBuilder(int $domainId, PricingGroup $pricingGroup): QueryBuilder
@@ -58,7 +58,7 @@ class MainVariantGroupRepository
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsForMainVariantGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
@@ -71,7 +71,7 @@ class MainVariantGroupRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[]
      */
     public function getByDistinguishingParameter(Parameter $parameter): array
@@ -84,7 +84,7 @@ class MainVariantGroupRepository
     /**
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[] $mainVariantGroups
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsForMainVariantGroups(array $mainVariantGroups, int $domainId, PricingGroup $pricingGroup): array

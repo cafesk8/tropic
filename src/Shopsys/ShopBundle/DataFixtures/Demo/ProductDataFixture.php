@@ -36,10 +36,10 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     /** @var \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureCsvReader */
     protected $productDataFixtureCsvReader;
 
-    /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade */
+    /** @var \Shopsys\ShopBundle\Model\Product\ProductFacade */
     protected $productFacade;
 
-    /** @var \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade */
+    /** @var \Shopsys\ShopBundle\Model\Product\ProductVariantFacade */
     protected $productVariantFacade;
 
     /**
@@ -48,7 +48,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     private $productDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory
      */
     private $parameterValueDataFactory;
 
@@ -67,10 +67,10 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      * @param \Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector $referenceInjector
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureCsvReader $productDataFixtureCsvReader
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade $productVariantFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductVariantFacade $productVariantFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
@@ -131,8 +131,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
     /**
      * @param string $referenceName
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
+     * @return \Shopsys\ShopBundle\Model\Product\Product
      */
     protected function createProduct($referenceName, ProductData $productData)
     {
@@ -144,7 +144,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product[] $productsByCatnum
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $productsByCatnum
      * @param int $productNo
      */
     protected function createVariants(array $productsByCatnum, $productNo)
@@ -202,8 +202,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $mainVariant
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
      */
     private function setParameterToMainVariant(Parameter $parameter, Product $mainVariant)
     {

@@ -20,7 +20,7 @@ class FlagsMassAction implements MassEditActionInterface
     private const OPERATION_SET = 'set';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
      */
     private $flagFacade;
 
@@ -30,7 +30,7 @@ class FlagsMassAction implements MassEditActionInterface
     private $entityManager;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      */
     public function __construct(

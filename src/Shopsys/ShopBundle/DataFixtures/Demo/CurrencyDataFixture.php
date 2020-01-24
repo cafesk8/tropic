@@ -16,7 +16,7 @@ class CurrencyDataFixture extends AbstractReferenceFixture
     public const CURRENCY_EUR = 'currency_eur';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     protected $currencyFacade;
 
@@ -26,7 +26,7 @@ class CurrencyDataFixture extends AbstractReferenceFixture
     protected $currencyDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyDataFactoryInterface $currencyDataFactory
      */
     public function __construct(

@@ -159,7 +159,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerPage $dataLayerPage
      * @param string $locale
      */
@@ -172,7 +172,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param string $locale
      * @return \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerProduct[]
      */
@@ -199,7 +199,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product[] $products
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param string $locale
      * @return \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerProduct[]
      */
@@ -216,7 +216,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerProduct $dataLayerProduct
      * @param string $locale
      */

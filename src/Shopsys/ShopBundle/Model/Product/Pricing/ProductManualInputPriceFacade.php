@@ -13,6 +13,9 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFactory
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
+ */
 class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
 {
     /**
@@ -22,7 +25,7 @@ class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFactoryInterface $productManualInputPriceFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
@@ -33,7 +36,7 @@ class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $inputPrice
      */

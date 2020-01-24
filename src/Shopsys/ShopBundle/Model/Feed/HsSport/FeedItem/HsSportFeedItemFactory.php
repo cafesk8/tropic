@@ -18,12 +18,12 @@ use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation;
 class HsSportFeedItemFactory
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\ImageFacade
+     * @var \Shopsys\ShopBundle\Component\Image\ImageFacade
      */
     private $imageFacade;
 
@@ -44,7 +44,7 @@ class HsSportFeedItemFactory
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
@@ -127,9 +127,9 @@ class HsSportFeedItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return \Shopsys\FrameworkBundle\Component\Image\Image[]
+     * @return \Shopsys\ShopBundle\Component\Image\Image[]
      */
     protected function getAllImagesUrlsByProduct(Product $product, DomainConfig $domainConfig): array
     {
@@ -152,7 +152,7 @@ class HsSportFeedItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return string|null
      */
     protected function getBrandName(Product $product): ?string
@@ -163,7 +163,7 @@ class HsSportFeedItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice
      */

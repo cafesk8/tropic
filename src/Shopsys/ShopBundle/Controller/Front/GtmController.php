@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GtmController extends FrontBaseController
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
@@ -27,7 +27,7 @@ class GtmController extends FrontBaseController
     private $gtmContainer;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmContainer $gtmContainer
      */

@@ -83,7 +83,7 @@ class GoPayFacadeOnCurrentDomain
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @return bool
      */
     public function isOrderGoPayUnpaid(Order $order): bool

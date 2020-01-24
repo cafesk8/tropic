@@ -12,6 +12,16 @@ use Shopsys\FrameworkBundle\Model\Article\ArticleFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Article\ArticleRepository;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 
+/**
+ * @property \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+ * @method \Shopsys\ShopBundle\Model\Article\Article|null findById(int $articleId)
+ * @method \Shopsys\ShopBundle\Model\Article\Article getById(int $articleId)
+ * @method \Shopsys\ShopBundle\Model\Article\Article getVisibleById(int $articleId)
+ * @method \Shopsys\ShopBundle\Model\Article\Article[] getVisibleArticlesForPlacementOnCurrentDomain(string $placement)
+ * @method \Shopsys\ShopBundle\Model\Article\Article create(\Shopsys\ShopBundle\Model\Article\ArticleData $articleData)
+ * @method \Shopsys\ShopBundle\Model\Article\Article edit(int $articleId, \Shopsys\ShopBundle\Model\Article\ArticleData $articleData)
+ * @method \Shopsys\ShopBundle\Model\Article\Article[] getAllByDomainId(int $domainId)
+ */
 class ArticleFacade extends BaseArticleFacade
 {
     /**
@@ -26,9 +36,9 @@ class ArticleFacade extends BaseArticleFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Article\ArticleRepository $articleRepository
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleRepository $articleRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Article\ArticleFactoryInterface $articleFactory
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
@@ -58,7 +68,7 @@ class ArticleFacade extends BaseArticleFacade
     /**
      * @param string $settingValue
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Article\Article|null
+     * @return \Shopsys\ShopBundle\Model\Article\Article|null
      */
     public function findArticleBySettingValueAndDomainId(string $settingValue, int $domainId): ?Article
     {
@@ -90,7 +100,7 @@ class ArticleFacade extends BaseArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Article\Article $article
+     * @param \Shopsys\ShopBundle\Model\Article\Article $article
      * @return bool
      */
     public function isArticleUsedForBushmanClub(Article $article): bool

@@ -17,6 +17,12 @@ use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 /**
  * @ORM\Table(name="carts")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Customer\User|null $user
+ * @property \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|\Doctrine\Common\Collections\Collection $items
+ * @method __construct(string $cartIdentifier, \Shopsys\ShopBundle\Model\Customer\User|null $user)
+ * @method addItem(\Shopsys\ShopBundle\Model\Cart\Item\CartItem $item)
+ * @method \Shopsys\ShopBundle\Model\Cart\Item\CartItem getItemById(int $itemId)
+ * @method \Shopsys\ShopBundle\Model\Cart\Item\CartItem|null findSimilarItemByItem(\Shopsys\ShopBundle\Model\Cart\Item\CartItem $item)
  */
 class Cart extends BaseCart
 {
@@ -38,7 +44,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
      * @param mixed[] $selectedGifts
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
@@ -71,7 +77,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param mixed[] $selectedPromoProductsItems
@@ -124,7 +130,7 @@ class Cart extends BaseCart
 
     /**
      * @param $productId
-     * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem
      */
     public function getItemByProductId(int $productId): CartItem
     {
@@ -218,7 +224,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[]
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function getItems()
     {

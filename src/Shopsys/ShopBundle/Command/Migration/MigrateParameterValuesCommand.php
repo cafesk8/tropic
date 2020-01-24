@@ -111,7 +111,7 @@ class MigrateParameterValuesCommand extends Command
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData|\Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData|\Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
      */
     private function mapParameterValueData(ParameterValue $parameterValue): ParameterValueData
     {

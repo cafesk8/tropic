@@ -13,6 +13,9 @@ use Shopsys\ShopBundle\Model\Product\Brand\Exception\InvalidBrandTypeException;
 /**
  * @ORM\Table(name="brands")
  * @ORM\Entity
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Product\Brand\BrandData $brandData)
+ * @method setDomains(\Shopsys\ShopBundle\Model\Product\Brand\BrandData $brandData)
+ * @method createDomains(\Shopsys\ShopBundle\Model\Product\Brand\BrandData $brandData)
  */
 class Brand extends BaseBrand
 {

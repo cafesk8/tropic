@@ -37,7 +37,7 @@ class GtmFacade
     private $currentCustomer;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
@@ -51,7 +51,7 @@ class GtmFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmContainer $gtmContainer
      * @param \Shopsys\ShopBundle\Model\Gtm\DataLayerMapper $dataLayerMapper
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
@@ -128,7 +128,7 @@ class GtmFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     public function onCartPage(OrderPreview $orderPreview): void
     {
@@ -152,7 +152,7 @@ class GtmFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     public function onOrderTransportAndPaymentPage(OrderPreview $orderPreview): void
     {
@@ -178,7 +178,7 @@ class GtmFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     public function onOrderDeliveryPage(OrderPreview $orderPreview): void
     {

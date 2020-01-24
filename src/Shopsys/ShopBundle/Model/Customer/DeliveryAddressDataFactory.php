@@ -10,10 +10,14 @@ use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactory as BaseDeliveryAddressDataFactory;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData createFromDeliveryAddress(\Shopsys\ShopBundle\Model\Customer\DeliveryAddress $deliveryAddress)
+ * @method fillFromDeliveryAddress(\Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData $deliveryAddressData, \Shopsys\ShopBundle\Model\Customer\DeliveryAddress $deliveryAddress)
+ */
 class DeliveryAddressDataFactory extends BaseDeliveryAddressDataFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
+     * @param \Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress
      * @return \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData
      */
     public function createFromBillingAddress(BillingAddress $billingAddress): DeliveryAddressData
@@ -26,7 +30,7 @@ class DeliveryAddressDataFactory extends BaseDeliveryAddressDataFactory
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData $deliveryAddressData
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
+     * @param \Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress
      */
     protected function fillFromBillingAddress(DeliveryAddressData $deliveryAddressData, BillingAddress $billingAddress): void
     {
@@ -65,7 +69,7 @@ class DeliveryAddressDataFactory extends BaseDeliveryAddressDataFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @return \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData
      */
     public function createFromOrder(Order $order): DeliveryAddressData

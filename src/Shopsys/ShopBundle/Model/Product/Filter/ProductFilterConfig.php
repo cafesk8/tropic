@@ -7,6 +7,12 @@ namespace Shopsys\ShopBundle\Model\Product\Filter;
 use Shopsys\FrameworkBundle\Model\Product\Filter\PriceRange;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig as BaseProductFilterConfig;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Flag\Flag[] $flagChoices
+ * @property \Shopsys\ShopBundle\Model\Product\Brand\Brand[] $brandChoices
+ * @method \Shopsys\ShopBundle\Model\Product\Flag\Flag[] getFlagChoices()
+ * @method \Shopsys\ShopBundle\Model\Product\Brand\Brand[] getBrandChoices()
+ */
 class ProductFilterConfig extends BaseProductFilterConfig
 {
     /**

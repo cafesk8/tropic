@@ -28,17 +28,17 @@ class PromoCodeController extends FrontBaseController
     private $currentPromoCodeFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade
      */
     private $promoCodeFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension
+     * @var \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension
      */
     private $dateTimeFormatterExtension;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Cart\CartFacade
+     * @var \Shopsys\ShopBundle\Model\Cart\CartFacade
      */
     private $cartFacade;
 
@@ -48,7 +48,7 @@ class PromoCodeController extends FrontBaseController
     private $priceExtension;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
@@ -58,12 +58,12 @@ class PromoCodeController extends FrontBaseController
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
-     * @param \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
-     * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(

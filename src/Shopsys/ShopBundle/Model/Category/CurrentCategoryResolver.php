@@ -11,18 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 class CurrentCategoryResolver
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryFacade
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
      */
     private $categoryFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,

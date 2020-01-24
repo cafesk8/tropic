@@ -14,6 +14,9 @@ use Shopsys\FrameworkBundle\Model\Country\CountryData as BaseCountryData;
  * @ORM\Entity
  *
  * @method CountryTranslation translation(?string $locale = null)
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Country\CountryData $countryData)
+ * @method setDomains(\Shopsys\ShopBundle\Model\Country\CountryData $countryData)
+ * @method createDomains(\Shopsys\ShopBundle\Model\Country\CountryData $countryData)
  */
 class Country extends BaseCountry
 {
@@ -35,7 +38,7 @@ class Country extends BaseCountry
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryData $countryData
+     * @param \Shopsys\ShopBundle\Model\Country\CountryData $countryData
      */
     public function edit(CountryData $countryData): void
     {

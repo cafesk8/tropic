@@ -38,7 +38,7 @@ class CategoryBlogArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[] $blogArticles
      */
     public function saveBlogArticlesToCategory(Category $category, array $blogArticles): void
@@ -60,7 +60,7 @@ class CategoryBlogArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
      */
     public function getAllBlogArticlesByCategory(Category $category): array
@@ -71,7 +71,7 @@ class CategoryBlogArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @param int $domainId
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]

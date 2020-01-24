@@ -48,12 +48,12 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     private $lastVisitedProductsFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface $productOnCurrentDomainFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      * @param \Shopsys\ShopBundle\Model\Product\View\ListedProductViewFactory $listedProductViewFactory
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionViewFacade $productActionViewFacade
      * @param \Shopsys\ReadModelBundle\Image\ImageViewFacade $imageViewFacade
@@ -100,7 +100,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ReadModelBundle\Product\Listed\ListedProductView[]
      */
     public function getAllOfferedBestsellingProducts(Category $category): array

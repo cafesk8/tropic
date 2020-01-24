@@ -16,7 +16,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param string|null $discountPercent
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[]
      */
     public function calculateDiscounts(array $quantifiedItemsPrices, ?string $discountPercent, ?PromoCode $promoCode = null): array

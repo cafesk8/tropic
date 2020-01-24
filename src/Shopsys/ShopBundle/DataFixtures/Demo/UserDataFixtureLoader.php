@@ -51,17 +51,17 @@ class UserDataFixtureLoader
     protected $path;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Customer\UserDataFactory
      */
     protected $userDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country[]
+     * @var \Shopsys\ShopBundle\Model\Country\Country[]
      */
     protected $countries;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
      */
     protected $customerDataFactory;
 
@@ -83,8 +83,8 @@ class UserDataFixtureLoader
     /**
      * @param string $path
      * @param \Shopsys\FrameworkBundle\Component\Csv\CsvReader $csvReader
-     * @param \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface $userDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface $deliveryAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -108,7 +108,7 @@ class UserDataFixtureLoader
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\Country[] $countries
+     * @param \Shopsys\ShopBundle\Model\Country\Country[] $countries
      */
     public function injectReferences(array $countries)
     {
@@ -224,7 +224,7 @@ class UserDataFixtureLoader
     /**
      * @param string $countryName
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Country\Country
+     * @return \Shopsys\ShopBundle\Model\Country\Country
      */
     protected function getCountryByNameAndDomain(string $countryName, int $domainId): Country
     {

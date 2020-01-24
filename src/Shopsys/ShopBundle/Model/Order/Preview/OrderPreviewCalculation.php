@@ -23,6 +23,10 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price|null calculateRoundingPrice(\Shopsys\ShopBundle\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice)
+ */
 class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 {
     /**
@@ -42,9 +46,9 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation $quantifiedProductDiscountCalculation
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation $quantifiedProductDiscountCalculation
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
@@ -74,9 +78,9 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct[] $quantifiedProducts
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport|null $transport
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment|null $payment
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      * @param string|null $promoCodeDiscountPercent
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $giftsInCart
@@ -231,7 +235,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport $transport
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport $transport
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param int $domainId
@@ -252,7 +256,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment $payment
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment $payment
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param int $domainId
@@ -273,7 +277,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment $payment
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment $payment
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $paymentPrice

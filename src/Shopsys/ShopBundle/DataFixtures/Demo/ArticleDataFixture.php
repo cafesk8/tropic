@@ -19,18 +19,18 @@ class ArticleDataFixture extends AbstractReferenceFixture
     public const ARTICLE_COOKIES_1 = 'article_cookies_1';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Article\ArticleFacade
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
      */
     protected $articleFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Article\ArticleDataFactory
      */
     protected $articleDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Article\ArticleFacade $articleFacade
-     * @param \Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface $articleDataFactory
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleDataFactory $articleDataFactory
      */
     public function __construct(ArticleFacade $articleFacade, ArticleDataFactoryInterface $articleDataFactory)
     {
@@ -109,7 +109,7 @@ class ArticleDataFixture extends AbstractReferenceFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Article\ArticleData $articleData
+     * @param \Shopsys\ShopBundle\Model\Article\ArticleData $articleData
      * @param string|null $referenceName
      */
     protected function createArticle(ArticleData $articleData, $referenceName = null)

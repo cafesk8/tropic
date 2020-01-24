@@ -13,6 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+ * @property \Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory|null $promoCodeGridFactory
+ * @method __construct(\Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeInlineEdit $promoCodeInlineEdit, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface|null $promoCodeDataFactory, \Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory|null $promoCodeGridFactory, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider|null $breadcrumbOverrider, bool $useInlineEditation)
+ * @method setPromoCodeGridFactory(\Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory $promoCodeGridFactory)
  */
 class PromoCodeController extends BasePromoCodeController
 {

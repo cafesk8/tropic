@@ -18,13 +18,13 @@ class MainVariantGroupDataFixture extends AbstractReferenceFixture implements De
     private $mainVariantGroupFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     private $parameterFacade;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(MainVariantGroupFacade $mainVariantGroupFacade, ParameterFacade $parameterFacade)
     {

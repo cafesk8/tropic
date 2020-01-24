@@ -15,7 +15,7 @@ use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
@@ -25,7 +25,7 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
     protected $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(Setting $setting, Domain $domain)
@@ -50,18 +50,18 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
     protected function loadForDomain(int $domainId)
     {
         $termsAndConditionsDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
-        /* @var $termsAndConditionsDomain \Shopsys\FrameworkBundle\Model\Article\Article */
+        /* @var $termsAndConditionsDomain \Shopsys\ShopBundle\Model\Article\Article */
         $this->setting->setForDomain(Setting::TERMS_AND_CONDITIONS_ARTICLE_ID, $termsAndConditionsDomain->getId(), $domainId);
 
         $privacyPolicyDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
-        /* @var $privacyPolicyDomain \Shopsys\FrameworkBundle\Model\Article\Article */
+        /* @var $privacyPolicyDomain \Shopsys\ShopBundle\Model\Article\Article */
         $this->setting->setForDomain(Setting::PRIVACY_POLICY_ARTICLE_ID, $privacyPolicyDomain->getId(), $domainId);
 
         $cookiesDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_COOKIES, $domainId);
-        /* @var $cookiesDomain \Shopsys\FrameworkBundle\Model\Article\Article */
+        /* @var $cookiesDomain \Shopsys\ShopBundle\Model\Article\Article */
         $this->setting->setForDomain(Setting::COOKIES_ARTICLE_ID, $cookiesDomain->getId(), $domainId);
 
-        /* @var $pricingGroup \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup */
+        /* @var $pricingGroup \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup */
         $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, $domainId);
         $this->setting->setForDomain(Setting::DEFAULT_PRICING_GROUP, $pricingGroup->getId(), $domainId);
 
@@ -101,7 +101,7 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
         $this->setting->setForDomain(Setting::PERSONAL_DATA_DISPLAY_SITE_CONTENT, $personalDataDisplaySiteContent, $domainId);
         $this->setting->setForDomain(Setting::PERSONAL_DATA_EXPORT_SITE_CONTENT, $personalDataExportSiteContent, $domainId);
 
-        /** @var \Shopsys\FrameworkBundle\Model\Article\Article $articleProductSizeDomain */
+        /** @var \Shopsys\ShopBundle\Model\Article\Article $articleProductSizeDomain */
         $articleProductSizeDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRODUCT_SIZE, $domainId);
         $this->setting->setForDomain(\Shopsys\ShopBundle\Component\Setting\Setting::PRODUCT_SIZE_ARTICLE_ID, $articleProductSizeDomain->getId(), $domainId);
     }

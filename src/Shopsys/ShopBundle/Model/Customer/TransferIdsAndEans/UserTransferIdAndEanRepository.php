@@ -32,7 +32,7 @@ class UserTransferIdAndEanRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $customer
+     * @param \Shopsys\ShopBundle\Model\Customer\User $customer
      * @param string $transferId
      * @param mixed $ean
      */

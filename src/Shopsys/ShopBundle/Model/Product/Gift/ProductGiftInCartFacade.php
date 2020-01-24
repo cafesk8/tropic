@@ -39,14 +39,14 @@ class ProductGiftInCartFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem[] $cartItems
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $cartItems
      * @return \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[]
      */
     public function getProductGiftInCartByProductId(array $cartItems): array
     {
         $giftsVariantsByProductId = [];
 
-        /** @var \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem $cartItem */
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem */
         foreach ($cartItems as $cartItem) {
             if ($cartItem->getProduct()->isVariant() === true) {
                 $productGifts = $cartItem->getProduct()->getMainVariant()->getActiveProductGiftsByDomainId($this->domain->getId());
@@ -71,7 +71,7 @@ class ProductGiftInCartFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $productGift
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem $cartItem
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem $cartItem
      * @return \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[]
      */
     private function getGiftVariants(Product $productGift, CartItem $cartItem): array

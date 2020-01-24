@@ -144,7 +144,7 @@ class MigrateCustomersPasswordsCommand extends Command
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
      * @param string $password
      */
     private function changePasswordByMigration(User $user, string $password): void

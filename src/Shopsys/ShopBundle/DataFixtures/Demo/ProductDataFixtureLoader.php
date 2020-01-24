@@ -56,17 +56,17 @@ class ProductDataFixtureLoader
     protected $availabilities;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @var \Shopsys\ShopBundle\Model\Category\Category[]
      */
     protected $categories;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\Flag[]
      */
     protected $flags;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\Brand[]
+     * @var \Shopsys\ShopBundle\Model\Product\Brand\Brand[]
      */
     protected $brands;
 
@@ -76,12 +76,12 @@ class ProductDataFixtureLoader
     protected $units;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup[]
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[]
      */
     protected $pricingGroups;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Product\ProductDataFactory
      */
     protected $productDataFactory;
 
@@ -91,15 +91,15 @@ class ProductDataFixtureLoader
     protected $domain;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
      */
     protected $pricingGroupFacade;
 
     /**
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader $productParametersFixtureLoader
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface $productDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         ProductParametersFixtureLoader $productParametersFixtureLoader,
@@ -116,11 +116,11 @@ class ProductDataFixtureLoader
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat[] $vats
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\Availability[] $availabilities
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category[] $categories
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[] $flags
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\Brand[] $brands
+     * @param \Shopsys\ShopBundle\Model\Category\Category[] $categories
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\Flag[] $flags
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\Brand[] $brands
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\Unit[] $units
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup[] $pricingGroups
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] $pricingGroups
      */
     public function refreshCachedEntities(
         array $vats,
@@ -143,7 +143,7 @@ class ProductDataFixtureLoader
 
     /**
      * @param array $row
-     * @return \Shopsys\FrameworkBundle\Model\Product\ProductData
+     * @return \Shopsys\ShopBundle\Model\Product\ProductData
      */
     public function createProductDataFromRow($row)
     {
@@ -337,7 +337,7 @@ class ProductDataFixtureLoader
 
     /**
      * @param array $row
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param int $domainId
      */
     protected function setProductDataPricesFromCsv(array $row, ProductData $productData)

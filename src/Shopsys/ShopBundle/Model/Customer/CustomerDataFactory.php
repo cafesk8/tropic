@@ -11,11 +11,14 @@ use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Customer\CustomerData createFromUser(\Shopsys\ShopBundle\Model\Customer\User $user)
+ */
 class CustomerDataFactory extends BaseCustomerDataFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
      */
     public function createAmendedByOrder(User $user, Order $order): CustomerData
@@ -40,8 +43,8 @@ class CustomerDataFactory extends BaseCustomerDataFactory
     /**
      * Method has to be overwritten, because we always want to update customer data with data from an order
      *
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress
      * @return \Shopsys\FrameworkBundle\Model\Customer\BillingAddressData
      */
     protected function getAmendedBillingAddressDataByOrder(Order $order, BillingAddress $billingAddress)
@@ -63,8 +66,8 @@ class CustomerDataFactory extends BaseCustomerDataFactory
     /**
      * Method has to be overwritten, because we always want to update customer data with data from an order
      *
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
      * @return \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData
      */
     protected function getAmendedDeliveryAddressDataByOrder(Order $order, ?DeliveryAddress $deliveryAddress = null)
@@ -102,7 +105,7 @@ class CustomerDataFactory extends BaseCustomerDataFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $newPassword
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData

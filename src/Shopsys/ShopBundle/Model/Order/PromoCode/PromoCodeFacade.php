@@ -11,7 +11,11 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository;
 
 /**
- * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById($promoCodeId)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode create(\Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode edit(int $promoCodeId, \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById(int $promoCodeId)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null findPromoCodeByCode(string $code)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] getAll()
  */
 class PromoCodeFacade extends BasePromoCodeFacade
 {
@@ -29,9 +33,9 @@ class PromoCodeFacade extends BasePromoCodeFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository $promoCodeRepository
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeRepository $promoCodeRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface $promoCodeFactory
-     * @param \Shopsys\FrameworkBundle\Component\String\HashGenerator $hashGenerator
+     * @param \Shopsys\ShopBundle\Component\String\HashGenerator $hashGenerator
      */
     public function __construct(
         EntityManagerInterface $em,

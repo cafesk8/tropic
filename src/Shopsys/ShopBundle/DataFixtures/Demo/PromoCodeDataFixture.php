@@ -24,7 +24,7 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
     protected $promoCodeDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory
      */
     public function __construct(

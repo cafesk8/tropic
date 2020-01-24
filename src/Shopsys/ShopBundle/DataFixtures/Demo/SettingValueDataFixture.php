@@ -13,12 +13,12 @@ use Shopsys\FrameworkBundle\Component\Setting\Setting;
 class SettingValueDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
     public function __construct(Setting $setting)
     {
@@ -32,9 +32,9 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
     {
         $termsAndConditions = $this->getReference(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS_1);
         $privacyPolicy = $this->getReference(ArticleDataFixture::ARTICLE_PRIVACY_POLICY_1);
-        /* @var $termsAndConditions \Shopsys\FrameworkBundle\Model\Article\Article */
+        /* @var $termsAndConditions \Shopsys\ShopBundle\Model\Article\Article */
         $cookies = $this->getReference(ArticleDataFixture::ARTICLE_COOKIES_1);
-        /* @var $cookies \Shopsys\FrameworkBundle\Model\Article\Article */
+        /* @var $cookies \Shopsys\ShopBundle\Model\Article\Article */
 
         $personalDataDisplaySiteContent = 'Zadáním e-mailu níže si můžete nechat zobrazit vaše osobní údaje, která evidujeme v našem internetovém obchodu.
          Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem. 

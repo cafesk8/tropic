@@ -26,7 +26,7 @@ class StoreFacade
     private $storeRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\ImageFacade
+     * @var \Shopsys\ShopBundle\Component\Image\ImageFacade
      */
     private $imageFacade;
 
@@ -48,7 +48,7 @@ class StoreFacade
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Store\StoreRepository $storeRepository
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Store\StoreFactory $storeFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade

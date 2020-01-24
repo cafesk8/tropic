@@ -14,6 +14,9 @@ use Shopsys\FrameworkBundle\Model\Product\Flag\Flag as BaseFlag;
  * @ORM\Entity
  *
  * @method FlagTranslation translation(?string $locale = null)
+ * @method __construct(\Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData)
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData)
+ * @method edit(\Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData)
  */
 class Flag extends BaseFlag implements OrderableEntityInterface
 {

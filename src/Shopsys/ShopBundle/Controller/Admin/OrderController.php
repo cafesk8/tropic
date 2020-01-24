@@ -27,6 +27,11 @@ use Shopsys\ShopBundle\Model\Order\MassAction\OrderMassActionFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
+ * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade $orderItemFacade
+ * @property \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
+ */
 class OrderController extends BaseOrderController
 {
     /**
@@ -40,15 +45,15 @@ class OrderController extends BaseOrderController
     private $csvExportMassAction;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
+     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\AdvancedSearchOrderFacade $advancedSearchOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation $orderItemPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade $orderItemFacade
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade $orderItemFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface $orderDataFactory
+     * @param \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
      * @param \Shopsys\ShopBundle\Model\Order\MassAction\OrderMassActionFacade $orderMassActionFacade
      * @param \Shopsys\ShopBundle\Model\Order\MassAction\CsvExportMassAction $csvExportMassAction
      */
@@ -143,7 +148,7 @@ class OrderController extends BaseOrderController
      */
     public function listAction(Request $request): Response
     {
-        /* @var $administrator \Shopsys\FrameworkBundle\Model\Administrator\Administrator */
+        /* @var $administrator \Shopsys\ShopBundle\Model\Administrator\Administrator */
         $administrator = $this->getUser();
 
         $advancedSearchForm = $this->advancedSearchOrderFacade->createAdvancedSearchOrderForm($request);

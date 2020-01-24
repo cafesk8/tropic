@@ -21,17 +21,17 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
     public const PAYMENT_CASH = 'payment_cash';
     public const PAYMENT_GOPAY = Payment::TYPE_GOPAY;
 
-    /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade */
+    /** @var \Shopsys\ShopBundle\Model\Payment\PaymentFacade */
     protected $paymentFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Payment\PaymentDataFactory
      */
     protected $paymentDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface $paymentDataFactory
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentDataFactory $paymentDataFactory
      */
     public function __construct(
         PaymentFacade $paymentFacade,
@@ -220,7 +220,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
 
     /**
      * @param string $referenceName
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentData $paymentData
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData
      * @param array $transportsReferenceNames
      */
     protected function createPayment(

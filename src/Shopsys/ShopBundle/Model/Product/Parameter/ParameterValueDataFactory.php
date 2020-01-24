@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory as
 class ParameterValueDataFactory extends BaseParameterValueDataFactory
 {
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
      */
     public function create(): BaseParameterValueData
     {
@@ -19,7 +19,7 @@ class ParameterValueDataFactory extends BaseParameterValueDataFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue $parameterValue
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
      */
     public function createFromParameterValue(ParameterValue $parameterValue): BaseParameterValueData

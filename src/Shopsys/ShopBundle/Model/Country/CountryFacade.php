@@ -8,6 +8,17 @@ use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade as BaseCountryFacade;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 
+/**
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\ShopBundle\Model\Country\CountryRepository $countryRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Country\CountryFactoryInterface $countryFactory)
+ * @method \Shopsys\ShopBundle\Model\Country\Country getById(int $countryId)
+ * @method \Shopsys\ShopBundle\Model\Country\Country create(\Shopsys\ShopBundle\Model\Country\CountryData $countryData)
+ * @method \Shopsys\ShopBundle\Model\Country\Country edit(int $countryId, \Shopsys\ShopBundle\Model\Country\CountryData $countryData)
+ * @method \Shopsys\ShopBundle\Model\Country\Country[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Country\Country[] getAllEnabledOnDomain(int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Country\Country[] getAllOnDomain(int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Country\Country[] getAllEnabledOnCurrentDomain()
+ * @method \Shopsys\ShopBundle\Model\Country\Country|null findByCode(string $countryCode)
+ */
 class CountryFacade extends BaseCountryFacade
 {
     /**
@@ -17,7 +28,7 @@ class CountryFacade extends BaseCountryFacade
 
     /**
      * @param string $code
-     * @return \Shopsys\FrameworkBundle\Model\Country\Country
+     * @return \Shopsys\ShopBundle\Model\Country\Country
      */
     public function getByCode(string $code): Country
     {
@@ -45,7 +56,7 @@ class CountryFacade extends BaseCountryFacade
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Country\Country
+     * @return \Shopsys\ShopBundle\Model\Country\Country
      */
     public function getHackedCountry(): Country
     {

@@ -17,7 +17,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     public const FLAG_ACTION_PRODUCT = 'flag_action';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
      */
     protected $flagFacade;
 
@@ -27,7 +27,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     protected $flagDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface $flagDataFactory
      */
     public function __construct(
@@ -62,7 +62,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagData $flagData
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData
      * @param string|null $referenceName
      */
     protected function createFlag(FlagData $flagData, $referenceName = null)

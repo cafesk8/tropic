@@ -21,7 +21,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     public const ADVERT_SIXTH_RECTANGLE = 'advert_sixth_rectangle';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade
+     * @var \Shopsys\ShopBundle\Model\Advert\AdvertFacade
      */
     protected $advertFacade;
 
@@ -31,7 +31,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     private $advertDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade $advertFacade
+     * @param \Shopsys\ShopBundle\Model\Advert\AdvertFacade $advertFacade
      * @param \Shopsys\ShopBundle\Model\Advert\AdvertDataFactory $advertDataFactory
      */
     public function __construct(AdvertFacade $advertFacade, AdvertDataFactory $advertDataFactory)

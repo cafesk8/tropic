@@ -29,12 +29,12 @@ class MallImportOrderDataMapper
     private const CZECH_LOCALE = DomainHelper::CZECH_LOCALE;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Order\OrderDataFactory
      */
     private $orderDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Order\Item\OrderItemDataFactory
      */
     private $orderItemDataFactory;
 
@@ -74,8 +74,8 @@ class MallImportOrderDataMapper
     private $mallImportPriceCalculatorCalculation;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface $orderDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface $orderItemDataFactoryInterface
+     * @param \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemDataFactory $orderItemDataFactoryInterface
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
@@ -165,7 +165,7 @@ class MallImportOrderDataMapper
 
     /**
      * @param mixed[] $mallOrderItem
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemData
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItemData
      */
     private function createOrderItem(array $mallOrderItem): OrderItemData
     {

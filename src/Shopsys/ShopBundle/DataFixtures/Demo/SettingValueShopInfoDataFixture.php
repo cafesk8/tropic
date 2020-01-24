@@ -13,7 +13,7 @@ use Shopsys\FrameworkBundle\Model\ShopInfo\ShopInfoSettingFacade;
 class SettingValueShopInfoDataFixture extends AbstractReferenceFixture
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
@@ -24,7 +24,7 @@ class SettingValueShopInfoDataFixture extends AbstractReferenceFixture
     ];
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
     public function __construct(Setting $setting)
     {

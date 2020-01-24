@@ -17,6 +17,11 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\ShopBundle\Model\Cart\CartFacade;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+ * @property \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+ */
 class OrderPreviewFactory extends BaseOrderPreviewFactory
 {
     /**
@@ -27,10 +32,10 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      */
     public function __construct(
         OrderPreviewCalculation $orderPreviewCalculation,
@@ -45,9 +50,9 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport|null $transport
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment|null $payment
-     * @return \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
+     * @return \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview
      */
     public function createForCurrentUser(?Transport $transport = null, ?Payment $payment = null)
     {
@@ -73,11 +78,11 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct[] $quantifiedProducts
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport|null $transport
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment|null $payment
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User|null $user
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
+     * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      * @param string|null $promoCodeDiscountPercent
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $giftsInCart
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $validEnteredPromoCodes

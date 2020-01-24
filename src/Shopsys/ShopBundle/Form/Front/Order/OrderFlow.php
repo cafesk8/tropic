@@ -22,7 +22,7 @@ class OrderFlow extends FormFlow
     private $domainId;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     * @var \Shopsys\ShopBundle\Model\Country\Country|null
      */
     private $country;
 
@@ -35,7 +35,7 @@ class OrderFlow extends FormFlow
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @param \Shopsys\ShopBundle\Model\Country\Country|null $country
      */
     public function setTransportCountry(?Country $country): void
     {

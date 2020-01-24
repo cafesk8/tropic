@@ -59,7 +59,7 @@ class StoreData
     public $images;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     * @var \Shopsys\ShopBundle\Model\Country\Country|null
      */
     public $country;
 

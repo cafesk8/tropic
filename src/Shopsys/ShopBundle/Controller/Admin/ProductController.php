@@ -34,6 +34,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
+ * @property \Shopsys\ShopBundle\Model\Product\ProductVariantFacade $productVariantFacade
+ * @property \Shopsys\ShopBundle\Component\Setting\Setting $setting
+ */
 class ProductController extends BaseProductController
 {
     /**
@@ -60,16 +65,16 @@ class ProductController extends BaseProductController
      * @param \Shopsys\FrameworkBundle\Model\Product\MassAction\ProductMassActionFacade $productMassActionFacade
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface $productDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
      * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListAdminFacade $productListAdminFacade
      * @param \Shopsys\FrameworkBundle\Model\AdvancedSearch\AdvancedSearchProductFacade $advancedSearchProductFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade $productVariantFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductVariantFacade $productVariantFacade
      * @param \Shopsys\FrameworkBundle\Twig\ProductExtension $productExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\ShopBundle\Model\Product\MassEdit\MassEditFacade $massEditFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
@@ -147,7 +152,7 @@ class ProductController extends BaseProductController
     public function listAction(Request $request): Response
     {
         $administrator = $this->getUser();
-        /* @var $administrator \Shopsys\FrameworkBundle\Model\Administrator\Administrator */
+        /* @var $administrator \Shopsys\ShopBundle\Model\Administrator\Administrator */
 
         $advancedSearchForm = $this->advancedSearchProductFacade->createAdvancedSearchForm($request);
         $advancedSearchData = $advancedSearchForm->getData();

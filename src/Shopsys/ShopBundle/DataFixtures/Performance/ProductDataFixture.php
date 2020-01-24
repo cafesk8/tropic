@@ -39,7 +39,7 @@ class ProductDataFixture
     private $em;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
 
@@ -54,7 +54,7 @@ class ProductDataFixture
     private $sqlLoggerFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade
+     * @var \Shopsys\ShopBundle\Model\Product\ProductVariantFacade
      */
     private $productVariantFacade;
 
@@ -69,7 +69,7 @@ class ProductDataFixture
     private $persistentReferenceFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryRepository
      */
     private $categoryRepository;
 
@@ -84,7 +84,7 @@ class ProductDataFixture
     private $demoDataIterationCounter;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]
      */
     private $productsByCatnum;
 
@@ -116,13 +116,13 @@ class ProductDataFixture
     /**
      * @param int $productTotalCount
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader $productDataFixtureLoader
      * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade $productVariantFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductVariantFacade $productVariantFacade
      * @param \Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector $productDataReferenceInjector
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryRepository $categoryRepository
      * @param \Faker\Generator $faker
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
@@ -240,7 +240,7 @@ class ProductDataFixture
 
     /**
      * @param string $catnum
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product
+     * @return \Shopsys\ShopBundle\Model\Product\Product
      */
     private function getProductByCatnum($catnum)
     {
@@ -254,7 +254,7 @@ class ProductDataFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      */
     private function makeProductDataUnique(ProductData $productData)
     {
@@ -304,7 +304,7 @@ class ProductDataFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      */
     private function setRandomPerformanceCategoriesToProductData(ProductData $productData)
     {
@@ -315,7 +315,7 @@ class ProductDataFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param int $domainId
      */
     private function cleanPerformanceCategoriesFromProductDataByDomainId(ProductData $productData, $domainId)
@@ -328,7 +328,7 @@ class ProductDataFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param int $domainId
      */
     private function addRandomPerformanceCategoriesToProductDataByDomainId(ProductData $productData, $domainId)
@@ -362,7 +362,7 @@ class ProductDataFixture
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return bool
      */
     private function isPerformanceCategory(Category $category)
@@ -370,7 +370,7 @@ class ProductDataFixture
         $firstPerformanceCategory = $this->persistentReferenceFacade->getReference(
             CategoryDataFixture::FIRST_PERFORMANCE_CATEGORY
         );
-        /* @var $firstPerformanceCategory \Shopsys\FrameworkBundle\Model\Category\Category */
+        /* @var $firstPerformanceCategory \Shopsys\ShopBundle\Model\Category\Category */
 
         return $category->getId() >= $firstPerformanceCategory->getId();
     }

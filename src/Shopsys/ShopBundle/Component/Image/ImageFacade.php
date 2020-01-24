@@ -8,6 +8,23 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade as BaseImageFacade;
 
+/**
+ * @property \Shopsys\ShopBundle\Component\FileUpload\FileUpload $fileUpload
+ * @method __construct(mixed $imageUrlPrefix, \Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig $imageConfig, \Shopsys\FrameworkBundle\Component\Image\ImageRepository $imageRepository, \League\Flysystem\FilesystemInterface $filesystem, \Shopsys\ShopBundle\Component\FileUpload\FileUpload $fileUpload, \Shopsys\FrameworkBundle\Component\Image\ImageLocator $imageLocator, \Shopsys\ShopBundle\Component\Image\ImageFactory $imageFactory, \League\Flysystem\MountManager $mountManager)
+ * @method saveImageOrdering(\Shopsys\ShopBundle\Component\Image\Image[] $orderedImages)
+ * @method deleteImages(object $entity, \Shopsys\ShopBundle\Component\Image\Image[] $images)
+ * @method \Shopsys\ShopBundle\Component\Image\Image getImageByEntity(object $entity, string|null $type)
+ * @method \Shopsys\ShopBundle\Component\Image\Image[] getImagesByEntityIndexedById(object $entity, string|null $type)
+ * @method \Shopsys\ShopBundle\Component\Image\Image[] getAllImagesByEntity(object $entity)
+ * @method deleteImageFiles(\Shopsys\ShopBundle\Component\Image\Image $image)
+ * @method string getImageUrl(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig, \Shopsys\ShopBundle\Component\Image\Image|object $imageOrEntity, string|null $sizeName, string|null $type)
+ * @method \Shopsys\FrameworkBundle\Component\Image\AdditionalImageData[] getAdditionalImagesData(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig, \Shopsys\ShopBundle\Component\Image\Image $imageOrEntity, string|null $sizeName, string|null $type)
+ * @method string getAdditionalImageUrl(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig, int $additionalSizeIndex, \Shopsys\ShopBundle\Component\Image\Image $image, string|null $sizeName)
+ * @method \Shopsys\ShopBundle\Component\Image\Image getImageByObject(\Shopsys\ShopBundle\Component\Image\Image|object $imageOrEntity, string|null $type)
+ * @method \Shopsys\ShopBundle\Component\Image\Image getById(int $imageId)
+ * @method setImagePositionsByOrder(\Shopsys\ShopBundle\Component\Image\Image[] $orderedImages)
+ * @method \Shopsys\ShopBundle\Component\Image\Image[] getImagesByEntitiesIndexedByEntityId(int[] $entityIds, string $entityClass)
+ */
 class ImageFacade extends BaseImageFacade
 {
     /**
@@ -56,7 +73,7 @@ class ImageFacade extends BaseImageFacade
     /**
      * @param object $entity
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return \Shopsys\FrameworkBundle\Component\Image\Image[]
+     * @return \Shopsys\ShopBundle\Component\Image\Image[]
      */
     public function getAllImagesUrlsByEntity($entity, DomainConfig $domainConfig): array
     {
@@ -64,7 +81,7 @@ class ImageFacade extends BaseImageFacade
         $allImages = $this->getAllImagesByEntity($entity);
 
         foreach ($allImages as $image) {
-            $allImagesUrls[] = $this->getImageUrl($domainConfig, $image);
+            $allImagesUrls[] = $this->getImageUrl($domainConfig, $image, null, null);
         }
 
         return $allImagesUrls;

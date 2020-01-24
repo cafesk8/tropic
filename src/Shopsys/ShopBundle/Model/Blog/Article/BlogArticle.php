@@ -203,7 +203,7 @@ class BlogArticle extends AbstractTranslatableEntity
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category[] $newBlogCategories
+     * @param \Shopsys\ShopBundle\Model\Category\Category[] $newBlogCategories
      * @param int $domainId
      */
     private function removeOldBlogArticleBlogCategoryDomains(array $newBlogCategories, int $domainId): void
@@ -235,7 +235,7 @@ class BlogArticle extends AbstractTranslatableEntity
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getBlogCategoriesIndexedByDomainId()
     {

@@ -11,7 +11,7 @@ use Shopsys\ShopBundle\Component\Image\ImageFacade;
 class BlogArticleDataFactory
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade
+     * @var \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade
      */
     private $friendlyUrlFacade;
 
@@ -26,7 +26,7 @@ class BlogArticleDataFactory
     private $imageFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      */

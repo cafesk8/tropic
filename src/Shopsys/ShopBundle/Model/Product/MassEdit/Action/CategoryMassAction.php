@@ -62,7 +62,7 @@ class CategoryMassAction implements MassEditActionInterface
     private $categoryRepository;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
