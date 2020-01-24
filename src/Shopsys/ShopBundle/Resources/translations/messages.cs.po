@@ -2272,12 +2272,6 @@ msgstr ""
 msgid "Slevový kupón"
 msgstr ""
 
-msgid "Slevový kupón <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byl modifikován"
-msgstr ""
-
-msgid "Slevový kupón <strong><a href=\"{{ url }}\">{{ name }}</a></strong> byl vytvořen"
-msgstr ""
-
 msgid "Slevový kupón mohou aplikovat pouze přihlášení zákazníci."
 msgstr ""
 

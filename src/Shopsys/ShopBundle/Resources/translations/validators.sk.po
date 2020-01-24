@@ -61,14 +61,14 @@ msgstr "Názov nesmie obsahovať viac ako {{limit}} znakov"
 msgid "Opening hours cannot be longer than {{ limit }} characters"
 msgstr "Otváracie hodiny nesmú byť dlhšie ako {{limit}} znakov"
 
-msgid "Password must be longer than {{ limit }} characters"
-msgstr "Heslo musí mať minimálne {{ limit }} znakov"
-
 msgid "Password cannot be same as e-mail"
 msgstr "Heslo nemôže byť rovnaké ako e-mail"
 
 msgid "Password cannot be same as part of e-mail before at sign"
 msgstr "Heslo nemôže byť rovnaké ako súčasť e-mailu pred podpisom"
+
+msgid "Password must be longer than {{ limit }} characters"
+msgstr "Heslo musí mať minimálne {{ limit }} znakov"
 
 msgid "Passwords do not match"
 msgstr "Heslá sa nezhodujú"
