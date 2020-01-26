@@ -49,7 +49,7 @@ class StoreData
     public $googleMapsLink;
 
     /**
-     * @var string|null
+     * @var int|null
      */
     public $position;
 

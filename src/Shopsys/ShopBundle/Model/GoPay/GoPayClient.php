@@ -106,7 +106,7 @@ class GoPayClient
 
         $response = $this->sendApiRequest($urlPath, GoPay::FORM, RequestMethods::GET);
 
-        if ($response->statusCode !== self::RESPONSE_STATUS_CODE_OK) {
+        if ((string)$response->statusCode !== self::RESPONSE_STATUS_CODE_OK) {
             throw new GoPayPaymentDownloadException(
                 $this->goPay->buildUrl('api/' . $urlPath),
                 RequestMethods::GET,
@@ -134,7 +134,7 @@ class GoPayClient
             RequestMethods::GET
         );
 
-        if ($response->statusCode !== self::RESPONSE_STATUS_CODE_OK) {
+        if ((string)$response->statusCode !== self::RESPONSE_STATUS_CODE_OK) {
             throw new GoPayPaymentDownloadException(
                 $this->goPay->buildUrl('api/' . $urlPath),
                 RequestMethods::GET,

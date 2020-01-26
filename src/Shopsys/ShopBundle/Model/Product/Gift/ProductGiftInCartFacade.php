@@ -40,7 +40,7 @@ class ProductGiftInCartFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $cartItems
-     * @return \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[]
+     * @return \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[][]
      */
     public function getProductGiftInCartByProductId(array $cartItems): array
     {

@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository
  * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
  * @property \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade

@@ -123,7 +123,7 @@ class FilterQueryTest extends TransactionFunctionalTestCase
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery
+     * @param \Shopsys\ShopBundle\Model\Product\Search\FilterQuery $filterQuery
      * @param int[] $ids
      * @param string $message
      */
@@ -154,11 +154,11 @@ class FilterQueryTest extends TransactionFunctionalTestCase
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery
+     * @return \Shopsys\ShopBundle\Model\Product\Search\FilterQuery
      */
     protected function createFilter(): FilterQuery
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory */
+        /** @var \Shopsys\ShopBundle\Model\Product\Search\FilterQueryFactory $filterQueryFactory */
         $filterQueryFactory = $this->getContainer()->get(FilterQueryFactory::class);
 
         /** @var \Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager $elasticSearchStructureManager */
@@ -168,6 +168,9 @@ class FilterQueryTest extends TransactionFunctionalTestCase
 
         $filter = $filterQueryFactory->create($elasticSearchIndexName);
 
-        return $filter->filterOnlySellable();
+        /** @var \Shopsys\ShopBundle\Model\Product\Search\FilterQuery $filterQuery */
+        $filterQuery = $filter->filterOnlySellable();
+
+        return $filterQuery;
     }
 }

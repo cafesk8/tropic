@@ -79,5 +79,7 @@ class PerformanceDataCommand extends Command
         $this->userDataFixture->load($output);
         $output->writeln('<fg=green>loading ' . OrderDataFixture::class . '</fg=green>');
         $this->orderDataFixture->load($output);
+
+        return 0;
     }
 }

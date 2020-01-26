@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode create(\Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData)
  * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode edit(int $promoCodeId, \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData)
  * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById(int $promoCodeId)

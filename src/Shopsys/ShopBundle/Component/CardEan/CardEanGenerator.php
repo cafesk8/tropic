@@ -26,9 +26,9 @@ class CardEanGenerator
      * From: https://glot.io/snippets/eta2anhsg5
      *
      * @param string $code
-     * @return int|null
+     * @return int
      */
-    private function getCheckDigit(string $code): ?int
+    private function getCheckDigit(string $code): int
     {
         $codePartials = str_split($code);
         $checkDigit = null;

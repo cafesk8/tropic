@@ -119,7 +119,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
         ];
         $paymentData->goPayPaymentMethod = $this->getReference(GoPayDataFixture::PAYMENT_CARD_METHOD);
-        $paymentData->prices = [
+        $paymentData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
         ];
@@ -134,7 +134,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             'de' => '',
         ];
         $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
-        $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
+        $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = false;
         $this->createPayment(self::PAYMENT_GOPAY, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
@@ -155,7 +155,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
         ];
-        $paymentData->prices = [
+        $paymentData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
         ];
@@ -170,7 +170,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             'de' => '',
         ];
         $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
-        $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
+        $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = false;
         $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
@@ -192,7 +192,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
         ];
-        $paymentData->prices = [
+        $paymentData->pricesByCurrencyId = [
             $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
             $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
         ];
@@ -207,7 +207,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             'de' => '',
         ];
         $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
-        $paymentData->domains = [Domain::FIRST_DOMAIN_ID];
+        $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = true;
         $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,

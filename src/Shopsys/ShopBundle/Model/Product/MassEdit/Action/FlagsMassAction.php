@@ -25,13 +25,13 @@ class FlagsMassAction implements MassEditActionInterface
     private $flagFacade;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $entityManager;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
      */
     public function __construct(
         FlagFacade $flagFacade,

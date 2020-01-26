@@ -79,7 +79,7 @@ class Transport extends BaseTransport
     protected $mallType;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Country\Country[]|\Doctrine\Common\Collections\Collection
+     * @var \Shopsys\ShopBundle\Model\Country\Country[]|\Doctrine\Common\Collections\Collection|array
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
      * @ORM\JoinTable(name="transport_countries")

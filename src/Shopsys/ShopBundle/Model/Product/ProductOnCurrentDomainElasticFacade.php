@@ -93,9 +93,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
-     * @param int $domainId
-     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[][]
      */
     public function getVariantsIndexedByMainVariantId(array $products): array
     {

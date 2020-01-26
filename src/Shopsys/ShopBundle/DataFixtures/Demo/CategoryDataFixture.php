@@ -66,7 +66,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
          */
         $rootCategory = $this->categoryFacade->getRootCategory();
         $categoryData = $this->categoryDataFactory->create();
-        /** @var $categoryData \Shopsys\ShopBundle\Model\Category\CategoryData */
+        /** @var \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData */
         $emptyDescriptionsForAllDomains = $this->createDomainKeyedArray();
 
         $categoryData->name = [

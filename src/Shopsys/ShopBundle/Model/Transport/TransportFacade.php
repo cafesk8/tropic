@@ -26,6 +26,7 @@ use Shopsys\ShopBundle\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule
 use Shopsys\ShopBundle\Component\Balikobot\Pickup\PickupFacade;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Model\Payment\PaymentRepository $paymentRepository
  * @property \Shopsys\ShopBundle\Model\Transport\TransportVisibilityCalculation $transportVisibilityCalculation
  * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
@@ -101,6 +102,7 @@ class TransportFacade extends BaseTransportFacade
             $transportData->pickupPlace = false;
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = parent::create($transportData);
         $this->scheduleCronModule();
 

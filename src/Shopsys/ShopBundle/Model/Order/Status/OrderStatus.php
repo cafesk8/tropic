@@ -50,7 +50,7 @@ class OrderStatus extends BaseOrderStatus
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusData $orderStatusData
-     * @param $type
+     * @param int $type
      */
     public function __construct(OrderStatusData $orderStatusData, $type)
     {

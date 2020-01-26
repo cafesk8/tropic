@@ -158,8 +158,7 @@ class ProductTransferMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
-     * @param array $productParameterValuesData
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $productParameterValuesData
      * @param string|null $valueText
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */

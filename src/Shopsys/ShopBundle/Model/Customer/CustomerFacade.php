@@ -24,6 +24,7 @@ use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFac
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
  * @method \Shopsys\ShopBundle\Model\Customer\User getUserById(int $userId)
  * @method \Shopsys\ShopBundle\Model\Customer\User|null findUserByEmailAndDomain(string $email, int $domainId)
@@ -122,7 +123,7 @@ class CustomerFacade extends BaseCustomerFacade
 
     /**
      * @param int $limit
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
     public function getNotExportedCustomersBatch(int $limit): array
     {

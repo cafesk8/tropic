@@ -51,7 +51,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $filterData
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider categoryTestCasesProvider
      */
@@ -95,7 +95,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
 
     /**
      * @param string $searchText
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $filterData
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider searchTestCasesProvider
      */
@@ -656,7 +656,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends TransactionFunc
      */
     private function getParameterValuesByLocalesAndTexts(array $valuesTextsByLocales)
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $parameterValues = [];
 

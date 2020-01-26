@@ -17,7 +17,7 @@ use Shopsys\ShopBundle\Model\Payment\PaymentFacade;
 class GoPayPaymentMethodFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -62,7 +62,7 @@ class GoPayPaymentMethodFacade
     private $goPayPaymentMethodDataFactory;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayClientFactory $goPayClientFactory
      * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodRepository $goPayPaymentMethodRepository

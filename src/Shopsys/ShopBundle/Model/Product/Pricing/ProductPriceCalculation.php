@@ -59,7 +59,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
+     * @return \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice
      */
     public function calculatePrice(Product $product, $domainId, PricingGroup $pricingGroup)
     {
@@ -69,7 +69,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice
+     * @return \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice
      */
     protected function calculateProductPriceForPricingGroup(Product $product, PricingGroup $pricingGroup)
     {

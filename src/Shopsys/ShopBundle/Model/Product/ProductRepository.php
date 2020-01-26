@@ -101,7 +101,7 @@ class ProductRepository extends BaseProductRepository
 
     /**
      * @param string $transferNumber
-     * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */
     public function findByTransferNumber(string $transferNumber): ?Product
     {
@@ -112,7 +112,7 @@ class ProductRepository extends BaseProductRepository
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param int $domainId
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[][]
      */
     public function getVariantsIndexedByMainVariantId(array $products, int $domainId, PricingGroup $pricingGroup): array
     {

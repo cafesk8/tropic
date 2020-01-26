@@ -43,7 +43,7 @@ class PricingGroupFacadeTest extends TransactionFunctionalTestCase
     public function testDeleteAndReplace()
     {
         $em = $this->getEntityManager();
-        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade */
+        /** @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade */
         $pricingGroupFacade = $this->getContainer()->get(PricingGroupFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade */
         $customerFacade = $this->getContainer()->get(CustomerFacade::class);

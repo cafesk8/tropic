@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 /**
  * @property \Shopsys\ShopBundle\Model\Product\View\ListedProductViewFactory $listedProductViewFactory
  * @property \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
+ * @property \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
  */
 class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 {
@@ -116,7 +117,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
 
     /**
      * @param array $productsArray
-     * @return \Shopsys\ReadModelBundle\Product\Listed\ListedProductView[]
+     * @return \Shopsys\ShopBundle\Model\Product\View\ListedProductView[]
      */
     protected function createFromArray(array $productsArray): array
     {

@@ -61,7 +61,7 @@ class CartController extends FrontBaseController
     private $errorExtractor;
 
     /**
-     * @var \Symfony\Component\Security\Csrf\CsrfTokenManager
+     * @var \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
      */
     private $tokenManager;
 
@@ -134,7 +134,6 @@ class CartController extends FrontBaseController
      */
     public function indexAction(Request $request)
     {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Cart $cart */
         $cart = $this->cartFacade->findCartOfCurrentCustomer();
         $this->correctCartItemQuantitiesByStore($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
@@ -239,7 +238,7 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param $cartFormData
+     * @param array $cartFormData
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
      * @return mixed[]
@@ -268,7 +267,7 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[][] $promoProductsInCart
      * @param \Shopsys\ShopBundle\Model\Cart\Cart|null $cart
      * @return mixed[]
      */

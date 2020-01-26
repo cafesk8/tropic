@@ -18,6 +18,9 @@ use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProduc
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListedProductViewFactory;
 use Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+ */
 class ListedProductViewFactory extends BaseListedProductViewFactory
 {
     /**
@@ -27,7 +30,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
@@ -159,10 +162,10 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param $priceArray
+     * @param array $priceArray
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    private function getPriceFromPriceArray($priceArray): Price
+    private function getPriceFromPriceArray(array $priceArray): Price
     {
         $priceWithoutVat = Money::create((string)$priceArray['price_without_vat']);
         $priceWithVat = Money::create((string)$priceArray['price_with_vat']);

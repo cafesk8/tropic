@@ -225,7 +225,7 @@ class ProductMallExportMapper
         }
 
         foreach ($images as $image) {
-            $mallProduct->addMedia($this->imageFacade->getImageUrl($domainConfig, $image, 'original'), $firstInLoop === false);
+            $mallProduct->addMedia($this->imageFacade->getImageUrl($domainConfig, $image, 'original', null), $firstInLoop === false);
             $firstInLoop = true;
         }
 
@@ -309,7 +309,7 @@ class ProductMallExportMapper
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return int|null
+     * @return int
      */
     private function findStockQuantity(Product $product): int
     {

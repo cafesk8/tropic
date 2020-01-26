@@ -42,7 +42,6 @@ class FlagFacade extends BaseFlagFacade
 
     /**
      * @param int|null $flagId
-     * @param \Shopsys\ShopBundle\Model\Product\Flag\Flag $flag
      */
     public function setDefaultFlagForFreeTransportAndPayment(?int $flagId): void
     {

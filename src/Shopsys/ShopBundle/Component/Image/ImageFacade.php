@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade as BaseImageFacade;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Component\FileUpload\FileUpload $fileUpload
  * @method __construct(mixed $imageUrlPrefix, \Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig $imageConfig, \Shopsys\FrameworkBundle\Component\Image\ImageRepository $imageRepository, \League\Flysystem\FilesystemInterface $filesystem, \Shopsys\ShopBundle\Component\FileUpload\FileUpload $fileUpload, \Shopsys\FrameworkBundle\Component\Image\ImageLocator $imageLocator, \Shopsys\ShopBundle\Component\Image\ImageFactory $imageFactory, \League\Flysystem\MountManager $mountManager)
  * @method saveImageOrdering(\Shopsys\ShopBundle\Component\Image\Image[] $orderedImages)
@@ -73,7 +74,7 @@ class ImageFacade extends BaseImageFacade
     /**
      * @param object $entity
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return \Shopsys\ShopBundle\Component\Image\Image[]
+     * @return string[]
      */
     public function getAllImagesUrlsByEntity($entity, DomainConfig $domainConfig): array
     {

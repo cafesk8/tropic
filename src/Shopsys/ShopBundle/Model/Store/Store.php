@@ -304,7 +304,7 @@ class Store implements PickupPlaceInterface
     /**
      * @return \Shopsys\ShopBundle\Model\Country\Country|null
      */
-    public function getCountry(): Country
+    public function getCountry(): ?Country
     {
         return $this->country;
     }

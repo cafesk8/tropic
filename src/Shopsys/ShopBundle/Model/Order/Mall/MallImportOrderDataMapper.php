@@ -59,7 +59,7 @@ class MallImportOrderDataMapper
     private $transportFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade
+     * @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade
      */
     private $orderStatusFacade;
 
@@ -80,7 +80,7 @@ class MallImportOrderDataMapper
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
+     * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
      * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\Order\Mall\MallImportPriceCalculatorCalculation $mallImportPriceCalculatorCalculation
      */
@@ -171,7 +171,6 @@ class MallImportOrderDataMapper
     {
         $product = $this->productFacade->getById($mallOrderItem[Order::KEY_ID]);
 
-        /** @var \Shopsys\ShopBundle\Model\Order\Item\OrderItemData $orderItem */
         $orderItemData = $this->orderItemDataFactory->create();
 
         $orderItemData->name = $product->getName(self::CZECH_LOCALE);

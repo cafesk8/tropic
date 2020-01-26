@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodRepository;
 class GoPayBankSwiftFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -25,7 +25,7 @@ class GoPayBankSwiftFacade
     private $goPayBankSwiftDataFactory;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodRepository $goPayPaymentMethodRepository
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftDataFactory $goPayBankSwiftDataFactory
      */

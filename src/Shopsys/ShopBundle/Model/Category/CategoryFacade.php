@@ -149,7 +149,7 @@ class CategoryFacade extends BaseCategoryFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Category\Category $destinationCategory
-     * @return array
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getCategoriesInPath(Category $destinationCategory): array
     {

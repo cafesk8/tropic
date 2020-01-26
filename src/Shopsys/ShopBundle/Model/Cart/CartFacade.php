@@ -24,8 +24,6 @@ use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
- * @method \Shopsys\ShopBundle\Model\Cart\Cart findCartOfCurrentCustomer()
- * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
  * @property \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
  * @property \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
  * @property \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
@@ -33,6 +31,7 @@ use Shopsys\ShopBundle\Model\Product\ProductFacade;
  * @method \Shopsys\ShopBundle\Model\Product\Product getProductByCartItemId(int $cartItemId)
  * @method \Shopsys\ShopBundle\Model\Cart\Cart|null findCartOfCurrentCustomer()
  * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartByCustomerIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier)
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
  */
 class CartFacade extends BaseCartFacade
 {
@@ -288,6 +287,7 @@ class CartFacade extends BaseCartFacade
      */
     public function findCartByCustomerIdentifier(CustomerIdentifier $customerIdentifier)
     {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart|null $cart */
         $cart = $this->cartRepository->findByCustomerIdentifier($customerIdentifier);
 
         if ($cart !== null) {

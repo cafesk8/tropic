@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceReposit
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
  */
 class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade

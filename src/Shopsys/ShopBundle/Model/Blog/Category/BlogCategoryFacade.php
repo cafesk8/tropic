@@ -13,7 +13,7 @@ use Shopsys\ShopBundle\Model\Blog\BlogVisibilityRecalculationScheduler;
 class BlogCategoryFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -43,7 +43,7 @@ class BlogCategoryFacade
     private $blogVisibilityRecalculationScheduler;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryRepository $blogCategoryRepository
      * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFactory $blogCategoryFactory
@@ -139,7 +139,7 @@ class BlogCategoryFacade
     }
 
     /**
-     * @param int[] $parentIdByBlogCategoryId
+     * @param mixed[] $parentIdByBlogCategoryId
      */
     public function editOrdering(array $parentIdByBlogCategoryId): void
     {
@@ -188,28 +188,25 @@ class BlogCategoryFacade
 
     /**
      * @param string $locale
-     * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildren[]
+     * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryWithPreloadedChildren[]
      */
     public function getAllBlogCategoriesWithPreloadedChildren(string $locale): array
     {
         $blogCategories = $this->blogCategoryRepository->getPreOrderTreeTraversalForAllBlogCategories($locale);
-        $blogCategoriesWithPreloadedChildren = $this->blogCategoryWithPreloadedChildrenFactory->createBlogCategoriesWithPreloadedChildren($blogCategories);
 
-        return $blogCategoriesWithPreloadedChildren;
+        return $this->blogCategoryWithPreloadedChildrenFactory->createBlogCategoriesWithPreloadedChildren($blogCategories);
     }
 
     /**
      * @param int $domainId
      * @param string $locale
-     * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildren[]
+     * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryWithPreloadedChildren[]
      */
     public function getVisibleBlogCategoriesWithPreloadedChildrenOnDomain(int $domainId, string $locale): array
     {
         $blogCategories = $this->blogCategoryRepository->getPreOrderTreeTraversalForVisibleBlogCategoriesOnDomain($domainId, $locale);
 
-        $blogCategoriesWithPreloadedChildren = $this->blogCategoryWithPreloadedChildrenFactory->createBlogCategoriesWithPreloadedChildren($blogCategories);
-
-        return $blogCategoriesWithPreloadedChildren;
+        return $this->blogCategoryWithPreloadedChildrenFactory->createBlogCategoriesWithPreloadedChildren($blogCategories);
     }
 
     /**

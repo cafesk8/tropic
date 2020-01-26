@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig as BaseProd
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory as BaseProductFilterConfigFactory;
 
 /**
- * @property  \Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository
  * @property \Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository
  * @method __construct(\Shopsys\ShopBundle\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer, \Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository $priceRangeRepository)
  */

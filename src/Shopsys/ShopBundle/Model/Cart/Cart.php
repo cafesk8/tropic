@@ -45,8 +45,8 @@ class Cart extends BaseCart
 
     /**
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
-     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
-     * @param mixed[] $selectedGifts
+     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftInCart[][] $productGiftsInCart
+     * @param mixed[][] $selectedGifts
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function updateGifts(CartItemFactoryInterface $cartItemFactory, array $productGiftsInCart, array $selectedGifts): array
@@ -79,8 +79,8 @@ class Cart extends BaseCart
     /**
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
-     * @param mixed[] $selectedPromoProductsItems
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[][] $promoProductsForCart
+     * @param mixed[][] $selectedPromoProductsItems
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem[]
      */
     public function updatePromoProductsItems(
@@ -129,7 +129,7 @@ class Cart extends BaseCart
     }
 
     /**
-     * @param $productId
+     * @param int $productId
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem
      */
     public function getItemByProductId(int $productId): CartItem

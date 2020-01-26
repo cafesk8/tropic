@@ -100,7 +100,9 @@ class ParameterFilterFormType extends AbstractType implements DataTransformerInt
         $parameterValuesIndexedByParameterId = [];
         foreach ($value as $parameterFilterData) {
             $parameterId = $parameterFilterData->parameter->getId();
-            $parameterValuesIndexedByParameterId[$parameterId] = $parameterFilterData->values;
+            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[] $parameterValues */
+            $parameterValues = $parameterFilterData->values;
+            $parameterValuesIndexedByParameterId[$parameterId] = $parameterValues;
         }
 
         return $parameterValuesIndexedByParameterId;

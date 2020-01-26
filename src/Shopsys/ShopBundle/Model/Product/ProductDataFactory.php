@@ -108,7 +108,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $nullForAllDomains = $this->getNullForAllDomains();
         $productData->actionPrices = $nullForAllDomains;
 
-        $productData->storeStocks = [];
+        $productData->stockQuantityByStoreId = [];
         $productData->generateToHsSportXmlFeed = true;
         $productData->finished = false;
     }

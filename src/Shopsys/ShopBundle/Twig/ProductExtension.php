@@ -171,7 +171,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
      */
     public function getParameterValueById(string $id): ParameterValue

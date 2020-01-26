@@ -31,8 +31,8 @@ class ProductFilterConfig extends BaseProductFilterConfig
      * @param \Shopsys\ShopBundle\Model\Product\Flag\Flag[] $flagChoices
      * @param \Shopsys\ShopBundle\Model\Product\Brand\Brand[] $brandChoices
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\PriceRange $priceRange
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[] $colorChoices
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[] $sizeChoices
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[] $colorChoices
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[] $sizeChoices
      */
     public function __construct(
         array $parameterChoices,

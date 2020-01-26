@@ -17,7 +17,7 @@ class CardEanFacade
     private const MAX_SET_EAN_TO_USER_ATTEMPTS = 10;
 
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -37,7 +37,7 @@ class CardEanFacade
     private $userRepository;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanGenerator $cardEanGenerator
      * @param \Shopsys\ShopBundle\Component\CardEan\CardEanRepository $cardEanRepository
      * @param \Shopsys\ShopBundle\Model\Customer\UserRepository $userRepository

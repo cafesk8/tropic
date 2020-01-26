@@ -68,7 +68,6 @@ class ProductPickerController extends BaseProductPickerController
     /**
      * @Route("/product-picker/pick-all/")
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $jsInstanceId
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function pickAllAction(Request $request): Response

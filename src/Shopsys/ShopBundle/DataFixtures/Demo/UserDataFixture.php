@@ -28,7 +28,7 @@ class UserDataFixture extends AbstractReferenceFixture implements DependentFixtu
     /** @var \Faker\Generator */
     protected $faker;
 
-    /** @var \Doctrine\ORM\EntityManagerInterface */
+    /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator */
     protected $em;
 
     /** @var \Shopsys\ShopBundle\Component\String\HashGenerator */
@@ -38,7 +38,7 @@ class UserDataFixture extends AbstractReferenceFixture implements DependentFixtu
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\DataFixtures\Demo\UserDataFixtureLoader $loaderService
      * @param \Faker\Generator $faker
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Component\String\HashGenerator $hashGenerator
      */
     public function __construct(
@@ -69,8 +69,11 @@ class UserDataFixture extends AbstractReferenceFixture implements DependentFixtu
         $customersData = $this->loaderService->getCustomersDataByDomainId(Domain::FIRST_DOMAIN_ID);
 
         foreach ($customersData as $customerData) {
-            $customerData->userData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
-            $customerData->pricingGroupUpdatedAt = new \DateTime();
+            /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
+            $userData = $customerData->userData;
+            $userData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
+            $userData->pricingGroupUpdatedAt = new \DateTime();
+            $customerData->userData = $userData;
 
             $customer = $this->customerFacade->create($customerData);
 

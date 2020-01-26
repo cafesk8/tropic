@@ -13,7 +13,7 @@ class QueryBuilderDataSourceTest extends TransactionFunctionalTestCase
 {
     public function testGetOneRow()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $qb = $em->createQueryBuilder();
@@ -30,7 +30,7 @@ class QueryBuilderDataSourceTest extends TransactionFunctionalTestCase
 
     public function testGetTotalRowsCount()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $qb = $em->createQueryBuilder();
@@ -49,7 +49,7 @@ class QueryBuilderDataSourceTest extends TransactionFunctionalTestCase
 
     public function testGetRows()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $qb = $em->createQueryBuilder();
@@ -71,7 +71,7 @@ class QueryBuilderDataSourceTest extends TransactionFunctionalTestCase
 
     public function testGetRowsInAscOrder()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $qb = $em->createQueryBuilder();
@@ -96,7 +96,7 @@ class QueryBuilderDataSourceTest extends TransactionFunctionalTestCase
 
     public function testGetRowsInDescOrder()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $qb = $em->createQueryBuilder();

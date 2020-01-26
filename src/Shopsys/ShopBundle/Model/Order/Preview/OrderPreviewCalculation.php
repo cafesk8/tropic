@@ -113,7 +113,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
         $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes);
 
-        $productsPrice = $this->getProductsPrice($quantifiedItemsPrices, $quantifiedItemsDiscountsIndexedByPromoCodeId);
+        $productsPrice = $this->getProductsPriceAffectedByMultiplePromoCodes($quantifiedItemsPrices, $quantifiedItemsDiscountsIndexedByPromoCodeId);
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
         $totalPromoProductPrice = $this->getTotalPromoProductsPrice($promoProductsInCart);
         $productsPrice = $productsPrice->add($totalPromoProductPrice);
@@ -149,7 +149,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
      */
     protected function getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId)
@@ -300,7 +300,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
@@ -325,7 +325,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function getProductsPrice(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId): Price
+    protected function getProductsPriceAffectedByMultiplePromoCodes(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId): Price
     {
         $finalPrice = Price::zero();
 
@@ -363,7 +363,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
      */
     protected function getQuantifiedItemsDiscountsIndexedByPromoCodeId(array $quantifiedItemsPrices, array $promoCodes): array
     {

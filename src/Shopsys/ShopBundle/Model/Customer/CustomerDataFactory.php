@@ -13,6 +13,9 @@ use Shopsys\FrameworkBundle\Model\Order\Order;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Customer\CustomerData createFromUser(\Shopsys\ShopBundle\Model\Customer\User $user)
+ * @property \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
+ * @property \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
+ * @property \Shopsys\ShopBundle\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
  */
 class CustomerDataFactory extends BaseCustomerDataFactory
 {

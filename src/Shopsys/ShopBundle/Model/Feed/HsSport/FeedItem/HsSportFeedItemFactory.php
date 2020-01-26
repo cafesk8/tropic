@@ -10,7 +10,6 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation;
@@ -43,7 +42,6 @@ class HsSportFeedItemFactory
     private $productPriceCalculation;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
      * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
@@ -105,12 +103,16 @@ class HsSportFeedItemFactory
             $sizeProductParameterValue = $this->parameterFacade->findSizeProductParameterValueByProductId($variant->getId());
             $colorProductParameterValue = $this->parameterFacade->findColorProductParameterValueByProductId($variant->getId());
 
+            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $sizeProductParameterValueValue */
+            $sizeProductParameterValueValue = $sizeProductParameterValue->getValue();
             $sizeValue = $sizeProductParameterValue !== null ?
-                $sizeProductParameterValue->getValue()->getHsFeedId() . '_' . $sizeProductParameterValue->getValue()->getText()
+                $sizeProductParameterValueValue->getHsFeedId() . '_' . $sizeProductParameterValueValue->getText()
                 : '';
 
+            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $colorProductParameterValueValue */
+            $colorProductParameterValueValue = $colorProductParameterValue->getValue();
             $colorValue = $colorProductParameterValue !== null ?
-                $colorProductParameterValue->getValue()->getHsFeedId() . '_' . $colorProductParameterValue->getValue()->getText()
+                $colorProductParameterValueValue->getHsFeedId() . '_' . $colorProductParameterValueValue->getText()
                 : '';
 
             $hsSportVariantItems[] = new HsSportFeedVariantItem(
@@ -129,7 +131,7 @@ class HsSportFeedItemFactory
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return \Shopsys\ShopBundle\Component\Image\Image[]
+     * @return string[]
      */
     protected function getAllImagesUrlsByProduct(Product $product, DomainConfig $domainConfig): array
     {

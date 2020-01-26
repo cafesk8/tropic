@@ -37,7 +37,7 @@ interface MassEditActionInterface
      * If using array, keys are used as input names and you need to use prefix "value" for keys.
      *
      * @param string $operation Symbolic operation name defined in getOperations() array indices
-     * @return string|\Symfony\Component\Form\FormTypeInterface|\Symfony\Component\Form\FormTypeInterface[]
+     * @return string|\Symfony\Component\Form\FormTypeInterface|string[]|\Symfony\Component\Form\FormTypeInterface[]
      */
     public function getValueFormType(string $operation);
 

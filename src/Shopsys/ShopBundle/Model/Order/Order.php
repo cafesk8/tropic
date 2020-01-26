@@ -28,7 +28,6 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
  * @method \Shopsys\ShopBundle\Model\Transport\Transport getTransport()
  * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
  * @method \Shopsys\ShopBundle\Model\Country\Country getCountry()
- * @method \Shopsys\ShopBundle\Model\Country\Country getDeliveryCountry()
  * @property \Shopsys\ShopBundle\Model\Customer\User|null $customer
  * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]|\Doctrine\Common\Collections\Collection $items
  * @property \Shopsys\ShopBundle\Model\Payment\Payment $payment
@@ -147,7 +146,7 @@ class Order extends BaseOrder
     protected $deliveryPostcode;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\GoPay\GoPayTransaction[]|array
      *
      * @ORM\OneToMany(
      *     targetEntity="Shopsys\ShopBundle\Model\GoPay\GoPayTransaction",
@@ -346,9 +345,6 @@ class Order extends BaseOrder
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation $orderItemPriceCalculation
-     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
      * @return \Shopsys\FrameworkBundle\Model\Order\OrderEditResult
      */
     public function edit(
@@ -477,7 +473,6 @@ class Order extends BaseOrder
 
     /**
      * @param string $exportStatus
-     * @return string
      */
     private function setExportStatus(string $exportStatus): void
     {
@@ -694,9 +689,6 @@ class Order extends BaseOrder
         return $this->statusCheckedAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function updateStatusCheckedAt(): void
     {
         $this->statusCheckedAt = new DateTime();
@@ -741,7 +733,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]
      */
     public function getPreparedProductItems(): array
     {
@@ -761,7 +753,7 @@ class Order extends BaseOrder
     {
         $this->transport = $orderData->transport;
 
-        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport|null $transport */
         $transport = $this->transport;
         if ($transport === null) {
             return;
@@ -835,5 +827,37 @@ class Order extends BaseOrder
         $emptyCodes = $promoCodesCodes === null || count($promoCodesCodes) === 0;
 
         return !$emptyCodes ? implode(self::PROMO_CODES_SEPARATOR, $promoCodesCodes) : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostcode()
+    {
+        return $this->postcode;
     }
 }

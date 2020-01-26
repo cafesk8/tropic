@@ -205,7 +205,6 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
-        /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
         $product1 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 1);
         $product2 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 2);
         $product3 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 3);

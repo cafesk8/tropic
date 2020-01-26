@@ -35,7 +35,7 @@ class TransferResponse
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[]|null
+     * @return \Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface[]|null|mixed[]
      */
     public function getResponseData(): ?array
     {

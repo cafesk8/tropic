@@ -44,12 +44,12 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     private $mainVariantGroupFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     private $productsIndexedByPricingGroupIdAndMainVariantGroup;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     private $variantsIndexedByPricingGroupIdAndMainVariantId;
 
@@ -205,6 +205,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     private function getMainVariantGroupProductsData(Product $product, string $locale): array
     {
         $mainVariantGroupProductsData = [];
+        /** @var \Shopsys\ShopBundle\Model\Product\Product[][] $productsIndexedByMainVariantGroup */
         foreach ($this->productsIndexedByPricingGroupIdAndMainVariantGroup as $pricingGroupId => $productsIndexedByMainVariantGroup) {
             if ($product->getMainVariantGroup() !== null && count($productsIndexedByMainVariantGroup) > 0 && in_array($product->getMainVariantGroup()->getId(), array_keys($productsIndexedByMainVariantGroup), true)) {
                 foreach ($productsIndexedByMainVariantGroup[$product->getMainVariantGroup()->getId()] as $mainVariantGroupProduct) {

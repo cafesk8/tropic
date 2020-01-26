@@ -61,7 +61,7 @@ class GtmHelper
     public function getGtmAvailabilityByOrderItem(OrderItem $orderItem): string
     {
         if (!$orderItem->isTypeProduct() || $orderItem->getProduct() === null) {
-            '';
+            return '';
         }
 
         $availability = $orderItem->getProduct()->getCalculatedAvailability();

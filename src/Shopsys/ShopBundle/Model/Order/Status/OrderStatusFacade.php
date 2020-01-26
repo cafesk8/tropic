@@ -7,6 +7,10 @@ namespace Shopsys\ShopBundle\Model\Order\Status;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMail;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade as BaseOrderStatusFacade;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\Status\OrderStatus create(OrderStatusData $orderStatusFormData)
+ * @method \Shopsys\ShopBundle\Model\Order\Status\OrderStatus getById($orderStatusId)
+ */
 class OrderStatusFacade extends BaseOrderStatusFacade
 {
     /**

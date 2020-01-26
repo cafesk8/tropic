@@ -31,14 +31,14 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     protected $transportDataFactory;
 
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $entityManager;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\ShopBundle\Model\Transport\TransportDataFactory $transportDataFactory
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
      */
     public function __construct(
         TransportFacade $transportFacade,
@@ -100,7 +100,6 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             'de' => 'Personal collection',
         ];
         $transportData->deliveryDays = 1;
-        $transportData->balikobot = false;
         $transportData->balikobotShipper = null;
         $transportData->balikobotShipperService = null;
 

@@ -92,7 +92,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param $routeName
+     * @param string $routeName
      * @param \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerPage $dataLayerPage
      */
     public function mapRouteNameToDataLayerPage($routeName, DataLayerPage $dataLayerPage): void
@@ -148,7 +148,6 @@ class DataLayerMapper
         $categoriesIdsInPath = [];
         $categoriesNamesInPath = [];
         foreach ($categoriesInPath as $categoryInPath) {
-            /** @var $categoryInPath \Shopsys\ShopBundle\Model\Category\Category */
             $categoriesIdsInPath[] = (string)$categoryInPath->getId();
             $categoriesNamesInPath[] = $categoryInPath->getName($locale);
         }
@@ -184,10 +183,6 @@ class DataLayerMapper
         foreach ($quantifiedProducts as $index => $quantifiedProduct) {
             $product = $quantifiedProduct->getProduct();
             $quantity = $quantifiedProduct->getQuantity();
-
-            if ($product === null) {
-                continue;
-            }
 
             $dataLayerProduct = new DataLayerProduct();
             $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale);

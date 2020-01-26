@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\ProductGift;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -89,10 +90,10 @@ class ProductGift
      */
     private function setProducts(array $products, Product $gift): void
     {
-        $filteredProducts = [];
+        $filteredProducts = new ArrayCollection();
         foreach ($products as $product) {
             if ($product !== $gift) {
-                $filteredProducts[] = $product;
+                $filteredProducts->add($product);
             }
         }
 

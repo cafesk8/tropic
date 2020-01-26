@@ -175,14 +175,18 @@ class ProductController extends BaseProductController
 
         $grid = $this->getGrid($queryBuilder);
 
-        if ($massEditForm->get('submit')->isClicked() || $massEditForm->get('submitAndExport')->isClicked()) {
+        /** @var \Symfony\Component\Form\SubmitButton $submitButton */
+        $submitButton = $massEditForm->get('submit');
+        /** @var \Symfony\Component\Form\SubmitButton $submitAndExportButton */
+        $submitAndExportButton = $massEditForm->get('submitAndExport');
+        if ($submitButton->isClicked() || $submitAndExportButton->isClicked()) {
             $this->performMassEdit(
                 array_map('intval', $grid->getSelectedRowIds()),
                 $massEditForm->getData(),
                 $queryBuilder
             );
 
-            if ($massEditForm->get('submitAndExport')->isClicked()) {
+            if ($submitAndExportButton->isClicked()) {
                 $this->cronModuleFacade->scheduleModuleByServiceId(ProductSearchExportCronModule::class);
                 $this->getFlashMessageSender()->addInfoFlash(
                     t('Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut')

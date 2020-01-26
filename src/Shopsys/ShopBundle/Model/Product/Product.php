@@ -368,7 +368,7 @@ class Product extends BaseProduct
 
     /**
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getListableProductCategoriesByDomainId(int $domainId): array
     {
@@ -616,7 +616,6 @@ class Product extends BaseProduct
      * @param string $locale
      * @param string $baseName
      * @param string $size
-     * @param string $color
      */
     public function updateNameWithSize(string $locale, string $baseName, string $size): void
     {

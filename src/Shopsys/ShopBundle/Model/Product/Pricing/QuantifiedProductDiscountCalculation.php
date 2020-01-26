@@ -52,8 +52,8 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         }
 
         if ($promoCode->isUseNominalDiscount() === true && $discountNominalAmount->equals($promoCode->getNominalDiscount()) === false) {
-            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $maxQuantifiedItemPrice */
             $nominalDiscountDifferenceAmount = $promoCode->getNominalDiscount()->subtract($discountNominalAmount);
+            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $maxQuantifiedItemPrice */
             $maxQuantifiedItemPrice = $quantifiedItemsDiscounts[$maxQuantifiedItemPriceIndex];
             $maxQuantifiedItemPrice = $maxQuantifiedItemPrice->add(
                 new Price($nominalDiscountDifferenceAmount, $nominalDiscountDifferenceAmount)
@@ -72,7 +72,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
     {
         $totalItemsPrice = array_reduce(
             $quantifiedItemsPrices,
-            function (Price $totalItemsPrice, QuantifiedItemPrice $quantifiedItemsPrice) {
+            function (Price $totalItemsPrice, ?QuantifiedItemPrice $quantifiedItemsPrice) {
                 if ($quantifiedItemsPrice === null) {
                     return $totalItemsPrice;
                 }

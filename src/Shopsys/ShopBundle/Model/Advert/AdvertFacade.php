@@ -75,6 +75,7 @@ class AdvertFacade extends BaseAdvertFacade
      */
     public function create(AdvertData $advertData): Advert
     {
+        /** @var \Shopsys\ShopBundle\Model\Advert\Advert $advert */
         $advert = parent::create($advertData);
 
         $this->refreshAdvertProducts($advert, $advertData->products);
@@ -89,6 +90,7 @@ class AdvertFacade extends BaseAdvertFacade
      */
     public function edit($advertId, AdvertData $advertData): Advert
     {
+        /** @var \Shopsys\ShopBundle\Model\Advert\Advert $advert */
         $advert = parent::edit($advertId, $advertData);
 
         $this->refreshAdvertProducts($advert, $advertData->products);

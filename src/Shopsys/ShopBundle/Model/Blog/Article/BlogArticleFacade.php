@@ -16,7 +16,7 @@ use Shopsys\ShopBundle\Model\Blog\Category\BlogCategory;
 class BlogArticleFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -51,7 +51,7 @@ class BlogArticleFacade
     private $blogVisibilityRecalculationScheduler;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleRepository $blogArticleRepository
      * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFactory $blogArticleFactory

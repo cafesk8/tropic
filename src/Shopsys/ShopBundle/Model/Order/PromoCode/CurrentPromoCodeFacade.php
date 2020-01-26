@@ -103,7 +103,6 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?User $user = null): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
 
         $productPricesType = $this->session->get(self::SESSION_CART_PRODUCT_PRICES_TYPE);

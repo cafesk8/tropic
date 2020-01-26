@@ -41,6 +41,7 @@ class ExtendedClassesAnnotationsCommand extends BaseExtendedClassesAnnotationsCo
                 );
             } catch (IdentifierNotFound $exception) {
                 $projectClassNecessaryPropertyAnnotationsLines = '';
+                $projectClassNecessaryMethodAnnotationsLines = '';
             }
             if (!$isDryRun) {
                 $this->annotationsAdder->addAnnotationToClass($projectClassBetterReflection, $projectClassNecessaryPropertyAnnotationsLines . $projectClassNecessaryMethodAnnotationsLines);

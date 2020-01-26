@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade as BaseProductVariantFacade;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
  * @property \Shopsys\ShopBundle\Model\Product\ProductDataFactory $productDataFactory
  * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
@@ -22,6 +23,7 @@ class ProductVariantFacade extends BaseProductVariantFacade
      */
     public function createVariant(Product $mainProduct, array $variants)
     {
+        /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariant */
         $mainVariant = parent::createVariant($mainProduct, $variants);
         $this->em->flush($mainProduct);
 

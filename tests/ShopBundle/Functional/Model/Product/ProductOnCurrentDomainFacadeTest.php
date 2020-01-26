@@ -207,7 +207,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
      */
     private function getParameterValuesByLocalesAndTexts(array $valuesTextsByLocales)
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $parameterValues = [];
 
@@ -244,7 +244,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
@@ -296,7 +296,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData
      * @param string $searchText
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
@@ -323,7 +323,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @param int $page
      * @param int $limit

@@ -53,6 +53,7 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Component\Setting\Setting $setting
  * @property \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
  * @property \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
@@ -150,7 +151,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\ShopBundle\Component\Mall\MallImportOrderClient $mallImportOrderClient
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmHelper $gtmHelper
      * @param \Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory $smsManagerFactory
-     * @param \Shopsys\ShopBundle\Model\Order\SmsMessageFactory $smsMessageFactory
+     * @param \Shopsys\ShopBundle\Component\SmsManager\SmsMessageFactory $smsMessageFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -524,9 +525,9 @@ class OrderFacade extends BaseOrderFacade
         ?PromoCode $promoCode = null
     ): void {
         if ($promoCode->isUseNominalDiscount()) {
-            $discountValue = $this->numberFormatterExtension->formatNumber(-$promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
+            $discountValue = $this->numberFormatterExtension->formatNumber('-' . $promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
         } else {
-            $discountValue = $this->numberFormatterExtension->formatPercent(-$promoCode->getPercent(), $locale);
+            $discountValue = $this->numberFormatterExtension->formatPercent('-' . $promoCode->getPercent(), $locale);
         }
 
         $name = sprintf(

@@ -103,6 +103,7 @@ class ParameterFacade extends BaseParameterFacade
             throw new ParameterUsedAsDistinguishingParameterException();
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter */
         $parameter = parent::edit($parameterId, $parameterData);
 
         $this->cachedProductDistinguishingParameterValueFacade->invalidAll();

@@ -49,6 +49,7 @@ use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
 /**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
  * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
  * @property \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository
@@ -731,7 +732,7 @@ class ProductFacade extends BaseProductFacade
     /**
      * @param array $products
      * @param int $domainId
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     public function getVariantsIndexedByPricingGroupIdAndMainVariantId(array $products, int $domainId): array
     {

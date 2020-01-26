@@ -63,7 +63,7 @@ class BushmanClubPointsExtension extends AbstractExtension
 
     /**
      * @param int $customerId
-     * @param int $periodName
+     * @param string $periodName
      * @return string|null
      */
     public function bushmanClubPointsByIndex(int $customerId, string $periodName): ?string

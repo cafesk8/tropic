@@ -30,7 +30,7 @@ class HiddenMassAction implements MassEditActionInterface
     private $productHiddenRecalculator;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
 

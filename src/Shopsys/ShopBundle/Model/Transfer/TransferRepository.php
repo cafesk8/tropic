@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Transfer;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Shopsys\ShopBundle\Model\Transfer\Exception\TransferNotFoundException;
 
 class TransferRepository
@@ -24,9 +24,9 @@ class TransferRepository
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Model\Transfer\TransferRepository|\Doctrine\ORM\EntityRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
-    private function getRepository(): EntityRepository
+    private function getRepository(): ObjectRepository
     {
         return $this->em->getRepository(Transfer::class);
     }

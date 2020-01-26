@@ -152,8 +152,8 @@ class OrderItemFactory extends BaseOrderItemFactory
      * @param string|null $unitName
      * @param string|null $catnum
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPrice
-     * @param \Shopsys\ShopBundle\Model\Order\Item\PromoProduct|null $promoProduct
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct
      * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
      */
     public function createPromoProduct(

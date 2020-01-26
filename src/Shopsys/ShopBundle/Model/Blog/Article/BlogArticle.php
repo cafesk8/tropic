@@ -14,6 +14,7 @@ use Shopsys\ShopBundle\Model\Blog\Article\Exception\BlogArticleDomainNotFoundExc
 /**
  * @ORM\Table(name="blog_articles")
  * @ORM\Entity
+ * @method \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleTranslation translation($locale = null)
  */
 class BlogArticle extends AbstractTranslatableEntity
 {
@@ -39,7 +40,7 @@ class BlogArticle extends AbstractTranslatableEntity
     private $blogArticleBlogCategoryDomains;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleTranslation[]
+     * @var \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleTranslation[]|\Doctrine\Common\Collections\ArrayCollection
      *
      * @Prezent\Translations(targetEntity="Shopsys\ShopBundle\Model\Blog\Article\BlogArticleTranslation")
      */
@@ -100,7 +101,7 @@ class BlogArticle extends AbstractTranslatableEntity
         $this->setTranslations($blogArticleData);
 
         $this->hidden = $blogArticleData->hidden;
-        $this->createdAt = $blogArticleData->createdAt ?? new DateTime();
+        $this->createdAt = new DateTime();
         $this->visibleOnHomepage = $blogArticleData->visibleOnHomepage;
         $this->publishDate = $blogArticleData->publishDate ?? new DateTime();
         $this->products = new ArrayCollection($blogArticleData->products);
@@ -169,8 +170,7 @@ class BlogArticle extends AbstractTranslatableEntity
 
     /**
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleBlogCategoryDomainFactory $blogArticleBlogCategoryDomainFactory
-     * @param array $blogCategoriesByDomainId
-     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[]
+     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[][] $blogCategoriesByDomainId
      */
     public function setCategories(
         BlogArticleBlogCategoryDomainFactory $blogArticleBlogCategoryDomainFactory,
@@ -203,7 +203,7 @@ class BlogArticle extends AbstractTranslatableEntity
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Category\Category[] $newBlogCategories
+     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[] $newBlogCategories
      * @param int $domainId
      */
     private function removeOldBlogArticleBlogCategoryDomains(array $newBlogCategories, int $domainId): void
@@ -235,7 +235,7 @@ class BlogArticle extends AbstractTranslatableEntity
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Model\Category\Category[]
+     * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[][]
      */
     public function getBlogCategoriesIndexedByDomainId()
     {
@@ -310,7 +310,6 @@ class BlogArticle extends AbstractTranslatableEntity
 
     /**
      * @param string|null $locale
-     * @param string locale
      * @return string|null
      */
     public function getDescription(?string $locale = null): ?string

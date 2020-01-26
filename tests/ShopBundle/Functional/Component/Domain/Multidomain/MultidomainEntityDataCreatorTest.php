@@ -13,7 +13,7 @@ class MultidomainEntityDataCreatorTest extends TransactionFunctionalTestCase
 {
     public function testCopyAllMultidomainDataForNewDomainCopiesTestRow()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
         $em->getConnection()->executeQuery('
@@ -70,7 +70,7 @@ class MultidomainEntityDataCreatorTest extends TransactionFunctionalTestCase
 
     public function testCopyAllMultidomainDataForNewDomainWithDomainIdDoesNotThrowDriverException()
     {
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
         $em->getConnection()->executeQuery('

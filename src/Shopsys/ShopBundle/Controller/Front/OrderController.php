@@ -300,6 +300,7 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Customer\User|null $user */
         $user = $this->getUser();
 
         $frontOrderFormData = new FrontOrderData();

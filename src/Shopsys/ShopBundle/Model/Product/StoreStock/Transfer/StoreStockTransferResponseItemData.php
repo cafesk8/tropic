@@ -24,7 +24,7 @@ class StoreStockTransferResponseItemData implements TransferResponseItemDataInte
     private $barcode;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemVariantData[]
+     * @var \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferResponseItemStockData[]
      */
     private $sitesQuantity = [];
 

@@ -139,7 +139,7 @@ class MainVariantGroupFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param int $domainId
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     public function getProductsIndexedByPricingGroupIdAndMainVariantGroup(array $products, int $domainId): array
     {
@@ -157,7 +157,7 @@ class MainVariantGroupFacade
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[][]
      */
     public function getProductsIndexedByMainVariantGroup(array $products, PricingGroup $pricingGroup): array
     {

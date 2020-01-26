@@ -21,7 +21,7 @@ class OrderGoPayStatusUpdateCronModule implements SimpleCronModuleInterface
     private $logger;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $em;
 

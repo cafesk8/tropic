@@ -36,7 +36,7 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         $vatData = new VatData();
         $vatData->name = 'vat';
-        $vatData->percent = 21;
+        $vatData->percent = '21';
         $vat = new Vat($vatData);
         $em->persist($vat);
 

@@ -32,7 +32,7 @@ class CategoryMassAction implements MassEditActionInterface
     private $categoryFacade;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
 

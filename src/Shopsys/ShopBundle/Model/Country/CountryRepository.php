@@ -21,10 +21,11 @@ class CountryRepository extends BaseCountryRepository
 {
     /**
      * @param string $code
-     * @return \Shopsys\ShopBundle\Model\Country\Country|object
+     * @return \Shopsys\ShopBundle\Model\Country\Country
      */
     public function getByCode(string $code): Country
     {
+        /** @var \Shopsys\ShopBundle\Model\Country\Country|null $country */
         $country = $this->getCountryRepository()->findOneBy(['code' => strtoupper($code)]);
         if ($country === null) {
             $message = sprintf('Country with code ISO `%s` was not found.', $code);

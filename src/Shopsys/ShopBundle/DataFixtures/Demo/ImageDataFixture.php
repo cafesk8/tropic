@@ -32,7 +32,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
     protected $targetDomainImagesDirectory;
 
     /**
-     * @var string
+     * @var \League\Flysystem\FilesystemInterface
      */
     protected $filesystem;
 

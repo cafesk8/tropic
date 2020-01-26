@@ -200,7 +200,9 @@ class OrderController extends BaseOrderController
         $massActionForm = $this->createForm(OrderMassActionFormType::class);
         $massActionForm->handleRequest($request);
 
-        if ($massActionForm->get('submit')->isClicked()) {
+        /** @var \Symfony\Component\Form\SubmitButton $submitButton */
+        $submitButton = $massActionForm->get('submit');
+        if ($submitButton->isClicked()) {
             $selectedOrdersIds = $this->orderMassActionFacade->getOrdersIdsForMassAction(
                 $massActionForm->getData(),
                 $queryBuilder,

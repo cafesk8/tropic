@@ -224,8 +224,8 @@ class OrderDataFixture
             $orderData->postcode = $this->faker->postcode;
             $orderData->country = $this->getRandomCountryFromFirstDomain();
             $orderData->companyName = $this->faker->company;
-            $orderData->companyNumber = $this->faker->randomNumber(6);
-            $orderData->companyTaxNumber = $this->faker->randomNumber(6);
+            $orderData->companyNumber = (string)$this->faker->randomNumber(6);
+            $orderData->companyTaxNumber = (string)$this->faker->randomNumber(6);
         }
 
         $orderData->transport = $this->getRandomTransport();

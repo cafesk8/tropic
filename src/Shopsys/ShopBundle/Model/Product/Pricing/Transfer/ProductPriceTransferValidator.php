@@ -27,7 +27,7 @@ class ProductPriceTransferValidator
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemData $productPriceTransferResponseItemData
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ProductPriceTransferResponseItemData $productPriceTransferResponseItemData
      */
     public function validate(ProductPriceTransferResponseItemData $productPriceTransferResponseItemData)
     {

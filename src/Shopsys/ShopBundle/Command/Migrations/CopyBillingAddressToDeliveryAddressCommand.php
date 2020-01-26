@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Command\Migrations;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactory;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory;
 use Symfony\Component\Console\Command\Command;
@@ -38,28 +37,20 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
     private $deliveryAddressDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactory
-     */
-    private $deliveryAddressFactory;
-
-    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactory $deliveryAddressFactory
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         CustomerFacade $customerFacade,
-        DeliveryAddressDataFactory $deliveryAddressDataFactory,
-        DeliveryAddressFactory $deliveryAddressFactory
+        DeliveryAddressDataFactory $deliveryAddressDataFactory
     ) {
         parent::__construct();
 
         $this->entityManager = $entityManager;
         $this->customerFacade = $customerFacade;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
-        $this->deliveryAddressFactory = $deliveryAddressFactory;
     }
 
     /**
@@ -74,7 +65,7 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -86,7 +77,7 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
 
             foreach ($users as $user) {
                 $deliveryAddressData = $this->deliveryAddressDataFactory->createFromBillingAddress($user->getBillingAddress());
-                $user->editDeliveryAddress($deliveryAddressData, $this->deliveryAddressFactory);
+                $this->customerFacade->editDeliveryAddress($user, $deliveryAddressData);
 
                 $this->customerFacade->flush($user);
 
@@ -96,5 +87,7 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
             $this->entityManager->commit();
             $this->entityManager->clear();
         } while ($userCount > 0);
+
+        return 0;
     }
 }

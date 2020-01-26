@@ -192,7 +192,6 @@ class User extends BaseUser
 
     /**
      * @param string $exportStatus
-     * @return string
      */
     private function setExportStatus(string $exportStatus): void
     {

@@ -183,7 +183,6 @@ class ProductDataFixtureLoader
             $categoryString = $domainId === 1 ? $row[self::COLUMN_CATEGORIES_1] : $row[self::COLUMN_CATEGORIES_2];
             $productData->categoriesByDomainId[$domainId] =
                 $this->getValuesByKeyString($categoryString, $this->categories);
-            $productData->actionPrices[$domainId] = null;
         }
 
         $productData->catnum = $row[self::COLUMN_CATNUM];
@@ -320,7 +319,7 @@ class ProductDataFixtureLoader
     /**
      * @param string $keyString
      * @param array $valuesByKey
-     * @return string[]
+     * @return array
      */
     protected function getValuesByKeyString($keyString, array $valuesByKey)
     {
@@ -338,7 +337,6 @@ class ProductDataFixtureLoader
     /**
      * @param array $row
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
-     * @param int $domainId
      */
     protected function setProductDataPricesFromCsv(array $row, ProductData $productData)
     {

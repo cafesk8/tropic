@@ -17,7 +17,7 @@ class CategoryRepositoryTest extends TransactionFunctionalTestCase
 
     public function testDoNotGetCategoriesWithoutVisibleChildren()
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade */
+        /** @var \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade */
         $categoryFacade = $this->getContainer()->get(CategoryFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository */
         $categoryRepository = $this->getContainer()->get(CategoryRepository::class);
@@ -46,7 +46,7 @@ class CategoryRepositoryTest extends TransactionFunctionalTestCase
 
     public function testGetCategoriesWithAtLeastOneVisibleChild()
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade */
+        /** @var \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade */
         $categoryFacade = $this->getContainer()->get(CategoryFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Category\CategoryRepository $categoryRepository */
         $categoryRepository = $this->getContainer()->get(CategoryRepository::class);

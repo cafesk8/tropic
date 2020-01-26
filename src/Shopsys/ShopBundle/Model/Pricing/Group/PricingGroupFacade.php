@@ -25,7 +25,7 @@ class PricingGroupFacade extends BasePricingGroupFacade
     protected $pricingGroupRepository;
 
     /**
-     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[][]
      */
     public function getAllIndexedByDomainIdOrderedByMinimalPrice(): array
     {

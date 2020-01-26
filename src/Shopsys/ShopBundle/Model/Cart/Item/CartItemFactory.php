@@ -20,7 +20,7 @@ class CartItemFactory extends BaseCartItemFactory
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
      * @param \Shopsys\ShopBundle\Model\Product\Product|null $gift
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem|null $mainCartItem
-     * @param \Shopsys\ShopBundle\Model\Cart\Item\PromoProduct|null $promoProduct
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct|null $promoProduct
      * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem
      */
     public function create(
