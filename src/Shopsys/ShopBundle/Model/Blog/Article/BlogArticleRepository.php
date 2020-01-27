@@ -113,7 +113,7 @@ class BlogArticleRepository
             ->join('ba.domains', 'bad', Join::WITH, 'bad.domainId = :domainId')
             ->andWhere('ba.publishDate <= :todayDate')
             ->andWhere('bad.visible = true')
-            ->setParameter('todayDate', (new DateTime())->format('Y-m-d'))
+            ->setParameter('todayDate', (new DateTime()))
             ->setParameter('domainId', $domainId);
     }
 

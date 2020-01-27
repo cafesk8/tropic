@@ -2,7 +2,7 @@
     {% for order in orders %}
         <order>
             <variable_symbol>{{ order.number }}</variable_symbol>
-            <order_create_date>{{ order.createdAt|date('c') }}</order_create_date>
+            <order_create_date>{{ order.createdAt|formatDateCore('c') }}</order_create_date>
             <order_canceled>{% if order.isCancelled %}1{% else %}0{% endif %}</order_canceled>
             <order_addresses>
                 <address>

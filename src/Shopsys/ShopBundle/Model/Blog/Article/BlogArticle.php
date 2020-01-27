@@ -77,7 +77,7 @@ class BlogArticle extends AbstractTranslatableEntity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $publishDate;
 

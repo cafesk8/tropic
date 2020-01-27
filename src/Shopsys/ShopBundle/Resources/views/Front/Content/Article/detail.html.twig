@@ -20,7 +20,7 @@
     <div class="web__line">
         <div class="web__container web__container--big-padding">
             <div class="in-article__container">
-                <div class="in-article__date">{{ article.createdAt|date('j.n.Y') }}</div>
+                <div class="in-article__date">{{ article.createdAt|formatDate }}</div>
 
                 <div class="in-article__text in-user-text">
                     {{ article.text|raw }}

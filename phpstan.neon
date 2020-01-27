@@ -18,6 +18,10 @@ parameters:
         -
             message: '#^Expression "\$undefined\[42\]" on a separate line does not do anything\.$#'
             path: %currentWorkingDirectory%/src/Shopsys/ShopBundle/Controller/Test/ErrorHandlerController.php
+        -
+            # the function is indeed defined in vendor/twig/twig/src/Extension/CoreExtension.php
+            message: '#^Function twig_date_format_filter not found\.$#'
+            path: %currentWorkingDirectory%/src/Shopsys/ShopBundle/Twig/DateTimeFormatterExtension.php
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
