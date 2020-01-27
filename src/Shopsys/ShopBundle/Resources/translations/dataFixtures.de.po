@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+
+msgid "Hvězda zahradnictví"
+msgstr ""
+
+msgid "Jindra má na sobě"
+msgstr ""
+
+msgid "Kempování"
+msgstr ""
+
+msgid "Legenární kapsáče jsou zpět"
+msgstr ""
+
+msgid "Pro pořádné chlapy"
+msgstr ""
+
+msgid "Prohlédnout"
+msgstr ""
+
+msgid "Silnější než kdy předtím..."
+msgstr ""
+
+msgid "Šití na míru"
+msgstr ""
+

@@ -47,7 +47,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     {
         $advertData = $this->advertDataFactory->create();
         $advertData->domainId = 1;
-        $advertData->name = 'Pro pořádné chlapy';
+        $advertData->name = t('Pro pořádné chlapy', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'firstSquare';
@@ -56,7 +56,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_FIRST_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Kempování';
+        $advertData->name = t('Kempování', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'secondSquare';
@@ -65,7 +65,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_SECOND_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Hvězda zahradnictví';
+        $advertData->name = t('Hvězda zahradnictví', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'thirdSquare';
@@ -74,7 +74,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_THIRD_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Pro pořádné chlapy';
+        $advertData->name = t('Pro pořádné chlapy', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'fourthSquare';
@@ -83,7 +83,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_FOURTH_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Šití na míru';
+        $advertData->name = t('Šití na míru', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'fifthRectangle';
@@ -92,13 +92,13 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_FIFTH_RECTANGLE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Prohlédnout';
+        $advertData->name = t('Prohlédnout', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->positionName = 'sixthRectangle';
         $advertData->link = '/admin';
-        $advertData->smallTitle = 'Legenární kapsáče jsou zpět';
-        $advertData->bigTitle = 'Silnější než kdy předtím...';
-        $advertData->productTitle = 'Jindra má na sobě';
+        $advertData->smallTitle = t('Legenární kapsáče jsou zpět', [], 'dataFixtures');
+        $advertData->bigTitle = t('Silnější než kdy předtím...', [], 'dataFixtures');
+        $advertData->productTitle = t('Jindra má na sobě', [], 'dataFixtures');
         $advertData->products = [
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '1'),
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '76'),
