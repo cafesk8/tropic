@@ -69,10 +69,11 @@ services:
             - '%mall_apiKey%'
             - '%mall_isProductionMode%'
 
-    Shopsys\FrameworkBundle\Component\Cron\CronFacade:
-        class: Shopsys\ShopBundle\Component\Cron\CronFacade
+    Shopsys\ShopBundle\Component\Cron\CronModuleExecutor:
         arguments:
-            - '@monolog.logger.cron'
+            $secondsTimeout: 240
+
+    Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor: '@Shopsys\ShopBundle\Component\Cron\CronModuleExecutor'
 
     Shopsys\ShopBundle\Component\Redis\RedisFacade:
         arguments:
