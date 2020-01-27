@@ -1708,11 +1708,11 @@ msgstr "Cenová skupina"
 msgid "Print"
 msgstr "Vytisknout"
 
-msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x230px), pro plochu 5 - velký obdelník na šířku (1180x387px), pro plochu 6 - obdélník na výšku (190x460px)."
+msgid "Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px)."
 msgstr ""
 
-msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
-msgstr "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdélník na šířku (190x460px)."
+msgid "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na výšku (380x600px)."
+msgstr "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na výšku (380x600px)."
 
 msgid "Pro termín doručení a dostupnost na prodejnách si vyberte z velikostí."
 msgstr "Pro termín doručení a dostupnost na prodejnách si vyber z velikostí."

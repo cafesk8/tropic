@@ -17,9 +17,7 @@ class AdvertPositionRegistry extends BaseAdvertPositionRegistry
             'firstSquare' => t('1 - čtverec'),
             'secondSquare' => t('2 - čtverec'),
             'thirdSquare' => t('3 - čtverec'),
-            'fourthSquare' => t('4 - čtverec'),
-            'fifthRectangle' => t('5 - velký obdelník na šířku'),
-            'sixthRectangle' => t('6 - obdélník na výšku'),
+            'fourthRectangle' => t('4 - velký obdelník na šířku'),
         ];
     }
 }

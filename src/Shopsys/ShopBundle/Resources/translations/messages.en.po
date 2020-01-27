@@ -1513,7 +1513,7 @@ msgstr ""
 msgid "Pricing group"
 msgstr ""
 
-msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x230px), pro plochu 5 - velký obdelník na šířku (1180x387px), pro plochu 6 - obdélník na výšku (190x460px)."
+msgid "Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px)."
 msgstr ""
 
 msgid "Pro využití slevového kódu musíte nakoupit aspoň za %price%."

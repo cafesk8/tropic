@@ -16,9 +16,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     public const ADVERT_FIRST_SQUARE = 'advert_first_square';
     public const ADVERT_SECOND_SQUARE = 'advert_second_square';
     public const ADVERT_THIRD_SQUARE = 'advert_third_square';
-    public const ADVERT_FOURTH_SQUARE = 'advert_fourth_square';
-    public const ADVERT_FIFTH_RECTANGLE = 'advert_fifth_rectangle';
-    public const ADVERT_SIXTH_RECTANGLE = 'advert_sixth_rectangle';
+    public const ADVERT_FOURTH_RECTANGLE = 'advert_fourth_rectangle';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade
@@ -74,38 +72,13 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_THIRD_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Shopsys';
-        $advertData->type = Advert::TYPE_IMAGE;
-        $advertData->hidden = false;
-        $advertData->positionName = 'fourthSquare';
-        $advertData->link = 'https://www.shopsys.cz/kontakt/';
-        $advert = $this->advertFacade->create($advertData);
-        $this->addReference(self::ADVERT_FOURTH_SQUARE, $advert);
-
-        $advertData->domainId = 1;
         $advertData->name = 'Zelí';
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
-        $advertData->positionName = 'fifthRectangle';
+        $advertData->positionName = 'fourthRectangle';
         $advertData->link = '/';
         $advert = $this->advertFacade->create($advertData);
-        $this->addReference(self::ADVERT_FIFTH_RECTANGLE, $advert);
-
-        $advertData->domainId = 1;
-        $advertData->name = 'Pocit';
-        $advertData->type = Advert::TYPE_IMAGE;
-        $advertData->positionName = 'sixthRectangle';
-        $advertData->link = '/';
-        $advertData->smallTitle = 'Když svítí slunce';
-        $advertData->bigTitle = 'Překvapit by však mohl fakt, že nikdo, snad krom toho, kdo balónky k obloze vypustil, netuší, jakou má ona stuha barvu.';
-        $advertData->productTitle = 'Ptají se často lidé.';
-        $advertData->products = [
-            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '1'),
-            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '76'),
-            $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '80'),
-        ];
-        $advert = $this->advertFacade->create($advertData);
-        $this->addReference(self::ADVERT_SIXTH_RECTANGLE, $advert);
+        $this->addReference(self::ADVERT_FOURTH_RECTANGLE, $advert);
     }
 
     /**

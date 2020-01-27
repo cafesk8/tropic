@@ -1903,8 +1903,8 @@ msgstr "Für Menschen mit einer Lebensperspektive, die uns verbindet. "
 msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x230px), pro plochu 5 - velký obdelník na šířku (1180x387px), pro plochu 6 - obdélník na výšku (190x460px)."
 msgstr ""
 
-msgid "Pro plochy 1, 2, 3, 4 - čtverec (380x290px), pro plochu 5 - obdélník na výšku (380x600px), pro plochu 6 - velký obdelník na šířku (190x460px)."
-msgstr "Für die Bereiche 1, 2, 3, 4 - Quadrat (380 x 290 Pixel), für den Bereich 5 - Rechteck in der Höhe (380 x 600 Pixel), für den Bereich 6 - großes Rechteck in der Breite (190 x 460 Pixel)."
+msgid "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na výšku (380x600px)."
+msgstr "Für die Bereiche 1, 2, 3 - Quadrat (380 x 290 Pixel), für den Bereich 4 - Rechteck in der Höhe (380 x 600 Pixel)."
 
 msgid "Pro termín doručení a dostupnost na prodejnách si vyberte z velikostí."
 msgstr "Für Liefertermine und Verfügbarkeit in Geschäften wähle deine Größe aus."

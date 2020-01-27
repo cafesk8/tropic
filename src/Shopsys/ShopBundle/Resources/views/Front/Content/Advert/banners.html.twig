@@ -2,10 +2,10 @@
     <div class="web__container">
         <div class="list-grid-images">
             <ul class="list-grid-images__portrait">
-                {% if fifthRectangle is not null %}
+                {% if fourthRectangle is not null %}
                     <li class="list-grid-images__portrait__item">
-                        <a href="{{ fifthRectangle.link }}" class="list-grid-images__portrait__link">
-                            {{ image(fifthRectangle, {size: 'rectangle', alt: fifthRectangle.name}) }}
+                        <a href="{{ fourthRectangle.link }}" class="list-grid-images__portrait__link">
+                            {{ image(fourthRectangle, {size: 'rectangle', alt: fourthRectangle.name}) }}
                         </a>
                     </li>
                 {% endif %}
@@ -41,21 +41,6 @@
                         </a>
                     </li>
                 {% endif %}
-                {#
-                    TODO PRG: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-36541
-                    4. Square on HP
-
-                    {% if fourthSquare is not null %}
-                        <li class="list-grid-images__landscape__item">
-                            <a href="{{ fourthSquare.link }}" class="list-grid-images__landscape__link">
-                                {{ image(fourthSquare, {size: 'square', alt: fourthSquare.name}) }}
-                                <div class="list-grid-images__button">
-                                    <span class="btn btn--secondary list-grid-images__button__btn">{{ fourthSquare.name }}</span>
-                                </div>
-                            </a>
-                        </li>
-                    {% endif %}
-                #}
             </ul>
         </div>
     </div>
