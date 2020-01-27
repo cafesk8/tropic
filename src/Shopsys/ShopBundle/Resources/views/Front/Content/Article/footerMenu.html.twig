@@ -1,3 +1,5 @@
+{% set domainId = getDomain().id %}
+
 <div class="list-menu list-menu--footer js-footer-link-content">
     <ul class="list-menu__column dont-print">
         {% for article in articles %}
@@ -18,11 +20,13 @@
                     {{ 'Blog'|trans }}
                 </a>
             </li>
-            <li class="list-menu__item">
-                <a href="{{ url('front_store_index') }}" class="list-menu__item__link underline">
-                    {{ 'Prodejny'|trans }}
-                </a>
-            </li>
+            {% if domainId != constant('Shopsys\\ShopBundle\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN') %}
+                <li class="list-menu__item">
+                    <a href="{{ url('front_store_index') }}" class="list-menu__item__link underline">
+                        {{ 'Prodejny'|trans }}
+                    </a>
+                </li>
+            {% endif %}
             <li class="list-menu__item">
                 <a href="{{ url('front_about_us_info') }}" class="list-menu__item__link underline">
                     {{ 'Kontakt'|trans }}

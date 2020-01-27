@@ -76,21 +76,7 @@
                                 <h4>{{ 'Sídlo'|trans }}</h4>
                             </div>
                         </div>
-                        {% if domainId == 2 %}
-                            <div class="wrap-article__row">
-                                <div class="wrap-article__row__half">
-                                    {{ 'Bushman Trade s.r.o.'|trans }}<br>
-                                    {{ 'Stará Vajnorská 11'|trans }}<br>
-                                    {{ '831 04 Bratislava'|trans }}<br>
-                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br><br>
-                                    {{ 'Tel'|trans }}: <a href="tel:00421908767330" class="underline-small">{{ '00421/908767330'|trans }}</a><br><br>
-                                    <a href="mailto:obchod@bushman.sk" class="underline-small">{{ 'obchod@bushman.sk'|trans }}</a><br>
-                                </div>
-                                <div class="wrap-article__row__half">
-                                    {{ 'Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B.'|trans }}
-                                </div>
-                            </div>
-                        {% else %}
+                        {% if domainId == 1 %}
                             <div class="wrap-article__row padding-bottom-20">
                                 <div class="wrap-article__row__half">
                                     {{ 'Bushman Company a.s.'|trans }}<br>
@@ -111,6 +97,37 @@
                                     {{ 'Firma zapsaná v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 55269.'|trans }}
                                 </div>
                             </div>
+                        {% elseif domainId == 2 %}
+                            <div class="wrap-article__row">
+                                <div class="wrap-article__row__half">
+                                    {{ 'Bushman Trade s.r.o.'|trans }}<br>
+                                    {{ 'Stará Vajnorská 11'|trans }}<br>
+                                    {{ '831 04 Bratislava'|trans }}<br>
+                                    {{ 'IČO: 51704501, IČ DPH: SK2120761621'|trans }}<br><br>
+                                    {{ 'Tel'|trans }}: <a href="tel:{{ '00421908767330'|trans }}" class="underline-small">{{ '00421/908767330'|trans }}</a><br><br>
+                                    <a href="mailto:{{ 'obchod@bushman.sk'|trans }}" class="underline-small">{{ 'obchod@bushman.sk'|trans }}</a><br>
+                                </div>
+                                <div class="wrap-article__row__half">
+                                    {{ 'Spoločnosť zapísaná v obchodnom registri Okresného súdu Bratislava I, oddiel Sro, vložka č. 128258/B.'|trans }}
+                                </div>
+                            </div>
+                        {% elseif domainId == 3 %}
+                            <div class="wrap-article__row">
+                                <div class="wrap-article__row__half">
+                                    {{ 'BUSHMAN GERMANY GmbH'|trans }}<br>
+                                    {{ 'Sachsenstraße 2'|trans }}<br>
+                                    {{ '92318 Neumarkt'|trans }}<br>
+                                    {{ 'Deutschland'|trans }}<br>
+                                    {{ 'Telefon:'|trans }} <a href="{{ '017634437977'|trans }}" class="underline-small">{{ '0176 344 37977'|trans }}</a> <br>
+                                    {{ 'E-Mail:'|trans }} <a href="{{ 'service@bushman.eu'|trans }}" class="underline-small">{{ 'service@bushman.eu'|trans }}</a><br>
+                                    {{ 'USt-IdNr.: DE285174086'|trans }}<br>
+                                    <br>
+                                </div>
+                                <div class="wrap-article__row__half">
+                                    {{ 'eingetragen im Handelsregister des Amtsgerichtes Nürnberg'|trans }}<br>
+                                    {{ 'Handelsregisternummer HRB 34224'|trans }}
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -118,10 +135,12 @@
             <div class="wrap-article">
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
-                        {% if domainId == 2 %}
-                            {% set mapSource = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10640.142207168987!2d17.1655044!3d48.1866665!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdb45bc57390ef3c6!2sBushman%20Factory-Outlet!5e0!3m2!1scs!2scz!4v1573820168929!5m2!1scs!2scz' %}
-                        {% else %}
+                        {% if domainId == 1 %}
                             {% set mapSource = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2572.5853368987177!2d14.673543315559575!3d49.850248479397116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b871241bc86ab%3A0xb8fdb42aee6cdd!2sBushman+Company+a.s.!5e0!3m2!1scs!2scz!4v1564350162889!5m2!1scs!2scz' %}
+                        {% elseif domainId == 2 %}
+                            {% set mapSource = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10640.142207168987!2d17.1655044!3d48.1866665!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdb45bc57390ef3c6!2sBushman%20Factory-Outlet!5e0!3m2!1scs!2scz!4v1573820168929!5m2!1scs!2scz' %}
+                        {% elseif domainId == 3 %}
+                            {% set mapSource = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2601.973576218106!2d11.474130115538065!3d49.29584367933277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479f654f85a81813%3A0x32738dd28277a71d!2sSachsenstra%C3%9Fe%202%2C%2092318%20Neumarkt%20in%20der%20Oberpfalz%2C%20N%C4%9Bmecko!5e0!3m2!1scs!2scz!4v1580140746881!5m2!1scs!2scz' %}
                         {% endif %}
                         <iframe src="{{ mapSource }}" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
                     </div>
