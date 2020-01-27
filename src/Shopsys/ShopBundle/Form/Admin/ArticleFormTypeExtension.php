@@ -25,7 +25,7 @@ class ArticleFormTypeExtension extends AbstractTypeExtension
             'constraints' => [
                 new Constraints\NotBlank(['message' => 'Please enter date of creation']),
             ],
-            'label' => 'Creation date',
+            'label' => t('Creation date'),
         ]);
 
         $builderArticleDataGroup->add('placement', ChoiceType::class, [
