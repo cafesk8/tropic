@@ -51,17 +51,17 @@ class MultidomainArticleSettingDataFixture extends AbstractReferenceFixture impl
     protected function loadForDomain(int $domainId)
     {
         /** @var \Shopsys\ShopBundle\Model\Article\Article $bushmanClubArticle */
-        $bushmanClubArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
+        $bushmanClubArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $ourValuesArticle */
-        $ourValuesArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
+        $ourValuesArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $ourStoryArticle */
-        $ourStoryArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
+        $ourStoryArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $firstHeaderArticle */
-        $firstHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
+        $firstHeaderArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $secondHeaderArticle */
-        $secondHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
+        $secondHeaderArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $thirdHeaderArticle */
-        $thirdHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
+        $thirdHeaderArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
 
         $this->articleFacade->setArticleOnDomainInSettings(
             $bushmanClubArticle,
@@ -106,7 +106,7 @@ class MultidomainArticleSettingDataFixture extends AbstractReferenceFixture impl
     public function getDependencies(): array
     {
         return [
-            MultidomainArticleDataFixture::class,
+            ArticleDataFixture::class,
         ];
     }
 }

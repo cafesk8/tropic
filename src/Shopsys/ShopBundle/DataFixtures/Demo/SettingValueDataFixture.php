@@ -30,10 +30,10 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
      */
     public function load(ObjectManager $manager)
     {
-        $termsAndConditions = $this->getReference(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS_1);
-        $privacyPolicy = $this->getReference(ArticleDataFixture::ARTICLE_PRIVACY_POLICY_1);
+        $termsAndConditions = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, Domain::FIRST_DOMAIN_ID);
+        $privacyPolicy = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRIVACY_POLICY, Domain::FIRST_DOMAIN_ID);
         /* @var $termsAndConditions \Shopsys\ShopBundle\Model\Article\Article */
-        $cookies = $this->getReference(ArticleDataFixture::ARTICLE_COOKIES_1);
+        $cookies = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_COOKIES, Domain::FIRST_DOMAIN_ID);
         /* @var $cookies \Shopsys\ShopBundle\Model\Article\Article */
 
         $personalDataDisplaySiteContent = 'Zadáním e-mailu níže si můžete nechat zobrazit vaše osobní údaje, která evidujeme v našem internetovém obchodu.

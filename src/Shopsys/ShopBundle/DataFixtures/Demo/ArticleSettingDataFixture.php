@@ -33,9 +33,9 @@ class ArticleSettingDataFixture extends AbstractReferenceFixture implements Depe
     public function load(ObjectManager $manager): void
     {
         /** @var \Shopsys\ShopBundle\Model\Article\Article $firstHeaderArticle */
-        $firstHeaderArticle = $this->getReference(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS_1);
+        $firstHeaderArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $secondHeaderArticle */
-        $secondHeaderArticle = $this->getReference(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS_1);
+        $secondHeaderArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, Domain::FIRST_DOMAIN_ID);
 
         $this->articleFacade->setArticleOnDomainInSettings(
             $firstHeaderArticle,

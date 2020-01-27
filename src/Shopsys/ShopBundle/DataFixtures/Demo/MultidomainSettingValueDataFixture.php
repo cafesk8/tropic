@@ -49,15 +49,15 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
      */
     protected function loadForDomain(int $domainId)
     {
-        $termsAndConditionsDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
+        $termsAndConditionsDomain = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
         /* @var $termsAndConditionsDomain \Shopsys\ShopBundle\Model\Article\Article */
         $this->setting->setForDomain(Setting::TERMS_AND_CONDITIONS_ARTICLE_ID, $termsAndConditionsDomain->getId(), $domainId);
 
-        $privacyPolicyDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
+        $privacyPolicyDomain = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
         /* @var $privacyPolicyDomain \Shopsys\ShopBundle\Model\Article\Article */
         $this->setting->setForDomain(Setting::PRIVACY_POLICY_ARTICLE_ID, $privacyPolicyDomain->getId(), $domainId);
 
-        $cookiesDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_COOKIES, $domainId);
+        $cookiesDomain = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_COOKIES, $domainId);
         /* @var $cookiesDomain \Shopsys\ShopBundle\Model\Article\Article */
         $this->setting->setForDomain(Setting::COOKIES_ARTICLE_ID, $cookiesDomain->getId(), $domainId);
 
@@ -102,7 +102,7 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
         $this->setting->setForDomain(Setting::PERSONAL_DATA_EXPORT_SITE_CONTENT, $personalDataExportSiteContent, $domainId);
 
         /** @var \Shopsys\ShopBundle\Model\Article\Article $articleProductSizeDomain */
-        $articleProductSizeDomain = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRODUCT_SIZE, $domainId);
+        $articleProductSizeDomain = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRODUCT_SIZE, $domainId);
         $this->setting->setForDomain(\Shopsys\ShopBundle\Component\Setting\Setting::PRODUCT_SIZE_ARTICLE_ID, $articleProductSizeDomain->getId(), $domainId);
     }
 
@@ -112,7 +112,7 @@ class MultidomainSettingValueDataFixture extends AbstractReferenceFixture implem
     public function getDependencies()
     {
         return [
-            MultidomainArticleDataFixture::class,
+            ArticleDataFixture::class,
             SettingValueDataFixture::class,
         ];
     }
