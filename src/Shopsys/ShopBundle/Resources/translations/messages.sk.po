@@ -13,11 +13,8 @@ msgstr "#5 výdrž a nadčasovosť"
 msgid "%name% agrees with privacy policy."
 msgstr "% name% súhlasí s pravidlami ochrany osobných údajov."
 
-msgid "(Banner) Bushman Club"
-msgstr "(Banner) Bushman Club"
-
 msgid "(Banner) Věrnostní program"
-msgstr ""
+msgstr "Vernostný program"
 
 msgid "(If I buy on the company behalf)"
 msgstr "(Ak nakupujem v mene spoločnosti)"
@@ -89,7 +86,7 @@ msgid "831 04 Bratislava"
 msgstr "831 04 Bratislava"
 
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
-msgstr ""
+msgstr "<i class=\"svg svg-cart\"></i>Pridať do košíka"
 
 msgid "AKCE"
 msgstr "AKCIA"
@@ -338,7 +335,7 @@ msgid "Category <strong>{{ name }}</strong> deleted"
 msgstr "Kategória <strong> {{name}} </strong> bola odstránená"
 
 msgid "Category<strong><a href=\"{{ url }}\">{{ name }}</a></strong> was modified"
-msgstr "Kategória <strong> <a href=\"{{ url }}\"> {{name}} </a> </strong> bola zmenená"
+msgstr "Kategória <strong><a href=\"{{ url }}\">{{ name }}</a></strong> bola zmenená"
 
 msgid "Celkem"
 msgstr "Celkom"
@@ -365,43 +362,25 @@ msgid "Changing password"
 msgstr "Zmena hesla"
 
 msgid "Chcete opravdu smazat tyto slevové kupóny?"
-msgstr "Chceš naozaj vymazať tieto zľavové kupóny?"
-
-msgid "Chcete se stát Bushmanem?"
-msgstr "Chcete sa stať Bushmanom?"
+msgstr "Chcete naozaj vymazať tieto zľavové kupóny?"
 
 msgid "Chceš dárek"
-msgstr ""
+msgstr "Chcete darček"
 
 msgid "Chceš promo produkt"
-msgstr ""
-
-msgid "Chceš se stát bushmanem?"
-msgstr "Chceš sa stať bushmanom?"
+msgstr "Chcete promo produkt"
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
-msgstr ""
-
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Bushman Clubu</a>."
-msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\"> Bushman Clubu </a>."
-
-msgid "Chci být členem Bushman Clubu"
-msgstr "Chcem byť členom Bushman Clubu"
+msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Vernostného programu</span></a>."
 
 msgid "Chci být členem Věrnostního programu"
-msgstr ""
+msgstr "Chcem byť členom Vernostného programu"
 
 msgid "Chci reklamovat zboží"
 msgstr "Chcem reklamovať tovar"
 
-msgid "Chci se stát bushmanem"
-msgstr "Chcem sa stať Bushmanom"
-
-msgid "Chci se stát členem BUSHMAN clubu"
-msgstr "Chcem sa stať členom BUSHMAN clubu"
-
 msgid "Chci se stát členem Věrnostního programu"
-msgstr ""
+msgstr "Chcem sa stať členom Vernostného programu"
 
 msgid "Chci zadat doručovací adresu"
 msgstr "Chcem zadať doručovaciu adresu"
@@ -440,7 +419,7 @@ msgid "Co je Bushman Klub?"
 msgstr "Čo je BUSHMAN club?"
 
 msgid "Co je Věrnostní program?"
-msgstr ""
+msgstr "Čo je Vernostný program?"
 
 msgid "Co je však naprosto jisté, spolehlivě vás zahřeje."
 msgstr "Čo je však úplne isté, spoľahlivo vás zahreje."
@@ -599,31 +578,31 @@ msgid "Do košíku jste přidali"
 msgstr "Pridané! V košíku máte tiež"
 
 msgid "Do you really want to delete this blog category?"
-msgstr "Naozaj chceš odstrániť túto kategóriu blogu?"
+msgstr "Naozaj chcete odstrániť túto kategóriu blogu?"
 
 msgid "Do you really want to remove the order?"
-msgstr "Naozaj chceš objednávku odstrániť?"
+msgstr "Naozaj chcete objednávku odstrániť?"
 
 msgid "Do you really want to remove this article?"
-msgstr "Naozaj chceš odstrániť tento článok?"
+msgstr "Naozaj chcete odstrániť tento článok?"
 
 msgid "Do you really want to remove this blog article?"
-msgstr "Naozaj chceš odstrániť tento článok blogu?"
+msgstr "Naozaj chcete odstrániť tento článok blogu?"
 
 msgid "Do you really want to remove this customer?"
-msgstr "Naozaj chceš odstrániť tohto zákazníka?"
+msgstr "Naozaj chcete odstrániť tohto zákazníka?"
 
 msgid "Do you really want to remove this flag?"
-msgstr "Naozaj chceš odstrániť túto vlajku?"
+msgstr "Naozaj chcete odstrániť túto vlajku?"
 
 msgid "Do you really want to remove this promo code?"
-msgstr "Naozaj chceš odstrániť tento propagačný kód?"
+msgstr "Naozaj chcete odstrániť tento propagačný kód?"
 
 msgid "Do you really want to remove this store?"
-msgstr "Naozaj chceš odstrániť tento obchod?"
+msgstr "Naozaj chcete odstrániť tento obchod?"
 
 msgid "Do you want to receive the newest information about our shop? Subscribe to our e-mail newsletter."
-msgstr "Chceš dostávať najnovšie informácie o našom obchode? Prihlás sa na odber nášho e-mailového spravodajcu."
+msgstr "Chcete dostávať najnovšie informácie o našom obchode? Prihlás sa na odber nášho e-mailového spravodajcu."
 
 msgid "Dobírka"
 msgstr "Dobierka"
@@ -643,9 +622,6 @@ msgstr "Doplnky"
 msgid "Doprava"
 msgstr "Doprava"
 
-msgid "Doprava (29.1. u vás)"
-msgstr "Doprava (29.1. u vás)"
-
 msgid "Doprava a platba"
 msgstr "Doprava a platba"
 
@@ -656,7 +632,7 @@ msgid "Doprava zdarma"
 msgstr "Doprava zadarmo"
 
 msgid "Doprava zdarma při nákupu <strong>nad 2&nbsp;500&nbsp;Kč</strong>"
-msgstr ""
+msgstr "Doprava zdarma pri nákupe <strong>nad 2&nbsp;500&nbsp;Kč</strong>"
 
 msgid "Dopravce"
 msgstr "Dopravca"
@@ -728,7 +704,7 @@ msgid "Děkujeme Vám"
 msgstr "Ďakujeme vám"
 
 msgid "Děkujeme za vaši objednávku"
-msgstr "Ďakujeme za vaši objednávku"
+msgstr "Ďakujeme za vašu objednávku"
 
 msgid "Děkuju pané Malý :)"
 msgstr "Ďakujem pán Malý :)"
@@ -806,7 +782,7 @@ msgid "Empty cart"
 msgstr "Prázdny košík"
 
 msgid "Enter e-mail"
-msgstr "Zadaj e-mail"
+msgstr "Zadajte e-mail"
 
 msgid "Entered customer not found, please check entered data."
 msgstr "Zadaný zákazník nebol nájdený, skontrolujte zadané údaje."
@@ -1049,16 +1025,13 @@ msgid "IČO: 51704501, IČ DPH: SK2120761621"
 msgstr "IČO: 51704501, IČ DPH: SK2120761621"
 
 msgid "Jak na výměnu velikosti?"
-msgstr "Chceš vymeniť veľkosť?"
+msgstr "Chcete vymeniť veľkosť?"
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
-msgstr "Ako zástupný znak pre číslo sledovania zásielky zadajte% s, teda napr. https://tracking.ulozenka.cz/?_fid=%s"
-
-msgid "Jako člen Bushman Clubu budete mít přístup k"
-msgstr "Ako člen Bushman Clubu budeš mať prístup k"
+msgstr "Ako zástupný znak pre číslo sledovania zásielky zadajte %s, teda napr. https://tracking.ulozenka.cz/?_fid=%s"
 
 msgid "Jako člen Věrnostního programu budete mít přístup k"
-msgstr ""
+msgstr "Ako člen Vernostného programu budete mať prístup k"
 
 msgid "Jaké služby najdete"
 msgstr "Aké služby nájdete"
@@ -1079,19 +1052,13 @@ msgid "Je sklad centrální"
 msgstr "Je sklad centrálny"
 
 msgid "Je čas vyrazit: tvoje objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží ti rezervujeme po dobu 5 dnů. Bushman.cz"
-msgstr "Je čas vyraziť: vaša objednávka č. %% orderNo %% je pripravená na vyzdvihnutie na predajni %% storeName %%, tovar vám rezervujeme po dobu 5 dní."
+msgstr "Je čas vyraziť: vaša objednávka č. %%orderNo%% je pripravená na vyzdvihnutie na predajni %%storeName%%, tovar vám rezervujeme po dobu 5 dní."
 
 msgid "Ještě nebylo implementováno."
 msgstr "Ešte nebolo implementované."
 
-msgid "Jindra má na sobě"
-msgstr "Jindra má na sebe"
-
 msgid "Jméno"
 msgstr "Meno"
-
-msgid "Jsem Jindra, otec všech bushmanů. Je potřeba, aby"
-msgstr "Som Jindra, otec všetkých bushmanov. Je potrebné, aby"
 
 msgid "Jste členem Věrnostního programu"
 msgstr "Ste členom vernostného programu"
@@ -1403,7 +1370,7 @@ msgid "Nejčtenější články"
 msgstr "Najčítanejšie články"
 
 msgid "Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám."
-msgstr ""
+msgstr "Nemusíte mať za sebou naplavaných tisíce kilometrov, aby ste zlepšili techniku a tiež výdrž. Poradíme vám."
 
 msgid "Nemáte oprávnění vidět požadovanou stránku. Požádejte svého administrátora o udělení přístupu."
 msgstr "Nemáte oprávnenie vidieť požadovanú stránku. Požiadajte svojho administrátora o udelenie prístupu."
@@ -1412,7 +1379,7 @@ msgid "Neměň se, my se taky neměníme"
 msgstr "Nemeň sa, my sa tiež nemeníme"
 
 msgid "Nemůžete vybrat produkt, který je již propojen"
-msgstr "Nemôžeš si vybrať produkt, ktorý je už prepojený"
+msgstr "Nemôžete si vybrať produkt, ktorý je už prepojený"
 
 msgid "Nenalezeny žádné problémy."
 msgstr "Nenašli sa žiadne problémy."
@@ -1628,7 +1595,7 @@ msgid "Operation failed"
 msgstr "Operácia zlyhala"
 
 msgid "Opravdu chcete %operation% (%subject%) u %count% produktů?"
-msgstr "Naozaj chceš % operation% (% subject%) u% count% produktov?"
+msgstr "Naozaj chcete %operation% (%subject%) u %count% produktov?"
 
 msgid "Opravdu chcete odstranit tento dárek?"
 msgstr "Naozaj chcete odstrániť tento darček?"
@@ -1769,7 +1736,7 @@ msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte h
 msgstr ""
 
 msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
-msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontroluj si to."
+msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontrolujte si to."
 
 msgid "Platný do"
 msgstr "Platný do"
@@ -1790,7 +1757,7 @@ msgid "Please enter promo code."
 msgstr "Zadajte propagačný kód."
 
 msgid "Please enter valid quantity you want to add to cart."
-msgstr "Zadajte platné množstvo, ktoré chceš pridať do košíka."
+msgstr "Zadajte platné množstvo, ktoré chcete pridať do košíka."
 
 msgid "Please excuse this error, we are working on fixing it. If needed, contact us on %mail% or by phone %phone%."
 msgstr "Za túto chybu sa ospravedlňujeme, pracujeme na tom, aby sme ju čo najskôr opravili. Prípadne nás kontaktujte na% mail% alebo telefonicky% phone%."
@@ -1937,10 +1904,10 @@ msgid "Pro termín doručení a dostupnost na prodejnách si vyberte z velikost�
 msgstr "Pre termín a dostupnosť na predaj si vyberte z veľkostí."
 
 msgid "Pro využití slevového kódu musíte nakoupit aspoň za %price%."
-msgstr "Pre využitie zľavového kódu musíš nakúpiť aspoň za% price%."
+msgstr "Pre využitie zľavového kódu musíte nakúpiť aspoň za% price%."
 
 msgid "Pro zobrazení parametrů si vyber z velikostí."
-msgstr "Pre zobrazenie parametrov si vyber z veľkostí."
+msgstr "Pre zobrazenie parametrov si vyberte z veľkostí."
 
 msgid "Procentuální sleva"
 msgstr "Percentuálna zľava"
@@ -2087,7 +2054,7 @@ msgid "Přidat"
 msgstr "Pridať"
 
 msgid "Přidat do košíku"
-msgstr ""
+msgstr "Pridať do košíka"
 
 msgid "Přidat nový banner"
 msgstr "Pridať nový banner"
@@ -2120,10 +2087,10 @@ msgid "Přihlášené i nepřihlášené"
 msgstr "Prihlásené aj neprihlásené"
 
 msgid "Přihlášení"
-msgstr ""
+msgstr "Prihlásenie"
 
 msgid "Přihoďte si k nákupu"
-msgstr "Prihoď si k nákupu"
+msgstr "Prihoďte si k nákupu"
 
 msgid "Přiznaný masivní zip odkazuje na již zmíněné \"péřovky\". Originální prošití do tvaru loga na zadním díle však dodává bundě jedineční vzhled, který v kombinaci s použitým celopotištěným, směsovým materiálem, vzorem imituje vazbu hrotového kepru, působí moderně a konzervativně zároveň. Přední díl zdobí drobné kovové logo."
 msgstr "Priznaný masívny zips odkazuje na už spomínané \"perovky\". Originálne prešitie do tvaru loga na zadnom diele však dodáva bunde jedinečný vzhľad, ktorý v kombinácií s použitým celopotlačeným, zmesovým materiálom, vzorom imituje väzbu hrotového kepra, pôsobí moderne a konzervatívne zároveň. Predný diel zdobí drobné kovové logo."
@@ -2149,11 +2116,8 @@ msgstr "Registrovať"
 msgid "Registration"
 msgstr "Registrácia"
 
-msgid "Registruj se"
-msgstr "Registruj sa"
-
 msgid "Registrujte se"
-msgstr "Registruj sa"
+msgstr "Registrujte sa"
 
 msgid "Rekapitulaci jsme vám zaslali také na váš e-mail"
 msgstr "Rekapituláciu sme vám zaslali aj na váš e-mail"
@@ -2357,13 +2321,13 @@ msgid "Slevový kód"
 msgstr "Zľavový kód"
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost byla do {{validityTo}}."
-msgstr "Zľavový kód si nemôžeš uplatniť. Jeho platnosť bola do {{validityTo}}."
+msgstr "Zľavový kód si nemôžete uplatniť. Jeho platnosť bola do {{validityTo}}."
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
-msgstr "Zľavový kód si nemôžeš uplatniť. Jeho platnosť je od {{validityFrom}} do {{validityTo}}."
+msgstr "Zľavový kód si nemôžete uplatniť. Jeho platnosť je od {{validityFrom}} do {{validityTo}}."
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
-msgstr "Zľavový kód si nemôžeš uplatniť. Jeho platnosť je od {{validityFrom}}."
+msgstr "Zľavový kód si nemôžete uplatniť. Jeho platnosť je od {{validityFrom}}."
 
 msgid "Slider on main page"
 msgstr "Slider na hl. stránke"
@@ -2378,7 +2342,7 @@ msgid "Smazat všechny"
 msgstr "Zmazať všetky"
 
 msgid "Snažíte se koupit více kusů, než je skladem."
-msgstr "Snažíš sa kúpiť viac kusov, než je skladom."
+msgstr "Snažíte sa kúpiť viac kusov, než je skladom."
 
 msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">zpracováním osobních údajů</span></a>."
 msgstr "Súhlasím so <a href=\"%url%\" target=\"_blank\"> <span class = \"underline-small\"> spracovaním osobných údajov </ span> </a>."
@@ -2648,10 +2612,10 @@ msgid "Unable to remove item from cart. The link for removing it probably expire
 msgstr "Položku nie je možné odstrániť z košíka. Odkaz na jeho odstránenie pravdepodobne vypršal, skús to znova."
 
 msgid "Unable to send some e-mails, please contact us for order verification."
-msgstr "Nie je možné odoslať žiadné e-maily, kontaktuj nás kvôli overeniu objednávky."
+msgstr "Nie je možné odoslať žiadné e-maily, kontaktujte nás kvôli overeniu objednávky."
 
 msgid "Unable to send some e-mails, please contact us for registration verification."
-msgstr "Nie je možné odoslať žiadné e-maily, kontaktuj nás kvôli overeniu registrácie."
+msgstr "Nie je možné odoslať žiadné e-maily, kontaktujte nás kvôli overeniu registrácie."
 
 msgid "Unable to send updating e-mail"
 msgstr "Nie je možné odoslať aktualizačný e-mail"
@@ -2678,7 +2642,7 @@ msgid "User not found."
 msgstr "Užívateľ nenájdený."
 
 msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
-msgstr ""
+msgstr "Už máte aplikovaný iný zľavový kupón a tento kupón nie je možné kombinovať."
 
 msgid "V hlavní roli"
 msgstr "V hlavnej úlohe"
@@ -2780,10 +2744,10 @@ msgid "View results"
 msgstr "Zobraziť výsledky"
 
 msgid "Vložte nový komentář"
-msgstr "Vlož nový komentár"
+msgstr "Vložte nový komentár"
 
 msgid "Volejte na"
-msgstr "Volaj na"
+msgstr "Volajte na"
 
 msgid "Vracel jsem velikost a měl jsem poštovné zdarma. Na české poměry něco nevídaného. Klobou dolů."
 msgstr "Vracal som veľkosť a mal som poštovné zadarmo. Na českej pomery niečo nevídaného. Klobúk dolu."
@@ -2792,40 +2756,40 @@ msgid "Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)"
 msgstr "Vrátenie tovaru v 14 dňovej lehote (odstúpenie od zmluvy)"
 
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
-msgstr ""
+msgstr "Vrátenie zadarmo <strong>do 30 dní</ strong>"
 
 msgid "Vyberte dopravce"
-msgstr "Vyber dopravcu"
+msgstr "Vyberte dopravcu"
 
 msgid "Vyberte dotaz"
-msgstr "Vyber otázku"
+msgstr "Vyberte otázku"
 
 msgid "Vyberte pobočku"
-msgstr "Vyber pobočku"
+msgstr "Vyberte pobočku"
 
 msgid "Vyberte prodejnu"
-msgstr "Vyber predajňu"
+msgstr "Vyberte predajňu"
 
 msgid "Vyberte prosím službu dopravce"
-msgstr "Vyber si prosím službu dopravcu"
+msgstr "Vyberte si prosím službu dopravcu"
 
 msgid "Vyberte službu dopravce"
-msgstr "Vyber službu dopravcu"
+msgstr "Vyberte službu dopravcu"
 
 msgid "Vyberte typ poukazu"
 msgstr "Vyberte typ poukazu"
 
 msgid "Vyberte variantu"
-msgstr "Vyber variantu"
+msgstr "Vyberte variantu"
 
 msgid "Vyberte velikost"
-msgstr "Vyber veľkosť"
+msgstr "Vyberte veľkosť"
 
 msgid "Vyberte způsob dopravy"
-msgstr "Vyber spôsob dopravy"
+msgstr "Vyberte spôsob dopravy"
 
 msgid "Vyberte způsob platby"
-msgstr "Vyber spôsob platby"
+msgstr "Vyberte spôsob platby"
 
 msgid "Vyberte článek, který se zobrazí jako druhý v horním menu hned za články které sou umístený v pozici \"horní menu v přehlede článku\""
 msgstr "Vyberte článok, ktorý sa zobrazí ako druhý v hornom menu hneď za článkami, ktoré sú umiestnené v pozícii \"horné menu v prehľade článkov\""
@@ -2846,10 +2810,10 @@ msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chc
 msgstr "Vyberte článok, ktorý sa zobrazí v registrácii u checkboxu, či sa chce stať zákazník členom Bushman Clubu, a tiež ako odkaz pre banner Bushman club"
 
 msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program"
-msgstr ""
+msgstr "Vyberte článok, ktorý sa zobrazí v registrácii u checkboxu, či sa chce stať zákazník členom Vernostného programu, a tiež ako odkaz pre banner Vernostný program"
 
 msgid "Vybrali jste si platbu převodem."
-msgstr "Vybral si si platbu prevodom."
+msgstr "Vybrali ste si platbu prevodom."
 
 msgid "Vybrané filtry"
 msgstr "Vybrané filtry"
@@ -2867,7 +2831,7 @@ msgid "Vybráno"
 msgstr "Vybrané"
 
 msgid "Vybíráme to nejlepší na říjen"
-msgstr ""
+msgstr "Vyberáme to najlepšie na október"
 
 msgid "Vyhledat"
 msgstr "Vyhľadať"
@@ -2875,8 +2839,8 @@ msgstr "Vyhľadať"
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr "Vyhľadávanie hľadá v priezvisku, názve firmy, emaily, telefóne a ean. Je možné používať operátory * a?."
 
-msgid "Vyhledávání neodpovídá žádna kategorie"
-msgstr ""
+msgid "Vyhledávání neodpovídá žádná kategorie"
+msgstr "Vyhľadávaniu nezodpovedá žiadna kategória"
 
 msgid "Vyhledávání neodpovídá žádný produkt"
 msgstr "Vyhľadávaniu nezodpovedá žiadny produkt"
@@ -2942,16 +2906,16 @@ msgid "Výsledky výrazu:"
 msgstr "Výsledky výrazu:"
 
 msgid "Věrnostní program"
-msgstr ""
+msgstr "Vernostný program"
 
 msgid "Věrnostní program - body"
-msgstr ""
+msgstr "Vernostný program - body"
 
 msgid "Vše co nabízíme, máme skladem"
 msgstr "Všetko čo ponúkame, máme na sklade"
 
 msgid "Vše pro běhání"
-msgstr ""
+msgstr "Všetko pre behanie"
 
 msgid "Všechny kategorie"
 msgstr "Všetky kategórie"
@@ -2966,31 +2930,31 @@ msgid "Yes"
 msgstr "Áno"
 
 msgid "You can upload following formats: PNG, JPG, GIF"
-msgstr "Môžeš nahrať nasledujúce formáty: PNG, JPG, GIF"
+msgstr "Môžete nahrať nasledujúce formáty: PNG, JPG, GIF"
 
 msgid "You cannot choose product that is main variant"
-msgstr "Nemôžeš si vybrať produkt, ktorý je hlavným variantom"
+msgstr "Nemôžete si vybrať produkt, ktorý je hlavným variantom"
 
 msgid "You cannot choose product that is variant"
-msgstr "Nemôžeš si vybrať produkt, ktorý je variantom"
+msgstr "Nemôžete si vybrať produkt, ktorý je variantom"
 
 msgid "You have been successfully registered."
-msgstr "Bol si úspešne zaregistrovaní."
+msgstr "Boli ste úspešne zaregistrovaní."
 
 msgid "You have been successfully subscribed to our newsletter."
-msgstr "Úspešne si sa prihlásil na odber nášho spravodajcu."
+msgstr "Úspešne ste sa prihlásili na odber nášho spravodajcu."
 
 msgid "You have successfully paid order via GoPay."
-msgstr "Úspešne si zaplatil objednávku cez GoPay."
+msgstr "Úspešne ste zaplatili objednávku cez GoPay."
 
 msgid "You have to be logged in to enter this page"
-msgstr "Na vstup na túto stránku musíš byť prihlásený"
+msgstr "Na vstup na túto stránku musíte byť prihlásený"
 
 msgid "Your cart is unfortunately empty. To create order, you have to <a href=\"%url%\">choose</a> some product first"
 msgstr "Váš košík je, žiaľ, prázdny. Ak chcete vytvoriť objednávku, musíte najprv <a href=\"%url%\">vybrať</a> nejaký produkt"
 
 msgid "Your data had been successfully updated"
-msgstr "Vaša údaje boli úspešne aktualizované"
+msgstr "Vaše údaje boli úspešne aktualizované"
 
 msgid "Your discount"
 msgstr "Vaša zľava"
@@ -3005,7 +2969,7 @@ msgid "Za zboží"
 msgstr "Za tovar"
 
 msgid "Zadejte kód"
-msgstr "Zadaj kód"
+msgstr "Zadajte kód"
 
 msgid "Zadejte město nebo PSČ:"
 msgstr "Zadajte mesto alebo PSČ:"
@@ -3038,7 +3002,7 @@ msgid "Zipy, které vydrží"
 msgstr "Zipsy, ktoré vydržia"
 
 msgid "Zkonečných stavů nelze měnit stav objednávky"
-msgstr "V zkonečných stavov nemožno meniť stav objednávky"
+msgstr "Z konečných stavov nemožno meniť stav objednávky"
 
 msgid "Zlevněné produkty"
 msgstr "Zľavnené produkty"
@@ -3176,7 +3140,7 @@ msgid "from %price%"
 msgstr "z %price%"
 
 msgid "historii svých objednávek,"
-msgstr "história objednávok,"
+msgstr "histórii svojich objednávok,"
 
 msgid "in upper menu"
 msgstr "v hornom menu"

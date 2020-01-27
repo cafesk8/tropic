@@ -2783,7 +2783,7 @@ msgid "Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)"
 msgstr "Rückgabe der Ware innerhalb von 14 Tagen (Widerrufsrecht)"
 
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
-msgstr ""
+msgstr "Kostenlose Rückerstattung <strong>innerhalb von 30 Tagen</ strong>"
 
 msgid "Vyberte dopravce"
 msgstr "Wähle den Spediteur aus"
@@ -2866,7 +2866,7 @@ msgstr "Suchen"
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr "Durchsuchen von Suchen nach Nachname, Firmenname, E-Mail, Telefon und E-Mail. Es ist möglich, die Operatoren * und ? zu verwenden."
 
-msgid "Vyhledávání neodpovídá žádna kategorie"
+msgid "Vyhledávání neodpovídá žádná kategorie"
 msgstr ""
 
 msgid "Vyhledávání neodpovídá žádný produkt"

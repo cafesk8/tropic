@@ -74,97 +74,97 @@ msgid "Passwords do not match"
 msgstr "Heslá sa nezhodujú"
 
 msgid "Please choose a valid combination of transport and payment"
-msgstr "Vyber platnú kombináciu dopravy a platby"
+msgstr "Vyberte platnú kombináciu dopravy a platby"
 
 msgid "Please choose advertisement type"
-msgstr "Vyber typ reklamy"
+msgstr "Vyberte typ reklamy"
 
 msgid "Please choose article placement"
-msgstr "Vyber umiestnenie článku"
+msgstr "Vyberte umiestnenie článku"
 
 msgid "Please choose country"
-msgstr "Vyber krajinu"
+msgstr "Vyberte krajinu"
 
 msgid "Please choose payment type"
-msgstr "Vyber typ platby"
+msgstr "Vyberte typ platby"
 
 msgid "Please choose shipping type"
-msgstr "Vyber typ prepravy"
+msgstr "Vyberte typ prepravy"
 
 msgid "Please enter city"
-msgstr "Zadaj mesto"
+msgstr "Zadajte mesto"
 
 msgid "Please enter company name"
-msgstr "Zadaj názov spoločnosti"
+msgstr "Zadajte názov spoločnosti"
 
 msgid "Please enter content"
-msgstr "Zadaj obsah"
+msgstr "Zadajte obsah"
 
 msgid "Please enter country of a store"
-msgstr "Zadaj krajinu obchodu"
+msgstr "Zadajte krajinu obchodu"
 
 msgid "Please enter date of creation"
-msgstr "Zadaj dátum vytvorenia"
+msgstr "Zadajte dátum vytvorenia"
 
 msgid "Please enter discount percentage"
-msgstr "Zadaj percento zľavy"
+msgstr "Zadajte percento zľavy"
 
 msgid "Please enter e-mail"
-msgstr "Zadaj e-mail"
+msgstr "Zadajte e-mail"
 
 msgid "Please enter first name"
-msgstr "Zadaj krstné meno"
+msgstr "Zadajte krstné meno"
 
 msgid "Please enter first name of contact person"
-msgstr "Zadaj krstné meno kontaktnej osoby"
+msgstr "Zadajte krstné meno kontaktnej osoby"
 
 msgid "Please enter full name"
-msgstr "Zadaj celé meno"
+msgstr "Zadajte celé meno"
 
 msgid "Please enter identification number"
-msgstr "Zadaj identifikačné číslo"
+msgstr "Zadajte identifikačné číslo"
 
 msgid "Please enter last name"
-msgstr "Zadaj priezvisko"
+msgstr "Zadajte priezvisko"
 
 msgid "Please enter last name of contact person"
-msgstr "Zadaj priezvisko kontaktnej osoby"
+msgstr "Zadajte priezvisko kontaktnej osoby"
 
 msgid "Please enter name"
-msgstr "Zadaj meno"
+msgstr "Zadajte meno"
 
 msgid "Please enter password"
-msgstr "Zadaj heslo"
+msgstr "Zadajte heslo"
 
 msgid "Please enter price in correct format (positive number with decimal separator)"
-msgstr "Zadaj cenu v správnom formáte (kladné číslo s desatinnou čiarkou)"
+msgstr "Zadajte cenu v správnom formáte (kladné číslo s desatinnou čiarkou)"
 
 msgid "Please enter quantity"
-msgstr "Zadaj množstvo"
+msgstr "Zadajte množstvo"
 
 msgid "Please enter stock in correct format (positive number >= 0)"
-msgstr "Zadaj zásoby v správnom formáte (kladné číslo> = 0)"
+msgstr "Zadajte zásoby v správnom formáte (kladné číslo> = 0)"
 
 msgid "Please enter street"
-msgstr "Zadaj ulicu"
+msgstr "Zadajte ulicu"
 
 msgid "Please enter telephone number"
-msgstr "Zadaj telefónne číslo"
+msgstr "Zadajte telefónne číslo"
 
 msgid "Please enter valid e-mail"
-msgstr "Zadaj platný e-mail"
+msgstr "Zadajte platný e-mail"
 
 msgid "Please enter valid quantity"
-msgstr "Zadaj platné množstvo"
+msgstr "Zadajte platné množstvo"
 
 msgid "Please enter zip code"
-msgstr "Zadaj PSČ"
+msgstr "Zadajte PSČ"
 
 msgid "Please select country"
 msgstr "Vyberte krajinu"
 
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
-msgstr "Pokiaľ chceš informačný riadok používateľom zobraziť, musíš ho vyplniť"
+msgstr "Pokiaľ chcete informačný riadok používateľom zobraziť, musíš ho vyplniť"
 
 msgid "Position in list cannot be longer than {{ limit }} characters"
 msgstr "Pozícia v zozname nesmie byť dlhšia ako {{limit}} znakov"

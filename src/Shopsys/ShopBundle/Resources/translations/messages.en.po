@@ -59,7 +59,7 @@ msgid "702 00 Ostrava"
 msgstr ""
 
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
-msgstr ""
+msgstr "<i class=\"svg svg-cart\"></i>Add to cart"
 
 msgid "Add"
 msgstr ""
@@ -1652,7 +1652,7 @@ msgid "Přidat"
 msgstr ""
 
 msgid "Přidat do košíku"
-msgstr ""
+msgstr "Add to cart"
 
 msgid "Přidat nový banner"
 msgstr ""
@@ -2225,10 +2225,10 @@ msgid "View results"
 msgstr ""
 
 msgid "Volejte na"
-msgstr ""
+msgstr "Call to"
 
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
-msgstr ""
+msgstr "Free refund <strong>within 30 days</strong>"
 
 msgid "Vyberte dopravce"
 msgstr ""
@@ -2302,7 +2302,7 @@ msgstr ""
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr ""
 
-msgid "Vyhledávání neodpovídá žádna kategorie"
+msgid "Vyhledávání neodpovídá žádná kategorie"
 msgstr ""
 
 msgid "Vyhledávání neodpovídá žádný produkt"

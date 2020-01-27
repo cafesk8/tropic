@@ -65,7 +65,7 @@ msgid "702 00 Ostrava"
 msgstr ""
 
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
-msgstr ""
+msgstr "<i class=\"svg svg-cart\"></i>Přidat do košíku"
 
 msgid "Accessories"
 msgstr "Příslušenství"
@@ -749,7 +749,7 @@ msgid "Flags"
 msgstr "Příznaky"
 
 msgid "Forgot your password?"
-msgstr "Nemůžeš si vzpomenout na heslo?"
+msgstr "Nemůžete si vzpomenout na heslo?"
 
 msgid "Forgotten password"
 msgstr "Zapomenuté heslo"
@@ -1874,7 +1874,7 @@ msgid "Přidat"
 msgstr ""
 
 msgid "Přidat do košíku"
-msgstr ""
+msgstr "Přidat do košíku"
 
 msgid "Přidat nový banner"
 msgstr ""
@@ -1889,7 +1889,7 @@ msgid "Přidám poznámku k objednávce"
 msgstr ""
 
 msgid "Přihlaste se"
-msgstr "Přihlas se"
+msgstr "Přihlaste se"
 
 msgid "Přihlásit se"
 msgstr ""
@@ -1924,11 +1924,8 @@ msgstr "Registrovat"
 msgid "Registration"
 msgstr "Registrace"
 
-msgid "Registruj se"
-msgstr ""
-
 msgid "Registrujte se"
-msgstr "Registruj se"
+msgstr "Registrujte se"
 
 msgid "Rekapitulaci jsme vám zaslali také na váš e-mail"
 msgstr "Rekapitulaci jsme vám zaslali také na váš e-mail"
@@ -1958,7 +1955,7 @@ msgid "Rozlišující parametr"
 msgstr ""
 
 msgid "S čím potřebujete pomoct?"
-msgstr "S čím potřebuješ pomoci?"
+msgstr "S čím potřebujete pomoci?"
 
 msgid "SKU"
 msgstr ""
@@ -2090,7 +2087,7 @@ msgid "Skupina produktů byla úspěšně vytvořena."
 msgstr ""
 
 msgid "Sledujte náš instagram"
-msgstr "Sleduj náš Instagram"
+msgstr "Sledujte náš Instagram"
 
 msgid "Sleva"
 msgstr ""
@@ -2126,13 +2123,13 @@ msgid "Slevový kód"
 msgstr ""
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost byla do {{validityTo}}."
-msgstr "Slevový kód už nemůžeš uplatnit. Jeho platnost byla do {{validityTo}}."
+msgstr "Slevový kód už nemůžete uplatnit. Jeho platnost byla do {{validityTo}}."
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
-msgstr "Slevový kód teď nemůžeš uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
+msgstr "Slevový kód teď nemůžete uplatnit. Jeho platnost je od {{validityFrom}} do {{validityTo}}."
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
-msgstr "Slevový kód ještě nemůžeš uplatnit. Jeho platnost je od {{validityFrom}}."
+msgstr "Slevový kód ještě nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
 
 msgid "Slider on main page"
 msgstr "Slider na hl. stránce"
@@ -2147,7 +2144,7 @@ msgid "Smazat všechny"
 msgstr ""
 
 msgid "Snažíte se koupit více kusů, než je skladem."
-msgstr "Snažíš se koupit více kusů, než máme skladem."
+msgstr "Snažíte se koupit více kusů, než máme skladem."
 
 msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">zpracováním osobních údajů</span></a>."
 msgstr ""
@@ -2273,7 +2270,7 @@ msgid "Text zprávy"
 msgstr ""
 
 msgid "Thank you, your message has been sent."
-msgstr "Děkujeme, tvůj vzkaz byl odeslán."
+msgstr "Děkujeme, váš vzkaz byl odeslán."
 
 msgid "The link to change your password expired."
 msgstr "Platnost odkazu pro změnu hesla vypršela."
@@ -2429,7 +2426,7 @@ msgid "Upozornění"
 msgstr ""
 
 msgid "Uprav hned"
-msgstr ""
+msgstr "Upravte hned"
 
 msgid "Upřesňující informace"
 msgstr ""
@@ -2441,7 +2438,7 @@ msgid "User not found."
 msgstr "Uživatel nebyl nalezen."
 
 msgid "Už máš aplikován jiný slevový kupón, a tento kupón nelze kombinovat."
-msgstr ""
+msgstr "Už máte aplikován jiný slevový kupón a tento kupón nelze kombinovat"
 
 msgid "V hlavním menu"
 msgstr ""
@@ -2486,7 +2483,7 @@ msgid "Vaše objednávka"
 msgstr "Vaše objednávka"
 
 msgid "Vaše velikost"
-msgstr "Tvoje velikost"
+msgstr "Vaše velikost"
 
 msgid "Ve středu"
 msgstr ""
@@ -2626,7 +2623,7 @@ msgstr ""
 msgid "Vyhledávání hledá v příjmení, názvu firmy, emailu, telefonu a ean. Je možné používat operátory * a ?."
 msgstr ""
 
-msgid "Vyhledávání neodpovídá žádna kategorie"
+msgid "Vyhledávání neodpovídá žádná kategorie"
 msgstr ""
 
 msgid "Vyhledávání neodpovídá žádný produkt"
