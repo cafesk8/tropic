@@ -215,7 +215,7 @@ msgid "Vložené youtube id neobsahuje žádné video."
 msgstr "Vložené youtube id neobsahuje žiadne video."
 
 msgid "Vyberte prosím pobočku"
-msgstr "Vyber prosím pobočku"
+msgstr "Vyberte prosím pobočku"
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
 msgstr "Vyplňte prosím SKU darčekového certifikátu."
@@ -227,13 +227,13 @@ msgid "Vyplňte prosím jméno"
 msgstr "Vyplňte prosím meno"
 
 msgid "Vyplňte prosím množství."
-msgstr "Vyplň prosím množstvo."
+msgstr "Vyplňte prosím množstvo."
 
 msgid "Vyplňte prosím nominální hodnotu dárkového certifikátu."
 msgstr "Vyplňte prosím nominálnu hodnotu darčekového certifikátu."
 
 msgid "Vyplňte prosím nominální hodnotu slevy."
-msgstr "Vyplň prosím nominálnu hodnotu zľavy."
+msgstr "Vyplňte prosím nominálnu hodnotu zľavy."
 
 msgid "Vyplňte prosím počet dnů do dodání"
 msgstr "Vyplňte prosím počet dní do dodania"
@@ -242,28 +242,28 @@ msgid "Vyplňte prosím příjmení"
 msgstr "Vyplňte prosím priezvisko"
 
 msgid "Vyplňte prosím text tlačítka"
-msgstr "Vyplň prosím text tlačidla"
+msgstr "Vyplňte prosím text tlačidla"
 
 msgid "Vyplňte, prosím, PSČ prodejny"
-msgstr "Vyplňe, prosím, PSČ predajne"
+msgstr "Vyplňte, prosím, PSČ predajne"
 
 msgid "Vyplňte, prosím, město prodejny"
-msgstr "Vyplň, prosím, mesto predajne"
+msgstr "Vyplňte, prosím, mesto predajne"
 
 msgid "Vyplňte, prosím, název prodejny"
-msgstr "Vyplň, prosím, názov predajne"
+msgstr "Vyplňte, prosím, názov predajne"
 
 msgid "Vyplňte, prosím, ulici prodejny"
-msgstr "Vyplň, prosím, ulicu predajne"
+msgstr "Vyplňte, prosím, ulicu predajne"
 
 msgid "You have to agree with privacy policy"
-msgstr "Musíš súhlasiť so zásadami ochrany osobných údajov"
+msgstr "Musíte súhlasiť so zásadami ochrany osobných údajov"
 
 msgid "You have to agree with terms and conditions and privacy policy"
-msgstr "Musíš súhlasiť s podmienkami a zásadami ochrany osobných údajov"
+msgstr "Musíte súhlasiť s podmienkami a zásadami ochrany osobných údajov"
 
 msgid "Zadejte prosím celé číslo."
-msgstr "Zadaj prosím celé číslo."
+msgstr "Zadajte prosím celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmie byť dlhšie ako {{limit}} znakov"
