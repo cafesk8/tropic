@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
+use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
@@ -106,6 +107,10 @@ class RegistrationController extends FrontBaseController
      */
     public function registerAction(Request $request)
     {
+        if ($this->isGranted(Roles::ROLE_LOGGED_CUSTOMER)) {
+            return $this->redirectToRoute('front_homepage');
+        }
+
         $domainId = $this->domain->getId();
         $customerData = $this->customerDataFactory->createForDomainId($domainId);
 
