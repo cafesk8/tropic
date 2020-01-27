@@ -80,7 +80,6 @@ class CartFormType extends AbstractType
             }
 
             $data['quantities'] = $this->cartFacade->getCorrectedQuantitiesBySentData($data['quantities']);
-            $this->cartFacade->displayInfoMessageAboutCorrectedCartItemsQuantities();
             $event->setData($data);
         });
     }

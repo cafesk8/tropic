@@ -16,10 +16,9 @@
             .bind('spinbox.plus', Shopsys.spinbox.plus)
             .bind('spinbox.minus', Shopsys.spinbox.minus);
 
-        $input.change(function () {
+        var checkValue = function () {
             var value = $(this).val();
             var min = $(this).data('spinbox-min');
-            var max = $(this).data('spinbox-max');
             var step = $(this).data('spinbox-step');
 
             if (min < step) {
@@ -30,10 +29,6 @@
                 value = min;
             }
 
-            if (step === undefined || Math.abs(step) < 1) {
-                step = 1;
-            }
-
             if (value % step !== 0) {
                 value = Math.floor(value / step) * step;
             }
@@ -42,12 +37,13 @@
                 value = min;
             }
 
-            if (max !== undefined && max < value) {
-                value = max;
-            }
-
             $(this).val(value);
-        }).change();
+        };
+
+        $input.change(checkValue);
+        $input.ready(function () {
+            $input.change();
+        });
 
         $plus
             .bind('mousedown.spinbox', function (e) {
@@ -69,9 +65,7 @@
     Shopsys.spinbox.plus = function () {
         var value = $.trim($(this).val());
         var step = $(this).data('spinbox-step');
-        if (step === undefined || Math.abs(step) < 1) {
-            step = 1;
-        }
+
         if (value.match(/^\d+$/)) {
             value = parseInt(value) + step;
             $(this).val(value);
@@ -82,9 +76,7 @@
     Shopsys.spinbox.minus = function () {
         var value = $.trim($(this).val());
         var step = $(this).data('spinbox-step');
-        if (step === undefined || Math.abs(step) < 1) {
-            step = 1;
-        }
+
         if (value.match(/^\d+$/)) {
             value = parseInt(value) - step;
             $(this).val(value);

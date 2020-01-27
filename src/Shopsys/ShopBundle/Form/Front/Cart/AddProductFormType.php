@@ -44,6 +44,8 @@ class AddProductFormType extends AbstractType
         $resolver->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
             'csrf_protection' => false, // CSRF is not necessary (and can be annoying) in this form
-        ])->setRequired('minimum_amount');
+        ])
+            ->setRequired('minimum_amount')
+            ->setAllowedTypes('minimum_amount', 'int');
     }
 }

@@ -43,11 +43,6 @@ class CartFacade extends BaseCartFacade
     private $productFacade;
 
     /**
-     * @var array
-     */
-    private $messageCollector;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
@@ -93,21 +88,17 @@ class CartFacade extends BaseCartFacade
 
         $this->flashMessageSender = $flashMessageSender;
         $this->productFacade = $productFacade;
-        $this->messageCollector = [];
     }
 
     /**
-     * @return int[]
+     * @return array
      */
     public function correctCartQuantitiesAccordingToStockedQuantities(): array
     {
-        $this->messageCollector = [];
         $cartModifiedQuantitiesIndexedByCartItemId = [];
 
         $cart = $this->findCartOfCurrentCustomer();
-        if ($cart === null) {
-            return $cartModifiedQuantitiesIndexedByCartItemId;
-        }
+
         foreach ($cart->getItems() as $cartItem) {
             $newCartItemQuantity = $this->getValidCartItemQuantity($cartItem);
 
@@ -122,7 +113,7 @@ class CartFacade extends BaseCartFacade
             $this->changeQuantities($cartModifiedQuantitiesIndexedByCartItemId);
         }
 
-        return $this->messageCollector;
+        return $cartModifiedQuantitiesIndexedByCartItemId;
     }
 
     /**
@@ -178,13 +169,6 @@ class CartFacade extends BaseCartFacade
         }
 
         return $modifyFormData;
-    }
-
-    public function displayInfoMessageAboutCorrectedCartItemsQuantities(): void
-    {
-        foreach ($this->messageCollector as $message) {
-            $this->flashMessageSender->addErrorFlash($message);
-        }
     }
 
     /**
@@ -363,37 +347,37 @@ class CartFacade extends BaseCartFacade
 
         if ($product->isUsingStock()) {
             if ($realMinimumAmount > $realStockQuantity) {
-                $this->messageCollector[] = t('Produkt %name% musel být z košíku odstraněn, protože není skladem.', [
+                $this->flashMessageSender->addErrorFlash(t('Produkt %name% musel být z košíku odstraněn, protože není skladem.', [
                     '%name%' => $cartItem->getName($this->domain->getLocale()),
-                ]);
+                ]));
 
                 return 0;
             }
 
             if ($desiredQuantity > $realStockQuantity) {
-                $this->messageCollector[] = t('Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
+                $this->flashMessageSender->addErrorFlash(t('Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
                     '%name%' => $cartItem->getName($this->domain->getLocale()),
                     '%quantity%' => $realStockQuantity,
-                ]);
+                ]));
 
                 return $realStockQuantity;
             }
         }
 
         if ($desiredQuantity < $realMinimumAmount) {
-            $this->messageCollector[] = t('Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
+            $this->flashMessageSender->addErrorFlash(t('Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
                 '%name%' => $cartItem->getName($this->domain->getLocale()),
                 '%quantity%' => $realMinimumAmount,
-            ]);
+            ]));
 
             return $realMinimumAmount;
         }
 
         if ($desiredQuantity % $product->getAmountMultiplier() !== 0) {
-            $this->messageCollector[] = t('Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili.', [
+            $this->flashMessageSender->addErrorFlash(t('Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili.', [
                 '%name%' => $cartItem->getName($this->domain->getLocale()),
                 '%multiplier%' => $product->getAmountMultiplier(),
-            ]);
+            ]));
 
             return (int)floor($desiredQuantity / $product->getAmountMultiplier()) * $product->getAmountMultiplier();
         }
