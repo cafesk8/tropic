@@ -37,6 +37,9 @@ msgstr ""
 msgid "A toy is an item that can be used for play. Toys are generally played with by children and pets. Playing with toys is an enjoyable means of training young children for life in society. Different materials are used to make toys enjoyable to all ages."
 msgstr ""
 
+msgid "Akce"
+msgstr ""
+
 msgid "Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také."
 msgstr ""
 
@@ -128,6 +131,12 @@ msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se ps
 msgstr ""
 
 msgid "Nedostupné"
+msgstr ""
+
+msgid "Nejprodávanější"
+msgstr ""
+
+msgid "Novinka"
 msgstr ""
 
 msgid "Novinky"
