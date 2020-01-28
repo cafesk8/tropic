@@ -274,6 +274,24 @@ class BlogCategoryRepository extends NestedTreeRepository
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $article
+     * @param int $domainId
+     * @return array
+     */
+    public function getBlogArticleBlogCategoriesLevels(BlogArticle $article, int $domainId): array {
+        $queryBuilder = $this->getAllVisibleByDomainIdQueryBuilder($domainId)
+            ->join(BlogArticleBlogCategoryDomain::class, 'babcd', Join::WITH, 'babcd.blogCategory = bc.id')
+            ->andWhere('babcd.blogArticle = :articleId')
+            ->andWhere('babcd.domainId = :domainId')
+            ->select(['bc.id', 'bc.level']);
+
+        return $queryBuilder->getQuery()->execute([
+            'articleId' => $article->getId(),
+            'domainId' => $domainId,
+        ]);
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory $blogCategory
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[]

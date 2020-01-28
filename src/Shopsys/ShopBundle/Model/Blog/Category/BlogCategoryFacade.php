@@ -296,4 +296,22 @@ class BlogCategoryFacade
 
         return $lastBlogCategoriesByBlogArticleId;
     }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $article
+     * @param int $domainId
+     * @return array
+     */
+    public function getBlogArticleBlogCategoriesWithDeepestLevelsIds(BlogArticle $article, int $domainId): array {
+        $blogCategories = $this->blogCategoryRepository->getBlogArticleBlogCategoriesLevels($article, $domainId);
+        $blogCategoriesByLevel = [];
+        $deepestLevel = 0;
+
+        foreach ($blogCategories as $blogCategory) {
+            $blogCategoriesByLevel[$blogCategory['level']][] = $blogCategory['id'];
+            $deepestLevel = $deepestLevel < $blogCategory['level'] ? $blogCategory['level'] : $deepestLevel;
+        }
+
+        return $blogCategoriesByLevel[$deepestLevel];
+    }
 }
