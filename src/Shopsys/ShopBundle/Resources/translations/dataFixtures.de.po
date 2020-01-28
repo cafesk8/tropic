@@ -109,10 +109,16 @@ msgstr ""
 msgid "Morbi posuere mauris dolor, quis accumsan dolor ullamcorper eget. Phasellus at elementum magna, et pretium neque. Praesent tristique lorem mi, eget varius quam aliquam eget. Vivamus ultrices interdum nisi, sed placerat lectus fermentum non. Phasellus ac quam vitae nisi aliquam vestibulum. Sed rhoncus tortor a arcu sagittis placerat. Nulla lectus nunc, ultrices ac faucibus sed, accumsan nec diam. Nam auctor neque quis tincidunt tempus. Nunc eget risus tristique, lobortis metus vitae, pellentesque leo. Vivamus placerat turpis ac dolor vehicula tincidunt. Sed venenatis, ante id ultrices convallis, lacus elit porttitor dolor, non porta risus ipsum ac justo. Integer id pretium quam, id placerat nulla."
 msgstr ""
 
+msgid "Na dotaz"
+msgstr ""
+
 msgid "Nabídka potisků triček"
 msgstr ""
 
 msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně"
+msgstr ""
+
+msgid "Nedostupné"
 msgstr ""
 
 msgid "Novinky"
@@ -142,6 +148,9 @@ msgstr ""
 msgid "Přehled osobních údajů - {domain}"
 msgstr ""
 
+msgid "Připravujeme"
+msgstr ""
+
 msgid "Registrace byla dokončena"
 msgstr ""
 
@@ -152,6 +161,9 @@ msgid "Shopsys Framework - nejlepší řešení pro váš internetový obchod."
 msgstr ""
 
 msgid "Silnější než kdy předtím..."
+msgstr ""
+
+msgid "Skladem"
 msgstr ""
 
 msgid "Stav objednávky se změnil"
