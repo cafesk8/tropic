@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Shopsys\ShopBundle\Model\Product\Brand\Brand;
@@ -45,13 +46,20 @@ class BrandDataFixture extends AbstractReferenceFixture
     protected $brandDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    protected $domain;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory $brandDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(BrandFacade $brandFacade, BrandDataFactoryInterface $brandDataFactory)
+    public function __construct(BrandFacade $brandFacade, BrandDataFactoryInterface $brandDataFactory, Domain $domain)
     {
         $this->brandFacade = $brandFacade;
         $this->brandDataFactory = $brandDataFactory;
+        $this->domain = $domain;
     }
 
     /**
@@ -63,14 +71,14 @@ class BrandDataFixture extends AbstractReferenceFixture
 
         foreach ($this->getBrandNamesIndexedByBrandConstants() as $brandConstant => $brandName) {
             $brandData->name = $brandName;
-            $brandData->descriptions = [
-                'cs' => 'Toto je popis značky ' . $brandData->name . '.',
-                'en' => 'This is description of brand ' . $brandData->name . '.',
-            ];
-
             if ($brandConstant === self::BRAND_BUSHMAN) {
                 $brandData->type = Brand::TYPE_MAIN_BUSHMAN;
             }
+
+            foreach ($this->domain->getAllLocales() as $locale) {
+                $brandData->descriptions[$locale] = t('Toto je popis značky %brandName%.', ['%brandName%' => $brandData->name], 'dataFixtures', $locale);
+            }
+
             $brand = $this->brandFacade->create($brandData);
             $this->addReference($brandConstant, $brand);
         }

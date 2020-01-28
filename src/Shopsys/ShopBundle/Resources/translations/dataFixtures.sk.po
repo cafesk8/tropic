@@ -187,6 +187,9 @@ msgstr ""
 msgid "Tiskárny"
 msgstr ""
 
+msgid "Toto je popis značky %brandName%."
+msgstr ""
+
 msgid "Ukázkový článek blogu %locale%"
 msgstr ""
 
