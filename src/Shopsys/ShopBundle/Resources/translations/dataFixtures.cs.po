@@ -142,6 +142,9 @@ msgstr ""
 msgid "Novinky"
 msgstr ""
 
+msgid "Nová"
+msgstr ""
+
 msgid "Německo"
 msgstr ""
 
@@ -193,6 +196,9 @@ msgstr ""
 msgid "Stav objednávky se změnil"
 msgstr ""
 
+msgid "Stornována"
+msgstr ""
+
 msgid "Tabulka velikostí pro produkty"
 msgstr ""
 
@@ -218,6 +224,21 @@ msgid "V tuto chvíli nemáme žádné otevřené pozice."
 msgstr ""
 
 msgid "Velkoobchodní prodej pro obchodníky provádíme již od roku 1992. Od roku 2013 umožňujeme obchodníkům s papírenským zbožím i pohodlný nákup přes tento internetový obchod. Každý zaregistrovaný zákazník vidí své aktuální ceny. O B2B mohou žádat pouze ochdodníci, kteří mají naše zboží určeno pro další prodej."
+msgstr ""
+
+msgid "Vrácené zboží"
+msgstr ""
+
+msgid "Vykrytá"
+msgstr ""
+
+msgid "Vykrytá - OM"
+msgstr ""
+
+msgid "Vyřizuje se"
+msgstr ""
+
+msgid "Vyřízena"
 msgstr ""
 
 msgid "Vážený zákazníku, <br /><br />Vaše objednávka byla zrušena."
@@ -260,6 +281,12 @@ msgid "| Demo obchod"
 msgstr ""
 
 msgid "Česká republika"
+msgstr ""
+
+msgid "Částečné vykrytí"
+msgstr ""
+
+msgid "Částečné vykrytí - OM"
 msgstr ""
 
 msgid "Šití na míru"

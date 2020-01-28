@@ -21,6 +21,7 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
     public const ORDER_STATUS_ALMOST_READY_STORE = 'order_status_almost_ready_store';
     public const ORDER_STATUS_READY = 'order_status_ready';
     public const ORDER_STATUS_READY_STORE = 'order_status_ready_store';
+    public const ORDER_STATUS_RETURNED = 'order_status_returned';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Order\Status\OrderStatusFacade
@@ -62,43 +63,20 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
         $this->createOrderStatusReference(3, self::ORDER_STATUS_DONE);
         $this->createOrderStatusReference(4, self::ORDER_STATUS_CANCELED);
 
-        $orderStatusData = $this->orderStatusDataFactory->create();
-        $orderStatusData->name = [
-            'cs' => 'Částečné vykrytí',
-            'sk' => 'Částečné vykrytí',
-            'de' => 'Částečné vykrytí',
-        ];
-        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_ALMOST_READY);
+        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_ALMOST_READY);
         $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_ALMOST_READY);
 
-        $orderStatusData = $this->orderStatusDataFactory->create();
-        $orderStatusData->name = [
-            'cs' => 'Částečné vykrytí - OM',
-            'sk' => 'Částečné vykrytí - OM',
-            'de' => 'Částečné vykrytí - OM',
-        ];
-        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_ALMOST_READY_STORE);
+        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_ALMOST_READY_STORE);
         $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_ALMOST_READY_STORE);
 
-        $orderStatusData = $this->orderStatusDataFactory->create();
-        $orderStatusData->name = [
-            'cs' => 'Vykrytá',
-            'sk' => 'Vykrytá',
-            'de' => 'Vykrytá',
-        ];
-        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_READY);
+        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_READY);
         $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY);
 
-        $orderStatusData = $this->orderStatusDataFactory->create();
-        $orderStatusData->name = [
-            'cs' => 'Vykrytá - OM',
-            'sk' => 'Vykrytá - OM',
-            'de' => 'Vykrytá - OM',
-        ];
-        $orderStatus = $this->orderStatusFacade->createWithType($orderStatusData, OrderStatus::TYPE_READY_STORE);
+        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_READY_STORE);
         $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY_STORE);
 
-        $this->addTranslationsToOrderStatusReturned();
+        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_RETURNED);
+        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_RETURNED);
     }
 
     /**
@@ -113,17 +91,40 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
         $referenceName
     ) {
         $orderStatus = $this->orderStatusFacade->getById($orderStatusId);
-        $this->addReference($referenceName, $orderStatus);
-    }
-
-    private function addTranslationsToOrderStatusReturned(): void
-    {
-        $orderStatusReturned = $this->orderStatusFacade->getByType(OrderStatus::TYPE_RETURNED);
-        $orderStatusDataReturned = $this->orderStatusDataFactory->createFromOrderStatus($orderStatusReturned);
-        $name = $orderStatusReturned->getName('en');
-        foreach ($this->domain->getAll() as $domainConfig) {
-            $orderStatusDataReturned->name[$domainConfig->getLocale()] = $name;
+        $orderStatusData = $this->orderStatusDataFactory->createFromOrderStatus($orderStatus);
+        foreach ($this->domain->getAllLocales() as $locale) {
+            switch ($referenceName) {
+                case self::ORDER_STATUS_NEW:
+                    $orderStatusData->name[$locale] = t('Nová', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_IN_PROGRESS:
+                    $orderStatusData->name[$locale] = t('Vyřizuje se', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_DONE:
+                    $orderStatusData->name[$locale] = t('Vyřízena', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_CANCELED:
+                    $orderStatusData->name[$locale] = t('Stornována', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_ALMOST_READY:
+                    $orderStatusData->name[$locale] = t('Částečné vykrytí', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_ALMOST_READY_STORE:
+                    $orderStatusData->name[$locale] = t('Částečné vykrytí - OM', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_READY:
+                    $orderStatusData->name[$locale] = t('Vykrytá', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_READY_STORE:
+                    $orderStatusData->name[$locale] = t('Vykrytá - OM', [], 'dataFixtures', $locale);
+                    break;
+                case self::ORDER_STATUS_RETURNED:
+                    $orderStatusData->name[$locale] = t('Vrácené zboží', [], 'dataFixtures', $locale);
+                    break;
+                default:
+                    throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnknownNameTranslationForOrderStatusReferenceNameException($referenceName);
+            }
         }
-        $this->orderStatusFacade->edit($orderStatusReturned->getId(), $orderStatusDataReturned);
+        $this->addReference($referenceName, $orderStatus);
     }
 }
