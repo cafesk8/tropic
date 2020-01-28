@@ -4,6 +4,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sk\n"
 
+msgid "%locale% perex lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis nisi, tincidunt sollicitudin augue eu."
+msgstr ""
+
 msgid "(Mon - Sat: 9 - 10 a.m. to 8 - 10 p.m.)"
 msgstr ""
 
@@ -65,6 +68,9 @@ msgid "Fotoaparáty"
 msgstr ""
 
 msgid "Historie společnosti"
+msgstr ""
+
+msgid "Hlavní stránka blogu - %locale%"
 msgstr ""
 
 msgid "Hračky a další"
@@ -179,6 +185,9 @@ msgid "Televize, audio"
 msgstr ""
 
 msgid "Tiskárny"
+msgstr ""
+
+msgid "Ukázkový článek blogu %locale%"
 msgstr ""
 
 msgid "V tuto chvíli nemáme žádné otevřené pozice."
