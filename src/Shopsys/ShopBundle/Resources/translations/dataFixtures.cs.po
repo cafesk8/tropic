@@ -307,6 +307,12 @@ msgstr ""
 msgid "Zásady ochrany osobních údajů"
 msgstr ""
 
+msgid "ks"
+msgstr ""
+
+msgid "m³"
+msgstr "m³"
+
 msgid "no-reply@shopsys.com"
 msgstr ""
 
