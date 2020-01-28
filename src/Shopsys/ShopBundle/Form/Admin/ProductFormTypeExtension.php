@@ -240,7 +240,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
         $this->extendAccessoriesGroup($builder);
         $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'), $product);
-        $this->addAmountGroup($builder);
+        $this->addAmountGroup($builder, $product);
     }
 
     /**
@@ -514,31 +514,52 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
      */
-    private function addAmountGroup(FormBuilderInterface $builder)
+    private function addAmountGroup(FormBuilderInterface $builder, ?Product $product)
     {
         $amountGroup = $builder->create('amountGroup', GroupType::class, [
             'label' => t('Minimum quantity and multiples'),
             'position' => ['after' => 'displayAvailabilityGroup'],
         ]);
 
-        $amountGroup->add('minimumAmount', NumberType::class, [
-            'constraints' => [
-                new Constraints\GreaterThan(0),
-                new Constraints\NotBlank(),
-            ],
-            'label' => t('Minimum amount'),
-            'scale' => 0,
-        ]);
+        if ($product !== null && $product->isVariant()) {
+            $amountGroup->add('minimumAmount', DisplayOnlyType::class, [
+                'mapped' => false,
+                'required' => false,
+                'data' => t('Minimální množství můžete nastavit na kartě hlavní varianty.'),
+                'attr' => [
+                    'class' => 'form-input-disabled form-line--disabled position__actual font-size-13',
+                ],
+            ]);
 
-        $amountGroup->add('amountMultiplier', NumberType::class, [
-            'constraints' => [
-                new Constraints\GreaterThan(0),
-                new Constraints\NotBlank(),
-            ],
-            'label' => t('Amount multiples'),
-            'scale' => 0,
-        ]);
+            $amountGroup->add('amountMultiplier', DisplayOnlyType::class, [
+                'mapped' => false,
+                'required' => false,
+                'data' => t('Násobky pro nákup můžete nastavit na kartě hlavní varianty.'),
+                'attr' => [
+                    'class' => 'form-input-disabled form-line--disabled position__actual font-size-13',
+                ],
+            ]);
+        } else {
+            $amountGroup->add('minimumAmount', NumberType::class, [
+                'constraints' => [
+                    new Constraints\GreaterThan(0),
+                    new Constraints\NotBlank(),
+                ],
+                'label' => t('Minimum amount'),
+                'scale' => 0,
+            ]);
+
+            $amountGroup->add('amountMultiplier', NumberType::class, [
+                'constraints' => [
+                    new Constraints\GreaterThan(0),
+                    new Constraints\NotBlank(),
+                ],
+                'label' => t('Amount multiples'),
+                'scale' => 0,
+            ]);
+        }
 
         $builder->add($amountGroup);
     }

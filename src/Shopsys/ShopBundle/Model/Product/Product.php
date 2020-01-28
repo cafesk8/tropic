@@ -720,6 +720,10 @@ class Product extends BaseProduct
      */
     public function getAmountMultiplier(): int
     {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getAmountMultiplier();
+        }
+
         return $this->amountMultiplier;
     }
 
@@ -728,6 +732,10 @@ class Product extends BaseProduct
      */
     public function getMinimumAmount(): int
     {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getMinimumAmount();
+        }
+
         return $this->minimumAmount;
     }
 
