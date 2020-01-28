@@ -63,225 +63,135 @@ class CategoryDataFixture extends AbstractReferenceFixture
         /**
          * Root category is created in database migration.
          * @see \Shopsys\FrameworkBundle\Migrations\Version20180603135345
+         * @var \Shopsys\ShopBundle\Model\Category\Category
          */
         $rootCategory = $this->categoryFacade->getRootCategory();
         $categoryData = $this->categoryDataFactory->create();
-        /** @var \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData */
-        $emptyDescriptionsForAllDomains = $this->createDomainKeyedArray();
 
-        $categoryData->name = [
-            'cs' => 'Elektro',
-            'sk' => 'Elektro',
-            'en' => 'Electronics',
-        ];
-        $categoryData->leftBannerTexts = [
-            'cs' => 'Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.',
-            'sk' => null,
-            'en' => null,
-        ];
-        $categoryData->rightBannerTexts = [
-            'cs' => 'Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně',
-            'sk' => null,
-            'en' => null,
-        ];
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Elektro', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, '
+                . 'video games, remote control cars, etc.), communications (telephones, cell phones, email-capable laptops, etc.) '
+                . 'and home office activities (e.g., desktop computers, printers, paper shredders, etc.).', [], 'dataFixtures', $locale);
+            $categoryData->leftBannerTexts[$locale] = t('Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také.', [], 'dataFixtures');
+            $categoryData->rightBannerTexts[$locale] = t('Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně', [], 'dataFixtures');
+        }
         $categoryData->preListingCategory = true;
         $categoryData->legendaryCategory = true;
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, '
-                    . 'video games, remote control cars, etc.), communications (telephones, cell phones, e-mail-capable laptops, etc.) '
-                    . 'and home office activities (e.g., desktop computers, printers, paper shredders, etc.).',
-            ]
-        );
         $categoryData->displayedInHorizontalMenu = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_ELECTRONICS);
 
-        $categoryData->name = [
-            'cs' => 'Televize, audio',
-            'sk' => 'Televize, audio',
-            'de' => 'TV, audio',
-        ];
-        $categoryData->leftBannerTexts = [
-            'cs' => null,
-            'sk' => null,
-            'en' => null,
-        ];
-        $categoryData->rightBannerTexts = [
-            'cs' => null,
-            'sk' => null,
-            'en' => null,
-        ];
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Televize, audio', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('Television or TV is a telecommunication medium used for transmitting sound with moving images in monochrome '
+                . '(black-and-white), or in color, and in two or three dimensions', [], 'dataFixtures', $locale);
+            $categoryData->leftBannerTexts[$locale] = null;
+            $categoryData->rightBannerTexts[$locale] = null;
+        }
         $categoryData->preListingCategory = false;
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'Television or TV is a telecommunication medium used for transmitting sound with moving images in monochrome '
-                . '(black-and-white), or in color, and in two or three dimensions',
-            ]
-        );
         $categoryData->displayedInHorizontalMenu = false;
         $categoryData->legendaryCategory = true;
-        $categoryData->parent = $this->getReference(self::CATEGORY_ELECTRONICS);
+        $categoryElectronics = $this->getReference(self::CATEGORY_ELECTRONICS);
+        $categoryData->parent = $categoryElectronics;
         $this->createCategory($categoryData, self::CATEGORY_TV);
 
-        $categoryData->name = [
-            'cs' => 'Fotoaparáty',
-            'sk' => 'Fotoaparáty',
-            'de' => 'Cameras & Photo',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A camera is an optical instrument for recording or capturing images, which may be stored locally, '
-                . 'transmitted to another location, or both.',
-            ]
-        );
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Fotoaparáty', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A camera is an optical instrument for recording or capturing images, which may be stored locally, '
+                . 'transmitted to another location, or both.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $categoryData->legendaryCategory = false;
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 
-        $categoryData->name = [
-            'cs' => 'Tiskárny',
-            'sk' => 'Tiskárny',
-            'de' => 'Printers',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A printer is a peripheral which makes a persistent human readable representation of graphics or text on paper '
-                . 'or similar physical media.',
-            ]
-        );
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Tiskárny', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A printer is a peripheral which makes a persistent human readable representation of graphics or text on paper '
+                . 'or similar physical media.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PRINTERS);
 
-        $categoryData->name = [
-            'cs' => 'Počítače & příslušenství',
-            'sk' => 'Počítače & příslušenství',
-            'de' => 'Personal Computers & accessories',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A personal computer (PC) is a general-purpose computer whose size, capabilities, and original sale price '
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Počítače & příslušenství', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A personal computer (PC) is a general-purpose computer whose size, capabilities, and original sale price '
                 . 'make it useful for individuals, and is intended to be operated directly by an end-user with no intervening computer '
                 . 'time-sharing models that allowed larger, more expensive minicomputer and mainframe systems to be used by many people, '
-                . 'usually at the same time.',
-            ]
-        );
+                . 'usually at the same time.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PC);
 
-        $categoryData->name = [
-            'cs' => 'Mobilní telefony',
-            'sk' => 'Mobilní telefony',
-            'de' => 'Mobile Phones',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A telephone is a telecommunications device that permits two or more users to conduct a conversation when they are '
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Mobilní telefony', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A telephone is a telecommunications device that permits two or more users to conduct a conversation when they are '
                 . 'too far apart to be heard directly. A telephone converts sound, typically and most efficiently the human voice, '
                 . 'into electronic signals suitable for transmission via cables or other transmission media over long distances, '
-                . 'and replays such signals simultaneously in audible form to its user.',
-            ]
-        );
+                . 'and replays such signals simultaneously in audible form to its user.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PHONES);
 
-        $categoryData->name = [
-            'cs' => 'Kávovary',
-            'sk' => 'Kávovary',
-            'de' => 'Coffee Machines',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'Coffeemakers or coffee machines are cooking appliances used to brew coffee. While there are many different types '
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Kávovary', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('Coffeemakers or coffee machines are cooking appliances used to brew coffee. While there are many different types '
                 . 'of coffeemakers using a number of different brewing principles, in the most common devices, coffee grounds '
                 . 'are placed in a paper or metal filter inside a funnel, which is set over a glass or ceramic coffee pot, '
-                . 'a cooking pot in the kettle family. Cold water is poured into a separate chamber, which is then heated up to the '
-                . 'boiling point, and directed into the funnel.',
-            ]
-        );
+                . 'a cooking pot in the kettle family. Cold water is poured into a separate chamber, which is than heated up to the '
+                . 'boiling point, and directed into the funnel.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_COFFEE);
 
-        $categoryData->name = [
-            'cs' => 'Knihy',
-            'sk' => 'Knihy',
-            'de' => 'Books',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A book is a set of written, printed, illustrated, or blank sheets, made of ink, paper, parchment, or other '
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Knihy', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A book is a set of written, printed, illustrated, or blank sheets, made of ink, paper, parchment, or other '
                 . 'materials, fastened together to hinge at one side. A single sheet within a book is a leaf, and each side of a leaf '
                 . 'is a page. A set of text-filled or illustrated pages produced in electronic format is known as an electronic book, '
-                . 'or e-book.',
-            ]
-        );
+                . 'or e-book.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_BOOKS);
 
-        $categoryData->name = [
-            'cs' => 'Hračky a další',
-            'sk' => 'Hračky a další',
-            'de' => 'Toys',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A toy is an item that can be used for play. Toys are generally played with by children and pets. '
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Hračky a další', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A toy is an item that can be used for play. Toys are generally played with by children and pets. '
                 . 'Playing with toys is an enjoyable means of training young children for life in society. Different materials are '
-                . 'used to make toys enjoyable to all ages. ',
-            ]
-        );
+                . 'used to make toys enjoyable to all ages.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = true;
         $this->createCategory($categoryData, self::CATEGORY_TOYS);
 
-        $categoryData->name = [
-            'cs' => 'Zahradní náčiní',
-            'sk' => 'Zahradní náčiní',
-            'de' => 'Garden tools',
-        ];
-        $categoryData->descriptions = array_replace(
-            $emptyDescriptionsForAllDomains,
-            [
-                Domain::FIRST_DOMAIN_ID => 'A garden tool is any one of many tools made for gardens and gardening and overlaps with the range of tools '
-                . 'made for agriculture and horticulture. Garden tools can also be hand tools and power tools.',
-            ]
-        );
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Zahradní náčiní', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('A garden tool is any one of many tools made for gardens and gardening and overlaps with the range of tools '
+                . 'made for agriculture and horticulture. Garden tools can also be hand tools and power tools.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_GARDEN_TOOLS);
 
-        $categoryData->name = [
-            'cs' => 'Jídlo',
-            'sk' => 'Jídlo',
-            'de' => 'Food',
-        ];
-        $categoryData->descriptions = array_replace(
-            $this->createDomainKeyedArray(),
-            [
-                Domain::FIRST_DOMAIN_ID => 'Food is any substance consumed to provide nutritional support for the body. It is usually of plant or '
-                    . 'animal origin, and contains essential nutrients, such as fats, proteins, vitamins, or minerals. The substance '
-                    . 'is ingested by an organism and assimilated by the organism\'s cells to provide energy, maintain life, '
-                    . 'or stimulate growth.',
-            ]
-        );
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Jídlo', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('Food is any substance consumed to provide nutritional support for the body. It is usually of plant or '
+                . 'animal origin, and contains essential nutrients, such as fats, proteins, vitamins, or minerals. The substance '
+                . 'is ingested by an organism and assimilated by the organism\'s cells to provide energy, maintain life, '
+                . 'or stimulate growth.', [], 'dataFixtures', $locale);
+        }
         $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_FOOD);
-    }
-
-    /**
-     * @return null[]
-     */
-    protected function createDomainKeyedArray(): array
-    {
-        return array_fill_keys($this->domain->getAllIds(), null);
     }
 
     /**
@@ -291,6 +201,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
      */
     protected function createCategory(CategoryData $categoryData, $referenceName = null)
     {
+        /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
         $category = $this->categoryFacade->create($categoryData);
         if ($referenceName !== null) {
             $this->addReference($referenceName, $category);
