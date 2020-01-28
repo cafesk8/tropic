@@ -4,6 +4,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs\n"
 
+msgid "(Mon - Sat: 9 - 10 a.m. to 8 - 10 p.m.)"
+msgstr ""
+
+msgid "+1-234-567-8989"
+msgstr ""
+
 msgid "<p> Objednávka číslo {number} byla odeslána, děkujeme za Váš nákup. Budeme Vás kontaktovat o dalším průběhu vyřizování. <br /><br /> Uschovejte si permanentní <a href=\"{order_detail_url}\">odkaz na detail objednávky</a>. <br /> {transport_instructions} <br /> {payment_instructions} <br /> </p>"
 msgstr ""
 
@@ -200,6 +206,9 @@ msgid "Zahradní náčiní"
 msgstr ""
 
 msgid "Zásady ochrany osobních údajů"
+msgstr ""
+
+msgid "no-reply@shopsys.com"
 msgstr ""
 
 msgid "| Demo obchod"
