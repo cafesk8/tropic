@@ -8,7 +8,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
@@ -31,6 +34,21 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     protected $transportDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    protected $domain;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
+     */
+    protected $currencyFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\PriceConverter
+     */
+    protected $priceConverter;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $entityManager;
@@ -38,15 +56,24 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\ShopBundle\Model\Transport\TransportDataFactory $transportDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceConverter $priceConverter
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
      */
     public function __construct(
         TransportFacade $transportFacade,
         TransportDataFactoryInterface $transportDataFactory,
+        Domain $domain,
+        CurrencyFacade $currencyFacade,
+        PriceConverter $priceConverter,
         EntityManagerInterface $entityManager
     ) {
         $this->transportFacade = $transportFacade;
         $this->transportDataFactory = $transportDataFactory;
+        $this->domain = $domain;
+        $this->currencyFacade = $currencyFacade;
+        $this->priceConverter = $priceConverter;
         $this->entityManager = $entityManager;
     }
 
@@ -55,109 +82,80 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
      */
     public function load(ObjectManager $manager)
     {
-        /** @var \Shopsys\ShopBundle\Model\Transport\TransportData $transportData */
         $transportData = $this->transportDataFactory->create();
-        $transportData->name = [
-            'cs' => 'Česká pošta - balík do ruky',
-            'sk' => 'Česká pošta - balík do ruky',
-            'de' => 'Czech post',
-        ];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('Česká pošta - balík do ruky', [], 'dataFixtures', $locale);
+        }
+
         $transportData->deliveryDays = 2;
-        $transportData->pricesByCurrencyId = [
-            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('99.95'),
-            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('3.95'),
-        ];
+        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('99.95'));
+
         $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_CZECH_POST, $transportData);
 
         $transportData = $this->transportDataFactory->create();
-        $transportData->name = [
-            'cs' => 'PPL',
-            'sk' => 'PPL',
-            'de' => 'PPL',
-        ];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('PPL', [], 'dataFixtures', $locale);
+        }
         $transportData->deliveryDays = 1;
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
 
-        $transportData->pricesByCurrencyId = [
-            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('199.95'),
-            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('6.95'),
-        ];
+        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('199.95'));
+
         $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_PPL, $transportData);
 
         $transportData = $this->transportDataFactory->create();
-        $transportData->name = [
-            'cs' => 'Osobní převzetí',
-            'sk' => 'Osobní převzetí',
-            'de' => 'Personal collection',
-        ];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('Osobní převzetí', [], 'dataFixtures', $locale);
+            $transportData->description[$locale] = t('Uvítá Vás milý personál!', [], 'dataFixtures', $locale);
+            $transportData->instructions[$locale] = t('Těšíme se na Vaši návštěvu.', [], 'dataFixtures', $locale);
+        }
         $transportData->deliveryDays = 1;
         $transportData->balikobotShipper = null;
         $transportData->balikobotShipperService = null;
 
-        $transportData->pricesByCurrencyId = [
-            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::zero(),
-            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::zero(),
-        ];
-        $transportData->description = [
-            'cs' => 'Uvítá Vás milý personál!',
-            'sk' => 'Uvítá Vás milý personál!',
-            'de' => 'You will be welcomed by friendly staff!',
-        ];
-        $transportData->instructions = [
-            'cs' => 'Těšíme se na Vaši návštěvu.',
-            'sk' => 'Těšíme se na Vaši návštěvu.',
-            'de' => 'We are looking forward to your visit.',
-        ];
+        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::zero());
+
         $transportData->vat = $this->getReference(VatDataFixture::VAT_ZERO);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_PERSONAL, $transportData);
 
         $transportData = $this->transportDataFactory->create();
-        $transportData->name = [
-            'cs' => 'PPL',
-            'sk' => 'PPL',
-            'de' => 'PPL',
-        ];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('PPL - de', [], 'dataFixtures', $locale);
+        }
         $transportData->deliveryDays = 3;
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
-
-        $transportData->pricesByCurrencyId = [
-            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('230.90'),
-            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('7.95'),
-        ];
+        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('230.90'));
         $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_GERMANY);
         $this->createTransport(self::TRANSPORT_PPL_DE, $transportData);
 
         $transportData = $this->transportDataFactory->create();
-        $transportData->name = [
-            'cs' => 'PPL',
-            'sk' => 'PPL',
-            'de' => 'PPL',
-        ];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $transportData->name[$locale] = t('PPL - fr', [], 'dataFixtures', $locale);
+        }
         $transportData->deliveryDays = 1;
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
-
-        $transportData->pricesByCurrencyId = [
-            $this->getReference(CurrencyDataFixture::CURRENCY_CZK)->getId() => Money::create('499.90'),
-            $this->getReference(CurrencyDataFixture::CURRENCY_EUR)->getId() => Money::create('15.95'),
-        ];
+        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('499.90'));
         $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_FRANCE);
         $this->createTransport(self::TRANSPORT_PPL_FR, $transportData);
@@ -169,12 +167,25 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
      */
     protected function createTransport($referenceName, TransportData $transportData)
     {
-        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = $this->transportFacade->create($transportData);
         $transport->setAsDownloaded();
         $this->entityManager->flush($transport);
 
         $this->addReference($referenceName, $transport);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $price
+     */
+    protected function setPriceForAllDomainDefaultCurrencies(TransportData $transportData, Money $price): void
+    {
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domain->getId());
+            $price = $this->priceConverter->convertPriceWithoutVatToPriceInDomainDefaultCurrency($price, $domain->getId());
+
+            $transportData->pricesByCurrencyId[$currency->getId()] = $price;
+        }
     }
 
     /**
@@ -185,7 +196,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         return [
             VatDataFixture::class,
             CurrencyDataFixture::class,
-            CountryDataFixture::class,
+            SettingValueDataFixture::class,
         ];
     }
 }

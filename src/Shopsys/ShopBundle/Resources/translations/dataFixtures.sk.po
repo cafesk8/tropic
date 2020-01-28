@@ -175,7 +175,19 @@ msgstr "Nemecko"
 msgid "Obchodní podmínky"
 msgstr ""
 
+msgid "Osobní převzetí"
+msgstr ""
+
 msgid "Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, video games, remote control cars, etc.), communications (telephones, cell phones, email-capable laptops, etc.) and home office activities (e.g., desktop computers, printers, paper shredders, etc.)."
+msgstr ""
+
+msgid "PPL"
+msgstr ""
+
+msgid "PPL - de"
+msgstr ""
+
+msgid "PPL - fr"
 msgstr ""
 
 msgid "PayPal"
@@ -247,11 +259,17 @@ msgstr ""
 msgid "Toto je popis značky %brandName%."
 msgstr ""
 
+msgid "Těšíme se na Vaši návštěvu."
+msgstr ""
+
 msgid "Ukázkový článek blogu %locale%"
 msgstr ""
 
 msgid "Upozornění pro naše zákazníky - tato verze e-shopu obsahuje testovací data."
 msgstr "Upozornenie pre našich zákazníkov, táto verzia e-shopu obsahuje testovacie dáta."
+
+msgid "Uvítá Vás milý personál!"
+msgstr ""
 
 msgid "V tuto chvíli nemáme žádné otevřené pozice."
 msgstr ""
@@ -317,6 +335,9 @@ msgid "no-reply@shopsys.com"
 msgstr ""
 
 msgid "| Demo obchod"
+msgstr ""
+
+msgid "Česká pošta - balík do ruky"
 msgstr ""
 
 msgid "Česká republika"
