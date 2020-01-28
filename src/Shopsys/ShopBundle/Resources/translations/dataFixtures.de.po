@@ -4,6 +4,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
 
+msgid "<p> Objednávka číslo {number} byla odeslána, děkujeme za Váš nákup. Budeme Vás kontaktovat o dalším průběhu vyřizování. <br /><br /> Uschovejte si permanentní <a href=\"{order_detail_url}\">odkaz na detail objednávky</a>. <br /> {transport_instructions} <br /> {payment_instructions} <br /> </p>"
+msgstr ""
+
 msgid "A book is a set of written, printed, illustrated, or blank sheets, made of ink, paper, parchment, or other materials, fastened together to hinge at one side. A single sheet within a book is a leaf, and each side of a leaf is a page. A set of text-filled or illustrated pages produced in electronic format is known as an electronic book, or e-book."
 msgstr ""
 
@@ -136,6 +139,12 @@ msgstr ""
 msgid "Registrace byla dokončena"
 msgstr ""
 
+msgid "Shopsys Framework - Titulní strana"
+msgstr ""
+
+msgid "Shopsys Framework - nejlepší řešení pro váš internetový obchod."
+msgstr ""
+
 msgid "Silnější než kdy předtím..."
 msgstr ""
 
@@ -181,10 +190,19 @@ msgstr ""
 msgid "Vážený zákazníku,<br/><br/> na základě vašeho zadaného emailu {e-mail}, Vám zasíláme odkaz ke stažení Vašich<br/> údajů evidovaných na našem internetovém obchodě ve strojově čitelném formátu.<br/> Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací, které k<br/> Vašemu e-mailu evidujeme na našem internetovém obchodu {domain}.<br/><br/> Pro přechod na stažení údajů, prosím, klikněte zde - {url}<br/> Odkaz je platný 24 hodin.<br/><br/> S pozdravem<br/> tým {domain}"
 msgstr ""
 
+msgid "Zadáním e-mailu níže si můžete nechat zobrazit vaše osobní údaje, která evidujeme v našem internetovém obchodu. Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem. Klikem na odkaz se dostanete na stránku s přehledem těchto osobních údajů - půjde o všechny údaje evidované k dané e-mailové adrese."
+msgstr ""
+
+msgid "Zadáním e-mailu níže si můžete stáhnout své osobní a jiné informace (například historii objednávek) z našeho internetového obchodu. Pro ověření vaší totožnosti vám po zadání e-mailové adresy bude zaslán e-mail s odkazem. Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací ve strojově čitelném formátu - půjde o údaje evidované k dané e-mailové adrese na této doméně internetového obchodu."
+msgstr ""
+
 msgid "Zahradní náčiní"
 msgstr ""
 
 msgid "Zásady ochrany osobních údajů"
+msgstr ""
+
+msgid "| Demo obchod"
 msgstr ""
 
 msgid "Šití na míru"
