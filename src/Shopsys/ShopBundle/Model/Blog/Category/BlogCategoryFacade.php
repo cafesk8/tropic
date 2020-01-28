@@ -302,7 +302,8 @@ class BlogCategoryFacade
      * @param int $domainId
      * @return array
      */
-    public function getBlogArticleBlogCategoriesWithDeepestLevelsIds(BlogArticle $article, int $domainId): array {
+    public function getBlogArticleBlogCategoriesWithDeepestLevelsIds(BlogArticle $article, int $domainId): array
+    {
         $blogCategories = $this->blogCategoryRepository->getBlogArticleBlogCategoriesLevels($article, $domainId);
         $blogCategoriesByLevel = [];
         $deepestLevel = 0;

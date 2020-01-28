@@ -278,7 +278,8 @@ class BlogCategoryRepository extends NestedTreeRepository
      * @param int $domainId
      * @return array
      */
-    public function getBlogArticleBlogCategoriesLevels(BlogArticle $article, int $domainId): array {
+    public function getBlogArticleBlogCategoriesLevels(BlogArticle $article, int $domainId): array
+    {
         $queryBuilder = $this->getAllVisibleByDomainIdQueryBuilder($domainId)
             ->join(BlogArticleBlogCategoryDomain::class, 'babcd', Join::WITH, 'babcd.blogCategory = bc.id')
             ->andWhere('babcd.blogArticle = :articleId')

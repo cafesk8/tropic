@@ -21,6 +21,7 @@ class BlogArticleController extends FrontBaseController
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
     private $domain;
+
     /**
      * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFacade
      */
@@ -68,6 +69,17 @@ class BlogArticleController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Blog/Article/mainBlogCategoryForBlogArticle.html.twig', [
             'blogCategory' => $this->blogArticleFacade->findBlogArticleMainCategoryOnDomain($blogArticle, $this->domain->getId()),
             'spanClass' => $spanClass,
+        ]);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $blogArticle
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function productsAction(?BlogArticle $blogArticle): Response
+    {
+        return $this->render('@ShopsysShop/Front/Content/Blog/Article/blogArticleProducts.html.twig', [
+            'articleProducts' => $blogArticle->getProducts(),
         ]);
     }
 }
