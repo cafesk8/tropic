@@ -13,6 +13,15 @@ msgstr ""
 msgid "+1-234-567-8989"
 msgstr ""
 
+msgid "<b>Zvolili jste platbu GoPay, bude Vám zobrazena platební brána.</b>"
+msgstr ""
+
+msgid "<b>Zvolili jste platbu PayPal, budete přesměrováni na platební bránu.</b>"
+msgstr ""
+
+msgid "<b>Zvolili jste platbu kreditní kartou. Prosím proveďte ji do dvou pracovních dnů.</b>"
+msgstr ""
+
 msgid "<p> Objednávka číslo {number} byla odeslána, děkujeme za Váš nákup. Budeme Vás kontaktovat o dalším průběhu vyřizování. <br /><br /> Uschovejte si permanentní <a href=\"{order_detail_url}\">odkaz na detail objednávky</a>. <br /> {transport_instructions} <br /> {payment_instructions} <br /> </p>"
 msgstr ""
 
@@ -52,6 +61,9 @@ msgstr ""
 msgid "Dobrý den,<br /><br />Vaše objednávka byla úspěšně vytvořena.<br /><br />O dalších stavech objednávky Vás budeme informovat.<br />Čislo objednávky: {number} <br />Datum a čas vytvoření: {date} <br />URL adresa eshopu: {url} <br />URL adresa na detail objednávky: {order_detail_url} <br />Doprava: {transport} <br />Číslo pro sledování zásilky: {tracking_number} <br />URL pro sledování zásilky: {tracking_url} <br />Platba: {payment} <br />Celková cena s DPH: {total_price} <br />Fakturační adresa:<br /> {billing_address} <br />Doručovací adresa: {delivery_address} <br />Poznámka: {note} <br />Produkty: {products} <br />{transport_instructions} <br />{payment_instructions}"
 msgstr ""
 
+msgid "Dobírka"
+msgstr ""
+
 msgid "Donec at dolor mi. Nullam ornare, massa in cursus imperdiet, felis nisl auctor ante, vel aliquet tortor lacus sit amet ipsum. Proin ultrices euismod elementum. Integer sodales hendrerit tortor, vel semper turpis interdum eu. Phasellus quam tortor, feugiat vel condimentum vel, tristique et ipsum. Duis blandit lectus in odio cursus rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam pulvinar massa at imperdiet venenatis. Maecenas convallis lobortis quam in fringilla. Mauris gravida turpis eget sapien imperdiet pulvinar. Nunc velit urna, fringilla nec est sit amet, accumsan varius nunc. Morbi sed tincidunt diam, sit amet laoreet nisl. Nulla tempus id lectus non lacinia.\\n\\nVestibulum interdum adipiscing iaculis. Nunc posuere pharetra velit. Nunc ac ante non massa scelerisque blandit sit amet vel velit. Integer in massa sed augue pulvinar malesuada. Pellentesque laoreet orci augue, in fermentum nisl feugiat ut. Nunc congue et nisi a interdum. Aenean mauris mi, interdum vel lacus et, placerat gravida augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed sagittis ipsum et consequat euismod. Praesent a ipsum dapibus, aliquet justo a, consectetur magna. Phasellus imperdiet tempor laoreet. Sed a accumsan lacus, accumsan faucibus dolor. Praesent euismod justo quis ipsum aliquam suscipit. Sed quis blandit urna."
 msgstr ""
 
@@ -73,10 +85,16 @@ msgstr ""
 msgid "Francie"
 msgstr ""
 
+msgid "GoPay - Platba kartou"
+msgstr ""
+
 msgid "Historie společnosti"
 msgstr ""
 
 msgid "Hlavní stránka blogu - %locale%"
+msgstr ""
+
+msgid "Hotově"
 msgstr ""
 
 msgid "Hračky a další"
@@ -106,6 +124,9 @@ msgstr ""
 msgid "Kontakt"
 msgstr ""
 
+msgid "Kreditní kartou"
+msgstr ""
+
 msgid "Kávovary"
 msgstr ""
 
@@ -113,6 +134,9 @@ msgid "Legenární kapsáče jsou zpět"
 msgstr ""
 
 msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis nisi, tincidunt sollicitudin augue eu, laoreet blandit sem. Donec rutrum augue a elit imperdiet, eu vehicula tortor porta. Vivamus pulvinar sem non auctor dictum. Morbi eleifend semper enim, eu faucibus tortor posuere vitae. Donec tincidunt ipsum ullamcorper nisi accumsan tincidunt. Aenean sed velit massa. Nullam interdum eget est ut convallis. Vestibulum et mauris condimentum, rutrum sem congue, suscipit arcu.\\nSed tristique vehicula ipsum, ut vulputate tortor feugiat eu. Vivamus convallis quam vulputate faucibus facilisis. Curabitur tincidunt pulvinar leo, eu dapibus augue lacinia a. Fusce sed tincidunt nunc. Morbi a nisi a odio pharetra laoreet nec eget quam. In in nisl tortor. Ut fringilla vitae lectus eu venenatis. Nullam interdum sed odio a posuere. Fusce pellentesque dui vel tortor blandit, a dictum nunc congue."
+msgstr ""
+
+msgid "Mall"
 msgstr ""
 
 msgid "Mobilní telefony"
@@ -154,6 +178,12 @@ msgstr ""
 msgid "Our electronics include devices used for entertainment (flat screen TVs, DVD players, DVD movies, iPods, video games, remote control cars, etc.), communications (telephones, cell phones, email-capable laptops, etc.) and home office activities (e.g., desktop computers, printers, paper shredders, etc.)."
 msgstr ""
 
+msgid "PayPal"
+msgstr ""
+
+msgid "Platba provedena u mall.cz"
+msgstr ""
+
 msgid "Počátek firmy se datuje rokem 1990, kdy její hlavní činností bylo zásobování bank a jiných firem papírenským zbožím. Dlouho u toho nezůstalo. Prudký vývoj utvrdil Papírnictví Pavlik CZ v pozici předního velkoobchodu, eskaloval v založení šestnácti vlastních prodejen – a v neposlední řadě umožnil založení vlastního eshopu."
 msgstr ""
 
@@ -176,6 +206,9 @@ msgid "Připravujeme"
 msgstr ""
 
 msgid "Registrace byla dokončena"
+msgstr ""
+
+msgid "Rychle, levně a spolehlivě!"
 msgstr ""
 
 msgid "Shopsys Framework - Titulní strana"
