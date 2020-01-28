@@ -67,6 +67,9 @@ msgstr ""
 msgid "Fotoaparáty"
 msgstr ""
 
+msgid "Francie"
+msgstr ""
+
 msgid "Historie společnosti"
 msgstr ""
 
@@ -130,6 +133,9 @@ msgstr ""
 msgid "Novinky"
 msgstr ""
 
+msgid "Německo"
+msgstr ""
+
 msgid "Obchodní podmínky"
 msgstr ""
 
@@ -170,6 +176,9 @@ msgid "Silnější než kdy předtím..."
 msgstr ""
 
 msgid "Skladem"
+msgstr ""
+
+msgid "Slovenská republika"
 msgstr ""
 
 msgid "Stav objednávky se změnil"
@@ -236,6 +245,9 @@ msgid "no-reply@shopsys.com"
 msgstr ""
 
 msgid "| Demo obchod"
+msgstr ""
+
+msgid "Česká republika"
 msgstr ""
 
 msgid "Šití na míru"

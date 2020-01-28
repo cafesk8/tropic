@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Country\CountryData;
 use Shopsys\FrameworkBundle\Model\Country\CountryDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
@@ -28,13 +29,20 @@ class CountryDataFixture extends AbstractReferenceFixture
     protected $countryDataFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    protected $domain;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Model\Country\CountryDataFactoryInterface $countryDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(CountryFacade $countryFacade, CountryDataFactoryInterface $countryDataFactory)
+    public function __construct(CountryFacade $countryFacade, CountryDataFactoryInterface $countryDataFactory, Domain $domain)
     {
         $this->countryFacade = $countryFacade;
         $this->countryDataFactory = $countryDataFactory;
+        $this->domain = $domain;
     }
 
     /**
@@ -43,39 +51,38 @@ class CountryDataFixture extends AbstractReferenceFixture
     public function load(ObjectManager $manager): void
     {
         $countryData = $this->countryDataFactory->create();
-        $countryData->names = [
-            'cs' => 'Česká republika',
-            'sk' => 'Česká republika',
-            'de' => 'Tschechische Republik',
-        ];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $countryData->names[$locale] = t('Česká republika', [], 'dataFixtures', $locale);
+        }
+
         $countryData->code = 'CZ';
         $this->createCountry($countryData, self::COUNTRY_CZECH_REPUBLIC);
 
         $countryData = $this->countryDataFactory->create();
-        $countryData->names = [
-            'cs' => 'Slovenská republika',
-            'sk' => 'Slovenská republika',
-            'de' => 'Slowakische Republik',
-        ];
-        $countryData->code = 'SK';
 
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $countryData->names[$locale] = t('Slovenská republika', [], 'dataFixtures', $locale);
+        }
+
+        $countryData->code = 'SK';
         $this->createCountry($countryData, self::COUNTRY_SLOVAKIA);
 
         $countryData = $this->countryDataFactory->create();
-        $countryData->names = [
-            'cs' => 'Německo',
-            'sk' => 'Nemecko',
-            'de' => 'Deutschland',
-        ];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $countryData->names[$locale] = t('Německo', [], 'dataFixtures', $locale);
+        }
+
         $countryData->code = 'DE';
         $this->createCountry($countryData, self::COUNTRY_GERMANY);
 
         $countryData = $this->countryDataFactory->create();
-        $countryData->names = [
-            'cs' => 'Francie',
-            'sk' => 'Francúzsko',
-            'de' => 'Frankreich',
-        ];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $countryData->names[$locale] = t('Francie', [], 'dataFixtures', $locale);
+        }
+
         $countryData->code = 'FR';
         $this->createCountry($countryData, self::COUNTRY_FRANCE);
     }

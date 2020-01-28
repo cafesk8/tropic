@@ -67,6 +67,9 @@ msgstr ""
 msgid "Fotoaparáty"
 msgstr ""
 
+msgid "Francie"
+msgstr "Frankreich"
+
 msgid "Historie společnosti"
 msgstr ""
 
@@ -130,6 +133,9 @@ msgstr ""
 msgid "Novinky"
 msgstr ""
 
+msgid "Německo"
+msgstr "Deutschland"
+
 msgid "Obchodní podmínky"
 msgstr ""
 
@@ -171,6 +177,9 @@ msgstr ""
 
 msgid "Skladem"
 msgstr ""
+
+msgid "Slovenská republika"
+msgstr "Slowakische Republik"
 
 msgid "Stav objednávky se změnil"
 msgstr ""
@@ -237,6 +246,9 @@ msgstr ""
 
 msgid "| Demo obchod"
 msgstr ""
+
+msgid "Česká republika"
+msgstr "Tschechische Republik"
 
 msgid "Šití na míru"
 msgstr ""
