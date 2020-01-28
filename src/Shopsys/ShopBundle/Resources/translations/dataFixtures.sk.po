@@ -211,6 +211,9 @@ msgstr ""
 msgid "Ukázkový článek blogu %locale%"
 msgstr ""
 
+msgid "Upozornění pro naše zákazníky - tato verze e-shopu obsahuje testovací data."
+msgstr "Upozornenie pre našich zákazníkov, táto verzia e-shopu obsahuje testovacie dáta."
+
 msgid "V tuto chvíli nemáme žádné otevřené pozice."
 msgstr ""
 
