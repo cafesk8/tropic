@@ -26,7 +26,6 @@ use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
-use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Form\Front\Customer\Password\NewPasswordFormType;
 use Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory;
 use Shopsys\ShopBundle\Form\Front\Order\OrderFlow;
@@ -181,11 +180,6 @@ class OrderController extends FrontBaseController
     private $authenticator;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\CardEan\CardEanFacade
-     */
-    private $cardEanFacade;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade
      */
     private $customerMailFacade;
@@ -225,7 +219,6 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
-     * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
@@ -255,7 +248,6 @@ class OrderController extends FrontBaseController
         GtmFacade $gtmFacade,
         CustomerFacade $customerFacade,
         Authenticator $authenticator,
-        CardEanFacade $cardEanFacade,
         CustomerMailFacade $customerMailFacade,
         CustomerDataFactory $customerDataFactory,
         GoPayTransactionFacade $goPayTransactionFacade
@@ -284,7 +276,6 @@ class OrderController extends FrontBaseController
         $this->gtmFacade = $gtmFacade;
         $this->customerFacade = $customerFacade;
         $this->authenticator = $authenticator;
-        $this->cardEanFacade = $cardEanFacade;
         $this->customerMailFacade = $customerMailFacade;
         $this->customerDataFactory = $customerDataFactory;
         $this->goPayTransactionFacade = $goPayTransactionFacade;
@@ -697,7 +688,6 @@ class OrderController extends FrontBaseController
             }
 
             $this->orderFacade->setCustomerToOrder($order, $newlyRegisteredUser);
-            $this->cardEanFacade->addPrereneratedEanToUserAndFlush($newlyRegisteredUser);
 
             $this->authenticator->loginUser($newlyRegisteredUser, $request);
             $this->getFlashMessageSender()->addSuccessFlash(t('You have been successfully registered.'));

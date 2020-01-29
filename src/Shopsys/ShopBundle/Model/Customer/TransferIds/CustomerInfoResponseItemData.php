@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans;
+namespace Shopsys\ShopBundle\Model\Customer\TransferIds;
 
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 
@@ -14,18 +14,18 @@ class CustomerInfoResponseItemData implements TransferResponseItemDataInterface
     private $coefficient;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId
      */
-    private $transferIdAndEan;
+    private $transferId;
 
     /**
      * @param array $responseData
-     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $transferIdAndEan
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId $transferId
      */
-    public function __construct(array $responseData, UserTransferIdAndEan $transferIdAndEan)
+    public function __construct(array $responseData, UserTransferId $transferId)
     {
         $this->coefficient = $this->getValidCoefficient($responseData);
-        $this->transferIdAndEan = $transferIdAndEan;
+        $this->transferId = $transferId;
     }
 
     /**
@@ -74,11 +74,11 @@ class CustomerInfoResponseItemData implements TransferResponseItemDataInterface
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan
+     * @return \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId
      */
-    public function getTransferIdAndEan(): UserTransferIdAndEan
+    public function getTransferId(): UserTransferId
     {
-        return $this->transferIdAndEan;
+        return $this->transferId;
     }
 
     /**
@@ -86,6 +86,6 @@ class CustomerInfoResponseItemData implements TransferResponseItemDataInterface
      */
     public function getDataIdentifier(): string
     {
-        return $this->transferIdAndEan->getCustomer()->getTransferId();
+        return $this->transferId->getCustomer()->getTransferId();
     }
 }

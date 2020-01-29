@@ -82,13 +82,13 @@ class LoginListener extends BaseLoginListener
             /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
             $customer = $event->getAuthenticationToken()->getUser();
 
-            foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
-                $customerInfoResponseItemData = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan, $customer->getDomainId());
+            foreach ($customer->getUserTransferId() as $transferId) {
+                $customerInfoResponseItemData = $this->customerTransferService->getTransferItemsFromResponse($transferId, $customer->getDomainId());
                 if ($customerInfoResponseItemData !== null) {
                     $this->customerFacade->updatePricingGroupByIsResponse(
-                        $customerInfoResponseItemData->getTransferIdAndEan()->getCustomer()->getPricingGroup(),
+                        $customerInfoResponseItemData->getTransferId()->getCustomer()->getPricingGroup(),
                         $customerInfoResponseItemData->getCoefficient(),
-                        $customerInfoResponseItemData->getTransferIdAndEan()
+                        $customerInfoResponseItemData->getTransferId()
                     );
                 }
             }

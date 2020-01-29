@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans;
+namespace Shopsys\ShopBundle\Model\Customer\TransferIds;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 
-class UserTransferIdAndEanRepository
+class UserTransferIdRepository
 {
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
@@ -26,24 +26,23 @@ class UserTransferIdAndEanRepository
     /**
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getUserTransferIdAndEanRepository(): ObjectRepository
+    protected function getUserTransferIdRepository(): ObjectRepository
     {
-        return $this->em->getRepository(UserTransferIdAndEan::class);
+        return $this->em->getRepository(UserTransferId::class);
     }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\User $customer
      * @param string $transferId
-     * @param mixed $ean
+     * @return bool
      */
-    public function isTransferIdAndEanExists(User $customer, string $transferId, $ean)
+    public function isTransferIdExists(User $customer, string $transferId)
     {
-        $userTransferIdAndEan = $this->getUserTransferIdAndEanRepository()->findOneBy([
+        $userTransferId = $this->getUserTransferIdRepository()->findOneBy([
             'customer' => $customer,
             'transferId' => $transferId,
-            'ean' => $ean,
         ]);
 
-        return $userTransferIdAndEan !== null;
+        return $userTransferId !== null;
     }
 }

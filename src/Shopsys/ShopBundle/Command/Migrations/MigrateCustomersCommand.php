@@ -15,7 +15,7 @@ use Shopsys\ShopBundle\Component\Transfer\Exception\TransferException;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData;
 use Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade;
+use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFacade;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,9 +50,9 @@ class MigrateCustomersCommand extends Command
     private $customerWithPricingGroupsTransferMapper;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFacade
      */
-    private $userTransferIdAndEanFacade;
+    private $userTransferIdFacade;
 
     /**
      * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
@@ -74,7 +74,7 @@ class MigrateCustomersCommand extends Command
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
      * @param \Shopsys\ShopBundle\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper
-     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade $userTransferIdAndEanFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFacade $userTransferIdFacade
      * @param \Shopsys\ShopBundle\Component\Rest\RestClient $multidomainRestClient
      * @param \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade $newsletterFacade
      */
@@ -83,7 +83,7 @@ class MigrateCustomersCommand extends Command
         CustomerFacade $customerFacade,
         CustomerTransferValidator $customerTransferValidator,
         CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper,
-        UserTransferIdAndEanFacade $userTransferIdAndEanFacade,
+        UserTransferIdFacade $userTransferIdFacade,
         MultidomainRestClient $multidomainRestClient,
         NewsletterFacade $newsletterFacade
     ) {
@@ -93,7 +93,7 @@ class MigrateCustomersCommand extends Command
         $this->customerFacade = $customerFacade;
         $this->customerTransferValidator = $customerTransferValidator;
         $this->customerWithPricingGroupsTransferMapper = $customerWithPricingGroupsTransferMapper;
-        $this->userTransferIdAndEanFacade = $userTransferIdAndEanFacade;
+        $this->userTransferIdFacade = $userTransferIdFacade;
         $this->multidomainRestClient = $multidomainRestClient;
         $this->germanCustomerEmailsWithNewsletterSubscription = GermanCustomersWithNewsletterSubscriptionDataProvider::getGermanCustomerEmailsWithNewsletterSubscription();
         $this->newsletterFacade = $newsletterFacade;
@@ -177,7 +177,7 @@ class MigrateCustomersCommand extends Command
         $customer->markAsExported();
         $this->em->flush($customer);
 
-        $this->userTransferIdAndEanFacade->saveTransferIdsAndEans($customer, $customersTransferItem->getEans(), $customersTransferItem->getDataIdentifier());
+        $this->userTransferIdFacade->saveTransferIds($customer, $customersTransferItem->getDataIdentifier());
 
         $this->newsletterFacade->addSubscribedEmail($customersTransferItem->getEmail(), DomainHelper::GERMAN_DOMAIN);
 

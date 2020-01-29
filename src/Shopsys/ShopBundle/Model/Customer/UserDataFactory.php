@@ -62,7 +62,7 @@ class UserDataFactory extends BaseUserDataFactory
     {
         parent::fillFromUser($userData, $user);
         $userData->memberOfBushmanClub = $user->isMemberOfBushmanClub();
-        $userData->ean = $user->getEan();
+        $userData->memberOfBushmanClub = $user->isMemberOfBushmanClub();
         $userData->pricingGroupUpdatedAt = $user->getPricingGroupUpdatedAt();
     }
 

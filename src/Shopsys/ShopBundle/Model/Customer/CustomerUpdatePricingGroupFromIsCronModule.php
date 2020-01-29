@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponse;
 use Shopsys\ShopBundle\Component\Transfer\Response\TransferResponseItemDataInterface;
 use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
 use Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferService;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData;
+use Shopsys\ShopBundle\Model\Customer\TransferIds\CustomerInfoResponseItemData;
 use Shopsys\ShopBundle\Model\Order\Status\Transfer\Exception\InvalidOrderStatusTransferResponseItemDataException;
 
 class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportCronModule
@@ -59,12 +59,12 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
         $customers = $this->customerFacade->getForPricingGroupUpdate();
         $allTransferDataItems = [];
         foreach ($customers as $customer) {
-            foreach ($customer->getUserTransferIdAndEan() as $transferIdAndEan) {
+            foreach ($customer->getUserTransferId() as $transferId) {
                 try {
-                    $allTransferDataItems[] = $this->customerTransferService->getTransferItemsFromResponse($transferIdAndEan, $customer->getDomainId());
+                    $allTransferDataItems[] = $this->customerTransferService->getTransferItemsFromResponse($transferId, $customer->getDomainId());
                 } catch (UnexpectedResponseCodeException $unexpectedResponseCodeException) {
-                    $this->customerFacade->changeCustomerPricingGroupUpdatedAt($transferIdAndEan->getCustomer());
-                    $this->logger->addWarning(sprintf('Customer info for User with ean `%s` and email %s not found', $transferIdAndEan->getEan(), $transferIdAndEan->getCustomer()->getEmail()));
+                    $this->customerFacade->changeCustomerPricingGroupUpdatedAt($transferId->getCustomer());
+                    $this->logger->addWarning(sprintf('Customer info for User with email %s not found', $transferId->getCustomer()->getEmail()));
                 }
             }
         }
@@ -84,9 +84,9 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
         }
 
         $this->customerFacade->updatePricingGroupByIsResponse(
-            $customerInfoResponseItemData->getTransferIdAndEan()->getCustomer()->getPricingGroup(),
+            $customerInfoResponseItemData->getTransferId()->getCustomer()->getPricingGroup(),
             $customerInfoResponseItemData->getCoefficient(),
-            $customerInfoResponseItemData->getTransferIdAndEan()
+            $customerInfoResponseItemData->getTransferId()
         );
     }
 

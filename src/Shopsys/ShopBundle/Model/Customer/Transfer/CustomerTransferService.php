@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Customer\Transfer;
 
 use Shopsys\ShopBundle\Component\Rest\MultidomainRestClient;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
+use Shopsys\ShopBundle\Model\Customer\TransferIds\CustomerInfoResponseItemData;
+use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId;
 
 class CustomerTransferService
 {
@@ -24,17 +24,16 @@ class CustomerTransferService
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan $userTransferIdAndEan
+     * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId $userTransferId
      * @param int $domainId
-     * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\CustomerInfoResponseItemData|null
+     * @return \Shopsys\ShopBundle\Model\Customer\TransferIds\CustomerInfoResponseItemData|null
      */
-    public function getTransferItemsFromResponse(UserTransferIdAndEan $userTransferIdAndEan, int $domainId): ?CustomerInfoResponseItemData
+    public function getTransferItemsFromResponse(UserTransferId $userTransferId, int $domainId): ?CustomerInfoResponseItemData
     {
         $restResponse = $this->multidomainRestClient->getByDomainId($domainId)->get('/api/Eshop/CustomerInfo', [
-            'Number' => $userTransferIdAndEan->getEan(),
-            'Email' => $userTransferIdAndEan->getCustomer()->getEmail(),
+            'Email' => $userTransferId->getCustomer()->getEmail(),
         ]);
 
-        return new CustomerInfoResponseItemData($restResponse->getData(), $userTransferIdAndEan);
+        return new CustomerInfoResponseItemData($restResponse->getData(), $userTransferId);
     }
 }

@@ -103,10 +103,6 @@ class OrderExportMapper
             ];
         }
 
-        if ($order->getCustomerEan() !== null) {
-            $headerArray['Customer']['IdCards'][] = $order->getCustomerEan();
-        }
-
         return $headerArray;
     }
 
