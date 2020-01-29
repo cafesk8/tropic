@@ -192,56 +192,45 @@
 {% macro verticalList(products, listCssClass, productHeadingTagName) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
-        <div class="{{ listCssClass }}__in">
-            <div class="{{ listCssClass }}__list">
-                {% for product in products %}
-                <div class="{{ listCssClass }}__item">
-                    <div class="{{ listCssClass }}__item__in">
+        {% for product in products %}
+            <div class="{{ listCssClass }}__item">
+                <div class="{{ listCssClass }}__item__in">
+                    {% set productSellingPrice = getProductSellingPrice(product) %}
+                    <a href="{{ url('front_product_detail', {'id': product.id}) }}">
+                        <div class="{{ listCssClass }}__item__image dont-print">
+                            {{ image(product.productForCreatingImageAccordingToVariant, { size: 'list', alt: product.name, lazy: true }) }}
+                        </div>
+                    </a>
+
+                    <div class="{{ listCssClass }}__item__info">
+                        <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title" href="{{ url('front_product_detail', {'id': product.id}) }}">
+                            {{ product.name|striptags|raw }}
+                        </{{ productHeadingTagName|default('h2') }}>
+
                         {% set productSellingPrice = getProductSellingPrice(product) %}
-                        <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass }}__item__block">
-                            <div class="{{ listCssClass }}__item__image dont-print">
-                                {{ image(product.productForCreatingImageAccordingToVariant, { size: 'list', alt: product.name, lazy: true }) }}
-                                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(productSellingPrice, product, 1), 'in-flag--in-list') }}
-                            </div>
 
-                            <div class="{{ listCssClass }}__item__info">
-                                <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">
-                                    {{ product.name|striptags|raw }}
-                                </{{ productHeadingTagName|default('h2') }}>
-
-                                {% set productSellingPrice = getProductSellingPrice(product) %}
-
-                                {% if productSellingPrice is not null %}
-                                    <div class="{{ listCssClass }}__item__info__price">
-                                        <div class="{{ listCssClass }}__item__info__price__item__main">
-                                            {% if productSellingPrice.priceFrom %}
-                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                            {% else %}
-                                                {{ productSellingPrice.priceWithVat|price }}
-                                            {% endif %}
-                                            {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
-                                                <div class="{{ listCssClass }}__item__info__price__item__old">
-                                                    {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
-                                                </div>
-                                                <div class="{{ listCssClass }}__item__info__price__item__discount">
-                                                    -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
-                                                </div>
-                                            {% endif %}
+                        {% if productSellingPrice is not null %}
+                            <div class="{{ listCssClass }}__item__info__price">
+                                <div class="{{ listCssClass }}__item__info__price__item__main">
+                                    {% if productSellingPrice.priceFrom %}
+                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                    {% else %}
+                                        {{ productSellingPrice.priceWithVat|price }}
+                                    {% endif %}
+                                    {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                        <div class="{{ listCssClass }}__item__info__price__item__old">
+                                            {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
                                         </div>
-                                        <div class="{{ listCssClass }}__item__info__price__item">
-                                            {% if productSellingPrice.priceFrom %}
-                                                {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                            {% else %}
-                                                {{ productSellingPrice.priceWithVat|price }}
-                                            {% endif %}
+                                        <div class="{{ listCssClass }}__item__info__price__item__discount">
+                                            -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                         </div>
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
-                        </a>
+                        {% endif %}
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 {% endmacro %}

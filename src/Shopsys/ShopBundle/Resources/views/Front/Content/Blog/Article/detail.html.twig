@@ -45,12 +45,10 @@
                         {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', {blogArticle: blogArticle})) }}
                     </div>
                     <div class="box-blog__section">
-                        <div class="box-blog__products">
-                            <div class="box-blog__products__title">
-                                {{ 'V článku píšeme o těchto produktech'|trans }}
-                            </div>
-                            {{ render(controller('ShopsysShopBundle:Front/BlogArticle:products', {blogArticle: blogArticle})) }}
+                        <div class="box-blog__section__title">
+                            {{ 'V článku píšeme o těchto produktech'|trans }}
                         </div>
+                        {{ render(controller('ShopsysShopBundle:Front/BlogArticle:products', {blogArticle: blogArticle})) }}
                     </div>
                 </div>
             </div>

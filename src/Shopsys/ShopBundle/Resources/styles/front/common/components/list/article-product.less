@@ -1,52 +1,21 @@
 @list-article-product-item-padding: 20px;
-@list-article-product-item-image-size: 130px;
+@list-article-product-item-image-size: 75px;
 @list-article-product-item-image-bottom-gap: 20px;
-@list-article-product-item-title-line-height: 24px;
 @list-article-product-item-title-rows: 2;
 
-@list-article-product-side-gap: 45px;
-
 .list-article-product {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
     position: relative;
-    width: calc(~"@{calc-base} - 2*@{list-article-product-side-gap}");
-    margin: 0 @list-article-product-side-gap;
-
-    @media @query-xl {
-        width: 100%;
-        margin: 0;
-    }
-
-    .slick-list {
-        overflow: hidden;
-    }
-
-    .slick-track {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: stretch;
-    }
-
-    &__in {
-        position: relative;
-        width: 100%;
-    }
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
 
     &__item {
         color: @color-brown;
 
         &__in {
-            padding: 0 @list-article-product-item-padding 3px @list-article-product-item-padding;
-        }
-
-        &__block {
             display: flex;
-            flex-direction: column;
-
-            text-decoration: none;
-            color: @color-base;
+            flex-direction: row;
         }
 
         &__image {
@@ -54,32 +23,30 @@
             position: relative;
             align-self: center;
             margin-bottom: @list-article-product-item-image-bottom-gap;
-            height: @list-article-product-item-image-size;
+            max-height: @list-article-product-item-image-size;
             width: @list-article-product-item-image-size;
+            padding-right: 10px;
 
             img {
-                .center-image();
-                max-width: @list-article-product-item-image-size;
-                max-height: @list-article-product-item-image-size;
+                width: 100%;
             }
         }
 
         &__info {
-            text-align: center;
+            width: calc(~"100% - @{list-article-product-item-image-size}");
 
             &__title {
                 display: flex;
-                justify-content: center;
-                height: @list-article-product-item-title-rows*@list-article-product-item-title-line-height;
-                line-height: @list-article-product-item-title-line-height;
                 margin-bottom: 0;
                 width: 100%;
-                text-align: center;
-                overflow: hidden;
 
                 font-size: @font-size;
                 font-weight: 400;
                 color: @color-gray-dark;
+
+                &:hover {
+                    text-decoration: underline;
+                }
             }
 
             &__availability {
