@@ -200,3 +200,13 @@ services:
     Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@Shopsys\ShopBundle\Twig\NumberFormatterExtension'
 
     Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade: ~
+
+    Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyDataFactoryInterface:
+        alias: Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyDataFactory
+
+    Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFactoryInterface:
+        alias: Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFactory
+
+    Shopsys\ShopBundle\Model\Transport\TransportFacade: ~
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@Shopsys\ShopBundle\Model\Transport\TransportFacade'
