@@ -1019,7 +1019,7 @@ msgid "Last viewed products"
 msgstr "Naposledy navštívené produkty"
 
 msgid "Legendární kategorie"
-msgstr ""
+msgstr "Speciální kategorie"
 
 msgid "Levý textový baner dole"
 msgstr ""
@@ -2121,6 +2121,9 @@ msgstr "Slevový kód teď nemůžeš uplatnit. Jeho platnost je od {{validityFr
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
 msgstr "Slevový kód ještě nemůžeš uplatnit. Jeho platnost je od {{validityFrom}}."
+
+msgid "Slider on main page"
+msgstr "Slider na hl. stránce"
 
 msgid "Slovensko"
 msgstr ""

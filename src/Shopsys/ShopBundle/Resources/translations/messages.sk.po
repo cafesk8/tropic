@@ -1186,14 +1186,8 @@ msgstr "Posledná objednávka"
 msgid "Lazarská 5/1719, 110 00 Praha 1"
 msgstr "Lazarská 5/1719, 110 00 Praha 1"
 
-msgid "Legendární kapsáče jsou zpět"
-msgstr "Legendárne kapsáče sú späť"
-
 msgid "Legendární kategorie"
-msgstr "Legendárne kategórie"
-
-msgid "Legendární kousky"
-msgstr "Legendárne kúsky"
+msgstr "Špeciálne kategórie"
 
 msgid "Levý textový baner dole"
 msgstr "Ľavý textový banner dole"
@@ -2047,9 +2041,6 @@ msgstr "Vykonať pre"
 msgid "Provést úpravu"
 msgstr "Vykonať úpravu"
 
-msgid "Prozkoumat všechny legendární produkty"
-msgstr "Preskúmať všetky legendárny produkty"
-
 msgid "První článek v horním menu"
 msgstr "Prvý článok v hornom menu"
 
@@ -2361,6 +2352,9 @@ msgstr "Zľavový kód si nemôžeš uplatniť. Jeho platnosť je od {{validityF
 
 msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
 msgstr "Zľavový kód si nemôžeš uplatniť. Jeho platnosť je od {{validityFrom}}."
+
+msgid "Slider on main page"
+msgstr "Slider na hl. stránke"
 
 msgid "Slovensko"
 msgstr "Slovensko"

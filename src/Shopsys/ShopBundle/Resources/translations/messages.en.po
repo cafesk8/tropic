@@ -896,7 +896,7 @@ msgid "Last order"
 msgstr ""
 
 msgid "Legendární kategorie"
-msgstr ""
+msgstr "Special categories"
 
 msgid "Levý textový baner dole"
 msgstr ""

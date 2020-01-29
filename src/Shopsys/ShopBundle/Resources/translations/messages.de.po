@@ -1165,14 +1165,8 @@ msgstr "Letzte Bestellung"
 msgid "Lazarská 5/1719, 110 00 Praha 1"
 msgstr "Lazarská 5/1719, 110 00 Praha 1"
 
-msgid "Legendární kapsáče jsou zpět"
-msgstr "Die legendären Cargohosen sind wieder da"
-
 msgid "Legendární kategorie"
-msgstr "Legendäre Kategorie"
-
-msgid "Legendární kousky"
-msgstr "Legendäre Stücke"
+msgstr "Spezielle Kategorien"
 
 msgid "Lenka"
 msgstr "Lenka"
@@ -2034,9 +2028,6 @@ msgstr "Durchführen für"
 
 msgid "Provést úpravu"
 msgstr "Nimm Anpassung vor"
-
-msgid "Prozkoumat všechny legendární produkty"
-msgstr "Entdecke alle legendären Produkte"
 
 msgid "První článek v horním menu"
 msgstr "Erster Artikel im oberen Menü"
