@@ -727,9 +727,6 @@ msgstr ""
 msgid "EAN nenastaven"
 msgstr "EAN nicht angesetzt"
 
-msgid "EAN věrnostní karty"
-msgstr "EAN-Kundenkarten"
-
 msgid "Editace banneru"
 msgstr "Banner bearbeiten"
 
@@ -2563,9 +2560,6 @@ msgstr "Fettgedruckte Überschrift"
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr "Tracking Link Form"
 
-msgid "Tvoje osobní číslo"
-msgstr "Ihre persönliche Nummer"
-
 msgid "Tvorba e-shopů na míru"
 msgstr "Erstellen von benutzerdefinierten E-Shops"
 
@@ -3081,9 +3075,6 @@ msgstr "Alle Filter löschen"
 
 msgid "Zvolte parametr"
 msgstr "Wähle den Parameter aus"
-
-msgid "Zákaznická ID a eany"
-msgstr "Kunden ID und EANs"
 
 msgid "Základní informace"
 msgstr "Grundlegende Informationen"
