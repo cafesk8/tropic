@@ -16,7 +16,7 @@ class MultidomainSettingValueShopInfoDataFixture extends AbstractReferenceFixtur
     public const SETTING_VALUES = [
         ShopInfoSettingFacade::SHOP_INFO_PHONE_NUMBER => '+420 595 177 177',
         ShopInfoSettingFacade::SHOP_INFO_PHONE_HOURS => '(po - pá, 8:00 - 16:00)',
-        ShopInfoSettingFacade::SHOP_INFO_EMAIL => 'info@shopsys.cz',
+        ShopInfoSettingFacade::SHOP_INFO_EMAIL => 'info@shopsys.com',
     ];
 
     /**

@@ -35,7 +35,7 @@ msgid "******** 6 nebo více znaků"
 msgstr "******** 6 alebo viac znakov"
 
 msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
-msgstr ""
+msgstr ", Shopsys s.r.o. Všetky práva vyhradené"
 
 msgid "-- Choose article --"
 msgstr "-- Vyberte článok --"
@@ -728,7 +728,7 @@ msgid "E-mailem"
 msgstr "E-mailom"
 
 msgid "E-shop na míru od"
-msgstr ""
+msgstr "E-shop na mieru od"
 
 msgid "EAN nenastaven"
 msgstr "EAN nenastavený"
@@ -1658,7 +1658,7 @@ msgid "Outlet"
 msgstr "Outlet"
 
 msgid "Ozvěte se nejlépe ve všední dny mezi"
-msgstr ""
+msgstr "Ozvite sa najlepšie vo všedné dni medzi"
 
 msgid "PPL"
 msgstr "PPL"
@@ -1733,7 +1733,7 @@ msgid "Platnost"
 msgstr "Platnosť"
 
 msgid "Platnost slevového kupónu \"%code%\" vypršela. Prosím, zkontrolujte ho."
-msgstr ""
+msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontrolujte ho."
 
 msgid "Platnost slevového kupónu vypršela. Prosím, zkontrolujte ho."
 msgstr "Platnosť zľavového kupónu vypršala. Prosím, skontrolujte si to."
@@ -1745,13 +1745,13 @@ msgid "Platný od"
 msgstr "Platný od"
 
 msgid "Platí pro"
-msgstr ""
+msgstr "Platí pre"
 
 msgid "Plavecké potřeby"
-msgstr ""
+msgstr "Plavecké potreby"
 
 msgid "Please check the correctness of all data filled."
-msgstr "Určite máte všetky údaje vyplnené správne."
+msgstr "Určite máte všetky údaje vyplnené správne?"
 
 msgid "Please enter promo code."
 msgstr "Zadajte propagačný kód."
@@ -2756,7 +2756,7 @@ msgid "Vrácení zboží ve 14 denní lhůtě (odstoupení od smlouvy)"
 msgstr "Vrátenie tovaru v 14 dňovej lehote (odstúpenie od zmluvy)"
 
 msgid "Vrácení zdarma <strong>do 30 dnů</strong>"
-msgstr "Vrátenie zadarmo <strong>do 30 dní</ strong>"
+msgstr "Vrátenie zadarmo <strong>do 30 dní</strong>"
 
 msgid "Vyberte dopravce"
 msgstr "Vyberte dopravcu"
