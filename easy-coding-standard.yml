@@ -50,6 +50,7 @@ parameters:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductVisibilityRepositoryTest.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/MultidomainOrderDataFixture.phpFixture.php'
             - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/OrderDataFixture.php'
+            - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/ProductDataFixture.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/RemoveLegacyProductsCommand.php'
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'
@@ -101,3 +102,4 @@ parameters:
 
         PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff:
             - '*/src/Shopsys/ShopBundle/Controller/Front/OrderController.php'
+            - '*/src/Shopsys/ShopBundle/DataFixtures/Demo/ProductDataFixture.php'

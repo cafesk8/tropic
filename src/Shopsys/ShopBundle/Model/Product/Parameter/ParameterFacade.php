@@ -26,13 +26,13 @@ use Shopsys\ShopBundle\Model\Product\ProductFacade;
  */
 class ParameterFacade extends BaseParameterFacade
 {
-    private const PARAMETER_COLOR = [
+    public const PARAMETER_COLOR = [
         'cs' => 'Barva',
         'sk' => 'Farba',
         'de' => 'Farbe',
     ];
 
-    private const PARAMETER_SIZE = [
+    public const PARAMETER_SIZE = [
         'cs' => 'Velikost',
         'sk' => 'Velikosť',
         'de' => 'Größe',

@@ -103,17 +103,21 @@ class HsSportFeedItemFactory
             $sizeProductParameterValue = $this->parameterFacade->findSizeProductParameterValueByProductId($variant->getId());
             $colorProductParameterValue = $this->parameterFacade->findColorProductParameterValueByProductId($variant->getId());
 
-            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $sizeProductParameterValueValue */
-            $sizeProductParameterValueValue = $sizeProductParameterValue->getValue();
-            $sizeValue = $sizeProductParameterValue !== null ?
-                $sizeProductParameterValueValue->getHsFeedId() . '_' . $sizeProductParameterValueValue->getText()
-                : '';
+            if ($sizeProductParameterValue === null) {
+                $sizeValue = '';
+            } else {
+                /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $sizeProductParameterValueValue */
+                $sizeProductParameterValueValue = $sizeProductParameterValue->getValue();
+                $sizeValue = $sizeProductParameterValueValue->getHsFeedId() . '_' . $sizeProductParameterValueValue->getText();
+            }
 
-            /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $colorProductParameterValueValue */
-            $colorProductParameterValueValue = $colorProductParameterValue->getValue();
-            $colorValue = $colorProductParameterValue !== null ?
-                $colorProductParameterValueValue->getHsFeedId() . '_' . $colorProductParameterValueValue->getText()
-                : '';
+            if ($colorProductParameterValue === null) {
+                $colorValue = '';
+            } else {
+                /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $colorProductParameterValueValue */
+                $colorProductParameterValueValue = $colorProductParameterValue->getValue();
+                $colorValue = $colorProductParameterValueValue->getHsFeedId() . '_' . $colorProductParameterValueValue->getText();
+            }
 
             $hsSportVariantItems[] = new HsSportFeedVariantItem(
                 $variant->getId(),
