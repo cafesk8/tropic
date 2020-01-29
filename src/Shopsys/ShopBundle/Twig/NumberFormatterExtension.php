@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Twig;
 
 use CommerceGuys\Intl\Currency\CurrencyRepositoryInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepositoryInterface;
+use Shopsys\FrameworkBundle\Model\Administration\AdministrationFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension as BaseNumberFormatterExtension;
@@ -27,10 +28,16 @@ class NumberFormatterExtension extends BaseNumberFormatterExtension
      * @param \CommerceGuys\Intl\NumberFormat\NumberFormatRepositoryInterface $numberFormatRepository
      * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \CommerceGuys\Intl\Currency\CurrencyRepositoryInterface $intlCurrencyRepository
+     * @param \Shopsys\FrameworkBundle\Model\Administration\AdministrationFacade $administrationFacade
      */
-    public function __construct(Localization $localization, NumberFormatRepositoryInterface $numberFormatRepository, CurrencyFacade $currencyFacade, CurrencyRepositoryInterface $intlCurrencyRepository)
-    {
-        parent::__construct($localization, $numberFormatRepository);
+    public function __construct(
+        Localization $localization,
+        NumberFormatRepositoryInterface $numberFormatRepository,
+        CurrencyFacade $currencyFacade,
+        CurrencyRepositoryInterface $intlCurrencyRepository,
+        AdministrationFacade $administrationFacade
+    ) {
+        parent::__construct($localization, $numberFormatRepository, $administrationFacade);
 
         $this->currencyFacade = $currencyFacade;
         $this->intlCurrencyRepository = $intlCurrencyRepository;
