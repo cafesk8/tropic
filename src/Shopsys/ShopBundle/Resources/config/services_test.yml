@@ -82,6 +82,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\OrderRepository: '@Shopsys\ShopBundle\Model\Order\OrderRepository'
 
+    Shopsys\ShopBundle\Model\Payment\PaymentFacade: ~
+
     Shopsys\FrameworkBundle\Model\Payment\PaymentFacade: '@Shopsys\ShopBundle\Model\Payment\PaymentFacade'
 
     Shopsys\FrameworkBundle\Model\Payment\PaymentRepository: '@Shopsys\ShopBundle\Model\Payment\PaymentRepository'
@@ -197,3 +199,4 @@ services:
 
     Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@Shopsys\ShopBundle\Twig\NumberFormatterExtension'
 
+    Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade: ~

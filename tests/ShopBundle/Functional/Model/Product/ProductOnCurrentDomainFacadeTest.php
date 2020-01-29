@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\ShopBundle\Functional\Model\Product;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
+use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
@@ -21,12 +23,23 @@ use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTestCase
 {
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\PriceConverter
+     */
+    protected $priceConverter;
+
+    protected function setUp()
+    {
+        $this->priceConverter = $this->getContainer()->get(PriceConverter::class);
+        parent::setUp();
+    }
+
     public function testFilterByMinimalPrice()
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_TV);
 
         $productFilterData = new ProductFilterData();
-        $productFilterData->minimalPrice = Money::create(1000);
+        $productFilterData->minimalPrice = $this->priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(1000), Domain::FIRST_DOMAIN_ID);
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
         $this->assertCount(22, $paginationResult->getResults());
@@ -37,7 +50,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_TV);
 
         $productFilterData = new ProductFilterData();
-        $productFilterData->maximalPrice = Money::create(10000);
+        $productFilterData->maximalPrice = $this->priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(10000), Domain::FIRST_DOMAIN_ID);
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
         $this->assertCount(22, $paginationResult->getResults());
@@ -58,6 +71,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Flag\Flag $flagTopProduct */
         $flagTopProduct = $this->getReference(FlagDataFixture::FLAG_TOP_PRODUCT);
         $productFilterData = new ProductFilterData();
         $productFilterData->flags = [$flagTopProduct];
@@ -70,7 +84,9 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_BOOKS);
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Flag\Flag $flagTopProduct */
         $flagTopProduct = $this->getReference(FlagDataFixture::FLAG_TOP_PRODUCT);
+        /** @var \Shopsys\ShopBundle\Model\Product\Flag\Flag $flagActionProduct */
         $flagActionProduct = $this->getReference(FlagDataFixture::FLAG_ACTION_PRODUCT);
         $productFilterData = new ProductFilterData();
         $productFilterData->flags = [$flagTopProduct, $flagActionProduct];
@@ -83,6 +99,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Brand\Brand $brandCanon */
         $brandCanon = $this->getReference(BrandDataFixture::BRAND_CANON);
         $productFilterData = new ProductFilterData();
         $productFilterData->brands = [$brandCanon];
@@ -95,7 +112,9 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Brand\Brand $brandHp */
         $brandHp = $this->getReference(BrandDataFixture::BRAND_HP);
+        /** @var \Shopsys\ShopBundle\Model\Product\Brand\Brand $brandCanon */
         $brandCanon = $this->getReference(BrandDataFixture::BRAND_CANON);
         $productFilterData = new ProductFilterData();
         $productFilterData->brands = [$brandCanon, $brandHp];
@@ -108,9 +127,10 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        $firstDomainLocale = $this->getFirstDomainLocale();
         $parameterFilterData = $this->createParameterFilterData(
-            ['cs' => 'Rozlišení tisku'],
-            [['cs' => '4800x1200']]
+            [$firstDomainLocale => t('Print resolution', [], 'dataFixtures', $firstDomainLocale)],
+            [[$firstDomainLocale => t('4800x1200', [], 'dataFixtures', $firstDomainLocale)]]
         );
 
         $productFilterData = new ProductFilterData();
@@ -125,11 +145,12 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        $firstDomainLocale = $this->getFirstDomainLocale();
         $parameterFilterData = $this->createParameterFilterData(
-            ['cs' => 'Rozlišení tisku'],
+            [$firstDomainLocale => t('Print resolution', [], 'dataFixtures', $firstDomainLocale)],
             [
-                ['cs' => '4800x1200'],
-                ['cs' => '2400x600'],
+                [$firstDomainLocale => t('4800x1200', [], 'dataFixtures', $firstDomainLocale)],
+                [$firstDomainLocale => t('2400x600', [], 'dataFixtures', $firstDomainLocale)],
             ]
         );
         $productFilterData = new ProductFilterData();
@@ -143,15 +164,16 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        $firstDomainLocale = $this->getFirstDomainLocale();
         $parameterFilterData1 = $this->createParameterFilterData(
-            ['cs' => 'Rozlišení tisku'],
+            [$firstDomainLocale => t('Print resolution', [], 'dataFixtures', $firstDomainLocale)],
             [
-                ['cs' => '4800x1200'],
-                ['cs' => '2400x600'],
+                [$firstDomainLocale => t('4800x1200', [], 'dataFixtures', $firstDomainLocale)],
+                [$firstDomainLocale => t('2400x600', [], 'dataFixtures', $firstDomainLocale)],
             ]
         );
         $parameterFilterData2 = $this->createParameterFilterData(
-            ['cs' => 'LCD'],
+            [$firstDomainLocale => t('LCD', [], 'dataFixtures', $firstDomainLocale)],
             []
         );
 
@@ -166,13 +188,14 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $category = $this->getReference(CategoryDataFixture::CATEGORY_PRINTERS);
 
+        $firstDomainLocale = $this->getFirstDomainLocale();
         $parameterFilterData1 = $this->createParameterFilterData(
-            ['cs' => 'Rozlišení tisku'],
-            [['cs' => '2400x600']]
+            [$firstDomainLocale => t('Print resolution', [], 'dataFixtures', $firstDomainLocale)],
+            [[$firstDomainLocale => t('2400x600', [], 'dataFixtures', $firstDomainLocale)]]
         );
         $parameterFilterData2 = $this->createParameterFilterData(
-            ['cs' => 'LCD'],
-            [['cs' => 'Ano']]
+            [$firstDomainLocale => t('LCD', [], 'dataFixtures', $firstDomainLocale)],
+            [[$firstDomainLocale => t('Yes', [], 'dataFixtures', $firstDomainLocale)]]
         );
         $productFilterData = new ProductFilterData();
         $productFilterData->parameters = [$parameterFilterData1, $parameterFilterData2];
@@ -207,16 +230,18 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
      */
     private function getParameterValuesByLocalesAndTexts(array $valuesTextsByLocales)
     {
-        /** @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em */
+        /** @var \Doctrine\ORM\EntityManager $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $parameterValues = [];
 
         foreach ($valuesTextsByLocales as $valueTextsByLocales) {
             foreach ($valueTextsByLocales as $locale => $text) {
-                $parameterValues[] = $em->getRepository(ParameterValue::class)->findOneBy([
+                /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue */
+                $parameterValue = $em->getRepository(ParameterValue::class)->findOneBy([
                     'text' => $text,
                     'locale' => $locale,
                 ]);
+                $parameterValues[] = $parameterValue;
             }
         }
 
@@ -228,7 +253,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $category = $this->getReference(CategoryDataFixture::CATEGORY_TV);
 
         $productFilterData = new ProductFilterData();
-        $productFilterData->minimalPrice = Money::create(1000);
+        $productFilterData->minimalPrice = $this->priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(1000), Domain::FIRST_DOMAIN_ID);
 
         $paginationResult = $this->getPaginationResultInCategoryWithPageAndLimit($productFilterData, $category, 1, 10);
         $this->assertCount(10, $paginationResult->getResults());
@@ -263,7 +288,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\Brand $brand
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\Brand $brand
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
     public function getPaginatedProductsForBrand(Brand $brand): PaginationResult
@@ -284,9 +309,11 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
     {
         $productFilterData = new ProductFilterData();
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Flag\Flag $flagTopProduct */
         $flagTopProduct = $this->getReference(FlagDataFixture::FLAG_NEW_PRODUCT);
         $productFilterData->flags = [$flagTopProduct];
 
+        /** @var \Shopsys\ShopBundle\Model\Product\Brand\Brand $brandCanon */
         $brandCanon = $this->getReference(BrandDataFixture::BRAND_CANON);
         $productFilterData->brands = [$brandCanon];
 

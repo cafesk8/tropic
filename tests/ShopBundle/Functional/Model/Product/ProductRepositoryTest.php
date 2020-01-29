@@ -247,7 +247,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
     /**
      * @param string $searchText
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     private function getProductsForSearchOrderedByPriority($searchText)
     {
@@ -260,8 +260,8 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
         $paginationResult = $productRepository->getPaginationResultForSearchListable(
             $searchText,
-            1,
-            $domain->getDomainConfigById(1)->getLocale(),
+            Domain::FIRST_DOMAIN_ID,
+            $domain->getDomainConfigById(Domain::FIRST_DOMAIN_ID)->getLocale(),
             new ProductFilterData(),
             ProductListOrderingConfig::ORDER_BY_PRIORITY,
             $pricingGroup,
@@ -274,7 +274,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
     /**
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     private function getProductsInCategoryOrderedByPriority(Category $category)
     {
@@ -287,8 +287,8 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
         $paginationResult = $productRepository->getPaginationResultForListableInCategory(
             $category,
-            1,
-            $domain->getDomainConfigById(1)->getLocale(),
+            Domain::FIRST_DOMAIN_ID,
+            $domain->getDomainConfigById(Domain::FIRST_DOMAIN_ID)->getLocale(),
             new ProductFilterData(),
             ProductListOrderingConfig::ORDER_BY_PRIORITY,
             $pricingGroup,
