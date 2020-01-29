@@ -111,6 +111,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->storeStocks = [];
         $productData->generateToHsSportXmlFeed = true;
         $productData->finished = false;
+        $productData->youtubeVideoIds = [];
     }
 
     /**
@@ -139,7 +140,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->mainVariantGroup = $product->getMainVariantGroup();
         $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
         $productData->finished = $product->isFinished();
-        $productData->youtubeVideoId = $product->getYoutubeVideoId();
         $productData->mallExport = $product->isMallExport();
         $productData->mallExportedAt = $product->getMallExportedAt();
         $productData->updatedAt = $product->getUpdatedAt();
@@ -147,5 +147,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->productType = $product->getProductType();
         $productData->minimumAmount = $product->getMinimumAmount();
         $productData->amountMultiplier = $product->getAmountMultiplier();
+        $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
     }
 }

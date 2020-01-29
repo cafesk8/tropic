@@ -940,7 +940,7 @@ msgstr "Je prodejna franšíza"
 msgid "Je sklad centrální"
 msgstr ""
 
-msgid "Je čas vyrazit: vaše objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží vám rezervujeme po dobu 5 dnů."
+msgid "Je čas vyrazit: Vaše objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží vám rezervujeme po dobu 5 dnů."
 msgstr ""
 
 msgid "Ještě nebylo implementováno."
@@ -1240,7 +1240,7 @@ msgstr "Nová rubrika blogu"
 msgid "New store"
 msgstr "Nová prodejna"
 
-msgid "Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz"
+msgid "Nezapomeňte: Vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%."
 msgstr ""
 
 msgid "Nezlevněné produkty"
@@ -2485,8 +2485,8 @@ msgstr ""
 msgid "Velikost obrázků"
 msgstr ""
 
-msgid "Video"
-msgstr ""
+msgid "Videa"
+msgstr "Videa"
 
 msgid "Viditelný na homepage"
 msgstr ""
@@ -2704,6 +2704,9 @@ msgstr "Pro přístup na tuto stránku se musíte přihlásit"
 msgid "You still have to purchase products for <strong> %price% </strong> for <strong> free </strong> shipping and payment."
 msgstr "Nakupte zboží ještě za <strong>%price%</strong> a dopravu i platbu máte <strong>zdarma</strong>."
 
+msgid "YouTube videa"
+msgstr ""
+
 msgid "Your cart"
 msgstr "Váš košík"
 
@@ -2720,9 +2723,6 @@ msgid "Your discount"
 msgstr "Vaše sleva"
 
 msgid "Youtube"
-msgstr ""
-
-msgid "Youtube video id"
 msgstr ""
 
 msgid "Za zboží"
@@ -2771,6 +2771,9 @@ msgid "Změna této hodnoty se projeví do 2 hodin"
 msgstr ""
 
 msgid "Změnit"
+msgstr ""
+
+msgid "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
 msgstr ""
 
 msgid "Změny v informačním řádky byly úspěšně uloženy"

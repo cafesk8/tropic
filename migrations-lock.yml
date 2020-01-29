@@ -874,3 +874,18 @@
 20200122145525:
     class: Shopsys\ShopBundle\Migrations\Version20200122145525
     skip: false
+20200129083406:
+    class: Shopsys\ShopBundle\Migrations\Version20200129083406
+    skip: false
+20200130133853:
+    class: Shopsys\ShopBundle\Migrations\Version20200130133853
+    skip: false
+20200130133901:
+    class: Shopsys\ShopBundle\Migrations\Version20200130133901
+    skip: false
+20200130134832:
+    class: Shopsys\ShopBundle\Migrations\Version20200130134832
+    skip: false
+20200131092210:
+    class: Shopsys\ShopBundle\Migrations\Version20200131092210
+    skip: false

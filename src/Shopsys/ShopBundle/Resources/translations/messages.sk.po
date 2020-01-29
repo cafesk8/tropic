@@ -1033,8 +1033,8 @@ msgstr "Je predajňa franchisa"
 msgid "Je sklad centrální"
 msgstr "Je sklad centrálny"
 
-msgid "Je čas vyrazit: tvoje objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží ti rezervujeme po dobu 5 dnů. Bushman.cz"
-msgstr "Je čas vyraziť: vaša objednávka č. %%orderNo%% je pripravená na vyzdvihnutie na predajni %%storeName%%, tovar vám rezervujeme po dobu 5 dní."
+msgid "Je čas vyrazit: Vaše objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží vám rezervujeme po dobu 5 dnů."
+msgstr "Je čas vyraziť: vaša objednávka č. %% orderNo %% je pripravená na vyzdvihnutie na predajni %% storeName %%, tovar vám rezervujeme po dobu 5 dní."
 
 msgid "Ještě nebylo implementováno."
 msgstr "Ešte nebolo implementované."
@@ -1047,6 +1047,9 @@ msgstr "Ste členom vernostného programu"
 
 msgid "Jste bushman? Přihlaste se"
 msgstr "Si bushman? Prihlás sa"
+
+msgid "Jste členem Věrnostního programu"
+msgstr "Ste členom vernostného programu"
 
 msgid "K dispozici v Hradci Králové"
 msgstr "K dispozícii v Hradci Králové"
@@ -1399,8 +1402,8 @@ msgstr "Nová kategória blogu"
 msgid "New store"
 msgstr "Nový obchod"
 
-msgid "Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz"
-msgstr "Nezabudni: vaša objednávka č. %% orderNo %% bude ešte 2 dni pripravená na predajni %% storeName %%. Je čas vyraziť!"
+msgid "Nezapomeňte: Vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%."
+msgstr "Nezabudni: vaša objednávka č. %% orderNo %% bude ešte 2 dni pripravená na predajni %% storeName %%."
 
 msgid "Nezlevněné produkty"
 msgstr "Nezľavnené produkty"
@@ -2692,6 +2695,9 @@ msgstr "Veľkosť"
 msgid "Velikost obrázků"
 msgstr "Veľkosť obrázkov"
 
+msgid "Videa"
+msgstr ""
+
 msgid "Video"
 msgstr "Video"
 
@@ -2929,6 +2935,9 @@ msgstr "Úspešne ste zaplatili objednávku cez GoPay."
 msgid "You have to be logged in to enter this page"
 msgstr "Na vstup na túto stránku musíte byť prihlásený"
 
+msgid "YouTube videa"
+msgstr ""
+
 msgid "Your cart is unfortunately empty. To create order, you have to <a href=\"%url%\">choose</a> some product first"
 msgstr "Váš košík je, žiaľ, prázdny. Ak chcete vytvoriť objednávku, musíte najprv <a href=\"%url%\">vybrať</a> nejaký produkt"
 
@@ -2997,6 +3006,9 @@ msgstr "Zmena tejto hodnoty sa prejaví do 2 hodín"
 
 msgid "Změnit"
 msgstr "Zmeniť"
+
+msgid "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
+msgstr ""
 
 msgid "Změny v informačním řádky byly úspěšně uloženy"
 msgstr "Zmeny v informačnom riadku boli úspešne uložené"

@@ -103,11 +103,11 @@ class Product extends BaseProduct
     protected $finished;
 
     /**
-     * @var string|null
+     * @var string[]
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="json", nullable=false)
      */
-    protected $youtubeVideoId;
+    protected $youtubeVideoIds;
 
     /**
      * @var bool
@@ -173,7 +173,6 @@ class Product extends BaseProduct
         $this->mainVariantGroup = $productData->mainVariantGroup;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
-        $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->updatedAt = $productData->updatedAt;
@@ -181,6 +180,7 @@ class Product extends BaseProduct
         $this->productType = $productData->productType;
         $this->minimumAmount = $productData->minimumAmount;
         $this->amountMultiplier = $productData->amountMultiplier;
+        $this->youtubeVideoIds = $productData->youtubeVideoIds;
     }
 
     /**
@@ -196,13 +196,13 @@ class Product extends BaseProduct
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
-        $this->youtubeVideoId = $productData->youtubeVideoId;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
         $this->minimumAmount = $productData->minimumAmount;
         $this->amountMultiplier = $productData->amountMultiplier;
+        $this->youtubeVideoIds = $productData->youtubeVideoIds;
     }
 
     /**
@@ -222,6 +222,14 @@ class Product extends BaseProduct
     public function editFlags(array $flags): void
     {
         parent::editFlags($flags);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getYoutubeVideoIds(): ?array
+    {
+        return $this->youtubeVideoIds;
     }
 
     /**
@@ -493,14 +501,6 @@ class Product extends BaseProduct
     public function isFinished(): bool
     {
         return $this->finished;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getYoutubeVideoId(): ?string
-    {
-        return $this->youtubeVideoId;
     }
 
     /**

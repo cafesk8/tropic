@@ -55,11 +55,6 @@ class ProductData extends BaseProductData
     public $finished;
 
     /**
-     * @var string|null
-     */
-    public $youtubeVideoId;
-
-    /**
      * @var bool
      */
     public $mallExport;
@@ -93,6 +88,11 @@ class ProductData extends BaseProductData
      * @var int
      */
     public $amountMultiplier;
+
+    /**
+     * @var string[]
+     */
+    public $youtubeVideoIds;
 
     public function __construct()
     {

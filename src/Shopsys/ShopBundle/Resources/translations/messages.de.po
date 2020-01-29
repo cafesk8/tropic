@@ -1042,8 +1042,8 @@ msgstr "Is das Geschäft ein Franchise-Shop"
 msgid "Je sklad centrální"
 msgstr "Es ist Zentrallager"
 
-msgid "Je čas vyrazit: tvoje objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží ti rezervujeme po dobu 5 dnů. Bushman.cz"
-msgstr "Es ist Zeit zu gehen: Deine Bestellung Nr. %% orderNo %% kann in %% storeName %% abgeholt werden. Wir reservieren die Ware für 5 Tage. Bushman.de"
+msgid "Je čas vyrazit: Vaše objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží vám rezervujeme po dobu 5 dnů."
+msgstr "Es ist Zeit zu gehen: Deine Bestellung Nr. %% orderNo %% kann in %% storeName %% abgeholt werden. Wir reservieren die Ware für 5 Tage."
 
 msgid "Ještě nebylo implementováno."
 msgstr "Noch nicht implementiert."
@@ -1426,8 +1426,8 @@ msgstr "Neue Blogkategorie"
 msgid "New store"
 msgstr "Neues Geschäft"
 
-msgid "Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz"
-msgstr "Beachte: Deine Bestellung Nr. %%orderNo%% wird noch 2 Tage lang in dem Geschäft %% storeName %% verfügbar. Es ist Zeit zu gehen! Bushman.de"
+msgid "Nezapomeňte: Vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%."
+msgstr "Beachte: Deine Bestellung Nr. %%orderNo%% wird noch 2 Tage lang in dem Geschäft %% storeName %% verfügbar. Es ist Zeit zu gehen!"
 
 msgid "Nezlevněné produkty"
 msgstr "Nicht ermäßigte Produkte"
@@ -2722,6 +2722,9 @@ msgstr "Größe"
 msgid "Velikost obrázků"
 msgstr "Bildgröße"
 
+msgid "Videa"
+msgstr ""
+
 msgid "Video"
 msgstr "Video"
 
@@ -2959,6 +2962,9 @@ msgstr "Du hast deine Bestellung erfolgreich über GoPay bezahlt."
 msgid "You have to be logged in to enter this page"
 msgstr "Du musst eingeloggt sein, um diese Seite zu betreten"
 
+msgid "YouTube videa"
+msgstr ""
+
 msgid "Your cart is unfortunately empty. To create order, you have to <a href=\"%url%\">choose</a> some product first"
 msgstr "Dein Warenkorb ist leider leer. Um eine Bestellung zu erstellen, musst du <a href=\"%url%\"> zuerst ein Produkt auswählen </a>"
 
@@ -3027,6 +3033,9 @@ msgstr "Diese Änderung wird innerhalb von 2 Stunden wirksam"
 
 msgid "Změnit"
 msgstr "Ändern"
+
+msgid "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
+msgstr ""
 
 msgid "Změny v informačním řádky byly úspěšně uloženy"
 msgstr "Änderungen an Infozeilen wurden erfolgreich gespeichert"

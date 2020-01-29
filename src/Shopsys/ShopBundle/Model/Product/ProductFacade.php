@@ -494,35 +494,40 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView|null
+     * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView[]
      */
-    public function getYoutubeView(Product $product): ?YoutubeView
+    public function getYoutubeViews(Product $product): array
     {
-        $youtubeDetail = null;
-        if ($product->getYoutubeVideoId() !== null) {
-            try {
-                $youtubeResponse = $this->googleClient->getVideoList($product->getYoutubeVideoId());
-                if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
-                    /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
-                    $youtubeVideoItem = $youtubeResponse->getItems()[0];
-                    $youtubeDetail = new YoutubeView(
-                        $product->getYoutubeVideoId(),
-                        $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
-                        $youtubeVideoItem->getSnippet()->getTitle()
+        $youtubeDetails = [];
+        $youtubeVideoIds = $product->getYoutubeVideoIds();
+        if (!empty($youtubeVideoIds)) {
+            foreach ($youtubeVideoIds as $youtubeVideoId) {
+                try {
+                    $youtubeResponse = $this->googleClient->getVideoList($youtubeVideoId);
+                    if ($youtubeResponse->getPageInfo()->getTotalResults() > 0) {
+                        /** @var \Google_Service_YouTube_Video $youtubeVideoItem */
+                        $youtubeVideoItem = $youtubeResponse->getItems()[0];
+                        $youtubeDetail = new YoutubeView(
+                            $youtubeVideoId,
+                            $youtubeVideoItem->getSnippet()->getThumbnails()->getDefault()->url,
+                            $youtubeVideoItem->getSnippet()->getTitle()
+                        );
+
+                        $youtubeDetails[] = $youtubeDetail;
+                    }
+                } catch (Google_Service_Exception $googleServiceException) {
+                    $this->logger->warning(
+                        'Not showing Youtube video on product detail due to Google_Service_Exception',
+                        [
+                            'exception message' => $googleServiceException->getMessage(),
+                            'productId' => $product->getId(),
+                        ]
                     );
                 }
-            } catch (Google_Service_Exception $googleServiceException) {
-                $this->logger->warning(
-                    'Not showing Youtube video on product detail due to Google_Service_Exception',
-                    [
-                        'exception message' => $googleServiceException->getMessage(),
-                        'productId' => $product->getId(),
-                    ]
-                );
             }
         }
 
-        return $youtubeDetail;
+        return $youtubeDetails;
     }
 
     /**
@@ -534,7 +539,7 @@ class ProductFacade extends BaseProductFacade
         $youtubeViewForMainVariants = [];
 
         foreach ($products as $product) {
-            $youtubeViewForMainVariants[$product->getId()] = $this->getYoutubeView($product);
+            $youtubeViewForMainVariants[$product->getId()] = $this->getYoutubeViews($product);
         }
 
         return $youtubeViewForMainVariants;

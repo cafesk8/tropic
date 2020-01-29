@@ -40,7 +40,7 @@ class SmsMessageFactory
                 $order->getTelephone(),
             ],
             RequestType::getRequestTypeEconomy(),
-            'Bushman'
+            'Shopsys'
         );
     }
 
@@ -53,12 +53,12 @@ class SmsMessageFactory
     private function getSmsAlert(string $smsAlertType, string $orderNumber, string $storeName): ?string
     {
         if ($smsAlertType === OrderStatus::SMS_ALERT_5_DAY_BEFORE) {
-            return t('Je čas vyrazit: tvoje objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží ti rezervujeme po dobu 5 dnů. Bushman.cz', [
+            return t('Je čas vyrazit: Vaše objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží vám rezervujeme po dobu 5 dnů.', [
                 '%%orderNo%%' => $orderNumber,
                 '%%storeName%%' => $storeName,
             ]);
         } elseif ($smsAlertType === OrderStatus::SMS_ALERT_2_DAY_BEFORE) {
-            return t('Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz', [
+            return t('Nezapomeňte: Vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%.', [
                 '%%orderNo%%' => $orderNumber,
                 '%%storeName%%' => $storeName,
             ]);

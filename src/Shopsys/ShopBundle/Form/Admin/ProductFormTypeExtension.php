@@ -346,7 +346,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $domainId = $domainConfig->getId();
 
             $actionPriceOptionsByDomainId[$domainId] = [
-               'currency' => $this->priceExtension->getCurrencyCodeByDomainId($domainId),
+                'currency' => $this->priceExtension->getCurrencyCodeByDomainId($domainId),
             ];
         }
 
@@ -445,8 +445,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Symfony\Component\Form\FormBuilderInterface $displayAvailabilityGroup
      * @param \Shopsys\ShopBundle\Model\Product\Product|null $product
      */
-    private function extendDisplayAvailabilityGroup(FormBuilderInterface $displayAvailabilityGroup, ?Product $product): void
-    {
+    private function extendDisplayAvailabilityGroup(
+        FormBuilderInterface $displayAvailabilityGroup,
+        ?Product $product
+    ): void {
         $displayAvailabilityGroup
             ->add('mallExport', YesNoType::class, [
                 'required' => false,
@@ -493,23 +495,30 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      */
     private function addVideoGroup(FormBuilderInterface $builder)
     {
-        $videoGroup = $builder->create('videoGroup', GroupType::class, [
-            'label' => t('Video'),
+        $videosGroup = $builder->create('videosGroup', GroupType::class, [
+            'label' => t('Videa'),
             'position' => ['after' => 'imageGroup'],
-        ]);
-
-        $videoGroup->add('youtubeVideoId', TextType::class, [
             'required' => false,
-            'label' => t('Youtube video id'),
-            'constraints' => [
-                new Callback([$this, 'validateYoutubeVideo']),
-            ],
-            'attr' => [
-                'class' => 'js-video-id',
-            ],
         ]);
 
-        $builder->add($videoGroup);
+        $videosGroup
+            ->add($builder->create('youtubeVideoIds', YoutubeVideosType::class, [
+                'entry_type' => TextType::class,
+                'label' => t('YouTube videa'),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'entry_options' => [
+                    'attr' => [
+                        'class' => 'js-video-id',
+                    ],
+                    'constraints' => [
+                        new Callback([$this, 'validateYoutubeVideo']),
+                    ],
+                    'required' => false,
+                ],
+            ]));
+
+        $builder->add($videosGroup);
     }
 
     /**
@@ -571,6 +580,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     public function validateYoutubeVideo(?string $youtubeVideoId, ExecutionContextInterface $context): void
     {
         if ($youtubeVideoId === null) {
+            $context->addViolation('Vložené ID Youtube videa neobsahuje žádné video.');
             return;
         }
 

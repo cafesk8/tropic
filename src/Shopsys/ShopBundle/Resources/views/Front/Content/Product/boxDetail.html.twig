@@ -1,4 +1,4 @@
-{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetail, productSizeArticleId, bushmanClubArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetails, productSizeArticleId, bushmanClubArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import '@ShopsysShop/Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% set domain = getDomain() %}
@@ -9,7 +9,7 @@
         <div class="box-detail__product">
             <div class="box-detail__image">
                 {% set galleryImages = getImages(product) %}
-                {% set showGallery = galleryImages|length > 0 or youtubeDetail is not null %}
+                {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
                 {# @var sellingPrice \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice #}
                 {% set sellingPrice = getProductSellingPrice(product) %}
 
@@ -45,32 +45,19 @@
                                     </a>
                                 </div>
                             {% endif %}
-                            {% if youtubeDetail is not null %}
+                            {% if youtubeDetails %}
                                 <div class="box-gallery__item box-gallery__item--video">
                                     <a
-                                        href="#"
-                                        class="box-gallery__item__link js-youtube-video-play"
-                                        onclick="Shopsys.window({ content: $('.js-youtube-video-box').html(), cssClass: 'window-popup--youtube' }); return false;"
+                                        href="#video"
+                                        class="box-gallery__item__link js-anchor-link"
                                     >
-                                        <img src="{{ youtubeDetail.getThumbnailUrl() }}"
-                                            alt="{{ youtubeDetail.getVideoTitle() }}"
-                                            title="{{ youtubeDetail.getVideoTitle() }}">
+                                        <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                            alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                            title="{{ youtubeDetails|first.getVideoTitle() }}">
                                         <div class="box-gallery__item__link__play">
                                             <div class="box-gallery__item__link__play__icon"></div>
                                         </div>
                                     </a>
-
-                                    <div class="display-none js-youtube-video-box">
-                                        <div class="youtubeWrapper">
-                                            <iframe
-                                                width="560"
-                                                height="315"
-                                                src="https://www.youtube.com/embed/{{ youtubeDetail.getVideoId() }}"
-                                                frameborder="0"
-                                                allowfullscreen
-                                            ></iframe>
-                                        </div>
-                                    </div>
                                 </div>
                             {% endif %}
                         </div>
@@ -225,7 +212,7 @@
             productMainCategory,
             visible,
             mainVariants,
-            youtubeDetail,
+            youtubeDetails,
             productSizeArticleId,
             accessories,
             accessoriesHeadline,

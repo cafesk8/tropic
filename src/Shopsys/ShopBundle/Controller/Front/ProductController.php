@@ -219,7 +219,7 @@ class ProductController extends FrontBaseController
                 $this->domain->getLocale(),
                 self::PRODUCT_BLOG_ARTICLES_LIMIT
             ),
-            'youtubeDetail' => $this->productFacade->getYoutubeView($product),
+            'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
             'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
             'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
         ]);
