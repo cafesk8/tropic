@@ -13,6 +13,9 @@ msgstr "#5 výdrž a nadčasovosť"
 msgid "%name% agrees with privacy policy."
 msgstr "% name% súhlasí s pravidlami ochrany osobných údajov."
 
+msgid "(Banner) Bushman Club"
+msgstr "(Banner) Bushman Club"
+
 msgid "(Banner) Věrnostní program"
 msgstr "Vernostný program"
 
@@ -1045,9 +1048,6 @@ msgstr "Meno"
 msgid "Jste členem Věrnostního programu"
 msgstr "Ste členom vernostného programu"
 
-msgid "Jste bushman? Přihlaste se"
-msgstr "Si bushman? Prihlás sa"
-
 msgid "Jste členem Věrnostního programu"
 msgstr "Ste členom vernostného programu"
 
@@ -1403,7 +1403,7 @@ msgid "New store"
 msgstr "Nový obchod"
 
 msgid "Nezapomeňte: Vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%."
-msgstr "Nezabudni: vaša objednávka č. %% orderNo %% bude ešte 2 dni pripravená na predajni %% storeName %%."
+msgstr "Nezabudnite: vaša objednávka č. %% orderNo %% bude ešte 2 dni pripravená na predajni %%storeName%%."
 
 msgid "Nezlevněné produkty"
 msgstr "Nezľavnené produkty"

@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints;
 
 class RegistrationFormType extends AbstractType
 {
-    public const VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER = 'bushmanClubMember';
+    public const VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER = 'loyaltyProgramMember';
 
     /**
      * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
@@ -107,8 +107,8 @@ class RegistrationFormType extends AbstractType
                 /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
                 $userData = $customerData->userData;
 
-                if ($userData->memberOfBushmanClub) {
-                    $validationGroups[] = self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER;
+                if ($userData->memberOfLoyaltyProgram) {
+                    $validationGroups[] = self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER;
                 }
 
                 return $validationGroups;
@@ -164,7 +164,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'invalid_message' => 'Passwords do not match',
             ])
-            ->add('memberOfBushmanClub', CheckboxType::class, [
+            ->add('memberOfLoyaltyProgram', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('email2', HoneyPotType::class);
@@ -189,7 +189,7 @@ class RegistrationFormType extends AbstractType
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Company name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                 ],
             ])
@@ -198,12 +198,12 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter street',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'Street name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                 ],
             ])
@@ -212,12 +212,12 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter city',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                     new Constraints\Length([
                         'max' => 100,
                         'maxMessage' => 'City name cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                 ],
             ])
@@ -226,12 +226,12 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new Constraints\NotBlank([
                         'message' => 'Please enter zip code',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                     new Constraints\Length([
                         'max' => 6,
                         'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters',
-                        'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                        'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                     ]),
                 ],
             ]);
@@ -256,7 +256,7 @@ class RegistrationFormType extends AbstractType
                     'constraints' => [
                         new Constraints\NotBlank([
                             'message' => 'Please select country',
-                            'groups' => [self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER],
+                            'groups' => [self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER],
                         ]),
                     ],
                 ]);

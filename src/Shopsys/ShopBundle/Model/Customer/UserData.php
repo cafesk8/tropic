@@ -22,7 +22,7 @@ class UserData extends BaseUserData
     /**
      * @var bool
      */
-    public $memberOfBushmanClub;
+    public $memberOfLoyaltyProgram;
 
     /**
      * @var string

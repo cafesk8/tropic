@@ -111,7 +111,7 @@ class PromoProductRepository
      */
     private function getPromoProductTypesByUser(?User $user): array
     {
-        if ($user === null || !$user->isMemberOfBushmanClub()) {
+        if ($user === null || !$user->isMemberOfLoyaltyProgram()) {
             return [PromoProduct::TYPE_ALL];
         }
 

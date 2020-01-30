@@ -93,10 +93,10 @@ class ArticleFacade extends BaseArticleFacade
      * @param \Shopsys\FrameworkBundle\Model\Article\Article $article
      * @return bool
      */
-    public function isArticleUsedForBushmanClub(Article $article): bool
+    public function isArticleUsedForLoyaltyProgram(Article $article): bool
     {
         foreach ($this->domain->getAll() as $domainConfig) {
-            if ($this->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $domainConfig->getId()) === $article) {
+            if ($this->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $domainConfig->getId()) === $article) {
                 return true;
             }
         }

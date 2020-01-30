@@ -87,7 +87,7 @@ class OrderExportMapper
                 'City' => $order->getDeliveryCity(),
                 'ZIP' => $order->getDeliveryPostcode(),
                 'Country' => $this->getDeliveryCountryPropertyContent($order),
-                'BranchNumber' => $order->isMemberOfBushmanClub() ? '1' : '0',
+                'BranchNumber' => $order->isMemberOfLoyaltyProgram() ? '1' : '0',
             ];
         } else {
             $headerArray['DeliveryAdress'] = [
@@ -98,7 +98,7 @@ class OrderExportMapper
                 'City' => self::EMPTY_VALUE,
                 'ZIP' => self::EMPTY_VALUE,
                 'Country' => self::EMPTY_VALUE,
-                'BranchNumber' => $order->isMemberOfBushmanClub() ? '1' : '0',
+                'BranchNumber' => $order->isMemberOfLoyaltyProgram() ? '1' : '0',
             ];
         }
 

@@ -60,7 +60,7 @@ class ArticleController extends BaseArticleController
                 'Article "%name%" set for displaying cookies information. This setting will be lost. Do you really want to delete it?',
                 ['%name%' => $article->getName()]
             );
-        } elseif ($this->articleFacade->isArticleUsedForBushmanClub($article)) {
+        } elseif ($this->articleFacade->isArticleUsedForLoyaltyProgram($article)) {
             $message = t(
                 'Článek "%name%" je nastaven pro zobrazení informací o Věrnostním programu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?',
                 ['%name%' => $article->getName()]

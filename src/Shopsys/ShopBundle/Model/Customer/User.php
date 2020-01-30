@@ -60,7 +60,7 @@ class User extends BaseUser
      *
      * @ORM\Column(type="boolean")
      */
-    private $memberOfBushmanClub;
+    private $memberOfLoyaltyProgram;
 
     /**
      * @var string
@@ -108,7 +108,7 @@ class User extends BaseUser
         parent::__construct($userData, $billingAddress, $deliveryAddress);
 
         $this->transferId = $userData->transferId;
-        $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
+        $this->memberOfLoyaltyProgram = $userData->memberOfLoyaltyProgram;
         $this->exportStatus = $userData->exportStatus;
         $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
         $this->userTransferId = new ArrayCollection();
@@ -120,7 +120,7 @@ class User extends BaseUser
     public function edit(BaseUserData $userData)
     {
         parent::edit($userData);
-        $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
+        $this->memberOfLoyaltyProgram = $userData->memberOfLoyaltyProgram;
         $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
 
         $this->setExportStatus(self::EXPORT_NOT_YET);
@@ -153,9 +153,9 @@ class User extends BaseUser
     /**
      * @return bool
      */
-    public function isMemberOfBushmanClub(): bool
+    public function isMemberOfLoyaltyProgram(): bool
     {
-        return $this->memberOfBushmanClub;
+        return $this->memberOfLoyaltyProgram;
     }
 
     /**
@@ -244,7 +244,7 @@ class User extends BaseUser
     {
         $this->transferId = $transferId->getTransferId();
         $this->pricingGroup = $newPricingGroup;
-        $this->memberOfBushmanClub = true;
+        $this->memberOfLoyaltyProgram = true;
     }
 
     /**

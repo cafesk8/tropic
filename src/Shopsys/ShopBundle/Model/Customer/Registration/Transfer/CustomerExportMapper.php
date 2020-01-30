@@ -111,7 +111,7 @@ class CustomerExportMapper
                 'City' => self::EMPTY_VALUE,
                 'ZIP' => self::EMPTY_VALUE,
                 'Country' => self::EMPTY_VALUE,
-                'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
+                'BranchNumber' => $user->isMemberOfLoyaltyProgram() ? '1' : '0',
             ];
         }
 
@@ -123,7 +123,7 @@ class CustomerExportMapper
             'City' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getCity()),
             'ZIP' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getPostcode()),
             'Country' => $this->getDeliveryAddressCountryPropertyContent($user),
-            'BranchNumber' => $user->isMemberOfBushmanClub() ? '1' : '0',
+            'BranchNumber' => $user->isMemberOfLoyaltyProgram() ? '1' : '0',
         ];
     }
 

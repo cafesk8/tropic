@@ -59,7 +59,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice[]
      */
-    protected $adeptPricesByProductId;
+    protected $registeredCustomerPricesByProductId;
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
@@ -227,36 +227,36 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
-    public function getProductAdeptPrice(Product $product): ?ProductPrice
+    public function getProductRegisteredCustomerPrice(Product $product): ?ProductPrice
     {
-        if (isset($this->adeptPricesByProductId[$product->getId()])) {
-            return $this->adeptPricesByProductId[$product->getId()];
+        if (isset($this->registeredCustomerPricesByProductId[$product->getId()])) {
+            return $this->registeredCustomerPricesByProductId[$product->getId()];
         }
 
-        $adeptPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ADEPT, $this->domain->getId());
+        $registeredCustomerPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $this->domain->getId());
 
         /** @var \Shopsys\ShopBundle\Model\Customer\User $user */
         $user = $this->currentCustomer->findCurrentUser();
 
-        if ($adeptPricingGroup === null || ($user !== null && $user->getPricingGroup()->getId() === $adeptPricingGroup->getId())) {
+        if ($registeredCustomerPricingGroup === null || ($user !== null && $user->getPricingGroup()->getId() === $registeredCustomerPricingGroup->getId())) {
             return null;
         }
 
         try {
-            $adeptProductPrice = $this->productPriceCalculation->calculatePrice($product, $this->domain->getId(), $adeptPricingGroup);
+            $registeredCustomerProductPrice = $this->productPriceCalculation->calculatePrice($product, $this->domain->getId(), $registeredCustomerPricingGroup);
         } catch (\Shopsys\FrameworkBundle\Model\Product\Pricing\Exception\MainVariantPriceCalculationException $ex) {
-            $adeptProductPrice = null;
+            $registeredCustomerProductPrice = null;
         }
 
         /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productSellingPrice */
         $productSellingPrice = $this->getProductSellingPrice($product);
 
-        if ($adeptProductPrice->getPriceWithVat()->isLessThan($productSellingPrice->getPriceWithVat())
-            && $adeptProductPrice->getPriceWithVat()->isLessThan($productSellingPrice->defaultProductPrice()->getPriceWithVat())
+        if ($registeredCustomerProductPrice->getPriceWithVat()->isLessThan($productSellingPrice->getPriceWithVat())
+            && $registeredCustomerProductPrice->getPriceWithVat()->isLessThan($productSellingPrice->defaultProductPrice()->getPriceWithVat())
         ) {
-            $this->adeptPricesByProductId[$product->getId()] = $adeptProductPrice;
+            $this->registeredCustomerPricesByProductId[$product->getId()] = $registeredCustomerProductPrice;
 
-            return $adeptProductPrice;
+            return $registeredCustomerProductPrice;
         }
 
         return null;

@@ -188,7 +188,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             throw new PromoCodeIsOnlyForLoggedCustomers($promoCode->getCode());
         }
 
-        if ($promoCode->isUserTypeBushmanClubMembers() === true && ($user === null || $user->isMemberOfBushmanClub() === false)) {
+        if ($promoCode->isUserTypeBushmanClubMembers() === true && ($user === null || $user->isMemberOfLoyaltyProgram() === false)) {
             throw new PromoCodeIsOnlyForLoggedBushmanClubMembers($promoCode->getCode());
         }
     }

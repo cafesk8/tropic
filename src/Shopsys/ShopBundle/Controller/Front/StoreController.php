@@ -84,14 +84,14 @@ class StoreController extends FrontBaseController
     {
         $store = $this->storeFacade->getStoreForDomainAndForStoreListById($storeId);
 
-        $bushmanClubArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(
-            Setting::BUSHMAN_CLUB_ARTICLE_ID,
+        $loyaltyProgramArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(
+            Setting::LOYALTY_PROGRAM_ARTICLE_ID,
             $this->domain->getId()
         );
 
         return $this->render('@ShopsysShop/Front/Content/Stores/detail.html.twig', [
             'store' => $store,
-            'bushmanClubArticle' => $bushmanClubArticle,
+            'loyaltyProgramArticle' => $loyaltyProgramArticle,
         ]);
     }
 }

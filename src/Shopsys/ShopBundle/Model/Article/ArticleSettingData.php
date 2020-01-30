@@ -9,7 +9,7 @@ class ArticleSettingData
     /**
      * @var \Shopsys\ShopBundle\Model\Article\Article|null
      */
-    public $bushmanClubArticle;
+    public $loyaltyProgramArticle;
 
     /**
      * @var \Shopsys\ShopBundle\Model\Article\Article|null

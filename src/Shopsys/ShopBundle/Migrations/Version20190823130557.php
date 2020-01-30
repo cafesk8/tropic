@@ -40,7 +40,7 @@ class Version20190823130557 extends AbstractMigration
             );
 
             $this->sql(
-                'INSERT INTO setting_values (name, domain_id, value, type) VALUES (\'bushmanClubArticleId\', :domainId, :entityId, \'integer\')',
+                'INSERT INTO setting_values (name, domain_id, value, type) VALUES (\'loyaltyProgramArticleId\', :domainId, :entityId, \'integer\')',
                 [
                     'domainId' => $domainId,
                     'entityId' => $entityId,

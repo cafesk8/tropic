@@ -221,7 +221,7 @@ class ProductController extends FrontBaseController
             ),
             'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
             'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
-            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
+            'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
         ]);
     }
 

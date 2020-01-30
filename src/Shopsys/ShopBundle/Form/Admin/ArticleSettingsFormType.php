@@ -41,7 +41,7 @@ class ArticleSettingsFormType extends AbstractType
         ]);
 
         $builderSettingsGroup
-            ->add('bushmanClubArticle', ChoiceType::class, [
+            ->add('loyaltyProgramArticle', ChoiceType::class, [
                 'required' => false,
                 'choices' => $articles,
                 'choice_label' => 'name',

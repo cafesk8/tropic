@@ -82,7 +82,7 @@ security:
         - { path: ^/admin/feed, roles: ROLE_VIEW_MARKETING }
         - { path: ^/admin/product/bestselling-product, roles: ROLE_VIEW_MARKETING }
         - { path: ^/admin/newsletter, roles: ROLE_VIEW_MARKETING }
-        - { path: ^/admin/bushman-club, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/loyalty-club, roles: ROLE_VIEW_MARKETING }
         - { path: ^/admin/info-row, roles: ROLE_VIEW_MARKETING }
         - { path: ^/admin/blog, roles: ROLE_VIEW_MARKETING }
 

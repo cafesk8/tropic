@@ -358,8 +358,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'
 
-    Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods: ~
-
     Shopsys\FrameworkBundle\Controller\Admin\CustomerController:
         class: Shopsys\ShopBundle\Controller\Admin\CustomerController
         tags: ['controller.service_arguments']

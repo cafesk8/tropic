@@ -50,8 +50,8 @@ class MultidomainArticleSettingDataFixture extends AbstractReferenceFixture impl
      */
     protected function loadForDomain(int $domainId)
     {
-        /** @var \Shopsys\ShopBundle\Model\Article\Article $bushmanClubArticle */
-        $bushmanClubArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
+        /** @var \Shopsys\ShopBundle\Model\Article\Article $loyaltyProgramArticle */
+        $loyaltyProgramArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $ourValuesArticle */
         $ourValuesArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
         /** @var \Shopsys\ShopBundle\Model\Article\Article $ourStoryArticle */
@@ -64,8 +64,8 @@ class MultidomainArticleSettingDataFixture extends AbstractReferenceFixture impl
         $thirdHeaderArticle = $this->getReferenceForDomain(MultidomainArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
 
         $this->articleFacade->setArticleOnDomainInSettings(
-            $bushmanClubArticle,
-            Setting::BUSHMAN_CLUB_ARTICLE_ID,
+            $loyaltyProgramArticle,
+            Setting::LOYALTY_PROGRAM_ARTICLE_ID,
             $domainId
         );
 

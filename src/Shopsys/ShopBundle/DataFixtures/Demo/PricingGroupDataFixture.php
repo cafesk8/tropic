@@ -16,10 +16,7 @@ use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 class PricingGroupDataFixture extends AbstractReferenceFixture
 {
     public const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
-    public const PRICING_GROUP_ADEPT_DOMAIN = 'pricing_group_adept_domain';
-    public const PRICING_GROUP_CLASSIC_DOMAIN = 'pricing_group_classic_domain';
-    public const PRICING_GROUP_REAL_BUSHMAN_DOMAIN = 'pricing_group_real_bushman_domain';
-    public const PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN = 'pricing_group_temporary_seven_percent_domain';
+    public const PRICING_GROUP_REGISTERED_DOMAIN = 'pricing_group_registered_domain';
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
@@ -73,40 +70,13 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $pricingGroupData = $this->pricingGroupDataFactory->create();
 
-        $pricingGroupData->name = 'ADEPT';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_ADEPT;
-        $pricingGroupData->discount = (float)0.95;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_ADEPT_DOMAIN, true, [
-            1 => Money::create('1999'),
-            2 => Money::create('79.99'),
-            3 => Money::create('79.99'),
-        ]);
-
-        $pricingGroupData->name = 'CLASSIC';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_CLASSIC;
-        $pricingGroupData->discount = (float)0.90;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_CLASSIC_DOMAIN, true, [
-            1 => Money::create('19999'),
-            2 => Money::create('799.99'),
-            3 => Money::create('799.99'),
-        ]);
-
-        $pricingGroupData->name = 'REAL BUSHMAN';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REAL_BUSHMAN;
-        $pricingGroupData->discount = (float)0.85;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN, true, [
-            1 => Money::create('49999'),
-            2 => Money::create('1999.99'),
-            3 => Money::create('1999.99'),
-        ]);
-
-        $pricingGroupData->name = '7%';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN;
-        $pricingGroupData->discount = (float)0.93;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN, true, [
-            1 => Money::create('49999'),
-            2 => Money::create('1999.99'),
-            3 => Money::create('1999.99'),
+        $pricingGroupData->name = 'Registrovaný zákazník';
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER;
+        $pricingGroupData->discount = (float)1;
+        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REGISTERED_DOMAIN, true, [
+            1 => Money::create('0'),
+            2 => Money::create('0'),
+            3 => Money::create('0'),
         ]);
     }
 

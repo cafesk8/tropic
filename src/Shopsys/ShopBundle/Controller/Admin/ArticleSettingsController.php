@@ -47,7 +47,7 @@ class ArticleSettingsController extends AdminBaseController
     }
 
     /**
-     * @Route("/bushman-club/setting/")
+     * @Route("/loyalty-club/setting/")
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -64,8 +64,8 @@ class ArticleSettingsController extends AdminBaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->bushmanClubArticle,
-                Setting::BUSHMAN_CLUB_ARTICLE_ID,
+                $articleSettingData->loyaltyProgramArticle,
+                Setting::LOYALTY_PROGRAM_ARTICLE_ID,
                 $selectedDomainId
             );
 
