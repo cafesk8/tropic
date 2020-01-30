@@ -380,7 +380,7 @@ msgid "Company name"
 msgstr "Název firmy"
 
 msgid "Company number"
-msgstr "IČ"
+msgstr "IČO"
 
 msgid "Connection to GoPay gateway failed."
 msgstr "Připojení k bráně GoPay selhalo."
@@ -396,12 +396,6 @@ msgstr "Pokračovat v objednávce"
 
 msgid "Cookies nejsou sušenky"
 msgstr ""
-
-msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
-msgstr "Copyright Ⓒ 2019, Bushman company, a. s. Všechna práva vyhrazena."
-
-msgid "Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena."
-msgstr "Copyright Ⓒ 2019, Bushman, a. s. Všechna práva vyhrazena."
 
 msgid "Country"
 msgstr "Stát"
@@ -919,7 +913,7 @@ msgstr ""
 msgid "Items"
 msgstr "Položky"
 
-msgid "IČ: 27790487, DIČ: CZ27790487"
+msgid "IČO: 27790487, DIČ: CZ27790487"
 msgstr ""
 
 msgid "Jak na výměnu velikosti?"

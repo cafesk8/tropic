@@ -35,7 +35,7 @@ msgid "******** 6 nebo více znaků"
 msgstr "******** 6 alebo viac znakov"
 
 msgid ", Shopsys s.r.o. Všechna práva vyhrazena."
-msgstr ", Shopsys s.r.o. Všetky práva vyhradené"
+msgstr ", Shopsys s.r.o. Všetky práva vyhradené."
 
 msgid "-- Choose article --"
 msgstr "-- Vyberte článok --"
@@ -443,7 +443,7 @@ msgid "Company name"
 msgstr "Meno spoločnosti"
 
 msgid "Company number"
-msgstr "Číslo spoločnosti"
+msgstr "IČO"
 
 msgid "Connection to GoPay gateway failed."
 msgstr "Pripojenie k bráne GoPay zlyhalo."
@@ -456,12 +456,6 @@ msgstr "Kontaktujte nás"
 
 msgid "Cookies nejsou sušenky"
 msgstr "Cookies nie sú sušienky"
-
-msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
-msgstr "Copyright Ⓒ 2019, Bushman company, a.s. Všetky práva vyhradené."
-
-msgid "Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena."
-msgstr "Copyright Ⓒ 2019, Bushman a.s. Všetky práva vyhradené."
 
 msgid "Country"
 msgstr "Krajina"
@@ -1012,17 +1006,8 @@ msgstr "Taliansko"
 msgid "Items"
 msgstr "Položky"
 
-msgid "IČ: 25618601, DIČ: CZ25618601"
-msgstr "IČ: 25618601, DIČ: CZ25618601"
-
-msgid "IČ: 26052679, DIČ: CZ26052679"
-msgstr "IČ: 26052679, DIČ: CZ26052679"
-
-msgid "IČ: 27790487, DIČ: CZ27790487"
-msgstr ""
-
-msgid "IČO: 51704501, IČ DPH: SK2120761621"
-msgstr "IČO: 51704501, IČ DPH: SK2120761621"
+msgid "IČO: 27790487, DIČ: CZ27790487"
+msgstr "IČO: 27790487, IČ DPH: CZ27790487"
 
 msgid "Jak na výměnu velikosti?"
 msgstr "Chcete vymeniť veľkosť?"
@@ -1817,7 +1802,7 @@ msgid "Poradíme s plaváním"
 msgstr ""
 
 msgid "Postcode"
-msgstr "Poštové smerovacie číslo"
+msgstr "PSČ"
 
 msgid "Potřebujete poradit s dokončením objednávky?"
 msgstr "Potrebuješ poradiť s dokončením objednávky?"

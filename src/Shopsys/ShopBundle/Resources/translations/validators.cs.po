@@ -35,7 +35,7 @@ msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
 msgstr "Hodnota nesmí byt delší než {{ limit }} znaků"
 
 msgid "Identification number cannot be longer than {{ limit }} characters"
-msgstr "IČ nesmí být delší než {{ limit }} znaků"
+msgstr "IČO nesmí být delší než {{ limit }} znaků"
 
 msgid "Image can be only in JPG, GIF or PNG format"
 msgstr "Obrázek může být pouze ve formátu JPG, GIF nebo PNG"

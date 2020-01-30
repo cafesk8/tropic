@@ -805,7 +805,7 @@ msgstr ""
 msgid "Items"
 msgstr ""
 
-msgid "IČ: 27790487, DIČ: CZ27790487"
+msgid "IČO: 27790487, DIČ: CZ27790487"
 msgstr "IR: 27790487, VAT no: CZ27790487"
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"

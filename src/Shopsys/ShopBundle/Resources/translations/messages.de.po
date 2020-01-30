@@ -460,12 +460,6 @@ msgstr "Kontaktiere uns"
 msgid "Cookies nejsou sušenky"
 msgstr "Cookies sind keine Kekse"
 
-msgid "Copyright Ⓒ 2019, Bushman company, a.s. Všechna práva vyhrazena."
-msgstr "Copyright Ⓒ 2019, Bushman Company, a.s. Alle rechte vorbehalten"
-
-msgid "Copyright Ⓒ 2019, Bushmann a.s. Všechna práva vyhrazena."
-msgstr "Copyright Ⓒ 2019, Bushman a.s. Alle Rechte vorbehalten"
-
 msgid "Country"
 msgstr "Land"
 
@@ -1012,17 +1006,8 @@ msgstr "Italia"
 msgid "Items"
 msgstr "Gegenstände"
 
-msgid "IČ: 25618601, DIČ: CZ25618601"
-msgstr "IČ: 25618601, DIČ: CZ25618601"
-
-msgid "IČ: 26052679, DIČ: CZ26052679"
-msgstr "IČ: 26052679, DIČ: CZ26052679"
-
-msgid "IČ: 27790487, DIČ: CZ27790487"
+msgid "IČO: 27790487, DIČ: CZ27790487"
 msgstr "IR: 27790487, USt-IdNr: CZ27790487"
-
-msgid "IČO: 51704501, IČ DPH: SK2120761621"
-msgstr "IČO: 51704501, IČ DPH: SK2120761621"
 
 msgid "Jak na výměnu velikosti?"
 msgstr "Wie tausche ich die Größe um?"
