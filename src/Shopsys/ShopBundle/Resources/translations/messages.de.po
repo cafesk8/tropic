@@ -2012,7 +2012,7 @@ msgid "Prosím, zkontrolujte zadané hodnoty"
 msgstr "Bitte überprüfe die eingegebenen Werte"
 
 msgid "Provozovna"
-msgstr "Filiale"
+msgstr "Europäischer Hauptsitz"
 
 msgid "Provést"
 msgstr "Durchführen"
@@ -3342,4 +3342,3 @@ msgstr "БЪЛГАРИЯ"
 
 msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
 msgstr "„Als ich das BUSHMAN-Projekt gestartet habe, wollte ich"
-
