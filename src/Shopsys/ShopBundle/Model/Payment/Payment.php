@@ -50,6 +50,13 @@ class Payment extends BasePayment
     private $cashOnDelivery;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $hiddenByGoPay;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData
      */
     public function __construct(BasePaymentData $paymentData)
@@ -60,6 +67,7 @@ class Payment extends BasePayment
         $this->setGoPayPaymentMethod($paymentData);
         $this->externalId = $paymentData->externalId;
         $this->cashOnDelivery = $paymentData->cashOnDelivery;
+        $this->hiddenByGoPay = $paymentData->hiddenByGoPay;
     }
 
     /**
@@ -112,6 +120,11 @@ class Payment extends BasePayment
         $this->hidden = true;
     }
 
+    public function unHide(): void
+    {
+        $this->hidden = false;
+    }
+
     /**
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentData $paymentData
      */
@@ -138,5 +151,23 @@ class Payment extends BasePayment
     public function isCashOnDelivery(): bool
     {
         return $this->cashOnDelivery;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHiddenByGoPay(): bool
+    {
+        return $this->hiddenByGoPay;
+    }
+
+    public function hideByGoPay(): void
+    {
+        $this->hiddenByGoPay = true;
+    }
+
+    public function unHideByGoPay(): void
+    {
+        $this->hiddenByGoPay = false;
     }
 }

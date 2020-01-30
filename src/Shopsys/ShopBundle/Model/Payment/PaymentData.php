@@ -28,6 +28,11 @@ class PaymentData extends BasePaymentData
      */
     public $cashOnDelivery;
 
+    /**
+     * @var bool
+     */
+    public $hiddenByGoPay;
+
     public function __construct()
     {
         parent::__construct();

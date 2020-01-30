@@ -646,3 +646,5 @@ services:
     Shopsys\ShopBundle\Controller\Front\ErrorController:
         arguments:
             $environment: '%kernel.environment%'
+
+    Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation: '@Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation'
