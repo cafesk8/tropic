@@ -65,7 +65,7 @@ class PaymentFacade extends BasePaymentFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
     public function getPaymentPricesWithVatIndexedByPaymentId(Currency $currency): array

@@ -25,7 +25,7 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
- * @method \Shopsys\FrameworkBundle\Model\Pricing\Price|null calculateRoundingPrice(\Shopsys\ShopBundle\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice)
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price|null calculateRoundingPrice(\Shopsys\ShopBundle\Model\Payment\Payment $payment, \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice)
  */
 class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 {
@@ -75,7 +75,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param int $domainId
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct[] $quantifiedProducts
      * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
@@ -111,7 +111,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $user
         );
 
-        $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes);
+        $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);
 
         $productsPrice = $this->getProductsPriceAffectedByMultiplePromoCodes($quantifiedItemsPrices, $quantifiedItemsDiscountsIndexedByPromoCodeId);
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
@@ -236,7 +236,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\Transport $transport
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
@@ -257,7 +257,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
     /**
      * @param \Shopsys\ShopBundle\Model\Payment\Payment $payment
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
@@ -278,7 +278,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
     /**
      * @param \Shopsys\ShopBundle\Model\Payment\Payment $payment
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $paymentPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $transportPrice
@@ -363,9 +363,10 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
      */
-    protected function getQuantifiedItemsDiscountsIndexedByPromoCodeId(array $quantifiedItemsPrices, array $promoCodes): array
+    protected function getQuantifiedItemsDiscountsIndexedByPromoCodeId(array $quantifiedItemsPrices, array $promoCodes, Currency $currency): array
     {
         $quantifiedItemsDiscountsIndexedByPromoCodeId = [];
         $quantifiedItemsPricesForDiscountsCalculation = $quantifiedItemsPrices;
@@ -374,9 +375,10 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
                 $quantifiedItemsPricesForDiscountsCalculation,
                 $quantifiedItemsDiscountsIndexedByPromoCodeId
             );
-            $quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()] = $this->quantifiedProductDiscountCalculation->calculateDiscounts(
+            $quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()] = $this->quantifiedProductDiscountCalculation->calculateDiscountsRoundedByCurrency(
                 $quantifiedItemsPricesForDiscountsCalculation,
                 $promoCode->getPercent(),
+                $currency,
                 $promoCode
             );
         }

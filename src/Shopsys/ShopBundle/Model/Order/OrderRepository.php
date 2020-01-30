@@ -29,6 +29,7 @@ use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
  * @method \Shopsys\ShopBundle\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
  * @method \Shopsys\ShopBundle\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \Shopsys\ShopBundle\Model\Customer\User $user)
  * @method \Shopsys\ShopBundle\Model\Order\Order|null findByUrlHashIncludingDeletedOrders(string $urlHash)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Currency\Currency[] getCurrenciesUsedInOrders()
  */
 class OrderRepository extends BaseOrderRepository
 {

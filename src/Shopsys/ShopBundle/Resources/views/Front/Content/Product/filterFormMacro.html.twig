@@ -33,13 +33,17 @@
                         <label for="{{ filterForm.minimalPrice.vars.id }}" class="input__label required">
                             {{ 'Od'|trans }}
                         </label>
-                        {{ form_widget(filterForm.minimalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
+                        {{ form_widget(filterForm.minimalPrice,
+                            {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.minimalPrice|price }})
+                        }}
                     </div>
                     <div class="box-price-slider__form__input box-price-slider__form__input--right">
                         <label for="{{ filterForm.maximalPrice.vars.id }}" class="input__label required">
                             {{ 'Do'|trans }}
                         </label>
-                        {{ form_widget(filterForm.maximalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate'}}) }}
+                        {{ form_widget(filterForm.maximalPrice,
+                            {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.maximalPrice|price }})
+                        }}
                     </div>
                 </div>
             </div>

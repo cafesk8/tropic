@@ -191,7 +191,7 @@ class GoPayPaymentMethodFacade
 
     /**
      * @param array $goPayMethodRawData
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param string $language
      * @return \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod
      */

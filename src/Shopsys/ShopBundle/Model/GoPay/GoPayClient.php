@@ -121,7 +121,7 @@ class GoPayClient
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @return array
      */
     public function downloadGoPayPaymentMethodsByCurrency(Currency $currency): array

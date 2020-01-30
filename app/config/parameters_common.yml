@@ -47,5 +47,6 @@ parameters:
         Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress: Shopsys\ShopBundle\Model\Customer\DeliveryAddress
         Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus: Shopsys\ShopBundle\Model\Order\Status\OrderStatus
         Shopsys\FrameworkBundle\Model\Country\Country: Shopsys\ShopBundle\Model\Country\Country
+        Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency: Shopsys\ShopBundle\Model\Pricing\Currency\Currency
     build-version: '0000000000000000'
     securityBcryptCost: 12

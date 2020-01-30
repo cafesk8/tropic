@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Form\Front\Product;
 
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
-use Shopsys\FrameworkBundle\Twig\MoneyExtension;
 use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig;
 use Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData;
 use Symfony\Component\Form\AbstractType;
@@ -18,19 +17,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductFilterFormType extends AbstractType
 {
-    /**
-     * @var \Shopsys\FrameworkBundle\Twig\MoneyExtension
-     */
-    private $moneyExtension;
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Twig\MoneyExtension $moneyExtension
-     */
-    public function __construct(MoneyExtension $moneyExtension)
-    {
-        $this->moneyExtension = $moneyExtension;
-    }
-
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @param array $options
@@ -45,7 +31,6 @@ class ProductFilterFormType extends AbstractType
         $builder
             ->add('minimalPrice', MoneyType::class, [
                 'required' => false,
-                'attr' => ['placeholder' => $this->moneyExtension->moneyFormatFilter($config->getPriceRange()->getMinimalPrice(), 0)],
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
@@ -54,7 +39,6 @@ class ProductFilterFormType extends AbstractType
             ])
             ->add('maximalPrice', MoneyType::class, [
                 'required' => false,
-                'attr' => ['placeholder' => $this->moneyExtension->moneyFormatFilter($config->getPriceRange()->getMaximalPrice(), 0)],
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),

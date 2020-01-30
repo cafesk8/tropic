@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Order\FrontOrderData as BaseFrontOrderData;
  * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemData|null $orderPayment
  * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemData|null $orderTransport
  * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItemData[] getNewItemsWithoutTransportAndPayment()
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\Currency|null $currency
  */
 class FrontOrderData extends BaseFrontOrderData
 {

@@ -44,6 +44,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Model/Product/Pricing/ProductPriceCalculation.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'

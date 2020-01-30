@@ -6,20 +6,25 @@ namespace Shopsys\ShopBundle\Model\Product\Pricing;
 
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation as BaseQuantifiedProductDiscountCalculation;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price|null calculateDiscountRoundedByCurrency(\Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice $quantifiedItemPrice, string $discountPercent, \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency)
+ */
 class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscountCalculation
 {
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param string|null $discountPercent
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[]
      */
-    public function calculateDiscounts(array $quantifiedItemsPrices, ?string $discountPercent, ?PromoCode $promoCode = null): array
+    public function calculateDiscountsRoundedByCurrency(array $quantifiedItemsPrices, ?string $discountPercent, Currency $currency, ?PromoCode $promoCode = null): array
     {
         $quantifiedItemsDiscounts = $this->initQuantifiedItemsDiscounts($quantifiedItemsPrices);
         $isCertificate = $promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE;
@@ -40,7 +45,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         $maxQuantifiedItemPriceIndex = null;
         $discountNominalAmount = Money::zero();
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
-            $quantifiedItemDiscount = $this->calculateDiscount($quantifiedItemPrice, $discountPercentForOrder);
+            $quantifiedItemDiscount = $this->calculateDiscountRoundedByCurrency($quantifiedItemPrice, $discountPercentForOrder, $currency);
             $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemDiscount;
             $discountNominalAmount = $discountNominalAmount->add($quantifiedItemDiscount->getPriceWithVat());
 

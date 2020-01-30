@@ -53,6 +53,8 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
  * @method \Shopsys\ShopBundle\Model\Country\Country|null getDeliveryCountry()
  * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem[] getProductItems()
  * @method \Shopsys\ShopBundle\Model\Administrator\Administrator|null getCreatedAsAdministrator()
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
+ * @method \Shopsys\ShopBundle\Model\Pricing\Currency\Currency getCurrency()
  */
 class Order extends BaseOrder
 {

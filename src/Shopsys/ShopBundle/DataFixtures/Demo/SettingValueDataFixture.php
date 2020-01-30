@@ -103,10 +103,10 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
     protected function setDomainDefaultCurrency(int $domainId): void
     {
         if ($domainId === Domain::FIRST_DOMAIN_ID) {
-            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $defaultCurrency */
+            /** @var \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $defaultCurrency */
             $defaultCurrency = $this->getReference(CurrencyDataFixture::CURRENCY_CZK);
         } else {
-            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $defaultCurrency */
+            /** @var \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $defaultCurrency */
             $defaultCurrency = $this->getReference(CurrencyDataFixture::CURRENCY_EUR);
         }
         $this->setting->setForDomain(PricingSetting::DEFAULT_DOMAIN_CURRENCY, $defaultCurrency->getId(), $domainId);
