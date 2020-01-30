@@ -91,6 +91,9 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
+msgid "Amount multiples"
+msgstr "Multiples for purchase"
+
 msgid "Ancestor category"
 msgstr ""
 

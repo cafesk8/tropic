@@ -148,6 +148,20 @@ class Product extends BaseProduct
     protected $productType;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $minimumAmount;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $amountMultiplier;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
@@ -168,6 +182,8 @@ class Product extends BaseProduct
         $this->updatedAt = $productData->updatedAt;
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
+        $this->minimumAmount = $productData->minimumAmount;
+        $this->amountMultiplier = $productData->amountMultiplier;
     }
 
     /**
@@ -190,6 +206,8 @@ class Product extends BaseProduct
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
+        $this->minimumAmount = $productData->minimumAmount;
+        $this->amountMultiplier = $productData->amountMultiplier;
     }
 
     /**
@@ -695,5 +713,57 @@ class Product extends BaseProduct
     public function isProductTypeGiftCertificate(): bool
     {
         return in_array($this->productType, self::PRODUCT_TYPES_GIFT_CERTIFICATES, true);
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmountMultiplier(): int
+    {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getAmountMultiplier();
+        }
+
+        return $this->amountMultiplier;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinimumAmount(): int
+    {
+        if ($this->isVariant()) {
+            return $this->getMainVariant()->getMinimumAmount();
+        }
+
+        return $this->minimumAmount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealMinimumAmount(): int
+    {
+        if ($this->getAmountMultiplier() > $this->getMinimumAmount()) {
+            return $this->getAmountMultiplier();
+        } elseif ($this->getMinimumAmount() % $this->getAmountMultiplier() !== 0) {
+            return (int)ceil($this->getMinimumAmount() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $this->getMinimumAmount();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealStockQuantity(): int
+    {
+        if (!$this->isUsingStock()) {
+            return PHP_INT_MAX;
+        } elseif ($this->getStockQuantity() % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($this->getStockQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $this->getStockQuantity();
     }
 }

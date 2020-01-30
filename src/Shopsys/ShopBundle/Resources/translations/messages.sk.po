@@ -136,6 +136,9 @@ msgstr "Všetky výsledky vyhľadávania"
 msgid "Amount"
 msgstr "Čiastka"
 
+msgid "Amount multiples"
+msgstr "Násobky pre nákup"
+
 msgid "Ancestor category"
 msgstr "Kategória predkov"
 
@@ -1255,6 +1258,12 @@ msgstr "Správa"
 msgid "Meta description"
 msgstr "Meta popis"
 
+msgid "Minimum amount"
+msgstr "Minimálne množstvo pre nákup"
+
+msgid "Minimum quantity and multiples"
+msgstr "Minimálne množstvo a násobky"
+
 msgid "Minimální cena košíku"
 msgstr "Minimálna cena košíku"
 
@@ -1953,6 +1962,9 @@ msgstr "Produkt <strong> {{product | productDisplayName}} </strong> bol upraven�
 
 msgid "Product no longer on sale"
 msgstr "Produkt sa už nepredáva"
+
+msgid "Product {{ name }} had to be removed from cart as its stock is too low"
+msgstr "Produkt {{ name }} musel byť z košíka odstránený, pretože jeho skladové zásoby sú príliš nízke"
 
 msgid "Product {{ name }} removed from cart"
 msgstr "Produkt {{name}} bol odstránený z košíka"

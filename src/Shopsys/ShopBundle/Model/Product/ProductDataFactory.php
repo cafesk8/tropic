@@ -145,5 +145,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->updatedAt = $product->getUpdatedAt();
         $productData->baseName = $product->getBaseName();
         $productData->productType = $product->getProductType();
+        $productData->minimumAmount = $product->getMinimumAmount();
+        $productData->amountMultiplier = $product->getAmountMultiplier();
     }
 }

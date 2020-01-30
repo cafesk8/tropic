@@ -16,6 +16,35 @@
             .bind('spinbox.plus', Shopsys.spinbox.plus)
             .bind('spinbox.minus', Shopsys.spinbox.minus);
 
+        var checkValue = function () {
+            var value = $(this).val();
+            var min = $(this).data('spinbox-min');
+            var step = $(this).data('spinbox-step');
+
+            if (min < step) {
+                min = step;
+            }
+
+            if (!value.match(/^\d+$/)) {
+                value = min;
+            }
+
+            if (value % step !== 0) {
+                value = Math.floor(value / step) * step;
+            }
+
+            if (min !== undefined && min > value) {
+                value = min;
+            }
+
+            $(this).val(value);
+        };
+
+        $input.change(checkValue);
+        $input.ready(function () {
+            $input.change();
+        });
+
         $plus
             .bind('mousedown.spinbox', function (e) {
                 repeater.startAutorepeat($input, 'spinbox.plus');
@@ -31,18 +60,14 @@
             .bind('mouseup.spinbox mouseout.spinbox', function (e) {
                 repeater.stopAutorepeat();
             });
-
     };
 
     Shopsys.spinbox.plus = function () {
         var value = $.trim($(this).val());
-        var max = $(this).data('spinbox-max');
+        var step = $(this).data('spinbox-step');
 
         if (value.match(/^\d+$/)) {
-            value = parseInt(value) + 1;
-            if (max !== undefined && max < value) {
-                value = max;
-            }
+            value = parseInt(value) + step;
             $(this).val(value);
             $(this).change();
         }
@@ -50,13 +75,10 @@
 
     Shopsys.spinbox.minus = function () {
         var value = $.trim($(this).val());
-        var min = $(this).data('spinbox-min');
+        var step = $(this).data('spinbox-step');
 
         if (value.match(/^\d+$/)) {
-            value = parseInt(value) - 1;
-            if (min !== undefined && min > value) {
-                value = min;
-            }
+            value = parseInt(value) - step;
             $(this).val(value);
             $(this).change();
         }

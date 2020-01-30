@@ -142,6 +142,9 @@ msgstr "Alle Suchergebnisse"
 msgid "Amount"
 msgstr "Menge"
 
+msgid "Amount multiples"
+msgstr "Vielfache zum Kauf"
+
 msgid "Ancestor category"
 msgstr "Übergeordnete Kategorie"
 
@@ -1243,6 +1246,12 @@ msgstr "Nachricht"
 msgid "Meta description"
 msgstr "Meta-Beschreibung"
 
+msgid "Minimum amount"
+msgstr "Mindestabnahmemenge"
+
+msgid "Minimum quantity and multiples"
+msgstr "Mindestmengen und Vielfache"
+
 msgid "Minimální cena košíku"
 msgstr "Mindestpreis von Warenkorb"
 
@@ -1941,6 +1950,9 @@ msgstr "Produkt <strong> {{product | productDisplayName}} </strong> geändert"
 
 msgid "Product no longer on sale"
 msgstr "Produkt nicht mehr im Verkauf"
+
+msgid "Product {{ name }} had to be removed from cart as its stock is too low"
+msgstr "Das Produkt {{ name }} muss aus dem Warenkorb entfernt werden, da der Lagerbestand zu niedrig ist"
 
 msgid "Product {{ name }} removed from cart"
 msgstr "Das Produkt {{name}} wurde aus dem Warenkorb entfernt"

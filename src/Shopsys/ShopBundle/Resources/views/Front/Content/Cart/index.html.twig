@@ -89,7 +89,11 @@
                                             <div class="table-cart__row__right">
                                                 <div class="table-cart__cell__spinbox">
                                                     <span class="form-input-spinbox js-spinbox">
-                                                        {{ form_widget(form.quantities[cartItem.id], { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': 1}}) }}
+                                                        {{ form_widget(form.quantities[cartItem.id], { attr: {
+                                                            class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                                                            'data-spinbox-min': cartItem.product.realMinimumAmount,
+                                                            'data-spinbox-step': cartItem.product.amountMultiplier
+                                                        }}) }}
                                                         <div class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></div>
                                                         <div class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></div>
                                                     </span>
