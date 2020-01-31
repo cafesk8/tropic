@@ -727,9 +727,6 @@ msgstr "E-shop na mieru od"
 msgid "EAN nenastaven"
 msgstr "EAN nenastavený"
 
-msgid "EAN věrnostní karty"
-msgstr "EAN vernostné karty"
-
 msgid "Editace banneru"
 msgstr "Editácia banneru"
 
@@ -2536,9 +2533,6 @@ msgstr "Tučný nadpis"
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr "Tvar odkazu pre sledovanie zásielky"
 
-msgid "Tvoje osobní číslo"
-msgstr "Vaše osobné číslo"
-
 msgid "Tvorba e-shopů na míru"
 msgstr "Tvorba e-shopov na mieru"
 
@@ -3054,9 +3048,6 @@ msgstr "Zrušiť všetky filtre"
 
 msgid "Zvolte parametr"
 msgstr "Zvoľte parameter"
-
-msgid "Zákaznická ID a eany"
-msgstr "Zákaznícka ID a eany"
 
 msgid "Základní informace"
 msgstr "Základné informácie"

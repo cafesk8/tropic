@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
-use Shopsys\ShopBundle\Component\CardEan\CardEanFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Registration\RegistrationFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
@@ -46,11 +45,6 @@ class RegistrationController extends FrontBaseController
     private $articleFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Component\CardEan\CardEanFacade
-     */
-    private $cardEanFacade;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade
      */
     private $customerMailFacade;
@@ -65,7 +59,6 @@ class RegistrationController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
-     * @param \Shopsys\ShopBundle\Component\CardEan\CardEanFacade $cardEanFacade
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
@@ -75,7 +68,6 @@ class RegistrationController extends FrontBaseController
         CustomerFacade $customerFacade,
         Authenticator $authenticator,
         LegalConditionsFacade $legalConditionsFacade,
-        CardEanFacade $cardEanFacade,
         ArticleFacade $articleFacade,
         CustomerMailFacade $customerMailFacade,
         CustomerDataFactory $customerDataFactory
@@ -84,7 +76,6 @@ class RegistrationController extends FrontBaseController
         $this->customerFacade = $customerFacade;
         $this->authenticator = $authenticator;
         $this->legalConditionsFacade = $legalConditionsFacade;
-        $this->cardEanFacade = $cardEanFacade;
         $this->articleFacade = $articleFacade;
         $this->customerMailFacade = $customerMailFacade;
         $this->customerDataFactory = $customerDataFactory;
@@ -126,8 +117,6 @@ class RegistrationController extends FrontBaseController
                     t('Unable to send some e-mails, please contact us for registration verification.')
                 );
             }
-
-            $this->cardEanFacade->addPrereneratedEanToUserAndFlush($user);
 
             $this->authenticator->loginUser($user, $request);
 

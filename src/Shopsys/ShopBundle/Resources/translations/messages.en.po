@@ -574,9 +574,6 @@ msgstr ""
 msgid "EAN nenastaven"
 msgstr ""
 
-msgid "EAN věrnostní karty"
-msgstr ""
-
 msgid "Editace banneru"
 msgstr ""
 
@@ -2059,9 +2056,6 @@ msgstr ""
 msgid "Tvar odkazu pro sledování zásilky"
 msgstr ""
 
-msgid "Tvoje osobní číslo"
-msgstr ""
-
 msgid "Typ"
 msgstr ""
 
@@ -2486,9 +2480,6 @@ msgid "Zrušit všechny filtry"
 msgstr ""
 
 msgid "Zvolte parametr"
-msgstr ""
-
-msgid "Zákaznická ID a eany"
 msgstr ""
 
 msgid "Základní informace"

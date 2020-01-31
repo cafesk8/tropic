@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans;
+namespace Shopsys\ShopBundle\Model\Customer\TransferIds;
 
-class UserTransferIdAndEanData
+class UserTransferIdData
 {
     /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\User|null
@@ -15,9 +15,4 @@ class UserTransferIdAndEanData
      * @var string|null
      */
     public $transferId;
-
-    /**
-     * @var string|null
-     */
-    public $ean;
 }

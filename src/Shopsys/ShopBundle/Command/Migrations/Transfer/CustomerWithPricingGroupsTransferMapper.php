@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Command\Migrations\Transfer;
 
-use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
@@ -77,7 +76,6 @@ class CustomerWithPricingGroupsTransferMapper
         $userData->telephone = $customerTransferResponseItemData->getPhone();
         $userData->domainId = $domainId;
         $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
-        $userData->ean = $this->findEan($customerTransferResponseItemData->getEans());
         $userData->memberOfBushmanClub = $userData->ean === null ? false : true;
 
         $billingAddressData = $customerData->billingAddressData;
@@ -99,18 +97,5 @@ class CustomerWithPricingGroupsTransferMapper
         $customerData->userData = $userData;
 
         return $customerData;
-    }
-
-    /**
-     * @param array $eans
-     * @return string|null
-     */
-    private function findEan(array $eans): ?string
-    {
-        if (count($eans) === 0) {
-            return null;
-        }
-
-        return TransformString::emptyToNull(end($eans));
     }
 }

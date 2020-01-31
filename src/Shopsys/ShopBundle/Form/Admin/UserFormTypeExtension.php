@@ -27,10 +27,6 @@ class UserFormTypeExtension extends AbstractTypeExtension
                 'label' => t('ID z IS'),
                 'data' => $user->getTransferId() ?? t('ID nenastaveno'),
             ])
-            ->add('ean', DisplayOnlyType::class, [
-                'label' => t('EAN věrnostní karty'),
-                'data' => $user->getEan() ?? t('EAN nenastaven'),
-            ])
             ->add('memberOfBushmanClub', DisplayOnlyType::class, [
                 'label' => t('Členem Věrnostního programu'),
                 'data' => $user->isMemberOfBushmanClub() === true ? t('Ano') : t('Ne'),

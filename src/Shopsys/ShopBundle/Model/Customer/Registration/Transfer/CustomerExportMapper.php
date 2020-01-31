@@ -65,9 +65,6 @@ class CustomerExportMapper
                 'DIC' => $this->getPassedValueOrEmptyForNull($user->getBillingAddress()->getCompanyTaxNumber()),
                 'Phone' => $user->getTelephone() ?? '1',
                 'Email' => $user->getEmail(),
-                'IdCards' => [
-                    $user->getEan(),
-                ],
             ],
             'DeliveryAdress' => $this->mapDeliveryAddress($user),
             'Total' => 0,

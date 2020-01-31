@@ -9,7 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository as BaseUserRepository;
-use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
+use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId;
 
 class UserRepository extends BaseUserRepository
 {
@@ -79,7 +79,7 @@ class UserRepository extends BaseUserRepository
         $queryBuilder = parent::getCustomerListQueryBuilderByQuickSearchData($domainId, $quickSearchData);
 
         if ($quickSearchData->text !== null && $quickSearchData->text !== '') {
-            $queryBuilder->leftJoin(UserTransferIdAndEan::class, 'uti', Join::WITH, 'uti.customer = u')
+            $queryBuilder->leftJoin(UserTransferId::class, 'uti', Join::WITH, 'uti.customer = u')
                 ->orWhere('NORMALIZE(uti.ean) LIKE NORMALIZE(:text)')
                 ->orWhere('NORMALIZE(u.ean) LIKE NORMALIZE(:text)');
         }
