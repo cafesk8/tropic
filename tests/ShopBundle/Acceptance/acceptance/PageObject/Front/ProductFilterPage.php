@@ -6,6 +6,7 @@ namespace Tests\ShopBundle\Acceptance\acceptance\PageObject\Front;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
+use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 use Tests\ShopBundle\Acceptance\acceptance\PageObject\AbstractPage;
 use Tests\ShopBundle\Test\Codeception\AcceptanceTester;
 use Tests\ShopBundle\Test\Codeception\Module\StrictWebDriver;
@@ -13,7 +14,7 @@ use Tests\ShopBundle\Test\Codeception\Module\StrictWebDriver;
 class ProductFilterPage extends AbstractPage
 {
     // Product filter waits for more requests before evaluation
-    public const PRE_EVALUATION_WAIT = 2;
+    protected const PRE_EVALUATION_WAIT = 2;
 
     /**
      * @param \Tests\ShopBundle\Test\Codeception\Module\StrictWebDriver $strictWebDriver
@@ -29,7 +30,8 @@ class ProductFilterPage extends AbstractPage
      */
     public function setMinimalPrice($price)
     {
-        $this->tester->fillFieldByCss('#product_filter_form_minimalPrice', $price . WebDriverKeys::ENTER);
+        $convertedPrice = $this->tester->getPriceWithVatConvertedToDomainDefaultCurrency($price);
+        $this->tester->fillFieldByCss('#product_filter_form_minimalPrice', $convertedPrice . WebDriverKeys::ENTER);
         $this->waitForFilter();
     }
 
@@ -38,16 +40,21 @@ class ProductFilterPage extends AbstractPage
      */
     public function setMaximalPrice($price)
     {
-        $this->tester->fillFieldByCss('#product_filter_form_maximalPrice', $price . WebDriverKeys::ENTER);
+        $convertedPrice = $this->tester->getPriceWithVatConvertedToDomainDefaultCurrency($price);
+        $this->tester->fillFieldByCss('#product_filter_form_maximalPrice', $convertedPrice . WebDriverKeys::ENTER);
         $this->waitForFilter();
     }
 
     /**
-     * @param string $label
+     * @param int $brandPosition
      */
-    public function filterByBrand($label)
+    public function filterByBrand($brandPosition)
     {
-        $this->tester->checkOptionByLabelTranslationFrontend($label);
+        $frontCheckboxClicker = FrontCheckbox::createByCss(
+            $this->tester,
+            '#product_filter_form_brands_' . $brandPosition
+        );
+        $frontCheckboxClicker->check();
         $this->waitForFilter();
     }
 
