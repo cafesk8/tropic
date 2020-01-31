@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
-use Shopsys\ShopBundle\Model\Category\CategoryFacade;
 use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 
 class HomepageController extends FrontBaseController
@@ -55,11 +54,6 @@ class HomepageController extends FrontBaseController
     private $productOnCurrentDomainFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
-     */
-    private $categoryFacade;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Article\ArticleFacade
      */
     private $articleFacade;
@@ -72,7 +66,6 @@ class HomepageController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
-     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      */
     public function __construct(
@@ -83,7 +76,6 @@ class HomepageController extends FrontBaseController
         Domain $domain,
         BlogArticleFacade $blogArticleFacade,
         ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade,
-        CategoryFacade $categoryFacade,
         ArticleFacade $articleFacade
     ) {
         $this->currentCustomer = $currentCustomer;
@@ -93,7 +85,6 @@ class HomepageController extends FrontBaseController
         $this->domain = $domain;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
-        $this->categoryFacade = $categoryFacade;
         $this->articleFacade = $articleFacade;
     }
 
@@ -117,8 +108,6 @@ class HomepageController extends FrontBaseController
             ),
             'domainId' => $this->domain->getId(),
             'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($topProducts),
-            'legendaryCategoryId' => $this->categoryFacade->getHighestLegendaryCategoryIdByDomainId($this->domain->getId()),
-            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
             'ourValuesArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_VALUES_ARTICLE_ID, $this->domain->getId()),
             'ourStoryArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_STORY_ARTICLE_ID, $this->domain->getId()),
         ]);
