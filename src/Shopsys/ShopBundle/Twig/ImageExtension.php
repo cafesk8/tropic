@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
 use Shopsys\FrameworkBundle\Model\Customer\User;
-use Shopsys\ReadModelBundle\Image\ImageView;
 use Shopsys\ReadModelBundle\Twig\ImageExtension as BaseImageExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Asset\Package;
@@ -42,40 +41,43 @@ class ImageExtension extends BaseImageExtension
     public function getFunctions()
     {
         return array_merge(parent::getFunctions(), [
-            new TwigFunction('imagePlaceholder', [$this, 'getImagePlaceholder']),
             new TwigFunction('barcodeImageByUser', [$this, 'getBarcodeImageByUser']),
         ]);
     }
 
-    public function getImagePlaceholder()
+    private function getImagePlaceholder()
     {
         return $this->assetsPackage->getUrl('assets/frontend/images/design/placeholder.gif');
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Component\Image\Image|\Shopsys\ReadModelBundle\Image\ImageView|Object|null $imageOrEntity
+     * Copy-pasted from @see \Shopsys\FrameworkBundle\Twig\ImageExtension
+     * Just the placeholder is used for $htmlAttributes['src'] when using lazy-load
+     *
      * @param array $attributes
+     * @param string $entityName
+     * @param \Shopsys\FrameworkBundle\Component\Image\AdditionalImageData[] $additionalImagesData
      * @return string
      */
-    public function getImageHtml($imageOrEntity, array $attributes = []): string
+    protected function getImageHtmlByEntityName(array $attributes, $entityName, $additionalImagesData = []): string
     {
-        if ($imageOrEntity !== null && !($imageOrEntity instanceof ImageView)) {
-            $this->preventDefault($attributes);
-            try {
-                $image = $this->imageFacade->getImageByObject($imageOrEntity, $attributes['type']);
-            } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
-                return $this->getNoimageHtml();
-            }
+        $htmlAttributes = $attributes;
+        unset($htmlAttributes['type'], $htmlAttributes['size']);
 
-            $useLazyLoading = array_key_exists('lazy', $attributes) ? (bool)$attributes['lazy'] : false;
-            if ($useLazyLoading === true) {
-                $attributes['src'] = $this->getImagePlaceholder();
-                $attributes['data-original'] = $this->getImageUrl($image, $attributes['size'], $attributes['type']);
-                $attributes['class'] = array_key_exists('class', $attributes) ? $attributes['class'] . ' js-lazy-load' : 'js-lazy-load';
-            }
+        $useLazyLoading = array_key_exists('lazy', $attributes) ? (bool)$attributes['lazy'] : true;
+        unset($htmlAttributes['lazy']);
+
+        if ($useLazyLoading === true) {
+            $htmlAttributes['loading'] = 'lazy';
+            $htmlAttributes['data-src'] = $htmlAttributes['src'];
+            $htmlAttributes['src'] = $this->getImagePlaceholder();
         }
 
-        return parent::getImageHtml($imageOrEntity, $attributes);
+        return $this->templating->render('@ShopsysFramework/Common/image.html.twig', [
+            'attr' => $htmlAttributes,
+            'additionalImagesData' => $additionalImagesData,
+            'imageCssClass' => $this->getImageCssClass($entityName, $attributes['type'], $attributes['size']),
+        ]);
     }
 
     /**

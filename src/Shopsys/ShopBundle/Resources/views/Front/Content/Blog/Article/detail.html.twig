@@ -29,7 +29,7 @@
 
                     {% if imageExists(blogArticle) %}
                         <div class="in-article__main-img">
-                            {{ image(blogArticle, { itemprop: 'image', lazy:true }) }}
+                            {{ image(blogArticle, { itemprop: 'image' }) }}
                         </div>
                         <div class="in-article__img-caption">
                             {{ blogArticle.mainPhotoTitle }}
@@ -61,7 +61,7 @@
                         {% for galleryImage in galleryImages %}
                             <div class="box-blog-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
                                 <a href="{{ imageUrl(galleryImage, 'original') }}" class="box-blog-gallery__item__link js-gallery-slide-link">
-                                    {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
+                                    {{ image(galleryImage, {size: 'thumbnail'}) }}
                                 </a>
                             </div>
                         {% endfor %}
