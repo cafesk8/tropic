@@ -308,7 +308,7 @@ msgid "Bushmanství obrazem"
 msgstr "Bushman-Lebensweise in Bildern"
 
 msgid "Buď bushman a měj výhodnější"
-msgstr "Sei ein Bushman und hab' viele Vorteile"
+msgstr "Sei ein Bushman und nutze viele Vorteile"
 
 msgid "Buď bushman a měj zdarma"
 msgstr "Sei ein Bushman und hab es kostenlos"
@@ -1031,7 +1031,7 @@ msgid "Jak na výměnu velikosti?"
 msgstr "Wie tausche ich die Größe um?"
 
 msgid "Jak vybrat správnou velikost?"
-msgstr "Wie wähle ich die richtige Größe?"
+msgstr "Größentabelle"
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Gib %s als Platzhalter für die Tracking-Nummer ein, z. B. https://tracking.ulozenka.cz/?_fid=%s"
