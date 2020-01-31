@@ -57,15 +57,11 @@ class ProductPrice extends BaseProductPrice
     }
 
     /**
-     * Less price is considered as less
-     *      because if user's pricing group is default pricing group
-     *      or if it has action price (ProductDomain::actionPrice)
-     *
      * @return bool
      */
-    public function isActionPrice(): bool
+    public function isActionPriceByUsedForPromoCode(): bool
     {
-        if ($this->priceWithVat->isLessThan($this->defaultProductPrice->priceWithVat)
+        if ($this->isActionPrice()
             && (
                 $this->product === null
                 || $this->activePricingGroup === null
@@ -78,6 +74,14 @@ class ProductPrice extends BaseProductPrice
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActionPrice(): bool
+    {
+        return $this->priceWithVat->isLessThan($this->defaultProductPrice->priceWithVat);
     }
 
     /**
