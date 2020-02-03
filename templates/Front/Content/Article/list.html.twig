@@ -1,0 +1,28 @@
+<ul class="list-articles {{ cssClass|default('') }}">
+    {% for blogArticle in blogArticles %}
+        {% set url = url('front_blogarticle_detail', {'id': blogArticle.id}) %}
+        <li class="list-articles__item">
+            <div class="list-articles__item__image">
+                <a href="{{ url }}" class="list-articles__item__image__link">
+                    {{ image(blogArticle, { size: 'list', alt: blogArticle.name }) }}
+                </a>
+            </div>
+            <div class="list-articles__item__content">
+                <div class="list-tags">
+                    {{ render(controller('App\\Controller\\Front\\BlogArticleController:mainBlogCategoryForBlogArticleAction', { blogArticle: blogArticle, spanClass: 'list-tags__tag' })) }}
+                </div>
+                <a href="{{ url }}" class="list-articles__item__content__title">
+                    <span class="underline-text">
+                        {{ blogArticle.name }}
+                    </span>
+                </a>
+                <div class="list-articles__item__content__text">
+                    {{ blogArticle.perex }}
+                </div>
+                <div class="list-articles__item__content__date">
+                    {{ blogArticle.publishDate|formatLongDate }}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

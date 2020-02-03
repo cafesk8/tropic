@@ -1,0 +1,97 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\ShopBundle\Functional\Model\Customer;
+
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use App\DataFixtures\Demo\PricingGroupDataFixture;
+use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
+
+class CustomerFacadeTest extends TransactionFunctionalTestCase
+{
+    protected const EXISTING_EMAIL_ON_DOMAIN_1 = 'no-reply.3@shopsys.com';
+    protected const EXISTING_EMAIL_ON_DOMAIN_2 = 'no-reply.4@shopsys.com';
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade
+     */
+    protected $customerFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory
+     */
+    protected $customerDataFactory;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->customerFacade = $this->getContainer()->get(CustomerFacade::class);
+        $this->customerDataFactory = $this->getContainer()->get(CustomerDataFactoryInterface::class);
+    }
+
+    public function testChangeEmailToExistingEmailButDifferentDomainDoNotThrowException()
+    {
+        $user = $this->customerFacade->findUserByEmailAndDomain(self::EXISTING_EMAIL_ON_DOMAIN_1, Domain::FIRST_DOMAIN_ID);
+        $customerData = $this->customerDataFactory->createFromUser($user);
+        /** @var \App\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
+        $userData->email = self::EXISTING_EMAIL_ON_DOMAIN_2;
+        $userData->memberOfLoyaltyProgram = false;
+        $customerData->userData = $userData;
+
+        $this->customerFacade->editByAdmin($user->getId(), $customerData);
+
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function testCreateNotDuplicateEmail()
+    {
+        $customerData = $this->customerDataFactory->create();
+        /** @var \App\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
+        $userData->pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, 1);
+        $userData->domainId = 1;
+        $userData->email = 'unique-email@shopsys.com';
+        $userData->firstName = 'John';
+        $userData->lastName = 'Doe';
+        $userData->password = 'password';
+        $userData->memberOfLoyaltyProgram = false;
+        $customerData->userData = $userData;
+
+        $this->customerFacade->create($customerData);
+
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function testCreateDuplicateEmail()
+    {
+        $user = $this->customerFacade->findUserByEmailAndDomain(self::EXISTING_EMAIL_ON_DOMAIN_1, 1);
+        $customerData = $this->customerDataFactory->createFromUser($user);
+        /** @var \App\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
+        $userData->password = 'password';
+        $userData->memberOfLoyaltyProgram = false;
+        $customerData->userData = $userData;
+        $this->expectException(\Shopsys\FrameworkBundle\Model\Customer\Exception\DuplicateEmailException::class);
+
+        $this->customerFacade->create($customerData);
+    }
+
+    public function testCreateDuplicateEmailCaseInsentitive()
+    {
+        $user = $this->customerFacade->findUserByEmailAndDomain(self::EXISTING_EMAIL_ON_DOMAIN_1, 1);
+        $customerData = $this->customerDataFactory->createFromUser($user);
+        /** @var \App\Model\Customer\UserData $userData */
+        $userData = $customerData->userData;
+        $userData->password = 'password';
+        $userData->email = mb_strtoupper(self::EXISTING_EMAIL_ON_DOMAIN_1);
+        $userData->memberOfLoyaltyProgram = false;
+        $customerData->userData = $userData;
+        $this->expectException(\Shopsys\FrameworkBundle\Model\Customer\Exception\DuplicateEmailException::class);
+
+        $this->customerFacade->create($customerData);
+    }
+}

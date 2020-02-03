@@ -1,0 +1,53 @@
+{% extends '@!ShopsysFramework/Admin/Content/PromoCode/listGrid.html.twig' %}
+
+{% block grid_value_cell_id_prefix %}
+    {% set prefix = value %}
+    {% set prefixJsClass = 'js-promo-code-mass' ~ value %}
+
+    {{ value }}
+    {% if value != '' %}
+        <span class="js-promo-code-mass {{ prefixJsClass }}" data-promo-code-prefix="{{ prefix }}" data-promo-code-prefix-js-class="{{ prefixJsClass }}" data-promo-code-group-enabled="{{ value != '' ? 1 : 0 }}"></span>
+        <span class="js-promocode-mass-delete display-none">
+            {% set csrfTokenId = constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_ID_PREFIX') ~ 'admin_promocode_deletemass' %}
+            {% set promocodeMassDeleteUrl = url('admin_promocode_deletemass', {
+                prefix: value,
+                (constant('Shopsys\\FrameworkBundle\\Component\\Router\\Security\\RouteCsrfProtector::CSRF_TOKEN_REQUEST_PARAMETER')): csrf_token(csrfTokenId)
+            }) %}
+            <a
+                href="{{ promocodeMassDeleteUrl }}"
+                class="btn btn-danger text-center"
+                onclick="
+                    Shopsys.window({
+                        content: '{{ 'Chcete opravdu smazat tyto slevové kupóny?'|trans|e('js') }}',
+                        buttonCancel: true,
+                        buttonContinue: true,
+                        textContinue: '{{ 'Yes'|trans|e('js') }}',
+                        urlContinue: '{{ promocodeMassDeleteUrl }}'
+                    });
+                    return false;"
+            >
+                {{ 'Smazat všechny'|trans }}
+            </a>
+        </span>
+    {% endif %}
+{% endblock %}
+
+{% block grid_value_cell_id_percent %}
+    {% if _context.row.pc.type is same as (constant('App\\Model\\Order\\PromoCode\\PromoCodeData::TYPE_CERTIFICATE')) %}
+        {{ _context.row.pc.certificateValue.getAmount|formatNumber }}
+        {{ currencySymbolByDomainId(_context.row.pc.domainId) }}
+    {% elseif _context.row.pc.useNominalDiscount is same as (true) %}
+        {{ _context.row.pc.nominalDiscount.getAmount|formatNumber }}
+        {{ currencySymbolByDomainId(_context.row.pc.domainId) }}
+    {% else %}
+        {{ value|formatPercent }}
+    {% endif %}
+{% endblock %}
+
+{% block grid_value_cell_id_type %}
+    {% if value is same as (constant('App\\Model\\Order\\PromoCode\\PromoCodeData::TYPE_CERTIFICATE')) %}
+        {{ 'Dárkový certifikát'|trans }}
+    {% else %}
+        {{ 'Slevový kupón'|trans }}
+    {% endif %}
+{% endblock %}

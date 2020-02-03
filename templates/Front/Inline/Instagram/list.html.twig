@@ -1,0 +1,30 @@
+{% set domainId = getDomain().id %}
+{% if domainId != constant('App\\Component\\Domain\\DomainHelper::GERMAN_DOMAIN') %}
+    <div class="box-images-line js-instagram-scroll-point">
+        <div class="box-images-line__title">
+            {{ 'Bushmanství obrazem'|trans }}
+            <a href="{{ instagramLink }}" class="box-images-line__title__link btn btn--secondary btn--small">
+                <i class="svg svg-instagram"></i>
+                {{ 'Sledujte náš instagram'|trans }}
+            </a>
+        </div>
+        <ul class="list-images-line">
+            {% for instagramTemplateObject in instagramTemplateObjects %}
+                <li class="list-images-line__item">
+                    {% if instagramTemplateObject.link is not null %}
+                        <a href="{{ instagramTemplateObject.link }}" title="{{ instagramTemplateObject.title }}" target="_blank">
+                    {% endif %}
+                        <div
+                            class="list-images-line__item__block background-size-cover-important js-lazy-load-on-background"
+                            style="background-position: center; background-repeat: none;"
+                            title="{{ instagramTemplateObject.title }}"
+                            data-original="{{ instagramTemplateObject.url }}"
+                        ></div>
+                    {% if instagramTemplateObject.link is not null %}
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

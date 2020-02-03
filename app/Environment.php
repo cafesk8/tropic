@@ -1,6 +1,6 @@
 <?php
 
-namespace Shopsys;
+namespace App;
 
 use Composer\IO\IOInterface;
 use Composer\Script\Event;

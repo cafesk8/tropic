@@ -1,0 +1,147 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\UserInterface:
+            id: App\Model\Customer\BushmanCustomPasswordEncoder
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_VIEW_ORDERS, ROLE_VIEW_CUSTOMERS, ROLE_VIEW_PRODUCTS, ROLE_VIEW_PRICING, ROLE_VIEW_MARKETING, ROLE_VIEW_ADMINISTRATORS, ROLE_VIEW_SETTINGS]
+
+    providers:
+        administrators:
+            id: Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorUserProvider
+
+        user_identities:
+            id: Shopsys\FrameworkBundle\Model\Customer\FrontendUserProvider
+
+    firewalls:
+        # see Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade
+        administration:
+            pattern: ^/(admin/|efconnect|elfinder)
+            user_checker: Shopsys\FrameworkBundle\Model\Security\AdministratorChecker
+            anonymous: ~
+            provider: administrators
+            logout_on_user_change: true
+            access_denied_url: "/admin/access-denied/"
+            form_login:
+                check_path: admin_login_check
+                login_path: admin_login
+                default_target_path: admin_default_dashboard
+                use_referer: true
+                username_parameter: "admin_login_form[username]"
+                password_parameter: "admin_login_form[password]"
+                csrf_parameter: "admin_login_form[_token]"
+            logout:
+                path: admin_logout
+                success_handler: Shopsys\FrameworkBundle\Model\Security\AdminLogoutHandler
+                csrf_parameter: _csrf_token
+                csrf_token_generator: security.csrf.token_manager
+                csrf_token_id: admin_logout
+                invalidate_session: false
+
+        frontend:
+            pattern: ^/
+            anonymous: ~
+            provider: user_identities
+            logout_on_user_change: true
+            form_login:
+                check_path: front_login_check
+                login_path: front_login
+                username_parameter: "front_login_form[email]"
+                password_parameter: "front_login_form[password]"
+                csrf_parameter: "front_login_form[_token]"
+                success_handler: App\Model\Security\CustomerLoginHandler
+                failure_handler: App\Model\Security\CustomerLoginHandler
+                remember_me: true
+            remember_me:
+                secret: "%secret%"
+                lifetime: 2592000 # 30 days
+                path: /
+                domain: ~
+                remember_me_parameter: "front_login_form[rememberMe]"
+            logout:
+                path: front_logout
+                success_handler: Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler
+                csrf_parameter: _csrf_token
+                csrf_token_generator: security.csrf.token_manager
+                csrf_token_id: frontend_logout
+                invalidate_session: false
+
+    access_control:
+        # same pattern must be in routing_front.yml
+        - { path: ^/login-as-remembered-user/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/superadmin/, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/translation/list/$, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/authorization/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # Marketing
+        - { path: ^/admin/article, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/slider, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/product/top-product, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/category/top-category, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/advert, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/feed, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/product/bestselling-product, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/newsletter, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/loyalty-club, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/info-row, roles: ROLE_VIEW_MARKETING }
+        - { path: ^/admin/blog, roles: ROLE_VIEW_MARKETING }
+
+        # Pricing
+        - { path: ^/admin/pricing, roles: ROLE_VIEW_PRICING }
+        - { path: ^/admin/vat, roles: ROLE_VIEW_PRICING }
+        - { path: ^/admin/transport-and-payment/free-transport-and-payment-limit, roles: ROLE_VIEW_PRICING }
+        - { path: ^/admin/currency, roles: ROLE_VIEW_PRICING }
+        - { path: ^/admin/promo-code, roles: ROLE_VIEW_PRICING }
+
+        # Setting
+        - { path: ^/admin/domain, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/shop-info, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/legal-conditions, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/personal-data, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/cookies, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/mail, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/customer-communication, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/transport-and-payment, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/transport, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/payment, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/product/availability, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/product/flag, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/product/parameter, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/order-status, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/brand, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/product/unit, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/unit, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/country, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/image, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/seo, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/script, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/heureka, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/store, roles: ROLE_VIEW_SETTINGS }
+        - { path: ^/admin/delivery-date, roles: ROLE_VIEW_SETTINGS }
+
+        # Customers
+        - { path: ^/admin/customer, roles: ROLE_VIEW_CUSTOMERS }
+
+        # Orders
+        - { path: ^/admin/order, roles: ROLE_VIEW_ORDERS }
+
+        # Products and categories
+        - { path: ^/admin/product, roles: ROLE_VIEW_PRODUCTS }
+        - { path: ^/admin/category, roles: ROLE_VIEW_PRODUCTS }
+
+        # Administrators
+        - { path: ^/admin/administrator, roles: ROLE_VIEW_ADMINISTRATORS }
+
+        - { path: ^/admin/access-denied, roles: ROLE_ADMIN }
+        - { path: ^/admin/_grid, roles: ROLE_ADMIN }
+        - { path: ^/admin/file-upload, roles: ROLE_ADMIN }
+        - { path: ^/admin/sso, roles: ROLE_ADMIN }
+        - { path: ^/admin/dashboard/$, roles: ROLE_ADMIN }
+        - { path: ^/admin/transfer-issues, roles: ROLE_ADMIN }
+        - { path: ^/admin/multidomain, roles: ROLE_ADMIN }
+        - { path: ^/admin/, roles: ROLE_SUPER_ADMIN }
+
+        - { path: ^/efconnect, roles: ROLE_ADMIN }
+        - { path: ^/elfinder, roles: ROLE_ADMIN }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

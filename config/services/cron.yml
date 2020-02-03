@@ -1,0 +1,124 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    ###########################
+    ## DEFAULT CRON INSTANCE ##
+    ###########################
+
+    App\Model\GoPay\GoPayAvailablePaymentsCronModule:
+        arguments:
+            - '%gopay.config%'
+        tags:
+            - { name: shopsys.cron, hours: '3', minutes: '50', readableFrequency: '1x za den' }
+
+    #    App\Model\Product\Transfer\ProductImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '*', minutes: '*' }
+    #
+    #    App\Model\Product\Pricing\Transfer\AllProductPriceImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '01', minutes: '30' }
+    #
+    #    App\Model\Product\Pricing\Transfer\ChangedProductPriceImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '*', minutes: '*' }
+    #
+    #    App\Model\Product\StoreStock\Transfer\AllCzechStoreStockImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '03', minutes: '00' }
+    #
+    #    App\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '03', minutes: '00' }
+    #
+    #    App\Model\Product\StoreStock\Transfer\AllGermanStoreStockImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '03', minutes: '00' }
+    #
+    #    App\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    App\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '1', minutes: '00', readableFrequency: 'v 01:00 a při změně dopravy' }
+
+    App\Model\Customer\CustomerUpdatePricingGroupFromIsCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '23', minutes: '50', readableFrequency: 'v 23:50' }
+
+    #    App\Model\Order\Mall\OrderImportCronModule:
+    #      tags:
+    #           - { name: shopsys.cron, hours: '23', minutes: '00', readableFrequency: '1x za hodinu' }
+
+    #    App\Model\Product\Mall\MallProductExportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '23', minutes: '00' }
+
+    App\Model\Product\Mall\MallProductDeleteCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '23', minutes: '00' }
+
+    Shopsys\FrameworkBundle\Model\Feed\DailyFeedCronModule: ~
+
+    overriddenDailyFeedCronModule:
+        class: App\Model\Feed\DailyFeedCronModule
+        tags:
+            - { name: shopsys.cron, hours: '*/6', minutes: '0' }
+
+    Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule: ~
+
+    overriddenHourlyFeedCronModule:
+        class: Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '10' }
+
+    Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule: ~
+
+    overriddenSitemapCronModule:
+        class: Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule
+        tags:
+            - { name: shopsys.cron, hours: '4', minutes: '0' }
+
+    #############################
+    ## CUSTOMERS CRON INSTANCE ##
+    #############################
+
+    #    App\Model\Customer\Transfer\ChangedCustomerImportCronModule:
+    #       tags:
+    #           - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers}
+    #
+    #    App\Model\Customer\Transfer\CzechCustomerImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+    #
+    #    App\Model\Customer\Transfer\SlovakCustomerImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+    #
+    #    App\Model\Customer\Transfer\GermanCustomerImportCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '02', minutes: '30', instanceName: customers}
+
+    App\Model\GoPay\OrderGoPayStatusUpdateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableFrequency: '1x za hodinu' }
+
+    App\Model\PayPal\OrderPayPalStatusUpdateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableFrequency: '1x za hodinu' }
+
+#    App\Model\Customer\Registration\Transfer\CustomerExportCronModule:
+#        tags:
+#            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers }
+#
+#    App\Model\Order\Transfer\OrderExportCronModule:
+#        tags:
+#            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers }
+
+#    App\Model\Order\Status\Transfer\OrderStatusImportCronModule:
+#        tags:
+#            - { name: shopsys.cron, hours: '*', minutes: '*', instanceName: customers }

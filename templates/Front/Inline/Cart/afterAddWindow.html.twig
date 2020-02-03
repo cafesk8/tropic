@@ -1,0 +1,98 @@
+{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+<div class="box-popup-add">
+    <div class="box-popup-add__content">
+        <div class="box-popup-add__content__title">
+            <span class="box-popup-add__content__title__text double-lined">
+                {{ 'Do košíku jste přidali'|trans }}
+            </span>
+        </div>
+        <div class="box-popup-add__content__product">
+            <div class="box-popup-add__content__product__image">
+                {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
+            </div>
+            <div class="box-popup-add__content__product__pieces display-none">
+                {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
+            </div>
+            <div class="box-popup-add__content__product__name">
+                <span class="box-popup-add__content__product__name__title">
+                    {{ cartItem.product.name }}
+                </span>
+                {% if quantifiedItemPrice is not null %}
+                    <span class="box-popup-add__content__product__name__price">
+                        <span class="box-popup-add__content__product__name__price__main">
+                            {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
+                        </span>
+                        {% if quantifiedItemPrice.unitPrice.isActionPrice %}
+                            <span class="box-popup-add__content__product__name__price__old">
+                                {{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}
+                            </span>
+                        {% endif %}
+                    </span>
+                {% endif %}
+                {% set distinguishingParameters = productDistinguishingParameterValue(cartItem.product) %}
+
+                {% if distinguishingParameters.firstDistinguishingParameterValue is not null %}
+                    <span class="box-popup-add__content__product__name__text">
+                        {{ distinguishingParameters.firstDistinguishingParameterName }}: {{ distinguishingParameters.firstDistinguishingParameterValue }}
+                    </span>
+                {% endif %}
+                {% if distinguishingParameters.secondDistinguishingParameterValue is not null %}
+                    <span class="box-popup-add__content__product__name__text">
+                        {{ distinguishingParameters.secondDistinguishingParameterName }}: <span class="in-badge">{{ distinguishingParameters.secondDistinguishingParameterValue }}</span>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="box-popup-add__action">
+        <div class="box-popup-add__action__buttons">
+            <div class="box-popup-add__action__buttons__back">
+                <i class="svg svg-triangle"></i>
+                <a href="#" class="box-popup-add__action__buttons__back__link underline-small js-window-button-close">
+                    {{ 'Zpět do e-shopu'|trans }}
+                </a>
+            </div>
+            <a href="{{ url('front_cart') }}" class="btn btn--success btn--large">
+                {{ 'Přejít do košíku'|trans }}
+            </a>
+        </div>
+        <div class="box-popup-add__action__transport">
+            {% if isFreeTransportAndPaymentActive %}
+                {% if isPaymentAndTransportFree %}
+                    <div class="in-free-transport">
+                        <span class="in-free-transport__title__important">{{ 'Máte dopravu zdarma!'|trans }}</span>
+                        <div class="in-free-transport__pipe">
+                            <div class="in-free-transport__pipe__line" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="in-free-transport">
+                        <div class="in-free-transport__title">
+                            {{ 'Nakupte ještě za '|trans }} <span class="in-free-transport__title__price">{{ remainingPriceWithVat|price }}</span>&nbsp;{{ 'a'|trans }} {{ 'máte'|trans }} <br>
+                            <span class="in-free-transport__title__important">{{ 'dopravu zdarma!'|trans }}</span>
+                        </div>
+                        <div class="in-free-transport__pipe">
+                            <div class="in-free-transport__pipe__line" style="width: {{ percentsForFreeTransportAndPayment }}%;"></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% if isModuleEnabled(ACCESSORIES_ON_BUY) %}
+    {% if accessories|length > 0 %}
+        <div class="wrap-box margin-top-20 margin-bottom-0">
+            <h3 class="wrap-box__title">
+                {{ 'Our customers who bought this bought also'|trans }}
+            </h3>
+            <div class="wrap-box__in">
+                {{ productList.list(accessories, 'list-products--in-window') }}
+            </div>
+        </div>
+        <span class="js-add-product-wide-window" data-wide="true"></span>
+    {% endif %}
+{% endif %}
+<span class="js-add-product-url-cart" data-url="{{ url('front_cart') }}"></span>

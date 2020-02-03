@@ -1,0 +1,197 @@
+{% import 'Front/Inline/Product/distinguishingParameterMacro.html.twig' as distinguishingParameter %}
+
+{% macro productPreviewItem(product, quantity, price) %}
+    <li class="list-cart-preview__item">
+        <div class="list-cart-preview__item__image">
+            {{ image(product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
+        </div>
+        <div class="list-cart-preview__item__pieces">
+            {{ quantity|formatNumber }} {{ product.unit.name }}
+        </div>
+        <div class="list-cart-preview__item__info">
+            <span class="list-cart-preview__item__title">
+                {{ product.name }}
+            </span>
+            <div class="list-cart-preview__item__parameters">
+                {{ distinguishingParameter.writeParameters(product, 'list-cart-preview__item__parameters__text') }}
+            </div>
+        </div>
+        <div class="list-cart-preview__item__price">
+            {{ price|price }}
+        </div>
+    </li>
+{% endmacro %}
+
+
+<div class="box-preview">
+    <h2 class="in-title in-title--small in-title--dark">
+        {{ 'Vaše objednávka'|trans }}
+    </h2>
+    {% if orderStep == "1" %}
+        {{ render(controller('App\\Controller\\Front\\PromoCodeController:indexAction')) }}
+    {% endif %}
+    <div class="box-preview__row box-preview__row--no-bottom{% if orderStep != "1" %} box-preview__row--without-radius-bottom{% else %} box-preview__row--without-radius{% endif %}">
+        {% if orderStep > 1 %}
+            <ul class="list-cart-preview">
+                {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
+                    {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
+                    {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat) }}
+                {% endfor %}
+                {% if orderPreview.promoProductCartItems %}
+                    {% for promoProductCartItem in orderPreview.promoProductCartItems %}
+                        {{ _self.productPreviewItem(promoProductCartItem.product, promoProductCartItem.quantity, promoProductCartItem.totalPrice) }}
+                    {% endfor %}
+                {% endif %}
+                {% if orderPreview.gifts is not empty %}
+                    <li>{{ 'Dárky k vaší objednávce:'|trans }}</li>
+                    {% for gift in orderPreview.gifts %}
+                        {{ _self.productPreviewItem(gift.product, gift.quantity, gift.totalPrice) }}
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        {% endif %}
+
+        <table id="js-order-preview-fees" class="table-cart-preview">
+            <tbody>
+                {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Sleva'|trans }}
+                            <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
+                            - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                {% if orderPreview.transport is not empty %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Doprava'|trans }} - {{ orderPreview.transport.name }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.transportPrice.priceWithVat|priceText }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% if orderPreview.payment is not empty %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Platba'|trans }} - {{ orderPreview.payment.name }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.paymentPrice.priceWithVat|priceText }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                {% if orderPreview.roundingPrice is not empty %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Rounding'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.roundingPrice.priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if orderStep == "1" %}
+                    <tr class="table-cart-preview__row">
+                        <td class="table-cart-preview__cell">
+                            {{ 'Za zboží'|trans }}
+                        </td>
+                        <td class="table-cart-preview__cell table-cart-preview__cell--price">
+                            {{ orderPreview.totalPrice.priceWithVat|price }}
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="box-preview__row{% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %} box-preview__row--without-radius-top">
+        <div id="js-order-preview-total-price" class="table-cart-preview">
+            <table class="table-cart-preview__total">
+                <tr class="table-cart-preview__total__row">
+                    <td class="table-cart-preview__total__cell">
+                        {{ 'Celkem'|trans }}
+                    </td>
+                    <td class="table-cart-preview__total__price-primary">
+                        {{ orderPreview.totalPrice.priceWithVat|price }}
+                    </td>
+                </tr>
+                <tr class="table-cart-preview__total__row">
+                    <td class="table-cart-preview__total__cell">
+                    </td>
+                    <td class="table-cart-preview__total__price-secondary">
+                        {{ orderPreview.totalPrice.priceWithoutVat|price }}&nbsp;{{ 'bez DPH'|trans }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="in-action in-action--column">
+            {% if orderStep > 2 %}
+                <div class="box-preview__conditions">
+                    {{ 'Kliknutím na tlačítko Odeslat objednávku'|trans }}<br>
+                    {{ 'souhlasím s '|trans }}
+                    {% if termsAndConditionsArticle is not null %}
+                        <a href="{{ url('front_article_detail', { id: termsAndConditionsArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
+                            <span class="underline-small">
+                                {{ 'obchodními podmínkami'|trans }}
+                            </span>
+                        </a>
+                    {% else %}
+                        {{ 'obchodními podmínkami'|trans }}
+                    {% endif %}
+                    {{ ' e-shopu a souhlasím se zpracováním'|trans}}
+                    {% if privacyPolicyArticle is not null %}
+                        <a href="{{ url('front_article_detail', { id: privacyPolicyArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
+                            <span class="underline-small">
+                                {{ 'osobních údajů'|trans }}
+                            </span>
+                        </a>
+                    {% else %}
+                        {{ 'osobních údajů'|trans }}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if orderPreview.quantifiedProducts > 0 and renderSubmitButton %}
+                {% if orderStep == 1 %}
+                    {% set continueButtonText = 'Pokračovat v objednávce'|trans %}
+                {% elseif orderStep == 2 %}
+                    {% set continueButtonText = 'Vyplnit dodací údaje'|trans %}
+                {% else %}
+                    {% set continueButtonText = 'Odeslat objednávku'|trans %}
+                {% endif %}
+                <button type="submit" id="{{ formSubmit.vars.id }}" name="{{ formSubmit.vars.full_name }}" class="btn btn--success btn--full-width box-preview__button btn">
+                    {% if orderStep > 2 %}
+                        <i class="svg svg-checked box-preview__button__icon"></i>
+                    {% endif %}
+
+                    {{ continueButtonText }}
+                </button>
+                {% do formSubmit.setRendered %}
+            {% endif %}
+
+            <div class="in-action__back">
+                {% if orderStep == 1 %}
+                    <a href="{{ url('front_homepage') }}" class="in-action__link underline">
+                        {{ 'Zpět do e-shopu'|trans }}
+                    </a>
+                {% elseif orderStep == 2 %}
+                    <a href="{{ url('front_cart') }}" class="in-action__link underline">
+                        {{ 'Zpět do košíku'|trans }}
+                    </a>
+                {% elseif orderStep == 3 %}
+                    <button type="submit" name="flow_order_transition" value="back" class="in-action__link js-no-validate-button">
+                        <span class="underline">
+                            {{ 'Zpět'|trans }}
+                        </span>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

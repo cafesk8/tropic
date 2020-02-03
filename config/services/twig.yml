@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Twig\:
+        resource: '../../src/Twig/'
+
+    App\Twig\ImageExtension:
+        arguments: ['%shopsys.front_design_image_url_prefix%', '@assets._default_package']
+
+    App\Twig\DomainExtension:
+        arguments:
+            - '%shopsys.domain_images_url_prefix%'

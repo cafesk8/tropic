@@ -1,2 +1,0 @@
-twig_cache:
-    service: shopsys.shop.twig.cache_provider

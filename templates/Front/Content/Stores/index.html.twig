@@ -1,0 +1,56 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block title %}
+    {{ 'Prodejny'|trans }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="web__line">
+        <div class="web__container">
+            <h1 class="in-title in-title--big in-title--center">
+                {{ 'Prodejny'|trans }}
+            </h1>
+
+            <div class="in-tab__wrap in-tab__wrap--no-border">
+                <div class="in-tab__head text-left">
+                    {% for regionId, regionText in regions %}
+                        <a href="#{{ regionId|webalize }}" class="in-tab__head__item in-tab__head__item--bottom-gap underline js-anchor-link">
+                            {{ regionText }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% for regionName, stores in storesIndexedByRegion %}
+                {% if regionName|length != 0 %}
+                    <h2 class="in-title" id="{{ regionName|webalize }}">{{ regionName }}&nbsp;({{ stores|length }})</h2>
+                {% endif %}
+                <ul class="list-stores">
+                    {% for store in stores %}
+                        <li class="list-stores__item">
+                            <a href="{{ url('front_store_detail', { storeId: store.id }) }}" class="list-stores__item__in">
+                                <div class="list-stores__item__image">
+                                    {{ image(store, { 'size': 'list' }) }}
+                                </div>
+                                <div class="list-stores__item__info">
+                                    <div class="list-stores__item__info__name">
+                                        <span class="list-stores__item__info__name__main">
+                                            {{ store.name }}
+                                        </span>
+                                        <span class="list-stores__item__info__name__additional">
+                                            {{ store.street }}
+                                        </span>
+                                    </div>
+                                    <div class="list-stores__item__info__open-hours">
+                                        {{ store.openingHours }}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

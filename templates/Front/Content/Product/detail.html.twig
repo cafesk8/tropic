@@ -1,0 +1,72 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+{% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+{% import 'Front/Content/Product/boxDetail.html.twig' as boxDetail %}
+
+{% set domain = getDomain() %}
+{% set accessoriesHeadline = 'Související zboží'|trans %}
+
+{% block meta_description %}
+    {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
+{% endblock %}
+
+{% block title %}
+    {{ product.getSeoTitle(domain.id)|default(product.name) }}
+{% endblock %}
+
+{% block breadcrumbDetail %}
+    {{ render(controller('App\\Controller\\Front\\BreadcrumbController:indexAction', { routeName: getRoute(), routeParameters: getRouteParams() } )) }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="web__line">
+        <div class="web__container">
+            <div itemscope itemtype="http://schema.org/Product">
+                <div class="js-product-variant-group">
+                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
+
+                    {% for mainVariant in mainVariants if mainVariant.id != product.id %}
+                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if accessories|length > 0 %}
+        <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
+            <div class="web__container">
+                <div class="box-accessories">
+                    <h2 class="box-accessories__title">
+                        {{ accessoriesHeadline }}
+                    </h2>
+                    {{ productList.horizontalList(accessories, "list-accessories-products", 'h3', 'accessories-products') }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if productBlogArticles|length > 0 %}
+        <div class="web__line">
+            <div class="web__container">
+                <div class="box-articles box-articles--with-border">
+                    <h2 class="box-articles__title-big">
+                        {{ 'Články k přečtení'|trans }}
+                    </h2>
+                    <div class="box-articles__title-small">
+                        {{ 'O produktu %s se dozvíte více v těchto článcích:'|trans|format(product.name) }}
+                    </div>
+                    {% include 'Front/Content/Article/list.html.twig' with { blogArticles: productBlogArticles } %}
+                    <div class="box-articles__bottom box-articles__bottom--small-gap">
+                        <a href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block last_visited_products %}
+        {{ render(controller('App\\Controller\\Front\\LastVisitedProductsController:showAction')) }}
+    {% endblock %}
+
+{% endblock %}

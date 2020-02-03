@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Form\Admin;
+
+use Shopsys\FrameworkBundle\Form\Admin\Customer\UserFormType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
+use App\Model\Customer\User;
+use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\FormBuilderInterface;
+
+class UserFormTypeExtension extends AbstractTypeExtension
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $user = $options['user'];
+        /* @var $user \App\Model\Customer\User */
+
+        if ($user instanceof User) {
+            $systemDataGroupBuilder = $builder->get('systemData');
+
+            $systemDataGroupBuilder->add('transferId', DisplayOnlyType::class, [
+                'label' => t('ID z IS'),
+                'data' => $user->getTransferId() ?? t('ID nenastaveno'),
+            ])
+                ->add('memberOfLoyaltyProgram', DisplayOnlyType::class, [
+                    'label' => t('Členem Věrnostního programu'),
+                    'data' => $user->isMemberOfLoyaltyProgram() === true ? t('Ano') : t('Ne'),
+                ]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtendedType()
+    {
+        return UserFormType::class;
+    }
+}

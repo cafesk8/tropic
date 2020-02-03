@@ -26,7 +26,7 @@ If you want to run migration DB locally, some steps need to be done for the firs
 
 **Migration commands**
 
-All commands for migrations should be located in namespace `Shopsys\ShopBundle\Command\Migration`.
+All commands for migrations should be located in namespace `App\Command\Migration`.
 Commands in this namespace are autowired with a connection to MySql database automatically.  
 You don't need to register that manually.
 

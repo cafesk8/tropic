@@ -1,0 +1,178 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model\Category;
+
+use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
+use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
+use Shopsys\FrameworkBundle\Model\Product\Product;
+
+/**
+ * @property \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
+ * @method \App\Model\Category\Category getRootCategory()
+ * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+ * @property \App\Component\Image\ImageFacade $imageFacade
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Category\CategoryRepository $categoryRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRecalculationScheduler $categoryVisibilityRecalculationScheduler, \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade, \App\Component\Image\ImageFacade $imageFacade, \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginCrudExtensionFacade, \Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory, \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory, \Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface $categoryFactory)
+ * @method \App\Model\Category\Category getById(int $categoryId)
+ * @method \App\Model\Category\Category create(\App\Model\Category\CategoryData $categoryData)
+ * @method \App\Model\Category\Category edit(int $categoryId, \App\Model\Category\CategoryData $categoryData)
+ * @method \App\Model\Category\Category[] getTranslatedAll(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \App\Model\Category\Category[] getAllCategoriesOfCollapsedTree(\App\Model\Category\Category[] $selectedCategories)
+ * @method \App\Model\Category\Category[] getFullPathsIndexedByIdsForDomain(int $domainId, string $locale)
+ * @method \App\Model\Category\Category[] getVisibleCategoriesInPathFromRootOnDomain(\App\Model\Category\Category $category, int $domainId)
+ * @method \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[] getCategoriesWithLazyLoadedVisibleChildrenForParent(\App\Model\Category\Category $parentCategory, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \App\Model\Category\Category[] getVisibleByDomainAndSearchText(int $domainId, string $locale, string $searchText)
+ * @method \App\Model\Category\Category[] getAllVisibleChildrenByCategoryAndDomainId(\App\Model\Category\Category $category, int $domainId)
+ * @method \App\Model\Category\Category[] getTranslatedAllWithoutBranch(\App\Model\Category\Category $category, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \App\Model\Category\Category[]|null[] getProductMainCategoriesIndexedByDomainId(\App\Model\Product\Product $product)
+ * @method \App\Model\Category\Category getProductMainCategoryByDomainId(\App\Model\Product\Product $product, int $domainId)
+ * @method \App\Model\Category\Category|null findProductMainCategoryByDomainId(\App\Model\Product\Product $product, int $domainId)
+ * @method string[] getCategoryNamesInPathFromRootToProductMainCategoryOnDomain(\App\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \App\Model\Category\Category getVisibleOnDomainById(int $domainId, int $categoryId)
+ * @method int[] getListableProductCountsIndexedByCategoryId(\App\Model\Category\Category[] $categories, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $domainId)
+ */
+class CategoryFacade extends BaseCategoryFacade
+{
+    /**
+     * @var \App\Model\Category\CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * @return \App\Model\Category\Category[]
+     */
+    public function getAll(): array
+    {
+        return $this->categoryRepository->getAll();
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Category\Category[]
+     */
+    public function getAllVisibleAndListableCategoriesForFirstColumnByDomainId(int $domainId): array
+    {
+        return $this->categoryRepository->getAllVisibleCategoriesForFirstColumnByDomainId($domainId);
+    }
+
+    /**
+     * @param \App\Model\Category\Category $category
+     * @param int $domainId
+     * @return \App\Model\Category\Category[]
+     */
+    public function getAllVisibleAndListableChildrenByCategoryAndDomainId(Category $category, int $domainId): array
+    {
+        return $this->categoryRepository->getAllVisibleAndListableChildrenByCategoryAndDomainId($category, $domainId);
+    }
+
+    /**
+     * @param \App\Model\Category\Category $parentCategory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]
+     */
+    public function getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(Category $parentCategory, DomainConfig $domainConfig): array
+    {
+        $categories = $this->categoryRepository->getTranslatedVisibleAndListableSubcategoriesByDomain($parentCategory, $domainConfig);
+
+        $categoriesWithLazyLoadedVisibleAndListableChildren = $this->categoryWithLazyLoadedVisibleChildrenFactory
+            ->createCategoriesWithLazyLoadedVisibleAndListableChildren($categories, $domainConfig);
+
+        return $categoriesWithLazyLoadedVisibleAndListableChildren;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
+     */
+    public function getProductVisibleAndListableProductCategoryDomains(Product $product, int $domainId): array
+    {
+        return $this->categoryRepository->getProductVisibleAndListableProductCategoryDomains($product, $domainId);
+    }
+
+    /**
+     * @param string|null $searchText
+     * @param int $limit
+     * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getSearchAutocompleteCategories($searchText, $limit)
+    {
+        $page = 1;
+
+        $paginationResult = $this->categoryRepository->getPaginationResultForSearchVisibleAndListable(
+            $searchText,
+            $this->domain->getId(),
+            $this->domain->getLocale(),
+            $page,
+            $limit
+        );
+
+        return $paginationResult;
+    }
+
+    /**
+     * @param int $domainId
+     * @param string $locale
+     * @param string|null $searchText
+     * @return \App\Model\Category\Category[]
+     */
+    public function getVisibleAndListableByDomainAndSearchText(int $domainId, string $locale, ?string $searchText): array
+    {
+        $categories = $this->categoryRepository->getVisibleAndListableByDomainIdAndSearchText(
+            $domainId,
+            $locale,
+            $searchText
+        );
+
+        return $categories;
+    }
+
+    /**
+     * @param int $domainId
+     * @return int|null
+     */
+    public function getHighestLegendaryCategoryIdByDomainId(int $domainId): ?int
+    {
+        return $this->categoryRepository->getHighestLegendaryCategoryIdByDomainId($domainId);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string|null
+     */
+    public function findMallCategoryForProduct(Product $product, int $domainId): ?string
+    {
+        return $this->categoryRepository->findMallCategoryForProduct($product->isVariant() ? $product->getMainVariant() : $product, $domainId);
+    }
+
+    /**
+     * @param \App\Model\Category\Category $destinationCategory
+     * @return \App\Model\Category\Category[]
+     */
+    public function getCategoriesInPath(Category $destinationCategory): array
+    {
+        $categoriesInPathWithoutRoot = array_slice($this->categoryRepository->getPath($destinationCategory), 1);
+
+        return $categoriesInPathWithoutRoot;
+    }
+
+    /**
+     * @param \App\Model\Category\Category $destinationCategory
+     * @param string $locale
+     * @param string $delimiter
+     * @return string
+     */
+    public function getCategoriesNamesInPathAsString(Category $destinationCategory, string $locale, string $delimiter = '/'): string
+    {
+        $categoriesInPath = $this->getCategoriesInPath($destinationCategory);
+
+        $categoriesNamesInPath = [];
+        foreach ($categoriesInPath as $category) {
+            $categoriesNamesInPath[] = $category->getName($locale);
+        }
+
+        return implode($delimiter, $categoriesNamesInPath);
+    }
+}

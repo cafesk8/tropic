@@ -1,0 +1,52 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+{% import 'Front/Content/Blog/Article/blogArticleInCategoryMacro.html.twig' as blogArticleList %}
+
+{% set domain = getDomain() %}
+
+{% block meta_description %}
+    {{- category.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
+{% endblock %}
+
+{% block title %}
+    {{ category.getSeoTitle(domain.id)|default(category.name) }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="web__line">
+        <div class="web__container">
+            <div class="box-prelist">
+                <div class="box-prelist__title">
+                    {{ category.getSeoH1(domain.id)|default(category.name) }}
+                </div>
+
+                {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
+            </div>
+        </div>
+    </div>
+
+    {{ render(controller('App\\Controller\\Front\\BestsellingProductController:listAction', {'category': category})) }}
+
+    {# TODO CODER: style blogArticles (Zeny na cestach in inVision) #}
+    {% if categoriesBlogArticles|length > 0 %}
+        <div class="web__line">
+            <div class="web__container">
+                <div class="box-articles box-articles--with-border">
+                    <h2 class="box-articles__title-big">
+                        {{ 'Mohlo by vás zajímat'|trans }}
+                    </h2>
+                    <div class="box-articles__title-small"></div>
+                    {% include 'Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
+                    <div class="box-articles__bottom box-articles__bottom--small-gap">
+                        <a href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link underline">{{ 'Přejít na výpis všech článků'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% block last_visited_products %}
+        {{ render(controller('App\\Controller\\Front\\LastVisitedProductsController:showAction')) }}
+    {% endblock %}
+
+{% endblock %}

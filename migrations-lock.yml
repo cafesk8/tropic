@@ -200,7 +200,7 @@
     class: Shopsys\FrameworkBundle\Migrations\Version20180413102110
     skip: false
 20180425143739:
-    class: Shopsys\ShopBundle\Migrations\Version20180425143739
+    class: App\Migrations\Version20180425143739
     skip: false
 20180530113304:
     class: Shopsys\FrameworkBundle\Migrations\Version20180530113304
@@ -305,559 +305,559 @@
     class: Shopsys\FrameworkBundle\Migrations\Version20190220101938
     skip: false
 20190130090829:
-    class: Shopsys\ShopBundle\Migrations\Version20190130090829
+    class: App\Migrations\Version20190130090829
     skip: false
 20190415140415:
-    class: Shopsys\ShopBundle\Migrations\Version20190415140415
+    class: App\Migrations\Version20190415140415
     skip: false
 20190416130355:
-    class: Shopsys\ShopBundle\Migrations\Version20190416130355
+    class: App\Migrations\Version20190416130355
     skip: false
 20190503153037:
-    class: Shopsys\ShopBundle\Migrations\Version20190503153037
+    class: App\Migrations\Version20190503153037
     skip: false
 20190426111214:
-    class: Shopsys\ShopBundle\Migrations\Version20190426111214
+    class: App\Migrations\Version20190426111214
     skip: false
 20190506093810:
-    class: Shopsys\ShopBundle\Migrations\Version20190506093810
+    class: App\Migrations\Version20190506093810
     skip: false
 20190510104015:
-    class: Shopsys\ShopBundle\Migrations\Version20190510104015
+    class: App\Migrations\Version20190510104015
     skip: false
 20190514174532:
-    class: Shopsys\ShopBundle\Migrations\Version20190514174532
+    class: App\Migrations\Version20190514174532
     skip: false
 20190516081832:
-    class: Shopsys\ShopBundle\Migrations\Version20190516081832
+    class: App\Migrations\Version20190516081832
     skip: false
 20190516133459:
-    class: Shopsys\ShopBundle\Migrations\Version20190516133459
+    class: App\Migrations\Version20190516133459
     skip: false
 20190430110040:
-    class: Shopsys\ShopBundle\Migrations\Version20190430110040
+    class: App\Migrations\Version20190430110040
     skip: false
 20190513152423:
-    class: Shopsys\ShopBundle\Migrations\Version20190513152423
+    class: App\Migrations\Version20190513152423
     skip: false
 20190522131720:
-    class: Shopsys\ShopBundle\Migrations\Version20190522131720
+    class: App\Migrations\Version20190522131720
     skip: false
 20190522133735:
-    class: Shopsys\ShopBundle\Migrations\Version20190522133735
+    class: App\Migrations\Version20190522133735
     skip: false
 20190523120551:
-    class: Shopsys\ShopBundle\Migrations\Version20190523120551
+    class: App\Migrations\Version20190523120551
     skip: false
 20190523144223:
-    class: Shopsys\ShopBundle\Migrations\Version20190523144223
+    class: App\Migrations\Version20190523144223
     skip: false
 20190527105224:
-    class: Shopsys\ShopBundle\Migrations\Version20190527105224
+    class: App\Migrations\Version20190527105224
     skip: false
 20190527120224:
-    class: Shopsys\ShopBundle\Migrations\Version20190527120224
+    class: App\Migrations\Version20190527120224
     skip: false
 20190527193128:
-    class: Shopsys\ShopBundle\Migrations\Version20190527193128
+    class: App\Migrations\Version20190527193128
     skip: false
 20190604100834:
-    class: Shopsys\ShopBundle\Migrations\Version20190604100834
+    class: App\Migrations\Version20190604100834
     skip: false
 20190513153157:
-    class: Shopsys\ShopBundle\Migrations\Version20190513153157
+    class: App\Migrations\Version20190513153157
     skip: false
 20190624103409:
-    class: Shopsys\ShopBundle\Migrations\Version20190624103409
+    class: App\Migrations\Version20190624103409
     skip: false
 20190624121528:
-    class: Shopsys\ShopBundle\Migrations\Version20190624121528
+    class: App\Migrations\Version20190624121528
     skip: false
 20190624145655:
-    class: Shopsys\ShopBundle\Migrations\Version20190624145655
+    class: App\Migrations\Version20190624145655
     skip: false
 20190626125738:
-    class: Shopsys\ShopBundle\Migrations\Version20190626125738
+    class: App\Migrations\Version20190626125738
     skip: false
 20190618121659:
-    class: Shopsys\ShopBundle\Migrations\Version20190618121659
+    class: App\Migrations\Version20190618121659
     skip: false
 20190618222553:
-    class: Shopsys\ShopBundle\Migrations\Version20190618222553
+    class: App\Migrations\Version20190618222553
     skip: false
 20190619113205:
-    class: Shopsys\ShopBundle\Migrations\Version20190619113205
+    class: App\Migrations\Version20190619113205
     skip: false
 20190613151850:
-    class: Shopsys\ShopBundle\Migrations\Version20190613151850
+    class: App\Migrations\Version20190613151850
     skip: false
 20190614082735:
-    class: Shopsys\ShopBundle\Migrations\Version20190614082735
+    class: App\Migrations\Version20190614082735
     skip: false
 20190614091638:
-    class: Shopsys\ShopBundle\Migrations\Version20190614091638
+    class: App\Migrations\Version20190614091638
     skip: false
 20190704085843:
-    class: Shopsys\ShopBundle\Migrations\Version20190704085843
+    class: App\Migrations\Version20190704085843
     skip: false
 20190704094640:
-    class: Shopsys\ShopBundle\Migrations\Version20190704094640
+    class: App\Migrations\Version20190704094640
     skip: false
 20190625084329:
-    class: Shopsys\ShopBundle\Migrations\Version20190625084329
+    class: App\Migrations\Version20190625084329
     skip: false
 20190611114955:
     class: Shopsys\FrameworkBundle\Migrations\Version20190611114955
     skip: false
 20190614091232:
-    class: Shopsys\ShopBundle\Migrations\Version20190614091232
+    class: App\Migrations\Version20190614091232
     skip: false
 20190617074227:
-    class: Shopsys\ShopBundle\Migrations\Version20190617074227
+    class: App\Migrations\Version20190617074227
     skip: false
 20190625122327:
-    class: Shopsys\ShopBundle\Migrations\Version20190625122327
+    class: App\Migrations\Version20190625122327
     skip: false
 20190708095355:
-    class: Shopsys\ShopBundle\Migrations\Version20190708095355
+    class: App\Migrations\Version20190708095355
     skip: false
 20190708155121:
-    class: Shopsys\ShopBundle\Migrations\Version20190708155121
+    class: App\Migrations\Version20190708155121
     skip: false
 20190710083659:
-    class: Shopsys\ShopBundle\Migrations\Version20190710083659
+    class: App\Migrations\Version20190710083659
     skip: false
 20190711121847:
-    class: Shopsys\ShopBundle\Migrations\Version20190711121847
+    class: App\Migrations\Version20190711121847
     skip: false
 20190712102008:
-    class: Shopsys\ShopBundle\Migrations\Version20190712102008
+    class: App\Migrations\Version20190712102008
     skip: false
 20190712164400:
-    class: Shopsys\ShopBundle\Migrations\Version20190712164400
+    class: App\Migrations\Version20190712164400
     skip: false
 20190712184425:
-    class: Shopsys\ShopBundle\Migrations\Version20190712184425
+    class: App\Migrations\Version20190712184425
     skip: false
 20190722072409:
-    class: Shopsys\ShopBundle\Migrations\Version20190722072409
+    class: App\Migrations\Version20190722072409
     skip: false
 20190717072054:
-    class: Shopsys\ShopBundle\Migrations\Version20190717072054
+    class: App\Migrations\Version20190717072054
     skip: false
 20190619095039:
-    class: Shopsys\ShopBundle\Migrations\Version20190619095039
+    class: App\Migrations\Version20190619095039
     skip: false
 20190730125448:
-    class: Shopsys\ShopBundle\Migrations\Version20190730125448
+    class: App\Migrations\Version20190730125448
     skip: false
 20190730131216:
-    class: Shopsys\ShopBundle\Migrations\Version20190730131216
+    class: App\Migrations\Version20190730131216
     skip: false
 20190730132258:
-    class: Shopsys\ShopBundle\Migrations\Version20190730132258
+    class: App\Migrations\Version20190730132258
     skip: false
 20190702132350:
-    class: Shopsys\ShopBundle\Migrations\Version20190702132350
+    class: App\Migrations\Version20190702132350
     skip: false
 20190702140701:
-    class: Shopsys\ShopBundle\Migrations\Version20190702140701
+    class: App\Migrations\Version20190702140701
     skip: false
 20190726105716:
-    class: Shopsys\ShopBundle\Migrations\Version20190726105716
+    class: App\Migrations\Version20190726105716
     skip: false
 20190726115733:
-    class: Shopsys\ShopBundle\Migrations\Version20190726115733
+    class: App\Migrations\Version20190726115733
     skip: false
 20190729071215:
-    class: Shopsys\ShopBundle\Migrations\Version20190729071215
+    class: App\Migrations\Version20190729071215
     skip: false
 20190731134183:
-    class: Shopsys\ShopBundle\Migrations\Version20190731134183
+    class: App\Migrations\Version20190731134183
     skip: false
 20190715092944:
-    class: Shopsys\ShopBundle\Migrations\Version20190715092944
+    class: App\Migrations\Version20190715092944
     skip: false
 20190719125539:
-    class: Shopsys\ShopBundle\Migrations\Version20190719125539
+    class: App\Migrations\Version20190719125539
     skip: false
 20190719131913:
-    class: Shopsys\ShopBundle\Migrations\Version20190719131913
+    class: App\Migrations\Version20190719131913
     skip: false
 20190729102521:
-    class: Shopsys\ShopBundle\Migrations\Version20190729102521
+    class: App\Migrations\Version20190729102521
     skip: false
 20190726125107:
-    class: Shopsys\ShopBundle\Migrations\Version20190726125107
+    class: App\Migrations\Version20190726125107
     skip: false
 20190801121143:
-    class: Shopsys\ShopBundle\Migrations\Version20190801121143
+    class: App\Migrations\Version20190801121143
     skip: false
 20190731151412:
-    class: Shopsys\ShopBundle\Migrations\Version20190731151412
+    class: App\Migrations\Version20190731151412
     skip: false
 20190814092835:
-    class: Shopsys\ShopBundle\Migrations\Version20190814092835
+    class: App\Migrations\Version20190814092835
     skip: false
 20190816074929:
-    class: Shopsys\ShopBundle\Migrations\Version20190816074929
+    class: App\Migrations\Version20190816074929
     skip: false
 20190812162326:
-    class: Shopsys\ShopBundle\Migrations\Version20190812162326
+    class: App\Migrations\Version20190812162326
     skip: false
 20190808132947:
-    class: Shopsys\ShopBundle\Migrations\Version20190808132947
+    class: App\Migrations\Version20190808132947
     skip: false
 20190819070221:
-    class: Shopsys\ShopBundle\Migrations\Version20190819070221
+    class: App\Migrations\Version20190819070221
     skip: false
 20190807072156:
-    class: Shopsys\ShopBundle\Migrations\Version20190807072156
+    class: App\Migrations\Version20190807072156
     skip: false
 20190808093321:
-    class: Shopsys\ShopBundle\Migrations\Version20190808093321
+    class: App\Migrations\Version20190808093321
     skip: false
 20190808110311:
-    class: Shopsys\ShopBundle\Migrations\Version20190808110311
+    class: App\Migrations\Version20190808110311
     skip: false
 20190809143702:
-    class: Shopsys\ShopBundle\Migrations\Version20190809143702
+    class: App\Migrations\Version20190809143702
     skip: false
 20190812144451:
-    class: Shopsys\ShopBundle\Migrations\Version20190812144451
+    class: App\Migrations\Version20190812144451
     skip: false
 20190822142492:
-    class: Shopsys\ShopBundle\Migrations\Version20190822142492
+    class: App\Migrations\Version20190822142492
     skip: false
 20190819100442:
-    class: Shopsys\ShopBundle\Migrations\Version20190819100442
+    class: App\Migrations\Version20190819100442
     skip: false
 20190823162522:
-    class: Shopsys\ShopBundle\Migrations\Version20190823162522
+    class: App\Migrations\Version20190823162522
     skip: false
 20190812082102:
-    class: Shopsys\ShopBundle\Migrations\Version20190812082102
+    class: App\Migrations\Version20190812082102
     skip: false
 20190816151913:
-    class: Shopsys\ShopBundle\Migrations\Version20190816151913
+    class: App\Migrations\Version20190816151913
     skip: false
 20190816172309:
-    class: Shopsys\ShopBundle\Migrations\Version20190816172309
+    class: App\Migrations\Version20190816172309
     skip: false
 20190817191640:
-    class: Shopsys\ShopBundle\Migrations\Version20190817191640
+    class: App\Migrations\Version20190817191640
     skip: false
 20190816103223:
-    class: Shopsys\ShopBundle\Migrations\Version20190816103223
+    class: App\Migrations\Version20190816103223
     skip: false
 20190819094840:
-    class: Shopsys\ShopBundle\Migrations\Version20190819094840
+    class: App\Migrations\Version20190819094840
     skip: false
 20190819132551:
-    class: Shopsys\ShopBundle\Migrations\Version20190819132551
+    class: App\Migrations\Version20190819132551
     skip: false
 20190819141932:
-    class: Shopsys\ShopBundle\Migrations\Version20190819141932
+    class: App\Migrations\Version20190819141932
     skip: false
 20190828102356:
-    class: Shopsys\ShopBundle\Migrations\Version20190828102356
+    class: App\Migrations\Version20190828102356
     skip: false
 20190828162246:
-    class: Shopsys\ShopBundle\Migrations\Version20190828162246
+    class: App\Migrations\Version20190828162246
     skip: false
 20190826151156:
-    class: Shopsys\ShopBundle\Migrations\Version20190826151156
+    class: App\Migrations\Version20190826151156
     skip: false
 20190826154816:
-    class: Shopsys\ShopBundle\Migrations\Version20190826154816
+    class: App\Migrations\Version20190826154816
     skip: false
 20190823130557:
-    class: Shopsys\ShopBundle\Migrations\Version20190823130557
+    class: App\Migrations\Version20190823130557
     skip: false
 20190823160037:
-    class: Shopsys\ShopBundle\Migrations\Version20190823160037
+    class: App\Migrations\Version20190823160037
     skip: false
 20190826085834:
-    class: Shopsys\ShopBundle\Migrations\Version20190826085834
+    class: App\Migrations\Version20190826085834
     skip: false
 20190828141932:
-    class: Shopsys\ShopBundle\Migrations\Version20190828141932
+    class: App\Migrations\Version20190828141932
     skip: false
 20190827100743:
-    class: Shopsys\ShopBundle\Migrations\Version20190827100743
+    class: App\Migrations\Version20190827100743
     skip: false
 20190827175005:
-    class: Shopsys\ShopBundle\Migrations\Version20190827175005
+    class: App\Migrations\Version20190827175005
     skip: false
 20190828095521:
-    class: Shopsys\ShopBundle\Migrations\Version20190828095521
+    class: App\Migrations\Version20190828095521
     skip: false
 20190827131352:
-    class: Shopsys\ShopBundle\Migrations\Version20190827131352
+    class: App\Migrations\Version20190827131352
     skip: false
 20190831120846:
-    class: Shopsys\ShopBundle\Migrations\Version20190831120846
+    class: App\Migrations\Version20190831120846
     skip: false
 20190831121246:
-    class: Shopsys\ShopBundle\Migrations\Version20190831121246
+    class: App\Migrations\Version20190831121246
     skip: false
 20190901160340:
-    class: Shopsys\ShopBundle\Migrations\Version20190901160340
+    class: App\Migrations\Version20190901160340
     skip: false
 20190904094821:
-    class: Shopsys\ShopBundle\Migrations\Version20190904094821
+    class: App\Migrations\Version20190904094821
     skip: false
 20190825183427:
-    class: Shopsys\ShopBundle\Migrations\Version20190825183427
+    class: App\Migrations\Version20190825183427
     skip: false
 20190902170047:
-    class: Shopsys\ShopBundle\Migrations\Version20190902170047
+    class: App\Migrations\Version20190902170047
     skip: false
 20190902150630:
-    class: Shopsys\ShopBundle\Migrations\Version20190902150630
+    class: App\Migrations\Version20190902150630
     skip: false
 20190903144234:
-    class: Shopsys\ShopBundle\Migrations\Version20190903144234
+    class: App\Migrations\Version20190903144234
     skip: false
 20190812082717:
-    class: Shopsys\ShopBundle\Migrations\Version20190812082717
+    class: App\Migrations\Version20190812082717
     skip: false
 20190812095346:
-    class: Shopsys\ShopBundle\Migrations\Version20190812095346
+    class: App\Migrations\Version20190812095346
     skip: false
 20190820115815:
-    class: Shopsys\ShopBundle\Migrations\Version20190820115815
+    class: App\Migrations\Version20190820115815
     skip: false
 20190816102946:
-    class: Shopsys\ShopBundle\Migrations\Version20190816102946
+    class: App\Migrations\Version20190816102946
     skip: false
 20190816140609:
-    class: Shopsys\ShopBundle\Migrations\Version20190816140609
+    class: App\Migrations\Version20190816140609
     skip: false
 20190904165100:
-    class: Shopsys\ShopBundle\Migrations\Version20190904165100
+    class: App\Migrations\Version20190904165100
     skip: false
 20190904185432:
-    class: Shopsys\ShopBundle\Migrations\Version20190904185432
+    class: App\Migrations\Version20190904185432
     skip: false
 20190829143820:
-    class: Shopsys\ShopBundle\Migrations\Version20190829143820
+    class: App\Migrations\Version20190829143820
     skip: false
 20190903191221:
-    class: Shopsys\ShopBundle\Migrations\Version20190903191221
+    class: App\Migrations\Version20190903191221
     skip: false
 20190903191319:
-    class: Shopsys\ShopBundle\Migrations\Version20190903191319
+    class: App\Migrations\Version20190903191319
     skip: false
 20190906111732:
-    class: Shopsys\ShopBundle\Migrations\Version20190906111732
+    class: App\Migrations\Version20190906111732
     skip: false
 20190908173632:
-    class: Shopsys\ShopBundle\Migrations\Version20190908173632
+    class: App\Migrations\Version20190908173632
     skip: false
 20190905163208:
-    class: Shopsys\ShopBundle\Migrations\Version20190905163208
+    class: App\Migrations\Version20190905163208
     skip: false
 20190906082932:
-    class: Shopsys\ShopBundle\Migrations\Version20190906082932
+    class: App\Migrations\Version20190906082932
     skip: false
 20190909145927:
-    class: Shopsys\ShopBundle\Migrations\Version20190909145927
+    class: App\Migrations\Version20190909145927
     skip: false
 20190910125901:
-    class: Shopsys\ShopBundle\Migrations\Version20190910125901
+    class: App\Migrations\Version20190910125901
     skip: false
 20190910132421:
-    class: Shopsys\ShopBundle\Migrations\Version20190910132421
+    class: App\Migrations\Version20190910132421
     skip: false
 20190910184338:
-    class: Shopsys\ShopBundle\Migrations\Version20190910184338
+    class: App\Migrations\Version20190910184338
     skip: false
 20190910185525:
-    class: Shopsys\ShopBundle\Migrations\Version20190910185525
+    class: App\Migrations\Version20190910185525
     skip: false
 20190910191207:
-    class: Shopsys\ShopBundle\Migrations\Version20190910191207
+    class: App\Migrations\Version20190910191207
     skip: false
 20190905120153:
-    class: Shopsys\ShopBundle\Migrations\Version20190905120153
+    class: App\Migrations\Version20190905120153
     skip: false
 20190909103222:
-    class: Shopsys\ShopBundle\Migrations\Version20190909103222
+    class: App\Migrations\Version20190909103222
     skip: false
 20190906143200:
-    class: Shopsys\ShopBundle\Migrations\Version20190906143200
+    class: App\Migrations\Version20190906143200
     skip: false
 20190907110005:
-    class: Shopsys\ShopBundle\Migrations\Version20190907110005
+    class: App\Migrations\Version20190907110005
     skip: false
 20190904201404:
-    class: Shopsys\ShopBundle\Migrations\Version20190904201404
+    class: App\Migrations\Version20190904201404
     skip: false
 20190913133523:
-    class: Shopsys\ShopBundle\Migrations\Version20190913133523
+    class: App\Migrations\Version20190913133523
     skip: false
 20190911223915:
-    class: Shopsys\ShopBundle\Migrations\Version20190911223915
+    class: App\Migrations\Version20190911223915
     skip: false
 20190912123010:
-    class: Shopsys\ShopBundle\Migrations\Version20190912123010
+    class: App\Migrations\Version20190912123010
     skip: false
 20190910082244:
-    class: Shopsys\ShopBundle\Migrations\Version20190910082244
+    class: App\Migrations\Version20190910082244
     skip: false
 20190917154021:
-    class: Shopsys\ShopBundle\Migrations\Version20190917154021
+    class: App\Migrations\Version20190917154021
     skip: false
 20190919150229:
-    class: Shopsys\ShopBundle\Migrations\Version20190919150229
+    class: App\Migrations\Version20190919150229
     skip: false
 20190917141619:
-    class: Shopsys\ShopBundle\Migrations\Version20190917141619
+    class: App\Migrations\Version20190917141619
     skip: false
 20190917145031:
-    class: Shopsys\ShopBundle\Migrations\Version20190917145031
+    class: App\Migrations\Version20190917145031
     skip: false
 20190919104024:
-    class: Shopsys\ShopBundle\Migrations\Version20190919104024
+    class: App\Migrations\Version20190919104024
     skip: false
 20190916110959:
-    class: Shopsys\ShopBundle\Migrations\Version20190916110959
+    class: App\Migrations\Version20190916110959
     skip: false
 20190916122060:
-    class: Shopsys\ShopBundle\Migrations\Version20190916122060
+    class: App\Migrations\Version20190916122060
     skip: false
 20190926183742:
-    class: Shopsys\ShopBundle\Migrations\Version20190926183742
+    class: App\Migrations\Version20190926183742
     skip: false
 20191001161248:
-    class: Shopsys\ShopBundle\Migrations\Version20191001161248
+    class: App\Migrations\Version20191001161248
     skip: false
 20191001120151:
-    class: Shopsys\ShopBundle\Migrations\Version20191001120151
+    class: App\Migrations\Version20191001120151
     skip: false
 20191010144727:
-    class: Shopsys\ShopBundle\Migrations\Version20191010144727
+    class: App\Migrations\Version20191010144727
     skip: false
 20191010152544:
-    class: Shopsys\ShopBundle\Migrations\Version20191010152544
+    class: App\Migrations\Version20191010152544
     skip: false
 20191011081124:
-    class: Shopsys\ShopBundle\Migrations\Version20191011081124
+    class: App\Migrations\Version20191011081124
     skip: false
 20191016103820:
-    class: Shopsys\ShopBundle\Migrations\Version20191016103820
+    class: App\Migrations\Version20191016103820
     skip: false
 20191015152425:
-    class: Shopsys\ShopBundle\Migrations\Version20191015152425
+    class: App\Migrations\Version20191015152425
     skip: false
 20191017110413:
-    class: Shopsys\ShopBundle\Migrations\Version20191017110413
+    class: App\Migrations\Version20191017110413
     skip: false
 20191015064042:
-    class: Shopsys\ShopBundle\Migrations\Version20191015064042
+    class: App\Migrations\Version20191015064042
     skip: false
 20191015122122:
-    class: Shopsys\ShopBundle\Migrations\Version20191015122122
+    class: App\Migrations\Version20191015122122
     skip: false
 20191024090301:
-    class: Shopsys\ShopBundle\Migrations\Version20191024090301
+    class: App\Migrations\Version20191024090301
     skip: false
 20191104150100:
-    class: Shopsys\ShopBundle\Migrations\Version20191104150100
+    class: App\Migrations\Version20191104150100
     skip: false
 20191104153028:
-    class: Shopsys\ShopBundle\Migrations\Version20191104153028
+    class: App\Migrations\Version20191104153028
     skip: false
 20191025102929:
-    class: Shopsys\ShopBundle\Migrations\Version20191025102929
+    class: App\Migrations\Version20191025102929
     skip: false
 20191025105521:
-    class: Shopsys\ShopBundle\Migrations\Version20191025105521
+    class: App\Migrations\Version20191025105521
     skip: false
 20191115161548:
-    class: Shopsys\ShopBundle\Migrations\Version20191115161548
+    class: App\Migrations\Version20191115161548
     skip: false
 20191115151235:
-    class: Shopsys\ShopBundle\Migrations\Version20191115151235
+    class: App\Migrations\Version20191115151235
     skip: false
 20191018102438:
-    class: Shopsys\ShopBundle\Migrations\Version20191018102438
+    class: App\Migrations\Version20191018102438
     skip: false
 20191021155942:
-    class: Shopsys\ShopBundle\Migrations\Version20191021155942
+    class: App\Migrations\Version20191021155942
     skip: false
 20191107115334:
-    class: Shopsys\ShopBundle\Migrations\Version20191107115334
+    class: App\Migrations\Version20191107115334
     skip: false
 20191119185742:
-    class: Shopsys\ShopBundle\Migrations\Version20191119185742
+    class: App\Migrations\Version20191119185742
     skip: false
 20191111115119:
-    class: Shopsys\ShopBundle\Migrations\Version20191111115119
+    class: App\Migrations\Version20191111115119
     skip: false
 20191111124321:
-    class: Shopsys\ShopBundle\Migrations\Version20191111124321
+    class: App\Migrations\Version20191111124321
     skip: false
 20191112183136:
-    class: Shopsys\ShopBundle\Migrations\Version20191112183136
+    class: App\Migrations\Version20191112183136
     skip: false
 20191125071730:
-    class: Shopsys\ShopBundle\Migrations\Version20191125071730
+    class: App\Migrations\Version20191125071730
     skip: false
 20191128144359:
-    class: Shopsys\ShopBundle\Migrations\Version20191128144359
+    class: App\Migrations\Version20191128144359
     skip: false
 20191121080802:
-    class: Shopsys\ShopBundle\Migrations\Version20191121080802
+    class: App\Migrations\Version20191121080802
     skip: false
 20191121102655:
-    class: Shopsys\ShopBundle\Migrations\Version20191121102655
+    class: App\Migrations\Version20191121102655
     skip: false
 20191126125916:
-    class: Shopsys\ShopBundle\Migrations\Version20191126125916
+    class: App\Migrations\Version20191126125916
     skip: false
 20191127074408:
-    class: Shopsys\ShopBundle\Migrations\Version20191127074408
+    class: App\Migrations\Version20191127074408
     skip: false
 20191128125127:
-    class: Shopsys\ShopBundle\Migrations\Version20191128125127
+    class: App\Migrations\Version20191128125127
     skip: false
 20191202072350:
-    class: Shopsys\ShopBundle\Migrations\Version20191202072350
+    class: App\Migrations\Version20191202072350
     skip: false
 20191202072351:
-    class: Shopsys\ShopBundle\Migrations\Version20191202072351
+    class: App\Migrations\Version20191202072351
     skip: false
 20191202072352:
-    class: Shopsys\ShopBundle\Migrations\Version20191202072352
+    class: App\Migrations\Version20191202072352
     skip: false
 20191204074458:
-    class: Shopsys\ShopBundle\Migrations\Version20191204074458
+    class: App\Migrations\Version20191204074458
     skip: false
 20191203071823:
-    class: Shopsys\ShopBundle\Migrations\Version20191203071823
+    class: App\Migrations\Version20191203071823
     skip: false
 20191211154052:
-    class: Shopsys\ShopBundle\Migrations\Version20191211154052
+    class: App\Migrations\Version20191211154052
     skip: false
 20191217085921:
-    class: Shopsys\ShopBundle\Migrations\Version20191217085921
+    class: App\Migrations\Version20191217085921
     skip: false
 20191204144834:
-    class: Shopsys\ShopBundle\Migrations\Version20191204144834
+    class: App\Migrations\Version20191204144834
     skip: false
 20191230161346:
-    class: Shopsys\ShopBundle\Migrations\Version20191230161346
+    class: App\Migrations\Version20191230161346
     skip: false
 20200113143308:
-    class: Shopsys\ShopBundle\Migrations\Version20200113143308
+    class: App\Migrations\Version20200113143308
     skip: false
 20200123143308:
-    class: Shopsys\ShopBundle\Migrations\Version20200123143308
+    class: App\Migrations\Version20200123143308
     skip: false
 20200120082349:
-    class: Shopsys\ShopBundle\Migrations\Version20200120082349
+    class: App\Migrations\Version20200120082349
     skip: false
 20200120162800:
     class: Shopsys\ShopBundle\Migrations\Version20200120162800
@@ -896,8 +896,8 @@
     class: Shopsys\FrameworkBundle\Migrations\Version20191029210140
     skip: false
 20200127102447:
-    class: Shopsys\ShopBundle\Migrations\Version20200127102447
+    class: App\Migrations\Version20200127102447
     skip: false
 20200130090432:
-    class: Shopsys\ShopBundle\Migrations\Version20200130090432
+    class: App\Migrations\Version20200130090432
     skip: false
