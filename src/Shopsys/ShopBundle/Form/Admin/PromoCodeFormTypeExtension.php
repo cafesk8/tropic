@@ -7,16 +7,20 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
+use Shopsys\FrameworkBundle\Form\CategoriesType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
+use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
+use Shopsys\ShopBundle\Model\Product\Brand\Brand;
+use Shopsys\ShopBundle\Model\Product\Brand\BrandFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -56,13 +60,20 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     private $priceExtension;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade
+     */
+    private $brandFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade $brandFacade
      */
-    public function __construct(Domain $domain, PriceExtension $priceExtension)
+    public function __construct(Domain $domain, PriceExtension $priceExtension, BrandFacade $brandFacade)
     {
         $this->domain = $domain;
         $this->priceExtension = $priceExtension;
+        $this->brandFacade = $brandFacade;
     }
 
     /**
@@ -110,7 +121,24 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $this->addNominalDiscountFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
         $this->addCertificateFields($basicInformationsFormGroup, $options['promo_code'], $options['domain_id']);
 
+        $basicInformationsFormGroup->add('limitType', ChoiceType::class, [
+            'label' => t('Omezit použití'),
+            'attr' => [
+                'class' => 'js-promo-code-input-use-limit-type js-promo-code-promo-code-only',
+            ],
+            'choices' => [
+                t('Neomezovat') => PromoCode::LIMIT_TYPE_ALL,
+                t('Podle kategorie') => PromoCode::LIMIT_TYPE_CATEGORIES,
+                t('Podle značky') => PromoCode::LIMIT_TYPE_BRANDS,
+                t('Konkrétní produkty') => PromoCode::LIMIT_TYPE_PRODUCTS,
+            ],
+            'multiple' => false,
+            'expanded' => false,
+            'required' => true,
+        ]);
+
         $builder->add($basicInformationsFormGroup);
+        $this->addLimitTypeGroup($builder);
 
         if ($options['mass_generate'] === true) {
             $builder->add($this->addMassGenerationGroup($builder));
@@ -136,7 +164,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 ]);
         }
 
-        $builder->add($this->getRestictionGroup($builder, $options['promo_code'], $options['domain_id']));
+        $builder->add($this->getRestrictionGroup($builder, $options['promo_code'], $options['domain_id']));
         $builder->add($this->getValidationGroup($builder));
 
         $builder->add('save', SubmitType::class);
@@ -352,7 +380,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
      * @param int|null $domainId
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getRestictionGroup(FormBuilderInterface $builder, ?BasePromoCode $promoCode, ?int $domainId): FormBuilderInterface
+    private function getRestrictionGroup(FormBuilderInterface $builder, ?BasePromoCode $promoCode, ?int $domainId): FormBuilderInterface
     {
         return $builder->create('restrictionGroup', GroupType::class, [
             'label' => 'Omezení',
@@ -467,5 +495,62 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             ],
             'position' => 'first',
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addLimitTypeGroup(FormBuilderInterface $builder)
+    {
+        $brandLimitsGroups = $builder->create('brandlimitsGroup', GroupType::class, [
+            'attr' => [
+                'class' => 'js-promo-code-limit-brands-group js-promo-code-input-limit-type js-promo-code-promo-code-only',
+            ],
+            'label' => t('Omezení na značky'),
+        ]);
+
+        $brandLimitsInput = $brandLimitsGroups->create('brandLimits', ChoiceType::class, [
+            'attr' => [
+                'class' => 'js-promo-code-input-limit-brands js-promo-code-input-limit-type js-promo-code-promo-code-only',
+            ],
+            'choices' => $this->brandFacade->getAll(),
+            'label' => t('Omezení na značky'),
+            'mapped' => true,
+            'multiple' => true,
+            'choice_label' => function (Brand $brand) {
+                return $brand->getName();
+            },
+        ]);
+
+        $brandLimitsGroups->add($brandLimitsInput);
+        $builder->add($brandLimitsGroups);
+
+        $categoryLimitsGroups = $builder->create('categorylimitsGroup', GroupType::class, [
+            'attr' => [
+                'class' => 'js-promo-code-limit-categories-group js-promo-code-input-limit-type js-promo-code-promo-code-only',
+            ],
+            'label' => t('Omezení na kategorie'),
+        ]);
+
+        $categoryLimitsGroups->add('categoryLimits', CategoriesType::class, [
+            'attr' => [
+                'class' => 'js-promo-code-input-limit-categories js-promo-code-input-limit-type js-promo-code-promo-code-only',
+            ],
+            'domain_id' => $this->domain->getId(),
+            'label' => t('Kategorie'),
+            'mapped' => true,
+        ]);
+
+        $builder->add($categoryLimitsGroups);
+
+        $productLimits = $builder->create('productLimits', ProductsType::class, [
+            'attr' => [
+                'class' => 'js-promo-code-input-limit-products js-promo-code-input-limit-type js-promo-code-promo-code-only',
+            ],
+            'label' => t('Omezení na produkty'),
+            'mapped' => true,
+        ]);
+
+        $builder->add($productLimits);
     }
 }

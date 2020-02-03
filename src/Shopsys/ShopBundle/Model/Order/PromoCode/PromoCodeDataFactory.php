@@ -9,6 +9,9 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory as BasePromoCodeDataFactory;
+use Shopsys\ShopBundle\Model\Category\CategoryFacade;
+use Shopsys\ShopBundle\Model\Product\Brand\BrandFacade;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 class PromoCodeDataFactory extends BasePromoCodeDataFactory
 {
@@ -18,15 +21,48 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     private $adminDomainTabsFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade
      */
-    public function __construct(AdminDomainTabsFacade $adminDomainTabsFacade)
-    {
+    private $promoCodeLimitFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade
+     */
+    private $brandFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
+     */
+    private $categoryFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     */
+    public function __construct(
+        AdminDomainTabsFacade $adminDomainTabsFacade,
+        PromoCodeLimitFacade $promoCodeLimitFacade,
+        BrandFacade $brandFacade,
+        CategoryFacade $categoryFacade,
+        ProductFacade $productFacade
+    ) {
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+        $this->promoCodeLimitFacade = $promoCodeLimitFacade;
+        $this->productFacade = $productFacade;
+        $this->brandFacade = $brandFacade;
+        $this->categoryFacade = $categoryFacade;
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData
      */
     public function create(): BasePromoCodeData
     {
@@ -44,6 +80,11 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->usageType = PromoCode::USAGE_TYPE_ALL;
         $promoCodeData->userType = PromoCode::USER_TYPE_ALL;
         $promoCodeData->combinable = false;
+        $promoCodeData->limitType = PromoCode::LIMIT_TYPE_ALL;
+        $promoCodeData->limits = [];
+        $promoCodeData->brandLimits = [];
+        $promoCodeData->categoryLimits = [];
+        $promoCodeData->productLimits = [];
 
         return $promoCodeData;
     }
@@ -56,6 +97,22 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     {
         $promoCodeData = $this->create();
         $this->fillFromPromoCode($promoCodeData, $promoCode);
+
+        $promoCodeData->limits = $this->promoCodeLimitFacade->getByPromoCode($promoCode);
+
+        foreach ($promoCodeData->limits as $limit) {
+            switch ($limit->getType()) {
+                case PromoCode::LIMIT_TYPE_BRANDS:
+                    $promoCodeData->brandLimits[] = $this->brandFacade->getById($limit->getObjectId());
+                    break;
+                case PromoCode::LIMIT_TYPE_CATEGORIES:
+                    $promoCodeData->categoryLimits[] = $this->categoryFacade->getById($limit->getObjectId());
+                    break;
+                case PromoCode::LIMIT_TYPE_PRODUCTS:
+                    $promoCodeData->productLimits[] = $this->productFacade->getById($limit->getObjectId());
+                    break;
+            }
+        }
 
         return $promoCodeData;
     }
@@ -85,5 +142,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->usageType = $promoCode->getUsageType();
         $promoCodeData->userType = $promoCode->getUserType();
         $promoCodeData->combinable = $promoCode->isCombinable();
+        $promoCodeData->limitType = $promoCode->getLimitType();
     }
 }

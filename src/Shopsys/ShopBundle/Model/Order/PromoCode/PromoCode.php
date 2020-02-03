@@ -28,6 +28,11 @@ class PromoCode extends BasePromoCode
     public const USER_TYPE_LOGGED = 'logged_users';
     public const USER_TYPE_BUSHMAN_CLUB_MEMBERS = 'bushman_club_member_users';
 
+    public const LIMIT_TYPE_ALL = 'all';
+    public const LIMIT_TYPE_BRANDS = 'brands';
+    public const LIMIT_TYPE_CATEGORIES = 'categories';
+    public const LIMIT_TYPE_PRODUCTS = 'products';
+
     /**
      * @var int
      *
@@ -148,12 +153,25 @@ class PromoCode extends BasePromoCode
     private $combinable;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    private $limitType;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[]
+     *
+     * @ORM\OneToMany(targetEntity="Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit", mappedBy="promoCode", cascade={"remove"})
+     */
+    public $limits;
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData
      */
     public function __construct(BasePromoCodeData $promoCodeData)
     {
         parent::__construct($promoCodeData);
-
         $this->domainId = $promoCodeData->domainId;
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
@@ -171,6 +189,9 @@ class PromoCode extends BasePromoCode
         $this->setUsageType($promoCodeData->usageType);
         $this->setUserType($promoCodeData->userType);
         $this->combinable = $promoCodeData->combinable;
+        $this->setLimitType($promoCodeData->limitType);
+
+        $this->limits = [];
     }
 
     /**
@@ -179,7 +200,6 @@ class PromoCode extends BasePromoCode
     public function edit(BasePromoCodeData $promoCodeData): void
     {
         parent::edit($promoCodeData);
-
         $this->unlimited = $promoCodeData->unlimited;
         $this->usageLimit = $promoCodeData->usageLimit;
         $this->numberOfUses = $promoCodeData->numberOfUses;
@@ -196,6 +216,8 @@ class PromoCode extends BasePromoCode
         $this->setUsageType($promoCodeData->usageType);
         $this->setUserType($promoCodeData->userType);
         $this->combinable = $promoCodeData->combinable;
+        $this->setLimitType($promoCodeData->limitType);
+        $this->limits = $promoCodeData->limits;
     }
 
     /**
@@ -400,5 +422,33 @@ class PromoCode extends BasePromoCode
     public function isCombinable(): bool
     {
         return $this->combinable;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLimitType(): string
+    {
+        return $this->limitType;
+    }
+
+    /**
+     * @param string $limitType
+     */
+    public function setLimitType(string $limitType): void
+    {
+        if (in_array($limitType, [self::LIMIT_TYPE_ALL, self::LIMIT_TYPE_BRANDS, self::LIMIT_TYPE_CATEGORIES, self::LIMIT_TYPE_PRODUCTS], true)) {
+            $this->limitType = $limitType;
+        } else {
+            $this->limitType = self::LIMIT_TYPE_ALL;
+        }
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[]
+     */
+    public function getLimits(): array
+    {
+        return $this->limits;
     }
 }
