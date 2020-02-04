@@ -144,12 +144,10 @@
                             <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
                                 {{ sellingPrice.priceWithVat|price }}
                             </div>
-                            {% if sellingPrice.priceWithVat.lessThan(sellingPrice.defaultProductPrice.priceWithVat) %}
+                            {% if sellingPrice.isActionPrice %}
                                 <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
                                     {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
                                 </div>
-                            {% endif %}
-                            {% if sellingPrice.isActionPrice %}
                                 <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
                                     {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
                                 </div>

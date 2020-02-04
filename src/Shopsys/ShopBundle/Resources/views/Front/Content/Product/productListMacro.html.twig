@@ -45,7 +45,7 @@
                                         {% else %}
                                             {{ productSellingPrice.priceWithVat|price }}
                                         {% endif %}
-                                        {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                        {% if (productSellingPrice.isActionPrice and not productSellingPrice.priceFrom) %}
                                             <div class="list-products__item__info__price__item__old">
                                                 {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
                                             </div>

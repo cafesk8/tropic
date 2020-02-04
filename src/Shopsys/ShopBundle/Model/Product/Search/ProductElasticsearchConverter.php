@@ -16,7 +16,6 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
     {
         $result = parent::fillEmptyFields($product);
         $price = $result['prices']['amount'] ?? 0;
-        $result['prices']['is_default'] = $product['prices']['is_default'] ?? false;
         $result['prices']['price_with_vat'] = $product['prices']['price_with_vat'] ?? $price;
         $result['prices']['price_without_vat'] = $product['prices']['price_without_vat'] ?? $price;
         $result['prices']['vat'] = $product['prices']['vat'] ?? 0;
@@ -24,6 +23,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['main_variant_group_products'] = $product['main_variant_group_products'] ?? [];
         $result['second_distinguishing_parameter_values'] = $product['second_distinguishing_parameter_values'] ?? [];
         $result['main_variant_id'] = $product['main_variant_id'] ?? null;
+        $result['default_price'] = $result['default_price'] ?? [];
 
         return $result;
     }

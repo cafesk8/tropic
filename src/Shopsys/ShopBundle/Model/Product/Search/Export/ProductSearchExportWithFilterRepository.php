@@ -6,15 +6,19 @@ namespace Shopsys\ShopBundle\Model\Product\Search\Export;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
+use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository as BaseProductSearchExportWithFilterRepository;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 
 class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWithFilterRepository
@@ -50,6 +54,21 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     private $productCachedAttributesFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation
+     */
+    private $basePriceCalculation;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting
+     */
+    private $pricingSetting;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository
+     */
+    private $productManualInputPriceRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
@@ -60,6 +79,9 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -71,7 +93,10 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
         FriendlyUrlFacade $friendlyUrlFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade,
-        ProductCachedAttributesFacade $productCachedAttributesFacade
+        ProductCachedAttributesFacade $productCachedAttributesFacade,
+        BasePriceCalculation $basePriceCalculation,
+        PricingSetting $pricingSetting,
+        ProductManualInputPriceRepository $productManualInputPriceRepository
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
@@ -79,6 +104,9 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
         $this->productsIndexedByPricingGroupIdAndMainVariantGroup = [];
         $this->variantsIndexedByPricingGroupIdAndMainVariantId = [];
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
+        $this->basePriceCalculation = $basePriceCalculation;
+        $this->pricingSetting = $pricingSetting;
+        $this->productManualInputPriceRepository = $productManualInputPriceRepository;
     }
 
     /**
@@ -126,8 +154,37 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
         $result['main_variant_group_products'] = $this->getMainVariantGroupProductsData($product, $locale);
         $result['second_distinguishing_parameter_values'] = $this->getSecondDistinguishingParameterValues($product, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
+        $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
 
         return $result;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @return array
+     */
+    private function getDefaultPriceArray(Product $product, int $domainId): array
+    {
+        $defaultPriceWithVat = null;
+        $defaultPriceWithoutVat = null;
+        $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $productManualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [$defaultPricingGroupOnDomain], $domainId);
+        $manualInputPriceForDefaultPricingGroup = reset($productManualInputPrices);
+        if ($manualInputPriceForDefaultPricingGroup !== false) {
+            $defaultPrice = $this->basePriceCalculation->calculateBasePrice(
+                Money::create($manualInputPriceForDefaultPricingGroup['inputPrice']),
+                $this->pricingSetting->getInputPriceType(),
+                $product->getVat()
+            );
+            $defaultPriceWithoutVat = (float)$defaultPrice->getPriceWithoutVat()->getAmount();
+            $defaultPriceWithVat = (float)$defaultPrice->getPriceWithVat()->getAmount();
+        }
+
+        return [
+            'price_with_vat' => $defaultPriceWithVat,
+            'price_without_vat' => $defaultPriceWithoutVat,
+        ];
     }
 
     /**
@@ -170,25 +227,6 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
         $parameters = array_merge($baseParameters, $parameters);
 
         return array_values(array_unique($parameters, SORT_REGULAR));
-    }
-
-    /**
-     * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @return array
-     */
-    protected function extractPrices(int $domainId, Product $product): array
-    {
-        $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
-        $pricesArray = parent::extractPrices($domainId, $product);
-
-        foreach ($pricesArray as $key => $priceArray) {
-            $priceArray['domain_id'] = $domainId;
-            $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupOnDomain->getId());
-            $pricesArray[$key] = $priceArray;
-        }
-
-        return $pricesArray;
     }
 
     /**

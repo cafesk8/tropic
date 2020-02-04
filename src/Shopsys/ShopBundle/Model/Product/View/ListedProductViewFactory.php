@@ -57,7 +57,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         $sellingPrice = $this->getSellingPrice(
             $productArray['prices'],
             $pricingGroup,
-            $this->getActionPrice($productArray['action_price'])
+            $this->getMoney($productArray['action_price']),
+            $this->getPriceFromPriceArray($productArray['default_price'])
         );
         $distinguishingParameterValues = $this->filterDistinguishingParameterValuesByPricingGroupId(
             $productArray['second_distinguishing_parameter_values'],
@@ -130,14 +131,15 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param array $pricesArray
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPriceForCurrentDomain
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $defaultProductPrice
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
     private function getSellingPrice(
         array $pricesArray,
         PricingGroup $pricingGroup,
-        ?Money $actionPriceForCurrentDomain
+        ?Money $actionPriceForCurrentDomain,
+        ?Price $defaultProductPrice
     ): ?BaseProductPrice {
-        $defaultProductPrice = $this->getDefaultProductPrice($pricesArray);
         $pricingGroupId = $pricingGroup->getId();
         foreach ($pricesArray as $priceArray) {
             if ($priceArray['pricing_group_id'] === $pricingGroupId) {
@@ -157,20 +159,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param array $pricesArray
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
-     */
-    private function getDefaultProductPrice(array $pricesArray): ?Price
-    {
-        foreach ($pricesArray as $priceArray) {
-            if ($priceArray['is_default'] === true) {
-                return $this->getPriceFromPriceArray($priceArray);
-            }
-        }
-        return null;
-    }
-
-    /**
      * @param $priceArray
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
@@ -183,12 +171,12 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param float|null $actionPrice
+     * @param float|null $amount
      * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
-    private function getActionPrice(?float $actionPrice): ?Money
+    private function getMoney(?float $amount): ?Money
     {
-        return $actionPrice !== null ? Money::create((string)$actionPrice) : null;
+        return $amount !== null ? Money::create((string)$amount) : null;
     }
 
     /**

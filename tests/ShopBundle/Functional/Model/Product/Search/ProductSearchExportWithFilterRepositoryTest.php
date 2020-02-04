@@ -64,6 +64,7 @@ class ProductSearchExportWithFilterRepositoryTest extends TransactionFunctionalT
             'detail_url',
             'in_stock',
             'prices',
+            'default_price',
             'parameters',
             'ordering_priority',
             'calculated_selling_denied',
