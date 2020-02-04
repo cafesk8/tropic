@@ -50,11 +50,11 @@ class BlogArticleController extends FrontBaseController
             $id
         );
 
-        $blogCategoriesIds = $this->blogCategoryFacade->getBlogArticleBlogCategoriesWithDeepestLevelsIds($blogArticle, $this->domain->getId());
+        $blogCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
 
         return $this->render('@ShopsysShop/Front/Content/Blog/Article/detail.html.twig', [
             'blogArticle' => $blogArticle,
-            'activeCategories' => $blogCategoriesIds,
+            'activeCategories' => $blogCategoryIds,
             'domainId' => $this->domain->getId(),
         ]);
     }

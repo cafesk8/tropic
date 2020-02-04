@@ -105,7 +105,7 @@ class BlogCategoryController extends FrontBaseController
         $activeCategoryIds = [];
 
         if ($blogArticle) {
-            $activeCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoriesWithDeepestLevelsIds($blogArticle, $this->domain->getId());
+            $activeCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
         } elseif ($blogCategory) {
             $activeCategoryIds[] = $blogCategory->getId();
         }
