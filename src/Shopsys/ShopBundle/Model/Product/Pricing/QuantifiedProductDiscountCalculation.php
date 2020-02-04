@@ -7,12 +7,31 @@ namespace Shopsys\ShopBundle\Model\Product\Pricing;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
+use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation as BaseQuantifiedProductDiscountCalculation;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade;
 
 class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscountCalculation
 {
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade
+     */
+    private $promoCodeLimitFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Rounding $rounding
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
+     */
+    public function __construct(PriceCalculation $priceCalculation, Rounding $rounding, PromoCodeLimitFacade $promoCodeLimitFacade)
+    {
+        parent::__construct($priceCalculation, $rounding);
+        $this->promoCodeLimitFacade = $promoCodeLimitFacade;
+    }
+
     /**
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
      * @param string|null $discountPercent
@@ -117,6 +136,14 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
                 if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_NO_ACTION_PRICE) {
                     return $productPrice->isActionPriceByUsedForPromoCode() === false;
+                }
+
+                if ($promoCode->getLimitType() === PromoCode::LIMIT_TYPE_ALL) {
+                    return true;
+                }
+
+                if (!in_array($productPrice->getProduct()->getId(), $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits()), true)) {
+                    return false;
                 }
 
                 return true;

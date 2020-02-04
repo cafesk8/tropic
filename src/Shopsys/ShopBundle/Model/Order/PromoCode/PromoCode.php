@@ -449,6 +449,6 @@ class PromoCode extends BasePromoCode
      */
     public function getLimits(): array
     {
-        return $this->limits;
+        return $this->limits->toArray();
     }
 }

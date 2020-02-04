@@ -747,4 +747,22 @@ class ProductFacade extends BaseProductFacade
 
         return $variantsIndexedByPricingGroupIdAndMainVariantId;
     }
+
+    /**
+     * @param array $brandIds
+     * @return array
+     */
+    public function getIdsByBrandIds(array $brandIds): array
+    {
+        return $this->productRepository->getIdsByBrandIds($brandIds, $this->domain->getId());
+    }
+
+    /**
+     * @param array $categoryIds
+     * @return array
+     */
+    public function getIdsByCategoryIds(array $categoryIds): array
+    {
+        return $this->productRepository->getIdsByCategoryIds($categoryIds, $this->domain->getId());
+    }
 }

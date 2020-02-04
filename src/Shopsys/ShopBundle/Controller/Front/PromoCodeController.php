@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
@@ -108,6 +109,7 @@ class PromoCodeController extends FrontBaseController
         $user = $this->getUser();
 
         try {
+            $this->currentPromoCodeFacade->checkApplicability($promoCode, $cart);
             $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts(), $user);
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
@@ -162,7 +164,13 @@ class PromoCodeController extends FrontBaseController
                 'result' => false,
                 'message' => t('Tento slevový kupón je již v objednávce aplikován.'),
             ]);
+        } catch (PromoCodeNotApplicableException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Tento slevový kupón nelze aplikovat na žádný produkt v košíku.'),
+            ]);
         }
+
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));
 
         return new JsonResponse(['result' => true]);

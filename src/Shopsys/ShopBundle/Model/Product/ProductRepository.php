@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup;
@@ -67,7 +68,7 @@ class ProductRepository extends BaseProductRepository
 
     /**
      * @param string $transferNumber
-     * @return \Shopsys\ShoRpBundle\Model\Product\Product|null
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */
     public function findByTransferNumber(string $transferNumber): ?Product
     {
@@ -354,6 +355,37 @@ class ProductRepository extends BaseProductRepository
             ->from(Product::class, 'p')
             ->andWhere('p.id IN(:productIds)')
             ->setParameter('productIds', $productIds)
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $brandIds
+     * @return array
+     */
+    public function getIdsByBrandIds(array $brandIds): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('p.id AS productId')
+            ->from(Product::class, 'p')
+            ->where('IDENTITY(p.brand) IN (:brandIds)')
+            ->setParameter('brandIds', $brandIds)
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $categoryIds
+     * @param int $domainId
+     * @return array
+     */
+    public function getIdsByCategoryIds(array $categoryIds, int $domainId): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('IDENTITY(pc.product) AS productId')
+            ->from(ProductCategoryDomain::class, 'pc')
+            ->where('IDENTITY(pc.category) IN (:categoryIds)')
+            ->andWhere('pc.domainId = :domainId')
+            ->setParameter('categoryIds', $categoryIds)
+            ->setParameter('domainId', $domainId)
             ->getQuery()->getResult();
     }
 

@@ -111,4 +111,12 @@ class ProductPrice extends BaseProductPrice
     {
         return $this->defaultProductPrice;
     }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     */
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
 }

@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\ShopBundle\Model\Category\Category;
 use Shopsys\ShopBundle\Model\Product\Brand\Brand;
 use Shopsys\ShopBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 class PromoCodeLimitFacade
 {
@@ -32,17 +33,24 @@ class PromoCodeLimitFacade
     private $promoCodeLimitDataFactory;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitRepository $promoCodeRepository
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFactory $promoCodeLimitFactory
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitDataFactory $promoCodeLimitDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(EntityManagerInterface $em, PromoCodeLimitRepository $promoCodeRepository, PromoCodeLimitFactory $promoCodeLimitFactory, PromoCodeLimitDataFactory $promoCodeLimitDataFactory)
+    public function __construct(EntityManagerInterface $em, PromoCodeLimitRepository $promoCodeRepository, PromoCodeLimitFactory $promoCodeLimitFactory, PromoCodeLimitDataFactory $promoCodeLimitDataFactory, ProductFacade $productFacade)
     {
         $this->em = $em;
         $this->promoCodeLimitRepository = $promoCodeRepository;
         $this->promoCodeLimitFactory = $promoCodeLimitFactory;
         $this->promoCodeLimitDataFactory = $promoCodeLimitDataFactory;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -74,6 +82,41 @@ class PromoCodeLimitFacade
     public function getByPromoCode(PromoCode $promoCode)
     {
         return $this->promoCodeLimitRepository->getByPromoCode($promoCode);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[] $limits
+     * @return int[]
+     */
+    public function getAllApplicableProductIdsByLimits(array $limits): array
+    {
+        $brandIds = [];
+        $categoryIds = [];
+        $productIds = [];
+
+        foreach ($limits as $limit) {
+            switch ($limit->getType()) {
+                case PromoCode::LIMIT_TYPE_BRANDS:
+                    $brandIds[] = $limit->getObjectId();
+                    break;
+                case PromoCode::LIMIT_TYPE_CATEGORIES:
+                    $categoryIds[] = $limit->getObjectId();
+                    break;
+                case PromoCode::LIMIT_TYPE_PRODUCTS:
+                    $productIds[] = $limit->getObjectId();
+                    break;
+            }
+        }
+
+        if (!empty($brandIds)) {
+            $productIds = array_merge($productIds, array_column($this->productFacade->getIdsByBrandIds($brandIds), 'productId'));
+        }
+
+        if (!empty($categoryIds)) {
+            $productIds = array_merge($productIds, array_column($this->productFacade->getIdsByCategoryIds($categoryIds), 'productId'));
+        }
+
+        return $productIds;
     }
 
     /**

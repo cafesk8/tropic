@@ -9,10 +9,12 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
+use Shopsys\ShopBundle\Model\Cart\Cart;
 use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
+use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -30,14 +32,21 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     private $domain;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade
+     */
+    private $promoCodeLimitFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(PromoCodeFacade $promoCodeFacade, SessionInterface $session, Domain $domain)
+    public function __construct(PromoCodeFacade $promoCodeFacade, PromoCodeLimitFacade $promoCodeLimitFacade, SessionInterface $session, Domain $domain)
     {
         parent::__construct($promoCodeFacade, $session);
         $this->domain = $domain;
+        $this->promoCodeLimitFacade = $promoCodeLimitFacade;
     }
 
     /**
@@ -60,7 +69,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      */
     public function usePromoCode(PromoCode $promoCode): void
     {
@@ -149,7 +158,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      * @return bool
      */
     private function isPromoCodeValidInItsValidDates(PromoCode $promoCode): bool
@@ -233,5 +242,26 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             unset($promoCodes[$key]);
         }
         $this->session->set(static::PROMO_CODE_SESSION_KEY, $promoCodes);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     */
+    public function checkApplicability(PromoCode $promoCode, Cart $cart): void
+    {
+        if ($promoCode->getLimitType() == PromoCode::LIMIT_TYPE_ALL) {
+            return;
+        }
+
+        $applicableProductIds = $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits());
+
+        foreach ($cart->getItems() as $cartItem) {
+            if (in_array($cartItem->getProduct()->getId(), $applicableProductIds, true)) {
+                return;
+            }
+        }
+
+        throw new PromoCodeNotApplicableException($promoCode->getCode());
     }
 }
