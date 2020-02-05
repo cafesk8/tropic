@@ -191,6 +191,7 @@
 
 {% macro verticalList(products, listCssClass, productHeadingTagName) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    {% import '@ShopsysShop/Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
     <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
         {% for product in products %}
             <div class="{{ listCssClass }}__item">
@@ -228,6 +229,10 @@
                                 </div>
                             </div>
                         {% endif %}
+
+                        <div class="{{ listCssClass }}__item__info__availability">
+                            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                        </div>
                     </div>
                 </div>
             </div>
