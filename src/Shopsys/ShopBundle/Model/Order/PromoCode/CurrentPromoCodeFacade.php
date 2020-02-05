@@ -133,7 +133,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         foreach ($quantifiedItemsPrices as $quantifiedItemsPrice) {
             /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
             $productPrice = $quantifiedItemsPrice->getUnitPrice();
-            if ($productPrice->isActionPrice() === true) {
+            if ($productPrice->isActionPriceByUsedForPromoCode() === true) {
                 $hasDiscountProductCount++;
             }
         }
