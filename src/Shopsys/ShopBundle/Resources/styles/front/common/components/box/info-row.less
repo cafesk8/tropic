@@ -3,6 +3,7 @@
 @box-info-row-bottom-gap: 20px;
 @box-info-row-min-height: 34px;
 @box-info-row-padding: 40px;
+@box-info-row-close-button-size: 14px;
 
 .box-info-row {
     position: relative;
@@ -14,6 +15,7 @@
     text-align: center;
 
     background-color: @box-info-row-bg;
+    border-radius: @radius;
     color: @color-f;
     font-size: @box-info-row-font-size;
     font-weight: 600;
@@ -42,13 +44,15 @@
 
     &__close {
         position: absolute;
-        right: 14px;
-        top: 13px;
+        right: @box-info-row-close-button-size;
+        top: 50%;
+        transform: translateY(-50%);
+        height: @box-info-row-close-button-size;
         line-height: 0;
 
         cursor: pointer;
         color: @color-f;
-        font-size: 14px;
+        font-size: @box-info-row-close-button-size;
 
         &:hover {
             .svg {

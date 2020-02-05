@@ -25,9 +25,12 @@
         padding-bottom: @box-popup-add-padding + 5px;
 
         background-color: @color-box;
+        border-radius: @radius @radius 0 0;
 
         @media @query-lg {
             width: @box-popup-add-content-width;
+
+            border-radius: @radius 0 0 @radius;
         }
 
         &__title {
@@ -147,9 +150,11 @@
         padding: @box-popup-add-padding;
 
         background-color: @color-f;
+        border-radius: 0 0 @radius @radius;
 
         @media @query-lg {
             width: calc(~"@{calc-base} - @{box-popup-add-content-width}");
+            border-radius: 0 @radius @radius 0;
         }
 
         &__buttons {

@@ -13,6 +13,7 @@
     padding: 20px 10px;
 
     background-color: @color-box;
+    border-radius: @radius;
 
     @media @query-lg {
         flex-direction: row;
@@ -20,16 +21,21 @@
     }
 
     &__title {
-        width: @box-search-title-width;
+        margin-bottom: 10px;
 
         font-size: 18px;
         font-weight: 700;
+
+        @media @query-lg {
+            width: @box-search-title-width;
+            margin-bottom: 0;
+        }
     }
 
     &__input {
         width: 100%;
 
-        @media @query-xl {
+        @media @query-lg {
             width: @box-search-input-max-width;
         }
     }

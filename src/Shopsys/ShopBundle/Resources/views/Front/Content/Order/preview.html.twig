@@ -30,7 +30,7 @@
     {% if orderStep == "1" %}
         {{ render(controller('ShopsysShopBundle:Front/PromoCode:index')) }}
     {% endif %}
-    <div class="box-preview__row box-preview__row--no-bottom box-preview__row--without-radius">
+    <div class="box-preview__row box-preview__row--no-bottom{% if orderStep != "1" %} box-preview__row--without-radius-bottom{% else %} box-preview__row--without-radius{% endif %}"> 
         {% if orderStep > 1 %}
             <ul class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
@@ -110,7 +110,7 @@
             </tbody>
         </table>
     </div>
-    <div class="box-preview__row {% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %}">
+    <div class="box-preview__row{% if orderStep != "1" %} box-preview__row--thin-top-border{% endif %} box-preview__row--without-radius-top">
         <div id="js-order-preview-total-price" class="table-cart-preview">
             <table class="table-cart-preview__total">
                 <tr class="table-cart-preview__total__row">

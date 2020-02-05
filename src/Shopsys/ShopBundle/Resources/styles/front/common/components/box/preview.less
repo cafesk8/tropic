@@ -17,6 +17,7 @@
         padding: @box-preview-padding-small;
 
         background-color: @color-f;
+        border-radius: @radius;
 
         @media @query-md {
             border: 3px solid @color-border;
@@ -34,18 +35,24 @@
 
         &--no-bottom {
             border-bottom: 0;
-            border-radius: @radius @radius 0 0;
         }
 
         &--thin-top-border {
             padding-top: 14px;
 
             border-top: 1px solid @color-border;
-            border-radius: 0 0 @radius @radius;
         }
 
         &--without-radius {
             border-radius: 0;
+        }
+
+        &--without-radius-bottom {
+            border-radius: @radius @radius 0 0;
+        }
+
+        &--without-radius-top {
+            border-radius: 0 0 @radius @radius;
         }
     }
 
