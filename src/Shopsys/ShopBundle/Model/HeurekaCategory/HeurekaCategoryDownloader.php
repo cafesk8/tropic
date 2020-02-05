@@ -42,7 +42,7 @@ class HeurekaCategoryDownloader extends BaseHeurekaCategoryDownloader
             $heurekaCategoryId = $heurekaCategoryData->id;
             try {
                 $heurekaCategory = $this->heurekaCategoryFacade->getOneById($heurekaCategoryId);
-                $heurekaCategoryData->categories = $heurekaCategory->getCategories()->toArray();
+                $heurekaCategoryData->categories = $heurekaCategory->getCategories();
             } catch (HeurekaCategoryNotFoundException $exception) {
             }
         }

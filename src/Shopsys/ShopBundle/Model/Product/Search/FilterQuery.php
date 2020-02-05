@@ -30,7 +30,7 @@ class FilterQuery extends BaseFilterQuery
 
         if ($orderingModeId === ProductListOrderingConfig::ORDER_BY_PRICE_ASC) {
             $clone->sorting = [
-                'prices.amount' => [
+                'prices.price_with_vat' => [
                     'order' => 'asc',
                     'nested' => [
                         'path' => 'prices',
@@ -70,6 +70,23 @@ class FilterQuery extends BaseFilterQuery
         $clone->sorting = [
             'selling_from' => 'desc',
             'name.keyword' => 'asc',
+        ];
+
+        return $clone;
+    }
+
+    /**
+     * @param array $ids
+     * @return \Shopsys\ShopBundle\Model\Product\Search\FilterQuery
+     */
+    public function filterIds(array $ids): self
+    {
+        $clone = clone $this;
+
+        $clone->filters[] = [
+            'terms' => [
+                '_id' => $ids,
+            ],
         ];
 
         return $clone;

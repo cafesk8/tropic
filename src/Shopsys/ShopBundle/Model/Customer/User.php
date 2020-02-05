@@ -14,7 +14,6 @@ use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\ShopBundle\Model\Customer\Exception\UnsupportedCustomerExportStatusException;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @ORM\Table(
@@ -85,7 +84,7 @@ class User extends BaseUser
     private $exportedAt;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]
+     * @var \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(
      *     targetEntity="Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan",
@@ -107,15 +106,13 @@ class User extends BaseUser
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
-     * @param \Shopsys\ShopBundle\Model\Customer\User|null $userByEmail
      */
     public function __construct(
         BaseUserData $userData,
         BillingAddress $billingAddress,
-        ?DeliveryAddress $deliveryAddress,
-        ?BaseUser $userByEmail
+        ?DeliveryAddress $deliveryAddress
     ) {
-        parent::__construct($userData, $billingAddress, $deliveryAddress, $userByEmail);
+        parent::__construct($userData, $billingAddress, $deliveryAddress);
 
         $this->transferId = $userData->transferId;
         $this->ean = $userData->ean;
@@ -127,11 +124,10 @@ class User extends BaseUser
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
-     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      */
-    public function edit(BaseUserData $userData, EncoderFactoryInterface $encoderFactory)
+    public function edit(BaseUserData $userData)
     {
-        parent::edit($userData, $encoderFactory);
+        parent::edit($userData);
         $this->ean = $userData->ean;
         $this->memberOfBushmanClub = $userData->memberOfBushmanClub;
         $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
@@ -169,25 +165,6 @@ class User extends BaseUser
     public function setTransferId(string $transferId): void
     {
         $this->transferId = $transferId;
-    }
-
-    /**
-     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
-     * @param string $password
-     */
-    public function changePasswordByMigration(EncoderFactoryInterface $encoderFactory, $password): void
-    {
-        $encoder = $encoderFactory->getEncoder($this);
-
-        if ($encoder instanceof BushmanCustomPasswordEncoder) {
-            $passwordHash = $encoder->getHashOfMigratedPassword($password, null);
-            $this->password = $passwordHash;
-            $this->resetPasswordHash = null;
-            $this->resetPasswordHashValidThrough = null;
-            return;
-        }
-
-        parent::changePassword($encoderFactory, $password);
     }
 
     /**
@@ -264,6 +241,8 @@ class User extends BaseUser
         if ($exportStatus === self::EXPORT_ERROR) {
             return t('Chyba při přenosu');
         }
+
+        return '';
     }
 
     /**
@@ -277,7 +256,7 @@ class User extends BaseUser
     /**
      * @return \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan[]
      */
-    public function getUserTransferIdAndEan()
+    public function getUserTransferIdAndEan(): array
     {
         return $this->userTransferIdAndEan->toArray();
     }

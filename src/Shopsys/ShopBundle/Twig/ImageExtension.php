@@ -9,7 +9,8 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
 use Shopsys\FrameworkBundle\Model\Customer\User;
-use Shopsys\FrameworkBundle\Twig\ImageExtension as BaseImageExtension;
+use Shopsys\ReadModelBundle\Image\ImageView;
+use Shopsys\ReadModelBundle\Twig\ImageExtension as BaseImageExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Asset\Package;
 use Twig\TwigFunction;
@@ -52,35 +53,29 @@ class ImageExtension extends BaseImageExtension
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Image\Image|Object $imageOrEntity
+     * @param \Shopsys\FrameworkBundle\Component\Image\Image|\Shopsys\ReadModelBundle\Image\ImageView|Object|null $imageOrEntity
      * @param array $attributes
      * @return string
      */
-    public function getImageHtml($imageOrEntity, array $attributes = [])
+    public function getImageHtml($imageOrEntity, array $attributes = []): string
     {
-        $this->preventDefault($attributes);
-
-        try {
-            $image = $this->imageFacade->getImageByObject($imageOrEntity, $attributes['type']);
-            $entityName = $image->getEntityName();
+        if ($imageOrEntity !== null && !($imageOrEntity instanceof ImageView)) {
+            $this->preventDefault($attributes);
+            try {
+                $image = $this->imageFacade->getImageByObject($imageOrEntity, $attributes['type']);
+            } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
+                return $this->getNoimageHtml();
+            }
 
             $useLazyLoading = array_key_exists('lazy', $attributes) ? (bool)$attributes['lazy'] : false;
             if ($useLazyLoading === true) {
                 $attributes['src'] = $this->getImagePlaceholder();
                 $attributes['data-original'] = $this->getImageUrl($image, $attributes['size'], $attributes['type']);
                 $attributes['class'] = array_key_exists('class', $attributes) ? $attributes['class'] . ' js-lazy-load' : 'js-lazy-load';
-            } else {
-                $attributes['src'] = $this->getImageUrl($image, $attributes['size'], $attributes['type']);
             }
-
-            $additionalImagesData = $this->imageFacade->getAdditionalImagesData($this->domain->getCurrentDomainConfig(), $image, $attributes['size'], $attributes['type']);
-        } catch (\Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException $e) {
-            $entityName = 'noimage';
-            $attributes['src'] = $this->getEmptyImageUrl();
-            $additionalImagesData = [];
         }
 
-        return $this->getImageHtmlByEntityName($attributes, $entityName, $additionalImagesData);
+        return parent::getImageHtml($imageOrEntity, $attributes);
     }
 
     /**

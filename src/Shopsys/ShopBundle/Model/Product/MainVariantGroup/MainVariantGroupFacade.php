@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 
 class MainVariantGroupFacade
 {
@@ -34,17 +35,29 @@ class MainVariantGroupFacade
     private $currentCustomer;
 
     /**
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupRepository $mainVariantGroupRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
-    public function __construct(EntityManagerInterface $entityManager, MainVariantGroupRepository $mainVariantGroupRepository, Domain $domain, CurrentCustomer $currentCustomer)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        MainVariantGroupRepository $mainVariantGroupRepository,
+        Domain $domain,
+        CurrentCustomer $currentCustomer,
+        PricingGroupFacade $pricingGroupFacade
+    ) {
         $this->entityManager = $entityManager;
         $this->mainVariantGroupRepository = $mainVariantGroupRepository;
         $this->domain = $domain;
         $this->currentCustomer = $currentCustomer;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -125,9 +138,28 @@ class MainVariantGroupFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getProductsIndexedByMainVariantGroup(array $products): array
+    public function getProductsIndexedByPricingGroupIdAndMainVariantGroup(array $products, int $domainId): array
+    {
+        $productsIndexedByPricingGroupIdAndMainVariantGroup = [];
+        foreach ($this->pricingGroupFacade->getByDomainId($domainId) as $pricingGroup) {
+            $productsIndexedByPricingGroupIdAndMainVariantGroup[$pricingGroup->getId()] = $this->getProductsIndexedByMainVariantGroup(
+                $products,
+                $pricingGroup
+            );
+        }
+
+        return $productsIndexedByPricingGroupIdAndMainVariantGroup;
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public function getProductsIndexedByMainVariantGroup(array $products, PricingGroup $pricingGroup): array
     {
         $mainVariantGroups = [];
         foreach ($products as $product) {
@@ -138,8 +170,8 @@ class MainVariantGroupFacade
 
         $allProductsInMainVariantGroups = $this->mainVariantGroupRepository->getProductsForMainVariantGroups(
             $mainVariantGroups,
-            $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
+            $pricingGroup->getDomainId(),
+            $pricingGroup
         );
 
         $mainVariantGroups = [];

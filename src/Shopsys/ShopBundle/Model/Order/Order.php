@@ -8,26 +8,14 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use GoPay\Definition\Response\PaymentStatus;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Utils\Utils;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
-use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Pricing\Price;
-use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Shopsys\ShopBundle\Model\Order\Exception\UnsupportedOrderExportStatusException;
-use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
-use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
-use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
-use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 use Shopsys\ShopBundle\Model\Transport\Transport;
@@ -339,12 +327,9 @@ class Order extends BaseOrder
      * @return \Shopsys\FrameworkBundle\Model\Order\OrderEditResult
      */
     public function edit(
-        BaseOrderData $orderData,
-        OrderItemPriceCalculation $orderItemPriceCalculation,
-        OrderItemFactoryInterface $orderItemFactory,
-        OrderPriceCalculation $orderPriceCalculation
+        BaseOrderData $orderData
     ): OrderEditResult {
-        $orderEditResult = parent::edit($orderData, $orderItemPriceCalculation, $orderItemFactory, $orderPriceCalculation);
+        $orderEditResult = parent::edit($orderData);
 
         $this->goPayTransactions = $orderData->goPayTransactions;
         $this->payPalId = $orderData->payPalId;
@@ -514,6 +499,8 @@ class Order extends BaseOrder
         if ($this->exportStatus === self::EXPORT_ERROR) {
             return t('Chyba při přenosu');
         }
+
+        return '';
     }
 
     /**
@@ -573,91 +560,6 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
-     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
-     * @param string $locale
-     */
-    public function fillOrderProducts(
-        OrderPreview $orderPreview,
-        OrderItemFactoryInterface $orderItemFactory,
-        NumberFormatterExtension $numberFormatterExtension,
-        $locale
-    ) {
-        $quantifiedItemPrices = $orderPreview->getQuantifiedItemsPrices();
-        $quantifiedItemDiscountsIndexedByPromoCodeId = $orderPreview->getQuantifiedItemsDiscountsIndexedByPromoCodeId();
-
-        foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
-            $product = $quantifiedProduct->getProduct();
-            if (!$product instanceof Product) {
-                $message = 'Object "' . get_class($product) . '" is not valid for order creation.';
-                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
-            }
-
-            $quantifiedItemPrice = $quantifiedItemPrices[$index];
-            /* @var $quantifiedItemPrice \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice */
-
-            $orderItem = $orderItemFactory->createProduct(
-                $this,
-                $product->getName($locale),
-                $quantifiedItemPrice->getUnitPrice(),
-                $product->getVat()->getPercent(),
-                $quantifiedProduct->getQuantity(),
-                $product->getUnit()->getName($locale),
-                $product->getCatnum(),
-                $product
-            );
-
-            foreach ($quantifiedItemDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemDiscounts) {
-                $quantifiedItemDiscount = $quantifiedItemDiscounts[$index];
-                /* @var $quantifiedItemDiscount \Shopsys\FrameworkBundle\Model\Pricing\Price|null */
-                if ($quantifiedItemDiscount !== null) {
-                    $promoCode = $orderPreview->getPromoCodeById($promoCodeId);
-                    $this->addOrderItemDiscount($numberFormatterExtension, $orderPreview, $orderItemFactory, $quantifiedItemDiscount, $orderItem, $locale, $promoCode);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
-     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $quantifiedItemDiscount
-     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
-     * @param string $locale
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
-     */
-    protected function addOrderItemDiscount(
-        NumberFormatterExtension $numberFormatterExtension,
-        OrderPreview $orderPreview,
-        OrderItemFactoryInterface $orderItemFactory,
-        Price $quantifiedItemDiscount,
-        OrderItem $orderItem,
-        $locale,
-        ?PromoCode $promoCode = null
-    ) {
-        if ($promoCode->isUseNominalDiscount()) {
-            $discountValue = $numberFormatterExtension->formatNumber(-$promoCode->getNominalDiscount()->getAmount()) . ' ' . $numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
-        } else {
-            $discountValue = $numberFormatterExtension->formatPercent(-$promoCode->getPercent(), $locale);
-        }
-
-        $name = sprintf(
-            '%s %s - %s',
-            t('Promo code', [], 'messages', $locale),
-            $discountValue,
-            $orderItem->getName()
-        );
-
-        $orderItemFactory->createPromoCode(
-            $name,
-            $quantifiedItemDiscount->inverse(),
-            $orderItem
-        );
-    }
-
-    /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money
      */
     public function getOrderDiscountPrice(): Money
@@ -672,48 +574,6 @@ class Order extends BaseOrder
         }
 
         return $discountPriceWithVat;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
-     * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     */
-    public function fillOrderGifts(OrderPreview $orderPreview, OrderItemFactoryInterface $orderItemFactory, ProductGiftPriceCalculation $productGiftPriceCalculation, Domain $domain): void
-    {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $giftInCart */
-        foreach ($orderPreview->getGifts() as $giftInCart) {
-            $gift = $giftInCart->getProduct();
-
-            if (!$gift instanceof Product) {
-                $message = 'Object "' . get_class($gift) . '" is not valid for order creation.';
-                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
-            }
-
-            if (!$orderItemFactory instanceof OrderItemFactory) {
-                $message = 'Object "' . get_class($orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
-                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
-            }
-
-            $giftPrice = new Price($productGiftPriceCalculation->getGiftPrice(), $productGiftPriceCalculation->getGiftPrice());
-            $giftTotalPrice = new Price(
-                $productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity()),
-                $productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity())
-            );
-
-            $orderItemFactory->createGift(
-                $this,
-                $gift->getName($domain->getLocale()),
-                $giftPrice,
-                $gift->getVat()->getPercent(),
-                $giftInCart->getQuantity(),
-                $gift->getUnit()->getName($domain->getLocale()),
-                $gift->getCatnum(),
-                $gift,
-                $giftTotalPrice
-            );
-        }
     }
 
     /**
@@ -747,54 +607,6 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     */
-    public function fillOrderPromoProducts(OrderPreview $orderPreview, OrderItemFactoryInterface $orderItemFactory, Domain $domain): void
-    {
-        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $promoProductCartItem */
-        foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
-            $product = $promoProductCartItem->getProduct();
-            $promoProduct = $promoProductCartItem->getPromoProduct();
-
-            if (!$product instanceof Product) {
-                $message = 'Object "' . get_class($product) . '" is not valid for order creation.';
-                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
-            }
-
-            if (!$promoProduct instanceof PromoProduct) {
-                $message = 'Object "' . get_class($promoProduct) . '" is not valid for order creation.';
-                throw new \Shopsys\FrameworkBundle\Model\Order\Item\Exception\InvalidQuantifiedProductException($message);
-            }
-
-            if (!$orderItemFactory instanceof OrderItemFactory) {
-                $message = 'Object "' . get_class($orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
-                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
-            }
-
-            $promoProductOrderItemPrice = new Price($promoProductCartItem->getWatchedPrice(), $promoProductCartItem->getWatchedPrice());
-            $promoProductOrderItemTotalPrice = new Price(
-                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity()),
-                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity())
-            );
-
-            $orderItemFactory->createPromoProduct(
-                $this,
-                $product->getName($domain->getLocale()),
-                $promoProductOrderItemPrice,
-                $product->getVat()->getPercent(),
-                $promoProductCartItem->getQuantity(),
-                $product->getUnit()->getName($domain->getLocale()),
-                $product->getCatnum(),
-                $product,
-                $promoProductOrderItemTotalPrice,
-                $promoProduct
-            );
-        }
-    }
-
-    /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
      */
     private function setDeliveryAddressNewly(OrderData $orderData): void
@@ -808,45 +620,6 @@ class Order extends BaseOrder
         $this->deliveryCity = $orderData->deliveryCity;
         $this->deliveryPostcode = $orderData->deliveryPostcode;
         $this->deliveryCountry = $orderData->deliveryCountry;
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
-     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
-     * @param \Shopsys\ShopBundle\Model\Order\Order $order
-     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
-     * @param string $defaultVatValue
-     * @param string $locale
-     */
-    public function setGiftCertificate(
-        OrderPreview $orderPreview,
-        OrderItemFactoryInterface $orderItemFactory,
-        NumberFormatterExtension $numberFormatterExtension,
-        self $order,
-        PromoCode $promoCode,
-        string $defaultVatValue,
-        string $locale
-    ): void {
-        $name = sprintf(
-            '%s %s %s',
-            t('Dárkový certifikát ', [], 'messages', $locale),
-            $promoCode->getCode(),
-            $numberFormatterExtension->formatNumber($promoCode->getCertificateValue()->getAmount()) . ' ' . $numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($order->getDomainId(), $locale)
-        );
-
-        $certificatePrice = new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
-        if ($certificatePrice->getPriceWithVat()->isGreaterThan($orderPreview->getTotalPriceWithoutGiftCertificate()->getPriceWithVat())) {
-            $certificatePrice = $orderPreview->getTotalPriceWithoutGiftCertificate();
-        }
-
-        $orderItemFactory->createGiftCertificate(
-            $order,
-            $name,
-            $certificatePrice,
-            $promoCode->getCertificateSku(),
-            $defaultVatValue
-        );
     }
 
     /**

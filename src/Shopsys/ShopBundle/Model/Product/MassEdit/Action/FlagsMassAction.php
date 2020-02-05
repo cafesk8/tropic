@@ -130,7 +130,7 @@ class FlagsMassAction implements MassEditActionInterface
         foreach ($productsIterableResult as $row) {
             /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
             $product = $row[0];
-            $flags = $product->getFlags()->toArray();
+            $flags = $product->getFlags();
             if (!in_array($value, $flags, true)) {
                 $flags[] = $value;
                 $product->editFlags($flags);
@@ -148,7 +148,7 @@ class FlagsMassAction implements MassEditActionInterface
         foreach ($productsIterableResult as $row) {
             /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
             $product = $row[0];
-            $flags = $product->getFlags()->toArray();
+            $flags = $product->getFlags();
             $key = array_search($value, $flags, true);
             if ($key !== false) {
                 unset($flags[$key]);

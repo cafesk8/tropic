@@ -84,7 +84,7 @@ class MigrateImageDoctrineListener
      */
     private function preFlushImage(Image $image)
     {
-        $image->setFileAsUploaded(Image::UPLOAD_KEY, $image->getMigrateFileName());
+        $image->setFileAsUploaded('image', $image->getMigrateFileName());
     }
 
     /**

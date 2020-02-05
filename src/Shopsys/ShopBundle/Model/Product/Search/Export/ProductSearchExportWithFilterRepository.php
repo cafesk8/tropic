@@ -4,8 +4,22 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\Search\Export;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
+use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
+use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository as BaseProductSearchExportWithFilterRepository;
+use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
+use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 
 class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWithFilterRepository
 {
@@ -13,6 +27,87 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     protected $productFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade
+     */
+    private $mainVariantGroupFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    private $productsIndexedByPricingGroupIdAndMainVariantGroup;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    private $variantsIndexedByPricingGroupIdAndMainVariantId;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
+     */
+    private $pricingGroupSettingFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade
+     */
+    private $productCachedAttributesFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation
+     */
+    private $basePriceCalculation;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting
+     */
+    private $pricingSetting;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository
+     */
+    private $productManualInputPriceRepository;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
+     */
+    public function __construct(
+        EntityManagerInterface $em,
+        ParameterRepository $parameterRepository,
+        ProductFacade $productFacade,
+        FriendlyUrlRepository $friendlyUrlRepository,
+        Domain $domain,
+        ProductVisibilityRepository $productVisibilityRepository,
+        FriendlyUrlFacade $friendlyUrlFacade,
+        MainVariantGroupFacade $mainVariantGroupFacade,
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        ProductCachedAttributesFacade $productCachedAttributesFacade,
+        BasePriceCalculation $basePriceCalculation,
+        PricingSetting $pricingSetting,
+        ProductManualInputPriceRepository $productManualInputPriceRepository
+    ) {
+        parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
+        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
+        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->productsIndexedByPricingGroupIdAndMainVariantGroup = [];
+        $this->variantsIndexedByPricingGroupIdAndMainVariantId = [];
+        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
+        $this->basePriceCalculation = $basePriceCalculation;
+        $this->pricingSetting = $pricingSetting;
+        $this->productManualInputPriceRepository = $productManualInputPriceRepository;
+    }
 
     /**
      * @param int $domainId
@@ -23,61 +118,139 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
      */
     public function getProductsData(int $domainId, string $locale, int $startFrom, int $batchSize): array
     {
-        $queryBuilder = $this->createQueryBuilder($domainId, $locale)
+        $queryBuilder = $this->createQueryBuilder($domainId)
             ->setFirstResult($startFrom)
             ->setMaxResults($batchSize);
 
         $query = $queryBuilder->getQuery();
 
+        $products = $query->getResult();
+        $this->productsIndexedByPricingGroupIdAndMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByPricingGroupIdAndMainVariantGroup($products, $domainId);
+        $this->variantsIndexedByPricingGroupIdAndMainVariantId = $this->productFacade->getVariantsIndexedByPricingGroupIdAndMainVariantId($products, $domainId);
+
         $result = [];
         /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
-        foreach ($query->getResult() as $product) {
-            $variants = $this->productFacade->getVariantsForProduct($product, $domainId);
-
-            $parameters = $this->extractParametersForProduct($product, $variants, $locale);
-            $flagIds = $this->extractFlags($product);
-            $categoryIds = $this->extractCategories($domainId, $product);
-            $prices = $this->extractPrices($domainId, $product);
-
-            $result[] = [
-                'id' => $product->getId(),
-                'catnum' => $product->getCatnum(),
-                'partno' => $product->getPartno(),
-                'ean' => $product->getEan(),
-                'name' => $product->getName($locale),
-                'description' => $product->getDescription($domainId),
-                'short_description' => $product->getShortDescription($domainId),
-                'brand' => $product->getBrand() ? $product->getBrand()->getId() : '',
-                'flags' => $flagIds,
-                'categories' => $categoryIds,
-                'in_stock' => $product->getCalculatedAvailability()->getDispatchTime() === 0,
-                'prices' => $prices,
-                'action_price' => $product->getActionPrice($domainId) ? (float)$product->getActionPrice($domainId)->getAmount() : null,
-                'parameters' => array_values($parameters),
-                'ordering_priority' => $product->getOrderingPriority(),
-                'calculated_selling_denied' => $product->getCalculatedSellingDenied(),
-                'selling_from' => ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d'),
-            ];
+        foreach ($products as $product) {
+            $result[] = $this->extractResult($product, $domainId, $locale);
         }
 
         return $result;
     }
 
     /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @param string $locale
+     * @return array
+     */
+    protected function extractResult(Product $product, int $domainId, string $locale): array
+    {
+        $variants = $this->productFacade->getVariantsForProduct($product, $domainId);
+        $result = parent::extractResult($product, $domainId, $locale);
+
+        $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
+        $result['action_price'] = $product->getActionPrice($domainId) ? (float)$product->getActionPrice($domainId)->getAmount() : null;
+        $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
+        $result['main_variant_group_products'] = $this->getMainVariantGroupProductsData($product, $locale);
+        $result['second_distinguishing_parameter_values'] = $this->getSecondDistinguishingParameterValues($product, $locale);
+        $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
+        $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
+
+        return $result;
+    }
+
+    /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param int $domainId
+     * @return array
+     */
+    private function getDefaultPriceArray(Product $product, int $domainId): array
+    {
+        $defaultPriceWithVat = null;
+        $defaultPriceWithoutVat = null;
+        $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $productManualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [$defaultPricingGroupOnDomain], $domainId);
+        $manualInputPriceForDefaultPricingGroup = reset($productManualInputPrices);
+        if ($manualInputPriceForDefaultPricingGroup !== false) {
+            $defaultPrice = $this->basePriceCalculation->calculateBasePrice(
+                Money::create($manualInputPriceForDefaultPricingGroup['inputPrice']),
+                $this->pricingSetting->getInputPriceType(),
+                $product->getVat()
+            );
+            $defaultPriceWithoutVat = (float)$defaultPrice->getPriceWithoutVat()->getAmount();
+            $defaultPriceWithVat = (float)$defaultPrice->getPriceWithVat()->getAmount();
+        }
+
+        return [
+            'price_with_vat' => $defaultPriceWithVat,
+            'price_without_vat' => $defaultPriceWithoutVat,
+        ];
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return array
+     */
+    private function getMainVariantGroupProductsData(Product $product, string $locale): array
+    {
+        $mainVariantGroupProductsData = [];
+        foreach ($this->productsIndexedByPricingGroupIdAndMainVariantGroup as $pricingGroupId => $productsIndexedByMainVariantGroup) {
+            if ($product->getMainVariantGroup() !== null && count($productsIndexedByMainVariantGroup) > 0 && in_array($product->getMainVariantGroup()->getId(), array_keys($productsIndexedByMainVariantGroup), true)) {
+                foreach ($productsIndexedByMainVariantGroup[$product->getMainVariantGroup()->getId()] as $mainVariantGroupProduct) {
+                    /** @var \Shopsys\ShopBundle\Model\Product\Product $mainVariantGroupProduct */
+                    $mainVariantGroupProductsData[] = [
+                        'pricing_group_id' => $pricingGroupId,
+                        'id' => $mainVariantGroupProduct->getId(),
+                        'name' => $mainVariantGroupProduct->getName($locale),
+                    ];
+                }
+            }
+        }
+
+        return $mainVariantGroupProductsData;
+    }
+
+    /**
+     * @param array $baseParameters
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $variants
      * @param string $locale
      * @return array
      */
-    private function extractParametersForProduct(Product $product, array $variants, string $locale): array
+    private function extractParametersForProductIncludingVariants(array $baseParameters, array $variants, string $locale): array
     {
         $parameters = [];
         foreach ($variants as $variant) {
             $parameters = array_merge($this->extractParameters($locale, $variant), $parameters);
         }
 
-        $parameters = array_merge($this->extractParameters($locale, $product), $parameters);
+        $parameters = array_merge($baseParameters, $parameters);
 
-        return array_unique($parameters, SORT_REGULAR);
+        return array_values(array_unique($parameters, SORT_REGULAR));
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param string $locale
+     * @return array
+     */
+    private function getSecondDistinguishingParameterValues(Product $product, string $locale): array
+    {
+        $secondDistinguishingParameterValues = [];
+        foreach ($this->variantsIndexedByPricingGroupIdAndMainVariantId as $pricingGroupId => $variantsIndexedByMainVariantId) {
+            if (isset($variantsIndexedByMainVariantId[$product->getId()])) {
+                $distinguishingParameterValuesForProduct = $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($variantsIndexedByMainVariantId[$product->getId()], $locale);
+                foreach ($distinguishingParameterValuesForProduct as $mainVariantId => $variantIdsIndexedByParameterValues) {
+                    foreach ($variantIdsIndexedByParameterValues as $parameterValue => $variantId) {
+                        $secondDistinguishingParameterValues[] = [
+                            'pricing_group_id' => $pricingGroupId,
+                            'value' => $parameterValue,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $secondDistinguishingParameterValues;
     }
 }

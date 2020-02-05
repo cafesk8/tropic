@@ -56,10 +56,10 @@ class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
             $productFlagFilter,
             $productCalculatedSellingDeniedFilter,
             $productAvailabilityFilter,
-            $productBrandFilter
+            $productBrandFilter,
+            $productCategoryFilter
         );
 
-        $this->registerFilter($productCategoryFilter);
         $this->registerFilter($productMainVariantFilter);
         $this->registerFilter($productVariantTypeNoneFilter);
         $this->registerFilter($productParameterFilter);

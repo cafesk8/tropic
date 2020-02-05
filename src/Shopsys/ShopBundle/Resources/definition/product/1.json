@@ -180,7 +180,27 @@
             "pricing_group_id": {
               "type": "integer"
             },
-            "amount": {
+            "price_with_vat": {
+              "type": "float"
+            },
+            "price_without_vat": {
+              "type": "float"
+            },
+            "vat": {
+              "type": "float"
+            },
+            "price_from": {
+              "type": "boolean"
+            }
+          }
+        },
+        "default_price": {
+          "type": "nested",
+          "properties": {
+            "price_with_vat": {
+              "type": "float"
+            },
+            "price_without_vat": {
               "type": "float"
             }
           }
@@ -210,6 +230,57 @@
         },
         "calculated_selling_denied": {
           "type": "boolean"
+        },
+        "selling_denied": {
+          "type": "boolean"
+        },
+        "availability": {
+          "type": "text"
+        },
+        "main_variant": {
+          "type": "boolean"
+        },
+        "main_variant_id": {
+          "type": "integer"
+        },
+        "detail_url": {
+          "type": "text"
+        },
+        "visibility": {
+          "type": "nested",
+          "properties": {
+            "pricing_group_id": {
+              "type": "integer"
+            },
+            "visible": {
+              "type": "boolean"
+            }
+          }
+        },
+        "main_variant_group_products": {
+          "type": "nested",
+          "properties": {
+            "pricing_group_id": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "text"
+            }
+          }
+        },
+        "second_distinguishing_parameter_values": {
+          "type": "nested",
+          "properties": {
+            "pricing_group_id": {
+              "type": "integer"
+            },
+            "value": {
+              "type": "text"
+            }
+          }
         }
       }
     }

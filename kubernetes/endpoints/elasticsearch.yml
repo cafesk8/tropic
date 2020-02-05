@@ -4,7 +4,7 @@ metadata:
     name: elasticsearch
 subsets:
     -   addresses:
-        -   ip: ~
+            -   ip: ~
         ports:
-        -   name: elasticsearch
-            port: ~
+                -   name: elasticsearch
+                    port: ~

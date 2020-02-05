@@ -71,7 +71,7 @@ class Transport extends BaseTransport
     protected $mallType;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Country\Country[]
+     * @var \Shopsys\FrameworkBundle\Model\Country\Country[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
      * @ORM\JoinTable(name="transport_countries")
@@ -226,7 +226,7 @@ class Transport extends BaseTransport
     /**
      * @return \Shopsys\FrameworkBundle\Model\Country\Country[]
      */
-    public function getCountries()
+    public function getCountries(): array
     {
         return $this->countries->toArray();
     }

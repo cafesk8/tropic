@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Twig;
 
-use CommerceGuys\Intl\Formatter\NumberFormatter;
+use CommerceGuys\Intl\Formatter\CurrencyFormatter;
 use Shopsys\FrameworkBundle\Twig\PriceExtension as BasePriceExtension;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 
@@ -15,21 +15,27 @@ class PriceExtension extends BasePriceExtension
 
     /**
      * @param string $locale
-     * @return \CommerceGuys\Intl\Formatter\NumberFormatter
+     * @return \CommerceGuys\Intl\Formatter\CurrencyFormatter
      */
-    protected function getNumberFormatter(string $locale): NumberFormatter
+    protected function getCurrencyFormatter(string $locale): CurrencyFormatter
     {
-        $numberFormat = $this->numberFormatRepository->get($locale);
-        $numberFormatter = new NumberFormatter($numberFormat, NumberFormatter::CURRENCY);
-
         if ($locale === DomainHelper::CZECH_LOCALE) {
-            $numberFormatter->setMinimumFractionDigits(self::CZECH_MINIMUM_FRACTION_DIGITS);
-            $numberFormatter->setMaximumFractionDigits(self::CZECH_MAXIMUM_FRACTION_DIGITS);
+            $minimumFractionDigits = self::CZECH_MINIMUM_FRACTION_DIGITS;
+            $maximumFractionDigits = self::CZECH_MAXIMUM_FRACTION_DIGITS;
         } else {
-            $numberFormatter->setMinimumFractionDigits(static::MINIMUM_FRACTION_DIGITS);
-            $numberFormatter->setMaximumFractionDigits(static::MAXIMUM_FRACTION_DIGITS);
+            $minimumFractionDigits = static::MINIMUM_FRACTION_DIGITS;
+            $maximumFractionDigits = static::MAXIMUM_FRACTION_DIGITS;
         }
 
-        return $numberFormatter;
+        return new CurrencyFormatter(
+            $this->numberFormatRepository,
+            $this->intlCurrencyRepository,
+            [
+                'locale' => $locale,
+                'style' => 'standard',
+                'minimum_fraction_digits' => $minimumFractionDigits,
+                'maximum_fraction_digits' => $maximumFractionDigits,
+            ]
+        );
     }
 }

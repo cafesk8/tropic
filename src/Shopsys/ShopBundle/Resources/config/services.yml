@@ -183,12 +183,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\UserRepository: '@Shopsys\ShopBundle\Model\Customer\UserRepository'
 
-    Shopsys\ShopBundle\Model\Localization\Localization:
-        arguments:
-            $adminLocale: '%shopsys.admin_locale%'
-
-    Shopsys\FrameworkBundle\Model\Localization\Localization: '@Shopsys\ShopBundle\Model\Localization\Localization'
-
     Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\OrderDataFactory'
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\Item\OrderItemDataFactory'
@@ -218,9 +212,6 @@ services:
     Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\ProductDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade'
-
-
-    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
@@ -343,8 +334,6 @@ services:
 
     Shopsys\FrameworkBundle\Component\Grid\Ordering\GridOrderingFacade: '@Shopsys\ShopBundle\Model\Grid\GridOrderingFacade'
 
-    Shopsys\FrameworkBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory: '@Shopsys\ShopBundle\Model\Breadcrumb\FrontBreadcrumbResolverFactory'
-
     Shopsys\ShopBundle\Model\Blog\Article\BlogArticleDetailFriendlyUrlDataProvider:
         tags:
             - {name: shopsys.friendly_url_provider}
@@ -368,10 +357,6 @@ services:
     Shopsys\ShopBundle\Model\Product\MassEdit\Action\ProductParameterMassAction: ~
 
     Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@Shopsys\ShopBundle\Model\Category\CategoryFacade'
-
-    Shopsys\ShopBundle\Twig\BushmanClubPointsExtension:
-        tags:
-            - { name: twig.extension }
 
     Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods: ~
 
@@ -406,10 +391,6 @@ services:
     Shopsys\ShopBundle\Component\Instagram\Instagram:
         arguments:
             - '%instagram%'
-
-    Shopsys\ShopBundle\Twig\InstagramExtension:
-        tags:
-            - { name: twig.extension }
 
     shopsys.shop.twig.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
@@ -510,14 +491,6 @@ services:
     Shopsys\ShopBundle\Component\Setting\Setting: ~
     Shopsys\FrameworkBundle\Component\Setting\Setting: '@Shopsys\ShopBundle\Component\Setting\Setting'
 
-    Shopsys\ShopBundle\Twig\DeliveryDateExtension:
-        tags:
-            - { name: twig.extension }
-
-    Shopsys\ShopBundle\Twig\FriendlyDateTimeFormatterExtension:
-        tags:
-            - { name: twig.extension }
-
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository: '@Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository'
 
     Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusDataFactoryInterface:
@@ -558,8 +531,8 @@ services:
     SimPod\SmsManager\ApiSmsManager: ~
 
     Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory:
-      arguments:
-        $apiKey: '%smsManagerApiKey%'
+        arguments:
+            $apiKey: '%smsManagerApiKey%'
 
     Shopsys\ShopBundle\Model\Order\MassAction\CsvExportMassAction: ~
 
@@ -586,7 +559,7 @@ services:
     Shopsys\FrameworkBundle\Model\Security\LoginListener:
         class: Shopsys\ShopBundle\Model\Security\LoginListener
         tags:
-          - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade: '@Shopsys\ShopBundle\Model\Order\Item\OrderItemFacade'
 
@@ -649,3 +622,21 @@ services:
     Shopsys\ShopBundle\Controller\Front\ErrorController:
         arguments:
             $environment: '%kernel.environment%'
+
+    swiftmailer.transport.real:
+        class: Swift_SmtpTransport
+        arguments: ['%mailer_host%']
+
+    Shopsys\ShopBundle\Model\Product\Search\ProductElasticsearchConverter: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchConverter: '@Shopsys\ShopBundle\Model\Product\Search\ProductElasticsearchConverter'
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewFactory'
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade: '@Shopsys\ShopBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade'
+
+    Shopsys\ShopBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade:
+        arguments:
+            - '@shopsys.shop.product.bestselling_product.cache_provider'

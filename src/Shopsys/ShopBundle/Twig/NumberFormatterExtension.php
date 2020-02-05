@@ -39,7 +39,7 @@ class NumberFormatterExtension extends BaseNumberFormatterExtension
     /**
      * What is it?
      *
-     * This method is copied from PriceExtension, but method addOrderItemDiscount in Order entity needs info
+     * This method is copied from PriceExtension, but method addOrderItemDiscount in OrderFacade needs info
      * about currency and it is simpler copy this method than override any classes from framework
      *
      * @param int $currencyId

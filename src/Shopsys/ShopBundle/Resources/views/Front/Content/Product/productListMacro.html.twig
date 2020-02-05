@@ -1,9 +1,8 @@
-{% macro list(products, variantsIndexedByMainVariantId, productsIndexedByMainVariantGroup, listCssClass, productHeadingTagName) %}
+{% macro list(productViews, listCssClass, productHeadingTagName) %}
     {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
-    {% set domain = getDomain() %}
 
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
-        {% for product in products %}
+        {% for productView in productViews %}
             {# Design - temporary hidden #}
             {% if 1==2 %}
                 {% if loop.index == 7 %}
@@ -12,24 +11,30 @@
                     </li>
                 {% endif %}
             {% endif %}
+            {% set productsForMainVariantGroup = productView.mainVariantGroupProductViews %}
             <li class="list-products__item
                 {# Design - temporary hidden #}
                 {% if 1==2 %}
                     {% if loop.index == 4 %} list-products__item--doubled {% endif %}
                 {% endif %}
-                {% if product.mainVariantGroup is not null %} list-products__item--with-variants {% endif %}
+                {% if productsForMainVariantGroup is not empty %} list-products__item--with-variants {% endif %}
                 js-list-products-item">
                 <div class="list-products__item__in">
-                    {% set productSellingPrice = getProductSellingPrice(product) %}
-                    <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="list-products__item__block">
+                    {% set productSellingPrice = productView.sellingPrice %}
+                    <a href="{{ productView.action.detailUrl }}" class="list-products__item__block">
                         <div class="list-products__item__image dont-print">
-                            {{ image(product, { size: 'list', alt: product.name, lazy: true }) }}
-                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(productSellingPrice, product, 1), 'in-flag--in-list') }}
+                            {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
+                            {% set productFlagIds = productView.flagIds %}
+                            {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                            {% if freeTransportAndPaymentFlagId is not null %}
+                                {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                            {% endif %}
+                            {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list') }}
                         </div>
 
                         <div class="list-products__item__info">
                             <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
-                                {{ product.name|striptags|raw }}
+                                {{ productView.name|striptags|raw }}
                             </{{ productHeadingTagName|default('h2') }}>
 
                             {% if productSellingPrice is not null %}
@@ -40,7 +45,7 @@
                                         {% else %}
                                             {{ productSellingPrice.priceWithVat|price }}
                                         {% endif %}
-                                        {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                        {% if (productSellingPrice.isActionPrice and not productSellingPrice.priceFrom) %}
                                             <div class="list-products__item__info__price__item__old">
                                                 {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
                                             </div>
@@ -60,17 +65,12 @@
                             {% endif %}
 
                             <div class="list-products__item__info__availability">
-                                {% if variantsIndexedByMainVariantId|length > 0 and product.id in variantsIndexedByMainVariantId|keys %}
-                                    {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
-                                    {% if product.id in secondDistinguishingParameters|keys %}
-                                        {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
-                                            <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endif %}
+                                {% for parameterValue in productView.distinguishingParameterValues %}
+                                    <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
+                                {% endfor %}
                                 <div class="list-products__item__info__availability__spacer"></div>
                                 <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
-                                    {{ product.calculatedAvailability.getName }}
+                                    {{ productView.availability }}
                                 </div>
 
                                 {# Temporary remove unnecessary stores availability #}
@@ -79,12 +79,7 @@
                                     {{ 'K dispozici v Hradci Králové'|trans }}
                                 </div>#}
                             </div>
-
-                            {% if productsIndexedByMainVariantGroup is not null
-                                and product.mainVariantGroup is not null
-                                and product.mainVariantGroup.id in productsIndexedByMainVariantGroup|keys
-                            %}
-                                {% set productsForMainVariantGroup = productsIndexedByMainVariantGroup[product.mainVariantGroup.id] %}
+                            {% if productsForMainVariantGroup is not empty %}
                                 <div class="list-products__item__variants">
                                     {% if productsForMainVariantGroup|length >= 5 %}
                                         <span class="js-variantsSlider-action-prev list-products__item__variants__arrow list-products__item__variants__arrow--prev">
@@ -92,9 +87,9 @@
                                         </span>
                                     {% endif %}
                                     <div class="list-products__item__variants__slider js-variantsSlider-slides">
-                                        {% for product in productsForMainVariantGroup %}
+                                        {% for mainVariantGroupProductView in productsForMainVariantGroup %}
                                             <div class="list-products__item__variants__image">
-                                                {{ image(product, { size: 'thumbnail', alt: product.name, lazy: true }) }}
+                                                {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name, lazy: true }) }}
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -113,32 +108,30 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(products, variantsIndexedByMainVariantId, listCssClass = 'list-products', productHeadingTagName, type) %}
-    <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ products|length }}">
+{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type) %}
+    <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
             <i class="svg svg-slider-arrow"></i>
         </span>
 
         <div class="{{ listCssClass }}__in">
-            {% set domain = getDomain() %}
-
             <div class="{{ listCssClass }}__list js-horizontal-list-slides">
-                {% for product in products %}
+                {% for productView in productViews %}
                     <div class="{{ listCssClass }}__item">
                         <div class="{{ listCssClass }}__item__in">
-                            <a href="{{ url('front_product_detail', {'id': product.id}) }}" class="{{ listCssClass }}__item__block">
+                            <a href="{{ productView.action.detailUrl }}" class="{{ listCssClass }}__item__block">
                                 <div class="{{ listCssClass }}__item__image dont-print">
-                                    {{ image(product.productForCreatingImageAccordingToVariant, { size: 'list', alt: product.name, lazy: true }) }}
+                                    {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
                                 </div>
 
                                 <div class="{{ listCssClass }}__item__info">
 
                                     <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">
-                                        {{ product.name|striptags|raw }}
+                                        {{ productView.name|striptags|raw }}
                                     </{{ productHeadingTagName|default('h2') }}>
 
-                                    {% set productSellingPrice = getProductSellingPrice(product) %}
+                                    {% set productSellingPrice = productView.sellingPrice %}
 
                                     {% if productSellingPrice is not null %}
                                         <div class="{{ listCssClass }}__item__info__price">
@@ -169,14 +162,9 @@
 
                                     <div class="{{ listCssClass }}__item__info__availability">
 {#                                        {{ 'Vaše velikost'|trans }}#}
-                                        {% if variantsIndexedByMainVariantId|length > 0 and product.id in variantsIndexedByMainVariantId|keys %}
-                                            {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[product.id]) %}
-                                            {% if product.id in secondDistinguishingParameters|keys %}
-                                                {% for parameterValue, variantId in secondDistinguishingParameters[product.id] %}
-                                                    <span class="in-badge">{{ parameterValue }}</span>
-                                                {% endfor %}
-                                            {% endif %}
-                                        {% endif %}
+                                        {% for parameterValue in productView.distinguishingParameterValues %}
+                                            <span class="in-badge">{{ parameterValue }}</span>
+                                        {% endfor %}
 {#                                        {{ product.calculatedAvailability.getName }}#}
                                     </div>
                                 </div>

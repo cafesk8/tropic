@@ -5,29 +5,17 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
-use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
+use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Category\CategoryFacade;
-use Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade;
 
 class HomepageController extends FrontBaseController
 {
     private const HOMEPAGE_ARTICLES_LIMIT = 2;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
-     */
-    private $currentCustomer;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade
-     */
-    private $topProductFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade
@@ -50,11 +38,6 @@ class HomepageController extends FrontBaseController
     private $blogArticleFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade
-     */
-    private $productOnCurrentDomainFacade;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Category\CategoryFacade
      */
     private $categoryFacade;
@@ -65,45 +48,41 @@ class HomepageController extends FrontBaseController
     private $articleFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @var \Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade
+     */
+    private $listedProductViewFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade $sliderItemFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductsFacade
      * @param \Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade $seoSettingFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
-     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
+     * @param \Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      */
     public function __construct(
-        CurrentCustomer $currentCustomer,
         SliderItemFacade $sliderItemFacade,
-        TopProductFacade $topProductsFacade,
         SeoSettingFacade $seoSettingFacade,
         Domain $domain,
         BlogArticleFacade $blogArticleFacade,
-        ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade,
         CategoryFacade $categoryFacade,
-        ArticleFacade $articleFacade
+        ArticleFacade $articleFacade,
+        ListedProductViewFacadeInterface $listedProductViewFacade
     ) {
-        $this->currentCustomer = $currentCustomer;
         $this->sliderItemFacade = $sliderItemFacade;
-        $this->topProductFacade = $topProductsFacade;
         $this->seoSettingFacade = $seoSettingFacade;
         $this->domain = $domain;
         $this->blogArticleFacade = $blogArticleFacade;
-        $this->productOnCurrentDomainFacade = $productOnCurrentDomainFacade;
         $this->categoryFacade = $categoryFacade;
         $this->articleFacade = $articleFacade;
+        $this->listedProductViewFacade = $listedProductViewFacade;
     }
 
     public function indexAction()
     {
         $sliderItems = $this->sliderItemFacade->getAllVisibleOnCurrentDomain();
-        $topProducts = $this->topProductFacade->getAllOfferedProducts(
-            $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
-        );
+        $topProducts = $this->listedProductViewFacade->getAllTop();
 
         return $this->render('@ShopsysShop/Front/Content/Default/index.html.twig', [
             'sliderItems' => $sliderItems,
@@ -116,7 +95,6 @@ class HomepageController extends FrontBaseController
                 self::HOMEPAGE_ARTICLES_LIMIT
             ),
             'domainId' => $this->domain->getId(),
-            'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($topProducts),
             'legendaryCategoryId' => $this->categoryFacade->getHighestLegendaryCategoryIdByDomainId($this->domain->getId()),
             'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $this->domain->getId()),
             'ourValuesArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_VALUES_ARTICLE_ID, $this->domain->getId()),

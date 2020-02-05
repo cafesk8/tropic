@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\LastVisitedProducts;
 
-use Shopsys\ShopBundle\Model\Product\Product;
-use Shopsys\ShopBundle\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -14,37 +12,26 @@ class LastVisitedProductsFacade
     public const COOKIE_PRODUCT_IDS_DELIMITER = ',';
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
-     */
-    private $productFacade;
-
-    /**
      * @var \Symfony\Component\HttpFoundation\RequestStack
      */
     private $requestStack;
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
      */
-    public function __construct(ProductFacade $productFacade, RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->productFacade = $productFacade;
         $this->requestStack = $requestStack;
     }
 
     /**
      * @param \Symfony\Component\HttpFoundation\ParameterBag $cookies
      * @param int $limit
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return int[]
      */
-    public function getProductsFromCookieSortedByNewest(ParameterBag $cookies, int $limit): array
+    public function getProductIdsFromCookieSortedByNewest(ParameterBag $cookies, int $limit): array
     {
-        $productIds = $this->getProductIdsFromCookieWithoutCurrentProduct($cookies, $limit);
-
-        $products = $this->productFacade->getVisibleMainVariantsByIds($productIds);
-
-        return $this->sortProductsInSameOrderAsIdsFromCookie($products, $productIds);
+        return $this->getProductIdsFromCookieWithoutCurrentProduct($cookies, $limit);
     }
 
     /**
@@ -66,23 +53,6 @@ class LastVisitedProductsFacade
         }
 
         return array_slice($productIds, 0, $limit, true);
-    }
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
-     * @param int[] $productIds
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
-     */
-    private function sortProductsInSameOrderAsIdsFromCookie(array $products, array $productIds): array
-    {
-        usort($products, function (Product $product1, Product $product2) use ($productIds) {
-            $product1Priority = array_search($product1->getId(), $productIds, true);
-            $product2Priority = array_search($product2->getId(), $productIds, true);
-
-            return $product1Priority < $product2Priority ? -1 : 1;
-        });
-
-        return $products;
     }
 
     /**
