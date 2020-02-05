@@ -17,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper;
+use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade;
@@ -36,6 +37,7 @@ use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation;
+use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
@@ -44,7 +46,9 @@ use Shopsys\ShopBundle\Component\Mall\MallImportOrderClient;
 use Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory;
 use Shopsys\ShopBundle\Component\SmsManager\SmsMessageFactory;
 use Shopsys\ShopBundle\Model\Gtm\GtmHelper;
+use Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory;
 use Shopsys\ShopBundle\Model\Order\Mall\Exception\StatusChangException;
+use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
@@ -335,20 +339,16 @@ class OrderFacade extends BaseOrderFacade
     {
         parent::fillOrderItems($order, $orderPreview);
 
-        $order->fillOrderGifts($orderPreview, $this->orderItemFactory, $this->productGiftPriceCalculation, $this->domain);
-        $order->fillOrderPromoProducts($orderPreview, $this->orderItemFactory, $this->domain);
+        $this->fillOrderGifts($order, $orderPreview);
+        $this->fillOrderPromoProducts($order, $orderPreview);
 
         $promoCodes = $orderPreview->getPromoCodesIndexedById();
         foreach ($promoCodes as $promoCode) {
             if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-                $order->setGiftCertificate(
+                $this->setGiftCertificate(
                     $orderPreview,
-                    $this->orderItemFactory,
-                    $this->numberFormatterExtension,
                     $order,
-                    $promoCode,
-                    $this->vatFacade->getDefaultVat()->getPercent(),
-                    $this->domain->getCurrentDomainConfig()->getLocale()
+                    $promoCode
                 );
             }
         }
@@ -441,5 +441,185 @@ class OrderFacade extends BaseOrderFacade
     {
         $order->setCustomer($customer);
         $this->em->flush($order);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param string $locale
+     */
+    public function fillOrderProducts(
+        Order $order,
+        OrderPreview $orderPreview,
+        string $locale
+    ): void {
+        $quantifiedItemPrices = $orderPreview->getQuantifiedItemsPrices();
+        $quantifiedItemDiscountsIndexedByPromoCodeId = $orderPreview->getQuantifiedItemsDiscountsIndexedByPromoCodeId();
+
+        foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
+            $product = $quantifiedProduct->getProduct();
+
+            $quantifiedItemPrice = $quantifiedItemPrices[$index];
+            /* @var $quantifiedItemPrice \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice */
+
+            $orderItem = $this->orderItemFactory->createProduct(
+                $order,
+                $product->getName($locale),
+                $quantifiedItemPrice->getUnitPrice(),
+                $product->getVat()->getPercent(),
+                $quantifiedProduct->getQuantity(),
+                $product->getUnit()->getName($locale),
+                $product->getCatnum(),
+                $product
+            );
+
+            foreach ($quantifiedItemDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemDiscounts) {
+                $quantifiedItemDiscount = $quantifiedItemDiscounts[$index];
+                /* @var $quantifiedItemDiscount \Shopsys\FrameworkBundle\Model\Pricing\Price|null */
+                if ($quantifiedItemDiscount !== null) {
+                    $promoCode = $orderPreview->getPromoCodeById($promoCodeId);
+                    $this->addOrderItemDiscount($orderItem, $quantifiedItemDiscount, $locale, (float)$orderPreview->getPromoCodeDiscountPercent(), $promoCode);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $quantifiedItemDiscount
+     * @param string $locale
+     * @param float $discountPercent
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null $promoCode
+     */
+    protected function addOrderItemDiscount(
+        OrderItem $orderItem,
+        Price $quantifiedItemDiscount,
+        string $locale,
+        float $discountPercent,
+        ?PromoCode $promoCode = null
+    ): void {
+        if ($promoCode->isUseNominalDiscount()) {
+            $discountValue = $this->numberFormatterExtension->formatNumber(-$promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
+        } else {
+            $discountValue = $this->numberFormatterExtension->formatPercent(-$promoCode->getPercent(), $locale);
+        }
+
+        $name = sprintf(
+            '%s %s - %s',
+            t('Promo code', [], 'messages', $locale),
+            $discountValue,
+            $orderItem->getName()
+        );
+
+        $this->orderItemFactory->createPromoCode(
+            $name,
+            $quantifiedItemDiscount->inverse(),
+            $orderItem
+        );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @throws \Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException
+     */
+    private function setGiftCertificate(
+        OrderPreview $orderPreview,
+        Order $order,
+        PromoCode $promoCode
+    ): void {
+        $locale = $this->domain->getCurrentDomainConfig()->getLocale();
+        $name = sprintf(
+            '%s %s %s',
+            t('Dárkový certifikát ', [], 'messages', $locale),
+            $promoCode->getCode(),
+            $this->numberFormatterExtension->formatNumber($promoCode->getCertificateValue()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($order->getDomainId(), $locale)
+        );
+
+        $certificatePrice = new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
+        if ($certificatePrice->getPriceWithVat()->isGreaterThan($orderPreview->getTotalPriceWithoutGiftCertificate()->getPriceWithVat())) {
+            $certificatePrice = $orderPreview->getTotalPriceWithoutGiftCertificate();
+        }
+
+        $this->orderItemFactory->createGiftCertificate(
+            $order,
+            $name,
+            $certificatePrice,
+            $promoCode->getCertificateSku(),
+            $this->vatFacade->getDefaultVat()->getPercent()
+        );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     */
+    private function fillOrderPromoProducts(Order $order, OrderPreview $orderPreview): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $promoProductCartItem */
+        foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
+            $product = $promoProductCartItem->getProduct();
+            $promoProduct = $promoProductCartItem->getPromoProduct();
+
+            if (!$this->orderItemFactory instanceof OrderItemFactory) {
+                $message = 'Object "' . get_class($this->orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
+                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
+            }
+
+            $promoProductOrderItemPrice = new Price($promoProductCartItem->getWatchedPrice(), $promoProductCartItem->getWatchedPrice());
+            $promoProductOrderItemTotalPrice = new Price(
+                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity()),
+                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity())
+            );
+
+            $this->orderItemFactory->createPromoProduct(
+                $order,
+                $product->getName($this->domain->getLocale()),
+                $promoProductOrderItemPrice,
+                $product->getVat()->getPercent(),
+                $promoProductCartItem->getQuantity(),
+                $product->getUnit()->getName($this->domain->getLocale()),
+                $product->getCatnum(),
+                $product,
+                $promoProductOrderItemTotalPrice,
+                $promoProduct
+            );
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     */
+    private function fillOrderGifts(Order $order, OrderPreview $orderPreview): void
+    {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Item\CartItem $giftInCart */
+        foreach ($orderPreview->getGifts() as $giftInCart) {
+            $gift = $giftInCart->getProduct();
+
+            if (!$this->orderItemFactory instanceof OrderItemFactory) {
+                $message = 'Object "' . get_class($this->orderItemFactory) . '" has to be instance of \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory.';
+                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
+            }
+
+            $giftPrice = new Price($this->productGiftPriceCalculation->getGiftPrice(), $this->productGiftPriceCalculation->getGiftPrice());
+            $giftTotalPrice = new Price(
+                $this->productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity()),
+                $this->productGiftPriceCalculation->getGiftPrice()->multiply($giftInCart->getQuantity())
+            );
+
+            $this->orderItemFactory->createGift(
+                $order,
+                $gift->getName($this->domain->getLocale()),
+                $giftPrice,
+                $gift->getVat()->getPercent(),
+                $giftInCart->getQuantity(),
+                $gift->getUnit()->getName($this->domain->getLocale()),
+                $gift->getCatnum(),
+                $gift,
+                $giftTotalPrice
+            );
+        }
     }
 }

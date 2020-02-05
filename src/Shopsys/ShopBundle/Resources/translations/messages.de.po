@@ -308,7 +308,7 @@ msgid "Bushmanství obrazem"
 msgstr "Bushman-Lebensweise in Bildern"
 
 msgid "Buď bushman a měj výhodnější"
-msgstr "Sei ein Bushman und hab' viele Vorteile"
+msgstr "Sei ein Bushman und nutze viele Vorteile"
 
 msgid "Buď bushman a měj zdarma"
 msgstr "Sei ein Bushman und hab es kostenlos"
@@ -1008,6 +1008,9 @@ msgstr "IR: 27790487, USt-IdNr: CZ27790487"
 
 msgid "Jak na výměnu velikosti?"
 msgstr "Wie tausche ich die Größe um?"
+
+msgid "Jak vybrat správnou velikost?"
+msgstr "Größentabelle"
 
 msgid "Jako zástupný znak pro číslo sledování zásilky zadejte %s, tedy např. https://tracking.ulozenka.cz/?_fid=%s"
 msgstr "Gib %s als Platzhalter für die Tracking-Nummer ein, z. B. https://tracking.ulozenka.cz/?_fid=%s"
@@ -2012,7 +2015,7 @@ msgid "Prosím, zkontrolujte zadané hodnoty"
 msgstr "Bitte überprüfe die eingegebenen Werte"
 
 msgid "Provozovna"
-msgstr "Filiale"
+msgstr "Europäischer Hauptsitz"
 
 msgid "Provést"
 msgstr "Durchführen"
@@ -2447,7 +2450,7 @@ msgid "Telefon"
 msgstr "Telefon"
 
 msgid "Telefonní číslo musí začínat +XXX"
-msgstr "Die Telefonnummer muss mit + XXX beginnen"
+msgstr "Die Telefonnummer muss mit +XXX beginnen"
 
 msgid "Telephone"
 msgstr "Telefon"
@@ -3399,4 +3402,3 @@ msgstr "БЪЛГАРИЯ"
 
 msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
 msgstr "„Als ich das BUSHMAN-Projekt gestartet habe, wollte ich"
-

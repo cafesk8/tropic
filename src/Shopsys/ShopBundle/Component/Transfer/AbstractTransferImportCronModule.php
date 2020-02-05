@@ -64,6 +64,7 @@ abstract class AbstractTransferImportCronModule extends AbstractTransferCronModu
      */
     private function processItems(TransferResponse $transferResponse): void
     {
+        ini_set('memory_limit', '1000M');
         foreach ($transferResponse->getResponseData() as $responseItemData) {
             $this->em->beginTransaction();
             try {

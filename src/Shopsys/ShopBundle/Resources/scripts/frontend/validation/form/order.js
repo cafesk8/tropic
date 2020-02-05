@@ -28,7 +28,7 @@
                 if ($orderPersonalInfoForm.find('#order_personal_info_form_deliveryStreet') !== null) {
                     groups.push(Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Front\\Order\\PersonalInfoFormType::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED'));
                 }
-                if (isGermanDomain) {
+                if (isGermanDomain || isSlovakDomain) {
                     groups.push(Shopsys.constant('\\Shopsys\\ShopBundle\\Form\\Front\\Order\\PersonalInfoFormType::VALIDATION_GROUP_PHONE_PLUS_REQUIRED'));
                 }
 

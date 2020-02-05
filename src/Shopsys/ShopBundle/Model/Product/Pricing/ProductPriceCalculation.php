@@ -123,7 +123,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             false,
             $pricingGroup,
             $defaultPricingGroup,
-            $product,
+            $product->getActionPrice($pricingGroup->getDomainId()),
             $defaultPrice
         );
     }

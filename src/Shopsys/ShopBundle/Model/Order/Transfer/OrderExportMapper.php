@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\Transfer;
 
 use Shopsys\FrameworkBundle\Component\String\TransformString;
-use Shopsys\FrameworkBundle\Model\Pricing\InputPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Component\Transfer\TransferConfig;
@@ -222,7 +221,7 @@ class OrderExportMapper
         $orderItemDiscount = $item->getPromoCodeForOrderItem();
 
         if ($orderItemDiscount !== null) {
-            $discountPerUnit = $orderItemDiscount->getPriceWithVat()->divide($item->getQuantity(), InputPriceCalculation::INPUT_PRICE_SCALE);
+            $discountPerUnit = $orderItemDiscount->getPriceWithVat()->divide($item->getQuantity(), 6);
             $discountPerUnit = $this->rounding->roundPriceWithoutVat($discountPerUnit);
             return $discountPerUnit->multiply(-1)->getAmount();
         }

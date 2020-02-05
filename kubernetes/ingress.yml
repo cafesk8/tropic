@@ -9,13 +9,13 @@ metadata:
         nginx.ingress.kubernetes.io/proxy-body-size: 32m
 spec:
     tls:
-    -   hosts: ~
-        secretName: tls-certificate
+        -   hosts: ~
+            secretName: tls-certificate
     rules:
-    -   host: ~
-        http:
-            paths:
-            -   path: /
-                backend:
-                    serviceName: webserver-php-fpm
-                    servicePort: 8080
+        -   host: ~
+            http:
+                paths:
+                    -   path: /
+                        backend:
+                            serviceName: webserver-php-fpm
+                            servicePort: 8080

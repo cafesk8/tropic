@@ -75,7 +75,7 @@ class MultidomainUserDataFixture extends AbstractReferenceFixture implements Dep
         $customersData = $this->loaderService->getCustomersDataByDomainId($domainId);
 
         foreach ($customersData as $customerData) {
-            $customerData->userData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
+            $customerData->userData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
 
             $this->customerFacade->create($customerData);
         }

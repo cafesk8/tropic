@@ -47,6 +47,7 @@ parameters:
     # testing credentials
     payPalClientId: AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS
     payPalClientSecret: EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL
+    payPalMode: SANDBOX
 
     transfer_enabled: true
     transfer_host: 'http://webappa7.azurewebsites.net'

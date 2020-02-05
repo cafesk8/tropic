@@ -112,11 +112,11 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
                 if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_WITH_ACTION_PRICE) {
-                    return $productPrice->isActionPrice() === true;
+                    return $productPrice->isActionPriceByUsedForPromoCode() === true;
                 }
 
                 if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_NO_ACTION_PRICE) {
-                    return $productPrice->isActionPrice() === false;
+                    return $productPrice->isActionPriceByUsedForPromoCode() === false;
                 }
 
                 return true;

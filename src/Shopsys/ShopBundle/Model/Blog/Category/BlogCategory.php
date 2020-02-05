@@ -295,7 +295,7 @@ class BlogCategory extends AbstractTranslatableEntity
 
         foreach ($domainIds as $domainId) {
             $blogCategoryDomain = new BlogCategoryDomain($this, $domainId);
-            $this->domains[] = $blogCategoryDomain;
+            $this->domains->add($blogCategoryDomain);
         }
 
         $this->setDomains($blogCategoryData);

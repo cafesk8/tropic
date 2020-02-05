@@ -24,12 +24,18 @@ class SmsMessageFactory
             return null;
         }
 
+        $smsAlert = $this->getSmsAlert(
+            $orderStatus->getSmsAlertType(),
+            $order->getNumber(),
+            $order->getStore()->getName()
+        );
+
+        if ($smsAlert === null) {
+            return null;
+        }
+
         return new SmsMessage(
-            $this->getSmsAlert(
-                $orderStatus->getSmsAlertType(),
-                $order->getNumber(),
-                $order->getStore()->getName()
-            ),
+            $smsAlert,
             [
                 $order->getTelephone(),
             ],
@@ -42,9 +48,9 @@ class SmsMessageFactory
      * @param string $smsAlertType
      * @param string $orderNumber
      * @param string $storeName
-     * @return string
+     * @return string|null
      */
-    private function getSmsAlert(string $smsAlertType, string $orderNumber, string $storeName): string
+    private function getSmsAlert(string $smsAlertType, string $orderNumber, string $storeName): ?string
     {
         if ($smsAlertType === OrderStatus::SMS_ALERT_5_DAY_BEFORE) {
             return t('Je čas vyrazit: tvoje objednávka č. %%orderNo%% je připravena k vyzvednutí na prodejně %%storeName%%, zboží ti rezervujeme po dobu 5 dnů. Bushman.cz', [
@@ -57,5 +63,7 @@ class SmsMessageFactory
                 '%%storeName%%' => $storeName,
             ]);
         }
+
+        return null;
     }
 }

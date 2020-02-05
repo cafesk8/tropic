@@ -10,9 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
-use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
 use Shopsys\ShopBundle\Model\Product\Exception\ProductIsNotMainVariantException;
@@ -35,7 +33,7 @@ class Product extends BaseProduct
     ];
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
+     * @var \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(
      *   targetEntity="Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock",
@@ -77,7 +75,7 @@ class Product extends BaseProduct
     protected $domains;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\Flag\Flag")
      * @ORM\JoinTable(name="product_flags")
@@ -86,7 +84,7 @@ class Product extends BaseProduct
     protected $flags;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]
+     * @var \Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\ProductGift\ProductGift", mappedBy="products", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
@@ -163,12 +161,11 @@ class Product extends BaseProduct
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Product[]|null $variants
      */
-    protected function __construct(ProductData $productData, ProductCategoryDomainFactoryInterface $productCategoryDomainFactory, ?array $variants = null)
+    protected function __construct(ProductData $productData, ?array $variants = null)
     {
-        parent::__construct($productData, $productCategoryDomainFactory, $variants);
+        parent::__construct($productData, $variants);
 
         $this->storeStocks = new ArrayCollection();
         $this->transferNumber = $productData->transferNumber;
@@ -187,16 +184,14 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
      * @param \Shopsys\ShopBundle\Model\Product\ProductData $productData
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
      */
     public function edit(
-        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        ProductData $productData,
-        ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
+        array $productCategoryDomains,
+        ProductData $productData
     ) {
-        parent::edit($productCategoryDomainFactory, $productData, $productPriceRecalculationScheduler);
+        parent::edit($productCategoryDomains, $productData);
 
         $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
@@ -211,15 +206,13 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
-     * @param \Shopsys\ShopBundle\Model\Category\Category[][] $categoriesByDomainId
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[] $productCategoryDomains
      */
     public function editCategoriesByDomainId(
-        ProductCategoryDomainFactoryInterface $productCategoryDomainFactory,
-        array $categoriesByDomainId
+        array $productCategoryDomains
     ): void {
         if (!$this->isVariant()) {
-            $this->setCategories($productCategoryDomainFactory, $categoriesByDomainId);
+            $this->setProductCategoryDomains($productCategoryDomains);
         }
     }
 
@@ -240,7 +233,7 @@ class Product extends BaseProduct
 
         foreach ($domainIds as $domainId) {
             $productDomain = new ProductDomain($this, $domainId);
-            $this->domains[] = $productDomain;
+            $this->domains->add($productDomain);
         }
 
         $this->setDomains($productData);
@@ -269,11 +262,11 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
+     * @return \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock[]
      */
-    public function getStoreStocks()
+    public function getStoreStocks(): array
     {
-        return $this->storeStocks;
+        return $this->storeStocks->toArray();
     }
 
     public function clearStoreStocks(): void
@@ -349,15 +342,15 @@ class Product extends BaseProduct
 
     /**
      * @param int|null $limit
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
      */
     public function getFlags(?int $limit = null)
     {
         if ($limit !== null) {
-            return new ArrayCollection($this->flags->slice(0, $limit));
+            return $this->flags->slice(0, $limit);
         }
 
-        return $this->flags;
+        return $this->flags->toArray();
     }
 
     /**

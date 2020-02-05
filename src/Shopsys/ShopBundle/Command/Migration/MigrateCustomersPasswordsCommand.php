@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Command\Migration;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Command\Migration\Exception\PasswordsFileNotFoundException;
+use Shopsys\ShopBundle\Model\Customer\BushmanCustomPasswordEncoder;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,19 +41,31 @@ class MigrateCustomersPasswordsCommand extends Command
     protected $encoderFactory;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade
+     */
+    protected $customerPasswordFacade;
+
+    /**
      * @param string $rootDir
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade $customerPasswordFacade
      */
-    public function __construct(string $rootDir, EntityManagerInterface $em, CustomerFacade $customerFacade, EncoderFactoryInterface $encoderFactory)
-    {
+    public function __construct(
+        string $rootDir,
+        EntityManagerInterface $em,
+        CustomerFacade $customerFacade,
+        EncoderFactoryInterface $encoderFactory,
+        CustomerPasswordFacade $customerPasswordFacade
+    ) {
         parent::__construct();
 
         $this->em = $em;
         $this->rootDir = $rootDir;
         $this->customerFacade = $customerFacade;
         $this->encoderFactory = $encoderFactory;
+        $this->customerPasswordFacade = $customerPasswordFacade;
     }
 
     protected function configure(): void
@@ -79,7 +94,7 @@ class MigrateCustomersPasswordsCommand extends Command
                 continue;
             }
 
-            $customer->changePasswordByMigration($this->encoderFactory, $passwordsByEmail[$customer->getEmail()]);
+            $this->changePasswordByMigration($customer, $passwordsByEmail[$customer->getEmail()]);
             $output->writeln(sprintf('Password for email %s was migrated.', $customer->getEmail()));
         }
 
@@ -126,5 +141,22 @@ class MigrateCustomersPasswordsCommand extends Command
         }
 
         return $migratedCustomerDataFilePath;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
+     * @param string $password
+     */
+    private function changePasswordByMigration(User $user, string $password): void
+    {
+        $encoder = $this->encoderFactory->getEncoder($this);
+
+        if ($encoder instanceof BushmanCustomPasswordEncoder) {
+            $passwordHash = $encoder->getHashOfMigratedPassword($password, null);
+            $user->setPasswordHash($passwordHash);
+            return;
+        }
+
+        $this->customerPasswordFacade->changePassword($user, $password);
     }
 }

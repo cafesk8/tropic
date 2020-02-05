@@ -29,6 +29,7 @@ parameters:
             - '*/tests/ShopBundle/Functional/Model/Order/Preview/OrderPreviewCalculationTest.php'
             - '*/tests/ShopBundle/Functional/Model/Pricing/InputPriceRecalculationSchedulerTest.php'
             - '*/tests/ShopBundle/Functional/Model/Product/ProductOnCurrentDomainFacadeCountDataTest.php'
+            - '*/tests/ShopBundle/Functional/Model/Cart/CartMigrationFacadeTest.php'
             - '*/tests/ShopBundle/Smoke/Http/RouteConfigCustomization.php'
             - '*/src/Shopsys/ShopBundle/Controller/Front/ProductController.php'
             - '*/src/Shopsys/ShopBundle/Form/Front/Order/TransportAndPaymentFormType.php'
@@ -58,6 +59,7 @@ parameters:
             - '*/src/Shopsys/ShopBundle/Controller/Front/CartController.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
             - '*/src/Shopsys/ShopBundle/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
+            - '*/src/Shopsys/ShopBundle/Model/Order/OrderFacade.php'
 
         ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff:
             - '*/src/Shopsys/ShopBundle/Model/Order/Order.php'

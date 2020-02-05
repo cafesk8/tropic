@@ -1,5 +1,5 @@
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
-{% if products|length > 0 %}
+{% if productViews|length > 0 %}
     <div class="web__line">
         <div class="web__container">
             <div id="top-products" class="box-top-products">
@@ -7,7 +7,7 @@
                     {{ 'Nejoblíbenější kousky'|trans }}
                 </div>
                 <div class="box-top-products__in">
-                    {{ productList.horizontalList(products, variantsIndexedByMainVariantId, "list-top-products", 'h3', 'top-products') }}
+                    {{ productList.horizontalList(productViews, "list-top-products", 'h3', 'top-products') }}
                 </div>
             </div>
         </div>

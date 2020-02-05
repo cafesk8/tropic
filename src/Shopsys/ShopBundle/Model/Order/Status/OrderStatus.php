@@ -118,4 +118,12 @@ class OrderStatus extends BaseOrderStatus
             parent::setType($type);
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function isCanceled(): bool
+    {
+        return $this->getType() === self::TYPE_CANCELED;
+    }
 }

@@ -12,6 +12,7 @@ use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\String\HashGenerator;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 
 class UserDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
@@ -68,7 +69,7 @@ class UserDataFixture extends AbstractReferenceFixture implements DependentFixtu
         $customersData = $this->loaderService->getCustomersDataByDomainId(Domain::FIRST_DOMAIN_ID);
 
         foreach ($customersData as $customerData) {
-            $customerData->userData->createdAt = $this->faker->dateTimeBetween('-1 week', 'now');
+            $customerData->userData->createdAt = $this->faker->dateTimeBetween('-2 week', 'now');
             $customerData->pricingGroupUpdatedAt = new \DateTime();
 
             $customer = $this->customerFacade->create($customerData);
@@ -95,7 +96,7 @@ class UserDataFixture extends AbstractReferenceFixture implements DependentFixtu
      */
     protected function resetPassword(User $customer)
     {
-        $customer->resetPassword($this->hashGenerator);
+        $customer->setResetPasswordHash($this->hashGenerator->generateHash(CustomerPasswordFacade::RESET_PASSWORD_HASH_LENGTH));
         $this->em->flush($customer);
     }
 }

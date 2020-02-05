@@ -14,7 +14,7 @@ class DailyFeedCronModule extends BaseDailyFeedCronModule
      */
     public function iterate(): bool
     {
-        if ($this->feedExportCreationDataQueue->isEmpty()) {
+        if ($this->getFeedExportCreationDataQueue()->isEmpty()) {
             $this->logger->addDebug('Queue is empty, no feeds to process.');
 
             return false;
@@ -41,7 +41,7 @@ class DailyFeedCronModule extends BaseDailyFeedCronModule
                 $this->feedFacade->getFeedFilepath($feedInfo, $domainConfig)
             ));
 
-            if ($this->feedExportCreationDataQueue->next() === true) {
+            if ($this->getFeedExportCreationDataQueue()->next() === true) {
                 $this->currentFeedExport = $this->createCurrentFeedExport();
                 return true;
             } else {
@@ -64,8 +64,8 @@ class DailyFeedCronModule extends BaseDailyFeedCronModule
             $this->currentFeedExport->sleep();
         }
 
-        $currentFeedName = $this->feedExportCreationDataQueue->getCurrentFeedName();
-        $currentDomain = $this->feedExportCreationDataQueue->getCurrentDomain();
+        $currentFeedName = $this->getFeedExportCreationDataQueue()->getCurrentFeedName();
+        $currentDomain = $this->getFeedExportCreationDataQueue()->getCurrentDomain();
 
         $this->setting->set(Setting::FEED_NAME_TO_CONTINUE, $currentFeedName);
         $this->setting->set(Setting::FEED_DOMAIN_ID_TO_CONTINUE, $currentDomain->getId());

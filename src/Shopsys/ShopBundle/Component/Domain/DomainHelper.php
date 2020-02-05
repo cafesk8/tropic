@@ -84,4 +84,13 @@ class DomainHelper
     {
         return $domain->getLocale() === self::GERMAN_LOCALE;
     }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @return bool
+     */
+    public static function isSlovakDomain(Domain $domain): bool
+    {
+        return $domain->getLocale() === self::SLOVAK_LOCALE;
+    }
 }

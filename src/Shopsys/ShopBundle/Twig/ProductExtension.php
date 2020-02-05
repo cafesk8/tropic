@@ -9,11 +9,13 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\ShopBundle\Model\Product\Flag\Flag;
 use Shopsys\ShopBundle\Model\Product\Flag\FlagFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue;
 use Shopsys\ShopBundle\Model\Product\ProductFacade;
+use Shopsys\ShopBundle\Model\Product\View\ListedProductView;
 use Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Twig\TwigFunction;
 
@@ -48,6 +50,11 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @var \Shopsys\ShopBundle\Model\Product\ProductFacade
      */
     private $productFacade;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\Flag|null
+     */
+    private $freeTransportFlag;
 
     /**
      * ProductExtension constructor.
@@ -106,6 +113,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'getProductById',
                 [$this, 'getProductById']
+            ),
+            new TwigFunction(
+                'getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed',
+                [$this, 'getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed']
             ),
         ];
     }
@@ -196,5 +207,31 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     public function getProductById(int $productId): Product
     {
         return $this->productFacade->getById($productId);
+    }
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\View\ListedProductView $listedProductView
+     * @return int|null
+     */
+    public function getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(ListedProductView $listedProductView): ?int
+    {
+        $freeTransportFlag = $this->getDefaultFreeTransportFlag();
+        if ($freeTransportFlag !== null && $this->freeTransportAndPaymentFacade->isFree($listedProductView->getSellingPrice()->getPriceWithVat(), $this->domain->getId())) {
+            return $freeTransportFlag->getId();
+        }
+
+        return null;
+    }
+
+    /**
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\Flag|null
+     */
+    private function getDefaultFreeTransportFlag(): ?Flag
+    {
+        if ($this->freeTransportFlag !== null) {
+            return $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
+        }
+
+        return $this->freeTransportFlag;
     }
 }

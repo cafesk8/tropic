@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade as BaseCustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface;
@@ -20,7 +21,6 @@ use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId;
 use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdDataFactory;
 use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class CustomerFacade extends BaseCustomerFacade
 {
@@ -48,12 +48,12 @@ class CustomerFacade extends BaseCustomerFacade
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserRepository $userRepository
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
-     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface $billingAddressFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface $deliveryAddressFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\UserFactoryInterface $userFactory
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade $customerPasswordFacade
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFacade $userTransferIdFacade
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdDataFactory $userTransferIdDataFactory
@@ -62,17 +62,17 @@ class CustomerFacade extends BaseCustomerFacade
         EntityManagerInterface $em,
         UserRepository $userRepository,
         CustomerDataFactoryInterface $customerDataFactory,
-        EncoderFactoryInterface $encoderFactory,
         CustomerMailFacade $customerMailFacade,
         BillingAddressFactoryInterface $billingAddressFactory,
         DeliveryAddressFactoryInterface $deliveryAddressFactory,
         BillingAddressDataFactoryInterface $billingAddressDataFactory,
         UserFactoryInterface $userFactory,
+        CustomerPasswordFacade $customerPasswordFacade,
         PricingGroupFacade $pricingGroupFacade,
         UserTransferIdFacade $userTransferIdFacade,
         UserTransferIdDataFactory $userTransferIdDataFactory
     ) {
-        parent::__construct($em, $userRepository, $customerDataFactory, $encoderFactory, $customerMailFacade, $billingAddressFactory, $deliveryAddressFactory, $billingAddressDataFactory, $userFactory);
+        parent::__construct($em, $userRepository, $customerDataFactory, $customerMailFacade, $billingAddressFactory, $deliveryAddressFactory, $billingAddressDataFactory, $userFactory, $customerPasswordFacade);
 
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->userTransferIdFacade = $userTransferIdFacade;
@@ -242,7 +242,6 @@ class CustomerFacade extends BaseCustomerFacade
     {
         /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
         $userData = $customerData->userData;
-        $userByEmailAndDomain = $this->findUserByEmailAndDomain($userData->email, $userData->domainId);
 
         $billingAddress = $this->billingAddressFactory->create($customerData->billingAddressData);
         $deliveryAddress = null;
@@ -257,8 +256,7 @@ class CustomerFacade extends BaseCustomerFacade
         $user = $this->userFactory->create(
             $customerData->userData,
             $billingAddress,
-            $deliveryAddress,
-            $userByEmailAndDomain
+            $deliveryAddress
         );
 
         $this->em->persist($billingAddress);

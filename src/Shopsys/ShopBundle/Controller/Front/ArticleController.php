@@ -68,7 +68,7 @@ class ArticleController extends FrontBaseController
 
         return $this->render('@ShopsysShop/Front/Content/Article/footerMenu.html.twig', [
             'articles' => $articles,
-            'isPlacementAboutUs' => Article::PLACEMENT_ABOUT === $placement,
+            'isPlacementAboutUs' => $placement === Article::PLACEMENT_ABOUT,
         ]);
     }
 

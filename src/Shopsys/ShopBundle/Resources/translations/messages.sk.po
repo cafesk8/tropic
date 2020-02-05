@@ -2423,7 +2423,7 @@ msgid "Telefon"
 msgstr "Telefón"
 
 msgid "Telefonní číslo musí začínat +XXX"
-msgstr "Telefónne číslo musí začínať + XXX"
+msgstr "Vlož telefónne číslo v tvare +XXX 908 111 111"
 
 msgid "Telephone"
 msgstr "Telefón"

@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForList
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
+use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 use Shopsys\ShopBundle\Form\Front\Product\ProductFilterFormType;
 use Shopsys\ShopBundle\Model\Article\ArticleFacade;
@@ -116,6 +117,11 @@ class ProductController extends FrontBaseController
     private $gtmFacade;
 
     /**
+     * @var \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface
+     */
+    private $listedProductViewFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -132,6 +138,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmFacade $gtmFacade
+     * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -149,7 +156,8 @@ class ProductController extends FrontBaseController
         ProductFacade $productFacade,
         Setting $setting,
         ArticleFacade $articleFacade,
-        GtmFacade $gtmFacade
+        GtmFacade $gtmFacade,
+        ListedProductViewFacadeInterface $listedProductViewFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -167,6 +175,7 @@ class ProductController extends FrontBaseController
         $this->setting = $setting;
         $this->articleFacade = $articleFacade;
         $this->gtmFacade = $gtmFacade;
+        $this->listedProductViewFacade = $listedProductViewFacade;
     }
 
     /**
@@ -183,7 +192,7 @@ class ProductController extends FrontBaseController
             return $this->redirectToRoute('front_product_detail', ['id' => $product->getMainVariant()->getId()]);
         }
 
-        $accessories = $this->productOnCurrentDomainFacade->getAccessoriesForProduct($product);
+        $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
         $domainId = $this->domain->getId();
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
         $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
@@ -258,12 +267,12 @@ class ProductController extends FrontBaseController
         ]);
         $filterForm->handleRequest($request);
 
-        $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsInCategory(
+        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedInCategory(
+            $id,
             $productFilterData,
             $orderingModeId,
             $page,
-            self::PRODUCTS_PER_PAGE,
-            $id
+            self::PRODUCTS_PER_PAGE
         );
 
         $productFilterCountData = null;
@@ -275,9 +284,6 @@ class ProductController extends FrontBaseController
             );
         }
 
-        $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
-        $mainVariantsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($paginationResult->getResults());
-
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'productFilterCountData' => $productFilterCountData,
@@ -286,8 +292,6 @@ class ProductController extends FrontBaseController
             'filterFormSubmitted' => $filterForm->isSubmitted(),
             'visibleChildren' => $visibleChildren,
             'priceRange' => $productFilterConfig->getPriceRange(),
-            'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
-            'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
             'categoriesBlogArticles' => $this->categoryBlogArticleFacade->getVisibleBlogArticlesByCategoryAndDomainId(
                 $category,
                 $this->domain->getId(),
@@ -307,7 +311,7 @@ class ProductController extends FrontBaseController
      */
     public function searchAction(Request $request)
     {
-        $searchText = $request->query->get(self::SEARCH_TEXT_PARAMETER);
+        $searchText = $request->query->get(self::SEARCH_TEXT_PARAMETER, '');
 
         $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
         if (!$this->isRequestPageValid($requestPage)) {
@@ -327,7 +331,7 @@ class ProductController extends FrontBaseController
         ]);
         $filterForm->handleRequest($request);
 
-        $paginationResult = $this->productOnCurrentDomainFacade->getPaginatedProductsForSearch(
+        $paginationResult = $this->listedProductViewFacade->getFilteredPaginatedForSearch(
             $searchText,
             $productFilterData,
             $orderingModeId,
@@ -344,9 +348,6 @@ class ProductController extends FrontBaseController
             );
         }
 
-        $variantsIndexedByMainVariantId = $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($paginationResult->getResults());
-        $mainVariantsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($paginationResult->getResults());
-
         $viewParameters = [
             'paginationResult' => $paginationResult,
             'productFilterCountData' => $productFilterCountData,
@@ -355,8 +356,6 @@ class ProductController extends FrontBaseController
             'searchText' => $searchText,
             'SEARCH_TEXT_PARAMETER' => self::SEARCH_TEXT_PARAMETER,
             'priceRange' => $productFilterConfig->getPriceRange(),
-            'variantsIndexedByMainVariantId' => $variantsIndexedByMainVariantId,
-            'mainVariantsIndexedByMainVariantGroup' => $mainVariantsIndexedByMainVariantGroup,
         ];
 
         if ($request->isXmlHttpRequest()) {

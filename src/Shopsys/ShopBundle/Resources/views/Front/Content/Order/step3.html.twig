@@ -26,7 +26,7 @@
                                 {{ form_row(form.firstName, { label: 'First name'|trans }) }}
                                 {{ form_row(form.lastName, { label: 'Last name'|trans }) }}
                                 {{ form_row(form.telephone, { label: 'Telephone'|trans }) }}
-                                {% if isGermanyDomain() is same as (true) %}
+                                {% if isGermanyDomain() is same as (true) or isSlovakDomain() is same as (true) %}
                                     <span class="form-line__info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
                                 {% endif %}
 

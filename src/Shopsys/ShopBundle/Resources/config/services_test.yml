@@ -45,12 +45,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface: '@Shopsys\ShopBundle\Model\Customer\UserDataFactory'
 
-    Shopsys\ShopBundle\Model\Localization\Localization:
-        arguments:
-            $adminLocale: '%shopsys.admin_locale%'
-
-    Shopsys\FrameworkBundle\Model\Localization\Localization: '@Shopsys\ShopBundle\Model\Localization\Localization'
-
     Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@Shopsys\ShopBundle\Model\Order\OrderDataFactory'
 
     Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory'
@@ -63,11 +57,13 @@ services:
 
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
 
+    Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactoryInterface: '@Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactory'
+
     Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface: '@Shopsys\ShopBundle\Model\Payment\PaymentDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\ProductDataFactory'
 
-    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportRepository: '@Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
+    Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository: '@Shopsys\ShopBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory'
 
@@ -184,3 +180,5 @@ services:
     Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@Shopsys\ShopBundle\Model\Feed\Google\GoogleFeedItemFactory'
 
     Shopsys\ShopBundle\Model\Feed\FeedHelper: ~
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade'

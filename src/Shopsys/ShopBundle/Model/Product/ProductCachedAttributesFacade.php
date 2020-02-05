@@ -113,15 +113,16 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * ]
      *
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $allVariants
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue|null
+     * @param string|null $locale
+     * @return array
      */
-    public function findDistinguishingParameterValuesForProducts(array $allVariants): array
+    public function findDistinguishingParameterValuesForProducts(array $allVariants, ?string $locale = null): array
     {
         $distinguishingParameterValues = [];
         $parameterValuesWithProductIds = [];
         $productWithVariantIds = [];
         foreach ($allVariants as $variant) {
-            $distinguishingParameterValue = $this->getProductDistinguishingParameterValue($variant);
+            $distinguishingParameterValue = $this->getProductDistinguishingParameterValue($variant, $locale);
             $secondDistinguishingParameterValue = $distinguishingParameterValue->getSecondDistinguishingParameterValue();
 
             $productWithVariantIds[$variant->getMainVariant()->getId()][] = $variant->getId();

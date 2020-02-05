@@ -1,6 +1,6 @@
 {% import '@ShopsysShop/Front/Content/Product/productListMacro.html.twig' as productList %}
 
-{% if products|length > 0 %}
+{% if productViews|length > 0 %}
     <div class="web__line">
         <div class="web__container">
             <div class="box-last-visited">
@@ -8,7 +8,7 @@
                     {{ 'Naposledy prohlížené produkty'|trans }}
                 </h2>
 
-                {{ productList.horizontalList(products, variantsIndexedByMainVariantId, "list-last-visited", 'h3', 'last-visited') }}
+                {{ productList.horizontalList(productViews,  "list-last-visited", 'h3', 'last-visited') }}
             </div>
         </div>
     </div>

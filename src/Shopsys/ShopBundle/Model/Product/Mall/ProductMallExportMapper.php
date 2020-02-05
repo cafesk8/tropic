@@ -236,7 +236,7 @@ class ProductMallExportMapper
 
             /** @var \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice $productPrice */
             $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
-            if ($productPrice->isActionPrice()) {
+            if ($productPrice->isActionPriceByUsedForPromoCode()) {
                 $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
                 $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
             } else {
