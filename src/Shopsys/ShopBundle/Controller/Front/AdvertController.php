@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdvertController extends FrontBaseController
 {
-    private const LIMIT_FOR_PRODUCTS_TO_SHOW = 3;
-
     /**
      * @var \Shopsys\ShopBundle\Model\Advert\AdvertFacade
      */
@@ -50,7 +48,7 @@ class AdvertController extends FrontBaseController
     {
         /** @var \Shopsys\ShopBundle\Model\Advert\Advert $advert */
         $advert = $this->advertFacade->findRandomAdvertByPositionOnCurrentDomain('sixthRectangle');
-        $advertProducts = $this->advertFacade->getAdvertProductsByAdvertAndLimit($advert, self::LIMIT_FOR_PRODUCTS_TO_SHOW);
+        $advertProducts = $this->advertFacade->getAdvertProductsByAdvert($advert);
 
         return $this->render('@ShopsysShop/Front/Content/Advert/bigBannerOnHomepage.html.twig', [
             'advert' => $advert,

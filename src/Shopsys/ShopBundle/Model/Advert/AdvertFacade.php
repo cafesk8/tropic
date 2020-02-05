@@ -92,10 +92,9 @@ class AdvertFacade extends BaseAdvertFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Advert\Advert|null $advert
-     * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
-    public function getAdvertProductsByAdvertAndLimit(?Advert $advert, int $limit): array
+    public function getAdvertProductsByAdvert(?Advert $advert): array
     {
         $sellableProductsForAdvert = [];
 
@@ -118,10 +117,6 @@ class AdvertFacade extends BaseAdvertFacade
                 }
             } else {
                 $sellableProductsForAdvert[] = $advertProduct->getProduct();
-            }
-
-            if (count($sellableProductsForAdvert) === $limit) {
-                return $sellableProductsForAdvert;
             }
         }
 
