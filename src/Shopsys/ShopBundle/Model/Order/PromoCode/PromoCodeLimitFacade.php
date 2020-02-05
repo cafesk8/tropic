@@ -57,7 +57,7 @@ class PromoCodeLimitFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitData $promoCodeLimitData
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    public function create(PromoCodeLimitData $promoCodeLimitData)
+    public function create(PromoCodeLimitData $promoCodeLimitData): PromoCodeLimit
     {
         $promoCodeLimit = $this->promoCodeLimitFactory->create($promoCodeLimitData);
         $this->em->persist($promoCodeLimit);
@@ -70,7 +70,7 @@ class PromoCodeLimitFacade
      * @param int $id
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    public function getById(int $id)
+    public function getById(int $id): PromoCodeLimit
     {
         return $this->promoCodeLimitRepository->getById($id);
     }
@@ -79,7 +79,7 @@ class PromoCodeLimitFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[]
      */
-    public function getByPromoCode(PromoCode $promoCode)
+    public function getByPromoCode(PromoCode $promoCode): array
     {
         return $this->promoCodeLimitRepository->getByPromoCode($promoCode);
     }
@@ -159,7 +159,7 @@ class PromoCodeLimitFacade
      * @param \Shopsys\ShopBundle\Model\Product\Brand\Brand $brand
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    private function createFromPromoCodeAndBrand(PromoCode $promoCode, Brand $brand)
+    private function createFromPromoCodeAndBrand(PromoCode $promoCode, Brand $brand): PromoCodeLimit
     {
         return $this->createFromPromoCodeAndObjectId($promoCode, $brand->getId(), PromoCode::LIMIT_TYPE_BRANDS);
     }
@@ -169,7 +169,7 @@ class PromoCodeLimitFacade
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    private function createFromPromoCodeAndCategory(PromoCode $promoCode, Category $category)
+    private function createFromPromoCodeAndCategory(PromoCode $promoCode, Category $category): PromoCodeLimit
     {
         return $this->createFromPromoCodeAndObjectId($promoCode, $category->getId(), PromoCode::LIMIT_TYPE_CATEGORIES);
     }
@@ -179,7 +179,7 @@ class PromoCodeLimitFacade
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    private function createFromPromoCodeAndProduct(PromoCode $promoCode, Product $product)
+    private function createFromPromoCodeAndProduct(PromoCode $promoCode, Product $product): PromoCodeLimit
     {
         return $this->createFromPromoCodeAndObjectId($promoCode, $product->getId(), PromoCode::LIMIT_TYPE_PRODUCTS);
     }
@@ -190,7 +190,7 @@ class PromoCodeLimitFacade
      * @param string $type
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    private function createFromPromoCodeAndObjectId(PromoCode $promoCode, int $objectId, string $type)
+    private function createFromPromoCodeAndObjectId(PromoCode $promoCode, int $objectId, string $type): PromoCodeLimit
     {
         $promoCodeLimitData = $this->promoCodeLimitDataFactory->create();
         $promoCodeLimitData->promoCode = $promoCode;

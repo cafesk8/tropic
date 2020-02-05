@@ -250,7 +250,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkApplicability(PromoCode $promoCode, Cart $cart): void
     {
-        if ($promoCode->getLimitType() == PromoCode::LIMIT_TYPE_ALL) {
+        if ($promoCode->getLimitType() === PromoCode::LIMIT_TYPE_ALL) {
             return;
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
 class PromoCodeLimitRepository
 {
@@ -25,7 +26,7 @@ class PromoCodeLimitRepository
      * @param int $id
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit
      */
-    public function getById(int $id)
+    public function getById(int $id): PromoCodeLimit
     {
         return $this->getPromoCodeLimitRepository()->find($id);
     }
@@ -34,7 +35,7 @@ class PromoCodeLimitRepository
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[]
      */
-    public function getByPromoCode(PromoCode $promoCode)
+    public function getByPromoCode(PromoCode $promoCode): array
     {
         return $this->getPromoCodeLimitRepository()->findBy(['promoCode' => $promoCode]);
     }
@@ -55,7 +56,7 @@ class PromoCodeLimitRepository
     /**
      * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         $queryBuilder = $this->em->createQueryBuilder();
         $queryBuilder
@@ -66,9 +67,9 @@ class PromoCodeLimitRepository
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitRepository
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitRepository
      */
-    private function getPromoCodeLimitRepository()
+    private function getPromoCodeLimitRepository(): EntityRepository
     {
         return $this->em->getRepository(PromoCodeLimit::class);
     }

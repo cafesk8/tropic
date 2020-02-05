@@ -360,7 +360,7 @@ class ProductRepository extends BaseProductRepository
 
     /**
      * @param array $brandIds
-     * @return array
+     * @return int[][]
      */
     public function getIdsByBrandIds(array $brandIds): array
     {
@@ -375,7 +375,7 @@ class ProductRepository extends BaseProductRepository
     /**
      * @param array $categoryIds
      * @param int $domainId
-     * @return array
+     * @return int[][]
      */
     public function getIdsByCategoryIds(array $categoryIds, int $domainId): array
     {
