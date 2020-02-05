@@ -630,3 +630,11 @@ services:
             - '@shopsys.shop.product.bestselling_product.cache_provider'
 
     Shopsys\FrameworkBundle\Twig\ImageExtension: '@App\Twig\ImageExtension'
+
+    App\Model\Product\Availability\AvailabilityDataFactory: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactory: '@App\Model\Product\Availability\AvailabilityDataFactory'
+
+    App\Model\Product\Availability\AvailabilityGridFactory: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityGridFactory: '@App\Model\Product\Availability\AvailabilityGridFactory'
