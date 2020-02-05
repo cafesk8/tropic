@@ -15,7 +15,6 @@ use Shopsys\ShopBundle\Component\Transfer\TransferCronModuleDependency;
 use Shopsys\ShopBundle\Model\Customer\CustomerFacade;
 use Shopsys\ShopBundle\Model\Customer\Transfer\Exception\InvalidCustomerTransferResponseItemDataException;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade;
-use Shopsys\ShopBundle\Model\Customer\User;
 
 abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCronModule
 {
@@ -119,19 +118,7 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
         );
 
         if ($customer === null) {
-            // EDIT: BUSHMAN wants to edit e-mail addresses for some "lost users" who probably hasn't never visited e-shop
-            // CREATE: BUSHMAN continuously wants to add new customers to IS and send to eshop
-            // Try to find customer by transferId instead of email!
-            $customer = $this->customerFacade->findUserByTransferIdAndDomain(
-                $itemData->getDataIdentifier(),
-                $itemData->getDomainId()
-            );
-            if ($customer === null) {
-                $this->createCustomer($itemData);
-            } else {
-                $this->editCustomer($itemData, $customer);
-            }
-
+            $this->createCustomer($itemData);
             return;
         }
 
@@ -173,26 +160,6 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
      * @return string
      */
     abstract protected function getApiUrl(): string;
-
-    /**
-     * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData $itemData
-     * @param \Shopsys\ShopBundle\Model\Customer\User $customer
-     */
-    private function editCustomer(CustomerTransferResponseItemData $itemData, User $customer): void
-    {
-        $customerData = $this->customerWithPricingGroupsTransferMapper->mapTransferDataToCustomerData($itemData, $customer);
-
-        $this->customerFacade->editByAdmin($customer->getId(), $customerData);
-
-        $this->em->flush($customer);
-
-        $this->logger->addInfo(
-            sprintf(
-                'Customer with transfer ID `%s` has been edited',
-                $itemData->getDataIdentifier()
-            )
-        );
-    }
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferResponseItemData $customerTransferResponseItemData

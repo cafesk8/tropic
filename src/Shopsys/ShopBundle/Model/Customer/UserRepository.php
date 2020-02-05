@@ -118,18 +118,4 @@ class UserRepository extends BaseUserRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
-
-    /**
-     * @param string $email
-     * @param string $transferId
-     * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Customer\User|null
-     */
-    public function findUserByTransferIdAndDomain(string $transferId, int $domainId): ?User
-    {
-        return $this->getUserRepository()->findOneBy([
-            'transferId' => $transferId,
-            'domainId' => $domainId,
-        ]);
-    }
 }
