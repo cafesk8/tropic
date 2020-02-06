@@ -451,6 +451,9 @@ class RouteConfigCustomization
                 $config->addExtraRequestDataSet('Logged user on login page is redirected onto homepage')
                      ->setAuth(new BasicHttpAuth('no-reply@shopsys.com', 'user123'))
                      ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName(['front_download_uploaded_file'], function (RouteConfig $config) {
+                $config->skipRoute('Downloading uploaded files is not tested.');
             });
     }
 
