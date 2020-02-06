@@ -83,7 +83,7 @@
                                     </a>
                                 {% else %}
                                     <div class="list-products__item__hover__wrap">
-                                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProduct', {productId: productView.id })) }}
+                                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: productView.action.id, type: 'small' })) }}
                                     </div>
                                 {% endif %}
                             </div>
@@ -141,13 +141,6 @@
                                                     <div class="{{ listCssClass }}__item__info__price__item__discount">
                                                         -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                                     </div>
-                                                {% endif %}
-                                            </div>
-                                            <div class="{{ listCssClass }}__item__info__price__item">
-                                                {% if productSellingPrice.priceFrom %}
-                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                                {% else %}
-                                                    {{ productSellingPrice.priceWithVat|price }}
                                                 {% endif %}
                                             </div>
                                         </div>
