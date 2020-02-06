@@ -35,13 +35,6 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         /** @var \App\Model\Category\Category $category */
         $category = $this->getReference(CategoryDataFixture::CATEGORY_ELECTRONICS);
 
-        $em = $this->getEntityManager();
-        $vatData = new VatData();
-        $vatData->name = 'vat';
-        $vatData->percent = '21';
-        $vat = new Vat($vatData);
-        $em->persist($vat);
-
         /** @var \App\Model\Product\ProductDataFactory $productDataFactory */
         $productDataFactory = $this->getContainer()->get(ProductDataFactoryInterface::class);
         /** @var \Shopsys\FrameworkBundle\Model\Localization\Localization $localization */
@@ -52,13 +45,36 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
             $names[$locale] = 'Name';
         }
         $productData->name = $names;
-        $productData->vat = $vat;
         $productData->categoriesByDomainId = [Domain::FIRST_DOMAIN_ID => [$category]];
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $productData->unit = $this->getReference(UnitDataFixture::UNIT_PIECES);
         $this->setPriceForAllDomains($productData, Money::create(100));
+        $this->setVatsForAllDomains($productData);
 
         return $productData;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductData $productData
+     */
+    private function setVatsForAllDomains(ProductData $productData): void
+    {
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+        $productVats = [];
+        $em = $this->getEntityManager();
+
+        foreach ($domain->getAllIds() as $domainId) {
+            $vatData = new VatData();
+            $vatData->name = 'vat';
+            $vatData->percent = '21';
+            $vat = new Vat($vatData, $domainId);
+            $em->persist($vat);
+
+            $productVats[$domainId] = $vat;
+        }
+
+        $productData->vatsIndexedByDomainId = $productVats;
     }
 
     /**

@@ -21,8 +21,6 @@ use App\Model\Transport\Exception\InvalidPersonalTakeTypeException;
  * @method setPayments(\App\Model\Payment\Payment[] $payments)
  * @method removePayment(\App\Model\Payment\Payment $payment)
  * @method \App\Model\Payment\Payment[] getPayments()
- * @method \Shopsys\FrameworkBundle\Model\Transport\TransportPrice getPrice(\App\Model\Pricing\Currency\Currency $currency)
- * @method setPrice(\Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface $transportPriceFactory, \App\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Component\Money\Money $price)
  */
 class Transport extends BaseTransport
 {

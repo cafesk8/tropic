@@ -34,9 +34,9 @@ use App\Component\Balikobot\Pickup\PickupFacade;
  * @method \App\Model\Transport\Transport getById(int $id)
  * @method \App\Model\Transport\Transport[] getVisibleOnCurrentDomain(\App\Model\Payment\Payment[] $visiblePayments)
  * @method \App\Model\Transport\Transport[] getVisibleByDomainId(int $domainId, \App\Model\Payment\Payment[] $visiblePaymentsOnDomain)
- * @method updateTransportPrices(\App\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesByCurrencyId)
+ * @method updateTransportPrices(\App\Model\Transport\Transport $transport, array $pricesIndexedByDomainId)
  * @method \App\Model\Transport\Transport[] getAllIncludingDeleted()
- * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByCurrencyId(\App\Model\Transport\Transport $transport)
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Transport\Transport $transport)
  */
 class TransportFacade extends BaseTransportFacade
 {
@@ -247,15 +247,16 @@ class TransportFacade extends BaseTransportFacade
 
     /**
      * @param \App\Model\Pricing\Currency\Currency $currency
+     * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
-    public function getTransportPricesWithVatIndexedByTransportId(Currency $currency): array
+    public function getTransportPricesWithVatByCurrencyAndDomainIdIndexedByTransportId(Currency $currency, int $domainId): array
     {
         $transportPricesWithVatByTransportId = [];
         $transports = $this->getAllIncludingDeleted();
         foreach ($transports as $transport) {
             try {
-                $transportPrice = $this->transportPriceCalculation->calculateIndependentPrice($transport, $currency);
+                $transportPrice = $this->transportPriceCalculation->calculateIndependentPrice($transport, $currency, $domainId);
                 $transportPricesWithVatByTransportId[$transport->getId()] = $transportPrice->getPriceWithVat();
             } catch (TransportPriceNotFoundException $exception) {
                 $transportPricesWithVatByTransportId[$transport->getId()] = Money::zero();

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
+use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface;
 use App\DataFixtures\Demo\AvailabilityDataFixture;
@@ -57,6 +60,7 @@ class ProductDomainTest extends TransactionFunctionalTestCase
         $productData->shortDescriptions[self::FIRST_DOMAIN_ID] = self::DEMONSTRATIVE_SHORT_DESCRIPTION;
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $productData->outOfStockAvailability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
+        $this->setVats($productData);
 
         $product = $this->productFactory->create($productData);
 
@@ -88,6 +92,7 @@ class ProductDomainTest extends TransactionFunctionalTestCase
         $productData->shortDescriptions[self::FIRST_DOMAIN_ID] = self::DEMONSTRATIVE_SHORT_DESCRIPTION;
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $productData->outOfStockAvailability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
+        $this->setVats($productData);
 
         $product = $this->productFactory->create($productData);
 
@@ -114,5 +119,21 @@ class ProductDomainTest extends TransactionFunctionalTestCase
         $this->em->clear();
 
         return $this->em->getRepository(Product::class)->find($productId);
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function setVats(ProductData $productData): void
+    {
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade */
+        $vatFacade = $this->getContainer()->get(VatFacade::class);
+        $productVatsIndexedByDomainId = [];
+        foreach ($domain->getAllIds() as $domainId) {
+            $productVatsIndexedByDomainId[$domainId] = $vatFacade->getDefaultVatForDomain($domainId);
+        }
+        $productData->vatsIndexedByDomainId = $productVatsIndexedByDomainId;
     }
 }

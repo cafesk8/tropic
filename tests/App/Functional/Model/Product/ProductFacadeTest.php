@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Tests\App\Functional\Model\Product;
 
 use ReflectionClass;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use App\DataFixtures\Demo\AvailabilityDataFixture;
 use App\DataFixtures\Demo\ProductDataFixture;
 use App\DataFixtures\Demo\UnitDataFixture;
-use App\DataFixtures\Demo\VatDataFixture;
 use App\Model\Product\Product;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
@@ -43,8 +45,8 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
         $productData->usingStock = true;
         $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         $productData->outOfStockAvailability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
-        $productData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $productData->unit = $this->getReference(UnitDataFixture::UNIT_PIECES);
+        $this->setVats($productData);
 
         /** @var \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade */
         $productFacade = $this->getContainer()->get(ProductFacade::class);
@@ -140,7 +142,26 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
         /** @var \App\Model\Product\Product $product */
         $product = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 1);
         $productId = $product->getId();
-        $productFacade->edit($productId, $productDataFactory->create());
+        $productData = $productDataFactory->create();
+        $this->setVats($productData);
+
+        $productFacade->edit($productId, $productData);
         $this->assertArrayHasKey($productId, $productPriceRecalculationScheduler->getProductsForImmediateRecalculation());
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function setVats(ProductData $productData): void
+    {
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade */
+        $vatFacade = $this->getContainer()->get(VatFacade::class);
+        $productVatsIndexedByDomainId = [];
+        foreach ($domain->getAllIds() as $domainId) {
+            $productVatsIndexedByDomainId[$domainId] = $vatFacade->getDefaultVatForDomain($domainId);
+        }
+        $productData->vatsIndexedByDomainId = $productVatsIndexedByDomainId;
     }
 }

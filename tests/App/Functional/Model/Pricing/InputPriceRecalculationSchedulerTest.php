@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Pricing;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\InputPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Pricing\InputPriceRecalculator;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
@@ -124,28 +124,17 @@ class InputPriceRecalculationSchedulerTest extends TransactionFunctionalTestCase
         $paymentDataFactory = $this->getContainer()->get(PaymentDataFactoryInterface::class);
         /** @var \App\Model\Transport\TransportDataFactory $transportDataFactory */
         $transportDataFactory = $this->getContainer()->get(TransportDataFactoryInterface::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade */
-        $currencyFacade = $this->getContainer()->get(CurrencyFacade::class);
 
         $paymentData = $paymentDataFactory->create();
         $transportData = $transportDataFactory->create();
 
-        $paymentData->pricesByCurrencyId = [];
-        $transportData->pricesByCurrencyId = [];
-        $currencies = [];
-
-        foreach ($currencyFacade->getAllIndexedById() as $currency) {
-            $currencies[] = $currency;
-            $paymentData->pricesByCurrencyId[$currency->getId()] = $inputPrice;
-            $transportData->pricesByCurrencyId[$currency->getId()] = $inputPrice;
-        }
-
-        $firstCurrency = reset($currencies);
+        $paymentData->pricesIndexedByDomainId[Domain::FIRST_DOMAIN_ID] = $inputPrice;
+        $transportData->pricesIndexedByDomainId[Domain::FIRST_DOMAIN_ID] = $inputPrice;
 
         $vatData = new VatData();
         $vatData->name = 'vat';
         $vatData->percent = $vatPercent;
-        $vat = new Vat($vatData);
+        $vat = new Vat($vatData, Domain::FIRST_DOMAIN_ID);
         $availabilityData = new AvailabilityData();
         $availabilityData->dispatchTime = 0;
         $availability = new Availability($availabilityData);
@@ -153,14 +142,12 @@ class InputPriceRecalculationSchedulerTest extends TransactionFunctionalTestCase
         $em->persist($availability);
 
         $paymentData->name = ['cs' => 'name'];
-        $paymentData->vat = $vat;
 
         /** @var \App\Model\Payment\Payment $payment */
         $payment = $paymentFacade->create($paymentData);
 
         $transportData->name = ['cs' => 'name'];
         $transportData->description = ['cs' => 'desc'];
-        $transportData->vat = $vat;
         /** @var \App\Model\Transport\Transport $transport */
         $transport = $transportFacade->create($transportData);
 
@@ -184,7 +171,7 @@ class InputPriceRecalculationSchedulerTest extends TransactionFunctionalTestCase
         $em->refresh($payment);
         $em->refresh($transport);
 
-        $this->assertThat($payment->getPrice($firstCurrency)->getPrice(), new IsMoneyEqual($expectedPrice));
-        $this->assertThat($transport->getPrice($firstCurrency)->getPrice(), new IsMoneyEqual($expectedPrice));
+        $this->assertThat($payment->getPrice(Domain::FIRST_DOMAIN_ID)->getPrice(), new IsMoneyEqual($expectedPrice));
+        $this->assertThat($transport->getPrice(Domain::FIRST_DOMAIN_ID)->getPrice(), new IsMoneyEqual($expectedPrice));
     }
 }

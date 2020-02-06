@@ -186,7 +186,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
             $defaultPrice = $this->basePriceCalculation->calculateBasePrice(
                 Money::create($manualInputPriceForDefaultPricingGroup['inputPrice']),
                 $this->pricingSetting->getInputPriceType(),
-                $product->getVat()
+                $product->getVatForDomain($domainId)
             );
             $defaultPriceWithoutVat = (float)$defaultPrice->getPriceWithoutVat()->getAmount();
             $defaultPriceWithVat = (float)$defaultPrice->getPriceWithVat()->getAmount();

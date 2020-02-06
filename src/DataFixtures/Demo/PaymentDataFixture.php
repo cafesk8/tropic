@@ -80,7 +80,6 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             $paymentData->instructions[$locale] = t('<b>Zvolili jste platbu kreditní kartou. Prosím proveďte ji do dvou pracovních dnů.</b>', [], 'dataFixtures', $locale);
         }
         $this->setPriceForAllDomainDefaultCurrencies($paymentData, Money::create('99.95'));
-        $paymentData->vat = $this->getReference(VatDataFixture::VAT_ZERO);
         $this->createPayment(self::PAYMENT_CARD, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,
@@ -94,7 +93,6 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
             $paymentData->name[$locale] = t('Dobírka', [], 'dataFixtures', $locale);
         }
         $this->setPriceForAllDomainDefaultCurrencies($paymentData, Money::create('49.90'));
-        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $paymentData->cashOnDelivery = true;
         $this->createPayment(self::PAYMENT_CASH_ON_DELIVERY, $paymentData, [TransportDataFixture::TRANSPORT_CZECH_POST]);
 
@@ -105,7 +103,6 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         }
         $paymentData->czkRounding = true;
         $this->setPriceForAllDomainDefaultCurrencies($paymentData, Money::zero());
-        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $this->createPayment(self::PAYMENT_CASH, $paymentData, [TransportDataFixture::TRANSPORT_PERSONAL]);
 
         $paymentData = $this->paymentDataFactory->create();
@@ -119,7 +116,6 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->instructions[$locale] = t('<b>Zvolili jste platbu GoPay, bude Vám zobrazena platební brána.</b>', [], 'dataFixtures', $locale);
         }
-        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = false;
         $this->createPayment(self::PAYMENT_GOPAY, $paymentData, [
@@ -139,7 +135,6 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->instructions[$locale] = t('<b>Zvolili jste platbu PayPal, budete přesměrováni na platební bránu.</b>', [], 'dataFixtures', $locale);
         }
-        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = false;
         $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
@@ -160,7 +155,6 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         foreach ($this->domain->getAllLocales() as $locale) {
             $paymentData->description[$locale] = t('Platba provedena u mall.cz', [], 'dataFixtures', $locale);
         }
-        $paymentData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
         $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = true;
         $this->createPayment(Payment::TYPE_PAY_PAL, $paymentData, [
@@ -214,10 +208,12 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
     protected function setPriceForAllDomainDefaultCurrencies(PaymentData $paymentData, Money $price): void
     {
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
-            $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domain->getId());
             $price = $this->priceConverter->convertPriceWithoutVatToPriceInDomainDefaultCurrency($price, $domain->getId());
 
-            $paymentData->pricesByCurrencyId[$currency->getId()] = $price;
+            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat $vat */
+            $vat = $this->getReferenceForDomain(VatDataFixture::VAT_ZERO, $domain->getId());
+            $paymentData->pricesIndexedByDomainId[$domain->getId()] = $price;
+            $paymentData->vatsIndexedByDomainId[$domain->getId()] = $vat;
         }
     }
 }

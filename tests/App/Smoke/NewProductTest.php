@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Smoke;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use App\DataFixtures\Demo\AvailabilityDataFixture;
@@ -60,9 +61,6 @@ class NewProductTest extends FunctionalTestCase
      */
     private function fillForm(Form $form)
     {
-        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat $vat */
-        $vat = $this->getReference(VatDataFixture::VAT_ZERO);
-
         /** @var \Shopsys\FrameworkBundle\Model\Product\Unit\Unit $unit */
         $unit = $this->getReference(UnitDataFixture::UNIT_CUBIC_METERS);
 
@@ -74,9 +72,7 @@ class NewProductTest extends FunctionalTestCase
         $form['product_form[basicInformationGroup][ean]'] = '123456';
         $form['product_form[descriptionsGroup][descriptions][1]'] = 'test description';
         $this->fillManualInputPrices($form);
-        /** @var \Symfony\Component\DomCrawler\Field\ChoiceFormField $vatFormField */
-        $vatFormField = $form['product_form[pricesGroup][vat]'];
-        $vatFormField->select($vat->getId());
+        $this->fillVats($form);
         $form['product_form[displayAvailabilityGroup][sellingFrom]'] = '1.1.1990';
         $form['product_form[displayAvailabilityGroup][sellingTo]'] = '1.1.2000';
         /** @var \Symfony\Component\DomCrawler\Field\ChoiceFormField $unitFormField */
@@ -108,6 +104,24 @@ class NewProductTest extends FunctionalTestCase
                 $pricingGroup->getId()
             );
             $form[$inputName] = '10000';
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\DomCrawler\Form $form
+     */
+    private function fillVats(Form $form)
+    {
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+        foreach ($domain->getAllIds() as $domainId) {
+            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat $vat */
+            $vat = $this->getReferenceForDomain(VatDataFixture::VAT_ZERO, $domainId);
+            $inputName = sprintf(
+                'product_form[pricesGroup][productCalculatedPricesGroup][vatsIndexedByDomainId][%s]',
+                $domainId
+            );
+            $form[$inputName] = $vat->getId();
         }
     }
 }

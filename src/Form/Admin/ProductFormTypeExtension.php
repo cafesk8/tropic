@@ -355,7 +355,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'required' => false,
             'block_name' => 'custom_name',
             'label' => t('Akční cena'),
-            'position' => ['after' => 'vat'],
+            'position' => ['before' => 'productCalculatedPricesGroup'],
             'options_by_domain_id' => $actionPriceOptionsByDomainId,
             'entry_options' => [
                 'scale' => 6,

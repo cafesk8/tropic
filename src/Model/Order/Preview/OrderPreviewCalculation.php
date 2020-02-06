@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Order\Preview;
 
 use InvalidArgumentException;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
@@ -45,6 +46,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     private $vatFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation
      * @param \App\Model\Product\Pricing\QuantifiedProductDiscountCalculation $quantifiedProductDiscountCalculation
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
@@ -52,6 +58,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation,
@@ -60,7 +67,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         PaymentPriceCalculation $paymentPriceCalculation,
         OrderPriceCalculation $orderPriceCalculation,
         PriceCalculation $priceCalculation,
-        VatFacade $vatFacade
+        VatFacade $vatFacade,
+        Domain $domain
     ) {
         parent::__construct(
             $quantifiedProductPriceCalculation,
@@ -72,6 +80,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
         $this->priceCalculation = $priceCalculation;
         $this->vatFacade = $vatFacade;
+        $this->domain = $domain;
     }
 
     /**
@@ -397,7 +406,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         foreach ($promoCodes as $promoCode) {
             if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
                 $certificatesTotalPriceWithVat = $promoCode->getCertificateValue();
-                $certificatedTotalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($certificatesTotalPriceWithVat, $this->vatFacade->getDefaultVat());
+                $certificatedTotalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($certificatesTotalPriceWithVat, $this->vatFacade->getDefaultVatForDomain($this->domain->getId()));
                 $certificatesTotalPriceWithoutVat = $certificatesTotalPriceWithVat->subtract($certificatedTotalVatAmount);
 
                 $certificatesPrice = $certificatesPrice->add(new Price($certificatesTotalPriceWithoutVat, $certificatesTotalPriceWithVat));

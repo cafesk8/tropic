@@ -74,7 +74,7 @@ use App\Model\Product\Gift\ProductGiftPriceCalculation;
  * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
- * @method calculateOrderItemDataPrices(\App\Model\Order\Item\OrderItemData $orderItemData)
+ * @method calculateOrderItemDataPrices(\App\Model\Order\Item\OrderItemData $orderItemData, int $domainId)
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -490,7 +490,7 @@ class OrderFacade extends BaseOrderFacade
                 $order,
                 $product->getName($locale),
                 $quantifiedItemPrice->getUnitPrice(),
-                $product->getVat()->getPercent(),
+                $product->getVatForDomain($order->getDomainId())->getPercent(),
                 $quantifiedProduct->getQuantity(),
                 $product->getUnit()->getName($locale),
                 $product->getCatnum(),
@@ -571,7 +571,7 @@ class OrderFacade extends BaseOrderFacade
             $name,
             $certificatePrice,
             $promoCode->getCertificateSku(),
-            $this->vatFacade->getDefaultVat()->getPercent()
+            $this->vatFacade->getDefaultVatForDomain($order->getDomainId())->getPercent()
         );
     }
 
@@ -601,7 +601,7 @@ class OrderFacade extends BaseOrderFacade
                 $order,
                 $product->getName($this->domain->getLocale()),
                 $promoProductOrderItemPrice,
-                $product->getVat()->getPercent(),
+                $product->getVatForDomain($order->getDomainId())->getPercent(),
                 $promoProductCartItem->getQuantity(),
                 $product->getUnit()->getName($this->domain->getLocale()),
                 $product->getCatnum(),
@@ -637,7 +637,7 @@ class OrderFacade extends BaseOrderFacade
                 $order,
                 $gift->getName($this->domain->getLocale()),
                 $giftPrice,
-                $gift->getVat()->getPercent(),
+                $gift->getVatForDomain($order->getDomainId())->getPercent(),
                 $giftInCart->getQuantity(),
                 $gift->getUnit()->getName($this->domain->getLocale()),
                 $gift->getCatnum(),

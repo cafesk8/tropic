@@ -20,8 +20,6 @@ use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
  * @method setTranslations(\App\Model\Payment\PaymentData $paymentData)
  * @method setDomains(\App\Model\Payment\PaymentData $paymentData)
  * @method createDomains(\App\Model\Payment\PaymentData $paymentData)
- * @method setPrice(\Shopsys\FrameworkBundle\Model\Payment\PaymentPriceFactoryInterface $paymentPriceFactory, \App\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Component\Money\Money $price)
- * @method \Shopsys\FrameworkBundle\Model\Payment\PaymentPrice getPrice(\App\Model\Pricing\Currency\Currency $currency)
  */
 class Payment extends BasePayment
 {

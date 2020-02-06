@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Cart;
 
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
+use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Availability\Availability;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
@@ -23,25 +23,27 @@ class CartItemTest extends TransactionFunctionalTestCase
     {
         $em = $this->getEntityManager();
         $productDataFactory = $this->getContainer()->get(ProductDataFactoryInterface::class);
+        $domain = $this->getContainer()->get(Domain::class);
+        $vatFacade = $this->getContainer()->get(VatFacade::class);
 
         $customerIdentifier = new CustomerIdentifier('randomString');
 
-        $vatData = new VatData();
-        $vatData->name = 'vat';
-        $vatData->percent = '21';
-        $vat = new Vat($vatData);
         $availabilityData = new AvailabilityData();
         $availabilityData->dispatchTime = 0;
         $availability = new Availability($availabilityData);
         $productData = $productDataFactory->create();
         $productData->name = [];
-        $productData->vat = $vat;
         $productData->availability = $availability;
         $productData->unit = $this->getReference(UnitDataFixture::UNIT_PIECES);
 
+        $productVatsIndexedByDomainId = [];
+        foreach ($domain->getAllIds() as $domainId) {
+            $productVatsIndexedByDomainId[$domainId] = $vatFacade->getDefaultVatForDomain($domainId);
+        }
+        $productData->vatsIndexedByDomainId = $productVatsIndexedByDomainId;
+
         $product1 = Product::create($productData);
         $product2 = Product::create($productData);
-        $em->persist($vat);
         $em->persist($availability);
         $em->persist($product1);
         $em->persist($product2);

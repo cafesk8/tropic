@@ -23,10 +23,10 @@ use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
  * @method setAdditionalDataAndFlush(\App\Model\Payment\Payment $payment, \App\Model\Payment\PaymentData $paymentData)
  * @method \App\Model\Payment\Payment[] getVisibleOnCurrentDomain()
  * @method \App\Model\Payment\Payment[] getVisibleByDomainId(int $domainId)
- * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesByCurrencyId)
+ * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, array $pricesIndexedByDomainId, array $vatsIndexedByDomainId)
  * @method \App\Model\Payment\Payment[] getAllIncludingDeleted()
  * @method \App\Model\Payment\Payment[] getAll()
- * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByCurrencyId(\App\Model\Payment\Payment $payment)
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Payment\Payment $payment)
  */
 class PaymentFacade extends BasePaymentFacade
 {
@@ -66,15 +66,16 @@ class PaymentFacade extends BasePaymentFacade
 
     /**
      * @param \App\Model\Pricing\Currency\Currency $currency
+     * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
-    public function getPaymentPricesWithVatIndexedByPaymentId(Currency $currency): array
+    public function getPaymentPricesWithVatByCurrencyAndDomainIdIndexedByPaymentId(Currency $currency, int $domainId): array
     {
         $paymentPricesWithVatByPaymentId = [];
         $payments = $this->getAllIncludingDeleted();
         foreach ($payments as $payment) {
             try {
-                $paymentPrice = $this->paymentPriceCalculation->calculateIndependentPrice($payment, $currency);
+                $paymentPrice = $this->paymentPriceCalculation->calculateIndependentPrice($payment, $currency, $domainId);
                 $paymentPricesWithVatByPaymentId[$payment->getId()] = $paymentPrice->getPriceWithVat();
             } catch (PaymentPriceNotFoundException $exception) {
                 $paymentPricesWithVatByPaymentId[$payment->getId()] = Money::zero();

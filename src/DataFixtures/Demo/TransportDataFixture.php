@@ -89,9 +89,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         }
 
         $transportData->deliveryDays = 2;
-        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('99.95'));
-
-        $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $this->setPriceForAllDomains($transportData, Money::create('99.95'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_CZECH_POST, $transportData);
@@ -107,9 +105,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
 
-        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('199.95'));
-
-        $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $this->setPriceForAllDomains($transportData, Money::create('199.95'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_PPL, $transportData);
@@ -125,9 +121,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->balikobotShipper = null;
         $transportData->balikobotShipperService = null;
 
-        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::zero());
-
-        $transportData->vat = $this->getReference(VatDataFixture::VAT_ZERO);
+        $this->setPriceForAllDomains($transportData, Money::zero());
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
         $this->createTransport(self::TRANSPORT_PERSONAL, $transportData);
@@ -141,8 +135,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
-        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('230.90'));
-        $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $this->setPriceForAllDomains($transportData, Money::create('230.90'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_GERMANY);
         $this->createTransport(self::TRANSPORT_PPL_DE, $transportData);
 
@@ -155,8 +148,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
-        $this->setPriceForAllDomainDefaultCurrencies($transportData, Money::create('499.90'));
-        $transportData->vat = $this->getReference(VatDataFixture::VAT_HIGH);
+        $this->setPriceForAllDomains($transportData, Money::create('499.90'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_FRANCE);
         $this->createTransport(self::TRANSPORT_PPL_FR, $transportData);
     }
@@ -178,13 +170,15 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
      * @param \App\Model\Transport\TransportData $transportData
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $price
      */
-    protected function setPriceForAllDomainDefaultCurrencies(TransportData $transportData, Money $price): void
+    protected function setPriceForAllDomains(TransportData $transportData, Money $price): void
     {
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
-            $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domain->getId());
             $price = $this->priceConverter->convertPriceWithoutVatToPriceInDomainDefaultCurrency($price, $domain->getId());
 
-            $transportData->pricesByCurrencyId[$currency->getId()] = $price;
+            /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat $vat */
+            $vat = $this->getReferenceForDomain(VatDataFixture::VAT_HIGH, $domain->getId());
+            $transportData->vatsIndexedByDomainId[$domain->getId()] = $vat;
+            $transportData->pricesIndexedByDomainId[$domain->getId()] = $price;
         }
     }
 

@@ -238,7 +238,6 @@ class ProductRepository extends BaseProductRepository
     public function getProductsForHsSportXmlFeed(DomainConfig $domainConfig, PricingGroup $pricingGroup, ?int $lastSeekId, int $maxResults): iterable
     {
         $queryBuilder = $this->getAllVisibleQueryBuilder($domainConfig->getId(), $pricingGroup)
-            ->addSelect('v')->join('p.vat', 'v')
             ->addSelect('b')->leftJoin('p.brand', 'b')
             ->andWhere('p.variantType IN (:variantTypes)')
             ->setParameter('variantTypes', [Product::VARIANT_TYPE_MAIN, Product::VARIANT_TYPE_NONE])
@@ -249,6 +248,7 @@ class ProductRepository extends BaseProductRepository
 
         $this->addTranslation($queryBuilder, $domainConfig->getLocale());
         $this->addDomain($queryBuilder, $domainConfig->getId());
+        $queryBuilder->addSelect('v')->join('pd.vat', 'v');
 
         if ($lastSeekId !== null) {
             $queryBuilder->andWhere('p.id > :lastProductId')->setParameter('lastProductId', $lastSeekId);

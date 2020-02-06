@@ -136,7 +136,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $defaultPrice = $this->calculateBasePriceRoundedByCurrency(
             $defaultPrice,
             $this->pricingSetting->getInputPriceType(),
-            $product->getVat(),
+            $product->getVatForDomain($domainId),
             $defaultCurrency
         );
 
@@ -146,7 +146,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $basePrice = $this->calculateBasePriceRoundedByCurrency(
                 $inputPrice,
                 $this->pricingSetting->getInputPriceType(),
-                $product->getVat(),
+                $product->getVatForDomain($domainId),
                 $defaultCurrency
             );
         }

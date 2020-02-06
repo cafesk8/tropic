@@ -188,7 +188,7 @@ class ProductMallExportMapper
         $mallCategoryId = $this->categoryFacade->findMallCategoryForProduct($product, self::CZECH_DOMAIN);
         if ($isVariant === false) {
             $mallProduct = new MallProduct();
-            $mallProduct->setVat($product->getVat()->getPercent());
+            $mallProduct->setVat($product->getVatForDomain(self::CZECH_DOMAIN)->getPercent());
             $mallProduct->setBrandId('SHOPSYS');
 
             if ($mallCategoryId !== null) {
