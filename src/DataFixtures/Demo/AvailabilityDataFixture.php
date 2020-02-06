@@ -77,7 +77,7 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
         }
 
         $availabilityData->dispatchTime = 0;
-        $availabilityData->rgbColor = '#c0e314';
+        $availabilityData->rgbColor = AvailabilityData::DEFAULT_COLOR;
         $inStockAvailability = $this->createAvailability($availabilityData, self::AVAILABILITY_IN_STOCK);
         $this->setting->set(Setting::DEFAULT_AVAILABILITY_IN_STOCK, $inStockAvailability->getId());
 

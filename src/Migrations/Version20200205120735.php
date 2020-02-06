@@ -15,7 +15,7 @@ class Version20200205120735 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        $this->sql('ALTER TABLE availabilities ADD rgb_color VARCHAR(7) NOT NULL DEFAULT \'#c0e314\'');
+        $this->sql('ALTER TABLE availabilities ADD rgb_color VARCHAR(7) NOT NULL DEFAULT \'' . AvailabilityData::DEFAULT_COLOR . '\'');
         $this->sql('ALTER TABLE availabilities ALTER rgb_color DROP DEFAULT');
     }
 
