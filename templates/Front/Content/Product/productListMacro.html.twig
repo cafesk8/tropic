@@ -1,5 +1,4 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
-    {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
 
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for productView in productViews %}
@@ -45,8 +44,8 @@
                                             {% endif %}
                                         </div>
                                         <div class="list-products__item__info__availability__spacer"></div>
-                                        <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
-                                            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                                        <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                            {{ productView.availability }}
                                         </div>
                                     </div>
                                 {% endif %}

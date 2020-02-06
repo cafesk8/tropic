@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Model\Product\Availability\AvailabilityData;
+use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Parameter\ParameterFacade;
@@ -57,14 +59,26 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     private $freeTransportFlag;
 
     /**
+     * @var \App\Model\Product\Availability\AvailabilityFacade
+     */
+    private $availabilityFacade;
+
+    /**
+     * @var string[]
+     */
+    private $availabilityColorsIndexedByName;
+
+    /**
      * ProductExtension constructor.
-     * @param \App\Model\Category\CategoryFacade $categoryFacade
+     *
+     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -73,7 +87,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade,
         Domain $domain,
         FlagFacade $flagFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        AvailabilityFacade $availabilityFacade
     ) {
         parent::__construct($categoryFacade, $productCachedAttributesFacade);
 
@@ -82,6 +97,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         $this->domain = $domain;
         $this->flagFacade = $flagFacade;
         $this->productFacade = $productFacade;
+        $this->availabilityFacade = $availabilityFacade;
     }
 
     /**
@@ -117,6 +133,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed',
                 [$this, 'getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed']
+            ),
+            new TwigFunction(
+                'getAvailabilityColor',
+                [$this, 'getAvailabilityColor']
             ),
         ];
     }
@@ -233,5 +253,18 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return $this->freeTransportFlag;
+    }
+
+    /**
+     * @param string $availability
+     * @return string
+     */
+    public function getAvailabilityColor(string $availability): string
+    {
+        if ($this->availabilityColorsIndexedByName === null) {
+            $this->availabilityColorsIndexedByName = $this->availabilityFacade->getColorsIndexedByName();
+        }
+
+        return $this->availabilityColorsIndexedByName[$availability] ?? AvailabilityData::DEFAULT_COLOR;
     }
 }
