@@ -125,21 +125,15 @@
         border-radius: 0 @radius @radius 0;
     }
 
-    @btn-mini-padding-horizontal-mobile: 2px;
-    @btn-mini-padding-horizontal: 5px;
-    @btn-mini-height: 16px;
+    @btn-mini-padding-horizontal: 7px;
+    @btn-mini-height: 22px;
 
     &--mini {
-        height: @btn-mini-height;
-        line-height: @btn-mini-height - 2px;
+        line-height: @btn-mini-height - 8px;
         min-height: @btn-mini-height;
-        padding: 0 @btn-mini-padding-horizontal-mobile;
+        padding: 2px @btn-mini-padding-horizontal;
 
-        font-size: 11px;
-
-        @media @query-lg {
-            padding: 0 @btn-mini-padding-horizontal;
-        }
+        font-size: @font-size;
     }
 }
 
