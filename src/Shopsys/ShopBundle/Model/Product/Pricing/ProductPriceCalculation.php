@@ -121,6 +121,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         return new ProductPrice(
             $basePrice,
             false,
+            $product->getId(),
             $pricingGroup,
             $defaultPricingGroup,
             $product->getActionPrice($pricingGroup->getDomainId()),

@@ -142,7 +142,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                     return true;
                 }
 
-                if (!in_array($productPrice->getProduct()->getId(), $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits()), true)) {
+                if (!in_array($productPrice->getProductId(), $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits()), true)) {
                     return false;
                 }
 

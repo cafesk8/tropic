@@ -33,8 +33,14 @@ class ProductPrice extends BaseProductPrice
     private $actionPriceForCurrentDomain;
 
     /**
+     * @var int
+     */
+    private $productId;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param mixed $priceFrom
+     * @param int $productId
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null $activePricingGroup
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null $defaultPricingGroup
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPriceForCurrentDomain
@@ -43,6 +49,7 @@ class ProductPrice extends BaseProductPrice
     public function __construct(
         Price $price,
         $priceFrom,
+        int $productId,
         ?PricingGroup $activePricingGroup,
         ?PricingGroup $defaultPricingGroup,
         ?Money $actionPriceForCurrentDomain,
@@ -53,6 +60,7 @@ class ProductPrice extends BaseProductPrice
         $this->activePricingGroup = $activePricingGroup;
         $this->defaultPricingGroup = $defaultPricingGroup;
         $this->actionPriceForCurrentDomain = $actionPriceForCurrentDomain;
+        $this->productId = $productId;
     }
 
     /**
@@ -113,10 +121,10 @@ class ProductPrice extends BaseProductPrice
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     * @return int
      */
-    public function getProduct(): ?Product
+    public function getProductId(): int
     {
-        return $this->product;
+        return $this->productId;
     }
 }
