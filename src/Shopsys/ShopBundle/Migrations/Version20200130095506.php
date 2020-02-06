@@ -7,6 +7,7 @@ namespace Shopsys\ShopBundle\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 use Shopsys\ShopBundle\Component\Domain\DomainHelper;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
 
 class Version20200130095506 extends AbstractMigration
 {
@@ -24,7 +25,7 @@ class Version20200130095506 extends AbstractMigration
                             VALUES (:name, :domain_id, :internal_id, :minimal_price, :discount)', [
                     'name' => 'Registrovaný zákazník',
                     'domain_id' => $domainId,
-                    'internal_id' => 'registered_customer',
+                    'internal_id' => PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER,
                     'minimal_price' => 0,
                     'discount' => 1,
                 ]);
