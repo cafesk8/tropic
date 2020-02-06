@@ -30,6 +30,7 @@ use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
  * @method int[] extractCategories(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
  * @method array extractParameters(string $locale, \Shopsys\ShopBundle\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method array extractPrices(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
  */
 class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWithFilterRepository
 {
