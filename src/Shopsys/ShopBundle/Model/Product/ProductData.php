@@ -104,5 +104,6 @@ class ProductData extends BaseProductData
         $this->updatedAt = new DateTime();
         $this->minimumAmount = 1;
         $this->amountMultiplier = 1;
+        $this->youtubeVideoIds = [];
     }
 }
