@@ -19,7 +19,7 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] $pricingGroups
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice[]
+     * @return array
      */
     public function findByProductAndPricingGroupsForDomain(Product $product, array $pricingGroups, int $domainId)
     {
