@@ -118,7 +118,7 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
         );
 
         if ($customer === null) {
-            $this->createCustomer($itemData);
+            //$this->createCustomer($itemData);
             return;
         }
 
