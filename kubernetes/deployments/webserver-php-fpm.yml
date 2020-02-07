@@ -26,9 +26,6 @@ spec:
                         - "webserver-php-fpm"
                         - "php-fpm"
                         - "webserver"
-                        - "{{DOMAIN_HOSTNAME_1}}"
-                        - "{{DOMAIN_HOSTNAME_2}}"
-                        - "{{DOMAIN_HOSTNAME_3}}"
             volumes:
                 -   name: source-codes
                     emptyDir: {}
@@ -49,7 +46,7 @@ spec:
                         name: nginx-default-config
             initContainers:
                 -   name: copy-source-codes-to-volume
-                    image: "{{DOCKER_PHP_FPM_IMAGE}}"
+                    image: ~
                     securityContext:
                         runAsUser: 33
                     command: ["sh", "-c", "cp -r /var/www/html/. /tmp/source-codes"]
@@ -57,10 +54,10 @@ spec:
                         -   name: source-codes
                             mountPath: /tmp/source-codes
                         -   name: domains-urls
-                            mountPath: "{{PATH_CONFIG_DIRECTORY}}/domains_urls.yml"
+                            mountPath: /var/www/html/app/config/domains_urls.yml
                             subPath: domains_urls.yml
                         -   name: parameters
-                            mountPath: "{{PATH_CONFIG_DIRECTORY}}/parameters.yml"
+                            mountPath: /var/www/html/app/config/parameters.yml
                             subPath: parameters.yml
             containers:
                 -   image: ~
@@ -77,10 +74,10 @@ spec:
                         -   name: source-codes
                             mountPath: /var/www/html
                         -   name: domains-urls
-                            mountPath: "{{PATH_CONFIG_DIRECTORY}}/domains_urls.yml"
+                            mountPath: /var/www/html/app/config/domains_urls.yml
                             subPath: domains_urls.yml
                         -   name: parameters
-                            mountPath: "{{PATH_CONFIG_DIRECTORY}}/parameters.yml"
+                            mountPath: /var/www/html/app/config/parameters.yml
                             subPath: parameters.yml
                     env:
                         -   name: S3_API_HOST

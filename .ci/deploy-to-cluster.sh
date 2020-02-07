@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/sh -ex
 
 # Login to Docker Hub for pushing images into register
 echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
@@ -199,30 +199,6 @@ yq write --inplace app/config/parameters.yml parameters.payPalMode ${PAY_PAL_MOD
 
 #SMTP
 yq write --inplace app/config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
-
-DOCKER_PHP_FPM_IMAGE=${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
-DOCKER_ELASTIC_IMAGE=${DOCKER_USERNAME}/elasticsearch:${DOCKER_ELASTIC_IMAGE_TAG}
-PATH_CONFIG_DIRECTORY='/var/www/html/app/config'
-GOOGLE_CLOUD_PROJECT_ID=${PROJECT_ID}
-
-FILES=$( find kubernetes -type f )
-VARS=(
-    DOMAIN_HOSTNAME_1
-    DOMAIN_HOSTNAME_2
-    DOMAIN_HOSTNAME_3
-    DOCKER_PHP_FPM_IMAGE
-    DOCKER_ELASTIC_IMAGE
-    PATH_CONFIG_DIRECTORY
-    GOOGLE_CLOUD_STORAGE_BUCKET_NAME
-    GOOGLE_CLOUD_PROJECT_ID
-)
-for FILE in $FILES; do
-  for VAR in ${VARS[@]}; do
-      sed -i "s|{{$VAR}}|${!VAR}|g" "$FILE"
-  done
-done
-unset FILES
-unset VARS
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf
