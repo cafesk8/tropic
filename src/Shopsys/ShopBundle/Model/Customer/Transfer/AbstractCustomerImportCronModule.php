@@ -38,8 +38,6 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
      * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
-     * @param \Shopsys\ShopBundle\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper
-     * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade $userTransferIdAndEanFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
