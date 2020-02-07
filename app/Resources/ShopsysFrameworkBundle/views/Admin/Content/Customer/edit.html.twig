@@ -12,32 +12,6 @@
             {% endblock %}
         {% endembed %}
 
-        <div class="wrap-divider">
-            <h2>{{ 'Věrnostní program - body'|trans }}</h2>
-
-            <table class="table-main">
-                <thead>
-                <tr>
-                    {% for bushmanClubPointPeriod in bushmanClubPointPeriods %}
-                        <th>
-                            {{ bushmanClubPointPeriod.dateFrom|formatDate }} -
-                            {{ bushmanClubPointPeriod.dateTo|formatDate }}
-                        </th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    {% for bushmanClubPointPeriod in bushmanClubPointPeriods %}
-                        <td>
-                            {{ bushmanClubPoints(user.id, bushmanClubPointPeriod) }}
-                        </td>
-                    {% endfor %}
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
     {{ form_end(form) }}
 
 {% endblock %}

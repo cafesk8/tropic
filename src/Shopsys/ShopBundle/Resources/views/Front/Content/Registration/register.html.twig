@@ -57,10 +57,10 @@
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">
-                            {{ form_widget(form.userData.memberOfBushmanClub, { attr: {class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-fields' }}) }}
-                            <label class="css-checkbox__image" for="{{ form.userData.memberOfBushmanClub.vars.id }}">
-                                {% if bushmanClubArticle is not null %}
-                                    {% set articleUrl = url('front_article_detail', {'id': bushmanClubArticle.id}) %}
+                            {{ form_widget(form.userData.memberOfLoyaltyProgram, { attr: {class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-fields' }}) }}
+                            <label class="css-checkbox__image" for="{{ form.userData.memberOfLoyaltyProgram.vars.id }}">
+                                {% if loyaltyProgramArticle is not null %}
+                                    {% set articleUrl = url('front_article_detail', {'id': loyaltyProgramArticle.id}) %}
                                     {{ 'Chci být členem <a href="%url%" target="_blank"><span class="underline-small">Věrnostního programu</span></a>.'|trans({'%url%': articleUrl})|raw }}
                                 {% else %}
                                     {{ 'Chci být členem Věrnostního programu'|trans }}

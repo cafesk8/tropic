@@ -7,22 +7,18 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData;
+use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 
 class PricingGroupDataFixture extends AbstractReferenceFixture
 {
     public const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
-    public const PRICING_GROUP_ADEPT_DOMAIN = 'pricing_group_adept_domain';
-    public const PRICING_GROUP_CLASSIC_DOMAIN = 'pricing_group_classic_domain';
-    public const PRICING_GROUP_REAL_BUSHMAN_DOMAIN = 'pricing_group_real_bushman_domain';
-    public const PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN = 'pricing_group_temporary_seven_percent_domain';
+    public const PRICING_GROUP_REGISTERED_DOMAIN = 'pricing_group_registered_domain';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
      */
     protected $pricingGroupFacade;
 
@@ -37,7 +33,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface $pricingGroupDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
@@ -71,43 +67,10 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $this->createPricingGroup($defaultPricingGroupData, self::PRICING_GROUP_BASIC_DOMAIN, false);
 
-        $pricingGroupData = $this->pricingGroupDataFactory->create();
-
-        $pricingGroupData->name = 'ADEPT';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_ADEPT;
-        $pricingGroupData->discount = (float)0.95;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_ADEPT_DOMAIN, true, [
-            1 => Money::create('1999'),
-            2 => Money::create('79.99'),
-            3 => Money::create('79.99'),
-        ]);
-
-        $pricingGroupData->name = 'CLASSIC';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_CLASSIC;
-        $pricingGroupData->discount = (float)0.90;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_CLASSIC_DOMAIN, true, [
-            1 => Money::create('19999'),
-            2 => Money::create('799.99'),
-            3 => Money::create('799.99'),
-        ]);
-
-        $pricingGroupData->name = 'REAL BUSHMAN';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REAL_BUSHMAN;
-        $pricingGroupData->discount = (float)0.85;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_REAL_BUSHMAN_DOMAIN, true, [
-            1 => Money::create('49999'),
-            2 => Money::create('1999.99'),
-            3 => Money::create('1999.99'),
-        ]);
-
-        $pricingGroupData->name = '7%';
-        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN;
-        $pricingGroupData->discount = (float)0.93;
-        $this->createPricingGroup($pricingGroupData, self::PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN, true, [
-            1 => Money::create('49999'),
-            2 => Money::create('1999.99'),
-            3 => Money::create('1999.99'),
-        ]);
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $registeredPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
+            $this->addReferenceForDomain(self::PRICING_GROUP_REGISTERED_DOMAIN, $registeredPricingGroup, $domainId);
+        }
     }
 
     /**

@@ -231,7 +231,7 @@ class Order extends BaseOrder
      *
      * @ORM\Column(type="boolean")
      */
-    private $memberOfBushmanClub;
+    private $memberOfLoyaltyProgram;
 
     /**
      * @var string
@@ -307,7 +307,7 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
-        $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
+        $this->memberOfLoyaltyProgram = $orderData->memberOfLoyaltyProgram;
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
     }
@@ -335,7 +335,7 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
-        $this->memberOfBushmanClub = $orderData->memberOfBushmanClub;
+        $this->memberOfLoyaltyProgram = $orderData->memberOfLoyaltyProgram;
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
 
@@ -515,17 +515,17 @@ class Order extends BaseOrder
     /**
      * @return bool
      */
-    public function isMemberOfBushmanClub(): bool
+    public function isMemberOfLoyaltyProgram(): bool
     {
-        return $this->memberOfBushmanClub;
+        return $this->memberOfLoyaltyProgram;
     }
 
     /**
-     * @param bool $memberOfBushmanClub
+     * @param bool $memberOfLoyaltyProgram
      */
-    public function setMemberOfBushmanClub(bool $memberOfBushmanClub): void
+    public function setMemberOfLoyaltyProgram(bool $memberOfLoyaltyProgram): void
     {
-        $this->memberOfBushmanClub = $memberOfBushmanClub;
+        $this->memberOfLoyaltyProgram = $memberOfLoyaltyProgram;
     }
 
     /**

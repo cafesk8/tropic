@@ -78,7 +78,7 @@ class OrderData extends BaseOrderData
     /**
      * @var bool
      */
-    public $memberOfBushmanClub;
+    public $memberOfLoyaltyProgram;
 
     /**
      * @var string|null
@@ -105,7 +105,7 @@ class OrderData extends BaseOrderData
         parent::__construct();
         $this->updatedAt = new DateTime();
         $this->statusCheckedAt = new DateTime();
-        $this->memberOfBushmanClub = false;
+        $this->memberOfLoyaltyProgram = false;
         $this->transportType = Transport::TYPE_NONE;
         $this->promoCodesCodes = [];
     }

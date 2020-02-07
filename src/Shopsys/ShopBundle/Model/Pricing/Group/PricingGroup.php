@@ -16,10 +16,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
 class PricingGroup extends BasePricingGroup
 {
     public const PRICING_GROUP_ORDINARY_CUSTOMER = 'ordinary_customer';
-    public const PRICING_GROUP_ADEPT = 'adept';
-    public const PRICING_GROUP_CLASSIC = 'classic';
-    public const PRICING_GROUP_REAL_BUSHMAN = 'real_bushman';
-    public const PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN = 'temporary_seven_percent';
+    public const PRICING_GROUP_REGISTERED_CUSTOMER = 'registered_customer';
 
     /**
      * @var string|null

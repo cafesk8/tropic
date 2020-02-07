@@ -99,8 +99,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'getProductDistinguishingParameterValue']
             ),
             new TwigFunction(
-                'getProductAdeptPrice',
-                [$this, 'getProductAdeptPrice']
+                'getProductRegisteredCustomerPrice',
+                [$this, 'getProductRegisteredCustomerPrice']
             ),
             new TwigFunction(
                 'getParameterValueById',
@@ -165,9 +165,9 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
-    public function getProductAdeptPrice(Product $product): ?ProductPrice
+    public function getProductRegisteredCustomerPrice(Product $product): ?ProductPrice
     {
-        return $this->productCachedAttributesFacade->getProductAdeptPrice($product);
+        return $this->productCachedAttributesFacade->getProductRegisteredCustomerPrice($product);
     }
 
     /**

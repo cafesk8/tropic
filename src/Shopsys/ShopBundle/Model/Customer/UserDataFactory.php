@@ -37,7 +37,7 @@ class UserDataFactory extends BaseUserDataFactory
     {
         $userData = new UserData();
         $this->fillForDomainId($userData, $domainId);
-        $userData->memberOfBushmanClub = false;
+        $userData->memberOfLoyaltyProgram = false;
 
         return $userData;
     }
@@ -61,8 +61,7 @@ class UserDataFactory extends BaseUserDataFactory
     protected function fillFromUser(BaseUserData $userData, BaseUser $user): void
     {
         parent::fillFromUser($userData, $user);
-        $userData->memberOfBushmanClub = $user->isMemberOfBushmanClub();
-        $userData->memberOfBushmanClub = $user->isMemberOfBushmanClub();
+        $userData->memberOfLoyaltyProgram = $user->isMemberOfLoyaltyProgram();
         $userData->pricingGroupUpdatedAt = $user->getPricingGroupUpdatedAt();
     }
 

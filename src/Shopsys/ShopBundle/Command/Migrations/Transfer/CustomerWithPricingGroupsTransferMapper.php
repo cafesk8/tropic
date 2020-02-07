@@ -76,7 +76,7 @@ class CustomerWithPricingGroupsTransferMapper
         $userData->telephone = $customerTransferResponseItemData->getPhone();
         $userData->domainId = $domainId;
         $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
-        $userData->memberOfBushmanClub = $userData->ean === null ? false : true;
+        $userData->memberOfLoyaltyProgram = false;
 
         $billingAddressData = $customerData->billingAddressData;
         $billingAddressData->city = $customerTransferResponseItemData->getCity();

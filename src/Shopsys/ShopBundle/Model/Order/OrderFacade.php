@@ -271,7 +271,7 @@ class OrderFacade extends BaseOrderFacade
         $customer = $order->getCustomer();
         if ($customer !== null) {
             $order->setCustomerTransferId($customer->getTransferId());
-            $order->setMemberOfBushmanClub($customer->isMemberOfBushmanClub());
+            $order->setMemberOfLoyaltyProgram($customer->isMemberOfLoyaltyProgram());
             $this->em->flush($order);
         }
 

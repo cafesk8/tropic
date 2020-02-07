@@ -2660,10 +2660,7 @@ msgid "Výsledky výrazu:"
 msgstr ""
 
 msgid "Věrnostní program"
-msgstr ""
-
-msgid "Věrnostní program - body"
-msgstr ""
+msgstr "Věrnostní program"
 
 msgid "Vše co nabízíme, máme skladem"
 msgstr "Vše, co nabízíme, máme skladem"

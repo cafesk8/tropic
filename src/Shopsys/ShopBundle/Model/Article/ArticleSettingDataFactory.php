@@ -29,7 +29,7 @@ class ArticleSettingDataFactory
     {
         $articleSettingData = new ArticleSettingData();
 
-        $articleSettingData->bushmanClubArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $domainId);
+        $articleSettingData->loyaltyProgramArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $domainId);
         $articleSettingData->ourValuesArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_VALUES_ARTICLE_ID, $domainId);
         $articleSettingData->ourStoryArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::OUR_STORY_ARTICLE_ID, $domainId);
         $articleSettingData->firstArticleOnHeaderMenu = $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $domainId);

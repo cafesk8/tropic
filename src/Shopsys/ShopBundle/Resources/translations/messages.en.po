@@ -2333,10 +2333,7 @@ msgid "Výsledky výrazu:"
 msgstr ""
 
 msgid "Věrnostní program"
-msgstr ""
-
-msgid "Věrnostní program - body"
-msgstr ""
+msgstr "Loyalty program"
 
 msgid "Vše pro běhání"
 msgstr ""

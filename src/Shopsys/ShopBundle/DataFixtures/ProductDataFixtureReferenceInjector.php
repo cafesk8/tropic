@@ -181,16 +181,12 @@ class ProductDataFixtureReferenceInjector
                 PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN,
                 $domainId
             );
-            $pricingGroups['vip_domain_' . $domainId] = $persistentReferenceFacade->getReferenceForDomain(
-                PricingGroupDataFixture::PRICING_GROUP_CLASSIC_DOMAIN,
+
+            $pricingGroups['registered_domain_' . $domainId] = $persistentReferenceFacade->getReferenceForDomain(
+                PricingGroupDataFixture::PRICING_GROUP_REGISTERED_DOMAIN,
                 $domainId
             );
         }
-
-        $pricingGroups['partner_domain_1'] = $persistentReferenceFacade->getReferenceForDomain(
-            PricingGroupDataFixture::PRICING_GROUP_ADEPT_DOMAIN,
-            Domain::FIRST_DOMAIN_ID
-        );
 
         return $pricingGroups;
     }

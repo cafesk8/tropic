@@ -131,7 +131,7 @@ class RegistrationController extends FrontBaseController
         return $this->render('@ShopsysShop/Front/Content/Registration/register.html.twig', [
             'form' => $form->createView(),
             'privacyPolicyArticle' => $this->legalConditionsFacade->findPrivacyPolicy($domainId),
-            'bushmanClubArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::BUSHMAN_CLUB_ARTICLE_ID, $domainId),
+            'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $domainId),
         ]);
     }
 }

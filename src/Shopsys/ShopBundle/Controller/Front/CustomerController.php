@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\ShopBundle\Form\Front\Customer\CustomerFormType;
-use Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontBaseController
@@ -48,18 +47,12 @@ class CustomerController extends FrontBaseController
     private $customerDataFactory;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods
-     */
-    private $bushmanClubPointPeriodSettings;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation $orderItemPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade $loginAsUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
-     * @param \Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods $bushmanClubPointPeriodSettings
      */
     public function __construct(
         CustomerFacade $customerFacade,
@@ -67,8 +60,7 @@ class CustomerController extends FrontBaseController
         Domain $domain,
         OrderItemPriceCalculation $orderItemPriceCalculation,
         LoginAsUserFacade $loginAsUserFacade,
-        CustomerDataFactoryInterface $customerDataFactory,
-        CurrentBushmanClubPointPeriods $bushmanClubPointPeriodSettings
+        CustomerDataFactoryInterface $customerDataFactory
     ) {
         $this->customerFacade = $customerFacade;
         $this->orderFacade = $orderFacade;
@@ -76,7 +68,6 @@ class CustomerController extends FrontBaseController
         $this->orderItemPriceCalculation = $orderItemPriceCalculation;
         $this->loginAsUserFacade = $loginAsUserFacade;
         $this->customerDataFactory = $customerDataFactory;
-        $this->bushmanClubPointPeriodSettings = $bushmanClubPointPeriodSettings;
     }
 
     /**
@@ -114,7 +105,6 @@ class CustomerController extends FrontBaseController
 
         return $this->render('@ShopsysShop/Front/Content/Customer/edit.html.twig', [
             'form' => $form->createView(),
-            'bushmanClubPointPeriods' => $this->bushmanClubPointPeriodSettings->getPeriods(),
             'customer' => $user,
         ]);
     }

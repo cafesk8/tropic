@@ -2918,10 +2918,7 @@ msgid "Výsledky výrazu:"
 msgstr "Ausdrucksergebnisse:"
 
 msgid "Věrnostní program"
-msgstr "Bushman-Club"
-
-msgid "Věrnostní program - body"
-msgstr "Věrnostní program Punkte"
+msgstr "Treueprogramm"
 
 msgid "Vše co nabízíme, máme skladem"
 msgstr "Alles was wir anbieten ist auf Lager"

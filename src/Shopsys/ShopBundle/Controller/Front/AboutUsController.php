@@ -36,13 +36,13 @@ class AboutUsController extends FrontBaseController
      */
     public function infoAction(): Response
     {
-        $bushmanClubArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(
-            Setting::BUSHMAN_CLUB_ARTICLE_ID,
+        $loyaltyProgramArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(
+            Setting::LOYALTY_PROGRAM_ARTICLE_ID,
             $this->domain->getId()
         );
 
         return $this->render('@ShopsysShop/Front/Content/AboutUs/info.html.twig', [
-            'bushmanClubArticle' => $bushmanClubArticle,
+            'loyaltyProgramArticle' => $loyaltyProgramArticle,
         ]);
     }
 }
