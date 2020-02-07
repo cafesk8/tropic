@@ -18,13 +18,20 @@ use Shopsys\ShopBundle\Model\Product\Parameter\Parameter;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue as ProjectParameterValue;
 use Shopsys\ShopBundle\Model\Product\SizeHelper;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\Parameter[] getVisibleParametersIndexedByIdOrderedByName(array $rows, string $locale)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[][] getParameterValuesIndexedByParameterIdOrderedByValueText(array $rows, string $locale)
+ * @method \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[] getParameterValuesIndexedByIdOrderedByText(array $rows, string $locale)
+ */
 class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepository
 {
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param string $locale
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoice[]
      */
     public function getParameterFilterChoicesInCategory(
@@ -70,9 +77,9 @@ class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepositor
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param string $locale
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[]
      */
     public function getColorParameterFilterChoicesInCategory(
@@ -114,9 +121,9 @@ class ParameterFilterChoiceRepository extends BaseParameterFilterChoiceRepositor
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param string $locale
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[]
      */
     public function getSizeParameterFilterChoicesInCategory(

@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     private $parameterFacade;
 
@@ -99,7 +99,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
     /**
      * ProductFormTypeExtension constructor.
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
@@ -143,7 +143,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $product = $options['product'];
-        /* @var $product \Shopsys\FrameworkBundle\Model\Product\Product|null */
+        /* @var $product \Shopsys\ShopBundle\Model\Product\Product|null */
 
         $builderBasicInformationGroup = $builder->get('basicInformationGroup');
         $builderBasicInformationGroup

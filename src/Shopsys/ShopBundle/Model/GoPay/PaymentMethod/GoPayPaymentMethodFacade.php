@@ -17,12 +17,12 @@ use Shopsys\ShopBundle\Model\Payment\PaymentFacade;
 class GoPayPaymentMethodFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
@@ -62,9 +62,9 @@ class GoPayPaymentMethodFacade
     private $goPayPaymentMethodDataFactory;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayClientFactory $goPayClientFactory
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethodRepository $goPayPaymentMethodRepository
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwiftFacade $goPayBankSwiftFacade
      * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
@@ -191,7 +191,7 @@ class GoPayPaymentMethodFacade
 
     /**
      * @param array $goPayMethodRawData
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @param string $language
      * @return \Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod
      */

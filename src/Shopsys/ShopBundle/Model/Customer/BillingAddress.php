@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Customer\BillingAddress as BaseBillingAddress;
 /**
  * @ORM\Table(name="billing_addresses")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Country\Country|null $country
+ * @method \Shopsys\ShopBundle\Model\Country\Country|null getCountry()
  */
 class BillingAddress extends BaseBillingAddress
 {

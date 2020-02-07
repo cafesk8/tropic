@@ -26,7 +26,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData
+     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData
      */
     public function create(): BasePromoCodeData
     {

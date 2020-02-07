@@ -13,6 +13,16 @@ use Shopsys\ShopBundle\Model\Transport\Exception\InvalidPersonalTakeTypeExceptio
 /**
  * @ORM\Table(name="transports")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Payment\Payment[]|\Doctrine\Common\Collections\Collection $payments
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Transport\TransportData $transportData)
+ * @method setDomains(\Shopsys\ShopBundle\Model\Transport\TransportData $transportData)
+ * @method createDomains(\Shopsys\ShopBundle\Model\Transport\TransportData $transportData)
+ * @method addPayment(\Shopsys\ShopBundle\Model\Payment\Payment $payment)
+ * @method setPayments(\Shopsys\ShopBundle\Model\Payment\Payment[] $payments)
+ * @method removePayment(\Shopsys\ShopBundle\Model\Payment\Payment $payment)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getPayments()
+ * @method \Shopsys\FrameworkBundle\Model\Transport\TransportPrice getPrice(\Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency)
+ * @method setPrice(\Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface $transportPriceFactory, \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Component\Money\Money $price)
  */
 class Transport extends BaseTransport
 {
@@ -71,7 +81,7 @@ class Transport extends BaseTransport
     protected $mallType;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country[]|\Doctrine\Common\Collections\Collection
+     * @var \Shopsys\ShopBundle\Model\Country\Country[]|\Doctrine\Common\Collections\Collection|array
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
      * @ORM\JoinTable(name="transport_countries")
@@ -224,7 +234,7 @@ class Transport extends BaseTransport
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Country\Country[]
+     * @return \Shopsys\ShopBundle\Model\Country\Country[]
      */
     public function getCountries(): array
     {
@@ -232,7 +242,7 @@ class Transport extends BaseTransport
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @param \Shopsys\ShopBundle\Model\Country\Country|null $country
      * @return bool
      */
     public function hasCountry(?Country $country): bool

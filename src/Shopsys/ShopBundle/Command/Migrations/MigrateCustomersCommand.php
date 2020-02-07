@@ -30,7 +30,7 @@ class MigrateCustomersCommand extends Command
     protected static $defaultName = 'shopsys:migrate:customers-with-pricing-groups';
 
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -70,12 +70,12 @@ class MigrateCustomersCommand extends Command
     private $newsletterFacade;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\ShopBundle\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
      * @param \Shopsys\ShopBundle\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFacade $userTransferIdAndEanFacade
-     * @param \Shopsys\ShopBundle\Component\Rest\RestClient $multidomainRestClient
+     * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade $newsletterFacade
      */
     public function __construct(
@@ -110,7 +110,7 @@ class MigrateCustomersCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $customersTransferItems = $this->getCustomersResponse();
 
@@ -137,13 +137,15 @@ class MigrateCustomersCommand extends Command
 
                 // Application in DEV mode uses TraceableValidator for validation. TraceableValidator saves data from
                 // validation in memory, so it can consume quite a lot of memory, which leads to transfer crash
-                if ($this->customerTransferValidator instanceof TraceableValidator) {
-                    $this->customerTransferValidator->reset();
+                if ($this->customerTransferValidator->getValidator() instanceof TraceableValidator) {
+                    $this->customerTransferValidator->getValidator()->reset();
                 }
             }
         }
 
         $progressBar->finish();
+
+        return 0;
     }
 
     /**
@@ -170,7 +172,7 @@ class MigrateCustomersCommand extends Command
             return;
         }
 
-        $this->customerTransferValidator->validate($customersTransferItem, $isNew);
+        $this->customerTransferValidator->validate($customersTransferItem);
         $customerData = $this->customerWithPricingGroupsTransferMapper->mapTransferDataToCustomerData($customersTransferItem, $customer);
         /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $this->customerFacade->create($customerData);

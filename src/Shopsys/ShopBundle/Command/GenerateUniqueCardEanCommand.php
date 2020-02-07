@@ -55,7 +55,7 @@ class GenerateUniqueCardEanCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -79,5 +79,7 @@ class GenerateUniqueCardEanCommand extends Command
 
         $symfonyStyleIo->newLine();
         $symfonyStyleIo->success('New card EAN numbers have benn successfully generated');
+
+        return 0;
     }
 }

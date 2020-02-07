@@ -8,10 +8,18 @@ use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDomain;
 use Shopsys\FrameworkBundle\Model\Transport\TransportRepository as BaseTransportRepository;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getAllByIds(array $transportIds)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getAllByDomainId(int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getAllIncludingDeleted()
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport|null findById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport getById(int $id)
+ */
 class TransportRepository extends BaseTransportRepository
 {
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
      */
     public function getAllPickupTransports(): array
     {
@@ -50,7 +58,7 @@ class TransportRepository extends BaseTransportRepository
     /**
      * @param int $domainId
      * @param bool $showEmailTransportInCart
-     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
      */
     public function getAllByDomainIdAndTransportEmailType(int $domainId, bool $showEmailTransportInCart)
     {

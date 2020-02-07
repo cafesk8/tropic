@@ -8,6 +8,18 @@ use DateTime;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\ShopBundle\Model\Transport\Transport;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
+ * @property \Shopsys\ShopBundle\Model\Order\Status\OrderStatus|null $status
+ * @property \Shopsys\ShopBundle\Model\Country\Country|null $country
+ * @property \Shopsys\ShopBundle\Model\Country\Country|null $deliveryCountry
+ * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemData[] $itemsWithoutTransportAndPayment
+ * @property \Shopsys\ShopBundle\Model\Administrator\Administrator|null $createdAsAdministrator
+ * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemData|null $orderPayment
+ * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemData|null $orderTransport
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItemData[] getNewItemsWithoutTransportAndPayment()
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\Currency|null $currency
+ */
 class OrderData extends BaseOrderData
 {
     /**

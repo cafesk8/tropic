@@ -28,7 +28,7 @@ class CategoryDomainTest extends TransactionFunctionalTestCase
     private $categoryFactory;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 

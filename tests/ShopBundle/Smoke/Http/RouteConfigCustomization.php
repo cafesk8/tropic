@@ -446,6 +446,11 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Redirect old shop url without friendly url record.')
                     ->setParameter('urlParam', '123')
                     ->setExpectedStatusCode(404);
+            })
+            ->customizeByRouteName('front_login', function (RouteConfig $config) {
+                $config->addExtraRequestDataSet('Logged user on login page is redirected onto homepage')
+                     ->setAuth(new BasicHttpAuth('no-reply@shopsys.com', 'user123'))
+                     ->setExpectedStatusCode(302);
             });
     }
 

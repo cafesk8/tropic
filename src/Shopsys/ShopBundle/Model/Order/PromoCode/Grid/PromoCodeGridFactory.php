@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Model\Order\PromoCode\Grid;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory as BasePromoCodeGridFactory;
@@ -31,9 +30,10 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
     }
 
     /**
+     * @param bool $withEditButton
      * @return \Shopsys\FrameworkBundle\Component\Grid\Grid
      */
-    public function create(): Grid
+    public function create($withEditButton = false)
     {
         $queryBuilder = $this->em->createQueryBuilder();
         $queryBuilder

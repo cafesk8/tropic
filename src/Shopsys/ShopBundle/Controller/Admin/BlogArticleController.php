@@ -56,7 +56,7 @@ class BlogArticleController extends AdminBaseController
     private $blogArticleGridFactory;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
+     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
      */
     private $session;
 

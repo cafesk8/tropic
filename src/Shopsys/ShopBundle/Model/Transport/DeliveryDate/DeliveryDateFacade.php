@@ -17,12 +17,12 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
 class DeliveryDateFacade
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade
+     * @var \Shopsys\ShopBundle\Model\Transport\TransportFacade
      */
     private $transportFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade
+     * @var \Shopsys\ShopBundle\Model\Payment\PaymentFacade
      */
     private $paymentFacade;
 
@@ -48,7 +48,7 @@ class DeliveryDateFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
      * @param \Shopsys\ShopBundle\Model\Transport\DeliveryDate\WorkdayService $workdayService
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain

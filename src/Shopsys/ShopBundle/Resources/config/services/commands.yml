@@ -15,3 +15,14 @@ services:
     Shopsys\ShopBundle\Command\MaintenanceModeCommand:
         arguments:
             - '@shopsys.shop.maintenance_cache_provider'
+
+    Shopsys\ShopBundle\Command\ExtendedClassesAnnotationsCommand:
+        arguments:
+            - '%shopsys.root_dir%'
+
+    Shopsys\FrameworkBundle\Command\ExtendedClassesAnnotationsCommand: '@Shopsys\ShopBundle\Command\ExtendedClassesAnnotationsCommand'
+
+    Shopsys\FrameworkBundle\Component\ClassExtension\ClassExtensionRegistry:
+        arguments:
+            - '%shopsys.entity_extension.map%'
+            - '%shopsys.framework.root_dir%'

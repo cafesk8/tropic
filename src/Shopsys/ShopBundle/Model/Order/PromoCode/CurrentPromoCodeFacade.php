@@ -16,6 +16,9 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedC
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null getValidEnteredPromoCodeOrNull()
+ */
 class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 {
     public const SESSION_CART_PRODUCT_PRICES_TYPE = 'cartProductPricesTypes';
@@ -30,7 +33,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
@@ -60,7 +63,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      */
     public function usePromoCode(PromoCode $promoCode): void
     {
@@ -100,7 +103,6 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?User $user = null): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
 
         $productPricesType = $this->session->get(self::SESSION_CART_PRODUCT_PRICES_TYPE);
@@ -149,7 +151,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      * @return bool
      */
     private function isPromoCodeValidInItsValidDates(PromoCode $promoCode): bool

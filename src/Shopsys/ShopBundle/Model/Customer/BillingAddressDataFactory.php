@@ -8,10 +8,14 @@ use Shopsys\FrameworkBundle\Model\Customer\BillingAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory as BaseBillingAddressDataFactory;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Customer\BillingAddressData createFromBillingAddress(\Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress)
+ * @method fillFromBillingAddress(\Shopsys\FrameworkBundle\Model\Customer\BillingAddressData $billingAddressData, \Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress)
+ */
 class BillingAddressDataFactory extends BaseBillingAddressDataFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @return \Shopsys\FrameworkBundle\Model\Customer\BillingAddressData
      */
     public function createFromOrder(Order $order): BillingAddressData

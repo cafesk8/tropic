@@ -10,11 +10,13 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren
 
 /**
  * @property \Shopsys\ShopBundle\Model\Category\CategoryRepository $categoryRepository
+ * @method __construct(\Shopsys\ShopBundle\Model\Category\CategoryRepository $categoryRepository)
+ * @method \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[] createCategoriesWithLazyLoadedVisibleChildren(\Shopsys\ShopBundle\Model\Category\Category[] $categories, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
  */
 class CategoryWithLazyLoadedVisibleChildrenFactory extends BaseCategoryWithLazyLoadedVisibleChildrenFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category[] $categories
+     * @param \Shopsys\ShopBundle\Model\Category\Category[] $categories
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]
      */

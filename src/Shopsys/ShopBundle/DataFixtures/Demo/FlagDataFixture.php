@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagData;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade;
@@ -17,7 +18,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     public const FLAG_ACTION_PRODUCT = 'flag_action';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
      */
     protected $flagFacade;
 
@@ -27,15 +28,23 @@ class FlagDataFixture extends AbstractReferenceFixture
     protected $flagDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    protected $domain;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface $flagDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         FlagFacade $flagFacade,
-        FlagDataFactoryInterface $flagDataFactory
+        FlagDataFactoryInterface $flagDataFactory,
+        Domain $domain
     ) {
         $this->flagFacade = $flagFacade;
         $this->flagDataFactory = $flagDataFactory;
+        $this->domain = $domain;
     }
 
     /**
@@ -45,24 +54,33 @@ class FlagDataFixture extends AbstractReferenceFixture
     {
         $flagData = $this->flagDataFactory->create();
 
-        $flagData->name = ['cs' => 'Novinka', 'en' => 'New'];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $flagData->name[$locale] = t('Novinka', [], 'dataFixtures', $locale);
+        }
+
         $flagData->rgbColor = '#efd6ff';
         $flagData->visible = true;
         $this->createFlag($flagData, self::FLAG_NEW_PRODUCT);
 
-        $flagData->name = ['cs' => 'Nejprodávanější', 'en' => 'TOP'];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $flagData->name[$locale] = t('Nejprodávanější', [], 'dataFixtures', $locale);
+        }
+
         $flagData->rgbColor = '#d6fffa';
         $flagData->visible = true;
         $this->createFlag($flagData, self::FLAG_TOP_PRODUCT);
 
-        $flagData->name = ['cs' => 'Akce', 'en' => 'Action'];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $flagData->name[$locale] = t('Akce', [], 'dataFixtures', $locale);
+        }
+
         $flagData->rgbColor = '#f9ffd6';
         $flagData->visible = true;
         $this->createFlag($flagData, self::FLAG_ACTION_PRODUCT);
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagData $flagData
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData
      * @param string|null $referenceName
      */
     protected function createFlag(FlagData $flagData, $referenceName = null)

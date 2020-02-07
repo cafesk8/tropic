@@ -105,9 +105,9 @@ class StoreController extends AdminBaseController
      */
     public function editAction(Request $request, int $id): Response
     {
-        $store = $this->storeFacade->getById($id);
-
-        if ($store === null) {
+        try {
+            $store = $this->storeFacade->getById($id);
+        } catch (StoreNotFoundException $ex) {
             $this->getFlashMessageSender()->addErrorFlash(t('Store doesn\'t exist'));
 
             return $this->redirectToRoute('admin_store_list');

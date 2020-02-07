@@ -6,11 +6,19 @@ namespace Shopsys\ShopBundle\Model\Customer;
 
 use DateTime;
 use Doctrine\ORM\Query\Expr\Join;
-use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
+use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\UserRepository as BaseUserRepository;
 use Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEan;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Customer\User|null findUserByEmailAndDomain(string $email, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Customer\User|null getUserByEmailAndDomain(string $email, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Customer\User getUserById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Customer\User|null findById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Customer\User|null findByIdAndLoginToken(int $id, string $loginToken)
+ * @method replaceUsersPricingGroup(\Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $oldPricingGroup, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $newPricingGroup)
+ */
 class UserRepository extends BaseUserRepository
 {
     /**

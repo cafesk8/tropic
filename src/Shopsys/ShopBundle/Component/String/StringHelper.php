@@ -26,7 +26,6 @@ class StringHelper
 
     /**
      * @param string $string
-     * @param string $inString
      * @return string
      */
     public static function removeWhitespaces(string $string): string

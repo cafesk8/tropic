@@ -18,6 +18,9 @@ use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProduc
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListedProductViewFactory;
 use Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+ */
 class ListedProductViewFactory extends BaseListedProductViewFactory
 {
     /**
@@ -27,7 +30,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
@@ -43,7 +46,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param array $productArray
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \Shopsys\ShopBundle\Model\Product\View\MainVariantGroupProductView[] $mainVariantGroupProductViews
      * @return \Shopsys\ShopBundle\Model\Product\View\ListedProductView
      */
@@ -80,7 +83,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
      * @param \Shopsys\ShopBundle\Model\Product\View\MainVariantGroupProductView[] $mainVariantGroupProductViews
@@ -129,7 +132,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
 
     /**
      * @param array $pricesArray
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPriceForCurrentDomain
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $defaultProductPrice
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
@@ -159,10 +162,10 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param $priceArray
+     * @param array $priceArray
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    private function getPriceFromPriceArray($priceArray): Price
+    private function getPriceFromPriceArray(array $priceArray): Price
     {
         $priceWithoutVat = Money::create((string)$priceArray['price_without_vat']);
         $priceWithVat = Money::create((string)$priceArray['price_with_vat']);
@@ -180,7 +183,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param array $variantsIndexedByMainVariantId
      * @return array
      */

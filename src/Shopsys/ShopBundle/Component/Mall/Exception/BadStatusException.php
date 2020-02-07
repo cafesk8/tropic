@@ -9,7 +9,7 @@ use Exception;
 class BadStatusException extends Exception implements MallStatusException
 {
     /**
-     * @param $message
+     * @param string $message
      */
     public function __construct($message)
     {

@@ -24,9 +24,9 @@ class ZboziFeedItemFactory extends BaseZboziFeedItemFactory
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
-     * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
+     * @param \Shopsys\ShopBundle\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
      * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductParametersBatchLoader $productParametersBatchLoader
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\ShopBundle\Model\Feed\FeedHelper $feedHelper
      */
     public function __construct(

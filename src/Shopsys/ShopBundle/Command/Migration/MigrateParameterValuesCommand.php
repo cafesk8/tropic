@@ -28,7 +28,7 @@ class MigrateParameterValuesCommand extends Command
     protected static $defaultName = 'shopsys:migrate:parameter-values';
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Driver\Connection
      */
     private $connection;
 
@@ -78,7 +78,7 @@ class MigrateParameterValuesCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -107,11 +107,13 @@ class MigrateParameterValuesCommand extends Command
             }
             $this->entityManager->clear();
         } while ($parameterValuesCount > 0);
+
+        return 0;
     }
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData|\Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
+     * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData|\Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData
      */
     private function mapParameterValueData(ParameterValue $parameterValue): ParameterValueData
     {
@@ -129,7 +131,7 @@ class MigrateParameterValuesCommand extends Command
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $parameterValue
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $parameterValue
      * @return string[]
      */
     private function getMigrateParameterValueData(ParameterValue $parameterValue): array

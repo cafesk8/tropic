@@ -26,9 +26,9 @@ class MainVariantGroup
     private $id;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      *
-     * @ORM\ManyToOne(targetEntity="\Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter")
+     * @ORM\ManyToOne(targetEntity="\Shopsys\ShopBundle\Model\Product\Parameter\Parameter")
      * @ORM\JoinColumn(nullable=true)
      */
     private $distinguishingParameter;
@@ -41,7 +41,7 @@ class MainVariantGroup
     private $products;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $distinguishingParameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $distinguishingParameter
      */
     public function __construct(Parameter $distinguishingParameter)
     {

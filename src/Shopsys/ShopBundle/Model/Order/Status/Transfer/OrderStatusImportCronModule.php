@@ -205,7 +205,7 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order[] $orders
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     * @return string[][]
      */
     private function getOrderNumbersIndexedByDomain(array $orders): array
     {

@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use Shopsys\ShopBundle\Form\Front\Newsletter\SubscriptionFormType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -72,9 +73,9 @@ class NewsletterController extends FrontBaseController
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
-    private function createSubscriptionForm(): Form
+    private function createSubscriptionForm(): FormInterface
     {
         return $this->createForm(SubscriptionFormType::class, null, [
             'action' => $this->generateUrl('front_newsletter_send'),

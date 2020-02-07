@@ -17,6 +17,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductDomain as BaseProductDomain;
  * )
  *
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Product\Product $product
+ * @method __construct(\Shopsys\ShopBundle\Model\Product\Product $product, int $domainId)
  */
 class ProductDomain extends BaseProductDomain
 {

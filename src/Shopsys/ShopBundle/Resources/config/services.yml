@@ -51,6 +51,8 @@ services:
 
     Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController:
         class: Shopsys\ShopBundle\Controller\Admin\PromoCodeController
+        arguments:
+            $useInlineEditation: false
 
     Faker\Generator:
         factory: [Faker\Factory, create, ]
@@ -67,10 +69,11 @@ services:
             - '%mall_apiKey%'
             - '%mall_isProductionMode%'
 
-    Shopsys\FrameworkBundle\Component\Cron\CronFacade:
-        class: Shopsys\ShopBundle\Component\Cron\CronFacade
+    Shopsys\ShopBundle\Component\Cron\CronModuleExecutor:
         arguments:
-            - '@monolog.logger.cron'
+            $secondsTimeout: 240
+
+    Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor: '@Shopsys\ShopBundle\Component\Cron\CronModuleExecutor'
 
     Shopsys\ShopBundle\Component\Redis\RedisFacade:
         arguments:
@@ -156,15 +159,13 @@ services:
 
     shopsys.shop.product.distinguishing_parameters.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.distinguishing_parameters'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.distinguishing_parameters'] }
 
     shopsys.shop.component.friendly_url.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.friendly_url'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.friendly_url'] }
 
     Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade:
         arguments:
@@ -219,12 +220,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@Shopsys\ShopBundle\Model\Product\Brand\BrandRepository'
 
-    Shopsys\ShopBundle\DataFixtures\ProductDataFixtureReferenceInjector: ~
-
-    Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureLoader: ~
-
-    Shopsys\ShopBundle\DataFixtures\Demo\ProductParametersFixtureLoader: ~
-
     Shopsys\ShopBundle\DataFixtures\Performance\CategoryDataFixture:
         arguments:
             - "%shopsys.performance_data.category.counts_by_level%"
@@ -257,14 +252,6 @@ services:
             - '%shopsys.image_dir%'
             - '%shopsys.domain_images_dir%'
         tags: ['doctrine.fixture.orm']
-
-    Shopsys\ShopBundle\DataFixtures\Demo\ProductDataFixtureCsvReader:
-        arguments:
-            - '%shopsys.data_fixtures.resource_products_filepath%'
-
-    Shopsys\ShopBundle\DataFixtures\Demo\UserDataFixtureLoader:
-        arguments:
-            - '%shopsys.data_fixtures.resource_customers_filepath%'
 
     Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductMainVariantFilter: ~
 
@@ -394,9 +381,8 @@ services:
 
     shopsys.shop.twig.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.twig'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.twig'] }
 
     Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory: '@Shopsys\ShopBundle\Model\Advert\AdvertDataFactory'
 
@@ -583,7 +569,7 @@ services:
 
     Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductFlagFilter: ~
 
-    Shopsys\FrameworkBundle\Model\Model\AdvancedSearch\Filter\ProductFlagFilter: '@Shopsys\ShopBundle\Model\Model\AdvancedSearch\Filter\ProductFlagFilter'
+    Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductFlagFilter: '@Shopsys\ShopBundle\Model\AdvancedSearch\Filter\ProductFlagFilter'
 
     Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory: '@Shopsys\ShopBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory'
 
@@ -603,9 +589,8 @@ services:
 
     shopsys.shop.maintenance_cache_provider:
         class: Doctrine\Common\Cache\RedisCache
-        factory: 'Shopsys\FrameworkBundle\Component\Doctrine\Cache\RedisCacheFactory:create'
-        arguments:
-            - '@snc_redis.global'
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.global'] }
 
     Shopsys\ShopBundle\Component\Maintenance\MaintenanceModeSubscriber:
         arguments:

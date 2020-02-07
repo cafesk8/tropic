@@ -49,7 +49,7 @@ class StoreData
     public $googleMapsLink;
 
     /**
-     * @var string|null
+     * @var int|null
      */
     public $position;
 
@@ -59,7 +59,7 @@ class StoreData
     public $images;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     * @var \Shopsys\ShopBundle\Model\Country\Country|null
      */
     public $country;
 

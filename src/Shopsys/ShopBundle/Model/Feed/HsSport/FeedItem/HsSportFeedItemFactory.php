@@ -10,7 +10,6 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation;
@@ -18,12 +17,12 @@ use Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation;
 class HsSportFeedItemFactory
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\ImageFacade
+     * @var \Shopsys\ShopBundle\Component\Image\ImageFacade
      */
     private $imageFacade;
 
@@ -43,8 +42,7 @@ class HsSportFeedItemFactory
     private $productPriceCalculation;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
@@ -105,13 +103,21 @@ class HsSportFeedItemFactory
             $sizeProductParameterValue = $this->parameterFacade->findSizeProductParameterValueByProductId($variant->getId());
             $colorProductParameterValue = $this->parameterFacade->findColorProductParameterValueByProductId($variant->getId());
 
-            $sizeValue = $sizeProductParameterValue !== null ?
-                $sizeProductParameterValue->getValue()->getHsFeedId() . '_' . $sizeProductParameterValue->getValue()->getText()
-                : '';
+            if ($sizeProductParameterValue === null) {
+                $sizeValue = '';
+            } else {
+                /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $sizeProductParameterValueValue */
+                $sizeProductParameterValueValue = $sizeProductParameterValue->getValue();
+                $sizeValue = $sizeProductParameterValueValue->getHsFeedId() . '_' . $sizeProductParameterValueValue->getText();
+            }
 
-            $colorValue = $colorProductParameterValue !== null ?
-                $colorProductParameterValue->getValue()->getHsFeedId() . '_' . $colorProductParameterValue->getValue()->getText()
-                : '';
+            if ($colorProductParameterValue === null) {
+                $colorValue = '';
+            } else {
+                /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue $colorProductParameterValueValue */
+                $colorProductParameterValueValue = $colorProductParameterValue->getValue();
+                $colorValue = $colorProductParameterValueValue->getHsFeedId() . '_' . $colorProductParameterValueValue->getText();
+            }
 
             $hsSportVariantItems[] = new HsSportFeedVariantItem(
                 $variant->getId(),
@@ -127,9 +133,9 @@ class HsSportFeedItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @return \Shopsys\FrameworkBundle\Component\Image\Image[]
+     * @return string[]
      */
     protected function getAllImagesUrlsByProduct(Product $product, DomainConfig $domainConfig): array
     {
@@ -152,7 +158,7 @@ class HsSportFeedItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return string|null
      */
     protected function getBrandName(Product $product): ?string
@@ -163,7 +169,7 @@ class HsSportFeedItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice
      */

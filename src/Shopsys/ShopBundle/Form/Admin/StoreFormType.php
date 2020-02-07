@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints;
 class StoreFormType extends AbstractType
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
      */
     private $countryFacade;
 
@@ -36,7 +36,7 @@ class StoreFormType extends AbstractType
     private $adminDomainTabsFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(

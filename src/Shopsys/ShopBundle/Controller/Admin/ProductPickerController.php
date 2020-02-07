@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+ * @method __construct(\Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory, \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListAdminFacade $productListAdminFacade, \Shopsys\FrameworkBundle\Model\AdvancedSearch\AdvancedSearchProductFacade $advancedSearchProductFacade, \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade)
+ */
 class ProductPickerController extends BaseProductPickerController
 {
     /**
@@ -64,7 +68,6 @@ class ProductPickerController extends BaseProductPickerController
     /**
      * @Route("/product-picker/pick-all/")
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param string $jsInstanceId
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function pickAllAction(Request $request): Response

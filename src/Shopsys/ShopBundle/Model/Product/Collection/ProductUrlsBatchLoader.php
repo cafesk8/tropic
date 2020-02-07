@@ -7,6 +7,11 @@ namespace Shopsys\ShopBundle\Model\Product\Collection;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader as BaseProductUrlsBatchLoader;
 
+/**
+ * @method string getProductUrl(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method string|null getProductImageUrl(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method string getKey(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ */
 class ProductUrlsBatchLoader extends BaseProductUrlsBatchLoader
 {
     /**

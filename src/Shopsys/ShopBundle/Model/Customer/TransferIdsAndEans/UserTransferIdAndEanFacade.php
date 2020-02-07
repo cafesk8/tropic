@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Model\Customer\User;
 class UserTransferIdAndEanFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -30,7 +30,7 @@ class UserTransferIdAndEanFacade
     private $userTransferIdAndEanDataFactory;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanRepository $userTransferIdAndEanRepository
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanDataFactory $userTransferIdAndEanDataFactory
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIdsAndEans\UserTransferIdAndEanFactory $userTransferIdAndEanFactory

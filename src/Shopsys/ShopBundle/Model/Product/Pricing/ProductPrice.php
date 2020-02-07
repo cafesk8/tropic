@@ -18,12 +18,12 @@ class ProductPrice extends BaseProductPrice
     private $defaultProductPrice;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null
      */
     private $activePricingGroup;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null
      */
     private $defaultPricingGroup;
 
@@ -35,8 +35,8 @@ class ProductPrice extends BaseProductPrice
     /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param mixed $priceFrom
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null $activePricingGroup
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null $defaultPricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null $activePricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null $defaultPricingGroup
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPriceForCurrentDomain
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $defaultProductPrice
      */

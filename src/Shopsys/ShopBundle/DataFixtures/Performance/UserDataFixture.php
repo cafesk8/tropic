@@ -43,12 +43,12 @@ class UserDataFixture
     private $sqlLoggerFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerFacade
      */
     private $customerEditFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Customer\UserDataFactory
      */
     private $userDataFactory;
 
@@ -68,7 +68,7 @@ class UserDataFixture
     private $progressBarFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory
      */
     private $customerDataFactory;
 
@@ -87,12 +87,12 @@ class UserDataFixture
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerEditFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface $userDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerEditFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
      * @param \Faker\Generator $faker
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory $progressBarFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface $deliveryAddressDataFactory
      */
@@ -157,7 +157,7 @@ class UserDataFixture
     /**
      * @param int $domainId
      * @param int $userNumber
-     * @return \Shopsys\FrameworkBundle\Model\Customer\User
+     * @return \Shopsys\ShopBundle\Model\Customer\User
      */
     private function createCustomerOnDomain($domainId, $userNumber)
     {
@@ -192,8 +192,8 @@ class UserDataFixture
         $billingAddressData->companyCustomer = $this->faker->boolean();
         if ($billingAddressData->companyCustomer === true) {
             $billingAddressData->companyName = $this->faker->company;
-            $billingAddressData->companyNumber = $this->faker->randomNumber(6);
-            $billingAddressData->companyTaxNumber = $this->faker->randomNumber(6);
+            $billingAddressData->companyNumber = (string)$this->faker->randomNumber(6);
+            $billingAddressData->companyTaxNumber = (string)$this->faker->randomNumber(6);
         }
         $billingAddressData->street = $this->faker->streetAddress;
         $billingAddressData->city = $this->faker->city;

@@ -11,6 +11,26 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 /**
  * @property \Shopsys\ShopBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
  * @method \Shopsys\ShopBundle\Model\Category\Category getRootCategory()
+ * @property \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+ * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\ShopBundle\Model\Category\CategoryRepository $categoryRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRecalculationScheduler $categoryVisibilityRecalculationScheduler, \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade, \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade, \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginCrudExtensionFacade, \Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory, \Shopsys\ShopBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory, \Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface $categoryFactory)
+ * @method \Shopsys\ShopBundle\Model\Category\Category getById(int $categoryId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category create(\Shopsys\ShopBundle\Model\Category\CategoryData $categoryData)
+ * @method \Shopsys\ShopBundle\Model\Category\Category edit(int $categoryId, \Shopsys\ShopBundle\Model\Category\CategoryData $categoryData)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getTranslatedAll(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getAllCategoriesOfCollapsedTree(\Shopsys\ShopBundle\Model\Category\Category[] $selectedCategories)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getFullPathsIndexedByIdsForDomain(int $domainId, string $locale)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getVisibleCategoriesInPathFromRootOnDomain(\Shopsys\ShopBundle\Model\Category\Category $category, int $domainId)
+ * @method \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[] getCategoriesWithLazyLoadedVisibleChildrenForParent(\Shopsys\ShopBundle\Model\Category\Category $parentCategory, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getVisibleByDomainAndSearchText(int $domainId, string $locale, string $searchText)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getAllVisibleChildrenByCategoryAndDomainId(\Shopsys\ShopBundle\Model\Category\Category $category, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getTranslatedAllWithoutBranch(\Shopsys\ShopBundle\Model\Category\Category $category, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[]|null[] getProductMainCategoriesIndexedByDomainId(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\ShopBundle\Model\Category\Category getProductMainCategoryByDomainId(\Shopsys\ShopBundle\Model\Product\Product $product, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category|null findProductMainCategoryByDomainId(\Shopsys\ShopBundle\Model\Product\Product $product, int $domainId)
+ * @method string[] getCategoryNamesInPathFromRootToProductMainCategoryOnDomain(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category getVisibleOnDomainById(int $domainId, int $categoryId)
+ * @method int[] getListableProductCountsIndexedByCategoryId(\Shopsys\ShopBundle\Model\Category\Category[] $categories, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup, int $domainId)
  */
 class CategoryFacade extends BaseCategoryFacade
 {
@@ -29,7 +49,7 @@ class CategoryFacade extends BaseCategoryFacade
 
     /**
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getAllVisibleAndListableCategoriesForFirstColumnByDomainId(int $domainId): array
     {
@@ -62,7 +82,7 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
@@ -95,7 +115,7 @@ class CategoryFacade extends BaseCategoryFacade
      * @param int $domainId
      * @param string $locale
      * @param string|null $searchText
-     * @return \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getVisibleAndListableByDomainAndSearchText(int $domainId, string $locale, ?string $searchText): array
     {
@@ -118,7 +138,7 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @return string|null
      */
@@ -129,7 +149,7 @@ class CategoryFacade extends BaseCategoryFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Category\Category $destinationCategory
-     * @return array
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getCategoriesInPath(Category $destinationCategory): array
     {

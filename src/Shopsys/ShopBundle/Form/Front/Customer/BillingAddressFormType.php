@@ -21,12 +21,12 @@ class BillingAddressFormType extends AbstractType
     public const VALIDATION_GROUP_COMPANY_CUSTOMER = 'companyCustomer';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
      */
     private $countryFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
     public function __construct(CountryFacade $countryFacade)
     {

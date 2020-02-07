@@ -10,6 +10,12 @@ use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFactory;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository;
 use Shopsys\ShopBundle\Component\Setting\Setting;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Product\Flag\Flag getById(int $flagId)
+ * @method \Shopsys\ShopBundle\Model\Product\Flag\Flag create(\Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData)
+ * @method \Shopsys\ShopBundle\Model\Product\Flag\Flag edit(int $flagId, \Shopsys\ShopBundle\Model\Product\Flag\FlagData $flagData)
+ * @method \Shopsys\ShopBundle\Model\Product\Flag\Flag[] getAll()
+ */
 class FlagFacade extends BaseFlagFacade
 {
     /**
@@ -24,7 +30,7 @@ class FlagFacade extends BaseFlagFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository $flagRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagRepository $flagRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFactory $flagFactory
      * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      */
@@ -36,7 +42,6 @@ class FlagFacade extends BaseFlagFacade
 
     /**
      * @param int|null $flagId
-     * @param \Shopsys\ShopBundle\Model\Product\Flag\Flag $flag
      */
     public function setDefaultFlagForFreeTransportAndPayment(?int $flagId): void
     {

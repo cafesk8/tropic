@@ -100,7 +100,7 @@ class FixParametersValuesForOtherLocalesCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $mainVariantProducts = $this->productFacade->getAllMainVariantProductsWithoutSkOrDeParameters(
             $input->getOption(self::OPTION_NAME_PARAMETER_TYPE),
@@ -122,6 +122,8 @@ class FixParametersValuesForOtherLocalesCommand extends Command
 
             $this->productFacade->edit($mainVariantProduct, $productData);
         }
+
+        return 0;
     }
 
     /**

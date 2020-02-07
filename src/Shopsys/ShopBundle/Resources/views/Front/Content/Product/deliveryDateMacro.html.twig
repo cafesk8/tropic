@@ -14,7 +14,7 @@
 
             {{ expectedDeliveryDate|friendlyDay }}
             {% if friendlyDayInterval.days >= 2 %}
-                {{ expectedDeliveryDate|date('j. n.') }}
+                {{ expectedDeliveryDate|formatDateCore('j. n.') }}
             {% endif %}
             {{ 'u&nbsp;tebe'|trans|raw }}
         {% elseif showNotAvailable %}

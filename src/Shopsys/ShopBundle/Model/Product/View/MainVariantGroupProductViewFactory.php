@@ -25,7 +25,7 @@ class MainVariantGroupProductViewFactory
 
     /**
      * @param array $productArray
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroupOfCurrentCustomer
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroupOfCurrentCustomer
      * @return \Shopsys\ShopBundle\Model\Product\View\MainVariantGroupProductView[]
      */
     public function createMultipleFromArray(array $productArray, PricingGroup $pricingGroupOfCurrentCustomer): array

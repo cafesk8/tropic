@@ -205,7 +205,6 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
-        /** @var \Shopsys\ShopBundle\Model\Product\Product $product */
         $product1 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 1);
         $product2 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 2);
         $product3 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . 3);
@@ -248,7 +247,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
     /**
      * @param string $searchText
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     private function getProductsForSearchOrderedByPriority($searchText)
     {
@@ -261,8 +260,8 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
         $paginationResult = $productRepository->getPaginationResultForSearchListable(
             $searchText,
-            1,
-            $domain->getDomainConfigById(1)->getLocale(),
+            Domain::FIRST_DOMAIN_ID,
+            $domain->getDomainConfigById(Domain::FIRST_DOMAIN_ID)->getLocale(),
             new ProductFilterData(),
             ProductListOrderingConfig::ORDER_BY_PRIORITY,
             $pricingGroup,
@@ -275,7 +274,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
     /**
      * @param \Shopsys\ShopBundle\Model\Category\Category $category
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     private function getProductsInCategoryOrderedByPriority(Category $category)
     {
@@ -288,8 +287,8 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
         $paginationResult = $productRepository->getPaginationResultForListableInCategory(
             $category,
-            1,
-            $domain->getDomainConfigById(1)->getLocale(),
+            Domain::FIRST_DOMAIN_ID,
+            $domain->getDomainConfigById(Domain::FIRST_DOMAIN_ID)->getLocale(),
             new ProductFilterData(),
             ProductListOrderingConfig::ORDER_BY_PRIORITY,
             $pricingGroup,

@@ -18,13 +18,13 @@ class MainVariantGroupDataFixture extends AbstractReferenceFixture implements De
     private $mainVariantGroupFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     private $parameterFacade;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(MainVariantGroupFacade $mainVariantGroupFacade, ParameterFacade $parameterFacade)
     {
@@ -39,11 +39,7 @@ class MainVariantGroupDataFixture extends AbstractReferenceFixture implements De
      */
     public function load(ObjectManager $manager)
     {
-        $parameter = $this->parameterFacade->findParameterByNames([
-            'cs' => 'Velikost',
-            'sk' => 'Velikosť',
-            'de' => 'Size',
-        ]);
+        $parameter = $this->parameterFacade->findParameterByNames(\Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade::PARAMETER_SIZE);
 
         $this->mainVariantGroupFacade->createMainVariantGroup($parameter, [
             $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '148'),

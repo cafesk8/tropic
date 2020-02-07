@@ -14,7 +14,7 @@ use Twig\TwigFunction;
 class BushmanClubPointsExtension extends AbstractExtension
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension
+     * @var \Shopsys\ShopBundle\Twig\NumberFormatterExtension
      */
     private $numberFormatterExtension;
 
@@ -29,7 +29,7 @@ class BushmanClubPointsExtension extends AbstractExtension
     private $bushmanClubPointPeriodSettings;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+     * @param \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
      * @param \Shopsys\ShopBundle\Model\BushmanClub\BushmanClubPointsFacade $bushmanClubPointsFacade
      * @param \Shopsys\ShopBundle\Model\BushmanClub\CurrentBushmanClubPointPeriods $bushmanClubPointPeriodSettings
      */
@@ -63,7 +63,7 @@ class BushmanClubPointsExtension extends AbstractExtension
 
     /**
      * @param int $customerId
-     * @param int $periodName
+     * @param string $periodName
      * @return string|null
      */
     public function bushmanClubPointsByIndex(int $customerId, string $periodName): ?string

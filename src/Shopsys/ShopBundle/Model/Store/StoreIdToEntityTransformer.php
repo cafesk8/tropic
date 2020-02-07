@@ -24,7 +24,7 @@ class StoreIdToEntityTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Store\Store $store
+     * @param \Shopsys\ShopBundle\Model\Store\Store|null $store
      * @return int|null
      */
     public function transform($store): ?int

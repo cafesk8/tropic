@@ -6,8 +6,8 @@ namespace Shopsys\ShopBundle\Model\GoPay;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use GoPay\Definition\Response\PaymentStatus;
-use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
 use Shopsys\ShopBundle\Model\Order\Order;
 
 class GoPayTransactionRepository
@@ -61,7 +61,7 @@ class GoPayTransactionRepository
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getAllQueryBuilder(): QueryBuilder
     {

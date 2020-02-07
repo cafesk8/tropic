@@ -66,7 +66,7 @@ class CustomerWithPricingGroupsTransferMapper
             $this->customerDataFactory->create() :
             $customerData = $this->customerDataFactory->createFromUser($customer);
 
-        /** @var $userData \Shopsys\ShopBundle\Model\Customer\UserData */
+        /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
         $userData = $customerData->userData;
 
         $domainId = $customerTransferResponseItemData->getDomainId();
@@ -76,7 +76,9 @@ class CustomerWithPricingGroupsTransferMapper
         $userData->email = $customerTransferResponseItemData->getEmail();
         $userData->telephone = $customerTransferResponseItemData->getPhone();
         $userData->domainId = $domainId;
-        $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        /** @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
+        $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $userData->pricingGroup = $pricingGroup;
         $userData->ean = $this->findEan($customerTransferResponseItemData->getEans());
         $userData->memberOfBushmanClub = $userData->ean === null ? false : true;
         $userData->password = $this->getFakePassword();

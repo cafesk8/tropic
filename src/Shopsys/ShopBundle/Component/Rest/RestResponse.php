@@ -35,7 +35,7 @@ class RestResponse
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getData(): array
     {

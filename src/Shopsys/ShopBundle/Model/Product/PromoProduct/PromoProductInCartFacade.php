@@ -42,7 +42,7 @@ class PromoProductInCartFacade
      * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
      * @param int $domainId
      * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
-     * @return \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[]
+     * @return \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct[][]
      */
     public function getPromoProductsForCart(?Cart $cart, int $domainId, ?User $user): array
     {

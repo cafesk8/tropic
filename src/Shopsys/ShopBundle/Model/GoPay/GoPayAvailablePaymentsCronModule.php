@@ -24,7 +24,7 @@ class GoPayAvailablePaymentsCronModule implements SimpleCronModuleInterface
     private $paymentMethodFacade;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $em;
 

@@ -6,6 +6,9 @@ namespace Shopsys\ShopBundle\Component\Cron;
 
 use Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade as BaseCronModuleFacade;
 
+/**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ */
 class CronModuleFacade extends BaseCronModuleFacade
 {
     /**

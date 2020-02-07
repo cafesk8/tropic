@@ -23,7 +23,7 @@ class BlogArticlesIdsToBlogArticlesTransformer implements DataTransformerInterfa
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[] $blogArticles
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]|\IteratorAggregate|mixed $blogArticles
      * @return int[]
      */
     public function transform($blogArticles): array

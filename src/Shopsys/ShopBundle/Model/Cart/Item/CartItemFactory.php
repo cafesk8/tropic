@@ -14,14 +14,14 @@ use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 class CartItemFactory extends BaseCartItemFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $quantity
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product|null $gift
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $gift
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem|null $mainCartItem
-     * @param \Shopsys\ShopBundle\Model\Cart\Item\PromoProduct|null $promoProduct
-     * @return \Shopsys\FrameworkBundle\Model\Cart\Item\CartItem
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct|null $promoProduct
+     * @return \Shopsys\ShopBundle\Model\Cart\Item\CartItem
      */
     public function create(
         Cart $cart,

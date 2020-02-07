@@ -18,10 +18,10 @@ class LoginAsCustomerCest
         $me->wantTo('login as a customer from admin');
         $loginPage->loginAsAdmin();
         $me->amOnPage('/admin/customer/edit/2');
-        $me->clickByText('Přihlásit za uživatele');
+        $me->clickByTranslationAdmin('Log in as user');
         $me->switchToLastOpenedWindow();
         $me->seeCurrentPageEquals('/');
-        $me->see('Pozor! Jste jako administrátor přihlášen za zákazníka.');
+        $me->seeTranslationFrontend('Attention! You are administrator logged in as the customer.');
         $me->see('Igor Anpilogov');
     }
 }

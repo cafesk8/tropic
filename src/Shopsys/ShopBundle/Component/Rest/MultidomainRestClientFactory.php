@@ -29,7 +29,7 @@ class MultidomainRestClientFactory
      * @param string $germanPassword
      * @param int $timeout
      * @param int $connectionTimeout
-     * @return \Shopsys\ShopBundle\Component\Rest\RestClient
+     * @return \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
     public function create(
         string $host,

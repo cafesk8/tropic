@@ -74,11 +74,17 @@ class NewProductTest extends FunctionalTestCase
         $form['product_form[basicInformationGroup][ean]'] = '123456';
         $form['product_form[descriptionsGroup][descriptions][1]'] = 'test description';
         $this->fillManualInputPrices($form);
-        $form['product_form[pricesGroup][vat]']->select($vat->getId());
+        /** @var \Symfony\Component\DomCrawler\Field\ChoiceFormField $vatFormField */
+        $vatFormField = $form['product_form[pricesGroup][vat]'];
+        $vatFormField->select($vat->getId());
         $form['product_form[displayAvailabilityGroup][sellingFrom]'] = '1.1.1990';
         $form['product_form[displayAvailabilityGroup][sellingTo]'] = '1.1.2000';
-        $form['product_form[displayAvailabilityGroup][unit]']->select($unit->getId());
-        $form['product_form[displayAvailabilityGroup][availability]']->select($availability->getId());
+        /** @var \Symfony\Component\DomCrawler\Field\ChoiceFormField $unitFormField */
+        $unitFormField = $form['product_form[displayAvailabilityGroup][unit]'];
+        $unitFormField->select($unit->getId());
+        /** @var \Symfony\Component\DomCrawler\Field\ChoiceFormField $availabilityFormField */
+        $availabilityFormField = $form['product_form[displayAvailabilityGroup][availability]'];
+        $availabilityFormField->select($availability->getId());
     }
 
     /**

@@ -22,7 +22,7 @@ class TransferIssueData
     public $context;
 
     /**
-     * @var int|null
+     * @var string|null
      */
     public $groupId;
 

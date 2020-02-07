@@ -11,6 +11,12 @@ use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
+ * @property \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport|null getTransport()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment|null getPayment()
+ */
 class OrderPreview extends BaseOrderPreview
 {
     /**
@@ -39,7 +45,7 @@ class OrderPreview extends BaseOrderPreview
     private $promoProductCartItems;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][]
      */
     private $quantifiedItemsDiscountsIndexedByPromoCodeId;
 
@@ -48,15 +54,15 @@ class OrderPreview extends BaseOrderPreview
      * @param array $quantifiedItemsPricesByIndex
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport|null $transport
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment|null $payment
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPriceWithoutGiftCertificate
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $gifts
      * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItem[] $promoProductCartItems
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      */
     public function __construct(
         array $quantifiedProductsByIndex,
@@ -177,7 +183,7 @@ class OrderPreview extends BaseOrderPreview
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][]
      */
     public function getQuantifiedItemsDiscountsIndexedByPromoCodeId(): array
     {
@@ -185,7 +191,7 @@ class OrderPreview extends BaseOrderPreview
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[]
      */
     public function getTotalItemDiscountsIndexedByPromoCodeId(): array
     {

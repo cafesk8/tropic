@@ -43,15 +43,14 @@ class PricingGroupFacadeTest extends TransactionFunctionalTestCase
     public function testDeleteAndReplace()
     {
         $em = $this->getEntityManager();
-        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade */
+        /** @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade */
         $pricingGroupFacade = $this->getContainer()->get(PricingGroupFacade::class);
         /** @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade */
         $customerFacade = $this->getContainer()->get(CustomerFacade::class);
 
-        $domainId = 1;
         $pricingGroupData = new PricingGroupData();
         $pricingGroupData->name = 'name';
-        $pricingGroupToDelete = $pricingGroupFacade->create($pricingGroupData, $domainId);
+        $pricingGroupToDelete = $pricingGroupFacade->create($pricingGroupData, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroupToReplaceWith */
         $pricingGroupToReplaceWith = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\ShopBundle\Model\Customer\User $user */

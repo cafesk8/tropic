@@ -25,6 +25,19 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
 use Shopsys\ShopBundle\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule;
 use Shopsys\ShopBundle\Component\Balikobot\Pickup\PickupFacade;
 
+/**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ * @property \Shopsys\ShopBundle\Model\Payment\PaymentRepository $paymentRepository
+ * @property \Shopsys\ShopBundle\Model\Transport\TransportVisibilityCalculation $transportVisibilityCalculation
+ * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+ * @property \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport getById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getVisibleOnCurrentDomain(\Shopsys\ShopBundle\Model\Payment\Payment[] $visiblePayments)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getVisibleByDomainId(int $domainId, \Shopsys\ShopBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain)
+ * @method updateTransportPrices(\Shopsys\ShopBundle\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesByCurrencyId)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport[] getAllIncludingDeleted()
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByCurrencyId(\Shopsys\ShopBundle\Model\Transport\Transport $transport)
+ */
 class TransportFacade extends BaseTransportFacade
 {
     /**
@@ -44,17 +57,17 @@ class TransportFacade extends BaseTransportFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportRepository $transportRepository
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentRepository $paymentRepository
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation $transportVisibilityCalculation
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentRepository $paymentRepository
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportVisibilityCalculation $transportVisibilityCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFactoryInterface $transportFactory
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface $transportPriceFactory
      * @param \Shopsys\ShopBundle\Component\Balikobot\Pickup\PickupFacade $pickupFacade
-     * @param \Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade $cronModuleFacade
+     * @param \Shopsys\ShopBundle\Component\Cron\CronModuleFacade $cronModuleFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -77,7 +90,7 @@ class TransportFacade extends BaseTransportFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Transport\TransportData $transportData
-     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport
      */
     public function create(TransportData $transportData): Transport
     {
@@ -89,6 +102,7 @@ class TransportFacade extends BaseTransportFacade
             $transportData->pickupPlace = false;
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Transport\Transport $transport */
         $transport = parent::create($transportData);
         $this->scheduleCronModule();
 
@@ -149,10 +163,10 @@ class TransportFacade extends BaseTransportFacade
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
-     * @param \Shopsys\FrameworkBundle\Model\Country\Country|null $country
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @param \Shopsys\ShopBundle\Model\Country\Country|null $country
      * @param bool $showEmailTransportInCart
-     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
      */
     public function getVisibleByDomainIdAndCountryAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, ?Country $country, bool $showEmailTransportInCart)
     {
@@ -175,7 +189,7 @@ class TransportFacade extends BaseTransportFacade
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
      */
     public function getVisibleByDomainIdWithoutPickUpPlaces(int $domainId, array $visiblePaymentsOnDomain): array
@@ -188,9 +202,9 @@ class TransportFacade extends BaseTransportFacade
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param bool $showEmailTransportInCart
-     * @return \Shopsys\FrameworkBundle\Model\Transport\Transport[]
+     * @return \Shopsys\ShopBundle\Model\Transport\Transport[]
      */
     private function getVisibleByDomainIdAndTransportEmailType(int $domainId, array $visiblePaymentsOnDomain, bool $showEmailTransportInCart)
     {
@@ -232,7 +246,7 @@ class TransportFacade extends BaseTransportFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
     public function getTransportPricesWithVatIndexedByTransportId(Currency $currency): array

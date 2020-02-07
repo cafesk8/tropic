@@ -27,7 +27,7 @@ class ProductTransferMapper
     private $productParameterValueDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory
      */
     private $parameterValueDataFactory;
 
@@ -46,7 +46,7 @@ class ProductTransferMapper
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory $productParameterValueDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueDataFactory $parameterValueDataFactory
      */
     public function __construct(ProductDataFactory $productDataFactory, AvailabilityFacade $availabilityFacade, ParameterFacade $parameterFacade, ProductParameterValueDataFactory $productParameterValueDataFactory, ParameterValueDataFactory $parameterValueDataFactory)
     {
@@ -158,8 +158,7 @@ class ProductTransferMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
-     * @param array $productParameterValuesData
+     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $productParameterValuesData
      * @param string|null $valueText
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */
@@ -186,7 +185,7 @@ class ProductTransferMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @param array $productParameterValuesData
      * @return string[]
      */

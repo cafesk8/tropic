@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HealtzController extends FrontBaseController
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
 

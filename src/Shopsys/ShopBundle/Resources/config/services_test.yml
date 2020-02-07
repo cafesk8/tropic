@@ -13,6 +13,9 @@ services:
 
     Shopsys\FrameworkBundle\Model\Localization\IntlCurrencyRepository: ~
 
+    CommerceGuys\Intl\Currency\CurrencyRepositoryInterface:
+        class: Shopsys\FrameworkBundle\Model\Localization\IntlCurrencyRepository
+
     Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver:
         class: Tests\ShopBundle\Functional\EntityExtension\OverwritableEntityNameResolver
         arguments:
@@ -78,6 +81,8 @@ services:
     Shopsys\FrameworkBundle\Model\Order\OrderFacade: '@Shopsys\ShopBundle\Model\Order\OrderFacade'
 
     Shopsys\FrameworkBundle\Model\Order\OrderRepository: '@Shopsys\ShopBundle\Model\Order\OrderRepository'
+
+    Shopsys\ShopBundle\Model\Payment\PaymentFacade: ~
 
     Shopsys\FrameworkBundle\Model\Payment\PaymentFacade: '@Shopsys\ShopBundle\Model\Payment\PaymentFacade'
 
@@ -182,3 +187,28 @@ services:
     Shopsys\ShopBundle\Model\Feed\FeedHelper: ~
 
     Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@Shopsys\ShopBundle\Model\Product\View\ListedProductViewElasticFacade'
+
+    Shopsys\FrameworkBundle\Model\Localization\Localization:
+        arguments:
+            $adminLocale: '%shopsys.admin_locale%'
+
+    Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory:
+        arguments: ['%router.resource%']
+
+    Shopsys\FrameworkBundle\Component\CurrencyFormatter\CurrencyFormatterFactory: ~
+
+    Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@Shopsys\ShopBundle\Twig\NumberFormatterExtension'
+
+    Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade: ~
+
+    Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyDataFactoryInterface:
+        alias: Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyDataFactory
+
+    Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFactoryInterface:
+        alias: Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFactory
+
+    Shopsys\ShopBundle\Model\Transport\TransportFacade: ~
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@Shopsys\ShopBundle\Model\Transport\TransportFacade'
+
+    Shopsys\FrameworkBundle\Component\Image\ImageFacade: '@Shopsys\ShopBundle\Component\Image\ImageFacade'

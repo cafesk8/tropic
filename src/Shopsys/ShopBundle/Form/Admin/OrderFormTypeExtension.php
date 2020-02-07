@@ -17,12 +17,12 @@ use Symfony\Component\Validator\Constraints\Length;
 class OrderFormTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension
+     * @var \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension
      */
     private $dateTimeFormatterExtension;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \Shopsys\ShopBundle\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      */
     public function __construct(DateTimeFormatterExtension $dateTimeFormatterExtension)
     {

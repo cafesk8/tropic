@@ -21,6 +21,23 @@ use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStock;
 /**
  * @ORM\Table(name="products")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Product\Brand\Brand|null $brand
+ * @property \Shopsys\ShopBundle\Model\Product\Product[]|\Doctrine\Common\Collections\Collection $variants
+ * @property \Shopsys\ShopBundle\Model\Product\Product|null $mainVariant
+ * @method static \Shopsys\ShopBundle\Model\Product\Product create(\Shopsys\ShopBundle\Model\Product\ProductData $productData)
+ * @method static \Shopsys\ShopBundle\Model\Product\Product createMainVariant(\Shopsys\ShopBundle\Model\Product\ProductData $productData, \Shopsys\ShopBundle\Model\Product\Product[] $variants)
+ * @method setAvailabilityAndStock(\Shopsys\ShopBundle\Model\Product\ProductData $productData)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[][] getCategoriesIndexedByDomainId()
+ * @method \Shopsys\ShopBundle\Model\Product\Brand\Brand|null getBrand()
+ * @method addVariant(\Shopsys\ShopBundle\Model\Product\Product $variant)
+ * @method addVariants(\Shopsys\ShopBundle\Model\Product\Product[] $variants)
+ * @method \Shopsys\ShopBundle\Model\Product\Product[] getVariants()
+ * @method setMainVariant(\Shopsys\ShopBundle\Model\Product\Product $mainVariant)
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Product\ProductData $productData)
+ * @method \Shopsys\ShopBundle\Model\Product\ProductDomain getProductDomain(int $domainId)
+ * @method refreshVariants(\Shopsys\ShopBundle\Model\Product\Product[] $currentVariants)
+ * @method addNewVariants(\Shopsys\ShopBundle\Model\Product\Product[] $currentVariants)
+ * @method unsetRemovedVariants(\Shopsys\ShopBundle\Model\Product\Product[] $currentVariants)
  */
 class Product extends BaseProduct
 {
@@ -60,9 +77,9 @@ class Product extends BaseProduct
     protected $mainVariantGroup;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      *
-     * @ORM\ManyToOne(targetEntity="\Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter")
+     * @ORM\ManyToOne(targetEntity="\Shopsys\ShopBundle\Model\Product\Parameter\Parameter")
      * @ORM\JoinColumn(nullable=true)
      */
     protected $distinguishingParameter;
@@ -75,7 +92,7 @@ class Product extends BaseProduct
     protected $domains;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]|\Doctrine\Common\Collections\Collection
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\Flag[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Shopsys\ShopBundle\Model\Product\Flag\Flag")
      * @ORM\JoinTable(name="product_flags")
@@ -273,7 +290,7 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      */
     public function setDistinguishingParameter(Parameter $parameter): void
     {
@@ -289,7 +306,7 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product
+     * @return \Shopsys\ShopBundle\Model\Product\Product
      */
     public function getProductForCreatingImageAccordingToVariant(): self
     {
@@ -324,7 +341,7 @@ class Product extends BaseProduct
 
     /**
      * @param int|null $limit
-     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\Flag[]
      */
     public function getFlags(?int $limit = null)
     {
@@ -337,7 +354,7 @@ class Product extends BaseProduct
 
     /**
      * @param int $limit
-     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\Flag[]
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\Flag[]
      */
     public function getFlagsIndexedByPosition(int $limit): array
     {
@@ -351,7 +368,7 @@ class Product extends BaseProduct
 
     /**
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getListableProductCategoriesByDomainId(int $domainId): array
     {
@@ -599,7 +616,6 @@ class Product extends BaseProduct
      * @param string $locale
      * @param string $baseName
      * @param string $size
-     * @param string $color
      */
     public function updateNameWithSize(string $locale, string $baseName, string $size): void
     {
@@ -635,7 +651,7 @@ class Product extends BaseProduct
 
     /**
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getGifts(int $domainId): array
     {

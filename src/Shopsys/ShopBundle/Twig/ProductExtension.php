@@ -58,7 +58,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
     /**
      * ProductExtension constructor.
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
@@ -162,7 +162,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
     public function getProductAdeptPrice(Product $product): ?ProductPrice
@@ -171,7 +171,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue
      */
     public function getParameterValueById(string $id): ParameterValue
@@ -181,7 +181,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice $productPrice
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Product\Flag\Flag[]
      */

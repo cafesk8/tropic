@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Product\Transfer;
 
 use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator;
-use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\ShopBundle\Component\Rest\RestClient;
 use Shopsys\ShopBundle\Component\Transfer\AbstractTransferImportCronModule;
@@ -67,11 +66,6 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     private $productTree;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory
-     */
-    private $productCategoryDomainFactory;
-
-    /**
      * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     private $parameterFacade;
@@ -95,7 +89,6 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductVariantFacade $productVariantFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactory $productCategoryDomainFactory
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator $productAvailabilityRecalculator
@@ -109,7 +102,6 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         ProductVisibilityFacade $productVisibilityFacade,
         ProductVariantFacade $productVariantFacade,
         MainVariantGroupFacade $mainVariantGroupFacade,
-        ProductCategoryDomainFactory $productCategoryDomainFactory,
         ParameterFacade $parameterFacade,
         ProductPriceRecalculator $productPriceRecalculator,
         ProductAvailabilityRecalculator $productAvailabilityRecalculator
@@ -122,7 +114,6 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $this->productVisibilityFacade = $productVisibilityFacade;
         $this->productVariantFacade = $productVariantFacade;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
-        $this->productCategoryDomainFactory = $productCategoryDomainFactory;
         $this->parameterFacade = $parameterFacade;
         $this->productPriceRecalculator = $productPriceRecalculator;
         $this->productAvailabilityRecalculator = $productAvailabilityRecalculator;
@@ -262,7 +253,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
         $mainVariants = [];
         $existingMainVariantGroup = null;
         foreach ($this->productTree as $colorValue => $secondParameterValuesWithProducts) {
-            /** @var \Shopsys\ShopBundle\Model\Product\Product $existingMainVariant */
+            /** @var \Shopsys\ShopBundle\Model\Product\Product|null $existingMainVariant */
             $existingMainVariant = null;
             $notVariants = [];
             foreach ($secondParameterValuesWithProducts as $productBySizeValue) {
@@ -282,7 +273,7 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
             if ($existingMainVariant !== null) {
                 $existingMainVariant->setDistinguishingParameter($this->parameterFacade->getSizeParameter());
                 foreach ($notVariants as $notVariant) {
-                    $existingMainVariant->addVariant($notVariant, $this->productCategoryDomainFactory);
+                    $existingMainVariant->addVariant($notVariant);
                 }
                 $existingMainVariant->updateCzechNamesWithColor((string)$colorValue);
                 $this->productFacade->flushMainVariant($existingMainVariant);
@@ -303,10 +294,10 @@ class ProductImportCronModule extends AbstractTransferImportCronModule
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $mainVariant
+     * @param \Shopsys\ShopBundle\Model\Product\Product|null $mainVariant
      * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup|null
      */
-    private function findMainVariantGroup(Product $mainVariant): ?MainVariantGroup
+    private function findMainVariantGroup(?Product $mainVariant): ?MainVariantGroup
     {
         return $mainVariant !== null ? $mainVariant->getMainVariantGroup() : null;
     }

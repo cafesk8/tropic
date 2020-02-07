@@ -225,7 +225,6 @@ class AllPagesTest extends KernelTestCase
             case PerformanceTestSampleQualifier::STATUS_CRITICAL:
             default:
                 $this->fail('Values are above critical threshold');
-                return;
         }
     }
 

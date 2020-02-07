@@ -15,7 +15,6 @@ use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
-use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyData;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -23,6 +22,7 @@ use Shopsys\ShopBundle\Model\Customer\User;
 use Shopsys\ShopBundle\Model\Customer\UserData;
 use Shopsys\ShopBundle\Model\Order\Order;
 use Shopsys\ShopBundle\Model\Order\OrderData;
+use Shopsys\ShopBundle\Model\Pricing\Currency\Currency;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
 
 class PersonalDataExportXmlTest extends TransactionFunctionalTestCase
@@ -89,9 +89,9 @@ class PersonalDataExportXmlTest extends TransactionFunctionalTestCase
         $billingAddressData->street = 'Hlubinská';
         $billingAddressData->companyCustomer = true;
         $billingAddressData->companyName = 'Shopsys';
-        $billingAddressData->companyNumber = 123456;
-        $billingAddressData->companyTaxNumber = 123456;
-        $billingAddressData->postcode = 70200;
+        $billingAddressData->companyNumber = '123456';
+        $billingAddressData->companyTaxNumber = '123456';
+        $billingAddressData->postcode = '70200';
 
         $billingAddress = new BillingAddress($billingAddressData);
 
@@ -107,7 +107,7 @@ class PersonalDataExportXmlTest extends TransactionFunctionalTestCase
         $deliveryAddressData = new DeliveryAddressData();
         $deliveryAddressData->country = $country;
         $deliveryAddressData->telephone = '+420987654321';
-        $deliveryAddressData->postcode = 70200;
+        $deliveryAddressData->postcode = '70200';
         $deliveryAddressData->companyName = 'Shopsys';
         $deliveryAddressData->street = 'Hlubinská';
         $deliveryAddressData->city = 'Ostrava';
@@ -139,9 +139,9 @@ class PersonalDataExportXmlTest extends TransactionFunctionalTestCase
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency $currency
-     * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus $status
-     * @param \Shopsys\FrameworkBundle\Model\Country\Country $country
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\Currency $currency
+     * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatus $status
+     * @param \Shopsys\ShopBundle\Model\Country\Country $country
      * @return \Shopsys\ShopBundle\Model\Order\Order
      */
     private function createOrder(Currency $currency, OrderStatus $status, Country $country)
@@ -157,10 +157,10 @@ class PersonalDataExportXmlTest extends TransactionFunctionalTestCase
         $orderData->city = 'Liberec';
         $orderData->street = 'Cihelní 5';
         $orderData->companyName = 'Shopsys';
-        $orderData->postcode = 65421;
+        $orderData->postcode = '65421';
         $orderData->telephone = '+420987654321';
-        $orderData->companyTaxNumber = 123456;
-        $orderData->companyNumber = 123456;
+        $orderData->companyTaxNumber = '123456';
+        $orderData->companyNumber = '123456';
         $orderData->deliveryAddressSameAsBillingAddress = true;
         $orderData->country = $country;
 

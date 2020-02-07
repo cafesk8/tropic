@@ -6,6 +6,9 @@ namespace Shopsys\ShopBundle\Model\Transport;
 
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Payment\Payment[] $payments
+ */
 class TransportData extends BaseTransportData
 {
     /**
@@ -34,7 +37,7 @@ class TransportData extends BaseTransportData
     public $transportType;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country[]
+     * @var \Shopsys\ShopBundle\Model\Country\Country[]
      */
     public $countries;
 

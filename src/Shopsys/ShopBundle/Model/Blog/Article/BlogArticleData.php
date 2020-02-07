@@ -15,7 +15,7 @@ class BlogArticleData
     public $names;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[]
+     * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory[][]
      */
     public $blogCategoriesByDomainId;
 

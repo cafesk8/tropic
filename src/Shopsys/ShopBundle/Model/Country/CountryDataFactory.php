@@ -8,6 +8,9 @@ use Shopsys\FrameworkBundle\Model\Country\Country as BaseCountry;
 use Shopsys\FrameworkBundle\Model\Country\CountryData as BaseCountryData;
 use Shopsys\FrameworkBundle\Model\Country\CountryDataFactory as BaseCountryDataFactory;
 
+/**
+ * @method fillNew(\Shopsys\ShopBundle\Model\Country\CountryData $countryData)
+ */
 class CountryDataFactory extends BaseCountryDataFactory
 {
     /**

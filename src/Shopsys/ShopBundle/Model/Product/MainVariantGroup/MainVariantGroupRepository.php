@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\MainVariantGroup;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
-use Shopsys\FrameworkBundle\Component\EntityExtension\QueryBuilder;
+use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
@@ -29,16 +29,16 @@ class MainVariantGroupRepository
     }
 
     /**
-     * @return \Doctrine\ORM\EntityRepository|\Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getMainVariantGroupRepository(): EntityRepository
+    protected function getMainVariantGroupRepository(): ObjectRepository
     {
         return $this->entityManager->getRepository(MainVariantGroup::class);
     }
 
     /**
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Doctrine\ORM\QueryBuilder
      */
     private function getProductsQueryBuilder(int $domainId, PricingGroup $pricingGroup): QueryBuilder
@@ -58,7 +58,7 @@ class MainVariantGroupRepository
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsForMainVariantGroup(Product $product, int $domainId, PricingGroup $pricingGroup): array
@@ -71,7 +71,7 @@ class MainVariantGroupRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @return \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[]
      */
     public function getByDistinguishingParameter(Parameter $parameter): array
@@ -84,7 +84,7 @@ class MainVariantGroupRepository
     /**
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroup[] $mainVariantGroups
      * @param int $domainId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsForMainVariantGroups(array $mainVariantGroups, int $domainId, PricingGroup $pricingGroup): array

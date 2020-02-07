@@ -70,7 +70,7 @@ class HsSportFeedItem implements FeedItemInterface
 
     /**
      * @param int $id
-     * @param int|null $var
+     * @param int $var
      * @param string|null $code
      * @param string $name
      * @param string $shortDescription
@@ -127,9 +127,9 @@ class HsSportFeedItem implements FeedItemInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getVar(): ?int
+    public function getVar(): int
     {
         return $this->var;
     }

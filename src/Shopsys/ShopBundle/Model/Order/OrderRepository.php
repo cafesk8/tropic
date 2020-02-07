@@ -18,6 +18,19 @@ use Shopsys\ShopBundle\Model\Order\Status\OrderStatus;
 use Shopsys\ShopBundle\Model\Payment\Payment;
 use Shopsys\ShopBundle\Model\PayPal\PayPalFacade;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\Order[] getOrdersByUserId(int $userId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order|null findLastByUserId(int $userId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order|null findById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Order\Order getById(int $id)
+ * @method bool isOrderStatusUsed(\Shopsys\ShopBundle\Model\Order\Status\OrderStatus $orderStatus)
+ * @method \Shopsys\ShopBundle\Model\Order\Order[] getCustomerOrderList(\Shopsys\ShopBundle\Model\Customer\User $user)
+ * @method \Shopsys\ShopBundle\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \Shopsys\ShopBundle\Model\Customer\User $user)
+ * @method \Shopsys\ShopBundle\Model\Order\Order|null findByUrlHashIncludingDeletedOrders(string $urlHash)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Currency\Currency[] getCurrenciesUsedInOrders()
+ */
 class OrderRepository extends BaseOrderRepository
 {
     /**
@@ -228,7 +241,7 @@ class OrderRepository extends BaseOrderRepository
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $ean
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem[]
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem[]
      */
     public function findOrderItemsByEan(Order $order, string $ean): array
     {

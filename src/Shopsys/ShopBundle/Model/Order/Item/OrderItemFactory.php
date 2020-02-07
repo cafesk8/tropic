@@ -11,6 +11,10 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem createPayment(\Shopsys\ShopBundle\Model\Order\Order $order, string $name, \Shopsys\FrameworkBundle\Model\Pricing\Price $price, string $vatPercent, int $quantity, \Shopsys\ShopBundle\Model\Payment\Payment $payment)
+ * @method \Shopsys\ShopBundle\Model\Order\Item\OrderItem createTransport(\Shopsys\ShopBundle\Model\Order\Order $order, string $name, \Shopsys\FrameworkBundle\Model\Pricing\Price $price, string $vatPercent, int $quantity, \Shopsys\ShopBundle\Model\Transport\Transport $transport)
+ */
 class OrderItemFactory extends BaseOrderItemFactory
 {
     /**
@@ -40,7 +44,7 @@ class OrderItemFactory extends BaseOrderItemFactory
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItem $orderItem
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
      */
     public function createPromoCode(
         string $name,
@@ -65,12 +69,12 @@ class OrderItemFactory extends BaseOrderItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $certificatePrice
      * @param string $certificateSku
      * @param string $vatPercent
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
      */
     public function createGiftCertificate(
         Order $order,
@@ -99,16 +103,16 @@ class OrderItemFactory extends BaseOrderItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param string $vatPercent
      * @param int $quantity
      * @param string|null $unitName
      * @param string|null $catnum
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $gift
+     * @param \Shopsys\ShopBundle\Model\Product\Product $gift
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPrice
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
      */
     public function createGift(
         Order $order,
@@ -140,17 +144,17 @@ class OrderItemFactory extends BaseOrderItemFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param string $vatPercent
      * @param int $quantity
      * @param string|null $unitName
      * @param string|null $catnum
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPrice
-     * @param \Shopsys\ShopBundle\Model\Order\Item\PromoProduct|null $promoProduct
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\OrderItem
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
+     * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct
+     * @return \Shopsys\ShopBundle\Model\Order\Item\OrderItem
      */
     public function createPromoProduct(
         Order $order,

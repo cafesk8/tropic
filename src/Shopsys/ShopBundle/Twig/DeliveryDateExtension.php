@@ -20,7 +20,7 @@ class DeliveryDateExtension extends AbstractExtension
     private $productCachedAttributesFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      */
     public function __construct(ProductCachedAttributesFacade $productCachedAttributesFacade)
     {

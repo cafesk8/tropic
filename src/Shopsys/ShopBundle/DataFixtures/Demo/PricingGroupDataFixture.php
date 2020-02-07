@@ -22,7 +22,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     public const PRICING_GROUP_TEMPORARY_SEVEN_PERCENT_GROUP_DOMAIN = 'pricing_group_temporary_seven_percent_domain';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade
      */
     protected $pricingGroupFacade;
 
@@ -37,8 +37,8 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface $pricingGroupDataFactory
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupDataFactory $pricingGroupDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(

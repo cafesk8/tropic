@@ -76,7 +76,7 @@ class MigrateProductGermanLegacyUrlsCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -110,6 +110,8 @@ class MigrateProductGermanLegacyUrlsCommand extends Command
             $this->entityManager->commit();
             $this->entityManager->clear();
         } while ($productsCount > 0);
+
+        return 0;
     }
 
     /**

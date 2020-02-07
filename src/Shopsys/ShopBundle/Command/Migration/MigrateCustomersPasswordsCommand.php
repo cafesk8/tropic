@@ -77,7 +77,7 @@ class MigrateCustomersPasswordsCommand extends Command
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('start password migration');
 
@@ -100,6 +100,8 @@ class MigrateCustomersPasswordsCommand extends Command
 
         $this->em->flush();
         $output->writeln('Password migrations finished');
+
+        return 0;
     }
 
     /**
@@ -144,7 +146,7 @@ class MigrateCustomersPasswordsCommand extends Command
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
      * @param string $password
      */
     private function changePasswordByMigration(User $user, string $password): void

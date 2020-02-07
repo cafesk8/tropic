@@ -33,7 +33,7 @@ class ProductMallExportMapper
     private $productPriceCalculationForUser;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Image\ImageFacade
+     * @var \Shopsys\ShopBundle\Component\Image\ImageFacade
      */
     private $imageFacade;
 
@@ -79,7 +79,7 @@ class ProductMallExportMapper
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
@@ -225,7 +225,7 @@ class ProductMallExportMapper
         }
 
         foreach ($images as $image) {
-            $mallProduct->addMedia($this->imageFacade->getImageUrl($domainConfig, $image, 'original'), $firstInLoop === false);
+            $mallProduct->addMedia($this->imageFacade->getImageUrl($domainConfig, $image, 'original', null), $firstInLoop === false);
             $firstInLoop = true;
         }
 
@@ -309,7 +309,7 @@ class ProductMallExportMapper
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return int|null
+     * @return int
      */
     private function findStockQuantity(Product $product): int
     {

@@ -9,7 +9,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueData as BasePa
 class ParameterValueData extends BaseParameterValueData
 {
     /**
-     * @var int
+     * @var string
      */
     public $hsFeedId;
 

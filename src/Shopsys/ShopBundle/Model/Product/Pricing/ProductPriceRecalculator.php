@@ -10,7 +10,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 class ProductPriceRecalculator extends BaseProductPriceRecalculator
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */
     public function recalculateOneProductPrices(Product $product): void
     {

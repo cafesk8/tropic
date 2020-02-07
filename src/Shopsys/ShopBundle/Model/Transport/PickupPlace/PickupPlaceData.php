@@ -7,7 +7,7 @@ namespace Shopsys\ShopBundle\Model\Transport\PickupPlace;
 class PickupPlaceData
 {
     /**
-     * @var string|null
+     * @var int|null
      */
     public $id;
 

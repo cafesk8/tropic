@@ -12,7 +12,7 @@ class FilterQuery extends BaseFilterQuery
 {
     /**
      * @param string $orderingModeId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery
      */
     public function applyOrdering(string $orderingModeId, PricingGroup $pricingGroup): BaseFilterQuery
