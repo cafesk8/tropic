@@ -142,8 +142,8 @@ msgstr ""
 msgid "Banner Náš příběh"
 msgstr ""
 
-msgid "Bannery na hl. stránce"
-msgstr ""
+msgid "Bannery"
+msgstr "Banners"
 
 msgid "Barva"
 msgstr ""

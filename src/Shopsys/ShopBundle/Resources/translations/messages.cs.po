@@ -169,8 +169,8 @@ msgstr ""
 msgid "Banner Náš příběh"
 msgstr ""
 
-msgid "Bannery na hl. stránce"
-msgstr ""
+msgid "Bannery"
+msgstr "Bannery"
 
 msgid "Barva"
 msgstr ""
@@ -2123,7 +2123,7 @@ msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
 msgstr "Slevový kód ještě nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
 
 msgid "Slider on main page"
-msgstr "Slider na hl. stránce"
+msgstr "Slider na titulní stránce"
 
 msgid "Služba dopravce"
 msgstr ""

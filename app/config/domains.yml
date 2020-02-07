@@ -1,11 +1,11 @@
 domains:
     -   id: 1
-        name: "Ready Made B2C"
+        name: "B2C - CZ"
         locale: cs
     -   id: 2
-        name: "Ready Made B2C"
+        name: "B2C - SK"
         locale: sk
     -   id: 3
-        name: "Ready Made B2C"
+        name: "B2C - EN"
         locale: de
 
