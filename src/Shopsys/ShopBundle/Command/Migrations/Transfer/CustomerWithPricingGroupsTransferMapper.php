@@ -79,6 +79,7 @@ class CustomerWithPricingGroupsTransferMapper
         $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
         $userData->ean = $this->findEan($customerTransferResponseItemData->getEans());
         $userData->memberOfBushmanClub = $userData->ean === null ? false : true;
+        $userData->password = $this->getFakePassword();
 
         $billingAddressData = $customerData->billingAddressData;
         $billingAddressData->city = $customerTransferResponseItemData->getCity();
@@ -99,6 +100,14 @@ class CustomerWithPricingGroupsTransferMapper
         $customerData->userData = $userData;
 
         return $customerData;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFakePassword(): string
+    {
+        return substr(str_replace(['+', '/', '='], '', base64_encode(random_bytes(128))), 0, 128);
     }
 
     /**
