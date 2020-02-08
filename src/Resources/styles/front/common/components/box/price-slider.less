@@ -1,62 +1,37 @@
 @box-price-slider-inputs-gap: 10px;
 
-@box-price-slider-form-text-width: 25px;
-
 .box-price-slider {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
-
-    border-radius: @radius-small;
+    margin-bottom: 20px;
 
     &__form {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
 
-        &__item {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: @calc-base / 2;
+        &__input {
+            position: relative;
+            width: 50%;
 
-            &__text {
-                padding-right: 4px;
-                width: @box-price-slider-form-text-width;
-
-                font-size: @font-size-small;
-                color: @color-gray;
+            input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                color: @color-base;
+                opacity: 1; /* Firefox */
             }
 
-            input {
-                max-width: calc(~"100% - @{box-price-slider-form-text-width}");
-                
-                font-size: @font-size-small;
-                font-weight: 700;
+            input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: @color-base;
+            }
 
-                &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-                    color: @color-base;
-                    opacity: 1; /* Firefox */
-                    font-weight: 700;
-                }
-    
-                &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-                    color: @color-base;
-                    font-weight: 700;
-                }
-    
-                &::-ms-input-placeholder { /* Microsoft Edge */
-                    color: @color-base;
-                    font-weight: 700;
-                }
+            input::-ms-input-placeholder { /* Microsoft Edge */
+                color: @color-base;
             }
 
             &--left {
-                padding-right: @box-price-slider-inputs-gap/2;
+                margin-right: @box-price-slider-inputs-gap/2;
             }
 
             &--right {
-                padding-left: @box-price-slider-inputs-gap/2;
+                margin-left: @box-price-slider-inputs-gap/2;
             }
         }
     }

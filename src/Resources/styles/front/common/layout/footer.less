@@ -1,10 +1,17 @@
 @footer-top-social-gap: 75px;
 @footer-top-social-height: 66px;
-@footer-top-info-socials-width: 46%;
-@footer-top-links-title: 120px;
-@footer-tab-border-color: @color-gray-dark;
-@footer-tab-arrow-size: 12px;
+@footer-top-info-width: 46%;
+@footer-tab-border-color: #cccbcb;
+@footer-tab-arrow-size: 20px;
 @footer-tab-height: 52px;
+
+.footer {
+    padding: 0 10px;
+
+    @media @query-lg {
+        padding: 0;
+    }
+}
 
 .footer-top {
     display: flex;
@@ -12,37 +19,26 @@
     padding: 15px 0 0 0;
 
     @media @query-lg {
-        padding: 59px 0 27px 0;
+        flex-direction: row;
+        padding: 45px 0 64px 0;
     }
 
     &__info {
-        display: flex;
-        flex-direction: column;
+        width: 100%;
 
         @media @query-lg {
-            flex-direction: row;
-        }
-    }
-
-    &__socials {
-        @media @query-md {
-            margin-bottom: @margin-gap;
-        }
-        
-        @media @query-lg {
-            padding-right: 25px;
-            margin-bottom: 0;
-            width: @footer-top-info-socials-width;
-        }
-
-        @media @query-xl {
+            width: @footer-top-info-width;
             padding-right: @footer-top-social-gap;
+        }
+
+        @media @query-vl {
+            padding-right: 0;
         }
     }
 
     &__contact {
         @media @query-lg {
-            flex: 1;
+            margin-top: 55px;
         }
     }
 
@@ -51,6 +47,11 @@
         display: flex;
         flex-direction: column;
 
+        @media @query-lg {
+            flex-direction: row;
+            width: calc(~"@{calc-base} - @{footer-top-info-width}");
+        }
+
         &__column {
             margin: 0 -10px;
             padding: 0 10px;
@@ -58,13 +59,9 @@
             border-top: 1px solid @footer-tab-border-color;
 
             @media @query-lg {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                width: 100%;
-                margin: 0 0 20px;
+                width: calc(~"@{calc-base}/3");
+                margin: 0;
                 padding: 0;
-
                 border-top: none;
             }
         }
@@ -73,17 +70,17 @@
             position: relative;
             line-height: @footer-tab-height;
 
-            color: @color-add;
-            font-size: @font-size-small;
+            font-size: 19px;
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
 
             @media @query-lg {
-                width: @footer-top-links-title;
-                line-height: 17px;
+                margin-top: 20px;
+                margin-bottom: 30px;
+                line-height: 26px;
 
-                cursor: initial;
+                cursor: default;
             }
 
             &__arrow {
@@ -93,10 +90,7 @@
                 line-height: @footer-tab-height;
 
                 .svg {
-                    height: @footer-tab-arrow-size;
-                    vertical-align: middle;
-
-                    color: @color-add;
+                    color: @color-orange;
                     font-size: @footer-tab-arrow-size;
 
                     .open & {
@@ -119,7 +113,7 @@
 
 .footer-bottom {
     padding-top: @footer-bottom-padding;
-    padding-bottom: 111px;
+    padding-bottom: @footer-bottom-padding;
     text-align: center;
 
     color: @color-brown;
@@ -132,11 +126,13 @@
     }
 
     &__copyright {
-        padding-top: 18px;
-        padding-bottom: 13px;
+        padding-top: 33px;
+        padding-bottom: 10px;
         text-align: center;
 
-        font-size: 13px;
+        font-family: @font-alt;
+        font-size: @font-size-small;
+        border-top: 1px solid @color-gray;
 
         @media @query-lg {
             width: 100%;
@@ -144,8 +140,19 @@
         }
     }
 
+    &__info {
+        line-height: 18px;
+        text-align: center;
+
+        font-family: @font-alt;
+        font-size: @font-size-extra-small;
+    }
+
     &__shopsys {
-        font-size: 13px;
+        padding-top: 56px;
+
+        font-family: @font-alt;
+        font-size: @font-size-small;
 
         &__link {
             color: @color-brown;
@@ -164,7 +171,7 @@
 
     &__articles {
         @media @query-lg {
-            width:100%/2;
+            width: 100%/2;
             text-align: right;
         }
     }
