@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Form\Front\Customer;
+namespace App\Form\Front\Customer\User;
 
-use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CustomerFormType extends AbstractType
+class CustomerUserUpdateFormType extends AbstractType
 {
     /**
-     * @var \App\Model\Customer\CustomerDataFactory
+     * @var \App\Model\Customer\User\CustomerUserUpdateDataFactory
      */
-    private $customerDataFactory;
+    private $customerUserUpdateDataFactory;
 
     /**
-     * @param \App\Model\Customer\CustomerDataFactory $customerDataFactory
+     * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      */
-    public function __construct(CustomerDataFactoryInterface $customerDataFactory)
+    public function __construct(CustomerUserUpdateDataFactoryInterface $customerUserUpdateDataFactory)
     {
-        $this->customerDataFactory = $customerDataFactory;
+        $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
     }
 
     /**
@@ -33,7 +33,7 @@ class CustomerFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userData', UserFormType::class, [
+            ->add('customerUserData', CustomerUserFormType::class, [
                 'user' => $options['user'],
             ])
             ->add('billingAddressData', BillingAddressFormType::class, [
@@ -57,7 +57,7 @@ class CustomerFormType extends AbstractType
             ->setRequired('user')
             ->addAllowedTypes('user', User::class)
             ->setDefaults([
-                'empty_data' => $this->customerDataFactory->create(),
+                'empty_data' => $this->customerUserUpdateDataFactory->create(),
                 'attr' => ['novalidate' => 'novalidate'],
             ]);
     }

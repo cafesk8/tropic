@@ -10,7 +10,7 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Cart\Cart;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
@@ -82,15 +82,15 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     /**
      * @param string $enteredCode
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $totalWatchedPriceOfProducts
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      */
-    public function setEnteredPromoCode($enteredCode, ?Money $totalWatchedPriceOfProducts = null, ?User $user = null): void
+    public function setEnteredPromoCode($enteredCode, ?Money $totalWatchedPriceOfProducts = null, ?CustomerUser $customerUser = null): void
     {
         if ($totalWatchedPriceOfProducts == null) {
             $totalWatchedPriceOfProducts = Money::zero();
         }
 
-        $this->checkPromoCodeValidity($enteredCode, $totalWatchedPriceOfProducts, $user);
+        $this->checkPromoCodeValidity($enteredCode, $totalWatchedPriceOfProducts, $customerUser);
 
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
         $codesInSession = $this->getEnteredCodesFromSession();
@@ -108,9 +108,9 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     /**
      * @param string $enteredCode
      * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalWatchedPriceOfProducts
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      */
-    public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?User $user = null): void
+    public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?CustomerUser $customerUser = null): void
     {
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
 
@@ -132,7 +132,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             throw new PromoCodeNotCombinableException($enteredCode);
         }
 
-        $this->checkPromoCodeUserTypeValidity($promoCode, $user);
+        $this->checkPromoCodeUserTypeValidity($promoCode, $customerUser);
     }
 
     /**
@@ -191,15 +191,15 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 
     /**
      * @param \App\Model\Order\PromoCode\PromoCode $promoCode
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      */
-    private function checkPromoCodeUserTypeValidity(PromoCode $promoCode, ?User $user = null)
+    private function checkPromoCodeUserTypeValidity(PromoCode $promoCode, ?CustomerUser $customerUser = null)
     {
-        if ($promoCode->isUserTypeLogged() === true && $user === null) {
+        if ($promoCode->isUserTypeLogged() === true && $customerUser === null) {
             throw new PromoCodeIsOnlyForLoggedCustomers($promoCode->getCode());
         }
 
-        if ($promoCode->isUserTypeBushmanClubMembers() === true && ($user === null || $user->isMemberOfLoyaltyProgram() === false)) {
+        if ($promoCode->isUserTypeBushmanClubMembers() === true && ($customerUser === null || $customerUser->isMemberOfLoyaltyProgram() === false)) {
             throw new PromoCodeIsOnlyForLoggedBushmanClubMembers($promoCode->getCode());
         }
     }

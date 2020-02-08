@@ -6,7 +6,7 @@ namespace App\Model\Order\Preview;
 
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
@@ -89,7 +89,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct[] $quantifiedProducts
      * @param \App\Model\Transport\Transport|null $transport
      * @param \App\Model\Payment\Payment|null $payment
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      * @param string|null $promoCodeDiscountPercent
      * @param \App\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param \App\Model\Cart\Item\CartItem[]|null $giftsInCart
@@ -103,7 +103,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         array $quantifiedProducts,
         ?Transport $transport = null,
         ?Payment $payment = null,
-        ?User $user = null,
+        ?CustomerUser $customerUser = null,
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $promoCode = null,
         ?array $giftsInCart = [],
@@ -117,7 +117,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $quantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(
             $quantifiedProducts,
             $domainId,
-            $user
+            $customerUser
         );
 
         $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);

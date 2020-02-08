@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Command\Migrations\Transfer;
 
 use Shopsys\FrameworkBundle\Component\String\TransformString;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
+use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\Customer\DeliveryAddressDataFactory;
 use App\Model\Customer\Transfer\CustomerTransferResponseItemData;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 
 class CustomerWithPricingGroupsTransferMapper
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory
      */
-    private $customerDataFactory;
+    private $customerUserUpdateDataFactory;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
@@ -36,18 +36,18 @@ class CustomerWithPricingGroupsTransferMapper
     private $deliveryAddressDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      */
     public function __construct(
-        CustomerDataFactory $customerDataFactory,
+        CustomerUserUpdateDataFactory $customerUserUpdateDataFactory,
         PricingGroupSettingFacade $pricingGroupSettingFacade,
         CountryFacade $countryFacade,
         DeliveryAddressDataFactory $deliveryAddressDataFactory
     ) {
-        $this->customerDataFactory = $customerDataFactory;
+        $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->countryFacade = $countryFacade;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
@@ -55,35 +55,35 @@ class CustomerWithPricingGroupsTransferMapper
 
     /**
      * @param \App\Model\Customer\Transfer\CustomerTransferResponseItemData $customerTransferResponseItemData
-     * @param \App\Model\Customer\User $customer
-     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     * @param \App\Model\Customer\User\CustomerUser $customer
+     * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData
      */
     public function mapTransferDataToCustomerData(
         CustomerTransferResponseItemData $customerTransferResponseItemData,
-        ?User $customer
-    ): CustomerData {
-        $customerData = $customer === null ?
-            $this->customerDataFactory->create() :
-            $customerData = $this->customerDataFactory->createFromUser($customer);
+        ?CustomerUser $customer
+    ): CustomerUserUpdateData {
+        $customerUserUpdateData = $customer === null ?
+            $this->customerUserUpdateDataFactory->create() :
+            $customerUserUpdateData = $this->customerUserUpdateDataFactory->createFromCustomerUser($customer);
 
-        /** @var \App\Model\Customer\UserData $userData */
-        $userData = $customerData->userData;
+        /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
+        $customerUserData = $customerUserUpdateData->customerUserData;
 
         $domainId = $customerTransferResponseItemData->getDomainId();
-        $userData->transferId = $customerTransferResponseItemData->getDataIdentifier();
-        $userData->firstName = $customerTransferResponseItemData->getFirstName();
-        $userData->lastName = $customerTransferResponseItemData->getLastName();
-        $userData->email = $customerTransferResponseItemData->getEmail();
-        $userData->telephone = $customerTransferResponseItemData->getPhone();
-        $userData->domainId = $domainId;
+        $customerUserData->transferId = $customerTransferResponseItemData->getDataIdentifier();
+        $customerUserData->firstName = $customerTransferResponseItemData->getFirstName();
+        $customerUserData->lastName = $customerTransferResponseItemData->getLastName();
+        $customerUserData->email = $customerTransferResponseItemData->getEmail();
+        $customerUserData->telephone = $customerTransferResponseItemData->getPhone();
+        $customerUserData->domainId = $domainId;
         /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
         $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
-        $userData->pricingGroup = $pricingGroup;
-        $userData->ean = $this->findEan($customerTransferResponseItemData->getEans());
-        $userData->memberOfBushmanClub = $userData->ean === null ? false : true;
-        $userData->password = $this->getFakePassword();
+        $customerUserData->pricingGroup = $pricingGroup;
+        $customerUserData->ean = $this->findEan($customerTransferResponseItemData->getEans());
+        $customerUserData->memberOfBushmanClub = $customerUserData->ean === null ? false : true;
+        $customerUserData->password = $this->getFakePassword();
 
-        $billingAddressData = $customerData->billingAddressData;
+        $billingAddressData = $customerUserUpdateData->billingAddressData;
         $billingAddressData->city = $customerTransferResponseItemData->getCity();
         $billingAddressData->street = $customerTransferResponseItemData->getStreet();
         $billingAddressData->postcode = $customerTransferResponseItemData->getPostcode();
@@ -97,11 +97,11 @@ class CustomerWithPricingGroupsTransferMapper
         }
 
         $deliveryAddressData = $this->deliveryAddressDataFactory->createFromBillingAddressData($billingAddressData);
-        $customerData->deliveryAddressData = $deliveryAddressData;
+        $customerUserUpdateData->deliveryAddressData = $deliveryAddressData;
 
-        $customerData->userData = $userData;
+        $customerUserUpdateData->customerUserData = $customerUserData;
 
-        return $customerData;
+        return $customerUserUpdateData;
     }
 
     /**

@@ -6,8 +6,8 @@ namespace App\Model\Order\Preview;
 
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory as BaseOrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
@@ -33,7 +33,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \App\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      */
@@ -41,11 +41,11 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         OrderPreviewCalculation $orderPreviewCalculation,
         Domain $domain,
         CurrencyFacade $currencyFacade,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         CartFacade $cartFacade,
         CurrentPromoCodeFacade $currentPromoCodeFacade
     ) {
-        parent::__construct($orderPreviewCalculation, $domain, $currencyFacade, $currentCustomer, $cartFacade, $currentPromoCodeFacade);
+        parent::__construct($orderPreviewCalculation, $domain, $currencyFacade, $currentCustomerUser, $cartFacade, $currentPromoCodeFacade);
         $this->orderPreviewCalculation = $orderPreviewCalculation;
     }
 
@@ -65,7 +65,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $this->cartFacade->getQuantifiedProductsOfCurrentCustomer(),
             $transport,
             $payment,
-            $this->currentCustomer->findCurrentUser(),
+            $this->currentCustomerUser->findCurrentCustomerUser(),
             null,
             null,
             $this->cartFacade->getGifts(),
@@ -80,7 +80,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct[] $quantifiedProducts
      * @param \App\Model\Transport\Transport|null $transport
      * @param \App\Model\Payment\Payment|null $payment
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      * @param string|null $promoCodeDiscountPercent
      * @param \App\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
      * @param \App\Model\Cart\Item\CartItem[] $giftsInCart
@@ -94,7 +94,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         array $quantifiedProducts,
         ?Transport $transport = null,
         ?Payment $payment = null,
-        ?User $user = null,
+        ?CustomerUser $customerUser = null,
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $validEnteredPromoCode = null,
         ?array $giftsInCart = [],
@@ -110,7 +110,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $quantifiedProducts,
             $transport,
             $payment,
-            $user,
+            $customerUser,
             $promoCodeDiscountPercent,
             $validEnteredPromoCode,
             $giftsInCart,

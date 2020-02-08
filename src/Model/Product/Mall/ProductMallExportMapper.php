@@ -10,7 +10,7 @@ use MPAPI\Entity\Products\Variant;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Category\CategoryFacade;
@@ -28,7 +28,7 @@ class ProductMallExportMapper
     private const CZECH_DOMAIN = DomainHelper::CZECH_DOMAIN;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser
+     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser
      */
     private $productPriceCalculationForUser;
 
@@ -78,7 +78,7 @@ class ProductMallExportMapper
     private $pricingGroupSettingFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
@@ -90,7 +90,7 @@ class ProductMallExportMapper
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
-        ProductPriceCalculationForUser $productPriceCalculationForUser,
+        ProductPriceCalculationForCustomerUser $productPriceCalculationForUser,
         ImageFacade $imageFacade,
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
@@ -101,7 +101,7 @@ class ProductMallExportMapper
         MallFacade $mallFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade
     ) {
-        $this->productPriceCalculationForUser = $productPriceCalculationForUser;
+        $this->productPriceCalculationForCustomerUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
         $this->domain = $domain;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
@@ -235,7 +235,7 @@ class ProductMallExportMapper
             }
 
             /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
-            $productPrice = $this->productPriceCalculationForUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
+            $productPrice = $this->productPriceCalculationForCustomerUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
             if ($productPrice->isActionPriceByUsedForPromoCode()) {
                 $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
                 $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());

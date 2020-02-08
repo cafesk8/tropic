@@ -45,8 +45,8 @@
                                 <th>{{ 'E-mail'|trans }}:</th>
                                 <td class="text-wrap">{{ user.email }} </td>
                             </tr>
-                            {% if user.billingAddress is not null %}
-                                {% set addr = user.billingAddress %}
+                            {% if user.customer.billingAddress is not null %}
+                                {% set addr = user.customer.billingAddress %}
                                 {% if addr.street is not null or addr.city is not null or addr.postCode is not null or addr.country.name is defined %}
                                     <tr>
                                         <th>{{ 'Billing address'|trans }}:</th>
@@ -74,13 +74,13 @@
                                 {% endif %}
                             {% endif %}
 
-                            {% if user.billingAddress.companyTaxNumber is not null or
-                                user.billingAddress.companyNumber is not null or
-                                user.billingAddress.companyName is not null %}
+                            {% if user.customer.billingAddress.companyTaxNumber is not null or
+                                user.customer.billingAddress.companyNumber is not null or
+                                user.customer.billingAddress.companyName is not null %}
                                 <tr>
                                     <th>{{ 'Company'|trans }}:</th>
                                     <td class="text-wrap">
-                                        {% set address = user.billingAddress %}
+                                        {% set address = user.customer.billingAddress %}
                                         {{ [address.companyName, address.companyNumber, address.companyTaxNumber ]|joinNoneEmpty }}
                                     </td>
                                 </tr>

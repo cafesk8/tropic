@@ -11,6 +11,7 @@ use App\Component\Transfer\Response\TransferResponseItemDataInterface;
 use App\Component\Transfer\TransferCronModuleDependency;
 use App\Model\Customer\Transfer\CustomerTransferService;
 use App\Model\Customer\TransferIds\CustomerInfoResponseItemData;
+use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Order\Status\Transfer\Exception\InvalidOrderStatusTransferResponseItemDataException;
 
 class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportCronModule
@@ -18,9 +19,9 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
     private const TRANSFER_IDENTIFIER = 'import_customers_pricing_groups';
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \App\Model\Customer\Transfer\CustomerTransferService
@@ -29,17 +30,17 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
 
     /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Customer\Transfer\CustomerTransferService $customerTransferService
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         CustomerTransferService $customerTransferService
     ) {
         parent::__construct($transferCronModuleDependency);
 
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->customerTransferService = $customerTransferService;
     }
 
@@ -56,14 +57,14 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $customers = $this->customerFacade->getForPricingGroupUpdate();
+        $customers = $this->customerUserFacade->getForPricingGroupUpdate();
         $allTransferDataItems = [];
         foreach ($customers as $customer) {
             foreach ($customer->getUserTransferId() as $transferId) {
                 try {
                     $allTransferDataItems[] = $this->customerTransferService->getTransferItemsFromResponse($transferId, $customer->getDomainId());
                 } catch (UnexpectedResponseCodeException $unexpectedResponseCodeException) {
-                    $this->customerFacade->changeCustomerPricingGroupUpdatedAt($transferId->getCustomer());
+                    $this->customerUserFacade->changeCustomerPricingGroupUpdatedAt($transferId->getCustomer());
                     $this->logger->addWarning(sprintf('Customer info for User with email %s not found', $transferId->getCustomer()->getEmail()));
                 }
             }
@@ -83,7 +84,7 @@ class CustomerUpdatePricingGroupFromIsCronModule extends AbstractTransferImportC
             );
         }
 
-        $this->customerFacade->updatePricingGroupByIsResponse(
+        $this->customerUserFacade->updatePricingGroupByIsResponse(
             $customerInfoResponseItemData->getTransferId()->getCustomer()->getPricingGroup(),
             $customerInfoResponseItemData->getCoefficient(),
             $customerInfoResponseItemData->getTransferId()

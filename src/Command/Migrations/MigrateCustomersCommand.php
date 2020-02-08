@@ -12,7 +12,7 @@ use App\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper;
 use App\Component\Domain\DomainHelper;
 use App\Component\Rest\MultidomainRestClient;
 use App\Component\Transfer\Exception\TransferException;
-use App\Model\Customer\CustomerFacade;
+use \App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\Transfer\CustomerTransferResponseItemData;
 use App\Model\Customer\Transfer\CustomerTransferValidator;
 use App\Model\Customer\TransferIds\UserTransferIdFacade;
@@ -35,9 +35,9 @@ class MigrateCustomersCommand extends Command
     private $em;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \App\Model\Customer\Transfer\CustomerTransferValidator
@@ -71,7 +71,7 @@ class MigrateCustomersCommand extends Command
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
      * @param \App\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper
      * @param \App\Model\Customer\TransferIds\UserTransferIdFacade $userTransferIdFacade
@@ -80,7 +80,7 @@ class MigrateCustomersCommand extends Command
      */
     public function __construct(
         EntityManagerInterface $em,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         CustomerTransferValidator $customerTransferValidator,
         CustomerWithPricingGroupsTransferMapper $customerWithPricingGroupsTransferMapper,
         UserTransferIdFacade $userTransferIdFacade,
@@ -90,7 +90,7 @@ class MigrateCustomersCommand extends Command
         parent::__construct();
 
         $this->em = $em;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->customerTransferValidator = $customerTransferValidator;
         $this->customerWithPricingGroupsTransferMapper = $customerWithPricingGroupsTransferMapper;
         $this->userTransferIdFacade = $userTransferIdFacade;
@@ -161,7 +161,7 @@ class MigrateCustomersCommand extends Command
             return;
         }
 
-        $customer = $this->customerFacade->findUserByEmailAndDomain(
+        $customer = $this->customerUserFacade->findCustomerUserByEmailAndDomain(
             $customersTransferItem->getEmail(),
             $customersTransferItem->getDomainId()
         );
@@ -173,9 +173,9 @@ class MigrateCustomersCommand extends Command
         }
 
         $this->customerTransferValidator->validate($customersTransferItem);
-        $customerData = $this->customerWithPricingGroupsTransferMapper->mapTransferDataToCustomerData($customersTransferItem, $customer);
-        /** @var \App\Model\Customer\User $customer */
-        $customer = $this->customerFacade->create($customerData);
+        $customerUserUpdateData = $this->customerWithPricingGroupsTransferMapper->mapTransferDataToCustomerData($customersTransferItem, $customer);
+        /** @var \App\Model\Customer\User\CustomerUser $customer */
+        $customer = $this->customerUserFacade->create($customerUserUpdateData);
         $customer->markAsExported();
         $this->em->flush($customer);
 
@@ -183,7 +183,7 @@ class MigrateCustomersCommand extends Command
 
         $this->newsletterFacade->addSubscribedEmail($customersTransferItem->getEmail(), DomainHelper::GERMAN_DOMAIN);
 
-        unset($customer, $customerData);
+        unset($customer, $customerUserUpdateData);
     }
 
     /**
@@ -196,9 +196,9 @@ class MigrateCustomersCommand extends Command
         $restResponseData = $restResponse->getData();
         $transferDataItems = [];
         foreach ($restResponseData as $restData) {
-            $customerData = new CustomerTransferResponseItemData($restData);
-            if ($customerData->getDomainId() === DomainHelper::GERMAN_DOMAIN) {
-                $transferDataItems[] = $customerData;
+            $customerUserUpdateData = new CustomerTransferResponseItemData($restData);
+            if ($customerUserUpdateData->getDomainId() === DomainHelper::GERMAN_DOMAIN) {
+                $transferDataItems[] = $customerUserUpdateData;
             }
         }
 

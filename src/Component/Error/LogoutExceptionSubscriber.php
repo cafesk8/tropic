@@ -6,7 +6,7 @@ namespace App\Component\Error;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -22,9 +22,9 @@ class LogoutExceptionSubscriber implements EventSubscriberInterface
     private $flashMessageSender;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
-    private $currentCustomer;
+    private $currentCustomerUser;
 
     /**
      * @var \Symfony\Component\Routing\RouterInterface
@@ -38,14 +38,14 @@ class LogoutExceptionSubscriber implements EventSubscriberInterface
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(FlashMessageSender $flashMessageSender, CurrentCustomer $currentCustomer, RouterInterface $router, Domain $domain)
+    public function __construct(FlashMessageSender $flashMessageSender, CurrentCustomerUser $currentCustomerUser, RouterInterface $router, Domain $domain)
     {
         $this->flashMessageSender = $flashMessageSender;
-        $this->currentCustomer = $currentCustomer;
+        $this->currentCustomerUser = $currentCustomerUser;
         $this->router = $router;
         $this->domain = $domain;
     }
@@ -68,8 +68,8 @@ class LogoutExceptionSubscriber implements EventSubscriberInterface
     public function processException(GetResponseForExceptionEvent $event): void
     {
         if ($event->getException() instanceof LogoutException) {
-            if ($this->currentCustomer->findCurrentUser() !== null) {
-                $domainId = $this->currentCustomer->findCurrentUser()->getDomainId();
+            if ($this->currentCustomerUser->findCurrentCustomerUser() !== null) {
+                $domainId = $this->currentCustomerUser->findCurrentCustomerUser()->getDomainId();
                 $locale = $this->domain->getDomainConfigById($domainId)->getLocale();
 
                 $this->flashMessageSender->addErrorFlash(t('Při pokusu o odhlášení došlo k problému. Pokud se opravdu chcete odhlásit, prosím, zkuste to ještě jednou.', [], 'messages', $locale));

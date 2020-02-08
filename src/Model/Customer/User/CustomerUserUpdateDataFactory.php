@@ -2,45 +2,45 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Customer;
+namespace App\Model\Customer\User;
 
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactory as BaseCustomerDataFactory;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
+use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory as BaseCustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 
 /**
- * @method \Shopsys\FrameworkBundle\Model\Customer\CustomerData createFromUser(\App\Model\Customer\User $user)
- * @property \App\Model\Customer\UserDataFactory $userDataFactory
+ * @method \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData createFromCustomerUser(\App\Model\Customer\User\CustomerUser $customerUser)
+ * @property \App\Model\Customer\User\CustomerUserDataFactory $customerUserDataFactory
  * @property \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
  * @property \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
  */
-class CustomerDataFactory extends BaseCustomerDataFactory
+class CustomerUserUpdateDataFactory extends BaseCustomerDataFactory
 {
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @param \App\Model\Order\Order $order
-     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData
      */
-    public function createAmendedByOrder(User $user, Order $order): CustomerData
+    public function createAmendedByOrder(CustomerUser $customerUser, Order $order): CustomerUserUpdateData
     {
-        $billingAddress = $user->getBillingAddress();
-        $deliveryAddress = $user->getDeliveryAddress();
+        $billingAddress = $customerUser->getCustomer()->getBillingAddress();
+        $deliveryAddress = $customerUser->getDeliveryAddress();
 
-        $customerData = $this->createFromUser($user);
+        $customerUserUpdateData = $this->createFromCustomerUser($customerUser);
 
-        $customerData->userData->firstName = $order->getFirstName();
-        $customerData->userData->lastName = $order->getLastName();
-        $customerData->userData->telephone = $order->getTelephone();
-        $customerData->billingAddressData = $this->getAmendedBillingAddressDataByOrder($order, $billingAddress);
+        $customerUserUpdateData->customerUserData->firstName = $order->getFirstName();
+        $customerUserUpdateData->customerUserData->lastName = $order->getLastName();
+        $customerUserUpdateData->customerUserData->telephone = $order->getTelephone();
+        $customerUserUpdateData->billingAddressData = $this->getAmendedBillingAddressDataByOrder($order, $billingAddress);
 
         if ($order->getTransport()->isPickupPlace() === false && $order->getTransport()->isChooseStore() === false) {
-            $customerData->deliveryAddressData = $this->getAmendedDeliveryAddressDataByOrder($order, $deliveryAddress);
+            $customerUserUpdateData->deliveryAddressData = $this->getAmendedDeliveryAddressDataByOrder($order, $deliveryAddress);
         }
 
-        return $customerData;
+        return $customerUserUpdateData;
     }
 
     /**
@@ -96,14 +96,14 @@ class CustomerDataFactory extends BaseCustomerDataFactory
 
     /**
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData
      */
-    public function createForDomainId(int $domainId): CustomerData
+    public function createForDomainId(int $domainId): CustomerUserUpdateData
     {
-        return new CustomerData(
+        return new CustomerUserUpdateData(
             $this->billingAddressDataFactory->create(),
             $this->deliveryAddressDataFactory->create(),
-            $this->userDataFactory->createForDomainId($domainId)
+            $this->customerUserDataFactory->createForDomainId($domainId)
         );
     }
 
@@ -111,11 +111,11 @@ class CustomerDataFactory extends BaseCustomerDataFactory
      * @param \App\Model\Order\Order $order
      * @param string $newPassword
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Customer\CustomerData
+     * @return \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData
      */
-    public function createFromOrder(Order $order, string $newPassword, int $domainId): CustomerData
+    public function createFromOrder(Order $order, string $newPassword, int $domainId): CustomerUserUpdateData
     {
-        $userData = $this->userDataFactory->createUserDataFromOrder($order, $newPassword, $domainId);
+        $customerUserData = $this->customerUserDataFactory->createUserDataFromOrder($order, $newPassword, $domainId);
 
         $deliveryAddressData = $this->deliveryAddressDataFactory->create();
         $billingAddressData = null;
@@ -130,6 +130,6 @@ class CustomerDataFactory extends BaseCustomerDataFactory
             $billingAddressData = $this->billingAddressDataFactory->createFromOrder($order);
         }
 
-        return new CustomerData($billingAddressData, $deliveryAddressData, $userData);
+        return new CustomerUserUpdateData($billingAddressData, $deliveryAddressData, $customerUserData);
     }
 }

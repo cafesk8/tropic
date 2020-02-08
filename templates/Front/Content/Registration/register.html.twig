@@ -16,30 +16,30 @@
             {{ form_start(form) }}
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.userData.firstName, { label: 'First name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
+                        {{ form_row(form.customerUserData.firstName, { label: 'First name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.userData.lastName, { label: 'Last name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
+                        {{ form_row(form.customerUserData.lastName, { label: 'Last name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
                     </div>
                 </div>
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">
                             <div class="form-line__input form-line__input--full">
-                                <label class="input__label" for="{{ form.userData.email.vars.id }}">
+                                <label class="input__label" for="{{ form.customerUserData.email.vars.id }}">
                                     {{ 'E-mail'|trans }}
                                 </label>
-                                {{ form_widget(form.userData.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
+                                {{ form_widget(form.customerUserData.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
                             </div>
                             <div class="form-line__error">
-                                {{ form_errors(form.userData.email, {errors_attr: { class: 'form-error--under' }}) }}
+                                {{ form_errors(form.customerUserData.email, {errors_attr: { class: 'form-error--under' }}) }}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.userData.password.first, {
+                        {{ form_row(form.customerUserData.password.first, {
                             label: 'Password'|trans,
                             attr: { class: 'form-line__input--full'},
                             errors_attr: { class: 'form-error--under' },
@@ -50,15 +50,15 @@
                         }) }}
                     </div>
                     <div class="wrap-article__row__half">
-                        {{ form_row(form.userData.password.second, { label: 'Password again'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
+                        {{ form_row(form.customerUserData.password.second, { label: 'Password again'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
                     </div>
                 </div>
 
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">
-                            {{ form_widget(form.userData.memberOfLoyaltyProgram, { attr: {class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-fields' }}) }}
-                            <label class="css-checkbox__image" for="{{ form.userData.memberOfLoyaltyProgram.vars.id }}">
+                            {{ form_widget(form.customerUserData.memberOfLoyaltyProgram, { attr: {class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-fields' }}) }}
+                            <label class="css-checkbox__image" for="{{ form.customerUserData.memberOfLoyaltyProgram.vars.id }}">
                                 {% if loyaltyProgramArticle is not null %}
                                     {% set articleUrl = url('front_article_detail', {'id': loyaltyProgramArticle.id}) %}
                                     {{ 'Chci být členem <a href="%url%" target="_blank"><span class="underline-small">Věrnostního programu</span></a>.'|trans({'%url%': articleUrl})|raw }}

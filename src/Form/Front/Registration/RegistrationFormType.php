@@ -12,9 +12,9 @@ use Shopsys\FrameworkBundle\Form\Constraints\NotIdenticalToEmailLocalPart;
 use Shopsys\FrameworkBundle\Form\Constraints\UniqueEmail;
 use Shopsys\FrameworkBundle\Form\HoneyPotType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
-use Shopsys\FrameworkBundle\Model\Customer\UserData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData;
 use App\Component\Domain\DomainHelper;
 use App\Model\Country\CountryFacade;
 use Symfony\Component\Form\AbstractType;
@@ -61,11 +61,11 @@ class RegistrationFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $userData = $this->getUserDataBuilder($builder);
+        $customerUserData = $this->getCustomerUserDataBuilder($builder);
         $deliveryAddressData = $this->getDeliveryAddressDataBuilder($builder, $options);
 
         $builder
-            ->add($userData)
+            ->add($customerUserData)
             ->add($deliveryAddressData)
             ->add('privacyPolicy', CheckboxType::class, [
                 'required' => true,
@@ -83,31 +83,31 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $defaults = [
-            'data_class' => CustomerData::class,
+            'data_class' => CustomerUserUpdateData::class,
             'attr' => ['novalidate' => 'novalidate'],
             TimedFormTypeExtension::OPTION_ENABLED => true,
             'constraints' => [
                 new FieldsAreNotIdentical([
-                    'field1' => 'userData.email',
-                    'field2' => 'userData.password',
-                    'errorPath' => 'userData.password',
+                    'field1' => 'customerUserData.email',
+                    'field2' => 'customerUserData.password',
+                    'errorPath' => 'customerUserData.password',
                     'message' => 'Password cannot be same as e-mail',
                 ]),
                 new NotIdenticalToEmailLocalPart([
-                    'password' => 'userData.password',
-                    'email' => 'userData.email',
-                    'errorPath' => 'userData.password',
+                    'password' => 'customerUserData.password',
+                    'email' => 'customerUserData.email',
+                    'errorPath' => 'customerUserData.password',
                     'message' => 'Password cannot be same as part of e-mail before at sign',
                 ]),
             ],
             'validation_groups' => function (FormInterface $form) {
                 $validationGroups = [ValidationGroup::VALIDATION_GROUP_DEFAULT];
-                /** @var \Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData */
-                $customerData = $form->getData();
-                /** @var \App\Model\Customer\UserData $userData */
-                $userData = $customerData->userData;
+                /** @var \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData */
+                $customerUserUpdateData = $form->getData();
+                /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
+                $customerUserData = $customerUserUpdateData->customerUserData;
 
-                if ($userData->memberOfBushmanClub) {
+                if ($customerUserData->memberOfBushmanClub) {
                     $validationGroups[] = self::VALIDATION_GROUP_BUSHMAN_CLUB_MEMBER;
                 }
 
@@ -125,10 +125,10 @@ class RegistrationFormType extends AbstractType
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getUserDataBuilder(FormBuilderInterface $builder): FormBuilderInterface
+    private function getCustomerUserDataBuilder(FormBuilderInterface $builder): FormBuilderInterface
     {
-        $userDataBuilder = $builder->create('userData', FormType::class, [
-            'data_class' => UserData::class,
+        $userDataBuilder = $builder->create('customerUserData', FormType::class, [
+            'data_class' => CustomerUserData::class,
         ]);
         $userDataBuilder
             ->add('firstName', TextType::class, [

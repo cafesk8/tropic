@@ -7,7 +7,7 @@ namespace App\Form\Front\Order;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\StepInterface;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 
 class OrderFlow extends FormFlow
 {
@@ -192,9 +192,9 @@ class OrderFlow extends FormFlow
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      */
-    public function mergePreviouslySavedFormDataWithLoggedUserData(User $user): void
+    public function mergePreviouslySavedFormDataWithLoggedUserData(CustomerUser $customerUser): void
     {
         $orderFormData = $this->retrieveStepData();
 
@@ -208,34 +208,34 @@ class OrderFlow extends FormFlow
         $newFormAddressData = $oldFormAddressData;
 
         if ($oldFormAddressData['firstName'] === '') {
-            $newFormAddressData['firstName'] = $user->getFirstName();
+            $newFormAddressData['firstName'] = $customerUser->getFirstName();
         }
         if ($oldFormAddressData['lastName'] === '') {
-            $newFormAddressData['lastName'] = $user->getLastName();
+            $newFormAddressData['lastName'] = $customerUser->getLastName();
         }
         if ($oldFormAddressData['email'] === '') {
-            $newFormAddressData['email'] = $user->getEmail();
+            $newFormAddressData['email'] = $customerUser->getEmail();
         }
         if ($oldFormAddressData['telephone'] === '') {
-            $newFormAddressData['telephone'] = $user->getTelephone();
+            $newFormAddressData['telephone'] = $customerUser->getTelephone();
         }
 
-        if ($user->getDeliveryAddress() !== null) {
+        if ($customerUser->getDeliveryAddress() !== null) {
             if ($oldFormAddressData['street'] === '') {
-                $newFormAddressData['street'] = $user->getDeliveryAddress()->getStreet();
+                $newFormAddressData['street'] = $customerUser->getDeliveryAddress()->getStreet();
             }
             if ($oldFormAddressData['city'] === '') {
-                $newFormAddressData['city'] = $user->getDeliveryAddress()->getCity();
+                $newFormAddressData['city'] = $customerUser->getDeliveryAddress()->getCity();
             }
             if ($oldFormAddressData['postcode'] === '') {
-                $newFormAddressData['postcode'] = $user->getDeliveryAddress()->getPostcode();
+                $newFormAddressData['postcode'] = $customerUser->getDeliveryAddress()->getPostcode();
             }
             if ($oldFormAddressData['country'] === '') {
-                $newFormAddressData['country'] = $user->getDeliveryAddress()->getCountry();
+                $newFormAddressData['country'] = $customerUser->getDeliveryAddress()->getCountry();
             }
         }
 
-        $newFormAddressData = $this->mergeFormCompanyDataWithLoggedUserCompanyData($oldFormAddressData, $newFormAddressData, $user);
+        $newFormAddressData = $this->mergeFormCompanyDataWithLoggedUserCompanyData($oldFormAddressData, $newFormAddressData, $customerUser);
 
         $orderFormData[$orderStepWithAddressData] = $newFormAddressData;
 
@@ -245,33 +245,33 @@ class OrderFlow extends FormFlow
     /**
      * @param array $oldFormAddressData
      * @param array $newFormAddressData
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return array
      */
-    private function mergeFormCompanyDataWithLoggedUserCompanyData(array $oldFormAddressData, array $newFormAddressData, User $user)
+    private function mergeFormCompanyDataWithLoggedUserCompanyData(array $oldFormAddressData, array $newFormAddressData, CustomerUser $customerUser)
     {
-        if ($user->getBillingAddress()->isCompanyCustomer()) {
+        if ($customerUser->getCustomer()->getBillingAddress()->isCompanyCustomer()) {
             if ($oldFormAddressData['companyName'] === '') {
-                $newFormAddressData['companyName'] = $user->getBillingAddress()->getCompanyName();
+                $newFormAddressData['companyName'] = $customerUser->getCustomer()->getBillingAddress()->getCompanyName();
             }
             if ($oldFormAddressData['companyNumber'] === '') {
-                $newFormAddressData['companyNumber'] = $user->getBillingAddress()->getCompanyNumber();
+                $newFormAddressData['companyNumber'] = $customerUser->getCustomer()->getBillingAddress()->getCompanyNumber();
             }
             if ($oldFormAddressData['companyTaxNumber'] === '') {
-                $newFormAddressData['companyTaxNumber'] = $user->getBillingAddress()->getCompanyTaxNumber();
+                $newFormAddressData['companyTaxNumber'] = $customerUser->getCustomer()->getBillingAddress()->getCompanyTaxNumber();
             }
 
             if ($oldFormAddressData['street'] === '') {
-                $newFormAddressData['street'] = $user->getBillingAddress()->getStreet();
+                $newFormAddressData['street'] = $customerUser->getCustomer()->getBillingAddress()->getStreet();
             }
             if ($oldFormAddressData['city'] === '') {
-                $newFormAddressData['city'] = $user->getBillingAddress()->getCity();
+                $newFormAddressData['city'] = $customerUser->getCustomer()->getBillingAddress()->getCity();
             }
             if ($oldFormAddressData['postcode'] === '') {
-                $newFormAddressData['postcode'] = $user->getBillingAddress()->getPostcode();
+                $newFormAddressData['postcode'] = $customerUser->getCustomer()->getBillingAddress()->getPostcode();
             }
             if ($oldFormAddressData['country'] === '') {
-                $newFormAddressData['country'] = $user->getBillingAddress()->getCountry();
+                $newFormAddressData['country'] = $customerUser->getCustomer()->getBillingAddress()->getCountry();
             }
         }
 

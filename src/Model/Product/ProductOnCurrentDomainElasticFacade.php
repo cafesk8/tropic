@@ -7,7 +7,7 @@ namespace App\Model\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData as BaseProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
@@ -53,7 +53,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * ProductOnCurrentDomainElasticFacade constructor.
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
      * @param \App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository $productFilterCountDataElasticsearchRepository
@@ -65,7 +65,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     public function __construct(
         ProductRepository $productRepository,
         Domain $domain,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         ProductAccessoryRepository $productAccessoryRepository,
         ProductElasticsearchRepository $productElasticsearchRepository,
         ProductFilterCountDataElasticsearchRepository $productFilterCountDataElasticsearchRepository,
@@ -74,7 +74,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         FilterQueryFactory $filterQueryFactory,
         ParameterFacade $parameterFacade
     ) {
-        parent::__construct($productRepository, $domain, $currentCustomer, $productAccessoryRepository, $productElasticsearchRepository, $productFilterCountDataElasticsearchRepository, $elasticsearchStructureManager, $productFilterDataToQueryTransformer, $filterQueryFactory);
+        parent::__construct($productRepository, $domain, $currentCustomerUser, $productAccessoryRepository, $productElasticsearchRepository, $productFilterCountDataElasticsearchRepository, $elasticsearchStructureManager, $productFilterDataToQueryTransformer, $filterQueryFactory);
         $this->parameterFacade = $parameterFacade;
     }
 
@@ -87,7 +87,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         return $this->productRepository->getAllSellableVariantsForMainVariants(
             $products,
             $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
+            $this->currentCustomerUser->getPricingGroup()
         );
     }
 
@@ -100,7 +100,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         return $this->productRepository->getVariantsIndexedByMainVariantId(
             $products,
             $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
+            $this->currentCustomerUser->getPricingGroup()
         );
     }
 
@@ -115,10 +115,10 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     {
         $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
             ->filterOnlySellable()
-            ->filterOnlyVisible($this->currentCustomer->getPricingGroup())
+            ->filterOnlyVisible($this->currentCustomerUser->getPricingGroup())
             ->setPage($page)
             ->setLimit($limit)
-            ->applyOrdering($orderingModeId, $this->currentCustomer->getPricingGroup());
+            ->applyOrdering($orderingModeId, $this->currentCustomerUser->getPricingGroup());
 
         $distinguishingParameters = [
             Parameter::TYPE_COLOR => $this->parameterFacade->getColorParameter(),
@@ -130,7 +130,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
         $filterQuery = $this->productFilterDataToQueryTransformer->addParametersToQuery($productFilterData, $filterQuery);
         $filterQuery = $this->productFilterDataToQueryTransformer->addDistinguishingParametersToQuery($productFilterData, $filterQuery, $distinguishingParameters);
         $filterQuery = $this->productFilterDataToQueryTransformer->addStockToQuery($productFilterData, $filterQuery);
-        $filterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $filterQuery, $this->currentCustomer->getPricingGroup());
+        $filterQuery = $this->productFilterDataToQueryTransformer->addPricesToQuery($productFilterData, $filterQuery, $this->currentCustomerUser->getPricingGroup());
 
         return $filterQuery;
     }
@@ -146,7 +146,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
         $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
 
-        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomer->getPricingGroup(), $productIds->getIds());
+        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomerUser->getPricingGroup(), $productIds->getIds());
 
         return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
     }
@@ -164,7 +164,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
         $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
 
-        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomer->getPricingGroup(), $productIds->getIds());
+        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomerUser->getPricingGroup(), $productIds->getIds());
 
         return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
     }

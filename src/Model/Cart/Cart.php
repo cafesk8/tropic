@@ -17,9 +17,9 @@ use App\Model\Product\PromoProduct\PromoProduct;
 /**
  * @ORM\Table(name="carts")
  * @ORM\Entity
- * @property \App\Model\Customer\User|null $user
+ * @property \App\Model\Customer\User\CustomerUser|null $customerUser
  * @property \App\Model\Cart\Item\CartItem[]|\Doctrine\Common\Collections\Collection $items
- * @method __construct(string $cartIdentifier, \App\Model\Customer\User|null $user)
+ * @method __construct(string $cartIdentifier, \App\Model\Customer\User\CustomerUser|null $customerUser)
  * @method addItem(\App\Model\Cart\Item\CartItem $item)
  * @method \App\Model\Cart\Item\CartItem getItemById(int $itemId)
  * @method \App\Model\Cart\Item\CartItem|null findSimilarItemByItem(\App\Model\Cart\Item\CartItem $item)

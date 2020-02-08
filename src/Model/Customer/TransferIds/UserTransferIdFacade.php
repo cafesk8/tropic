@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Customer\TransferIds;
 
 use Doctrine\ORM\EntityManagerInterface;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 
 class UserTransferIdFacade
 {
@@ -59,20 +59,20 @@ class UserTransferIdFacade
     }
 
     /**
-     * @param \App\Model\Customer\User $customer
+     * @param \App\Model\Customer\User\CustomerUser $customer
      * @param string $transferId
      * @return bool
      */
-    public function isTransferIdExists(User $customer, string $transferId): bool
+    public function isTransferIdExists(CustomerUser $customer, string $transferId): bool
     {
         return $this->userTransferIdRepository->isTransferIdExists($customer, $transferId);
     }
 
     /**
-     * @param \App\Model\Customer\User $customer
+     * @param \App\Model\Customer\User\CustomerUser $customer
      * @param string $transferId
      */
-    public function saveTransferIds(User $customer, string $transferId): void
+    public function saveTransferIds(CustomerUser $customer, string $transferId): void
     {
         if (!$this->isTransferIdExists($customer, $transferId)) {
             $userTransferIdData = $this->userTransferIdDataFactory->createFromCustomerTransferId($customer, $transferId);

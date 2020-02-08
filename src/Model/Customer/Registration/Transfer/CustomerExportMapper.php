@@ -9,7 +9,7 @@ use Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\TransferConfig;
 use App\Model\Country\CountryFacade;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 
 class CustomerExportMapper
 {
@@ -36,40 +36,37 @@ class CustomerExportMapper
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return array
      */
-    public function mapToArray(User $user): array
+    public function mapToArray(CustomerUser $customerUser): array
     {
         $orderArray = [];
-        $orderArray['Header'] = $this->prepareHeader($user);
+        $orderArray['Header'] = $this->prepareHeader($customerUser);
         $orderArray['Items'] = [];
 
         return $orderArray;
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return array
      */
-    private function prepareHeader(User $user): array
+    private function prepareHeader(CustomerUser $customerUser): array
     {
         $headerArray = [
-            'Source' => DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$user->getDomainId()],
+            'Source' => DomainHelper::DOMAIN_ID_TO_TRANSFER_SOURCE[$customerUser->getDomainId()],
             'Number' => $this->orderNumberSequenceRepository->getNextNumber(),
             'CreatingDateTime' => (new DateTime())->format(TransferConfig::DATETIME_FORMAT),
             'Customer' => [
-                'ID' => $user->getTransferId() ?? '',
-                'Adress' => $this->mapBillingAddress($user),
-                'ICO' => $this->getPassedValueOrEmptyForNull($user->getBillingAddress()->getCompanyNumber()),
-                'DIC' => $this->getPassedValueOrEmptyForNull($user->getBillingAddress()->getCompanyTaxNumber()),
-                'Phone' => $user->getTelephone() ?? '1',
-                'Email' => $user->getEmail(),
-                'IdCards' => [
-                    $user->getEan(),
-                ],
+                'ID' => $customerUser->getTransferId() ?? '',
+                'Adress' => $this->mapBillingAddress($customerUser),
+                'ICO' => $this->getPassedValueOrEmptyForNull($customerUser->getCustomer()->getBillingAddress()->getCompanyNumber()),
+                'DIC' => $this->getPassedValueOrEmptyForNull($customerUser->getCustomer()->getBillingAddress()->getCompanyTaxNumber()),
+                'Phone' => $customerUser->getTelephone() ?? '1',
+                'Email' => $customerUser->getEmail(),
             ],
-            'DeliveryAdress' => $this->mapDeliveryAddress($user),
+            'DeliveryAdress' => $this->mapDeliveryAddress($customerUser),
             'Total' => 0,
             'PaymentMetod' => self::EMPTY_VALUE,
             'ShippingMetod' => self::EMPTY_VALUE,
@@ -79,31 +76,31 @@ class CustomerExportMapper
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return array
      */
-    private function mapBillingAddress(User $user): array
+    private function mapBillingAddress(CustomerUser $customerUser): array
     {
-        $billingAddress = $user->getBillingAddress();
+        $billingAddress = $customerUser->getCustomer()->getBillingAddress();
 
         return [
-            'SureName' => $user->getLastName(),
-            'ForeName' => $user->getFirstName(),
+            'SureName' => $customerUser->getLastName(),
+            'ForeName' => $customerUser->getFirstName(),
             'Company' => $this->getPassedValueOrEmptyForNull($billingAddress->getCompanyName()),
             'Street' => $this->getPassedValueOrEmptyForNull($billingAddress->getStreet()),
             'City' => $this->getPassedValueOrEmptyForNull($billingAddress->getCity()),
             'ZIP' => $this->getPassedValueOrEmptyForNull($billingAddress->getPostcode()),
-            'Country' => $this->getCountryPropertyContent($user),
+            'Country' => $this->getCountryPropertyContent($customerUser),
         ];
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return array
      */
-    private function mapDeliveryAddress(User $user): array
+    private function mapDeliveryAddress(CustomerUser $customerUser): array
     {
-        $deliveryAddress = $user->getDeliveryAddress();
+        $deliveryAddress = $customerUser->getDeliveryAddress();
 
         if ($deliveryAddress === null) {
             return [
@@ -114,7 +111,7 @@ class CustomerExportMapper
                 'City' => self::EMPTY_VALUE,
                 'ZIP' => self::EMPTY_VALUE,
                 'Country' => self::EMPTY_VALUE,
-                'BranchNumber' => $user->isMemberOfLoyaltyProgram() ? '1' : '0',
+                'BranchNumber' => $customerUser->isMemberOfLoyaltyProgram() ? '1' : '0',
             ];
         }
 
@@ -125,8 +122,8 @@ class CustomerExportMapper
             'Street' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getStreet()),
             'City' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getCity()),
             'ZIP' => $this->getPassedValueOrEmptyForNull($deliveryAddress->getPostcode()),
-            'Country' => $this->getDeliveryAddressCountryPropertyContent($user),
-            'BranchNumber' => $user->isMemberOfLoyaltyProgram() ? '1' : '0',
+            'Country' => $this->getDeliveryAddressCountryPropertyContent($customerUser),
+            'BranchNumber' => $customerUser->isMemberOfLoyaltyProgram() ? '1' : '0',
         ];
     }
 
@@ -140,12 +137,12 @@ class CustomerExportMapper
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return string
      */
-    private function getCountryPropertyContent(User $user): string
+    private function getCountryPropertyContent(CustomerUser $customerUser): string
     {
-        $countryCode = DomainHelper::COUNTRY_CODE_BY_DOMAIN_ID[$user->getDomainId()];
+        $countryCode = DomainHelper::COUNTRY_CODE_BY_DOMAIN_ID[$customerUser->getDomainId()];
 
         /** @var \App\Model\Country\Country $country */
         $country = $this->countryFacade->findByCode($countryCode);
@@ -162,12 +159,12 @@ class CustomerExportMapper
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return string
      */
-    private function getDeliveryAddressCountryPropertyContent(User $user): string
+    private function getDeliveryAddressCountryPropertyContent(CustomerUser $customerUser): string
     {
-        $deliveryAddress = $user->getDeliveryAddress();
+        $deliveryAddress = $customerUser->getDeliveryAddress();
 
         if ($deliveryAddress === null || $deliveryAddress->getCountry() === null) {
             return self::EMPTY_VALUE;

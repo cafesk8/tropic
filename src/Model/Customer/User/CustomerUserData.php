@@ -2,25 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Customer;
+namespace App\Model\Customer\User;
 
 use DateTime;
-use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData as BaseCustomerUserData;
 
 /**
  * @property \App\Model\Pricing\Group\PricingGroup|null $pricingGroup
  */
-class UserData extends BaseUserData
+class CustomerUserData extends BaseCustomerUserData
 {
     /**
      * @var string|null
      */
     public $transferId;
-
-    /**
-     * @var string|null
-     */
-    public $ean;
 
     /**
      * @var bool
@@ -30,7 +25,7 @@ class UserData extends BaseUserData
     /**
      * @var string
      */
-    public $exportStatus = User::EXPORT_NOT_YET;
+    public $exportStatus = CustomerUser::EXPORT_NOT_YET;
 
     /**
      * @var \DateTime

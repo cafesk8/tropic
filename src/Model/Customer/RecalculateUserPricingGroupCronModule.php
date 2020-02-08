@@ -6,7 +6,7 @@ namespace App\Model\Customer;
 
 use DateInterval;
 use DateTime;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
@@ -31,9 +31,9 @@ class RecalculateUserPricingGroupCronModule implements SimpleCronModuleInterface
     private $pricingGroupFacade;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
@@ -43,14 +43,14 @@ class RecalculateUserPricingGroupCronModule implements SimpleCronModuleInterface
     /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
-    public function __construct(OrderFacade $orderFacade, PricingGroupFacade $pricingGroupFacade, CustomerFacade $customerFacade, PricingGroupSettingFacade $pricingGroupSettingFacade)
+    public function __construct(OrderFacade $orderFacade, PricingGroupFacade $pricingGroupFacade, CustomerUserFacade $customerUserFacade, PricingGroupSettingFacade $pricingGroupSettingFacade)
     {
         $this->orderFacade = $orderFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
     }
 
@@ -75,10 +75,10 @@ class RecalculateUserPricingGroupCronModule implements SimpleCronModuleInterface
 
         $customerIds = $this->orderFacade->getCustomerIdsFromOrdersByDatePeriod($startTime, $endTime);
         $pricingGroupsIndexedByDomainId = $this->pricingGroupFacade->getAllIndexedByDomainIdOrderedByMinimalPrice();
-        $customers = $this->customerFacade->getUsersByIds($customerIds);
+        $customers = $this->customerUserFacade->getUsersByIds($customerIds);
         $ordersValueIndexedByUser = $this->orderFacade->getOrdersValueIndexedByCustomerIdOlderThanDate($customerIds, $endTime);
 
-        /** @var \App\Model\Customer\User $customer */
+        /** @var \App\Model\Customer\User\CustomerUser $customer */
         foreach ($customers as $customer) {
             $pricingGroupsForDomain = $pricingGroupsIndexedByDomainId[$customer->getDomainId()];
             $newPricingGroupForCustomer = null;
@@ -93,9 +93,9 @@ class RecalculateUserPricingGroupCronModule implements SimpleCronModuleInterface
             }
 
             if ($newPricingGroupForCustomer !== null) {
-                $this->customerFacade->changePricingGroup($customer, $newPricingGroupForCustomer);
+                $this->customerUserFacade->changePricingGroup($customer, $newPricingGroupForCustomer);
             } else {
-                $this->customerFacade->changePricingGroup($customer, $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($customer->getDomainId()));
+                $this->customerUserFacade->changePricingGroup($customer, $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($customer->getDomainId()));
             }
 
             $this->logger->addInfo(sprintf('Pricing group for user with id `%s` was changed.', $customer->getId()));

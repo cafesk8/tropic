@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Security;
 
-use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -17,15 +17,15 @@ class AuthenticatorTest extends FunctionalTestCase
     {
         /** @var \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator */
         $authenticator = $this->getContainer()->get(Authenticator::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade */
-        $customerFacade = $this->getContainer()->get(CustomerFacade::class);
+        /** @var \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade $customerUserFacade */
+        $customerUserFacade = $this->getContainer()->get(CustomerUserFacade::class);
 
-        $user = $customerFacade->getUserById(1);
+        $customerUser = $customerUserFacade->getCustomerUserById(1);
         $mockedRequest = $this->createMockedRequest();
 
         $beforeLoginSessionId = $mockedRequest->getSession()->getId();
 
-        $authenticator->loginUser($user, $mockedRequest);
+        $authenticator->loginUser($customerUser, $mockedRequest);
 
         $afterLoginSessionId = $mockedRequest->getSession()->getId();
 

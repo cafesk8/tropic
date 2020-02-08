@@ -8,7 +8,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Collection\ProductParametersBatchLoader;
 use Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItem;
 use Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItemFactory as BaseZboziFeedItemFactory;
@@ -23,14 +23,14 @@ class ZboziFeedItemFactory extends BaseZboziFeedItemFactory
     private $feedHelper;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
      * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductParametersBatchLoader $productParametersBatchLoader
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Feed\FeedHelper $feedHelper
      */
     public function __construct(
-        ProductPriceCalculationForUser $productPriceCalculationForUser,
+        ProductPriceCalculationForCustomerUser $productPriceCalculationForUser,
         ProductUrlsBatchLoader $productUrlsBatchLoader,
         ProductParametersBatchLoader $productParametersBatchLoader,
         CategoryFacade $categoryFacade,

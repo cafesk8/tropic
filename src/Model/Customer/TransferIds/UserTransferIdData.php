@@ -7,7 +7,7 @@ namespace App\Model\Customer\TransferIds;
 class UserTransferIdData
 {
     /**
-     * @var \App\Model\Customer\User|null
+     * @var \App\Model\Customer\User\CustomerUser|null
      */
     public $customer;
 

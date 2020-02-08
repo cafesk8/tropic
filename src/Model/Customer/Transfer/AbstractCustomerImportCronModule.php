@@ -11,7 +11,7 @@ use App\Component\Transfer\AbstractTransferImportCronModule;
 use App\Component\Transfer\Response\TransferResponse;
 use App\Component\Transfer\Response\TransferResponseItemDataInterface;
 use App\Component\Transfer\TransferCronModuleDependency;
-use App\Model\Customer\CustomerFacade;
+use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\Transfer\Exception\InvalidCustomerTransferResponseItemDataException;
 
 abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCronModule
@@ -24,9 +24,9 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
     protected $multidomainRestClient;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    protected $customerFacade;
+    protected $customerUserFacade;
 
     /**
      * @var \App\Model\Customer\Transfer\CustomerTransferValidator
@@ -36,18 +36,18 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
     /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Component\Rest\MultidomainRestClient $multidomainRestClient
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Customer\Transfer\CustomerTransferValidator $customerTransferValidator
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         MultidomainRestClient $multidomainRestClient,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         CustomerTransferValidator $customerTransferValidator
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->multidomainRestClient = $multidomainRestClient;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->customerTransferValidator = $customerTransferValidator;
     }
 
@@ -93,7 +93,7 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
 
         $this->customerTransferValidator->validate($itemData);
 
-        $customer = $this->customerFacade->findUserByEmailAndDomain(
+        $customer = $this->customerUserFacade->findCustomerUserByEmailAndDomain(
             $itemData->getEmail(),
             $itemData->getDomainId()
         );
@@ -104,7 +104,7 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
         }
 
         if ($customer->getTransferId() === null) {
-            $this->customerFacade->editCustomerTransferId($customer, $itemData->getDataIdentifier());
+            $this->customerUserFacade->editCustomerTransferId($customer, $itemData->getDataIdentifier());
             $this->logger->addInfo(sprintf(
                 'Customer with transfer ID `%s`, transfer ID has been edited',
                 $itemData->getDataIdentifier()

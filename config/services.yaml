@@ -181,11 +181,11 @@ services:
     Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@App\Model\Category\CategoryDataFactory'
 
 
-    Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface: '@App\Model\Customer\UserDataFactory'
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface: '@App\Model\Customer\User\CustomerUserDataFactory'
 
-    Shopsys\FrameworkBundle\Model\Customer\CustomerFacade: '@App\Model\Customer\CustomerFacade'
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade: '@App\Model\Customer\User\CustomerUserFacade'
 
-    Shopsys\FrameworkBundle\Model\Customer\UserRepository: '@App\Model\Customer\UserRepository'
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository: '@App\Model\Customer\User\CustomerUserRepository'
 
     Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@App\Model\Order\OrderDataFactory'
 
@@ -358,7 +358,7 @@ services:
         class: App\Controller\Admin\CustomerController
         tags: ['controller.service_arguments']
 
-    Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface: '@App\Model\Customer\CustomerDataFactory'
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface: '@App\Model\Customer\User\CustomerUserUpdateDataFactory'
 
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactory: '@App\Model\Pricing\Group\PricingGroupDataFactory'
 

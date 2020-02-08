@@ -19,7 +19,7 @@ use App\DataFixtures\Demo\PersonalDataAccessRequestDataFixture;
 use App\DataFixtures\Demo\PricingGroupDataFixture;
 use App\DataFixtures\Demo\PromoCodeDataFixture;
 use App\DataFixtures\Demo\UnitDataFixture;
-use App\DataFixtures\Demo\UserDataFixture;
+use App\DataFixtures\Demo\CustomerUserDataFixture;
 use App\DataFixtures\Demo\VatDataFixture;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -386,8 +386,8 @@ class RouteConfigCustomization
                     ]);
             })
             ->customizeByRouteName('front_registration_set_new_password', function (RouteConfig $config) {
-                /** @var \App\Model\Customer\User $customer */
-                $customer = $this->getPersistentReference(UserDataFixture::USER_WITH_RESET_PASSWORD_HASH);
+                /** @var \App\Model\Customer\User\CustomerUser $customer */
+                $customer = $this->getPersistentReference(CustomerUserDataFixture::USER_WITH_RESET_PASSWORD_HASH);
 
                 $config->changeDefaultRequestDataSet('See new password page for customer with reset password hash.')
                     ->setParameter('email', $customer->getEmail())

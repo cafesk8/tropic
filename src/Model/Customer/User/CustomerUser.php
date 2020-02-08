@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Customer;
+namespace App\Model\Customer\User;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
-use Shopsys\FrameworkBundle\Model\Customer\User as BaseUser;
-use Shopsys\FrameworkBundle\Model\Customer\UserData as BaseUserData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData as BaseCustomerUserData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use App\Model\Customer\Exception\UnsupportedCustomerExportStatusException;
 use App\Model\Customer\TransferIds\UserTransferId;
 
 /**
  * @ORM\Table(
- *     name="users",
+ *     name="customer_users",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="email_domain", columns={"email", "domain_id"})
  *     },
@@ -26,15 +25,13 @@ use App\Model\Customer\TransferIds\UserTransferId;
  *     }
  * )
  * @ORM\Entity
- * @property \App\Model\Customer\BillingAddress $billingAddress
  * @property \App\Model\Customer\DeliveryAddress|null $deliveryAddress
  * @property \App\Model\Pricing\Group\PricingGroup $pricingGroup
- * @method \App\Model\Customer\BillingAddress getBillingAddress()
  * @method \App\Model\Customer\DeliveryAddress|null getDeliveryAddress()
  * @method \App\Model\Pricing\Group\PricingGroup getPricingGroup()
  * @method setDeliveryAddress(\App\Model\Customer\DeliveryAddress|null $deliveryAddress)
  */
-class User extends BaseUser
+class CustomerUser extends BaseCustomerUser
 {
     public const EXPORT_SUCCESS = 'export_success';
     public const EXPORT_NOT_YET = 'export_not_yet';
@@ -103,32 +100,30 @@ class User extends BaseUser
     private $pricingGroupUpdatedAt;
 
     /**
-     * @param \App\Model\Customer\UserData $userData
-     * @param \App\Model\Customer\BillingAddress $billingAddress
+     * @param \App\Model\Customer\User\CustomerUserData $customerUserData
      * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
      */
     public function __construct(
-        BaseUserData $userData,
-        BillingAddress $billingAddress,
+        BaseCustomerUserData $customerUserData,
         ?DeliveryAddress $deliveryAddress
     ) {
-        parent::__construct($userData, $billingAddress, $deliveryAddress);
+        parent::__construct($customerUserData, $deliveryAddress);
 
-        $this->transferId = $userData->transferId;
-        $this->memberOfLoyaltyProgram = $userData->memberOfLoyaltyProgram;
-        $this->exportStatus = $userData->exportStatus;
-        $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
+        $this->transferId = $customerUserData->transferId;
+        $this->memberOfLoyaltyProgram = $customerUserData->memberOfLoyaltyProgram;
+        $this->exportStatus = $customerUserData->exportStatus;
+        $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
         $this->userTransferId = new ArrayCollection();
     }
 
     /**
-     * @param \App\Model\Customer\UserData $userData
+     * @param \App\Model\Customer\User\CustomerUserData $customerUserData
      */
-    public function edit(BaseUserData $userData)
+    public function edit(BaseCustomerUserData $customerUserData)
     {
-        parent::edit($userData);
-        $this->memberOfLoyaltyProgram = $userData->memberOfLoyaltyProgram;
-        $this->pricingGroupUpdatedAt = $userData->pricingGroupUpdatedAt;
+        parent::edit($customerUserData);
+        $this->memberOfLoyaltyProgram = $customerUserData->memberOfLoyaltyProgram;
+        $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
 
         $this->setExportStatus(self::EXPORT_NOT_YET);
     }

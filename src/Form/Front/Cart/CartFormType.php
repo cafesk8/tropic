@@ -73,11 +73,10 @@ class CartFormType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
-            $cart = $this->cartFacade->findCartOfCurrentCustomer();
+            $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
 
             if ($cart !== null) {
-                $cartModifiedQuantitiesIndexedByCartItemId = $this->cartFacade->getChangedCartQuantitiesBySentData($data['quantities']);
-                $this->cartFacade->displayInfoMessageAboutCorrectedCartItemsQuantities($cartModifiedQuantitiesIndexedByCartItemId);
+                $this->cartFacade->getChangedCartQuantitiesBySentData($data['quantities']);
             }
 
             $data['quantities'] = $this->cartFacade->getCorrectedQuantitiesBySentData($data['quantities']);

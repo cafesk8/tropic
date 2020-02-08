@@ -10,7 +10,7 @@ use App\Component\String\StringHelper;
 use App\Component\Transfer\AbstractTransferExportCronModule;
 use App\Component\Transfer\Response\TransferResponse;
 use App\Component\Transfer\TransferCronModuleDependency;
-use App\Model\Customer\CustomerFacade;
+use App\Model\Customer\User\CustomerUserFacade;
 
 class CustomerExportCronModule extends AbstractTransferExportCronModule
 {
@@ -23,9 +23,9 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
     private $multidomainRestClient;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \App\Model\Customer\Registration\Transfer\CustomerExportMapper
@@ -35,19 +35,19 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
     /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Component\Rest\MultidomainRestClient $multidomainRestClient
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Customer\Registration\Transfer\CustomerExportMapper $customerExportMapper
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         MultidomainRestClient $multidomainRestClient,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         CustomerExportMapper $customerExportMapper
     ) {
         parent::__construct($transferCronModuleDependency);
 
         $this->multidomainRestClient = $multidomainRestClient;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->customerExportMapper = $customerExportMapper;
     }
 
@@ -64,12 +64,12 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
      */
     protected function getDataForExport(): array
     {
-        $notExportedCustomers = $this->customerFacade->getNotExportedCustomersBatch(self::CUSTOMER_EXPORT_BATCH_SIZE);
+        $notExportedCustomers = $this->customerUserFacade->getNotExportedCustomersBatch(self::CUSTOMER_EXPORT_BATCH_SIZE);
 
         $customersToExport = [];
 
-        foreach ($notExportedCustomers as $user) {
-            $customersToExport[$user->getId()] = $this->customerExportMapper->mapToArray($user);
+        foreach ($notExportedCustomers as $customerUser) {
+            $customersToExport[$customerUser->getId()] = $this->customerExportMapper->mapToArray($customerUser);
         }
 
         return $customersToExport;
@@ -98,7 +98,7 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
     protected function processExportResponse($itemIdentifier, TransferResponse $transferResponse): void
     {
         if ($transferResponse->getStatusCode() !== 200) {
-            $this->customerFacade->markCustomerAsFailedExported($itemIdentifier);
+            $this->customerUserFacade->markCustomerAsFailedExported($itemIdentifier);
             $this->logger->addError(sprintf(
                 'User with id `%s` was not exported, because of bad response code `%s`',
                 $itemIdentifier,
@@ -108,14 +108,14 @@ class CustomerExportCronModule extends AbstractTransferExportCronModule
 
         $responseData = $transferResponse->getResponseData();
         if (array_key_exists('Error', $responseData) && $responseData['Error'] === true) {
-            $this->customerFacade->markCustomerAsFailedExported($itemIdentifier);
+            $this->customerUserFacade->markCustomerAsFailedExported($itemIdentifier);
             $this->logger->addWarning(sprintf(
                 'User with id `%s` was not exported, because of error `%s`',
                 $itemIdentifier,
                 StringHelper::removeNewline((string)$responseData['ErrorMessage'])
             ));
         } else {
-            $this->customerFacade->markCustomerAsExported($itemIdentifier);
+            $this->customerUserFacade->markCustomerAsExported($itemIdentifier);
             $this->logger->addInfo(sprintf('User with id `%s` was exported successfully', $itemIdentifier));
         }
     }

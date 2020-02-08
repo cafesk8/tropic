@@ -143,16 +143,16 @@ class CartController extends FrontBaseController
      */
     public function indexAction(Request $request)
     {
-        $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
         $this->correctCartItemQuantitiesByStore($cart);
         $cartItems = $cart === null ? [] : $cart->getItems();
-        /** @var \App\Model\Customer\User|null $user */
-        $user = $this->getUser();
+        /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
+        $customerUser = $this->getUser();
 
         $domainId = $this->domain->getId();
 
         $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
-        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $user);
+        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
 
         $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $promoProductsForCart, $cart);
 
@@ -169,7 +169,7 @@ class CartController extends FrontBaseController
                 $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cart->getItems());
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
 
-                $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $user);
+                $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
                 $this->cartFacade->updatePromoProducts($promoProductsForCart, $form->getData()['chosenPromoProducts']);
 
                 $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
@@ -188,7 +188,7 @@ class CartController extends FrontBaseController
             $this->getFlashMessageSender()->addErrorFlash(t('Please make sure that you entered right quantity of all items in cart.'));
         }
 
-        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $user);
+        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
         $cartFormData = $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
         $form = $this->createForm(CartFormType::class, $cartFormData);
         $form->handleRequest($request);
@@ -300,7 +300,7 @@ class CartController extends FrontBaseController
     public function boxAction(Request $request): Response
     {
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
-        $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
 
         $this->correctCartItemQuantitiesByStore($cart);
 

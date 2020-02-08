@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -26,6 +26,6 @@ class UserExtension extends AbstractExtension
      */
     public function getUserExportStatusName(string $exportStatus): string
     {
-        return User::getExportStatusNameByExportStatus($exportStatus);
+        return CustomerUser::getExportStatusNameByExportStatus($exportStatus);
     }
 }

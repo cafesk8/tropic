@@ -12,7 +12,7 @@ use Shopsys\FrameworkBundle\Model\Advert\AdvertFacade as BaseAdvertFacade;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertRepository;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use App\Model\Advert\Product\AdvertProduct;
 use App\Model\Advert\Product\AdvertProductRepository;
 use App\Model\Product\ProductRepository;
@@ -31,9 +31,9 @@ class AdvertFacade extends BaseAdvertFacade
     private $advertProductRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
-    private $currentCustomer;
+    private $currentCustomerUser;
 
     /**
      * @var \App\Model\Product\ProductRepository
@@ -48,7 +48,7 @@ class AdvertFacade extends BaseAdvertFacade
      * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertFactoryInterface $advertFactory
      * @param \App\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
      * @param \App\Model\Advert\Product\AdvertProductRepository $advertProductRepository
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\ProductRepository $productRepository
      */
     public function __construct(
@@ -59,13 +59,13 @@ class AdvertFacade extends BaseAdvertFacade
         AdvertFactoryInterface $advertFactory,
         AdvertPositionRegistry $advertPositionRegistry,
         AdvertProductRepository $advertProductRepository,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         ProductRepository $productRepository
     ) {
         parent::__construct($em, $advertRepository, $imageFacade, $domain, $advertFactory, $advertPositionRegistry);
 
         $this->advertProductRepository = $advertProductRepository;
-        $this->currentCustomer = $currentCustomer;
+        $this->currentCustomerUser = $currentCustomerUser;
         $this->productRepository = $productRepository;
     }
 
@@ -117,7 +117,7 @@ class AdvertFacade extends BaseAdvertFacade
                 $sellableVariants = $this->productRepository->getAllSellableVariantsByMainVariant(
                     $advertProduct->getProduct(),
                     $this->domain->getId(),
-                    $this->currentCustomer->getPricingGroup()
+                    $this->currentCustomerUser->getPricingGroup()
                 );
 
                 if (count($sellableVariants) > 0) {

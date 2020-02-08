@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
@@ -24,10 +24,10 @@ use App\Model\PayPal\PayPalFacade;
  * @method \App\Model\Order\Order|null findById(int $id)
  * @method \App\Model\Order\Order getById(int $id)
  * @method bool isOrderStatusUsed(\App\Model\Order\Status\OrderStatus $orderStatus)
- * @method \App\Model\Order\Order[] getCustomerOrderList(\App\Model\Customer\User $user)
+ * @method \App\Model\Order\Order[] getCustomerUserOrderList(\App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
  * @method \App\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
- * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User $user)
+ * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order|null findByUrlHashIncludingDeletedOrders(string $urlHash)
  * @method \App\Model\Pricing\Currency\Currency[] getCurrenciesUsedInOrders()
  */
@@ -89,7 +89,7 @@ class OrderRepository extends BaseOrderRepository
     {
         $queryBuilder = $this->createOrderQueryBuilder()
             ->select('SUM(o.totalProductPriceWithVat) AS sum')
-            ->where('o.customer = :customerId')
+            ->where('o.customerUser = :customerId')
             ->andWhere('o.createdAt >= :ordersFrom')
             ->andWhere('o.createdAt <= :ordersTo')
             ->andWhere('o.status = :status')

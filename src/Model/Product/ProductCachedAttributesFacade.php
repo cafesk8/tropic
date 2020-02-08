@@ -6,11 +6,11 @@ namespace App\Model\Product;
 
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 use App\Model\Pricing\Group\PricingGroup;
@@ -52,9 +52,9 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     private $pricingGroupFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
-    private $currentCustomer;
+    private $currentCustomerUser;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice[]
@@ -62,7 +62,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     protected $registeredCustomerPricesByProductId;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \App\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
@@ -70,10 +70,10 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      */
     public function __construct(
-        ProductPriceCalculationForUser $productPriceCalculationForUser,
+        ProductPriceCalculationForCustomerUser $productPriceCalculationForUser,
         ParameterRepository $parameterRepository,
         Localization $localization,
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
@@ -81,7 +81,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         ProductPriceCalculation $productPriceCalculation,
         Domain $domain,
         PricingGroupFacade $pricingGroupFacade,
-        CurrentCustomer $currentCustomer
+        CurrentCustomerUser $currentCustomerUser
     ) {
         parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
@@ -89,7 +89,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         $this->productPriceCalculation = $productPriceCalculation;
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
-        $this->currentCustomer = $currentCustomer;
+        $this->currentCustomerUser = $currentCustomerUser;
     }
 
     /**
@@ -235,10 +235,10 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
         $registeredCustomerPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $this->domain->getId());
 
-        /** @var \App\Model\Customer\User $user */
-        $user = $this->currentCustomer->findCurrentUser();
+        /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+        $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
 
-        if ($registeredCustomerPricingGroup === null || ($user !== null && $user->getPricingGroup()->getId() === $registeredCustomerPricingGroup->getId())) {
+        if ($registeredCustomerPricingGroup === null || ($customerUser !== null && $customerUser->getPricingGroup()->getId() === $registeredCustomerPricingGroup->getId())) {
             return null;
         }
 

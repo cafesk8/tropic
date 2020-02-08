@@ -10,7 +10,7 @@ use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory as B
 
 /**
  * @property \App\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository
- * @method __construct(\App\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer, \Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository $priceRangeRepository)
+ * @method __construct(\App\Model\Product\Filter\ParameterFilterChoiceRepository $parameterFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\FlagFilterChoiceRepository $flagFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser, \Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository $brandFilterChoiceRepository, \Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository $priceRangeRepository)
  */
 class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
 {
@@ -22,7 +22,7 @@ class ProductFilterConfigFactory extends BaseProductFilterConfigFactory
      */
     public function createForCategory($domainId, $locale, Category $category): ProductFilterConfig
     {
-        $pricingGroup = $this->currentCustomer->getPricingGroup();
+        $pricingGroup = $this->currentCustomerUser->getPricingGroup();
         $parent = parent::createForCategory($domainId, $locale, $category);
         $colorChoices = $this->parameterFilterChoiceRepository->getColorParameterFilterChoicesInCategory(
             $domainId,

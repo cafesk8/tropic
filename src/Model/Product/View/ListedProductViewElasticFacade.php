@@ -6,7 +6,7 @@ namespace App\Model\Product\View;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
@@ -52,7 +52,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
      * @param \App\Model\Product\View\ListedProductViewFactory $listedProductViewFactory
@@ -67,7 +67,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         ProductFacade $productFacade,
         ProductAccessoryFacade $productAccessoryFacade,
         Domain $domain,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         TopProductFacade $topProductFacade,
         ProductOnCurrentDomainFacadeInterface $productOnCurrentDomainFacade,
         ListedProductViewFactory $listedProductViewFactory,
@@ -78,7 +78,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         CachedBestsellingProductFacade $cachedBestsellingProductFacade,
         LastVisitedProductsFacade $lastVisitedProductsFacade
     ) {
-        parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomer, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
+        parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->mainVariantGroupProductViewFactory = $mainVariantGroupProductViewFactory;
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
@@ -109,7 +109,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         $bestsellingProductIds = $this->cachedBestsellingProductFacade->getAllOfferedBestsellingProductIds(
             $this->domain->getId(),
             $category,
-            $this->currentCustomer->getPricingGroup()
+            $this->currentCustomerUser->getPricingGroup()
         );
 
         return $this->createFromArray($this->productOnCurrentDomainFacade->getHitsForIds($bestsellingProductIds));
@@ -126,7 +126,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             Product::class,
             $this->getProductIdsForGeneratingImagesFromProductIds($productsArray)
         );
-        $pricingGroupOfCurrentCustomer = $this->currentCustomer->getPricingGroup();
+        $pricingGroupOfCurrentCustomer = $this->currentCustomerUser->getPricingGroup();
         foreach ($productsArray as $productArray) {
             $productId = $productArray['id'];
             $listedProductViews[$productId] = $this->listedProductViewFactory->createFromArray(
@@ -153,7 +153,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         );
         $productActionViews = $this->productActionViewFacade->getForProducts($products);
 
-        $currentCustomerPricingGroup = $this->currentCustomer->getPricingGroup();
+        $currentCustomerPricingGroup = $this->currentCustomerUser->getPricingGroup();
         $productsIndexedByMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByMainVariantGroup($products, $currentCustomerPricingGroup);
         $variantsIndexedByPricingGroupIdAndMainVariantId = $this->productFacade->getVariantsIndexedByPricingGroupIdAndMainVariantId($products, $this->domain->getId());
         $listedProductViews = [];

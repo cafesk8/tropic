@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Form\Front\Customer;
+namespace App\Form\Front\Customer\User;
 
 use Shopsys\FrameworkBundle\Form\Constraints\FieldsAreNotIdentical;
 use Shopsys\FrameworkBundle\Form\Constraints\NotIdenticalToEmailLocalPart;
-use Shopsys\FrameworkBundle\Model\Customer\User;
-use Shopsys\FrameworkBundle\Model\Customer\UserData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints;
 
-class UserFormType extends AbstractType
+class CustomerUserFormType extends AbstractType
 {
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
@@ -66,7 +66,7 @@ class UserFormType extends AbstractType
                 'invalid_message' => 'Passwords do not match',
             ]);
 
-        /** @var \App\Model\Customer\User $customer */
+        /** @var \App\Model\Customer\User\CustomerUser $customer */
         $customer = $options['user'];
 
         if ($customer->isMemberOfBushmanClub() === false) {
@@ -86,7 +86,7 @@ class UserFormType extends AbstractType
             ->setRequired('user')
             ->addAllowedTypes('user', User::class)
             ->setDefaults([
-                'data_class' => UserData::class,
+                'data_class' => CustomerUserData::class,
                 'attr' => ['novalidate' => 'novalidate'],
                 'constraints' => [
                     new FieldsAreNotIdentical([

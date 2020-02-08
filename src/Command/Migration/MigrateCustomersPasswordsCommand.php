@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Command\Migration;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use App\Command\Migration\Exception\PasswordsFileNotFoundException;
 use App\Model\Customer\BushmanCustomPasswordEncoder;
-use App\Model\Customer\CustomerFacade;
+use \App\Model\Customer\User\CustomerUserFacade;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,9 +26,9 @@ class MigrateCustomersPasswordsCommand extends Command
     private $rootDir;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \Doctrine\ORM\EntityManagerInterface
@@ -41,31 +41,31 @@ class MigrateCustomersPasswordsCommand extends Command
     protected $encoderFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade
      */
-    protected $customerPasswordFacade;
+    protected $customerUserPasswordFacade;
 
     /**
      * @param string $rootDir
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface $encoderFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerPasswordFacade $customerPasswordFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade $customerUserPasswordFacade
      */
     public function __construct(
         string $rootDir,
         EntityManagerInterface $em,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         EncoderFactoryInterface $encoderFactory,
-        CustomerPasswordFacade $customerPasswordFacade
+        CustomerUserPasswordFacade $customerUserPasswordFacade
     ) {
         parent::__construct();
 
         $this->em = $em;
         $this->rootDir = $rootDir;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->encoderFactory = $encoderFactory;
-        $this->customerPasswordFacade = $customerPasswordFacade;
+        $this->customerUserPasswordFacade = $customerUserPasswordFacade;
     }
 
     protected function configure(): void
@@ -84,10 +84,10 @@ class MigrateCustomersPasswordsCommand extends Command
         $migratedCustomerDataFilePath = $this->askForFilePath($input, $output);
         $passwordsByEmail = $this->getPasswordsByEmail($migratedCustomerDataFilePath, $output);
 
-        $allCustomers = $this->customerFacade->getAllUsers();
+        $allCustomers = $this->customerUserFacade->getAllUsers();
         $output->writeln('Count of users: ' . count($allCustomers));
 
-        /** @var \App\Model\Customer\User $customer */
+        /** @var \App\Model\Customer\User\CustomerUser $customer */
         foreach ($allCustomers as $customer) {
             if (array_key_exists($customer->getEmail(), $passwordsByEmail) === false) {
                 $output->writeln(sprintf('!!! Not password found for email %s', $customer->getEmail()));
@@ -115,13 +115,13 @@ class MigrateCustomersPasswordsCommand extends Command
         $migratedCustomerData = json_decode($migratedCustomerDataJson, true);
 
         $migratedCustomerDataByEmail = [];
-        foreach ($migratedCustomerData as $customerData) {
-            if (array_key_exists('USR_Login', $customerData) === false || array_key_exists('USR_Password', $customerData) === false) {
+        foreach ($migratedCustomerData as $customerUserUpdateData) {
+            if (array_key_exists('USR_Login', $customerUserUpdateData) === false || array_key_exists('USR_Password', $customerUserUpdateData) === false) {
                 $output->writeln('!!! Bad customer data');
                 continue;
             }
 
-            $migratedCustomerDataByEmail[$customerData['USR_Login']] = $customerData['USR_Password'];
+            $migratedCustomerDataByEmail[$customerUserUpdateData['USR_Login']] = $customerUserUpdateData['USR_Password'];
         }
 
         return $migratedCustomerDataByEmail;
@@ -146,19 +146,19 @@ class MigrateCustomersPasswordsCommand extends Command
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @param string $password
      */
-    private function changePasswordByMigration(User $user, string $password): void
+    private function changePasswordByMigration(User $customerUser, string $password): void
     {
         $encoder = $this->encoderFactory->getEncoder($this);
 
         if ($encoder instanceof BushmanCustomPasswordEncoder) {
             $passwordHash = $encoder->getHashOfMigratedPassword($password, null);
-            $user->setPasswordHash($passwordHash);
+            $customerUser->setPasswordHash($passwordHash);
             return;
         }
 
-        $this->customerPasswordFacade->changePassword($user, $password);
+        $this->customerUserPasswordFacade->changePassword($customerUser, $password);
     }
 }

@@ -8,7 +8,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use App\Component\Domain\DomainHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -105,12 +105,12 @@ class DeliveryAddressFormType extends AbstractType
             ]);
 
         if (DomainHelper::isGermanDomain($this->domain) === true) {
-            /** @var \App\Model\Customer\User $user */
-            $user = $options['user'];
-            if ($user->getDeliveryAddress() === null || $user->getDeliveryAddress()->getCountry() === null) {
+            /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+            $customerUser = $options['user'];
+            if ($customerUser->getDeliveryAddress() === null || $customerUser->getDeliveryAddress()->getCountry() === null) {
                 $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
             } else {
-                $countries = [$user->getDeliveryAddress()->getCountry()];
+                $countries = [$customerUser->getDeliveryAddress()->getCountry()];
             }
         } else {
             $countries = [

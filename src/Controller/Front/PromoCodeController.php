@@ -100,17 +100,17 @@ class PromoCodeController extends FrontBaseController
         $promoCodeCode = $request->get(self::PROMO_CODE_PARAMETER);
 
         /** @var \App\Model\Cart\Cart $cart */
-        $cart = $this->cartFacade->getCartOfCurrentCustomerCreateIfNotExists();
+        $cart = $this->cartFacade->getCartOfCurrentCustomerUserCreateIfNotExists();
 
         /** @var \App\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
 
-        /** @var \App\Model\Customer\User|null $user */
-        $user = $this->getUser();
+        /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
+        $customerUser = $this->getUser();
 
         try {
             $this->currentPromoCodeFacade->checkApplicability($promoCode, $cart);
-            $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts(), $user);
+            $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts(), $customerUser);
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,

@@ -9,7 +9,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
@@ -31,8 +31,8 @@ use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Country\CountryFacade;
-use App\Model\Customer\CustomerDataFactory;
-use App\Model\Customer\CustomerFacade;
+use App\Model\Customer\User\CustomerUserUpdateDataFactory;
+use \App\Model\Customer\User\CustomerUserFacade;
 use App\Model\GoPay\BankSwift\GoPayBankSwift;
 use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
 use App\Model\GoPay\Exception\GoPayNotConfiguredException;
@@ -170,9 +170,9 @@ class OrderController extends FrontBaseController
     private $gtmFacade;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Security\Authenticator
@@ -185,9 +185,9 @@ class OrderController extends FrontBaseController
     private $customerMailFacade;
 
     /**
-     * @var \App\Model\Customer\CustomerDataFactory
+     * @var \App\Model\Customer\User\CustomerUserUpdateDataFactory
      */
-    private $customerDataFactory;
+    private $customerUserUpdateDataFactory;
 
     /**
      * @var \App\Model\GoPay\GoPayTransactionFacade
@@ -217,10 +217,10 @@ class OrderController extends FrontBaseController
      * @param \App\Model\Country\CountryFacade $countryFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
-     * @param \App\Model\Customer\CustomerDataFactory $customerDataFactory
+     * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      * @param \App\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
      */
     public function __construct(
@@ -246,10 +246,10 @@ class OrderController extends FrontBaseController
         CountryFacade $countryFacade,
         BlogArticleFacade $blogArticleFacade,
         GtmFacade $gtmFacade,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         Authenticator $authenticator,
         CustomerMailFacade $customerMailFacade,
-        CustomerDataFactory $customerDataFactory,
+        CustomerUserUpdateDataFactory $customerUserUpdateDataFactory,
         GoPayTransactionFacade $goPayTransactionFacade
     ) {
         $this->orderFacade = $orderFacade;
@@ -274,10 +274,10 @@ class OrderController extends FrontBaseController
         $this->countryFacade = $countryFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->gtmFacade = $gtmFacade;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->authenticator = $authenticator;
         $this->customerMailFacade = $customerMailFacade;
-        $this->customerDataFactory = $customerDataFactory;
+        $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
         $this->goPayTransactionFacade = $goPayTransactionFacade;
     }
 
@@ -286,19 +286,19 @@ class OrderController extends FrontBaseController
         /** @var \Shopsys\FrameworkBundle\Component\FlashMessage\Bag $flashMessageBag */
         $flashMessageBag = $this->get('shopsys.shop.component.flash_message.bag.front');
 
-        $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
         if ($cart === null) {
             return $this->redirectToRoute('front_cart');
         }
 
-        /** @var \App\Model\Customer\User|null $user */
-        $user = $this->getUser();
+        /** @var \App\Model\Customer\User\CustomerUser|null $customerUser */
+        $customerUser = $this->getUser();
 
         $frontOrderFormData = new FrontOrderData();
         $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
-        if ($user instanceof User) {
-            $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $user);
-            $frontOrderFormData->country = $user->getBillingAddress()->getCountry();
+        if ($customerUser instanceof CustomerUser) {
+            $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $customerUser);
+            $frontOrderFormData->country = $customerUser->getCustomer()->getBillingAddress()->getCountry();
         } else {
             $frontOrderFormData->country = $this->countryFacade->getHackedCountry();
         }
@@ -314,7 +314,7 @@ class OrderController extends FrontBaseController
         }
 
         if ($this->session->has(CustomerLoginHandler::LOGGED_FROM_ORDER_SESSION_KEY)) {
-            $orderFlow->mergePreviouslySavedFormDataWithLoggedUserData($user);
+            $orderFlow->mergePreviouslySavedFormDataWithLoggedUserData($customerUser);
         }
 
         $orderFlow->bind($frontOrderFormData);
@@ -441,17 +441,17 @@ class OrderController extends FrontBaseController
      */
     public function transportAndPaymentBoxAction(Request $request): Response
     {
-        $cart = $this->cartFacade->findCartOfCurrentCustomer();
+        $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
         if ($cart === null) {
             return new Response('');
         }
 
-        $user = $this->getUser();
+        $customerUser = $this->getUser();
 
         $frontOrderFormData = new FrontOrderData();
         $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
-        if ($user instanceof User) {
-            $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $user);
+        if ($customerUser instanceof CustomerUser) {
+            $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $customerUser);
         }
         $domainId = $this->domain->getId();
         $frontOrderFormData->domainId = $domainId;
@@ -677,9 +677,9 @@ class OrderController extends FrontBaseController
 
             $newPassword = $formData['newPassword'];
             $order = $this->orderFacade->getById($orderId);
-            $customerData = $this->customerDataFactory->createFromOrder($order, $newPassword, $this->domain->getId());
-            /** @var \App\Model\Customer\User $newlyRegisteredUser */
-            $newlyRegisteredUser = $this->customerFacade->registerCustomer($customerData);
+            $customerUserUpdateData = $this->customerUserUpdateDataFactory->createFromOrder($order, $newPassword, $this->domain->getId());
+            /** @var \App\Model\Customer\User\CustomerUser $newlyRegisteredUser */
+            $newlyRegisteredUser = $this->customerUserFacade->registerCustomer($customerUserUpdateData);
             try {
                 $this->customerMailFacade->sendRegistrationMail($newlyRegisteredUser);
             } catch (\Swift_SwiftException | MailException $exception) {
@@ -885,6 +885,6 @@ class OrderController extends FrontBaseController
     private function isUserLoggedOrRegistered(string $email): bool
     {
         return $this->isGranted(Roles::ROLE_LOGGED_CUSTOMER) ||
-            $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId()) !== null;
+            $this->customerUserFacade->findCustomerUserByEmailAndDomain($email, $this->domain->getId()) !== null;
     }
 }

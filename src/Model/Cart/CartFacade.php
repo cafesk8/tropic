@@ -14,11 +14,11 @@ use Shopsys\FrameworkBundle\Model\Cart\CartRepository;
 use Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidCartItemException;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Cart\Item\CartItem;
@@ -32,9 +32,9 @@ use App\Model\Product\ProductFacade;
  * @property \App\Model\Cart\Item\CartItemFactory $cartItemFactory
  * @method deleteCart(\App\Model\Cart\Cart $cart)
  * @method \App\Model\Product\Product getProductByCartItemId(int $cartItemId)
- * @method \App\Model\Cart\Cart|null findCartOfCurrentCustomer()
- * @method \App\Model\Cart\Cart getCartByCustomerIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier)
- * @method \App\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
+ * @method \App\Model\Cart\Cart|null findCartOfCurrentCustomerUser()
+ * @method \App\Model\Cart\Cart getCartByCustomerUserIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier  $customerUserIdentifier)
+ * @method \App\Model\Cart\Cart getCartOfCurrentCustomerUserCreateIfNotExists()
  */
 class CartFacade extends BaseCartFacade
 {
@@ -53,11 +53,11 @@ class CartFacade extends BaseCartFacade
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
      * @param \App\Model\Product\ProductRepository $productRepository
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory $customerIdentifierFactory
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory  $customerUserIdentifierFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculation
      * @param \App\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
@@ -68,11 +68,11 @@ class CartFacade extends BaseCartFacade
         EntityManagerInterface $em,
         CartFactory $cartFactory,
         ProductRepository $productRepository,
-        CustomerIdentifierFactory $customerIdentifierFactory,
+         CustomerUserIdentifierFactory  $customerUserIdentifierFactory,
         Domain $domain,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
-        ProductPriceCalculationForUser $productPriceCalculation,
+        ProductPriceCalculationForCustomerUser $productPriceCalculation,
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
         CartWatcherFacade $cartWatcherFacade,
@@ -82,9 +82,9 @@ class CartFacade extends BaseCartFacade
             $em,
             $cartFactory,
             $productRepository,
-            $customerIdentifierFactory,
+             $customerUserIdentifierFactory,
             $domain,
-            $currentCustomer,
+            $currentCustomerUser,
             $currentPromoCodeFacade,
             $productPriceCalculation,
             $cartItemFactory,
@@ -103,7 +103,7 @@ class CartFacade extends BaseCartFacade
     {
         $cartModifiedQuantitiesIndexedByCartItemId = [];
 
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         foreach ($cart->getItems() as $cartItem) {
             $newCartItemQuantity = $this->getValidCartItemQuantity($cartItem);
@@ -130,7 +130,7 @@ class CartFacade extends BaseCartFacade
     {
         $correctedCartQuantitiesByCartItemId = [];
 
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
             return $correctedCartQuantitiesByCartItemId;
@@ -157,7 +157,7 @@ class CartFacade extends BaseCartFacade
      */
     public function getCorrectedQuantitiesBySentData(array $cartFormDataQuantities): array
     {
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
             return $cartFormDataQuantities;
@@ -184,7 +184,7 @@ class CartFacade extends BaseCartFacade
      */
     public function addProduct(Product $product, int $quantity): AddProductResult
     {
-        $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
+        $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
 
         $productQuantityInCart = 0;
 
@@ -207,7 +207,7 @@ class CartFacade extends BaseCartFacade
      */
     public function updateGifts(array $productGiftInCart, array $selectedGifts): void
     {
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
             return;
@@ -240,7 +240,7 @@ class CartFacade extends BaseCartFacade
      */
     public function getGifts(): array
     {
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
             return [];
@@ -250,16 +250,16 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier  $customerUserIdentifier
      * @return \App\Model\Cart\Cart|null
      */
-    public function findCartByCustomerIdentifier(CustomerIdentifier $customerIdentifier)
+    public function findCartByCustomerUserIdentifier(CustomerUserIdentifier  $customerUserIdentifier)
     {
         /** @var \App\Model\Cart\Cart|null $cart */
-        $cart = $this->cartRepository->findByCustomerIdentifier($customerIdentifier);
+        $cart = $this->cartRepository->findByCustomerUserIdentifier( $customerUserIdentifier);
 
         if ($cart !== null) {
-            $this->cartWatcherFacade->checkCartModifications($cart, $customerIdentifier->getUser());
+            $this->cartWatcherFacade->checkCartModifications($cart,  $customerUserIdentifier->getCustomerUser());
 
             if ($cart->isEmpty()) {
                 $this->deleteCart($cart);
@@ -276,7 +276,7 @@ class CartFacade extends BaseCartFacade
      */
     public function getPromoProducts(): array
     {
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
             return [];
@@ -291,7 +291,7 @@ class CartFacade extends BaseCartFacade
      */
     public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
     {
-        $cart = $this->findCartOfCurrentCustomer();
+        $cart = $this->findCartOfCurrentCustomerUser();
 
         if ($cart === null) {
             return;
@@ -329,7 +329,7 @@ class CartFacade extends BaseCartFacade
      */
     public function showEmailTransportInCart(): bool
     {
-        $cart = $this->getCartOfCurrentCustomerCreateIfNotExists();
+        $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
 
         foreach ($cart->getItems() as $cartItem) {
             if ($cartItem->getProduct()->isProductTypeGiftCertificate() === false) {

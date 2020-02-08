@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Customer\TransferIds;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 
 /**
  * @ORM\Table(name="user_transfer_ids")
@@ -14,10 +14,10 @@ use App\Model\Customer\User;
 class UserTransferId
 {
     /**
-     * @var \App\Model\Customer\User
+     * @var \App\Model\Customer\User\CustomerUser
      *
-     * @ORM\ManyToOne(targetEntity="App\Model\Customer\User", inversedBy="userTransferId")
-     * @ORM\JoinColumn(nullable=false, name="customer_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="App\Model\Customer\User\CustomerUser", inversedBy="userTransferId")
+     * @ORM\JoinColumn(nullable=false, name="customer_user_id", referencedColumnName="id", onDelete="CASCADE")
      * @ORM\Id
      */
     private $customer;
@@ -40,9 +40,9 @@ class UserTransferId
     }
 
     /**
-     * @return \App\Model\Customer\User
+     * @return \App\Model\Customer\User\CustomerUser
      */
-    public function getCustomer(): User
+    public function getCustomer(): CustomerUser
     {
         return $this->customer;
     }

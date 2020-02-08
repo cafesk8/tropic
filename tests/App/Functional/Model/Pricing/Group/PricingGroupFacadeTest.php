@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\App\Functional\Model\Pricing\Group;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
-use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPrice;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
@@ -45,31 +45,31 @@ class PricingGroupFacadeTest extends TransactionFunctionalTestCase
         $em = $this->getEntityManager();
         /** @var \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade */
         $pricingGroupFacade = $this->getContainer()->get(PricingGroupFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade */
-        $customerFacade = $this->getContainer()->get(CustomerFacade::class);
+        /** @var \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade $customerUserFacade */
+        $customerUserFacade = $this->getContainer()->get(CustomerUserFacade::class);
 
         $pricingGroupData = new PricingGroupData();
         $pricingGroupData->name = 'name';
         $pricingGroupToDelete = $pricingGroupFacade->create($pricingGroupData, Domain::FIRST_DOMAIN_ID);
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroupToReplaceWith */
         $pricingGroupToReplaceWith = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
-        /** @var \App\Model\Customer\User $user */
-        $user = $customerFacade->getUserById(1);
-        /** @var \App\Model\Customer\UserDataFactory $userDataFactory */
-        $userDataFactory = $this->getContainer()->get(UserDataFactoryInterface::class);
-        $userData = $userDataFactory->createFromUser($user);
-        /** @var \App\Model\Customer\CustomerDataFactory $customerDataFactory */
-        $customerDataFactory = $this->getContainer()->get(CustomerDataFactoryInterface::class);
+        /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+        $customerUser = $customerUserFacade->getCustomerUserById(1);
+        /** @var \App\Model\Customer\User\CustomerUserDataFactory $customerUserDataFactory */
+        $customerUserDataFactory = $this->getContainer()->get(CustomerUserDataFactoryInterface::class);
+        $customerUserData = $customerUserDataFactory->createFromCustomerUser($customerUser);
+        /** @var \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory */
+        $customerUserUpdateDataFactory = $this->getContainer()->get(CustomerUserUpdateDataFactoryInterface::class);
 
-        $userData->pricingGroup = $pricingGroupToDelete;
-        $customerData = $customerDataFactory->create();
-        $customerData->userData = $userData;
-        $customerFacade->editByAdmin($user->getId(), $customerData);
+        $customerUserData->pricingGroup = $pricingGroupToDelete;
+        $customerUserUpdateData = $customerUserUpdateDataFactory->create();
+        $customerUserUpdateData->customerUserData = $customerUserData;
+        $customerUserFacade->editByAdmin($customerUser->getId(), $customerUserUpdateData);
 
         $pricingGroupFacade->delete($pricingGroupToDelete->getId(), $pricingGroupToReplaceWith->getId());
 
-        $em->refresh($user);
+        $em->refresh($customerUser);
 
-        $this->assertEquals($pricingGroupToReplaceWith, $user->getPricingGroup());
+        $this->assertEquals($pricingGroupToReplaceWith, $customerUser->getPricingGroup());
     }
 }

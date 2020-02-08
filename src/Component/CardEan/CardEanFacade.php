@@ -6,10 +6,10 @@ namespace App\Component\CardEan;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use App\Component\CardEan\Exception\CardEanCouldNotBeSetToUserException;
 use App\Component\CardEan\Exception\ReachMaxCardEanUniqueResolveAttemptException;
-use App\Model\Customer\UserRepository;
+use App\Model\Customer\User\CustomerUserRepository;
 
 class CardEanFacade
 {
@@ -32,26 +32,26 @@ class CardEanFacade
     private $cardEanRepository;
 
     /**
-     * @var \App\Model\Customer\UserRepository
+     * @var \App\Model\Customer\User\CustomerUserRepository
      */
-    private $userRepository;
+    private $customerUserRepository;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \App\Component\CardEan\CardEanGenerator $cardEanGenerator
      * @param \App\Component\CardEan\CardEanRepository $cardEanRepository
-     * @param \App\Model\Customer\UserRepository $userRepository
+     * @param \App\Model\Customer\User\CustomerUserRepository $customerUserRepository
      */
     public function __construct(
         EntityManagerInterface $em,
         CardEanGenerator $cardEanGenerator,
         CardEanRepository $cardEanRepository,
-        UserRepository $userRepository
+        CustomerUserRepository $customerUserRepository
     ) {
         $this->em = $em;
         $this->cardEanGenerator = $cardEanGenerator;
         $this->cardEanRepository = $cardEanRepository;
-        $this->userRepository = $userRepository;
+        $this->customerUserRepository = $customerUserRepository;
     }
 
     /**
@@ -73,7 +73,7 @@ class CardEanFacade
 
             $newEan = $this->cardEanGenerator->generate();
             $eanExists = $this->cardEanRepository->eanExists($newEan);
-            $eanUsed = $this->userRepository->eanUsed($newEan);
+            $eanUsed = $this->customerUserRepository->eanUsed($newEan);
 
             $isNewEanUnique = $eanExists === false && $eanUsed === false;
         } while ($isNewEanUnique === false);
@@ -96,9 +96,9 @@ class CardEanFacade
     }
 
     /**
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      */
-    public function addPrereneratedEanToUserAndFlush(User $user)
+    public function addPrereneratedEanToUserAndFlush(User $customerUser)
     {
         $attempt = 0;
         $eanIsSetToUser = false;
@@ -109,10 +109,10 @@ class CardEanFacade
                 $this->em->beginTransaction();
 
                 $cardEan = $this->cardEanRepository->getOnePregeneratedEan();
-                $user->setEan($cardEan->getEan());
+                $customerUser->setEan($cardEan->getEan());
 
                 $this->em->remove($cardEan);
-                $this->em->flush([$cardEan, $user]);
+                $this->em->flush([$cardEan, $customerUser]);
 
                 $this->em->commit();
 

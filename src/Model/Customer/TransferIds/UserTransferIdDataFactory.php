@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\TransferIds;
 
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 
 class UserTransferIdDataFactory
 {
@@ -29,14 +29,14 @@ class UserTransferIdDataFactory
     }
 
     /**
-     * @param \App\Model\Customer\User $customer
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @param string $transferId
      * @return \App\Model\Customer\TransferIds\UserTransferIdData
      */
-    public function createFromCustomerTransferId(User $customer, string $transferId): UserTransferIdData
+    public function createFromCustomerTransferId(CustomerUser $customerUser, string $transferId): UserTransferIdData
     {
         $userTransferIdData = $this->create();
-        $userTransferIdData->customer = $customer;
+        $userTransferIdData->customer = $customerUser;
         $userTransferIdData->transferId = $transferId;
 
         return $userTransferIdData;

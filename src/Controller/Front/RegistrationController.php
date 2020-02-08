@@ -13,17 +13,17 @@ use Shopsys\FrameworkBundle\Model\Security\Roles;
 use App\Component\Setting\Setting;
 use App\Form\Front\Registration\RegistrationFormType;
 use App\Model\Article\ArticleFacade;
-use App\Model\Customer\CustomerDataFactory;
-use App\Model\Customer\CustomerFacade;
+use App\Model\Customer\User\CustomerUserUpdateDataFactory;
+use \App\Model\Customer\User\CustomerUserFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class RegistrationController extends FrontBaseController
 {
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -51,35 +51,35 @@ class RegistrationController extends FrontBaseController
     private $customerMailFacade;
 
     /**
-     * @var \App\Model\Customer\CustomerDataFactory
+     * @var \App\Model\Customer\User\CustomerUserUpdateDataFactory
      */
-    private $customerDataFactory;
+    private $customerUserUpdateDataFactory;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
      * @param \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
-     * @param \App\Model\Customer\CustomerDataFactory $customerDataFactory
+     * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      */
     public function __construct(
         Domain $domain,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         Authenticator $authenticator,
         LegalConditionsFacade $legalConditionsFacade,
         ArticleFacade $articleFacade,
         CustomerMailFacade $customerMailFacade,
-        CustomerDataFactory $customerDataFactory
+        CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
     ) {
         $this->domain = $domain;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->authenticator = $authenticator;
         $this->legalConditionsFacade = $legalConditionsFacade;
         $this->articleFacade = $articleFacade;
         $this->customerMailFacade = $customerMailFacade;
-        $this->customerDataFactory = $customerDataFactory;
+        $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
     }
 
     /**
@@ -88,9 +88,9 @@ class RegistrationController extends FrontBaseController
     public function existsEmailAction(Request $request)
     {
         $email = $request->get('email');
-        $user = $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId());
+        $customerUser = $this->customerUserFacade->findCustomerUserByEmailAndDomain($email, $this->domain->getId());
 
-        return new JsonResponse($user !== null);
+        return new JsonResponse($customerUser !== null);
     }
 
     /**
@@ -103,27 +103,27 @@ class RegistrationController extends FrontBaseController
         }
 
         $domainId = $this->domain->getId();
-        $customerData = $this->customerDataFactory->createForDomainId($domainId);
+        $customerUserUpdateData = $this->customerUserUpdateDataFactory->createForDomainId($domainId);
 
-        $form = $this->createForm(RegistrationFormType::class, $customerData, [
+        $form = $this->createForm(RegistrationFormType::class, $customerUserUpdateData, [
             'domain_id' => $domainId,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $customerData = $form->getData();
+            $customerUserUpdateData = $form->getData();
 
-            /** @var \App\Model\Customer\User $user */
-            $user = $this->customerFacade->registerCustomer($customerData);
+            /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+            $customerUser = $this->customerUserFacade->registerCustomer($customerUserUpdateData);
             try {
-                $this->customerMailFacade->sendRegistrationMail($user);
+                $this->customerMailFacade->sendRegistrationMail($customerUser);
             } catch (\Swift_SwiftException | MailException $exception) {
                 $this->getFlashMessageSender()->addErrorFlash(
                     t('Unable to send some e-mails, please contact us for registration verification.')
                 );
             }
 
-            $this->authenticator->loginUser($user, $request);
+            $this->authenticator->loginUser($customerUser, $request);
 
             $this->getFlashMessageSender()->addSuccessFlash(t('You have been successfully registered.'));
             return $this->redirectToRoute('front_customer_edit');

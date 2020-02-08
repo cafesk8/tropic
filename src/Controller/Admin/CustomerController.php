@@ -10,22 +10,18 @@ use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\MoneyConvertingDataSourceDecorator;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
 use Shopsys\FrameworkBundle\Controller\Admin\CustomerController as BaseCustomerController;
-use Shopsys\FrameworkBundle\Form\Admin\Customer\CustomerFormType;
+use Shopsys\FrameworkBundle\Form\Admin\Customer\User\CustomerUserUpdateFormType;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerListAdminFacade;
-use Shopsys\FrameworkBundle\Model\Customer\UserDataFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @property \App\Model\Customer\UserDataFactory $userDataFactory
- * @property \App\Model\Customer\CustomerFacade $customerFacade
+ * @property \App\Model\Customer\User\CustomerUserDataFactory $customerUserDataFactory
+ * @property \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
  * @property \App\Model\Order\OrderFacade $orderFacade
- * @property \App\Model\Customer\CustomerDataFactory $customerDataFactory
- * @method string getSsoLoginAsUserUrl(\App\Model\Customer\User $user)
- * @method __construct(\Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory, \Shopsys\FrameworkBundle\Model\Customer\CustomerListAdminFacade $customerListAdminFacade, \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade, \Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade $loginAsUserFacade, \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory, \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory)
+ * @property \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
+ * @method string getSsoLoginAsCustomerUserUrl(\App\Model\Customer\User\CustomerUser $customerUser)
  */
 class CustomerController extends BaseCustomerController
 {
@@ -37,23 +33,23 @@ class CustomerController extends BaseCustomerController
      */
     public function editAction(Request $request, $id): Response
     {
-        $user = $this->customerFacade->getUserById($id);
-        $customerData = $this->customerDataFactory->createFromUser($user);
+        $customerUser = $this->customerUserFacade->getCustomerUserById($id);
+        $customerUserUpdateData = $this->customerUserUpdateDataFactory->createFromCustomerUser($customerUser);
 
-        $form = $this->createForm(CustomerFormType::class, $customerData, [
-            'user' => $user,
+        $form = $this->createForm(CustomerUserUpdateFormType::class, $customerUserUpdateData, [
+            'customerUser' => $customerUser,
             'domain_id' => $this->adminDomainTabsFacade->getSelectedDomainId(),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->customerFacade->editByAdmin($id, $customerData);
+            $this->customerUserFacade->editByAdmin($id, $customerUserUpdateData);
 
             $this->getFlashMessageSender()->addSuccessFlashTwig(
                 t('Customer <strong><a href="{{ url }}">{{ name }}</a></strong> modified'),
                 [
-                    'name' => $user->getFullName(),
-                    'url' => $this->generateUrl('admin_customer_edit', ['id' => $user->getId()]),
+                    'name' => $customerUser->getFullName(),
+                    'url' => $this->generateUrl('admin_customer_edit', ['id' => $customerUser->getId()]),
                 ]
             );
 
@@ -64,15 +60,15 @@ class CustomerController extends BaseCustomerController
             $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
-        $this->breadcrumbOverrider->overrideLastItem(t('Editing customer - %name%', ['%name%' => $user->getFullName()]));
+        $this->breadcrumbOverrider->overrideLastItem(t('Editing customer - %name%', ['%name%' => $customerUser->getFullName()]));
 
-        $orders = $this->orderFacade->getCustomerOrderList($user);
+        $orders = $this->orderFacade->getCustomerUserOrderList($customerUser);
 
         return $this->render('@ShopsysFramework/Admin/Content/Customer/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
+            'customerUser' => $customerUser,
             'orders' => $orders,
-            'ssoLoginAsUserUrl' => $this->getSsoLoginAsUserUrl($user),
+            'ssoLoginAsUserUrl' => $this->getSsoLoginAsCustomerUserUrl($customerUser),
         ]);
     }
 
@@ -89,7 +85,7 @@ class CustomerController extends BaseCustomerController
         $quickSearchForm = $this->createForm(QuickSearchFormType::class, new QuickSearchFormData());
         $quickSearchForm->handleRequest($request);
 
-        $queryBuilder = $this->customerListAdminFacade->getCustomerListQueryBuilderByQuickSearchData(
+        $queryBuilder = $this->customerUserListAdminFacade->getCustomerUserListQueryBuilderByQuickSearchData(
             $this->adminDomainTabsFacade->getSelectedDomainId(),
             $quickSearchForm->getData()
         );

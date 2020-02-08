@@ -8,7 +8,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier;
+use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Availability\Availability;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData;
@@ -26,7 +26,7 @@ class CartItemTest extends TransactionFunctionalTestCase
         $domain = $this->getContainer()->get(Domain::class);
         $vatFacade = $this->getContainer()->get(VatFacade::class);
 
-        $customerIdentifier = new CustomerIdentifier('randomString');
+         $customerUserIdentifier = new CustomerUserIdentifier('randomString');
 
         $availabilityData = new AvailabilityData();
         $availabilityData->dispatchTime = 0;
@@ -49,7 +49,7 @@ class CartItemTest extends TransactionFunctionalTestCase
         $em->persist($product2);
         $em->flush();
 
-        $cart = new Cart($customerIdentifier->getCartIdentifier());
+        $cart = new Cart( $customerUserIdentifier->getCartIdentifier());
 
         $cartItem1 = new CartItem($cart, $product1, 1, Money::zero());
         $cartItem2 = new CartItem($cart, $product1, 3, Money::zero());

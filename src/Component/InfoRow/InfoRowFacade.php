@@ -62,7 +62,7 @@ class InfoRowFacade
     /**
      * @return bool
      */
-    public function isRowVisibleForCurrentCustomer(): bool
+    public function isRowVisibleForCurrentCustomerUser(): bool
     {
         $currentDomainId = $this->domain->getId();
         if ($this->isRowVisible($currentDomainId) === false) {

@@ -8,7 +8,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use App\Form\Front\Login\LoginFormType;
-use App\Model\Customer\CustomerFacade;
+use \App\Model\Customer\User\CustomerUserFacade;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +22,9 @@ class LoginController extends FrontBaseController
     private $authenticator;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -33,13 +33,13 @@ class LoginController extends FrontBaseController
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Security\Authenticator $authenticator
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(Authenticator $authenticator, CustomerFacade $customerFacade, Domain $domain)
+    public function __construct(Authenticator $authenticator, CustomerUserFacade $customerUserFacade, Domain $domain)
     {
         $this->authenticator = $authenticator;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->domain = $domain;
     }
 
@@ -97,9 +97,9 @@ class LoginController extends FrontBaseController
     {
         if (!$this->isGranted(Roles::ROLE_LOGGED_CUSTOMER)) {
             $email = $request->get('email');
-            $user = $this->customerFacade->findUserByEmailAndDomain($email, $this->domain->getId());
+            $customerUser = $this->customerUserFacade->findCustomerUserByEmailAndDomain($email, $this->domain->getId());
 
-            if ($user !== null) {
+            if ($customerUser !== null) {
                 return $this->render('Front/Content/Login/notice.html.twig', [
                     'email' => $email,
                 ]);

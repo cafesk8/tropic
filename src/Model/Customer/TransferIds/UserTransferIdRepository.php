@@ -6,7 +6,7 @@ namespace App\Model\Customer\TransferIds;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 
 class UserTransferIdRepository
 {
@@ -32,7 +32,7 @@ class UserTransferIdRepository
     }
 
     /**
-     * @param \App\Model\Customer\User $customer
+     * @param \App\Model\Customer\User\CustomerUser $customer
      * @param string $transferId
      */
     public function isTransferIdExists(User $customer, string $transferId)

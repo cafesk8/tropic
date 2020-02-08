@@ -51,7 +51,7 @@ class InfoRowExtension extends AbstractExtension
     {
         $currentDomainId = $this->domain->getId();
 
-        return $this->infoRowFacade->isRowVisibleForCurrentCustomer();
+        return $this->infoRowFacade->isRowVisibleForCurrentCustomerUser();
     }
 
     /**

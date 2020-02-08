@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
-use App\Model\Customer\User as Customer;
+use App\Model\Customer\User\CustomerUser as Customer;
 use App\Model\Gtm\Data\DataLayerPage;
 use App\Model\Gtm\Data\DataLayerProduct;
 use App\Model\Gtm\Data\DataLayerUser;
@@ -103,13 +103,13 @@ class DataLayerMapper
     }
 
     /**
-     * @param \App\Model\Customer\User|null $currentCustomer
+     * @param \App\Model\Customer\User\CustomerUser|null $currentCustomerUser
      * @param \App\Model\Gtm\Data\DataLayerUser $dataLayerUser
      */
-    public function mapCurrentCustomerToDataLayerUser(?Customer $currentCustomer, DataLayerUser $dataLayerUser): void
+    public function mapCurrentCustomerToDataLayerUser(?Customer $currentCustomerUser, DataLayerUser $dataLayerUser): void
     {
-        if ($currentCustomer !== null) {
-            $dataLayerUser->setId((string)$currentCustomer->getId());
+        if ($currentCustomerUser !== null) {
+            $dataLayerUser->setId((string)$currentCustomerUser->getId());
             $dataLayerUser->setState(DataLayerUser::STATE_LOGGED_IN);
 
             if ($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN_AS_CUSTOMER)) {

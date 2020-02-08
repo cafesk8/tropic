@@ -29,7 +29,7 @@ parameters:
         Shopsys\FrameworkBundle\Model\Cart\Cart: App\Model\Cart\Cart
         Shopsys\FrameworkBundle\Model\Category\Category: App\Model\Category\Category
         Shopsys\FrameworkBundle\Model\Category\CategoryTranslation: App\Model\Category\CategoryTranslation
-        Shopsys\FrameworkBundle\Model\Customer\User: App\Model\Customer\User
+        Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser: App\Model\Customer\User\CustomerUser
         Shopsys\FrameworkBundle\Model\Order\Order: App\Model\Order\Order
         Shopsys\FrameworkBundle\Model\Order\Item\OrderItem: App\Model\Order\Item\OrderItem
         Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode: App\Model\Order\PromoCode\PromoCode

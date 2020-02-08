@@ -9,8 +9,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Generator;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\User;
-use Shopsys\FrameworkBundle\Model\Customer\UserRepository;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
 use Shopsys\FrameworkBundle\Model\Order\OrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
@@ -23,9 +23,9 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
     public const ORDER_PREFIX = 'order_';
 
     /**
-     * @var \App\Model\Customer\UserRepository
+     * @var \App\Model\Customer\User\CustomerUserRepository
      */
-    protected $userRepository;
+    protected $customerUserRepository;
 
     /**
      * @var \Faker\Generator
@@ -58,7 +58,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
     protected $currencyFacade;
 
     /**
-     * @param \App\Model\Customer\UserRepository $userRepository
+     * @param \App\Model\Customer\User\CustomerUserRepository $customerUserRepository
      * @param \Faker\Generator $faker
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -67,7 +67,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
-        UserRepository $userRepository,
+        CustomerUserRepository $customerUserRepository,
         Generator $faker,
         OrderFacade $orderFacade,
         OrderPreviewFactory $orderPreviewFactory,
@@ -75,7 +75,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
         Domain $domain,
         CurrencyFacade $currencyFacade
     ) {
-        $this->userRepository = $userRepository;
+        $this->customerUserRepository = $customerUserRepository;
         $this->faker = $faker;
         $this->orderFacade = $orderFacade;
         $this->orderPreviewFactory = $orderPreviewFactory;
@@ -106,7 +106,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
     {
         $domainDefaultCurrency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
 
-        $user = $this->userRepository->findUserByEmailAndDomain('no-reply@shopsys.com', $domainId);
+        $customerUser = $this->customerUserRepository->findCustomerUserByEmailAndDomain('no-reply@shopsys.com', $domainId);
         $orderData = $this->orderDataFactory->create();
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_GOPAY);
@@ -134,7 +134,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '9' => 2,
                 ProductDataFixture::PRODUCT_PREFIX . '10' => 3,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -166,7 +166,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '20' => 1,
                 ProductDataFixture::PRODUCT_PREFIX . '15' => 5,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -195,7 +195,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '4' => 6,
                 ProductDataFixture::PRODUCT_PREFIX . '11' => 1,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -223,7 +223,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
             [
                 ProductDataFixture::PRODUCT_PREFIX . '1' => 1,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -254,7 +254,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '3' => 1,
                 ProductDataFixture::PRODUCT_PREFIX . '1' => 2,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -287,7 +287,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '17' => 1,
                 ProductDataFixture::PRODUCT_PREFIX . '18' => 1,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -610,7 +610,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
             ]
         );
 
-        $user = $this->userRepository->findUserByEmailAndDomain('vitek@shopsys.com', $domainId);
+        $customerUser = $this->customerUserRepository->findCustomerUserByEmailAndDomain('vitek@shopsys.com', $domainId);
         $orderData = $this->orderDataFactory->create();
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PPL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CARD);
@@ -647,7 +647,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '14' => 1,
                 ProductDataFixture::PRODUCT_PREFIX . '10' => 2,
             ],
-            $user
+            $customerUser
         );
     }
 
@@ -682,7 +682,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
             ]
         );
 
-        $user = $this->userRepository->findUserByEmailAndDomain('no-reply.2@shopsys.com', $domainId);
+        $customerUser = $this->customerUserRepository->findCustomerUserByEmailAndDomain('no-reply.2@shopsys.com', $domainId);
         $orderData = $this->orderDataFactory->create();
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_PERSONAL);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH);
@@ -718,10 +718,10 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '1' => 2,
                 ProductDataFixture::PRODUCT_PREFIX . '3' => 1,
             ],
-            $user
+            $customerUser
         );
 
-        $user = $this->userRepository->findUserByEmailAndDomain('no-reply.7@shopsys.com', $domainId);
+        $customerUser = $this->customerUserRepository->findCustomerUserByEmailAndDomain('no-reply.7@shopsys.com', $domainId);
         $orderData = $this->orderDataFactory->create();
         $orderData->transport = $this->getReference(TransportDataFixture::TRANSPORT_CZECH_POST);
         $orderData->payment = $this->getReference(PaymentDataFixture::PAYMENT_CASH_ON_DELIVERY);
@@ -745,7 +745,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
                 ProductDataFixture::PRODUCT_PREFIX . '2' => 2,
                 ProductDataFixture::PRODUCT_PREFIX . '4' => 4,
             ],
-            $user
+            $customerUser
         );
 
         $orderData = $this->orderDataFactory->create();
@@ -776,12 +776,12 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
     /**
      * @param \App\Model\Order\OrderData $orderData
      * @param array $products
-     * @param \App\Model\Customer\User $user
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      */
     protected function createOrder(
         OrderData $orderData,
         array $products,
-        ?User $user = null
+        ?CustomerUser $customerUser = null
     ) {
         $quantifiedProducts = [];
         foreach ($products as $productReferenceName => $quantity) {
@@ -794,11 +794,11 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
             $quantifiedProducts,
             $orderData->transport,
             $orderData->payment,
-            $user,
+            $customerUser,
             null
         );
 
-        $order = $this->orderFacade->createOrder($orderData, $orderPreview, $user);
+        $order = $this->orderFacade->createOrder($orderData, $orderPreview, $customerUser);
         /* @var $order \App\Model\Order\Order */
 
         $referenceName = self::ORDER_PREFIX . $order->getId();
@@ -814,7 +814,7 @@ class OrderDataFixture extends AbstractReferenceFixture implements DependentFixt
             ProductDataFixture::class,
             TransportDataFixture::class,
             PaymentDataFixture::class,
-            UserDataFixture::class,
+            CustomerUserDataFixture::class,
             OrderStatusDataFixture::class,
             CountryDataFixture::class,
             SettingValueDataFixture::class,

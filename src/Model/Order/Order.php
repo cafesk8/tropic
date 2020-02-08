@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Utils\Utils;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
@@ -28,7 +28,7 @@ use App\Model\Transport\Transport;
  * @method \App\Model\Transport\Transport getTransport()
  * @method \App\Model\Payment\Payment getPayment()
  * @method \App\Model\Country\Country getCountry()
- * @property \App\Model\Customer\User|null $customer
+ * @property \App\Model\Customer\User\CustomerUser|null $customerUser
  * @property \App\Model\Order\Item\OrderItem[]|\Doctrine\Common\Collections\Collection $items
  * @property \App\Model\Payment\Payment $payment
  * @property \App\Model\Order\Status\OrderStatus $status
@@ -45,7 +45,7 @@ use App\Model\Transport\Transport;
  * @method \App\Model\Order\Item\OrderItem getOrderPayment()
  * @method \App\Model\Order\Item\OrderItem getOrderTransport()
  * @method \App\Model\Order\Status\OrderStatus getStatus()
- * @method \App\Model\Customer\User|null getCustomer()
+ * @method \App\Model\Customer\User\CustomerUser|null getCustomer()
  * @method \App\Model\Order\Item\OrderItem[] getItems()
  * @method \App\Model\Order\Item\OrderItem[] getItemsWithoutTransportAndPayment()
  * @method \App\Model\Order\Item\OrderItem[] getTransportAndPaymentItems()
@@ -284,15 +284,15 @@ class Order extends BaseOrder
      * @param \App\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      */
     public function __construct(
         BaseOrderData $orderData,
         string $orderNumber,
         string $urlHash,
-        ?User $user = null
+        ?CustomerUser $customerUser = null
     ) {
-        parent::__construct($orderData, $orderNumber, $urlHash, $user);
+        parent::__construct($orderData, $orderNumber, $urlHash, $customerUser);
 
         $this->setTransport($orderData);
         $this->payment = $orderData->payment;
@@ -311,7 +311,7 @@ class Order extends BaseOrder
 
         $this->number = $orderNumber;
         $this->status = $orderData->status;
-        $this->customer = $user;
+        $this->customerUser= $customerUser;
         $this->deleted = false;
         if ($orderData->createdAt === null) {
             $this->createdAt = new DateTime();
@@ -756,11 +756,11 @@ class Order extends BaseOrder
     }
 
     /**
-     * @param \App\Model\Customer\User $customer
+     * @param \App\Model\Customer\User\CustomerUser $customerUser
      */
-    public function setCustomer(User $customer): void
+    public function setCustomer(CustomerUser $customerUser): void
     {
-        $this->customer = $customer;
+        $this->customerUser = $customerUser;
     }
 
     /**

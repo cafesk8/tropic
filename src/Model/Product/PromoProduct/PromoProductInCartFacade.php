@@ -6,7 +6,7 @@ namespace App\Model\Product\PromoProduct;
 
 use App\Model\Cart\Cart;
 use App\Model\Cart\CartFacade;
-use App\Model\Customer\User;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\Product\ProductFacade;
 
 class PromoProductInCartFacade
@@ -41,10 +41,10 @@ class PromoProductInCartFacade
     /**
      * @param \App\Model\Cart\Cart $cart
      * @param int $domainId
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      * @return \App\Model\Product\PromoProduct\PromoProduct[][]
      */
-    public function getPromoProductsForCart(?Cart $cart, int $domainId, ?User $user): array
+    public function getPromoProductsForCart(?Cart $cart, int $domainId, ?CustomerUser $customerUser): array
     {
         if ($cart === null) {
             return [];
@@ -53,7 +53,7 @@ class PromoProductInCartFacade
         $promoProducts = $this->promoProductRepository->getPromoProductsWithMinimalCartPrice(
             $cart->getTotalWatchedPriceOfProducts(),
             $domainId,
-            $user
+            $customerUser
         );
 
         $promoProductsForCart = [];

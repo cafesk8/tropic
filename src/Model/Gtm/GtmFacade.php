@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Gtm;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Category\Category;
@@ -32,9 +32,9 @@ class GtmFacade
     private $dataLayerMapper;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
-    private $currentCustomer;
+    private $currentCustomerUser;
 
     /**
      * @var \App\Model\Pricing\Currency\CurrencyFacade
@@ -50,20 +50,20 @@ class GtmFacade
      * GtmFacade constructor.
      * @param \App\Model\Gtm\GtmContainer $gtmContainer
      * @param \App\Model\Gtm\DataLayerMapper $dataLayerMapper
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         GtmContainer $gtmContainer,
         DataLayerMapper $dataLayerMapper,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         CurrencyFacade $currencyFacade,
         Domain $domain
     ) {
         $this->gtmContainer = $gtmContainer;
         $this->dataLayerMapper = $dataLayerMapper;
-        $this->currentCustomer = $currentCustomer;
+        $this->currentCustomerUser = $currentCustomerUser;
         $this->currencyFacade = $currencyFacade;
         $this->domain = $domain;
 
@@ -86,8 +86,8 @@ class GtmFacade
         $dataLayerUser = new DataLayerUser();
         $this->dataLayer->set('user', $dataLayerUser);
 
-        $currentCustomer = $this->currentCustomer->findCurrentUser();
-        $this->dataLayerMapper->mapCurrentCustomerToDataLayerUser($currentCustomer, $dataLayerUser);
+        $currentCustomerUser = $this->currentCustomerUser->findCurrentCustomerUser();
+        $this->dataLayerMapper->mapCurrentCustomerToDataLayerUser($currentCustomerUser, $dataLayerUser);
     }
 
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Command\Migrations;
 
 use Doctrine\ORM\EntityManagerInterface;
-use App\Model\Customer\CustomerFacade;
+use \App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\DeliveryAddressDataFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,9 +27,9 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
     private $entityManager;
 
     /**
-     * @var \App\Model\Customer\CustomerFacade
+     * @var \App\Model\Customer\User\CustomerUserFacade
      */
-    private $customerFacade;
+    private $customerUserFacade;
 
     /**
      * @var \App\Model\Customer\DeliveryAddressDataFactory
@@ -38,18 +38,18 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        CustomerFacade $customerFacade,
+        CustomerUserFacade $customerUserFacade,
         DeliveryAddressDataFactory $deliveryAddressDataFactory
     ) {
         parent::__construct();
 
         $this->entityManager = $entityManager;
-        $this->customerFacade = $customerFacade;
+        $this->customerUserFacade = $customerUserFacade;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
     }
 
@@ -72,16 +72,16 @@ class CopyBillingAddressToDeliveryAddressCommand extends Command
         do {
             $this->entityManager->beginTransaction();
 
-            $users = $this->customerFacade->getCustomersWithoutDeliveryAddress(self::BATCH_LIMIT);
+            $users = $this->customerUserFacade->getCustomersWithoutDeliveryAddress(self::BATCH_LIMIT);
             $userCount = count($users);
 
-            foreach ($users as $user) {
-                $deliveryAddressData = $this->deliveryAddressDataFactory->createFromBillingAddress($user->getBillingAddress());
-                $this->customerFacade->editDeliveryAddress($user, $deliveryAddressData);
+            foreach ($users as $customerUser) {
+                $deliveryAddressData = $this->deliveryAddressDataFactory->createFromBillingAddress($customerUser->getCustomer()->getBillingAddress());
+                $this->customerUserFacade->editDeliveryAddress($customerUser, $deliveryAddressData);
 
-                $this->customerFacade->flush($user);
+                $this->customerUserFacade->flush($customerUser);
 
-                $symfonyStyleIo->success(sprintf('Delivery address of user with ID `%s` has been created from user\'s billing address', $user->getId()));
+                $symfonyStyleIo->success(sprintf('Delivery address of user with ID `%s` has been created from user\'s billing address', $customerUser->getId()));
             }
 
             $this->entityManager->commit();

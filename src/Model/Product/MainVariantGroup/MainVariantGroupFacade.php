@@ -6,7 +6,7 @@ namespace App\Model\Product\MainVariantGroup;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -30,9 +30,9 @@ class MainVariantGroupFacade
     private $domain;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
-    private $currentCustomer;
+    private $currentCustomerUser;
 
     /**
      * @var \App\Model\Pricing\Group\PricingGroupFacade
@@ -43,20 +43,20 @@ class MainVariantGroupFacade
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \App\Model\Product\MainVariantGroup\MainVariantGroupRepository $mainVariantGroupRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         MainVariantGroupRepository $mainVariantGroupRepository,
         Domain $domain,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         PricingGroupFacade $pricingGroupFacade
     ) {
         $this->entityManager = $entityManager;
         $this->mainVariantGroupRepository = $mainVariantGroupRepository;
         $this->domain = $domain;
-        $this->currentCustomer = $currentCustomer;
+        $this->currentCustomerUser = $currentCustomerUser;
         $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
@@ -108,7 +108,7 @@ class MainVariantGroupFacade
         return $this->mainVariantGroupRepository->getProductsForMainVariantGroup(
             $product,
             $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup()
+            $this->currentCustomerUser->getPricingGroup()
         );
     }
 

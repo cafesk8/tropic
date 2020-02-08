@@ -12,7 +12,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository;
@@ -73,9 +73,9 @@ class ProductFacade extends BaseProductFacade
     protected $productRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
-    private $currentCustomer;
+    private $currentCustomerUser;
 
     /**
      * @var \App\Model\Product\StoreStock\ProductStoreStockFactory
@@ -136,7 +136,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface $productVisibilityFactory
      * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportScheduler $productSearchExportScheduler
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
@@ -169,7 +169,7 @@ class ProductFacade extends BaseProductFacade
         ProductVisibilityFactoryInterface $productVisibilityFactory,
         ProductPriceCalculation $productPriceCalculation,
         ProductSearchExportScheduler $productSearchExportScheduler,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
         CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
@@ -204,7 +204,7 @@ class ProductFacade extends BaseProductFacade
             $productSearchExportScheduler
         );
 
-        $this->currentCustomer = $currentCustomer;
+        $this->currentCustomerUser = $currentCustomerUser;
         $this->productStoreStockFactory = $productStoreStockFactory;
         $this->storeFacade = $storeFacade;
         $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
@@ -222,7 +222,7 @@ class ProductFacade extends BaseProductFacade
     {
         return $this->productRepository->getVisibleMainVariantsByIds(
             $this->domain->getId(),
-            $this->currentCustomer->getPricingGroup(),
+            $this->currentCustomerUser->getPricingGroup(),
             $productIds
         );
     }

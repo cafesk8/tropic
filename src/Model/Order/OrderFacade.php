@@ -11,9 +11,9 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
-use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper;
@@ -55,20 +55,20 @@ use App\Model\Product\Gift\ProductGiftPriceCalculation;
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \App\Component\Setting\Setting $setting
  * @property \App\Model\Cart\CartFacade $cartFacade
- * @property \App\Model\Customer\CustomerFacade $customerFacade
+ * @property \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
  * @property \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
  * @property \App\Model\Order\FrontOrderDataMapper $frontOrderDataMapper
  * @property \App\Twig\NumberFormatterExtension $numberFormatterExtension
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
  * @property \App\Model\Order\Item\OrderItemFactory $orderItemFactory
- * @method \App\Model\Order\Order createOrder(\App\Model\Order\OrderData $orderData, \App\Model\Order\Preview\OrderPreview $orderPreview, \App\Model\Customer\User|null $user)
+ * @method \App\Model\Order\Order createOrder(\App\Model\Order\OrderData $orderData, \App\Model\Order\Preview\OrderPreview $orderPreview, \App\Model\Customer\User\CustomerUser|null $customerUser)
  * @method sendHeurekaOrderInfo(\App\Model\Order\Order $order, bool $disallowHeurekaVerifiedByCustomers)
- * @method prefillFrontOrderData(\App\Model\Order\FrontOrderData $orderData, \App\Model\Customer\User $user)
- * @method \App\Model\Order\Order[] getCustomerOrderList(\App\Model\Customer\User $user)
+ * @method prefillFrontOrderData(\App\Model\Order\FrontOrderData $orderData, \App\Model\Customer\User\CustomerUser $customerUser)
+ * @method \App\Model\Order\Order[] getCustomerUserOrderList(\App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
  * @method \App\Model\Order\Order getById(int $orderId)
  * @method \App\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
- * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User $user)
+ * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method setOrderDataAdministrator(\App\Model\Order\OrderData $orderData)
  * @method fillOrderPayment(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
@@ -131,8 +131,8 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
-     * @param \App\Model\Customer\CustomerFacade $customerFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade $orderProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade $heurekaFacade
@@ -165,8 +165,8 @@ class OrderFacade extends BaseOrderFacade
         AdministratorFrontSecurityFacade $administratorFrontSecurityFacade,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         CartFacade $cartFacade,
-        CustomerFacade $customerFacade,
-        CurrentCustomer $currentCustomer,
+        CustomerUserFacade $customerUserFacade,
+        CurrentCustomerUser $currentCustomerUser,
         OrderPreviewFactory $orderPreviewFactory,
         OrderProductFacade $orderProductFacade,
         HeurekaFacade $heurekaFacade,
@@ -199,8 +199,8 @@ class OrderFacade extends BaseOrderFacade
             $administratorFrontSecurityFacade,
             $currentPromoCodeFacade,
             $cartFacade,
-            $customerFacade,
-            $currentCustomer,
+            $customerUserFacade,
+            $currentCustomerUser,
             $orderPreviewFactory,
             $orderProductFacade,
             $heurekaFacade,
@@ -291,7 +291,7 @@ class OrderFacade extends BaseOrderFacade
         $order = parent::createOrderFromFront($orderData);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
 
-        /** @var \App\Model\Customer\User $customer */
+        /** @var \App\Model\Customer\User\CustomerUser $customer */
         $customer = $order->getCustomer();
         if ($customer !== null) {
             $order->setCustomerTransferId($customer->getTransferId());
@@ -459,9 +459,9 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \App\Model\Order\Order $order
-     * @param \App\Model\Customer\User $customer
+     * @param \App\Model\Customer\User\CustomerUser $customer
      */
-    public function setCustomerToOrder(Order $order, User $customer): void
+    public function setCustomerToOrder(Order $order, CustomerUser $customer): void
     {
         $order->setCustomer($customer);
         $this->em->flush($order);

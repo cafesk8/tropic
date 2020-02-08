@@ -9,8 +9,8 @@ use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatcherFacade;
-use Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer;
-use App\Model\Customer\User;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\PromoCodeFacade;
@@ -34,7 +34,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      */
@@ -42,37 +42,37 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         FlashMessageSender $flashMessageSender,
         EntityManagerInterface $em,
         CartWatcher $cartWatcher,
-        CurrentCustomer $currentCustomer,
+        CurrentCustomerUser $currentCustomerUser,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         PromoCodeFacade $promoCodeFacade
     ) {
-        parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomer);
+        parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomerUser);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
     }
 
     /**
      * @param \App\Model\Cart\Cart $cart
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      */
-    public function checkCartModifications(Cart $cart, ?User $user = null): void
+    public function checkCartModifications(Cart $cart, ?CustomerUser $customerUser = null): void
     {
         parent::checkCartModifications($cart);
 
-        $this->checkValidityOfEnteredPromoCodes($cart, $user);
+        $this->checkValidityOfEnteredPromoCodes($cart, $customerUser);
     }
 
     /**
      * @param \App\Model\Cart\Cart $cart
-     * @param \App\Model\Customer\User|null $user
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      */
-    public function checkValidityOfEnteredPromoCodes(Cart $cart, ?User $user = null): void
+    public function checkValidityOfEnteredPromoCodes(Cart $cart, ?CustomerUser $customerUser = null): void
     {
         $enteredCodes = $this->currentPromoCodeFacade->getEnteredCodesFromSession();
 
         foreach ($enteredCodes as $enteredCode) {
             try {
-                $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $user);
+                $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $customerUser);
                 $this->currentPromoCodeFacade->checkApplicability($this->promoCodeFacade->findPromoCodeByCode($enteredCode), $cart);
             } catch (PromoCodeNotApplicableException $exception) {
                 $this->flashMessageSender->addErrorFlash(t('Slevový kupón nelze aplikovat na žádný produkt v košíku.'));
