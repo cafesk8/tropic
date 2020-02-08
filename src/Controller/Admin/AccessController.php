@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
+use Shopsys\FrameworkBundle\Controller\Admin\AccessController as BaseAccessController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AccessDeniedController extends AdminBaseController
+class AccessController extends BaseAccessController
 {
     /**
      * @Route("/access-denied/")
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function accessDeniedAction(Request $request): Response
+    public function deniedAction(Request $request): Response
     {
         $this->getFlashMessageSender()->addErrorFlashTwig(
             t('Nemáte oprávnění vidět požadovanou stránku. Požádejte svého administrátora o udělení přístupu.')

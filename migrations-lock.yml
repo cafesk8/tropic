@@ -928,8 +928,14 @@
 20191112122617:
     class: Shopsys\FrameworkBundle\Migrations\Version20191112122617
     skip: false
+20200208164913:
+    class: App\Migrations\Version20200208164913
+    skip: false
 20191113133455:
     class: Shopsys\FrameworkBundle\Migrations\Version20191113133455
+    skip: false
+20200208165159:
+    class: App\Migrations\Version20200208165159
     skip: false
 20191113212555:
     class: Shopsys\FrameworkBundle\Migrations\Version20191113212555

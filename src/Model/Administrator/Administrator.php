@@ -7,7 +7,7 @@ namespace App\Model\Administrator;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Administrator\Administrator as BaseAdministrator;
-use Shopsys\FrameworkBundle\Model\Administrator\AdministratorData as BaseAdministratorData;
+use Shopsys\FrameworkBundle\Model\Administrator\AdministratorData;
 
 /**
  * @ORM\Entity
@@ -21,13 +21,6 @@ use Shopsys\FrameworkBundle\Model\Administrator\AdministratorData as BaseAdminis
 class Administrator extends BaseAdministrator
 {
     /**
-     * @var string[]
-     *
-     * @ORM\Column(type="json", nullable=false)
-     */
-    private $roles;
-
-    /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -35,30 +28,22 @@ class Administrator extends BaseAdministrator
     private $lastTransferIssuesVisit;
 
     /**
-     * @param \App\Model\Administrator\AdministratorData $administratorData
+     * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorData $administratorData
      */
-    public function __construct(BaseAdministratorData $administratorData)
+    public function __construct(AdministratorData $administratorData)
     {
         parent::__construct($administratorData);
         $this->roles = $administratorData->roles;
     }
 
     /**
-     * @param \App\Model\Administrator\AdministratorData $administratorData
+     * @param \Shopsys\FrameworkBundle\Model\Administrator\AdministratorData $administratorData
      */
     public function edit(
-        BaseAdministratorData $administratorData
+        AdministratorData $administratorData
     ): void {
         parent::edit($administratorData);
         $this->roles = $administratorData->roles;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRoles()
-    {
-        return array_merge(parent::getRoles(), $this->roles);
     }
 
     /**

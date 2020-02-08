@@ -103,7 +103,7 @@ class RouteConfigCustomization
                     $config->skipRoute('Domain list in administration is not available when only 1 domain exists.');
                 }
             })
-            ->customizeByRouteName('admin_accessdenied_accessdenied', function (RouteConfig $config) {
+            ->customizeByRouteName('admin_access_denied', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('This route serves as "access_denied_url" (see security.yml) and always redirects to a referer (or dashboard).')
                     ->setExpectedStatusCode(302);
             });
