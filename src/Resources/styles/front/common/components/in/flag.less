@@ -1,5 +1,6 @@
 @in-flag-item-top-gap: 12px;
 @in-flag-item-size: 70px;
+@in-flag-item-size-medium: 60px;
 @in-flag-item-size-small: 46px;
 @in-flag-item-font-size: 18px;
 @in-flag-item-font-size-small: @font-size;
@@ -38,7 +39,6 @@
         color: @color-f;
         font-size: 10px;
         font-weight: 700;
-        word-break: break-all;
 
         &:last-child {
             margin-bottom: 0;
@@ -52,6 +52,8 @@
         }
 
         &--smaller-text {
+            word-break: break-all;
+
             @media @query-lg {
                 font-size: @in-flag-item-font-size-small;
             }
@@ -60,6 +62,15 @@
         .in-flag--static &  {
             float: left;
             clear: none;
+        }
+
+        .in-flag--in-list & {
+            @media @query-md {
+                width: @in-flag-item-size-medium;
+                height: @in-flag-item-size-medium;
+
+                font-size: 13px;
+            }
         }
     }
 }
