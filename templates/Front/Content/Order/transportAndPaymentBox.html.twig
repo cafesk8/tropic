@@ -18,7 +18,13 @@
             {% for child in form.transport %}
                 {% set choice = form.transport.vars.choices[child.vars.name] %}
                 {% set transportPrice = transportsPrices[choice.data.id] %}
-                <label class="box-chooser__item js-order-transport">
+                {% if loop.index == 4 %}
+                    <div class="box-chooser__toggle-additional js-toggle-additional-transports">
+                        {{ 'Zobrazit další způsoby dopravy'|trans }}
+                        <div class="svg-arrow-right"></div>
+                    </div>
+                {% endif %}
+                <label class="box-chooser__item js-order-transport{% if loop.index > 3 %} js-additional-transport display-none{% endif %}">
                     <span class="box-chooser__item__check">
                         {{ form_widget(child, { attr: {
                             class: 'css-radio js-order-transport-input',
@@ -98,7 +104,13 @@
                 {% if isGoPayBankTransfer %}
                     {% set bankTransferRendered = true %}
                 {% endif %}
-                <label class="box-chooser__item">
+                {% if loop.index == 4 %}
+                    <div class="box-chooser__toggle-additional js-toggle-additional-payments">
+                        {{ 'Zobrazit další způsoby platby'|trans }}
+                        <div class="svg-arrow-right"></div>
+                    </div>
+                {% endif %}
+                <label class="box-chooser__item{% if loop.index > 3 %} js-additional-payment display-none{% endif %}">
                     <span class="box-chooser__item__check">
                         {{ form_widget(child, { attr: { class: 'css-radio js-order-payment-input' ~ (isGoPayBankTransfer ? ' js-gopay-bank-transfer-input' : ''), 'data-id': choice.data.id} }) }}
                         <span class="css-radio__image"></span>

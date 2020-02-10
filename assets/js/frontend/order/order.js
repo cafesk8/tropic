@@ -60,6 +60,10 @@ export default class PaymentTransportRelations {
         if ($checkedTransport.length > 0) {
             $checkedTransport.closest('label.box-chooser__item').removeClass('box-chooser__item--inactive').addClass('box-chooser__item--active');
         }
+
+        $('.js-toggle-additional-transports').click(function () {
+            $('.js-additional-transport').toggleClass('display-none');
+        });
     }
 
     updatePayments () {
@@ -91,6 +95,10 @@ export default class PaymentTransportRelations {
         if ($checkedPayment.length > 0) {
             $checkedPayment.closest('label.box-chooser__item').removeClass('box-chooser__item--inactive').addClass('box-chooser__item--active');
         }
+
+        $('.js-toggle-additional-payments').click(function () {
+            $('.js-additional-payment').toggleClass('display-none');
+        });
     }
 
     onTransportChange (event, paymentTransportRelations) {

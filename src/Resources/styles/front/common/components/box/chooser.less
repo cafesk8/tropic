@@ -121,7 +121,7 @@
             @media @query-lg {
                 width: @box-chooser-price-width;
                 padding-left: 10px;
-                margin-left: none;
+                margin-left: 0;
             }
 
             .box-chooser__item--active & {
@@ -136,5 +136,9 @@
 
     &__sub-selection {
         padding-left: 20px;
+    }
+
+    &__toggle-additional {
+        cursor: pointer;
     }
 }
