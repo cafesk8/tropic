@@ -63,6 +63,7 @@ export default class PaymentTransportRelations {
 
         $('.js-toggle-additional-transports').click(function () {
             $('.js-additional-transport').toggleClass('display-none');
+            $(this).toggleClass('active');
         });
     }
 
@@ -98,6 +99,7 @@ export default class PaymentTransportRelations {
 
         $('.js-toggle-additional-payments').click(function () {
             $('.js-additional-payment').toggleClass('display-none');
+            $(this).toggleClass('active');
         });
     }
 

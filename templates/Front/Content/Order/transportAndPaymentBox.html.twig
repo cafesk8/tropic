@@ -18,12 +18,6 @@
             {% for child in form.transport %}
                 {% set choice = form.transport.vars.choices[child.vars.name] %}
                 {% set transportPrice = transportsPrices[choice.data.id] %}
-                {% if loop.index == 4 %}
-                    <div class="box-chooser__toggle-additional js-toggle-additional-transports">
-                        {{ 'Zobrazit další způsoby dopravy'|trans }}
-                        <div class="svg-arrow-right"></div>
-                    </div>
-                {% endif %}
                 <label class="box-chooser__item js-order-transport{% if loop.index > 3 %} js-additional-transport display-none{% endif %}">
                     <span class="box-chooser__item__check">
                         {{ form_widget(child, { attr: {
@@ -82,6 +76,15 @@
                 {% do form.transport.setRendered %}
                 {{ 'Nothing to choose from'|trans }}
             {% endfor %}
+            {% if form.transport|length > 3 %}
+                <div class="box-chooser__more js-toggle-additional-transports">
+                    <p class="box-chooser__more__text">
+                        <span class="box-chooser__more__text__show">{{ 'Zobrazit další způsoby dopravy'|trans }}</span>
+                        <span class="box-chooser__more__text__hide">{{ 'Skrýt další způsoby dopravy'|trans }}</span>    
+                    </p>
+                    <i class="svg svg-arrow"></i>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -103,12 +106,6 @@
                 {% set isGoPayBankTransfer = goPayPaymentMethod != null and goPayPaymentMethod.identifier == goPayBankTransferIdentifier %}
                 {% if isGoPayBankTransfer %}
                     {% set bankTransferRendered = true %}
-                {% endif %}
-                {% if loop.index == 4 %}
-                    <div class="box-chooser__toggle-additional js-toggle-additional-payments">
-                        {{ 'Zobrazit další způsoby platby'|trans }}
-                        <div class="svg-arrow-right"></div>
-                    </div>
                 {% endif %}
                 <label class="box-chooser__item{% if loop.index > 3 %} js-additional-payment display-none{% endif %}">
                     <span class="box-chooser__item__check">
@@ -165,6 +162,15 @@
                 {% do form.payment.setRendered %}
                 {{ 'Nothing to choose from'|trans }}
             {% endfor %}
+            {% if form.transport|length > 3 %}
+                <div class="box-chooser__more js-toggle-additional-payments">
+                    <p class="box-chooser__more__text">
+                        <span class="box-chooser__more__text__show">{{ 'Zobrazit další způsoby platby'|trans }}</span>
+                        <span class="box-chooser__more__text__hide">{{ 'Skrýt další způsoby platby'|trans }}</span>
+                    </p>
+                    <i class="svg svg-arrow"></i>
+                </div>
+            {% endif %}
             {% if not bankTransferRendered %}
                 {% do goPayBankSwiftForm.setRendered %}
             {% endif %}
