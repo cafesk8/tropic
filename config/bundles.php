@@ -44,4 +44,5 @@ return [
     Symfony\Bundle\AsseticBundle\AsseticBundle::class => ['all' => true],
     Fp\JsFormValidatorBundle\FpJsFormValidatorBundle::class => ['all' => true],
     EmanueleMinotto\TwigCacheBundle\TwigCacheBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

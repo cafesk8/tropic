@@ -16,11 +16,9 @@
             var isGermanDomain = '{{ isGermanyDomain() }}' == 1;
             var isSlovakDomain = '{{ isSlovakDomain() }}' == 1;
         </script>
-        {# bootstrap/tooltip.js must be imported before bootstrap/popover.js #}
+        {{ encore_entry_script_tags('jquery') }}
         {{ importJavascripts([
-            'bundles/bmatznerjquery/js/jquery.min.js',
-            'bundles/bmatznerjquery/js/jquery-migrate.js',
-            'bundles/fpjsformvalidator/js/fp_js_validator.js',
+            'bundles/fpjsformvalidator/js/fp_js_validator.js'
         ]) }}
         {{ js_validator_config() }}
         {{ init_js_validation() }}
@@ -50,30 +48,7 @@
 
         {% block html_body %}{% endblock %}
 
-        {% if app.environment == 'dev' %}
-            <script async src="//localhost:35729/livereload.js"></script>
-        {% endif %}
-
-
-        {{ importJavascripts([
-            'frontend/plugins/*.js',
-            'common/components/escape.js',
-            'common/components/keyCodes.js',
-            'common/register.js',
-            'common/bootstrap/tooltip.js',
-            'common/bootstrap/popover.js',
-            'common/plugins/*.js',
-            'frontend/validation/form/*.js',
-            'common/validation/*.js',
-            'frontend/cart/*.js',
-            'frontend/order/*.js',
-            'frontend/product/*.js',
-            'frontend/blog/*.js',
-            'common/*.js',
-            'frontend/*.js',
-            'common/components/*.js',
-            'frontend/components/*.js',
-        ]) }}
+        {{ encore_entry_script_tags('frontend') }}
 
         {% block javascripts_bottom %}{% endblock %}
     </body>

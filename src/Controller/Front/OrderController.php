@@ -416,7 +416,27 @@ class OrderController extends FrontBaseController
             'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
             'pickupPlace' => $orderData->pickupPlace,
             'store' => $orderData->store,
+            'paymentTransportRelations' => $this->getPaymentTransportRelations($payments),
         ]);
+    }
+
+    /**
+     * @param \App\Model\Payment\Payment[] $payments
+     * @return string
+     */
+    private function getPaymentTransportRelations(array $payments): string
+    {
+        $relations = [];
+        foreach ($payments as $payment) {
+            foreach ($payment->getTransports() as $transport) {
+                $relations[] = [
+                    'paymentId' => $payment->getId(),
+                    'transportId' => $transport->getId(),
+                ];
+            }
+        }
+
+        return json_encode($relations);
     }
 
     /**
