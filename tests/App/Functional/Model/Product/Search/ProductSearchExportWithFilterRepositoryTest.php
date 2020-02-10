@@ -74,6 +74,12 @@ class ProductSearchExportWithFilterRepositoryTest extends TransactionFunctionalT
             'main_variant_group_products',
             'visibility',
             'second_distinguishing_parameter_values',
+            'is_main_variant',
+            'uuid',
+            'unit',
+            'is_using_stock',
+            'stock_quantity',
+            'variants',
         ];
     }
 }
