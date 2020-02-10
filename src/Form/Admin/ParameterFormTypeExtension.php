@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use Shopsys\FrameworkBundle\Form\Admin\Product\Parameter\ParameterFormType;
 use App\Model\Product\Parameter\ParameterData;
+use Shopsys\FrameworkBundle\Form\Admin\Product\Parameter\ParameterFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

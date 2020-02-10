@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use DateTime;
-use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\Product;
 use App\Model\Transport\DeliveryDate\Exception\NoVisibleTransportsWithoutPickUpPlacesOnDomainException;
 use App\Model\Transport\Transport;
+use DateTime;
+use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

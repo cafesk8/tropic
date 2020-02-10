@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Command\Migration;
 
-use Doctrine\DBAL\Driver\Connection;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Shopsys\FrameworkBundle\Component\String\TransformString;
 use App\Command\Migration\Exception\MigrationDataNotFoundException;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValue;
 use App\Model\Product\Parameter\ParameterValueData;
 use App\Model\Product\Parameter\ParameterValueDataFactory;
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

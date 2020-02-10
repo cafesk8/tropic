@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Mall;
 
+use App\Component\Mall\MallImportOrderClient;
 use Exception;
 use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
-use App\Component\Mall\MallImportOrderClient;
 use Symfony\Bridge\Monolog\Logger;
 
 class OrderImportCronModule implements IteratedCronModuleInterface

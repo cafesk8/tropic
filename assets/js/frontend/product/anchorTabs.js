@@ -1,8 +1,6 @@
 import Register from 'framework/common/utils/register';
 
 (function ($) {
-    const Shopsys = window.Shopsys || {};
-
     new Register().registerCallback(function ($container) {
         $container.filterAllNodes('.js-anchor-tabs .js-tabs-button').click(function (e) {
             e.preventDefault();

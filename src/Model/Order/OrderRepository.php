@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Order;
 
+use App\Model\GoPay\GoPayTransaction;
+use App\Model\Order\Status\OrderStatus;
+use App\Model\Payment\Payment;
+use App\Model\PayPal\PayPalFacade;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -13,10 +17,6 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository as BaseOrderRepository;
-use App\Model\GoPay\GoPayTransaction;
-use App\Model\Order\Status\OrderStatus;
-use App\Model\Payment\Payment;
-use App\Model\PayPal\PayPalFacade;
 
 /**
  * @method \App\Model\Order\Order[] getOrdersByUserId(int $userId)
@@ -30,6 +30,9 @@ use App\Model\PayPal\PayPalFacade;
  * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order|null findByUrlHashIncludingDeletedOrders(string $urlHash)
  * @method \App\Model\Pricing\Currency\Currency[] getCurrenciesUsedInOrders()
+ * @method \App\Model\Order\Order[] getOrdersByCustomerUserId(int $customerUserId)
+ * @method \App\Model\Order\Order|null findLastByCustomerUserId(int $customerUserId)
+ * @method \App\Model\Order\Order getByOrderNumberAndCustomerUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  */
 class OrderRepository extends BaseOrderRepository
 {
@@ -113,7 +116,7 @@ class OrderRepository extends BaseOrderRepository
     {
         $queryBuilder = $this->createOrderQueryBuilder()
             ->select('IDENTITY(o.customer) as id')
-            ->join(User::class, 'u', Join::WITH, 'o.customer = u.id')
+            ->join(CustomerUser::class, 'u', Join::WITH, 'o.customer = u.id')
             ->where('o.createdAt > :startTime')
             ->andWhere('o.createdAt < :endTime')
             ->andWhere('o.customer is not null')

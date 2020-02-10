@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MassEdit\Action;
 
+use App\Model\Category\Category;
+use App\Model\Category\CategoryRepository;
+use App\Model\Product\MassEdit\MassEditActionInterface;
+use App\Model\Product\Product;
+use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
@@ -11,11 +16,6 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
-use App\Model\Category\Category;
-use App\Model\Category\CategoryRepository;
-use App\Model\Product\MassEdit\MassEditActionInterface;
-use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CategoryMassAction implements MassEditActionInterface

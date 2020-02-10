@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use Shopsys\FrameworkBundle\Form\Admin\Order\Status\OrderStatusFormType;
 use App\Model\Order\Status\OrderStatus;
 use App\Model\Order\Status\OrderStatusData;
+use Shopsys\FrameworkBundle\Form\Admin\Order\Status\OrderStatusFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

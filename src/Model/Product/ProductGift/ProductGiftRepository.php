@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Product\ProductGift;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Product\ProductGift\Exception\ProductGiftNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\ProductTranslation;
-use App\Component\Domain\DomainHelper;
-use App\Model\Product\ProductGift\Exception\ProductGiftNotFoundException;
 
 class ProductGiftRepository
 {

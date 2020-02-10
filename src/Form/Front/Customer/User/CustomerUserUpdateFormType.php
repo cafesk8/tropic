@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Customer\User;
 
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
+use App\Form\Front\Customer\BillingAddressFormType;
+use App\Form\Front\Customer\DeliveryAddressFormType;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -55,7 +57,7 @@ class CustomerUserUpdateFormType extends AbstractType
             ->setRequired('domain_id')
             ->addAllowedTypes('domain_id', 'int')
             ->setRequired('user')
-            ->addAllowedTypes('user', User::class)
+            ->addAllowedTypes('user', CustomerUser::class)
             ->setDefaults([
                 'empty_data' => $this->customerUserUpdateDataFactory->create(),
                 'attr' => ['novalidate' => 'novalidate'],

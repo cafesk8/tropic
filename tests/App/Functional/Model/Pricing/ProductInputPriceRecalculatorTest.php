@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Pricing;
 
+use App\DataFixtures\Demo\PricingGroupDataFixture;
+use App\DataFixtures\Demo\UnitDataFixture;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
@@ -13,11 +16,8 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
-use App\DataFixtures\Demo\PricingGroupDataFixture;
-use App\DataFixtures\Demo\UnitDataFixture;
-use App\Model\Product\Product;
-use Tests\FrameworkBundle\Test\IsMoneyEqual;
 use Tests\App\Test\TransactionFunctionalTestCase;
+use Tests\FrameworkBundle\Test\IsMoneyEqual;
 
 class ProductInputPriceRecalculatorTest extends TransactionFunctionalTestCase
 {

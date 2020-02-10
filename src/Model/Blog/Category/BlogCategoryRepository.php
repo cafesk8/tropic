@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Category;
 
+use App\Model\Blog\Article\BlogArticle;
+use App\Model\Blog\Article\BlogArticleBlogCategoryDomain;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
-use App\Model\Blog\Article\BlogArticle;
-use App\Model\Blog\Article\BlogArticleBlogCategoryDomain;
 
 class BlogCategoryRepository extends NestedTreeRepository
 {

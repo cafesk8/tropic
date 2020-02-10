@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Component\Image;
 
+use App\Component\FileUpload\FileUpload;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Shopsys\FrameworkBundle\Component\FileUpload\FileNamingConvention;
 use Shopsys\FrameworkBundle\Component\Image\Config\ImageConfig;
-use App\Component\FileUpload\FileUpload;
 
 class MigrateImageDoctrineListener
 {

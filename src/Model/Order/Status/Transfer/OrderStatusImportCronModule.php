@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Status\Transfer;
 
-use DateTime;
 use App\Component\Domain\DomainHelper;
 use App\Component\Rest\Exception\UnexpectedResponseCodeException;
 use App\Component\Rest\MultidomainRestClient;
@@ -21,6 +20,7 @@ use App\Model\Order\OrderFacade;
 use App\Model\Order\Status\OrderStatus;
 use App\Model\Order\Status\OrderStatusFacade;
 use App\Model\Order\Status\Transfer\Exception\InvalidOrderStatusTransferResponseItemDataException;
+use DateTime;
 
 class OrderStatusImportCronModule extends AbstractTransferImportCronModule
 {

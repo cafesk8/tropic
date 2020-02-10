@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Component\Instagram\Instagram;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\Templating\EngineInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

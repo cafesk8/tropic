@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Model\Customer\User;
 
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddress;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
-use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory as BaseCustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory as BaseCustomerDataFactory;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 
 /**

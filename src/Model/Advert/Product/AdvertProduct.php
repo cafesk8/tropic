@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Advert\Product;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Model\Advert\Advert;
 use App\Model\Product\Product;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity

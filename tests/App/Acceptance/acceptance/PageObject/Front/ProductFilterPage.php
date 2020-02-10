@@ -6,10 +6,10 @@ namespace Tests\App\Acceptance\acceptance\PageObject\Front;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
-use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 use Tests\App\Acceptance\acceptance\PageObject\AbstractPage;
 use Tests\App\Test\Codeception\AcceptanceTester;
 use Tests\App\Test\Codeception\Module\StrictWebDriver;
+use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 
 class ProductFilterPage extends AbstractPage
 {

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\Cart;
 
+use App\Model\Cart\Exception\MaxPromoProductCartItemsReachedException;
+use App\Model\Cart\Item\CartItem;
+use App\Model\Product\ProductFacade;
+use App\Model\Product\PromoProduct\PromoProduct;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart as BaseCart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
-use App\Model\Cart\Exception\MaxPromoProductCartItemsReachedException;
-use App\Model\Cart\Item\CartItem;
-use App\Model\Product\ProductFacade;
-use App\Model\Product\PromoProduct\PromoProduct;
 
 /**
  * @ORM\Table(name="carts")

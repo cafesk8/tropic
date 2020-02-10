@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Mall;
 
-use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use Symfony\Bridge\Monolog\Logger;
 
 class MallProductDeleteCronModule implements SimpleCronModuleInterface

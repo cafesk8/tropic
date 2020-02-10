@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Order;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Order\FrontOrderData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\Transformers\InverseTransformer;
@@ -11,8 +13,6 @@ use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
-use App\Component\Domain\DomainHelper;
-use App\Model\Order\FrontOrderData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

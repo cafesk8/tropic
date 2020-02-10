@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Gtm\Data;
 
+use App\Model\Gtm\Exception\GtmException;
 use DateTime;
 use JsonSerializable;
-use App\Model\Gtm\Exception\GtmException;
 
 class DataLayerUser implements JsonSerializable
 {

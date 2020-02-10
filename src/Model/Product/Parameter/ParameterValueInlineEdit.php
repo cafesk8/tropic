@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Parameter;
 
-use Shopsys\FrameworkBundle\Component\Grid\InlineEdit\AbstractGridInlineEdit;
 use App\Component\DataObject\Exception\NotImplementedException;
 use App\Form\Admin\ParameterValueFormType;
+use Shopsys\FrameworkBundle\Component\Grid\InlineEdit\AbstractGridInlineEdit;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class ParameterValueInlineEdit extends AbstractGridInlineEdit

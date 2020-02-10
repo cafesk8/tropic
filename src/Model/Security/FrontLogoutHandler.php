@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Security;
 
+use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Order\OrderFlowFacade;
 use Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler as BaseFrontLogoutHandler;
-use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 

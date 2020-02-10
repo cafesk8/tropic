@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository as BasePr
  * @method \App\Model\Pricing\Group\PricingGroup|null findById(int $pricingGroupId)
  * @method \App\Model\Pricing\Group\PricingGroup[] getAllExceptIdByDomainId(int $pricingGroupId, int $domainId)
  * @method bool existsUserWithPricingGroup(\App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @method bool existsCustomerUserWithPricingGroup(\App\Model\Pricing\Group\PricingGroup $pricingGroup)
  */
 class PricingGroupRepository extends BasePricingGroupRepository
 {

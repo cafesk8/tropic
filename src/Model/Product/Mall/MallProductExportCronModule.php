@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Mall;
 
-use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
 use App\Component\Mall\MallFacade;
 use App\Model\Product\Mall\Exception\InvalidProductForMallExportException;
 use App\Model\Product\ProductFacade;
+use Shopsys\Plugin\Cron\IteratedCronModuleInterface;
 use Symfony\Bridge\Monolog\Logger;
 
 class MallProductExportCronModule implements IteratedCronModuleInterface

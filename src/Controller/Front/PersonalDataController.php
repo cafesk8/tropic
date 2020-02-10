@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Form\Front\PersonalData\PersonalDataFormType;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\XmlResponse;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
@@ -14,7 +15,6 @@ use Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMailFacade
 use Shopsys\FrameworkBundle\Model\PersonalData\PersonalDataAccessRequest;
 use Shopsys\FrameworkBundle\Model\PersonalData\PersonalDataAccessRequestDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\PersonalData\PersonalDataAccessRequestFacade;
-use App\Form\Front\PersonalData\PersonalDataFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Model\GoPay;
 
+use App\Model\GoPay\Exception\GoPayPaymentDownloadException;
 use GoPay\Definition\RequestMethods;
 use GoPay\GoPay;
 use GoPay\Http\JsonBrowser;
@@ -13,7 +14,6 @@ use GoPay\OAuth2;
 use GoPay\Token\CachedOAuth;
 use GoPay\Token\InMemoryTokenCache;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
-use App\Model\GoPay\Exception\GoPayPaymentDownloadException;
 
 class GoPayClient
 {

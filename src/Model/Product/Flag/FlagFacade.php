@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Flag;
 
+use App\Component\Setting\Setting;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade as BaseFlagFacade;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFactory;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository;
-use App\Component\Setting\Setting;
 
 /**
  * @method \App\Model\Product\Flag\Flag getById(int $flagId)

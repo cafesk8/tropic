@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Model\Order\Order;
-use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use App\Model\GoPay\Exception\GoPayNotConfiguredException;
 use App\Model\GoPay\Exception\GoPayPaymentDownloadException;
 use App\Model\GoPay\GoPayTransactionFacade;
+use Shopsys\FrameworkBundle\Model\Order\Order;
+use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class GoPayController extends FrontBaseController

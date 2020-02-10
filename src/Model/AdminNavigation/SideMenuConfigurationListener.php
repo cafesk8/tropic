@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\AdminNavigation;
 
+use App\Model\Administrator\Role;
 use Knp\Menu\ItemInterface;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\ConfigureMenuEvent;
-use App\Model\Administrator\Role;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SideMenuConfigurationListener

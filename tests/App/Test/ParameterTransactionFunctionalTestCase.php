@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Test;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Model\Product\Parameter\ParameterFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class ParameterTransactionFunctionalTestCase extends TransactionFunctionalTestCase
 {

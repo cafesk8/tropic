@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Product\Product;
+use App\Model\Product\ProductData;
 use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,9 +24,6 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFac
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
-use App\Component\Domain\DomainHelper;
-use App\Model\Product\Product;
-use App\Model\Product\ProductData;
 
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
@@ -5824,14 +5824,14 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     protected function setVat(ProductData $productData, ?string $vatReference): void
     {
-       /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat[] $productVatsIndexedByDomainId */
-       $productVatsIndexedByDomainId = [];
-       foreach ($this->domain->getAllIds() as $domainId) {
-           if ($vatReference !== null) {
-               $productVatsIndexedByDomainId[$domainId] = $this->persistentReferenceFacade->getReferenceForDomain($vatReference, Domain::FIRST_DOMAIN_ID);
-           }
-       }
-       $productData->vatsIndexedByDomainId = $productVatsIndexedByDomainId;
+        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat[] $productVatsIndexedByDomainId */
+        $productVatsIndexedByDomainId = [];
+        foreach ($this->domain->getAllIds() as $domainId) {
+            if ($vatReference !== null) {
+                $productVatsIndexedByDomainId[$domainId] = $this->persistentReferenceFacade->getReferenceForDomain($vatReference, Domain::FIRST_DOMAIN_ID);
+            }
+        }
+        $productData->vatsIndexedByDomainId = $productVatsIndexedByDomainId;
     }
 
     /**

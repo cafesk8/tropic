@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Form\Front\Login\LoginFormType;
+use App\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
-use App\Form\Front\Login\LoginFormType;
-use \App\Model\Customer\User\CustomerUserFacade;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

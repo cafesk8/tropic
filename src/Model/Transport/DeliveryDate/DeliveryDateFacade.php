@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Transport\DeliveryDate;
 
+use App\Component\Setting\Setting;
+use App\Model\Product\Product;
+use App\Model\Transport\Transport;
 use DateInterval;
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
-use App\Component\Setting\Setting;
-use App\Model\Product\Product;
-use App\Model\Transport\Transport;
 
 class DeliveryDateFacade
 {

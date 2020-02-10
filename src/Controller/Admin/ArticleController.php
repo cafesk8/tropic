@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Article\Article;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Controller\Admin\ArticleController as BaseArticleController;
 use Shopsys\FrameworkBundle\Model\Article\Article as BaseArticle;
-use App\Model\Article\Article;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

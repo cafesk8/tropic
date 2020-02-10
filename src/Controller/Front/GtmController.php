@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Model\Gtm\GtmContainer;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
-use App\Model\Gtm\GtmContainer;
 use Symfony\Component\HttpFoundation\Response;
 
 class GtmController extends FrontBaseController

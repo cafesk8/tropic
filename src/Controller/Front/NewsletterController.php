@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Form\Front\Newsletter\SubscriptionFormType;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
-use App\Form\Front\Newsletter\SubscriptionFormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Cart;
 
-use Shopsys\FrameworkBundle\Form\Constraints\ConstraintValue;
 use App\Model\Cart\CartFacade;
+use Shopsys\FrameworkBundle\Form\Constraints\ConstraintValue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

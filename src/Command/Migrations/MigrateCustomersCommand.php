@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Command\Migrations;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use App\Command\Migrations\DataProvider\GermanCustomersWithNewsletterSubscriptionDataProvider;
 use App\Command\Migrations\Transfer\CustomerWithPricingGroupsTransferMapper;
 use App\Component\Domain\DomainHelper;
 use App\Component\Rest\MultidomainRestClient;
 use App\Component\Transfer\Exception\TransferException;
-use \App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\Transfer\CustomerTransferResponseItemData;
 use App\Model\Customer\Transfer\CustomerTransferValidator;
 use App\Model\Customer\TransferIds\UserTransferIdFacade;
+use App\Model\Customer\User\CustomerUserFacade;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\App\Acceptance\acceptance\PageObject\Front;
 
 use Shopsys\FrameworkBundle\Component\Form\TimedFormTypeExtension;
-use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 use Tests\App\Acceptance\acceptance\PageObject\AbstractPage;
+use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 
 class RegistrationPage extends AbstractPage
 {

@@ -3,6 +3,7 @@ import Register from 'framework/common/utils/register';
 
 (function ($) {
 
+    /* eslint-disable no-use-before-define */
     const Shopsys = Shopsys || {};
     Shopsys.massEdit = Shopsys.massEdit || {};
 

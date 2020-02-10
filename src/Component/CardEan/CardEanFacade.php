@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Component\CardEan;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use App\Component\CardEan\Exception\CardEanCouldNotBeSetToUserException;
 use App\Component\CardEan\Exception\ReachMaxCardEanUniqueResolveAttemptException;
 use App\Model\Customer\User\CustomerUserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 
 class CardEanFacade
 {
@@ -98,7 +98,7 @@ class CardEanFacade
     /**
      * @param \App\Model\Customer\User\CustomerUser $customerUser
      */
-    public function addPrereneratedEanToUserAndFlush(User $customerUser)
+    public function addPrereneratedEanToUserAndFlush(CustomerUser $customerUser)
     {
         $attempt = 0;
         $eanIsSetToUser = false;

@@ -7,6 +7,9 @@ namespace App\Model\Administrator;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorData;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorDataFactory as BaseAdministratorDataFactory;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Administrator\AdministratorData createFromAdministrator(\App\Model\Administrator\Administrator $administrator)
+ */
 class AdministratorDataFactory extends BaseAdministratorDataFactory
 {
     /**
@@ -19,5 +22,4 @@ class AdministratorDataFactory extends BaseAdministratorDataFactory
 
         return $administratorData;
     }
-
 }

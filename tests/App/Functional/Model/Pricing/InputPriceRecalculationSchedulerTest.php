@@ -19,8 +19,8 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Tests\FrameworkBundle\Test\IsMoneyEqual;
 use Tests\App\Test\TransactionFunctionalTestCase;
+use Tests\FrameworkBundle\Test\IsMoneyEqual;
 
 class InputPriceRecalculationSchedulerTest extends TransactionFunctionalTestCase
 {

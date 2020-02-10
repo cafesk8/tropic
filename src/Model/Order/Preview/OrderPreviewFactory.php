@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Model\Cart\CartFacade;
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
@@ -15,7 +16,6 @@ use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
-use App\Model\Cart\CartFacade;
 
 /**
  * @property \App\Model\Order\Preview\OrderPreviewCalculation $orderPreviewCalculation

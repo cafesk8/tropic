@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Parameter;
 
+use App\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository as BaseParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
-use App\Model\Product\Parameter\Exception\ParameterValueNotFoundException;
-use App\Model\Product\Product;
 
 /**
  * @method \App\Model\Product\Parameter\Parameter|null findById(int $parameterId)

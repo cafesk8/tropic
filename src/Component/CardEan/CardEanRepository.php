@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Component\CardEan;
 
+use App\Component\CardEan\Exception\NotFreeCardEansException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use App\Component\CardEan\Exception\NotFreeCardEansException;
 
 class CardEanRepository
 {

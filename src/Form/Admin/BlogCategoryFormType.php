@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Blog\Category\BlogCategory;
+use App\Model\Blog\Category\BlogCategoryData;
+use App\Model\Blog\Category\BlogCategoryFacade;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -13,9 +16,6 @@ use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\UrlListType;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
-use App\Model\Blog\Category\BlogCategory;
-use App\Model\Blog\Category\BlogCategoryData;
-use App\Model\Blog\Category\BlogCategoryFacade;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Order\PromoCode\PromoCode;
+use App\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -18,10 +20,6 @@ use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
-use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
-use App\Model\Product\Brand\Brand;
-use App\Model\Product\Brand\BrandFacade;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

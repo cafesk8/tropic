@@ -84,7 +84,7 @@ class CustomerUserFormType extends AbstractType
     {
         $resolver
             ->setRequired('user')
-            ->addAllowedTypes('user', User::class)
+            ->addAllowedTypes('user', CustomerUser::class)
             ->setDefaults([
                 'data_class' => CustomerUserData::class,
                 'attr' => ['novalidate' => 'novalidate'],

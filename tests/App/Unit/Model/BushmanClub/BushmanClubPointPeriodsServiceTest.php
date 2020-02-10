@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Unit\Model\BushmanClub;
 
+use App\Model\BushmanClub\BushmanClubPointPeriodsService;
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use App\Model\BushmanClub\BushmanClubPointPeriodsService;
 
 class BushmanClubPointPeriodsServiceTest extends TestCase
 {

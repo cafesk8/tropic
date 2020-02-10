@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Unit;
 
+use App\DataFixtures\Demo\ProductDataFixture;
+use App\DataFixtures\Demo\UnitDataFixture;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitData;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
-use App\DataFixtures\Demo\ProductDataFixture;
-use App\DataFixtures\Demo\UnitDataFixture;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class UnitFacadeTest extends TransactionFunctionalTestCase

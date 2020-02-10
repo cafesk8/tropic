@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
+use App\Model\Product\PromoProduct\PromoProduct;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Order\Item\Exception\WrongItemTypeException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Product\PromoProduct\PromoProduct;
 
 /**
  * @ORM\Table(name="order_items")

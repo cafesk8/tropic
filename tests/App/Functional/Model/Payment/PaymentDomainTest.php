@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Payment;
 
+use App\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFactoryInterface;
-use App\Model\Payment\Payment;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class PaymentDomainTest extends TransactionFunctionalTestCase

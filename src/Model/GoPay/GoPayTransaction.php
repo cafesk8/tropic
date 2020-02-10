@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\GoPay;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Model\Order\Order;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="gopay_transactions")

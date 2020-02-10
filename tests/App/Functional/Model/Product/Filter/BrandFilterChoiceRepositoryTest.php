@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\ShopBundle\Functional\Model\Product\Filter;
 
+use App\DataFixtures\Demo\CategoryDataFixture;
+use App\DataFixtures\Demo\PricingGroupDataFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand;
 use Shopsys\FrameworkBundle\Model\Product\Filter\BrandFilterChoiceRepository;
-use App\DataFixtures\Demo\CategoryDataFixture;
-use App\DataFixtures\Demo\PricingGroupDataFixture;
-use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
+use Tests\App\Test\TransactionFunctionalTestCase;
 
 class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
 {

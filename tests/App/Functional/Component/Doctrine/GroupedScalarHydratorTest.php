@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Component\Doctrine;
 
+use App\Model\Order\Order;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\Doctrine\GroupedScalarHydrator;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
-use App\Model\Order\Order;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class GroupedScalarHydratorTest extends TransactionFunctionalTestCase

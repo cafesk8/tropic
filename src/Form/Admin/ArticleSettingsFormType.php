@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Article\ArticleSettingData;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFacade;
-use App\Model\Article\ArticleSettingData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

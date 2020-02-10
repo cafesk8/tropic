@@ -1,4 +1,4 @@
-import './goPaySelection'
+import './goPaySelection';
 import './order';
 import './orderRememberData';
 import './pickupPlace';

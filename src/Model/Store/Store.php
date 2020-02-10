@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
+use App\Model\Transport\PickupPlace\PickupPlaceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use App\Model\Transport\PickupPlace\PickupPlaceInterface;
 
 /**
  * @ORM\Entity

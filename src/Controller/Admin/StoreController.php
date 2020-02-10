@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use App\Form\Admin\StoreFormType;
 use App\Model\Store\Exception\StoreNotFoundException;
 use App\Model\Store\StoreDataFactory;
 use App\Model\Store\StoreFacade;
 use App\Model\Store\StoreGridFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

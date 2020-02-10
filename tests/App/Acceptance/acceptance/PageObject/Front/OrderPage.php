@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Acceptance\acceptance\PageObject\Front;
 
-use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 use Tests\App\Acceptance\acceptance\PageObject\AbstractPage;
+use Tests\FrameworkBundle\Test\Codeception\FrontCheckbox;
 
 class OrderPage extends AbstractPage
 {

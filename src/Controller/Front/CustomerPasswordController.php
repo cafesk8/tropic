@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Form\Front\Customer\Password\NewPasswordFormType;
+use App\Form\Front\Customer\Password\ResetPasswordFormType;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
-use App\Form\Front\Customer\Password\NewPasswordFormType;
-use App\Form\Front\Customer\Password\ResetPasswordFormType;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerPasswordController extends FrontBaseController
@@ -65,7 +65,7 @@ class CustomerPasswordController extends FrontBaseController
                     ]
                 );
                 return $this->redirectToRoute('front_registration_reset_password');
-            } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\UserNotFoundByEmailAndDomainException $ex) {
+            } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\CustomerUserNotFoundByEmailAndDomainException $ex) {
                 $this->getFlashMessageSender()->addErrorFlashTwig(
                     t('Customer with e-mail address <strong>{{ email }}</strong> doesn\'t exist. '
                         . '<a href="{{ registrationLink }}"> Register</a>'),
@@ -107,7 +107,7 @@ class CustomerPasswordController extends FrontBaseController
                 $customerUser = $this->customerUserPasswordFacade->setNewPassword($email, $this->domain->getId(), $hash, $newPassword);
 
                 $this->authenticator->loginUser($customerUser, $request);
-            } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\UserNotFoundByEmailAndDomainException $ex) {
+            } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\CustomerUserNotFoundByEmailAndDomainException $ex) {
                 $this->getFlashMessageSender()->addErrorFlashTwig(
                     t('Customer with e-mail address <strong>{{ email }}</strong> doesn\'t exist. '
                         . '<a href="{{ registrationLink }}"> Register</a>'),

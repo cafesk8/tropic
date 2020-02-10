@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Parameter;
 
+use App\Model\Product\CachedProductDistinguishingParameterValueFacade;
+use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
+use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
@@ -12,10 +16,6 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParam
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
-use App\Model\Product\CachedProductDistinguishingParameterValueFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
-use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
-use App\Model\Product\ProductFacade;
 
 /**
  * @method \App\Model\Product\Parameter\Parameter getById(int $parameterId)

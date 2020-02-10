@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Feed\Zbozi\FeedItem;
 
+use App\Model\Feed\FeedHelper;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Collection\ProductParametersBatchLoader;
@@ -13,7 +14,6 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItem;
 use Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItemFactory as BaseZboziFeedItemFactory;
 use Shopsys\ProductFeed\ZboziBundle\Model\Product\ZboziProductDomain;
-use App\Model\Feed\FeedHelper;
 
 class ZboziFeedItemFactory extends BaseZboziFeedItemFactory
 {

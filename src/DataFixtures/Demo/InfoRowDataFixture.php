@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\InfoRow\InfoRowFacade;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use App\Component\InfoRow\InfoRowFacade;
 
 class InfoRowDataFixture extends AbstractReferenceFixture
 {

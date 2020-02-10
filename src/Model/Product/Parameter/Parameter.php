@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Parameter;
 
+use App\Model\Product\Parameter\Exception\InvalidParameterTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterTranslation;
-use App\Model\Product\Parameter\Exception\InvalidParameterTypeException;
 
 /**
  * @ORM\Table(name="parameters")

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Order;
 
+use App\Model\Order\Exception\UnsupportedOrderExportStatusException;
+use App\Model\Store\Store;
+use App\Model\Transport\PickupPlace\PickupPlace;
+use App\Model\Transport\Transport;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,10 +19,6 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Order as BaseOrder;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
-use App\Model\Order\Exception\UnsupportedOrderExportStatusException;
-use App\Model\Store\Store;
-use App\Model\Transport\PickupPlace\PickupPlace;
-use App\Model\Transport\Transport;
 
 /**
  * @ORM\Table(name="orders")
@@ -55,6 +55,7 @@ use App\Model\Transport\Transport;
  * @method \App\Model\Administrator\Administrator|null getCreatedAsAdministrator()
  * @property \App\Model\Pricing\Currency\Currency $currency
  * @method \App\Model\Pricing\Currency\Currency getCurrency()
+ * @method \App\Model\Customer\User\CustomerUser|null getCustomerUser()
  */
 class Order extends BaseOrder
 {
@@ -311,7 +312,7 @@ class Order extends BaseOrder
 
         $this->number = $orderNumber;
         $this->status = $orderData->status;
-        $this->customerUser= $customerUser;
+        $this->customerUser = $customerUser;
         $this->deleted = false;
         if ($orderData->createdAt === null) {
             $this->createdAt = new DateTime();

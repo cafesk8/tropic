@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MassEdit\Action;
 
-use Doctrine\ORM\QueryBuilder;
-use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use App\Model\Product\MassEdit\MassEditActionInterface;
 use App\Model\Product\Parameter\Parameter;
 use App\Model\Product\Parameter\ParameterFacade;
@@ -15,6 +11,10 @@ use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\Product;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
+use Doctrine\ORM\QueryBuilder;
+use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProductParameterMassAction implements MassEditActionInterface

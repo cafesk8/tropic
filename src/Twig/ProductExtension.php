@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
-use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Parameter\ParameterFacade;
@@ -17,6 +12,11 @@ use App\Model\Product\ProductDistinguishingParameterValue;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\View\ListedProductView;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
+use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Twig\TwigFunction;
 
 class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension

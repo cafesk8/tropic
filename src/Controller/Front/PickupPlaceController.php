@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\String\TransformString;
 use App\Model\Transport\PickupPlace\PickupPlaceFacade;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

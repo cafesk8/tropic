@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Product;
 
-use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use App\Model\Product\Filter\ProductFilterConfig;
 use App\Model\Product\Filter\ProductFilterData;
+use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

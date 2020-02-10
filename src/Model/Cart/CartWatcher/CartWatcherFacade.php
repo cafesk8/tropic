@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Model\Cart\CartWatcher;
 
+use App\Model\Customer\User\CustomerUser;
+use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
+use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
+use App\Model\Order\PromoCode\PromoCodeFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use App\Model\Customer\User\CustomerUser;
-use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
-use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
-use App\Model\Order\PromoCode\PromoCodeFacade;
 
 /**
  * @property \App\Model\Cart\CartWatcher\CartWatcher $cartWatcher

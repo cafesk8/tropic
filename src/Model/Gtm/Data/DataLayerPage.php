@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Gtm\Data;
 
-use JsonSerializable;
 use App\Model\Gtm\Exception\GtmException;
+use JsonSerializable;
 
 class DataLayerPage implements JsonSerializable
 {

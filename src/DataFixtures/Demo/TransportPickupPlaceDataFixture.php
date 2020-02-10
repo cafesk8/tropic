@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\String\StringHelper;
+use App\Model\Transport\PickupPlace\PickupPlaceData;
+use App\Model\Transport\PickupPlace\PickupPlaceFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Generator;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
-use App\Component\String\StringHelper;
-use App\Model\Transport\PickupPlace\PickupPlaceData;
-use App\Model\Transport\PickupPlace\PickupPlaceFacade;
 
 class TransportPickupPlaceDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

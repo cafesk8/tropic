@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Model\GoPay;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Order\Order;
+use Doctrine\ORM\EntityManagerInterface;
 
 class GoPayTransactionFacade
 {

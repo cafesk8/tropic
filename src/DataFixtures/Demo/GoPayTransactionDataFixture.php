@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\GoPay\GoPayTransaction;
+use App\Model\GoPay\GoPayTransactionData;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
-use App\Model\GoPay\GoPayTransaction;
-use App\Model\GoPay\GoPayTransactionData;
 
 class GoPayTransactionDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\PromoProduct;
 
+use App\Model\Product\Product;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use App\Model\Product\Product;
 
 /**
  * @ORM\Entity

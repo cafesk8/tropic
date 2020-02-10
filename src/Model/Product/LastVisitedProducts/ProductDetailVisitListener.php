@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\LastVisitedProducts;
 
-use DateTime;
 use App\Controller\Front\LastVisitedProductsController;
+use DateTime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;

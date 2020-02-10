@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchProductFilterTranslation as BaseAdvancedSearchProductFilterTranslation;
-use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductCatnumFilter;
 use App\Model\AdvancedSearch\Filter\ProductMainVariantFilter;
 use App\Model\AdvancedSearch\Filter\ProductParameterFilter;
 use App\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter;
+use Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchProductFilterTranslation as BaseAdvancedSearchProductFilterTranslation;
+use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductCatnumFilter;
 
 class AdvancedSearchProductFilterTranslation extends BaseAdvancedSearchProductFilterTranslation
 {

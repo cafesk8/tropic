@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Model\Order\PromoCode\PromoCode;
+use App\Model\Order\PromoCode\PromoCodeData;
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
@@ -21,8 +23,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalcu
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
-use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 
 /**
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation

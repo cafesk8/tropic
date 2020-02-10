@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer;
 
-use Exception;
 use App\Component\Rest\Exception\RestException;
 use App\Component\Transfer\Exception\TransferException;
 use App\Component\Transfer\Response\TransferResponse;
 use App\Component\Transfer\Response\TransferResponseItemDataInterface;
+use Exception;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
 abstract class AbstractTransferImportCronModule extends AbstractTransferCronModule

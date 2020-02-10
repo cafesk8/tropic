@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Product\ProductGift\ProductGift;
+use App\Model\Product\ProductGift\ProductGiftData;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\ProductType;
-use App\Model\Product\ProductGift\ProductGift;
-use App\Model\Product\ProductGift\ProductGiftData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

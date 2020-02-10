@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Category\BlogCategory;
 use App\Model\Blog\Category\BlogCategoryFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

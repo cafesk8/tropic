@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\AdvancedSearch;
 
+use App\Model\AdvancedSearch\Filter\ProductFlagFilter;
+use App\Model\AdvancedSearch\Filter\ProductMainVariantFilter;
+use App\Model\AdvancedSearch\Filter\ProductParameterFilter;
+use App\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductAvailabilityFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductBrandFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductCalculatedSellingDeniedFilter;
@@ -13,10 +17,6 @@ use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductNameFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductPartnoFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductStockFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig as BaseProductAdvancedSearchConfig;
-use App\Model\AdvancedSearch\Filter\ProductFlagFilter;
-use App\Model\AdvancedSearch\Filter\ProductMainVariantFilter;
-use App\Model\AdvancedSearch\Filter\ProductParameterFilter;
-use App\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter;
 
 class ProductAdvancedSearchConfig extends BaseProductAdvancedSearchConfig
 {

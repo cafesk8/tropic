@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use App\Model\BushmanClub\BushmanClubPointPeriod;
 use App\Model\BushmanClub\BushmanClubPointsFacade;
 use App\Model\BushmanClub\CurrentBushmanClubPointPeriods;
+use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

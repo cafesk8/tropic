@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Transfer\Issue;
 
+use App\Model\Administrator\Administrator;
+use App\Model\Transfer\TransferFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use App\Model\Administrator\Administrator;
-use App\Model\Transfer\TransferFacade;
 
 class TransferIssueFacade
 {

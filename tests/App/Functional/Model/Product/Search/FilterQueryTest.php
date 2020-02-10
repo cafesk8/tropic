@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product\Search;
 
+use App\DataFixtures\Demo\PricingGroupDataFixture;
 use Elasticsearch\Client;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager;
@@ -12,7 +13,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory;
-use App\DataFixtures\Demo\PricingGroupDataFixture;
 use Tests\App\Test\ParameterTransactionFunctionalTestCase;
 
 class FilterQueryTest extends ParameterTransactionFunctionalTestCase

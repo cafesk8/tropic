@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Transport\Transport;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +16,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
-use App\Model\Transport\Transport;
 
 class TransportDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

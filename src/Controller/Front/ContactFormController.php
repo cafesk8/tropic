@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsFacade;
-use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use App\Form\Front\Contact\ContactFormType;
 use App\Model\ContactForm\ContactFormData;
 use App\Model\ContactForm\ContactFormFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsFacade;
+use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -102,7 +102,7 @@ class ContactFormController extends FrontBaseController
         return $this->render('Front/Content/ContactForm/contactForm.html.twig', [
             'form' => $form->createView(),
             'privacyPolicyArticle' => $privacyPolicyArticle,
-            'mainText' => $this->contactFormSettingsFacade->getMainText($this->domain->getId())
+            'mainText' => $this->contactFormSettingsFacade->getMainText($this->domain->getId()),
         ]);
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Model\Feed\HsSport\FeedItem;
 
+use App\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
-use App\Model\Product\ProductRepository;
 
 class HsSportFeedItemFacade
 {

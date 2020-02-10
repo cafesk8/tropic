@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\PayPal;
 
+use App\Model\Order\Order;
+use App\Model\PayPal\Exception\UnsupportedPayPalModeException;
 use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
-use App\Model\Order\Order;
-use App\Model\PayPal\Exception\UnsupportedPayPalModeException;
 
 class PayPalClient
 {

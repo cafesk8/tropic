@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MassEdit;
 
-use Doctrine\ORM\QueryBuilder;
 use App\Model\Product\MassEdit\Action\HiddenMassAction;
 use App\Model\Product\ProductRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Smoke;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use App\DataFixtures\Demo\AvailabilityDataFixture;
 use App\DataFixtures\Demo\UnitDataFixture;
 use App\DataFixtures\Demo\VatDataFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Tests\App\Test\FunctionalTestCase;
@@ -121,7 +121,7 @@ class NewProductTest extends FunctionalTestCase
                 'product_form[pricesGroup][productCalculatedPricesGroup][vatsIndexedByDomainId][%s]',
                 $domainId
             );
-            $form[$inputName] = $vat->getId();
+            $form[$inputName] = (string)$vat->getId();
         }
     }
 }

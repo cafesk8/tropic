@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\AdvancedSearch\Filter;
 
+use App\Model\Product\Parameter\ParameterFacade;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\AdvancedSearchFilterInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
-use App\Model\Product\Parameter\ParameterFacade;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProductParameterFilter implements AdvancedSearchFilterInterface

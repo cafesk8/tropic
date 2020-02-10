@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Country;
 
+use App\Component\Domain\DomainHelper;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade as BaseCountryFacade;
-use App\Component\Domain\DomainHelper;
 
 /**
  * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Country\CountryRepository $countryRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Country\CountryFactoryInterface $countryFactory)

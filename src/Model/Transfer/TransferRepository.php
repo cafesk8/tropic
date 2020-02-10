@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Transfer;
 
+use App\Model\Transfer\Exception\TransferNotFoundException;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Model\Transfer\Exception\TransferNotFoundException;
 
 class TransferRepository
 {

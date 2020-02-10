@@ -34,8 +34,9 @@ class UserTransferIdRepository
     /**
      * @param \App\Model\Customer\User\CustomerUser $customer
      * @param string $transferId
+     * @return bool
      */
-    public function isTransferIdExists(User $customer, string $transferId)
+    public function isTransferIdExists(CustomerUser $customer, string $transferId)
     {
         $userTransferId = $this->getUserTransferIdRepository()->findOneBy([
             'customer' => $customer,

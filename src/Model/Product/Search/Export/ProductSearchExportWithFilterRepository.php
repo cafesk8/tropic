@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Search\Export;
 
+use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use App\Model\Product\Pricing\ProductManualInputPriceRepository;
+use App\Model\Product\ProductCachedAttributesFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -18,8 +20,6 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository as BaseProductSearchExportWithFilterRepository;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
-use App\Model\Product\ProductCachedAttributesFacade;
 
 /**
  * @property \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -31,6 +31,7 @@ use App\Model\Product\ProductCachedAttributesFacade;
  * @method array extractParameters(string $locale, \App\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
  * @method array extractPrices(int $domainId, \App\Model\Product\Product $product)
+ * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  */
 class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWithFilterRepository
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Advert\Product;
 
+use App\Model\Advert\Advert;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use App\Model\Advert\Advert;
 
 class AdvertProductRepository
 {

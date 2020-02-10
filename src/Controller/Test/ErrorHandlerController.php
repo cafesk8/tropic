@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Test;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use App\Controller\Front\FrontBaseController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class ErrorHandlerController extends FrontBaseController

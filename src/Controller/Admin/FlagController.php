@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use App\Form\Admin\FlagSettingsFormType;
 use App\Model\Product\Flag\FlagFacade;
+use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

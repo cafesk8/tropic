@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use App\Form\Admin\PromoProductFormType;
 use App\Model\Product\PromoProduct\Exception\PromoProductNotFoundException;
 use App\Model\Product\PromoProduct\PromoProductDataFactory;
 use App\Model\Product\PromoProduct\PromoProductFacade;
 use App\Model\Product\PromoProduct\PromoProductGridFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
+use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

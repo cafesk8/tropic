@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Search;
 
+use App\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer as BaseProductFilterDataToQueryTransformer;
-use App\Model\Product\Parameter\Parameter;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addBrandsToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)

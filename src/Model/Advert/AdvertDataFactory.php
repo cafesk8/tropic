@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Advert;
 
+use App\Model\Advert\Product\AdvertProduct;
+use App\Model\Advert\Product\AdvertProductRepository;
 use Shopsys\FrameworkBundle\Model\Advert\Advert as BaseAdvert;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertData as BaseAdvertData;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory as BaseAdvertDataFactory;
-use App\Model\Advert\Product\AdvertProduct;
-use App\Model\Advert\Product\AdvertProductRepository;
 
 /**
  * @property \App\Component\Image\ImageFacade|null $imageFacade

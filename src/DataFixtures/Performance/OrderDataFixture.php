@@ -4,19 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Performance;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Faker\Generator as Faker;
-use Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory;
-use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
-use Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
-use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
-use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use App\DataFixtures\Demo\CountryDataFixture;
 use App\DataFixtures\Demo\CurrencyDataFixture;
 use App\DataFixtures\Demo\OrderStatusDataFixture;
@@ -24,6 +11,19 @@ use App\DataFixtures\Demo\PaymentDataFixture;
 use App\DataFixtures\Demo\TransportDataFixture;
 use App\DataFixtures\Performance\ProductDataFixture as PerformanceProductDataFixture;
 use App\DataFixtures\Performance\UserDataFixture as PerformanceUserDataFixture;
+use Doctrine\ORM\EntityManagerInterface;
+use Faker\Generator as Faker;
+use Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory;
+use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
+use Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
+use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
+use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OrderDataFixture
@@ -210,7 +210,9 @@ class OrderDataFixture
             $orderData->street = $billingAddress->getStreet();
             $orderData->city = $billingAddress->getCity();
             $orderData->postcode = $billingAddress->getPostcode();
-            $orderData->country = $billingAddress->getCountry();
+            /** @var \App\Model\Country\Country $country */
+            $country = $billingAddress->getCountry();
+            $orderData->country = $country;
             $orderData->companyName = $billingAddress->getCompanyName();
             $orderData->companyNumber = $billingAddress->getCompanyNumber();
             $orderData->companyTaxNumber = $billingAddress->getCompanyTaxNumber();
@@ -302,7 +304,7 @@ class OrderDataFixture
 
         $qb = $this->em->createQueryBuilder()
             ->select('u.id')
-            ->from(User::class, 'u')
+            ->from(CustomerUser::class, 'u')
             ->where('u.id >= :firstPerformanceUserId')
             ->andWhere('u.domainId = :domainId')
             ->setParameter('firstPerformanceUserId', $firstPerformanceUser->getId())

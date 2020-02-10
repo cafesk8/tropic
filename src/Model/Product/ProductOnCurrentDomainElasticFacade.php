@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Filter\ProductFilterData;
+use App\Model\Product\Parameter\Parameter;
+use App\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Elasticsearch\ElasticsearchStructureManager;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
@@ -18,9 +21,6 @@ use Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer;
-use App\Model\Product\Filter\ProductFilterData;
-use App\Model\Product\Parameter\Parameter;
-use App\Model\Product\Parameter\ParameterFacade;
 
 /**
  * @property \App\Model\Product\Search\FilterQueryFactory $filterQueryFactory
@@ -31,6 +31,8 @@ use App\Model\Product\Parameter\ParameterFacade;
  * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginatedProductsForSearch(string|null $searchText, \App\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit)
  * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataInCategory(int $categoryId, \App\Model\Product\Filter\ProductFilterConfig $productFilterConfig, \App\Model\Product\Filter\ProductFilterData $productFilterData)
  * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataForSearch(string|null $searchText, \App\Model\Product\Filter\ProductFilterConfig $productFilterConfig, \App\Model\Product\Filter\ProductFilterData $productFilterData)
+ * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginatedProductsForSearch(string $searchText, \App\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, int $page, int $limit)
+ * @method array getProductsByCategory(\App\Model\Category\Category $category, int $limit, int $offset, string $orderingModeId)
  */
 class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElasticFacade
 {

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Product\Exception\ProductIsNotMainVariantException;
+use App\Model\Product\MainVariantGroup\MainVariantGroup;
+use App\Model\Product\Mall\ProductMallExportMapper;
+use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,11 +17,6 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
-use App\Component\Domain\DomainHelper;
-use App\Model\Product\Exception\ProductIsNotMainVariantException;
-use App\Model\Product\MainVariantGroup\MainVariantGroup;
-use App\Model\Product\Mall\ProductMallExportMapper;
-use App\Model\Product\StoreStock\ProductStoreStock;
 
 /**
  * @ORM\Table(name="products")

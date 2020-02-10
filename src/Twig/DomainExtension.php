@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use Shopsys\FrameworkBundle\Twig\DomainExtension as BaseDomainExtension;
 use App\Component\Domain\DomainHelper;
+use Shopsys\FrameworkBundle\Twig\DomainExtension as BaseDomainExtension;
 use Twig\TwigFunction;
 
 class DomainExtension extends BaseDomainExtension

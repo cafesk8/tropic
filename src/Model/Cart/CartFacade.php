@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Cart;
 
+use App\Model\Cart\Exception\OutOfStockException;
+use App\Model\Cart\Item\CartItem;
+use App\Model\Product\Product;
+use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
@@ -20,10 +24,6 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
-use App\Model\Cart\Exception\OutOfStockException;
-use App\Model\Cart\Item\CartItem;
-use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
 
 /**
  * @property \App\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
@@ -68,7 +68,7 @@ class CartFacade extends BaseCartFacade
         EntityManagerInterface $em,
         CartFactory $cartFactory,
         ProductRepository $productRepository,
-         CustomerUserIdentifierFactory  $customerUserIdentifierFactory,
+        CustomerUserIdentifierFactory $customerUserIdentifierFactory,
         Domain $domain,
         CurrentCustomerUser $currentCustomerUser,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
@@ -82,7 +82,7 @@ class CartFacade extends BaseCartFacade
             $em,
             $cartFactory,
             $productRepository,
-             $customerUserIdentifierFactory,
+            $customerUserIdentifierFactory,
             $domain,
             $currentCustomerUser,
             $currentPromoCodeFacade,
@@ -253,13 +253,13 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier  $customerUserIdentifier
      * @return \App\Model\Cart\Cart|null
      */
-    public function findCartByCustomerUserIdentifier(CustomerUserIdentifier  $customerUserIdentifier)
+    public function findCartByCustomerUserIdentifier(CustomerUserIdentifier $customerUserIdentifier)
     {
         /** @var \App\Model\Cart\Cart|null $cart */
-        $cart = $this->cartRepository->findByCustomerUserIdentifier( $customerUserIdentifier);
+        $cart = $this->cartRepository->findByCustomerUserIdentifier($customerUserIdentifier);
 
         if ($cart !== null) {
-            $this->cartWatcherFacade->checkCartModifications($cart,  $customerUserIdentifier->getCustomerUser());
+            $this->cartWatcherFacade->checkCartModifications($cart, $customerUserIdentifier->getCustomerUser());
 
             if ($cart->isEmpty()) {
                 $this->deleteCart($cart);

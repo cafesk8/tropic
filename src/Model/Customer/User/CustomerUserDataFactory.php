@@ -11,6 +11,9 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactory as BaseC
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 
+/**
+ * @method \App\Model\Customer\User\CustomerUserData createForCustomer(\Shopsys\FrameworkBundle\Model\Customer\Customer $customer)
+ */
 class CustomerUserDataFactory extends BaseCustomerUserDataFactory
 {
     /**

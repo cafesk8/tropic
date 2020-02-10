@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Search;
 
+use App\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
-use App\Model\Product\Listing\ProductListOrderingConfig;
 
 class FilterQuery extends BaseFilterQuery
 {

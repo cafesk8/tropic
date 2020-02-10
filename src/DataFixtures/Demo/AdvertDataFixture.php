@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Advert\AdvertDataFactory;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Model\Advert\Advert;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertFacade;
-use App\Model\Advert\AdvertDataFactory;
 
 class AdvertDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

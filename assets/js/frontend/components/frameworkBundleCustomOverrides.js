@@ -8,6 +8,7 @@ import Translator from 'bazinga-translator';
 
     Shopsys.validation.showFormErrorsWindow = function (container) {
         if ($(container).hasClass('js-no-popup') === false) {
+            /* eslint-disable no-new */
             new Window({
                 content:
                       '        <div class="box-popup-add__content__title">'

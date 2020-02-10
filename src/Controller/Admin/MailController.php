@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Shopsys\FrameworkBundle\Controller\Admin\MailController as BaseMailController;
 use App\Model\Order\Mail\OrderMail;
+use Shopsys\FrameworkBundle\Controller\Admin\MailController as BaseMailController;
 
 /**
  * @property \App\Model\Order\Mail\OrderMail $orderMail

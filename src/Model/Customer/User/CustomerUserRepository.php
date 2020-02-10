@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
+use App\Model\Customer\TransferIds\UserTransferId;
 use DateTime;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository as BaseCustomerUserRepository;
-use App\Model\Customer\TransferIds\UserTransferId;
 
 /**
  * @method \App\Model\Customer\User\CustomerUser|null findCustomerUserByEmailAndDomain(string $email, int $domainId)
@@ -18,6 +18,8 @@ use App\Model\Customer\TransferIds\UserTransferId;
  * @method \App\Model\Customer\User\CustomerUser|null findById(int $id)
  * @method \App\Model\Customer\User\CustomerUser|null findByIdAndLoginToken(int $id, string $loginToken)
  * @method replaceUsersPricingGroup(\App\Model\Pricing\Group\PricingGroup $oldPricingGroup, \App\Model\Pricing\Group\PricingGroup $newPricingGroup)
+ * @method \App\Model\Customer\User\CustomerUser|null getCustomerUserByEmailAndDomain(string $email, int $domainId)
+ * @method replaceCustomerUsersPricingGroup(\App\Model\Pricing\Group\PricingGroup $oldPricingGroup, \App\Model\Pricing\Group\PricingGroup $newPricingGroup)
  */
 class CustomerUserRepository extends BaseCustomerUserRepository
 {

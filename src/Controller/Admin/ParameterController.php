@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\ParameterController as BaseParameterController;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Exception\ParameterNotFoundException;
-use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 
 /**
  * @method __construct(\App\Model\Product\Parameter\ParameterFacade $parameterFacade, \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterInlineEdit $parameterInlineEdit)

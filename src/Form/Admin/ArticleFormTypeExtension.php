@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Article\Article;
 use Shopsys\FrameworkBundle\Form\Admin\Article\ArticleFormType;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
-use App\Model\Article\Article;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

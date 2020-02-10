@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use App\Component\Setting\Setting;
 use App\Form\Admin\ArticleSettingsFormType;
 use App\Model\Article\ArticleFacade;
 use App\Model\Article\ArticleSettingDataFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use App\DataFixtures\Demo\ProductDataFixture;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
-use App\DataFixtures\Demo\ProductDataFixture;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductSellingDeniedRecalculatorTest extends TransactionFunctionalTestCase

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Component\Balikobot\Pickup;
 
-use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use App\Component\String\StringHelper;
 use App\Model\Country\CountryFacade;
 use App\Model\Transport\PickupPlace\PickupPlaceData;
 use App\Model\Transport\PickupPlace\PickupPlaceFacade;
 use App\Model\Transport\Transport;
 use App\Model\Transport\TransportFacade;
+use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
 use Symfony\Bridge\Monolog\Logger;
 
 class DownloadPickupPlacesCronModule implements SimpleCronModuleInterface

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Vat;
 
+use App\DataFixtures\Demo\PaymentDataFixture;
+use App\DataFixtures\Demo\TransportDataFixture;
+use App\DataFixtures\Demo\VatDataFixture;
+use App\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
-use App\DataFixtures\Demo\PaymentDataFixture;
-use App\DataFixtures\Demo\TransportDataFixture;
-use App\DataFixtures\Demo\VatDataFixture;
-use App\Model\Transport\TransportFacade;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class VatFacadeTest extends TransactionFunctionalTestCase

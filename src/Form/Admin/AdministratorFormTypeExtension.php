@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use Shopsys\FrameworkBundle\Form\Admin\Administrator\AdministratorFormType;
 use App\Model\Administrator\Role;
+use Shopsys\FrameworkBundle\Form\Admin\Administrator\AdministratorFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\AdvancedSearch;
 
+use App\Model\AdvancedSearchOrder\Filter\OrderTransportFilter;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig as BaseOrderAdvancedSearchConfig;
 use Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\Filter\OrderCityFilter;
@@ -18,7 +19,6 @@ use Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\Filter\OrderPriceFilterWit
 use Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\Filter\OrderProductFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\Filter\OrderStatusFilter;
 use Shopsys\FrameworkBundle\Model\AdvancedSearchOrder\Filter\OrderStreetFilter;
-use App\Model\AdvancedSearchOrder\Filter\OrderTransportFilter;
 
 class OrderAdvancedSearchConfig extends BaseOrderAdvancedSearchConfig
 {

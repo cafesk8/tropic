@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Category;
 
+use App\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface;
-use App\Model\Category\Category;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class CategoryDomainTest extends TransactionFunctionalTestCase

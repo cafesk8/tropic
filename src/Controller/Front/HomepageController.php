@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
-use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
-use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use App\Component\Setting\Setting;
 use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
+use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
+use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 
 class HomepageController extends FrontBaseController
 {

@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode;
 
-use DateTime;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
-use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Cart\Cart;
 use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
@@ -16,6 +11,11 @@ use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembe
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
+use DateTime;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**

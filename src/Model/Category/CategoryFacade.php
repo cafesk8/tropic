@@ -31,6 +31,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
  * @method string[] getCategoryNamesInPathFromRootToProductMainCategoryOnDomain(\App\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
  * @method \App\Model\Category\Category getVisibleOnDomainById(int $domainId, int $categoryId)
  * @method int[] getListableProductCountsIndexedByCategoryId(\App\Model\Category\Category[] $categories, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $domainId)
+ * @method \App\Model\Category\Category getByUuid(string $categoryUuid)
  */
 class CategoryFacade extends BaseCategoryFacade
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\BushmanClub;
 
-use DateTime;
 use App\Model\BushmanClub\Exceptions\BushmanClubPointPeriodNotFoundException;
+use DateTime;
 
 class CurrentBushmanClubPointPeriods
 {

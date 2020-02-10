@@ -15,7 +15,6 @@ class Version20200207174519 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->sql('ALTER TABLE user_transfer_ids_and_eans DROP CONSTRAINT FK_891E458F9395C3F3');
-
     }
 
     /**

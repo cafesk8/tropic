@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Mall;
 
-use MPAPI\Entity\Products\AbstractArticleEntity;
-use MPAPI\Entity\Products\Product as MallProduct;
-use MPAPI\Entity\Products\Variant;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Category\CategoryFacade;
@@ -20,6 +13,13 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
 use App\Model\Product\ProductFacade;
 use App\Model\Store\StoreFacade;
+use MPAPI\Entity\Products\AbstractArticleEntity;
+use MPAPI\Entity\Products\Product as MallProduct;
+use MPAPI\Entity\Products\Variant;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 
 class ProductMallExportMapper
 {
@@ -30,7 +30,7 @@ class ProductMallExportMapper
     /**
      * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser
      */
-    private $productPriceCalculationForUser;
+    private $productPriceCalculationForCustomerUser;
 
     /**
      * @var \App\Component\Image\ImageFacade
@@ -235,7 +235,7 @@ class ProductMallExportMapper
             }
 
             /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
-            $productPrice = $this->productPriceCalculationForCustomerUser->calculatePriceForUserAndDomainId($product, self::CZECH_DOMAIN);
+            $productPrice = $this->productPriceCalculationForCustomerUser->calculatePriceForCustomerUserAndDomainId($product, self::CZECH_DOMAIN);
             if ($productPrice->isActionPriceByUsedForPromoCode()) {
                 $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
                 $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Article;
 
+use App\Model\Blog\Category\BlogCategory;
+use App\Model\Blog\Category\BlogCategoryFacade;
 use Shopsys\FrameworkBundle\Component\Breadcrumb\BreadcrumbGeneratorInterface;
 use Shopsys\FrameworkBundle\Component\Breadcrumb\BreadcrumbItem;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use App\Model\Blog\Category\BlogCategory;
-use App\Model\Blog\Category\BlogCategoryFacade;
 
 class BlogArticleBreadcrumbGenerator implements BreadcrumbGeneratorInterface
 {

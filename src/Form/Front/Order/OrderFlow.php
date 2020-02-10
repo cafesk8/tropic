@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Order;
 
+use App\Model\Customer\User\CustomerUser;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\StepInterface;
 use Shopsys\FrameworkBundle\Model\Country\Country;
-use App\Model\Customer\User\CustomerUser;
 
 class OrderFlow extends FormFlow
 {

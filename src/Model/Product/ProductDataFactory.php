@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
@@ -19,7 +20,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactory as BaseProductDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
-use App\Model\Product\Brand\BrandFacade;
 
 class ProductDataFactory extends BaseProductDataFactory
 {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Article\Article;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Article\ArticleData;
 use Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFacade;
-use App\Model\Article\Article;
 
 class ArticleDataFixture extends AbstractReferenceFixture
 {

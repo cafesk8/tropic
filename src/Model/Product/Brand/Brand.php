@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Brand;
 
+use App\Model\Product\Brand\Exception\BrandDeletionForbiddenException;
+use App\Model\Product\Brand\Exception\InvalidBrandTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand as BaseBrand;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandData as BaseBrandData;
-use App\Model\Product\Brand\Exception\BrandDeletionForbiddenException;
-use App\Model\Product\Brand\Exception\InvalidBrandTypeException;
 
 /**
  * @ORM\Table(name="brands")

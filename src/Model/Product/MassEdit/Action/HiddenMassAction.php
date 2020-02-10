@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MassEdit\Action;
 
+use App\Model\Product\MassEdit\MassEditActionInterface;
+use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
-use App\Model\Product\MassEdit\MassEditActionInterface;
-use App\Model\Product\Product;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class HiddenMassAction implements MassEditActionInterface

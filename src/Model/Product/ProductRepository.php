@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\MainVariantGroup\MainVariantGroup;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -17,7 +18,6 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository as BaseProductRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
-use App\Model\Product\MainVariantGroup\MainVariantGroup;
 
 /**
  * @method \App\Model\Product\Product|null findById(int $id)
@@ -52,6 +52,9 @@ use App\Model\Product\MainVariantGroup\MainVariantGroup;
  * @method \App\Model\Product\Product[] getListableByIds(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int[] $sortedProductIds)
  * @method \App\Model\Product\Product getOneByCatnumExcludeMainVariants(string $productCatnum)
  * @method \App\Model\Product\Product getOneByUuid(string $uuid)
+ * @method \Doctrine\ORM\QueryBuilder getAllListableTranslatedAndOrderedQueryBuilder(int $domainId, string $locale, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @method \Doctrine\ORM\QueryBuilder getAllListableTranslatedAndOrderedQueryBuilderByCategory(int $domainId, string $locale, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, \App\Model\Category\Category $category)
+ * @method array getAllOfferedProducts(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  */
 class ProductRepository extends BaseProductRepository
 {

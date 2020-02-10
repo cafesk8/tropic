@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Category\CategoryBlogArticle;
 
+use App\Model\Category\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use App\Model\Category\Category;
 
 class CategoryBlogArticleRepository
 {

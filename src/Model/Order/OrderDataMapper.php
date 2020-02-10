@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Order;
 
+use App\Model\Store\Store;
+use App\Model\Transport\PickupPlace\PickupPlace;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderData as BaseFrontOrderData;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataMapper as BaseOrderDataMapper;
-use App\Model\Store\Store;
-use App\Model\Transport\PickupPlace\PickupPlace;
 
 /**
  * @property \App\Model\Order\OrderDataFactory $orderDataFactory

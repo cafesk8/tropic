@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Gtm;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Security\Roles;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Customer\User\CustomerUser as Customer;
@@ -18,6 +13,11 @@ use App\Model\Gtm\Data\DataLayerUser;
 use App\Model\Order\Item\OrderItem;
 use App\Model\Order\Order;
 use App\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
+use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DataLayerMapper

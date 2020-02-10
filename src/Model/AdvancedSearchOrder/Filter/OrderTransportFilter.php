@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\AdvancedSearchOrder\Filter;
 
+use App\Model\Transport\TransportFacade;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\AdvancedSearchFilterInterface;
-use App\Model\Transport\TransportFacade;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class OrderTransportFilter implements AdvancedSearchFilterInterface

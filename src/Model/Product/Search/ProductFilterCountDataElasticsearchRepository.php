@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Search;
 
+use App\Model\Product\Parameter\Parameter;
+use App\Model\Product\Parameter\ParameterFacade;
 use Elasticsearch\Client;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
@@ -11,8 +13,6 @@ use Shopsys\FrameworkBundle\Model\Product\Search\AggregationResultToProductFilte
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository as BaseProductFilterCountDataElasticsearchRepository;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer;
-use App\Model\Product\Parameter\Parameter;
-use App\Model\Product\Parameter\ParameterFacade;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataInSearch(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $baseFilterQuery)

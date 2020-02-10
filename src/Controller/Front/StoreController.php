@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Component\Setting\Setting;
 use App\Model\Article\ArticleFacade;
 use App\Model\Store\StoreFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

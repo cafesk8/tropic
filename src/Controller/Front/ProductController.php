@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\Setting\Setting;
+use App\Form\Front\Product\ProductFilterFormType;
+use App\Model\Article\ArticleFacade;
+use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
+use App\Model\Gtm\GtmFacade;
+use App\Model\Product\Filter\ProductFilterData;
+use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
@@ -16,15 +25,6 @@ use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSear
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Twig\RequestExtension;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
-use App\Component\Setting\Setting;
-use App\Form\Front\Product\ProductFilterFormType;
-use App\Model\Article\ArticleFacade;
-use App\Model\Blog\Article\BlogArticleFacade;
-use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
-use App\Model\Gtm\GtmFacade;
-use App\Model\Product\Filter\ProductFilterData;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
-use App\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends FrontBaseController

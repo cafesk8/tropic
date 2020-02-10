@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use App\DataFixtures\Demo\AvailabilityDataFixture;
+use App\DataFixtures\Demo\ProductDataFixture;
+use App\DataFixtures\Demo\UnitDataFixture;
+use App\Model\Product\Product;
 use ReflectionClass;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
@@ -11,10 +15,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
-use App\DataFixtures\Demo\AvailabilityDataFixture;
-use App\DataFixtures\Demo\ProductDataFixture;
-use App\DataFixtures\Demo\UnitDataFixture;
-use App\Model\Product\Product;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductFacadeTest extends TransactionFunctionalTestCase

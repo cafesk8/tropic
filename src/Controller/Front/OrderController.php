@@ -5,6 +5,28 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use Exception;
+use App\Form\Front\Customer\Password\NewPasswordFormType;
+use App\Form\Front\Order\DomainAwareOrderFlowFactory;
+use App\Form\Front\Order\OrderFlow;
+use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Country\CountryFacade;
+use App\Model\Customer\User\CustomerUserFacade;
+use App\Model\Customer\User\CustomerUserUpdateDataFactory;
+use App\Model\GoPay\BankSwift\GoPayBankSwift;
+use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use App\Model\GoPay\Exception\GoPayNotConfiguredException;
+use App\Model\GoPay\Exception\GoPayPaymentDownloadException;
+use App\Model\GoPay\GoPayFacadeOnCurrentDomain;
+use App\Model\GoPay\GoPayTransactionFacade;
+use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
+use App\Model\Gtm\GtmFacade;
+use App\Model\Order\FrontOrderData;
+use App\Model\Order\OrderData;
+use App\Model\Order\OrderDataMapper;
+use App\Model\Order\Preview\OrderPreviewFactory;
+use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
+use App\Model\PayPal\PayPalFacade;
+use App\Model\Security\CustomerLoginHandler;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -26,28 +48,6 @@ use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
-use App\Form\Front\Customer\Password\NewPasswordFormType;
-use App\Form\Front\Order\DomainAwareOrderFlowFactory;
-use App\Form\Front\Order\OrderFlow;
-use App\Model\Blog\Article\BlogArticleFacade;
-use App\Model\Country\CountryFacade;
-use App\Model\Customer\User\CustomerUserUpdateDataFactory;
-use \App\Model\Customer\User\CustomerUserFacade;
-use App\Model\GoPay\BankSwift\GoPayBankSwift;
-use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
-use App\Model\GoPay\Exception\GoPayNotConfiguredException;
-use App\Model\GoPay\Exception\GoPayPaymentDownloadException;
-use App\Model\GoPay\GoPayFacadeOnCurrentDomain;
-use App\Model\GoPay\GoPayTransactionFacade;
-use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
-use App\Model\Gtm\GtmFacade;
-use App\Model\Order\FrontOrderData;
-use App\Model\Order\OrderData;
-use App\Model\Order\OrderDataMapper;
-use App\Model\Order\Preview\OrderPreviewFactory;
-use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
-use App\Model\PayPal\PayPalFacade;
-use App\Model\Security\CustomerLoginHandler;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -298,7 +298,9 @@ class OrderController extends FrontBaseController
         $frontOrderFormData->deliveryAddressSameAsBillingAddress = true;
         if ($customerUser instanceof CustomerUser) {
             $this->orderFacade->prefillFrontOrderData($frontOrderFormData, $customerUser);
-            $frontOrderFormData->country = $customerUser->getCustomer()->getBillingAddress()->getCountry();
+            /** @var \App\Model\Country\Country $country */
+            $country = $customerUser->getCustomer()->getBillingAddress()->getCountry();
+            $frontOrderFormData->country = $country;
         } else {
             $frontOrderFormData->country = $this->countryFacade->getHackedCountry();
         }

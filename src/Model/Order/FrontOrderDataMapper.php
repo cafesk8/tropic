@@ -45,7 +45,9 @@ class FrontOrderDataMapper extends BaseFrontOrderDataMapper
             $frontOrderData->deliveryStreet = $billingAddress->getStreet();
             $frontOrderData->deliveryCity = $billingAddress->getCity();
             $frontOrderData->deliveryPostcode = $billingAddress->getPostcode();
-            $frontOrderData->deliveryCountry = $billingAddress->getCountry();
+            /** @var \App\Model\Country\Country $country */
+            $country = $billingAddress->getCountry();
+            $frontOrderData->deliveryCountry = $country;
         }
         $frontOrderData->deliveryAddressSameAsBillingAddress = true;
     }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Component\Mall;
 
-use MPAPI\Entity\Order;
-use MPAPI\Services\Orders;
 use App\Component\Mall\Exception\BadStatusFromFinallyStatusException;
 use App\Component\Mall\Exception\BadStatusFromOpenStatusException;
 use App\Component\Mall\Exception\BadStatusFromShippedStatusException;
 use App\Component\Mall\Exception\BadStatusFromShippingStatusException;
+use MPAPI\Entity\Order;
+use MPAPI\Services\Orders;
 
 class MallImportOrderClient
 {

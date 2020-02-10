@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Article;
 
+use App\Model\Article\Article;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFactoryInterface;
-use App\Model\Article\Article;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ArticleTest extends TransactionFunctionalTestCase

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Cart\Item;
 
+use App\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem as BaseCartItem;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactory as BaseCartItemFactory;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Product\PromoProduct\PromoProduct;
 
 class CartItemFactory extends BaseCartItemFactory
 {

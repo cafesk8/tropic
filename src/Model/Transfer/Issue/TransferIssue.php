@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Transfer\Issue;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Model\Transfer\Transfer;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="transfer_issues", indexes={@ORM\Index(columns={"group_id"}), @ORM\Index(columns={"message"})})

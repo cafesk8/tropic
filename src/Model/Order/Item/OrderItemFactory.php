@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
+use App\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactory as BaseOrderItemFactory;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Product\PromoProduct\PromoProduct;
 
 /**
  * @method \App\Model\Order\Item\OrderItem createPayment(\App\Model\Order\Order $order, string $name, \Shopsys\FrameworkBundle\Model\Pricing\Price $price, string $vatPercent, int $quantity, \App\Model\Payment\Payment $payment)

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use App\Form\Admin\MainVariantGroupFormType;
 use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
+use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 

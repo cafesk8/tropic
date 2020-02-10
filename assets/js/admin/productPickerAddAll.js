@@ -11,7 +11,7 @@ import Register from 'framework/common/utils/register';
         const $addButton = $wrapper.filterAllNodes('.js-product-picker-add-all');
         const $removeButton = $wrapper.filterAllNodes('.js-product-picker-remove-all');
 
-        const init = function () {
+        this.init = function () {
             $addButton.on('click', onAddButtonClick);
             $removeButton.on('click', onRemoveButtonClick);
         };

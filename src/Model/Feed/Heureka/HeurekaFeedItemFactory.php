@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Feed\Heureka;
 
+use App\Model\Category\CategoryFacade;
+use App\Model\Feed\FeedHelper;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -11,8 +13,6 @@ use Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItem;
 use Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory as BaseHeurekaFeedItemFactory;
 use Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaProductDataBatchLoader;
 use Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryFacade;
-use App\Model\Category\CategoryFacade;
-use App\Model\Feed\FeedHelper;
 
 class HeurekaFeedItemFactory extends BaseHeurekaFeedItemFactory
 {

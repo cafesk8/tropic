@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Form\Admin\Customer\User\CustomerUserFormType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
-use App\Model\Customer\User\CustomerUser;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 

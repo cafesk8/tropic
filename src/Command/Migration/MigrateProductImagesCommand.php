@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Command\Migration;
 
-use Doctrine\DBAL\Driver\Connection;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use App\Command\Migration\Exception\MigrationDataNotFoundException;
 use App\Component\Image\Exception\MigrateImageToEntityFailedException;
 use App\Component\Image\ImageFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

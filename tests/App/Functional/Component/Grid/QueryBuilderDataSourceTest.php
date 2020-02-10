@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Component\Grid;
 
-use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
 use App\DataFixtures\Demo\ProductDataFixture;
 use App\Model\Product\Product;
+use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class QueryBuilderDataSourceTest extends TransactionFunctionalTestCase

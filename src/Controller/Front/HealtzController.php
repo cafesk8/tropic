@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Component\Redis\RedisFacade;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class HealtzController extends FrontBaseController

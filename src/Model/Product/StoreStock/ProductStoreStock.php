@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\StoreStock;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Model\Product\Product;
 use App\Model\Store\Store;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity

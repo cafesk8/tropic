@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Component\Domain\DomainHelper;
+use App\Component\GoogleApi\GoogleClient;
+use App\Component\GoogleApi\Youtube\YoutubeView;
+use App\Component\Setting\Setting;
+use App\Model\Category\Category;
+use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\MainVariantGroup\MainVariantGroup;
+use App\Model\Product\Parameter\ParameterFacade;
+use App\Model\Product\Product as ChildProduct;
+use App\Model\Product\StoreStock\ProductStoreStockFactory;
+use App\Model\Store\StoreFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Google_Service_Exception;
 use Psr\Log\LoggerInterface;
@@ -36,17 +47,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportScheduler;
-use App\Component\Domain\DomainHelper;
-use App\Component\GoogleApi\GoogleClient;
-use App\Component\GoogleApi\Youtube\YoutubeView;
-use App\Component\Setting\Setting;
-use App\Model\Category\Category;
-use App\Model\Pricing\Group\PricingGroupFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroup;
-use App\Model\Product\Parameter\ParameterFacade;
-use App\Model\Product\Product as ChildProduct;
-use App\Model\Product\StoreStock\ProductStoreStockFactory;
-use App\Model\Store\StoreFacade;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em

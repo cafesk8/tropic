@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Transfer;
 
-use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator;
-use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use App\Component\Rest\RestClient;
 use App\Component\Transfer\AbstractTransferImportCronModule;
 use App\Component\Transfer\Response\TransferResponse;
@@ -19,6 +17,8 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\ProductVariantFacade;
 use App\Model\Product\Transfer\Exception\InvalidProductTransferResponseItemDataException;
+use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
 class ProductImportCronModule extends AbstractTransferImportCronModule
 {

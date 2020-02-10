@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 
 class MainVariantGroupDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

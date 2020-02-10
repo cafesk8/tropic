@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Product\Brand\Brand;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
-use App\Model\Product\Brand\Brand;
 
 class BrandDataFixture extends AbstractReferenceFixture
 {

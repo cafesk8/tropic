@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\GoPay;
 
+use App\Model\Order\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use GoPay\Definition\Response\PaymentStatus;
-use App\Model\Order\Order;
 
 class GoPayTransactionRepository
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Transfer;
 
-use Shopsys\FrameworkBundle\Component\String\TransformString;
-use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\TransferConfig;
 use App\Model\Order\Item\OrderItem;
 use App\Model\Order\Order;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
+use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 
 class OrderExportMapper
 {

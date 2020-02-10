@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
+use App\Model\Product\ProductDomain;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository as BaseProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Product\ProductDomain;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice[] getByProduct(\App\Model\Product\Product $product)

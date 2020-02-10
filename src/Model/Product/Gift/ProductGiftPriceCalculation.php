@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Gift;
 
+use App\Component\Domain\DomainHelper;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use App\Component\Domain\DomainHelper;
 
 class ProductGiftPriceCalculation
 {

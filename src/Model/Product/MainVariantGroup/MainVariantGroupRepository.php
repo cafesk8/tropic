@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MainVariantGroup;
 
+use App\Model\Product\Product;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
@@ -11,7 +12,6 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
-use App\Model\Product\Product;
 
 class MainVariantGroupRepository
 {

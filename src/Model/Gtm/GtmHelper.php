@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Gtm;
 
-use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use App\Model\Order\Item\OrderItem;
 use App\Model\Order\OrderData;
 use App\Model\Order\Preview\OrderPreview;
@@ -13,6 +12,7 @@ use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
 use App\Twig\NumberFormatterExtension;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 
 class GtmHelper
 {

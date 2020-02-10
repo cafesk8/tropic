@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Article;
 
+use App\Component\Setting\Setting;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFacade as BaseArticleFacade;
 use Shopsys\FrameworkBundle\Model\Article\ArticleFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Article\ArticleRepository;
-use App\Component\Setting\Setting;
 
 /**
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade

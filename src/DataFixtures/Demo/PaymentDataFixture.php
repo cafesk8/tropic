@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Payment\Payment;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
@@ -14,7 +15,6 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
-use App\Model\Payment\Payment;
 
 class PaymentDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

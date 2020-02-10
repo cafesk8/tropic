@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Product\MassEdit\MassEditFacade;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController as BaseProductPickerController;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
-use App\Model\Product\MassEdit\MassEditFacade;
-use App\Model\Product\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

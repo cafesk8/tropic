@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
-use Doctrine\Common\Cache\CacheProvider;
 use App\Component\Redis\RedisFacade;
+use Doctrine\Common\Cache\CacheProvider;
 
 class CachedProductDistinguishingParameterValueFacade
 {

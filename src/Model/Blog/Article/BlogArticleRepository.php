@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Article;
 
+use App\Model\Blog\Category\BlogCategory;
+use App\Model\Product\Product;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -12,8 +14,6 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
-use App\Model\Blog\Category\BlogCategory;
-use App\Model\Product\Product;
 
 class BlogArticleRepository
 {

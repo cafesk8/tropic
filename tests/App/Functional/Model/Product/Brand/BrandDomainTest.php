@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product\Brand;
 
+use App\Model\Product\Brand\Brand;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFactoryInterface;
-use App\Model\Product\Brand\Brand;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class BrandDomainTest extends TransactionFunctionalTestCase

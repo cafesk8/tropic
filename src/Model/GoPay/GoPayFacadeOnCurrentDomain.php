@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Model\GoPay;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Model\Order\Order;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class GoPayFacadeOnCurrentDomain
 {

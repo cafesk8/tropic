@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\Cron;
 
-use Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor as BaseCronModuleExecutor;
 use App\Component\Transfer\TransferIteratedCronModuleInterface;
+use Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor as BaseCronModuleExecutor;
 
 class CronModuleExecutor extends BaseCronModuleExecutor
 {

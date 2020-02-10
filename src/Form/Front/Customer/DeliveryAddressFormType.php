@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Customer;
 
+use App\Component\Domain\DomainHelper;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
-use App\Component\Domain\DomainHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -138,7 +138,7 @@ class DeliveryAddressFormType extends AbstractType
             ->setRequired('domain_id')
             ->addAllowedTypes('domain_id', 'int')
             ->setRequired('user')
-            ->addAllowedTypes('user', User::class)
+            ->addAllowedTypes('user', CustomerUser::class)
             ->setDefaults([
                 'data_class' => DeliveryAddressData::class,
                 'attr' => ['novalidate' => 'novalidate'],

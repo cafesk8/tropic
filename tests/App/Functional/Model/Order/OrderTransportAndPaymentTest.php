@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Order;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use App\Model\Payment\Payment;
 use App\Model\Payment\PaymentFacade;
 use App\Model\Transport\Transport;
 use App\Model\Transport\TransportFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Transport;
 
+use App\Model\Transport\Exception\InvalidPersonalTakeTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 use Shopsys\FrameworkBundle\Model\Transport\Transport as BaseTransport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportData as BaseTransportData;
-use App\Model\Transport\Exception\InvalidPersonalTakeTypeException;
 
 /**
  * @ORM\Table(name="transports")

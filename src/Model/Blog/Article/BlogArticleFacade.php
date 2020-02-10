@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Article;
 
+use App\Model\Blog\BlogVisibilityRecalculationScheduler;
+use App\Model\Blog\Category\BlogCategory;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Blog\BlogVisibilityRecalculationScheduler;
-use App\Model\Blog\Category\BlogCategory;
 
 class BlogArticleFacade
 {

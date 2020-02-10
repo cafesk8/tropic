@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Order;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Cart\CartFacade;
+use App\Model\Country\CountryFacade;
+use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
+use App\Model\Store\StoreIdToEntityTransformer;
+use App\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\SingleCheckboxChoiceType;
 use Shopsys\FrameworkBundle\Model\Country\Country;
@@ -13,12 +19,6 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
-use App\Component\Domain\DomainHelper;
-use App\Model\Cart\CartFacade;
-use App\Model\Country\CountryFacade;
-use App\Model\GoPay\BankSwift\GoPayBankSwiftFacade;
-use App\Model\Store\StoreIdToEntityTransformer;
-use App\Model\Transport\PickupPlace\PickupPlaceIdToEntityTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product\Availability;
 
+use App\DataFixtures\Demo\ProductDataFixture;
 use Shopsys\FrameworkBundle\Model\Product\Availability\Availability;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
-use App\DataFixtures\Demo\ProductDataFixture;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 final class AvailabilityFacadeTest extends TransactionFunctionalTestCase

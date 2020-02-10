@@ -25,6 +25,7 @@ use Shopsys\FrameworkBundle\Component\Image\ImageFacade as BaseImageFacade;
  * @method \App\Component\Image\Image getById(int $imageId)
  * @method setImagePositionsByOrder(\App\Component\Image\Image[] $orderedImages)
  * @method \App\Component\Image\Image[] getImagesByEntitiesIndexedByEntityId(int[] $entityIds, string $entityClass)
+ * @method \App\Component\Image\Image[] getImagesByEntityIdAndNameIndexedById(int $entityId, string $entityName, string|null $type)
  */
 class ImageFacade extends BaseImageFacade
 {

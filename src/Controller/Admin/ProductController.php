@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Component\Cron\CronModuleFacade;
+use App\Form\Admin\VariantFormTypeExtension;
+use App\Model\Product\MassEdit\MassEditFacade;
+use App\Model\Product\Parameter\ParameterFacade;
+use App\Model\Product\ProductFacade;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Grid\Grid;
@@ -25,11 +30,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
 use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportCronModule;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 use Shopsys\FrameworkBundle\Twig\ProductExtension;
-use App\Component\Cron\CronModuleFacade;
-use App\Form\Admin\VariantFormTypeExtension;
-use App\Model\Product\MassEdit\MassEditFacade;
-use App\Model\Product\Parameter\ParameterFacade;
-use App\Model\Product\ProductFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

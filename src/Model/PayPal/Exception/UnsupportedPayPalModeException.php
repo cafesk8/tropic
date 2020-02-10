@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\PayPal\Exception;
 
-use Exception;
 use App\Model\PayPal\PayPalClient;
+use Exception;
 
 class UnsupportedPayPalModeException extends Exception
 {

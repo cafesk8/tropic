@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Pricing\ProductPriceCalculation;
+use App\Model\Transport\DeliveryDate\DeliveryDateFacade;
+use App\Model\Transport\Transport;
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
@@ -13,11 +18,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
-use App\Model\Pricing\Group\PricingGroup;
-use App\Model\Pricing\Group\PricingGroupFacade;
-use App\Model\Product\Pricing\ProductPriceCalculation;
-use App\Model\Transport\DeliveryDate\DeliveryDateFacade;
-use App\Model\Transport\Transport;
 
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {

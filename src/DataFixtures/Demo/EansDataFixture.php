@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\CardEan\CardEanFacade;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
-use App\Component\CardEan\CardEanFacade;
 
 class EansDataFixture extends AbstractReferenceFixture
 {

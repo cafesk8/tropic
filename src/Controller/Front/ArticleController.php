@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Component\Setting\Setting;
 use App\Model\Article\Article;
 use App\Model\Article\ArticleFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends FrontBaseController

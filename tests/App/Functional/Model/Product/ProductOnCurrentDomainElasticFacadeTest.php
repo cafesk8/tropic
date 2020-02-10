@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
-use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use App\Model\Product\ProductOnCurrentDomainElasticFacade;
+use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 
 class ProductOnCurrentDomainElasticFacadeTest extends ProductOnCurrentDomainFacadeTest
 {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
+use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
+use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
@@ -16,9 +19,6 @@ use Shopsys\ReadModelBundle\Image\ImageViewFacade;
 use Shopsys\ReadModelBundle\Product\Action\ProductActionViewFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewElasticFacade as BaseListedProductViewElasticFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory;
-use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
-use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**

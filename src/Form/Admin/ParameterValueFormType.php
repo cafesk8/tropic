@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use Shopsys\FrameworkBundle\Form\ColorPickerType;
 use App\Model\Product\Parameter\ParameterValueData;
+use Shopsys\FrameworkBundle\Form\ColorPickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

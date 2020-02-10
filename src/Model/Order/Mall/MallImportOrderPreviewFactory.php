@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Mall;
 
-use MPAPI\Entity\Order;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
 use App\Component\Domain\DomainHelper;
 use App\Model\Order\OrderData;
 use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Product\ProductFacade;
+use MPAPI\Entity\Order;
+use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
+use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
 
 class MallImportOrderPreviewFactory
 {

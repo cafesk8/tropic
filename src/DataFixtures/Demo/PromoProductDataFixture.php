@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Product\PromoProduct\PromoProductDataFactory;
+use App\Model\Product\PromoProduct\PromoProductFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use App\Model\Product\PromoProduct\PromoProductDataFactory;
-use App\Model\Product\PromoProduct\PromoProductFacade;
 
 class PromoProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

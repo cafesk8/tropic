@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Controller\Admin\GridController as BaseGridController;
-use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

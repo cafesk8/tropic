@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Component\Grid;
 
-use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderWithRowManipulatorDataSource;
 use App\DataFixtures\Demo\ProductDataFixture;
 use App\Model\Product\Product;
+use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderWithRowManipulatorDataSource;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class QueryBuilderWithRowManipulatorDataSourceTest extends TransactionFunctionalTestCase

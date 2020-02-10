@@ -1,11 +1,10 @@
 import Register from 'framework/common/utils/register';
 import Translator from 'bazinga-translator';
-import AjaxMoreLoader from '../components/ajaxMoreLoader'
+import AjaxMoreLoader from '../components/ajaxMoreLoader';
 
 (function ($) {
 
-    const Shopsys = window.Shopsys || {};
-
+    /* eslint-disable no-new */
     (new Register()).registerCallback(function ($container) {
         $container.filterAllNodes('.js-blog-list-with-paginator').each(function () {
             new AjaxMoreLoader($(this), {

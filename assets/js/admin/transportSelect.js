@@ -4,6 +4,7 @@ import Translator from 'bazinga-translator';
 
 (function ($) {
 
+    /* eslint-disable no-use-before-define */
     const Shopsys = Shopsys || {};
     Shopsys.transportSelect = Shopsys.transportSelect || {};
 

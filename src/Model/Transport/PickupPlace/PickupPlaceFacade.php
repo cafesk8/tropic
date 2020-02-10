@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Transport\PickupPlace;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Country\CountryFacade;
 use App\Model\Transport\TransportFacade;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PickupPlaceFacade
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\Registration\Transfer;
 
-use DateTime;
-use Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\TransferConfig;
 use App\Model\Country\CountryFacade;
 use App\Model\Customer\User\CustomerUser;
+use DateTime;
+use Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository;
 
 class CustomerExportMapper
 {

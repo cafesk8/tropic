@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace App\Model\Order;
 
+use App\Component\Domain\DomainHelper;
+use App\Component\Mall\MallImportOrderClient;
+use App\Component\SmsManager\SmsManagerFactory;
+use App\Component\SmsManager\SmsMessageFactory;
+use App\Model\Gtm\GtmHelper;
+use App\Model\Order\Item\OrderItemFactory;
+use App\Model\Order\Mall\Exception\StatusChangException;
+use App\Model\Order\PromoCode\PromoCode;
+use App\Model\Order\PromoCode\PromoCodeData;
+use App\Model\Product\Gift\ProductGiftPriceCalculation;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -12,8 +22,8 @@ use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper;
@@ -40,16 +50,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
-use App\Component\Domain\DomainHelper;
-use App\Component\Mall\MallImportOrderClient;
-use App\Component\SmsManager\SmsManagerFactory;
-use App\Component\SmsManager\SmsMessageFactory;
-use App\Model\Gtm\GtmHelper;
-use App\Model\Order\Item\OrderItemFactory;
-use App\Model\Order\Mall\Exception\StatusChangException;
-use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
-use App\Model\Product\Gift\ProductGiftPriceCalculation;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em

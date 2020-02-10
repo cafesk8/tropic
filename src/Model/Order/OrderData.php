@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Order;
 
+use App\Model\Transport\Transport;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Order\OrderData as BaseOrderData;
-use App\Model\Transport\Transport;
 
 /**
  * @property \App\Model\Payment\Payment|null $payment

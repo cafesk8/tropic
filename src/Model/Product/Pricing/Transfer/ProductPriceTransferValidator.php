@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing\Transfer;
 
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use App\Component\Transfer\Exception\TransferInvalidDataException;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;

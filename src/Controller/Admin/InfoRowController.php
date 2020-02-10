@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Component\InfoRow\InfoRowFacade;
+use App\Form\Admin\InfoRowFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
-use App\Component\InfoRow\InfoRowFacade;
-use App\Form\Admin\InfoRowFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

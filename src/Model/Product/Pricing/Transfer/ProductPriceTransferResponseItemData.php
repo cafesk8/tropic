@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing\Transfer;
 
+use App\Component\DataObject\ReadObjectAsArrayTrait;
+use App\Component\Transfer\Response\TransferResponseItemDataInterface;
 use ArrayAccess;
 use IteratorAggregate;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use App\Component\DataObject\ReadObjectAsArrayTrait;
-use App\Component\Transfer\Response\TransferResponseItemDataInterface;
 
 class ProductPriceTransferResponseItemData implements TransferResponseItemDataInterface, ArrayAccess, IteratorAggregate
 {

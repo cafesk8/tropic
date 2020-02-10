@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\PayPal;
 
+use App\Model\Order\Order;
+use App\Model\Order\OrderFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use PayPal\Api\Address;
 use PayPal\Api\Amount;
@@ -14,8 +16,6 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
-use App\Model\Order\Order;
-use App\Model\Order\OrderFacade;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PayPalFacade

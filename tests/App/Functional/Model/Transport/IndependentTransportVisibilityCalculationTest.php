@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Transport;
 
+use App\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
 use Shopsys\FrameworkBundle\Model\Transport\IndependentTransportVisibilityCalculation;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
-use App\Model\Transport\Transport;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class IndependentTransportVisibilityCalculationTest extends TransactionFunctionalTestCase
@@ -29,16 +27,14 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
     public function testIsIndependentlyVisible()
     {
         $em = $this->getEntityManager();
-        $vat = $this->getDefaultVat();
 
         $enabledOnDomains = [
             Domain::FIRST_DOMAIN_ID => true,
             Domain::SECOND_DOMAIN_ID => false,
         ];
 
-        $transport = $this->getDefaultTransport($vat, $enabledOnDomains, false);
+        $transport = $this->getDefaultTransport($enabledOnDomains, false);
 
-        $em->persist($vat);
         $em->persist($transport);
         $em->flush();
 
@@ -52,7 +48,6 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
     public function testIsIndependentlyVisibleEmptyName()
     {
         $em = $this->getEntityManager();
-        $vat = $this->getDefaultVat();
 
         $transportData = $this->getTransportDataFactory()->create();
         $names = [];
@@ -60,7 +55,6 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
             $names[$locale] = null;
         }
         $transportData->name = $names;
-        $transportData->vat = $vat;
         $transportData->hidden = false;
         $transportData->enabled = [
             Domain::FIRST_DOMAIN_ID => true,
@@ -69,7 +63,6 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
 
         $transport = new Transport($transportData);
 
-        $em->persist($vat);
         $em->persist($transport);
         $em->flush();
 
@@ -83,16 +76,14 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
     public function testIsIndependentlyVisibleNotOnDomain()
     {
         $em = $this->getEntityManager();
-        $vat = $this->getDefaultVat();
 
         $enabledOnDomains = [
             Domain::FIRST_DOMAIN_ID => false,
             Domain::SECOND_DOMAIN_ID => false,
         ];
 
-        $transport = $this->getDefaultTransport($vat, $enabledOnDomains, false);
+        $transport = $this->getDefaultTransport($enabledOnDomains, false);
 
-        $em->persist($vat);
         $em->persist($transport);
         $em->flush();
 
@@ -106,16 +97,14 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
     public function testIsIndependentlyVisibleHidden()
     {
         $em = $this->getEntityManager();
-        $vat = $this->getDefaultVat();
 
         $enabledOnDomains = [
             Domain::FIRST_DOMAIN_ID => true,
             Domain::SECOND_DOMAIN_ID => false,
         ];
 
-        $transport = $this->getDefaultTransport($vat, $enabledOnDomains, true);
+        $transport = $this->getDefaultTransport($enabledOnDomains, true);
 
-        $em->persist($vat);
         $em->persist($transport);
         $em->flush();
 
@@ -127,12 +116,11 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat $vat
      * @param array $enabledForDomains
      * @param bool $hidden
      * @return \App\Model\Transport\Transport
      */
-    public function getDefaultTransport(Vat $vat, $enabledForDomains, $hidden)
+    public function getDefaultTransport($enabledForDomains, $hidden)
     {
         $transportDataFactory = $this->getTransportDataFactory();
 
@@ -143,22 +131,10 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
         }
         $transportData->name = $names;
 
-        $transportData->vat = $vat;
         $transportData->hidden = $hidden;
         $transportData->enabled = $enabledForDomains;
 
         return new Transport($transportData);
-    }
-
-    /**
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat
-     */
-    private function getDefaultVat()
-    {
-        $vatData = new VatData();
-        $vatData->name = 'vat';
-        $vatData->percent = '21';
-        return new Vat($vatData);
     }
 
     /**

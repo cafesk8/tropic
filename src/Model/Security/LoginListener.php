@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Security;
 
+use App\Model\Customer\Transfer\CustomerTransferService;
+use App\Model\Customer\User\CustomerUserFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Administrator\Activity\AdministratorActivityFacade;
@@ -13,8 +15,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderFlowFacade;
 use Shopsys\FrameworkBundle\Model\Security\LoginListener as BaseLoginListener;
 use Shopsys\FrameworkBundle\Model\Security\TimelimitLoginInterface;
 use Shopsys\FrameworkBundle\Model\Security\UniqueLoginInterface;
-use \App\Model\Customer\User\CustomerUserFacade;
-use App\Model\Customer\Transfer\CustomerTransferService;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginListener extends BaseLoginListener
@@ -61,7 +61,7 @@ class LoginListener extends BaseLoginListener
             $customerUser->setLastActivity(new DateTime());
         }
 
-        if ($customerUser instanceof User) {
+        if ($customerUser instanceof CustomerUser) {
             $customerUser->onLogin();
         }
 

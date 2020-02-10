@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\Gtm;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Category\Category;
 use App\Model\Gtm\Data\DataLayerPage;
 use App\Model\Gtm\Data\DataLayerUser;
 use App\Model\Order\Order;
 use App\Model\Product\Product;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
+use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 
 class GtmFacade
 {

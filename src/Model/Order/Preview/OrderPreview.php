@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Model\Order\PromoCode\PromoCode;
+use App\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
-use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 
 /**
  * @property \App\Model\Transport\Transport|null $transport

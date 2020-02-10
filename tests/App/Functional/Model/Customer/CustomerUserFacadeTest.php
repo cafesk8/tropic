@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Customer;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use App\DataFixtures\Demo\PricingGroupDataFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class CustomerUserFacadeTest extends TransactionFunctionalTestCase

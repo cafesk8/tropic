@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Pricing\Group;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPrice;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use App\DataFixtures\Demo\PricingGroupDataFixture;
 use App\DataFixtures\Demo\ProductDataFixture;
 use App\Model\Pricing\Group\PricingGroupData;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPrice;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class PricingGroupFacadeTest extends TransactionFunctionalTestCase

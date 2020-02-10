@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Category;
 
+use App\Model\Blog\Category\Exception\BlogCategoryDomainNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Prezent\Doctrine\Translatable\Annotation as Prezent;
 use Shopsys\FrameworkBundle\Model\Localization\AbstractTranslatableEntity;
-use App\Model\Blog\Category\Exception\BlogCategoryDomainNotFoundException;
 
 /**
  * @Gedmo\Tree(type="nested")

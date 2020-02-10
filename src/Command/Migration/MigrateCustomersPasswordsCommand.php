@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Command\Migration;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use App\Command\Migration\Exception\PasswordsFileNotFoundException;
 use App\Model\Customer\BushmanCustomPasswordEncoder;
-use \App\Model\Customer\User\CustomerUserFacade;
+use App\Model\Customer\User\CustomerUserFacade;
+use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -149,7 +149,7 @@ class MigrateCustomersPasswordsCommand extends Command
      * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @param string $password
      */
-    private function changePasswordByMigration(User $customerUser, string $password): void
+    private function changePasswordByMigration(CustomerUser $customerUser, string $password): void
     {
         $encoder = $this->encoderFactory->getEncoder($this);
 

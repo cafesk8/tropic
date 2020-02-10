@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Advert\AdvertData;
 use Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Model\Advert\Advert;
-use App\Model\Advert\AdvertData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command\Migration;
 
-use Doctrine\DBAL\Driver\Connection;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use App\Command\Migration\Exception\MigrationDataNotFoundException;
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Parameter\Parameter;
@@ -17,6 +13,10 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

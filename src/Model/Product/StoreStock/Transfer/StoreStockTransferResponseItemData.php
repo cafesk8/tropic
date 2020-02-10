@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\StoreStock\Transfer;
 
-use ArrayAccess;
-use IteratorAggregate;
 use App\Component\DataObject\ReadObjectAsArrayTrait;
 use App\Component\Transfer\Response\TransferResponseItemDataInterface;
+use ArrayAccess;
+use IteratorAggregate;
 
 class StoreStockTransferResponseItemData implements TransferResponseItemDataInterface, ArrayAccess, IteratorAggregate
 {

@@ -1,5 +1,5 @@
 -   name: mailTemplate
     class: Shopsys\FrameworkBundle\Model\Mail\MailTemplate
     types:
-       -   name: default
-           multiple: true
+        -   name: default
+            multiple: true

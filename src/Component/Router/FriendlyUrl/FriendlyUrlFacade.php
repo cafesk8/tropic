@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Router\FriendlyUrl;
 
+use App\Component\Router\FriendlyUrl\Exception\FriendlyUrlExistsException;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
@@ -12,7 +13,6 @@ use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade as Ba
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFactoryInterface;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlUniqueResultFactory;
-use App\Component\Router\FriendlyUrl\Exception\FriendlyUrlExistsException;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em

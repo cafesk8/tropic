@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use App\DataFixtures\Demo\AvailabilityDataFixture;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface;
-use App\DataFixtures\Demo\AvailabilityDataFixture;
-use App\Model\Product\Product;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductDomainTest extends TransactionFunctionalTestCase

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Mall;
 
-use MPAPI\Entity\Order;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade;
 use App\Component\Mall\MallImportOrderClient;
 use App\Model\Order\OrderFacade;
+use MPAPI\Entity\Order;
+use Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade;
 
 class MallImportOrderFactory
 {

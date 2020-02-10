@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\HorizontalCategoryFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends FrontBaseController

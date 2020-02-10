@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Model\Feed\HsSport;
 
+use App\Model\Feed\HsSport\FeedItem\HsSportFeedItemFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Feed\FeedInfoInterface;
 use Shopsys\FrameworkBundle\Model\Feed\FeedInterface;
-use App\Model\Feed\HsSport\FeedItem\HsSportFeedItemFacade;
 
 class HsSportFeed implements FeedInterface
 {

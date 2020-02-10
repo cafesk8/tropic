@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
+use App\Model\Store\Exception\StoreNotFoundException;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use App\Model\Store\Exception\StoreNotFoundException;
 
 class StoreRepository
 {

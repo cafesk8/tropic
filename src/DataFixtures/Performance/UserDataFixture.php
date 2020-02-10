@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Performance;
 
+use App\DataFixtures\Demo\CountryDataFixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator as Faker;
 use Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory;
@@ -11,11 +12,10 @@ use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
 use Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface;
-use App\DataFixtures\Demo\CountryDataFixture;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UserDataFixture

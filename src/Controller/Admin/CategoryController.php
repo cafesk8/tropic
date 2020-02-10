@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Component\Redis\RedisFacade;
+use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
@@ -12,8 +14,6 @@ use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider;
 use Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
-use App\Component\Redis\RedisFacade;
-use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

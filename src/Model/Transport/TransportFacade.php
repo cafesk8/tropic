@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Transport;
 
+use App\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule;
+use App\Component\Balikobot\Pickup\PickupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -22,8 +24,6 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportRepository;
 use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
-use App\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule;
-use App\Component\Balikobot\Pickup\PickupFacade;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
@@ -37,6 +37,8 @@ use App\Component\Balikobot\Pickup\PickupFacade;
  * @method updateTransportPrices(\App\Model\Transport\Transport $transport, array $pricesIndexedByDomainId)
  * @method \App\Model\Transport\Transport[] getAllIncludingDeleted()
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Transport\Transport $transport)
+ * @method updateTransportPrices(\App\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId)
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Transport\Transport|null $transport)
  */
 class TransportFacade extends BaseTransportFacade
 {

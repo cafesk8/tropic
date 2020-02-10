@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Form\Front\Customer\User\CustomerUserUpdateFormType;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
-use App\Form\Front\Customer\User\CustomerUserUpdateFormType;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerController extends FrontBaseController

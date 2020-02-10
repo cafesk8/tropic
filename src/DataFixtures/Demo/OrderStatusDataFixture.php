@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Model\Order\Status\OrderStatus;
 use App\Model\Order\Status\OrderStatusDataFactory;
 use App\Model\Order\Status\OrderStatusFacade;
+use Doctrine\Common\Persistence\ObjectManager;
+use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class OrderStatusDataFixture extends AbstractReferenceFixture
 {

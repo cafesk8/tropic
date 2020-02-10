@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace App\Model\PayPal;
 
+use App\Model\Order\OrderFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use PayPal\Exception\PayPalConnectionException;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
-use App\Model\Order\OrderFacade;
 use Symfony\Bridge\Monolog\Logger;
 
 class OrderPayPalStatusUpdateCronModule implements SimpleCronModuleInterface

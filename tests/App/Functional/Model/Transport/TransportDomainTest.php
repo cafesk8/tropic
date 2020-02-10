@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Transport;
 
+use App\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFactoryInterface;
-use App\Model\Transport\Transport;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class TransportDomainTest extends TransactionFunctionalTestCase

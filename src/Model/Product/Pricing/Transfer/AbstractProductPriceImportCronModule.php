@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing\Transfer;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 use App\Component\Domain\DomainHelper;
 use App\Component\Rest\MultidomainRestClient;
 use App\Component\Rest\RestClient;
@@ -16,6 +13,9 @@ use App\Component\Transfer\Response\TransferResponseItemDataInterface;
 use App\Component\Transfer\TransferCronModuleDependency;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\InvalidProductTransferResponseItemDataException;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator;
 
 abstract class AbstractProductPriceImportCronModule extends AbstractTransferImportCronModule
 {

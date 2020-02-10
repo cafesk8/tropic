@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
+use App\Model\Order\PromoCode\PromoCode;
+use App\Model\Order\PromoCode\PromoCodeData;
+use App\Model\Order\PromoCode\PromoCodeLimitFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
@@ -11,9 +14,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation as BaseQuantifiedProductDiscountCalculation;
-use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
-use App\Model\Order\PromoCode\PromoCodeLimitFacade;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price|null calculateDiscountRoundedByCurrency(\Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice $quantifiedItemPrice, string $discountPercent, \App\Model\Pricing\Currency\Currency $currency)

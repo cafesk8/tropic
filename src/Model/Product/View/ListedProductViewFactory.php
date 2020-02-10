@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
@@ -16,7 +17,6 @@ use Shopsys\ReadModelBundle\Image\ImageView;
 use Shopsys\ReadModelBundle\Product\Action\ProductActionView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListedProductViewFactory;
-use App\Model\Product\Pricing\ProductPrice;
 
 /**
  * @property \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade

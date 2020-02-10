@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\App\Smoke\Http;
 
+use App\Controller\Front\ProductController;
+use App\DataFixtures\Demo\CustomerUserDataFixture;
+use App\DataFixtures\Demo\OrderDataFixture;
+use App\DataFixtures\Demo\PersonalDataAccessRequestDataFixture;
+use App\DataFixtures\Demo\PricingGroupDataFixture;
+use App\DataFixtures\Demo\PromoCodeDataFixture;
+use App\DataFixtures\Demo\UnitDataFixture;
+use App\DataFixtures\Demo\VatDataFixture;
 use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\Security\RouteCsrfProtector;
@@ -13,14 +21,6 @@ use Shopsys\HttpSmokeTesting\RequestDataSet;
 use Shopsys\HttpSmokeTesting\RouteConfig;
 use Shopsys\HttpSmokeTesting\RouteConfigCustomizer;
 use Shopsys\HttpSmokeTesting\RouteInfo;
-use App\Controller\Front\ProductController;
-use App\DataFixtures\Demo\OrderDataFixture;
-use App\DataFixtures\Demo\PersonalDataAccessRequestDataFixture;
-use App\DataFixtures\Demo\PricingGroupDataFixture;
-use App\DataFixtures\Demo\PromoCodeDataFixture;
-use App\DataFixtures\Demo\UnitDataFixture;
-use App\DataFixtures\Demo\CustomerUserDataFixture;
-use App\DataFixtures\Demo\VatDataFixture;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class RouteConfigCustomization

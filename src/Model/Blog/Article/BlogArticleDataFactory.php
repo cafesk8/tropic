@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Article;
 
+use App\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
-use App\Component\Image\ImageFacade;
 
 class BlogArticleDataFactory
 {

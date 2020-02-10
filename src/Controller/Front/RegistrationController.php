@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\Setting\Setting;
+use App\Form\Front\Registration\RegistrationFormType;
+use App\Model\Article\ArticleFacade;
+use App\Model\Customer\User\CustomerUserFacade;
+use App\Model\Customer\User\CustomerUserUpdateDataFactory;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Security\Authenticator;
 use Shopsys\FrameworkBundle\Model\Security\Roles;
-use App\Component\Setting\Setting;
-use App\Form\Front\Registration\RegistrationFormType;
-use App\Model\Article\ArticleFacade;
-use App\Model\Customer\User\CustomerUserUpdateDataFactory;
-use \App\Model\Customer\User\CustomerUserFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

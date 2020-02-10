@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\Product\PromoProduct;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Customer\User\CustomerUser;
+use App\Model\Product\PromoProduct\Exception\PromoProductNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\ProductTranslation;
-use App\Component\Domain\DomainHelper;
-use App\Model\Customer\User\CustomerUser;
-use App\Model\Product\PromoProduct\Exception\PromoProductNotFoundException;
 
 class PromoProductRepository
 {

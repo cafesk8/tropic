@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Form\BlogCategoriesType;
+use App\Model\Blog\Article\BlogArticle;
+use App\Model\Blog\Article\BlogArticleData;
 use DateTime;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FormTypesBundle\MultidomainType;
@@ -19,9 +22,6 @@ use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
 use Shopsys\FrameworkBundle\Form\UrlListType;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
-use App\Form\BlogCategoriesType;
-use App\Model\Blog\Article\BlogArticle;
-use App\Model\Blog\Article\BlogArticleData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

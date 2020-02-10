@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Gift;
 
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use App\Model\Product\Product;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 
 class ProductGiftInCart
 {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Store\Store;
+use App\Model\Store\StoreData;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
@@ -11,8 +13,6 @@ use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
 use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
-use App\Model\Store\Store;
-use App\Model\Store\StoreData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Transfer;
 
-use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
+use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 
 class ProductTransferMapper
 {

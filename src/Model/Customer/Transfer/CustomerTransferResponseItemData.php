@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\Transfer;
 
-use ArrayAccess;
-use IteratorAggregate;
-use Shopsys\FrameworkBundle\Component\String\TransformString;
 use App\Component\DataObject\ReadObjectAsArrayTrait;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Response\TransferResponseItemDataInterface;
+use ArrayAccess;
+use IteratorAggregate;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 
 class CustomerTransferResponseItemData implements TransferResponseItemDataInterface, ArrayAccess, IteratorAggregate
 {

@@ -4,39 +4,41 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
+use App\Model\Customer\TransferIds\UserTransferId;
+use App\Model\Customer\TransferIds\UserTransferIdDataFactory;
+use App\Model\Customer\TransferIds\UserTransferIdFacade;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade as BaseCustomerUserFacade;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade as BaseCustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use App\Model\Customer\TransferIds\UserTransferId;
-use App\Model\Customer\TransferIds\UserTransferIdDataFactory;
-use App\Model\Customer\TransferIds\UserTransferIdFacade;
-use App\Model\Pricing\Group\PricingGroupFacade;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @property \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
- * @method \App\Model\Customer\User\CustomerUser getCustomerUserById(int $userId)
  * @method \App\Model\Customer\User\CustomerUser|null findCustomerUserByEmailAndDomain(string $email, int $domainId)
  * @method \App\Model\Customer\User\CustomerUser register(\App\Model\Customer\User\CustomerUserData $customerUserData)
  * @method \App\Model\Customer\User\CustomerUser create(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
- * @method \App\Model\Customer\User\CustomerUser edit(int $userId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
  * @method editDeliveryAddress(\App\Model\Customer\User\CustomerUser $customerUser, \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData $deliveryAddressData)
- * @method \App\Model\Customer\User\CustomerUser editByAdmin(int $userId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
- * @method \App\Model\Customer\User\CustomerUser editByCustomerUser(int $userId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
  * @method amendCustomerDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order)
  * @method setEmail(string $email, \App\Model\Customer\User\CustomerUser $customerUser)
+ * @method \App\Model\Customer\User\CustomerUser getCustomerUserById(int $customerUserId)
+ * @method \App\Model\Customer\User\CustomerUser createCustomerUser(\Shopsys\FrameworkBundle\Model\Customer\Customer $customer, \App\Model\Customer\User\CustomerUserData $customerUserData, \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData|null $deliveryAddressData)
+ * @method \App\Model\Customer\User\CustomerUser edit(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
+ * @method \App\Model\Customer\User\CustomerUser editByAdmin(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
+ * @method \App\Model\Customer\User\CustomerUser editByCustomerUser(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
+ * @method amendCustomerUserDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order)
  */
 class CustomerUserFacade extends BaseCustomerUserFacade
 {

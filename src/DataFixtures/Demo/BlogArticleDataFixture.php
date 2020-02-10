@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Model\Blog\Article\BlogArticleDataFactory;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\BlogVisibilityFacade;
 use App\Model\Blog\Category\BlogCategory;
 use App\Model\Blog\Category\BlogCategoryDataFactory;
 use App\Model\Blog\Category\BlogCategoryFacade;
+use Doctrine\Common\Persistence\ObjectManager;
+use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 
 class BlogArticleDataFixture extends AbstractReferenceFixture
 {

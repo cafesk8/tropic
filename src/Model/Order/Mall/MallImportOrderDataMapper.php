@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Mall;
 
-use DateTime;
-use MPAPI\Entity\Order;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemData;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
-use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade;
 use App\Component\Domain\DomainHelper;
 use App\Model\Country\CountryFacade;
 use App\Model\Order\Mall\Exception\NoMallPaymentTypeExistException;
@@ -23,6 +15,14 @@ use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Product\ProductFacade;
 use App\Model\Transport\Transport;
 use App\Model\Transport\TransportFacade;
+use DateTime;
+use MPAPI\Entity\Order;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemData;
+use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus;
+use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade;
 
 class MallImportOrderDataMapper
 {

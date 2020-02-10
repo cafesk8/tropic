@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode;
 
+use App\Model\Order\PromoCode\Exception\InvalidPromoCodeUsageTypeException;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
-use App\Model\Order\PromoCode\Exception\InvalidPromoCodeUsageTypeException;
 
 /**
  * @ORM\Table(name="promo_codes")

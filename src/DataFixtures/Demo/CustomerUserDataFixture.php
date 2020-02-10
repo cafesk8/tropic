@@ -73,7 +73,7 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
     protected $domain;
 
     /**
-     * @var \App\Model\Customer\User\CustomerUserDataFactory
+     * @var \App\Model\Customer\User\CustomerUserUpdateDataFactory
      */
     protected $customerUserUpdateDataFactory;
 
@@ -103,10 +103,10 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \App\Component\String\HashGenerator $hashGenerator
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface $customerUserUpdateDataFactory
+     * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      * @param \App\Model\Customer\User\CustomerUserDataFactory $customerUserDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface $deliveryAddressDataFactory
+     * @param \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
+     * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFactoryInterface $customerFactory
      */
     public function __construct(

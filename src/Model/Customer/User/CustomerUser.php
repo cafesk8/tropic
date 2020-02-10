@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
+use App\Model\Customer\Exception\UnsupportedCustomerExportStatusException;
+use App\Model\Customer\TransferIds\UserTransferId;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,8 +13,6 @@ use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData as BaseCustomerUserData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use App\Model\Customer\Exception\UnsupportedCustomerExportStatusException;
-use App\Model\Customer\TransferIds\UserTransferId;
 
 /**
  * @ORM\Table(

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Mall\MallFacade;
+use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
+use App\Model\Category\CategoryData;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
@@ -11,10 +15,6 @@ use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
 use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
-use App\Component\Mall\MallFacade;
-use App\Model\Blog\Article\BlogArticleFacade;
-use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
-use App\Model\Category\CategoryData;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

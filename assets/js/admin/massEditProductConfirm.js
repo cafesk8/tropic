@@ -4,6 +4,7 @@ import Window from 'framework/admin/utils/window';
 
 (function ($) {
 
+    /* eslint-disable no-use-before-define */
     const Shopsys = Shopsys || {};
     Shopsys.massEditConfirm = Shopsys.massEditConfirm || {};
 
@@ -26,7 +27,7 @@ import Window from 'framework/admin/utils/window';
 
                 const subject = $('.js-mass-edit-subject option:selected').text().toLowerCase();
                 const operation = $('.js-mass-edit-operation option:selected').text().toLowerCase();
-
+                /* eslint-disable no-new */
                 new Window({
                     content: Translator.trans(
                         'Opravdu chcete %operation% (%subject%) u %count% produktů?',

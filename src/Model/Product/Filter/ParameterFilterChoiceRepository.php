@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Filter;
 
+use App\Model\Product\ColorHelper;
+use App\Model\Product\Parameter\Parameter;
+use App\Model\Product\Parameter\ParameterValue as ProjectParameterValue;
+use App\Model\Product\SizeHelper;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Component\Doctrine\GroupedScalarHydrator;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -13,10 +17,6 @@ use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Product\ColorHelper;
-use App\Model\Product\Parameter\Parameter;
-use App\Model\Product\Parameter\ParameterValue as ProjectParameterValue;
-use App\Model\Product\SizeHelper;
 
 /**
  * @property \App\Model\Product\ProductRepository $productRepository

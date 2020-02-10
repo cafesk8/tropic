@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Blog\Article;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Model\Blog\Category\BlogCategory;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(

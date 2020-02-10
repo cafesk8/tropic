@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Model\Feed\HsSport\FeedItem;
 
+use App\Model\Product\Parameter\ParameterFacade;
+use App\Model\Product\Pricing\ProductPriceCalculation;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Image\Exception\ImageNotFoundException;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -11,8 +13,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Product\Parameter\ParameterFacade;
-use App\Model\Product\Pricing\ProductPriceCalculation;
 
 class HsSportFeedItemFactory
 {

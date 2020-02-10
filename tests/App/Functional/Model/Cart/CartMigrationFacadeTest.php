@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Cart;
 
+use App\DataFixtures\Demo\ProductDataFixture;
+use App\Model\Product\Product;
 use Doctrine\ORM\EntityManager;
 use ReflectionClass;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartMigrationFacade;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
-use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
-use  Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
-use App\DataFixtures\Demo\ProductDataFixture;
-use App\Model\Product\Product;
+use  Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
+use  Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class CartMigrationFacadeTest extends TransactionFunctionalTestCase
@@ -35,11 +35,11 @@ class CartMigrationFacadeTest extends TransactionFunctionalTestCase
         $cartIdentifier1 = 'abc123';
         $cartIdentifier2 = 'def456';
 
-        $CustomerUserIdentifier1 = new CustomerUserIdentifier($cartIdentifier1);
-        $mainCart = new Cart($CustomerUserIdentifier1->getCartIdentifier());
+        $customerUserIdentifier1 = new CustomerUserIdentifier($cartIdentifier1);
+        $mainCart = new Cart($customerUserIdentifier1->getCartIdentifier());
 
-        $CustomerUserIdentifier2 = new CustomerUserIdentifier($cartIdentifier2);
-        $mergingCart = new Cart($CustomerUserIdentifier2->getCartIdentifier());
+        $customerUserIdentifier2 = new CustomerUserIdentifier($cartIdentifier2);
+        $mergingCart = new Cart($customerUserIdentifier2->getCartIdentifier());
 
         $cartItem = new CartItem($mainCart, $product1, 2, Money::zero());
         $mainCart->addItem($cartItem);
@@ -53,13 +53,13 @@ class CartMigrationFacadeTest extends TransactionFunctionalTestCase
             ->setMethods(['persist', 'flush'])
             ->disableOriginalConstructor()
             ->getMock();
-        $CustomerUserIdentifierFactoryMock = $this->getMockBuilder( CustomerUserIdentifierFactory::class)
+        $customerUserIdentifierFactoryMock = $this->getMockBuilder(CustomerUserIdentifierFactory::class)
             ->setMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
-        $CustomerUserIdentifierFactoryMock
+        $customerUserIdentifierFactoryMock
             ->expects($this->any())->method('get')
-            ->willReturn($CustomerUserIdentifier1);
+            ->willReturn($customerUserIdentifier1);
         $cartItemFactory = $this->getContainer()->get(CartItemFactoryInterface::class);
         $cartFacadeMock = $this->getMockBuilder(CartFacade::class)
             ->setMethods(['getCartByCustomerUserIdentifierCreateIfNotExists', 'deleteCart'])
@@ -74,7 +74,7 @@ class CartMigrationFacadeTest extends TransactionFunctionalTestCase
 
         $cartMigrationFacade = new CartMigrationFacade(
             $entityManagerMock,
-            $CustomerUserIdentifierFactoryMock,
+            $customerUserIdentifierFactoryMock,
             $cartItemFactory,
             $cartFacadeMock
         );

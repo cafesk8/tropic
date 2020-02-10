@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Customer;
 
+use App\Model\Order\OrderFacade;
 use DateInterval;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\Plugin\Cron\SimpleCronModuleInterface;
-use App\Model\Order\OrderFacade;
 use Symfony\Bridge\Monolog\Logger;
 
 class RecalculateUserPricingGroupCronModule implements SimpleCronModuleInterface

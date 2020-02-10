@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Payment;
 
-use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository as BasePaymentRepository;
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
+use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository as BasePaymentRepository;
 
 /**
  * @method \App\Model\Payment\Payment[] getAll()

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Command\Migrations;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Command\Migration\Exception\CompleteProductUrlLegacySlugDoesNotExistException;
 use App\Command\Migrations\DataProvider\MigrateProductGermanLegacyUrlsDataProvider;
 use App\Component\Domain\DomainHelper;
 use App\Component\Router\FriendlyUrl\Exception\FriendlyUrlExistsException;
 use App\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use App\Model\Product\ProductFacade;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MassEdit\Action;
 
+use App\Model\Product\MassEdit\MassEditActionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade;
-use App\Model\Product\MassEdit\MassEditActionInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class FlagsMassAction implements MassEditActionInterface

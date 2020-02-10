@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\DataObject;
 
-use ArrayIterator;
 use App\Component\DataObject\Exception\NotImplementedException;
+use ArrayIterator;
 use Traversable;
 
 /**

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Product\MainVariantGroup;
 
+use App\Model\Pricing\Group\PricingGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use App\Model\Pricing\Group\PricingGroupFacade;
 
 class MainVariantGroupFacade
 {

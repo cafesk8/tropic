@@ -11,8 +11,8 @@ use App\Component\Transfer\AbstractTransferImportCronModule;
 use App\Component\Transfer\Response\TransferResponse;
 use App\Component\Transfer\Response\TransferResponseItemDataInterface;
 use App\Component\Transfer\TransferCronModuleDependency;
-use App\Model\Customer\User\CustomerUserFacade;
 use App\Model\Customer\Transfer\Exception\InvalidCustomerTransferResponseItemDataException;
+use App\Model\Customer\User\CustomerUserFacade;
 
 abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCronModule
 {

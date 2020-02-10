@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Gift;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 
 class ProductGiftInCartFacade
 {

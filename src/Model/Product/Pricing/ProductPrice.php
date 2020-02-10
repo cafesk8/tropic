@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
+use App\Model\Product\Pricing\Exception\PriceLessThanZeroException;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPrice;
-use App\Model\Product\Pricing\Exception\PriceLessThanZeroException;
 
 class ProductPrice extends BaseProductPrice
 {

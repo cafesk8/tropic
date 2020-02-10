@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Order;
 
+use App\DataFixtures\Demo\CountryDataFixture;
+use App\DataFixtures\Demo\CurrencyDataFixture;
+use App\DataFixtures\Demo\OrderStatusDataFixture;
+use App\Model\Order\Item\OrderItemData;
+use App\Model\Order\OrderData;
+use App\Model\Transport\TransportRepository;
 use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -13,12 +19,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderRepository;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
-use App\DataFixtures\Demo\CountryDataFixture;
-use App\DataFixtures\Demo\CurrencyDataFixture;
-use App\DataFixtures\Demo\OrderStatusDataFixture;
-use App\Model\Order\Item\OrderItemData;
-use App\Model\Order\OrderData;
-use App\Model\Transport\TransportRepository;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class OrderFacadeTest extends TransactionFunctionalTestCase

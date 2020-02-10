@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Product\PromoProduct\PromoProduct;
+use App\Model\Product\PromoProduct\PromoProductData;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\ProductType;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
-use App\Model\Product\PromoProduct\PromoProduct;
-use App\Model\Product\PromoProduct\PromoProductData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;

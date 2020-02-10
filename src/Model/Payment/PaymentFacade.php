@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Payment;
 
+use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Payment\Exception\PaymentPriceNotFoundException;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade as BasePaymentFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
-use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 
 /**
  * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
@@ -27,6 +27,8 @@ use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
  * @method \App\Model\Payment\Payment[] getAllIncludingDeleted()
  * @method \App\Model\Payment\Payment[] getAll()
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Payment\Payment $payment)
+ * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId, \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat[] $vatsIndexedByDomainId)
+ * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Payment\Payment|null $payment)
  */
 class PaymentFacade extends BasePaymentFacade
 {

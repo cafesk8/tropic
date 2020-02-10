@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Transport\PickupPlace;
 
+use App\Model\Transport\PickupPlace\Exception\PickupPlaceNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Shopsys\FrameworkBundle\Component\String\DatabaseSearching;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
-use App\Model\Transport\PickupPlace\Exception\PickupPlaceNotFoundException;
 
 class PickupPlaceRepository
 {

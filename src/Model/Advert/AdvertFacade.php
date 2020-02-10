@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Advert;
 
+use App\Model\Advert\Product\AdvertProduct;
+use App\Model\Advert\Product\AdvertProductRepository;
+use App\Model\Product\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -13,9 +16,6 @@ use Shopsys\FrameworkBundle\Model\Advert\AdvertFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry;
 use Shopsys\FrameworkBundle\Model\Advert\AdvertRepository;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use App\Model\Advert\Product\AdvertProduct;
-use App\Model\Advert\Product\AdvertProductRepository;
-use App\Model\Product\ProductRepository;
 
 /**
  * @property \App\Component\Image\ImageFacade $imageFacade

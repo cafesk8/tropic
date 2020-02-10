@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\App\Functional\Model\Product;
 
+use App\DataFixtures\Demo\CategoryDataFixture;
+use App\DataFixtures\Demo\PricingGroupDataFixture;
+use App\DataFixtures\Demo\ProductDataFixture;
+use App\Model\Category\Category;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingConfig;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
-use App\DataFixtures\Demo\CategoryDataFixture;
-use App\DataFixtures\Demo\PricingGroupDataFixture;
-use App\DataFixtures\Demo\ProductDataFixture;
-use App\Model\Category\Category;
-use App\Model\Product\Product;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductRepositoryTest extends TransactionFunctionalTestCase

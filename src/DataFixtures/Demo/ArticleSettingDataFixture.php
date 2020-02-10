@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Setting\Setting;
+use App\Model\Article\ArticleFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use App\Component\Setting\Setting;
-use App\Model\Article\ArticleFacade;
 
 class ArticleSettingDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {

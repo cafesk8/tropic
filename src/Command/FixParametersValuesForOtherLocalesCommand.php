@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterRepository;
@@ -12,6 +11,7 @@ use App\Model\Product\Parameter\ParameterValueDataFactory;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
 use App\Model\Product\ProductFacade;
+use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

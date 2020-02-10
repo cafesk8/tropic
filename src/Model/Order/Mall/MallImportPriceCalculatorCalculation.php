@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Mall;
 
+use App\Component\Domain\DomainHelper;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
@@ -68,6 +69,6 @@ class MallImportPriceCalculatorCalculation
         $vatData->name = 'orderItemVat';
         $vatData->percent = $percentVat;
 
-        return $this->vatFactory->create($vatData);
+        return $this->vatFactory->create($vatData, DomainHelper::CZECH_DOMAIN);
     }
 }

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use App\Model\Product\StoreStock\Transfer\AllCzechStoreStockImportCronModule;
 use App\Model\Product\StoreStock\Transfer\AllGermanStoreStockImportCronModule;
 use App\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule;
 use App\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule;
 use App\Model\Transfer\TransferFacade;
+use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
 class StoreFacade
 {

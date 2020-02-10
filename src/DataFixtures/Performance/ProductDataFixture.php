@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Performance;
 
+use App\DataFixtures\Demo\ProductDataFixture as DemoProductDataFixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator as Faker;
 use Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory;
@@ -18,7 +19,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
-use App\DataFixtures\Demo\ProductDataFixture as DemoProductDataFixture;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ProductDataFixture

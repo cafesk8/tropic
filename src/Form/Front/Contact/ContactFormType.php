@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Contact;
 
+use App\Model\ContactForm\ContactFormData;
 use Shopsys\FrameworkBundle\Component\Form\TimedFormTypeExtension;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
 use Shopsys\FrameworkBundle\Form\HoneyPotType;
-use App\Model\ContactForm\ContactFormData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

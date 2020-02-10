@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade;
 use App\Component\Transfer\Logger\TransferLoggerFactory;
 use App\Model\Transfer\Issue\TransferIssueFacade;
 use App\Model\Transfer\TransferFacade;
+use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TransferCronModuleDependency

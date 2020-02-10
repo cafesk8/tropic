@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use App\Model\Article\Article;
 use App\Model\Article\ArticleFacade;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

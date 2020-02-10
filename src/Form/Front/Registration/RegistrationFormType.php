@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Registration;
 
+use App\Component\Domain\DomainHelper;
+use App\Model\Country\CountryFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Form\TimedFormTypeExtension;
 use Shopsys\FrameworkBundle\Form\Constraints\Email;
@@ -12,11 +14,9 @@ use Shopsys\FrameworkBundle\Form\Constraints\NotIdenticalToEmailLocalPart;
 use Shopsys\FrameworkBundle\Form\Constraints\UniqueEmail;
 use Shopsys\FrameworkBundle\Form\HoneyPotType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData;
-use App\Component\Domain\DomainHelper;
-use App\Model\Country\CountryFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

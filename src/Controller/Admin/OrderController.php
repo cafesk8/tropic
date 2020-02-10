@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Form\Admin\OrderMassActionFormType;
+use App\Model\Order\Mall\Exception\StatusChangException;
+use App\Model\Order\MassAction\CsvExportMassAction;
+use App\Model\Order\MassAction\OrderMassActionData;
+use App\Model\Order\MassAction\OrderMassActionFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Grid\DataSourceInterface;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
@@ -19,11 +24,6 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
-use App\Form\Admin\OrderMassActionFormType;
-use App\Model\Order\Mall\Exception\StatusChangException;
-use App\Model\Order\MassAction\CsvExportMassAction;
-use App\Model\Order\MassAction\OrderMassActionData;
-use App\Model\Order\MassAction\OrderMassActionFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

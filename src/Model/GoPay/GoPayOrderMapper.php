@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace App\Model\GoPay;
 
+use App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade;
+use App\Model\Order\Order;
 use League\ISO3166\ISO3166;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory;
-use App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade;
-use App\Model\Order\Order;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GoPayOrderMapper
