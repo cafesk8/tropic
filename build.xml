@@ -91,4 +91,14 @@
             <arg value="-vvv"/>
         </exec>
     </target>
+
+    <target name="tests-unit" depends="production-protection,clean" description="Runs unit tests.">
+        <exec executable="${path.phpunit.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg value="--colors=always"/>
+            <arg value="--testsuite"/>
+            <arg value="Unit"/>
+            <arg value="--configuration"/>
+            <arg value="${path.root}/phpunit.xml"/>
+        </exec>
+    </target>
 </project>
