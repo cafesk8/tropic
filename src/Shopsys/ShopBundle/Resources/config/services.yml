@@ -203,6 +203,12 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory: '@Shopsys\ShopBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory'
 
+    Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitDataFactory: ~
+
+    Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade: ~
+
+    Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitRepository: ~
+
     Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@Shopsys\ShopBundle\Model\Transport\TransportDataFactory'
 
     Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface: '@Shopsys\ShopBundle\Model\Payment\PaymentDataFactory'

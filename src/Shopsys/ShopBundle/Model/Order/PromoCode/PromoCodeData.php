@@ -101,4 +101,29 @@ class PromoCodeData extends BasePromoCodeData
      * @var bool|null
      */
     public $combinable;
+
+    /**
+     * @var string
+     */
+    public $limitType;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimit[]
+     */
+    public $limits;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Brand\Brand[]
+     */
+    public $brandLimits;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Category\Category[]
+     */
+    public $categoryLimits;
+
+    /**
+     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     */
+    public $productLimits;
 }

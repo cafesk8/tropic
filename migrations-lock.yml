@@ -862,6 +862,12 @@
 20200120162800:
     class: Shopsys\ShopBundle\Migrations\Version20200120162800
     skip: false
+20200130130743:
+    class: Shopsys\ShopBundle\Migrations\Version20200130130743
+    skip: false
+20200130150932:
+    class: Shopsys\ShopBundle\Migrations\Version20200130150932
+    skip: false
 20200129161821:
     class: Shopsys\ShopBundle\Migrations\Version20200129161821
     skip: false

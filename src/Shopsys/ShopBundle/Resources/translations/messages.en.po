@@ -46,14 +46,8 @@ msgstr ""
 msgid "3 - čtverec"
 msgstr ""
 
-msgid "4 - čtverec"
-msgstr ""
-
-msgid "5 - velký obdelník na šířku"
-msgstr ""
-
-msgid "6 - obdélník na výšku"
-msgstr ""
+msgid "4 - velký obdelník na šířku"
+msgstr "4 - big wide rectangle"
 
 msgid "702 00 Ostrava"
 msgstr ""
@@ -158,9 +152,6 @@ msgid "Basic"
 msgstr ""
 
 msgid "Basic information"
-msgstr ""
-
-msgid "Belgien"
 msgstr ""
 
 msgid "Bez SMS alertu"
@@ -427,9 +418,6 @@ msgstr ""
 msgid "Detail promo produktu"
 msgstr ""
 
-msgid "Deutschland"
-msgstr ""
-
 msgid "Discount"
 msgstr ""
 
@@ -571,9 +559,6 @@ msgstr ""
 msgid "E-shop na míru od"
 msgstr ""
 
-msgid "EAN nenastaven"
-msgstr ""
-
 msgid "Editace banneru"
 msgstr ""
 
@@ -694,9 +679,6 @@ msgstr ""
 msgid "Google Maps link"
 msgstr ""
 
-msgid "Great britain"
-msgstr ""
-
 msgid "HS feed ID"
 msgstr ""
 
@@ -704,6 +686,9 @@ msgid "Heading (H1)"
 msgstr ""
 
 msgid "Heslo"
+msgstr ""
+
+msgid "Hidden"
 msgstr ""
 
 msgid "Hide"
@@ -766,16 +751,10 @@ msgstr ""
 msgid "ID z IS"
 msgstr ""
 
-msgid "ID zákazníka"
-msgstr ""
-
 msgid "IN TIME"
 msgstr ""
 
 msgid "Id stavu z IS"
-msgstr ""
-
-msgid "Identifikační údaj zakazníka"
 msgstr ""
 
 msgid "Image"
@@ -794,9 +773,6 @@ msgid "Instagram"
 msgstr ""
 
 msgid "Interní identifikátor přenosu"
-msgstr ""
-
-msgid "Italia"
 msgstr ""
 
 msgid "Items"
@@ -871,6 +847,9 @@ msgstr ""
 msgid "Kombinovatelný"
 msgstr ""
 
+msgid "Konkrétní produkty"
+msgstr "Specific products"
+
 msgid "Kontakt"
 msgstr ""
 
@@ -916,12 +895,6 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-msgid "Lëtzebuerg"
-msgstr ""
-
-msgid "Magyarország"
-msgstr ""
-
 msgid "Main variant"
 msgstr ""
 
@@ -961,6 +934,12 @@ msgstr ""
 msgid "Meta description"
 msgstr ""
 
+msgid "Minimum amount"
+msgstr ""
+
+msgid "Minimum quantity and multiples"
+msgstr ""
+
 msgid "Minimální cena košíku"
 msgstr ""
 
@@ -969,6 +948,9 @@ msgstr ""
 
 msgid "Minimální hodnota objednávky"
 msgstr ""
+
+msgid "Minimální množství můžete nastavit na kartě hlavní varianty."
+msgstr "You can set minimum amount in main variant detail"
 
 msgid "Minuty"
 msgstr ""
@@ -1000,9 +982,6 @@ msgstr ""
 msgid "Město"
 msgstr ""
 
-msgid "Nadpis produktů"
-msgstr ""
-
 msgid "Najdete v kategoriích"
 msgstr ""
 
@@ -1024,9 +1003,6 @@ msgstr ""
 msgid "Nastavení bylo uloženo."
 msgstr ""
 
-msgid "Nastavení pro 6. pozici"
-msgstr ""
-
 msgid "Nastavení přiřazení článků"
 msgstr ""
 
@@ -1037,9 +1013,6 @@ msgid "Naše služby"
 msgstr ""
 
 msgid "Ne"
-msgstr ""
-
-msgid "Nederland"
 msgstr ""
 
 msgid "Nedoručena"
@@ -1068,6 +1041,9 @@ msgstr ""
 
 msgid "Neomezený počet použití"
 msgstr ""
+
+msgid "Neomezovat"
+msgstr "No restriction"
 
 msgid "Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%)."
 msgstr ""
@@ -1152,6 +1128,9 @@ msgstr ""
 
 msgid "Nyní budete přesměrováni na platební bránu GoPay."
 msgstr ""
+
+msgid "Násobky pro nákup můžete nastavit na kartě hlavní varianty."
+msgstr "You can set multiples in main variant detail"
 
 msgid "Název dárku"
 msgstr ""
@@ -1239,6 +1218,18 @@ msgstr ""
 
 msgid "Omezení"
 msgstr ""
+
+msgid "Omezení na kategorie"
+msgstr "Restrict by categories"
+
+msgid "Omezení na produkty"
+msgstr "Restrict by products"
+
+msgid "Omezení na značky"
+msgstr "Restrict by brands"
+
+msgid "Omezit použití"
+msgstr "Restrict usage"
 
 msgid "Online shop"
 msgstr ""
@@ -1423,6 +1414,12 @@ msgstr ""
 msgid "Please make sure that you entered right quantity of all items in cart."
 msgstr ""
 
+msgid "Podle kategorie"
+msgstr "By category"
+
+msgid "Podle značky"
+msgstr "By brand"
+
 msgid "Podle zvolené adresy nebylo možné vyhledat žádné pobočky"
 msgstr ""
 
@@ -1435,11 +1432,14 @@ msgstr ""
 msgid "Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu."
 msgstr ""
 
-msgid "Položka {{ name }} je skladem k dispozici v počtu {{ quantity }} ks, počet kusů ve Vašem košíku jsme proto upravili."
-msgstr ""
+msgid "Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili."
+msgstr "Product %name% has %quantity% pcs in stock, therefore we adjusted quantity in your cart."
 
-msgid "Polska"
-msgstr ""
+msgid "Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili."
+msgstr "Product %name% can only be bought in multiples of %multiplier%. We adjusted quantity in your cart."
+
+msgid "Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili."
+msgstr "Product %name% is buyable in minimum quantity of %quantity% pcs. We adjusted quantity in your cart."
 
 msgid "Pondělí až pátek 8:00 – 16:00"
 msgstr "Monday to Friday 8 AM - 16 PM"
@@ -1536,6 +1536,9 @@ msgstr ""
 
 msgid "Products in stock only"
 msgstr ""
+
+msgid "Produkt %name% musel být z košíku odstraněn, protože není skladem."
+msgstr "Product %name% had to be removed from your cart as it is not in stock."
 
 msgid "Produkt je hotový"
 msgstr ""
@@ -1690,8 +1693,8 @@ msgstr ""
 msgid "Registration"
 msgstr ""
 
-msgid "Registruj se"
-msgstr ""
+msgid "Registrujte se"
+msgstr "Register"
 
 msgid "Remove"
 msgstr ""
@@ -1855,10 +1858,10 @@ msgstr ""
 msgid "Slevový kupón nelze aplikovat na zlevněné zboží."
 msgstr ""
 
-msgid "Slevový kód"
-msgstr ""
+msgid "Slevový kupón nelze aplikovat na žádný produkt v košíku."
+msgstr "Promo code is not usable for any product in your cart."
 
-msgid "Slovensko"
+msgid "Slevový kód"
 msgstr ""
 
 msgid "Služba dopravce"
@@ -1960,14 +1963,17 @@ msgstr ""
 msgid "Telephone"
 msgstr ""
 
-msgid "Tenký nadpis"
-msgstr ""
-
 msgid "Tento slevový kupón je již v objednávce aplikován."
 msgstr ""
 
+msgid "Tento slevový kupón nelze aplikovat na žádný produkt v košíku."
+msgstr "This promo code is not usable for any product in your cart."
+
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr ""
+
+msgid "Tento způsob platby je skrytý systémem GoPay."
+msgstr "This payment method is automatically hidden by GoPay."
 
 msgid "Text"
 msgstr ""
@@ -2039,9 +2045,6 @@ msgid "Treti článek v horním menu"
 msgstr ""
 
 msgid "Tuhle značku není možné smazat. Jde o značku, která je automaticky přiřazena všem produktem."
-msgstr ""
-
-msgid "Tučný nadpis"
 msgstr ""
 
 msgid "Tvar odkazu pro sledování zásilky"
@@ -2423,7 +2426,7 @@ msgid "Změnit"
 msgstr ""
 
 msgid "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
-msgstr ""
+msgstr "Changes will take effect after a few minutes because of download of current offices."
 
 msgid "Změny v informačním řádky byly úspěšně uloženy"
 msgstr ""
@@ -2498,9 +2501,6 @@ msgid "dopravu zdarma!"
 msgstr ""
 
 msgid "e-shopu a souhlasím se zpracováním"
-msgstr ""
-
-msgid "ean"
 msgstr ""
 
 msgid "from"
@@ -2650,13 +2650,7 @@ msgstr ""
 msgid "{{title}} není platný. Prosím, zkontrolujte ho."
 msgstr ""
 
-msgid "Österreich"
-msgstr ""
-
 msgid "Úvod"
-msgstr ""
-
-msgid "Česko"
 msgstr ""
 
 msgid "Česká pošta"
@@ -2684,8 +2678,5 @@ msgid "Žádné dárky nenalezeny."
 msgstr ""
 
 msgid "Žádné promo produkty nenalezeny."
-msgstr ""
-
-msgid "БЪЛГАРИЯ"
 msgstr ""
 

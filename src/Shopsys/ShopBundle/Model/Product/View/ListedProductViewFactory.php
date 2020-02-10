@@ -57,6 +57,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         $sellingPrice = $this->getSellingPrice(
             $productArray['prices'],
             $pricingGroup,
+            $productArray['id'],
             $this->getMoney($productArray['action_price']),
             $this->getPriceFromPriceArray($productArray['default_price'])
         );
@@ -130,6 +131,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     /**
      * @param array $pricesArray
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param int $productId
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPriceForCurrentDomain
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $defaultProductPrice
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
@@ -137,6 +139,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private function getSellingPrice(
         array $pricesArray,
         PricingGroup $pricingGroup,
+        int $productId,
         ?Money $actionPriceForCurrentDomain,
         ?Price $defaultProductPrice
     ): ?BaseProductPrice {
@@ -147,6 +150,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
                 return new ProductPrice(
                     $price,
                     $priceArray['price_from'],
+                    $productId,
                     $pricingGroup,
                     $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($pricingGroup->getDomainId()),
                     $actionPriceForCurrentDomain,
