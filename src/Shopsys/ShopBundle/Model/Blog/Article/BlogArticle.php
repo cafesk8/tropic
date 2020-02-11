@@ -449,4 +449,12 @@ class BlogArticle extends AbstractTranslatableEntity
     {
         return $this->products->toArray();
     }
+
+    /**
+     * @return bool
+     */
+    public function hasProducts(): bool
+    {
+        return count($this->products) > 0;
+    }
 }
