@@ -41,7 +41,7 @@ class PricingGroup extends BasePricingGroup
 
     /**
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData
-     * @param $domainId
+     * @param int $domainId
      */
     public function __construct(PricingGroupData $pricingGroupData, $domainId)
     {

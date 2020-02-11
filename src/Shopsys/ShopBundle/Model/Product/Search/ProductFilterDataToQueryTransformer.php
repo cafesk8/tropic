@@ -10,6 +10,13 @@ use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer as BaseProductFilterDataToQueryTransformer;
 use Shopsys\ShopBundle\Model\Product\Parameter\Parameter;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addBrandsToQuery(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addFlagsToQuery(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addParametersToQuery(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addStockToQuery(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addPricesToQuery(\Shopsys\ShopBundle\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup)
+ */
 class ProductFilterDataToQueryTransformer extends BaseProductFilterDataToQueryTransformer
 {
     /**

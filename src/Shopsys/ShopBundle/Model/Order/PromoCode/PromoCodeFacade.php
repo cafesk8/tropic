@@ -11,7 +11,10 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade as BasePromoCo
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface;
 
 /**
- * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById($promoCodeId)
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode getById(int $promoCodeId)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null findPromoCodeByCode(string $code)
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode[] getAll()
  */
 class PromoCodeFacade extends BasePromoCodeFacade
 {
@@ -36,7 +39,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeRepository $promoCodeRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface $promoCodeFactory
-     * @param \Shopsys\FrameworkBundle\Component\String\HashGenerator $hashGenerator
+     * @param \Shopsys\ShopBundle\Component\String\HashGenerator $hashGenerator
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
      */
     public function __construct(

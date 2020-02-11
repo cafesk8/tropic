@@ -14,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusTranslation;
  * @ORM\Entity
  *
  * @method OrderStatusTranslation translation(?string $locale = null)
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Order\Status\OrderStatusData $orderStatusData)
  */
 class OrderStatus extends BaseOrderStatus
 {
@@ -49,7 +50,7 @@ class OrderStatus extends BaseOrderStatus
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\Status\OrderStatusData $orderStatusData
-     * @param $type
+     * @param int $type
      */
     public function __construct(OrderStatusData $orderStatusData, $type)
     {

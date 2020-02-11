@@ -64,14 +64,14 @@ class PromoCode extends BasePromoCode
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $validFrom;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $validTo;
 

@@ -11,7 +11,7 @@ use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 class GoPayBankSwiftRepository
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $em;
 

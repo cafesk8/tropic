@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportDataFactory as BaseTranspor
 class TransportDataFactory extends BaseTransportDataFactory
 {
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Transport\TransportData
+     * @return \Shopsys\ShopBundle\Model\Transport\TransportData
      */
     public function create(): TransportData
     {
@@ -22,8 +22,8 @@ class TransportDataFactory extends BaseTransportDataFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport $transport
-     * @return \Shopsys\FrameworkBundle\Model\Transport\TransportData
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport $transport
+     * @return \Shopsys\ShopBundle\Model\Transport\TransportData
      */
     public function createFromTransport(Transport $transport): TransportData
     {

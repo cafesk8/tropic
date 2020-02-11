@@ -16,6 +16,14 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
  * @ORM\Entity
  *
  * @method CategoryTranslation translation(?string $locale = null)
+ * @property \Shopsys\ShopBundle\Model\Category\CategoryTranslation[]|\Doctrine\Common\Collections\Collection $translations
+ * @property \Shopsys\ShopBundle\Model\Category\Category|null $parent
+ * @property \Shopsys\ShopBundle\Model\Category\Category[]|\Doctrine\Common\Collections\Collection $children
+ * @method setParent(\Shopsys\ShopBundle\Model\Category\Category|null $parent)
+ * @method \Shopsys\ShopBundle\Model\Category\Category|null getParent()
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getChildren()
+ * @method setDomains(\Shopsys\ShopBundle\Model\Category\CategoryData $categoryData)
+ * @method createDomains(\Shopsys\ShopBundle\Model\Category\CategoryData $categoryData)
  */
 class Category extends BaseCategory
 {

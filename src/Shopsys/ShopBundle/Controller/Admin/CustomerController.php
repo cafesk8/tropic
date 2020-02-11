@@ -16,6 +16,13 @@ use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory
+ * @property \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+ * @property \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
+ * @property \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+ * @method string getSsoLoginAsUserUrl(\Shopsys\ShopBundle\Model\Customer\User $user)
+ */
 class CustomerController extends BaseCustomerController
 {
     /**
@@ -73,7 +80,7 @@ class CustomerController extends BaseCustomerController
     public function listAction(Request $request): Response
     {
         $administrator = $this->getUser();
-        /* @var $administrator \Shopsys\FrameworkBundle\Model\Administrator\Administrator */
+        /* @var $administrator \Shopsys\ShopBundle\Model\Administrator\Administrator */
 
         $quickSearchForm = $this->createForm(QuickSearchFormType::class, new QuickSearchFormData());
         $quickSearchForm->handleRequest($request);

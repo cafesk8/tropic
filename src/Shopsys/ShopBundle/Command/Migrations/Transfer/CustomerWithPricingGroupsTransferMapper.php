@@ -65,7 +65,7 @@ class CustomerWithPricingGroupsTransferMapper
             $this->customerDataFactory->create() :
             $customerData = $this->customerDataFactory->createFromUser($customer);
 
-        /** @var $userData \Shopsys\ShopBundle\Model\Customer\UserData */
+        /** @var \Shopsys\ShopBundle\Model\Customer\UserData $userData */
         $userData = $customerData->userData;
 
         $domainId = $customerTransferResponseItemData->getDomainId();
@@ -75,8 +75,11 @@ class CustomerWithPricingGroupsTransferMapper
         $userData->email = $customerTransferResponseItemData->getEmail();
         $userData->telephone = $customerTransferResponseItemData->getPhone();
         $userData->domainId = $domainId;
-        $userData->pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        /** @var \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
+        $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $userData->pricingGroup = $pricingGroup;
         $userData->memberOfLoyaltyProgram = false;
+        $userData->password = $this->getFakePassword();
 
         $billingAddressData = $customerData->billingAddressData;
         $billingAddressData->city = $customerTransferResponseItemData->getCity();
@@ -97,5 +100,13 @@ class CustomerWithPricingGroupsTransferMapper
         $customerData->userData = $userData;
 
         return $customerData;
+    }
+
+    /**
+     * @return string
+     */
+    private function getFakePassword(): string
+    {
+        return substr(str_replace(['+', '/', '='], '', base64_encode(random_bytes(128))), 0, 128);
     }
 }

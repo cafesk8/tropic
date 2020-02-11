@@ -10,6 +10,10 @@ use Shopsys\FrameworkBundle\Model\Article\Article as BaseArticle;
 use Shopsys\ShopBundle\Model\Article\Article;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Article\ArticleDataFactory $articleDataFactory
+ * @method __construct(\Shopsys\ShopBundle\Model\Article\ArticleFacade $articleFacade, \Shopsys\ShopBundle\Model\Article\ArticleDataFactory $articleDataFactory, \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider, \Shopsys\FrameworkBundle\Component\ConfirmDelete\ConfirmDeleteResponseFactory $confirmDeleteResponseFactory, \Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade $legalConditionsFacade, \Shopsys\FrameworkBundle\Model\Cookies\CookiesFacade $cookiesFacade)
+ */
 class ArticleController extends BaseArticleController
 {
     /**

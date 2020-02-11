@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Component\Cron;
 
+use Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor as BaseCronModuleExecutor;
 use Shopsys\ShopBundle\Component\Transfer\TransferIteratedCronModuleInterface;
 
-class CronModuleExecutor extends \Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor
+class CronModuleExecutor extends BaseCronModuleExecutor
 {
     /**
      * @inheritDoc

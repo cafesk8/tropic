@@ -6,6 +6,9 @@ namespace Shopsys\ShopBundle\Model\AdvancedSearch\Filter;
 
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductFlagFilter as BaseProductFlagFilter;
 
+/**
+ * @method __construct(\Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade)
+ */
 class ProductFlagFilter extends BaseProductFlagFilter
 {
     /**

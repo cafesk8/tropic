@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Model\Order\Order;
 class GoPayTransactionFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -25,7 +25,7 @@ class GoPayTransactionFacade
     private $goPayFacadeOnCurrentDomain;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayTransactionRepository $goPayTransactionRepository
      * @param \Shopsys\ShopBundle\Model\GoPay\GoPayFacadeOnCurrentDomain $goPayFacadeOnCurrentDomain
      */

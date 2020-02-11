@@ -397,6 +397,9 @@ msgstr "Ich möchte andere Rechnungsinformationen eingeben"
 msgid "Choose"
 msgstr "Wähle"
 
+msgid "Choose variant"
+msgstr ""
+
 msgid "Chyba při přenosu"
 msgstr "Übertragungsfehler"
 

@@ -27,7 +27,7 @@ class MigrateProductImagesCommand extends Command
     protected static $defaultName = 'shopsys:migrate:product-images';
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Driver\Connection
      */
     private $connection;
 
@@ -77,7 +77,7 @@ class MigrateProductImagesCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -102,6 +102,8 @@ class MigrateProductImagesCommand extends Command
             }
             $this->entityManager->clear();
         } while ($productsCount > 0);
+
+        return 0;
     }
 
     /**
@@ -126,7 +128,7 @@ class MigrateProductImagesCommand extends Command
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return string[]
+     * @return string[][]
      */
     private function getMigrateProductData(Product $product): array
     {

@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Category\Category;
 class CategoryBlogArticleFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -26,7 +26,7 @@ class CategoryBlogArticleFacade
     private $categoryBlogArticleFactory;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleRepository $categoryBlogArticleRepository
      * @param \Shopsys\ShopBundle\Model\Category\CategoryBlogArticle\CategoryBlogArticleFactory $categoryBlogArticleFactory
      */
@@ -38,7 +38,7 @@ class CategoryBlogArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[] $blogArticles
      */
     public function saveBlogArticlesToCategory(Category $category, array $blogArticles): void
@@ -60,7 +60,7 @@ class CategoryBlogArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
      */
     public function getAllBlogArticlesByCategory(Category $category): array
@@ -71,14 +71,14 @@ class CategoryBlogArticleFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
      * @param int $domainId
      * @param int $limit
      * @return \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle[]
      */
     public function getVisibleBlogArticlesByCategoryAndDomainId(Category $category, int $domainId, int $limit): array
     {
-        $categoriesBlogArticles = $this->categoryBlogArticleRepository->getVisibleByCategoryAndDomainId($category, $domainId, $limit);
+        $categoriesBlogArticles = $this->categoryBlogArticleRepository->getVisibleByCategoryAndDomainId($category, $domainId);
 
         return $this->getBlogArticlesFromCategoriesBlogArticles($categoriesBlogArticles, true, $limit);
     }

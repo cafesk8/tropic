@@ -32,7 +32,7 @@ class GoPayPaymentMethodData
     public $paymentGroup;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency|null
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\Currency|null
      */
     public $currency;
 }

@@ -99,7 +99,7 @@ class Store implements PickupPlaceInterface
     private $pickupPlace;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\Country|null
+     * @var \Shopsys\ShopBundle\Model\Country\Country|null
      * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Country\Country")
      * @ORM\JoinColumn(nullable=false, name="country_id", referencedColumnName="id")
      */
@@ -302,9 +302,9 @@ class Store implements PickupPlaceInterface
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Country\Country|null
+     * @return \Shopsys\ShopBundle\Model\Country\Country|null
      */
-    public function getCountry(): Country
+    public function getCountry(): ?Country
     {
         return $this->country;
     }

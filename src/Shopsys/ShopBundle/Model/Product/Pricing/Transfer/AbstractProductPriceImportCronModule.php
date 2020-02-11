@@ -20,7 +20,7 @@ use Shopsys\ShopBundle\Model\Product\Transfer\Exception\InvalidProductTransferRe
 abstract class AbstractProductPriceImportCronModule extends AbstractTransferImportCronModule
 {
     /**
-     * @var \Shopsys\ShopBundle\Component\Rest\RestClient
+     * @var \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient
      */
     protected $multidomainRestClient;
 
@@ -54,7 +54,7 @@ abstract class AbstractProductPriceImportCronModule extends AbstractTransferImpo
      * @param \Shopsys\ShopBundle\Component\Rest\MultidomainRestClient $multidomainRestClient
      * @param \Shopsys\ShopBundle\Model\Product\Pricing\Transfer\ProductPriceTransferValidator $productPriceTransferValidator
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */

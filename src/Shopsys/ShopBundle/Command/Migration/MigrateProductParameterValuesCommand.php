@@ -32,7 +32,7 @@ class MigrateProductParameterValuesCommand extends Command
     protected static $defaultName = 'shopsys:migrate:product-parameter-values';
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Driver\Connection
      */
     private $connection;
 
@@ -106,7 +106,7 @@ class MigrateProductParameterValuesCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -135,6 +135,8 @@ class MigrateProductParameterValuesCommand extends Command
             }
             $this->entityManager->clear();
         } while ($productsCount > 0);
+
+        return 0;
     }
 
     /**
@@ -170,7 +172,7 @@ class MigrateProductParameterValuesCommand extends Command
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @return string[]
+     * @return string[][]
      */
     private function getMigrateProductParameterValues(Product $product): array
     {
@@ -212,12 +214,11 @@ class MigrateProductParameterValuesCommand extends Command
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[] $productParameterValues
-     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
+     * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueData[]
      */
     private function filterMallProductParameters(array $productParameterValues): array
     {
         $filteredProductParameterValues = [];
-        /** @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValueData $productParameterValue */
         foreach ($productParameterValues as $productParameterValue) {
             /** @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter */
             $parameter = $productParameterValue->parameter;

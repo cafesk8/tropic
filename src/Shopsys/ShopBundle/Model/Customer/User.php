@@ -26,6 +26,13 @@ use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId;
  *     }
  * )
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress
+ * @property \Shopsys\ShopBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
+ * @property \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+ * @method \Shopsys\ShopBundle\Model\Customer\BillingAddress getBillingAddress()
+ * @method \Shopsys\ShopBundle\Model\Customer\DeliveryAddress|null getDeliveryAddress()
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup getPricingGroup()
+ * @method setDeliveryAddress(\Shopsys\ShopBundle\Model\Customer\DeliveryAddress|null $deliveryAddress)
  */
 class User extends BaseUser
 {
@@ -97,8 +104,8 @@ class User extends BaseUser
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\UserData $userData
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddress $billingAddress
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
+     * @param \Shopsys\ShopBundle\Model\Customer\BillingAddress $billingAddress
+     * @param \Shopsys\ShopBundle\Model\Customer\DeliveryAddress|null $deliveryAddress
      */
     public function __construct(
         BaseUserData $userData,
@@ -168,7 +175,6 @@ class User extends BaseUser
 
     /**
      * @param string $exportStatus
-     * @return string
      */
     private function setExportStatus(string $exportStatus): void
     {
@@ -238,7 +244,7 @@ class User extends BaseUser
 
     /**
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId $transferId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup|null $newPricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null $newPricingGroup
      */
     public function updateTransferIdAndPricingGroup(UserTransferId $transferId, ?PricingGroup $newPricingGroup)
     {

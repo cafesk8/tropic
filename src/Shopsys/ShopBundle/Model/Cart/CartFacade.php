@@ -27,7 +27,13 @@ use Shopsys\ShopBundle\Model\Product\ProductFacade;
 
 /**
  * @property \Shopsys\ShopBundle\Model\Cart\CartWatcher\CartWatcherFacade $cartWatcherFacade
- * @method \Shopsys\ShopBundle\Model\Cart\Cart findCartOfCurrentCustomer()
+ * @property \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
+ * @property \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+ * @property \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
+ * @method deleteCart(\Shopsys\ShopBundle\Model\Cart\Cart $cart)
+ * @method \Shopsys\ShopBundle\Model\Product\Product getProductByCartItemId(int $cartItemId)
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart|null findCartOfCurrentCustomer()
+ * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartByCustomerIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier)
  * @method \Shopsys\ShopBundle\Model\Cart\Cart getCartOfCurrentCustomerCreateIfNotExists()
  */
 class CartFacade extends BaseCartFacade
@@ -46,13 +52,13 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
+     * @param \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifierFactory $customerIdentifierFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface $cartItemFactory
+     * @param \Shopsys\ShopBundle\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
@@ -245,10 +251,11 @@ class CartFacade extends BaseCartFacade
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerIdentifier $customerIdentifier
-     * @return \Shopsys\FrameworkBundle\Model\Cart\Cart|null
+     * @return \Shopsys\ShopBundle\Model\Cart\Cart|null
      */
     public function findCartByCustomerIdentifier(CustomerIdentifier $customerIdentifier)
     {
+        /** @var \Shopsys\ShopBundle\Model\Cart\Cart|null $cart */
         $cart = $this->cartRepository->findByCustomerIdentifier($customerIdentifier);
 
         if ($cart !== null) {

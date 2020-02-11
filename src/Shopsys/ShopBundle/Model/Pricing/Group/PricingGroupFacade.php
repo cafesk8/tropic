@@ -6,6 +6,17 @@ namespace Shopsys\ShopBundle\Model\Pricing\Group;
 
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade as BasePricingGroupFacade;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Customer\UserRepository $userRepository
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPriceRepository $productCalculatedPriceRepository, \Shopsys\ShopBundle\Model\Customer\UserRepository $userRepository, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFactoryInterface $pricingGroupFactory)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup getById(int $pricingGroupId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup create(\Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup edit(int $pricingGroupId, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupData $pricingGroupData)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] getByDomainId(int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] getAllExceptIdByDomainId(int $id, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[][] getAllIndexedByDomainId()
+ */
 class PricingGroupFacade extends BasePricingGroupFacade
 {
     /**
@@ -14,7 +25,7 @@ class PricingGroupFacade extends BasePricingGroupFacade
     protected $pricingGroupRepository;
 
     /**
-     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[][]
      */
     public function getAllIndexedByDomainIdOrderedByMinimalPrice(): array
     {

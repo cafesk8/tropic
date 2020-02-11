@@ -10,7 +10,7 @@ use Tests\ShopBundle\Test\Codeception\AcceptanceTester;
 
 class CustomerRegistrationCest
 {
-    public const MINIMUM_FORM_SUBMIT_WAIT_TIME = 10;
+    protected const MINIMUM_FORM_SUBMIT_WAIT_TIME = 10;
 
     /**
      * @param \Tests\ShopBundle\Acceptance\acceptance\PageObject\Front\RegistrationPage $registrationPage
@@ -27,9 +27,9 @@ class CustomerRegistrationCest
         $layoutPage->clickOnRegistration();
         $registrationPage->register('Roman', 'Štěpánek', 'no-reply.16@shopsys.com', 'user123', 'user123');
         $me->wait(self::MINIMUM_FORM_SUBMIT_WAIT_TIME);
-        $me->see('Byli jste úspěšně zaregistrováni');
+        $me->seeTranslationFrontend('You have been successfully registered.');
         $me->see('Roman Štěpánek');
-        $me->see('Odhlásit se');
+        $me->seeTranslationFrontend('Log out');
     }
 
     /**
@@ -39,9 +39,9 @@ class CustomerRegistrationCest
     public function testAlreadyUsedEmail(RegistrationPage $registrationPage, AcceptanceTester $me)
     {
         $me->wantTo('use already used email while registration');
-        $me->amOnPage('/registrace/');
+        $me->amOnLocalizedRoute('front_registration_register');
         $registrationPage->register('Roman', 'Štěpánek', 'no-reply@shopsys.com', 'user123', 'user123');
-        $registrationPage->seeEmailError('Tento e-mail je již registrován');
+        $registrationPage->seeEmailError('This email is already registered');
     }
 
     /**
@@ -51,8 +51,8 @@ class CustomerRegistrationCest
     public function testPasswordMismatch(RegistrationPage $registrationPage, AcceptanceTester $me)
     {
         $me->wantTo('use mismatching passwords while registration');
-        $me->amOnPage('/registrace/');
+        $me->amOnLocalizedRoute('front_registration_register');
         $registrationPage->register('Roman', 'Štěpánek', 'no-reply.16@shopsys.com', 'user123', 'missmatchingPassword');
-        $registrationPage->seePasswordError('Hesla se neshodují');
+        $registrationPage->seePasswordError('Passwords do not match');
     }
 }

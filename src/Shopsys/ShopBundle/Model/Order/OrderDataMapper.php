@@ -11,6 +11,9 @@ use Shopsys\FrameworkBundle\Model\Order\OrderDataMapper as BaseOrderDataMapper;
 use Shopsys\ShopBundle\Model\Store\Store;
 use Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlace;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
+ */
 class OrderDataMapper extends BaseOrderDataMapper
 {
     /**
@@ -19,8 +22,8 @@ class OrderDataMapper extends BaseOrderDataMapper
     private $countryFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface $orderDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Order\OrderDataFactory $orderDataFactory
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      */
     public function __construct(OrderDataFactoryInterface $orderDataFactory, CountryFacade $countryFacade)
     {

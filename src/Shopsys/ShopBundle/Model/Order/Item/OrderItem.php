@@ -15,6 +15,18 @@ use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 /**
  * @ORM\Table(name="order_items")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Order\Order $order
+ * @property \Shopsys\ShopBundle\Model\Transport\Transport|null $transport
+ * @property \Shopsys\ShopBundle\Model\Payment\Payment|null $payment
+ * @property \Shopsys\ShopBundle\Model\Product\Product|null $product
+ * @method \Shopsys\ShopBundle\Model\Order\Order getOrder()
+ * @method edit(\Shopsys\ShopBundle\Model\Order\Item\OrderItemData $orderItemData)
+ * @method setTransport(\Shopsys\ShopBundle\Model\Transport\Transport $transport)
+ * @method \Shopsys\ShopBundle\Model\Transport\Transport getTransport()
+ * @method setPayment(\Shopsys\ShopBundle\Model\Payment\Payment $payment)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment getPayment()
+ * @method \Shopsys\ShopBundle\Model\Product\Product|null getProduct()
+ * @method setProduct(\Shopsys\ShopBundle\Model\Product\Product|null $product)
  */
 class OrderItem extends BaseOrderItem
 {
@@ -57,7 +69,7 @@ class OrderItem extends BaseOrderItem
     private $promoProduct;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
      * @param string $vatPercent
@@ -84,7 +96,7 @@ class OrderItem extends BaseOrderItem
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      */
     public function setGift(Product $product): void
     {
@@ -108,7 +120,7 @@ class OrderItem extends BaseOrderItem
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Product|null
+     * @return \Shopsys\ShopBundle\Model\Product\Product|null
      */
     public function getGift(): ?Product
     {
@@ -205,7 +217,7 @@ class OrderItem extends BaseOrderItem
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct $promoProduct
      */
     public function setPromoProduct(Product $product, PromoProduct $promoProduct): void

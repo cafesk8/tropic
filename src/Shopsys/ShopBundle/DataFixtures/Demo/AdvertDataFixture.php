@@ -19,7 +19,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     public const ADVERT_FOURTH_RECTANGLE = 'advert_fourth_rectangle';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade
+     * @var \Shopsys\ShopBundle\Model\Advert\AdvertFacade
      */
     protected $advertFacade;
 
@@ -29,7 +29,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     private $advertDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Advert\AdvertFacade $advertFacade
+     * @param \Shopsys\ShopBundle\Model\Advert\AdvertFacade $advertFacade
      * @param \Shopsys\ShopBundle\Model\Advert\AdvertDataFactory $advertDataFactory
      */
     public function __construct(AdvertFacade $advertFacade, AdvertDataFactory $advertDataFactory)
@@ -45,7 +45,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
     {
         $advertData = $this->advertDataFactory->create();
         $advertData->domainId = 1;
-        $advertData->name = 'Shopsys';
+        $advertData->name = t('Shopsys', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'firstSquare';
@@ -54,7 +54,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_FIRST_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Open-source Ecommerce Framework';
+        $advertData->name = t('Open-source Ecommerce Framework', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'secondSquare';
@@ -63,7 +63,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_SECOND_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Eshopová hvězda';
+        $advertData->name = t('Eshopová hvězda', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'thirdSquare';
@@ -72,7 +72,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_THIRD_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = 'Zelí';
+        $advertData->name = t('Zelí', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'fourthRectangle';

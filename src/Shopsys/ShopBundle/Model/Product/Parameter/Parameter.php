@@ -15,6 +15,7 @@ use Shopsys\ShopBundle\Model\Product\Parameter\Exception\InvalidParameterTypeExc
  * @ORM\Entity
  *
  * @method ParameterTranslation translation(?string $locale = null)
+ * @method setTranslations(\Shopsys\ShopBundle\Model\Product\Parameter\ParameterData $parameterData)
  */
 class Parameter extends BaseParameter
 {

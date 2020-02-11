@@ -21,6 +21,7 @@ parameters:
     shopsys.performance_test.feed.delivery.max_duration_seconds: 20
     shopsys.performance_test.feed.min_duration_seconds: 5
     container.autowiring.strict_mode: true
+    shopsys.image.enable_lazy_load: true
     shopsys.entity_extension.map:
         Shopsys\FrameworkBundle\Model\Advert\Advert: Shopsys\ShopBundle\Model\Advert\Advert
         Shopsys\FrameworkBundle\Model\Article\Article: Shopsys\ShopBundle\Model\Article\Article
@@ -47,5 +48,6 @@ parameters:
         Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress: Shopsys\ShopBundle\Model\Customer\DeliveryAddress
         Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus: Shopsys\ShopBundle\Model\Order\Status\OrderStatus
         Shopsys\FrameworkBundle\Model\Country\Country: Shopsys\ShopBundle\Model\Country\Country
+        Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency: Shopsys\ShopBundle\Model\Pricing\Currency\Currency
     build-version: '0000000000000000'
     securityBcryptCost: 12

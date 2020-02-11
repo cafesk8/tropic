@@ -104,9 +104,9 @@ class PromoProductController extends AdminBaseController
      */
     public function editAction(Request $request, int $id): Response
     {
-        $promoProduct = $this->promoProductFacade->getById($id);
-
-        if ($promoProduct === null) {
+        try {
+            $promoProduct = $this->promoProductFacade->getById($id);
+        } catch (PromoProductNotFoundException $ex) {
             $this->getFlashMessageSender()->addErrorFlash(t('Promo produkt neexistuje'));
 
             return $this->redirectToRoute('admin_promoproduct_list');

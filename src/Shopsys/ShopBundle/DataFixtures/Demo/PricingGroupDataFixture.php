@@ -34,7 +34,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
     /**
      * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface $pricingGroupDataFactory
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupDataFactory $pricingGroupDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(

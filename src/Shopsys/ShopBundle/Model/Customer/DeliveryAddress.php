@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress as BaseDeliveryAddres
 /**
  * @ORM\Table(name="delivery_addresses")
  * @ORM\Entity
+ * @property \Shopsys\ShopBundle\Model\Country\Country|null $country
+ * @method \Shopsys\ShopBundle\Model\Country\Country|null getCountry()
  */
 class DeliveryAddress extends BaseDeliveryAddress
 {

@@ -9,13 +9,17 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceReposit
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\ShopBundle\Model\Product\ProductDomain;
 
+/**
+ * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice[] getByProduct(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice|null findByProductAndPricingGroup(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup)
+ */
 class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepository
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup[] $pricingGroups
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] $pricingGroups
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice[]
+     * @return array
      */
     public function findByProductAndPricingGroupsForDomain(Product $product, array $pricingGroups, int $domainId)
     {

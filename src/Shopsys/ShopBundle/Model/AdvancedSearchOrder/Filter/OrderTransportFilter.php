@@ -75,16 +75,18 @@ class OrderTransportFilter implements AdvancedSearchFilterInterface
         foreach ($rulesData as $index => $ruleData) {
             if ($ruleData->operator === self::OPERATOR_IS || $ruleData->operator === self::OPERATOR_IS_NOT) {
                 $dqlOperator = $this->getContainsDqlOperator($ruleData->operator);
-                $parameterName = 'orderTransport_' . $index;
-                $queryBuilder->andWhere('o.transport ' . $dqlOperator . ' :' . $parameterName);
-                $queryBuilder->setParameter($parameterName, $ruleData->value);
+                if ($dqlOperator !== null) {
+                    $parameterName = 'orderTransport_' . $index;
+                    $queryBuilder->andWhere('o.transport ' . $dqlOperator . ' :' . $parameterName);
+                    $queryBuilder->setParameter($parameterName, $ruleData->value);
+                }
             }
         }
     }
 
     /**
      * @param string $operator
-     * @return string
+     * @return string|null
      */
     protected function getContainsDqlOperator($operator)
     {
@@ -93,6 +95,8 @@ class OrderTransportFilter implements AdvancedSearchFilterInterface
                 return '=';
             case self::OPERATOR_IS_NOT:
                 return '!=';
+            default:
+                return null;
         }
     }
 }

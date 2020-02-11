@@ -7,7 +7,6 @@ namespace Tests\ShopBundle\Functional\Model\Order;
 use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
-use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemData;
 use Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
 use Shopsys\FrameworkBundle\Model\Order\OrderRepository;
@@ -17,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 use Shopsys\ShopBundle\DataFixtures\Demo\CountryDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\CurrencyDataFixture;
 use Shopsys\ShopBundle\DataFixtures\Demo\OrderStatusDataFixture;
+use Shopsys\ShopBundle\Model\Order\Item\OrderItemData;
 use Shopsys\ShopBundle\Model\Order\OrderData;
 use Shopsys\ShopBundle\Model\Transport\TransportRepository;
 use Tests\ShopBundle\Test\TransactionFunctionalTestCase;
@@ -37,11 +37,10 @@ class OrderFacadeTest extends TransactionFunctionalTestCase
         $productRepository = $this->getContainer()->get(ProductRepository::class);
         /** @var \Shopsys\ShopBundle\Model\Transport\TransportRepository $transportRepository */
         $transportRepository = $this->getContainer()->get(TransportRepository::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Payment\PaymentRepository $paymentRepository */
+        /** @var \Shopsys\ShopBundle\Model\Payment\PaymentRepository $paymentRepository */
         $paymentRepository = $this->getContainer()->get(PaymentRepository::class);
         /** @var \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade */
         $persistentReferenceFacade = $this->getContainer()->get(PersistentReferenceFacade::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculation */
         $product = $productRepository->getById(1);
 
         $cartFacade->addProductToCart($product->getId(), 1);
@@ -132,14 +131,14 @@ class OrderFacadeTest extends TransactionFunctionalTestCase
         $orderItemData1->name = 'itemName1';
         $orderItemData1->priceWithoutVat = Money::create(100);
         $orderItemData1->priceWithVat = Money::create(121);
-        $orderItemData1->vatPercent = 21;
+        $orderItemData1->vatPercent = '21';
         $orderItemData1->quantity = 3;
 
         $orderItemData2 = new OrderItemData();
         $orderItemData2->name = 'itemName2';
         $orderItemData2->priceWithoutVat = Money::create(333);
         $orderItemData2->priceWithVat = Money::create(333);
-        $orderItemData2->vatPercent = 0;
+        $orderItemData2->vatPercent = '0';
         $orderItemData2->quantity = 1;
 
         $orderItemsData[OrderData::NEW_ITEM_PREFIX . '1'] = $orderItemData1;

@@ -47,6 +47,6 @@ class FriendlyDateTimeFormatterExtension extends AbstractExtension
             7 => t('V neděli'),
         ];
 
-        return $daysInWeekTranslations[$day->format('N')];
+        return $daysInWeekTranslations[(int)$day->format('N')];
     }
 }

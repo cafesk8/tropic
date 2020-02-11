@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Shopsys\ShopBundle\Model\Product\Brand\Brand;
@@ -38,20 +39,27 @@ class BrandDataFixture extends AbstractReferenceFixture
     public const BRAND_NIKON = 'brand_nikon';
     public const BRAND_SHOPSYS = 'brand_shopsys';
 
-    /** @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade */
+    /** @var \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade */
     protected $brandFacade;
 
-    /** @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface */
+    /** @var \Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory */
     protected $brandDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface $brandDataFactory
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
      */
-    public function __construct(BrandFacade $brandFacade, BrandDataFactoryInterface $brandDataFactory)
+    protected $domain;
+
+    /**
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Brand\BrandDataFactory $brandDataFactory
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     */
+    public function __construct(BrandFacade $brandFacade, BrandDataFactoryInterface $brandDataFactory, Domain $domain)
     {
         $this->brandFacade = $brandFacade;
         $this->brandDataFactory = $brandDataFactory;
+        $this->domain = $domain;
     }
 
     /**
@@ -63,14 +71,14 @@ class BrandDataFixture extends AbstractReferenceFixture
 
         foreach ($this->getBrandNamesIndexedByBrandConstants() as $brandConstant => $brandName) {
             $brandData->name = $brandName;
-            $brandData->descriptions = [
-                'cs' => 'Toto je popis značky ' . $brandData->name . '.',
-                'en' => 'This is description of brand ' . $brandData->name . '.',
-            ];
-
             if ($brandConstant === self::BRAND_SHOPSYS) {
                 $brandData->type = Brand::TYPE_MAIN_SHOPSYS;
             }
+
+            foreach ($this->domain->getAllLocales() as $locale) {
+                $brandData->descriptions[$locale] = t('Toto je popis značky %brandName%.', ['%brandName%' => $brandData->name], 'dataFixtures', $locale);
+            }
+
             $brand = $this->brandFacade->create($brandData);
             $this->addReference($brandConstant, $brand);
         }

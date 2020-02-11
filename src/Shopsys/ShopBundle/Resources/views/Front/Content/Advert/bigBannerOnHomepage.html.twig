@@ -14,7 +14,7 @@
                 </div>
                 <div class="box-special-offer__grayscale">
                     <div class="box-special-offer__grayscale__image">
-                        {{ image(advert, { size: 'bigBanner', alt: advert.smallTitle, lazy: true }) }}
+                        {{ image(advert, { size: 'bigBanner', alt: advert.smallTitle }) }}
                     </div>
                     <div class="box-special-offer__grayscale__title">
                         <span class="box-special-offer__grayscale__title__text double-lined">
@@ -27,7 +27,7 @@
                             {% set url = url('front_product_detail', {'id': advertProduct.id}) %}
                             <li class="box-special-offer__products__item">
                                 <a class="box-special-offer__products__item__image" href="{{ url }}" title="{{ advertProduct.name }}">
-                                    {{ image(advertProduct, { size: 'biggerThumbnail', alt: advertProduct.name, lazy: true }) }}
+                                    {{ image(advertProduct, { size: 'biggerThumbnail', alt: advertProduct.name }) }}
                                 </a>
                                 <div class="box-special-offer__products__item__content">
                                     <a href="{{ url }}" title="{{ advertProduct.name }}">

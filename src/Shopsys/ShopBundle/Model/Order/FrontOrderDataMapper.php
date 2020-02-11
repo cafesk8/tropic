@@ -9,6 +9,9 @@ use Shopsys\FrameworkBundle\Model\Order\FrontOrderData;
 use Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper as BaseFrontOrderDataMapper;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 
+/**
+ * @method prefillFrontFormDataFromCustomer(\Shopsys\ShopBundle\Model\Order\FrontOrderData $frontOrderData, \Shopsys\ShopBundle\Model\Customer\User $user)
+ */
 class FrontOrderDataMapper extends BaseFrontOrderDataMapper
 {
     /**
@@ -23,9 +26,9 @@ class FrontOrderDataMapper extends BaseFrontOrderDataMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\FrontOrderData $frontOrderData
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User $user
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order|null $order
+     * @param \Shopsys\ShopBundle\Model\Order\FrontOrderData $frontOrderData
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
+     * @param \Shopsys\ShopBundle\Model\Order\Order|null $order
      */
     public function prefillFrontFormData(FrontOrderData $frontOrderData, User $user, ?Order $order)
     {

@@ -7,6 +7,13 @@ namespace Shopsys\ShopBundle\Model\Payment;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentRepository as BasePaymentRepository;
 use Shopsys\ShopBundle\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getAllIncludingDeleted()
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment|null findById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment getById(int $id)
+ * @method \Shopsys\ShopBundle\Model\Payment\Payment[] getAllByTransport(\Shopsys\ShopBundle\Model\Transport\Transport $transport)
+ */
 class PaymentRepository extends BasePaymentRepository
 {
     /**

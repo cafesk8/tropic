@@ -11,7 +11,7 @@ use Shopsys\ShopBundle\Model\Transport\TransportFacade;
 class PickupPlaceFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $entityManager;
 
@@ -31,7 +31,7 @@ class PickupPlaceFacade
     private $countryFacade;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
      * @param \Shopsys\ShopBundle\Model\Transport\PickupPlace\PickupPlaceRepository $pickupPlaceRepository
      * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
      * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade

@@ -10,6 +10,9 @@ use Tests\ShopBundle\Test\Codeception\AcceptanceTester;
 
 class ProductFilterCest
 {
+    private const BRAND_LG_POSITION = 3;
+    private const BRAND_HYUNDAI_POSITION = 2;
+
     /**
      * @param \Tests\ShopBundle\Test\Codeception\AcceptanceTester $me
      * @param \Tests\ShopBundle\Acceptance\acceptance\PageObject\Front\ProductFilterPage $productFilterPage
@@ -21,7 +24,8 @@ class ProductFilterCest
         ProductListPage $productListPage
     ) {
         $me->wantTo('test all product filters');
-        $me->amOnPage('/televize-audio/');
+        // tv-audio
+        $me->amOnLocalizedRoute('front_product_list', ['id' => 3]);
         $productListPage->assertProductsTotalCount(28);
 
         $productFilterPage->setMinimalPrice(1000);
@@ -30,19 +34,19 @@ class ProductFilterCest
         $productFilterPage->setMaximalPrice(10000);
         $productListPage->assertProductsTotalCount(16);
 
-        $productFilterPage->filterByBrand('LG');
+        $productFilterPage->filterByBrand(static::BRAND_LG_POSITION);
         $productListPage->assertProductsTotalCount(3);
 
-        $productFilterPage->filterByBrand('Hyundai');
+        $productFilterPage->filterByBrand(static::BRAND_HYUNDAI_POSITION);
         $productListPage->assertProductsTotalCount(7);
 
-        $productFilterPage->filterByParameter('HDMI', 'Ano');
+        $productFilterPage->filterByParameter('HDMI', 'Yes');
         $productListPage->assertProductsTotalCount(6);
 
-        $productFilterPage->filterByParameter('Úhlopříčka', '27"');
+        $productFilterPage->filterByParameter('Screen size', '27"');
         $productListPage->assertProductsTotalCount(2);
 
-        $productFilterPage->filterByParameter('Úhlopříčka', '30"');
+        $productFilterPage->filterByParameter('Screen size', '30"');
         $productListPage->assertProductsTotalCount(4);
     }
 }

@@ -20,18 +20,18 @@ class FlagsMassAction implements MassEditActionInterface
     private const OPERATION_SET = 'set';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade
      */
     private $flagFacade;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $entityManager;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
-     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $entityManager
      */
     public function __construct(
         FlagFacade $flagFacade,

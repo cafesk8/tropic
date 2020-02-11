@@ -8,6 +8,13 @@ use Doctrine\ORM\Query;
 use Shopsys\FrameworkBundle\Component\Doctrine\SortableNullsWalker;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository as BasePricingGroupRepository;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup getById(int $pricingGroupId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] getPricingGroupsByDomainId(int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup|null findById(int $pricingGroupId)
+ * @method \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[] getAllExceptIdByDomainId(int $pricingGroupId, int $domainId)
+ * @method bool existsUserWithPricingGroup(\Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup)
+ */
 class PricingGroupRepository extends BasePricingGroupRepository
 {
     /**
@@ -38,7 +45,7 @@ class PricingGroupRepository extends BasePricingGroupRepository
     }
 
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup[]
+     * @return \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup[]
      */
     public function getAll()
     {

@@ -29,17 +29,18 @@ class CartCest
         FloatingWindowPage $floatingWindowPage
     ) {
         $me->wantTo('have more pieces of the same product as one item in cart');
-        $me->amOnPage('/22-sencor-sle-22f46dm4-hello-kitty/');
+        // 22-sencor-sle-22f46dm4-hello-kitty
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 1]);
+        $productDetailPage->addProductIntoCart(3);
+        $floatingWindowPage->closeFloatingWindow();
+
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(1, '10497');
 
         $productDetailPage->addProductIntoCart(3);
         $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('1 položka za 10 497,00 Kč');
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(1, '20994');
 
-        $productDetailPage->addProductIntoCart(3);
-        $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('1 položka za 20 994,00 Kč');
-
-        $me->amOnPage('/kosik/');
+        $me->amOnLocalizedRoute('front_cart');
 
         $cartPage->assertProductQuantity('22" Sencor SLE 22F46DM4 HELLO KITTY', 6);
     }
@@ -59,13 +60,18 @@ class CartCest
         FloatingWindowPage $floatingWindowPage
     ) {
         $me->wantTo('add product to cart from product list');
-        $me->amOnPage('/televize-audio/');
+        // tv-audio
+        $me->amOnLocalizedRoute('front_product_list', ['id' => 3]);
         $productListPage->addProductToCartByName('Defender 2.0 SPK-480', 1);
-        $me->see('Do košíku bylo vloženo zboží Defender 2.0 SPK-480 (1 ks)');
+        $me->seeTranslationFrontend('Product <strong>%name%</strong> (%quantity% %unitName%) added to the cart', 'messages', [
+            '%name%' => t('Defender 2.0 SPK-480', [], 'dataFixtures', $me->getFrontendLocale()),
+            '%quantity%' => 1,
+            '%unitName%' => $me->getDefaultUnitName(),
+        ]);
         $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('1 položka');
-        $me->amOnPage('/kosik/');
-        $cartPage->assertProductPrice('Defender 2.0 SPK-480', '119,00 Kč');
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(1, '119');
+        $me->amOnLocalizedRoute('front_cart');
+        $cartPage->assertProductPriceRoundedByCurrency('Defender 2.0 SPK-480', '119');
     }
 
     /**
@@ -85,11 +91,15 @@ class CartCest
         $me->wantTo('add product to cart from homepage');
         $me->amOnPage('/');
         $homepagePage->addTopProductToCartByName('22" Sencor SLE 22F46DM4 HELLO KITTY', 1);
-        $me->see('Do košíku bylo vloženo zboží');
+        $me->seeTranslationFrontend('Product <strong>%name%</strong> (%quantity% %unitName%) added to the cart', 'messages', [
+            '%name%' => t('22" Sencor SLE 22F46DM4 HELLO KITTY', [], 'dataFixtures', $me->getFrontendLocale()),
+            '%quantity%' => 1,
+            '%unitName%' => $me->getDefaultUnitName(),
+        ]);
         $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('1 položka');
-        $me->amOnPage('/kosik/');
-        $cartPage->assertProductPrice('22" Sencor SLE 22F46DM4 HELLO KITTY', '3 499,00 Kč');
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(1, '3499');
+        $me->amOnLocalizedRoute('front_cart');
+        $cartPage->assertProductPriceRoundedByCurrency('22" Sencor SLE 22F46DM4 HELLO KITTY', '3499');
     }
 
     /**
@@ -105,14 +115,19 @@ class CartCest
         FloatingWindowPage $floatingWindowPage
     ) {
         $me->wantTo('add product to cart from product detail');
-        $me->amOnPage('/22-sencor-sle-22f46dm4-hello-kitty/');
-        $me->see('Vložit do košíku');
+        // 22-sencor-sle-22f46dm4-hello-kitty
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 1]);
+        $me->seeTranslationFrontend('Add to cart');
         $productDetailPage->addProductIntoCart(3);
-        $me->see('Do košíku bylo vloženo zboží');
+        $me->seeTranslationFrontend('Product <strong>%name%</strong> (%quantity% %unitName%) added to the cart', 'messages', [
+            '%name%' => t('22" Sencor SLE 22F46DM4 HELLO KITTY', [], 'dataFixtures', $me->getFrontendLocale()),
+            '%quantity%' => 3,
+            '%unitName%' => $me->getDefaultUnitName(),
+        ]);
         $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('1 položka za 10 497,00 Kč');
-        $me->amOnPage('/kosik/');
-        $me->see('22" Sencor SLE 22F46DM4 HELLO KITTY');
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(1, '10497');
+        $me->amOnLocalizedRoute('front_cart');
+        $me->seeTranslationFrontend('22" Sencor SLE 22F46DM4 HELLO KITTY', 'dataFixtures');
     }
 
     /**
@@ -126,13 +141,14 @@ class CartCest
         AcceptanceTester $me
     ) {
         $me->wantTo('change items in cart and recalculate price');
-        $me->amOnPage('/22-sencor-sle-22f46dm4-hello-kitty/');
-        $me->see('Vložit do košíku');
+        // 22-sencor-sle-22f46dm4-hello-kitty
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 1]);
+        $me->seeTranslationFrontend('Add to cart');
         $productDetailPage->addProductIntoCart(3);
-        $me->clickByText('Přejít do košíku');
+        $me->clickByTranslationFrontend('Go to cart');
 
         $cartPage->changeProductQuantity('22" Sencor SLE 22F46DM4 HELLO KITTY', 10);
-        $cartPage->assertTotalPriceWithVat('34 990,00 Kč');
+        $cartPage->assertTotalPriceWithVatRoundedByCurrency('34990');
     }
 
     /**
@@ -147,12 +163,14 @@ class CartCest
     ) {
         $me->wantTo('add some items to cart and remove them');
 
-        $me->amOnPage('/panasonic-dmc-ft5ep/');
+        // panasonic-dmc-ft5ep
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 38]);
         $productDetailPage->addProductIntoCart();
-        $me->amOnPage('/jura-impressa-j9-tft-carbon/');
+        // jura-impressa-j9-tft-carbon
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 23]);
         $productDetailPage->addProductIntoCart();
 
-        $me->amOnPage('/kosik/');
+        $me->amOnLocalizedRoute('front_cart');
         $cartPage->assertProductIsInCartByName('JURA Impressa J9 TFT Carbon');
         $cartPage->assertProductIsInCartByName('PANASONIC DMC FT5EP');
 
@@ -160,7 +178,9 @@ class CartCest
         $cartPage->assertProductIsNotInCartByName('JURA Impressa J9 TFT Carbon');
 
         $cartPage->removeProductFromCart('PANASONIC DMC FT5EP');
-        $me->see('Váš nákupní košík je bohužel prázdný.');
+        $me->seeTranslationFrontend('Your cart is unfortunately empty. To create order, you have to <a href="{{ url }}">choose</a> some product first', 'messages', [
+            '{{ url }}' => '',
+        ]);
     }
 
     /**
@@ -179,17 +199,19 @@ class CartCest
     ) {
         $me->wantTo('add distinct products to cart');
 
-        $me->amOnPage('/22-sencor-sle-22f46dm4-hello-kitty/');
+        // 22-sencor-sle-22f46dm4-hello-kitty
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 1]);
         $productDetailPage->addProductIntoCart();
         $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('1 položka za 3 499,00 Kč');
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(1, '3499');
 
-        $me->amOnPage('/canon-pixma-ip7250/');
+        // canon-pixma-ip7250
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 142]);
         $productDetailPage->addProductIntoCart();
         $floatingWindowPage->closeFloatingWindow();
-        $cartBoxPage->seeInCartBox('2 položky za 27 687,00 Kč');
+        $cartBoxPage->seeCountAndPriceRoundedByCurrencyInCartBox(2, '27687');
 
-        $me->amOnPage('/kosik/');
+        $me->amOnLocalizedRoute('front_cart');
         $cartPage->assertProductIsInCartByName('22" Sencor SLE 22F46DM4 HELLO KITTY');
         $cartPage->assertProductIsInCartByName('Canon PIXMA iP7250');
     }
@@ -206,15 +228,18 @@ class CartCest
     ) {
         $me->wantTo('see that prices of products in cart are calculated well');
 
-        $me->amOnPage('/aquila-aquagym-pramenita-voda-neperliva/');
+        // aquila-aquagym-non-carbonated-spring-water
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 71]);
         $productDetailPage->addProductIntoCart(10);
-        $me->amOnPage('/stokorunova-poukazka/');
+        // 100-czech-crowns-ticket
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 72]);
         $productDetailPage->addProductIntoCart(100);
-        $me->amOnPage('/premiumcord-micro-usb-a-b-1m/');
+        // premiumcord-micro-usb-a-b-1m
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 73]);
         $productDetailPage->addProductIntoCart(75);
 
-        $me->amOnPage('/kosik/');
-        $cartPage->assertTotalPriceWithVat('17 350,00 Kč');
+        $me->amOnLocalizedRoute('front_cart');
+        $cartPage->assertTotalPriceWithVatRoundedByCurrency('17350');
     }
 
     /**
@@ -229,21 +254,23 @@ class CartCest
     ) {
         $me->wantTo('see that flow of promocode in cart is correct');
 
-        $me->amOnPage('/aquila-aquagym-pramenita-voda-neperliva/');
+        // aquila-aquagym-non-carbonated-spring-water
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 71]);
         $productDetailPage->addProductIntoCart();
-        $me->amOnPage('/stokorunova-poukazka/');
+        // 100-czech-crowns-ticket
+        $me->amOnLocalizedRoute('front_product_detail', ['id' => 72]);
         $productDetailPage->addProductIntoCart();
 
-        $me->amOnPage('/kosik/');
+        $me->amOnLocalizedRoute('front_cart');
 
         $cartPage->applyPromoCode('test');
 
         $cartPage->canSeePromoCodeRemoveButtonElement();
-        $cartPage->assertTotalPriceWithVat('122,00 Kč');
+        $cartPage->assertTotalPriceWithVatRoundedByCurrency('122');
 
         $cartPage->removePromoCode();
 
         $cartPage->canSeePromoCodeSubmitButtonElement();
-        $cartPage->assertTotalPriceWithVat('136,00 Kč');
+        $cartPage->assertTotalPriceWithVatRoundedByCurrency('136');
     }
 }

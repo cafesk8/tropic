@@ -28,7 +28,7 @@ class MigrateProductDataCommand extends Command
     protected static $defaultName = 'shopsys:migrate:product-data';
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Driver\Connection
      */
     private $connection;
 
@@ -79,7 +79,7 @@ class MigrateProductDataCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -106,6 +106,8 @@ class MigrateProductDataCommand extends Command
             }
             $this->entityManager->clear();
         } while ($productsCount > 0);
+
+        return 0;
     }
 
     /**

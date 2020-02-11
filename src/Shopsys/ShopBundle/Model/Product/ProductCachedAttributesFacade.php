@@ -22,7 +22,7 @@ use Shopsys\ShopBundle\Model\Transport\Transport;
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository
      */
     protected $parameterRepository;
 
@@ -63,7 +63,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForUser $productPriceCalculationForUser
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \Shopsys\ShopBundle\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \Shopsys\ShopBundle\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
@@ -181,7 +181,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
      * @return \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue
      */
@@ -224,7 +224,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
     public function getProductRegisteredCustomerPrice(Product $product): ?ProductPrice
@@ -263,7 +263,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string|null $locale
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
      */

@@ -23,7 +23,7 @@
                     {% set productSellingPrice = productView.sellingPrice %}
                     <a href="{{ productView.action.detailUrl }}" class="list-products__item__block">
                         <div class="list-products__item__image dont-print">
-                            {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
+                            {{ image(productView.image, { size: 'list', alt: productView.name }) }}
                             {% set productFlagIds = productView.flagIds %}
                             {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
                             {% if freeTransportAndPaymentFlagId is not null %}
@@ -89,7 +89,7 @@
                                 <div class="list-products__item__variants__slider js-variantsSlider-slides">
                                     {% for mainVariantGroupProductView in productsForMainVariantGroup %}
                                         <div class="list-products__item__variants__image">
-                                            {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name, lazy: true }) }}
+                                            {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name }) }}
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -123,7 +123,7 @@
                     <div class="{{ listCssClass }}__item__in">
                         <a href="{{ productView.action.detailUrl }}" class="{{ listCssClass }}__item__block">
                             <div class="{{ listCssClass }}__item__image dont-print">
-                                {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
+                                {{ image(productView.image, { size: 'list', alt: productView.name }) }}
                             </div>
                             {% set productFlagIds = productView.flagIds %}
                             {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}

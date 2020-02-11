@@ -48,7 +48,7 @@ class PersonalInfoFormType extends AbstractType
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade $heurekaFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
@@ -349,7 +349,7 @@ class PersonalInfoFormType extends AbstractType
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\FrontOrderData $orderData
+     * @param \Shopsys\ShopBundle\Model\Order\FrontOrderData $orderData
      * @return bool
      */
     private function isPickupPlaceAndStoreNull(FrontOrderData $orderData): bool

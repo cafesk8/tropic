@@ -92,7 +92,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param $routeName
+     * @param string $routeName
      * @param \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerPage $dataLayerPage
      */
     public function mapRouteNameToDataLayerPage($routeName, DataLayerPage $dataLayerPage): void
@@ -148,7 +148,6 @@ class DataLayerMapper
         $categoriesIdsInPath = [];
         $categoriesNamesInPath = [];
         foreach ($categoriesInPath as $categoryInPath) {
-            /** @var $categoryInPath \Shopsys\ShopBundle\Model\Category\Category */
             $categoriesIdsInPath[] = (string)$categoryInPath->getId();
             $categoriesNamesInPath[] = $categoryInPath->getName($locale);
         }
@@ -159,7 +158,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerPage $dataLayerPage
      * @param string $locale
      */
@@ -172,7 +171,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param string $locale
      * @return \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerProduct[]
      */
@@ -185,10 +184,6 @@ class DataLayerMapper
             $product = $quantifiedProduct->getProduct();
             $quantity = $quantifiedProduct->getQuantity();
 
-            if ($product === null) {
-                continue;
-            }
-
             $dataLayerProduct = new DataLayerProduct();
             $this->mapProductToDataLayerProduct($product, $dataLayerProduct, $locale);
             $dataLayerProduct->setQuantity($quantity);
@@ -199,7 +194,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product[] $products
+     * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
      * @param string $locale
      * @return \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerProduct[]
      */
@@ -216,7 +211,7 @@ class DataLayerMapper
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Gtm\Data\DataLayerProduct $dataLayerProduct
      * @param string $locale
      */

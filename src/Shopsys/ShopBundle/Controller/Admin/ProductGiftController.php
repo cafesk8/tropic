@@ -106,9 +106,9 @@ class ProductGiftController extends AdminBaseController
      */
     public function editAction(Request $request, int $id): Response
     {
-        $productGift = $this->productGiftFacade->getById($id);
-
-        if ($productGift === null) {
+        try {
+            $productGift = $this->productGiftFacade->getById($id);
+        } catch (ProductGiftNotFoundException $ex) {
             $this->getFlashMessageSender()->addErrorFlash(t('Dárek neexistuje'));
 
             return $this->redirectToRoute('admin_productgift_list');

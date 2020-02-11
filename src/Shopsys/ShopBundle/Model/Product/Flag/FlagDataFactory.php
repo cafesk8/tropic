@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactory as BaseFlagDataFa
 class FlagDataFactory extends BaseFlagDataFactory
 {
     /**
-     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\FlagData
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\FlagData
      */
     public function create(): BaseFlagData
     {
@@ -21,8 +21,8 @@ class FlagDataFactory extends BaseFlagDataFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\Flag $flag
-     * @return \Shopsys\FrameworkBundle\Model\Product\Flag\FlagData
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\Flag $flag
+     * @return \Shopsys\ShopBundle\Model\Product\Flag\FlagData
      */
     public function createFromFlag(BaseFlag $flag): BaseFlagData
     {

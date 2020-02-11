@@ -12,7 +12,6 @@ class RedisFacade extends BaseRedisFacade
     /**
      * @param string $pattern
      * @param mixed|null $id
-     * @param string|null id
      */
     public function clearCacheByPattern($pattern = '', $id = null)
     {
@@ -34,7 +33,7 @@ class RedisFacade extends BaseRedisFacade
      * @param string $pattern
      * @return \Redis|null
      */
-    public function findCacheClientByPattern(string $pattern): Redis
+    public function findCacheClientByPattern(string $pattern): ?Redis
     {
         foreach ($this->getCacheClients() as $redis) {
             $prefix = (string)$redis->getOption(Redis::OPT_PREFIX);

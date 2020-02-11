@@ -15,6 +15,8 @@ use Shopsys\ShopBundle\Model\Blog\Category\Exception\BlogCategoryDomainNotFoundE
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="blog_categories")
  * @ORM\Entity
+ *
+ * @method \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryTranslation translation($locale)
  */
 class BlogCategory extends AbstractTranslatableEntity
 {
@@ -30,7 +32,7 @@ class BlogCategory extends AbstractTranslatableEntity
     protected $id;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryTranslation[]
+     * @var \Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryTranslation[]|\Doctrine\Common\Collections\ArrayCollection
      *
      * @Prezent\Translations(targetEntity="Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryTranslation")
      */

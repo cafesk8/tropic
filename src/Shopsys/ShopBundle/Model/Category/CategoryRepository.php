@@ -17,11 +17,35 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryRepository as BaseCategoryRep
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository, \Shopsys\FrameworkBundle\Component\EntityExtension\EntityNameResolver $entityNameResolver)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getAll()
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getAllCategoriesOfCollapsedTree(\Shopsys\ShopBundle\Model\Category\Category[] $selectedCategories)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getFullPathsIndexedByIdsForDomain(int $domainId, string $locale)
+ * @method \Shopsys\ShopBundle\Model\Category\Category getRootCategory()
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getTranslatedAllWithoutBranch(\Shopsys\ShopBundle\Model\Category\Category $categoryBranch, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category|null findById(int $categoryId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category getById(int $categoryId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getPreOrderTreeTraversalForAllCategories(string $locale)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getPreOrderTreeTraversalForVisibleCategoriesByDomain(int $domainId, string $locale)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getTranslatedVisibleSubcategoriesByDomain(\Shopsys\ShopBundle\Model\Category\Category $parentCategory, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getVisibleByDomainIdAndSearchText(int $domainId, string $locale, string|null $searchText)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getAllVisibleChildrenByCategoryAndDomainId(\Shopsys\ShopBundle\Model\Category\Category $category, int $domainId)
+ * @method int[] getListableProductCountsIndexedByCategoryId(\Shopsys\ShopBundle\Model\Category\Category[] $categories, \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category|null findProductMainCategoryOnDomain(\Shopsys\ShopBundle\Model\Product\Product $product, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category getProductMainCategoryOnDomain(\Shopsys\ShopBundle\Model\Product\Product $product, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getVisibleCategoriesInPathFromRootOnDomain(\Shopsys\ShopBundle\Model\Category\Category $category, int $domainId)
+ * @method string[] getCategoryNamesInPathFromRootToProductMainCategoryOnDomain(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getCategoriesByIds(int[] $categoryIds)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getCategoriesWithVisibleChildren(\Shopsys\ShopBundle\Model\Category\Category[] $categories, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Category\Category[] getTranslatedAll(\Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig)
+ */
 class CategoryRepository extends BaseCategoryRepository
 {
     /**
      * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     public function getAllVisibleCategoriesForFirstColumnByDomainId(int $domainId): array
     {
@@ -40,7 +64,7 @@ class CategoryRepository extends BaseCategoryRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -120,7 +144,7 @@ class CategoryRepository extends BaseCategoryRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain[]
      */
@@ -153,7 +177,7 @@ class CategoryRepository extends BaseCategoryRepository
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @return string|null
      */

@@ -19,7 +19,7 @@ class FlagSettingsFormType extends AbstractType
     private $flagFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade $flagFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Flag\FlagFacade $flagFacade
      */
     public function __construct(FlagFacade $flagFacade)
     {

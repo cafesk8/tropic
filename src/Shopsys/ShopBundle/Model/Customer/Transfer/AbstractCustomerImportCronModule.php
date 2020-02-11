@@ -93,14 +93,13 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
 
         $this->customerTransferValidator->validate($itemData);
 
-        /** @var \Shopsys\ShopBundle\Model\Customer\User $customer */
         $customer = $this->customerFacade->findUserByEmailAndDomain(
             $itemData->getEmail(),
             $itemData->getDomainId()
         );
 
         if ($customer === null) {
-            $this->logger->addInfo(sprintf('Customer with transfer ID `%s` not found, will be skipped', $itemData->getDataIdentifier()));
+            //$this->createCustomer($itemData);
             return;
         }
 

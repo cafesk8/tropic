@@ -22,6 +22,20 @@ use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdDataFactory;
 use Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFacade;
 use Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupFacade;
 
+/**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ * @property \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
+ * @method \Shopsys\ShopBundle\Model\Customer\User getUserById(int $userId)
+ * @method \Shopsys\ShopBundle\Model\Customer\User|null findUserByEmailAndDomain(string $email, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Customer\User register(\Shopsys\ShopBundle\Model\Customer\UserData $userData)
+ * @method \Shopsys\ShopBundle\Model\Customer\User create(\Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData)
+ * @method \Shopsys\ShopBundle\Model\Customer\User edit(int $userId, \Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData)
+ * @method editDeliveryAddress(\Shopsys\ShopBundle\Model\Customer\User $user, \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData $deliveryAddressData)
+ * @method \Shopsys\ShopBundle\Model\Customer\User editByAdmin(int $userId, \Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData)
+ * @method \Shopsys\ShopBundle\Model\Customer\User editByCustomer(int $userId, \Shopsys\FrameworkBundle\Model\Customer\CustomerData $customerData)
+ * @method amendCustomerDataFromOrder(\Shopsys\ShopBundle\Model\Customer\User $user, \Shopsys\ShopBundle\Model\Order\Order $order)
+ * @method setEmail(string $email, \Shopsys\ShopBundle\Model\Customer\User $user)
+ */
 class CustomerFacade extends BaseCustomerFacade
 {
     /**
@@ -46,8 +60,8 @@ class CustomerFacade extends BaseCustomerFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Customer\UserRepository $userRepository
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
+     * @param \Shopsys\ShopBundle\Model\Customer\UserRepository $userRepository
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface $billingAddressFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface $deliveryAddressFactory
@@ -108,7 +122,7 @@ class CustomerFacade extends BaseCustomerFacade
 
     /**
      * @param int $limit
-     * @return \Shopsys\ShopBundle\Model\Order\Order[]
+     * @return \Shopsys\ShopBundle\Model\Customer\User[]
      */
     public function getNotExportedCustomersBatch(int $limit): array
     {
@@ -193,7 +207,7 @@ class CustomerFacade extends BaseCustomerFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $currentPricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $currentPricingGroup
      * @param float|null $coefficient
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferId $userTransferId
      */

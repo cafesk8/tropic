@@ -24,7 +24,7 @@ class DeliveryAddressFormType extends AbstractType
     public const VALIDATION_GROUP_DIFFERENT_DELIVERY_ADDRESS = 'differentDeliveryAddress';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Country\CountryFacade
+     * @var \Shopsys\ShopBundle\Model\Country\CountryFacade
      */
     private $countryFacade;
 
@@ -34,7 +34,7 @@ class DeliveryAddressFormType extends AbstractType
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Country\CountryFacade $countryFacade
+     * @param \Shopsys\ShopBundle\Model\Country\CountryFacade $countryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(CountryFacade $countryFacade, Domain $domain)

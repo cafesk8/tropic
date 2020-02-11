@@ -27,7 +27,7 @@ class StoreStockTransferValidator
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Transfer\ProductTransferResponseItemData $storeStockTransferResponseItemData
+     * @param \Shopsys\ShopBundle\Model\Product\StoreStock\Transfer\StoreStockTransferResponseItemData $storeStockTransferResponseItemData
      */
     public function validate(StoreStockTransferResponseItemData $storeStockTransferResponseItemData)
     {

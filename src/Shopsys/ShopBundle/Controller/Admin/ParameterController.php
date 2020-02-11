@@ -10,6 +10,9 @@ use Shopsys\FrameworkBundle\Controller\Admin\ParameterController as BaseParamete
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Exception\ParameterNotFoundException;
 use Shopsys\ShopBundle\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 
+/**
+ * @method __construct(\Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade, \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterInlineEdit $parameterInlineEdit)
+ */
 class ParameterController extends BaseParameterController
 {
     /**

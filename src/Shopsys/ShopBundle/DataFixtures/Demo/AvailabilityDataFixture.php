@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\DataFixtures\Demo;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactoryInterface;
@@ -29,23 +30,31 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
     protected $availabilityDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    protected $domain;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactoryInterface $availabilityDataFactory
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         AvailabilityFacade $availabilityFacade,
         AvailabilityDataFactoryInterface $availabilityDataFactory,
-        Setting $setting
+        Setting $setting,
+        Domain $domain
     ) {
         $this->availabilityFacade = $availabilityFacade;
         $this->availabilityDataFactory = $availabilityDataFactory;
         $this->setting = $setting;
+        $this->domain = $domain;
     }
 
     /**
@@ -54,20 +63,33 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
     public function load(ObjectManager $manager)
     {
         $availabilityData = $this->availabilityDataFactory->create();
-        $availabilityData->name = ['cs' => 'Připravujeme', 'en' => 'Preparing', 'sk' => 'Pripravujeme'];
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $availabilityData->name[$locale] = t('Připravujeme', [], 'dataFixtures', $locale);
+        }
+
         $availabilityData->dispatchTime = 14;
         $this->createAvailability($availabilityData, self::AVAILABILITY_PREPARING);
 
-        $availabilityData->name = ['cs' => 'Skladem', 'en' => 'In stock', 'sk' => 'Skladom'];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $availabilityData->name[$locale] = t('Skladem', [], 'dataFixtures', $locale);
+        }
+
         $availabilityData->dispatchTime = 0;
         $inStockAvailability = $this->createAvailability($availabilityData, self::AVAILABILITY_IN_STOCK);
         $this->setting->set(Setting::DEFAULT_AVAILABILITY_IN_STOCK, $inStockAvailability->getId());
 
-        $availabilityData->name = ['cs' => 'Na dotaz', 'en' => 'On request', 'sk' => 'Na dotaz'];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $availabilityData->name[$locale] = t('Na dotaz', [], 'dataFixtures', $locale);
+        }
+
         $availabilityData->dispatchTime = 7;
         $this->createAvailability($availabilityData, self::AVAILABILITY_ON_REQUEST);
 
-        $availabilityData->name = ['cs' => 'Nedostupné', 'en' => 'Out of stock', 'sk' => 'Nedostupné'];
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $availabilityData->name[$locale] = t('Nedostupné', [], 'dataFixtures', $locale);
+        }
+
         $availabilityData->dispatchTime = null;
         $this->createAvailability($availabilityData, self::AVAILABILITY_OUT_OF_STOCK);
     }

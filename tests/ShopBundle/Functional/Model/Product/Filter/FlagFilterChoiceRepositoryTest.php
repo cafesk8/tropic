@@ -37,9 +37,11 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $this->assertContains(3, $ids);
     }
 
-    public function testGetFlagFilterChoicesForSearchApple(): void
+    public function testGetFlagFilterChoicesForSearchPhone(): void
     {
-        $flagFilterChoices = $this->getChoicesForSearchText('apple');
+        $this->skipTestIfFirstDomainIsNotInEnglish();
+
+        $flagFilterChoices = $this->getChoicesForSearchText('phone');
 
         $this->assertCount(3, $flagFilterChoices);
 
@@ -55,11 +57,13 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         $this->assertContains(3, $ids);
     }
 
-    public function testGetFlagFilterChoicesForKniha(): void
+    public function testGetFlagFilterChoicesForBook(): void
     {
-        $flagFilterChoices = $this->getChoicesForSearchText('Kniha');
+        $this->skipTestIfFirstDomainIsNotInEnglish();
 
-        $this->assertCount(1, $flagFilterChoices);
+        $flagFilterChoices = $this->getChoicesForSearchText('book');
+
+        $this->assertCount(2, $flagFilterChoices);
 
         $ids = array_map(
             static function (Flag $flag) {
@@ -69,6 +73,7 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         );
 
         $this->assertContains(1, $ids);
+        $this->assertContains(2, $ids);
     }
 
     /**
@@ -82,10 +87,14 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
         $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
-        /** @var \Shopsys\FrameworkBundle\Model\Category\Category $category */
+        /** @var \Shopsys\ShopBundle\Model\Category\Category $category */
         $category = $this->getReference($categoryReferenceName);
 
-        return $repository->getFlagFilterChoicesInCategory(1, $pricingGroup, 'en', $category);
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+        $domainConfig1 = $domain->getDomainConfigById(Domain::FIRST_DOMAIN_ID);
+
+        return $repository->getFlagFilterChoicesInCategory($domainConfig1->getId(), $pricingGroup, $domainConfig1->getLocale(), $category);
     }
 
     /**
@@ -99,7 +108,11 @@ class FlagFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
         /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
         $pricingGroup = $this->getReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_BASIC_DOMAIN, Domain::FIRST_DOMAIN_ID);
 
-        return $repository->getFlagFilterChoicesForSearch(1, $pricingGroup, 'cs', $searchText);
+        /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
+        $domain = $this->getContainer()->get(Domain::class);
+        $domainConfig1 = $domain->getDomainConfigById(Domain::FIRST_DOMAIN_ID);
+
+        return $repository->getFlagFilterChoicesForSearch($domainConfig1->getId(), $pricingGroup, $domainConfig1->getLocale(), $searchText);
     }
 
     /**

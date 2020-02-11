@@ -13,22 +13,23 @@ use Shopsys\FrameworkBundle\Model\ShopInfo\ShopInfoSettingFacade;
 class SettingValueShopInfoDataFixture extends AbstractReferenceFixture
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
-    public const SETTING_VALUES = [
-        ShopInfoSettingFacade::SHOP_INFO_PHONE_NUMBER => '+420 595 177 177',
-        ShopInfoSettingFacade::SHOP_INFO_PHONE_HOURS => '(Po - Pá: 8:00 - 16:00)',
-        ShopInfoSettingFacade::SHOP_INFO_EMAIL => 'info@shopsys.com',
-    ];
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    protected $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(Setting $setting)
+    public function __construct(Setting $setting, Domain $domain)
     {
         $this->setting = $setting;
+        $this->domain = $domain;
     }
 
     /**
@@ -36,8 +37,12 @@ class SettingValueShopInfoDataFixture extends AbstractReferenceFixture
      */
     public function load(ObjectManager $manager)
     {
-        foreach (self::SETTING_VALUES as $key => $value) {
-            $this->setting->setForDomain($key, $value, Domain::FIRST_DOMAIN_ID);
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $domainId = $domainConfig->getId();
+            $locale = $domainConfig->getLocale();
+            $this->setting->setForDomain(ShopInfoSettingFacade::SHOP_INFO_PHONE_NUMBER, t('+420 595 177 177', [], 'dataFixtures', $locale), $domainId);
+            $this->setting->setForDomain(ShopInfoSettingFacade::SHOP_INFO_PHONE_HOURS, t('(Po - Pá: 8:00 - 16:00)', [], 'dataFixtures', $locale), $domainId);
+            $this->setting->setForDomain(ShopInfoSettingFacade::SHOP_INFO_EMAIL, t('info@shopsys.com', [], 'dataFixtures', $locale), $domainId);
         }
     }
 }

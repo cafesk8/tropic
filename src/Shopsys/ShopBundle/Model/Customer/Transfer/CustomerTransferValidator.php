@@ -72,4 +72,12 @@ class CustomerTransferValidator
             throw new TransferInvalidDataException($violations);
         }
     }
+
+    /**
+     * @return \Symfony\Component\Validator\Validator\ValidatorInterface
+     */
+    public function getValidator(): ValidatorInterface
+    {
+        return $this->validator;
+    }
 }

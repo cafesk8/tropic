@@ -246,7 +246,7 @@ class BlogCategoryFormType extends AbstractType
             $builderSeoGroup
                 ->add('urls', UrlListType::class, [
                     'route_name' => 'front_blogcategory_detail',
-                    'entity_id' => $options['blogCategory'] !== null ? $options['blogCategory']->getId() : null,
+                    'entity_id' => $options['blogCategory']->getId(),
                     'label' => t('URL addresses'),
                 ]);
         }

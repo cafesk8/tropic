@@ -50,7 +50,7 @@ class MaintenanceModeCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -67,5 +67,7 @@ class MaintenanceModeCommand extends Command
         }
 
         $symfonyStyleIo->newLine();
+
+        return 0;
     }
 }

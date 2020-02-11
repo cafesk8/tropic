@@ -7,6 +7,13 @@ namespace Shopsys\ShopBundle\Model\Product;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Flag\Flag[] $flags
+ * @property \Shopsys\ShopBundle\Model\Category\Category[][] $categoriesByDomainId
+ * @property \Shopsys\ShopBundle\Model\Product\Brand\Brand|null $brand
+ * @property \Shopsys\ShopBundle\Model\Product\Product[] $accessories
+ * @property \Shopsys\ShopBundle\Model\Product\Product[] $variants
+ */
 class ProductData extends BaseProductData
 {
     /**
@@ -20,7 +27,7 @@ class ProductData extends BaseProductData
     public $transferNumber = null;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      */
     public $distinguishingParameter;
 
@@ -30,7 +37,7 @@ class ProductData extends BaseProductData
     public $mainVariantGroup;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter|null
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\Parameter|null
      */
     public $distinguishingParameterForMainVariantGroup;
 

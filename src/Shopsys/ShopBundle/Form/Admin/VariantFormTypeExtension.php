@@ -16,13 +16,13 @@ class VariantFormTypeExtension extends AbstractTypeExtension
     public const DISTINGUISHING_PARAMETER = 'distinguishingParameter';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade
      */
     private $parameterFacade;
 
     /**
      * ProductFormTypeExtension constructor.
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function __construct(ParameterFacade $parameterFacade)
     {

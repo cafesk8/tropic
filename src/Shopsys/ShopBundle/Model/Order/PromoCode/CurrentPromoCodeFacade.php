@@ -18,6 +18,9 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotApplicableExc
 use Shopsys\ShopBundle\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode|null getValidEnteredPromoCodeOrNull()
+ */
 class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 {
     public const SESSION_CART_PRODUCT_PRICES_TYPE = 'cartProductPricesTypes';
@@ -37,7 +40,7 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     private $promoCodeLimitFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -109,7 +112,6 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkPromoCodeValidity(string $enteredCode, Money $totalWatchedPriceOfProducts, ?User $user = null): void
     {
-        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
 
         $productPricesType = $this->session->get(self::SESSION_CART_PRODUCT_PRICES_TYPE);

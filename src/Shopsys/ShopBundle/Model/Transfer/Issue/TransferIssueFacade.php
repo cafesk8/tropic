@@ -13,7 +13,7 @@ use Shopsys\ShopBundle\Model\Transfer\TransferFacade;
 class TransferIssueFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     protected $em;
 
@@ -28,7 +28,7 @@ class TransferIssueFacade
     private $transferFacade;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Transfer\Issue\TransferIssueRepository $transferIssueRepository
      * @param \Shopsys\ShopBundle\Model\Transfer\TransferFacade $transferFacade
      */

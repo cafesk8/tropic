@@ -15,7 +15,7 @@ class GoogleProductRepository extends BaseGoogleProductRepository
 {
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param int|null $lastSeekId
      * @param int $maxResults
      * @return iterable

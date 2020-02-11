@@ -6,6 +6,9 @@ namespace Shopsys\ShopBundle\Model\Grid;
 
 use Shopsys\FrameworkBundle\Component\Grid\Ordering\GridOrderingFacade as BaseGridOrderingFacade;
 
+/**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ */
 class GridOrderingFacade extends BaseGridOrderingFacade
 {
     /**

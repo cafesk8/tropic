@@ -15,13 +15,13 @@ class TransferFacade
     private $transferRepository;
 
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
     /**
      * @param \Shopsys\ShopBundle\Model\Transfer\TransferRepository $transferRepository
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      */
     public function __construct(
         TransferRepository $transferRepository,
@@ -54,7 +54,6 @@ class TransferFacade
 
     /**
      * @param string $identifier
-     * @param \DateTime $lastStartAt
      */
     public function resetTransferByTransferId(string $identifier): void
     {

@@ -12,3 +12,7 @@ _styleguide:
 
 _main:
     resource: routing.yml
+
+_styleguide:
+    path: /_styleguide/
+    defaults: { _controller: ShopsysShopBundle:Styleguide\Styleguide:styleguide }

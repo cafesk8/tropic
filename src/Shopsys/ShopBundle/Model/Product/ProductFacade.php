@@ -48,6 +48,23 @@ use Shopsys\ShopBundle\Model\Product\Product as ChildProduct;
 use Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory;
 use Shopsys\ShopBundle\Model\Store\StoreFacade;
 
+/**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ * @property \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+ * @property \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
+ * @property \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository
+ * @property \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade $productManualInputPriceFacade
+ * @property \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+ * @property \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
+ * @method \Shopsys\ShopBundle\Model\Product\Product getById(int $productId)
+ * @method \Shopsys\ShopBundle\Model\Product\Product create(\Shopsys\ShopBundle\Model\Product\ProductData $productData)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[][] getAllProductSellingPricesIndexedByDomainId(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[] getAllProductSellingPricesByDomainId(\Shopsys\ShopBundle\Model\Product\Product $product, int $domainId)
+ * @method createProductVisibilities(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method refreshProductAccessories(\Shopsys\ShopBundle\Model\Product\Product $product, \Shopsys\ShopBundle\Model\Product\Product[] $accessories)
+ * @method \Shopsys\ShopBundle\Model\Product\Product getOneByCatnumExcludeMainVariants(string $productCatnum)
+ * @method \Shopsys\ShopBundle\Model\Product\Product getByUuid(string $uuid)
+ */
 class ProductFacade extends BaseProductFacade
 {
     /**
@@ -86,7 +103,7 @@ class ProductFacade extends BaseProductFacade
     private $pricingGroupFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     private $setting;
 
@@ -97,16 +114,16 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductRepository $productRepository
+     * @param \Shopsys\ShopBundle\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\ShopBundle\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade $productManualInputPriceFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceFacade $productManualInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
@@ -117,7 +134,7 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface $productCategoryDomainFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface $productParameterValueFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface $productVisibilityFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
+     * @param \Shopsys\ShopBundle\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportScheduler $productSearchExportScheduler
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
      * @param \Shopsys\ShopBundle\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
@@ -240,7 +257,7 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter $parameter
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
     public function getProductsWithDistinguishingParameter(Parameter $parameter): array
@@ -462,7 +479,7 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
      */
     protected function refreshProductManualInputPrices(Product $product, array $manualInputPrices)
@@ -584,7 +601,7 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Product\Product[]
      */
@@ -664,7 +681,7 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterFacade $parameterFacade
      */
     public function fillVariantNamesFromMainVariantNames(Product $product, ParameterFacade $parameterFacade): void
@@ -732,7 +749,7 @@ class ProductFacade extends BaseProductFacade
     /**
      * @param array $products
      * @param int $domainId
-     * @return \Shopsys\ShopBundle\Model\Product\Product[]
+     * @return \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     public function getVariantsIndexedByPricingGroupIdAndMainVariantId(array $products, int $domainId): array
     {

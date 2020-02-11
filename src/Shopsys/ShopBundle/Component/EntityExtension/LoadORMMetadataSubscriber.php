@@ -21,7 +21,7 @@ class LoadORMMetadataSubscriber extends BaseLoadORMMetadataSubscriber
      *  - If mapping of child class property is not equal to mapping of parent class property and child class property overrides parent class property, there will be used mapping of child class property
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadataInfo $metadata
-     * @param $configuration
+     * @param \Doctrine\ORM\Configuration $configuration
      */
     protected function setAssociationMappings(ClassMetadataInfo $metadata, $configuration)
     {

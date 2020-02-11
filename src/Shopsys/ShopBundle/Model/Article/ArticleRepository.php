@@ -6,6 +6,13 @@ namespace Shopsys\ShopBundle\Model\Article;
 
 use Shopsys\FrameworkBundle\Model\Article\ArticleRepository as BaseArticleRepository;
 
+/**
+ * @method \Shopsys\ShopBundle\Model\Article\Article|null findById(string $articleId)
+ * @method \Shopsys\ShopBundle\Model\Article\Article[] getVisibleArticlesForPlacement(int $domainId, string $placement)
+ * @method \Shopsys\ShopBundle\Model\Article\Article getById(int $articleId)
+ * @method \Shopsys\ShopBundle\Model\Article\Article getVisibleById(int $articleId)
+ * @method \Shopsys\ShopBundle\Model\Article\Article[] getAllByDomainId(int $domainId)
+ */
 class ArticleRepository extends BaseArticleRepository
 {
     /**

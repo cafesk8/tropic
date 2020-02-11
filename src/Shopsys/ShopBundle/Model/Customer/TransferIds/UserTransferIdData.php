@@ -7,7 +7,7 @@ namespace Shopsys\ShopBundle\Model\Customer\TransferIds;
 class UserTransferIdData
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\User|null
+     * @var \Shopsys\ShopBundle\Model\Customer\User|null
      */
     public $customer;
 

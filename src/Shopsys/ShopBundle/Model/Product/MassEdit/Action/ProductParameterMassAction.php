@@ -167,7 +167,7 @@ class ProductParameterMassAction implements MassEditActionInterface
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param \Shopsys\ShopBundle\Model\Product\Parameter\Parameter $parameter
-     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterValue[] $parameterValues
+     * @param string[] $parameterValues
      */
     private function addParameterToProduct(Product $product, Parameter $parameter, array $parameterValues): void
     {

@@ -17,7 +17,7 @@
                     {% if imageExists(product) %}
                         <a href="{{ imageUrl(product, 'original') }}"
                         class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
-                            {{ image(product, { itemprop: 'image', lazy: true }) }}
+                            {{ image(product, { itemprop: 'image' }) }}
                         </a>
                     {% else %}
                         {{ noimage({ alt: product.name }) }}
@@ -32,7 +32,7 @@
                                 <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
                                     <a href="{{ imageUrl(galleryImage, 'original') }}"
                                     class="box-gallery__item__link js-gallery-slide-link">
-                                        {{ image(galleryImage, {size: 'thumbnail', lazy: true}) }}
+                                        {{ image(galleryImage, {size: 'thumbnail'}) }}
                                     </a>
                                 </div>
                             {% endfor %}
@@ -87,7 +87,7 @@
                                         {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
                                             <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active' }}"
                                                 data-id="{{ mainVariantGroupProduct.id }}">
-                                                {{ image(mainVariantGroupProduct, {size: 'thumbnail', lazy: true}) }}
+                                                {{ image(mainVariantGroupProduct, {size: 'thumbnail'}) }}
                                                 <span class="list-variants__item__name">
                                                     {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
                                                 </span>

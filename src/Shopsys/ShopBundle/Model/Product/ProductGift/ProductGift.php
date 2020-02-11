@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Model\Product\ProductGift;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -23,7 +24,7 @@ class ProductGift
     protected $id;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Product
+     * @var \Shopsys\ShopBundle\Model\Product\Product
      *
      * @ORM\ManyToOne(targetEntity="Shopsys\ShopBundle\Model\Product\Product")
      * @ORM\JoinColumn(name="gift_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -85,14 +86,14 @@ class ProductGift
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $gift
+     * @param \Shopsys\ShopBundle\Model\Product\Product $gift
      */
     private function setProducts(array $products, Product $gift): void
     {
-        $filteredProducts = [];
+        $filteredProducts = new ArrayCollection();
         foreach ($products as $product) {
             if ($product !== $gift) {
-                $filteredProducts[] = $product;
+                $filteredProducts->add($product);
             }
         }
 

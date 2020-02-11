@@ -36,7 +36,7 @@ class CustomerExportMapper
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Order\Order $user
+     * @param \Shopsys\ShopBundle\Model\Customer\User $user
      * @return array
      */
     public function mapToArray(User $user): array

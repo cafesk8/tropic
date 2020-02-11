@@ -54,7 +54,7 @@ class RemoveLegacyProductsCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $symfonyStyleIo = new SymfonyStyle($input, $output);
 
@@ -74,6 +74,8 @@ class RemoveLegacyProductsCommand extends Command
 
             $this->entityManager->clear();
         }
+
+        return 0;
     }
 
     /**

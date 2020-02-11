@@ -78,7 +78,7 @@ class PromoCodeData extends BasePromoCodeData
     public $type;
 
     /**
-     * @var string|null
+     * @var \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
     public $certificateValue;
 

@@ -394,6 +394,9 @@ msgstr "Chcem zadať iné fakturačné údaje"
 msgid "Choose"
 msgstr "Zvoliť"
 
+msgid "Choose variant"
+msgstr ""
+
 msgid "Chyba při přenosu"
 msgstr "Chyba pri prenose"
 

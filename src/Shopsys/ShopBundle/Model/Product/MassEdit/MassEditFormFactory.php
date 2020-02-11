@@ -98,7 +98,6 @@ class MassEditFormFactory
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\MassEdit\MassEditActionInterface $action
      * @return array
      */
     private function getSubjectChoices(): array

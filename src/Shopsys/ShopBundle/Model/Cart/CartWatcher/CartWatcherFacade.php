@@ -52,7 +52,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Cart\Cart $cart
+     * @param \Shopsys\ShopBundle\Model\Cart\Cart $cart
      * @param \Shopsys\ShopBundle\Model\Customer\User|null $user
      */
     public function checkCartModifications(Cart $cart, ?User $user = null): void

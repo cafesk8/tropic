@@ -79,7 +79,7 @@ class HsSportFeedVariantItem implements FeedItemInterface
     }
 
     /**
-     * @return int
+     * @return string|null
      */
     public function getEan(): ?string
     {

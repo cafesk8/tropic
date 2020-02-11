@@ -52,6 +52,31 @@ use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation;
 
+/**
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
+ * @property \Shopsys\ShopBundle\Component\Setting\Setting $setting
+ * @property \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
+ * @property \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
+ * @property \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
+ * @property \Shopsys\ShopBundle\Model\Order\FrontOrderDataMapper $frontOrderDataMapper
+ * @property \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+ * @property \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+ * @property \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
+ * @method \Shopsys\ShopBundle\Model\Order\Order createOrder(\Shopsys\ShopBundle\Model\Order\OrderData $orderData, \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview, \Shopsys\ShopBundle\Model\Customer\User|null $user)
+ * @method sendHeurekaOrderInfo(\Shopsys\ShopBundle\Model\Order\Order $order, bool $disallowHeurekaVerifiedByCustomers)
+ * @method prefillFrontOrderData(\Shopsys\ShopBundle\Model\Order\FrontOrderData $orderData, \Shopsys\ShopBundle\Model\Customer\User $user)
+ * @method \Shopsys\ShopBundle\Model\Order\Order[] getCustomerOrderList(\Shopsys\ShopBundle\Model\Customer\User $user)
+ * @method \Shopsys\ShopBundle\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order getById(int $orderId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
+ * @method \Shopsys\ShopBundle\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \Shopsys\ShopBundle\Model\Customer\User $user)
+ * @method setOrderDataAdministrator(\Shopsys\ShopBundle\Model\Order\OrderData $orderData)
+ * @method fillOrderPayment(\Shopsys\ShopBundle\Model\Order\Order $order, \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method fillOrderTransport(\Shopsys\ShopBundle\Model\Order\Order $order, \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method fillOrderRounding(\Shopsys\ShopBundle\Model\Order\Order $order, \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method refreshOrderItemsWithoutTransportAndPayment(\Shopsys\ShopBundle\Model\Order\Order $order, \Shopsys\ShopBundle\Model\Order\OrderData $orderData)
+ * @method calculateOrderItemDataPrices(\Shopsys\ShopBundle\Model\Order\Item\OrderItemData $orderItemData)
+ */
 class OrderFacade extends BaseOrderFacade
 {
     /**
@@ -97,36 +122,36 @@ class OrderFacade extends BaseOrderFacade
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderRepository $orderRepository
+     * @param \Shopsys\ShopBundle\Model\Order\OrderRepository $orderRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderUrlGenerator $orderUrlGenerator
      * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository $orderStatusRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade $orderMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderHashGeneratorRepository $orderHashGeneratorRepository
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
-     * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
-     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\CurrentCustomer $currentCustomer
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade $orderProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade $heurekaFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderFactoryInterface $orderFactory
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemPriceCalculation $orderItemPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper $frontOrderDataMapper
-     * @param \Shopsys\FrameworkBundle\Twig\NumberFormatterExtension $numberFormatterExtension
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+     * @param \Shopsys\ShopBundle\Model\Order\FrontOrderDataMapper $frontOrderDataMapper
+     * @param \Shopsys\ShopBundle\Twig\NumberFormatterExtension $numberFormatterExtension
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface $orderItemFactory
+     * @param \Shopsys\ShopBundle\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \Shopsys\ShopBundle\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\ShopBundle\Component\Mall\MallImportOrderClient $mallImportOrderClient
      * @param \Shopsys\ShopBundle\Model\Gtm\GtmHelper $gtmHelper
      * @param \Shopsys\ShopBundle\Component\SmsManager\SmsManagerFactory $smsManagerFactory
-     * @param \Shopsys\ShopBundle\Model\Order\SmsMessageFactory $smsMessageFactory
+     * @param \Shopsys\ShopBundle\Component\SmsManager\SmsMessageFactory $smsMessageFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -250,7 +275,7 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
-     * @return \Shopsys\FrameworkBundle\Model\Order\Order
+     * @return \Shopsys\ShopBundle\Model\Order\Order
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
@@ -444,8 +469,8 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      * @param string $locale
      */
     public function fillOrderProducts(
@@ -499,9 +524,9 @@ class OrderFacade extends BaseOrderFacade
         ?PromoCode $promoCode = null
     ): void {
         if ($promoCode->isUseNominalDiscount()) {
-            $discountValue = $this->numberFormatterExtension->formatNumber(-$promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
+            $discountValue = $this->numberFormatterExtension->formatNumber('-' . $promoCode->getNominalDiscount()->getAmount()) . ' ' . $this->numberFormatterExtension->getCurrencySymbolByCurrencyIdAndLocale($orderItem->getOrder()->getDomainId(), $locale);
         } else {
-            $discountValue = $this->numberFormatterExtension->formatPercent(-$promoCode->getPercent(), $locale);
+            $discountValue = $this->numberFormatterExtension->formatPercent('-' . $promoCode->getPercent(), $locale);
         }
 
         $name = sprintf(
@@ -519,8 +544,8 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode
      * @throws \Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException
      */
@@ -552,8 +577,8 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     private function fillOrderPromoProducts(Order $order, OrderPreview $orderPreview): void
     {
@@ -589,8 +614,8 @@ class OrderFacade extends BaseOrderFacade
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     private function fillOrderGifts(Order $order, OrderPreview $orderPreview): void
     {

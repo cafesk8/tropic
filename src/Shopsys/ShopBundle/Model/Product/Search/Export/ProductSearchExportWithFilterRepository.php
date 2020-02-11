@@ -21,6 +21,17 @@ use Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use Shopsys\ShopBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+ * @property \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
+ * @property \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+ * @method string extractDetailUrl(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method int[] extractFlags(\Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method int[] extractCategories(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method array extractParameters(string $locale, \Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method array extractVisibility(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
+ * @method array extractPrices(int $domainId, \Shopsys\ShopBundle\Model\Product\Product $product)
+ */
 class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWithFilterRepository
 {
     /**
@@ -34,12 +45,12 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     private $mainVariantGroupFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     private $productsIndexedByPricingGroupIdAndMainVariantGroup;
 
     /**
-     * @var \Shopsys\ShopBundle\Model\Product\Product[]
+     * @var \Shopsys\ShopBundle\Model\Product\Product[][][]
      */
     private $variantsIndexedByPricingGroupIdAndMainVariantId;
 
@@ -70,12 +81,12 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductFacade $productFacade
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
+     * @param \Shopsys\ShopBundle\Model\Product\Parameter\ParameterRepository $parameterRepository
+     * @param \Shopsys\ShopBundle\Model\Product\ProductFacade $productFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository $friendlyUrlRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
-     * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \Shopsys\ShopBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \Shopsys\ShopBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
@@ -138,7 +149,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param int $domainId
      * @param string $locale
      * @return array
@@ -188,13 +199,14 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
      * @return array
      */
     private function getMainVariantGroupProductsData(Product $product, string $locale): array
     {
         $mainVariantGroupProductsData = [];
+        /** @var \Shopsys\ShopBundle\Model\Product\Product[][] $productsIndexedByMainVariantGroup */
         foreach ($this->productsIndexedByPricingGroupIdAndMainVariantGroup as $pricingGroupId => $productsIndexedByMainVariantGroup) {
             if ($product->getMainVariantGroup() !== null && count($productsIndexedByMainVariantGroup) > 0 && in_array($product->getMainVariantGroup()->getId(), array_keys($productsIndexedByMainVariantGroup), true)) {
                 foreach ($productsIndexedByMainVariantGroup[$product->getMainVariantGroup()->getId()] as $mainVariantGroupProduct) {
@@ -230,7 +242,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $locale
      * @return array
      */

@@ -21,7 +21,7 @@ class InfoRowFacade
     private const SETTING_KEY_LAST_CHANGE_AT = 'infoRowLastChangeAt';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Setting\Setting
+     * @var \Shopsys\ShopBundle\Component\Setting\Setting
      */
     protected $setting;
 
@@ -36,7 +36,7 @@ class InfoRowFacade
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \Shopsys\ShopBundle\Component\Setting\Setting $setting
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */

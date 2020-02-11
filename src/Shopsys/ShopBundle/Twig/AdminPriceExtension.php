@@ -6,6 +6,7 @@ namespace Shopsys\ShopBundle\Twig;
 
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Twig_Extension;
 use Twig_SimpleFilter;
 
@@ -17,13 +18,13 @@ class AdminPriceExtension extends Twig_Extension
     private $adminDomainTabsFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Twig\PriceExtension
+     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
      */
     private $priceExtension;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
-     * @param \Shopsys\ShopBundle\Twig\PriceExtension $priceExtension
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      */
     public function __construct(AdminDomainTabsFacade $adminDomainTabsFacade, PriceExtension $priceExtension)
     {

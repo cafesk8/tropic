@@ -65,7 +65,7 @@ class OrderController extends FrontBaseController
     private $domainAwareOrderFlowFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Cart\CartFacade
+     * @var \Shopsys\ShopBundle\Model\Cart\CartFacade
      */
     private $cartFacade;
 
@@ -80,7 +80,7 @@ class OrderController extends FrontBaseController
     private $orderMailFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\OrderDataMapper
+     * @var \Shopsys\ShopBundle\Model\Order\OrderDataMapper
      */
     private $orderDataMapper;
 
@@ -100,22 +100,22 @@ class OrderController extends FrontBaseController
     private $transportAndPaymentWatcher;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade
+     * @var \Shopsys\ShopBundle\Model\Payment\PaymentFacade
      */
     private $paymentFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation
+     * @var \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation
      */
     private $paymentPriceCalculation;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade
+     * @var \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade
      */
     private $currencyFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Transport\TransportFacade
+     * @var \Shopsys\ShopBundle\Model\Transport\TransportFacade
      */
     private $transportFacade;
 
@@ -195,15 +195,15 @@ class OrderController extends FrontBaseController
     private $goPayTransactionFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\OrderFacade $orderFacade
-     * @param \Shopsys\FrameworkBundle\Model\Cart\CartFacade $cartFacade
+     * @param \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
+     * @param \Shopsys\ShopBundle\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Transport\TransportFacade $transportFacade
-     * @param \Shopsys\FrameworkBundle\Model\Payment\PaymentFacade $paymentFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \Shopsys\ShopBundle\Model\Transport\TransportFacade $transportFacade
+     * @param \Shopsys\ShopBundle\Model\Payment\PaymentFacade $paymentFacade
+     * @param \Shopsys\ShopBundle\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \Shopsys\ShopBundle\Model\Order\OrderDataMapper $orderDataMapper
      * @param \Shopsys\ShopBundle\Form\Front\Order\DomainAwareOrderFlowFactory $domainAwareOrderFlowFactory
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
@@ -291,6 +291,7 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
+        /** @var \Shopsys\ShopBundle\Model\Customer\User|null $user */
         $user = $this->getUser();
 
         $frontOrderFormData = new FrontOrderData();
@@ -420,7 +421,7 @@ class OrderController extends FrontBaseController
 
     /**
      * @param \Shopsys\ShopBundle\Form\Front\Order\OrderFlow $orderFlow
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
      */
     private function setGtmDataLayer(OrderFlow $orderFlow, OrderPreview $orderPreview): void
     {
@@ -551,9 +552,9 @@ class OrderController extends FrontBaseController
 
     /**
      * @param \Shopsys\ShopBundle\Model\Order\OrderData $orderData
-     * @param \Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview $orderPreview
-     * @param \Shopsys\FrameworkBundle\Model\Transport\Transport[] $transports
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment[] $payments
+     * @param \Shopsys\ShopBundle\Model\Order\Preview\OrderPreview $orderPreview
+     * @param \Shopsys\ShopBundle\Model\Transport\Transport[] $transports
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment[] $payments
      */
     private function checkTransportAndPaymentChanges(
         OrderData $orderData,
@@ -770,7 +771,7 @@ class OrderController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      */
     private function checkOrderGoPayStatus(Order $order): void
     {
@@ -824,7 +825,7 @@ class OrderController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment $payment
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment $payment
      * @param \Shopsys\ShopBundle\Model\GoPay\BankSwift\GoPayBankSwift|null $goPayBankSwift
      */
     private function setGoPayBankSwiftSession(Payment $payment, ?GoPayBankSwift $goPayBankSwift): void
@@ -866,7 +867,7 @@ class OrderController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Order $order
+     * @param \Shopsys\ShopBundle\Model\Order\Order $order
      */
     private function sendMail($order)
     {

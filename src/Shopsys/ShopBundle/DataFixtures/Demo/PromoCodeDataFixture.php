@@ -19,13 +19,13 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
     protected $promoCodeFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface
+     * @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory
      */
     protected $promoCodeDataFactory;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactoryInterface $promoCodeDataFactory
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeDataFactory $promoCodeDataFactory
      */
     public function __construct(
         PromoCodeFacade $promoCodeFacade,
@@ -40,7 +40,7 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
      */
     public function load(ObjectManager $manager)
     {
-        /** @var $promoCodeData \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData */
+        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeData $promoCodeData */
         $promoCodeData = $this->promoCodeDataFactory->create();
         $promoCodeData->unlimited = false;
         $promoCodeData->domainId = 1;

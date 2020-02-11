@@ -37,7 +37,7 @@ class ProductController extends FrontBaseController
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
+     * @var \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfigFactory
      */
     private $productFilterConfigFactory;
 
@@ -62,17 +62,17 @@ class ProductController extends FrontBaseController
     private $requestExtension;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForListFacade
      */
     private $productListOrderingModeForListFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade
      */
     private $productListOrderingModeForBrandFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade
+     * @var \Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade
      */
     private $productListOrderingModeForSearchFacade;
 
@@ -125,11 +125,11 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface $productOnCurrentDomainFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
-     * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade $productListOrderingModeForListFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade
+     * @param \Shopsys\ShopBundle\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
+     * @param \Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForListFacade $productListOrderingModeForListFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade
+     * @param \Shopsys\ShopBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
      * @param \Shopsys\ShopBundle\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -367,8 +367,8 @@ class ProductController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\Category $category
-     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
+     * @param \Shopsys\ShopBundle\Model\Category\Category $category
+     * @return \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig
      */
     private function createProductFilterConfigForCategory(Category $category)
     {
@@ -381,7 +381,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param string|null $searchText
-     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
+     * @return \Shopsys\ShopBundle\Model\Product\Filter\ProductFilterConfig
      */
     private function createProductFilterConfigForSearch($searchText)
     {
@@ -394,7 +394,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param string|null $searchText
-     * @return \Shopsys\FrameworkBundle\Model\Category\Category[]
+     * @return \Shopsys\ShopBundle\Model\Category\Category[]
      */
     private function searchCategories($searchText)
     {

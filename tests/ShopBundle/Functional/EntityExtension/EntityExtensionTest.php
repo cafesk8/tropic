@@ -45,7 +45,7 @@ class EntityExtensionTest extends TransactionFunctionalTestCase
     public const ORDER_ITEM_ID = 1;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 

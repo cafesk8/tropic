@@ -32,7 +32,7 @@ class OrderPreviewCalculationTest extends FunctionalTestCase
         $domain = $this->getContainer()->get(Domain::class);
         $vatData = new VatData();
         $vatData->name = 'vatName';
-        $vatData->percent = 20;
+        $vatData->percent = '20';
         $vat = new Vat($vatData);
 
         $paymentPrice = new Price(Money::create(100), Money::create(120));
@@ -52,10 +52,10 @@ class OrderPreviewCalculationTest extends FunctionalTestCase
             ->willReturn($quantifiedItemsPrices);
 
         $quantifiedProductDiscountCalculationMock = $this->getMockBuilder(QuantifiedProductDiscountCalculation::class)
-            ->setMethods(['calculateDiscounts', '__construct'])
+            ->setMethods(['calculateDiscountsRoundedByCurrency', '__construct'])
             ->disableOriginalConstructor()
             ->getMock();
-        $quantifiedProductDiscountCalculationMock->expects($this->once())->method('calculateDiscounts')
+        $quantifiedProductDiscountCalculationMock->expects($this->once())->method('calculateDiscountsRoundedByCurrency')
             ->willReturn($quantifiedProductsDiscounts);
 
         $paymentPriceCalculationMock = $this->getMockBuilder(PaymentPriceCalculation::class)
@@ -119,7 +119,7 @@ class OrderPreviewCalculationTest extends FunctionalTestCase
         $domain = $this->getContainer()->get(Domain::class);
         $vatData = new VatData();
         $vatData->name = 'vatName';
-        $vatData->percent = 20;
+        $vatData->percent = '20';
         $vat = new Vat($vatData);
 
         $unitPrice = new Price(Money::create(1000), Money::create(1200));
@@ -137,10 +137,10 @@ class OrderPreviewCalculationTest extends FunctionalTestCase
             ->willReturn($quantifiedItemsPrices);
 
         $quantifiedProductDiscountCalculationMock = $this->getMockBuilder(QuantifiedProductDiscountCalculation::class)
-            ->setMethods(['calculateDiscounts', '__construct'])
+            ->setMethods(['calculateDiscountsRoundedByCurrency', '__construct'])
             ->disableOriginalConstructor()
             ->getMock();
-        $quantifiedProductDiscountCalculationMock->expects($this->once())->method('calculateDiscounts')
+        $quantifiedProductDiscountCalculationMock->expects($this->once())->method('calculateDiscountsRoundedByCurrency')
             ->willReturn($quantifiedProductsDiscounts);
 
         $paymentPriceCalculationMock = $this->getMockBuilder(PaymentPriceCalculation::class)

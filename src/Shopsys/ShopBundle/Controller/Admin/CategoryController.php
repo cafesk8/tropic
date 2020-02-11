@@ -18,6 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @property \Shopsys\ShopBundle\Model\Category\CategoryDataFactory $categoryDataFactory
+ * @property \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+ */
 class CategoryController extends BaseCategoryController
 {
     /**
@@ -31,8 +35,8 @@ class CategoryController extends BaseCategoryController
     private $redisFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface $categoryDataFactory
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryFacade $categoryFacade
+     * @param \Shopsys\ShopBundle\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider

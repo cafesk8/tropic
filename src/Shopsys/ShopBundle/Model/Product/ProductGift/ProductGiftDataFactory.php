@@ -19,7 +19,7 @@ class ProductGiftDataFactory
     }
 
     /**
-     * @param $domainId
+     * @param int $domainId
      * @return \Shopsys\ShopBundle\Model\Product\ProductGift\ProductGiftData
      */
     public function createForDomainId(int $domainId): ProductGiftData

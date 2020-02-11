@@ -37,10 +37,7 @@ class FriendlyUrlCacheFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
-     * @param string $locale
      * @param \Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrl $friendlyUrl
-     * @param \Shopsys\ShopBundle\Model\Product\ProductDistinguishingParameterValue $productDistinguishingParameterValue
      */
     public function saveToCache(FriendlyUrl $friendlyUrl): void
     {
@@ -49,11 +46,9 @@ class FriendlyUrlCacheFacade
     }
 
     /**
-     * @param \Shopsys\ShopBundle\Model\Product\Product $product
      * @param string $routeName
      * @param int $domainId
      * @param int $entityId
-     * @param string $locale
      * @return string
      */
     protected function getCacheId(string $routeName, int $domainId, int $entityId): string

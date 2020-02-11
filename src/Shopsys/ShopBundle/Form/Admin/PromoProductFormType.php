@@ -7,9 +7,9 @@ namespace Shopsys\ShopBundle\Form\Admin;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\ProductType;
+use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\ShopBundle\Model\Product\PromoProduct\PromoProductData;
-use Shopsys\ShopBundle\Twig\PriceExtension;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -26,13 +26,13 @@ class PromoProductFormType extends AbstractType
     private $adminDomainTabsFacade;
 
     /**
-     * @var \Shopsys\ShopBundle\Twig\PriceExtension
+     * @var \Shopsys\FrameworkBundle\Twig\PriceExtension
      */
     private $priceExtension;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
-     * @param \Shopsys\ShopBundle\Twig\PriceExtension $priceExtension
+     * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      */
     public function __construct(
         AdminDomainTabsFacade $adminDomainTabsFacade,
