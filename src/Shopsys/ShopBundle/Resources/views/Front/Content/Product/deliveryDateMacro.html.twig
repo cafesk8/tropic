@@ -15,7 +15,7 @@
             <span class="box-detail__availability__date">
                 {{ expectedDeliveryDate|friendlyDay }}
                 {% if friendlyDayInterval.days >= 2 %}
-                    {{ expectedDeliveryDate|dateCore('j. n.') }}
+                    {{ expectedDeliveryDate|formatDateCore('j. n.') }}
                 {% endif %}
                 {{ 'u&nbsp;tebe'|trans|raw }}
             </span>
