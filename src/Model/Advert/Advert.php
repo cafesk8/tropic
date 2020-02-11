@@ -36,6 +36,13 @@ class Advert extends BaseAdvert
     private $productTitle;
 
     /**
+     * @var \App\Model\Category\Category[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Model\Category\Category", mappedBy="advert")
+     */
+    private $categories;
+
+    /**
      * @param \App\Model\Advert\AdvertData $advertData
      */
     public function __construct(BaseAdvertData $advertData)
@@ -45,6 +52,7 @@ class Advert extends BaseAdvert
         $this->smallTitle = $advertData->smallTitle;
         $this->bigTitle = $advertData->bigTitle;
         $this->productTitle = $advertData->productTitle;
+        $this->categories = $advertData->categories;
     }
 
     /**
@@ -57,6 +65,7 @@ class Advert extends BaseAdvert
         $this->smallTitle = $advertData->smallTitle;
         $this->bigTitle = $advertData->bigTitle;
         $this->productTitle = $advertData->productTitle;
+        $this->categories = $advertData->categories;
     }
 
     /**
@@ -81,5 +90,21 @@ class Advert extends BaseAdvert
     public function getProductTitle(): ?string
     {
         return $this->productTitle;
+    }
+
+    /**
+     * @return \App\Model\Category\Category[]
+     */
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param \App\Model\Category\Category[] $categories
+     */
+    public function setCategories(array $categories): void
+    {
+        $this->categories = $categories;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Model\Advert\Advert;
 use App\Model\Advert\AdvertFacade;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,6 +23,9 @@ class AdvertController extends FrontBaseController
         $this->advertFacade = $advertFacade;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function bannerAction()
     {
         return $this->render('Front/Content/Advert/banners.html.twig', [
@@ -44,6 +48,19 @@ class AdvertController extends FrontBaseController
         return $this->render('Front/Content/Advert/bigBannerOnHomepage.html.twig', [
             'advert' => $advert,
             'advertProducts' => $advertProducts,
+        ]);
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert|null $advert
+     * @param string|null $sizeInfoName
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function boxAction(?Advert $advert, ?string $sizeInfoName = null)
+    {
+        return $this->render('Front/Content/Advert/box.html.twig', [
+            'advert' => $advert,
+            'sizeInfo' => $sizeInfoName,
         ]);
     }
 }

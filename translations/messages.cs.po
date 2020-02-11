@@ -538,6 +538,9 @@ msgstr "Dolaď si svůj outfit"
 msgid "Domain"
 msgstr "Doména"
 
+msgid "Doporučené rozměry obrázku"
+msgstr "Doporučené rozměry obrázku"
+
 msgid "Doprava"
 msgstr ""
 
@@ -1591,6 +1594,9 @@ msgstr "Pokračujte podle pokynů"
 msgid "Please make sure that you entered right quantity of all items in cart."
 msgstr "Zkontrolujte si, zda máte správně zadané množství veškerých položek v košíku."
 
+msgid "Pod nadpisem kategorie"
+msgstr "Pod nadpisem kategorie"
+
 msgid "Podle kategorie"
 msgstr "Podle kategorie"
 
@@ -1704,9 +1710,6 @@ msgstr "Cenová skupina"
 
 msgid "Print"
 msgstr "Vytisknout"
-
-msgid "Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px)."
-msgstr ""
 
 msgid "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na výšku (380x600px)."
 msgstr "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na výšku (380x600px)."
@@ -2476,9 +2479,6 @@ msgstr ""
 msgid "Velikost"
 msgstr ""
 
-msgid "Velikost obrázků"
-msgstr ""
-
 msgid "Videa"
 msgstr "Videa"
 
@@ -2765,9 +2765,6 @@ msgid "Změnit"
 msgstr ""
 
 msgid "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
-msgstr ""
-
-msgid "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
 msgstr "Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček."
 
 msgid "Změny v informačním řádky byly úspěšně uloženy"
@@ -2917,6 +2914,9 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našem"
 
+msgid "pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px"
+msgstr "pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px"
+
 msgid "problémů"
 msgstr ""
 
@@ -3036,6 +3036,12 @@ msgstr ""
 
 msgid "Číslo pro sledování zásilky"
 msgstr ""
+
+msgid "šířka: 1180px, výška: 387px"
+msgstr "šířka: 1180px, výška: 387px"
+
+msgid "šířka: 380px, výška: 230px"
+msgstr "šířka: 380px, výška: 230px"
 
 msgid "Žádné dárky nenalezeny."
 msgstr ""
