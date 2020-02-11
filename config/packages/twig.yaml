@@ -17,7 +17,7 @@ twig:
         - '@ShopsysFramework/Admin/Form/displayOnlyUrl.html.twig'
         - '@ShopsysFramework/Admin/Form/localizedFullWidth.html.twig'
         - '@ShopsysFramework/Admin/Form/productParameterValue.html.twig'
-        - 'Admin/Form/productCalculatedPrices.html.twig'
+        - '@ShopsysFramework/Admin/Form/productCalculatedPrices.html.twig'
         - 'Admin/Form/storeStockFields.html.twig'
         - 'Admin/Form/blogCategoriesType.html.twig'
         - 'Admin/Form/blogCategoryCheckboxType.html.twig'
