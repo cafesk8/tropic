@@ -28,10 +28,16 @@ class AdvertData extends BaseAdvertData
      */
     public $products;
 
+    /**
+     * @var \App\Model\Category\Category[]
+     */
+    public $categories;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->products = [];
+        $this->categories = [];
     }
 }

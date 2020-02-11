@@ -49,5 +49,6 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->mallCategoryId = $category->getMallCategoryId();
         $categoryData->leftBannerTexts = $category->getLeftBannerTexts();
         $categoryData->rightBannerTexts = $category->getRightBannerTexts();
+        $categoryData->advert = $category->getAdvert();
     }
 }
