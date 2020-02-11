@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @property \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade
  * @property \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory
  * @method string getSsoLoginAsUserUrl(\Shopsys\ShopBundle\Model\Customer\User $user)
+ * @method __construct(\Shopsys\ShopBundle\Model\Customer\UserDataFactory $userDataFactory, \Shopsys\FrameworkBundle\Model\Customer\CustomerListAdminFacade $customerListAdminFacade, \Shopsys\ShopBundle\Model\Customer\CustomerFacade $customerFacade, \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider, \Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade $administratorGridFacade, \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\ShopBundle\Model\Order\OrderFacade $orderFacade, \Shopsys\FrameworkBundle\Model\Security\LoginAsUserFacade $loginAsUserFacade, \Shopsys\FrameworkBundle\Component\Router\DomainRouterFactory $domainRouterFactory, \Shopsys\ShopBundle\Model\Customer\CustomerDataFactory $customerDataFactory)
  */
 class CustomerController extends BaseCustomerController
 {

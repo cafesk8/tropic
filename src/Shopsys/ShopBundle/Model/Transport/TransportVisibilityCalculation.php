@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation as Ba
 /**
  * @method bool existsIndependentlyVisiblePaymentWithTransport(\Shopsys\ShopBundle\Model\Payment\Payment[] $payments, \Shopsys\ShopBundle\Model\Transport\Transport $transport, int $domainId)
  * @method \Shopsys\ShopBundle\Model\Transport\Transport[] filterVisible(\Shopsys\ShopBundle\Model\Transport\Transport[] $transports, \Shopsys\ShopBundle\Model\Payment\Payment[] $visiblePaymentsOnDomain, int $domainId)
+ * @property \Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation
+ * @method __construct(\Shopsys\FrameworkBundle\Model\Transport\IndependentTransportVisibilityCalculation $independentTransportVisibilityCalculation, \Shopsys\ShopBundle\Model\Payment\IndependentPaymentVisibilityCalculation $independentPaymentVisibilityCalculation)
  */
 class TransportVisibilityCalculation extends BaseTransportVisibilityCalculation
 {

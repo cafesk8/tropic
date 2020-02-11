@@ -10,7 +10,7 @@ use Shopsys\FrameworkBundle\Model\Payment\Payment;
 class IndependentPaymentVisibilityCalculation extends BaseIndependentPaymentVisibilityCalculation
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Payment\Payment $payment
+     * @param \Shopsys\ShopBundle\Model\Payment\Payment $payment
      * @param int $domainId
      * @return bool
      */
