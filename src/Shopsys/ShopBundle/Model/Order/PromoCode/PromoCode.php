@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Model\Order\PromoCode;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
@@ -191,7 +192,7 @@ class PromoCode extends BasePromoCode
         $this->combinable = $promoCodeData->combinable;
         $this->setLimitType($promoCodeData->limitType);
 
-        $this->limits = [];
+        $this->limits = new ArrayCollection();
     }
 
     /**
@@ -217,7 +218,9 @@ class PromoCode extends BasePromoCode
         $this->setUserType($promoCodeData->userType);
         $this->combinable = $promoCodeData->combinable;
         $this->setLimitType($promoCodeData->limitType);
-        $this->limits = $promoCodeData->limits;
+        foreach ($promoCodeData->limits as $limit) {
+            $this->limits->add($limit);
+        }
     }
 
     /**

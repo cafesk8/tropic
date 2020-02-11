@@ -10,7 +10,7 @@ use Shopsys\ShopBundle\Model\Customer\User;
 class UserTransferIdFacade
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
 
@@ -30,7 +30,7 @@ class UserTransferIdFacade
     private $userTransferIdDataFactory;
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdRepository $userTransferIdRepository
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdDataFactory $userTransferIdDataFactory
      * @param \Shopsys\ShopBundle\Model\Customer\TransferIds\UserTransferIdFactory $userTransferIdFactory

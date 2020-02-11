@@ -67,7 +67,7 @@ class PromoCodeLimitRepository
     }
 
     /**
-     * @return \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCodeLimitRepository
+     * @return \Doctrine\ORM\EntityRepository
      */
     private function getPromoCodeLimitRepository(): EntityRepository
     {

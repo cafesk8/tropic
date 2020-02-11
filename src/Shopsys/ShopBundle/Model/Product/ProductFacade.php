@@ -549,7 +549,7 @@ class ProductFacade extends BaseProductFacade
 
     /**
      * @param \Shopsys\ShopBundle\Model\Product\Product[] $products
-     * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView[]
+     * @return \Shopsys\ShopBundle\Component\GoogleApi\Youtube\YoutubeView[][]
      */
     public function getYoutubeViewForMainVariants(array $products): array
     {
@@ -771,7 +771,7 @@ class ProductFacade extends BaseProductFacade
      */
     public function getIdsByBrandIds(array $brandIds): array
     {
-        return $this->productRepository->getIdsByBrandIds($brandIds, $this->domain->getId());
+        return $this->productRepository->getIdsByBrandIds($brandIds);
     }
 
     /**

@@ -18,6 +18,7 @@ class IndependentPaymentVisibilityCalculation extends BaseIndependentPaymentVisi
     {
         $locale = $this->domain->getDomainConfigById($domainId)->getLocale();
 
+        /** @var string|null $paymentName */
         $paymentName = $payment->getName($locale);
         if ($paymentName === null || $paymentName === '') {
             return false;

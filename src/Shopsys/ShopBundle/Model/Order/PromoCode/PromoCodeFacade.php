@@ -60,6 +60,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
      */
     public function create(BasePromoCodeData $promoCodeData)
     {
+        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = parent::create($promoCodeData);
         $this->refreshPromoCodeLimits($promoCode, $promoCodeData);
 
@@ -73,6 +74,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
      */
     public function edit($promoCodeId, BasePromoCodeData $promoCodeData)
     {
+        /** @var \Shopsys\ShopBundle\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = parent::edit($promoCodeId, $promoCodeData);
         $this->refreshPromoCodeLimits($promoCode, $promoCodeData);
 
