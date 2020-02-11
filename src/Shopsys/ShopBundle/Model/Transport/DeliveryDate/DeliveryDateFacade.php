@@ -6,7 +6,6 @@ namespace Shopsys\ShopBundle\Model\Transport\DeliveryDate;
 
 use DateInterval;
 use DateTime;
-use DateTimeZone;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
