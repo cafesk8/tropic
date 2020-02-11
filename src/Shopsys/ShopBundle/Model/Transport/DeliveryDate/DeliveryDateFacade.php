@@ -117,9 +117,6 @@ class DeliveryDateFacade
     public function getOrderDeadline(): DateTime
     {
         $orderDeadline = new DateTime();
-        $orderDeadline->setTimezone(
-            new DateTimeZone('Europe/Prague')
-        );
         $orderDeadline->setTime(
             $this->setting->getForDomain(Setting::ORDER_TRANSPORT_DEADLINE_HOURS, $this->domain->getId()),
             $this->setting->getForDomain(Setting::ORDER_TRANSPORT_DEADLINE_MINUTES, $this->domain->getId())
