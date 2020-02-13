@@ -2,7 +2,7 @@
 @in-flag-item-size: 70px;
 @in-flag-item-size-small: 46px;
 @in-flag-item-font-size: 18px;
-@in-flag-item-font-size-small: 16px;
+@in-flag-item-font-size-small: @font-size;
 @in-flag-in-list-position-top: 0;
 @in-flag-in-list-position-right: 0;
 
@@ -24,11 +24,12 @@
     &__item {
         float: right;
         clear: right;
-        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: @in-flag-item-size-small;
         height: @in-flag-item-size-small;
-        line-height: @in-flag-item-size-small;
-        margin-top: @in-flag-item-top-gap;
+        margin-bottom: @in-flag-item-top-gap;
         text-align: center;
 
         overflow: hidden;
@@ -37,19 +38,19 @@
         font-size: 10px;
         font-weight: 700;
 
-        @media @query-md {
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        @media @query-lg {
             width: @in-flag-item-size;
             height: @in-flag-item-size;
-            line-height: @in-flag-item-size;
 
             font-size: @in-flag-item-font-size;
         }
 
         &--smaller-text {
-            line-height: @in-flag-item-font-size-small;
-            padding-top: 20px;
-
-            @media @query-md {
+            @media @query-lg {
                 font-size: @in-flag-item-font-size-small;
             }
         }
