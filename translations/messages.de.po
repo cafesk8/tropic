@@ -2110,9 +2110,6 @@ msgstr "Abrundung"
 msgid "Rozbalit"
 msgstr "Aufrollen"
 
-msgid "Rozlišující parameter"
-msgstr "Unterscheidungsparameter"
-
 msgid "Rozlišující parametr"
 msgstr "Unterscheidungsparameter"
 

@@ -94,8 +94,8 @@ abstract class AbstractProductPriceImportCronModule extends AbstractTransferImpo
         $slovakTransferDataItems = $this->getTransferItemsFromResponse(DomainHelper::SLOVAK_DOMAIN, $this->multidomainRestClient->getSlovakRestClient());
         $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
 
-        $this->logger->addInfo('Downloading product prices for domain with ID `' . DomainHelper::GERMAN_DOMAIN . '`');
-        $germanTransferDataItems = $this->getTransferItemsFromResponse(DomainHelper::GERMAN_DOMAIN, $this->multidomainRestClient->getGermanRestClient());
+        $this->logger->addInfo('Downloading product prices for domain with ID `' . DomainHelper::ENGLISH_DOMAIN . '`');
+        $germanTransferDataItems = $this->getTransferItemsFromResponse(DomainHelper::ENGLISH_DOMAIN, $this->multidomainRestClient->getEnglishRestClient());
         $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
 
         return new TransferResponse(200, $transferDataItems);

@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/frontend/styles/print' ~ getDomain().id ~ '_' ~ getCssVersion() ~ '.css') }}" media="print">
         <script>
-            var isGermanDomain = '{{ isGermanyDomain() }}' == 1;
+            var isEnglishDomain = '{{ isEnglishDomain() }}' == 1;
             var isSlovakDomain = '{{ isSlovakDomain() }}' == 1;
         </script>
         {{ encore_entry_script_tags('jquery') }}
@@ -39,7 +39,7 @@
         <meta name="msapplication-config" content="{{ asset('/assets/frontend/images/favicons/browserconfig.xml') }}">
         <meta name="theme-color" content="#e79c00">
 
-        <title>{% block title %}{{ 'BUSHMAN E-shop - kvalitní outdoorové a volnočasové oblečení'|trans }}{% endblock %} {{ getSeoTitleAddOn() }}</title>
+        <title>{% block title %}{{ 'Shopsys Commerce Cloud'|trans }}{% endblock %} {{ getSeoTitleAddOn() }}</title>
     </head>
 
     <body class="web domain{{ getDomain().id }}">

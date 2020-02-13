@@ -77,7 +77,7 @@ abstract class AbstractStoreStockImportCronModule extends AbstractTransferImport
         $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
 
         $this->logger->addInfo('Downloading stock quantities from IS for German domain');
-        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getGermanRestClient());
+        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getEnglishRestClient());
         $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
 
         return new TransferResponse(200, $transferDataItems);

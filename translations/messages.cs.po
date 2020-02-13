@@ -1948,9 +1948,6 @@ msgstr "Zaokrouhlení"
 msgid "Rozbalit"
 msgstr ""
 
-msgid "Rozlišující parameter"
-msgstr ""
-
 msgid "Rozlišující parametr"
 msgstr ""
 

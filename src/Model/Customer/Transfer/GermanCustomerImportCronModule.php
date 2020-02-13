@@ -16,8 +16,8 @@ class GermanCustomerImportCronModule extends AbstractCustomerOnDomainImportCronM
      */
     protected function getTransferResponse(): TransferResponse
     {
-        $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::GERMAN_DOMAIN . '`');
+        $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::ENGLISH_DOMAIN . '`');
 
-        return $this->getTransferResponseByRestClient($this->multidomainRestClient->getGermanRestClient());
+        return $this->getTransferResponseByRestClient($this->multidomainRestClient->getEnglishRestClient());
     }
 }

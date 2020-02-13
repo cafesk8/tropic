@@ -34,6 +34,18 @@ front_order_index:
     path: /order/
     defaults: { _controller: App\Controller\Front\OrderController:indexAction }
 
+front_order_paid:
+    path: /order-payment-confirmation/{urlHash}
+    defaults: { _controller: App\Controller\Front\OrderController:paidAction }
+
+front_order_not_paid:
+    path: /order-not-paid/{urlHash}
+    defaults: { _controller: App\Controller\Front\OrderController:notPaidAction }
+
+front_order_repeat_gopay_payment:
+    path: /repeat-payment/{urlHash}
+    defaults: { _controller: App\Controller\Front\OrderController:repeatGoPayPaymentAction }
+
 front_order_sent:
     path: /order-confirm/
     defaults: { _controller: App\Controller\Front\OrderController:sentAction }

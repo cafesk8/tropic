@@ -2170,9 +2170,6 @@ msgstr "Zaokrúhľovanie"
 msgid "Rozbalit"
 msgstr "Rozbaliť"
 
-msgid "Rozlišující parameter"
-msgstr "Rozlišujúci parameter"
-
 msgid "Rozlišující parametr"
 msgstr "Rozlišujúci parameter"
 

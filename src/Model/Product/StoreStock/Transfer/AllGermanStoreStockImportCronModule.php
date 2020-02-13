@@ -17,6 +17,6 @@ class AllGermanStoreStockImportCronModule extends AbstractAllOnDomainStoreStockI
     {
         $this->logger->addInfo('Downloading stock quantities from IS for German domain');
 
-        return $this->getTransferResponseByRestClient($this->multidomainRestClient->getGermanRestClient());
+        return $this->getTransferResponseByRestClient($this->multidomainRestClient->getEnglishRestClient());
     }
 }

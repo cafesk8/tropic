@@ -19,9 +19,6 @@ msgstr "Externé ID nesmie byť dlhšie ako {{limit}} znakov"
 msgid "First name cannot be longer than {{ limit }} characters"
 msgstr "Krstné meno nesmie byť dlhšie ako {{limit}} znakov"
 
-msgid "First name of contact person cannot be longer then {{ limit }} characters"
-msgstr "Krstné meno kontaktnej osoby nesmie byť dlhšie ako {{limit}} znakov"
-
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr "Odkaz na Mapy Google nesmie byť dlhší ako {{limit}} znakov"
 
@@ -31,9 +28,6 @@ msgstr "Heading (H1) cannot be longer than {{ limit }} characters"
 msgid "Hodiny musí být v rozmezí od 0 do 23"
 msgstr "Hodiny musia byť v rozmedzí od 0 do 23"
 
-msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
-msgstr "Hodnota nemôže byt dlhšia ako {{limit}} znakov"
-
 msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr "Identifikačné číslo nesmie byť dlhšie ako {{limit}} znakov"
 
@@ -42,9 +36,6 @@ msgstr "Obrázok môže byť iba vo formáte JPG, GIF alebo PNG"
 
 msgid "Last name cannot be longer than {{ limit }} characters"
 msgstr "Priezvisko nesmie byť dlhšie ako {{limit}} znakov"
-
-msgid "Last name of contact person cannot be longer than {{ limit }} characters"
-msgstr "Priezvisko kontaktnej osoby nesmie byť dlhšie ako {{limit}} znakov"
 
 msgid "Minuty musí být v rozmezí od 0 do 59"
 msgstr "Minúty musia byť v rozmedzí od 0 do 59"
@@ -115,20 +106,11 @@ msgstr "Zadajte e-mail"
 msgid "Please enter first name"
 msgstr "Zadajte krstné meno"
 
-msgid "Please enter first name of contact person"
-msgstr "Zadajte krstné meno kontaktnej osoby"
-
-msgid "Please enter full name"
-msgstr "Zadajte celé meno"
-
 msgid "Please enter identification number"
 msgstr "Zadajte identifikačné číslo"
 
 msgid "Please enter last name"
 msgstr "Zadajte priezvisko"
-
-msgid "Please enter last name of contact person"
-msgstr "Zadajte priezvisko kontaktnej osoby"
 
 msgid "Please enter name"
 msgstr "Zadajte meno"
@@ -211,9 +193,6 @@ msgstr "Nahraný obrázok je veľký ({{ size }} {{ suffix }}). Maximálna veľk
 msgid "Vložené ID Youtube videa neobsahuje žádné video."
 msgstr "Vložené ID Youtube videa neobsahuje žiadne video."
 
-msgid "Vložené youtube id neobsahuje žádné video."
-msgstr "Vložené youtube id neobsahuje žiadne video."
-
 msgid "Vyberte prosím pobočku"
 msgstr "Vyberte prosím pobočku"
 
@@ -258,9 +237,6 @@ msgstr "Vyplňte, prosím, ulicu predajne"
 
 msgid "You have to agree with privacy policy"
 msgstr "Musíte súhlasiť so zásadami ochrany osobných údajov"
-
-msgid "You have to agree with terms and conditions and privacy policy"
-msgstr "Musíte súhlasiť s podmienkami a zásadami ochrany osobných údajov"
 
 msgid "Zadejte prosím celé číslo."
 msgstr "Zadajte prosím celé číslo."

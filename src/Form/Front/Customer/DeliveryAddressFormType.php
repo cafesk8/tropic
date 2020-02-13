@@ -104,7 +104,7 @@ class DeliveryAddressFormType extends AbstractType
                 ],
             ]);
 
-        if (DomainHelper::isGermanDomain($this->domain) === true) {
+        if (DomainHelper::isEnglishDomain($this->domain) === true) {
             /** @var \App\Model\Customer\User\CustomerUser $customerUser */
             $customerUser = $options['user'];
             if ($customerUser->getDeliveryAddress() === null || $customerUser->getDeliveryAddress()->getCountry() === null) {
