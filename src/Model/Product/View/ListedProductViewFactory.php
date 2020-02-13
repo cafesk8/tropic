@@ -15,7 +15,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPri
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ReadModelBundle\Image\ImageView;
-use Shopsys\ReadModelBundle\Product\Action\ProductActionView;
+use Shopsys\ReadModelBundle\Product\Action\ProductActionView as BaseProductActionView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListedProductViewFactory;
 
@@ -61,7 +61,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     public function createFromArray(
         array $productArray,
         ?ImageView $imageView,
-        ProductActionView $productActionView,
+        BaseProductActionView $productActionView,
         PricingGroup $pricingGroup
     ): BaseListedProductView {
         $sellingPrice = $this->getSellingPrice(
@@ -94,7 +94,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     public function createFromProduct(
         Product $product,
         ?ImageView $imageView,
-        ProductActionView $productActionView
+        BaseProductActionView $productActionView
     ): BaseListedProductView {
         return new ListedProductView(
             $product->getId(),

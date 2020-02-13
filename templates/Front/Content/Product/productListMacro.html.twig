@@ -81,7 +81,7 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type) %}
+{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type, showButton = false) %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
@@ -146,6 +146,12 @@
                                     </div>
                                 </div>
                             </a>
+                            {% if showButton %}
+                                <div class="{{ listCssClass }}__item__add-button">
+                                    {# TODO KOD US-7670 #}
+                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {productActionView: productView.action, showAmountInput: false})) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -204,7 +210,11 @@
                             {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
                         </div>
                     </div>
-                </div>
+                    <div class="{{ listCssClass }}__item__add-button">
+                        {# TODO KOD US-7670 #}
+                        {{ render(controller('App\\Controller\\Front\\CartController:addProductForm', {product: product, showAmountInput: false})) }}
+                    </div>
+            </div>
             </div>
         {% endfor %}
     </div>

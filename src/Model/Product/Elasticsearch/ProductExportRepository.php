@@ -144,6 +144,8 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
         $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
+        $result['minimum_amount'] = $product->getRealMinimumAmount();
+        $result['amount_multiplier'] = $product->getAmountMultiplier();
 
         return $result;
     }

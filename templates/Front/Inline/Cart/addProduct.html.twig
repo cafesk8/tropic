@@ -1,6 +1,6 @@
 {{ form_start(form, {attr: {class: 'js-add-product dont-print', 'data-ajax-url': url('front_cart_add_product_ajax'), 'multipleForm': true}}) }}
     <div class="box-detail-add__action{% if type == 'small' %} box-detail-add__action--in-product-list{% endif %}">
-        <div class="box-detail-add__action__spinbox js-spinbox-parent{% if product.realStockQuantity < 1 %} display-none{% endif %}">
+        <div class="box-detail-add__action__spinbox js-spinbox-parent{% if product.realStockQuantity < 1 or not showAmountInput %} display-none{% endif %}">
             <div class="in-message in-message--warning js-maximum-amount-warning display-none">
                 {{ 'Větší množství není možné nakoupit'|trans }}
             </div>
