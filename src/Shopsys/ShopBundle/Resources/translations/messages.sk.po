@@ -208,8 +208,8 @@ msgstr "Banner Naše hodnoty"
 msgid "Banner Náš příběh"
 msgstr "Banner Náš príbeh"
 
-msgid "Bannery na hl. stránce"
-msgstr "Bannery na hl. stránke"
+msgid "Bannery"
+msgstr "Bannery"
 
 msgid "Barva"
 msgstr "Farba"
@@ -2056,9 +2056,6 @@ msgstr "Pridať všetky položky z nižšie vyhľadaných a zavrieť"
 msgid "Přidám poznámku k objednávce"
 msgstr "Pridám poznámku k objednávke"
 
-msgid "Přihlas se"
-msgstr "Prihlás sa"
-
 msgid "Přihlaste se"
 msgstr "Prihláste sa"
 
@@ -2318,7 +2315,7 @@ msgid "Slevový kód nemůžete uplatnit. Jeho platnost je od {{validityFrom}}."
 msgstr "Zľavový kód si nemôžete uplatniť. Jeho platnosť je od {{validityFrom}}."
 
 msgid "Slider on main page"
-msgstr "Slider na hl. stránke"
+msgstr "Slider na titulnej stránke"
 
 msgid "Slovensko"
 msgstr "Slovensko"

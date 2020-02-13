@@ -208,8 +208,8 @@ msgstr "Banner Unsere Werte"
 msgid "Banner Náš příběh"
 msgstr "Banner Unsere Geschichte"
 
-msgid "Bannery na hl. stránce"
-msgstr "Banner auf der Hauptseite"
+msgid "Bannery"
+msgstr "Banner"
 
 msgid "Barva"
 msgstr "Farbe"
@@ -2076,9 +2076,6 @@ msgstr "Alle unten gefundenen Produkte hinzufügen und schließen"
 
 msgid "Přidám poznámku k objednávce"
 msgstr "Ich werde der Bestellung eine Notiz hinzufügen"
-
-msgid "Přihlas se"
-msgstr "Anmelden"
 
 msgid "Přihlaste se"
 msgstr "Anmelden"

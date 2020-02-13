@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shopsys\ShopBundle\Controller\Admin;
 
+use Knp\Menu\Util\MenuManipulator;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -29,7 +30,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     {
         $productsMenu = $event->getMenu();
 
-        $productGiftMenu = $productsMenu->addChild('admin_productgift_list', ['route' => 'admin_productgift_list', 'label' => t('Dárky')]);
+        $productGiftMenu = $productsMenu->addChild('admin_productgift_list', ['route' => 'admin_productgift_list', 'label' => t('Dárky k produktům')]);
         $productGiftMenu->addChild('new', ['route' => 'admin_productgift_new', 'label' => t('Nový dárek'), 'display' => false]);
         $productGiftMenu->addChild('edit', ['route' => 'admin_productgift_edit', 'label' => t('Editace dárku'), 'display' => false]);
 
@@ -92,7 +93,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         ]);
 
         $adverts = $marketingMenu->getChild('adverts');
-        $adverts->setLabel('Bannery na hl. stránce');
+        $adverts->setLabel(t('Bannery'));
         $adverts->getChild('new')->setLabel('Nový banner');
         $adverts->getChild('edit')->setLabel('Editace banneru');
 
@@ -105,5 +106,8 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
         $blogMenu->addChild('blog_article', ['route' => 'admin_blogarticle_list', 'label' => t('Blog articles')]);
         $blogMenu->addChild('blog_article_new', ['route' => 'admin_blogarticle_new', 'label' => t('New blog article'), 'display' => false]);
         $blogMenu->addChild('blog_article_edit', ['route' => 'admin_blogarticle_edit', 'label' => t('Editing blog article'), 'display' => false]);
+
+        $menuManipulator = new MenuManipulator();
+        $menuManipulator->moveToPosition($adverts, 1);
     }
 }

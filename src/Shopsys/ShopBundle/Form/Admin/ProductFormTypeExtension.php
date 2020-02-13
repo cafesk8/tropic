@@ -436,7 +436,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private function extendAccessoriesGroup(FormBuilderInterface $builder): void
     {
         $codeFieldOptions = $builder->get('accessories')->getOptions();
-        $codeFieldOptions['label'] = t('Dolaďte svůj outfit');
+        $codeFieldOptions['label'] = t('Související zboží');
         $codeFieldType = get_class($builder->get('accessories')->getType()->getInnerType());
         $builder->add('accessories', $codeFieldType, $codeFieldOptions);
     }
