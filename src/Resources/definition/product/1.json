@@ -288,6 +288,12 @@
             "type": "text"
           }
         }
+      },
+      "minimum_amount": {
+        "type": "integer"
+      },
+      "amount_multiplier": {
+        "type": "integer"
       }
     }
   }

@@ -6,7 +6,6 @@ namespace App\Model\Product\View;
 
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\ReadModelBundle\Image\ImageView;
-use Shopsys\ReadModelBundle\Product\Action\ProductActionView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProductView;
 
 /**
@@ -37,7 +36,7 @@ class ListedProductView extends BaseListedProductView
      * @param string $availability
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice $sellingPrice
      * @param array $flagIds
-     * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $action
+     * @param \App\Model\Product\View\ProductActionView $action
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $image
      * @param array $mainVariantGroupProductViews
      * @param string[] $distinguishingParameterValues

@@ -598,6 +598,10 @@ services:
 
     Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@App\Model\Product\View\ListedProductViewElasticFacade'
 
+    App\Model\Product\View\ProductActionViewFactory: ~
+
+    Shopsys\ReadModelBundle\Product\Action\ProductActionViewFactory: '@App\Model\Product\View\ProductActionViewFactory'
+
     Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade: '@App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade'
 
     App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade:

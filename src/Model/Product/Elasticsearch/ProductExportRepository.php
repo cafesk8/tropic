@@ -177,6 +177,8 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
         $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
+        $result['minimum_amount'] = $product->getRealMinimumAmount();
+        $result['amount_multiplier'] = $product->getAmountMultiplier();
 
         return $result;
     }
