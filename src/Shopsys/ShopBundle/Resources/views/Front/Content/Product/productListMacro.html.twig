@@ -188,3 +188,54 @@
     </div>
 
 {% endmacro %}
+
+{% macro verticalList(products, listCssClass, productHeadingTagName) %}
+    {% import '@ShopsysShop/Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    {% import '@ShopsysShop/Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+    <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
+        {% for product in products %}
+            <div class="{{ listCssClass }}__item">
+                <div class="{{ listCssClass }}__item__in">
+                    {% set productSellingPrice = getProductSellingPrice(product) %}
+                    <a href="{{ url('front_product_detail', {'id': product.id}) }}">
+                        <div class="{{ listCssClass }}__item__image dont-print">
+                            {{ image(product.productForCreatingImageAccordingToVariant, { size: 'list', alt: product.name, lazy: true }) }}
+                        </div>
+                    </a>
+
+                    <div class="{{ listCssClass }}__item__info">
+                        <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title" href="{{ url('front_product_detail', {'id': product.id}) }}">
+                            {{ product.name|striptags|raw }}
+                        </{{ productHeadingTagName|default('h2') }}>
+
+                        {% set productSellingPrice = getProductSellingPrice(product) %}
+
+                        {% if productSellingPrice is not null %}
+                            <div class="{{ listCssClass }}__item__info__price">
+                                <div class="{{ listCssClass }}__item__info__price__item__main">
+                                    {% if productSellingPrice.priceFrom %}
+                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                    {% else %}
+                                        {{ productSellingPrice.priceWithVat|price }}
+                                    {% endif %}
+                                    {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                        <div class="{{ listCssClass }}__item__info__price__item__old">
+                                            {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                        </div>
+                                        <div class="{{ listCssClass }}__item__info__price__item__discount">
+                                            -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="{{ listCssClass }}__item__info__availability">
+                            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

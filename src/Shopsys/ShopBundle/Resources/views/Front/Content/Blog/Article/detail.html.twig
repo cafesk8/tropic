@@ -42,8 +42,16 @@
                 </div>
                 <div class="box-blog__panel">
                     <div class="box-blog__section">
-                        {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list')) }}
+                        {{ render(controller('ShopsysShopBundle:Front/BlogCategory:list', {blogArticle: blogArticle})) }}
                     </div>
+                    {% if blogArticle.hasProducts() %}
+                        <div class="box-blog__section">
+                            <div class="box-blog__section__title">
+                                {{ 'V článku píšeme o těchto produktech'|trans }}
+                            </div>
+                            {{ render(controller('ShopsysShopBundle:Front/BlogArticle:products', {blogArticle: blogArticle})) }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -80,9 +88,8 @@
         </div>
 
     </div>
-
+</div>
     {% block last_visited_products %}
         {{ render(controller('ShopsysShopBundle:Front/LastVisitedProducts:show')) }}
     {% endblock %}
-</div>
 {% endblock %}

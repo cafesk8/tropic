@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shopsys\ShopBundle\Controller\Front;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\ShopBundle\Model\Blog\Article\BlogArticle;
 use Shopsys\ShopBundle\Model\Blog\Article\BlogArticleFacade;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategory;
 use Shopsys\ShopBundle\Model\Blog\Category\BlogCategoryFacade;
@@ -94,13 +95,23 @@ class BlogCategoryController extends FrontBaseController
     }
 
     /**
+     * @param \Shopsys\ShopBundle\Model\Blog\Article\BlogArticle $blogArticle
+     * @param \Shopsys\ShopBundle\Model\Blog\Category\BlogCategory|null $blogCategory
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(): Response
+    public function listAction(?BlogArticle $blogArticle, ?BlogCategory $blogCategory): Response
     {
         $childrenBlogCategories = $this->blogCategoryFacade->getAllVisibleChildrenByDomainId($this->domain->getId());
+        $activeCategoryIds = [];
+
+        if ($blogArticle) {
+            $activeCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
+        } elseif ($blogCategory) {
+            $activeCategoryIds[] = $blogCategory->getId();
+        }
 
         return $this->render('@ShopsysShop/Front/Content/Blog/Category/list.html.twig', [
+            'activeCategoryIds' => $activeCategoryIds,
             'blogCategories' => $childrenBlogCategories,
         ]);
     }
