@@ -145,15 +145,16 @@
                                             </div>
                                         </div>
                                     {% endif %}
-                                    {# TODO KOD: Proč se to jmenuje availability, když je to seznam variant? #}
+
                                     <div class="{{ listCssClass }}__item__info__availability">
                                         {% for parameterValue in productView.distinguishingParameterValues %}
                                             <span class="in-badge">{{ parameterValue }}</span>
                                         {% endfor %}
-                                    </div>
-                                    {# TODO US-7671 KOD: Nastylovat dostupnost (bohužel nejsou k dispozici barvy, dokud neuzavřeme BG-6693) #}
-                                    <div class="{{ listCssClass }}__item__info__availability">
-                                        {{ productView.availability }}
+
+                                        <div class="list-products__item__info__availability__spacer"></div>
+                                        <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
+                                            {{ productView.availability }}
+                                        </div>
                                     </div>
                                 </div>
                             </a>
