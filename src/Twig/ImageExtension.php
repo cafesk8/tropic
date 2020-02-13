@@ -11,6 +11,13 @@ use Shopsys\ReadModelBundle\Twig\ImageExtension as BaseImageExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Asset\Package;
 
+/**
+ * @property \App\Component\Image\ImageFacade $imageFacade
+ * @method bool imageExists(\App\Component\Image\Image|object $imageOrEntity, string|null $type)
+ * @method string getImageUrl(\App\Component\Image\Image|object $imageOrEntity, string|null $sizeName, string|null $type)
+ * @method \App\Component\Image\Image[] getImages(object $entity, string|null $type)
+ * @method string getImageHtml(\App\Component\Image\Image|object $imageOrEntity, array $attributes)
+ */
 class ImageExtension extends BaseImageExtension
 {
     /**
@@ -25,10 +32,18 @@ class ImageExtension extends BaseImageExtension
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageLocator $imageLocator
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     * @param bool $isLazyLoadEnabled
      */
-    public function __construct($frontDesignImageUrlPrefix, Package $assetsPackage, Domain $domain, ImageLocator $imageLocator, ImageFacade $imageFacade, EngineInterface $templating)
-    {
-        parent::__construct($frontDesignImageUrlPrefix, $domain, $imageLocator, $imageFacade, $templating);
+    public function __construct(
+        $frontDesignImageUrlPrefix,
+        Package $assetsPackage,
+        Domain $domain,
+        ImageLocator $imageLocator,
+        ImageFacade $imageFacade,
+        EngineInterface $templating,
+        bool $isLazyLoadEnabled
+    ) {
+        parent::__construct($frontDesignImageUrlPrefix, $domain, $imageLocator, $imageFacade, $templating, $isLazyLoadEnabled);
         $this->assetsPackage = $assetsPackage;
     }
 

@@ -8,7 +8,10 @@ services:
         resource: '../../src/Twig/'
 
     App\Twig\ImageExtension:
-        arguments: ['%shopsys.front_design_image_url_prefix%', '@assets._default_package']
+        arguments:
+            $frontDesignImageUrlPrefix: '%shopsys.front_design_image_url_prefix%'
+            $assetsPackage: '@assets._default_package'
+            $isLazyLoadEnabled: '%shopsys.image.enable_lazy_load%'
 
     App\Twig\DomainExtension:
         arguments:

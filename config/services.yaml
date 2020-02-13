@@ -632,3 +632,5 @@ services:
     App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade:
         arguments:
             - '@shopsys.shop.product.bestselling_product.cache_provider'
+
+    Shopsys\FrameworkBundle\Twig\ImageExtension: '@App\Twig\ImageExtension'
