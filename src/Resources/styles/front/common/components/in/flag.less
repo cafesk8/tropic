@@ -33,6 +33,7 @@
         margin-bottom: @in-flag-item-top-gap;
         text-align: center;
         padding: 0 5px;
+        word-break: break-all;
 
         overflow: hidden;
         border-radius: 50%;
@@ -52,8 +53,6 @@
         }
 
         &--smaller-text {
-            word-break: break-all;
-
             @media @query-lg {
                 font-size: @in-flag-item-font-size-small;
             }
@@ -64,7 +63,7 @@
             clear: none;
         }
 
-        .in-flag--in-list & {
+        .in-flag--in-list &  {
             @media @query-md {
                 width: @in-flag-item-size-medium;
                 height: @in-flag-item-size-medium;
