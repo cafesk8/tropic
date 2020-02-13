@@ -9,6 +9,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
+use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 
@@ -25,13 +27,31 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
     protected $domain;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsFacade
+     */
+    private $contactFormSettingsFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsDataFactoryInterface
+     */
+    private $contactFormSettingsDataFactory;
+
+    /**
      * @param \App\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsFacade $contactFormSettingsFacade
+     * @param \Shopsys\FrameworkBundle\Model\ContactForm\ContactFormSettingsDataFactoryInterface $contactFormSettingsDataFactory
      */
-    public function __construct(Setting $setting, Domain $domain)
-    {
+    public function __construct(
+        Setting $setting,
+        Domain $domain,
+        ContactFormSettingsFacade $contactFormSettingsFacade,
+        ContactFormSettingsDataFactoryInterface $contactFormSettingsDataFactory
+    ) {
         $this->setting = $setting;
         $this->domain = $domain;
+        $this->contactFormSettingsFacade = $contactFormSettingsFacade;
+        $this->contactFormSettingsDataFactory = $contactFormSettingsDataFactory;
     }
 
     /**
@@ -93,6 +113,8 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
             $articleProductSizeDomain = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRODUCT_SIZE, $domainId);
             $this->setting->setForDomain(\App\Component\Setting\Setting::PRODUCT_SIZE_ARTICLE_ID, $articleProductSizeDomain->getId(), $domainId);
 
+            $this->setContactFormMainText($domainId, $locale);
+
             $this->setDomainDefaultCurrency($domainId);
         }
     }
@@ -122,5 +144,17 @@ class SettingValueDataFixture extends AbstractReferenceFixture implements Depend
             PricingGroupDataFixture::class,
             CurrencyDataFixture::class,
         ];
+    }
+
+    /**
+     * @param int $domainId
+     * @param string $locale
+     */
+    protected function setContactFormMainText(int $domainId, string $locale): void
+    {
+        $contactFormSettingData = $this->contactFormSettingsDataFactory->createFromSettingsByDomainId($domainId);
+        $contactFormMainText = t('Do you have a question?', [], 'dataFixtures', $locale);
+        $contactFormSettingData->mainText = $contactFormMainText;
+        $this->contactFormSettingsFacade->editSettingsForDomain($contactFormSettingData, $domainId);
     }
 }
