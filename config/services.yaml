@@ -121,8 +121,8 @@ services:
             - '%transfer_cs_password%'
             - '%transfer_sk_username%'
             - '%transfer_sk_password%'
-            - '%transfer_de_username%'
-            - '%transfer_de_password%'
+            - '%transfer_en_username%'
+            - '%transfer_en_password%'
 
     App\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:

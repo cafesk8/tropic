@@ -30,12 +30,14 @@ class ParameterFacade extends BaseParameterFacade
         'cs' => 'Barva',
         'sk' => 'Farba',
         'de' => 'Farbe',
+        'en' => 'Color',
     ];
 
     public const PARAMETER_SIZE = [
         'cs' => 'Velikost',
         'sk' => 'Velikosť',
         'de' => 'Größe',
+        'en' => 'Size',
     ];
 
     /**

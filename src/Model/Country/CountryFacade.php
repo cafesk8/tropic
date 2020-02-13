@@ -60,7 +60,7 @@ class CountryFacade extends BaseCountryFacade
      */
     public function getHackedCountry(): Country
     {
-        if (DomainHelper::isGermanDomain($this->domain) === false) {
+        if (DomainHelper::isEnglishDomain($this->domain) === false) {
             $countryCode = DomainHelper::getCountryCodeByLocale($this->domain->getLocale());
             return $this->getByCode($countryCode);
         }
@@ -68,7 +68,7 @@ class CountryFacade extends BaseCountryFacade
         $countryId = $_SESSION['_sf2_attributes']['craue_form_flow']['order']['flow_order']['data'][2]['country'] ?? null;
 
         if ($countryId === null) {
-            return $this->findByCode(DomainHelper::GERMAN_COUNTRY_CODE);
+            return $this->findByCode(DomainHelper::ENGLISH_COUNTRY_CODE);
         }
 
         return $this->getById($countryId);

@@ -22,14 +22,20 @@
             {{ 'Polska'|trans }}
         </a>
     </li>
-    {% if isGermanyDomain() is same as (false) %}
+    {% if isEnglishDomain() is same as (false) %}
         <li class="list-languages__item">
-            <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/germany.png') }}" alt="{{ 'Deutschland'|trans }}">
+            <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/united-kingdom.png') }}" alt="{{ 'Great Britain'|trans }}">
             <a class="list-languages__item__link underline" href="{{ findUrlByDomainId('front_homepage', [], 3)}}">
-                {{ 'Deutschland'|trans }}
+                {{ 'Great Britain'|trans }}
             </a>
         </li>
     {% endif %}
+    <li class="list-languages__item">
+        <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/germany.png') }}" alt="{{ 'Deutschland'|trans }}">
+        <a class="list-languages__item__link underline" href="{{ findUrlByDomainId('front_homepage', [], 3)}}">
+            {{ 'Deutschland'|trans }}
+        </a>
+    </li>
     <li class="list-languages__item">
         <img class="list-languages__item__image" src="{{ asset('/assets/frontend/images/flags/austria.png') }}" alt="{{ 'Österreich'|trans }}">
         <a class="list-languages__item__link underline" href="{{ findUrlByDomainId('front_homepage', [], 3)}}">

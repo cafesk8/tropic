@@ -19,9 +19,6 @@ msgstr ""
 msgid "First name cannot be longer than {{ limit }} characters"
 msgstr "Jméno nesmí být delší než {{ limit }} znaků"
 
-msgid "First name of contact person cannot be longer then {{ limit }} characters"
-msgstr "Jméno kontaktní osoby nesmí být delší než {{ limit }} znaků"
-
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr "Link na Google mapy nesmí být delší než {{ limit }} znaků"
 
@@ -31,9 +28,6 @@ msgstr "Nadpis (H1) nesmí být delší než {{ limit }} znaků"
 msgid "Hodiny musí být v rozmezí od 0 do 23"
 msgstr ""
 
-msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
-msgstr "Hodnota nesmí byt delší než {{ limit }} znaků"
-
 msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr "IČO nesmí být delší než {{ limit }} znaků"
 
@@ -42,9 +36,6 @@ msgstr "Obrázek může být pouze ve formátu JPG, GIF nebo PNG"
 
 msgid "Last name cannot be longer than {{ limit }} characters"
 msgstr "Příjmení nesmí být delší než {{ limit }} znaků"
-
-msgid "Last name of contact person cannot be longer than {{ limit }} characters"
-msgstr "Příjmení kontaktní osoby nesmí být delší než {{ limit }} znaků"
 
 msgid "Minuty musí být v rozmezí od 0 do 59"
 msgstr ""
@@ -115,26 +106,14 @@ msgstr "Vyplňte svůj e-mail"
 msgid "Please enter first name"
 msgstr "Vyplňte své jméno"
 
-msgid "Please enter first name of contact person"
-msgstr "Vyplňte jméno kontaktní osoby"
-
-msgid "Please enter full name"
-msgstr "Vyplňte celé jméno"
-
 msgid "Please enter identification number"
 msgstr "Vyplňte IČ"
 
 msgid "Please enter last name"
 msgstr "Vyplňte své příjmení"
 
-msgid "Please enter last name of contact person"
-msgstr "Vyplňte příjmení kontaktní osoby"
-
 msgid "Please enter name"
 msgstr "Vyplňte název"
-
-msgid "Please enter name of a store"
-msgstr "Vyplňte název prodejny"
 
 msgid "Please enter password"
 msgstr "Vyplňte své heslo"
@@ -258,9 +237,6 @@ msgstr "Vyplňte ulici prodejny"
 
 msgid "You have to agree with privacy policy"
 msgstr "Musíte souhlasit se zpracováním osobních údajů"
-
-msgid "You have to agree with terms and conditions and privacy policy"
-msgstr "Musíte souhlasit s obchodními podmínkami a zpracováním osobních údajů"
 
 msgid "Zadejte prosím celé číslo."
 msgstr "Zadejte celé číslo."

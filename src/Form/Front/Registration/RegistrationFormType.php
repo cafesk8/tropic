@@ -246,7 +246,7 @@ class RegistrationFormType extends AbstractType
      */
     private function addCountryChoiceForGermanDomain(FormBuilderInterface $deliveryAddressDataBuilder, array $options): void
     {
-        if (DomainHelper::isGermanDomain($this->domain)) {
+        if (DomainHelper::isEnglishDomain($this->domain)) {
             $deliveryAddressDataBuilder
                 ->add('country', ChoiceType::class, [
                     'required' => true,

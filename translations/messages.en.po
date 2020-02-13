@@ -1714,7 +1714,7 @@ msgstr ""
 msgid "Rozbalit"
 msgstr ""
 
-msgid "Rozlišující parameter"
+msgid "Rozlišující parametr"
 msgstr ""
 
 msgid "Rozlišující parametr"

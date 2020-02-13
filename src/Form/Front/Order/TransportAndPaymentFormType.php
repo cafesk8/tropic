@@ -128,7 +128,7 @@ class TransportAndPaymentFormType extends AbstractType
 
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($options['domain_id']);
 
-        if (DomainHelper::isGermanDomain($this->domain)) {
+        if (DomainHelper::isEnglishDomain($this->domain)) {
             $countries = $this->countryFacade->getAllEnabledOnCurrentDomain();
 
             $builder->add('country', ChoiceType::class, [

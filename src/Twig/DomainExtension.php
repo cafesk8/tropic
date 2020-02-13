@@ -16,7 +16,7 @@ class DomainExtension extends BaseDomainExtension
     public function getFunctions(): array
     {
         return array_merge(parent::getFunctions(), [
-            new TwigFunction('isGermanyDomain', [$this, 'isGermanyDomain']),
+            new TwigFunction('isEnglishDomain', [$this, 'isEnglishDomain']),
             new TwigFunction('isSlovakDomain', [$this, 'isSlovakDomain']),
         ]);
     }
@@ -24,9 +24,9 @@ class DomainExtension extends BaseDomainExtension
     /**
      * @return bool
      */
-    public function isGermanyDomain(): bool
+    public function isEnglishDomain(): bool
     {
-        return DomainHelper::isGermanDomain($this->domain);
+        return DomainHelper::isEnglishDomain($this->domain);
     }
 
     /**

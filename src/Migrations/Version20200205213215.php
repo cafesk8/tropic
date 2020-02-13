@@ -45,7 +45,7 @@ class Version20200205213215 extends AbstractMigration
                 return 'Máš dotaz?';
             case DomainHelper::SLOVAK_LOCALE:
                 return 'Máš otázku?';
-            case DomainHelper::GERMAN_LOCALE:
+            case DomainHelper::ENGLISH_LOCALE:
                 return 'Hast du eine Frage?';
             default:
                 return 'Do you have a question?';

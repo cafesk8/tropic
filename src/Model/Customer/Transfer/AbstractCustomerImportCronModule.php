@@ -72,8 +72,8 @@ abstract class AbstractCustomerImportCronModule extends AbstractTransferImportCr
         $slovakTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getSlovakRestClient());
         $transferDataItems = array_merge($transferDataItems, $slovakTransferDataItems);
 
-        $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::GERMAN_DOMAIN . '`');
-        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getGermanRestClient());
+        $this->logger->addInfo('Downloading customers for domain with ID `' . DomainHelper::ENGLISH_DOMAIN . '`');
+        $germanTransferDataItems = $this->getTransferItemsFromResponse($this->multidomainRestClient->getEnglishRestClient());
         $transferDataItems = array_merge($transferDataItems, $germanTransferDataItems);
 
         return new TransferResponse(200, $transferDataItems);
