@@ -741,7 +741,7 @@ class ProductFacade extends BaseProductFacade
     public function getSellableById($id): ChildProduct
     {
         /** @var \App\Model\Product\Product $product */
-        $product = $this->productRepository->getSellableById($id, $this->domain->getId(), $this->currentCustomer->getPricingGroup());
+        $product = $this->productRepository->getSellableById($id, $this->domain->getId(), $this->currentCustomerUser->getPricingGroup());
 
         return $product;
     }

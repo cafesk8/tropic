@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Category\Category;
 use App\Model\Product\Brand\Brand;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PromoCodeLimitFacade
 {

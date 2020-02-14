@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode;
 
+use App\Model\Category\CategoryFacade;
+use App\Model\Product\Brand\BrandFacade;
+use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory as BasePromoCodeDataFactory;
-use App\Model\Category\CategoryFacade;
-use App\Model\Product\Brand\BrandFacade;
-use App\Model\Product\ProductFacade;
 
 class PromoCodeDataFactory extends BasePromoCodeDataFactory
 {

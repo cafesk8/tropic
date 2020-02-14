@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use Exception;
 use App\Form\Front\Customer\Password\NewPasswordFormType;
 use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
@@ -27,6 +26,7 @@ use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
+use Exception;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\HttpFoundation\DownloadFileResponse;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;

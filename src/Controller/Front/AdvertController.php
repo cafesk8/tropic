@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\Model\Advert\AdvertFacade;
-use App\Model\Product\ProductOnCurrentDomainElasticFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdvertController extends FrontBaseController

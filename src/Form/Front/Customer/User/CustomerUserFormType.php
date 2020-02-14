@@ -69,9 +69,9 @@ class CustomerUserFormType extends AbstractType
         /** @var \App\Model\Customer\User\CustomerUser $customer */
         $customer = $options['user'];
 
-        if ($customer->isMemberOfBushmanClub() === false) {
+        if ($customer->isMemberOfLoyaltyProgram() === false) {
             $builder
-                ->add('memberOfBushmanClub', CheckboxType::class, [
+                ->add('memberOfLoyaltyProgram', CheckboxType::class, [
                     'required' => true,
                 ]);
         }

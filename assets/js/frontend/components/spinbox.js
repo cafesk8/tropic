@@ -35,7 +35,7 @@ export default class Spinbox {
 
     }
 
-    static checkValue(event) {
+    static checkValue (event) {
         let value = $(event.currentTarget).val();
         let min = $(event.currentTarget).data('spinbox-min');
         let step = $(event.currentTarget).data('spinbox-step');

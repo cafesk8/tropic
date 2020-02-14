@@ -107,7 +107,7 @@ class RegistrationFormType extends AbstractType
                 /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
                 $customerUserData = $customerUserUpdateData->customerUserData;
 
-                if ($customerUserData->memberOfBushmanClub) {
+                if ($customerUserData->memberOfLoyaltyProgram) {
                     $validationGroups[] = self::VALIDATION_GROUP_LOYALTY_PROGRAM_MEMBER;
                 }
 

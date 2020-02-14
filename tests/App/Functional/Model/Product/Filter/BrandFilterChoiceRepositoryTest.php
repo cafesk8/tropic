@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ShopBundle\Functional\Model\Product\Filter;
+namespace Tests\App\Functional\Model\Product\Filter;
 
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\PricingGroupDataFixture;

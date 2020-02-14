@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\TransferIds;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Model\Customer\User\CustomerUser;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="user_transfer_ids")

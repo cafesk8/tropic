@@ -23,11 +23,11 @@ use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider;
 use Shopsys\FrameworkBundle\Model\AdvancedSearch\AdvancedSearchProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListAdminFacade;
 use Shopsys\FrameworkBundle\Model\Product\MassAction\ProductMassActionFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
-use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportCronModule;
 use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 use Shopsys\FrameworkBundle\Twig\ProductExtension;
 use Symfony\Component\HttpFoundation\Request;
@@ -187,7 +187,7 @@ class ProductController extends BaseProductController
             );
 
             if ($submitAndExportButton->isClicked()) {
-                $this->cronModuleFacade->scheduleModuleByServiceId(ProductSearchExportCronModule::class);
+                $this->cronModuleFacade->scheduleModuleByServiceId(ProductExportCronModule::class);
                 $this->getFlashMessageSender()->addInfoFlash(
                     t('Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut')
                 );

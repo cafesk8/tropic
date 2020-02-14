@@ -79,8 +79,7 @@ class CustomerWithPricingGroupsTransferMapper
         /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
         $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
         $customerUserData->pricingGroup = $pricingGroup;
-        $customerUserData->ean = $this->findEan($customerTransferResponseItemData->getEans());
-        $customerUserData->memberOfBushmanClub = $customerUserData->ean === null ? false : true;
+        $customerUserData->memberOfLoyaltyProgram = false;
         $customerUserData->password = $this->getFakePassword();
 
         $billingAddressData = $customerUserUpdateData->billingAddressData;
@@ -110,18 +109,5 @@ class CustomerWithPricingGroupsTransferMapper
     private function getFakePassword(): string
     {
         return substr(str_replace(['+', '/', '='], '', base64_encode(random_bytes(128))), 0, 128);
-    }
-
-    /**
-     * @param array $eans
-     * @return string|null
-     */
-    private function findEan(array $eans): ?string
-    {
-        if (count($eans) === 0) {
-            return null;
-        }
-
-        return TransformString::emptyToNull(end($eans));
     }
 }

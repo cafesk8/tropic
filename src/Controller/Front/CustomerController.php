@@ -46,7 +46,6 @@ class CustomerController extends FrontBaseController
      */
     private $customerUserUpdateDataFactory;
 
-
     /**
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \App\Model\Order\OrderFacade $orderFacade

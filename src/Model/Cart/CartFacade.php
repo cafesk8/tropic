@@ -35,6 +35,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
  * @method \App\Model\Cart\Cart|null findCartOfCurrentCustomerUser()
  * @method \App\Model\Cart\Cart getCartByCustomerUserIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier  $customerUserIdentifier)
  * @method \App\Model\Cart\Cart getCartOfCurrentCustomerUserCreateIfNotExists()
+ * @method \App\Model\Cart\Cart getCartByCustomerUserIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier $customerUserIdentifier)
  */
 class CartFacade extends BaseCartFacade
 {

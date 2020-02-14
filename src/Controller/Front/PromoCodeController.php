@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
+use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
@@ -15,7 +16,6 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
-use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

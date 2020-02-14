@@ -179,7 +179,7 @@ class MigrateCustomersCommand extends Command
         $customer->markAsExported();
         $this->em->flush($customer);
 
-        $this->userTransferIdFacade->saveTransferIds($customer, $customersTransferItem->getEans(), $customersTransferItem->getDataIdentifier());
+        $this->userTransferIdFacade->saveTransferIds($customer, $customersTransferItem->getDataIdentifier());
 
         $this->newsletterFacade->addSubscribedEmail($customersTransferItem->getEmail(), DomainHelper::GERMAN_DOMAIN);
 

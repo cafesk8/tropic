@@ -75,6 +75,11 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method fillOrderRounding(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\BaseOrder $order, \App\Model\Order\OrderData $orderData)
  * @method calculateOrderItemDataPrices(\App\Model\Order\Item\OrderItemData $orderItemData, int $domainId)
+ * @method sendHeurekaOrderInfo(\App\Model\Order\Order $order, bool $disallowHeurekaVerifiedByCustomers)
+ * @method fillOrderPayment(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
  */
 class OrderFacade extends BaseOrderFacade
 {

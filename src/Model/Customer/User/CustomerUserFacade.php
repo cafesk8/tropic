@@ -187,7 +187,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         $this->em->flush($customerUser);
 
         if (!$this->userTransferIdFacade->isTransferIdExists($customerUser, $transferId)) {
-            $userTransferIdData = $this->userTransferIdDataFactory->createFromCustomerAndTransferId($customerUser, $transferId);
+            $userTransferIdData = $this->userTransferIdDataFactory->createFromCustomerTransferId($customerUser, $transferId);
             $this->userTransferIdFacade->create($userTransferIdData);
         }
 
@@ -266,7 +266,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         $billingAddress = $this->billingAddressFactory->create($customerUserUpdateData->billingAddressData);
         $deliveryAddress = null;
         $deliveryAddressData = $customerUserUpdateData->deliveryAddressData;
-        if ($customerUserData->memberOfBushmanClub || $deliveryAddressData->addressFilled === true) {
+        if ($customerUserData->memberOfLoyaltyProgram || $deliveryAddressData->addressFilled === true) {
             $deliveryAddressData->addressFilled = true;
             $deliveryAddress = $this->deliveryAddressFactory->create($customerUserUpdateData->deliveryAddressData);
             $this->em->persist($deliveryAddress);

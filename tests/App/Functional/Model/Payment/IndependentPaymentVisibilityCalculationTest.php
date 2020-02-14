@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\ShopBundle\Functional\Model\Payment;
+namespace Tests\App\Functional\Model\Payment;
 
 use App\Model\Payment\IndependentPaymentVisibilityCalculation;
 use App\Model\Payment\Payment;

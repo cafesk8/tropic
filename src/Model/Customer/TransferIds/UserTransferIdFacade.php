@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\TransferIds;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Model\Customer\User\CustomerUser;
+use Doctrine\ORM\EntityManagerInterface;
 
 class UserTransferIdFacade
 {

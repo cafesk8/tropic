@@ -73,6 +73,4 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
     {
         return AdvertFormType::class;
     }
-
-
 }

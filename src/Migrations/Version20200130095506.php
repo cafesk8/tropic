@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Migrations;
 
-use Doctrine\DBAL\Schema\Schema;
-use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 use App\Component\Domain\DomainHelper;
 use App\Model\Pricing\Group\PricingGroup;
+use Doctrine\DBAL\Schema\Schema;
+use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 
 class Version20200130095506 extends AbstractMigration
 {
