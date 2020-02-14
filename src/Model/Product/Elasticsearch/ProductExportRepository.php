@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Product\Search\Export;
+namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use App\Model\Product\Pricing\ProductManualInputPriceRepository;
@@ -15,11 +15,11 @@ use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository as BaseProductExportRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
-use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository as BaseProductSearchExportWithFilterRepository;
 
 /**
  * @property \App\Model\Product\Parameter\ParameterRepository $parameterRepository
@@ -33,7 +33,7 @@ use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithF
  * @method array extractPrices(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractVariantIds(\App\Model\Product\Product $product)
  */
-class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWithFilterRepository
+class ProductExportRepository extends BaseProductExportRepository
 {
     /**
      * @var \App\Model\Product\ProductFacade
@@ -143,7 +143,7 @@ class ProductSearchExportWithFilterRepository extends BaseProductSearchExportWit
         $result = [];
         /** @var \App\Model\Product\Product $product */
         foreach ($products as $product) {
-            $result[] = $this->extractResult($product, $domainId, $locale);
+            $result[$product->getId()] = $this->extractResult($product, $domainId, $locale);
         }
 
         return $result;

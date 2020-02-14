@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\App\Functional\Model\Product\Search;
+namespace Tests\App\Functional\Model\Product\Elasticsearch;
 
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository;
 use Tests\App\Test\TransactionFunctionalTestCase;
 
-class ProductSearchExportWithFilterRepositoryTest extends TransactionFunctionalTestCase
+class ProductExportRepositoryTest extends TransactionFunctionalTestCase
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportWithFilterRepository
+     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository
      */
     private $repository;
 
@@ -23,7 +23,7 @@ class ProductSearchExportWithFilterRepositoryTest extends TransactionFunctionalT
     protected function setUp()
     {
         parent::setUp();
-        $this->repository = $this->getContainer()->get(ProductSearchExportWithFilterRepository::class);
+        $this->repository = $this->getContainer()->get(ProductExportRepository::class);
         $this->domain = $this->getContainer()->get(Domain::class);
     }
 
