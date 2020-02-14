@@ -14,7 +14,7 @@ class Version20200207175326 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        $this->sql('ALTER TABLE user_transfer_ids_and_eans ADD CONSTRAINT FK_891E458F9395C3F3 FOREIGN KEY (customer_id) REFERENCES customer_users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->sql('ALTER TABLE user_transfer_ids ADD CONSTRAINT FK_891E458F9395C3F3 FOREIGN KEY (customer_id) REFERENCES customer_users (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     /**
