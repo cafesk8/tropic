@@ -6,6 +6,9 @@ namespace App\Model\Product\Availability;
 
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade as BaseAvailabilityFacade;
 
+/**
+ * @method Availability getDefaultInStockAvailability()
+ */
 class AvailabilityFacade extends BaseAvailabilityFacade
 {
     /**

@@ -11,6 +11,8 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData as BaseA
 /**
  * @ORM\Table(name="availabilities")
  * @ORM\Entity
+ * @method setTranslations(AvailabilityData $availabilityData)
+ * @method setTranslations(\App\Model\Product\Availability\AvailabilityData $availabilityData)
  */
 class Availability extends BaseAvailability
 {

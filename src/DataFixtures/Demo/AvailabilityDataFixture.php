@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Setting\Setting;
 use App\Model\Product\Availability\AvailabilityData;
 use App\Model\Product\Availability\AvailabilityDataFactory;
+use App\Model\Product\Availability\AvailabilityFacade;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\Setting\Setting;
-use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 
 class AvailabilityDataFixture extends AbstractReferenceFixture
 {
@@ -40,9 +40,9 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
     protected $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \App\Model\Product\Availability\AvailabilityDataFactory $availabilityDataFactory
-     * @param \Shopsys\FrameworkBundle\Component\Setting\Setting $setting
+     * @param \App\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
@@ -62,6 +62,7 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
      */
     public function load(ObjectManager $manager)
     {
+        /** @var \App\Model\Product\Availability\AvailabilityData $availabilityData */
         $availabilityData = $this->availabilityDataFactory->create();
 
         foreach ($this->domain->getAllLocales() as $locale) {
@@ -101,10 +102,11 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
     /**
      * @param \App\Model\Product\Availability\AvailabilityData $availabilityData
      * @param string|null $referenceName
-     * @return \Shopsys\FrameworkBundle\Model\Product\Availability\Availability
+     * @return \App\Model\Product\Availability\Availability
      */
     protected function createAvailability(AvailabilityData $availabilityData, $referenceName = null)
     {
+        /** @var \App\Model\Product\Availability\Availability $availability */
         $availability = $this->availabilityFacade->create($availabilityData);
         if ($referenceName !== null) {
             $this->addReference($referenceName, $availability);

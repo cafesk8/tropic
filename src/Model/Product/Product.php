@@ -38,6 +38,15 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @method refreshVariants(\App\Model\Product\Product[] $currentVariants)
  * @method addNewVariants(\App\Model\Product\Product[] $currentVariants)
  * @method unsetRemovedVariants(\App\Model\Product\Product[] $currentVariants)
+ * @property \App\Model\Product\Availability\Availability|null $availability
+ * @property \App\Model\Product\Availability\Availability|null $outOfStockAvailability
+ * @property \App\Model\Product\Availability\Availability $calculatedAvailability
+ * @method \App\Model\Product\Availability\Availability getAvailability()
+ * @method \App\Model\Product\Availability\Availability|null getOutOfStockAvailability()
+ * @method \App\Model\Product\Availability\Availability getCalculatedAvailability()
+ * @method setAvailability(\App\Model\Product\Availability\Availability $availability)
+ * @method setOutOfStockAvailability(\App\Model\Product\Availability\Availability|null $outOfStockAvailability)
+ * @method setCalculatedAvailability(\App\Model\Product\Availability\Availability $calculatedAvailability)
  */
 class Product extends BaseProduct
 {
