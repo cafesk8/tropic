@@ -100,9 +100,11 @@ class LoginController extends FrontBaseController
             $customerUser = $this->customerUserFacade->findCustomerUserByEmailAndDomain($email, $this->domain->getId());
 
             if ($customerUser !== null) {
-                return $this->render('Front/Content/Login/notice.html.twig', [
+                return $this->render('Front/Content/Order/noticeRegistered.html.twig', [
                     'email' => $email,
                 ]);
+            } else {
+                return $this->render('Front/Content/Order/noticeUnregistered.html.twig', []);
             }
         }
 

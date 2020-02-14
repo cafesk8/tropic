@@ -281,7 +281,11 @@ class OrderController extends FrontBaseController
         $this->goPayTransactionFacade = $goPayTransactionFacade;
     }
 
-    public function indexAction()
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request)
     {
         /** @var \Shopsys\FrameworkBundle\Component\FlashMessage\Bag $flashMessageBag */
         $flashMessageBag = $this->get('shopsys.shop.component.flash_message.bag.front');
@@ -366,6 +370,13 @@ class OrderController extends FrontBaseController
 
                 if ($frontOrderFormData->newsletterSubscription) {
                     $this->newsletterFacade->addSubscribedEmail($frontOrderFormData->email, $this->domain->getId());
+                }
+
+                if ($frontOrderFormData->registration) {
+                    $customerData = $this->customerUserUpdateDataFactory->createFromOrder($order, $frontOrderFormData->password, $this->domain->getId());
+                    $customer = $this->customerUserFacade->create($customerData);
+                    $this->authenticator->loginUser($customer, $request);
+                    $this->orderFacade->setCustomerToOrder($order, $customer);
                 }
 
                 $this->setGoPayBankSwiftSession($frontOrderFormData->payment, $frontOrderFormData->goPayBankSwift);

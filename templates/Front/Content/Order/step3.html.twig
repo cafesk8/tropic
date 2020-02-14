@@ -37,6 +37,31 @@
 
                                 <div class="clear js-order-personal-info-form-email"></div>
 
+                                <div class="js-order-registration-fields display-none">
+                                    {{ form_widget(form.registration, {
+                                        attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
+                                    }}
+                                    <label for="{{ form.registration.vars.id }}" class="css-checkbox__image">
+                                        {{ 'Chci se zaregistrovat'|trans }}
+                                    </label>
+
+                                    <div id="js-password-fields">
+                                        {{ form_row(form.password.first, {
+                                            label: 'Password'|trans,
+                                            attr: { class: 'form-line__input--full'},
+                                            errors_attr: { class: 'form-error--under' },
+                                            icon: {
+                                                class: 'in-icon in-icon--info js-tooltip',
+                                                title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
+                                            }
+                                        }) }}
+                                        {{ form_row(form.password.second, {
+                                            label: 'Password again'|trans,
+                                            attr: { class: 'form-line__input--full'},
+                                            errors_attr: { class: 'form-error--under' }
+                                        }) }}
+                                    </div>
+                                </div>
                             </div>
                             <h2 class="in-title in-title--small in-title--dark">
                                 {{ 'Doručit na adresu'|trans }}
