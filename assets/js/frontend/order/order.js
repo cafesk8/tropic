@@ -177,6 +177,11 @@ export default class PaymentTransportRelations {
                 success: function (data) {
                     const $container = $('.js-order-personal-info-form-email');
                     $container.empty().append(data);
+
+                    if (data.includes('js-email-not-registered-notice')) {
+                        $('.js-order-registration-fields').show();
+                    }
+
                     new Register().registerNewContent($container);
                 }
             });
