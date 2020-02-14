@@ -62,7 +62,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
  * @property \App\Model\Order\Item\OrderItemFactory $orderItemFactory
  * @method \App\Model\Order\Order createOrder(\App\Model\Order\OrderData $orderData, \App\Model\Order\Preview\OrderPreview $orderPreview, \App\Model\Customer\User\CustomerUser|null $customerUser)
- * @method sendHeurekaOrderInfo(\App\Model\Order\Order $order, bool $disallowHeurekaVerifiedByCustomers)
+ * @method sendHeurekaOrderInfo(\App\Model\Order\BaseOrder $order, bool $disallowHeurekaVerifiedByCustomers)
  * @method prefillFrontOrderData(\App\Model\Order\FrontOrderData $orderData, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getCustomerUserOrderList(\App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
@@ -70,10 +70,10 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method \App\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
  * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method setOrderDataAdministrator(\App\Model\Order\OrderData $orderData)
- * @method fillOrderPayment(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
- * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
- * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
- * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
+ * @method fillOrderPayment(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method fillOrderTransport(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method fillOrderRounding(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
+ * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\BaseOrder $order, \App\Model\Order\OrderData $orderData)
  * @method calculateOrderItemDataPrices(\App\Model\Order\Item\OrderItemData $orderItemData, int $domainId)
  */
 class OrderFacade extends BaseOrderFacade
@@ -248,7 +248,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param string $payPalStatus
      */
-    public function setPayPalStatus(Order $order, string $payPalStatus): void
+    public function setPayPalStatus(BaseOrder $order, string $payPalStatus): void
     {
         $order->setPayPalStatus($payPalStatus);
         $this->em->flush($order);
@@ -359,7 +359,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param \App\Model\Order\Preview\OrderPreview $orderPreview
      */
-    protected function fillOrderItems(Order $order, OrderPreview $orderPreview): void
+    protected function fillOrderItems(BaseOrder $order, OrderPreview $orderPreview): void
     {
         parent::fillOrderItems($order, $orderPreview);
 
@@ -442,7 +442,7 @@ class OrderFacade extends BaseOrderFacade
     /**
      * @param \App\Model\Order\Order $order
      */
-    public function sendSms(Order $order): void
+    public function sendSms(BaseOrder $order): void
     {
         if ($order->getDomainId() !== DomainHelper::CZECH_DOMAIN) {
             return;
@@ -461,7 +461,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param \App\Model\Customer\User\CustomerUser $customer
      */
-    public function setCustomerToOrder(Order $order, CustomerUser $customer): void
+    public function setCustomerToOrder(BaseOrder $order, CustomerUser $customer): void
     {
         $order->setCustomer($customer);
         $this->em->flush($order);
@@ -473,7 +473,7 @@ class OrderFacade extends BaseOrderFacade
      * @param string $locale
      */
     public function fillOrderProducts(
-        Order $order,
+        BaseOrder $order,
         OrderPreview $orderPreview,
         string $locale
     ): void {
@@ -550,7 +550,7 @@ class OrderFacade extends BaseOrderFacade
      */
     private function setGiftCertificate(
         OrderPreview $orderPreview,
-        Order $order,
+        BaseOrder $order,
         PromoCode $promoCode
     ): void {
         $locale = $this->domain->getCurrentDomainConfig()->getLocale();
@@ -579,7 +579,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param \App\Model\Order\Preview\OrderPreview $orderPreview
      */
-    private function fillOrderPromoProducts(Order $order, OrderPreview $orderPreview): void
+    private function fillOrderPromoProducts(BaseOrder $order, OrderPreview $orderPreview): void
     {
         /** @var \App\Model\Cart\Item\CartItem $promoProductCartItem */
         foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
@@ -616,7 +616,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param \App\Model\Order\Preview\OrderPreview $orderPreview
      */
-    private function fillOrderGifts(Order $order, OrderPreview $orderPreview): void
+    private function fillOrderGifts(BaseOrder $order, OrderPreview $orderPreview): void
     {
         /** @var \App\Model\Cart\Item\CartItem $giftInCart */
         foreach ($orderPreview->getGifts() as $giftInCart) {
