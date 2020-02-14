@@ -45,7 +45,6 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @method \App\Model\Order\Item\OrderItem getOrderPayment()
  * @method \App\Model\Order\Item\OrderItem getOrderTransport()
  * @method \App\Model\Order\Status\OrderStatus getStatus()
- * @method \App\Model\Customer\User\CustomerUser|null getCustomer()
  * @method \App\Model\Order\Item\OrderItem[] getItems()
  * @method \App\Model\Order\Item\OrderItem[] getItemsWithoutTransportAndPayment()
  * @method \App\Model\Order\Item\OrderItem[] getTransportAndPaymentItems()

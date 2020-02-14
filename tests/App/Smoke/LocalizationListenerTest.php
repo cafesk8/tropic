@@ -23,7 +23,7 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Vložit do košíku")')->count()
+            $crawler->filter('html:contains("Přidat do košíku")')->count()
         );
     }
 

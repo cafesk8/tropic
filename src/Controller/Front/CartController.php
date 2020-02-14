@@ -337,6 +337,7 @@ class CartController extends FrontBaseController
     {
         $form = $this->createForm(AddProductFormType::class, ['productId' => $product->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
+            'minimum_amount' => $product->getRealMinimumAmount(),
         ]);
 
         $hardDisabled = $product->getStockQuantity() < 1;

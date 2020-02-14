@@ -30,7 +30,7 @@ class AddProductFormType extends AbstractType
             ->add('quantity', TextType::class, [
                 'data' => 1,
                 'constraints' => [
-                    new Constraints\GreaterThan(0),
+                    new Constraints\GreaterThanOrEqual($options['minimum_amount']),
                     new Constraints\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
@@ -45,6 +45,8 @@ class AddProductFormType extends AbstractType
         $resolver->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
             'csrf_protection' => false, // CSRF is not necessary (and can be annoying) in this form
-        ]);
+        ])
+            ->setRequired('minimum_amount')
+            ->setAllowedTypes('minimum_amount', 'int');
     }
 }

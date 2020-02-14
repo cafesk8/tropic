@@ -8,7 +8,6 @@ use App\Model\Country\CountryFacade;
 use App\Model\Customer\DeliveryAddressDataFactory;
 use  App\Model\Customer\Transfer\CustomerTransferResponseItemData;
 use App\Model\Customer\User\CustomerUser;
-use Shopsys\FrameworkBundle\Component\String\TransformString;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactory;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;

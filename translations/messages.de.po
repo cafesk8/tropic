@@ -95,7 +95,7 @@ msgid "831 04 Bratislava"
 msgstr "831 04 Bratislava"
 
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
-msgstr ""
+msgstr "<i class=\"svg svg-cart\"></i>Add to cart"
 
 msgid "AKCE"
 msgstr "AKTION"
@@ -2063,7 +2063,7 @@ msgid "Přidat"
 msgstr "Hinzufügen"
 
 msgid "Přidat do košíku"
-msgstr ""
+msgstr "Add to cart"
 
 msgid "Přidat nový banner"
 msgstr "Ein neues Banner hinzufügen"

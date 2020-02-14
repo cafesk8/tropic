@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BlogCategoryController extends FrontBaseController
 {
-    private const BLOG_ARTICLES_PER_PAGE = 1;
+    private const BLOG_ARTICLES_PER_PAGE = 12;
     private const PAGE_QUERY_PARAMETER = 'page';
 
     /**
@@ -77,7 +77,7 @@ class BlogCategoryController extends FrontBaseController
             $this->domain->getId()
         );
 
-        return $this->render('@ShopsysShop/Front/Content/Blog/Category/detail.html.twig', [
+        return $this->render('Front/Content/Blog/Category/detail.html.twig', [
             'blogCategory' => $blogCategory,
             'isMainPage' => $blogCategory->isMainPage(),
             'blogArticlePaginationResult' => $blogArticlePaginationResult,
@@ -110,7 +110,7 @@ class BlogCategoryController extends FrontBaseController
             $activeCategoryIds[] = $blogCategory->getId();
         }
 
-        return $this->render('@ShopsysShop/Front/Content/Blog/Category/list.html.twig', [
+        return $this->render('Front/Content/Blog/Category/list.html.twig', [
             'activeCategoryIds' => $activeCategoryIds,
             'blogCategories' => $childrenBlogCategories,
         ]);

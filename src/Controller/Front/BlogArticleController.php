@@ -6,21 +6,16 @@ namespace App\Controller\Front;
 
 use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
-use App\Model\Blog\Category\BlogCategory;
 use App\Model\Blog\Category\BlogCategoryFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BlogCategoryController extends FrontBaseController
+class BlogArticleController extends FrontBaseController
 {
-    private const BLOG_ARTICLES_PER_PAGE = 12;
-    private const PAGE_QUERY_PARAMETER = 'page';
-
     /**
-     * @var \App\Model\Blog\Category\BlogCategoryFacade
+     * @var \App\Model\Blog\Article\BlogArticleFacade
      */
-    private $blogCategoryFacade;
+    private $blogArticleFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -28,91 +23,63 @@ class BlogCategoryController extends FrontBaseController
     private $domain;
 
     /**
-     * @var \App\Model\Blog\Article\BlogArticleFacade
+     * @var \App\Model\Blog\Category\BlogCategoryFacade
      */
-    private $blogArticleFacade;
+    private $blogCategoryFacade;
 
     /**
-     * @param \App\Model\Blog\Category\BlogCategoryFacade $blogCategoryFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
+     * @param \App\Model\Blog\Category\BlogCategoryFacade $blogCategoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(
-        BlogCategoryFacade $blogCategoryFacade,
-        BlogArticleFacade $blogArticleFacade,
-        Domain $domain
-    ) {
-        $this->blogCategoryFacade = $blogCategoryFacade;
-        $this->domain = $domain;
+    public function __construct(BlogArticleFacade $blogArticleFacade, BlogCategoryFacade $blogCategoryFacade, Domain $domain)
+    {
         $this->blogArticleFacade = $blogArticleFacade;
+        $this->domain = $domain;
+        $this->blogCategoryFacade = $blogCategoryFacade;
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function detailAction(Request $request, int $id): Response
+    public function detailAction(int $id): Response
     {
-        $blogCategory = $this->blogCategoryFacade->getVisibleOnDomainById($this->domain->getId(), $id);
-
-        $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
-
-        if (!$this->isRequestPageValid($requestPage)) {
-            return $this->redirectToRoute('front_blogcategory_detail', ['id' => BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID]);
-        }
-
-        $page = $requestPage === null ? 1 : (int)$requestPage;
-
-        $blogArticlePaginationResult = $this->blogArticleFacade->getPaginationResultForListableInBlogCategory(
-            $blogCategory,
-            $this->domain->getId(),
-            $this->domain->getLocale(),
-            $page,
-            self::BLOG_ARTICLES_PER_PAGE
+        $blogArticle = $this->blogArticleFacade->getVisibleOnDomainById(
+            $this->domain->getCurrentDomainConfig(),
+            $id
         );
 
-        $lastBlogCategoryForBlogArticlesByBlogArticleId = $this->blogCategoryFacade->getLastBlogCategoryForBlogArticlesByBlogArticleId(
-            $blogArticlePaginationResult->getResults(),
-            $this->domain->getId()
-        );
+        $blogCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
 
-        return $this->render('Front/Content/Blog/Category/detail.html.twig', [
-            'blogCategory' => $blogCategory,
-            'isMainPage' => $blogCategory->isMainPage(),
-            'blogArticlePaginationResult' => $blogArticlePaginationResult,
-            'lastBlogCategoryForBlogArticlesByBlogArticleId' => $lastBlogCategoryForBlogArticlesByBlogArticleId,
+        return $this->render('Front/Content/Blog/Article/detail.html.twig', [
+            'blogArticle' => $blogArticle,
+            'activeCategories' => $blogCategoryIds,
+            'domainId' => $this->domain->getId(),
         ]);
     }
 
     /**
-     * @param string|null $page
-     * @return bool
+     * @param \App\Model\Blog\Article\BlogArticle $blogArticle
+     * @param string $spanClass
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function isRequestPageValid(?string $page): bool
+    public function mainBlogCategoryForBlogArticleAction(BlogArticle $blogArticle, ?string $spanClass): Response
     {
-        return $page === null || (preg_match('@^([2-9]|[1-9][0-9]+)$@', $page));
+        return $this->render('Front/Content/Blog/Article/mainBlogCategoryForBlogArticle.html.twig', [
+            'blogCategory' => $this->blogArticleFacade->findBlogArticleMainCategoryOnDomain($blogArticle, $this->domain->getId()),
+            'spanClass' => $spanClass,
+        ]);
     }
 
     /**
      * @param \App\Model\Blog\Article\BlogArticle $blogArticle
-     * @param \App\Model\Blog\Category\BlogCategory|null $blogCategory
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(?BlogArticle $blogArticle, ?BlogCategory $blogCategory): Response
+    public function productsAction(?BlogArticle $blogArticle): Response
     {
-        $childrenBlogCategories = $this->blogCategoryFacade->getAllVisibleChildrenByDomainId($this->domain->getId());
-        $activeCategoryIds = [];
-
-        if ($blogArticle) {
-            $activeCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
-        } elseif ($blogCategory) {
-            $activeCategoryIds[] = $blogCategory->getId();
-        }
-
-        return $this->render('Front/Content/Blog/Category/list.html.twig', [
-            'activeCategoryIds' => $activeCategoryIds,
-            'blogCategories' => $childrenBlogCategories,
+        return $this->render('Front/Content/Blog/Article/blogArticleProducts.html.twig', [
+            'articleProducts' => $blogArticle->getProducts(),
         ]);
     }
 }

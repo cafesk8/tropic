@@ -1,59 +1,52 @@
 import Ajax from 'framework/common/utils/ajax';
 import Register from 'framework/common/utils/register';
 import { createLoaderOverlay, showLoaderOverlay } from 'framework/common/utils/loaderOverlay';
-import Window from '../utils/window';
 import Translator from 'bazinga-translator';
 
-export default class Login {
+(function ($) {
 
-    showWindow (event, login) {
-        Ajax.ajax({
-            url: $(event.currentTarget).data('url'),
-            type: 'POST',
-            success: function (data) {
-                const $window = new Window({
-                    content: data,
-                    textHeading: Translator.trans('Login')
-                });
+    const Shopsys = window.Shopsys || {};
+    Shopsys.login = Shopsys.login || {};
 
-                $window.getWindow().on('submit', '.js-front-login-window', login.onSubmit);
-            }
-        });
+    Shopsys.login.Login = function () {
 
-        event.preventDefault();
-    }
+        this.init = function ($loginForm) {
+            $loginForm.on('submit', onSubmit);
+        };
 
-    onSubmit () {
-        Ajax.ajax({
-            loaderElement: '.js-login-box-overlay',
-            type: 'POST',
-            url: $(this).attr('action'),
-            data: $(this).serialize(),
-            success: function (data) {
-                if (data.success === true) {
-                    const $loaderOverlay = createLoaderOverlay('.js-login-box-overlay');
-                    showLoaderOverlay($loaderOverlay);
+        function onSubmit () {
+            Ajax.ajax({
+                loaderElement: '.js-login-box-overlay',
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data.success === true) {
+                        const $loaderOverlay = createLoaderOverlay('.js-login-box-overlay');
+                        showLoaderOverlay($loaderOverlay);
 
-                    document.location = data.urlToRedirect;
-                } else {
-                    const $validationErrors = $('.js-login-validation-errors');
-                    if ($validationErrors.hasClass('display-none')) {
-                        $validationErrors
-                            .text(Translator.trans('This account doesn\'t exist or password is incorrect'))
-                            .show();
+                        document.location = data.urlToRedirect;
+                    } else {
+                        const $validationErrors = $('.js-login-validation-errors');
+                        if ($validationErrors.hasClass('display-none')) {
+                            $validationErrors
+                                .text(Translator.trans('This account doesn\'t exist or password is incorrect'))
+                                .show();
+                        }
+
                     }
                 }
-            }
-        });
-        return false;
-    }
+            });
+            return false;
+        }
 
-    static init ($container) {
+    };
+
+    new Register().registerCallback(function ($container) {
         $container.filterAllNodes('.js-front-login-window').each(function () {
-            const login = new Login();
-            $(this).on('click', (event) => login.showWindow(event, login));
+            const $login = new Shopsys.login.Login();
+            $login.init($(this));
         });
-    }
-}
+    });
 
-(new Register()).registerCallback(Login.init);
+})(jQuery);

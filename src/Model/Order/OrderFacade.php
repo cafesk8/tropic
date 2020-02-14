@@ -62,7 +62,6 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
  * @property \App\Model\Order\Item\OrderItemFactory $orderItemFactory
  * @method \App\Model\Order\Order createOrder(\App\Model\Order\OrderData $orderData, \App\Model\Order\Preview\OrderPreview $orderPreview, \App\Model\Customer\User\CustomerUser|null $customerUser)
- * @method sendHeurekaOrderInfo(\App\Model\Order\BaseOrder $order, bool $disallowHeurekaVerifiedByCustomers)
  * @method prefillFrontOrderData(\App\Model\Order\FrontOrderData $orderData, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getCustomerUserOrderList(\App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Order\Order[] getOrderListForEmailByDomainId(string $email, int $domainId)
@@ -70,10 +69,6 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method \App\Model\Order\Order getByUrlHashAndDomain(string $urlHash, int $domainId)
  * @method \App\Model\Order\Order getByOrderNumberAndUser(string $orderNumber, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method setOrderDataAdministrator(\App\Model\Order\OrderData $orderData)
- * @method fillOrderPayment(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
- * @method fillOrderTransport(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
- * @method fillOrderRounding(\App\Model\Order\BaseOrder $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
- * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\BaseOrder $order, \App\Model\Order\OrderData $orderData)
  * @method calculateOrderItemDataPrices(\App\Model\Order\Item\OrderItemData $orderItemData, int $domainId)
  * @method sendHeurekaOrderInfo(\App\Model\Order\Order $order, bool $disallowHeurekaVerifiedByCustomers)
  * @method fillOrderPayment(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
@@ -297,7 +292,7 @@ class OrderFacade extends BaseOrderFacade
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
 
         /** @var \App\Model\Customer\User\CustomerUser $customer */
-        $customer = $order->getCustomer();
+        $customer = $order->getCustomerUser();
         if ($customer !== null) {
             $order->setCustomerTransferId($customer->getTransferId());
             $order->setMemberOfLoyaltyProgram($customer->isMemberOfLoyaltyProgram());

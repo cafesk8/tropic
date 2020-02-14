@@ -1,5 +1,5 @@
 import Register from 'framework/common/utils/register';
-import { addNewItemToCollection, removeItemFromCollection } from 'framework/validation/customization/customizeCollectionBundle';
+import { addNewItemToCollection, removeItemFromCollection } from 'framework/admin/validation/customization/customizeCollectionBundle';
 
 (function ($) {
 

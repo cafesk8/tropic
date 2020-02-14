@@ -164,7 +164,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'invalid_message' => 'Passwords do not match',
             ])
-            ->add('memberOfBushmanClub', CheckboxType::class, [
+            ->add('memberOfLoyaltyProgram', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('email2', HoneyPotType::class);

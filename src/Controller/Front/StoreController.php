@@ -91,7 +91,7 @@ class StoreController extends FrontBaseController
 
         return $this->render('Front/Content/Stores/detail.html.twig', [
             'store' => $store,
-            'bushmanClubArticle' => $loyaltyProgramArticle,
+            'loyaltyProgramArticle' => $loyaltyProgramArticle,
         ]);
     }
 }

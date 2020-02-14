@@ -16,7 +16,6 @@ use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 

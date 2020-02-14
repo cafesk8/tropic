@@ -14,3 +14,4 @@ import './transportSelect';
 import './validation.form.transport';
 import './youtubeId.validation';
 import './youtubeUrlParser';
+import './youtubeVideos';

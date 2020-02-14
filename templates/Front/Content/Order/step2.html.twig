@@ -19,7 +19,7 @@
                         {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
                     {% endif %}
                     <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
-                        {% include 'ShopsysShopBundle:Front/Content/Order:transportAndPaymentBox.html.twig' %}
+                        {% include 'Front/Content/Order/transportAndPaymentBox.html.twig' %}
                     </div>
 
                     <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
