@@ -382,10 +382,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Category\CategoryRepository: '@App\Model\Category\CategoryRepository'
 
-    App\Component\Instagram\Instagram:
-        arguments:
-            - '%instagram%'
-
     shopsys.shop.twig.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
         calls:
