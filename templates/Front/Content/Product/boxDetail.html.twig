@@ -10,7 +10,7 @@
             <div class="box-detail__image">
                 {% set galleryImages = getImages(product) %}
                 {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
-                {# @var sellingPrice \Shopsys\ShopBundle\Model\Product\Pricing\ProductPrice #}
+                {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
                 {% set sellingPrice = getProductSellingPrice(product) %}
 
                 <div class="box-detail__image__main">

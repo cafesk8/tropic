@@ -127,7 +127,7 @@
             occurrence: 'Front-end: Brand page'
 
 -   name: store
-    class: Shopsys\ShopBundle\Model\Store\Store
+    class: App\Model\Store\Store
     sizes:
         -   name: ~
             width: 570
@@ -141,7 +141,7 @@
             occurrence: 'Front-end: Stores list'
 
 -   name:  blogCategory
-    class: Shopsys\ShopBundle\Model\Blog\Category\BlogCategory
+    class: App\Model\Blog\Category\BlogCategory
     sizes:
         -   name: ~
             width: 400
@@ -150,7 +150,7 @@
             occurrence: 'Front-end: Blog category detail'
 
 -   name:  blogArticle
-    class: Shopsys\ShopBundle\Model\Blog\Article\BlogArticle
+    class: App\Model\Blog\Article\BlogArticle
     multiple: true
     sizes:
         -   name: ~

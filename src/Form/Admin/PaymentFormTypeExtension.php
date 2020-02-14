@@ -73,7 +73,7 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
             ]);
 
         if ($options['payment'] !== null) {
-            /** @var \Shopsys\ShopBundle\Model\Payment\Payment $payment */
+            /** @var \App\Model\Payment\Payment $payment */
             $payment = $options['payment'];
             if ($payment->isHiddenByGoPay()) {
                 $builderBasicInformationGroup->add('hidden', YesNoType::class, [
