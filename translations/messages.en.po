@@ -2563,8 +2563,8 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr ""
 
-msgid "pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px"
-msgstr "for prescription - width: 1180px, height: 158px, for listing - width: 1180px, height: 88px"
+msgid "šířka: 1180px, výška: 150px"
+msgstr "width: 1180px, height: 150px"
 
 msgid "problémů"
 msgstr ""

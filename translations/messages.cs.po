@@ -2914,8 +2914,8 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našem"
 
-msgid "pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px"
-msgstr "pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px"
+msgid "šířka: 1180px, výška: 150px"
+msgstr "šířka: 1180px, výška: 150px"
 
 msgid "problémů"
 msgstr ""

@@ -3172,8 +3172,8 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našom"
 
-msgid "pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px"
-msgstr "pre predvýpis - šírka: 1180px, výška: 158px, pre výpis - šírka: 1180px, výška: 88px"
+msgid "šířka: 1180px, výška: 150px"
+msgstr "šírka: 1180px, výška: 150px"
 
 msgid "pro členy"
 msgstr "pre členov"
