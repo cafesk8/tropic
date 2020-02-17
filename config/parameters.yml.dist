@@ -63,8 +63,8 @@ parameters:
     transfer_cs_password: 'BusLpk*155heslo'
     transfer_sk_username: 'bushmantest_sk'
     transfer_sk_password: 'BusSK*475heslo'
-    transfer_de_username: 'bushmantest_de'
-    transfer_de_password: 'BusDE*852heslo'
+    transfer_en_username: 'bushmantest_de'
+    transfer_en_password: 'BusDE*852heslo'
 
     # testing credentials
     balikobot:
