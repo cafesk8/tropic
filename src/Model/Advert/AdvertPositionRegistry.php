@@ -34,7 +34,7 @@ class AdvertPositionRegistry extends BaseAdvertPositionRegistry
             'secondSquare' => t('šířka: 380px, výška: 230px'),
             'thirdSquare' => t('šířka: 380px, výška: 230px'),
             'fourthRectangle' => t('šířka: 1180px, výška: 387px'),
-            self::CATEGORY_ADVERT_POSITION => t('pro předvýpis - šířka: 1180px, výška: 158px, pro výpis - šířka: 1180px, výška: 88px'),
+            self::CATEGORY_ADVERT_POSITION => t('šířka: 1180px, výška: 150px'),
         ];
     }
 }
