@@ -13,7 +13,7 @@ use Tests\App\Test\TransactionFunctionalTestCase;
 
 class ProductRenameRedirectPreviousUrlTest extends TransactionFunctionalTestCase
 {
-    private const TESTED_PRODUCT_ID = 1;
+    private const TESTED_PRODUCT_ID = 10;
 
     public function testPreviousUrlRedirect(): void
     {
