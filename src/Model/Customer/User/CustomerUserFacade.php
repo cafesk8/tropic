@@ -262,8 +262,9 @@ class CustomerUserFacade extends BaseCustomerUserFacade
     {
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
+        $customer = $this->customerFacade->createCustomerWithBillingAddress($customerUserUpdateData->billingAddressData);
+        $customerUserUpdateData->customerUserData->customer = $customer;
 
-        $billingAddress = $this->billingAddressFactory->create($customerUserUpdateData->billingAddressData);
         $deliveryAddress = null;
         $deliveryAddressData = $customerUserUpdateData->deliveryAddressData;
         if ($customerUserData->memberOfLoyaltyProgram || $deliveryAddressData->addressFilled === true) {
@@ -278,7 +279,6 @@ class CustomerUserFacade extends BaseCustomerUserFacade
             $deliveryAddress
         );
 
-        $this->em->persist($billingAddress);
         $this->em->persist($customerUser);
         $this->em->flush();
 
