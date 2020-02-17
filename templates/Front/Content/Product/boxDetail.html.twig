@@ -104,8 +104,9 @@
                                         {{ 'Vyberte velikost'|trans }}
                                         <a
                                             href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}"
-                                            class="box-detail__variants__title__link underline-small"
-                                            onclick="Shopsys.window({ content: '{{ render(controller('App\\Controller\\Front\\ArticleController:detailForModalAction', { 'id': productSizeArticleId }))|escape('js') }}', cssClass: 'window-popup--wide' }); return false;"
+                                            class="box-detail__variants__title__link underline-small js-window-opener-frontend"
+                                            data-content="{{ render(controller('App\\Controller\\Front\\ArticleController:detailForModalAction', { 'id': productSizeArticleId }))|escape('js') }}"
+                                            data-css-class="window-popup--wide"
                                         >
                                             {{ 'Jak vybrat správnou velikost?' }}
                                         </a>

@@ -12,6 +12,7 @@ import './promoCode.validation';
 import './promoCodeGroup';
 import './transportSelect';
 import './validation.form.transport';
+import './windowOpener';
 import './youtubeId.validation';
 import './youtubeUrlParser';
 import './youtubeVideos';

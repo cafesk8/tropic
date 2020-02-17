@@ -33,16 +33,10 @@
                             {% if blogCategoryWithPreloadedChildren.blogCategory.level is not same as(1) %}
                                 <a
                                     href="{{ blogCategoryDeleteUrl }}"
-                                    onclick="
-                                            Shopsys.window({
-                                            content: '{{ 'Do you really want to delete this blog category?'|trans|e('js') }}',
-                                            buttonCancel: true,
-                                            buttonContinue: true,
-                                            textContinue: '{{ 'Yes'|trans|e('js') }}',
-                                            urlContinue: '{{ blogCategoryDeleteUrl|e('js') }}'
-                                            });
-                                            return false;"
-                                    class="form-tree__item__control"
+                                    class="form-tree__item__control js-window-opener-admin"
+                                    data-content="{{ 'Do you really want to delete this blog category?'|trans|e('js') }}"
+                                    data-text-continue="{{ 'Yes'|trans|e('js') }}"
+                                    data-url-continue="{{ blogCategoryDeleteUrl|e('js') }}"
                                 >
                                     <i class="svg svg-trash"></i>
                                 </a>

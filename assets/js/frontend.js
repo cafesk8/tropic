@@ -7,6 +7,9 @@ import 'framework/common/components';
 import CustomizeBundle from 'framework/common/validation/customizeBundle';
 import showFormErrorsWindowOnFrontend from './frontend/utils/customizeBundle';
 
+import './frontend/utils/loginWindowOpener';
+import './frontend/utils/availabilityOnStoreWindowOpener';
+
 import './loadTranslations';
 
 import './frontend/components';

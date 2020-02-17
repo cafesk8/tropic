@@ -1,5 +1,12 @@
 <div class="box-order__login--notice">
     {{ 'Váš e-mail je na e-shopu registrován.'|trans }}
-    <a href="{{ url('front_login') }}" class="underline-small" onclick="Shopsys.window({ content: '{{ render(controller('App\\Controller\\Front\\LoginController:windowFormAction', { email: email }))|escape('js') }}', cssClass: 'window-popup--standard window-popup--no-padding', eventOnLoad: PaymentTransportRelations.copyEmail }); return false;">{{ 'Přihlaste se'|trans }}</a>
+    <a
+        href="{{ url('front_login') }}"
+        class="underline-small js-login-in-order-window-opener"
+        data-url="{{ url('front_login_window_form') }}"
+        data-email="{{ email }}"
+    >
+        {{ 'Přihlaste se'|trans }}
+    </a>
     {{ 'a údaje vám předvyplníme.'|trans }}
 </div>

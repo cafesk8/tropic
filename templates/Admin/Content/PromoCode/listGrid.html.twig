@@ -15,16 +15,10 @@
             }) %}
             <a
                 href="{{ promocodeMassDeleteUrl }}"
-                class="btn btn-danger text-center"
-                onclick="
-                    Shopsys.window({
-                        content: '{{ 'Chcete opravdu smazat tyto slevové kupóny?'|trans|e('js') }}',
-                        buttonCancel: true,
-                        buttonContinue: true,
-                        textContinue: '{{ 'Yes'|trans|e('js') }}',
-                        urlContinue: '{{ promocodeMassDeleteUrl }}'
-                    });
-                    return false;"
+                class="btn btn-danger text-center js-window-opener-admin"
+                data-content="{{ 'Chcete opravdu smazat tyto slevové kupóny?'|trans }}"
+                data-text-continue="{{ 'Yes'|trans|e('js') }}"
+                data-url-continue="{{ promocodeMassDeleteUrl }}"
             >
                 {{ 'Smazat všechny'|trans }}
             </a>
