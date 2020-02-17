@@ -60,11 +60,6 @@ export default class PaymentTransportRelations {
         if ($checkedTransport.length > 0) {
             $checkedTransport.closest('label.box-chooser__item').removeClass('box-chooser__item--inactive').addClass('box-chooser__item--active');
         }
-
-        $('.js-toggle-additional-transports').click(function () {
-            $('.js-additional-transport').toggleClass('display-none');
-            $(this).toggleClass('active');
-        });
     }
 
     updatePayments () {
@@ -96,11 +91,6 @@ export default class PaymentTransportRelations {
         if ($checkedPayment.length > 0) {
             $checkedPayment.closest('label.box-chooser__item').removeClass('box-chooser__item--inactive').addClass('box-chooser__item--active');
         }
-
-        $('.js-toggle-additional-payments').click(function () {
-            $('.js-additional-payment').toggleClass('display-none');
-            $(this).toggleClass('active');
-        });
     }
 
     onTransportChange (event, paymentTransportRelations) {
@@ -207,6 +197,10 @@ export default class PaymentTransportRelations {
     static init ($container) {
         const $transportInputs = $container.filterAllNodes('.js-order-transport-input');
         const $paymentInputs = $container.filterAllNodes('.js-order-payment-input');
+        var $toggleAdditionalTransportsButton = $container.filterAllNodes('.js-toggle-additional-transports');
+        var $toggleAdditionalPaymentsButton = $container.filterAllNodes('.js-toggle-additional-payments');
+        var $additionalTransports = $container.filterAllNodes('.js-additional-transport');
+        var $additionalPayments = $container.filterAllNodes('.js-additional-payment');
         const paymentTransportRelations = new PaymentTransportRelations();
 
         $transportInputs.change((event) => paymentTransportRelations.onTransportChange(event, paymentTransportRelations));
@@ -219,6 +213,16 @@ export default class PaymentTransportRelations {
         $paymentInputs.filter(':checked').change();
         paymentTransportRelations.updateContinueButton();
         paymentTransportRelations.checkLoginNotice();
+
+        $toggleAdditionalTransportsButton.click(function () {
+            $additionalTransports.toggleClass('display-none');
+            $toggleAdditionalTransportsButton.toggleClass('active');
+        });
+
+        $toggleAdditionalPaymentsButton.click(function () {
+            $additionalPayments.toggleClass('display-none');
+            $toggleAdditionalPaymentsButton.toggleClass('active');
+        });
     }
 }
 
