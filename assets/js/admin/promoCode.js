@@ -19,10 +19,10 @@ import Register from 'framework/common/utils/register';
         const $percentDiscountInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-percent-discount');
         const $certificateFieldsInputs = $promoCodeForm.filterAllNodes('.js-promo-code-certificate-field');
 
-        const promoCodeConstant = Shopsys.constant('Shopsys\\ShopBundle\\Model\\Order\\PromoCode\\PromoCodeData::TYPE_PROMO_CODE');
-        const limitTypeBrandsConstant = Shopsys.constant('Shopsys\\ShopBundle\\Model\\Order\\PromoCode\\PromoCode::LIMIT_TYPE_BRANDS');
-        const limitTypeCategoriesConstant = Shopsys.constant('Shopsys\\ShopBundle\\Model\\Order\\PromoCode\\PromoCode::LIMIT_TYPE_CATEGORIES');
-        const limitTypeProductsConstant = Shopsys.constant('Shopsys\\ShopBundle\\Model\\Order\\PromoCode\\PromoCode::LIMIT_TYPE_PRODUCTS');
+        const promoCodeConstant = 'promoCode';
+        const limitTypeBrandsConstant = 'brands';
+        const limitTypeCategoriesConstant = 'categories';
+        const limitTypeProductsConstant = 'products';
 
         this.init = function () {
             onUnlimitedInputChange();
