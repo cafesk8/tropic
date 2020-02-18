@@ -57,6 +57,13 @@
                                 </div>
                             </a>
 
+                            {% if productView.getRandomGiftName() is not null %}
+                                {# TODO KOD: US-7335 #}
+                                <div class="list-products__item__info_gift">
+                                    <span class="todo-kod-text-transform--uppercase">{{ 'Dárek'|trans }}</span>: {{ productView.getRandomGiftName() }}
+                                </div>
+                            {% endif %}
+
                             <div class="list-products__item__hover">
                                 {% if productsForMainVariantGroup is not empty %}
                                     <a href="{{ productView.action.detailUrl }}" class="list-products__item__variants">

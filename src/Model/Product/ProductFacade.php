@@ -812,4 +812,24 @@ class ProductFacade extends BaseProductFacade
 
         return $indexedProducts;
     }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @param string $locale
+     * @return string[][]
+     */
+    public function getProductGiftNames(Product $product, int $domainId, string $locale): array
+    {
+        /** @var \App\Model\Product\Product[] $gifts */
+        $gifts = $product->getGifts($domainId);
+        $giftNames = [];
+        foreach ($gifts as $gift) {
+            $giftNames[] = [
+                'name' => $gift->getName($locale),
+            ];
+        }
+
+        return $giftNames;
+    }
 }

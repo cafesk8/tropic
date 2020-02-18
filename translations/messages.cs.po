@@ -607,7 +607,7 @@ msgstr ""
 msgid "Dárkový certifikát 500 Kč"
 msgstr ""
 
-msgid "Dárky"
+msgid "Dárky k produktům"
 msgstr ""
 
 msgid "Dárky k vaší objednávce:"
@@ -941,9 +941,6 @@ msgid "Kategorie v Mall.cz"
 msgstr ""
 
 msgid "Kategorie článků"
-msgstr ""
-
-msgid "Ke každému nákupu dárek v hodnotě"
 msgstr ""
 
 msgid "Kliknutím na tlačítko Odeslat objednávku"
@@ -1738,6 +1735,9 @@ msgstr "Do košíku bylo vloženo zboží <strong>{{ name }}</strong> ({{ quanti
 msgid "Product <strong>{{ name }}</strong> added to the cart (total amount {{ quantity|formatNumber }} {{ unitName }})"
 msgstr "Do košíku bylo vloženo zboží <strong>{{ name }}</strong> (celkem již {{ quantity|formatNumber }} {{ unitName }})"
 
+msgid "Product <strong>{{ name }}</strong> you had in cart is no longer available. Please check your order."
+msgstr ""
+
 msgid "Product <strong>{{ product|productDisplayName }}</strong> modified"
 msgstr "Produkt <strong>{{ product|productDisplayName }}</strong> byl upraven"
 
@@ -1746,6 +1746,9 @@ msgstr "Informace o produktu"
 
 msgid "Product no longer on sale"
 msgstr "Zboží se již neprodává"
+
+msgid "Product you had in cart is no longer in available. Please check your order."
+msgstr ""
 
 msgid "Product {{ name }} had to be removed from cart as its stock is too low"
 msgstr "Produkt {{ name }} musel být z košíku odstraněn, protože jeho skladové zásoby jsou příliš nízké"
@@ -2452,6 +2455,9 @@ msgstr ""
 msgid "V úterý"
 msgstr ""
 
+msgid "V článku píšeme o těchto produktech"
+msgstr ""
+
 msgid "VAT rate"
 msgstr "Sazba DPH"
 
@@ -2460,9 +2466,6 @@ msgstr "Varianta <strong>{{ productVariant|productDisplayName }}</strong> byla �
 
 msgid "Variants"
 msgstr "Varianty"
-
-msgid "Vaše hodnocení"
-msgstr ""
 
 msgid "Vaše objednávka"
 msgstr "Vaše objednávka"
@@ -2541,6 +2544,12 @@ msgstr "Vyberte prodejnu"
 
 msgid "Vyberte prosím službu dopravce"
 msgstr "Vyberte, prosím, službu dopravce"
+
+msgid "Vyberte si dárek <strong>zdarma</strong> v hodnotě"
+msgstr ""
+
+msgid "Vyberte si dárek <strong>zdarma</strong> v hodnotě"
+msgstr "Vyberte si dárek <strong>zdarma</strong> v hodnotě"
 
 msgid "Vyberte službu dopravce"
 msgstr "Vyberte službu dopravce"
@@ -2947,9 +2956,6 @@ msgstr "u&nbsp;vás"
 msgid "ušetříte"
 msgstr "ušetříte"
 
-msgid "v hodnotě"
-msgstr ""
-
 msgid "v měně dle zvolené domény"
 msgstr ""
 
@@ -2962,9 +2968,6 @@ msgstr ""
 msgid "without positioning"
 msgstr "bez umístění"
 
-msgid "za"
-msgstr ""
-
 msgid "za zvýhodněnou cenu"
 msgstr ""
 
@@ -2973,6 +2976,9 @@ msgstr "zadávat nemusíte"
 
 msgid "zašlete na náš bankovní účet číslo"
 msgstr "zašlete na náš bankovní účet číslo"
+
+msgid "zdarma v hodnotě"
+msgstr ""
 
 msgid "získat 3% slevu"
 msgstr ""
