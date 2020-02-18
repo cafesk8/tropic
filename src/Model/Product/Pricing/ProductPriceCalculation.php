@@ -171,7 +171,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
      * @param \App\Model\Pricing\Currency\Currency $currency
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function calculateBasePriceRoundedByCurrency(
+    public function calculateBasePriceRoundedByCurrency(
         Money $inputPrice,
         int $inputPriceType,
         Vat $vat,
