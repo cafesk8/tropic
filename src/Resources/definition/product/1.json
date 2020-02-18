@@ -256,6 +256,14 @@
           }
         }
       },
+      "gifts": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text"
+          }
+        }
+      },
       "minimum_amount": {
         "type": "integer"
       },

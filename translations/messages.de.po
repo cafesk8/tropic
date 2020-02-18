@@ -1042,8 +1042,8 @@ msgstr "Artikelkategorien"
 msgid "Kdo zná, ví. Kdo nezná ať rychle vyzkouší!"
 msgstr "Wer weiß, weiß. Wer weiß nicht, muss schnell versuchen!"
 
-msgid "Ke každému nákupu dárek v hodnotě"
-msgstr "Zu jedem Einkauf, ein Geschenk im werte von"
+msgid "Vyberte si dárek <strong>zdarma</strong> v hodnotě"
+msgstr "Wählen Sie einen <strong>kostenlosen</strong> Geschenkwert aus"
 
 msgid "Ke kořenům"
 msgstr "Zu den Wurzeln"

@@ -8,6 +8,7 @@ use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\PromoCodeFacade;
+use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
@@ -17,6 +18,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 
 /**
  * @property \App\Model\Cart\CartWatcher\CartWatcher $cartWatcher
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  */
 class CartWatcherFacade extends BaseCartWatcherFacade
 {
@@ -31,12 +33,18 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     private $promoCodeFacade;
 
     /**
+     * @var \App\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -44,11 +52,13 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         CartWatcher $cartWatcher,
         CurrentCustomerUser $currentCustomerUser,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
-        PromoCodeFacade $promoCodeFacade
+        PromoCodeFacade $promoCodeFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomerUser);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -60,6 +70,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         parent::checkCartModifications($cart);
 
         $this->checkValidityOfEnteredPromoCodes($cart, $customerUser);
+        $this->checkValidityOfGifts($cart);
     }
 
     /**
@@ -85,6 +96,39 @@ class CartWatcherFacade extends BaseCartWatcherFacade
                 );
                 $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($enteredCode);
             }
+        }
+    }
+
+    /**
+     * @param \App\Model\Cart\Cart $cart
+     */
+    private function checkValidityOfGifts(Cart $cart): void
+    {
+        $giftCartItems = $cart->getGifts();
+
+        $toFlush = [];
+        foreach ($giftCartItems as $giftCartItem) {
+            $product = $giftCartItem->getProduct();
+            try {
+                if (!$this->productFacade->isProductMarketable($product)) {
+                    $this->flashMessageSender->addErrorFlashTwig(
+                        t('Product <strong>{{ name }}</strong> you had in cart is no longer available. Please check your order.'),
+                        ['name' => $product->getName()]
+                    );
+
+                    $cart->removeItemById($giftCartItem->getId());
+                    $this->em->remove($giftCartItem);
+                    $toFlush[] = $giftCartItem;
+                }
+            } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $e) {
+                $this->flashMessageSender->addErrorFlash(
+                    t('Product you had in cart is no longer in available. Please check your order.')
+                );
+            }
+        }
+
+        if (count($toFlush) > 0) {
+            $this->em->flush($toFlush);
         }
     }
 }

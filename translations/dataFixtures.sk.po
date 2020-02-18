@@ -7,10 +7,10 @@ msgstr ""
 msgid "%locale% perex lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus felis nisi, tincidunt sollicitudin augue eu."
 msgstr ""
 
-msgid "(Mon - Sat: 9 - 10 a.m. to 8 - 10 p.m.)"
+msgid "(Po - Pá: 8:00 - 16:00)"
 msgstr ""
 
-msgid "+1-234-567-8989"
+msgid "+420 595 177 177"
 msgstr ""
 
 msgid "1 kg"
@@ -460,9 +460,6 @@ msgstr ""
 msgid "Book scoring system and traffic regulations"
 msgstr ""
 
-msgid "Březen, za kamna nevlezem. V kvalitním oblečení si užijete procházky v jakémkoliv počasí. Neměňte své zvyky, my je také."
-msgstr ""
-
 msgid "CD-R VERBATIM 210MB"
 msgstr ""
 
@@ -685,6 +682,9 @@ msgstr ""
 msgid "Ergonomics"
 msgstr ""
 
+msgid "Eshopová hvězda"
+msgstr ""
+
 msgid "Export osobních údajů - {domain}"
 msgstr ""
 
@@ -817,9 +817,6 @@ msgstr ""
 msgid "Hračky a další"
 msgstr ""
 
-msgid "Hvězda zahradnictví"
-msgstr ""
-
 msgid "Hyundai 22HD44D"
 msgstr ""
 
@@ -835,9 +832,6 @@ msgstr ""
 msgid "Jak nakupovat"
 msgstr ""
 
-msgid "Jindra má na sobě"
-msgstr ""
-
 msgid "Jídlo"
 msgstr ""
 
@@ -845,9 +839,6 @@ msgid "Kabel HDMI A - HDMI A M/M 2m gold-plated connectors High Speed HD"
 msgstr ""
 
 msgid "Kariéra"
-msgstr ""
-
-msgid "Kempování"
 msgstr ""
 
 msgid "Knife potato RM-3240/3250"
@@ -890,9 +881,6 @@ msgid "LG 58LA790W (FHD)"
 msgstr ""
 
 msgid "LG E410 Optimus L1 II White"
-msgstr ""
-
-msgid "Legenární kapsáče jsou zpět"
 msgstr ""
 
 msgid "Localization"
@@ -1006,11 +994,11 @@ msgstr "Na dotaz"
 msgid "Nabídka potisků triček"
 msgstr ""
 
-msgid "Nadčasové splynutí s přírodou. Sama víte, že i na procházce se psem můžete vypadat dobře a přirozeně"
-msgstr ""
-
 msgid "Nedostupné"
 msgstr "Nedostupné"
+
+msgid "Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili"
+msgstr ""
 
 msgid "Nejprodávanější"
 msgstr ""
@@ -1099,6 +1087,9 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
+msgid "Open-source Ecommerce Framework"
+msgstr ""
+
 msgid "Optical"
 msgstr ""
 
@@ -1177,9 +1168,6 @@ msgstr ""
 msgid "Powerful color inkjet printer A4 size, quality photo printing, high resolution up to 9600 x 2400dpi, the rate of up to 15 st. / Min in monochrome and up to 10 st. / Min in color, duplex printing, tray for up to 125 sheets, USB 2.0, WiFi 802.11b / g / n, possibility of printing discs. Canon PIXMA iP7250 is a compact portable printer for home or office thous. This is a quality color inkjet printer up to A4 with gentle tiskem.Má stylish and compact design with a hinged upper portion serving as a feeder print media. It is intended primarily for use as a small family or a printer portable printer - especially for printing photographs. It allows users to print documents and fotografií.Je equipped with precision 1 picolitre FINE for printing with tiny particles. It allows you to achieve resolutions up to 9600 x 2400dpi. The printer has five individual ink tanks with the ChromaLife100 +. Printer can print borderless photos. Maximum print speed is 15 pages per minute in black and white or 10 in color. E.g. print borderless 10 x 15 cm photo takes about 21 seconds. The printer also offers direct disc printing and automatic two-sided tisk.Připojení to the computer is done via the USB 2.0 port or through a wireless interface, WiFi 802.11b / g / n. The printer has the dimensions 451 x 368 x 128 mm and weighs 6.6 kg. The included software for easy photo printing My Image Garden."
 msgstr ""
 
-msgid "Počátek firmy se datuje rokem 1990, kdy její hlavní činností bylo zásobování bank a jiných firem papírenským zbožím. Dlouho u toho nezůstalo. Prudký vývoj utvrdil Papírnictví Pavlik CZ v pozici předního velkoobchodu, eskaloval v založení šestnácti vlastních prodejen – a v neposlední řadě umožnil založení vlastního eshopu."
-msgstr ""
-
 msgid "Počítače & příslušenství"
 msgstr ""
 
@@ -1210,13 +1198,10 @@ msgstr ""
 msgid "Pro obchodníky"
 msgstr ""
 
-msgid "Pro pořádné chlapy"
-msgstr ""
-
 msgid "Processor frequency"
 msgstr ""
 
-msgid "Prohlédnout"
+msgid "Proti slunci to vypadá, že se slunce pohybuje k západu rychleji než balónky, a možná to tak skutečně je. Nejeden filozof by mohl tvrdit, že balónky se sluncem závodí, ale fyzikové by to jistě vyvrátili. Z fyzikálního pohledu totiž balónky působí zcela nezajímavě. Nejvíc bezpochyby zaujmou děti - jedna malá holčička zrovna včera div nebrečela, že by snad balónky mohly prasknout. A co teprve ta stuha. Stuha, kterou je každý z trojice balónků uvázán, aby se nevypustil."
 msgstr ""
 
 msgid "Přehled osobních údajů - {domain}"
@@ -1241,6 +1226,9 @@ msgid "Recording on"
 msgstr ""
 
 msgid "Red and green paper glasses for watching"
+msgstr ""
+
+msgid "Red seems a little smaller next to blue and green, but that's probably just an optical illusion"
 msgstr ""
 
 msgid "Reducing the diameter of 35 mm to 32 mm"
@@ -1321,6 +1309,9 @@ msgstr ""
 msgid "Sensitivity (ISO)"
 msgstr ""
 
+msgid "Shopsys"
+msgstr ""
+
 msgid "Shopsys Framework - Titulní strana"
 msgstr ""
 
@@ -1328,9 +1319,6 @@ msgid "Shopsys Framework - nejlepší řešení pro váš internetový obchod."
 msgstr ""
 
 msgid "Side mount plates - few ETV-2860"
-msgstr ""
-
-msgid "Silnější než kdy předtím..."
 msgstr ""
 
 msgid "Simple Genius Mouse NetScroll 310 offers the most widely used functional elements of a basic ergonomics. It has an optical sensor with a resolution of 800 DPI, which can handle work on a large number of standard surfaces."
@@ -1567,9 +1555,6 @@ msgstr ""
 msgid "VERBATIM 1TB external HDD 2,5\" USB 3.0 GT SuperSpeed red"
 msgstr ""
 
-msgid "Velkoobchodní prodej pro obchodníky provádíme již od roku 1992. Od roku 2013 umožňujeme obchodníkům s papírenským zbožím i pohodlný nákup přes tento internetový obchod. Každý zaregistrovaný zákazník vidí své aktuální ceny. O B2B mohou žádat pouze ochdodníci, kteří mají naše zboží určeno pro další prodej."
-msgstr ""
-
 msgid "Video"
 msgstr ""
 
@@ -1610,6 +1595,9 @@ msgid "Vážený zákazníku,<br /><br />na tomto odkazu můžete nastavit nové
 msgstr ""
 
 msgid "Vážený zákazníku,<br/><br/> na základě vašeho zadaného emailu {e-mail}, Vám zasíláme odkaz ke stažení Vašich<br/> údajů evidovaných na našem internetovém obchodě ve strojově čitelném formátu.<br/> Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací, které k<br/> Vašemu e-mailu evidujeme na našem internetovém obchodu {domain}.<br/><br/> Pro přechod na stažení údajů, prosím, klikněte zde - {url}<br/> Odkaz je platný 24 hodin.<br/><br/> S pozdravem<br/> tým {domain}"
+msgstr ""
+
+msgid "Vítr skoro nefouká a tak by se na první pohled mohlo zdát, že se balónky snad vůbec nepohybují. Jenom tak klidně levitují ve vzduchu. Jelikož slunce jasně září a na obloze byste od východu k západu hledali mráček marně, balónky působí jako jakási fata morgána uprostřed pouště. Zkrátka široko daleko nikde nic, jen zelenkavá tráva, jasně modrá obloha a tři křiklavě barevné pouťové balónky, které se téměř nepozorovatelně pohupují ani ne moc vysoko, ani moc nízko nad zemí. Kdyby pod balónky nebyla sytě zelenkavá tráva, ale třeba suchá silnice či beton, možná by bylo vidět jejich barevné stíny - to jak přes poloprůsvitné barevné balónky prochází ostré sluneční paprsky."
 msgstr ""
 
 msgid "Watch broadcast in stunning Full HD, while at the same stylish devices work."
@@ -1675,6 +1663,9 @@ msgstr ""
 msgid "Zahradní náčiní"
 msgstr ""
 
+msgid "Zelí"
+msgstr ""
+
 msgid "Zásady ochrany osobních údajů"
 msgstr ""
 
@@ -1696,6 +1687,9 @@ msgstr ""
 msgid "hardcover"
 msgstr ""
 
+msgid "info@shopsys.com"
+msgstr ""
+
 msgid "inkjet"
 msgstr ""
 
@@ -1707,9 +1701,6 @@ msgstr ""
 
 msgid "m³"
 msgstr "m³"
-
-msgid "no-reply@shopsys.com"
-msgstr ""
 
 msgid "one-slotted"
 msgstr ""
@@ -1736,9 +1727,6 @@ msgid "Částečné vykrytí"
 msgstr ""
 
 msgid "Částečné vykrytí - OM"
-msgstr ""
-
-msgid "Šití na míru"
 msgstr ""
 
 msgid "Žádost o heslo"

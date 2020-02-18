@@ -829,8 +829,8 @@ msgstr ""
 msgid "Kategorie článků"
 msgstr ""
 
-msgid "Ke každému nákupu dárek v hodnotě"
-msgstr ""
+msgid "Vyberte si dárek <strong>zdarma</strong> v hodnotě"
+msgstr "Choose a <strong>free</strong> gift worth"
 
 msgid "Kliknutím na tlačítko Odeslat objednávku"
 msgstr ""
