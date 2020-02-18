@@ -7,7 +7,7 @@ import Timeout from 'framework/common/utils/timeout';
     Shopsys.variantsSlider = Shopsys.variantsSlider || {};
 
     Shopsys.variantsSlider.init = function ($container) {
-        $container.filterAllNodes('.js-list-products-item').on('hover', function (event) {
+        $container.filterAllNodes('.js-list-products-item').on('mouseenter', function (event) {
             const $currentGallery = $(event.currentTarget);
             $currentGallery.find('.js-variantsSlider-slides:not(.slick-initialized)').slick({
                 dots: false,
@@ -27,7 +27,6 @@ import Timeout from 'framework/common/utils/timeout';
                 e.preventDefault();
             });
         });
-
     };
 
     new Register().registerCallback(Shopsys.variantsSlider.init);
