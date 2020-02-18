@@ -1,0 +1,192 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block meta_robots -%}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block title %}
+    {{ 'My orders'|trans }}
+{% endblock %}
+
+{% block main_content %}
+<div class="web__line">
+    <div class="web__container">
+
+        <h1 class="in-title in-title--big in-title--center">{{ 'Order Nr.'|trans }} {{order.number}}</h1>
+
+        <div class="wrap-box wrap-box--narrow">
+            <h2 class="wrap-box__title">{{ 'Basic information'|trans }}</h2>
+            <div class="wrap-box__in">
+                <table class="table-params">
+                    <tr>
+                        <th>{{ 'Status'|trans }}: </th>
+                        <td>
+                            <span class="table-params__status-name">{{ order.status.name }}</span>
+                            {% if order.payment.goPay is same as (true) and order.gopayPaid == false %}
+                                <a class="btn btn--success btn--mini" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
+                                    {{ 'Opakovat platbu'|trans }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'Creation date'|trans }}: </th>
+                        <td>{{ order.createdAt|formatDate }}</td>
+                    </tr>
+                    {% if order.trackingNumber %}
+                        <tr>
+                            {% if order.trackingUrl %}
+                                <th>{{ 'Odkaz pro sledování zásilky'|trans }}: </th>
+                                <td><a href="{{ order.trackingUrl }}" target="_blank">{{ order.trackingNumber }}</a><td>
+                            {% else %}
+                                <th>{{ 'Číslo pro sledování zásilky'|trans }}: </th>
+                                <td>{{ order.trackingNumber }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        <div class="wrap-box wrap-box--narrow">
+            <h2 class="wrap-box__title">{{ 'Osobní údaje'|trans }}</h2>
+            <div class="wrap-box__in">
+                <table class="table-params">
+                    <tr>
+                        <th>{{ 'First name'|trans }}: </th>
+                        <td>{{ order.firstName }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'Last name'|trans }}: </th>
+                        <td>{{ order.lastName }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'Telephone'|trans }}: </th>
+                        <td>{{ order.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'E-mail'|trans }}: </th>
+                        <td>{{ order.email }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        {% if order.deliveryStreet is not null %}
+            <div class="wrap-box wrap-box--narrow">
+                <h2 class="wrap-box__title">{{ 'Shipping address'|trans }}</h2>
+                <div class="wrap-box__in">
+                    <table class="table-params">
+                        {% if order.deliveryCompanyName is not null %}
+                            <tr>
+                                <th>{{ 'Company'|trans }}: </th>
+                                <td>{{ order.deliveryCompanyName }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>{{ 'Street'|trans }}: </th>
+                            <td>{{ order.deliveryStreet }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'City'|trans }}: </th>
+                            <td>{{ order.deliveryCity }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Postcode'|trans }}: </th>
+                            <td>{{ order.deliveryPostcode }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Country'|trans }}: </th>
+                            <td>{{ order.deliveryCountry.name }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if order.street is not null and not order.isPersonalTakeType %}
+            <div class="wrap-box wrap-box--narrow">
+                <h2 class="wrap-box__title">{{ 'Billing address'|trans }}</h2>
+                <div class="wrap-box__in">
+                    <table class="table-params">
+                        {% if order.companyName is not null %}
+                            <tr>
+                                <th>{{ 'Company name'|trans }}: </th>
+                                <td>{{ order.companyName }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.companyNumber is not null %}
+                            <tr>
+                                <th>{{ 'Company number'|trans }}: </th>
+                                <td>{{ order.companyNumber }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if order.companyTaxNumber is not null %}
+                            <tr>
+                                <th>{{ 'Tax number'|trans }}: </th>
+                                <td>{{ order.companyTaxNumber }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>{{ 'Street'|trans }}: </th>
+                            <td>{{ order.street }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'City'|trans }}: </th>
+                            <td>{{ order.city }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Postcode'|trans }}: </th>
+                            <td>{{ order.postcode }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Country'|trans }}: </th>
+                            <td>{{ order.country.name }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="wrap-box wrap-box--narrow">
+            <h2 class="wrap-box__title">{{ 'Items'|trans }}</h2>
+            <div class="wrap-box__in">
+                <div class="in-scroll margin-bottom-20">
+                    <div class="in-scroll__in">
+                        <table class="table-main box-order-detail__table">
+                            <tr>
+                                <th>{{ 'Name'|trans }}</th>
+                                <th class="text-right">{{ 'Unit price including VAT'|trans }}</th>
+                                <th class="text-right">{{ 'Amount'|trans }}</th>
+                                <th class="text-right">{{ 'Total including VAT'|trans }}</th>
+                            </tr>
+                            {% for item in order.items %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td class="text-right">{{ item.priceWithVat|priceWithCurrency(order.currency) }}</td>
+                                    <td class="text-right">{{ item.quantity|formatNumber }} {{ item.unitName }}</td>
+                                    <td class="text-right">{{ orderItemTotalPricesById[item.id].priceWithVat|priceWithCurrency(order.currency) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="box-order-detail__total">
+                    <table class="box-order-detail__total__table">
+                        <tr>
+                            <th>{{ 'Total price including VAT'|trans }}: </th>
+                            <td>{{ order.totalPriceWithVat|priceWithCurrency(order.currency) }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrap-box wrap-box--narrow wrap-box--no-border">
+            {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                <a href="{{ url('front_customer_orders') }}" class="btn">{{ 'Back to orders overview'|trans }}</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

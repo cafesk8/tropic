@@ -1,0 +1,240 @@
+{% macro list(productViews, listCssClass, productHeadingTagName) %}
+
+    <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
+        {% for productView in productViews %}
+            {# Design - temporary hidden #}
+            {% if 1==2 %}
+                {% if loop.index == 7 %}
+                    <li class="list-products__item list-products__item--doubled list-products__item--image">
+                        {% include 'Front/Inline/PromoImage/index.html.twig' with {cssClass: 'box-promo-image--product-list'} only %}
+                    </li>
+                {% endif %}
+            {% endif %}
+            {% set productsForMainVariantGroup = productView.mainVariantGroupProductViews %}
+            <li class="list-products__item
+                {# Design - temporary hidden #}
+                {% if 1==2 %}
+                    {% if loop.index == 4 %} list-products__item--doubled {% endif %}
+                {% endif %}
+                {% if productsForMainVariantGroup is not empty %} list-products__item--with-variants {% endif %}
+                js-list-products-item">
+                <div class="list-products__item__in">
+                    {% set productSellingPrice = productView.sellingPrice %}
+                    <a href="{{ productView.action.detailUrl }}" class="list-products__item__block">
+                        <div class="list-products__item__image dont-print">
+                            {{ image(productView.image, { size: 'list', alt: productView.name }) }}
+                            {% set productFlagIds = productView.flagIds %}
+                            {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                            {% if freeTransportAndPaymentFlagId is not null %}
+                                {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                            {% endif %}
+                            {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list') }}
+                        </div>
+
+                        <div class="list-products__item__info">
+                            <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
+                            {{ productView.name|striptags|raw }}
+                        </{{ productHeadingTagName|default('h2') }}>
+
+                        {% if productSellingPrice is not null %}
+                            <div class="list-products__item__info__price">
+                                <div class="list-products__item__info__price__item__main">
+                                    {% if productSellingPrice.priceFrom %}
+                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                    {% else %}
+                                        {{ productSellingPrice.priceWithVat|price }}
+                                    {% endif %}
+                                    {% if (productSellingPrice.isActionPrice and not productSellingPrice.priceFrom) %}
+                                        <div class="list-products__item__info__price__item__old">
+                                            {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                        </div>
+                                        <div class="list-products__item__info__price__item__discount">
+                                            -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="list-products__item__info__price__item">
+                                    {% if productSellingPrice.priceFrom %}
+                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                    {% else %}
+                                        {{ productSellingPrice.priceWithVat|price }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="list-products__item__info__availability">
+                            {% for parameterValue in productView.distinguishingParameterValues %}
+                                <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
+                            {% endfor %}
+                            <div class="list-products__item__info__availability__spacer"></div>
+                            <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
+                                {{ productView.availability }}
+                            </div>
+
+                            {# Temporary remove unnecessary stores availability #}
+                            {#<div class="list-products__item__info__availability__stores js-not-implemented-yet" style="color: #7bbd70;">
+                                #}{# TODO PRG: do not remove element - only remove text inside if needed#}{#
+                                {{ 'K dispozici v Hradci Králové'|trans }}
+                            </div>#}
+                        </div>
+                        {% if productsForMainVariantGroup is not empty %}
+                            <div class="list-products__item__variants">
+                                {% if productsForMainVariantGroup|length >= 5 %}
+                                    <span class="js-variantsSlider-action-prev list-products__item__variants__arrow list-products__item__variants__arrow--prev">
+                                            <i class="svg svg-slider-arrow"></i>
+                                        </span>
+                                {% endif %}
+                                <div class="list-products__item__variants__slider js-variantsSlider-slides">
+                                    {% for mainVariantGroupProductView in productsForMainVariantGroup %}
+                                        <div class="list-products__item__variants__image">
+                                            {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name }) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if productsForMainVariantGroup|length >= 5 %}
+                                    <span class="js-variantsSlider-action-next list-products__item__variants__arrow list-products__item__variants__arrow--next">
+                                            <i class="svg svg-slider-arrow"></i>
+                                        </span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                </div>
+                </a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type) %}
+    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
+
+        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
+            <i class="svg svg-slider-arrow"></i>
+        </span>
+
+        <div class="{{ listCssClass }}__in">
+            <div class="{{ listCssClass }}__list js-horizontal-list-slides">
+                {% for productView in productViews %}
+                <div class="{{ listCssClass }}__item">
+                    <div class="{{ listCssClass }}__item__in">
+                        <a href="{{ productView.action.detailUrl }}" class="{{ listCssClass }}__item__block">
+                            <div class="{{ listCssClass }}__item__image dont-print">
+                                {{ image(productView.image, { size: 'list', alt: productView.name }) }}
+                            </div>
+                            {% set productFlagIds = productView.flagIds %}
+                            {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                            {% if freeTransportAndPaymentFlagId is not null %}
+                                {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                            {% endif %}
+                            {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list') }}
+
+                            <div class="{{ listCssClass }}__item__info">
+
+                                <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">
+                                {{ productView.name|striptags|raw }}
+                            </{{ productHeadingTagName|default('h2') }}>
+
+                            {% set productSellingPrice = productView.sellingPrice %}
+
+                            {% if productSellingPrice is not null %}
+                                <div class="{{ listCssClass }}__item__info__price">
+                                    <div class="{{ listCssClass }}__item__info__price__item__main">
+                                        {% if productSellingPrice.priceFrom %}
+                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                        {% else %}
+                                            {{ productSellingPrice.priceWithVat|price }}
+                                        {% endif %}
+                                        {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                            <div class="{{ listCssClass }}__item__info__price__item__old">
+                                                {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                            </div>
+                                            <div class="{{ listCssClass }}__item__info__price__item__discount">
+                                                -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="{{ listCssClass }}__item__info__price__item">
+                                        {% if productSellingPrice.priceFrom %}
+                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                        {% else %}
+                                            {{ productSellingPrice.priceWithVat|price }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="{{ listCssClass }}__item__info__availability">
+                                {#                                        {{ 'Vaše velikost'|trans }}#}
+                                {% for parameterValue in productView.distinguishingParameterValues %}
+                                    <span class="in-badge">{{ parameterValue }}</span>
+                                {% endfor %}
+                                {#                                        {{ product.calculatedAvailability.getName }}#}
+                            </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--next js-horizontal-list-action-next">
+            <i class="svg svg-slider-arrow"></i>
+        </span>
+    </div>
+
+{% endmacro %}
+
+{% macro verticalList(products, listCssClass, productHeadingTagName) %}
+    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+    <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
+        {% for product in products %}
+            <div class="{{ listCssClass }}__item">
+                <div class="{{ listCssClass }}__item__in">
+                    {% set productSellingPrice = getProductSellingPrice(product) %}
+                    <a href="{{ url('front_product_detail', {'id': product.id}) }}">
+                        <div class="{{ listCssClass }}__item__image dont-print">
+                            {{ image(product.productForCreatingImageAccordingToVariant, { size: 'list', alt: product.name, lazy: true }) }}
+                        </div>
+                    </a>
+
+                    <div class="{{ listCssClass }}__item__info">
+                        <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title" href="{{ url('front_product_detail', {'id': product.id}) }}">
+                            {{ product.name|striptags|raw }}
+                        </{{ productHeadingTagName|default('h2') }}>
+
+                        {% set productSellingPrice = getProductSellingPrice(product) %}
+
+                        {% if productSellingPrice is not null %}
+                            <div class="{{ listCssClass }}__item__info__price">
+                                <div class="{{ listCssClass }}__item__info__price__item__main">
+                                    {% if productSellingPrice.priceFrom %}
+                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                    {% else %}
+                                        {{ productSellingPrice.priceWithVat|price }}
+                                    {% endif %}
+                                    {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+                                        <div class="{{ listCssClass }}__item__info__price__item__old">
+                                            {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                        </div>
+                                        <div class="{{ listCssClass }}__item__info__price__item__discount">
+                                            -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="{{ listCssClass }}__item__info__availability">
+                            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

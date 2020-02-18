@@ -24,8 +24,8 @@ docker image pull ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG} || (
 sed -i "s/{{GOOGLE_CLOUD_STORAGE_BUCKET_NAME}}/${GOOGLE_CLOUD_STORAGE_BUCKET_NAME}/g" docker/nginx/google-cloud/nginx.conf
 
 # Create real parameters files to be modified and applied to the cluster as configmaps
-cp app/config/domains_urls.yml.dist app/config/domains_urls.yml
-cp app/config/parameters.yml.dist app/config/parameters.yml
+cp config/domains_urls.yml.dist config/domains_urls.yml
+cp config/parameters.yml.dist config/parameters.yml
 
 # Replace docker images for php-fpm of application
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].image ${DOCKER_USERNAME}/php-fpm:${DOCKER_IMAGE_TAG}
@@ -47,11 +47,11 @@ yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.sp
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.initContainers[1].env[1].value ${PROJECT_ID}
 
 # Set domain urls
-yq write --inplace app/config/domains_urls.yml domains_urls[0].url https://${FIRST_DOMAIN_HOSTNAME}
-yq write --inplace app/config/domains_urls.yml domains_urls[1].url https://${SECOND_DOMAIN_HOSTNAME}
+yq write --inplace config/domains_urls.yml domains_urls[0].url https://${FIRST_DOMAIN_HOSTNAME}
+yq write --inplace config/domains_urls.yml domains_urls[1].url https://${SECOND_DOMAIN_HOSTNAME}
 
 # Add a mask for trusted proxies so that load balanced traffic is trusted and headers from outside of the network are not lost
-yq write --inplace app/config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
+yq write --inplace config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
 
 cd /tmp/infrastructure/google-cloud
 

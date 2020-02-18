@@ -1,0 +1,48 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block meta_robots -%}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block title %}
+    {{ 'Login'|trans }}
+{% endblock %}
+
+{% block main_content %}
+
+    {{ form_start(form, {attr: {'multipleForm': true}}) }}
+        <div class="web__line">
+            <div class="web__container">
+
+                <h1 class="in-title in-title--big in-title--center">{{ 'Login'|trans }}</h1>
+
+                <div class="wrap-well wrap-well--big-padding">
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__full padding-bottom-10">
+                            {{ form_errors(form) }}
+                        </div>
+                    </div>
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.email, { label: 'E-mail'|trans }) }}
+                        </div>
+                        <div class="wrap-article__row__half">
+                            {{ form_row(form.password, { label: 'Heslo'|trans }) }}
+                        </div>
+                    </div>
+                    <div class="wrap-article__row">
+                        <div class="wrap-article__row__half padding-top-15 padding-bottom-15">
+                            <a href="{{ url('front_registration_reset_password') }}"><span class="underline-small">{{ 'Forgot your password?'|trans }}</span></a>
+                        </div>
+                        <div class="wrap-article__row__half text-right">
+                            {{ form_widget(form.login, {label: 'Log in'|trans}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% do form.rememberMe.setRendered %}
+
+    {{ form_end(form) }}
+
+{% endblock %}

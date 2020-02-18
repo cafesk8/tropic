@@ -1,0 +1,82 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+{% import 'Front/Inline/Paginator/paginator.html.twig' as paginator %}
+
+{% set domain = getDomain() %}
+
+{% block title %}
+    {{- blogCategory.getSeoTitle(domain.id)|default(blogCategory.name) -}}
+{% endblock %}
+
+{% block meta_description %}
+    {{- blogCategory.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
+{% endblock %}
+
+{% block main_content %}
+    {% set entityName = 'blogArticles'|trans %}
+    <div class="web__line">
+        <div class="web__container">
+            <div class="box-blog">
+                <h1 class="box-blog__title">
+                    {% if blogCategory.getSeoH1(domain.id) is not null %}
+                        {{ blogCategory.getSeoH1(domain.id) }}
+                    {% else %}
+                        {{ blogCategory.name }}
+                    {% endif %}
+                </h1>
+                <div class="box-blog__content">
+                    <div class="box-blog__list">
+                        {% if blogArticlePaginationResult.results|length > 0 %}
+                            <div class="js-blog-list-with-paginator">
+                                <ul class="list-articles-blog js-list">
+                                    {% for blogArticle in blogArticlePaginationResult.results %}
+                                        {% set url = url('front_blogarticle_detail', {'id': blogArticle.id}) %}
+                                        <li class="list-articles-blog__item list-articles-blog__item--full-size">
+                                            <div class="list-articles-blog__item__image">
+                                                <a href="{{ url }}" class="list-articles-blog__item__image__link" title="{{ blogArticle.name }}">
+                                                    {{ image(blogArticle, { size: 'list', alt: blogArticle.name }) }}
+                                                </a>
+                                            </div>
+                                            <div class="list-articles-blog__item__content">
+                                                <div class="list-tags">
+                                                    <span class="list-tags__tag">
+                                                        {{ lastBlogCategoryForBlogArticlesByBlogArticleId[blogArticle.id].name }}
+                                                    </span>
+                                                </div>
+                                                <a href="{{ url }}" class="list-articles-blog__item__content__title">
+                                                    <span class="underline-text">{{ blogArticle.name }}</span>
+                                                </a>
+                                                <div class="list-articles-blog__item__content__text">
+                                                    {{ blogArticle.perex|striptags|raw }}
+                                                </div>
+                                                <div class="list-articles-blog__item__content__date">
+                                                    {{ blogArticle.publishDate|formatLongDate }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="box-blog__list__button">
+                                    {{ paginator.loadMoreButton(blogArticlePaginationResult) }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="in-message in-message--info margin-bottom-20">
+                                {{ 'This blog category contains no blog articles.'|trans }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="box-blog__panel">
+                        <div class="box-blog__section">
+                            {{ render(controller('App\\Controller\\Front\\BlogCategoryController:listAction', {blogCategory: blogCategory})) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block last_visited_products %}
+        {{ render(controller('App\\Controller\\Front\\LastVisitedProductsController:showAction')) }}
+    {% endblock %}
+{% endblock %}

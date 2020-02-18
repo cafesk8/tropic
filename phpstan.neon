@@ -3,25 +3,22 @@ parameters:
         -
             # Ignore annotations in generated code
             message: '#PHPDoc tag @(param|return) has invalid value (.|\n)+: Unexpected token .+, expected type at offset \d+$#'
-            path: %currentWorkingDirectory%/tests/ShopBundle/Test/Codeception/_generated/AcceptanceTesterActions.php
-        -
-            message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface::scalarNode\(\)\.$#'
-            path: %currentWorkingDirectory%/src/Shopsys/ShopBundle/DependencyInjection/Configuration.php
+            path: %currentWorkingDirectory%/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php
         -
             # Ignore annotations in generated code
             message: '#^PHPDoc tag @throws with type .+ is not subtype of Throwable$#'
-            path: %currentWorkingDirectory%/tests/ShopBundle/Test/Codeception/_generated/AcceptanceTesterActions.php
+            path: %currentWorkingDirectory%/tests/App/Test/Codeception/_generated/AcceptanceTesterActions.php
         -
             # We need to have undefined variable for testing purposes
             message: '#^Undefined variable: \$undefined$#'
-            path: %currentWorkingDirectory%/src/Shopsys/ShopBundle/Controller/Test/ErrorHandlerController.php
+            path: %currentWorkingDirectory%/src/Controller/Test/ErrorHandlerController.php
         -
             message: '#^Expression "\$undefined\[42\]" on a separate line does not do anything\.$#'
-            path: %currentWorkingDirectory%/src/Shopsys/ShopBundle/Controller/Test/ErrorHandlerController.php
+            path: %currentWorkingDirectory%/src/Controller/Test/ErrorHandlerController.php
         -
             # the function is indeed defined in vendor/twig/twig/src/Extension/CoreExtension.php
             message: '#^Function twig_date_format_filter not found\.$#'
-            path: %currentWorkingDirectory%/src/Shopsys/ShopBundle/Twig/DateTimeFormatterExtension.php
+            path: %currentWorkingDirectory%/src/Twig/DateTimeFormatterExtension.php
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon

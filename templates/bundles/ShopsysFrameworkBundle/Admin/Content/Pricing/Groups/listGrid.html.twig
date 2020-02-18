@@ -1,0 +1,26 @@
+{% extends '@!ShopsysFramework/Admin/Content/Pricing/Groups/listGrid.html.twig' %}
+
+{% block grid_action_cell %}
+    {% if actionColumn.type == 'edit' %}
+        {% set icon = 'pencil' %}
+    {% elseif actionColumn.type == 'delete' %}
+        {% set icon = 'trash' %}
+    {% else %}
+        {% set icon = actionColumn.type %}
+    {% endif %}
+    {% if actionColumn.type != 'delete' or row.pg.internalId is null %}
+        <a
+                class="in-icon in-icon--{{ actionColumn.type }} svg svg-{{ icon }} table-action{% if actionColumn.classAttribute %} {{ actionColumn.classAttribute }}{% endif %}{% if actionColumn.ajaxConfirm %} js-ajax-confirm{% endif %}"
+                {% if actionColumn.ajaxConfirm %}
+                    data-ajax-confirm-on-open="true"
+                {% endif %}
+                href="{{ actionColumn.targetUrl(row) }}"
+                title = "{{ actionColumn.title }}"
+                {% if actionColumn.confirmMessage is not empty -%}
+                    data-confirm-window
+                    data-confirm-message="{{ actionColumn.confirmMessage }}"
+                    data-confirm-contiue-url="{{ actionColumn.targetUrl(row) }}"
+                {%- endif %}
+        ></a>
+    {% endif %}
+{% endblock %}

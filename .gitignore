@@ -17,3 +17,14 @@
 /docker-sync.yml
 /migration-data/*
 !/migration-data/.gitkeep
+/.env.local
+/.env.local.php
+/.env.*.local
+/assets/js/translations.json
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/web/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

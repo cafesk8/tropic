@@ -15,10 +15,10 @@ namespace: ~
 configMapGenerator:
     -   name: domains-urls
         files:
-            - ../../../app/config/domains_urls.yml
+            - ../../../config/domains_urls.yml
     -   name: parameters
         files:
-            - ../../../app/config/parameters.yml
+            - ../../../config/parameters.yml
     -   name: nginx-configuration
         files:
             - ../../../docker/nginx/s3/nginx.conf

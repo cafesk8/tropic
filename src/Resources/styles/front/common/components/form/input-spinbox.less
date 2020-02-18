@@ -1,0 +1,80 @@
+@form-input-spinbox-padding-vertical: 3px;
+@form-input-spinbox-buttons-width: 29px;
+@form-input-spinbox-height: 48px;
+@form-input-spinbox-input-width: 102px;
+@form-inpit-spinbox-button-icon-size: @font-size;
+
+.form-input-spinbox {
+    display: inline-block;
+    width: @form-input-spinbox-input-width;
+    vertical-align: middle;
+    position: relative;
+    padding: 0 @form-input-spinbox-buttons-width;
+    
+    border: 1px solid @color-border-dark;
+    border-radius: @radius-small;
+    box-shadow: @box-shadow-outer;
+
+    .box-detail-sets & {
+        display: none;
+    }
+
+    &__label {
+        position: absolute;
+        top: 6px;
+        left: 8px;
+
+        color: @color-brown-light;
+        font-size: @font-size-small;
+        text-transform: uppercase;
+        z-index: 1;
+    }
+
+    &__input {
+        height: @form-input-spinbox-height;
+        line-height: @form-input-spinbox-height;
+        padding: 0;
+        text-align: center;
+
+        color: @color-base;
+        font-size: 20px;
+        font-weight: 700;
+
+        &:focus {
+            border: 0;
+        }
+    }
+
+    &__btn {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        right: 0;
+        width: @form-input-spinbox-buttons-width;
+        height: @form-input-spinbox-height - 0.5px;
+        text-align: center;
+
+        background-color: @color-f;
+        border-radius: 0 @radius-small @radius-small 0;
+        color: @color-gray;
+        font-size: @form-inpit-spinbox-button-icon-size;
+        cursor: pointer;
+
+        &--minus {
+            left: 0;
+            right: auto;
+
+            border-radius: @radius-small 0 0 @radius-small;
+        }
+
+        .svg {
+            height: @form-inpit-spinbox-button-icon-size;
+        }
+
+        &:hover {
+            background: darken(@color-light, 5%);
+        }
+    }
+}

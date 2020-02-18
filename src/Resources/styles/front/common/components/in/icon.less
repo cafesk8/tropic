@@ -1,0 +1,28 @@
+.in-icon {
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    right: 10px;
+    line-height: @input-height;
+    vertical-align: middle;
+
+    text-decoration: none;
+}
+
+// Modifications - type
+.in-icon {
+    &--info {
+        color: @color-add;
+        font-size: 16px;
+        cursor: help;
+    }
+
+    &--detail {
+        position: relative;
+        line-height: 15px;
+        margin-bottom: -3px;
+        margin-left: 17px;
+
+        color: @color-inactive;
+    }
+}

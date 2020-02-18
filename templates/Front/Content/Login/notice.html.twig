@@ -1,0 +1,12 @@
+<div class="box-order__login--notice">
+    {{ 'Váš e-mail je na e-shopu registrován.'|trans }}
+    <a
+        href="{{ url('front_login') }}"
+        class="underline-small js-login-in-order-window-opener"
+        data-url="{{ url('front_login_window_form') }}"
+        data-email="{{ email }}"
+    >
+        {{ 'Přihlaste se'|trans }}
+    </a>
+    {{ 'a údaje vám předvyplníme.'|trans }}
+</div>

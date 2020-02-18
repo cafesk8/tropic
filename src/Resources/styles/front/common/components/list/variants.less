@@ -1,0 +1,158 @@
+@list-variants-item-size: 30px;
+@list-variants-item-gap: 10px;
+@list-variants-item-padding: 5px;
+@list-variants-item-gap-with-image: 10px;
+@list-variants-item-bg: @color-f;
+@list-variants-item-bg-hover: @color-f;
+@list-variants-item-bg-active: @color-add;
+@list-variants-item-border-color: @color-border-dark;
+@list-variants-item-border-color-hover: @color-add;
+@list-variants-item-disabled-font-color: #cecdcd;
+
+@list-variants-item-with-image-width: 84px;
+@list-variants-item-with-image-height: 114px;
+@list-variants-item-with-image-picture-size: 60px;
+
+.list-variants {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-right: -@list-variants-item-gap;
+    margin-bottom: -@list-variants-item-gap;
+
+    &--filter {
+        margin-right: -@list-variants-item-gap;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: @list-variants-item-size;
+        height: @list-variants-item-size;
+        line-height: @list-variants-item-size - 4px;
+        margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
+        padding: 0 @list-variants-item-padding;
+
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        color: @color-base;
+        background-color: @list-variants-item-bg;
+        border: 2px solid @list-variants-item-border-color;
+        border-radius: @radius-small;
+
+        &:hover {
+            background-color: @list-variants-item-bg-hover;
+            border: 2px solid @list-variants-item-border-color-hover;
+        }
+
+        &.active {
+            color: @color-base;
+            background-color: @list-variants-item-bg-active;
+            box-shadow: @box-shadow;
+            border: 0.9px solid rgba(0,0,0,0.1);
+        }
+
+        &.disabled {
+            color: @list-variants-item-disabled-font-color;
+            background-color: @color-box;
+            border: 2px solid @color-border;
+        }
+
+        &__label {
+            display: block;
+            padding: 0 5px;
+            margin: 0 -@list-variants-item-padding;
+            width: calc(~"100% + 2*@{list-variants-item-padding}");
+            height: @list-variants-item-size - 4px;
+
+            cursor: pointer;
+        }
+
+        &__name {
+            display: block;
+            word-wrap: break-word;
+
+            font-size: @font-size-small;
+        }
+
+        &__with-image {
+            padding: 10px 10px 8px 10px;
+            width: @list-variants-item-with-image-width;
+            margin: 0 @list-variants-item-gap-with-image @list-variants-item-gap-with-image 0;
+            text-align: center;
+
+            cursor: pointer;
+            background-color: transparent;
+            border: 1px solid @color-border;
+            border-radius: @radius-small;
+
+            img {
+                max-height: @list-variants-item-with-image-picture-size;
+                max-width: @list-variants-item-with-image-picture-size;
+                margin-bottom: 9px;
+            }
+
+            &.active {
+                padding: 9px 9px 7px 9px;
+
+                background-color: @color-f;
+                border: 2px solid @list-variants-item-border-color-hover;
+            }
+
+            &__name {
+                color: @color-base;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+
+    &__item-color {
+        width: @list-variants-item-size;
+        height: @list-variants-item-size;
+        line-height: @list-variants-item-size - 4px;
+        margin: 0 @list-variants-item-gap @list-variants-item-gap 0;
+        text-align: center;
+
+        border-radius: @radius;
+
+        .svg {
+            display: none;
+            color: @color-f;
+            line-height: @list-variants-item-size;
+
+            font-size: 20px;
+            text-shadow: 0 0 2px @color-0;
+        }
+
+        &.active {
+            .svg {
+                display: block;
+            }
+        }
+
+        &__label {
+            display: block;
+            width: 100%;
+            height: @list-variants-item-size;
+
+            cursor: pointer;
+        }
+    }
+}
+
+input[type=checkbox]:checked + .list-variants__item {
+    color: @color-base;
+    background-color: @list-variants-item-bg-active;
+    box-shadow: @box-shadow;
+    border: 0.9px solid rgba(0,0,0,0.1);
+}
+
+input[type=checkbox]:checked + .list-variants__item-color {
+    .svg {
+        display: block;
+    }
+}

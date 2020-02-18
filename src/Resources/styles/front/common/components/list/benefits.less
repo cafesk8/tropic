@@ -1,0 +1,112 @@
+@list-benefits-count: 3;
+@list-benefits-gap: 27px 0 50px 0;
+@list-benefits-icon-size: 40px;
+@list-benefits-icon-size-small: 34px;
+@list-benefits-width-mobile: 280px;
+
+@list-benefits-in-panel-gap: @box-preview-gap;
+@list-benefits-in-panel-width: @box-preview-width;
+
+.list-benefits {
+    .reset-ul();
+    display: flex;
+    flex-direction: column;
+    width: @list-benefits-width-mobile;
+    margin: @list-benefits-gap;
+
+    @media @query-lg {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    &--small {
+        flex-direction: column;
+
+        @media @query-vl {
+            flex-direction: row;
+        }
+    }
+
+    &--in-panel {
+        flex-direction: column;
+        width: @list-benefits-width-mobile;
+        margin-left: auto;
+        margin-right: auto;
+
+        @media @query-xl {
+            width: 100%;
+            padding-left: @list-benefits-in-panel-gap;
+        }
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
+
+        @media @query-vl {
+            width: calc(~"@{calc-base}/@{list-benefits-count}");
+            margin-bottom: 0;
+
+            &:nth-child(1) {
+                padding-left: 16px;
+            }
+
+            &:nth-child(2) {
+                padding-left: 50px;
+
+                .list-benefits--small & {
+                    padding-left: 45px;
+                }
+            }
+
+            &:nth-child(3) {
+                padding-left: 78px;
+
+                .list-benefits--small & {
+                    padding-left: 55px;
+                }
+            }
+
+            .list-benefits--in-panel & {
+                width: 100%;
+                padding-left: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        &__icon {
+            width: @list-benefits-icon-size;
+
+            .list-benefits--small & {
+                width: @list-benefits-icon-size-small;
+            }
+
+            .svg {
+                color: @color-brown;
+                font-size: @list-benefits-icon-size;
+
+                .list-benefits--small & {
+                    font-size: @list-benefits-icon-size-small;
+                }
+            }
+        }
+
+        &__text {
+            width: calc(~"@{calc-base} - @{list-benefits-icon-size}");
+            padding-left: 12px;
+
+            color: @color-brown;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+
+            .list-benefits--small & {
+                width: calc(~"@{calc-base} - @{list-benefits-icon-size-small}");
+                font-size: @font-size-small
+            }
+        }
+    }
+}

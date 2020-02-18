@@ -1,0 +1,105 @@
+@box-cookies-height-mobile: 180px;
+@box-cookies-height: 245px;
+@box-cookies-padding: @web-padding;
+@box-cookies-width: 375px;
+@box-cookies-gap: 40px;
+
+@box-cookies-background: @color-box;
+@box-cookies-close-color: #979797;
+@box-cookies-close-size: 13px;
+@box-cookies-buttons-height: 44px;
+
+@box-cookies-button-agree-width: 46%;
+
+.box-cookies {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: @box-cookies-gap/2;
+    width: 100%;
+    height: @box-cookies-height-mobile;
+    will-change: transform;
+
+    background: @box-cookies-background;
+    transition: @transition transform;
+    border: 3px solid @color-black;
+    border-radius: @radius;
+
+    @media @query-md {
+        height: @box-cookies-height;
+        width: @box-cookies-width;
+        padding: @box-cookies-gap;
+        bottom: @box-cookies-gap;
+        left: @box-cookies-gap;
+        right: 0;
+    }
+
+    &__title {
+        margin-bottom: 15px;
+
+        color: @color-base;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    &__text {
+        margin-bottom: 30px;
+
+        color: @color-base;
+        font-size: @font-size;
+        line-height: 18px;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        &__agree {
+            padding: 0 10px;
+            width: @box-cookies-button-agree-width;
+            line-height: @box-cookies-buttons-height;
+            height: @box-cookies-buttons-height;
+
+            font-size: 14px;
+        }
+
+        &__link {
+            line-height: @box-cookies-buttons-height;
+            text-decoration: none;
+
+            color: @color-base;
+            font-size: @font-size;
+            font-weight: 700;
+            text-transform: uppercase;
+
+            &__wrap {
+                width: calc(~"100% - @{box-cookies-button-agree-width}");
+                text-align: center;
+            }
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+
+        cursor: pointer;
+        color: @box-cookies-close-color;
+        font-size: @box-cookies-close-size;
+
+        &:hover {
+            color: @color-base;
+        }
+    }
+
+    &--closing {
+        transform: scaleY(0);
+    }
+}

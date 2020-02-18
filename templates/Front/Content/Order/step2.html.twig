@@ -1,0 +1,37 @@
+{% extends 'Front/Content/Order/step.html.twig' %}
+
+{% block content %}
+    <div class="web__line">
+        <div class="web__container web__container--transparent">
+            {% include 'Front/Inline/OrderProgress/index.html.twig' with {step: '2'} only %}
+        </div>
+    </div>
+
+    <div class="web__line">
+        <div class="web__container web__container--border-radius">
+            <div class="box-order">
+                <div class="box-order__message">
+                    {{ form_errors(form) }}
+                    {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
+                </div>
+                <div class="box-order__wrap">
+                    {% if isGermanyDomain() is same as (true) %}
+                        {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
+                    {% endif %}
+                    <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
+                        {% include 'Front/Content/Order/transportAndPaymentBox.html.twig' %}
+                    </div>
+
+                    <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
+                        {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
+                            transportId: transport is empty ? null : transport.id,
+                            paymentId: payment is empty ? null : payment.id,
+                            orderStep: '2',
+                            formSubmit: form.save
+                        })) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

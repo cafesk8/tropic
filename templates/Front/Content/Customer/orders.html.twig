@@ -1,0 +1,64 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block meta_robots -%}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block title %}
+    {{ 'My orders'|trans }}
+{% endblock %}
+
+{% block main_content %}
+<div class="web__line">
+    <div class="web__container">
+        <h1 class="in-title in-title--big in-title--center">{{ 'My orders'|trans }}</h1>
+        {% if orders|length == 0 %}
+            <div class="in-message in-message--info">
+                {{ 'No order so far.'|trans }}
+            </div>
+        {% else %}
+            <div class="in-scroll box-orders margin-bottom-20">
+                <div class="in-scroll__in">
+                    <table class="table-main box-orders__table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'Order number'|trans }}</th>
+                                <th class="box-orders__table__cell box-orders__table__cell--small">{{ 'Creation date'|trans }}</th>
+                                <th class="box-orders__table__cell box-orders__table__cell--medium">{{ 'Current status'|trans }}</th>
+                                <th class="text-right">{{ 'Number of items'|trans }}</th>
+                                <th>{{ 'Shipping'|trans }}</th>
+                                <th>{{ 'Payment'|trans }}</th>
+                                <th class="text-right">{{ 'Total price including VAT'|trans }}</th>
+                                <th class="text-center">{{ 'Detail'|trans }}</th>
+                            </tr>
+                        </thead>
+                        {% for order in orders %}
+                            <tr>
+                                <td><a href="{{ url('front_customer_order_detail_registered', { orderNumber: order.number }) }}"><span class="underline-small">{{ order.number }}</span></a></td>
+                                <td>{{ order.createdAt|formatDate }}</td>
+                                <td>
+                                    <span class="margin-right-10">{{ order.status.name }}</span>
+                                    {% if order.payment.goPay is same as (true) and order.gopayPaid == false %}
+                                        <a class="btn btn--success btn--mini" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
+                                            {{ 'Zaplatit'|trans }}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td class="text-right">{{ order.productItemsCount }}</td>
+                                <td>{{ order.transportName }}</td>
+                                <td>{{ order.paymentName }}</td>
+                                <td class="text-right">{{ order.totalPriceWithVat|priceWithCurrency(order.currency) }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url('front_customer_order_detail_registered', { orderNumber: order.number }) }}" class="in-icon in-icon--detail">
+                                        <i class="svg svg-search"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

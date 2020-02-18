@@ -1,0 +1,632 @@
+imports:
+    - { resource: services/*.yml }
+    - { resource: forms.yml }
+    - { resource: paths.yml }
+    - { resource: parameters_common.yml }
+    - { resource: parameters.yml }
+    - { resource: directories.yml }
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    joschi127_doctrine_entity_override.event_subscriber.load_orm_metadata:
+        class: App\Component\EntityExtension\LoadORMMetadataSubscriber
+        arguments:
+            - "@service_container"
+            - "%shopsys.entity_extension.map%"
+        tags:
+            - { name: doctrine.event_subscriber, priority: -10 }
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        public: true
+        tags: ['controller.service_arguments']
+
+    App\:
+        resource: '../src/**/*{BreadcrumbGenerator,Calculation,Facade,Factory,Generator,Handler,InlineEdit,Listener,Loader,Mapper,Parser,Provider,Recalculator,RecalculationScheduler,Registry,Repository,Resolver,Service,Scheduler,Subscriber,Transformer,Validator,OnCurrentDomain}.php'
+        exclude: '../src/{Command,Controller,DependencyInjection,Form,Migrations,Resources,Twig}'
+
+    App\Command\Migration\:
+        resource: '../src/Command/Migration/'
+        arguments:
+            - '@doctrine.dbal.migration_connection'
+
+    League\Flysystem\MountManager:
+        arguments:
+            -
+                local: '@local_filesystem'
+                main: '@main_filesystem'
+
+    Shopsys\FrameworkBundle\Controller\Admin\ArticleController:
+        class: App\Controller\Admin\ArticleController
+
+    Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController:
+        class: App\Controller\Admin\ProductPickerController
+
+    Shopsys\FrameworkBundle\Controller\Admin\ParameterController:
+        class: App\Controller\Admin\ParameterController
+
+    Shopsys\FrameworkBundle\Controller\Admin\ProductController:
+        class: App\Controller\Admin\ProductController
+
+    Shopsys\FrameworkBundle\Controller\Admin\PromoCodeController:
+        class: App\Controller\Admin\PromoCodeController
+        arguments:
+            $useInlineEditation: false
+
+    Faker\Generator:
+        factory: [Faker\Factory, create, ]
+        arguments: ['cs_CZ']
+        calls:
+            - [seed, ['%faker.seed%']]
+
+    App\Component\Balikobot\BalikobotClient:
+        arguments:
+            - '%balikobot%'
+
+    App\Component\Mall\MallClient:
+        arguments:
+            - '%mall_apiKey%'
+            - '%mall_isProductionMode%'
+
+    App\Component\Cron\CronModuleExecutor:
+        arguments:
+            $secondsTimeout: 240
+
+    Shopsys\FrameworkBundle\Component\Cron\CronModuleExecutor: '@App\Component\Cron\CronModuleExecutor'
+
+    App\Component\Redis\RedisFacade:
+        arguments:
+            $allClients: !tagged snc_redis.client
+            $persistentClients:
+                - '@snc_redis.global'
+                - '@snc_redis.session'
+
+    App\Component\FileUpload\FileUpload:
+        arguments: ['%kernel.cache_dir%', '%shopsys.uploaded_file_dir%', '%shopsys.image_dir%']
+
+    Shopsys\FrameworkBundle\Component\FileUpload\FileUpload: '@App\Component\FileUpload\FileUpload'
+
+    App\Component\Image\MigrateImageDoctrineListener:
+        arguments:
+            - '%migrate_product_images_dir%'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: prePersist }
+
+    App\Component\Image\ImageFacade:
+        arguments: ['%shopsys.image_url_prefix%']
+
+    Shopsys\FrameworkBundle\Component\Image\ImageFacade: '@App\Component\Image\ImageFacade'
+
+    Shopsys\FrameworkBundle\Component\Image\ImageFactoryInterface:
+        alias: App\Component\Image\ImageFactory
+
+    App\Component\Rest\RestClient:
+        class: App\Component\Rest\RestClient
+        factory: 'App\Component\Rest\RestClientFactory:create'
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_cs_username%'
+            - '%transfer_cs_password%'
+
+    App\Component\Rest\MultidomainRestClient:
+        factory: 'App\Component\Rest\MultidomainRestClientFactory:create'
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_cs_username%'
+            - '%transfer_cs_password%'
+            - '%transfer_sk_username%'
+            - '%transfer_sk_password%'
+            - '%transfer_de_username%'
+            - '%transfer_de_password%'
+
+    App\Component\Transfer\Logger\TransferLoggerFactory:
+        arguments:
+            - '@monolog.logger.cron'
+
+    App\Component\Transfer\TransferConfig:
+        arguments:
+            - '%transfer_host%'
+            - '%transfer_cs_username%'
+            - '%transfer_cs_password%'
+            - '%transfer_enabled%'
+
+    App\Component\Transfer\TransferCronModuleDependency: ~
+
+    Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchProductFilterTranslation: '@App\Form\Admin\AdvancedSearchProductFilterTranslation'
+
+    App\Form\Front\Order\DomainAwareOrderFlowFactory: ~
+
+    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
+        class: App\Model\Cart\CartWatcher\CartWatcherFacade
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderFlowFactoryInterface: '@App\Form\Front\Order\DomainAwareOrderFlowFactory'
+
+    Shopsys\FrameworkBundle\Model\Article\ArticleDataFactoryInterface: '@App\Model\Article\ArticleDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Article\ArticleFacade: '@App\Model\Article\ArticleFacade'
+
+    Shopsys\FrameworkBundle\Model\Article\ArticleRepository: '@App\Model\Article\ArticleRepository'
+
+    App\Model\Category\CurrentCategoryResolver: ~
+
+    League\Flysystem\FilesystemInterface: '@main_filesystem'
+
+    Shopsys\FrameworkBundle\Model\Administrator\AdministratorDataFactoryInterface: '@App\Model\Administrator\AdministratorDataFactory'
+
+    shopsys.shop.product.distinguishing_parameters.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.distinguishing_parameters'] }
+
+    shopsys.shop.component.friendly_url.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.friendly_url'] }
+
+    App\Model\Product\CachedProductDistinguishingParameterValueFacade:
+        arguments:
+            - '@shopsys.shop.product.distinguishing_parameters.cache_provider'
+
+    App\Component\Router\FriendlyUrl\FriendlyUrlCacheFacade:
+        arguments:
+            - '@shopsys.shop.component.friendly_url.cache_provider'
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryDataFactoryInterface: '@App\Model\Category\CategoryDataFactory'
+
+
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface: '@App\Model\Customer\User\CustomerUserDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade: '@App\Model\Customer\User\CustomerUserFacade'
+
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository: '@App\Model\Customer\User\CustomerUserRepository'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderDataFactoryInterface: '@App\Model\Order\OrderDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface: '@App\Model\Order\Item\OrderItemDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface: '@App\Model\Order\Item\OrderItemFactory'
+
+    App\Model\Order\OrderDataMapper: ~
+
+    Shopsys\FrameworkBundle\Model\Order\OrderDataMapper: '@App\Model\Order\OrderDataMapper'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory: '@App\Model\Order\PromoCode\PromoCodeDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade: '@App\Model\Order\PromoCode\CurrentPromoCodeFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade: '@App\Model\Order\PromoCode\PromoCodeFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeRepository: '@App\Model\Order\PromoCode\PromoCodeRepository'
+
+    Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory: '@App\Model\Order\PromoCode\Grid\PromoCodeGridFactory'
+
+    App\Model\Order\PromoCode\PromoCodeLimitDataFactory: ~
+
+    App\Model\Order\PromoCode\PromoCodeLimitFacade: ~
+
+    App\Model\Order\PromoCode\PromoCodeLimitRepository: ~
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportDataFactoryInterface: '@App\Model\Transport\TransportDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Payment\PaymentDataFactoryInterface: '@App\Model\Payment\PaymentDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Collection\ProductUrlsBatchLoader: '@App\Model\Product\Collection\ProductUrlsBatchLoader'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface: '@App\Model\Product\ProductDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface: '@App\Model\Product\ProductOnCurrentDomainElasticFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandDataFactoryInterface: '@App\Model\Product\Brand\BrandDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade: '@App\Model\Product\Brand\BrandFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Brand\BrandRepository: '@App\Model\Product\Brand\BrandRepository'
+
+    App\DataFixtures\Performance\CategoryDataFixture:
+        arguments:
+            - "%shopsys.performance_data.category.counts_by_level%"
+
+    App\DataFixtures\Performance\OrderDataFixture:
+        arguments:
+            - "%shopsys.performance_data.order.total_count%"
+            - "%shopsys.performance_data.order.item_count_per_order%"
+
+    App\Component\FileSystem\FileSystemFactoryDecorator:
+        decorates: Shopsys\FrameworkBundle\Component\Filesystem\MainFilesystemFactory
+        arguments:
+            $inner: '@App\Component\FileSystem\FilesystemFactoryDecorator.inner'
+            $s3ApiHost: '%env(S3_API_HOST)%'
+            $s3ApiUsername: '%env(S3_API_USERNAME)%'
+            $s3ApiPassword: '%env(S3_API_PASSWORD)%'
+            $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
+
+    App\DataFixtures\Performance\ProductDataFixture:
+        arguments:
+            - "%shopsys.performance_data.product.total_count%"
+
+    App\DataFixtures\Performance\UserDataFixture:
+        arguments:
+            - "%shopsys.performance_data.user.count_per_domain%"
+
+    App\DataFixtures\Demo\ImageDataFixture:
+        arguments:
+            - '%shopsys.data_fixtures_images.resources_dir%'
+            - '%shopsys.image_dir%'
+            - '%shopsys.domain_images_dir%'
+        tags: ['doctrine.fixture.orm']
+
+    App\Model\AdvancedSearch\Filter\ProductMainVariantFilter: ~
+
+    App\Model\AdvancedSearch\Filter\ProductVariantTypeNoneFilter: ~
+
+    App\Model\AdvancedSearch\Filter\ProductParameterFilter: ~
+
+    App\Model\AdvancedSearch\ProductAdvancedSearchConfig: ~
+
+    Shopsys\FrameworkBundle\Model\AdvancedSearch\ProductAdvancedSearchConfig: '@App\Model\AdvancedSearch\ProductAdvancedSearchConfig'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderFacade: '@App\Model\Order\OrderFacade'
+
+    Shopsys\FrameworkBundle\Model\Order\OrderRepository: '@App\Model\Order\OrderRepository'
+
+    Shopsys\FrameworkBundle\Model\Payment\PaymentFacade: '@App\Model\Payment\PaymentFacade'
+
+    Shopsys\FrameworkBundle\Model\Payment\PaymentPriceCalculation: '@App\Model\Payment\PaymentPriceCalculation'
+
+    Shopsys\FrameworkBundle\Model\Payment\PaymentRepository: '@App\Model\Payment\PaymentRepository'
+
+    App\Model\GoPay\GoPayClientFactory:
+        arguments:
+            - '%gopay.config%'
+
+    App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade:
+        public: true
+
+    Shopsys\FrameworkBundle\Model\Product\ProductFacade: '@App\Model\Product\ProductFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductRepository: '@App\Model\Product\ProductRepository'
+
+    App\Model\Product\LastVisitedProducts\ProductDetailVisitListener:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\Model\PayPal\PayPalClient:
+        arguments:
+            - '%payPalClientId%'
+            - '%payPalClientSecret%'
+            - '%payPalMode%'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade:
+        class: App\Model\Product\ProductCachedAttributesFacade
+
+    Shopsys\FrameworkBundle\Model\Product\ProductFactory: '@App\Model\Product\ProductFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade: '@App\Model\Product\ProductVariantFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade: '@App\Model\Product\Parameter\ParameterFacade'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportFacade: '@App\Model\Transport\TransportFacade'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportRepository: '@App\Model\Transport\TransportRepository'
+
+    Shopsys\FrameworkBundle\Component\Cron\CronModuleFacade: '@App\Component\Cron\CronModuleFacade'
+
+    Shopsys\FrameworkBundle\Model\Country\CountryFacade: '@App\Model\Country\CountryFacade'
+
+    Shopsys\FrameworkBundle\Model\Country\CountryRepository: '@App\Model\Country\CountryRepository'
+
+    Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation: '@App\Model\Transport\TransportVisibilityCalculation'
+
+    Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade: '@App\Model\TransportAndPayment\FreeTransportAndPaymentFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Flag\FlagFacade: '@App\Model\Product\Flag\FlagFacade'
+
+    Shopsys\FrameworkBundle\Component\Grid\Ordering\GridOrderingFacade: '@App\Model\Grid\GridOrderingFacade'
+
+    App\Model\Blog\Article\BlogArticleDetailFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
+    App\Model\Blog\Category\BlogCategoryDetailFriendlyUrlDataProvider:
+        tags:
+            - {name: shopsys.friendly_url_provider}
+
+    App\Model\Blog\BlogVisibilityRecalculationListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    App\Model\Product\MassEdit\MassEditActionProvider: ~
+
+    App\Model\Product\MassEdit\Action\FlagsMassAction: ~
+
+    App\Model\Product\MassEdit\Action\HiddenMassAction: ~
+
+    App\Model\Product\MassEdit\Action\CategoryMassAction: ~
+
+    App\Model\Product\MassEdit\Action\ProductParameterMassAction: ~
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryFacade: '@App\Model\Category\CategoryFacade'
+
+    Shopsys\FrameworkBundle\Controller\Admin\CustomerController:
+        class: App\Controller\Admin\CustomerController
+        tags: ['controller.service_arguments']
+
+    Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface: '@App\Model\Customer\User\CustomerUserUpdateDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactory: '@App\Model\Pricing\Group\PricingGroupDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade: '@App\Model\Pricing\Group\PricingGroupFacade'
+
+    Shopsys\FrameworkBundle\Controller\Admin\CategoryController:
+        class: App\Controller\Admin\CategoryController
+        tags: ['controller.service_arguments']
+
+    Shopsys\FrameworkBundle\Component\String\HashGenerator: '@App\Component\String\HashGenerator'
+
+    Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository: '@App\Model\Product\Elasticsearch\ProductExportRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation: '@App\Model\Product\Pricing\ProductPriceCalculation'
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@App\Model\Order\Preview\OrderPreviewFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation: '@App\Model\Order\Preview\OrderPreviewCalculation'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation: '@App\Model\Product\Pricing\QuantifiedProductDiscountCalculation'
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryRepository: '@App\Model\Category\CategoryRepository'
+
+    shopsys.shop.twig.cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.twig'] }
+
+    Shopsys\FrameworkBundle\Model\Advert\AdvertDataFactory: '@App\Model\Advert\AdvertDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry: '@App\Model\Advert\AdvertPositionRegistry'
+
+    Shopsys\FrameworkBundle\Model\Advert\AdvertFacade: '@App\Model\Advert\AdvertFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade: '@App\Model\Product\Pricing\ProductManualInputPriceFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository: '@App\Model\Product\Pricing\ProductManualInputPriceRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Flag\FlagGridFactory: '@App\Model\Product\Flag\FlagGridFactory'
+
+    Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@App\Component\Router\FriendlyUrl\FriendlyUrlFacade'
+
+    Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository: '@App\Component\Router\FriendlyUrl\FriendlyUrlRepository'
+
+    Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@App\Model\Breadcrumb\SimpleBreadcrumbGenerator'
+
+    App\Model\Cart\CartFacade:
+        arguments:
+            - '@shopsys.shop.component.flash_message.sender.front'
+
+    App\Model\Customer\BushmanCustomPasswordEncoder:
+        arguments:
+            - '%securityBcryptCost%'
+
+    Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@App\Model\Cart\CartFacade'
+
+    Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface: '@App\Model\Cart\Item\CartItemFactory'
+
+    App\Model\Order\Preview\OrderPreview: ~
+
+    Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview: '@App\Model\Order\Preview\OrderPreview'
+
+    Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@App\Twig\NumberFormatterExtension'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig: '@App\Model\Product\Filter\ProductFilterConfig'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@App\Model\Product\Filter\ProductFilterConfigFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory: '@App\Model\Product\Search\FilterQueryFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade: '@App\Model\Product\Listing\ProductListOrderingModeForListFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade: '@App\Model\Product\Listing\ProductListOrderingModeForBrandFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade: '@App\Model\Product\Listing\ProductListOrderingModeForSearchFacade'
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryDataFactoryInterface:
+        alias: Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryDataFactory
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\Product\HeurekaProductDomainDataFactoryInterface:
+        alias: Shopsys\ProductFeed\HeurekaBundle\Model\Product\HeurekaProductDomainDataFactory
+
+    App\Model\Product\Parameter\AdminSelectedParameter: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository: '@App\Model\Product\Parameter\ParameterRepository'
+
+    Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension: '@App\Twig\DateTimeFormatterExtension'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory: '@App\Model\Product\Parameter\ParameterValueDataFactory'
+    App\Component\GoogleApi\GoogleClient:
+        arguments:
+            - '%googleApiKey%'
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator:
+        class: App\Model\Product\Pricing\ProductPriceRecalculator
+        tags:
+            # must be run before ProductVisibilityFacade
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 20 }
+
+    App\Component\NinjaMutex\Lock\NullLock: ~
+
+    NinjaMutex\Lock\LockInterface:
+        class: App\Component\NinjaMutex\Lock\NullLock
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface: '@App\Model\Product\Parameter\ParameterDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterGridFactory: '@App\Model\Product\Parameter\ParameterGridFactory'
+
+    Shopsys\FrameworkBundle\Controller\Admin\GridController:
+        class: App\Controller\Admin\GridController
+        tags: ['controller.service_arguments']
+
+    Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade: '@App\Model\Pricing\Currency\CurrencyFacade'
+
+    App\Component\Mall\MallImportOrderClient:
+        arguments:
+            $includeTestOrders: '%mall_includeTestOrders%'
+
+    App\Component\Setting\Setting: ~
+    Shopsys\FrameworkBundle\Component\Setting\Setting: '@App\Component\Setting\Setting'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository: '@App\Model\Pricing\Group\PricingGroupRepository'
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusDataFactoryInterface:
+        class: App\Model\Order\Status\OrderStatusDataFactory
+
+    Shopsys\FrameworkBundle\Model\Order\Status\Grid\OrderStatusGridFactory: '@App\Model\Order\Status\Grid\OrderStatusGridFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade:
+        class: App\Model\Order\Status\OrderStatusFacade
+
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository:
+        class: App\Model\Order\Status\OrderStatusRepository
+
+    App\Model\Gtm\GtmContainer:
+        arguments:
+            $containersConfigs: '%gtm.config%'
+
+    App\Model\Gtm\GtmListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+
+    App\Model\Gtm\GtmHelper: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer: '@App\Model\Product\Search\ProductFilterDataToQueryTransformer'
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'
+
+    Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactory: '@App\Model\Customer\DeliveryAddressDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactory: '@App\Model\Customer\BillingAddressDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Order\FrontOrderDataMapper: '@App\Model\Order\FrontOrderDataMapper'
+
+    Shopsys\FrameworkBundle\Model\Country\CountryDataFactory: '@App\Model\Country\CountryDataFactory'
+
+    SimPod\SmsManager\ApiSmsManager: ~
+
+    App\Component\SmsManager\SmsManagerFactory:
+        arguments:
+            $apiKey: '%smsManagerApiKey%'
+
+    App\Model\Order\MassAction\CsvExportMassAction: ~
+
+    Shopsys\FrameworkBundle\Controller\Admin\OrderController:
+        class: App\Controller\Admin\OrderController
+        tags: ['controller.service_arguments']
+
+    App\Model\AdvancedSearch\OrderAdvancedSearchConfig: ~
+
+    Shopsys\FrameworkBundle\Model\AdvancedSearch\OrderAdvancedSearchConfig: '@App\Model\AdvancedSearch\OrderAdvancedSearchConfig'
+
+    App\Model\AdvancedSearchOrder\Filter\OrderTransportFilter: ~
+
+    Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@App\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
+
+    App\Component\Log\SlowLogSubscriber:
+        arguments:
+            - '@monolog.logger.slow'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Shopsys\FrameworkBundle\Component\Log\SlowLogSubscriber: '@App\Component\Log\SlowLogSubscriber'
+
+    Shopsys\FrameworkBundle\Model\Security\LoginListener:
+        class: App\Model\Security\LoginListener
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+
+    Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade: '@App\Model\Order\Item\OrderItemFacade'
+
+    App\Model\Order\Mail\OrderMail: ~
+
+    Shopsys\FrameworkBundle\Model\Order\Mail\OrderMail: '@App\Model\Order\Mail\OrderMail'
+
+    Shopsys\FrameworkBundle\Controller\Admin\MailController:
+        class: App\Controller\Admin\MailController
+        tags: ['controller.service_arguments']
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory: '@App\Model\Feed\Heureka\HeurekaFeedItemFactory'
+
+    Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@App\Model\Feed\Google\GoogleFeedItemFactory'
+
+    App\Model\Feed\FeedHelper: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository: '@App\Model\Product\Flag\FlagRepository'
+
+    App\Model\AdvancedSearch\Filter\ProductFlagFilter: ~
+
+    Shopsys\FrameworkBundle\Model\AdvancedSearch\Filter\ProductFlagFilter: '@App\Model\AdvancedSearch\Filter\ProductFlagFilter'
+
+    Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory: '@App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory'
+
+    App\Model\AdminNavigation\SideMenuConfigurationListener:
+        class: App\Model\AdminNavigation\SideMenuConfigurationListener
+        tags:
+            - { name: kernel.event_listener, event: shopsys.admin_side_menu.configure_root, method: onRootConfigure }
+
+    App\Model\HeurekaCategory\HeurekaCategoryDownloader: ~
+
+    Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryDownloader:
+        class: App\Model\HeurekaCategory\HeurekaCategoryDownloader
+        arguments:
+            - '%shopsys.product_feed.heureka_bundle.heureka_category_feed_url%'
+
+    Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItemFactory: '@App\Model\Feed\Zbozi\FeedItem\ZboziFeedItemFactory'
+
+    shopsys.shop.maintenance_cache_provider:
+        class: Doctrine\Common\Cache\RedisCache
+        calls:
+            - { method: setRedis, arguments: ['@snc_redis.global'] }
+
+    App\Component\Maintenance\MaintenanceModeSubscriber:
+        arguments:
+            - '@shopsys.shop.maintenance_cache_provider'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@App\Model\Security\FrontLogoutHandler'
+
+    App\Component\Error\LogoutExceptionSubscriber:
+        arguments:
+            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
+
+    App\Controller\Front\ErrorController:
+        arguments:
+            $environment: '%kernel.environment%'
+
+    Shopsys\FrameworkBundle\Model\Payment\IndependentPaymentVisibilityCalculation: '@App\Model\Payment\IndependentPaymentVisibilityCalculation'
+
+    swiftmailer.transport.real:
+        class: Swift_SmtpTransport
+        arguments: ['%mailer_host%']
+
+    App\Model\Product\Search\ProductElasticsearchConverter: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchConverter: '@App\Model\Product\Search\ProductElasticsearchConverter'
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory: '@App\Model\Product\View\ListedProductViewFactory'
+
+    Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@App\Model\Product\View\ListedProductViewElasticFacade'
+
+    Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade: '@App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade'
+
+    App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade:
+        arguments:
+            - '@shopsys.shop.product.bestselling_product.cache_provider'
+
+    Shopsys\FrameworkBundle\Twig\ImageExtension: '@App\Twig\ImageExtension'

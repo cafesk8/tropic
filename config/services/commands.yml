@@ -1,0 +1,28 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Command\:
+        resource: '../../src/Command'
+
+    App\Command\MigrateCustomersPasswordsCommand:
+        class: App\Command\Migration\MigrateCustomersPasswordsCommand
+        arguments:
+            - '%kernel.project_dir%'
+
+    App\Command\MaintenanceModeCommand:
+        arguments:
+            - '@shopsys.shop.maintenance_cache_provider'
+
+    App\Command\ExtendedClassesAnnotationsCommand:
+        arguments:
+            - '%shopsys.root_dir%'
+
+    Shopsys\FrameworkBundle\Command\ExtendedClassesAnnotationsCommand: '@App\Command\ExtendedClassesAnnotationsCommand'
+
+    Shopsys\FrameworkBundle\Component\ClassExtension\ClassExtensionRegistry:
+        arguments:
+            - '%shopsys.entity_extension.map%'
+            - '%shopsys.framework.root_dir%'

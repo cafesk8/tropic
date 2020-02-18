@@ -1,0 +1,6 @@
+{% extends '@!ShopsysFramework/Admin/Content/Flag/list.html.twig' %}
+
+{% block main_content %}
+    {{ render(controller('App\\Controller\\Admin\\FlagController:settingsAction')) }}
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,113 @@
+@box-filter-padding: 30px;
+@box-filter-title-bottom-gap: 22px;
+@box-filter-section-gap: 50px;
+@box-filter-width: @box-list-panel-width;
+@box-filter-gap: @box-list-panel-gap;
+@box-filter-selected-cross-size: 11px;
+
+.box-filter {
+    width: @box-filter-width;
+    margin-right: @box-filter-gap;
+    margin-bottom: @margin-gap;
+
+    background-color: @color-f;
+
+    @media @query-vl {
+        background-color: transparent;
+    }
+
+    &.active-mobile {
+        width: calc(~"100% - @{web-padding-small} * 2");
+        margin-right: 0;
+
+        @media @query-vl {
+            width: 100%;
+        }
+    }
+
+    &__top {
+        margin-bottom: 16px;
+        padding: @box-filter-padding;
+
+        background-color: @color-box;
+        border-radius: @radius;
+    }
+
+    &__bottom {
+        border: 3px solid @color-border;
+        border-radius: @radius;
+    }
+
+    &__title {
+        display: block;
+        margin-bottom: @box-filter-title-bottom-gap;
+        line-height: 15px;
+
+        color: @color-base;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+
+        &--small-gap {
+            margin-bottom: 12px;
+        }
+    }
+
+    &__selected {
+        display: flex;
+        flex-direction: column;
+
+        &__item {
+            position: relative;
+            margin-bottom: 5px;
+            padding: 8px 27px 7px 12px;
+
+            font-size: 13px;
+            border-radius: @radius-small;
+            color: @color-base;
+            background-color: @color-f;
+
+            .svg {
+                position: absolute;
+                right: 10px;
+                top: calc(~"50% - @{box-filter-selected-cross-size}/2");
+
+                cursor: pointer;
+                font-size: @box-filter-selected-cross-size;
+                color: @color-gray;
+            }
+        }
+
+        &__remove {
+            margin-top: 10px;
+
+            &__link {
+                color: @color-gray-dark;
+                font-size: 14px;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+        }
+    }
+
+    &__choice {
+        padding: 26px @box-filter-padding 20px @box-filter-padding;
+        margin-bottom: -1px;
+
+        border-bottom: 1px solid @color-border;
+
+        &__title {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 10px 5px 0;
+
+            font-weight: bold;
+        }
+    }
+
+    &__action {
+        display: none;
+        text-align: center;
+    }
+}

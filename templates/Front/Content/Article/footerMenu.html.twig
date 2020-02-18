@@ -1,0 +1,33 @@
+<div class="list-menu list-menu--footer js-footer-link-content">
+    <ul class="list-menu__column dont-print">
+        {% for article in articles %}
+            <li class="list-menu__item">
+                <a class="list-menu__item__link underline underline--light" href="{{ url('front_article_detail', { id: article.id }) }}">{{ article.name }}</a>
+                {#<span class="in-badge js-not-implemented-yet">12</span>#}
+            </li>
+        {% endfor %}
+        {% if isPlacementAboutUs %}
+            <li class="list-menu__item">
+                <a href="{{ url(
+                    'front_blogcategory_detail', {
+                        'id': constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')
+                    }
+                ) }}"
+                   class="list-menu__item__link underline underline--light"
+                >
+                    {{ 'Blog'|trans }}
+                </a>
+            </li>
+            <li class="list-menu__item">
+                <a href="{{ url('front_store_index') }}" class="list-menu__item__link underline underline--light">
+                    {{ 'Prodejny'|trans }}
+                </a>
+            </li>
+            <li class="list-menu__item">
+                <a href="{{ url('front_about_us_info') }}" class="list-menu__item__link underline underline--light">
+                    {{ 'Kontakt'|trans }}
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

@@ -1,0 +1,15 @@
+{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+
+{% if productViews|length > 0 %}
+    <div class="web__line">
+        <div class="web__container">
+            <div class="box-last-visited">
+                <h2 class="box-last-visited__title">
+                    {{ 'Naposledy prohlížené produkty'|trans }}
+                </h2>
+
+                {{ productList.horizontalList(productViews,  "list-last-visited", 'h3', 'last-visited') }}
+            </div>
+        </div>
+    </div>
+{% endif %}

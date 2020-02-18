@@ -12,11 +12,9 @@
 
     <import file="${path.framework}/build.xml"/>
 
-    <target name="checks-ci" depends="db-check-mapping,test-db-demo" description="Checks ORM mapping and runs DB, smoke and acceptance tests.">
-        <phingcall target="tests-functional"/>
-        <phingcall target="tests-smoke"/>
+    <target name="tests-acceptance">
+        <echo level="info" message="Acceptance tests are turned off on this project"/>
     </target>
-    <target name="checks-ci-diff" depends="db-check-mapping,test-db-demo,tests-functional,tests-smoke" description="Checks ORM mapping and runs DB, smoke and acceptance tests."/>
 
     <target name="cron-default" description="Runs default background jobs. Should be executed periodically by system Cron every 5 minutes.">
         <exec executable="${path.php.executable}" passthru="true" checkreturn="true">
@@ -73,12 +71,6 @@
 
     <target name="build-deploy-part-2-db-dependent" depends="product-search-migrate-structure,redis-check,db-migrations-count-with-maintenance,db-migrations,domains-data-create,friendly-urls-generate,domains-urls-replace,grunt,error-pages-generate,warmup,clean-redis-old" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
 
-    <target name="npm" description="Installs modules required for Grunt.">
-        <exec executable="${path.npm.executable}" dir="${path.root}" logoutput="true" passthru="true" checkreturn="true">
-            <arg value="install"/>
-        </exec>
-    </target>
-
     <target name="clean-all" depends="clean, clean-redis" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
 
 <!-- phpstan target is overridden to setup higher memory limit. see https://github.com/shopsys/shopsys/issues/1614 -->
@@ -95,6 +87,16 @@
             <arg value="--level=${phpstan.level}"/>
             <arg value="--memory-limit=2G"/>
             <arg value="-vvv"/>
+        </exec>
+    </target>
+
+    <target name="tests-unit" depends="production-protection,clean" description="Runs unit tests.">
+        <exec executable="${path.phpunit.executable}" logoutput="true" passthru="true" checkreturn="true">
+            <arg value="--colors=always"/>
+            <arg value="--testsuite"/>
+            <arg value="Unit"/>
+            <arg value="--configuration"/>
+            <arg value="${path.root}/phpunit.xml"/>
         </exec>
     </target>
 </project>

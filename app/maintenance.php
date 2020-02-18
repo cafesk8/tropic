@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
     header('HTTP/1.1 503 Service Temporarily Unavailable');
     header('Status: 503 Service Temporarily Unavailable');
     header('Retry-after: 300');
@@ -6,4 +8,4 @@
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
     header('Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate');
 
-    echo file_get_contents(__DIR__ . '/../src/Shopsys/ShopBundle/Resources/views/maintenance.html.twig');
+    echo file_get_contents(__DIR__ . '/../templates/maintenance.html.twig');

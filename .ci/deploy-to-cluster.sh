@@ -18,8 +18,8 @@ docker image pull ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG} || (
 )
 
 # Create real parameters files to be modified and applied to the cluster as configmaps
-cp app/config/domains_urls.yml.dist app/config/domains_urls.yml
-cp app/config/parameters.yml.dist app/config/parameters.yml
+cp config/domains_urls.yml.dist config/domains_urls.yml
+cp config/parameters.yml.dist config/parameters.yml
 
 # Replace docker images for php-fpm of application
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].image ${APPLICATION_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
@@ -58,14 +58,14 @@ yq write --inplace kubernetes/endpoints/elasticsearch.yml subsets[0].ports[0].po
 yq write --inplace kubernetes/services/elasticsearch.yml spec.ports[0].port ${ELASTICSEARCH_HOST_PORT}
 
 # Add a mask for trusted proxies so that load balanced traffic is trusted and headers from outside of the network are not lost
-yq write --inplace app/config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
+yq write --inplace config/parameters.yml parameters.trusted_proxies[+] 10.0.0.0/8
 
 # Set namespace for project
 yq write --inplace kubernetes/namespace.yml metadata.name ${PROJECT_NAME}
 yq write --inplace kubernetes/kustomize/base/kustomization.yaml namespace ${PROJECT_NAME}
 
 # Set domain urls
-yq write --inplace app/config/domains_urls.yml domains_urls[0].url https://${DOMAIN_HOSTNAME_1}
+yq write --inplace config/domains_urls.yml domains_urls[0].url https://${DOMAIN_HOSTNAME_1}
 
 # set ENV variables into pods using php-fpm image
 yq write --inplace kubernetes/deployments/webserver-php-fpm.yml spec.template.spec.containers[0].env[0].value ${S3_API_HOST}
@@ -104,50 +104,50 @@ yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTem
 yq write --inplace kubernetes/cron/php-fpm-cron-executor-default.yml spec.jobTemplate.spec.template.spec.initContainers[1].env[5].value ${ELASTIC_SEARCH_INDEX_PREFIX}
 
 # Set database IPs
-yq write --inplace app/config/parameters.yml parameters.database_name ${POSTGRES_DATABASE_NAME}
-yq write --inplace app/config/parameters.yml parameters.database_password ${POSTGRES_DATABASE_PASSWORD}
-yq write --inplace app/config/parameters.yml parameters.database_port ${POSTGRES_DATABASE_PORT}
-yq write --inplace app/config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
-yq write --inplace app/config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
+yq write --inplace config/parameters.yml parameters.database_name ${POSTGRES_DATABASE_NAME}
+yq write --inplace config/parameters.yml parameters.database_password ${POSTGRES_DATABASE_PASSWORD}
+yq write --inplace config/parameters.yml parameters.database_port ${POSTGRES_DATABASE_PORT}
+yq write --inplace config/parameters.yml parameters.database_user ${POSTGRES_DATABASE_USER}
+yq write --inplace config/parameters.yml parameters.elasticsearch_host elasticsearch:${ELASTICSEARCH_HOST_PORT}
 
 if [ ${RUNNING_PRODUCTION} -eq "1" ]; then
-    yq write --inplace app/config/parameters.yml parameters.mailer_delivery_whitelist nullPlaceholder
-    yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address nullPlaceholder
-    sed -i 's/nullPlaceholder/null/' app/config/parameters.yml
+    yq write --inplace config/parameters.yml parameters.mailer_delivery_whitelist nullPlaceholder
+    yq write --inplace config/parameters.yml parameters.mailer_master_email_address nullPlaceholder
+    sed -i 's/nullPlaceholder/null/' config/parameters.yml
 else
-    yq write --inplace app/config/parameters.yml parameters.mailer_master_email_address "no-reply@shopsys.com"
+    yq write --inplace config/parameters.yml parameters.mailer_master_email_address "no-reply@shopsys.com"
 fi
 
 # set Balikobot credentials
-yq write --inplace app/config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
-yq write --inplace app/config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
+yq write --inplace config/parameters.yml parameters.balikobot.username ${BALIKOBOT_USERNAME}
+yq write --inplace config/parameters.yml parameters.balikobot.apiKey ${BALIKOBOT_API_KEY}
 
-#GTM
-yq write --inplace app/config/parameters.yml parameters[gtm.config].cs.enabled ${GTM_CS_ENABLED}
-yq write --inplace app/config/parameters.yml parameters[gtm.config].cs.container_id ${GTM_CS_CONTAINER_ID}
-yq write --inplace app/config/parameters.yml parameters[gtm.config].sk.enabled ${GTM_SK_ENABLED}
-yq write --inplace app/config/parameters.yml parameters[gtm.config].sk.container_id ${GTM_SK_CONTAINER_ID}
-yq write --inplace app/config/parameters.yml parameters[gtm.config].de.enabled ${GTM_DE_ENABLED}
-yq write --inplace app/config/parameters.yml parameters[gtm.config].de.container_id ${GTM_DE_CONTAINER_ID}
+#GT
+yq write --inplace config/parameters.yml parameters[gtm.config].cs.enabled ${GTM_CS_ENABLED}
+yq write --inplace config/parameters.yml parameters[gtm.config].cs.container_id ${GTM_CS_CONTAINER_ID}
+yq write --inplace config/parameters.yml parameters[gtm.config].sk.enabled ${GTM_SK_ENABLED}
+yq write --inplace config/parameters.yml parameters[gtm.config].sk.container_id ${GTM_SK_CONTAINER_ID}
+yq write --inplace config/parameters.yml parameters[gtm.config].de.enabled ${GTM_DE_ENABLED}
+yq write --inplace config/parameters.yml parameters[gtm.config].de.container_id ${GTM_DE_CONTAINER_ID}
 
 #GoPay CS
-yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.goid ${GOPAY_CS_GO_ID}
-yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.clientId ${GOPAY_CS_CLIENT_ID}
-yq write --inplace app/config/parameters.yml parameters[gopay.config].cs.clientSecret ${GOPAY_CS_CLIENT_SECRET}
-yq write --inplace app/config/parameters.yml parameters[gopay.config].isProductionMode ${GOPAY_IS_PRODUCTION_MODE}
+yq write --inplace config/parameters.yml parameters[gopay.config].cs.goid ${GOPAY_CS_GO_ID}
+yq write --inplace config/parameters.yml parameters[gopay.config].cs.clientId ${GOPAY_CS_CLIENT_ID}
+yq write --inplace config/parameters.yml parameters[gopay.config].cs.clientSecret ${GOPAY_CS_CLIENT_SECRET}
+yq write --inplace config/parameters.yml parameters[gopay.config].isProductionMode ${GOPAY_IS_PRODUCTION_MODE}
 
 #GoPay SK
-yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.goid ${GOPAY_SK_GO_ID}
-yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientId ${GOPAY_SK_CLIENT_ID}
-yq write --inplace app/config/parameters.yml parameters[gopay.config].sk.clientSecret ${GOPAY_SK_CLIENT_SECRET}
+yq write --inplace config/parameters.yml parameters[gopay.config].sk.goid ${GOPAY_SK_GO_ID}
+yq write --inplace config/parameters.yml parameters[gopay.config].sk.clientId ${GOPAY_SK_CLIENT_ID}
+yq write --inplace config/parameters.yml parameters[gopay.config].sk.clientSecret ${GOPAY_SK_CLIENT_SECRET}
 
 #PayPal
-yq write --inplace app/config/parameters.yml parameters.payPalClientId ${PAY_PAL_CLIENT_ID}
-yq write --inplace app/config/parameters.yml parameters.payPalClientSecret ${PAY_PAL_CLIENT_SECRET}
-yq write --inplace app/config/parameters.yml parameters.payPalMode ${PAY_PAL_MODE}
+yq write --inplace config/parameters.yml parameters.payPalClientId ${PAY_PAL_CLIENT_ID}
+yq write --inplace config/parameters.yml parameters.payPalClientSecret ${PAY_PAL_CLIENT_SECRET}
+yq write --inplace config/parameters.yml parameters.payPalMode ${PAY_PAL_MODE}
 
 #SMTP
-yq write --inplace app/config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
+yq write --inplace config/parameters.yml parameters.mailer_host ${SMTP_SERVER_URL}
 
 # Replace bucket name for S3 images URL
 sed -i "s/S3_BUCKET_NAME/${S3_API_BUCKET_NAME}/g" docker/nginx/s3/nginx.conf

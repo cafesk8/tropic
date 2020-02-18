@@ -1,0 +1,31 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block title %}
+    {{- article.seoTitle|default(article.name) -}}
+{% endblock %}
+
+{% block meta_description %}
+    {{- article.seoMetaDescription|default(getSeoMetaDescription()) -}}
+{% endblock %}
+
+{% block main_content %}
+
+    <div class="web__line">
+        <div class="web__container">
+            <h1 class="in-title in-title--big in-title--center">
+                {% if article.seoH1 is not null %}
+                    {{ article.seoH1 }}
+                {% else %}
+                    {{ article.name }}
+                {% endif %}
+            </h1>
+            <div class="in-article__container">
+                <div class="in-article__date">{{ article.createdAt|formatDate }}</div>
+
+                <div class="in-article__text in-user-text">
+                    {{ article.text|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

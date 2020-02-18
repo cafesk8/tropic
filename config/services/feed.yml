@@ -1,0 +1,12 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Model\Feed\HsSport\HsSportFeedInfo: ~
+
+    App\Model\Feed\HsSport\HsSportFeed:
+        tags:
+            - { name: shopsys.product_feed }
