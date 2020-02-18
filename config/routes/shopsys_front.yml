@@ -179,12 +179,6 @@ front_store_detail:
     path: /stores/detail/{storeId}
     defaults: { _controller: App\Controller\Front\StoreController:detailAction }
 
-front_bushmanshop_redirect:
-    path: /cz/{urlParam}
-    defaults: { _controller: App\Controller\Front\BushmanShopRedirectController:indexAction }
-    requirements:
-        urlParam: "[\\p{L}\\p{N}/\\s.-]+"
-
 front_order_register_customer:
     path: /order/register-customer/{orderId}
     defaults: { _controller: App\Controller\Front\OrderController:registerCustomerAction }

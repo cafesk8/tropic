@@ -442,11 +442,6 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Use ID 2 as default blog category.')
                     ->setParameter('id', 2);
             })
-            ->customizeByRouteName('front_bushmanshop_redirect', function (RouteConfig $config) {
-                $config->changeDefaultRequestDataSet('Redirect old shop url without friendly url record.')
-                    ->setParameter('urlParam', '123')
-                    ->setExpectedStatusCode(404);
-            })
             ->customizeByRouteName('front_login', function (RouteConfig $config) {
                 $config->addExtraRequestDataSet('Logged user on login page is redirected onto homepage')
                      ->setAuth(new BasicHttpAuth('no-reply@shopsys.com', 'user123'))

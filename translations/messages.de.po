@@ -115,9 +115,6 @@ msgstr "In den Warenkorb"
 msgid "Address"
 msgstr "Adresse"
 
-msgid "Administrativní areál BUSHMAN"
-msgstr "BUSHMAN Bürokomplex"
-
 msgid "Administrátor má právo"
 msgstr "Administrator hat das Recht"
 
@@ -183,9 +180,6 @@ msgstr "Kategorie zuweisen"
 
 msgid "Attention! You are administrator logged in as the customer."
 msgstr "Achtung! Du bist Administrator aber als Kunde angemeldet."
-
-msgid "BUSHMAN E-shop - kvalitní outdoorové a volnočasové oblečení"
-msgstr "BUSHMAN E-shop - hochwertige Outdoor- und Freizeitbekleidung"
 
 msgid "Back to buying"
 msgstr "Zurück zum Einkauf"
@@ -274,9 +268,6 @@ msgstr "Blog-Kategorie <strong><a href=\"{{ url }}\">{{ name }}</a></strong> wur
 msgid "Blog category <strong>{{ name }}</strong> deleted"
 msgstr "Blog-Kategorie <strong>{{ name }}</strong> gelöscht"
 
-msgid "Body v bushman klubu"
-msgstr "Punkte im Bushmanclub"
-
 msgid "Brand"
 msgstr "Marke"
 
@@ -285,33 +276,6 @@ msgstr "Marken Übersicht"
 
 msgid "Bulk editing done"
 msgstr "Massenbearbeitung erfolgt"
-
-msgid "Bushman Company a.s."
-msgstr "Bushman Company a.s."
-
-msgid "Bushman Jarda"
-msgstr "Bushman Jarda"
-
-msgid "Bushman Trade s.r.o."
-msgstr "Bushman Trade s.r.o."
-
-msgid "Bushman expedice aneb čtyři češi na kalahari"
-msgstr "Bushmanexpedition oder vier Tschechen auf der Kalahari"
-
-msgid "Bushmani mají nejraději"
-msgstr "Bushman mag am besten"
-
-msgid "Bushmanství nás spojuje, vaše příběhy a názory nás inspirují. I proto jsou prodejny spíše místem setkání než pouze nákupu."
-msgstr "Bushman-Lebensweise verbindet uns, eure Geschichten und Meinungen inspirieren uns. Das ist auch der Grund, warum Geschäfte eher Treffpunkte als Einkaufsorte sind."
-
-msgid "Bushmanství obrazem"
-msgstr "Bushman-Lebensweise in Bildern"
-
-msgid "Buď bushman a měj výhodnější"
-msgstr "Sei ein Bushman und nutze viele Vorteile"
-
-msgid "Buď bushman a měj zdarma"
-msgstr "Sei ein Bushman und hab es kostenlos"
 
 msgid "Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut"
 msgstr ""
@@ -361,17 +325,11 @@ msgstr "Passwort ändern"
 msgid "Chcete opravdu smazat tyto slevové kupóny?"
 msgstr "Möchtest du diese Rabattgutscheine wirklich löschen?"
 
-msgid "Chcete se stát Bushmanem?"
-msgstr "Willst du Bushman werden?"
-
 msgid "Chceš dárek"
 msgstr ""
 
 msgid "Chceš promo produkt"
 msgstr ""
-
-msgid "Chceš se stát bushmanem?"
-msgstr "Willst du Bushman werden?"
 
 msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
 msgstr ""
@@ -381,9 +339,6 @@ msgstr ""
 
 msgid "Chci reklamovat zboží"
 msgstr "Ich will die Ware reklamieren"
-
-msgid "Chci se stát bushmanem"
-msgstr "Ich will Bushman werden"
 
 msgid "Chci se stát členem Věrnostního programu"
 msgstr ""
@@ -1060,9 +1015,6 @@ msgstr "Jindřich Melichar"
 msgid "Jméno"
 msgstr "Name"
 
-msgid "Jsem Jindra, otec všech bushmanů. Je potřeba, aby"
-msgstr "Ich bin Jindra, der Vater aller Bushmänner. Es muss sein"
-
 msgid "Jste členem Věrnostního programu"
 msgstr "Sie sind Mitglied des Treueprogramms"
 
@@ -1302,9 +1254,6 @@ msgstr "Stadt"
 
 msgid "Můžu potvrdit výše uvedené recenze. Bunda je opravdu kvalitní, dobře se nosí a i po týdnu jsem necítil pot ani hlínu."
 msgstr "Ich kann die obigen Bewertungen bestätigen. Die Jacke ist wirklich gut, gut getragen und selbst nach einer Woche fühlte ich mich nicht verschweißt oder schmutzig."
-
-msgid "Na vybrané oblečení dáváme bushmanům záruku 25 let"
-msgstr "Auf ausgewählte Kleidungsstücke gewähren wir für alle Bushmänner 25 Jahre Garantie"
 
 msgid "Nadpis produktů"
 msgstr "Produktüberschrift"
@@ -2530,9 +2479,6 @@ msgstr "Wir freuen uns und versenden!"
 msgid "To prevent the possibility of account theft, the change of the e-mail address must be dealt with individually. If your e-mail address has changed, please contact us."
 msgstr "Um die Möglichkeit eines Kontodiebstahls auszuschließen, muss die Änderung der E-Mail-Adresse individuell behandelt werden. Wenn sich deine Email-Adresse geändert hat, kontaktiere uns bitte."
 
-msgid "Tomáš Malý - Bushman specialista"
-msgstr "Tomáš Malý - Bushman Spezialist"
-
 msgid "Total excluding VAT"
 msgstr "Gesamtsumme ohne Mehrwertsteuer"
 
@@ -2818,9 +2764,6 @@ msgstr "Wähle den Artikel aus, der als Erster unmittelbar nach den Artikeln im 
 msgid "Vyberte článek, který se zobrazí jako čtvrtý v horním menu hned za Blogem"
 msgstr "Wähle den Artikel aus, der als vierter im oberen Menü direkt nach dem Blog angezeigt wird"
 
-msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Bushman Clubu, a také jako odkaz pro banner Bushman club"
-msgstr "Wähle den Artikel aus, der in der Checkbox-Registrierung angezeigt werden soll, wenn der Kunde Bushman Club-Mitglied werden möchte, sowie als Link zum Bushman Club-Banner"
-
 msgid "Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce stát zákazník členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program"
 msgstr ""
 
@@ -2901,9 +2844,6 @@ msgstr "Dein Konto"
 
 msgid "Vážím si všech"
 msgstr "Ich schätze jeden"
-
-msgid "Vážím si všech 80 000 bushmanů"
-msgstr "Ich respektiere alle 80.000 Bushmänner"
 
 msgid "Výchozí služba dopravce"
 msgstr "Standard-Spediteur-Service"
@@ -3115,9 +3055,6 @@ msgstr "ohne MwSt"
 msgid "blogArticles"
 msgstr "Blog-Artikel"
 
-msgid "bushmanů"
-msgstr "Bushmänner"
-
 msgid "byl v hlavní roli"
 msgstr "war in der Hauptrolle"
 
@@ -3205,9 +3142,6 @@ msgstr "über uns"
 msgid "obchodními podmínkami"
 msgstr "Geschäftsbedingungen"
 
-msgid "office@bushman.cz"
-msgstr "office@bushman.cz"
-
 msgid "on stock"
 msgstr "Auf Lager"
 
@@ -3237,9 +3171,6 @@ msgstr "Werbeartikel"
 
 msgid "přijatou tržbu u správce daně online, v případě technického výpadku pak nejpozději do 48 hodin."
 msgstr "Einnahmen vom Steuerverwalter online, bei technischen Störungen spätestens innerhalb von 48 Stunden."
-
-msgid "recepce@bushman.cz"
-msgstr "recepce@bushman.cz"
 
 msgid "records"
 msgstr "Aufzeichnungen"
@@ -3358,14 +3289,8 @@ msgstr "Česko"
 msgid "Česká pošta"
 msgstr "Deutsche Post"
 
-msgid "Členem Bushman Clubu"
-msgstr "Mitglied von Bushman Club"
-
 msgid "Členem Věrnostního programu"
 msgstr ""
-
-msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Bushman Clubu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
-msgstr "Im Artikel \"%name%\" werden Informationen zum Bushman Club angezeigt. Diese Einstellung geht verloren. Möchtest du es wirklich löschen?"
 
 msgid "Článek \"%name%\" je nastaven pro zobrazení informací o Věrnostním programu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?"
 msgstr ""
@@ -3405,6 +3330,3 @@ msgstr "Keine Werbeartikel gefunden"
 
 msgid "БЪЛГАРИЯ"
 msgstr "БЪЛГАРИЯ"
-
-msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
-msgstr "„Als ich das BUSHMAN-Projekt gestartet habe, wollte ich"
