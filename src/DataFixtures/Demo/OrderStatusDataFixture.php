@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use App\Model\Order\Status\OrderStatus;
 use App\Model\Order\Status\OrderStatusDataFactory;
 use App\Model\Order\Status\OrderStatusFacade;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,11 +16,6 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
     public const ORDER_STATUS_IN_PROGRESS = 'order_status_in_progress';
     public const ORDER_STATUS_DONE = 'order_status_done';
     public const ORDER_STATUS_CANCELED = 'order_status_canceled';
-    public const ORDER_STATUS_ALMOST_READY = 'order_status_almost_ready';
-    public const ORDER_STATUS_ALMOST_READY_STORE = 'order_status_almost_ready_store';
-    public const ORDER_STATUS_READY = 'order_status_ready';
-    public const ORDER_STATUS_READY_STORE = 'order_status_ready_store';
-    public const ORDER_STATUS_RETURNED = 'order_status_returned';
 
     /**
      * @var \App\Model\Order\Status\OrderStatusFacade
@@ -62,21 +56,6 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
         $this->createOrderStatusReference(2, self::ORDER_STATUS_IN_PROGRESS);
         $this->createOrderStatusReference(3, self::ORDER_STATUS_DONE);
         $this->createOrderStatusReference(4, self::ORDER_STATUS_CANCELED);
-
-        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_ALMOST_READY);
-        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_ALMOST_READY);
-
-        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_ALMOST_READY_STORE);
-        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_ALMOST_READY_STORE);
-
-        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_READY);
-        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY);
-
-        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_READY_STORE);
-        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_READY_STORE);
-
-        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_RETURNED);
-        $this->createOrderStatusReference($orderStatus->getId(), self::ORDER_STATUS_RETURNED);
     }
 
     /**
@@ -105,21 +84,6 @@ class OrderStatusDataFixture extends AbstractReferenceFixture
                     break;
                 case self::ORDER_STATUS_CANCELED:
                     $orderStatusData->name[$locale] = t('Stornována', [], 'dataFixtures', $locale);
-                    break;
-                case self::ORDER_STATUS_ALMOST_READY:
-                    $orderStatusData->name[$locale] = t('Částečné vykrytí', [], 'dataFixtures', $locale);
-                    break;
-                case self::ORDER_STATUS_ALMOST_READY_STORE:
-                    $orderStatusData->name[$locale] = t('Částečné vykrytí - OM', [], 'dataFixtures', $locale);
-                    break;
-                case self::ORDER_STATUS_READY:
-                    $orderStatusData->name[$locale] = t('Vykrytá', [], 'dataFixtures', $locale);
-                    break;
-                case self::ORDER_STATUS_READY_STORE:
-                    $orderStatusData->name[$locale] = t('Vykrytá - OM', [], 'dataFixtures', $locale);
-                    break;
-                case self::ORDER_STATUS_RETURNED:
-                    $orderStatusData->name[$locale] = t('Vrácené zboží', [], 'dataFixtures', $locale);
                     break;
                 default:
                     throw new \Shopsys\FrameworkBundle\Component\DataFixture\Exception\UnknownNameTranslationForOrderStatusReferenceNameException($referenceName);

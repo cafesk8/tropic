@@ -29,18 +29,6 @@
         >
             <i class="svg svg-info"></i>
         </span>
-    {% elseif row.os.type in [
-            constant('App\\Model\\Order\\Status\\OrderStatus::TYPE_ALMOST_READY'),
-            constant('App\\Model\\Order\\Status\\OrderStatus::TYPE_ALMOST_READY_STORE'),
-            constant('App\\Model\\Order\\Status\\OrderStatus::TYPE_READY'),
-            constant('App\\Model\\Order\\Status\\OrderStatus::TYPE_READY_STORE')
-        ]
-    %}
-        <span title="{{ 'Tento stav není možné smazat, jelikož je na něj navázána funkčnost'|trans }}"
-            class="js-tooltip cursor-help in-icon in-icon--info" data-toggle="tooltip" data-placement="bottom"
-        >
-            <i class="svg svg-info"></i>
-        </span>
     {% else %}
         {{ gridView.renderBlock('grid_action_cell', {actionColumn: actionColumn, row: row}) }}
     {% endif %}

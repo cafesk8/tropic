@@ -155,14 +155,6 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             return;
         }
 
-        if ($orderStatus->isOrderStatusReady() && $newOrderStatus->isCheckOrderReadyStatus() === true) {
-            $this->logger->addInfo(sprintf(
-                'Order status of order with ID `%s`: returned due to isOrderStatusReady = true and isCheckOrderReadyStatus = true and isCanceled = false',
-                $order->getId()
-            ));
-            return;
-        }
-
         $this->changeOrderStatus($order, $newOrderStatus);
     }
 
@@ -263,20 +255,9 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             return;
         }
 
-        $orderStatus = null;
-        $isOrderSendToStore = $order->getStoreExternalNumber() !== null;
-        if ($orderItemTransferData->isOrderReady() === true) {
-            $orderStatusType = $isOrderSendToStore === true ? OrderStatus::TYPE_READY_STORE : OrderStatus::TYPE_READY;
-            $orderStatus = $this->orderStatusFacade->getByType($orderStatusType);
-        } else {
-            $isAlmostReady = $this->checkAlmostReadyByItems($orderItemTransferData->getItems());
-            if ($isAlmostReady === true) {
-                $orderStatusType = $isOrderSendToStore === true ? OrderStatus::TYPE_ALMOST_READY_STORE : OrderStatus::TYPE_ALMOST_READY;
-                $orderStatus = $this->orderStatusFacade->getByType($orderStatusType);
-            }
-        }
+        $orderStatus = $this->orderStatusFacade->getByType(OrderStatus::TYPE_IN_PROGRESS);
 
-        if ($order->getStatus() === $orderStatus || $orderStatus === null) {
+        if ($order->getStatus() === $orderStatus) {
             $this->logger->addInfo(sprintf(
                 'Order status of order with ID `%s`: returned due to same order status or null order status',
                 $order->getId()
@@ -345,20 +326,6 @@ class OrderStatusImportCronModule extends AbstractTransferImportCronModule
             $oldOrderStatusName,
             $order->getStatus()->getName('cs')
         ));
-    }
-
-    /**
-     * @param \App\Model\Order\Status\Transfer\OrderItemQuantityTransferResponseDataItem[] $items
-     * @return bool
-     */
-    private function checkAlmostReadyByItems(array $items): bool
-    {
-        $preparedItemCount = 0;
-        foreach ($items as $item) {
-            $preparedItemCount += $item->getPreparedCount();
-        }
-
-        return $preparedItemCount > 0;
     }
 
     /**
