@@ -10,8 +10,10 @@ use App\Model\Product\Brand\BrandFacade;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Form\Admin\PromoCode\PromoCodeFormType;
 use Shopsys\FrameworkBundle\Form\CategoriesType;
+use Shopsys\FrameworkBundle\Form\Constraints\MoneyRange;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DatePickerType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
@@ -34,6 +36,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
@@ -50,6 +53,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     public const VALIDATION_GROUP_TYPE_CERTIFICATE = 'CERTIFICATE';
 
     public const VALIDATION_GROUP_TYPE_PROMO_CODE = 'PROMO_CODE';
+
+    public const VALIDATION_GROUP_TYPE_LIMIT_BRANDS = 'LIMIT_BRANDS';
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -109,7 +114,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
         $basicInformationsFormGroup = $builder->create('basicInformationsGroup', GroupType::class, [
             'label' => t('Základní informace'),
         ]);
+        $this->addPromoCodeOrCertificateField($builder, $basicInformationsFormGroup);
         $basicInformationsFormGroup->add('usageType', ChoiceType::class, [
+            'attr' => [
+                'class' => 'js-promo-code-input-usage-type js-promo-code-promo-code-only',
+            ],
             'label' => t('Aplikovat na'),
             'choices' => [
                 t('Všechny produkty') => PromoCode::USAGE_TYPE_ALL,
@@ -137,7 +146,6 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'label' => t('Kombinovatelný'),
         ]);
 
-        $this->addPromoCodeOrCertificateField($builder, $basicInformationsFormGroup);
         $this->extendCodeField($builder, $basicInformationsFormGroup);
         $this->extendPercentField($builder, $basicInformationsFormGroup);
         $this->addNominalDiscountFields($basicInformationsFormGroup, $options['promo_code'], $domainId);
@@ -171,6 +179,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'required' => true,
                 'data' => $domainId,
                 'label' => t('Domain'),
+                'position' => 'first',
             ]);
         } else {
             $basicInformationsFormGroup
@@ -188,7 +197,6 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
 
         $builder->add($this->getRestrictionGroup($builder, $options['promo_code'], $domainId));
         $builder->add($this->getValidationGroup($builder));
-
         $builder->add('save', SubmitType::class);
     }
 
@@ -224,6 +232,10 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_CERTIFICATE;
                     } else {
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_PROMO_CODE;
+                    }
+
+                    if ($promoCodeData->limitType === PromoCode::LIMIT_TYPE_BRANDS) {
+                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_LIMIT_BRANDS;
                     }
 
                     return $validationGroups;
@@ -288,6 +300,10 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'max' => 100,
                 'groups' => self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT,
             ]),
+            new GreaterThan([
+                'groups' => self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT,
+                'value' => 0,
+            ]),
         ];
 
         $percentFieldType = get_class($builder->get('percent')->getType()->getInnerType());
@@ -316,8 +332,8 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                 'required' => true,
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
-                    new NotNegativeMoneyAmount([
-                        'message' => 'Price must be greater or equal to zero',
+                    new MoneyRange([
+                        'min' => Money::create(1),
                         'groups' => self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT,
                     ]),
                     new NotBlank([
@@ -514,7 +530,6 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'attr' => [
                 'class' => 'js-promo-code-promo-code-or-certificate',
             ],
-            'position' => 'first',
         ]);
     }
 
@@ -538,6 +553,10 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'label' => t('Omezení na značky'),
             'mapped' => true,
             'multiple' => true,
+            'required' => true,
+            'constraints' => [
+                new NotBlank(['groups' => self::VALIDATION_GROUP_TYPE_LIMIT_BRANDS]),
+            ],
             'choice_label' => function (Brand $brand) {
                 return $brand->getName();
             },

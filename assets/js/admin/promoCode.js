@@ -13,6 +13,7 @@ import Register from 'framework/common/utils/register';
         const $unlimitedInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-unlimited');
         const $usageLimitInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-usage-limit');
         const $limitTypeInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-use-limit-type');
+        const $usageTypeInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-usage-type');
 
         const $useNominalDiscountInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-use-nominal-discount');
         const $nominalDiscountInput = $promoCodeForm.filterAllNodes('.js-promo-code-input-nominal-discount');
@@ -60,7 +61,7 @@ import Register from 'framework/common/utils/register';
         var onLimitTypeInputChange = function () {
             $('.js-promo-code-input-limit-type').closest('.wrap-divider').hide();
 
-            console.log($limitTypeInput.val());
+            $usageTypeInput.closest('.form-line').removeClass('display-none');
 
             switch ($limitTypeInput.val()) {
                 case limitTypeBrandsConstant:
@@ -71,6 +72,7 @@ import Register from 'framework/common/utils/register';
                     break;
                 case limitTypeProductsConstant:
                     $('.js-promo-code-input-limit-products').closest('.wrap-divider').show();
+                    $usageTypeInput.closest('.form-line').addClass('display-none');
                     break;
             }
         };
