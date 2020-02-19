@@ -1,7 +1,10 @@
 @form-input-spinbox-padding-vertical: 3px;
 @form-input-spinbox-buttons-width: 29px;
+@form-input-spinbox-buttons-width-small: 23px;
 @form-input-spinbox-height: 48px;
+@form-input-spinbox-height-small: 40px;
 @form-input-spinbox-input-width: 102px;
+@form-input-spinbox-input-width-small: 72px;
 @form-inpit-spinbox-button-icon-size: @font-size;
 
 .form-input-spinbox {
@@ -14,6 +17,11 @@
     border: 1px solid @color-border-dark;
     border-radius: @radius-small;
     box-shadow: @box-shadow-outer;
+
+    &--small {
+        width: @form-input-spinbox-input-width-small;
+        padding: 0 @form-input-spinbox-buttons-width-small;
+    }
 
     .box-detail-sets & {
         display: none;
@@ -39,6 +47,13 @@
         color: @color-base;
         font-size: 20px;
         font-weight: 700;
+
+        .form-input-spinbox--small & {
+            height: @form-input-spinbox-height-small;
+            line-height: @form-input-spinbox-height-small;
+
+            font-size: @font-size;
+        }
 
         &:focus {
             border: 0;
@@ -67,6 +82,11 @@
             right: auto;
 
             border-radius: @radius-small 0 0 @radius-small;
+        }
+
+        .form-input-spinbox--small & {
+            height: @form-input-spinbox-height-small - 0.5px;
+            width: @form-input-spinbox-buttons-width-small;
         }
 
         .svg {

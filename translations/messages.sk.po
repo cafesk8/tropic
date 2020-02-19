@@ -3125,7 +3125,7 @@ msgid "from"
 msgstr "z"
 
 msgid "from %price%"
-msgstr "z %price%"
+msgstr "od %price%"
 
 msgid "historii svých objednávek,"
 msgstr "histórii svojich objednávok,"
