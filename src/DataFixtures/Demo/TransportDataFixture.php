@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\MergadoTransportType\MergadoTransportTypeFacade;
 use App\Model\Transport\Transport;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -88,6 +89,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $transportData->name[$locale] = t('Česká pošta - balík do ruky', [], 'dataFixtures', $locale);
         }
 
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::CZECH_POST;
         $transportData->deliveryDays = 2;
         $this->setPriceForAllDomains($transportData, Money::create('99.95'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
@@ -104,6 +106,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::PPL;
 
         $this->setPriceForAllDomains($transportData, Money::create('199.95'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
@@ -120,6 +123,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->deliveryDays = 1;
         $transportData->balikobotShipper = null;
         $transportData->balikobotShipperService = null;
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::OWN_TRANSPORT;
 
         $this->setPriceForAllDomains($transportData, Money::zero());
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
@@ -135,6 +139,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
         $transportData->initialDownload = false;
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::PPL;
         $this->setPriceForAllDomains($transportData, Money::create('230.90'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_GERMANY);
         $this->createTransport(self::TRANSPORT_PPL_DE, $transportData);
@@ -147,6 +152,7 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
+        $transportData->mergadoTransportType = MergadoTransportTypeFacade::PPL;
         $transportData->initialDownload = false;
         $this->setPriceForAllDomains($transportData, Money::create('499.90'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_FRANCE);

@@ -23,7 +23,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
  * @method setAdditionalDataAndFlush(\App\Model\Payment\Payment $payment, \App\Model\Payment\PaymentData $paymentData)
  * @method \App\Model\Payment\Payment[] getVisibleOnCurrentDomain()
  * @method \App\Model\Payment\Payment[] getVisibleByDomainId(int $domainId)
- * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, array $pricesIndexedByDomainId, array $vatsIndexedByDomainId)
  * @method \App\Model\Payment\Payment[] getAllIncludingDeleted()
  * @method \App\Model\Payment\Payment[] getAll()
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Payment\Payment $payment)

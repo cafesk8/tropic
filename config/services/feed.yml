@@ -10,3 +10,9 @@ services:
     App\Model\Feed\HsSport\HsSportFeed:
         tags:
             - { name: shopsys.product_feed }
+
+    App\Model\Feed\Mergado\MergadoFeedInfo: ~
+
+    App\Model\Feed\Mergado\MergadoFeed:
+        tags:
+            - { name: shopsys.product_feed }

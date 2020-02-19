@@ -61,6 +61,11 @@ class TransportData extends BaseTransportData
      */
     public $trackingUrlPattern;
 
+    /**
+     * @var string|null
+     */
+    public $mergadoTransportType;
+
     public function __construct()
     {
         parent::__construct();

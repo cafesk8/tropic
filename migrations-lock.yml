@@ -965,11 +965,14 @@
     class: App\Migrations\Version20200214151904
     skip: false
 20200205120735:
-    class: Shopsys\ShopBundle\Migrations\Version20200205120735
+    class: App\Migrations\Version20200205120735
     skip: false
 20200210165830:
     class: Shopsys\ShopBundle\Migrations\Version20200210165830
     skip: false
 20200218124900:
-    class: Shopsys\ShopBundle\Migrations\Version20200218124900
+    class: App\Migrations\Version20200218124900
+    skip: false
+20200204111316:
+    class: App\Migrations\Version20200204111316
     skip: false
