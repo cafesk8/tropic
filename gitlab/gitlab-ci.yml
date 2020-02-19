@@ -18,6 +18,7 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     HOST: ${CI_COMMIT_REF_SLUG}.${CI_PROJECT_NAME}.${REVIEW_URL}
+    HOSTS: ${CI_COMMIT_REF_SLUG}.${CI_PROJECT_NAME}.${REVIEW_URL}, sk.${CI_COMMIT_REF_SLUG}.${CI_PROJECT_NAME}.${REVIEW_URL}, en.${CI_COMMIT_REF_SLUG}.${CI_PROJECT_NAME}.${REVIEW_URL}
     COMPOSE_PROJECT_NAME: ${CI_PROJECT_NAME}__${CI_COMMIT_REF_SLUG}
     PRODUCTION_URL: ""
     DEVEL_URL: ""
@@ -66,7 +67,6 @@ review:
     variables:
         CI_NETWORK: ci_default
         CI_NGINX_PROXY_NETWORK: ci_nginx-proxy-network
-        HOSTS: ${HOST}, sk.${HOST}, en.${HOST}
     needs:
         - build
     <<: *only-default
@@ -87,7 +87,6 @@ review:stop:
         GIT_STRATEGY: none
         CI_NETWORK: ci_default
         CI_NGINX_PROXY_NETWORK: ci_nginx-proxy-network
-        HOSTS: ${HOST}, sk.${HOST}, en.${HOST}
     tags:
         - review
     needs:
