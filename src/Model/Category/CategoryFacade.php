@@ -195,4 +195,32 @@ class CategoryFacade extends BaseCategoryFacade
     {
         return $this->categoryRepository->getCategoriesByAdvert($advert);
     }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param string $separator
+     * @return string|null
+     */
+    public function getCategoryFullPath(Product $product, DomainConfig $domainConfig, string $separator): ?string
+    {
+        $mainCategory = $this->findProductMainCategoryByDomainId($product, $domainConfig->getId());
+
+        if ($mainCategory === null) {
+            return null;
+        }
+
+        $categories = $this->getVisibleCategoriesInPathFromRootOnDomain(
+            $mainCategory,
+            $domainConfig->getId()
+        );
+
+        $categoryFullPath = null;
+        $categoryNames = [];
+        foreach ($categories as $category) {
+            $categoryNames[] = $category->getName($domainConfig->getLocale());
+        }
+
+        return $categoryFullPath ?? implode($separator, $categoryNames);
+    }
 }

@@ -115,6 +115,13 @@ class Transport extends BaseTransport
     private $trackingUrlPattern;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $mergadoTransportType;
+
+    /**
      * @param \App\Model\Transport\TransportData $transportData
      */
     public function __construct(BaseTransportData $transportData)
@@ -132,6 +139,7 @@ class Transport extends BaseTransport
         $this->externalId = $transportData->externalId;
         $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
+        $this->mergadoTransportType = $transportData->mergadoTransportType;
     }
 
     /**
@@ -152,6 +160,7 @@ class Transport extends BaseTransport
         $this->externalId = $transportData->externalId;
         $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
+        $this->mergadoTransportType = $transportData->mergadoTransportType;
     }
 
     /**
@@ -302,5 +311,13 @@ class Transport extends BaseTransport
     public function getTrackingUrlPattern(): ?string
     {
         return $this->trackingUrlPattern;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMergadoTransportType(): ?string
+    {
+        return $this->mergadoTransportType;
     }
 }
