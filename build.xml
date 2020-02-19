@@ -12,6 +12,8 @@
 
     <import file="${path.framework}/build.xml"/>
 
+    <target name="build-demo" depends="production-protection,wipe,build-version-generate,composer-prod,redis-check,npm,dirs-create,assets,db-demo,elasticsearch-index-recreate,elasticsearch-export,grunt,error-pages-generate,warmup,clean-redis-old" description="Builds application for production with clean demo DB."/>
+
     <target name="tests-acceptance">
         <echo level="info" message="Acceptance tests are turned off on this project"/>
     </target>
