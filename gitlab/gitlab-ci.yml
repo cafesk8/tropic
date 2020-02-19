@@ -77,7 +77,7 @@ review:
         - docker-compose exec -T php-fpm sed -i "s/http:\/\/127.0.0.1:8000/https:\/\/${HOST}/g" config/domains_urls.yml
         - docker-compose exec -T php-fpm sed -i "s/http:\/\/127.0.0.1:8000/https:\/\/sk.${HOST}/g" config/domains_urls.yml
         - docker-compose exec -T php-fpm sed -i "s/http:\/\/127.0.0.1:8000/https:\/\/en.${HOST}/g" config/domains_urls.yml
-        - docker-compose exec -T php-fpm php phing -D production.confirm.action=y db-create build-demo
+        - docker-compose exec -T php-fpm php phing -D production.confirm.action=y clean db-create build-demo
     tags:
         - review
 
