@@ -83,7 +83,7 @@
                                     </a>
                                 {% else %}
                                     <div class="list-products__item__hover__wrap">
-                                        {{ render(controller('ShopsysShopBundle:Front/Cart:addProductForm', {product: productView.action.id, type: 'small' })) }}
+                                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: productView.action.id, type: 'small' })) }}
                                     </div>
                                 {% endif %}
                             </div>
