@@ -235,7 +235,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ]);
-        $this->addCountryChoiceForGermanDomain($deliveryAddressDataBuilder, $options);
+        $this->addCountryChoiceForEnglishDomain($deliveryAddressDataBuilder, $options);
 
         return $deliveryAddressDataBuilder;
     }
@@ -244,7 +244,7 @@ class RegistrationFormType extends AbstractType
      * @param \Symfony\Component\Form\FormBuilderInterface $deliveryAddressDataBuilder
      * @param array $options
      */
-    private function addCountryChoiceForGermanDomain(FormBuilderInterface $deliveryAddressDataBuilder, array $options): void
+    private function addCountryChoiceForEnglishDomain(FormBuilderInterface $deliveryAddressDataBuilder, array $options): void
     {
         if (DomainHelper::isEnglishDomain($this->domain)) {
             $deliveryAddressDataBuilder

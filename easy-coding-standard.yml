@@ -42,8 +42,6 @@ parameters:
             - '*/src/Controller/Front/PromoCodeController.php'
             - '*/src/Form/Admin/PromoCodeFormTypeExtension.php'
             - '*/src/Controller/Front/CartController.php'
-            - '*/src/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
-            - '*/src/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
             - '*/src/Model/Product/Pricing/ProductPriceCalculation.php'
 
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff:
@@ -59,8 +57,6 @@ parameters:
             - '*/src/Model/Product/ProductFacade.php'
             - '*/src/Model/Product/Product.php'
             - '*/src/Controller/Front/CartController.php'
-            - '*/src/Command/Migrations/DataProvider/MigrateProductGermanLegacyUrlsDataProvider.php'
-            - '*/src/Command/Migrations/DataProvider/GermanCustomersWithNewsletterSubscriptionDataProvider.php'
             - '*/src/Model/Order/OrderFacade.php'
             - '*/src/Form/Admin/ProductFormTypeExtension.php'
 
