@@ -62,7 +62,7 @@ review:
     stage: review
     environment:
         name: "review/${CI_COMMIT_REF_SLUG}"
-        url: https://${HOST}
+        url: https://${CI_COMMIT_REF_SLUG}.${CI_PROJECT_NAME}.${REVIEW_URL}
         on_stop: review:stop
     variables:
         CI_NETWORK: ci_default
