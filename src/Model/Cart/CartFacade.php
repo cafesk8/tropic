@@ -33,7 +33,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
  * @method deleteCart(\App\Model\Cart\Cart $cart)
  * @method \App\Model\Product\Product getProductByCartItemId(int $cartItemId)
  * @method \App\Model\Cart\Cart|null findCartOfCurrentCustomerUser()
- * @method \App\Model\Cart\Cart getCartByCustomerUserIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier  $customerUserIdentifier)
  * @method \App\Model\Cart\Cart getCartOfCurrentCustomerUserCreateIfNotExists()
  * @method \App\Model\Cart\Cart getCartByCustomerUserIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier $customerUserIdentifier)
  */
