@@ -135,20 +135,20 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             function (QuantifiedItemPrice $quantifiedItemsPrice) use ($promoCode) {
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
+
+                if ($promoCode->getLimitType() !== PromoCode::LIMIT_TYPE_ALL
+                    &&
+                    !in_array($productPrice->getProductId(), $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits()), true)
+                ) {
+                    return false;
+                }
+
                 if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_WITH_ACTION_PRICE) {
                     return $productPrice->isActionPriceByUsedForPromoCode() === true;
                 }
 
                 if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_NO_ACTION_PRICE) {
                     return $productPrice->isActionPriceByUsedForPromoCode() === false;
-                }
-
-                if ($promoCode->getLimitType() === PromoCode::LIMIT_TYPE_ALL) {
-                    return true;
-                }
-
-                if (!in_array($productPrice->getProductId(), $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits()), true)) {
-                    return false;
                 }
 
                 return true;
