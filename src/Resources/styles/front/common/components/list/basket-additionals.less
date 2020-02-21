@@ -78,6 +78,8 @@
         color: @color-brown;
 
         &__in {
+            display: flex;
+            flex-direction: column;
             height: 100%;
             padding: 0 @list-basket-additionals-item-padding 3px @list-basket-additionals-item-padding;
         }
@@ -96,8 +98,12 @@
             position: relative;
             align-self: center;
             margin-bottom: @list-basket-additionals-item-image-bottom-gap;
-            height: @list-basket-additionals-item-image-size;
+            height: @list-basket-additionals-item-image-size/2;
             width: 100%;
+
+            @media @query-vl {
+                height: @list-accessories-products-item-image-size;
+            }
 
             img {
                 .center-image();
@@ -178,6 +184,15 @@
                         font-weight: 400;
                     }
                 }
+            }
+        }
+
+        &__button-add {
+            text-align: center;
+            margin-top: auto;
+
+            .btn {
+                word-break: keep-all;
             }
         }
     }
