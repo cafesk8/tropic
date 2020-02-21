@@ -34,13 +34,13 @@
                             <div class="box-price-slider__form__item__text">
                                 {{ 'Od'|trans }}
                             </div>
-                            {{ form_widget(filterForm.minimalPrice, {attr: { class: 'box-price-slider__form__item__input js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.minimalPrice|price }}) }}
+                            {{ form_widget(filterForm.minimalPrice, {attr: { class: 'box-price-slider__form__item__input js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.minimalPrice.amount|formatNumber }}) }}
                         </div>
                         <div class="box-price-slider__form__item box-price-slider__form__item--right">
                             <div class="box-price-slider__form__item__text">
                                 {{ 'Do'|trans }}
                             </div>
-                            {{ form_widget(filterForm.maximalPrice, {attr: { class: 'box-price-slider__form__item__input js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.maximalPrice|price }}) }}
+                            {{ form_widget(filterForm.maximalPrice, {attr: { class: 'box-price-slider__form__item__input js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.maximalPrice.amount|formatNumber }}) }}
                         </div>
                     </div>
                 </div>
