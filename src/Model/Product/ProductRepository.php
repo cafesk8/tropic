@@ -397,12 +397,12 @@ class ProductRepository extends BaseProductRepository
 
     /**
      * @param array $brandIds
-     * @return int[][]
+     * @return \App\Model\Product\Product[]
      */
-    public function getIdsByBrandIds(array $brandIds): array
+    public function getByBrandIds(array $brandIds): array
     {
         return $this->em->createQueryBuilder()
-            ->select('p.id AS productId')
+            ->select('p')
             ->from(Product::class, 'p')
             ->where('IDENTITY(p.brand) IN (:brandIds)')
             ->setParameter('brandIds', $brandIds)
@@ -412,13 +412,14 @@ class ProductRepository extends BaseProductRepository
     /**
      * @param array $categoryIds
      * @param int $domainId
-     * @return int[][]
+     * @return \App\Model\Product\Product[]
      */
-    public function getIdsByCategoryIds(array $categoryIds, int $domainId): array
+    public function getByCategoryIds(array $categoryIds, int $domainId): array
     {
         return $this->em->createQueryBuilder()
-            ->select('IDENTITY(pc.product) AS productId')
+            ->select('p')
             ->from(ProductCategoryDomain::class, 'pc')
+            ->join(Product::class, 'p', Join::WITH, 'pc.product = p.id')
             ->where('IDENTITY(pc.category) IN (:categoryIds)')
             ->andWhere('pc.domainId = :domainId')
             ->setParameter('categoryIds', $categoryIds)

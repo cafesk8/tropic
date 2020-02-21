@@ -256,11 +256,19 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             return;
         }
 
-        $applicableProductIds = $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits());
+        $applicableProducts = $this->promoCodeLimitFacade->getAllApplicableProductsByLimits($promoCode->getLimits());
 
         foreach ($cart->getItems() as $cartItem) {
-            if (in_array($cartItem->getProduct()->getId(), $applicableProductIds, true)) {
-                return;
+            $productId = $cartItem->getProduct()->getId();
+
+            if (isset($applicableProducts[$productId])) {
+                if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_ALL) {
+                    return;
+                } elseif ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_NO_ACTION_PRICE && $applicableProducts[$productId]->getActionPrice($this->domain->getId()) === null) {
+                    return;
+                } elseif ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_WITH_ACTION_PRICE && $applicableProducts[$productId]->getActionPrice($this->domain->getId()) !== null) {
+                    return;
+                }
             }
         }
 

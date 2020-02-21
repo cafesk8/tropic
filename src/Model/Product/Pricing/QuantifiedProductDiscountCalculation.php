@@ -7,6 +7,7 @@ namespace App\Model\Product\Pricing;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Order\PromoCode\PromoCodeLimitFacade;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
@@ -54,7 +55,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         $filteredQuantifiedItemsPrices = $this->filterQuantifiedItemsPricesByPromoCode($quantifiedItemsPrices, $promoCode);
 
         $discountPercentForOrder = $discountPercent !== null ? $discountPercent : '0';
-        if ($promoCode->isUseNominalDiscount() === true) {
+        if ($promoCode->isUseNominalDiscount()) {
             $discountPercentForOrder = $this->calculateDiscountPercentFromNominalDiscount(
                 $promoCode,
                 $filteredQuantifiedItemsPrices
@@ -65,6 +66,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         $discountNominalAmount = Money::zero();
         foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
             $quantifiedItemDiscount = $this->calculateDiscountRoundedByCurrency($quantifiedItemPrice, $discountPercentForOrder, $currency);
+            $quantifiedItemDiscount = $quantifiedItemDiscount ?? new Price(Money::zero(), Money::zero());
             $quantifiedItemsDiscounts[$quantifiedItemIndex] = $quantifiedItemDiscount;
             $discountNominalAmount = $discountNominalAmount->add($quantifiedItemDiscount->getPriceWithVat());
 
@@ -75,7 +77,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             }
         }
 
-        if ($promoCode->isUseNominalDiscount() === true && $discountNominalAmount->equals($promoCode->getNominalDiscount()) === false) {
+        if ($promoCode->isUseNominalDiscount() && $discountNominalAmount->equals($promoCode->getNominalDiscount()) === false) {
             $nominalDiscountDifferenceAmount = $promoCode->getNominalDiscount()->subtract($discountNominalAmount);
             /** @var \Shopsys\FrameworkBundle\Model\Pricing\Price $maxQuantifiedItemPrice */
             $maxQuantifiedItemPrice = $quantifiedItemsDiscounts[$maxQuantifiedItemPriceIndex];
@@ -94,7 +96,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
      */
     private function calculateTotalItemsPrice(array $quantifiedItemsPrices): Price
     {
-        $totalItemsPrice = array_reduce(
+        return array_reduce(
             $quantifiedItemsPrices,
             function (Price $totalItemsPrice, ?QuantifiedItemPrice $quantifiedItemsPrice) {
                 if ($quantifiedItemsPrice === null) {
@@ -105,8 +107,6 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             },
             Price::zero()
         );
-
-        return $totalItemsPrice;
     }
 
     /**
@@ -138,7 +138,13 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
 
                 if ($promoCode->getLimitType() !== PromoCode::LIMIT_TYPE_ALL
                     &&
-                    !in_array($productPrice->getProductId(), $this->promoCodeLimitFacade->getAllApplicableProductIdsByLimits($promoCode->getLimits()), true)
+                    !in_array(
+                        $productPrice->getProductId(),
+                        array_map(function (Product $product) {
+                            return $product->getId();
+                        }, $this->promoCodeLimitFacade->getAllApplicableProductsByLimits($promoCode->getLimits())),
+                        true
+                    )
                 ) {
                     return false;
                 }

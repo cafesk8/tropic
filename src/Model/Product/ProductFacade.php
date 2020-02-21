@@ -766,20 +766,50 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param array $brandIds
-     * @return array
+     * @param int[] $brandIds
+     * @return array(int,\App\Model\Product\Product[])
      */
-    public function getIdsByBrandIds(array $brandIds): array
+    public function getByBrandIdsIndexedById(array $brandIds): array
     {
-        return $this->productRepository->getIdsByBrandIds($brandIds);
+        $products = $this->productRepository->getByBrandIds($brandIds);
+        $indexedProducts = [];
+
+        array_walk($products, function (Product $product) use (&$indexedProducts) {
+            $indexedProducts[$product->getId()] = $product;
+        });
+
+        return $indexedProducts;
     }
 
     /**
-     * @param array $categoryIds
-     * @return array
+     * @param int[] $categoryIds
+     * @return array(int,\App\Model\Product\Product[])
      */
-    public function getIdsByCategoryIds(array $categoryIds): array
+    public function getByCategoryIdsIndexedById(array $categoryIds): array
     {
-        return $this->productRepository->getIdsByCategoryIds($categoryIds, $this->domain->getId());
+        $products = $this->productRepository->getByCategoryIds($categoryIds, $this->domain->getId());
+        $indexedProducts = [];
+
+        array_walk($products, function (Product $product) use (&$indexedProducts) {
+            $indexedProducts[$product->getId()] = $product;
+        });
+
+        return $indexedProducts;
+    }
+
+    /**
+     * @param int[] $productIds
+     * @return array(int,\App\Model\Product\Product[])
+     */
+    public function getByIdsIndexedById(array $productIds): array
+    {
+        $products = $this->productRepository->getAllByIds($productIds);
+        $indexedProducts = [];
+
+        array_walk($products, function (Product $product) use (&$indexedProducts) {
+            $indexedProducts[$product->getId()] = $product;
+        });
+
+        return $indexedProducts;
     }
 }

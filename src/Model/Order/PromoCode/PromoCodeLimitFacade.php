@@ -86,13 +86,14 @@ class PromoCodeLimitFacade
 
     /**
      * @param \App\Model\Order\PromoCode\PromoCodeLimit[] $limits
-     * @return int[]
+     * @return \App\Model\Product\Product[]
      */
-    public function getAllApplicableProductIdsByLimits(array $limits): array
+    public function getAllApplicableProductsByLimits(array $limits): array
     {
         $brandIds = [];
         $categoryIds = [];
         $productIds = [];
+        $products = [];
 
         foreach ($limits as $limit) {
             switch ($limit->getType()) {
@@ -109,14 +110,18 @@ class PromoCodeLimitFacade
         }
 
         if (!empty($brandIds)) {
-            $productIds = array_merge($productIds, array_column($this->productFacade->getIdsByBrandIds($brandIds), 'productId'));
+            $products += $this->productFacade->getByBrandIdsIndexedById($brandIds);
         }
 
         if (!empty($categoryIds)) {
-            $productIds = array_merge($productIds, array_column($this->productFacade->getIdsByCategoryIds($categoryIds), 'productId'));
+            $products += $this->productFacade->getByCategoryIdsIndexedById($categoryIds);
         }
 
-        return $productIds;
+        if (!empty($productIds)) {
+            $products += $this->productFacade->getByIdsIndexedById($productIds);
+        }
+
+        return $products;
     }
 
     /**
