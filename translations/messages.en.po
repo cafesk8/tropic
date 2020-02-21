@@ -139,8 +139,8 @@ msgstr "Banner Our values"
 msgid "Banner Náš příběh"
 msgstr "Banner Our story"
 
-msgid "Bannery na hl. stránce"
-msgstr "Banners on homepage"
+msgid "Bannery"
+msgstr "Banners"
 
 msgid "Barva"
 msgstr "Color"
@@ -466,9 +466,6 @@ msgstr "Cash on delivery"
 msgid "Dodací údaje"
 msgstr "Delivery information"
 
-msgid "Dolaďte svůj outfit"
-msgstr "Fine-tune your outfit"
-
 msgid "Domain"
 msgstr "Domain"
 
@@ -535,8 +532,8 @@ msgstr "Gift certificate 40 €"
 msgid "Dárkový certifikát 500 Kč"
 msgstr "Gift certificate 20 €"
 
-msgid "Dárky"
-msgstr "Gifts"
+msgid "Dárky k produktům"
+msgstr "Product gifts"
 
 msgid "Dárky k vaší objednávce:"
 msgstr "Gifts for your order"
@@ -796,9 +793,6 @@ msgstr "Language"
 msgid "Je nám líto"
 msgstr "We are sorry"
 
-msgid "Je nám líto, požadovaná stránka na našem webu neexistuje."
-msgstr "We are sorry, requested page does not exist on our website."
-
 msgid "Je prodejna franchisa"
 msgstr "Is shop a franchise"
 
@@ -979,9 +973,6 @@ msgstr "I have a promo code or a gift certificate"
 msgid "Máte dopravu zdarma!"
 msgstr "Free delivery unlocked!"
 
-msgid "Máte dotaz?"
-msgstr "Do you have a question?"
-
 msgid "Město"
 msgstr "Town"
 
@@ -989,7 +980,7 @@ msgid "Najdete v kategoriích"
 msgstr "Found in categories"
 
 msgid "Najděte si něco na sebe…"
-msgstr "Find something to wear…"
+msgstr "Search…"
 
 msgid "Nakupte ještě za"
 msgstr "Buy more for"
@@ -1069,8 +1060,8 @@ msgstr "New blog category"
 msgid "New store"
 msgstr "New store"
 
-msgid "Nezapomeňte: Vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%."
-msgstr "Don't forget: Your order no. %%orderNo%% will be prepared for 2 more days on store %%storeName%%."
+msgid "Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz"
+msgstr ""
 
 msgid "Nezlevněné produkty"
 msgstr "Undiscounted products"
@@ -1291,9 +1282,6 @@ msgstr "Order not found."
 msgid "Order number"
 msgstr "Order number"
 
-msgid "Order saved."
-msgstr "Order saved."
-
 msgid "Orders value"
 msgstr "Orders value"
 
@@ -1398,6 +1386,9 @@ msgstr "Swimming equipment"
 
 msgid "Please check the correctness of all data filled."
 msgstr "Please check the correctness of all data filled."
+
+msgid "Please check the entered values.<br>"
+msgstr ""
 
 msgid "Please enter promo code."
 msgstr "Please enter promo code."
@@ -1822,6 +1813,12 @@ msgstr "Quantity in stock"
 msgid "Skrýt"
 msgstr "Hide"
 
+msgid "Skrýt další způsoby dopravy"
+msgstr "Hide delivery methods"
+
+msgid "Skrýt další způsoby platby"
+msgstr "Hide payment methods"
+
 msgid "Skrývání zboží"
 msgstr "Hiding of products"
 
@@ -1990,9 +1987,6 @@ msgstr "The price of payment {{ paymentName }} changed during ordering process. 
 msgid "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
 msgstr "The price of shipping {{ transportName }} changed during ordering process. Check your order, please."
 
-msgid "There was an error while saving. The order isn't saved."
-msgstr "There was an error while saving. The order isn't saved."
-
 msgid "There were problems during payment of created order with number %orderNumber%."
 msgstr "There were problems during payment of created order with number %orderNumber%."
 
@@ -2152,6 +2146,9 @@ msgstr "On Saturday"
 msgid "V úterý"
 msgstr "On Tuesday"
 
+msgid "V článku píšeme o těchto produktech"
+msgstr "In this article we write about these products"
+
 msgid "Variant <strong>{{ productVariant|productDisplayName }}</strong> successfully created."
 msgstr "Variant <strong>{{ productVariant|productDisplayName }}</strong> successfully created."
 
@@ -2269,6 +2266,9 @@ msgstr "Selected promo product does not exist"
 msgid "Vybrat"
 msgstr "Choose"
 
+msgid "Vybrat variantu"
+msgstr "Choose a variant"
+
 msgid "Vybráno"
 msgstr "Selected"
 
@@ -2330,7 +2330,7 @@ msgid "Věrnostní program"
 msgstr "Loyalty program"
 
 msgid "Vše pro běhání"
-msgstr "Everything for running"
+msgstr "Running Equipment"
 
 msgid "Všechny produkty"
 msgstr "All products"
@@ -2427,6 +2427,12 @@ msgstr "Brand"
 
 msgid "Zobrazit"
 msgstr "Show"
+
+msgid "Zobrazit další způsoby dopravy"
+msgstr "Show more delivery methods"
+
+msgid "Zobrazit další způsoby platby"
+msgstr "Show more payment methods"
 
 msgid "Zobrazit na frontendu"
 msgstr "Show on frontend"

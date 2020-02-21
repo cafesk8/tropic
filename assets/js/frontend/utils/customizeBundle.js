@@ -7,7 +7,7 @@ export default function showFormErrorsWindow (container) {
     const $window = $('#js-window');
 
     const $errorListHtml = '<div class="text-left">'
-        + Translator.trans('Please check the entered values.<br>')
+        + Translator.trans('Prosím, zkontrolujte zadané hodnoty')
         + $formattedFormErrors[0].outerHTML
         + '</div>';
 

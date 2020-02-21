@@ -146,7 +146,7 @@ msgid "Please select country"
 msgstr "Please select country"
 
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
-msgstr "Fill out the information bar to display it to users."
+msgstr "Fill out the information bar to display it to users"
 
 msgid "Position in list cannot be longer than {{ limit }} characters"
 msgstr "Position in list cannot be longer than {{ limit }} characters"
