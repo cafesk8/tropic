@@ -169,8 +169,7 @@
                                 </div>
                             </a>
                             {% if showButton %}
-                                <div class="{{ listCssClass }}__item__add-button">
-                                    {# TODO KOD US-7670 #}
+                                <div class="{{ listCssClass }}__item__button-add">
                                     {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {productActionView: productView.action, showAmountInput: false})) }}
                                 </div>
                             {% endif %}
@@ -234,7 +233,7 @@
                     </div>
                     <div class="{{ listCssClass }}__item__add-button">
                         {# TODO KOD US-7670 #}
-                        {{ render(controller('App\\Controller\\Front\\CartController:addProductForm', {product: product, showAmountInput: false})) }}
+                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false})) }}
                     </div>
             </div>
             </div>
