@@ -986,7 +986,7 @@ msgid "Najdete v kategoriích"
 msgstr "Najdete v kategoriích"
 
 msgid "Najděte si něco na sebe…"
-msgstr "Najděte si něco na sebe…"
+msgstr "Napište co hledáte…"
 
 msgid "Nakupte ještě za"
 msgstr "Nakupte ještě za"

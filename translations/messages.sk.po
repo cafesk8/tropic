@@ -874,9 +874,6 @@ msgstr "Kombinovateľný"
 msgid "Konkrétní produkty"
 msgstr "Konkrétne produkty"
 
-msgid "Konkrétní produkty"
-msgstr ""
-
 msgid "Kontakt"
 msgstr "Kontakt"
 
@@ -1016,7 +1013,7 @@ msgid "Najdete v kategoriích"
 msgstr "Nájdete v kategóriach"
 
 msgid "Najděte si něco na sebe…"
-msgstr "Nájdite si niečo na seba..."
+msgstr "Napíšte čo hľadáte..."
 
 msgid "Nakupte ještě za"
 msgstr "Nakúpte ešte za"
@@ -1161,9 +1158,6 @@ msgstr "Teraz budete presmerovaný na platobnú bránu GoPay."
 
 msgid "Násobky pro nákup můžete nastavit na kartě hlavní varianty."
 msgstr "Násobky pre nákup môžete nastaviť na karte hlavnej varianty."
-
-msgid "Násobky pro nákup můžete nastavit na kartě hlavní varianty."
-msgstr ""
 
 msgid "Název dárku"
 msgstr "Názov darčeka"
@@ -1476,12 +1470,6 @@ msgstr ""
 
 msgid "Polska"
 msgstr "Poľsko"
-
-msgid "Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili."
-msgstr "Položku %name% je možné nakúpiť po násobkoch %multiplier%, počet kusov vo vašom košíku sme preto upravili."
-
-msgid "Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili."
-msgstr "Položku %name% je možné nakúpiť v minimálnom počte %quantity% ks, počet kusov vo vašom košíku sme preto upravili."
 
 msgid "Pondělí až pátek 8:00 – 16:00"
 msgstr "Pondelok až piatok 8:00 - 16:00"
@@ -2018,7 +2006,7 @@ msgid "Telefon"
 msgstr "Telefón"
 
 msgid "Telefonní číslo musí začínat +XXX"
-msgstr "Vlož telefónne číslo v tvare +XXX 908 111 111"
+msgstr "Zadajte telefónne číslo v tvare +XXX 908 111 111"
 
 msgid "Telephone"
 msgstr "Telefón"
@@ -2028,9 +2016,6 @@ msgstr "Tento zľavový kupón je už v objednávke aplikovaný."
 
 msgid "Tento slevový kupón nelze aplikovat na žádný produkt v košíku."
 msgstr "Tento zľavový kupón nie je možné aplikovať na žiaden produkt v košíku."
-
-msgid "Tento slevový kupón nelze aplikovat na žádný produkt v košíku."
-msgstr ""
 
 msgid "Tento stav není možné smazat, jelikož je na něj navázána funkčnost"
 msgstr "Tento stav nie je možné zmazať, pretože je na neho naviazaná funkčnosť"
