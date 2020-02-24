@@ -285,6 +285,7 @@ class OrderFacade extends BaseOrderFacade
         foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
             $orderData->promoCodesCodes[] = $validEnteredPromoCode->getCode();
             $this->currentPromoCodeFacade->usePromoCode($validEnteredPromoCode);
+            $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($validEnteredPromoCode->getCode());
         }
 
         /** @var \App\Model\Order\Order $order */
