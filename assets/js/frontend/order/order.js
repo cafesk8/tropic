@@ -180,6 +180,8 @@ export default class PaymentTransportRelations {
 
                     if (data.includes('js-email-not-registered-notice')) {
                         $('.js-order-registration-fields').show();
+                    } else {
+                        $('.js-order-registration-fields').hide();
                     }
 
                     new Register().registerNewContent($container);
