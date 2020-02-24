@@ -17,7 +17,7 @@ class Version20190907110005 extends AbstractMigration
         $this->sql('ALTER TABLE order_statuses ADD check_order_ready_status BOOLEAN NOT NULL DEFAULT FALSE');
         $this->sql('ALTER TABLE order_statuses ALTER check_order_ready_status DROP DEFAULT');
 
-        $this->sql('UPDATE order_statuses SET check_order_ready_status = TRUE WHERE id = 2 OR type IN (5,6)');
+        $this->sql('UPDATE order_statuses SET check_order_ready_status = TRUE WHERE id = 2');
     }
 
     /**

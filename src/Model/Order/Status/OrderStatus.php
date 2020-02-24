@@ -21,12 +21,6 @@ class OrderStatus extends BaseOrderStatus
     public const SMS_ALERT_5_DAY_BEFORE = 'smsAlert5dayBefore';
     public const SMS_ALERT_2_DAY_BEFORE = 'smsAlert2dayBefore';
 
-    public const TYPE_ALMOST_READY = 5;
-    public const TYPE_ALMOST_READY_STORE = 6;
-    public const TYPE_READY = 7;
-    public const TYPE_READY_STORE = 8;
-    public const TYPE_RETURNED = 9;
-
     /**
      * @var string|null
      *
@@ -92,32 +86,6 @@ class OrderStatus extends BaseOrderStatus
     public function isCheckOrderReadyStatus(): bool
     {
         return $this->checkOrderReadyStatus;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOrderStatusReady(): bool
-    {
-        return in_array($this->getType(), [self::TYPE_READY, self::TYPE_READY_STORE], true);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setType($type): void
-    {
-        if (in_array($type, [
-            self::TYPE_ALMOST_READY,
-            self::TYPE_ALMOST_READY_STORE,
-            self::TYPE_READY,
-            self::TYPE_READY_STORE,
-            self::TYPE_RETURNED,
-        ], true)) {
-            $this->type = $type;
-        } else {
-            parent::setType($type);
-        }
     }
 
     /**
