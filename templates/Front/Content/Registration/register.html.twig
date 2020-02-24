@@ -26,7 +26,7 @@
                     <div class="wrap-article__row__full">
                         <div class="form-line">
                             <div class="form-line__input form-line__input--full">
-                                <label class="input__label" for="{{ form.customerUserData.email.vars.id }}">
+                                <label class="input-label" for="{{ form.customerUserData.email.vars.id }}">
                                     {{ 'E-mail'|trans }}
                                 </label>
                                 {{ form_widget(form.customerUserData.email, { attr: {'data-request-url' : url('front_registration_exists_email') } }) }}
@@ -90,7 +90,7 @@
                         <div class="wrap-article__row__full">
                             <div class="form-line">
                                 <div class="form-line__input form-line__input--full">
-                                    <label class="input__label" for="{{ form.deliveryAddressData.country.vars.id }}">
+                                    <label class="input-label" for="{{ form.deliveryAddressData.country.vars.id }}">
                                         {{ 'Country'|trans }}
                                     </label>
                                     {{ form_widget(form.deliveryAddressData.country) }}

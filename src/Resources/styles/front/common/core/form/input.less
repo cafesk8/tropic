@@ -45,18 +45,6 @@
         border-top: 0;
     }
 
-    &__label {
-        width: @input-label-width;
-        padding-right: 10px;
-
-        font-size: @input-font-size-label;
-        z-index: 1;
-
-        &--full-width {
-            width: auto;
-        }
-    }
-
     &--textarea {
         height: @input-textarea-height;
         line-height: 20px;
@@ -82,6 +70,18 @@
     .form-input-disabled &,
     &.form-input-disabled {
         background: @input-disabled-background;
+    }
+}
+
+.input-label {
+    width: @input-label-width;
+    padding-right: 10px;
+
+    font-size: @input-font-size-label;
+    z-index: 1;
+
+    &--full-width {
+        width: auto;
     }
 }
 
