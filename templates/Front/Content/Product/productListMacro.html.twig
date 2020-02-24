@@ -43,10 +43,6 @@
                                                 </div>
                                             {% endif %}
                                         </div>
-                                        <div class="list-products__item__info__availability__spacer"></div>
-                                        <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                            {{ productView.availability }}
-                                        </div>
                                     </div>
                                 {% endif %}
 
@@ -55,7 +51,7 @@
                                         <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
                                     {% endfor %}
                                     <div class="list-products__item__info__availability__spacer"></div>
-                                    <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
+                                    <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                         {{ productView.availability }}
                                     </div>
                                 </div>
@@ -115,13 +111,13 @@
                             <a href="{{ productView.action.detailUrl }}" class="{{ listCssClass }}__item__block">
                                 <div class="{{ listCssClass }}__item__image dont-print">
                                     {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
+                                    {% set productFlagIds = productView.flagIds %}
+                                    {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                                    {% if freeTransportAndPaymentFlagId is not null %}
+                                        {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                                    {% endif %}
+                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list', true) }}
                                 </div>
-                                {% set productFlagIds = productView.flagIds %}
-                                {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                {% if freeTransportAndPaymentFlagId is not null %}
-                                    {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
-                                {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list') }}
 
                                 <div class="{{ listCssClass }}__item__info">
                                     <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">

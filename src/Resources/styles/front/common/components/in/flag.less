@@ -25,7 +25,7 @@
     &__item {
         float: right;
         clear: right;
-        display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         width: @in-flag-item-size-small;
@@ -33,7 +33,7 @@
         margin-bottom: @in-flag-item-top-gap;
         text-align: center;
         padding: 0 5px;
-        word-break: break-all;
+        word-break: break-word;
 
         overflow: hidden;
         border-radius: 50%;
@@ -41,15 +41,20 @@
         font-size: 10px;
         font-weight: 700;
 
-        &:last-child {
-            margin-bottom: 0;
-        }
-
         @media @query-lg {
+            display: flex;
             width: @in-flag-item-size;
             height: @in-flag-item-size;
 
             font-size: @in-flag-item-font-size;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &:first-child {
+            display: flex;
         }
 
         &--smaller-text {
@@ -70,6 +75,10 @@
 
                 font-size: 13px;
             }
+        }
+
+        .in-flag--detail & {
+            display: flex;
         }
     }
 }
