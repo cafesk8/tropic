@@ -15,7 +15,7 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 class PromoProduct
 {
     public const TYPE_ALL = 'all';
-    public const TYPE_BUSHMAN_CLUB_MEMBERS_ONLY = 'bushmanClubMembersOnly';
+    public const TYPE_LOYALTY_PROGRAM_MEMBERS_ONLY = 'loyaltyProgramMembersOnly';
 
     /**
      * @var int
@@ -163,7 +163,7 @@ class PromoProduct
     {
         return [
             self::TYPE_ALL => t('všechny zákazníky'),
-            self::TYPE_BUSHMAN_CLUB_MEMBERS_ONLY => t('pouze členy Věrnostního programu'),
+            self::TYPE_LOYALTY_PROGRAM_MEMBERS_ONLY => t('pouze členy Věrnostního programu'),
         ];
     }
 }

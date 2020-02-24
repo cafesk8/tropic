@@ -34,7 +34,7 @@ class Version20190823130557 extends AbstractMigration
                 'INSERT INTO friendly_urls (domain_id, slug, route_name, entity_id, main) VALUES (:domainId, :slug, \'front_article_detail\', :entityId, TRUE)',
                 [
                     'domainId' => $domainId,
-                    'slug' => 'bushmanclub/',
+                    'slug' => 'vernostni-program/',
                     'entityId' => $entityId,
                 ]
             );

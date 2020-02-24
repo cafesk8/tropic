@@ -7,8 +7,8 @@ namespace App\Model\Order\PromoCode;
 use App\Model\Cart\Cart;
 use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
-use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedBushmanClubMembers;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
+use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedLoyaltyProgramMembers;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use DateTime;
@@ -199,8 +199,8 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
             throw new PromoCodeIsOnlyForLoggedCustomers($promoCode->getCode());
         }
 
-        if ($promoCode->isUserTypeBushmanClubMembers() === true && ($customerUser === null || $customerUser->isMemberOfLoyaltyProgram() === false)) {
-            throw new PromoCodeIsOnlyForLoggedBushmanClubMembers($promoCode->getCode());
+        if ($promoCode->isUserTypeLoyaltyProgramMembers() === true && ($customerUser === null || $customerUser->isMemberOfLoyaltyProgram() === false)) {
+            throw new PromoCodeIsOnlyForLoggedLoyaltyProgramMembers($promoCode->getCode());
         }
     }
 
