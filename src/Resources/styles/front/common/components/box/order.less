@@ -91,4 +91,35 @@
             padding-left: @box-order-cart-gap;
         }
     }
+
+    &__registration {
+        padding-left: 72px;
+        max-width: 400px;
+        width: 100%;
+
+        font-size: @font-size-small;
+
+        &__message {
+            padding: 8px 10px;
+            margin-bottom: 11px;
+
+            border-radius: @radius;
+            background-color: lighten(@color-info, 35%);
+        }
+
+        &__block {
+            padding: 8px 10px;
+
+            border-radius: @radius;
+            background-color: @color-light;
+
+            &--without-border-top {
+                border-radius: 0 0 @radius @radius;
+            }
+
+            &--without-border-bottom {
+                border-radius: @radius @radius 0 0;
+            }
+        }
+    }
 }

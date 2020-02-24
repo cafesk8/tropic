@@ -1,5 +1,6 @@
 @form-line-width-label: 160px;
 @form-line-width-input: 400px;
+@form-line-width-input-small: 300px;
 @form-line-gap-between: 10px;
 @form-line-margin-bottom: 11px;
 @form-line-label-field-gap-mobile: 5px;
@@ -7,6 +8,7 @@
 .form-line {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     margin: 0 0 @form-line-margin-bottom;
     padding: 0;
 
@@ -25,6 +27,14 @@
             max-width: @form-line-width-input;
         }
 
+        @media @query-vl {
+            max-width: @form-line-width-input-small;
+        }
+
+        @media @query-xl {
+            max-width: @form-line-width-input;
+        }
+
         &--full {
             max-width: 100%;
             width: 100%;
@@ -40,6 +50,16 @@
         font-size: 0;
         
         @media @query-lg {
+            width: calc(~"@{calc-base} - @{form-line-width-input}");
+            padding-left: 20px;
+        }
+
+        @media @query-vl {
+            width: calc(~"@{calc-base} - @{form-line-width-input-small}");
+        }
+
+        @media @query-xl {
+            padding-left: @input-label-width;
             width: calc(~"@{calc-base} - @{form-line-width-input}");
         }
     }
