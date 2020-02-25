@@ -51,3 +51,5 @@ parameters:
         Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency: App\Model\Pricing\Currency\Currency
     build-version: '0000000000000000'
     securityBcryptCost: 12
+    # All time values are displayed in this timezone (default is PHP timezone)
+    shopsys.display_timezone: Europe/Prague

@@ -13,7 +13,7 @@ use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Form\DatePickerType;
+use Shopsys\FrameworkBundle\Form\DateTimeType;
 use Shopsys\FrameworkBundle\Form\FormRenderingConfigurationExtension;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
@@ -223,13 +223,14 @@ class BlogArticleFormType extends AbstractType
                 'required' => true,
                 'label' => t('Viditelný na homepage'),
             ])
-            ->add('publishDate', DatePickerType::class, [
+            ->add('publishDate', DateTimeType::class, [
                 'required' => true,
                 'constraints' => [
                     new Constraints\NotBlank(['message' => 'Please enter date of creation']),
                 ],
                 'label' => t('Datum publikace'),
                 'data' => $blogArticle === null ? new DateTime() : $blogArticle->getPublishDate(),
+                'invalid_message' => 'Zadejte datum a čas ve formátu DD.MM.RRRR HH:MM:SS (například 24.02.2020 14:05:34)',
             ]);
 
         return $builderSettingsGroup;
