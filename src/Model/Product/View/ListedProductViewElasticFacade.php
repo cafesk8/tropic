@@ -10,6 +10,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade;
+use Shopsys\FrameworkBundle\Model\Product\Collection\ProductCollectionFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
 use Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade;
@@ -37,17 +38,23 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     private $lastVisitedProductsFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Collection\ProductCollectionFacade
+     */
+    private $productCollectionFacade;
+
+    /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Shopsys\FrameworkBundle\Model\Product\TopProduct\TopProductFacade $topProductFacade
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
-     * @param \App\Model\Product\View\ListedProductViewFactory $listedProductViewFactory
+     * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory $listedProductViewFactory
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionViewFacade $productActionViewFacade
      * @param \Shopsys\ReadModelBundle\Image\ImageViewFacade $imageViewFacade
      * @param \App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade $cachedBestsellingProductFacade
      * @param \App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade $lastVisitedProductsFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Collection\ProductCollectionFacade $productCollectionFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -60,11 +67,13 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         ProductActionViewFacade $productActionViewFacade,
         ImageViewFacade $imageViewFacade,
         CachedBestsellingProductFacade $cachedBestsellingProductFacade,
-        LastVisitedProductsFacade $lastVisitedProductsFacade
+        LastVisitedProductsFacade $lastVisitedProductsFacade,
+        ProductCollectionFacade $productCollectionFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
         $this->lastVisitedProductsFacade = $lastVisitedProductsFacade;
+        $this->productCollectionFacade = $productCollectionFacade;
     }
 
     /**
