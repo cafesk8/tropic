@@ -3,4 +3,16 @@
 .in-place {
     margin-bottom: @in-place-margin;
     text-align: center;
+    overflow: hidden;
+
+    font-size: 0;
+    border-radius: @radius;
+
+    &--preCategory, &--category {
+        display: none;
+        
+        @media @query-lg {
+            display: block;
+        }
+    }
 }
