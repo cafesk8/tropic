@@ -92,6 +92,7 @@
         &__block {
             display: flex;
             flex-direction: column;
+            height: 100%;
 
             text-decoration: none;
             color: @color-base;
@@ -116,23 +117,47 @@
             }
         }
 
-        &__info {
+        &__title {
+            display: block;
+            line-height: 24px;
+            margin-bottom: 0;
             padding: 0 15px;
             text-align: center;
 
-            &__title {
-                display: block;
-                line-height: 24px;
-                margin-bottom: 0;
+            font-size: 16px;
+            font-weight: 400;
+            color: @color-gray-dark;
+        }
 
-                font-size: 16px;
-                font-weight: 400;
-                color: @color-gray-dark;
-            }
+        &__info {
+            margin-top: auto;
+            padding: 0 15px;
+            text-align: center;
 
             &__availability {
                 color: @color-brown-light;
                 font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
+
+                &__text {
+                    display: block;
+                    line-height: 18px;
+
+                    font-size: 13px;
+                    font-weight: 700;
+                }
             }
 
             &__price {

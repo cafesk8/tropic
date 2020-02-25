@@ -89,11 +89,13 @@
 
         &__in {
             padding: 0 @list-last-visited-item-padding 3px @list-last-visited-item-padding;
+            height: 100%;
         }
 
         &__block {
             display: flex;
             flex-direction: column;
+            height: 100%;
 
             text-decoration: none;
             color: @color-base;
@@ -113,28 +115,49 @@
             }
         }
 
+        &__title {
+            display: flex;
+            justify-content: center;
+            height: @list-last-visited-item-title-rows*@list-last-visited-item-title-line-height;
+            line-height: @list-last-visited-item-title-line-height;
+            margin-bottom: 0;
+            width: 100%;
+            text-align: center;
+            overflow: hidden;
+
+            font-size: @font-size;
+            font-weight: 400;
+            color: @color-gray-dark;
+        }
+
         &__info {
             text-align: center;
-
-            &__title {
-                display: flex;
-                justify-content: center;
-                height: @list-last-visited-item-title-rows*@list-last-visited-item-title-line-height;
-                line-height: @list-last-visited-item-title-line-height;
-                margin-bottom: 0;
-                width: 100%;
-                text-align: center;
-                overflow: hidden;
-
-                font-size: @font-size;
-                font-weight: 400;
-                color: @color-gray-dark;
-            }
+            margin-top: auto;
 
             &__availability {
                 color: @color-brown-light;
-                font-family: @font-alt;
                 font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
+
+                &__text {
+                    display: block;
+                    line-height: 18px;
+
+                    font-size: 13px;
+                    font-weight: 700;
+                }
             }
 
             &__price {

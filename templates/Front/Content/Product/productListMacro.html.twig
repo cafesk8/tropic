@@ -119,11 +119,11 @@
                                     {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list', true) }}
                                 </div>
 
-                                <div class="{{ listCssClass }}__item__info">
-                                    <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__info__title">
-                                        {{ productView.name|striptags|raw }}
-                                    <{{ '/' ~ productHeadingTagName|default('h2') }}>
+                                <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__title">
+                                    {{ productView.name|striptags|raw }}
+                                <{{ '/' ~ productHeadingTagName|default('h2') }}>
 
+                                <div class="{{ listCssClass }}__item__info">
                                     {% set productSellingPrice = productView.sellingPrice %}
 
                                     {% if productSellingPrice is not null %}
@@ -151,8 +151,8 @@
                                             <span class="in-badge">{{ parameterValue }}</span>
                                         {% endfor %}
 
-                                        <div class="list-products__item__info__availability__spacer"></div>
-                                        <div class="list-products__item__info__availability__text" style="color: #7bbd70;">
+                                        <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
+                                        <div class="{{ listCssClass }}__item__info__availability__text" style="color: #7bbd70;">
                                             {{ productView.availability }}
                                         </div>
                                     </div>
