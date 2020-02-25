@@ -162,7 +162,7 @@
                 {% do form.payment.setRendered %}
                 {{ 'Nothing to choose from'|trans }}
             {% endfor %}
-            {% if form.transport|length > 3 %}
+            {% if form.payment|length > 3 %}
                 <div class="box-chooser__more js-toggle-additional-payments">
                     <p class="box-chooser__more__text">
                         <span class="box-chooser__more__text__show">{{ 'Zobrazit další způsoby platby'|trans }}</span>
