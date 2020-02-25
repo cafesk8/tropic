@@ -254,19 +254,22 @@
           "visible": {
             "type": "boolean"
           }
-        }
-      },
-      "main_variant_group_products": {
-        "type": "nested",
-        "properties": {
-          "pricing_group_id": {
-            "type": "integer"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "name": {
-            "type": "text"
+        },
+        "main_variant_group_products": {
+          "type": "nested",
+          "properties": {
+            "pricing_group_id": {
+              "type": "integer"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "text"
+            },
+            "detail_url": {
+              "type": "text"
+            }
           }
         }
       },
