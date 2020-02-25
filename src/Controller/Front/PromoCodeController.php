@@ -94,6 +94,7 @@ class PromoCodeController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function applyAction(Request $request)
     {
@@ -109,7 +110,10 @@ class PromoCodeController extends FrontBaseController
         $customerUser = $this->getUser();
 
         try {
-            $this->currentPromoCodeFacade->checkApplicability($promoCode, $cart);
+            if ($promoCode instanceof PromoCode) {
+                $this->currentPromoCodeFacade->checkApplicability($promoCode, $cart);
+            }
+
             $this->currentPromoCodeFacade->setEnteredPromoCode($promoCodeCode, $cart->getTotalWatchedPriceOfProducts(), $customerUser);
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
