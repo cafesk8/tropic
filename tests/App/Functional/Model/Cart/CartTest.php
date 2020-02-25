@@ -7,14 +7,14 @@ namespace Tests\App\Functional\Model\Cart;
 use App\DataFixtures\Demo\UnitDataFixture;
 use  App\Model\Cart\Cart;
 use App\Model\Cart\Item\CartItem;
+use App\Model\Product\Availability\Availability;
+use App\Model\Product\Availability\AvailabilityData;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatData;
-use Shopsys\FrameworkBundle\Model\Product\Availability\Availability;
-use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Tests\App\Test\TransactionFunctionalTestCase;
 

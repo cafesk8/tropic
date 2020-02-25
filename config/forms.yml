@@ -82,3 +82,7 @@ services:
     App\Form\Admin\CountryFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Country\CountryFormType }
+
+    App\Form\Admin\AvailabilityFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\Availability\AvailabilityFormType }

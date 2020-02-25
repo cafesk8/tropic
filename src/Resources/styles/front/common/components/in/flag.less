@@ -1,5 +1,6 @@
 @in-flag-item-top-gap: 12px;
 @in-flag-item-size: 70px;
+@in-flag-item-size-medium: 60px;
 @in-flag-item-size-small: 46px;
 @in-flag-item-font-size: 18px;
 @in-flag-item-font-size-small: @font-size;
@@ -24,13 +25,15 @@
     &__item {
         float: right;
         clear: right;
-        display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         width: @in-flag-item-size-small;
         height: @in-flag-item-size-small;
         margin-bottom: @in-flag-item-top-gap;
         text-align: center;
+        padding: 0 5px;
+        word-break: break-word;
 
         overflow: hidden;
         border-radius: 50%;
@@ -38,15 +41,20 @@
         font-size: 10px;
         font-weight: 700;
 
-        &:last-child {
-            margin-bottom: 0;
-        }
-
         @media @query-lg {
+            display: flex;
             width: @in-flag-item-size;
             height: @in-flag-item-size;
 
             font-size: @in-flag-item-font-size;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &:first-child {
+            display: flex;
         }
 
         &--smaller-text {
@@ -58,6 +66,19 @@
         .in-flag--static &  {
             float: left;
             clear: none;
+        }
+
+        .in-flag--in-list &  {
+            @media @query-md {
+                width: @in-flag-item-size-medium;
+                height: @in-flag-item-size-medium;
+
+                font-size: 13px;
+            }
+        }
+
+        .in-flag--detail & {
+            display: flex;
         }
     }
 }
