@@ -1,0 +1,89 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block gtm_specific_script_purchase %}
+{% endblock %}
+
+{% block orderGtmMeasuring %}
+{% endblock %}
+
+{% block meta_robots -%}
+    <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block title %}
+    {{ 'Změna způsobu platby objednávky'|trans }}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block progress_bar %}
+{% endblock %}
+
+{% block main_content %}
+    {# TODO KOD: https://app.yodiz.com/plan/pages/board.vz?cid=10273#/app/tk-41399 Naformátovat změnu platby, když uživatel nezaplatí přes GoPay a vrátí se zpět do shopu #}
+    <div class="web__line">
+        <div class="web__container">
+            {{ form_start(form) }}
+            <div class="display-none">{{ form_errors(form.payment) }}</div>
+
+            <div class="wrap-box wrap-box--with-form">
+                <div class="wrap-box__header">
+                    <h2 class="wrap-box__header__title">
+                        {{ 'Během placení objednávky došlo k potížím'|trans }}
+                    </h2>
+                </div>
+                <div class="wrap-box__in">
+                    <p>
+                        {% trans with {'%orderNumber%': orderNumber} %}
+                            Pro úspěšné dokončení objednávky č. <strong>%orderNumber%</strong> zkuste zopakovat platbu,
+                        {% endtrans %}
+                        {{ 'nebo si zvolte jiný způsob platby'|trans }}
+                    </p>
+                </div>
+                <div class="wrap-box__bottom">
+                    <div class="in-action in-action--reverse in-action--in-panel in-action--center">
+                        <div class="in-action__right js-order-payments">
+                            {% set bankTransferRendered = false %}
+                            {% set goPayPaymentId = null %}
+                            {% set goPayFormChild = null %}
+                            {% set existsGoPayBankTransfer = false %}
+
+                            {% for child in form.payment %}
+                                {% set choice = form.payment.vars.choices[child.vars.name] %}
+                                {% set payment = choice.data %}
+                                {% set goPayPaymentMethod = payment.getGoPayPaymentMethod() %}
+                                {% set isGoPayBankTransfer = goPayPaymentMethod != null and goPayPaymentMethod.identifier == goPayBankTransferIdentifier %}
+
+                                {% if payment is not same as (unsuccessfulPayment) %}
+                                    <label for="{{child.vars.id}}" class="btn">
+                                        {{ form_widget(child, { attr: { class: 'display-none js-order-change-payment', 'data-id': payment.id} }) }}
+                                        <span class="payment-name">{{ payment.name }}</span>
+                                        <span class="payment-price">{{ payment.getPrice(getDomain().id).price|priceText }}</span>
+                                    </label>
+                                    {{ d(payment) }}
+                                {% endif %}
+                            {% endfor %}
+                            <label class="btn">
+                                {% for child in form.payment %}
+                                    {% set choice = form.payment.vars.choices[child.vars.name] %}
+                                    {% set payment = choice.data %}
+                                    {% if payment is same as (unsuccessfulPayment)  %}
+                                        {{ form_widget(child, { attr: { class: 'display-none js-order-change-payment', 'data-id': payment.id} }) }}
+                                        {{ 'Opakovat platbu'|trans }}
+                                    {% endif %}
+                                {% endfor %}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if not bankTransferRendered %}
+                {% do form.goPayBankSwift.setRendered %}
+            {% endif %}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
