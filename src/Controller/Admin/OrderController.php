@@ -89,6 +89,7 @@ class OrderController extends BaseOrderController
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
     {
@@ -113,7 +114,7 @@ class OrderController extends BaseOrderController
                     ]
                 );
                 return $this->redirectToRoute('admin_order_list');
-            } catch (\ Shopsys\FrameworkBundle\Model\Customer\Exception\CustomerUserNotFoundException $e) {
+            } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\CustomerUserNotFoundException $e) {
                 $this->getFlashMessageSender()->addErrorFlash(
                     t('Entered customer not found, please check entered data.')
                 );
