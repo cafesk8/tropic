@@ -112,10 +112,13 @@ class PersonalInfoFormType extends AbstractType
                 'first_options' => [
                     'constraints' => [
                         new Constraints\NotBlank([
-                            'groups' => self::VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED,
+                            'groups' => [self::VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED],
                             'message' => 'Please enter password',
                         ]),
-                        new Constraints\Length(['min' => 6, 'minMessage' => 'Password must be longer than {{ limit }} characters']),
+                        new Constraints\Length([
+                            'min' => 6,
+                            'minMessage' => 'Password must be longer than {{ limit }} characters',
+                        ]),
                     ],
                 ],
                 'invalid_message' => 'Passwords do not match',
@@ -361,9 +364,7 @@ class PersonalInfoFormType extends AbstractType
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
                     }
 
-                    if (DomainHelper::isGermanDomain($this->domain)
-                        || DomainHelper::isSlovakDomain($this->domain)
-                    ) {
+                    if (DomainHelper::isGermanDomain($this->domain) || DomainHelper::isSlovakDomain($this->domain)) {
                         $validationGroups[] = self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED;
                     }
 
