@@ -51,6 +51,7 @@
                                             {{ form_row(form.password.first, {
                                                 label: 'Password'|trans,
                                                 inputModificationClass: 'form-line__input--full',
+                                                errorModificationClass: 'form-line__error--full',
                                                 errors_attr: { class: 'form-error--under' },
                                                 icon: {
                                                     class: 'in-icon in-icon--info js-tooltip',
@@ -60,6 +61,7 @@
                                             {{ form_row(form.password.second, {
                                                 label: 'Password again'|trans,
                                                 inputModificationClass: 'form-line__input--full',
+                                                errorModificationClass: 'form-line__error--full',
                                                 errors_attr: { class: 'form-error--under' }
                                             }) }}
                                         </div>

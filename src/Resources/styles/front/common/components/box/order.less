@@ -93,11 +93,14 @@
     }
 
     &__registration {
-        padding-left: 72px;
         max-width: 400px;
         width: 100%;
 
         font-size: @font-size-small;
+
+        @media @query-sm {
+            padding-left: @input-label-width;
+        }
 
         &__message {
             padding: 8px 10px;
