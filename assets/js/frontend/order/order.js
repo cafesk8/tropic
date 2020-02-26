@@ -208,6 +208,9 @@ export default class PaymentTransportRelations {
         var $toggleAdditionalPaymentsButton = $container.filterAllNodes('.js-toggle-additional-payments');
         var $additionalTransports = $container.filterAllNodes('.js-additional-transport');
         var $additionalPayments = $container.filterAllNodes('.js-additional-payment');
+        const $registrationCheckbox = $container.filterAllNodes('#order_personal_info_form_registration');
+        const $registrationFields = $container.filterAllNodes('.js-order-registration-fields');
+        const $passwordInputs = $container.filterAllNodes('#order_personal_info_form_password_first, #order_personal_info_form_password_second');
         const paymentTransportRelations = new PaymentTransportRelations();
 
         $transportInputs.change((event) => paymentTransportRelations.onTransportChange(event, paymentTransportRelations));
@@ -230,6 +233,16 @@ export default class PaymentTransportRelations {
             $additionalPayments.toggleClass('display-none');
             $toggleAdditionalPaymentsButton.toggleClass('active');
         });
+
+        $registrationCheckbox.change(function () {
+            if (!$(this).is(':checked')) {
+                $passwordInputs.val('');
+            }
+        });
+
+        if ($registrationCheckbox.is(':checked')) {
+            $registrationFields.show();
+        }
     }
 }
 
