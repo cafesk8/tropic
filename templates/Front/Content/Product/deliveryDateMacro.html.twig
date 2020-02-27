@@ -22,6 +22,6 @@
         {% elseif showNotAvailable %}
             <span class="box-detail__availability__date box-detail__availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
         {% else %}
-            <span class="box-detail__availability__date">{{ product.calculatedAvailability.name }}</span>
+            <span class="box-detail__availability__date" style="color: {{ product.calculatedAvailability.rgbColor }}">{{ product.calculatedAvailability.name }}</span>
         {% endif %}
 {% endmacro %}

@@ -83,12 +83,16 @@
         }
 
         &__in {
-            padding: 0 @list-accessories-products-item-padding 3px @list-accessories-products-item-padding;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: @list-accessories-products-item-padding;
         }
 
         &__block {
             display: flex;
             flex-direction: column;
+            height: 100%;
 
             text-decoration: none;
             color: @color-base;
@@ -99,39 +103,61 @@
             position: relative;
             align-self: center;
             margin-bottom: @list-accessories-products-item-image-bottom-gap;
-            height: @list-accessories-products-item-image-size;
-            width: @list-accessories-products-item-image-size;
+            height: @list-accessories-products-item-image-size/2;
+            width: 100%;
+
+            @media @query-vl {
+                height: @list-accessories-products-item-image-size;
+            }
+
 
             img {
                 .center-image();
                 max-width: @list-accessories-products-item-image-size/2;
-                max-height: @list-accessories-products-item-image-size/2;
-
-                @media @query-vl {
-                    max-width: @list-accessories-products-item-image-size;
-                    max-height: @list-accessories-products-item-image-size;
-                }
             }
         }
 
-        &__info {
+        &__title {
+            display: block;
+            line-height: 24px;
+            margin-bottom: 0;
             padding: 0 15px;
             text-align: center;
 
-            &__title {
-                display: block;
-                line-height: 24px;
-                margin-bottom: 0;
+            font-size: 16px;
+            font-weight: 400;
+            color: @color-gray-dark;
+        }
 
-                font-size: 16px;
-                font-weight: 400;
-                color: @color-gray-dark;
-            }
+        &__info {
+            margin-top: auto;
+            padding: 0 15px;
+            text-align: center;
 
             &__availability {
-                display: none;
                 color: @color-brown-light;
                 font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
+
+                &__text {
+                    display: block;
+                    line-height: 18px;
+
+                    font-size: 13px;
+                    font-weight: 700;
+                }
             }
 
             &__price {

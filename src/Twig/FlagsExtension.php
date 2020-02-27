@@ -46,15 +46,17 @@ class FlagsExtension extends AbstractExtension
     /**
      * @param int[] $flagIds
      * @param string $classAddition
+     * @param bool $onlyFirst
      * @return string
      */
-    public function renderFlagsByIds(array $flagIds, string $classAddition = ''): string
+    public function renderFlagsByIds(array $flagIds, string $classAddition = '', bool $onlyFirst = false): string
     {
         return $this->templating->render(
             'Front/Inline/Product/productFlags.html.twig',
             [
                 'flags' => $this->flagsProvider->getFlagsByIds($flagIds),
                 'classAddition' => $classAddition,
+                'onlyFirst' => $onlyFirst,
             ]
         );
     }

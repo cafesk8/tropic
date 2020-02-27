@@ -78,11 +78,13 @@
         color: @color-brown;
 
         &__in {
+            height: 100%;
             padding: 0 @list-basket-additionals-item-padding 3px @list-basket-additionals-item-padding;
         }
 
         &__block {
             display: flex;
+            height: 100%;
             flex-direction: column;
 
             text-decoration: none;
@@ -102,24 +104,48 @@
             }
         }
 
-        &__info {
+        &__title {
+            display: block;
+            height: @list-top-products-item-title-rows*@list-top-products-item-title-line-height;
+            line-height: @list-top-products-item-title-line-height;
+            margin-bottom: 0;
             padding: 0 15px;
             text-align: center;
+            overflow: hidden;
 
-            &__title {
-                display: block;
-                height: @list-top-products-item-title-rows*@list-top-products-item-title-line-height;
-                line-height: @list-top-products-item-title-line-height;
-                margin-bottom: 0;
-                overflow: hidden;
+            font-weight: 400;
+            color: @color-gray-dark;
+        }
 
-                font-weight: 400;
-                color: @color-gray-dark;
-            }
+        &__info {
+            margin-top: auto;
+            padding: 0 15px;
+            text-align: center;
 
             &__availability {
                 color: @color-brown-light;
                 font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
+
+                &__text {
+                    display: block;
+                    line-height: 18px;
+
+                    font-size: 13px;
+                    font-weight: 700;
+                }
             }
 
             &__price {

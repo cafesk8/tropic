@@ -23,7 +23,7 @@
                         {{ noimage({ alt: product.name }) }}
                     {% endif %}
                 </div>
-                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), '') }}
+                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail') }}
 
                 {% if showGallery %}
                     <div class="box-gallery dont-print js-gallery">

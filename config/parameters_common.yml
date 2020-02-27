@@ -1,6 +1,6 @@
 parameters:
     database_driver: pdo_pgsql
-    database_server_version: 10.5
+    database_server_version: 12.1
     migration_database_driver: pdo_mysql
     migration_database_server_version: 5.5.62
     # Symfony's FrameworkBundle sets throw_at (error_reporting) to 0 in production by default
@@ -49,5 +49,8 @@ parameters:
         Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus: App\Model\Order\Status\OrderStatus
         Shopsys\FrameworkBundle\Model\Country\Country: App\Model\Country\Country
         Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency: App\Model\Pricing\Currency\Currency
+        Shopsys\FrameworkBundle\Model\Product\Availability\Availability: App\Model\Product\Availability\Availability
     build-version: '0000000000000000'
     securityBcryptCost: 12
+    # All time values are displayed in this timezone (default is PHP timezone)
+    shopsys.display_timezone: Europe/Prague

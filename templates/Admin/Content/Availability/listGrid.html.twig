@@ -1,0 +1,7 @@
+{% extends '@!ShopsysFramework/Admin/Content/Availability/listGrid.html.twig' %}
+
+{% block grid_value_cell_id_rgbColor %}
+    {% if value is not empty %}
+        <span class="in-pill" style="background-color: {{ value }};">{{ value }}</span>
+    {% endif %}
+{% endblock %}

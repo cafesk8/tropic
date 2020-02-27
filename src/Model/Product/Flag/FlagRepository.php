@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository as BaseFlagReposit
 /**
  * @method \App\Model\Product\Flag\Flag|null findById(int $flagId)
  * @method \App\Model\Product\Flag\Flag getById(int $flagId)
- * @method \App\Model\Product\Flag\Flag[] getAll()
  */
 class FlagRepository extends BaseFlagRepository
 {
@@ -23,5 +22,13 @@ class FlagRepository extends BaseFlagRepository
             ->andWhere('f.id NOT IN(:exceptIds)')
             ->setParameter('exceptIds', $exceptIds)
             ->getQuery()->getResult();
+    }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getAll()
+    {
+        return $this->getFlagRepository()->findBy([], ['position' => 'asc']);
     }
 }

@@ -56,7 +56,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository $productAccessoryRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
+     * @param \App\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
      * @param \App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository $productFilterCountDataElasticsearchRepository
      * @param \App\Model\Product\Search\ProductFilterDataToQueryTransformer $productFilterDataToQueryTransformer
      * @param \App\Model\Product\Search\FilterQueryFactory $filterQueryFactory
@@ -110,7 +110,7 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param string $orderingModeId
      * @param int $page
      * @param int $limit
-     * @return \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery
+     * @return \App\Model\Product\Search\FilterQuery
      */
     protected function createFilterQueryWithProductFilterData(BaseProductFilterData $productFilterData, $orderingModeId, $page, $limit): FilterQuery
     {
