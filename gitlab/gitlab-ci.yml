@@ -125,6 +125,7 @@ review:stop:
 deploy:production:
     <<: *deploy
     when: manual
+    allow_failure: false
     resource_group: deploy_production
     variables:
         DOCKER_HOST: tcp://docker:2375/
