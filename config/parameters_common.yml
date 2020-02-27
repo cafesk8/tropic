@@ -1,6 +1,6 @@
 parameters:
     database_driver: pdo_pgsql
-    database_server_version: 10.5
+    database_server_version: 12.1
     migration_database_driver: pdo_mysql
     migration_database_server_version: 5.5.62
     # Symfony's FrameworkBundle sets throw_at (error_reporting) to 0 in production by default

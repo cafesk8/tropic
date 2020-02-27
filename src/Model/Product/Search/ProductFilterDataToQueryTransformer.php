@@ -11,19 +11,19 @@ use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery;
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer as BaseProductFilterDataToQueryTransformer;
 
 /**
- * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addBrandsToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
- * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addFlagsToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
- * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addParametersToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
- * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addStockToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery)
- * @method \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery addPricesToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @method \App\Model\Product\Search\FilterQuery addBrandsToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \App\Model\Product\Search\FilterQuery addFlagsToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \App\Model\Product\Search\FilterQuery addParametersToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \App\Model\Product\Search\FilterQuery addStockToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $filterQuery)
+ * @method \App\Model\Product\Search\FilterQuery addPricesToQuery(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $filterQuery, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  */
 class ProductFilterDataToQueryTransformer extends BaseProductFilterDataToQueryTransformer
 {
     /**
      * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $filterQuery
+     * @param \App\Model\Product\Search\FilterQuery $filterQuery
      * @param \App\Model\Product\Parameter\Parameter[] $distinguishingParameters
-     * @return \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery
+     * @return \App\Model\Product\Search\FilterQuery
      */
     public function addDistinguishingParametersToQuery(ProductFilterData $productFilterData, FilterQuery $filterQuery, array $distinguishingParameters): FilterQuery
     {
