@@ -99,195 +99,193 @@
     }
   },
   "mappings": {
-    "_doc": {
-      "properties": {
-        "name": {
-          "type": "text",
-          "analyzer": "stemming",
-          "fields": {
-            "full_with_diacritic": {
-              "type": "text",
-              "analyzer": "full_with_diacritic"
-            },
-            "full_without_diacritic": {
-              "type": "text",
-              "analyzer": "full_without_diacritic"
-            },
-            "edge_ngram_with_diacritic": {
-              "type": "text",
-              "analyzer": "edge_ngram_with_diacritic",
-              "search_analyzer": "full_with_diacritic"
-            },
-            "edge_ngram_without_diacritic": {
-              "type": "text",
-              "analyzer": "edge_ngram_without_diacritic",
-              "search_analyzer": "full_without_diacritic"
-            },
-            "keyword": {
-              "type": "icu_collation_keyword",
-              "language": "sk",
-              "index": false
-            }
+    "properties": {
+      "name": {
+        "type": "text",
+        "analyzer": "stemming",
+        "fields": {
+          "full_with_diacritic": {
+            "type": "text",
+            "analyzer": "full_with_diacritic"
+          },
+          "full_without_diacritic": {
+            "type": "text",
+            "analyzer": "full_without_diacritic"
+          },
+          "edge_ngram_with_diacritic": {
+            "type": "text",
+            "analyzer": "edge_ngram_with_diacritic",
+            "search_analyzer": "full_with_diacritic"
+          },
+          "edge_ngram_without_diacritic": {
+            "type": "text",
+            "analyzer": "edge_ngram_without_diacritic",
+            "search_analyzer": "full_without_diacritic"
+          },
+          "keyword": {
+            "type": "icu_collation_keyword",
+            "language": "sk",
+            "index": false
           }
-        },
-        "catnum": {
-          "type": "text",
-          "analyzer": "keyword",
-          "fields": {
-            "edge_ngram": {
-              "type": "text",
-              "analyzer": "edge_ngram_unanalyzed",
-              "search_analyzer": "keyword"
-            }
+        }
+      },
+      "catnum": {
+        "type": "text",
+        "analyzer": "keyword",
+        "fields": {
+          "edge_ngram": {
+            "type": "text",
+            "analyzer": "edge_ngram_unanalyzed",
+            "search_analyzer": "keyword"
           }
-        },
-        "partno": {
-          "type": "text",
-          "analyzer": "keyword",
-          "fields": {
-            "edge_ngram": {
-              "type": "text",
-              "analyzer": "edge_ngram_unanalyzed",
-              "search_analyzer": "keyword"
-            }
+        }
+      },
+      "partno": {
+        "type": "text",
+        "analyzer": "keyword",
+        "fields": {
+          "edge_ngram": {
+            "type": "text",
+            "analyzer": "edge_ngram_unanalyzed",
+            "search_analyzer": "keyword"
           }
-        },
-        "ean": {
-          "type": "text",
-          "analyzer": "keyword",
-          "fields": {
-            "edge_ngram": {
-              "type": "text",
-              "analyzer": "edge_ngram_unanalyzed",
-              "search_analyzer": "keyword"
-            }
+        }
+      },
+      "ean": {
+        "type": "text",
+        "analyzer": "keyword",
+        "fields": {
+          "edge_ngram": {
+            "type": "text",
+            "analyzer": "edge_ngram_unanalyzed",
+            "search_analyzer": "keyword"
           }
-        },
-        "short_description": {
-          "type": "text",
-          "analyzer": "edge_ngram_without_diacritic",
-          "search_analyzer": "full_without_diacritic_html"
-        },
-        "description": {
-          "type": "text",
-          "analyzer": "edge_ngram_without_diacritic_html",
-          "search_analyzer": "full_without_diacritic_html"
-        },
-        "flags": {
-          "type": "integer"
-        },
-        "brand": {
-          "type": "integer"
-        },
-        "categories": {
-          "type": "integer"
-        },
-        "prices": {
-          "type": "nested",
-          "properties": {
-            "pricing_group_id": {
-              "type": "integer"
-            },
-            "price_with_vat": {
-              "type": "float"
-            },
-            "price_without_vat": {
-              "type": "float"
-            },
-            "vat": {
-              "type": "float"
-            },
-            "price_from": {
-              "type": "boolean"
-            }
+        }
+      },
+      "short_description": {
+        "type": "text",
+        "analyzer": "edge_ngram_without_diacritic",
+        "search_analyzer": "full_without_diacritic_html"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "edge_ngram_without_diacritic_html",
+        "search_analyzer": "full_without_diacritic_html"
+      },
+      "flags": {
+        "type": "integer"
+      },
+      "brand": {
+        "type": "integer"
+      },
+      "categories": {
+        "type": "integer"
+      },
+      "prices": {
+        "type": "nested",
+        "properties": {
+          "pricing_group_id": {
+            "type": "integer"
+          },
+          "price_with_vat": {
+            "type": "float"
+          },
+          "price_without_vat": {
+            "type": "float"
+          },
+          "vat": {
+            "type": "float"
+          },
+          "price_from": {
+            "type": "boolean"
           }
-        },
-        "default_price": {
-          "type": "nested",
-          "properties": {
-            "price_with_vat": {
-              "type": "float"
-            },
-            "price_without_vat": {
-              "type": "float"
-            }
+        }
+      },
+      "default_price": {
+        "type": "nested",
+        "properties": {
+          "price_with_vat": {
+            "type": "float"
+          },
+          "price_without_vat": {
+            "type": "float"
           }
-        },
-        "selling_from": {
-          "type": "date"
-        },
-        "action_price": {
-          "type": "float"
-        },
-        "in_stock": {
-          "type": "boolean"
-        },
-        "parameters": {
-          "type": "nested",
-          "properties": {
-            "parameter_id": {
-              "type": "integer"
-            },
-            "parameter_value_id": {
-              "type": "integer"
-            }
+        }
+      },
+      "selling_from": {
+        "type": "date"
+      },
+      "action_price": {
+        "type": "float"
+      },
+      "in_stock": {
+        "type": "boolean"
+      },
+      "parameters": {
+        "type": "nested",
+        "properties": {
+          "parameter_id": {
+            "type": "integer"
+          },
+          "parameter_value_id": {
+            "type": "integer"
           }
-        },
-        "ordering_priority": {
-          "type": "integer"
-        },
-        "calculated_selling_denied": {
-          "type": "boolean"
-        },
-        "selling_denied": {
-          "type": "boolean"
-        },
-        "availability": {
-          "type": "text"
-        },
-        "main_variant": {
-          "type": "boolean"
-        },
-        "main_variant_id": {
-          "type": "integer"
-        },
-        "detail_url": {
-          "type": "text"
-        },
-        "visibility": {
-          "type": "nested",
-          "properties": {
-            "pricing_group_id": {
-              "type": "integer"
-            },
-            "visible": {
-              "type": "boolean"
-            }
+        }
+      },
+      "ordering_priority": {
+        "type": "integer"
+      },
+      "calculated_selling_denied": {
+        "type": "boolean"
+      },
+      "selling_denied": {
+        "type": "boolean"
+      },
+      "availability": {
+        "type": "text"
+      },
+      "main_variant": {
+        "type": "boolean"
+      },
+      "main_variant_id": {
+        "type": "integer"
+      },
+      "detail_url": {
+        "type": "text"
+      },
+      "visibility": {
+        "type": "nested",
+        "properties": {
+          "pricing_group_id": {
+            "type": "integer"
+          },
+          "visible": {
+            "type": "boolean"
           }
-        },
-        "main_variant_group_products": {
-          "type": "nested",
-          "properties": {
-            "pricing_group_id": {
-              "type": "integer"
-            },
-            "id": {
-              "type": "integer"
-            },
-            "name": {
-              "type": "text"
-            }
+        }
+      },
+      "main_variant_group_products": {
+        "type": "nested",
+        "properties": {
+          "pricing_group_id": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "text"
           }
-        },
-        "second_distinguishing_parameter_values": {
-          "type": "nested",
-          "properties": {
-            "pricing_group_id": {
-              "type": "integer"
-            },
-            "value": {
-              "type": "text"
-            }
+        }
+      },
+      "second_distinguishing_parameter_values": {
+        "type": "nested",
+        "properties": {
+          "pricing_group_id": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "text"
           }
         }
       }

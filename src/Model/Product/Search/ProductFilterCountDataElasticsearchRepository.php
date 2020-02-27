@@ -15,10 +15,11 @@ use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticse
 use Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer;
 
 /**
- * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataInSearch(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $baseFilterQuery)
- * @method int[] calculateFlagsPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $plusFlagsQuery)
- * @method int[] calculateBrandsPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $plusFlagsQuery)
- * @method replaceParametersPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $countData, \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $plusParametersQuery)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData getProductFilterCountDataInSearch(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $baseFilterQuery)
+ * @method int[] calculateFlagsPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $plusFlagsQuery)
+ * @method int[] calculateBrandsPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Product\Search\FilterQuery $plusFlagsQuery)
+ * @method replaceParametersPlusNumbers(\App\Model\Product\Filter\ProductFilterData $productFilterData, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $countData, \App\Model\Product\Search\FilterQuery $plusParametersQuery)
+ * @method array calculateParameterPlusNumbers(\Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData $parameterFilterData, \App\Model\Product\Search\FilterQuery $parameterFilterQuery)
  */
 class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCountDataElasticsearchRepository
 {
@@ -50,7 +51,7 @@ class ProductFilterCountDataElasticsearchRepository extends BaseProductFilterCou
 
     /**
      * @param \App\Model\Product\Filter\ProductFilterData $productFilterData
-     * @param \Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery $baseFilterQuery
+     * @param \App\Model\Product\Search\FilterQuery $baseFilterQuery
      * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData
      */
     public function getProductFilterCountDataInCategory(ProductFilterData $productFilterData, FilterQuery $baseFilterQuery): ProductFilterCountData
