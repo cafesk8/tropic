@@ -8,7 +8,6 @@ use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Cart\Item\CartItem;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
@@ -52,11 +51,6 @@ class CartFacade extends BaseCartFacade
     protected $orderGiftFacade;
 
     /**
-     * @var \App\Model\Product\ProductFacade
-     */
-    private $productFacade;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
@@ -69,7 +63,6 @@ class CartFacade extends BaseCartFacade
      * @param \App\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
-     * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      */
     public function __construct(
@@ -85,7 +78,6 @@ class CartFacade extends BaseCartFacade
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
         CartWatcherFacade $cartWatcherFacade,
-        ProductFacade $productFacade,
         OrderGiftFacade $orderGiftFacade
     ) {
         parent::__construct(
@@ -103,7 +95,6 @@ class CartFacade extends BaseCartFacade
         );
 
         $this->flashMessageSender = $flashMessageSender;
-        $this->productFacade = $productFacade;
         $this->orderGiftFacade = $orderGiftFacade;
     }
 
@@ -280,59 +271,6 @@ class CartFacade extends BaseCartFacade
         }
 
         return $cart;
-    }
-
-    /**
-     * @return \App\Model\Cart\Item\CartItem[]
-     */
-    public function getPromoProducts(): array
-    {
-        $cart = $this->findCartOfCurrentCustomerUser();
-
-        if ($cart === null) {
-            return [];
-        }
-
-        return $cart->getPromoProductItems();
-    }
-
-    /**
-     * @param \App\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
-     * @param mixed[] $selectedPromoProducts
-     */
-    public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
-    {
-        $cart = $this->findCartOfCurrentCustomerUser();
-
-        if ($cart === null) {
-            return;
-        }
-
-        $this->removeAllPromoProductsItems($cart);
-
-        $promoProductItems = $cart->updatePromoProductsItems(
-            $this->cartItemFactory,
-            $this->productFacade,
-            $promoProductsInCart,
-            $selectedPromoProducts
-        );
-        foreach ($promoProductItems as $promoProductItem) {
-            $this->em->persist($promoProductItem);
-        }
-
-        $this->em->flush();
-    }
-
-    /**
-     * @param \App\Model\Cart\Cart $cart
-     */
-    private function removeAllPromoProductsItems(Cart $cart): void
-    {
-        $allRemovedPromoProductItems = $cart->removeAllPromoProductsAndGetThem();
-        foreach ($allRemovedPromoProductItems as $removedPromoProductItem) {
-            $this->em->remove($removedPromoProductItem);
-        }
-        $this->em->flush();
     }
 
     /**

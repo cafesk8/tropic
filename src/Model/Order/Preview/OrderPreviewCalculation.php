@@ -94,7 +94,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param string|null $promoCodeDiscountPercent
      * @param \App\Model\Order\PromoCode\PromoCode|null $promoCode
      * @param \App\Model\Cart\Item\CartItem[]|null $giftsInCart
-     * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
      * @param \App\Model\Product\Product|null $orderGiftProduct
      * @return \App\Model\Order\Preview\OrderPreview
@@ -109,7 +108,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $promoCode = null,
         ?array $giftsInCart = [],
-        ?array $promoProductsInCart = [],
         array $promoCodes = [],
         ?Product $orderGiftProduct = null
     ): BaseOrderPreview {
@@ -127,8 +125,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
 
         $productsPrice = $this->getProductsPriceAffectedByMultiplePromoCodes($quantifiedItemsPrices, $quantifiedItemsDiscountsIndexedByPromoCodeId);
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
-        $totalPromoProductPrice = $this->getTotalPromoProductsPrice($promoProductsInCart);
-        $productsPrice = $productsPrice->add($totalPromoProductPrice);
         $productsPrice = $productsPrice->add($totalGiftPrice);
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
@@ -150,7 +146,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $roundingPrice,
             $totalPriceWithoutGiftCertificate,
             $giftsInCart,
-            $promoProductsInCart,
             $quantifiedItemsDiscountsIndexedByPromoCodeId,
             $orderGiftProduct
         );
@@ -224,27 +219,6 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         }
 
         return $totalGiftsPrice;
-    }
-
-    /**
-     * @param array|null $promoProductsInCart
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
-     */
-    private function getTotalPromoProductsPrice(?array $promoProductsInCart = null): Price
-    {
-        $totalPromoProductsPrice = Price::zero();
-
-        if ($promoProductsInCart === null) {
-            return $totalPromoProductsPrice;
-        }
-
-        /** @var \App\Model\Cart\Item\CartItem $promoProductInCart */
-        foreach ($promoProductsInCart as $promoProductInCart) {
-            $promoProductPrice = $promoProductInCart->getWatchedPrice()->multiply($promoProductInCart->getQuantity());
-            $totalPromoProductsPrice = $totalPromoProductsPrice->add(new Price($promoProductPrice, $promoProductPrice));
-        }
-
-        return $totalPromoProductsPrice;
     }
 
     /**

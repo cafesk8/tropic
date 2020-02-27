@@ -394,7 +394,6 @@ class OrderFacade extends BaseOrderFacade
 
         $this->fillOrderGifts($order, $orderPreview);
         $this->fillOrderGift($order, $orderPreview);
-        $this->fillOrderPromoProducts($order, $orderPreview);
 
         $promoCodes = $orderPreview->getPromoCodesIndexedById();
         foreach ($promoCodes as $promoCode) {
@@ -628,43 +627,6 @@ class OrderFacade extends BaseOrderFacade
             $promoCode->getCertificateSku(),
             $this->vatFacade->getDefaultVatForDomain($order->getDomainId())->getPercent()
         );
-    }
-
-    /**
-     * @param \App\Model\Order\Order $order
-     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
-     */
-    private function fillOrderPromoProducts(BaseOrder $order, OrderPreview $orderPreview): void
-    {
-        /** @var \App\Model\Cart\Item\CartItem $promoProductCartItem */
-        foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
-            $product = $promoProductCartItem->getProduct();
-            $promoProduct = $promoProductCartItem->getPromoProduct();
-
-            if (!$this->orderItemFactory instanceof OrderItemFactory) {
-                $message = 'Object "' . get_class($this->orderItemFactory) . '" has to be instance of \App\Model\Order\Item\OrderItemFactory.';
-                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
-            }
-
-            $promoProductOrderItemPrice = new Price($promoProductCartItem->getWatchedPrice(), $promoProductCartItem->getWatchedPrice());
-            $promoProductOrderItemTotalPrice = new Price(
-                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity()),
-                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity())
-            );
-
-            $this->orderItemFactory->createPromoProduct(
-                $order,
-                $product->getName($this->domain->getLocale()),
-                $promoProductOrderItemPrice,
-                $product->getVatForDomain($order->getDomainId())->getPercent(),
-                $promoProductCartItem->getQuantity(),
-                $product->getUnit()->getName($this->domain->getLocale()),
-                $product->getCatnum(),
-                $product,
-                $promoProductOrderItemTotalPrice,
-                $promoProduct
-            );
-        }
     }
 
     /**

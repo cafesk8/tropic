@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Cart;
 
-use App\Model\Cart\Exception\MaxPromoProductCartItemsReachedException;
 use App\Model\Cart\Item\CartItem;
 use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
-use App\Model\Product\PromoProduct\PromoProduct;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart as BaseCart;
@@ -27,8 +24,6 @@ use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
  */
 class Cart extends BaseCart
 {
-    public const MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART = 1;
-
     /**
      * @var \App\Model\Product\Product|null
      *
@@ -86,58 +81,6 @@ class Cart extends BaseCart
     }
 
     /**
-     * @param \App\Model\Cart\Item\CartItemFactory $cartItemFactory
-     * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \App\Model\Product\PromoProduct\PromoProduct[][] $promoProductsForCart
-     * @param mixed[][] $selectedPromoProductsItems
-     * @return \App\Model\Cart\Item\CartItem[]
-     */
-    public function updatePromoProductsItems(
-        CartItemFactoryInterface $cartItemFactory,
-        ProductFacade $productFacade,
-        array $promoProductsForCart,
-        array $selectedPromoProductsItems
-    ): array {
-        $cartPromoProductsItems = [];
-
-        $countOfSelected = 0;
-
-        foreach ($selectedPromoProductsItems as $promoProductId => $isSelectedByProductId) {
-            foreach ($isSelectedByProductId as $productId => $isSelected) {
-                if ($isSelected === true) {
-                    if ($countOfSelected >= self::MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART) {
-                        throw new MaxPromoProductCartItemsReachedException();
-                    }
-
-                    $countOfSelected++;
-
-                    if (!isset($promoProductsForCart[$promoProductId])) {
-                        continue;
-                    }
-
-                    /** @var \App\Model\Product\PromoProduct\PromoProduct $promoProductForCart */
-                    $promoProductForCart = $promoProductsForCart[$promoProductId][$productId];
-
-                    $promoProductCartItem = $cartItemFactory->create(
-                        $this,
-                        $productFacade->getById($productId),
-                        1,
-                        $promoProductForCart->getPrice(),
-                        null,
-                        null,
-                        $promoProductForCart
-                    );
-                    $this->addItem($promoProductCartItem);
-
-                    $cartPromoProductsItems[] = $promoProductCartItem;
-                }
-            }
-        }
-
-        return $cartPromoProductsItems;
-    }
-
-    /**
      * @param int $productId
      * @return \App\Model\Cart\Item\CartItem
      */
@@ -164,20 +107,6 @@ class Cart extends BaseCart
         }
 
         return $removedGifts;
-    }
-
-    /**
-     * @return \App\Model\Cart\Item\CartItem[]
-     */
-    public function removeAllPromoProductsAndGetThem(): array
-    {
-        $removedPromoProductsItems = [];
-        foreach ($this->getPromoProductItems() as $promoProductItem) {
-            $this->removeItemById($promoProductItem->getId());
-            $removedPromoProductsItems[] = $promoProductItem;
-        }
-
-        return $removedPromoProductsItems;
     }
 
     /**
@@ -219,30 +148,12 @@ class Cart extends BaseCart
     /**
      * @return \App\Model\Cart\Item\CartItem[]
      */
-    public function getPromoProductItems(): array
-    {
-        $promoProductCartItems = [];
-        /** @var \App\Model\Cart\Item\CartItem $cartItem */
-        foreach ($this->items->toArray() as $cartItem) {
-            if ($cartItem->getPromoProduct() !== null) {
-                $promoProductCartItems[] = $cartItem;
-            }
-        }
-
-        return $promoProductCartItems;
-    }
-
-    /**
-     * @return \App\Model\Cart\Item\CartItem[]
-     */
     public function getItems()
     {
         $cartItems = [];
         /** @var \App\Model\Cart\Item\CartItem $cartItem */
         foreach ($this->items->toArray() as $cartItem) {
-            if ($cartItem->getGiftByProduct() === null
-            && $cartItem->getPromoProduct() === null
-            ) {
+            if ($cartItem->getGiftByProduct() === null) {
                 $cartItems[] = $cartItem;
             }
         }
@@ -259,23 +170,6 @@ class Cart extends BaseCart
     {
         foreach ($this->getGifts() as $cartGift) {
             if ($cartGift->getProduct()->getId() === $giftId && $cartGift->getGiftByProduct()->getId() === $cartItemId) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \App\Model\Product\PromoProduct\PromoProduct $promoProduct
-     * @param int $productId
-     * @return bool
-     */
-    public function isPromoProductSelected(PromoProduct $promoProduct, int $productId): bool
-    {
-        foreach ($this->getPromoProductItems() as $promoProductCartItem) {
-            if ($promoProductCartItem->getPromoProduct() === $promoProduct
-                && $promoProductCartItem->getProduct()->getId() === $productId) {
                 return true;
             }
         }

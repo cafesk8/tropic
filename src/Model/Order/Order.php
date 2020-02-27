@@ -591,21 +591,6 @@ class Order extends BaseOrder
     }
 
     /**
-     * @return \App\Model\Order\Item\OrderItem[]
-     */
-    public function getPromoProductItems()
-    {
-        $promoProductItems = [];
-        foreach ($this->items as $item) {
-            if ($item->isTypePromoProduct()) {
-                $promoProductItems[] = $item;
-            }
-        }
-
-        return $promoProductItems;
-    }
-
-    /**
      * @param \App\Model\Order\OrderData $orderData
      */
     private function setDeliveryAddressNewly(OrderData $orderData): void

@@ -37,11 +37,6 @@
                     {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
                     {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat) }}
                 {% endfor %}
-                {% if orderPreview.promoProductCartItems %}
-                    {% for promoProductCartItem in orderPreview.promoProductCartItems %}
-                        {{ _self.productPreviewItem(promoProductCartItem.product, promoProductCartItem.quantity, promoProductCartItem.totalPrice) }}
-                    {% endfor %}
-                {% endif %}
                 {% set orderGiftProduct = orderPreview.orderGiftProduct %}
                 {% if orderGiftProduct is not null %}
                     <li>{{ 'Dárek k vaší objednávce:'|trans }}</li>

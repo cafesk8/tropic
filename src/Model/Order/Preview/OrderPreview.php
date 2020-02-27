@@ -46,11 +46,6 @@ class OrderPreview extends BaseOrderPreview
     private $totalPriceWithoutGiftCertificate;
 
     /**
-     * @var \App\Model\Cart\Item\CartItem[]
-     */
-    private $promoProductCartItems;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][]
      */
     private $quantifiedItemsDiscountsIndexedByPromoCodeId;
@@ -67,7 +62,6 @@ class OrderPreview extends BaseOrderPreview
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $totalPriceWithoutGiftCertificate
      * @param \App\Model\Cart\Item\CartItem[] $gifts
-     * @param \App\Model\Cart\Item\CartItem[] $promoProductCartItems
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @param \App\Model\Product\Product|null $orderGiftProduct
      */
@@ -83,7 +77,6 @@ class OrderPreview extends BaseOrderPreview
         ?Price $roundingPrice = null,
         ?Price $totalPriceWithoutGiftCertificate = null,
         array $gifts = [],
-        array $promoProductCartItems = [],
         array $quantifiedItemsDiscountsIndexedByPromoCodeId = [],
         ?Product $orderGiftProduct = null
     ) {
@@ -102,7 +95,6 @@ class OrderPreview extends BaseOrderPreview
 
         $this->totalPriceWithoutGiftCertificate = $totalPriceWithoutGiftCertificate;
         $this->gifts = $gifts;
-        $this->promoProductCartItems = $promoProductCartItems;
         $this->quantifiedItemsDiscountsIndexedByPromoCodeId = $quantifiedItemsDiscountsIndexedByPromoCodeId;
         $this->promoCodesIndexedById = [];
         $this->orderGiftProduct = $orderGiftProduct;
@@ -122,14 +114,6 @@ class OrderPreview extends BaseOrderPreview
     public function getGifts(): ?array
     {
         return $this->gifts;
-    }
-
-    /**
-     * @return \App\Model\Cart\Item\CartItem[]
-     */
-    public function getPromoProductCartItems(): array
-    {
-        return $this->promoProductCartItems;
     }
 
     /**

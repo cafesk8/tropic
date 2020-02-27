@@ -70,7 +70,6 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             null,
             null,
             $this->cartFacade->getGifts(),
-            $this->cartFacade->getPromoProducts(),
             $validEnteredPromoCodes,
             $this->cartFacade->getOrderGiftProduct()
         );
@@ -86,7 +85,6 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param string|null $promoCodeDiscountPercent
      * @param \App\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
      * @param \App\Model\Cart\Item\CartItem[] $giftsInCart
-     * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $validEnteredPromoCodes
      * @param \App\Model\Product\Product|null $orderGiftProduct
      * @return \App\Model\Order\Preview\OrderPreview
@@ -101,7 +99,6 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $validEnteredPromoCode = null,
         ?array $giftsInCart = [],
-        ?array $promoProductsInCart = [],
         array $validEnteredPromoCodes = [],
         ?Product $orderGiftProduct = null
     ): OrderPreview {
@@ -118,7 +115,6 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $promoCodeDiscountPercent,
             $validEnteredPromoCode,
             $giftsInCart,
-            $promoProductsInCart,
             $validEnteredPromoCodes,
             $orderGiftProduct
         );

@@ -63,12 +63,6 @@ class CartFormType extends AbstractType
                     'entry_type' => CheckboxType::class,
                 ],
             ])
-            ->add('chosenPromoProducts', CollectionType::class, [
-                'entry_type' => CollectionType::class,
-                'entry_options' => [
-                    'entry_type' => CheckboxType::class,
-                ],
-            ])
             ->add('orderGiftProduct', OrderGiftChoiceType::class, [
                 'required' => false,
                 'choices' => $options['offeredGifts'],

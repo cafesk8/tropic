@@ -16,7 +16,6 @@ use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
-use App\Model\Product\PromoProduct\PromoProductInCartFacade;
 use App\Model\Product\View\ProductActionView;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
@@ -101,11 +100,6 @@ class CartController extends FrontBaseController
     private $currentPromoCodeFacade;
 
     /**
-     * @var \App\Model\Product\PromoProduct\PromoProductInCartFacade
-     */
-    private $promoProductInCartFacade;
-
-    /**
      * @var \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface
      */
     private $listedProductViewFacade;
@@ -120,7 +114,6 @@ class CartController extends FrontBaseController
      * @param \App\Model\Product\Gift\ProductGiftInCartFacade $productGiftInCartFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
-     * @param \App\Model\Product\PromoProduct\PromoProductInCartFacade $promoProductInCartFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
@@ -136,7 +129,6 @@ class CartController extends FrontBaseController
         ProductGiftInCartFacade $productGiftInCartFacade,
         GtmFacade $gtmFacade,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
-        PromoProductInCartFacade $promoProductInCartFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         ProductFacade $productFacade,
         OrderGiftFacade $orderGiftFacade,
@@ -151,7 +143,6 @@ class CartController extends FrontBaseController
         $this->productGiftInCartFacade = $productGiftInCartFacade;
         $this->gtmFacade = $gtmFacade;
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
-        $this->promoProductInCartFacade = $promoProductInCartFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->productFacade = $productFacade;
         $this->orderGiftFacade = $orderGiftFacade;
@@ -172,13 +163,11 @@ class CartController extends FrontBaseController
         $domainId = $this->domain->getId();
 
         $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
-        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
-
         /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $productsPrice = $orderPreview->getProductsPrice();
         $this->cartFacade->verifySelectedOrderGift($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser));
-        $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $promoProductsForCart, $cart);
+        $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $cart);
 
         $offeredGifts = $this->orderGiftFacade->getAllListableGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser));
 
@@ -186,8 +175,6 @@ class CartController extends FrontBaseController
             'offeredGifts' => $offeredGifts,
         ]);
         $form->handleRequest($request);
-
-        $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
 
         $invalidCart = false;
         if ($form->isSubmitted() && $form->isValid()) {
@@ -197,11 +184,6 @@ class CartController extends FrontBaseController
 
                 $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
-
-                $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
-                $this->cartFacade->updatePromoProducts($promoProductsForCart, $form->getData()['chosenPromoProducts']);
-
-                $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
 
                 if (!$request->get(self::RECALCULATE_ONLY_PARAMETER_NAME, false)) {
                     return $this->redirectToRoute('front_order_index');
@@ -218,8 +200,6 @@ class CartController extends FrontBaseController
             $this->getFlashMessageSender()->addErrorFlash(t('Please make sure that you entered right quantity of all items in cart.'));
         }
 
-        $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
-        $cartFormData = $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
         $form = $this->createForm(CartFormType::class, $cartFormData, [
             'offeredGifts' => $offeredGifts,
         ]);
@@ -235,7 +215,6 @@ class CartController extends FrontBaseController
             'cartItems' => $cartItems,
             'cartItemPrices' => $quantifiedItemsPrices,
             'cartGiftsByProductId' => $cartGiftsByProductId,
-            'promoProducts' => $promoProductsForCart,
             'form' => $form->createView(),
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
             'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
@@ -254,16 +233,14 @@ class CartController extends FrontBaseController
     /**
      * @param \App\Model\Cart\Item\CartItem[] $cartItems
      * @param \App\Model\Product\Gift\ProductGiftInCart[] $productGiftsInCart
-     * @param \App\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
      * @param \App\Model\Cart\Cart|null $cart
      * @return mixed[]
      */
-    private function getCartFormData(array $cartItems, array $productGiftsInCart, array $promoProductsForCart, ?Cart $cart = null): array
+    private function getCartFormData(array $cartItems, array $productGiftsInCart, ?Cart $cart = null): array
     {
         $cartFormData = [
             'quantities' => [],
             'chosenGifts' => [],
-            'chosenPromoProducts' => [],
             'orderGiftProduct' => $cart === null ? null : $cart->getOrderGiftProduct(),
         ];
         foreach ($cartItems as $cartItem) {
@@ -274,19 +251,6 @@ class CartController extends FrontBaseController
         foreach ($productGiftsInCart as $productGiftInCart) {
             $cartFormData['chosenGifts'] = array_replace($cartFormData['chosenGifts'], $this->getChosenGiftVariant($productGiftInCart, $cart));
         }
-
-        return $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
-    }
-
-    /**
-     * @param array $cartFormData
-     * @param \App\Model\Product\PromoProduct\PromoProduct[] $promoProductsForCart
-     * @param \App\Model\Cart\Cart|null $cart
-     * @return mixed[]
-     */
-    private function setCartFormDataPromoProducts($cartFormData, array $promoProductsForCart, ?Cart $cart = null): array
-    {
-        $cartFormData['chosenPromoProducts'] = array_replace($cartFormData['chosenPromoProducts'], $this->getChosenPromoProducts($promoProductsForCart, $cart));
 
         return $cartFormData;
     }
@@ -305,24 +269,6 @@ class CartController extends FrontBaseController
         }
 
         return $chosenGifts;
-    }
-
-    /**
-     * @param \App\Model\Product\PromoProduct\PromoProduct[][] $promoProductsInCart
-     * @param \App\Model\Cart\Cart|null $cart
-     * @return mixed[]
-     */
-    private function getChosenPromoProducts(array $promoProductsInCart, ?Cart $cart = null): array
-    {
-        $chosenPromoProducts = [];
-        foreach ($promoProductsInCart as $promoProductId => $promoProductByProductId) {
-            foreach ($promoProductByProductId as $productId => $promoProduct) {
-                $chosenPromoProducts[$promoProductId][$productId] =
-                    $cart !== null && $cart->isPromoProductSelected($promoProduct, $productId);
-            }
-        }
-
-        return $chosenPromoProducts;
     }
 
     /**
