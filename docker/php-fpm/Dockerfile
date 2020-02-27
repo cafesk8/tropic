@@ -1,5 +1,14 @@
 FROM henzigo/shopsys-framework:v9.0.0 as base
 
+USER root
+
+# install PostgreSQl client for dumping database
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+    sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list' && \
+    apt-get update && apt-get install -y postgresql-12 postgresql-client-12 && apt-get clean
+
+USER www-data
+
 ########################################################################################################################
 
 FROM base as development
