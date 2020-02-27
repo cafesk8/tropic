@@ -154,6 +154,23 @@ class OrderGiftRepository
 
     /**
      * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $exceptLevel
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getAllLevelsOnDomainExceptLevel(int $domainId, ?Money $exceptLevel = null): array
+    {
+        $queryBuilder = $this->getAllLevelsOnDomainQueryBuilder($domainId);
+        if ($exceptLevel !== null) {
+            $queryBuilder
+                ->andWhere('og.priceLevelWithVat != :exceptLevel')
+                ->setParameter('exceptLevel', $exceptLevel->getAmount());
+        }
+
+        return array_column($queryBuilder->getQuery()->getResult(), 'priceLevelWithVat');
+    }
+
+    /**
+     * @param int $domainId
      * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
      */
     private function getAllEnabledLevelsOnDomain(int $domainId): array

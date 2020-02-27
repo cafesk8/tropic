@@ -6,8 +6,10 @@ namespace App\Form\Admin;
 
 use App\Model\Order\Gift\OrderGift;
 use App\Model\Order\Gift\OrderGiftData;
+use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FormTypesBundle\YesNoType;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\ProductsType;
@@ -16,7 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class OrderGiftFormType extends AbstractType
 {
@@ -26,11 +30,23 @@ class OrderGiftFormType extends AbstractType
     protected $currencyFacade;
 
     /**
-     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @var \App\Model\Order\Gift\OrderGiftFacade
      */
-    public function __construct(CurrencyFacade $currencyFacade)
+    protected $orderGiftFacade;
+
+    /**
+     * @var \App\Model\Order\Gift\OrderGift|null
+     */
+    protected $orderGift;
+
+    /**
+     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
+     * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
+     */
+    public function __construct(CurrencyFacade $currencyFacade, OrderGiftFacade $orderGiftFacade)
     {
         $this->currencyFacade = $currencyFacade;
+        $this->orderGiftFacade = $orderGiftFacade;
     }
 
     /**
@@ -39,12 +55,12 @@ class OrderGiftFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $orderGift = $options['orderGift'];
+        $this->orderGift = $options['orderGift'];
         $domainId = $options['domainId'];
         $builder
             ->add('domainId', DomainType::class, [
                 'label' => t('Doména'),
-                'disabled' => $orderGift !== null,
+                'disabled' => $this->orderGift !== null,
             ])
             ->add('enabled', YesNoType::class, [
                 'label' => t('Aktivní'),
@@ -58,6 +74,7 @@ class OrderGiftFormType extends AbstractType
                         'message' => 'Zadejte prosím hladinu ceny objednávky',
                     ]),
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
+                    new Callback([$this, 'validateUniqueLevel']),
                 ],
                 'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId)->getCode(),
             ])
@@ -86,5 +103,33 @@ class OrderGiftFormType extends AbstractType
                 'data_class' => OrderGiftData::class,
                 'attr' => ['novalidate' => 'novalidate'],
             ]);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $priceLevel
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateUniqueLevel(?Money $priceLevel, ExecutionContextInterface $context): void
+    {
+        if ($priceLevel === null) {
+            return;
+        }
+        /** @var \Symfony\Component\Form\Form $form */
+        $form = $context->getRoot();
+        /** @var \App\Model\Order\Gift\OrderGiftData $orderGiftData */
+        $orderGiftData = $form->getData();
+
+        $exceptLevel = null;
+        if ($this->orderGift instanceof OrderGift) {
+            $exceptLevel = $this->orderGift->getPriceLevelWithVat();
+        }
+
+        $allLevels = $this->orderGiftFacade->getAllLevelsOnDomainExceptLevel($orderGiftData->domainId, $exceptLevel);
+        foreach ($allLevels as $level) {
+            if ($priceLevel->getAmount() === $level->getAmount()) {
+                $context->addViolation('Tato hladina ceny objednávky již existuje');
+                return;
+            }
+        }
     }
 }

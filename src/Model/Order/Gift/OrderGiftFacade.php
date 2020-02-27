@@ -128,4 +128,14 @@ class OrderGiftFacade
     {
         return $this->orderGiftRepository->getNextLevelDifference($totalProductPriceWithVat, $domainId);
     }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $exceptLevel
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money[]
+     */
+    public function getAllLevelsOnDomainExceptLevel(int $domainId, ?Money $exceptLevel = null): array
+    {
+        return $this->orderGiftRepository->getAllLevelsOnDomainExceptLevel($domainId, $exceptLevel);
+    }
 }
