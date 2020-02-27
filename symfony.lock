@@ -83,6 +83,9 @@
     "defuse/php-encryption": {
         "version": "v2.2.1"
     },
+    "devops/kubernetes-deployment": {
+        "version": "1.0.12"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
