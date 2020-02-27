@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa23b174a319369c809aba50bf75d2a9",
+    "content-hash": "5567be9aaa515478c1a3cc07e0cde8ca",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -1240,6 +1240,58 @@
                 "symmetric key cryptography"
             ],
             "time": "2018-07-24T23:27:56+00:00"
+        },
+        {
+            "name": "devops/kubernetes-deployment",
+            "version": "1.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git",
+                "reference": "42a793c172ac66d5f13fe23e3e64f9d8718139d6"
+            },
+            "require": {
+                "arvenil/ninja-mutex": "^0.4.1",
+                "doctrine/annotations": "^1.6.0",
+                "doctrine/common": "^2.8.1",
+                "doctrine/doctrine-bundle": "^1.8.1",
+                "league/flysystem": "^1.0",
+                "league/flysystem-aws-s3-v3": "^1.0",
+                "php": "^7.1",
+                "shopsys/framework": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DevOps\\KubernetesDeploymentBundle\\": "src"
+                },
+                "classmap": [
+                    "src"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "DevOps\\KubernetesDeploymentBundle\\": "tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Górecki",
+                    "email": "jan.gorecki@shopsys.com",
+                    "homepage": "http://shopsys.com"
+                }
+            ],
+            "description": "This bundle provides easy way to deploy Shopsys Framework into Kubernetes platform.",
+            "keywords": [
+                "deploy",
+                "framework",
+                "kubernetes",
+                "shopsys",
+                "symfony"
+            ],
+            "time": "2020-02-27T10:17:41+00:00"
         },
         {
             "name": "doctrine/annotations",
