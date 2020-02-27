@@ -150,6 +150,23 @@
                                         {% endif %}
 
                                     {% endfor %}
+                                    {% if form.orderGiftProduct.vars.choices|length > 0 %}
+                                        {{ form_row(form.orderGiftProduct) }}
+                                    {% else %}
+                                        {% do form.orderGiftProduct.setRendered %}
+                                    {% endif %}
+                                    {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
+                                        {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
+                                        <ul>
+                                            {% for nextLevelGift in nextLevelGifts %}
+                                                <li>
+                                                    {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
+                                                    {{ nextLevelGift.name }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+
                                     {% if promoProducts|length > 0 %}
                                         <div class="table-cart__gifts--promo">
                                             <h3>{{ 'Promo produkty k objednávce'|trans }}</h3>

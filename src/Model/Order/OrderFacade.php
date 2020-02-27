@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -392,6 +393,7 @@ class OrderFacade extends BaseOrderFacade
         parent::fillOrderItems($order, $orderPreview);
 
         $this->fillOrderGifts($order, $orderPreview);
+        $this->fillOrderGift($order, $orderPreview);
         $this->fillOrderPromoProducts($order, $orderPreview);
 
         $promoCodes = $orderPreview->getPromoCodesIndexedById();
@@ -403,6 +405,31 @@ class OrderFacade extends BaseOrderFacade
                     $promoCode
                 );
             }
+        }
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     */
+    private function fillOrderGift(Order $order, OrderPreview $orderPreview)
+    {
+        $orderGiftProduct = $orderPreview->getOrderGiftProduct();
+
+        if ($orderGiftProduct !== null) {
+            $giftPrice = new Price(Money::zero(), Money::zero());
+
+            $this->orderItemFactory->createGift(
+                $order,
+                $orderGiftProduct->getName($this->domain->getLocale()),
+                $giftPrice,
+                $orderGiftProduct->getVatForDomain($order->getDomainId())->getPercent(),
+                1,
+                $orderGiftProduct->getUnit()->getName($this->domain->getLocale()),
+                $orderGiftProduct->getCatnum(),
+                $orderGiftProduct,
+                $giftPrice
+            );
         }
     }
 

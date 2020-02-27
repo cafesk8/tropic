@@ -274,3 +274,27 @@
         {% endif %}
     {% endspaceless %}
 {% endblock %}
+
+{% block order_gift_choice_row %}
+    {% spaceless %}
+        <h3>{{- form_label(form) -}}</h3>
+        <ul>
+            {% set productChoices = form.vars.choices %}
+            {% for index, child in form %}
+                {% set isEmptyValue = child.vars.value is empty %}
+                <li>
+                    <label>
+                        {{ form_widget(child) }}
+                        {% if isEmptyValue %}
+                            {{- form_label(child) -}}
+                        {% else %}
+                            {% set product = productChoices[index].data %}
+                            {{ image(product, { alt: product.name, size: 'thumbnail' }) }}
+                            {{ product.name }}
+                        {% endif %}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endspaceless %}
+{% endblock order_gift_choice_row %}

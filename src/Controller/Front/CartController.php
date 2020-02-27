@@ -8,7 +8,9 @@ use App\Form\Front\Cart\AddProductFormType;
 use App\Form\Front\Cart\CartFormType;
 use App\Model\Cart\Cart;
 use App\Model\Cart\CartFacade;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\Gtm\GtmFacade;
+use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
@@ -23,6 +25,8 @@ use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +44,16 @@ class CartController extends FrontBaseController
      * @var \App\Model\Product\ProductFacade
      */
     protected $productFacade;
+
+    /**
+     * @var \App\Model\Order\Gift\OrderGiftFacade
+     */
+    protected $orderGiftFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
+     */
+    protected $pricingGroupSettingFacade;
 
     /**
      * @var \App\Model\Cart\CartFacade
@@ -109,6 +123,8 @@ class CartController extends FrontBaseController
      * @param \App\Model\Product\PromoProduct\PromoProductInCartFacade $promoProductInCartFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
         CartFacade $cartFacade,
@@ -122,7 +138,9 @@ class CartController extends FrontBaseController
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         PromoProductInCartFacade $promoProductInCartFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        OrderGiftFacade $orderGiftFacade,
+        PricingGroupSettingFacade $pricingGroupSettingFacade
     ) {
         $this->cartFacade = $cartFacade;
         $this->domain = $domain;
@@ -136,6 +154,8 @@ class CartController extends FrontBaseController
         $this->promoProductInCartFacade = $promoProductInCartFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->productFacade = $productFacade;
+        $this->orderGiftFacade = $orderGiftFacade;
+        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
     }
 
     /**
@@ -154,9 +174,17 @@ class CartController extends FrontBaseController
         $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
         $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
 
+        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
+        $productsPrice = $orderPreview->getProductsPrice();
+        $this->cartFacade->verifySelectedOrderGift($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser));
         $cartFormData = $this->getCartFormData($cartItems, $cartGiftsByProductId, $promoProductsForCart, $cart);
 
-        $form = $this->createForm(CartFormType::class, $cartFormData);
+        $offeredGifts = $this->orderGiftFacade->getAllListableGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser));
+
+        $form = $this->createForm(CartFormType::class, $cartFormData, [
+            'offeredGifts' => $offeredGifts,
+        ]);
         $form->handleRequest($request);
 
         $this->promoProductInCartFacade->checkMinimalCartPricesForCart($cart);
@@ -165,6 +193,7 @@ class CartController extends FrontBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
+                $this->cartFacade->setOrderGiftProduct($form->getData()['orderGiftProduct']);
 
                 $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
                 $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
@@ -177,6 +206,7 @@ class CartController extends FrontBaseController
                 if (!$request->get(self::RECALCULATE_ONLY_PARAMETER_NAME, false)) {
                     return $this->redirectToRoute('front_order_index');
                 }
+                return $this->redirectToRoute('front_cart');
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidQuantityException $ex) {
                 $invalidCart = true;
             }
@@ -190,12 +220,11 @@ class CartController extends FrontBaseController
 
         $promoProductsForCart = $this->promoProductInCartFacade->getPromoProductsForCart($cart, $domainId, $customerUser);
         $cartFormData = $this->setCartFormDataPromoProducts($cartFormData, $promoProductsForCart, $cart);
-        $form = $this->createForm(CartFormType::class, $cartFormData);
+        $form = $this->createForm(CartFormType::class, $cartFormData, [
+            'offeredGifts' => $offeredGifts,
+        ]);
         $form->handleRequest($request);
 
-        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
-        $productsPrice = $orderPreview->getProductsPrice();
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $topProducts = $this->listedProductViewFacade->getAllTop();
         $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
@@ -217,6 +246,8 @@ class CartController extends FrontBaseController
             'promoCodesIndexedById' => $orderPreview->getPromoCodesIndexedById(),
             'topProducts' => $topProducts,
             'locale' => $this->domain->getLocale(),
+            'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser)),
+            'nextLevelDifference' => $this->orderGiftFacade->getNextLevelDifference($productsPrice->getPriceWithVat(), $domainId),
         ]);
     }
 
@@ -233,6 +264,7 @@ class CartController extends FrontBaseController
             'quantities' => [],
             'chosenGifts' => [],
             'chosenPromoProducts' => [],
+            'orderGiftProduct' => $cart === null ? null : $cart->getOrderGiftProduct(),
         ];
         foreach ($cartItems as $cartItem) {
             $cartFormData['quantities'][$cartItem->getId()] = $cartItem->getQuantity();
@@ -589,5 +621,21 @@ class CartController extends FrontBaseController
             'type' => $type,
             'showAmountInput' => $showAmountInput,
         ]);
+    }
+
+    /**
+     * @param \App\Model\Customer\User\CustomerUser|null $customerUser
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    private function getCurrentPricingGroup(?CustomerUser $customerUser): PricingGroup
+    {
+        if ($customerUser !== null) {
+            $pricingGroup = $customerUser->getPricingGroup();
+        } else {
+            /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
+            $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($this->domain->getId());
+        }
+
+        return $pricingGroup;
     }
 }

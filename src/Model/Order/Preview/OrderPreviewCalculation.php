@@ -21,6 +21,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 
@@ -95,6 +96,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \App\Model\Cart\Item\CartItem[]|null $giftsInCart
      * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @param \App\Model\Product\Product|null $orderGiftProduct
      * @return \App\Model\Order\Preview\OrderPreview
      */
     public function calculatePreview(
@@ -108,7 +110,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         ?PromoCode $promoCode = null,
         ?array $giftsInCart = [],
         ?array $promoProductsInCart = [],
-        array $promoCodes = []
+        array $promoCodes = [],
+        ?Product $orderGiftProduct = null
     ): BaseOrderPreview {
         if ($promoCodeDiscountPercent !== null || $promoCode !== null) {
             throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$promoCode" argument is supported, you need to use "$promoCodes" array instead');
@@ -148,7 +151,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $totalPriceWithoutGiftCertificate,
             $giftsInCart,
             $promoProductsInCart,
-            $quantifiedItemsDiscountsIndexedByPromoCodeId
+            $quantifiedItemsDiscountsIndexedByPromoCodeId,
+            $orderGiftProduct
         );
         $orderPreview->setPromoCodes($promoCodes);
         $orderPreview->setTotalDiscount($totalDiscount);

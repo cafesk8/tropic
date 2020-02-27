@@ -6,6 +6,9 @@ namespace App\Model\Order\Gift;
 
 use App\Model\Pricing\Currency\CurrencyFacade;
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 
 class OrderGiftFacade
 {
@@ -80,5 +83,49 @@ class OrderGiftFacade
         $orderGift = $this->getById($id);
         $this->entityManager->remove($orderGift);
         $this->entityManager->flush($orderGift);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductPriceWithVat
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Product[]
+     */
+    public function getAllListableGiftProductsByTotalProductPrice(Money $totalProductPriceWithVat, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->orderGiftRepository->getAllListableGiftProductsByTotalProductPrice($totalProductPriceWithVat, $domainId, $pricingGroup);
+    }
+
+    /**
+     * @param \App\Model\Product\Product|null $currentOrderGiftProduct
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductPriceWithVat
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return bool
+     */
+    public function isOrderGiftProductValid(?Product $currentOrderGiftProduct, Money $totalProductPriceWithVat, int $domainId, PricingGroup $pricingGroup): bool
+    {
+        return $currentOrderGiftProduct === null || in_array($currentOrderGiftProduct, $this->getAllListableGiftProductsByTotalProductPrice($totalProductPriceWithVat, $domainId, $pricingGroup), true);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductPriceWithVat
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Product[]
+     */
+    public function getAllListableNextLevelGiftProductsByTotalProductPrice(Money $totalProductPriceWithVat, int $domainId, PricingGroup $pricingGroup): array
+    {
+        return $this->orderGiftRepository->getAllListableNextLevelGiftProductsByTotalProductPrice($totalProductPriceWithVat, $domainId, $pricingGroup);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductPriceWithVat
+     * @param int $domainId
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    public function getNextLevelDifference(Money $totalProductPriceWithVat, int $domainId): ?Money
+    {
+        return $this->orderGiftRepository->getNextLevelDifference($totalProductPriceWithVat, $domainId);
     }
 }

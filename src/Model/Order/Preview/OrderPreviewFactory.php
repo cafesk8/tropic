@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 
 /**
@@ -70,7 +71,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             null,
             $this->cartFacade->getGifts(),
             $this->cartFacade->getPromoProducts(),
-            $validEnteredPromoCodes
+            $validEnteredPromoCodes,
+            $this->cartFacade->getOrderGiftProduct()
         );
     }
 
@@ -86,6 +88,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \App\Model\Cart\Item\CartItem[] $giftsInCart
      * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $validEnteredPromoCodes
+     * @param \App\Model\Product\Product|null $orderGiftProduct
      * @return \App\Model\Order\Preview\OrderPreview
      */
     public function create(
@@ -99,7 +102,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?PromoCode $validEnteredPromoCode = null,
         ?array $giftsInCart = [],
         ?array $promoProductsInCart = [],
-        array $validEnteredPromoCodes = []
+        array $validEnteredPromoCodes = [],
+        ?Product $orderGiftProduct = null
     ): OrderPreview {
         if ($promoCodeDiscountPercent !== null || $validEnteredPromoCode !== null) {
             throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$validEnteredPromoCode" argument is supported, you need to use "$promoCodes" array instead');
@@ -115,7 +119,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $validEnteredPromoCode,
             $giftsInCart,
             $promoProductsInCart,
-            $validEnteredPromoCodes
+            $validEnteredPromoCodes,
+            $orderGiftProduct
         );
     }
 }

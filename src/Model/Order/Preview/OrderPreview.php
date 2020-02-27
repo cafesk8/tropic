@@ -9,6 +9,7 @@ use App\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 
 /**
@@ -19,6 +20,11 @@ use Shopsys\FrameworkBundle\Model\Transport\Transport;
  */
 class OrderPreview extends BaseOrderPreview
 {
+    /**
+     * @var \App\Model\Product\Product|null
+     */
+    protected $orderGiftProduct;
+
     /**
      * @var \App\Model\Order\PromoCode\PromoCode[]
      */
@@ -63,6 +69,7 @@ class OrderPreview extends BaseOrderPreview
      * @param \App\Model\Cart\Item\CartItem[] $gifts
      * @param \App\Model\Cart\Item\CartItem[] $promoProductCartItems
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @param \App\Model\Product\Product|null $orderGiftProduct
      */
     public function __construct(
         array $quantifiedProductsByIndex,
@@ -77,7 +84,8 @@ class OrderPreview extends BaseOrderPreview
         ?Price $totalPriceWithoutGiftCertificate = null,
         array $gifts = [],
         array $promoProductCartItems = [],
-        array $quantifiedItemsDiscountsIndexedByPromoCodeId = []
+        array $quantifiedItemsDiscountsIndexedByPromoCodeId = [],
+        ?Product $orderGiftProduct = null
     ) {
         parent::__construct(
             $quantifiedProductsByIndex,
@@ -97,6 +105,15 @@ class OrderPreview extends BaseOrderPreview
         $this->promoProductCartItems = $promoProductCartItems;
         $this->quantifiedItemsDiscountsIndexedByPromoCodeId = $quantifiedItemsDiscountsIndexedByPromoCodeId;
         $this->promoCodesIndexedById = [];
+        $this->orderGiftProduct = $orderGiftProduct;
+    }
+
+    /**
+     * @return \App\Model\Product\Product|null
+     */
+    public function getOrderGiftProduct(): ?Product
+    {
+        return $this->orderGiftProduct;
     }
 
     /**

@@ -6,6 +6,7 @@ namespace App\Model\Cart;
 
 use App\Model\Cart\Exception\MaxPromoProductCartItemsReachedException;
 use App\Model\Cart\Item\CartItem;
+use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\PromoProduct\PromoProduct;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,6 +28,14 @@ use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct;
 class Cart extends BaseCart
 {
     public const MAX_COUNT_OF_PROMO_PRODUCTS_IN_CART = 1;
+
+    /**
+     * @var \App\Model\Product\Product|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Model\Product\Product")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     */
+    private $orderGiftProduct;
 
     /**
      * @return \Shopsys\FrameworkBundle\Component\Money\Money
@@ -285,5 +294,21 @@ class Cart extends BaseCart
         }
 
         return $quantifiedProducts;
+    }
+
+    /**
+     * @return \App\Model\Product\Product|null
+     */
+    public function getOrderGiftProduct(): ?Product
+    {
+        return $this->orderGiftProduct;
+    }
+
+    /**
+     * @param \App\Model\Product\Product|null $orderGiftProduct
+     */
+    public function setOrderGiftProduct(?Product $orderGiftProduct): void
+    {
+        $this->orderGiftProduct = $orderGiftProduct;
     }
 }
