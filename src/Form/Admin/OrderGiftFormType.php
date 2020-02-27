@@ -61,6 +61,9 @@ class OrderGiftFormType extends AbstractType
             ->add('domainId', DomainType::class, [
                 'label' => t('Doména'),
                 'disabled' => $this->orderGift !== null,
+                'attr' => [
+                    'class' => 'js-order-gift-domain-id',
+                ],
             ])
             ->add('enabled', YesNoType::class, [
                 'label' => t('Aktivní'),
