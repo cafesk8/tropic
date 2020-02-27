@@ -236,7 +236,7 @@
       "availability": {
         "type": "text"
       },
-      "main_variant": {
+      "is_main_variant": {
         "type": "boolean"
       },
       "main_variant_id": {

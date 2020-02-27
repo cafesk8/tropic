@@ -36,7 +36,7 @@ class ProductActionViewFactory extends BaseProductActionViewFactory
         return new ProductActionView(
             $productArray['id'],
             $productArray['selling_denied'],
-            $productArray['main_variant'],
+            $productArray['is_main_variant'],
             $productArray['detail_url'],
             $productArray['minimum_amount'],
             $productArray['amount_multiplier']
