@@ -12,7 +12,7 @@ export default class Spinbox {
         $input
             .on('spinbox.plus', Spinbox.plus)
             .on('spinbox.minus', Spinbox.minus)
-            .on('cahnge', Spinbox.checkValue);
+            .on('change', Spinbox.checkValue);
         $input.ready(function () {
             $input.change();
         });
