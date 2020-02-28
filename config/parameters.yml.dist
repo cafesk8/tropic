@@ -29,21 +29,20 @@ parameters:
     env(REDIS_PREFIX): ''
     env(ELASTIC_SEARCH_INDEX_PREFIX): ''
 
-    gopay:
-        config:
-            cs:
-                goid: 8111408481
-                clientId: 1437261089
-                clientSecret: acdDPRSW
-                language: CS
-            sk:
-                goid: 8111408481
-                clientId: 1437261089
-                clientSecret: acdDPRSW
-                language: SK
-            isProductionMode: false
-            scope: payment-all
-            timeout: 30
+    gopay_config:
+        cs:
+            goid: 8111408481
+            clientId: 1437261089
+            clientSecret: acdDPRSW
+            language: CS
+        sk:
+            goid: 8111408481
+            clientId: 1437261089
+            clientSecret: acdDPRSW
+            language: SK
+        isProductionMode: false
+        scope: payment-all
+        timeout: 30
 
     # testing credentials
     payPalClientId: AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS
@@ -78,22 +77,21 @@ parameters:
     #API Key owned by @malyMiso
     googleApiKey: AIzaSyCgJiyuJ4hrcC6W1eot6nPiM0YzZ9ZnE-Y
 
-    gtm:
-        config:
-            cs:
-                enabled: true
-                container_id: TEST
-                container_environment: null
-                datalayer_locale: cs
-            sk:
-                enabled: true
-                container_id: TEST
-                container_environment: null
-                datalayer_locale: cs
-            de:
-                enabled: true
-                container_id: TEST
-                container_environment: null
-                datalayer_locale: cs
+    gtm_config:
+        cs:
+            enabled: true
+            container_id: TEST
+            container_environment: null
+            datalayer_locale: cs
+        sk:
+            enabled: true
+            container_id: TEST
+            container_environment: null
+            datalayer_locale: cs
+        de:
+            enabled: true
+            container_id: TEST
+            container_environment: null
+            datalayer_locale: cs
 
     smsManagerApiKey: 3e17f29771088c3e8bd74b78f040c4aad4e9a3e5
