@@ -275,7 +275,7 @@ services:
 
     App\Model\GoPay\GoPayClientFactory:
         arguments:
-            - '%gopay.config%'
+            - '%gopay_config%'
 
     App\Model\GoPay\PaymentMethod\GoPayPaymentMethodFacade:
         public: true
@@ -481,7 +481,7 @@ services:
 
     App\Model\Gtm\GtmContainer:
         arguments:
-            $containersConfigs: '%gtm.config%'
+            $containersConfigs: '%gtm_config%'
 
     App\Model\Gtm\GtmListener:
         tags:
