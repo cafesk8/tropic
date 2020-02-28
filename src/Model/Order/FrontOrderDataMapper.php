@@ -34,7 +34,7 @@ class FrontOrderDataMapper extends BaseFrontOrderDataMapper
     {
         $this->prefillFrontFormDataFromCustomer($frontOrderData, $customerUser);
 
-        $deliveryAddress = $customerUser->getDeliveryAddress();
+        $deliveryAddress = $customerUser->getDefaultDeliveryAddress();
 
         if ($deliveryAddress === null) {
             $billingAddress = $customerUser->getCustomer()->getBillingAddress();

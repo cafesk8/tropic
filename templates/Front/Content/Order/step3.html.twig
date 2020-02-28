@@ -90,21 +90,26 @@
                                     {% do form.deliveryCountry.setRendered %}
                                 </div>
                             {% else %}
-                                <div id="js-delivery-address-fields" class="margin-top-20">
-                                    {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
-                                    {% if isEnglishDomain() is same as (true) %}
-                                        <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                                <div id="js-delivery-address" class="margin-top-20">
+                                    {% if app.user is not null %}
+                                        {{ form_row(form.deliveryAddress) }}
                                     {% endif %}
-                                    {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
-                                    {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
-                                    {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
+                                    <div class="js-order-delivery-address-fields{% if app.user is not null and form.deliveryAddress.vars.value is not same as('') %} display-none{% endif %}">
+                                        {{ form_row(form.deliveryCompanyName, { label: 'Company'|trans }) }}
+                                        {% if isEnglishDomain() is same as (true) %}
+                                            <span class="info">{{ 'Telefonní číslo musí začínat +XXX'|trans }}</span>
+                                        {% endif %}
+                                        {{ form_row(form.deliveryStreet, { label: 'Street'|trans }) }}
+                                        {{ form_row(form.deliveryCity, { label: 'City'|trans }) }}
+                                        {{ form_row(form.deliveryPostcode, { label: 'Postcode'|trans }) }}
 
-                                    {% if isEnglishDomain() is same as (true) %}
-                                        {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
-                                        <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
-                                    {% else %}
-                                        {% do form.deliveryCountry.setRendered %}
-                                    {% endif %}
+                                        {% if isEnglishDomain() is same as (true) %}
+                                            {{ form_row(form.deliveryCountry, { label: 'Country'|trans }) }}
+                                            <a href="{{ url('front_order_index') }}">{{ 'Změnit'|trans }}</a>
+                                        {% else %}
+                                            {% do form.deliveryCountry.setRendered %}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             {% endif %}
                             <div class="margin-top-10">

@@ -100,7 +100,7 @@ class CustomerExportMapper
      */
     private function mapDeliveryAddress(CustomerUser $customerUser): array
     {
-        $deliveryAddress = $customerUser->getDeliveryAddress();
+        $deliveryAddress = $customerUser->getDefaultDeliveryAddress();
 
         if ($deliveryAddress === null) {
             return [
@@ -164,7 +164,7 @@ class CustomerExportMapper
      */
     private function getDeliveryAddressCountryPropertyContent(CustomerUser $customerUser): string
     {
-        $deliveryAddress = $customerUser->getDeliveryAddress();
+        $deliveryAddress = $customerUser->getDefaultDeliveryAddress();
 
         if ($deliveryAddress === null || $deliveryAddress->getCountry() === null) {
             return self::EMPTY_VALUE;

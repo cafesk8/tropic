@@ -96,13 +96,14 @@
 
             <div id="{{ form.deliveryAddressData.vars.id }}">
                 <div class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Shipping address'|trans }}</h2>
+                    <h2 class="wrap-box__title">{{ 'Doručovací adresy'|trans }}</h2>
                     <div class="wrap-box__in">
+                        {{ form_row(form.customerUserData.defaultDeliveryAddress) }}
                         {{ form_widget(form.deliveryAddressData.addressFilled, {
-                            attr: { class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' }})
+                            attr: { class: 'css-checkbox js-checkbox-toggle js-delivery-address-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-address-fields' }})
                         }}
                         <label class="css-checkbox__image" for="{{ form.deliveryAddressData.addressFilled.vars.id }}">
-                            {{ 'Chci zadat doručovací adresu'|trans }}
+                            {{ 'Chci zadat novou doručovací adresu'|trans }}
                         </label>
                         <div id="js-delivery-address-fields" class="margin-top-20">
                             {{ form_row(form.deliveryAddressData.companyName, { label: 'Company'|trans}) }}
