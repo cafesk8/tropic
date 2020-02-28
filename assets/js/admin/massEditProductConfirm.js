@@ -1,6 +1,6 @@
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 import Translator from 'bazinga-translator';
-import Window from 'framework/admin/utils/window';
+import Window from 'framework/admin/utils/Window';
 
 (function ($) {
 

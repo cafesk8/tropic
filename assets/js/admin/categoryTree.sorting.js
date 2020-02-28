@@ -1,5 +1,5 @@
 import 'nestedSortable';
-import CategoryTreeSorting from 'framework/admin/components/categoryTree.sorting';
+import CategoryTreeSorting from 'framework/admin/components/CategoryTreeSorting';
 
 // not working at the moment, it is not possible to monkeypatch the constructor :(
 const myConstructor = ($rootTree, $saveButton) => {

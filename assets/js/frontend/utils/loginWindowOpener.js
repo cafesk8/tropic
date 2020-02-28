@@ -1,7 +1,7 @@
-import Register from 'framework/common/utils/register';
-import Window from './window';
+import Register from 'framework/common/utils/Register';
+import Window from './Window';
 import PaymentTransportRelations from '../order/order';
-import Ajax from 'framework/common/utils/ajax';
+import Ajax from 'framework/common/utils/Ajax';
 
 new Register().registerCallback(function ($container) {
     $container.filterAllNodes('.js-login-in-order-window-opener').on('click', function (event) {

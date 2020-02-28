@@ -1,5 +1,5 @@
 import MiniLazyload from 'minilazyload';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 /* eslint-disable no-new */
 new MiniLazyload({

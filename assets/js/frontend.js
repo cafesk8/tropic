@@ -1,4 +1,4 @@
-// import 'jquery-ui-touch-punch';
+import './jQuery/registerJquery';
 
 import tooltip from 'framework/common/bootstrap/tooltip';
 
@@ -38,7 +38,7 @@ import 'framework/common/validation';
 
 import './frontend/blog/blogList';
 
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 const $ = window.jQuery || global.jQuery || jQuery;
 tooltip($);
 

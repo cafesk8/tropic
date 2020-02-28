@@ -1,5 +1,5 @@
-import Register from 'framework/common/utils/register';
-import Window from './window';
+import Register from 'framework/common/utils/Register';
+import Window from './Window';
 
 new Register().registerCallback(function ($container) {
     $container.filterAllNodes('.js-detail-availability-window-opener').on('click', function (event) {

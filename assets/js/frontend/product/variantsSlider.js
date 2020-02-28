@@ -1,5 +1,5 @@
-import Register from 'framework/common/utils/register';
-import Timeout from 'framework/common/utils/timeout';
+import Register from 'framework/common/utils/Register';
+import Timeout from 'framework/common/utils/Timeout';
 
 (function ($) {
 
