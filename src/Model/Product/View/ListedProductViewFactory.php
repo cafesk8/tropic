@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\View;
 
 use App\Model\Product\Pricing\ProductPrice;
+use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
@@ -29,17 +30,25 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private $pricingGroupSettingFacade;
 
     /**
+     * @var \App\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -79,7 +88,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productActionView,
             $imageView,
             $mainVariantGroupProductViews,
-            $distinguishingParameterValues
+            $distinguishingParameterValues,
+            $productArray['gifts']
         );
     }
 
@@ -110,7 +120,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productActionView,
             $imageView,
             $mainVariantGroupProductViews,
-            $secondDistinguishingParameterValues
+            $secondDistinguishingParameterValues,
+            $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale())
         );
     }
 

@@ -176,6 +176,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['second_distinguishing_parameter_values'] = $this->getSecondDistinguishingParameterValues($product, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
+        $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
 
         return $result;
     }

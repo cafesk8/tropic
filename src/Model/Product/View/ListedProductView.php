@@ -26,6 +26,11 @@ class ListedProductView extends BaseListedProductView
     private $distinguishingParameterValues;
 
     /**
+     * @var string[][]
+     */
+    private $gifts;
+
+    /**
      * @param int $id
      * @param string $name
      * @param string|null $shortDescription
@@ -36,6 +41,7 @@ class ListedProductView extends BaseListedProductView
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $image
      * @param array $mainVariantGroupProductViews
      * @param string[] $distinguishingParameterValues
+     * @param string[][] $gifts
      */
     public function __construct(
         int $id,
@@ -47,12 +53,14 @@ class ListedProductView extends BaseListedProductView
         ProductActionView $action,
         ?ImageView $image,
         array $mainVariantGroupProductViews,
-        array $distinguishingParameterValues
+        array $distinguishingParameterValues,
+        array $gifts
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
         $this->mainVariantGroupProductViews = $mainVariantGroupProductViews;
         $this->distinguishingParameterValues = $distinguishingParameterValues;
+        $this->gifts = $gifts;
     }
 
     /**
@@ -69,5 +77,26 @@ class ListedProductView extends BaseListedProductView
     public function getDistinguishingParameterValues(): array
     {
         return $this->distinguishingParameterValues;
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function getGifts(): array
+    {
+        return $this->gifts;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandomGiftName(): ?string
+    {
+        if (empty($this->gifts)) {
+            return null;
+        }
+        $randomGiftKey = array_rand($this->gifts);
+
+        return $this->gifts[$randomGiftKey]['name'];
     }
 }

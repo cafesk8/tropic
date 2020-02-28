@@ -55,6 +55,16 @@
                                         {{ productView.availability }}
                                     </div>
                                 </div>
+
+                                {% if productView.getRandomGiftName() is not null %}
+                                    <div class="list-products__item__info__gift">
+                                        <span class="list-products__item__info__gift__icon">
+                                            <i class="svg svg-gift"></i>
+                                        </span>
+                                        <span class="list-products__item__info__gift__text-colored">{{ 'Dárek'|trans }}:</span>
+                                        {{ productView.getRandomGiftName() }}
+                                    </div>
+                                {% endif %}
                             </a>
 
                             <div class="list-products__item__hover">

@@ -288,6 +288,14 @@
             "type": "text"
           }
         }
+      },
+      "gifts": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text"
+          }
+        }
       }
     }
   }
