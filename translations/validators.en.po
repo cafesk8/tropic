@@ -28,9 +28,6 @@ msgstr ""
 msgid "Hodiny musí být v rozmezí od 0 do 23"
 msgstr ""
 
-msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
-msgstr ""
-
 msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr ""
 

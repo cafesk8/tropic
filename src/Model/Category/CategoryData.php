@@ -56,6 +56,11 @@ class CategoryData extends BaseCategoryData
      */
     public $rightBannerTexts;
 
+    /**
+     * @var \App\Model\Advert\Advert|null
+     */
+    public $advert;
+
     public function __construct()
     {
         parent::__construct();
@@ -65,5 +70,6 @@ class CategoryData extends BaseCategoryData
         $this->legendaryCategory = false;
         $this->leftBannerTexts = [];
         $this->rightBannerTexts = [];
+        $this->advert = null;
     }
 }

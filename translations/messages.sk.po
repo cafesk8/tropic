@@ -70,18 +70,6 @@ msgstr "3 - štvorec"
 msgid "4 - čtverec"
 msgstr "4 - štvorec"
 
-msgid "5 - obdélník na výšku"
-msgstr "5 - obdĺžnik na výšku"
-
-msgid "5 - velký obdelník na šířku"
-msgstr ""
-
-msgid "6 - obdélník na výšku"
-msgstr ""
-
-msgid "6 - velký obdelník na šířku"
-msgstr "6 - veľký obdĺžnik na šírku"
-
 msgid "702 00 Ostrava"
 msgstr ""
 
@@ -619,6 +607,9 @@ msgstr "Doména"
 msgid "Doplňky"
 msgstr "Doplnky"
 
+msgid "Doporučené rozměry obrázku"
+msgstr "Odporúčané rozmery obrázku"
+
 msgid "Doprava"
 msgstr "Doprava"
 
@@ -1051,9 +1042,6 @@ msgstr "Meno"
 msgid "Jste členem Věrnostního programu"
 msgstr "Ste členom vernostného programu"
 
-msgid "Jste členem Věrnostního programu"
-msgstr "Ste členom vernostného programu"
-
 msgid "K dispozici v Hradci Králové"
 msgstr "K dispozícii v Hradci Králové"
 
@@ -1167,9 +1155,6 @@ msgstr "Odhlásiť sa"
 
 msgid "Login"
 msgstr "Prihlásiť sa"
-
-msgid "Lëtzebuerg"
-msgstr ""
 
 msgid "Magyarország"
 msgstr "Maďarsko"
@@ -1753,6 +1738,9 @@ msgstr "Za túto chybu sa ospravedlňujeme, pracujeme na tom, aby sme ju čo naj
 msgid "Please make sure that you entered right quantity of all items in cart."
 msgstr "Uistite sa, že si zadal správne množstvo všetkých položiek v košíka."
 
+msgid "Pod nadpisem kategorie"
+msgstr "Pod nadpisom kategórie"
+
 msgid "Podle zvolené adresy nebylo možné vyhledat žádné pobočky"
 msgstr "Podľa zvolenej adresy nebolo možné vyhľadať žiadne pobočky"
 
@@ -1878,9 +1866,6 @@ msgstr "Vytlačiť"
 
 msgid "Pro lidi s životním názorem, který nás spojuje.“"
 msgstr "Pre ľudí so životným názorom, ktorý nás spája. \""
-
-msgid "Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px)."
-msgstr ""
 
 msgid "Pro plochy 1, 2, 3 - čtverec (380x290px), pro plochu 4 - obdélník na výšku (380x600px)."
 msgstr "Pre plochy 1, 2, 3 - štvorec (380x290px), pre plochu 4 - obdĺžnik na výšku (380x600px)."
@@ -3187,6 +3172,9 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr "požadovaná stránka na našom"
 
+msgid "šířka: 1180px, výška: 150px"
+msgstr "šírka: 1180px, výška: 150px"
+
 msgid "pro členy"
 msgstr "pre členov"
 
@@ -3355,6 +3343,12 @@ msgstr "Šatka Etna"
 msgid "šaty"
 msgstr "šaty"
 
+msgid "šířka: 1180px, výška: 387px"
+msgstr "šírka: 1180px, výška: 387px"
+
+msgid "šířka: 380px, výška: 230px"
+msgstr "šírka: 380px, výška: 230px"
+
 msgid "Ženy"
 msgstr "Ženy"
 
@@ -3363,10 +3357,3 @@ msgstr "Žiadne darčeky nenájdené."
 
 msgid "Žádné promo produkty nenalezeny."
 msgstr "Žiadne promo produkty nájdené."
-
-msgid "БЪЛГАРИЯ"
-msgstr ""
-
-msgid "„Když jsem zakládal projekt BUSHMAN, chtěl jsem"
-msgstr "\"Keď som zakladal projekt BUSHMAN, chcel som"
-

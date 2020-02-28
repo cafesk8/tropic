@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Model\Advert\Advert;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -175,5 +176,23 @@ class CategoryFacade extends BaseCategoryFacade
         }
 
         return implode($delimiter, $categoriesNamesInPath);
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert $advert
+     * @param \App\Model\Category\Category[] $newCategories
+     */
+    public function removeAdvertFromCategories(Advert $advert, array $newCategories): void
+    {
+        $this->categoryRepository->removeAdvertFromCategories($advert, $newCategories);
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert $advert
+     * @return \App\Model\Category\Category[]
+     */
+    public function getCategoriesByAdvert(Advert $advert): array
+    {
+        return $this->categoryRepository->getCategoriesByAdvert($advert);
     }
 }

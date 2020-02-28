@@ -475,6 +475,9 @@ msgstr ""
 msgid "Domain"
 msgstr ""
 
+msgid "Doporučené rozměry obrázku"
+msgstr "Recommended image size"
+
 msgid "Doprava"
 msgstr ""
 
@@ -1414,6 +1417,9 @@ msgstr ""
 msgid "Please make sure that you entered right quantity of all items in cart."
 msgstr ""
 
+msgid "Pod nadpisem kategorie"
+msgstr "Under category title"
+
 msgid "Podle kategorie"
 msgstr "By category"
 
@@ -1499,9 +1505,6 @@ msgid "Preview"
 msgstr ""
 
 msgid "Pricing group"
-msgstr ""
-
-msgid "Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px)."
 msgstr ""
 
 msgid "Pro využití slevového kódu musíte nakoupit aspoň za %price%."
@@ -2179,9 +2182,6 @@ msgstr ""
 msgid "Velikost"
 msgstr ""
 
-msgid "Velikost obrázků"
-msgstr ""
-
 msgid "Videa"
 msgstr "Videos"
 
@@ -2563,6 +2563,9 @@ msgstr ""
 msgid "požadovaná stránk na našem"
 msgstr ""
 
+msgid "šířka: 1180px, výška: 150px"
+msgstr "width: 1180px, height: 150px"
+
 msgid "problémů"
 msgstr ""
 
@@ -2673,6 +2676,12 @@ msgstr ""
 
 msgid "Číslo pro sledování zásilky"
 msgstr ""
+
+msgid "šířka: 1180px, výška: 387px"
+msgstr "width: 1180px, height: 387px"
+
+msgid "šířka: 380px, výška: 230px"
+msgstr "width: 380px, height: 230px"
 
 msgid "Žádné dárky nenalezeny."
 msgstr ""

@@ -63,5 +63,6 @@ class AdvertDataFactory extends BaseAdvertDataFactory
         $advertData->products = array_map(function (AdvertProduct $advertProduct) {
             return $advertProduct->getProduct();
         }, $this->advertProductRepository->getAdvertProductsByAdvert($advert));
+        $advertData->categories = $advert->getCategories();
     }
 }

@@ -8,6 +8,8 @@ use Shopsys\FrameworkBundle\Model\Advert\AdvertPositionRegistry as BaseAdvertPos
 
 class AdvertPositionRegistry extends BaseAdvertPositionRegistry
 {
+    public const CATEGORY_ADVERT_POSITION = 'category';
+
     /**
      * @return string[]
      */
@@ -17,7 +19,22 @@ class AdvertPositionRegistry extends BaseAdvertPositionRegistry
             'firstSquare' => t('1 - čtverec'),
             'secondSquare' => t('2 - čtverec'),
             'thirdSquare' => t('3 - čtverec'),
-            'fourthRectangle' => t('4 - velký obdelník na šířku'),
+            'fourthRectangle' => t('4 - velký obdélník na šířku'),
+            self::CATEGORY_ADVERT_POSITION => t('Pod nadpisem kategorie'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getImageSizeRecommendationsIndexedByNames(): array
+    {
+        return [
+            'firstSquare' => t('šířka: 380px, výška: 230px'),
+            'secondSquare' => t('šířka: 380px, výška: 230px'),
+            'thirdSquare' => t('šířka: 380px, výška: 230px'),
+            'fourthRectangle' => t('šířka: 1180px, výška: 387px'),
+            self::CATEGORY_ADVERT_POSITION => t('šířka: 1180px, výška: 150px'),
         ];
     }
 }
