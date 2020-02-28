@@ -449,9 +449,6 @@ class RouteConfigCustomization
             })
             ->customizeByRouteName(['front_download_uploaded_file'], function (RouteConfig $config) {
                 $config->skipRoute('Downloading uploaded files is not tested.');
-            })
-            ->customizeByRouteName(['front_healtz'], function (RouteConfig $config) {
-                $config->skipRoute('Do not check healtz route.');
             });
     }
 
