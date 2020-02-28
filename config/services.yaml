@@ -238,15 +238,6 @@ services:
             - "%shopsys.performance_data.order.total_count%"
             - "%shopsys.performance_data.order.item_count_per_order%"
 
-    App\Component\FileSystem\FileSystemFactoryDecorator:
-        decorates: Shopsys\FrameworkBundle\Component\Filesystem\MainFilesystemFactory
-        arguments:
-            $inner: '@App\Component\FileSystem\FilesystemFactoryDecorator.inner'
-            $s3ApiHost: '%env(S3_API_HOST)%'
-            $s3ApiUsername: '%env(S3_API_USERNAME)%'
-            $s3ApiPassword: '%env(S3_API_PASSWORD)%'
-            $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
-
     App\DataFixtures\Performance\ProductDataFixture:
         arguments:
             - "%shopsys.performance_data.product.total_count%"
@@ -458,11 +449,6 @@ services:
             # must be run before ProductVisibilityFacade
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 20 }
 
-    App\Component\NinjaMutex\Lock\NullLock: ~
-
-    NinjaMutex\Lock\LockInterface:
-        class: App\Component\NinjaMutex\Lock\NullLock
-
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface: '@App\Model\Product\Parameter\ParameterDataFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterGridFactory: '@App\Model\Product\Parameter\ParameterGridFactory'
@@ -587,17 +573,6 @@ services:
             - '%shopsys.product_feed.heureka_bundle.heureka_category_feed_url%'
 
     Shopsys\ProductFeed\ZboziBundle\Model\FeedItem\ZboziFeedItemFactory: '@App\Model\Feed\Zbozi\FeedItem\ZboziFeedItemFactory'
-
-    shopsys.shop.maintenance_cache_provider:
-        class: Doctrine\Common\Cache\RedisCache
-        calls:
-            - { method: setRedis, arguments: ['@snc_redis.global'] }
-
-    App\Component\Maintenance\MaintenanceModeSubscriber:
-        arguments:
-            - '@shopsys.shop.maintenance_cache_provider'
-        tags:
-            - { name: kernel.event_subscriber }
 
     Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@App\Model\Security\FrontLogoutHandler'
 

@@ -27,21 +27,4 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
 
         return $result;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function convertBulk(string $index, array $data): array
-    {
-        $result = parent::convertBulk($index, $data);
-        foreach ($result as $key => $value) {
-            if (array_key_exists('index', $value)) {
-                $indexValue = $value['index'];
-                unset($indexValue['_type']);
-                $result[$key]['index'] = $indexValue;
-            }
-        }
-
-        return $result;
-    }
 }

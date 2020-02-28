@@ -7,11 +7,29 @@ stages:
     - build
     - test
     - review
+    - deploy
 
 .only-default: &only-default
     only:
         - branches
         - master
+
+.deploy: &deploy
+    image:
+        name: shopsys/kubernetes-buildpack:0.3.0-dev
+    stage: deploy
+    needs:
+        - build
+    tags:
+        - docker
+    script:
+        - docker create -ti --name image ${TAG} bash
+        - docker cp image:/var/www/html/var/ ./
+        - apk add --no-cache bash openvpn
+        - openvpn --daemon --config $OVPN
+        - sleep 10
+        - mkdir -p /root/.kube/ && echo "${KUBE_CONFIG}" > /root/.kube/config
+        - chmod +x ./deploy/deploy-project.sh && ./deploy/deploy-project.sh deploy
 
 variables:
     TAG: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}
@@ -103,3 +121,30 @@ review:stop:
     environment:
         name: review/${CI_COMMIT_REF_SLUG}
         action: stop
+
+deploy:production:
+    <<: *deploy
+    when: manual
+    allow_failure: false
+    resource_group: deploy_production
+    variables:
+        DOCKER_HOST: tcp://docker:2375/
+        KUBE_CONFIG: ${KUBE_CONFIG_PROD}
+    only:
+        - master
+        - /^master-.*$/
+    environment:
+        name: production
+
+deploy:devel:
+    <<: *deploy
+    resource_group: deploy_devel
+    variables:
+        DOCKER_HOST: tcp://docker:2375/
+        KUBE_CONFIG: ${KUBE_CONFIG_DEVEL}
+    only:
+        - devel
+        - /^devel-.*$/
+    environment:
+        name: devel
+
