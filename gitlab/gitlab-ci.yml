@@ -135,6 +135,7 @@ deploy:production:
         - /^master-.*$/
     environment:
         name: production
+        url: https://${DOMAIN_HOSTNAME_1}
 
 deploy:devel:
     <<: *deploy
@@ -147,4 +148,5 @@ deploy:devel:
         - /^devel-.*$/
     environment:
         name: devel
+        url: https://${DOMAIN_HOSTNAME_1}
 
