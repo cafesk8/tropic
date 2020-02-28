@@ -2,7 +2,7 @@
 
 BASE_PATH="$(realpath "$(dirname "$0")/..")"
 CONFIGURATION_TARGET_PATH="${BASE_PATH}/var/deployment/kubernetes"
-BASIC_AUTH_PATH="${CONFIGURATION_TARGET_PATH}/basicHttpAuth"
+BASIC_AUTH_PATH="${BASE_PATH}/basicHttpAuth"
 DEPLOY_TARGET_PATH="${BASE_PATH}/var/deployment/deploy"
 APP_CONFIG_DIRECTORY="config"
 APP_CONFIG_PATH="${BASE_PATH}/${APP_CONFIG_DIRECTORY}"
