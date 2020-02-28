@@ -69,25 +69,27 @@
 
                             <div class="list-products__item__hover">
                                 {% if productsForMainVariantGroup is not empty %}
-                                    {% if productsForMainVariantGroup|length >= 5 %}
-                                        <span class="js-variantsSlider-action-prev list-products__item__variants__arrow list-products__item__variants__arrow--prev">
+                                    <div class="list-products__item__variants">
+                                        {% if productsForMainVariantGroup|length >= 5 %}
+                                            <span class="js-variantsSlider-action-prev list-products__item__variants__arrow list-products__item__variants__arrow--prev">
+                                                    <i class="svg svg-slider-arrow"></i>
+                                                </span>
+                                        {% endif %}
+                                        <div class="list-products__item__variants__slider js-variantsSlider-slides">
+                                            {% for mainVariantGroupProductView in productsForMainVariantGroup %}
+                                                <a href="{{ mainVariantGroupProductView.detailUrl }}"> {# TODO KOD - obrázky vedle sebe #}
+                                                    <div class="list-products__item__variants__image">
+                                                        {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name, lazy: true }) }}
+                                                    </div>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                        {% if productsForMainVariantGroup|length >= 5 %}
+                                            <span class="js-variantsSlider-action-next list-products__item__variants__arrow list-products__item__variants__arrow--next">
                                                 <i class="svg svg-slider-arrow"></i>
                                             </span>
-                                    {% endif %}
-                                    <div class="list-products__item__variants__slider js-variantsSlider-slides">
-                                        {% for mainVariantGroupProductView in productsForMainVariantGroup %}
-                                            <a href="{{ mainVariantGroupProductView.detailUrl }}"> {# TODO KOD - obrázky vedle sebe #}
-                                                <div class="list-products__item__variants__image">
-                                                    {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name, lazy: true }) }}
-                                                </div>
-                                            </a>
-                                        {% endfor %}
+                                        {% endif %}
                                     </div>
-                                    {% if productsForMainVariantGroup|length >= 5 %}
-                                        <span class="js-variantsSlider-action-next list-products__item__variants__arrow list-products__item__variants__arrow--next">
-                                            <i class="svg svg-slider-arrow"></i>
-                                        </span>
-                                    {% endif %}
                                     <a href="{{ productView.action.detailUrl }}" class="btn btn--success">
                                         {{ 'Vybrat variantu'|trans }}
                                     </a>
