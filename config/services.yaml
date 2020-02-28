@@ -238,15 +238,6 @@ services:
             - "%shopsys.performance_data.order.total_count%"
             - "%shopsys.performance_data.order.item_count_per_order%"
 
-    App\Component\FileSystem\FileSystemFactoryDecorator:
-        decorates: Shopsys\FrameworkBundle\Component\Filesystem\MainFilesystemFactory
-        arguments:
-            $inner: '@App\Component\FileSystem\FilesystemFactoryDecorator.inner'
-            $s3ApiHost: '%env(S3_API_HOST)%'
-            $s3ApiUsername: '%env(S3_API_USERNAME)%'
-            $s3ApiPassword: '%env(S3_API_PASSWORD)%'
-            $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
-
     App\DataFixtures\Performance\ProductDataFixture:
         arguments:
             - "%shopsys.performance_data.product.total_count%"
