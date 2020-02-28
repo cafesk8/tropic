@@ -15,10 +15,12 @@
                     {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
                 </div>
                 <div class="box-order__wrap">
-                    {% if isEnglishDomain() is same as (true) %}
-                        {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
-                    {% endif %}
                     <div id="{{ form.vars.id }}" class="box-order__info js-order-box">
+                        {% if isEnglishDomain() is same as (true) %}
+                            <div class="margin-bottom-20">
+                                {{ form_row(form.country, { label: 'Country'|trans, attr: { 'data-order-transport-and-payment-box-url': url('front_order_transport_and_payment_box') } }) }}
+                            </div>
+                        {% endif %}
                         {% include 'Front/Content/Order/transportAndPaymentBox.html.twig' %}
                     </div>
 
