@@ -114,7 +114,7 @@ class TransportAndPaymentFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $country = $this->countryFacade->getHackedCountry();
+        $country = $options['country'] ?? $this->countryFacade->getHackedCountry();
 
         $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
 
