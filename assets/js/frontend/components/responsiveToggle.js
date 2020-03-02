@@ -9,7 +9,7 @@ import Register from 'framework/common/utils/register';
  4. switch to desktop version reset visibility of data-element from 2.
 */
 
-const activeButtonClass = 'active';
+const activeButtonClass = 'open';
 
 export default class ResponsiveToggle {
 
