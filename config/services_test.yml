@@ -100,9 +100,6 @@ services:
     Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface:
         alias: App\Model\Customer\User\CustomerUserUpdateDataFactory
 
-    Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface:
-        alias: App\Model\Product\ProductFactory
-
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemDataFactoryInterface: '@App\Model\Order\Item\OrderItemDataFactory'
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactoryInterface: '@App\Model\Order\Item\OrderItemFactory'
@@ -149,10 +146,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterGridFactory: '@App\Model\Product\Parameter\ParameterGridFactory'
 
-    Shopsys\FrameworkBundle\Controller\Admin\GridController:
-        class: App\Controller\Admin\GridController
-        tags: ['controller.service_arguments']
-
     App\Component\Setting\Setting: ~
     Shopsys\FrameworkBundle\Component\Setting\Setting: '@App\Component\Setting\Setting'
 
@@ -166,10 +159,6 @@ services:
     App\Component\Mall\MallImportOrderClient:
         arguments:
             $includeTestOrders: '%mall_includeTestOrders%'
-
-    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@App\Model\Product\Filter\ProductFilterConfigFactory'
-
-    Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
 
     App\Model\Product\ProductOnCurrentDomainElasticFacade: ~
 

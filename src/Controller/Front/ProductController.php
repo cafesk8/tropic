@@ -10,8 +10,6 @@ use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
-use App\Model\Product\Filter\ProductFilterData;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -19,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForBrandFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade;
 use Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForSearchFacade;
@@ -37,7 +36,7 @@ class ProductController extends FrontBaseController
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;
 
     /**
-     * @var \App\Model\Product\Filter\ProductFilterConfigFactory
+     * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
      */
     private $productFilterConfigFactory;
 
@@ -82,11 +81,6 @@ class ProductController extends FrontBaseController
     private $moduleFacade;
 
     /**
-     * @var \App\Model\Product\MainVariantGroup\MainVariantGroupFacade
-     */
-    private $mainVariantGroupFacade;
-
-    /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
      */
     private $blogArticleFacade;
@@ -126,12 +120,11 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
-     * @param \App\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
      * @param \App\Model\Product\Listing\ProductListOrderingModeForListFacade $productListOrderingModeForListFacade
      * @param \App\Model\Product\Listing\ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade
      * @param \App\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade
      * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \App\Model\Product\ProductFacade $productFacade
@@ -150,7 +143,6 @@ class ProductController extends FrontBaseController
         ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade,
         ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade,
         ModuleFacade $moduleFacade,
-        MainVariantGroupFacade $mainVariantGroupFacade,
         BlogArticleFacade $blogArticleFacade,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
         ProductFacade $productFacade,
@@ -168,7 +160,6 @@ class ProductController extends FrontBaseController
         $this->productListOrderingModeForBrandFacade = $productListOrderingModeForBrandFacade;
         $this->productListOrderingModeForSearchFacade = $productListOrderingModeForSearchFacade;
         $this->moduleFacade = $moduleFacade;
-        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->productFacade = $productFacade;
@@ -195,14 +186,8 @@ class ProductController extends FrontBaseController
         $accessories = $this->listedProductViewFacade->getAllAccessories($product->getId());
         $domainId = $this->domain->getId();
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
-        $mainVariantGroupProducts = $this->mainVariantGroupFacade->getProductsForMainVariantGroup($product);
-        $youtubeDetailForMainVariants = $this->productFacade->getYoutubeViewForMainVariants($mainVariantGroupProducts);
 
-        if (count($mainVariantGroupProducts) > 0) {
-            $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProducts($mainVariantGroupProducts);
-        } else {
-            $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProduct($product);
-        }
+        $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProduct($product);
 
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
@@ -210,8 +195,6 @@ class ProductController extends FrontBaseController
             'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
             'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
-            'mainVariants' => $mainVariantGroupProducts,
-            'youtubeDetailForMainVariants' => $youtubeDetailForMainVariants,
             'domainId' => $domainId,
             'productBlogArticles' => $this->blogArticleFacade->getVisibleByProduct(
                 $product,
@@ -260,7 +243,6 @@ class ProductController extends FrontBaseController
 
         $productFilterData = new ProductFilterData();
 
-        /** @var \App\Model\Product\Filter\ProductFilterConfig $productFilterConfig */
         $productFilterConfig = $this->createProductFilterConfigForCategory($category);
         $filterForm = $this->createForm(ProductFilterFormType::class, $productFilterData, [
             'product_filter_config' => $productFilterConfig,
@@ -368,7 +350,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param \App\Model\Category\Category $category
-     * @return \App\Model\Product\Filter\ProductFilterConfig
+     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
     private function createProductFilterConfigForCategory(Category $category)
     {
@@ -381,7 +363,7 @@ class ProductController extends FrontBaseController
 
     /**
      * @param string|null $searchText
-     * @return \App\Model\Product\Filter\ProductFilterConfig
+     * @return \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig
      */
     private function createProductFilterConfigForSearch($searchText)
     {

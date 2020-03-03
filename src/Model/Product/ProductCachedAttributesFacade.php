@@ -27,11 +27,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     protected $parameterRepository;
 
     /**
-     * @var \App\Model\Product\CachedProductDistinguishingParameterValueFacade
-     */
-    private $cachedProductDistinguishingParameterValueFacade;
-
-    /**
      * @var \App\Model\Transport\DeliveryDate\DeliveryDateFacade
      */
     private $deliveryDateFacade;
@@ -65,7 +60,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
-     * @param \App\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \App\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
      * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -76,7 +70,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         ProductPriceCalculationForCustomerUser $productPriceCalculationForUser,
         ParameterRepository $parameterRepository,
         Localization $localization,
-        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
         DeliveryDateFacade $deliveryDateFacade,
         ProductPriceCalculation $productPriceCalculation,
         Domain $domain,
@@ -84,133 +77,11 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         CurrentCustomerUser $currentCustomerUser
     ) {
         parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
-        $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
         $this->deliveryDateFacade = $deliveryDateFacade;
         $this->productPriceCalculation = $productPriceCalculation;
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->currentCustomerUser = $currentCustomerUser;
-    }
-
-    /**
-     * This method returns for every main variant all values of distinguishing parameter used in variants with variantId if variant has that value
-     *
-     * Example result:
-     *
-     * [
-     *     'Main variant ID 1' => [
-     *          'Distinguishing parameter value "Blue"' => null // null is here, because there is no variant for main variant with ID 1
-     *          'Distinguishing parameter value "Green"' => 12 // Here is ID of variant that has value Green for distinguishing parameter
-     *     ],
-     *     'Main variant ID 2' => [
-     *          'Distinguishing parameter value "Blue"' => null
-     *          'Distinguishing parameter value "Green"' => null
-     *     ],
-     *     'Main variant ID 3' => [
-     *          'Distinguishing parameter value "Blue"' => 13
-     *          'Distinguishing parameter value "Green"' => 43
-     *     ],
-     * ]
-     *
-     * @param \App\Model\Product\Product[] $allVariants
-     * @param string|null $locale
-     * @return array
-     */
-    public function findDistinguishingParameterValuesForProducts(array $allVariants, ?string $locale = null): array
-    {
-        $distinguishingParameterValues = [];
-        $parameterValuesWithProductIds = [];
-        $productWithVariantIds = [];
-        foreach ($allVariants as $variant) {
-            $distinguishingParameterValue = $this->getProductDistinguishingParameterValue($variant, $locale);
-            $secondDistinguishingParameterValue = $distinguishingParameterValue->getSecondDistinguishingParameterValue();
-
-            $productWithVariantIds[$variant->getMainVariant()->getId()][] = $variant->getId();
-
-            if ($secondDistinguishingParameterValue === null) {
-                continue;
-            }
-
-            $parameterValuesWithProductIds[$secondDistinguishingParameterValue][] = $variant->getId();
-
-            if (in_array($secondDistinguishingParameterValue, $distinguishingParameterValues, true) === false) {
-                $distinguishingParameterValues[] = $secondDistinguishingParameterValue;
-            }
-        }
-
-        $finalResult = [];
-
-        foreach ($productWithVariantIds as $mainVariantId => $variantIds) {
-            foreach ($distinguishingParameterValues as $distinguishingParameterValue) {
-                if (array_key_exists($distinguishingParameterValue, $parameterValuesWithProductIds) === true) {
-                    $productId = array_intersect($parameterValuesWithProductIds[$distinguishingParameterValue], $variantIds);
-                    $finalResult[$mainVariantId][$distinguishingParameterValue] = array_shift($productId);
-                } else {
-                    $finalResult[$mainVariantId][$distinguishingParameterValue] = null;
-                }
-            }
-
-            if (array_key_exists($mainVariantId, $finalResult) && is_array($finalResult[$mainVariantId])) {
-                uksort($finalResult[$mainVariantId], [SizeHelper::class, 'compareSizes']);
-            }
-        }
-
-        return $finalResult;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param string|null $locale
-     * @return \App\Model\Product\ProductDistinguishingParameterValue
-     */
-    public function getProductDistinguishingParameterValue(Product $product, ?string $locale = null): ProductDistinguishingParameterValue
-    {
-        if ($locale === null) {
-            $locale = $this->localization->getLocale();
-        }
-
-        $productDistinguishingParameterValue =
-            $this->cachedProductDistinguishingParameterValueFacade->findProductDistinguishingParameterValue($product, $locale);
-
-        if ($productDistinguishingParameterValue === null) {
-            $productDistinguishingParameterValue = $this->createProductDistinguishingParameterValue($product, $locale);
-            $this->cachedProductDistinguishingParameterValueFacade->saveToCache($product, $locale, $productDistinguishingParameterValue);
-        }
-
-        return $productDistinguishingParameterValue;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param string $locale
-     * @return \App\Model\Product\ProductDistinguishingParameterValue
-     */
-    private function createProductDistinguishingParameterValue(Product $product, string $locale): ProductDistinguishingParameterValue
-    {
-        $productParameterValues = $this->getProductParameterValues($product, $locale);
-
-        $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
-        $mainVariantGroup = $mainVariant->getMainVariantGroup();
-
-        $firstDistinguishingParameterValue = null;
-        $secondDistinguishingParameterValue = null;
-        $productDistinguishingParameterValue = null;
-        foreach ($productParameterValues as $productParameterValue) {
-            if ($mainVariantGroup !== null && $productParameterValue->getParameter()->getId() === $mainVariantGroup->getDistinguishingParameter()->getId()) {
-                $firstDistinguishingParameterValue = $productParameterValue;
-            }
-            if ($productParameterValue->getParameter() === $mainVariant->getDistinguishingParameter()) {
-                $secondDistinguishingParameterValue = $productParameterValue;
-            }
-        }
-
-        $productDistinguishingParameterValue = new ProductDistinguishingParameterValue(
-            $firstDistinguishingParameterValue,
-            $secondDistinguishingParameterValue,
-            $locale
-        );
-
-        return $productDistinguishingParameterValue;
     }
 
     /**

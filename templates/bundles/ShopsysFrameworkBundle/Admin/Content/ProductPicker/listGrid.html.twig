@@ -11,11 +11,6 @@
            data-toggle="tooltip" data-placement="left" title=""
            data-original-title="{{ 'You cannot choose product that is variant'|trans }}"
         ></i>
-    {% elseif isMainVariantGroup and row.product.mainVariantGroup is not null %}
-        <i class="in-icon in-icon--info svg svg-info cursor-help js-tooltip"
-           data-toggle="tooltip" data-placement="left" title=""
-           data-original-title="{{ 'Nemůžete vybrat produkt, který je již propojen'|trans }}"
-        ></i>
     {% elseif isMultiple %}
         <a
                 class="js-products-picker-window-add-product btn btn--light btn--plus btn--small"

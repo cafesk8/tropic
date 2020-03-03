@@ -15,11 +15,6 @@ class AdvertController extends FrontBaseController
     private $advertFacade;
 
     /**
-     * @var \App\Model\Product\ProductOnCurrentDomainElasticFacade
-     */
-    private $productOnCurrentDomainFacade;
-
-    /**
      * @param \App\Model\Advert\AdvertFacade $advertFacade
      */
     public function __construct(AdvertFacade $advertFacade)
@@ -49,7 +44,6 @@ class AdvertController extends FrontBaseController
         return $this->render('Front/Content/Advert/bigBannerOnHomepage.html.twig', [
             'advert' => $advert,
             'advertProducts' => $advertProducts,
-            'variantsIndexedByMainVariantId' => $this->productOnCurrentDomainFacade->getVariantsIndexedByMainVariantId($advertProducts),
         ]);
     }
 }

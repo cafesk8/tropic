@@ -22,13 +22,7 @@
     <div class="web__line">
         <div class="web__container">
             <div itemscope itemtype="http://schema.org/Product">
-                <div class="js-product-variant-group">
-                    {{ boxDetail.productBox(product, allVariants, productMainCategory, true, mainVariants, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
-
-                    {% for mainVariant in mainVariants if mainVariant.id != product.id %}
-                        {{ boxDetail.productBox(mainVariant, allVariants, productMainCategory, false, mainVariants, youtubeDetailForMainVariants[mainVariant.id], productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
-                    {% endfor %}
-                </div>
+                {{ boxDetail.productBox(product, allVariants, productMainCategory, true, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) }}
             </div>
         </div>
     </div>

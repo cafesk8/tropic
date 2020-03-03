@@ -1,11 +1,11 @@
-{% macro productBox(product, variants, productMainCategory, visible, mainVariants, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+{% macro productBox(product, variants, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
 
-    <div class="box-detail {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
+    <div class="box-detail {% if visible == false %}display-none{% endif %}">
         <div class="box-detail__product">
             <div class="box-detail__image">
                 {% set galleryImages = getImages(product) %}
@@ -75,55 +75,6 @@
                 </div>
 
                 <div class="box-detail__wrap">
-                    {% if (product.mainVariantGroup is not null and mainVariants|length > 0) or product.isMainVariant is same as (true) %}
-                        <div class="box-detail__variants">
-                            {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
-                                <div class="box-detail__variants__title">
-                                    {{ 'Vyberte variantu'|trans }}
-                                </div>
-                                <ul class="list-variants">
-                                    {% for mainVariantGroupProduct in mainVariants %}
-                                        {% set productDistinguishingParameterValue = productDistinguishingParameterValue(mainVariantGroupProduct) %}
-                                        {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
-                                            <li class="list-variants__item__with-image js-product-main-variant-select-button {{ mainVariantGroupProduct.id == product.id ? 'active' }}"
-                                                data-id="{{ mainVariantGroupProduct.id }}">
-                                                {{ image(mainVariantGroupProduct, {size: 'thumbnail'}) }}
-                                                <span class="list-variants__item__name">
-                                                    {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
-                                                </span>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-
-                            {% if product.isMainVariant is same as (true) %}
-                                {% set allDistinguishingParameterValuesForProducts = distinguishingParameterValuesForProducts(variants) %}
-                                {% if allDistinguishingParameterValuesForProducts is not empty %}
-                                    <div class="box-detail__variants__title box-detail__variants__title--with-top-gap">
-                                        {{ 'Vyberte velikost'|trans }}
-                                        <a
-                                            href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}"
-                                            class="box-detail__variants__title__link underline-small js-window-opener-frontend"
-                                            data-content="{{ render(controller('App\\Controller\\Front\\ArticleController:detailForModalAction', { 'id': productSizeArticleId }))|escape('js') }}"
-                                            data-css-class="window-popup--wide"
-                                        >
-                                            {{ 'Jak vybrat správnou velikost?' }}
-                                        </a>
-                                    </div>
-                                    <ul class="list-variants">
-                                        {% if product.id in allDistinguishingParameterValuesForProducts|keys %}
-                                            {% for parameterValue, variantId in allDistinguishingParameterValuesForProducts[product.id] %}
-                                                <li class="list-variants__item {{ variantId is null ? 'disabled' }} js-product-variant-select-button"
-                                                    data-id="{{ variantId }}">{{ parameterValue }}</li>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </ul>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    {% endif %}
-
                     <div class="box-detail__add-basket {{ variants|length <= 0 and product.isMainVariant == true ? 'box-detail__add-basket--empty' }} js-product-variant-detail-wrapper">
                         <div>
                             {% if product.calculatedAvailability %}
@@ -212,7 +163,6 @@
             variants,
             productMainCategory,
             visible,
-            mainVariants,
             youtubeDetails,
             productSizeArticleId,
             accessories,

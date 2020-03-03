@@ -1,6 +1,5 @@
 {% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
-{% import 'Front/Inline/Product/distinguishingParameterMacro.html.twig' as distinguishingParameter %}
 
 {% block meta_robots -%}
     <meta name="robots" content="noindex, follow">
@@ -83,7 +82,6 @@
                                                     <a class="table-cart__cell__name__title" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
                                                         {{ cartItem.name }}
                                                     </a>
-                                                    {{ distinguishingParameter.writeParameters(cartItem.product, 'table-cart__cell__name__text') }}
                                                 </div>
                                             </div>
                                             <div class="table-cart__row__right">

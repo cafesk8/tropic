@@ -14,10 +14,6 @@ services:
         tags:
             - { name: shopsys.cron, hours: '3', minutes: '50', readableFrequency: '1x za den' }
 
-    #    App\Model\Product\Transfer\ProductImportCronModule:
-    #        tags:
-    #            - { name: shopsys.cron, hours: '*', minutes: '*' }
-    #
     #    App\Model\Product\Pricing\Transfer\AllProductPriceImportCronModule:
     #        tags:
     #            - { name: shopsys.cron, hours: '01', minutes: '30' }

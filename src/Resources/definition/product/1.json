@@ -255,31 +255,6 @@
             "type": "boolean"
           }
         }
-      },
-      "main_variant_group_products": {
-        "type": "nested",
-        "properties": {
-          "pricing_group_id": {
-            "type": "integer"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "name": {
-            "type": "text"
-          }
-        }
-      },
-      "second_distinguishing_parameter_values": {
-        "type": "nested",
-        "properties": {
-          "pricing_group_id": {
-            "type": "integer"
-          },
-          "value": {
-            "type": "text"
-          }
-        }
       }
     }
   }

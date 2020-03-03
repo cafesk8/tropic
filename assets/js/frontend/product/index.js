@@ -6,6 +6,3 @@ import './productFilterBox';
 import './productList.AjaxFilter';
 import './productList';
 import './productListCategoryToggler';
-import './variantSelector';
-import './variantSelectorToLastVisited';
-import './variantsSlider';

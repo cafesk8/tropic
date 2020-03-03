@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
-use App\Model\Product\MainVariantGroup\MainVariantGroup;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
@@ -32,11 +31,11 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
  * @method \Doctrine\ORM\QueryBuilder getListableBySearchTextQueryBuilder(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, string $locale, string|null $searchText)
  * @method filterByCategory(\Doctrine\ORM\QueryBuilder $queryBuilder, \App\Model\Category\Category $category, int $domainId)
  * @method filterByBrand(\Doctrine\ORM\QueryBuilder $queryBuilder, \App\Model\Product\Brand\Brand $brand)
- * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForListableInCategory(\App\Model\Category\Category $category, int $domainId, string $locale, \App\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
+ * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForListableInCategory(\App\Model\Category\Category $category, int $domainId, string $locale, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
  * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForListableForBrand(\App\Model\Product\Brand\Brand $brand, int $domainId, string $locale, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
- * @method \Doctrine\ORM\QueryBuilder getFilteredListableInCategoryQueryBuilder(\App\Model\Category\Category $category, int $domainId, string $locale, \App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
- * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForSearchListable(string|null $searchText, int $domainId, string $locale, \App\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
- * @method \Doctrine\ORM\QueryBuilder getFilteredListableForSearchQueryBuilder(string|null $searchText, int $domainId, string $locale, \App\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @method \Doctrine\ORM\QueryBuilder getFilteredListableInCategoryQueryBuilder(\App\Model\Category\Category $category, int $domainId, string $locale, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
+ * @method \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult getPaginationResultForSearchListable(string|null $searchText, int $domainId, string $locale, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, int $page, int $limit)
+ * @method \Doctrine\ORM\QueryBuilder getFilteredListableForSearchQueryBuilder(string|null $searchText, int $domainId, string $locale, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $productFilterData, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @method applyOrdering(\Doctrine\ORM\QueryBuilder $queryBuilder, string $orderingModeId, \App\Model\Pricing\Group\PricingGroup $pricingGroup, string $locale)
  * @method \App\Model\Product\Product getById(int $id)
  * @method \App\Model\Product\Product[] getAllByIds(int[] $ids)
@@ -95,17 +94,6 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
-     * @param \App\Model\Product\Parameter\Parameter $parameter
-     * @return \App\Model\Product\Product[]
-     */
-    public function getProductsWithDistinguishingParameter(Parameter $parameter): array
-    {
-        return $this->getProductRepository()->findBy([
-            'distinguishingParameter' => $parameter,
-        ]);
-    }
-
-    /**
      * @param string $transferNumber
      * @return \App\Model\Product\Product|null
      */
@@ -134,35 +122,6 @@ class ProductRepository extends BaseProductRepository
         /** @var \App\Model\Product\Product $product */
         foreach ($queryResult as $product) {
             $results[$product->getMainVariant()->getId()][] = $product;
-        }
-
-        return $results;
-    }
-
-    /**
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroup $mainVariantGroup
-     * @param int $domainId
-     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \App\Model\Product\Product[]
-     */
-    public function getVariantsForMainVariantGroup(MainVariantGroup $mainVariantGroup, int $domainId, PricingGroup $pricingGroup): array
-    {
-        $queryBuilder = $this->getAllSellableQueryBuilder($domainId, $pricingGroup);
-        $queryBuilder
-            ->leftJoin('p.mainVariant', 'pmv')
-            ->andWhere('p.variantType = :variant')
-            ->andWhere('pmv.mainVariantGroup = :mainVariantGroup')
-            ->andWhere('p.mallExport = true')
-            ->setParameter('variant', Product::VARIANT_TYPE_VARIANT)
-            ->setParameter('mainVariantGroup', $mainVariantGroup);
-
-        $queryResult = $queryBuilder->getQuery()->execute();
-
-        $results = [];
-
-        /** @var \App\Model\Product\Product $variant */
-        foreach ($queryResult as $variant) {
-            $results[] = $variant;
         }
 
         return $results;
@@ -351,10 +310,9 @@ class ProductRepository extends BaseProductRepository
     {
         return (int)$this->getAllVisibleQueryBuilder($domainId, $pricingGroup)
             ->select('count(p)')
-            ->andWhere('p.mainVariant = :mainVariant OR p.mainVariantGroup = :mainVariantGroup')
+            ->andWhere('p.mainVariant = :mainVariant')
             ->andWhere('p.variantType = :variant')
             ->setParameter('mainVariant', $mainVariant)
-            ->setParameter('mainVariantGroup', $mainVariant->getMainVariantGroup())
             ->setParameter('variant', Product::VARIANT_TYPE_VARIANT)
             ->resetDQLPart('orderBy')
             ->getQuery()

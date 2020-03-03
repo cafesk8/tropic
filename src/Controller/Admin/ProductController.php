@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Component\Cron\CronModuleFacade;
-use App\Form\Admin\VariantFormTypeExtension;
 use App\Model\Product\MassEdit\MassEditFacade;
-use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\ProductFacade;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -15,8 +13,6 @@ use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Controller\Admin\ProductController as BaseProductController;
-use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
-use Shopsys\FrameworkBundle\Form\Admin\Product\VariantFormType;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormType;
 use Shopsys\FrameworkBundle\Model\Administrator\AdministratorGridFacade;
@@ -52,11 +48,6 @@ class ProductController extends BaseProductController
     protected $productFacade;
 
     /**
-     * @var \App\Model\Product\Parameter\ParameterFacade
-     */
-    private $parameterFacade;
-
-    /**
      * @var \App\Component\Cron\CronModuleFacade
      */
     private $cronModuleFacade;
@@ -77,7 +68,6 @@ class ProductController extends BaseProductController
      * @param \App\Component\Setting\Setting $setting
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      * @param \App\Model\Product\MassEdit\MassEditFacade $massEditFacade
-     * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \App\Component\Cron\CronModuleFacade $cronModuleFacade
      */
     public function __construct(
@@ -96,52 +86,12 @@ class ProductController extends BaseProductController
         Setting $setting,
         AvailabilityFacade $availabilityFacade,
         MassEditFacade $massEditFacade,
-        ParameterFacade $parameterFacade,
         CronModuleFacade $cronModuleFacade
     ) {
         parent::__construct($productMassActionFacade, $gridFactory, $productFacade, $productDataFactory, $breadcrumbOverrider, $administratorGridFacade, $productListAdminFacade, $advancedSearchProductFacade, $productVariantFacade, $productExtension, $domain, $unitFacade, $setting, $availabilityFacade);
 
         $this->massEditFacade = $massEditFacade;
-        $this->parameterFacade = $parameterFacade;
         $this->cronModuleFacade = $cronModuleFacade;
-    }
-
-    /**
-     * @Route("/product/create-variant/")
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function createVariantAction(Request $request): Response
-    {
-        $form = $this->createForm(VariantFormType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
-            /** @var \App\Model\Product\Product $mainVariant */
-            $mainVariant = $formData[VariantFormType::MAIN_VARIANT];
-            $mainVariant->setDistinguishingParameter($formData[VariantFormTypeExtension::DISTINGUISHING_PARAMETER]);
-            try {
-                $newMainVariant = $this->productVariantFacade->createVariant($mainVariant, $formData[VariantFormType::VARIANTS]);
-
-                $this->getFlashMessageSender()->addSuccessFlashTwig(
-                    t('Variant <strong>{{ productVariant|productDisplayName }}</strong> successfully created.'),
-                    [
-                        'productVariant' => $newMainVariant,
-                    ]
-                );
-
-                return $this->redirectToRoute('admin_product_edit', ['id' => $newMainVariant->getId()]);
-            } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\VariantException $ex) {
-                $this->getFlashMessageSender()->addErrorFlash(
-                    t('Not possible to create variations of products that are already variant or main variant.')
-                );
-            }
-        }
-
-        return $this->render('@ShopsysFramework/Admin/Content/Product/createVariant.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -266,46 +216,5 @@ class ProductController extends BaseProductController
         $grid->addColumn('finished', 'p.finished', t('Produkt je hotový'), true);
 
         return $grid;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $id
-     */
-    public function editAction(Request $request, $id)
-    {
-        $product = $this->productFacade->getById($id);
-        $productData = $this->productDataFactory->createFromProduct($product);
-
-        $form = $this->createForm(ProductFormType::class, $productData, ['product' => $product]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->productFacade->edit($id, $form->getData());
-            $this->productFacade->fillVariantNamesFromMainVariantNames($product, $this->parameterFacade);
-
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
-                t('Product <strong>{{ product|productDisplayName }}</strong> modified'),
-                [
-                    'product' => $product,
-                ]
-            );
-
-            return $this->redirectToRoute('admin_product_edit', ['id' => $product->getId()]);
-        }
-
-        if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
-        }
-
-        $this->breadcrumbOverrider->overrideLastItem(t('Editing product - %name%', ['%name%' => $this->productExtension->getProductDisplayName($product)]));
-
-        $viewParameters = [
-            'form' => $form->createView(),
-            'product' => $product,
-            'domains' => $this->domain->getAll(),
-        ];
-
-        return $this->render('@ShopsysFramework/Admin/Content/Product/edit.html.twig', $viewParameters);
     }
 }

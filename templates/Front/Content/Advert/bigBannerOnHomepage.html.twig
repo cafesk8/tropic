@@ -38,18 +38,6 @@
                                                 <span class="box-special-offer__products__item__content__price__discount">-{{ sellingPrice.pricePercentageDifference|formatPercent }}</span>
                                             {% endif %}
                                         </span>
-                                        <span class="box-special-offer__products__item__content__size">
-{#                                            {{ 'Vaše velikost'|trans }}#}
-                                            {% if variantsIndexedByMainVariantId|length > 0 and advertProduct.id in variantsIndexedByMainVariantId|keys %}
-                                                {% set secondDistinguishingParameters = distinguishingParameterValuesForProducts(variantsIndexedByMainVariantId[advertProduct.id]) %}
-                                                {% if advertProduct.id in secondDistinguishingParameters|keys %}
-                                                    {% for parameterValue, variantId in secondDistinguishingParameters[advertProduct.id] %}
-                                                        <span class="in-badge">{{ parameterValue }}</span>
-                                                    {% endfor %}
-                                                {% endif %}
-                                            {% endif %}
-{#                                            {{ advertProduct.calculatedAvailability.name }}#}
-                                        </span>
                                     </a>
                                 </div>
                             </li>

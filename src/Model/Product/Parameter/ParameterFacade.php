@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Parameter;
 
-use App\Model\Product\CachedProductDistinguishingParameterValueFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
-use App\Model\Product\Parameter\Exception\ParameterUsedAsDistinguishingParameterException;
 use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
@@ -39,11 +36,6 @@ class ParameterFacade extends BaseParameterFacade
     ];
 
     /**
-     * @var \App\Model\Product\MainVariantGroup\MainVariantGroupFacade
-     */
-    private $mainVariantGroupFacade;
-
-    /**
      * @var \App\Model\Product\ProductFacade
      */
     private $productFacade;
@@ -59,34 +51,23 @@ class ParameterFacade extends BaseParameterFacade
     private $parameterDataFactory;
 
     /**
-     * @var \App\Model\Product\CachedProductDistinguishingParameterValueFacade
-     */
-    private $cachedProductDistinguishingParameterValueFacade;
-
-    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface $parameterFactory
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
-     * @param \App\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      */
     public function __construct(
         EntityManagerInterface $em,
         ParameterRepository $parameterRepository,
         ParameterFactoryInterface $parameterFactory,
-        MainVariantGroupFacade $mainVariantGroupFacade,
         ProductFacade $productFacade,
-        ParameterDataFactoryInterface $parameterDataFactory,
-        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+        ParameterDataFactoryInterface $parameterDataFactory
     ) {
         parent::__construct($em, $parameterRepository, $parameterFactory);
 
-        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->productFacade = $productFacade;
         $this->parameterDataFactory = $parameterDataFactory;
-        $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
     }
 
     /**
@@ -96,17 +77,8 @@ class ParameterFacade extends BaseParameterFacade
      */
     public function edit($parameterId, ParameterData $parameterData)
     {
-        /** @var \App\Model\Product\Parameter\Parameter $parameterForCheck */
-        $parameterForCheck = $this->parameterRepository->getById($parameterId);
-
-        if ($parameterData->visibleOnFrontend !== $parameterForCheck->isVisibleOnFrontend() && count($this->getProductsWithDistinguishingParameter($parameterForCheck)) > 0) {
-            throw new ParameterUsedAsDistinguishingParameterException();
-        }
-
         /** @var \App\Model\Product\Parameter\Parameter $parameter */
         $parameter = parent::edit($parameterId, $parameterData);
-
-        $this->cachedProductDistinguishingParameterValueFacade->invalidAll();
 
         return $parameter;
     }
@@ -118,26 +90,8 @@ class ParameterFacade extends BaseParameterFacade
     {
         $parameter = $this->parameterRepository->getById($parameterId);
 
-        if (count($this->getProductsWithDistinguishingParameter($parameter)) > 0) {
-            throw new ParameterUsedAsDistinguishingParameterException();
-        }
-
         $this->em->remove($parameter);
         $this->em->flush();
-
-        $this->cachedProductDistinguishingParameterValueFacade->invalidAll();
-    }
-
-    /**
-     * @param \App\Model\Product\Parameter\Parameter $parameter
-     * @return \App\Model\Product\Product[]
-     */
-    public function getProductsWithDistinguishingParameter(Parameter $parameter): array
-    {
-        return array_merge(
-            $this->productFacade->getProductsWithDistinguishingParameter($parameter),
-            $this->mainVariantGroupFacade->getByDistinguishingParameter($parameter)
-        );
     }
 
     /**
@@ -235,22 +189,6 @@ class ParameterFacade extends BaseParameterFacade
     public function getSizeParameter(): Parameter
     {
         return $this->findOrCreateParameterByNames(self::PARAMETER_SIZE, Parameter::TYPE_SIZE);
-    }
-
-    /**
-     * @param \App\Model\Product\Parameter\Parameter $parameter
-     * @return string
-     */
-    public function getParameterUsedAsDistinguishingParameterExceptionProducts(Parameter $parameter): string
-    {
-        $productIdsWithDistinguishingParameter = implode(
-            ', ',
-            array_map(function ($product) {
-                return $product->getId();
-            }, $this->getProductsWithDistinguishingParameter($parameter))
-        );
-
-        return $productIdsWithDistinguishingParameter;
     }
 
     /**

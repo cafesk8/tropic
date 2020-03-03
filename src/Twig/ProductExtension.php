@@ -10,15 +10,14 @@ use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValue;
-use App\Model\Product\ProductDistinguishingParameterValue;
 use App\Model\Product\ProductFacade;
-use App\Model\Product\View\ListedProductView;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Twig\TwigFunction;
 
 class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
@@ -107,14 +106,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     {
         return [
             new TwigFunction(
-                'distinguishingParameterValuesForProducts',
-                [$this, 'findDistinguishingParameterValuesForProducts']
-            ),
-            new TwigFunction(
-                'productDistinguishingParameterValue',
-                [$this, 'getProductDistinguishingParameterValue']
-            ),
-            new TwigFunction(
                 'getProductRegisteredCustomerPrice',
                 [$this, 'getProductRegisteredCustomerPrice']
             ),
@@ -139,46 +130,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'getAvailabilityColor']
             ),
         ];
-    }
-
-    /**
-     * @param \App\Model\Product\Product[] $products
-     * @return string[]
-     */
-    public function findDistinguishingParameterValuesForProducts(array $products): array
-    {
-        return $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($products);
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return \App\Model\Product\ProductDistinguishingParameterValue
-     */
-    public function getProductDistinguishingParameterValue(Product $product): ProductDistinguishingParameterValue
-    {
-        return $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param string $productListDisplayName
-     * @return string
-     */
-    protected function addParameterValueToProductDisplayName(
-        Product $product,
-        string $productListDisplayName
-    ): string {
-        $productDistinguishingParameterValue = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
-
-        if ($productDistinguishingParameterValue->getFirstDistinguishingParameterValue() !== null) {
-            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getFirstDistinguishingParameterValue();
-        }
-
-        if ($productDistinguishingParameterValue->getSecondDistinguishingParameterValue() !== null) {
-            $productListDisplayName .= ' - ' . $productDistinguishingParameterValue->getSecondDistinguishingParameterValue();
-        }
-
-        return $productListDisplayName;
     }
 
     /**
@@ -230,7 +181,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param \App\Model\Product\View\ListedProductView $listedProductView
+     * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductView $listedProductView
      * @return int|null
      */
     public function getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(ListedProductView $listedProductView): ?int

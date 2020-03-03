@@ -11,10 +11,10 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPrice;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ReadModelBundle\Image\ImageView;
 use Shopsys\ReadModelBundle\Product\Action\ProductActionView;
+use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListedProductViewFactory;
 
@@ -47,15 +47,13 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @param \App\Model\Product\View\MainVariantGroupProductView[] $mainVariantGroupProductViews
-     * @return \App\Model\Product\View\ListedProductView
+     * @return \Shopsys\ReadModelBundle\Product\Listed\ListedProductView
      */
     public function createFromArray(
         array $productArray,
         ?ImageView $imageView,
         ProductActionView $productActionView,
-        PricingGroup $pricingGroup,
-        array $mainVariantGroupProductViews = []
+        PricingGroup $pricingGroup
     ): BaseListedProductView {
         $sellingPrice = $this->getSellingPrice(
             $productArray['prices'],
@@ -63,10 +61,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['id'],
             $this->getMoney($productArray['action_price']),
             $this->getPriceFromPriceArray($productArray['default_price'])
-        );
-        $distinguishingParameterValues = $this->filterDistinguishingParameterValuesByPricingGroupId(
-            $productArray['second_distinguishing_parameter_values'],
-            $pricingGroup->getId()
         );
 
         return new ListedProductView(
@@ -77,58 +71,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $sellingPrice,
             $productArray['flags'],
             $productActionView,
-            $imageView,
-            $mainVariantGroupProductViews,
-            $distinguishingParameterValues
+            $imageView
         );
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
-     * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
-     * @param \App\Model\Product\View\MainVariantGroupProductView[] $mainVariantGroupProductViews
-     * @param \App\Model\Product\Product[] $variantsIndexedByMainVariantId
-     * @return \App\Model\Product\View\ListedProductView
-     */
-    public function createFromProduct(
-        Product $product,
-        ?ImageView $imageView,
-        ProductActionView $productActionView,
-        array $mainVariantGroupProductViews = [],
-        array $variantsIndexedByMainVariantId = []
-    ): BaseListedProductView {
-        $secondDistinguishingParameterValues = $this->getSecondDistinguishingParameterValues($product, $variantsIndexedByMainVariantId);
-
-        return new ListedProductView(
-            $product->getId(),
-            $product->getName(),
-            $product->getShortDescription($this->domain->getId()),
-            $product->getCalculatedAvailability()->getName(),
-            $this->productCachedAttributesFacade->getProductSellingPrice($product),
-            $this->getFlagIdsForProduct($product),
-            $productActionView,
-            $imageView,
-            $mainVariantGroupProductViews,
-            $secondDistinguishingParameterValues
-        );
-    }
-
-    /**
-     * @param array $distinguishingParameterValues
-     * @param int $pricingGroupId
-     * @return array
-     */
-    private function filterDistinguishingParameterValuesByPricingGroupId(array $distinguishingParameterValues, int $pricingGroupId): array
-    {
-        $distinguishingParameterValuesForPricingGroup = [];
-        foreach ($distinguishingParameterValues as $distinguishingParameterValue) {
-            if ($distinguishingParameterValue['pricing_group_id'] === $pricingGroupId) {
-                $distinguishingParameterValuesForPricingGroup[] = $distinguishingParameterValue['value'];
-            }
-        }
-
-        return $distinguishingParameterValuesForPricingGroup;
     }
 
     /**
@@ -184,25 +128,5 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private function getMoney(?float $amount): ?Money
     {
         return $amount !== null ? Money::create((string)$amount) : null;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param array $variantsIndexedByMainVariantId
-     * @return array
-     */
-    private function getSecondDistinguishingParameterValues(Product $product, array $variantsIndexedByMainVariantId): array
-    {
-        $secondDistinguishingParameterValues = [];
-        if (isset($variantsIndexedByMainVariantId[$product->getId()])) {
-            $distinguishingParameterValuesForProduct = $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($variantsIndexedByMainVariantId[$product->getId()]);
-            foreach ($distinguishingParameterValuesForProduct as $mainVariantId => $variantIdsIndexedByParameterValues) {
-                foreach ($variantIdsIndexedByParameterValues as $parameterValue => $variantId) {
-                    $secondDistinguishingParameterValues[] = $parameterValue;
-                }
-            }
-        }
-
-        return $secondDistinguishingParameterValues;
     }
 }
