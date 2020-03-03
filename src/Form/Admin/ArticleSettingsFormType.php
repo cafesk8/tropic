@@ -37,7 +37,7 @@ class ArticleSettingsFormType extends AbstractType
         $articles = $this->articleFacade->getAllByDomainId($options['domain_id']);
 
         $builderSettingsGroup = $builder->create('settings', GroupType::class, [
-            'label' => t('Settings'),
+            'label' => t('Články věrnostního programu'),
         ]);
 
         $builderSettingsGroup
@@ -47,26 +47,8 @@ class ArticleSettingsFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'placeholder' => t('-- Choose article --'),
-                'label' => t('(Banner) Věrnostní program'),
-                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce zákazník stát členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program'),
-            ])
-            ->add('ourStoryArticle', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('Banner Náš příběh'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Náš příběh'),
-            ])
-            ->add('ourValuesArticle', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('Banner Naše hodnoty'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Naše hodnoty'),
+                'label' => t('Hlavní'),
+                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce zákazník stát členem Věrnostního programu.'),
             ]);
 
         $builderArticleOnHeaderGroup = $this->createArticleOnHeaderPosition($builder, $articles);

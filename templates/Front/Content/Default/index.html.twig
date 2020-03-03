@@ -73,9 +73,9 @@
                             {{ 'Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké.'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
-                            {% if ourStoryArticle is not null %}
-                                <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_article_detail', { id: ourStoryArticle.id }) }}" class="btn">{{ 'Vše pro běhání'|trans }}</a>
-                            {% endif %}
+                            <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_homepage') }}">
+                                {{ 'Vše pro běhání'|trans }}
+                            </a>
                         </div>
                     </div>
                 </li>
@@ -90,9 +90,9 @@
                             {{ 'Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám.'|trans }}
                         </div>
                         <div class="list-article-main__item__content__bottom">
-                            {% if ourValuesArticle is not null %}
-                                <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_article_detail', { id: ourValuesArticle.id }) }}" class="btn">{{ 'Plavecké potřeby'|trans }}</a>
-                            {% endif %}
+                            <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_homepage') }}">
+                                {{ 'Plavecké potřeby'|trans }}
+                            </a>
                         </div>
                     </div>
                 </li>

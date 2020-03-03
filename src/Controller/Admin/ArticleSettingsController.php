@@ -70,18 +70,6 @@ class ArticleSettingsController extends AdminBaseController
             );
 
             $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->ourValuesArticle,
-                Setting::OUR_VALUES_ARTICLE_ID,
-                $selectedDomainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->ourStoryArticle,
-                Setting::OUR_STORY_ARTICLE_ID,
-                $selectedDomainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
                 $articleSettingData->firstArticleOnHeaderMenu,
                 Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
                 $selectedDomainId

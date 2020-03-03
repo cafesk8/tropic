@@ -19,16 +19,6 @@ class ArticleSettingData
     /**
      * @var \App\Model\Article\Article|null
      */
-    public $ourValuesArticle;
-
-    /**
-     * @var \App\Model\Article\Article|null
-     */
-    public $ourStoryArticle;
-
-    /**
-     * @var \App\Model\Article\Article|null
-     */
     public $firstArticleOnHeaderMenu;
 
     /**
