@@ -85,7 +85,7 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     {
         $marketingMenu = $event->getMenu();
 
-        $marketingMenu->addChild('articles_settings', ['route' => 'admin_articlesettings_setting', 'label' => t('Přiřazení článků')]);
+        $marketingMenu->addChild('articles_settings', ['route' => 'admin_articlesettings_setting', 'label' => t('Odkazy na články')]);
 
         $marketingMenu->addChild('stores', [
             'route' => 'admin_inforow_detail',

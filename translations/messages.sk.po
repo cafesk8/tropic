@@ -7,9 +7,6 @@ msgstr ""
 msgid "%name% agrees with privacy policy."
 msgstr "%name% súhlasí s pravidlami ochrany osobných údajov."
 
-msgid "(Banner) Věrnostní program"
-msgstr "Vernostný program"
-
 msgid "(If I buy on the company behalf)"
 msgstr "(Ak nakupujem v mene spoločnosti)"
 
@@ -133,14 +130,8 @@ msgstr "Späť na prehľad"
 msgid "Balíkobot"
 msgstr "Balíkobot"
 
-msgid "Banner Naše hodnoty"
-msgstr "Banner Naše hodnoty"
-
-msgid "Banner Náš příběh"
-msgstr "Banner Náš príbeh"
-
-msgid "Bannery na hl. stránce"
-msgstr "Banner na úvodnej stránke"
+msgid "Bannery"
+msgstr "Bannery"
 
 msgid "Barva"
 msgstr "Farba"
