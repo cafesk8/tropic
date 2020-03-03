@@ -35,8 +35,38 @@
                                     'data-url': url('front_login_notice')
                                 } }) }}
 
-                                <div class="clear js-order-personal-info-form-email"></div>
+                                <div class="box-order__registration">
+                                    <div class="js-order-personal-info-form-email"></div>
 
+                                    <div class="box-order__registration__block box-order__registration__block--without-border-top js-order-registration-fields display-none">
+                                        {{ form_widget(form.registration, {
+                                            attr: { class: 'css-checkbox js-checkbox-toggle js-order-registration-checkbox', 'data-checkbox-toggle-container-id': 'js-password-fields' }})
+                                        }}
+
+                                        <label for="{{ form.registration.vars.id }}" class="css-checkbox__image">
+                                            {{ 'Chci se zaregistrovat'|trans }}
+                                        </label>
+
+                                        <div class="margin-top-10" id="js-password-fields">
+                                            {{ form_row(form.password.first, {
+                                                label: 'Password'|trans,
+                                                inputModificationClass: 'form-line__input--full',
+                                                errorModificationClass: 'form-line__error--full',
+                                                errors_attr: { class: 'form-error--under' },
+                                                icon: {
+                                                    class: 'in-icon in-icon--info js-tooltip',
+                                                    title: 'Password must be at least six characters and can\'t be the same as entered e-mail or its part before at sign.'|trans
+                                                }
+                                            }) }}
+                                            {{ form_row(form.password.second, {
+                                                label: 'Password again'|trans,
+                                                inputModificationClass: 'form-line__input--full',
+                                                errorModificationClass: 'form-line__error--full',
+                                                errors_attr: { class: 'form-error--under' }
+                                            }) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <h2 class="in-title in-title--small in-title--dark">
                                 {{ 'Doručit na adresu'|trans }}

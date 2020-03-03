@@ -29,7 +29,9 @@ export default function orderValidator ($container) {
             if ($orderPersonalInfoForm.find('#order_personal_info_form_deliveryStreet') !== null) {
                 groups.push('deliveryAddressRequired');
             }
-
+            if ($orderPersonalInfoForm.find('.js-order-registration-checkbox').is(':checked')) {
+                groups.push('\\App\\Form\\Front\\Order\\PersonalInfoFormType::VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED');
+            }
             return groups;
         }
     });

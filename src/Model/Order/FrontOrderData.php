@@ -36,6 +36,16 @@ class FrontOrderData extends BaseFrontOrderData
     public $store;
 
     /**
+     * @var string|null
+     */
+    public $password;
+
+    /**
+     * @var bool
+     */
+    public $registration;
+
+    /**
      * @var \App\Model\Country\Country|null
      */
     public $country;
@@ -45,5 +55,6 @@ class FrontOrderData extends BaseFrontOrderData
         parent::__construct();
 
         $this->newsletterSubscription = true;
+        $this->registration = false;
     }
 }
