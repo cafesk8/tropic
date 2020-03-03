@@ -263,6 +263,12 @@
             "type": "boolean"
           }
         }
+      },
+      "minimum_amount": {
+        "type": "integer"
+      },
+      "amount_multiplier": {
+        "type": "integer"
       }
     }
   }

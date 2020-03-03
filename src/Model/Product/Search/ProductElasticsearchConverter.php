@@ -22,6 +22,8 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['prices']['price_from'] = $product['prices']['price_from'] ?? false;
         $result['main_variant_id'] = $product['main_variant_id'] ?? null;
         $result['default_price'] = $result['default_price'] ?? [];
+        $result['minimum_amount'] = $product['minimum_amount'] ?? 1;
+        $result['amount_multiplier'] = $product['amount_multiplier'] ?? 1;
 
         return $result;
     }

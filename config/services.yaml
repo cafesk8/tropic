@@ -593,3 +593,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery: '@App\Model\Product\Search\FilterQuery'
 
     Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository: '@App\Model\Product\Search\ProductElasticsearchRepository'
+
+    Shopsys\ReadModelBundle\Product\Action\ProductActionViewFactory: '@App\Model\Product\View\ProductActionViewFactory'
