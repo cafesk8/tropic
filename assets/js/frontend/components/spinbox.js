@@ -13,6 +13,7 @@ export default class Spinbox {
             .on('spinbox.plus', Spinbox.plus)
             .on('spinbox.minus', Spinbox.minus)
             .on('change', Spinbox.checkValue);
+
         $input.ready(function () {
             $input.change();
         });

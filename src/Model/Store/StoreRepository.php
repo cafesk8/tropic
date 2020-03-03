@@ -67,45 +67,40 @@ class StoreRepository
     }
 
     /**
-     * @param int $domainId
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getAllForDomainQueryBuilder(int $domainId): QueryBuilder
+    public function getAllQueryBuilder(): QueryBuilder
     {
         return $this->em->createQueryBuilder()
             ->select('s')
-            ->from(Store::class, 's')
-            ->where('s.domainId = :domainId')
-            ->setParameter('domainId', $domainId);
+            ->from(Store::class, 's');
     }
 
     /**
      * @param int $storeId
-     * @param int $domainId
      * @return \App\Model\Store\Store
      */
-    public function getStoreForDomainAndForStoreListById(int $storeId, int $domainId): Store
+    public function getStoreForStoreListById(int $storeId): Store
     {
-        $store = $this->getAllForDomainQueryBuilder($domainId)
+        $store = $this->getAllQueryBuilder()
             ->andWhere('s.id = :storeId')
             ->andWhere('s.showOnStoreList = true')
             ->setParameter('storeId', $storeId)
             ->getQuery()->getOneOrNullResult();
 
         if ($store === null) {
-            throw new StoreNotFoundException('Store with ID ' . $storeId . ' not found for domain with ID `' . $storeId . '`.');
+            throw new StoreNotFoundException('Store with ID ' . $storeId . ' not found.');
         }
 
         return $store;
     }
 
     /**
-     * @param int $domainId
      * @return \App\Model\Store\Store[]
      */
-    public function getAllPickupPlacesForDomain(int $domainId): array
+    public function getAllPickupPlaces(): array
     {
-        $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
+        $queryBuilder = $this->getAllQueryBuilder();
         $queryBuilder->andWhere('s.pickupPlace = true');
         $queryBuilder->orderBy('s.position, s.name', 'asc');
 
@@ -121,12 +116,11 @@ class StoreRepository
     }
 
     /**
-     * @param int $domainId
      * @return string[]
      */
-    public function findRegionNamesForStoreList(int $domainId): array
+    public function findRegionNamesForStoreList(): array
     {
-        $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
+        $queryBuilder = $this->getAllQueryBuilder();
         $queryBuilder->select('s.region')
             ->addSelect('COUNT(s) as storesCount')
             ->andWhere('s.region IS NOT NULL')
@@ -146,12 +140,11 @@ class StoreRepository
     }
 
     /**
-     * @param int $domainId
      * @return \App\Model\Store\Store[][]
      */
-    public function findStoresForStoreListIndexedByRegion(int $domainId): array
+    public function findStoresForStoreListIndexedByRegion(): array
     {
-        $queryBuilder = $this->getAllForDomainQueryBuilder($domainId);
+        $queryBuilder = $this->getAllQueryBuilder();
         $queryBuilder
             ->andWhere('s.showOnStoreList = true')
             ->orderBy('s.region', 'ASC')

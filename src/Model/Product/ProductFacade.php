@@ -286,8 +286,6 @@ class ProductFacade extends BaseProductFacade
             $totalStockQuantity += $productStoreStock->getStockQuantity() ?? 0;
         }
 
-        $totalStockQuantity -= ChildProduct::DECREASE_REAL_STOCK_QUANTITY_BY;
-
         if ($totalStockQuantity < 0) {
             $totalStockQuantity = 0;
         }

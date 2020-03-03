@@ -10,7 +10,6 @@ use App\Model\Store\StoreDataFactory;
 use App\Model\Store\StoreFacade;
 use App\Model\Store\StoreGridFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,11 +27,6 @@ class StoreController extends AdminBaseController
     private $storeDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
-     */
-    private $adminDomainTabsFacade;
-
-    /**
      * @var \App\Model\Store\StoreGridFactory
      */
     private $storeGridFactory;
@@ -40,18 +34,12 @@ class StoreController extends AdminBaseController
     /**
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Model\Store\StoreDataFactory $storeDataFactory
-     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \App\Model\Store\StoreGridFactory $storeGridFactory
      */
-    public function __construct(
-        StoreFacade $storeFacade,
-        StoreDataFactory $storeDataFactory,
-        AdminDomainTabsFacade $adminDomainTabsFacade,
-        StoreGridFactory $storeGridFactory
-    ) {
+    public function __construct(StoreFacade $storeFacade, StoreDataFactory $storeDataFactory, StoreGridFactory $storeGridFactory)
+    {
         $this->storeFacade = $storeFacade;
         $this->storeDataFactory = $storeDataFactory;
-        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
         $this->storeGridFactory = $storeGridFactory;
     }
 
@@ -62,8 +50,7 @@ class StoreController extends AdminBaseController
      */
     public function newAction(Request $request): Response
     {
-        $selectedDomainId = $this->adminDomainTabsFacade->getSelectedDomainId();
-        $storeData = $this->storeDataFactory->createForDomainId($selectedDomainId);
+        $storeData = $this->storeDataFactory->create();
 
         $form = $this->createForm(StoreFormType::class, $storeData, [
             'store' => null,

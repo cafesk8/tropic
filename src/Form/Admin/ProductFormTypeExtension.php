@@ -161,7 +161,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
-            'label' => t('Stock in stores'),
+            'label' => t('Skladové zásoby'),
+            'position' => ['after' => 'displayAvailabilityGroup'],
         ]);
 
         $builderStoreStockGroup->add('stockQuantityByStoreId', StoreStockType::class);
@@ -455,7 +456,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     {
         $amountGroup = $builder->create('amountGroup', GroupType::class, [
             'label' => t('Minimum quantity and multiples'),
-            'position' => ['after' => 'displayAvailabilityGroup'],
+            'position' => ['after' => 'storeStock'],
         ]);
 
         if ($product !== null && $product->isVariant()) {

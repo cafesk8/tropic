@@ -9,11 +9,6 @@ use Shopsys\FrameworkBundle\Component\FileUpload\ImageUploadData;
 class StoreData
 {
     /**
-     * @var int
-     */
-    public $domainId;
-
-    /**
      * @var string
      */
     public $name;

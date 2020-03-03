@@ -6,6 +6,7 @@ namespace App\Model\Store;
 
 use App\Model\Transport\PickupPlace\PickupPlaceInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Shopsys\FrameworkBundle\Model\Country\Country;
 
 /**
@@ -15,11 +16,6 @@ use Shopsys\FrameworkBundle\Model\Country\Country;
 class Store implements PickupPlaceInterface
 {
     /**
-     * Those stores have special function and we are not downloading their stock quantities
-     */
-    public const SPECIAL_STORES_NOT_ON_ESHOP = ['1010', '0039', '0040'];
-
-    /**
      * @var int
      *
      * @ORM\Column(type="integer")
@@ -27,13 +23,6 @@ class Store implements PickupPlaceInterface
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $domainId;
 
     /**
      * @var string
@@ -88,6 +77,7 @@ class Store implements PickupPlaceInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
+     * @Gedmo\SortablePosition
      */
     private $position;
 
@@ -160,7 +150,6 @@ class Store implements PickupPlaceInterface
     public function __construct(StoreData $storeData)
     {
         $this->name = $storeData->name;
-        $this->domainId = $storeData->domainId;
         $this->description = $storeData->description;
         $this->street = $storeData->street;
         $this->city = $storeData->city;
@@ -194,7 +183,6 @@ class Store implements PickupPlaceInterface
     public function edit(StoreData $storeData): void
     {
         $this->name = $storeData->name;
-        $this->domainId = $storeData->domainId;
         $this->description = $storeData->description;
         $this->street = $storeData->street;
         $this->city = $storeData->city;
@@ -222,14 +210,6 @@ class Store implements PickupPlaceInterface
     }
 
     /**
-     * @return int
-     */
-    public function getDomainId(): int
-    {
-        return $this->domainId;
-    }
-
-    /**
      * @return string
      */
     public function getName(): string
@@ -246,9 +226,9 @@ class Store implements PickupPlaceInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet(): string
+    public function getStreet(): ?string
     {
         return $this->street;
     }
