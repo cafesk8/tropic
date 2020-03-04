@@ -1,0 +1,83 @@
+@list-order-gifts-title-width: 150px;
+@list-order-gifts-image-size: 70px;
+@list-order-gifts-item-gap: 15px;
+
+.list-order-gifts {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
+    margin-left: -@list-order-gifts-item-gap;
+
+    &__item {
+        width: calc(~"100% / 2 - @{list-order-gifts-item-gap}");
+        margin-left: @list-order-gifts-item-gap;
+        margin-bottom: @list-order-gifts-item-gap;
+        text-align: center;
+
+        @media @query-sm {
+            width: calc(~"100% / 3 - @{list-order-gifts-item-gap}");
+        }
+
+        @media @query-lg {
+            width: calc(~"100% / 4 - @{list-order-gifts-item-gap}");
+        }
+
+        @media @query-xl {
+            width: calc(~"100% / 6 - @{list-order-gifts-item-gap}");
+        }
+
+        &__label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        &__input {
+            display: none;
+        }
+
+        &__image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: @list-order-gifts-image-size;
+            width: @list-order-gifts-image-size;
+            padding: 5px;
+            margin-bottom: 10px;
+
+            font-size: 0;
+            border: 1px solid transparent;
+            border-radius: @radius-small;
+            
+            .list-order-gifts__item__input:checked ~ & {
+                box-shadow: @box-shadow-outer;
+                border: 1px solid @color-add;
+            }
+        }
+
+        &__name {
+            margin: 0;
+            word-break: break-word;
+
+            .list-order-gifts__item__input:checked ~ & {
+                font-weight: 700;
+            }
+
+            .input-label {
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+.list-order-gifts-title {
+    width: @list-order-gifts-title-width;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+
+    font-weight: 700;
+}

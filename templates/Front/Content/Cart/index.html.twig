@@ -148,23 +148,34 @@
                                         {% else %}
                                             {% do form.chosenGifts.setRendered %}
                                         {% endif %}
-
                                     {% endfor %}
+
                                     {% if form.orderGiftProduct.vars.choices|length > 0 %}
-                                        {{ form_row(form.orderGiftProduct) }}
+                                        <div class="table-cart__order-gifts">
+                                            {{ form_row(form.orderGiftProduct) }}
+                                        </div>
                                     {% else %}
                                         {% do form.orderGiftProduct.setRendered %}
                                     {% endif %}
+
                                     {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
-                                        {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
-                                        <ul>
-                                            {% for nextLevelGift in nextLevelGifts %}
-                                                <li>
-                                                    {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
-                                                    {{ nextLevelGift.name }}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                                        <div class="table-cart__next-gifts">
+                                            <p class="table-cart__next-gifts__title">
+                                                {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
+                                            </p>
+                                            <ul class="list-next-gifts">
+                                                {% for nextLevelGift in nextLevelGifts %}
+                                                    <li class="list-next-gifts__item">
+                                                        <div class="list-next-gifts__item__image">
+                                                            {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
+                                                        </div>
+                                                        <p class="list-next-gifts__item__name">
+                                                            {{ nextLevelGift.name }}
+                                                        </p>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     {% endif %}
                                 </div>
 

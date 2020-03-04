@@ -277,20 +277,27 @@
 
 {% block order_gift_choice_row %}
     {% spaceless %}
-        <h3>{{- form_label(form) -}}</h3>
-        <ul>
+        <h3 class="list-order-gifts-title">{{- form_label(form) -}}</h3>
+        <ul class="list-order-gifts">
             {% set productChoices = form.vars.choices %}
             {% for index, child in form %}
                 {% set isEmptyValue = child.vars.value is empty %}
-                <li>
-                    <label>
-                        {{ form_widget(child) }}
+                <li class="list-order-gifts__item">
+                    <label class="list-order-gifts__item__label">
+                        {{ form_widget(child, {attr: { class: "list-order-gifts__item__input" }}) }}
                         {% if isEmptyValue %}
-                            {{- form_label(child) -}}
+                            <div class="list-order-gifts__item__image"></div>
+                            <p class="list-order-gifts__item__name">
+                                {{- form_label(child) -}}
+                            </p>
                         {% else %}
                             {% set product = productChoices[index].data %}
-                            {{ image(product, { alt: product.name, size: 'thumbnail' }) }}
-                            {{ product.name }}
+                            <div class="list-order-gifts__item__image">
+                                {{ image(product, { alt: product.name, size: 'thumbnail' }) }}
+                            </div>
+                            <p class="list-order-gifts__item__name">
+                                {{ product.name }}
+                            </p>
                         {% endif %}
                     </label>
                 </li>
