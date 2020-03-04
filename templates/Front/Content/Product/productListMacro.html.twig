@@ -208,12 +208,12 @@
                         <div class="{{ listCssClass }}__item__info__availability">
                             {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
                         </div>
+
+                        <div class="{{ listCssClass }}__item__add-button">
+                            {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'smallWithoutIcon'})) }}
+                        </div>
                     </div>
-                    <div class="{{ listCssClass }}__item__add-button">
-                        {# TODO KOD US-7670 #}
-                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false})) }}
-                    </div>
-            </div>
+                </div>
             </div>
         {% endfor %}
     </div>

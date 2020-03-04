@@ -3,7 +3,6 @@
     <div class="box-popup-add__content">
         <div class="box-popup-add__content__title">
             <span class="box-popup-add__content__title__text double-lined">
-                {# TODO KOD US-7670 #}
                 {{ 'Do košíku přidáno %quantity%&nbsp;ks<br>celkem za %price%'|transHtml({
                     '%quantity%': cartItem.quantity|formatNumber,
                     '%price%': quantifiedItemPrice.totalPrice.priceWithVat|price
