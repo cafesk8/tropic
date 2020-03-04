@@ -11,17 +11,17 @@ class DomainHelper
 {
     public const CZECH_DOMAIN = 1;
     public const SLOVAK_DOMAIN = 2;
-    public const GERMAN_DOMAIN = 3;
+    public const ENGLISH_DOMAIN = 3;
 
     public const CZECH_LOCALE = 'cs';
     public const SLOVAK_LOCALE = 'sk';
-    public const GERMAN_LOCALE = 'de';
+    public const ENGLISH_LOCALE = 'en';
 
-    public const LOCALES = [self::CZECH_LOCALE, self::SLOVAK_LOCALE, self::GERMAN_LOCALE];
+    public const LOCALES = [self::CZECH_LOCALE, self::SLOVAK_LOCALE, self::ENGLISH_LOCALE];
 
     public const CZECH_COUNTRY_CODE = 'CZ';
     public const SLOVAK_COUNTRY_CODE = 'SK';
-    public const GERMAN_COUNTRY_CODE = 'DE';
+    public const ENGLISH_COUNTRY_CODE = 'GB';
 
     public const SOURCE_LPKCZ = 'LPKCZ';
     public const SOURCE_BSHTR = 'BSHTR';
@@ -30,37 +30,37 @@ class DomainHelper
     public const DOMAIN_ID_BY_COUNTRY_CODE = [
         self::CZECH_COUNTRY_CODE => self::CZECH_DOMAIN,
         self::SLOVAK_COUNTRY_CODE => self::SLOVAK_DOMAIN,
-        self::GERMAN_COUNTRY_CODE => self::GERMAN_DOMAIN,
+        self::ENGLISH_COUNTRY_CODE => self::ENGLISH_DOMAIN,
     ];
 
     public const COUNTRY_CODE_BY_DOMAIN_ID = [
         self::CZECH_DOMAIN => self::CZECH_COUNTRY_CODE,
         self::SLOVAK_DOMAIN => self::SLOVAK_COUNTRY_CODE,
-        self::GERMAN_DOMAIN => self::GERMAN_COUNTRY_CODE,
+        self::ENGLISH_DOMAIN => self::ENGLISH_COUNTRY_CODE,
     ];
 
     public const COUNTRY_CODE_BY_LOCALE = [
         self::CZECH_LOCALE => self::CZECH_COUNTRY_CODE,
         self::SLOVAK_LOCALE => self::SLOVAK_COUNTRY_CODE,
-        self::GERMAN_LOCALE => self::GERMAN_COUNTRY_CODE,
+        self::ENGLISH_LOCALE => self::ENGLISH_COUNTRY_CODE,
     ];
 
     public const DOMAIN_ID_TO_TRANSFER_SOURCE = [
         self::CZECH_DOMAIN => self::SOURCE_LPKCZ,
         self::SLOVAK_DOMAIN => self::SOURCE_BSHTR,
-        self::GERMAN_DOMAIN => self::SOURCE_BSHDE,
+        self::ENGLISH_DOMAIN => self::SOURCE_BSHDE,
     ];
 
     public const TRANSFER_SOURCE_TO_DOMAIN_ID = [
         self::SOURCE_LPKCZ => self::CZECH_DOMAIN,
         self::SOURCE_BSHTR => self::SLOVAK_DOMAIN,
-        self::SOURCE_BSHDE => self::GERMAN_DOMAIN,
+        self::SOURCE_BSHDE => self::ENGLISH_DOMAIN,
     ];
 
     public const DOMAIN_ID_TO_LOCALE = [
         self::CZECH_DOMAIN => self::CZECH_LOCALE,
         self::SLOVAK_DOMAIN => self::SLOVAK_LOCALE,
-        self::GERMAN_DOMAIN => self::GERMAN_LOCALE,
+        self::ENGLISH_DOMAIN => self::ENGLISH_LOCALE,
     ];
 
     /**
@@ -80,9 +80,9 @@ class DomainHelper
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @return bool
      */
-    public static function isGermanDomain(Domain $domain): bool
+    public static function isEnglishDomain(Domain $domain): bool
     {
-        return $domain->getLocale() === self::GERMAN_LOCALE;
+        return $domain->getLocale() === self::ENGLISH_LOCALE;
     }
 
     /**

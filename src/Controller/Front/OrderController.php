@@ -332,17 +332,13 @@ class OrderController extends FrontBaseController
         }
 
         $form = $orderFlow->createForm();
+        $isValid = $orderFlow->isValid($form);
+        // FormData are filled during isValid() call
+        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
 
         $payment = $frontOrderFormData->payment;
         /** @var \App\Model\Transport\Transport $transport */
         $transport = $frontOrderFormData->transport;
-
-        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
-
-        $isValid = $orderFlow->isValid($form);
-        // FormData are filled during isValid() call
-        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
 
         if ($transport !== null && $transport->isPickupPlace()) {
             if ($orderData->pickupPlace !== null) {
@@ -357,6 +353,8 @@ class OrderController extends FrontBaseController
             }
         }
 
+        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);

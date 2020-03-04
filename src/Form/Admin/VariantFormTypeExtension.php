@@ -39,7 +39,7 @@ class VariantFormTypeExtension extends AbstractTypeExtension
         $builder
             ->add(self::DISTINGUISHING_PARAMETER, ChoiceType::class, [
                 'required' => true,
-                'label' => t('Rozlišující parameter'),
+                'label' => t('Rozlišující parametr'),
                 'choices' => $allParameters,
                 'choice_label' => 'name',
                 'choice_value' => 'id',

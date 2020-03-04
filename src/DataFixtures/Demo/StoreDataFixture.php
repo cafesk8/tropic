@@ -111,7 +111,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->createStore($storeData, self::REFERENCE_STORE_BRATISLAVA_AUPARK);
 
         $storeData->description = $description;
-        $storeData->domainId = DomainHelper::GERMAN_DOMAIN;
+        $storeData->domainId = DomainHelper::ENGLISH_DOMAIN;
         $storeData->name = 'Elbepark';
         $storeData->city = 'Dresden';
         $storeData->street = 'Peschelstraße 33';

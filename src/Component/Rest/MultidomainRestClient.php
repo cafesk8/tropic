@@ -21,21 +21,21 @@ class MultidomainRestClient
     /**
      * @var \App\Component\Rest\RestClient
      */
-    private $germanRestClient;
+    private $englishRestClient;
 
     /**
      * @param \App\Component\Rest\RestClient $czechRestClient
      * @param \App\Component\Rest\RestClient $slovakRestClient
-     * @param \App\Component\Rest\RestClient $germanRestClient
+     * @param \App\Component\Rest\RestClient $englishRestClient
      */
     public function __construct(
         RestClient $czechRestClient,
         RestClient $slovakRestClient,
-        RestClient $germanRestClient
+        RestClient $englishRestClient
     ) {
         $this->czechRestClient = $czechRestClient;
         $this->slovakRestClient = $slovakRestClient;
-        $this->germanRestClient = $germanRestClient;
+        $this->englishRestClient = $englishRestClient;
     }
 
     /**
@@ -57,9 +57,9 @@ class MultidomainRestClient
     /**
      * @return \App\Component\Rest\RestClient
      */
-    public function getGermanRestClient(): RestClient
+    public function getEnglishRestClient(): RestClient
     {
-        return $this->germanRestClient;
+        return $this->englishRestClient;
     }
 
     /**
@@ -72,8 +72,8 @@ class MultidomainRestClient
         if ($domainId === DomainHelper::SLOVAK_DOMAIN) {
             $restClient = $this->slovakRestClient;
         }
-        if ($domainId === DomainHelper::GERMAN_DOMAIN) {
-            $restClient = $this->germanRestClient;
+        if ($domainId === DomainHelper::ENGLISH_DOMAIN) {
+            $restClient = $this->englishRestClient;
         }
 
         return $restClient;
