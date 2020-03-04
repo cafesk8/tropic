@@ -1,0 +1,56 @@
+{% block delivery_address_choice_row %}
+    {% if deliveryAddresses|length > 0 %}
+        <div class="wrap-divider">
+            <ul class="list-addresses">
+                {% for child in form %}
+                    {% if child.vars.value|isInteger %}
+                        {% set deliveryAddress = deliveryAddresses[child.vars.value] %}
+                        <li class="list-addresses__item {% if child.vars.checked %} active {% endif %} js-delivery-address-row">
+                            <label for="{{ child.vars.id }}" class="list-addresses__item__in">
+                                <div class="list-addresses__item__circle">
+                                    {{ form_widget(child, { attr: { class: 'css-radio js-delivery-address-input' } }) }}
+                                    <span class="css-radio__image"></span>
+                                </div>
+                                <div class="list-addresses__item__left">
+                                    <div><strong>{{ deliveryAddress.firstName }} {{ deliveryAddress.lastName }}</strong></div>
+                                    {% if deliveryAddress.companyName %}
+                                        <div>{{ deliveryAddress.companyName }}</div>
+                                    {% endif %}
+                                    <div>{{ deliveryAddress.street }}, {{ deliveryAddress.city }} {{ deliveryAddress.postcode }}</div>
+                                    {% if deliveryAddress.country %}
+                                        <div>{{ deliveryAddress.country.name }}</div>
+                                    {% endif %}
+                                </div>
+                                {% if deliveryAddress.telephone %}
+                                    <div class="list-addresses__item__right">
+                                        <span class="list-addresses__item__line">
+                                            <i class="svg svg-phone"></i>
+                                            {{ deliveryAddress.telephone }}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                                <div class="list-addresses__item__remove">
+                                    <a data-href="{{ url('front_customer_delivery_address_delete', { deliveryAddressId: deliveryAddress.id }) }}" class="js-delivery-address-remove-button">
+                                        <i class="svg svg-remove"></i>
+                                    </a>
+                                </div>
+                            </label>
+                        </li>
+                    {% else %}
+                        <li class="list-addresses__item list-addresses__item--last {% if child.vars.checked %} active {% endif %} js-delivery-address-row">
+                            <label for="{{ child.vars.id }}" class="list-addresses__item__in">
+                                <div class="list-addresses__item__circle">
+                                    {{ form_widget(child, { attr: { class: 'css-radio js-delivery-address-input' } }) }}
+                                    <span class="css-radio__image"></span>
+                                </div>
+                                <div class="list-addresses__item__left">
+                                    <label for="{{ child.vars.id }}">{{ 'New delivery address'|trans }}</label>
+                                </div>
+                            </label>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
