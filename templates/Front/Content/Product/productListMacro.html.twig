@@ -57,7 +57,11 @@
                                         </div>
                                     {% else %}
                                         <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                            {{ productView.availability }}
+                                            {% if productsForMainVariantGroup is not empty %}
+                                                {{ 'Dostupnost dle varianty'|trans }}
+                                            {% else %}
+                                                {{ productView.availability }}
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                 </div>
@@ -176,7 +180,11 @@
                                             </div>
                                         {% else %}
                                             <div class="{{ listCssClass }}__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {{ productView.availability }}
+                                                {% if productView.mainVariantGroupProductViews is not empty %}
+                                                    {{ 'Dostupnost dle varianty'|trans }}
+                                                {% else %}
+                                                    {{ productView.availability }}
+                                                {% endif %}
                                             </div>
                                         {% endif %}
                                     </div>

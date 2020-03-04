@@ -1,6 +1,6 @@
 {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
 
-{% macro availibilityDetail(product, setDisplayNone) %}
+{% macro availabilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}box-detail__availability js-detail-availability js-detail-availability-{{ product.id }}">
         <span class="box-detail__availability__status">
             {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
@@ -46,13 +46,17 @@
     <div class="box-detail__availability js-product-variant-detail-select-info">
         <span class="box-detail__availability__status">
             <span class="box-detail__availability__date">
-                {{ 'Skladem, ihned k odeslání'|trans }}
+                {% if distinguishingParameterValuesForProducts(product.variants) is empty %}
+                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                {% else %}
+                    {{ 'Pro zobrazení dostupnosti vyberte variantu'|trans }}
+                {% endif %}
             </span>
         </span>
     </div>
     {% for variant in variants if variant in product.variants %}
-        {{ _self.availibilityDetail(variant, true) }}
+        {{ _self.availabilityDetail(variant, true) }}
     {% endfor %}
 {% else %}
-    {{ _self.availibilityDetail(product, false) }}
+    {{ _self.availabilityDetail(product, false) }}
 {% endif %}
