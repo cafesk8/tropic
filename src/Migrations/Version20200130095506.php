@@ -27,7 +27,7 @@ class Version20200130095506 extends AbstractMigration
                     'domain_id' => $domainId,
                     'internal_id' => PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER,
                     'minimal_price' => 0,
-                    'discount' => 1,
+                    'discount' => 3,
                 ]);
         }
     }

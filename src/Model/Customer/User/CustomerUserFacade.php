@@ -39,6 +39,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
  * @method \App\Model\Customer\User\CustomerUser editByAdmin(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
  * @method \App\Model\Customer\User\CustomerUser editByCustomerUser(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
  * @method amendCustomerUserDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order)
+ * @property \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
  */
 class CustomerUserFacade extends BaseCustomerUserFacade
 {
@@ -69,7 +70,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface $billingAddressFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface $deliveryAddressFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
+     * @param \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFactoryInterface $customerUserFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade $customerUserPasswordFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
@@ -219,7 +220,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
      */
     public function updatePricingGroupByIsResponse(PricingGroup $currentPricingGroup, ?float $coefficient, UserTransferId $userTransferId): void
     {
-        if ($coefficient !== null && ($currentPricingGroup->getDiscount() === null || $coefficient <= $currentPricingGroup->getDiscount())) {
+        if ($coefficient !== null && $coefficient <= $currentPricingGroup->getDiscount()) {
             $this->updateTransferIdAndPricingGroup(
                 $userTransferId,
                 $coefficient
@@ -262,6 +263,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
     {
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
+        $customerUserData->pricingGroup = $this->pricingGroupFacade->getForRegisteredCustomer();
         $customer = $this->customerFacade->createCustomerWithBillingAddress($customerUserUpdateData->billingAddressData);
         $customerUserUpdateData->customerUserData->customer = $customer;
 

@@ -109,7 +109,7 @@ class ProductPrice extends BaseProductPrice
     {
         $percents = $this->getActionPriceDifference()->divide($this->defaultProductPrice->priceWithVat->getAmount(), 6)->multiply(100)->getAmount();
 
-        return (int)$percents;
+        return (int)round($percents);
     }
 
     /**

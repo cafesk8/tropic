@@ -19,7 +19,12 @@ class PricingGroupData extends BasePricingGroupData
     public $minimalPrice;
 
     /**
-     * @var float|null
+     * @var float
      */
     public $discount;
+
+    public function __construct()
+    {
+        $this->discount = 0;
+    }
 }

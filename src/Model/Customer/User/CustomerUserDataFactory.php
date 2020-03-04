@@ -53,6 +53,7 @@ class CustomerUserDataFactory extends BaseCustomerUserDataFactory
     {
         $customerUserData = new CustomerUserData();
         $this->fillFromUser($customerUserData, $customerUser);
+        $customerUserData->pricingGroup = $customerUser->getPricingGroup();
 
         return $customerUserData;
     }

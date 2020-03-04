@@ -78,3 +78,7 @@ services:
     App\Form\Admin\AvailabilityFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\Availability\AvailabilityFormType }
+
+    App\Form\Admin\PricingGroupFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Pricing\Group\PricingGroupFormType }

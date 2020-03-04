@@ -73,4 +73,21 @@ class PricingGroupFacade extends BasePricingGroupFacade
     {
         return $this->pricingGroupRepository->findByDiscount($discount, $userDomainId);
     }
+
+    /**
+     * @param string $internalId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    private function getByInternalId(string $internalId): PricingGroup
+    {
+        return $this->pricingGroupRepository->getByNameAndDomainId($internalId, $this->domain->getId());
+    }
+
+    /**
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getForRegisteredCustomer(): PricingGroup
+    {
+        return $this->getByInternalId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER);
+    }
 }

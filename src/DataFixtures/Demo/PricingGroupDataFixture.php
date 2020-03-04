@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\DataFixtures\Demo;
 
 use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Pricing\Group\PricingGroupData;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 
 class PricingGroupDataFixture extends AbstractReferenceFixture
 {
@@ -60,7 +60,8 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
 
         $defaultPricingGroupData = $this->pricingGroupDataFactory->createFromPricingGroup($defaultPricingGroup);
         $defaultPricingGroupData->name = 'Běžný zákazník';
-        $defaultPricingGroupData->internalId = \App\Model\Pricing\Group\PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
+        $defaultPricingGroupData->internalId = PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
+        $defaultPricingGroupData->discount = 0;
 
         $this->pricingGroupFacade->edit($defaultPricingGroup->getId(), $defaultPricingGroupData);
         $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, Domain::FIRST_DOMAIN_ID);
@@ -77,21 +78,12 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
      * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param string $referenceName
      * @param bool $firstDomain
-     * @param mixed|null $minimalPrices
      */
-    protected function createPricingGroup(
-        PricingGroupData $pricingGroupData,
-        $referenceName,
-        $firstDomain = true,
-        $minimalPrices = null
-    ) {
+    protected function createPricingGroup(PricingGroupData $pricingGroupData, $referenceName, $firstDomain = true)
+    {
         foreach ($this->domain->getAllIds() as $domainId) {
             if ($firstDomain === false && $domainId === Domain::FIRST_DOMAIN_ID) {
                 continue;
-            }
-
-            if ($minimalPrices !== null) {
-                $pricingGroupData->minimalPrice = $minimalPrices[$domainId];
             }
 
             $pricingGroup = $this->pricingGroupFacade->create($pricingGroupData, $domainId);

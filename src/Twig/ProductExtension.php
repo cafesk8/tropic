@@ -10,12 +10,12 @@ use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValue;
+use App\Model\Product\Pricing\ProductPrice;
+use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Twig\TwigFunction;
@@ -71,7 +71,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * ProductExtension constructor.
      *
      * @param \App\Model\Category\CategoryFacade $categoryFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -106,6 +106,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     {
         return [
             new TwigFunction(
+                'getDefaultPrice',
+                [$this, 'getDefaultPrice']
+            ),
+            new TwigFunction(
                 'getProductRegisteredCustomerPrice',
                 [$this, 'getProductRegisteredCustomerPrice']
             ),
@@ -134,7 +138,16 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
 
     /**
      * @param \App\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
+     * @return \App\Model\Product\Pricing\ProductPrice
+     */
+    public function getDefaultPrice(Product $product): ProductPrice
+    {
+        return $this->productCachedAttributesFacade->getDefaultPrice($product);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\Pricing\ProductPrice|null
      */
     public function getProductRegisteredCustomerPrice(Product $product): ?ProductPrice
     {
@@ -151,7 +164,7 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice $productPrice
+     * @param \App\Model\Product\Pricing\ProductPrice $productPrice
      * @param \App\Model\Product\Product $product
      * @param int $limit
      * @return \App\Model\Product\Flag\Flag[]
