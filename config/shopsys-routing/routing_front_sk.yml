@@ -89,3 +89,7 @@ front_store_index:
 front_store_detail:
     path: /stores/detail/{storeId}/
     defaults: { _controller: App\Controller\Front\StoreController:detailAction }
+
+front_brand_list:
+    path: /prehlad-znaciek/
+    defaults: { _controller: App\Controller\Front\BrandController:listAction }

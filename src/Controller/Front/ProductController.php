@@ -10,6 +10,7 @@ use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
+use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Filter\ProductFilterData;
 use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use App\Model\Product\ProductFacade;
@@ -35,6 +36,11 @@ class ProductController extends FrontBaseController
     private const PRODUCT_BLOG_ARTICLES_LIMIT = 2;
     private const LIST_BLOG_ARTICLES_LIMIT = 1;
     private const PRE_LIST_BLOG_ARTICLES_LIMIT = 2;
+
+    /**
+     * @var \App\Model\Product\Brand\BrandFacade
+     */
+    protected $brandFacade;
 
     /**
      * @var \App\Model\Product\Filter\ProductFilterConfigFactory
@@ -139,6 +145,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -157,7 +164,8 @@ class ProductController extends FrontBaseController
         Setting $setting,
         ArticleFacade $articleFacade,
         GtmFacade $gtmFacade,
-        ListedProductViewFacadeInterface $listedProductViewFacade
+        ListedProductViewFacadeInterface $listedProductViewFacade,
+        BrandFacade $brandFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -176,6 +184,7 @@ class ProductController extends FrontBaseController
         $this->articleFacade = $articleFacade;
         $this->gtmFacade = $gtmFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
+        $this->brandFacade = $brandFacade;
     }
 
     /**
@@ -476,5 +485,42 @@ class ProductController extends FrontBaseController
         $parameters = $this->requestExtension->getAllRequestParams();
         unset($parameters[self::PAGE_QUERY_PARAMETER]);
         return $parameters;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id
+     */
+    public function listByBrandAction(Request $request, $id)
+    {
+        $requestPage = $request->get(self::PAGE_QUERY_PARAMETER);
+        if (!$this->isRequestPageValid($requestPage)) {
+            return $this->redirectToRoute('front_brand_detail', $this->getRequestParametersWithoutPage());
+        }
+        $page = $requestPage === null ? 1 : (int)$requestPage;
+
+        $orderingModeId = $this->productListOrderingModeForBrandFacade->getOrderingModeIdFromRequest(
+            $request
+        );
+
+        $paginationResult = $this->listedProductViewFacade->getPaginatedForBrand(
+            $id,
+            $orderingModeId,
+            $page,
+            self::PRODUCTS_PER_PAGE
+        );
+
+        $brand = $this->brandFacade->getById($id);
+
+        $viewParameters = [
+            'paginationResult' => $paginationResult,
+            'brand' => $brand,
+        ];
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('Front/Content/Product/ajaxListByBrand.html.twig', $viewParameters);
+        } else {
+            return $this->render('Front/Content/Product/listByBrand.html.twig', $viewParameters);
+        }
     }
 }
