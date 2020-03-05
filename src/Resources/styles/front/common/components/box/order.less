@@ -59,12 +59,21 @@
     }
 
     &__additional {
+        width: 100%;
         padding: 20px 15px 10px 15px;
 
         margin-bottom: 20px;
 
         @media @query-md {
             padding: 67px @box-order-additional-gap 38px @box-order-additional-gap;
+        }
+
+        @media @query-vl {
+            width: calc(~"100% - @{box-order-cart-width-small}")
+        }
+
+        @media @query-xl {
+            width: calc(~"100% - @{box-order-cart-width}")
         }
 
         &__title {
