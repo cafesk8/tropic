@@ -3,11 +3,7 @@
 {% macro availibilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}box-detail__availability js-detail-availability js-detail-availability-{{ product.id }}">
         <span class="box-detail__availability__status">
-            {% if product.calculatedSellingDenied %}
-                {{ 'Product no longer on sale'|trans }}
-            {% else %}
-                {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
-            {% endif %}
+            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
         </span>
 
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
