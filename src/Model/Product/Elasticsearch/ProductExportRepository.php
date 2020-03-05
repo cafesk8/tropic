@@ -28,7 +28,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @method string extractDetailUrl(int $domainId, \App\Model\Product\Product $product)
  * @method int[] extractFlags(\App\Model\Product\Product $product)
- * @method int[] extractCategories(int $domainId, \App\Model\Product\Product $product)
  * @method array extractParameters(string $locale, \App\Model\Product\Product $product)
  * @method array extractVisibility(int $domainId, \App\Model\Product\Product $product)
  * @method array extractPrices(int $domainId, \App\Model\Product\Product $product)
@@ -275,5 +274,24 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $secondDistinguishingParameterValues;
+    }
+
+    /**
+     * see https://github.com/shopsys/shopsys/pull/1719
+     * @param int $domainId
+     * @param \App\Model\Product\Product $product
+     * @return int[]
+     */
+    protected function extractCategories(int $domainId, Product $product): array
+    {
+        $categoryIds = [];
+        $categoriesIndexedByDomainId = $product->getCategoriesIndexedByDomainId();
+        if (isset($categoriesIndexedByDomainId[$domainId])) {
+            foreach ($categoriesIndexedByDomainId[$domainId] as $category) {
+                $categoryIds[] = $category->getId();
+            }
+        }
+
+        return $categoryIds;
     }
 }
