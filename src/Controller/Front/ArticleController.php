@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use App\Component\Setting\Setting;
 use App\Model\Article\Article;
 use App\Model\Article\ArticleFacade;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends FrontBaseController
@@ -20,18 +18,11 @@ class ArticleController extends FrontBaseController
     private $articleFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
-
-    /**
      * @param \App\Model\Article\ArticleFacade $articleFacade
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
-    public function __construct(ArticleFacade $articleFacade, Domain $domain)
+    public function __construct(ArticleFacade $articleFacade)
     {
         $this->articleFacade = $articleFacade;
-        $this->domain = $domain;
     }
 
     /**
@@ -81,8 +72,6 @@ class ArticleController extends FrontBaseController
 
         return $this->render('Front/Content/Article/headerList.html.twig', [
             'articles' => $articles,
-            'firstHeaderArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $this->domain->getId()),
-            'secondHeaderArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID, $this->domain->getId()),
         ]);
     }
 }

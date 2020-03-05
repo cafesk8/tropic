@@ -30,14 +30,6 @@
                             {{ 'Blog'|trans }}
                         </a>
                     </li>
-                    {% set thirdArticleOnHeader = getArticleBySettingValue(constant('App\\Component\\Setting\\Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID')) %}
-                    {% if thirdArticleOnHeader is not null %}
-                        <li class="top-bar__menu__item">
-                            <a href="{{ url('front_article_detail', { id: thirdArticleOnHeader.id }) }}" class="top-bar__menu__item__link">
-                                {{ thirdArticleOnHeader.name }}
-                            </a>
-                        </li>
-                    {% endif %}
                     {% if domainId != 3 %}
                         <li class="top-bar__menu__item">
                             <a href="{{ url('front_store_index') }}" class="top-bar__menu__item__link">
