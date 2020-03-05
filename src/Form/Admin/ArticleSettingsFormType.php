@@ -47,7 +47,7 @@ class ArticleSettingsFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'placeholder' => t('-- Choose article --'),
-                'label' => t('Hlavní'),
+                'label' => t('Hlavní článek'),
                 'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce zákazník stát členem Věrnostního programu.'),
             ]);
 
