@@ -43,27 +43,6 @@ class ArticleSettingDataFixture extends AbstractReferenceFixture implements Depe
         foreach ($this->domain->getAll() as $domainConfig) {
             $domainId = $domainConfig->getId();
 
-            /** @var \App\Model\Article\Article $termsAndConditionsArticle */
-            $termsAndConditionsArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_TERMS_AND_CONDITIONS, $domainId);
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $termsAndConditionsArticle,
-                Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
-                $domainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $termsAndConditionsArticle,
-                Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
-                $domainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $termsAndConditionsArticle,
-                Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
-                $domainId
-            );
-
             if ($domainId !== Domain::FIRST_DOMAIN_ID) {
                 /** @var \App\Model\Article\Article $loyaltyProgramArticle */
                 $loyaltyProgramArticle = $this->getReferenceForDomain(ArticleDataFixture::ARTICLE_PRIVACY_POLICY, $domainId);
