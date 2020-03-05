@@ -175,7 +175,7 @@
                                                 {{ 'Product no longer on sale'|trans }}
                                             </div>
                                         {% else %}
-                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #7bbd70;">
+                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                                 {{ productView.availability }}
                                             </div>
                                         {% endif %}
