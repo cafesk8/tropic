@@ -34,6 +34,10 @@ class AddProductFormType extends AbstractType
                     new Constraints\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
+            ->add('onlyRefresh', HiddenType::class, [
+                'data' => $options['only_refresh'],
+                'mapped' => false,
+            ])
             ->add('add', SubmitType::class);
     }
 
@@ -45,8 +49,10 @@ class AddProductFormType extends AbstractType
         $resolver->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
             'csrf_protection' => false, // CSRF is not necessary (and can be annoying) in this form
+            'only_refresh' => false,
         ])
-            ->setRequired('minimum_amount')
-            ->setAllowedTypes('minimum_amount', 'int');
+            ->setRequired(['minimum_amount', 'only_refresh'])
+            ->setAllowedTypes('minimum_amount', 'int')
+            ->setAllowedTypes('only_refresh', 'bool');
     }
 }
