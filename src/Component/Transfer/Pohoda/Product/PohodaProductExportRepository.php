@@ -62,7 +62,6 @@ class PohodaProductExportRepository
 
     /**
      * @param \DateTime|null $lastUpdateTime
-     * @param int $limit
      * @return array
      */
     public function findProductPohodaIdsByLastUpdateTime(?DateTime $lastUpdateTime): array
@@ -91,6 +90,4 @@ class PohodaProductExportRepository
 
         return $query->getResult();
     }
-
-
 }
