@@ -66,7 +66,7 @@ class ArticleController extends BaseArticleController
             );
         } elseif ($this->articleFacade->isArticleUsedForLoyaltyProgram($article)) {
             $message = t(
-                'Článek "%name%" je nastaven pro zobrazení informací o Bushman Clubu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?',
+                'Článek "%name%" je nastaven pro zobrazení informací o Věrnostním programu. Toto nastavení bude ztraceno. Opravdu si jej přejete smazat?',
                 ['%name%' => $article->getName()]
             );
         } else {
