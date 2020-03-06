@@ -11,6 +11,7 @@ export default class ChangeOrderPayment {
     }
 
     static init ($container) {
+        $container.filterAllNodes('.js-change-payment-container .form-line').hide();
         var $orderPayments = $container.filterAllNodes('.js-order-change-payment');
         var $orderGoPayPayments = $container.filterAllNodes('.js-gopay-bank-transfer-input');
         const changeOrderPayment = new ChangeOrderPayment();
