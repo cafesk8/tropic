@@ -16,8 +16,6 @@ class Version20200130095506 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        $this->sql('ALTER TABLE users RENAME COLUMN member_of_bushman_club TO member_of_loyalty_program');
-        $this->sql('ALTER TABLE orders RENAME COLUMN member_of_bushman_club TO member_of_loyalty_program');
         $this->sql('DELETE FROM pricing_groups WHERE internal_id != \'ordinary_customer\'');
 
         foreach (DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE as $domainId) {

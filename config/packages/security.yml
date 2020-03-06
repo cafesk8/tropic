@@ -1,7 +1,8 @@
 security:
     encoders:
         Symfony\Component\Security\Core\User\UserInterface:
-            id: App\Model\Customer\BushmanCustomPasswordEncoder
+            algorithm: bcrypt
+            cost: 12
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_VIEW_ORDERS, ROLE_VIEW_CUSTOMERS, ROLE_VIEW_PRODUCTS, ROLE_VIEW_PRICING, ROLE_VIEW_MARKETING, ROLE_VIEW_ADMINISTRATORS, ROLE_VIEW_SETTINGS]

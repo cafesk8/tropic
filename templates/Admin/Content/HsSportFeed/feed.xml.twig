@@ -1,11 +1,11 @@
 {% block begin %}
 <?xml version="1.0" encoding="utf-8"?>
-<BUSHMAN>
+<BRAND>
     <GENERATED>{{ formatCurrentDateTime('Y-m-d H:i:s') }}</GENERATED>
 {% endblock %}
 
 {% block item %}
-    <BUSHMANITEM>
+    <BRANDITEM>
         <ID>{{ item.id }}</ID>
         <VAR>{{ item.var }}</VAR>
         <CODE>{{ item.code }}</CODE>
@@ -40,9 +40,9 @@
                 </VARIANT>
             {% endfor %}
         </VARIANTS>
-    </BUSHMANITEM>
+    </BRANDITEM>
 {% endblock %}
 
 {% block end %}
-</BUSHMAN>
+</BRAND>
 {% endblock %}

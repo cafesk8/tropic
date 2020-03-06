@@ -7,21 +7,20 @@ namespace App\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 
-class Version20190913133523 extends AbstractMigration
+class Version20200309100421 extends AbstractMigration
 {
     /**
      * @param \Doctrine\DBAL\Schema\Schema $schema
      */
-    public function up(Schema $schema): void
+    public function up(Schema $schema)
     {
-        $this->sql('ALTER TABLE orders ADD member_of_bushman_club BOOLEAN NOT NULL DEFAULT false');
-        $this->sql('ALTER TABLE orders ALTER member_of_bushman_club DROP DEFAULT');
+        $this->sql('UPDATE administrators SET password = \'$2y$12$Q5iWqM5tjAN39BSPmVVDV.NwhqVj9oZD0q3.V77hjTQkDHz1eNf9K\' WHERE id IN (1,2)');
     }
 
     /**
      * @param \Doctrine\DBAL\Schema\Schema $schema
      */
-    public function down(Schema $schema): void
+    public function down(Schema $schema)
     {
     }
 }
