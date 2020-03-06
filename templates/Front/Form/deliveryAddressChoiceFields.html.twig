@@ -23,10 +23,8 @@
                                 </div>
                                 {% if deliveryAddress.telephone %}
                                     <div class="list-addresses__item__right">
-                                        <span class="list-addresses__item__line">
-                                            <i class="svg svg-phone"></i>
-                                            {{ deliveryAddress.telephone }}
-                                        </span>
+                                        <i class="svg svg-phone"></i>
+                                        {{ deliveryAddress.telephone }}
                                     </div>
                                 {% endif %}
                                 <div class="list-addresses__item__remove">
@@ -37,7 +35,7 @@
                             </label>
                         </li>
                     {% else %}
-                        <li class="list-addresses__item list-addresses__item--last {% if child.vars.checked %} active {% endif %} js-delivery-address-row">
+                        <li class="list-addresses__item {% if child.vars.checked %} active {% endif %} js-delivery-address-row">
                             <label for="{{ child.vars.id }}" class="list-addresses__item__in">
                                 <div class="list-addresses__item__circle">
                                     {{ form_widget(child, { attr: { class: 'css-radio js-delivery-address-input' } }) }}
