@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\Product;
 
-use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataExceptionInterface;
+use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use DateTime;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -72,8 +72,11 @@ class PohodaProductExportFacade
         foreach ($pohodaProductsData as $pohodaProductData) {
             try {
                 $this->pohodaProductDataValidator->validate($pohodaProductData);
-            } catch (PohodaInvalidDataExceptionInterface $exc) {
-                $this->logger->addError('Položka s catnum:' . $pohodaProductData[PohodaProduct::COL_CATNUM] . ' s názvem:' . $pohodaProductData[PohodaProduct::COL_NAME] . ' není validní a nebude přenesena - ' . $exc->getMessage());
+            } catch (PohodaInvalidDataException $exc) {
+                $this->logger->addError('Položka není validní a nebude přenesena.', [
+                    'pohodaId' => $pohodaProductData[PohodaProduct::COL_POHODA_ID],
+                    'exceptionMessage' => $exc->getMessage(),
+                ]);
                 continue;
             }
 

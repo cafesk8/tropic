@@ -8,7 +8,6 @@ use App\Component\Transfer\AbstractTransferCronModule;
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
 use App\Component\Transfer\TransferCronModuleDependency;
-use App\Model\Transfer\TransferFacade;
 
 class ProductInfoQueueImportCronModule extends AbstractTransferCronModule
 {
@@ -18,11 +17,6 @@ class ProductInfoQueueImportCronModule extends AbstractTransferCronModule
      * @var \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade
      */
     private $pohodaProductExportFacade;
-
-    /**
-     * @var \App\Model\Transfer\TransferFacade
-     */
-    protected $transferFacade;
 
     /**
      * @var \App\Model\Product\Transfer\ProductInfoQueueImportFacade
@@ -37,20 +31,17 @@ class ProductInfoQueueImportCronModule extends AbstractTransferCronModule
     /**
      * @param \App\Component\Transfer\TransferCronModuleDependency $transferCronModuleDependency
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade $pohodaProductExportFacade
-     * @param \App\Model\Transfer\TransferFacade $transferFacade
      * @param \App\Model\Product\Transfer\ProductInfoQueueImportFacade $productInfoQueueImportFacade
      * @param \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager $pohodaEntityManager
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
         PohodaProductExportFacade $pohodaProductExportFacade,
-        TransferFacade $transferFacade,
         ProductInfoQueueImportFacade $productInfoQueueImportFacade,
         PohodaEntityManager $pohodaEntityManager
     ) {
         parent::__construct($transferCronModuleDependency);
         $this->pohodaProductExportFacade = $pohodaProductExportFacade;
-        $this->transferFacade = $transferFacade;
         $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
         $this->pohodaEntityManager = $pohodaEntityManager;
     }

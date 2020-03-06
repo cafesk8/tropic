@@ -14,16 +14,13 @@ use Symfony\Bridge\Doctrine\ContainerAwareEventManager;
 class PohodaEntityManager extends EntityManagerDecorator
 {
     /**
-     * Factory method to create EntityManager instances.
-     *
      * @param mixed $conn an array with the connection parameters or an existing Connection instance
      * @param \Doctrine\ORM\Configuration $config the Configuration instance to use
      * @param \Symfony\Bridge\Doctrine\ContainerAwareEventManager $eventManager the EventManager instance to use
      *
-     * @throws \Doctrine\ORM\ORMException
      * @return \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager the created EntityManager
      */
-    public static function create($conn, Configuration $config, ?ContainerAwareEventManager $eventManager = null)
+    public static function create($conn, Configuration $config, ?ContainerAwareEventManager $eventManager = null): self
     {
         return new self(EntityManager::create($conn, $config, $eventManager));
     }

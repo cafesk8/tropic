@@ -34,7 +34,6 @@ doctrine:
                 user: "%pohoda_database_user%"
                 password: "%pohoda_database_password%"
                 charset: "%pohoda_database_charset%"
-                server_version: "%pohoda_database_server_version%"
         types:
             money: \Shopsys\FrameworkBundle\Component\Doctrine\MoneyType
 

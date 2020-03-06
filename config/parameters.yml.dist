@@ -30,13 +30,12 @@ parameters:
     env(ELASTIC_SEARCH_INDEX_PREFIX): ''
 
     pohoda_database_driver: pdo_sqlsrv
-    pohoda_database_host: 10.10.11.189
-    pohoda_database_port: 1433
-    pohoda_database_name: StwPh_12345678_2018
-    pohoda_database_user: pohodasql
-    pohoda_database_password: pohoda123
+    pohoda_database_host: 46.234.110.124
+    pohoda_database_port: 1614
+    pohoda_database_name: StwPhTRP_TESTSHOPSYS
+    pohoda_database_user: chmandokt
+    pohoda_database_password: tK.7496321
     pohoda_database_charset: UTF8
-    pohoda_database_server_version: !!float 12
 
     gopay_config:
         cs:

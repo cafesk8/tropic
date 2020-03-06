@@ -29,17 +29,17 @@ class PohodaProduct
     public $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $nameSk;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $shortDescription;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $longDescription;
 

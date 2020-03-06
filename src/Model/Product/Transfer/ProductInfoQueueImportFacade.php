@@ -9,14 +9,14 @@ class ProductInfoQueueImportFacade
     /**
      * @var \App\Model\Product\Transfer\ProductInfoQueueImportRepository
      */
-    private $basicInfoQueueImportRepository;
+    private $productInfoQueueImportRepository;
 
     /**
-     * @param \App\Model\Product\Transfer\ProductInfoQueueImportRepository $basicInfoQueueImportRepository
+     * @param \App\Model\Product\Transfer\ProductInfoQueueImportRepository $productInfoQueueImportRepository
      */
-    public function __construct(ProductInfoQueueImportRepository $basicInfoQueueImportRepository)
+    public function __construct(ProductInfoQueueImportRepository $productInfoQueueImportRepository)
     {
-        $this->basicInfoQueueImportRepository = $basicInfoQueueImportRepository;
+        $this->productInfoQueueImportRepository = $productInfoQueueImportRepository;
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductInfoQueueImportFacade
      */
     public function insertChangedPohodaProductIds(array $pohodaProductIds, \DateTime $pohodaTransferDateTime): void
     {
-        $this->basicInfoQueueImportRepository->insertChangedPohodaProductIds($pohodaProductIds, $pohodaTransferDateTime);
+        $this->productInfoQueueImportRepository->insertChangedPohodaProductIds($pohodaProductIds, $pohodaTransferDateTime);
     }
 
     /**
@@ -34,7 +34,7 @@ class ProductInfoQueueImportFacade
      */
     public function findChangedPohodaProductIds(int $limit): array
     {
-        return $this->basicInfoQueueImportRepository->findChangedPohodaProductIds($limit);
+        return $this->productInfoQueueImportRepository->findChangedPohodaProductIds($limit);
     }
 
     /**
@@ -42,6 +42,6 @@ class ProductInfoQueueImportFacade
      */
     public function removeProductsFromQueue(array $updatedPohodaProductIds): void
     {
-        $this->basicInfoQueueImportRepository->removeUpdatedProducts($updatedPohodaProductIds);
+        $this->productInfoQueueImportRepository->removeUpdatedProducts($updatedPohodaProductIds);
     }
 }

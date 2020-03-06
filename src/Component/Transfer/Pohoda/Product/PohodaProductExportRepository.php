@@ -12,11 +12,11 @@ class PohodaProductExportRepository
 {
     private const FIRST_UPDATE_TIME = '2000-01-01 00:00:00';
 
-    public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+    private const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
-    public const DEFAULT_POHODA_STOCK_ID = self::POHODA_STOCK_TROPIC_ID;
+    private const DEFAULT_POHODA_STOCK_ID = self::POHODA_STOCK_TROPIC_ID;
 
-    public const POHODA_STOCK_TROPIC_ID = 10;
+    private const POHODA_STOCK_TROPIC_ID = 10;
 
     /**
      * @var \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager

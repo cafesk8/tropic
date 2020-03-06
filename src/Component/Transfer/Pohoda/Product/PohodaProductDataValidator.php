@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\Product;
 
-use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataExceptionInterface;
+use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -33,7 +33,7 @@ class PohodaProductDataValidator
         $violations = $this->validator->validate($pohodaProductData, new Collection([
             'allowExtraFields' => true,
             'fields' => [
-                PohodaProduct::COL_NAME => [
+                PohodaProduct::COL_POHODA_ID => [
                     new Type(['type' => 'string']),
                     new NotBlank(),
                 ],
@@ -41,11 +41,15 @@ class PohodaProductDataValidator
                     new Type(['type' => 'string']),
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_NAME => [
+                    new Type(['type' => 'string']),
+                    new NotBlank(),
+                ],
             ],
         ]));
 
         if (count($violations) > 0) {
-            throw new PohodaInvalidDataExceptionInterface($violations);
+            throw new PohodaInvalidDataException($violations);
         }
     }
 }

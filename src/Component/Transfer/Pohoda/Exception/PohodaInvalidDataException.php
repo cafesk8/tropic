@@ -7,7 +7,7 @@ namespace App\Component\Transfer\Pohoda\Exception;
 use Exception;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class PohodaInvalidDataExceptionInterface extends Exception implements PohodaTransferExceptionInterface
+class PohodaInvalidDataException extends Exception implements PohodaTransferExceptionInterface
 {
     /**
      * @param \Symfony\Component\Validator\ConstraintViolationListInterface $violations

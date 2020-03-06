@@ -299,12 +299,12 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param string $transferNumber
+     * @param int $pohodaId
      * @return \App\Model\Product\Product|null
      */
-    public function findByTransferNumber(string $transferNumber): ?Product
+    public function findByPohodaId(int $pohodaId): ?Product
     {
-        return $this->productRepository->findByTransferNumber($transferNumber);
+        return $this->productRepository->findByPohodaId($pohodaId);
     }
 
     /**

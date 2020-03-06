@@ -130,7 +130,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $productData->actionPrices[$domainId] = $product->getActionPrice($domainId);
         }
 
-        $productData->transferNumber = $product->getTransferNumber();
+        $productData->pohodaId = $product->getPohodaId();
         $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
         $productData->finished = $product->isFinished();
         $productData->mallExport = $product->isMallExport();

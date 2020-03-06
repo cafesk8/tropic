@@ -24,9 +24,9 @@ class ProductData extends BaseProductData
     public $stockQuantityByStoreId = [];
 
     /**
-     * @var string|null
+     * @var int|null
      */
-    public $transferNumber = null;
+    public $pohodaId = null;
 
     /**
      * @var \App\Model\Product\Product[]
