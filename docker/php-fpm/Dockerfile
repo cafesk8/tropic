@@ -7,6 +7,25 @@ RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-k
     sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list' && \
     apt-get update && apt-get install -y postgresql-12 postgresql-client-12 && apt-get clean
 
+RUN apt-get install apt-transport-https
+
+### SQLSRVSTART
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN apt-get update -yqq \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev unixodbc \
+    && rm -r /var/lib/apt/lists/*
+
+RUN pecl install sqlsrv pdo_sqlsrv
+
+RUN /usr/local/bin/docker-php-ext-enable sqlsrv pdo_sqlsrv
+###SQLSRVEND
+
+RUN docker-php-ext-enable \
+    redis \
+    sqlsrv \
+    pdo_sqlsrv
+
 USER www-data
 
 ########################################################################################################################

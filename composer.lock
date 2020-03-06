@@ -16582,6 +16582,7 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*",
+        "ext-pdo_sqlsrv": "^5.8",
         "ext-redis": "*",
         "ext-xml": "*"
     },
