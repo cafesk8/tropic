@@ -42,6 +42,8 @@
     }
 
     &__error {
+        display: flex;
+        align-items: center;
         position: relative;
         width: 100%;
         padding-left: @input-label-width;
@@ -52,6 +54,7 @@
         @media @query-lg {
             width: calc(~"@{calc-base} - @{form-line-width-input}");
             padding-left: 20px;
+            margin-top: 0;
         }
 
         @media @query-vl {
