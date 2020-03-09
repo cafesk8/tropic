@@ -36,6 +36,7 @@
                 border: none;
                 border-radius: @radius-small;
                 box-shadow: none;
+                background-color: transparent;
 
                 @media @query-vl {
                     height: @search-input-height;
@@ -81,7 +82,7 @@
     &__autocomplete {
         position: absolute;
         width: 100%;
-        top: @search-input-height-small;
+        top: @search-input-height-small + 2px;
         left: 0;
         z-index: @z-index-above;
         padding: 20px;
@@ -89,7 +90,7 @@
         background-color: @color-box;
 
         @media @query-vl {
-            top: @search-input-height;
+            top: @search-input-height + 2px;
         }
     }
 }
