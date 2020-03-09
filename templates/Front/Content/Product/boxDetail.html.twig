@@ -76,98 +76,98 @@
 
                 <div class="box-detail__wrap">
                     <div class="box-detail__add-basket">
-                        {% if product.calculatedAvailability %}
-                            {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
-                        {% endif %}
-                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
-                             class="box-detail-add__prices">
-                            <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                {{ sellingPrice.priceWithVat|price }}
-                            </div>
-                            {% if sellingPrice.isActionPrice %}
-                                <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-                                    {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
-                                </div>
-                                <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-                                    {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
-                                </div>
-                            {% endif %}
-                            <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
-                            <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
-                            <link itemprop="availability"
-                                  href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
-                        </div>
                         <div>
-                        {% if product.isMainVariant and not product.calculatedSellingDenied %}
-                            <table {% if getProductSellingPrice(product) is not null %}itemprop="offers"
-                                   itemscope
-                                   itemtype="http://schema.org/AggregateOffer" {% endif %}
-                                   class="table-variants"
-                            >
-                                <thead>
-                                <tr class="table-variants__row">
-                                    <th class="table-variants__cell table-variants__cell--image"></th>
-                                    <th class="table-variants__cell table-variants__cell--name">{{ 'Name'|trans }}</th>
-                                    <th class="table-variants__cell table-variants__cell--price">
-                                        {{ 'Price including VAT'|trans }}
-                                        {% if getProductSellingPrice(product) is not null %}
-                                            <meta itemprop="priceCurrency"
-                                                  content="{{ currencyCode(domain.id) }}"
-                                            >
-                                            <meta itemprop="lowPrice"
-                                                  content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
-                                            >
-                                            <link itemprop="availability"
-                                                  href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                            >
-                                        {% endif %}
-                                    </th>
-                                    <th class="table-variants__cell table-variants__cell--action"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for variant in variants %}
-                                    <tr class="table-variants__row">
-                                        <td class="table-variants__cell table-variants__cell--image">
-                                            <div class="table-variants__cell__image">
-                                                {% if imageExists(variant) %}
-                                                    <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
-                                                        {{ image(variant, { size: 'thumbnail' }) }}
-                                                    </a>
-                                                {% else %}
-                                                    {{ noimage() }}
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                        <td class="table-variants__cell table-variants__cell--name">
-                                            {% if variant.variantAlias is not null %}
-                                                {{ variant.variantAlias }}
-                                            {% else %}
-                                                {{ variant.name }}
-                                            {% endif %}
-                                        </td>
-                                        <td class="table-variants__cell table-variants__cell--price">
-                                            {{ getProductSellingPrice(variant).priceWithVat|price }}
-                                        </td>
-                                        <td class="table-variants__cell table-variants__cell--action">
-                                            {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        {% endif %}
-                        {% if not product.isMainVariant %}
-                            <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
-                                {% if not product.calculatedSellingDenied %}
-                                    {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, type: 'large' })) }}
-                                {% else %}
-                                    <div>
-                                        {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
+                            {% if product.calculatedAvailability %}
+                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
+                            {% endif %}
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
+                                class="box-detail-add__prices">
+                                <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+                                    {{ sellingPrice.priceWithVat|price }}
+                                </div>
+                                {% if sellingPrice.isActionPrice %}
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+                                        {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                    </div>
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+                                        {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
                                     </div>
                                 {% endif %}
+                                <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                                <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
+                                <link itemprop="availability"
+                                    href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                             </div>
-                        {% endif %}
+                            {% if product.isMainVariant and not product.calculatedSellingDenied %}
+                                <table {% if getProductSellingPrice(product) is not null %}itemprop="offers"
+                                    itemscope
+                                    itemtype="http://schema.org/AggregateOffer" {% endif %}
+                                    class="table-variants"
+                                >
+                                    <thead>
+                                    <tr class="table-variants__row">
+                                        <th class="table-variants__cell table-variants__cell--image"></th>
+                                        <th class="table-variants__cell table-variants__cell--name">{{ 'Name'|trans }}</th>
+                                        <th class="table-variants__cell table-variants__cell--price">
+                                            {{ 'Price including VAT'|trans }}
+                                            {% if getProductSellingPrice(product) is not null %}
+                                                <meta itemprop="priceCurrency"
+                                                    content="{{ currencyCode(domain.id) }}"
+                                                >
+                                                <meta itemprop="lowPrice"
+                                                    content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
+                                                >
+                                                <link itemprop="availability"
+                                                    href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
+                                                >
+                                            {% endif %}
+                                        </th>
+                                        <th class="table-variants__cell table-variants__cell--action"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for variant in variants %}
+                                        <tr class="table-variants__row">
+                                            <td class="table-variants__cell table-variants__cell--image">
+                                                <div class="table-variants__cell__image">
+                                                    {% if imageExists(variant) %}
+                                                        <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
+                                                            {{ image(variant, { size: 'thumbnail' }) }}
+                                                        </a>
+                                                    {% else %}
+                                                        {{ noimage() }}
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td class="table-variants__cell table-variants__cell--name">
+                                                {% if variant.variantAlias is not null %}
+                                                    {{ variant.variantAlias }}
+                                                {% else %}
+                                                    {{ variant.name }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="table-variants__cell table-variants__cell--price">
+                                                {{ getProductSellingPrice(variant).priceWithVat|price }}
+                                            </td>
+                                            <td class="table-variants__cell table-variants__cell--action">
+                                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                            {% if not product.isMainVariant %}
+                                <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
+                                    {% if not product.calculatedSellingDenied %}
+                                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, type: 'large' })) }}
+                                    {% else %}
+                                        <div>
+                                            {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     {% for gift in product.gifts(domain.id) %}
