@@ -127,8 +127,8 @@
     class: Shopsys\FrameworkBundle\Model\Product\Brand\Brand
     sizes:
         -   name: ~
-            width: 300
-            height: 200
+            width: 150
+            height: 150
             crop: false
             occurrence: 'Front-end: Brand page'
 

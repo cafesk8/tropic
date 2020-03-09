@@ -15,9 +15,12 @@
                 {% endif %}
             </div>
         {% endif %}
-        <div class="box-list__filter-opener">
-            <span class="btn js-product-filter-opener">{{ 'Filtrovat produkty'|trans }}</span>
-        </div>
+        
+        {% if hiddenFilterFormButton is not defined %}
+            <div class="box-list__filter-opener">
+                <span class="btn js-product-filter-opener">{{ 'Filtrovat produkty'|trans }}</span>
+            </div>
+        {% endif %}
 
         {{ productList.list(paginationResult.results) }}
 

@@ -145,11 +145,9 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
 
         $filterQuery = $this->createListableProductsForBrandFilterQuery($emptyProductFilterData, $orderingModeId, $page, $limit, $brandId);
 
-        $productIds = $this->productElasticsearchRepository->getSortedProductIdsByFilterQuery($filterQuery);
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
 
-        $listableProductsByIds = $this->productRepository->getListableByIds($this->domain->getId(), $this->currentCustomerUser->getPricingGroup(), $productIds->getIds());
-
-        return new PaginationResult($page, $limit, $productIds->getTotal(), $listableProductsByIds);
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
     }
 
     /**

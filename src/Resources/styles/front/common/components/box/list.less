@@ -8,6 +8,8 @@
 
 @box-list-bottom-gap: 62px;
 
+@box-list-producer-image-width: 150px;
+
 .box-list {
     &__row {
         display: flex;
@@ -158,11 +160,13 @@
 
         &__image {
             @media @query-md {
-                padding-right: 30px;
+                width: @box-list-producer-image-width;
+                margin-right: 30px;
             }
         }
 
         &__text {
+            flex: 1;
             margin-bottom: 20px;
         }
     }
