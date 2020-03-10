@@ -194,8 +194,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $this->addVideoGroup($builder);
 
-        if ($product !== null && $product->isMainVariant() === false) {
-            $this->addActionPriceToPricesGroup($builder);
+        if ($product === null || ($product !== null && $product->isMainVariant() === false)) {
+            $this->addActionPriceToPricesGroup($builder, $product);
             $builder->add($this->getPricesGroup($builder, $product));
         }
 
@@ -283,9 +283,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Product\Product|null $product
      */
-    private function addActionPriceToPricesGroup(FormBuilderInterface $builder): void
+    private function addActionPriceToPricesGroup(FormBuilderInterface $builder, ?Product $product): void
     {
+        if ($product === null || $product->isMainVariant()) {
+            return;
+        }
+
         $builderPricesGroup = $builder->get('pricesGroup');
         $actionPriceOptionsByDomainId = [];
 
@@ -333,7 +338,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         /** @var \App\Model\Pricing\Group\PricingGroup $pricingGroup */
-        foreach ($this->pricingGroupFacade->getAll() as $pricingGroup) {
+        foreach ($this->pricingGroupFacade->getAllOrderedByInternalId() as $pricingGroup) {
             $manualInputPricesByPricingGroup->add($pricingGroup->getId(), MoneyType::class, [
                 'scale' => 6,
                 'required' => false,

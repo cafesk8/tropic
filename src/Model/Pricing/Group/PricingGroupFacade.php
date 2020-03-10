@@ -90,4 +90,26 @@ class PricingGroupFacade extends BasePricingGroupFacade
     {
         return $this->getByInternalId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER);
     }
+
+    /**
+     * @return \App\Model\Pricing\Group\PricingGroup[]
+     */
+    public function getAllOrderedByInternalId(): array
+    {
+        $pricingGroups = $this->getAll();
+
+        usort($pricingGroups, function (PricingGroup $first, PricingGroup $second) {
+            if ($first->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER) {
+                return 0;
+            }
+
+            if ($second->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER) {
+                return -1;
+            }
+
+            return 1;
+        });
+
+        return $pricingGroups;
+    }
 }

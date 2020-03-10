@@ -9,6 +9,7 @@ use App\Component\GoogleApi\GoogleClient;
 use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
 use App\Model\Category\Category;
+use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Product as ChildProduct;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
@@ -33,6 +34,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactory
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
@@ -55,7 +57,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
  * @property \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
  * @method \App\Model\Product\Product getById(int $productId)
  * @method \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
- * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[][] getAllProductSellingPricesIndexedByDomainId(\App\Model\Product\Product $product)
  * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[] getAllProductSellingPricesByDomainId(\App\Model\Product\Product $product, int $domainId)
  * @method createProductVisibilities(\App\Model\Product\Product $product)
  * @method refreshProductAccessories(\App\Model\Product\Product $product, \App\Model\Product\Product[] $accessories)
@@ -702,6 +703,37 @@ class ProductFacade extends BaseProductFacade
         });
 
         return $indexedProducts;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllProductSellingPricesIndexedByDomainId(BaseProduct $product)
+    {
+        $sellingPricesByDomainId = parent::getAllProductSellingPricesIndexedByDomainId($product);
+
+        foreach ($sellingPricesByDomainId as &$sellingPrices) {
+            usort($sellingPrices, function (ProductSellingPrice $first, ProductSellingPrice $second) {
+                /** @var \App\Model\Pricing\Group\PricingGroup $firstPricingGroup */
+                $firstPricingGroup = $first->getPricingGroup();
+                /** @var \App\Model\Pricing\Group\PricingGroup $secondPricingGroup */
+                $secondPricingGroup = $second->getPricingGroup();
+                $isFirstOrdinary = $firstPricingGroup->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
+                $isSecondOrdinary = $secondPricingGroup->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
+
+                if ($isFirstOrdinary && !$isSecondOrdinary) {
+                    return -1;
+                }
+
+                if (!$isFirstOrdinary && $isSecondOrdinary) {
+                    return 1;
+                }
+
+                return 0;
+            });
+        }
+
+        return $sellingPricesByDomainId;
     }
 
     /**
