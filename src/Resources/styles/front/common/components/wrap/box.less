@@ -4,6 +4,18 @@
     border: 1px solid @color-border;
     border-radius: @radius;
 
+    &__block {
+        margin-bottom: 30px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .payment-price {
+            color: @color-add;
+        }
+    }
+
     &__title {
         padding: 10px 20px;
         margin-bottom: 0;
@@ -15,6 +27,14 @@
 
     &__in {
         padding: 20px;
+    }
+
+    &__button {
+        margin: 0 10px 10px 0;
+
+        &__price {
+            color: @color-add;
+        }
     }
 
     &--narrow {

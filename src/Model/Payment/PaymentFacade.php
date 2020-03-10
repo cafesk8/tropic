@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Payment;
 
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
+use App\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Payment\Exception\PaymentPriceNotFoundException;
 use Shopsys\FrameworkBundle\Model\Payment\PaymentFacade as BasePaymentFacade;
@@ -26,8 +27,8 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
  * @method \App\Model\Payment\Payment[] getAllIncludingDeleted()
  * @method \App\Model\Payment\Payment[] getAll()
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Payment\Payment $payment)
- * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId, \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat[] $vatsIndexedByDomainId)
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Payment\Payment|null $payment)
+ * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId, \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat[] $vatsIndexedByDomainId)
  */
 class PaymentFacade extends BasePaymentFacade
 {
@@ -97,5 +98,18 @@ class PaymentFacade extends BasePaymentFacade
             $payment->unHideByGoPay();
         }
         $this->em->flush($payments);
+    }
+
+    /**
+     * @param \App\Model\Transport\Transport $transport
+     * @return \App\Model\Payment\Payment[]
+     */
+    public function getVisibleOnCurrentDomainByTransport(Transport $transport): array
+    {
+        $paymentsByTransport = $this->paymentRepository->getAllByTransport($transport);
+        /** @var \App\Model\Payment\Payment[] $payments */
+        $payments = $this->paymentVisibilityCalculation->filterVisible($paymentsByTransport, $this->domain->getId());
+
+        return $payments;
     }
 }
