@@ -196,13 +196,6 @@
                                         </div>
                                     {% endif %}
                                 {% endif %}
-
-                                <div class="box-order__additional">
-                                    <div class="box-order__additional__title">
-                                        {{ 'Přihoďte si k nákupu'|trans }}
-                                    </div>
-                                    {{ productList.horizontalList(topProducts, "list-basket-additionals", 'h3', 'basket-additionals') }}
-                                </div>
                             </div>
                             <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
                                 {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
@@ -212,6 +205,13 @@
                             </div>
                         </div>
                     {{ form_end(form) }}
+
+                    <div class="box-order__additional">
+                        <div class="box-order__additional__title">
+                            {{ 'Přihoďte si k nákupu'|trans }}
+                        </div>
+                        {{ productList.horizontalList(topProducts, "list-basket-additionals", 'h3', 'basket-additionals', true, true) }}
+                    </div>
                 {% else %}
                     <div class="box-cart-empty">
                         <div class="box-cart-empty__image">

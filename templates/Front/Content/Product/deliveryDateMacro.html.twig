@@ -1,27 +1,29 @@
 {% macro productAvailabilityWithDeliveryDate(product) %}
-        {% set domain = getDomain() %}
-        {% set deliveryDate = getDeliveryDate(product) %}
-        {% set showDeliveryDate = product.usingStock
-            and product.stockQuantity > 0
-            and deliveryDate is not null  %}
+    {% set domain = getDomain() %}
+    {% set deliveryDate = getDeliveryDate(product) %}
+    {% set showDeliveryDate = product.usingStock
+        and product.stockQuantity > 0
+        and deliveryDate is not null  %}
 
-        {% set showNotAvailable = product.usingStock
-            and product.stockQuantity < 1
-            and not product.outOfStockAction is same as(constant('OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY', product)) %}
+    {% set showNotAvailable = product.usingStock
+        and product.stockQuantity < 1
+        and not product.outOfStockAction is same as(constant('OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY', product)) %}
 
-        {% if showDeliveryDate %}
-            {% set expectedDeliveryDate = deliveryDate %}
-            {% set friendlyDayInterval = expectedDeliveryDate.diff(date()) %}
-            <span class="box-detail__availability__date">
+    {% if product.calculatedSellingDenied %}
+        {{ 'Product no longer on sale'|trans }}
+    {% elseif showDeliveryDate %}
+        {% set expectedDeliveryDate = deliveryDate %}
+        {% set friendlyDayInterval = expectedDeliveryDate.diff(date()) %}
+        <span class="box-detail__availability__date">
                 {{ expectedDeliveryDate|friendlyDay }}
-                {% if friendlyDayInterval.days >= 2 %}
-                    {{ expectedDeliveryDate|formatDateCore('j. n.') }}
-                {% endif %}
-                {{ 'u&nbsp;tebe'|trans|raw }}
+            {% if friendlyDayInterval.days >= 2 %}
+                {{ expectedDeliveryDate|formatDateCore('j. n.') }}
+            {% endif %}
+            {{ 'u&nbsp;tebe'|trans|raw }}
             </span>
-        {% elseif showNotAvailable %}
-            <span class="box-detail__availability__date box-detail__availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
-        {% else %}
-            <span class="box-detail__availability__date" style="color: {{ product.calculatedAvailability.rgbColor }}">{{ product.calculatedAvailability.name }}</span>
-        {% endif %}
+    {% elseif showNotAvailable %}
+        <span class="box-detail__availability__date box-detail__availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
+    {% else %}
+        <span class="box-detail__availability__date" style="color: {{ product.calculatedAvailability.rgbColor }}">{{ product.calculatedAvailability.name }}</span>
+    {% endif %}
 {% endmacro %}
