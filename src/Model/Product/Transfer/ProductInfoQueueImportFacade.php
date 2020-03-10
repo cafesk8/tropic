@@ -44,4 +44,12 @@ class ProductInfoQueueImportFacade
     {
         $this->productInfoQueueImportRepository->removeUpdatedProducts($updatedPohodaProductIds);
     }
+
+    /**
+     * @return bool
+     */
+    public function isQueueEmpty(): bool
+    {
+        return $this->productInfoQueueImportRepository->isQueueEmpty();
+    }
 }

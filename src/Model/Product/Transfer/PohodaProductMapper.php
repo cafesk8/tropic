@@ -24,5 +24,6 @@ class PohodaProductMapper
         $productData->name[DomainHelper::SLOVAK_LOCALE] = $pohodaProduct->nameSk;
         $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
+        $productData->usingStock = true;
     }
 }

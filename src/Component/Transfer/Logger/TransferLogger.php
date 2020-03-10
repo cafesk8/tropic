@@ -59,6 +59,7 @@ class TransferLogger
     public function addInfo($message, array $context = []): void
     {
         $this->logger->addInfo($this->getLoggerMessage($message), $context);
+        $this->addTransferIssueDataToQueue($message, $context);
     }
 
     /**

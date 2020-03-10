@@ -61,16 +61,15 @@ class ProductInfoQueueImportCronModule extends AbstractTransferCronModule
     {
         $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
+        $this->logger->addInfo('Spuštěn import do fronty produktů', ['transferLastStartAt' => $transfer->getLastStartAt()]);
 
         $pohodaProductIds = $this->pohodaProductExportFacade->findPohodaProductIdsFromLastModificationDate($transfer->getLastStartAt());
         if (count($pohodaProductIds) === 0) {
             $this->logger->addInfo('Nejsou žádná data ke zpracování');
         } else {
             $this->productInfoQueueImportFacade->insertChangedPohodaProductIds($pohodaProductIds, $dateTimeBeforeTransferFromPohodaServer);
-            $this->logger->addInfo('Celkem změněných produktů: ' . count($pohodaProductIds));
+            $this->logger->addInfo('Celkem změněných produktů', ['pohodaProductIdsCount' => count($pohodaProductIds)]);
         }
-
-        $this->transferFacade->setAsFinished(self::TRANSFER_IDENTIFIER, $dateTimeBeforeTransferFromPohodaServer);
 
         return false;
     }

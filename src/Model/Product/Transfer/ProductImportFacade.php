@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Transfer;
 
-use App\Component\Transfer\Logger\TransferLoggerFactory;
+use App\Component\Transfer\Logger\TransferLogger;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
 use App\Model\Product\ProductDataFactory;
@@ -47,7 +47,6 @@ class ProductImportFacade
     private $productInfoQueueImportFacade;
 
     /**
-     * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade $pohodaProductExportFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
@@ -55,7 +54,6 @@ class ProductImportFacade
      * @param \App\Model\Product\Transfer\ProductInfoQueueImportFacade $productInfoQueueImportFacade
      */
     public function __construct(
-        TransferLoggerFactory $transferLoggerFactory,
         PohodaProductExportFacade $pohodaProductExportFacade,
         ProductFacade $productFacade,
         ProductDataFactory $productDataFactory,
@@ -67,15 +65,16 @@ class ProductImportFacade
         $this->productDataFactory = $productDataFactory;
         $this->pohodaProductMapper = $pohodaProductMapper;
 
-        $this->logger = $transferLoggerFactory->getTransferLoggerByIdentifier(ProductImportCronModule::TRANSFER_IDENTIFIER);
         $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
     }
 
     /**
+     * @param \App\Component\Transfer\Logger\TransferLogger $logger
      * @return bool
      */
-    public function processImport(): bool
+    public function processImport(TransferLogger $logger): bool
     {
+        $this->logger = $logger;
         $changedPohodaProductIds = $this->productInfoQueueImportFacade->findChangedPohodaProductIds(self::PRODUCT_EXPORT_MAX_BATCH_LIMIT);
         $pohodaProducts = $this->pohodaProductExportFacade->findPohodaProductsByPohodaIds(
             $changedPohodaProductIds
@@ -85,12 +84,12 @@ class ProductImportFacade
         if (count($pohodaProducts) === 0) {
             $this->logger->addInfo('Nejsou žádná data ke zpracování');
         } else {
+            $this->logger->addInfo('Proběhne uložení produktů', ['pohodaProductsCount' => count($pohodaProducts)]);
             $updatedPohodaProductIds = $this->updateProductsByPohodaProducts($pohodaProducts);
         }
-
         $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
 
-        return false;
+        return !$this->productInfoQueueImportFacade->isQueueEmpty();
     }
 
     /**
@@ -133,6 +132,11 @@ class ProductImportFacade
 
         $createdProduct = $this->productFacade->create($productData);
 
+        $this->logger->addInfo('Produkt vytvořen', [
+            'pohodaId' => $createdProduct->getPohodaId(),
+            'productId' => $createdProduct->getId(),
+        ]);
+
         return $createdProduct->getPohodaId();
     }
 
@@ -154,6 +158,11 @@ class ProductImportFacade
             ]);
         }
         $editedProduct = $this->productFacade->edit($product->getId(), $productData);
+
+        $this->logger->addInfo('Produkt upraven', [
+            'pohodaId' => $editedProduct->getPohodaId(),
+            'productId' => $editedProduct->getId(),
+        ]);
 
         return $editedProduct->getPohodaId();
     }

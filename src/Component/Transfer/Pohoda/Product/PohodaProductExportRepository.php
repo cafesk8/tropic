@@ -6,6 +6,7 @@ namespace App\Component\Transfer\Pohoda\Product;
 
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 class PohodaProductExportRepository
@@ -68,6 +69,11 @@ class PohodaProductExportRepository
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID);
+
+        if ($lastUpdateTime !== null) {
+            // Timezone in Pohoda is always Europe/Prague and we store dates in UTC so we need to convert the last update time to Pohoda´s timezone
+            $lastUpdateTime->setTimezone(new DateTimeZone('Europe/Prague'));
+        }
 
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT Product.ID

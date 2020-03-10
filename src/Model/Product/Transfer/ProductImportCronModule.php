@@ -41,6 +41,6 @@ class ProductImportCronModule extends AbstractTransferCronModule
      */
     protected function runTransfer(): bool
     {
-        return $this->productImportFacade->processImport();
+        return $this->productImportFacade->processImport($this->logger);
     }
 }

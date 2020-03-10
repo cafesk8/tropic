@@ -67,6 +67,23 @@ class ProductInfoQueueImportRepository
     }
 
     /**
+     * @return bool
+     */
+    public function isQueueEmpty(): bool
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('product_count', 'productCount');
+
+        $queryBuilder = $this->em->createNativeQuery(
+            'SELECT COUNT(1) AS product_count
+            FROM pohoda_changed_products_basic_info_queue',
+            $resultSetMapping
+        );
+
+        return $queryBuilder->getSingleScalarResult() === 0;
+    }
+
+    /**
      * @param array $updatedPohodaProductIds
      */
     public function removeUpdatedProducts(array $updatedPohodaProductIds): void
