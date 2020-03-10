@@ -22,6 +22,9 @@ function deploy() {
         ["parameters.elasticsearch_host"]='elasticsearch'
         ["parameters.mailer_host"]='shopmail.shopsys.cz'
         ["parameters.trusted_proxies[+]"]=10.0.0.0/8
+        ["parameters.gtm_config.cs.container_id"]="${GTM_CONTAINER_ID_CS}"
+        ["parameters.gtm_config.sk.container_id"]="${GTM_CONTAINER_ID_SK}"
+        ["parameters.gtm_config.en.container_id"]="${GTM_CONTAINER_ID_EN}"
     )
 
     VARS=(
