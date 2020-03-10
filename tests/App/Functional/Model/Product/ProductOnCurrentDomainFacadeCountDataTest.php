@@ -7,7 +7,6 @@ namespace Tests\App\Functional\Model\Product;
 use App\DataFixtures\Demo\BrandDataFixture;
 use App\DataFixtures\Demo\CategoryDataFixture;
 use App\DataFixtures\Demo\FlagDataFixture;
-use App\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -15,6 +14,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory;
 use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\ProductOnCurrentDomainFacadeInterface;
@@ -52,7 +52,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
 
     /**
      * @param \App\Model\Category\Category $category
-     * @param \App\Model\Product\Filter\ProductFilterData $filterData
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider categoryTestCasesProvider
      */
@@ -83,7 +83,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
 
     /**
      * @param string $searchText
-     * @param \App\Model\Product\Filter\ProductFilterData $filterData
+     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData $filterData
      * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterCountData $expectedCountData
      * @dataProvider searchTestCasesProvider
      */

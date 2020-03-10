@@ -6,7 +6,6 @@ namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
-use App\Model\Product\MainVariantGroup\MainVariantGroup;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
@@ -14,7 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 
@@ -76,22 +74,6 @@ class Product extends BaseProduct
      * @ORM\Column(type="string", length=20, nullable=true, unique=true)
      */
     private $transferNumber;
-
-    /**
-     * @var \App\Model\Product\MainVariantGroup\MainVariantGroup|null
-     *
-     * @ORM\ManyToOne(targetEntity="\App\Model\Product\MainVariantGroup\MainVariantGroup", inversedBy="products", cascade={"persist"})
-     * @ORM\JoinColumn(name="maint_variant_group_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     */
-    protected $mainVariantGroup;
-
-    /**
-     * @var \App\Model\Product\Parameter\Parameter|null
-     *
-     * @ORM\ManyToOne(targetEntity="\App\Model\Product\Parameter\Parameter")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    protected $distinguishingParameter;
 
     /**
      * @var \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\ArrayCollection
@@ -195,8 +177,6 @@ class Product extends BaseProduct
 
         $this->storeStocks = new ArrayCollection();
         $this->transferNumber = $productData->transferNumber;
-        $this->distinguishingParameter = $productData->distinguishingParameter;
-        $this->mainVariantGroup = $productData->mainVariantGroup;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
@@ -219,7 +199,6 @@ class Product extends BaseProduct
     ) {
         parent::edit($productCategoryDomains, $productData);
 
-        $this->distinguishingParameter = $productData->distinguishingParameter;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
@@ -274,28 +253,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return \App\Model\Product\MainVariantGroup\MainVariantGroup|null
-     */
-    public function getMainVariantGroup(): ?MainVariantGroup
-    {
-        return $this->mainVariantGroup;
-    }
-
-    /**
-     * @return \App\Model\Product\Parameter\Parameter|null
-     */
-    public function getDistinguishingParameter(): ?Parameter
-    {
-        if ($this->isVariant() === true && $this->isMainVariant() === false) {
-            /** @var \App\Model\Product\Product $mainVariant */
-            $mainVariant = $this->getMainVariant();
-            return $mainVariant->getDistinguishingParameter();
-        }
-
-        return $this->distinguishingParameter;
-    }
-
-    /**
      * @return \App\Model\Product\StoreStock\ProductStoreStock[]
      */
     public function getStoreStocks(): array
@@ -322,22 +279,6 @@ class Product extends BaseProduct
     public function getTransferNumber(): ?string
     {
         return $this->transferNumber;
-    }
-
-    /**
-     * @param \App\Model\Product\Parameter\Parameter $parameter
-     */
-    public function setDistinguishingParameter(Parameter $parameter): void
-    {
-        $this->distinguishingParameter = $parameter;
-    }
-
-    /**
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroup|null $mainVariantGroup
-     */
-    public function setMainVariantGroup(?MainVariantGroup $mainVariantGroup): void
-    {
-        $this->mainVariantGroup = $mainVariantGroup;
     }
 
     /**

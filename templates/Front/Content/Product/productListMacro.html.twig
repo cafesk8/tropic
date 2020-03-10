@@ -2,9 +2,7 @@
 
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for productView in productViews %}
-            {% set productsForMainVariantGroup = productView.mainVariantGroupProductViews %}
             <li class="list-products__item
-                {% if productsForMainVariantGroup is not empty %} list-products__item--with-variants {% endif %}
                 js-list-products-item">
                 <div class="list-products__item__in">
                     {% set productSellingPrice = productView.sellingPrice %}
@@ -47,9 +45,6 @@
                                 {% endif %}
 
                                 <div class="list-products__item__info__availability">
-                                    {% for parameterValue in productView.distinguishingParameterValues %}
-                                        <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
-                                    {% endfor %}
                                     <div class="list-products__item__info__availability__spacer"></div>
                                     <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                         {{ productView.availability }}
@@ -58,34 +53,9 @@
                             </a>
 
                             <div class="list-products__item__hover">
-                                {% if productsForMainVariantGroup is not empty %}
-                                    <a href="{{ productView.action.detailUrl }}" class="list-products__item__variants">
-                                        {% if productsForMainVariantGroup|length >= 5 %}
-                                            <span class="js-variantsSlider-action-prev list-products__item__variants__arrow list-products__item__variants__arrow--prev">
-                                                    <i class="svg svg-slider-arrow"></i>
-                                                </span>
-                                        {% endif %}
-                                        <div class="list-products__item__variants__slider js-variantsSlider-slides">
-                                            {% for mainVariantGroupProductView in productsForMainVariantGroup %}
-                                                <div class="list-products__item__variants__image">
-                                                    {{ image(mainVariantGroupProductView.image, { size: 'thumbnail', alt: mainVariantGroupProductView.name, lazy: true }) }}
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                        {% if productsForMainVariantGroup|length >= 5 %}
-                                            <span class="js-variantsSlider-action-next list-products__item__variants__arrow list-products__item__variants__arrow--next">
-                                                    <i class="svg svg-slider-arrow"></i>
-                                                </span>
-                                        {% endif %}
-                                    </a>
-                                    <a href="{{ productView.action.detailUrl }}" class="btn btn--success">
-                                        {{ 'Vybrat variantu'|trans }}
-                                    </a>
-                                {% else %}
-                                    <div class="list-products__item__hover__wrap">
-                                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: productView.action.id, type: 'small' })) }}
-                                    </div>
-                                {% endif %}
+                                <div class="list-products__item__hover__wrap">
+                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { productActionView: productView.action, type: 'small' } )) }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -147,10 +117,6 @@
                                     {% endif %}
 
                                     <div class="{{ listCssClass }}__item__info__availability">
-                                        {% for parameterValue in productView.distinguishingParameterValues %}
-                                            <span class="in-badge">{{ parameterValue }}</span>
-                                        {% endfor %}
-
                                         <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
                                         <div class="{{ listCssClass }}__item__info__availability__text" style="color: #7bbd70;">
                                             {{ productView.availability }}

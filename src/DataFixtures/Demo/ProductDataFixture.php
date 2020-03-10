@@ -5646,9 +5646,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
             \App\Model\Product\Parameter\ParameterFacade::PARAMETER_SIZE,
             \App\Model\Product\Parameter\Parameter::TYPE_SIZE
         );
-        $distinguishingParameterForVariants = $this->parameterFacade->findOrCreateParameterByNames([
-            'cs' => 'Úhlopříčka',
-        ]);
 
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
             /** @var \App\Model\Product\Product $mainProduct */
@@ -5660,7 +5657,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
                 $variants[] = $this->productsByCatnum[$variantCatnum];
             }
 
-            $mainProduct->setDistinguishingParameter($distinguishingParameterForVariants);
             $mainVariant = $this->productVariantFacade->createVariant($mainProduct, $variants);
             $this->addProductReference($mainVariant);
         }

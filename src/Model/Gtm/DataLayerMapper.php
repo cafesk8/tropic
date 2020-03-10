@@ -230,8 +230,6 @@ class DataLayerMapper
             $dataLayerProduct->setPriceWithTax($sellingPrice->getPriceWithVat()->getAmount());
         }
 
-        $dataLayerProduct->setVariant($this->gtmHelper->getVariantByProduct($product));
-
         if ($product->getBrand() !== null) {
             $dataLayerProduct->setBrand($product->getBrand()->getName());
         }
@@ -338,7 +336,6 @@ class DataLayerMapper
             'priceWithTax' => $this->getMoneyAsString($priceWithTax),
             'brand' => ($product->getBrand() === null) ? '' : $product->getBrand()->getName(),
             'category' => $this->categoryFacade->getCategoriesNamesInPathAsString($productMainCategory, $locale),
-            'variant' => $this->gtmHelper->getVariantByProduct($product),
             'availability' => $this->gtmHelper->getGtmAvailabilityByOrderItem($productItem),
             'quantity' => $productItem->getQuantity(),
         ];

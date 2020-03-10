@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Form\Admin;
 
 use App\Component\GoogleApi\GoogleClient;
-use App\Form\Transformers\RemoveProductTransformer;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
@@ -25,9 +24,6 @@ use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyUrlType;
 use Shopsys\FrameworkBundle\Form\GroupType;
-use Shopsys\FrameworkBundle\Form\ProductsType;
-use Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,11 +39,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * @var \App\Model\Product\Parameter\ParameterFacade
-     */
-    private $parameterFacade;
-
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
      */
@@ -100,7 +91,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
     /**
      * ProductFormTypeExtension constructor.
-     * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
@@ -113,7 +103,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
-        ParameterFacade $parameterFacade,
         BlogArticleFacade $blogArticleFacade,
         AdminDomainTabsFacade $adminDomainTabsFacade,
         PriceExtension $priceExtension,
@@ -125,7 +114,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         FlagFacade $flagFacade,
         FlashMessageSender $flashMessageSender
     ) {
-        $this->parameterFacade = $parameterFacade;
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
         $this->priceExtension = $priceExtension;
@@ -184,35 +172,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $builder->add($this->getArticlesGroup($builder, $product));
         }
 
-        if ($product instanceof Product && $product->isMainVariant()) {
-            $variantGroup = $builder->get('variantGroup');
-
-            $allParameters = $this->parameterFacade->getAll();
-            $variantGroup
-                ->add('distinguishingParameter', ChoiceType::class, [
-                    'required' => false,
-                    'label' => t('Rozlišující parametr'),
-                    'choices' => $allParameters,
-                    'choice_label' => 'name',
-                    'choice_value' => 'id',
-                    'placeholder' => t('Zvolte parametr'),
-                    'constraints' => [
-                        new Constraints\NotBlank(),
-                    ],
-                ]);
-
-            $builder->add($variantGroup);
-        }
-
         $this->addVideoGroup($builder);
 
-        if ($product !== null && $product->getMainVariantGroup() !== null) {
-            $this->createMainVariantGroup($builder, $product);
-        } else {
-            if ($product !== null && $product->isMainVariant() === false) {
-                $this->addActionPriceToPricesGroup($builder);
-                $builder->add($this->getPricesGroup($builder, $product));
-            }
+        if ($product !== null && $product->isMainVariant() === false) {
+            $this->addActionPriceToPricesGroup($builder);
+            $builder->add($this->getPricesGroup($builder, $product));
         }
 
         if ($product !== null && $product->isVariant()) {
@@ -294,44 +258,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     public function getExtendedType(): string
     {
         return ProductFormType::class;
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \App\Model\Product\Product $product
-     */
-    private function createMainVariantGroup(FormBuilderInterface $builder, Product $product): void
-    {
-        $builderMainVariantGroup = $builder->create('builderMainVariantGroup', GroupType::class, [
-            'label' => t('Propojené produkty'),
-            'position' => ['after' => 'name'],
-        ]);
-
-        $allParameters = $this->parameterFacade->getAll();
-
-        $builderMainVariantGroup
-            ->add('distinguishingParameterForMainVariantGroup', ChoiceType::class, [
-                'required' => false,
-                'label' => t('Hlavní rozlišující parametr'),
-                'choices' => $allParameters,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('Zvolte parametr'),
-            ])
-            ->add(
-                $builder
-                    ->create('productsInGroup', ProductsType::class, [
-                        'required' => false,
-                        'label' => t('Produkty'),
-                        'allow_main_variants' => true,
-                        'allow_variants' => false,
-                        'is_main_variant_group' => true,
-                    ])
-                    ->addModelTransformer(new RemoveDuplicatesFromArrayTransformer())
-                    ->addModelTransformer(new RemoveProductTransformer($product))
-            );
-
-        $builder->add($builderMainVariantGroup);
     }
 
     /**

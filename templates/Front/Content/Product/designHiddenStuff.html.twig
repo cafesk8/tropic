@@ -407,28 +407,6 @@
                             </div>
                     </div>
                 </div>
-            <div class="box-detail-sets__item__variants">
-                <div class="box-detail__variants box-detail__variants--in-sets">
-                    {% if product.mainVariantGroup is not null and mainVariants|length > 0 %}
-                        <div class="box-detail__variants__title">
-                            {{ 'Vyberte variantu'|trans }}
-                            <a href="{{ url('front_article_detail', { 'id': productSizeArticleId }) }}" class="box-detail__variants__title__link underline-small">{{ 'Jak vybrat správnou velikost?'|trans }}</a>
-                        </div>
-                        <ul class="list-variants">
-                            {% for mainVariantGroupProduct in mainVariants %}
-                                {% set productDistinguishingParameterValue = productDistinguishingParameterValue(mainVariantGroupProduct) %}
-                                {% if productDistinguishingParameterValue.firstDistinguishingParameterValue is not null %}
-                                    <li class="list-variants__item js-not-implemented-yet" data-id="{{ mainVariantGroupProduct.id }}">
-                                        <span class="list-variants__item__name">
-                                            {{ productDistinguishingParameterValue.firstDistinguishingParameterValue }}
-                                        </span>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            </div>
             <div class="box-detail-sets__item__add-basket">
                 <div itemprop="offers"
                 itemscope

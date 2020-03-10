@@ -87,10 +87,8 @@ class MallProductDeleteCronModule implements SimpleCronModuleInterface
             return $this->mallFacade->deleteProduct($product->getId());
         } elseif ($product->isVariant()) {
             return $this->deleteVariant($product);
-        } elseif ($product->isMainVariant() === true && $product->getMainVariantGroup() === null) {
+        } elseif ($product->isMainVariant() === true) {
             return $this->mallFacade->deleteProduct($product->getId());
-        } elseif ($product->isMainVariant() === true && $product->getMainVariantGroup() !== null) {
-            return $this->deleteVariant($product);
         }
 
         return false;

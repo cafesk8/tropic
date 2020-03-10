@@ -3,7 +3,6 @@
     variants,
     productMainCategory,
     visible,
-    mainVariants,
     youtubeDetails,
     productSizeArticleId,
     accessories,
@@ -19,7 +18,7 @@
     {% if product.getDescription(domain.id)
         or productParameterValues > 0
     %}
-    <div class="box-detail__content {% if visible == false %}display-none{% endif %} {% if product.mainVariantGroup is not null %}js-product-detail js-product-detail-{{ product.id }}{% endif %}">
+    <div class="box-detail__content {% if visible == false %}display-none{% endif %}">
         <div class="in-tab in-tab--full-width js-anchor-tabs">
             <div class="in-tab__content">
                 <div class="in-tab__content__left">
@@ -87,30 +86,7 @@
                                 {{ parametersHeadline }}
                             </h3>
 
-                            {% if product.mainVariantGroup is not null %}
-                                <div class="js-product-variant-detail-wrapper">
-                                    <div class="js-product-variant-detail-select-info">
-                                        <div class="in-user-text">
-                                            <p class="padding-left-20">{{ 'Pro zobrazení parametrů si vyber z velikostí.'|trans }}</p>
-                                        </div>
-
-                                        <div class="padding-bottom-50">
-                                            <div class="box-detail__tags__row padding-left-20">
-                                                {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    {% for variant in variants %}
-                                        {% set productParameterValuesForVariant = getProductParameterValues(variant) %}
-                                        <div class="display-none js-product-variant-detail js-product-variant-detail-{{ variant.id }}">
-                                            {{ _self.parameters(variant, productParameterValuesForVariant, parametersHeadline, productVisibleProductCategoryDomains) }}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
-                            {% endif %}
+                            {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
 
                         </div>
 

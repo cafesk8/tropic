@@ -29,21 +29,6 @@ class ProductData extends BaseProductData
     public $transferNumber = null;
 
     /**
-     * @var \App\Model\Product\Parameter\Parameter|null
-     */
-    public $distinguishingParameter;
-
-    /**
-     * @var \App\Model\Product\MainVariantGroup\MainVariantGroup|null
-     */
-    public $mainVariantGroup;
-
-    /**
-     * @var \App\Model\Product\Parameter\Parameter|null
-     */
-    public $distinguishingParameterForMainVariantGroup;
-
-    /**
      * @var \App\Model\Product\Product[]
      */
     public $productsInGroup;

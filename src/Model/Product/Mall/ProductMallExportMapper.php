@@ -7,7 +7,6 @@ namespace App\Model\Product\Mall;
 use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Category\CategoryFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use App\Model\Product\Mall\Exception\InvalidProductForMallExportException;
 use App\Model\Product\Product;
 use App\Model\Product\ProductCachedAttributesFacade;
@@ -18,7 +17,6 @@ use MPAPI\Entity\Products\Product as MallProduct;
 use MPAPI\Entity\Products\Variant;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 
 class ProductMallExportMapper
@@ -53,11 +51,6 @@ class ProductMallExportMapper
     private $productFacade;
 
     /**
-     * @var \App\Model\Product\MainVariantGroup\MainVariantGroupFacade
-     */
-    private $mainVariantGroupFacade;
-
-    /**
      * @var \App\Model\Category\CategoryFacade
      */
     private $categoryFacade;
@@ -73,21 +66,14 @@ class ProductMallExportMapper
     private $mallFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
-     */
-    private $pricingGroupSettingFacade;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Component\Mall\MallFacade $mallFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      */
     public function __construct(
         ProductPriceCalculationForCustomerUser $productPriceCalculationForUser,
@@ -95,53 +81,30 @@ class ProductMallExportMapper
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
-        MainVariantGroupFacade $mainVariantGroupFacade,
         CategoryFacade $categoryFacade,
         StoreFacade $storeFacade,
-        MallFacade $mallFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        MallFacade $mallFacade
     ) {
         $this->productPriceCalculationForCustomerUser = $productPriceCalculationForUser;
         $this->imageFacade = $imageFacade;
         $this->domain = $domain;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->productFacade = $productFacade;
-        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->categoryFacade = $categoryFacade;
         $this->storeFacade = $storeFacade;
         $this->mallFacade = $mallFacade;
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return \MPAPI\Entity\Products\Product|null
-     */
-    public function mapProductOrMainVariantGroup(Product $product): ?\MPAPI\Entity\Products\Product
-    {
-        if ($product->isMainVariant() === false) {
-            return $this->mapProduct($product);
-        } elseif ($product->isMainVariant() === true && $product->getMainVariantGroup() === null) {
-            return $this->mapProduct($product);
-        } elseif ($product->isMainVariant() === true && $product->getMainVariantGroup() !== null) {
-            return $this->mapMainVariantGroupAsProduct($product);
-        }
-
-        return null;
     }
 
     /**
      * @param \App\Model\Product\Product $product
      * @return \MPAPI\Entity\Products\Product
      */
-    private function mapProduct(Product $product): MallProduct
+    public function mapProduct(Product $product): MallProduct
     {
         /** @var \MPAPI\Entity\Products\Product $mallProduct */
         $mallProduct = $this->mapBasicInformation($product, false);
 
         if ($product->isMainVariant() === true) {
-            $distinguishingParameters = $this->getDistinguishingParametersForProduct($product);
-            $mallProduct->setVariableParameters($distinguishingParameters);
             $variants = $this->productFacade->getVariantsForProductExportToMall($product);
 
             foreach ($variants as $variant) {
@@ -246,65 +209,6 @@ class ProductMallExportMapper
         }
 
         return $mallProduct;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return \MPAPI\Entity\Products\Product|null
-     */
-    private function mapMainVariantGroupAsProduct(Product $product): ?MallProduct
-    {
-        /** @var \MPAPI\Entity\Products\Product $mallProduct */
-        $mallProduct = $this->mapBasicInformation($product, false);
-        $mallProduct->setId('group-' . $product->getMainVariantGroup()->getId());
-
-        $shortDescription = $product->getShortDescription(self::CZECH_DOMAIN);
-        if ($shortDescription === null) {
-            throw new InvalidProductForMallExportException('Short description not set');
-        }
-        $mallProduct->setShortdesc($shortDescription);
-        $mallProduct->setLongdesc($product->getDescription(self::CZECH_DOMAIN));
-
-        $distinguishingParameters = $this->getDistinguishingParametersForProduct($product);
-        $mallProduct->setVariableParameters($distinguishingParameters);
-        $variants = $this->productFacade->getVariantsForMainVariantGroup($product->getMainVariantGroup(), self::CZECH_DOMAIN);
-
-        if (count($variants) <= 0) {
-            $variants = $this->mainVariantGroupFacade->getProductsForMainVariantGroupByProductAndDomainIdAndPricingGroup(
-                $product,
-                DomainHelper::CZECH_DOMAIN,
-                $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId(DomainHelper::CZECH_DOMAIN)
-            );
-            if (count($variants) <= 0) {
-                return null;
-            }
-        }
-
-        foreach ($variants as $variant) {
-            if ($variant->getEan() !== null) {
-                $mallProduct->addVariant($this->mapVariant($variant));
-            }
-        }
-
-        return $mallProduct;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return string[]
-     */
-    private function getDistinguishingParametersForProduct(Product $product): array
-    {
-        $distinguishingParameters = [];
-        if ($product->getMainVariantGroup() !== null && $product->getMainVariantGroup()->getDistinguishingParameter() !== null) {
-            $distinguishingParameters[] = $product->getMainVariantGroup()->getDistinguishingParameter()->getMallId();
-        }
-
-        if ($product->getDistinguishingParameter() !== null) {
-            $distinguishingParameters[] = $product->getDistinguishingParameter()->getMallId();
-        }
-
-        return $distinguishingParameters;
     }
 
     /**

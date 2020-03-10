@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Pricing\Currency\CurrencyFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroupFacade;
 use App\Model\Product\Pricing\ProductManualInputPriceRepository;
 use App\Model\Product\Pricing\ProductPriceCalculation;
-use App\Model\Product\ProductCachedAttributesFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -51,29 +49,9 @@ class ProductExportRepository extends BaseProductExportRepository
     protected $currencyFacade;
 
     /**
-     * @var \App\Model\Product\MainVariantGroup\MainVariantGroupFacade
-     */
-    private $mainVariantGroupFacade;
-
-    /**
-     * @var \App\Model\Product\Product[][][]
-     */
-    private $productsIndexedByPricingGroupIdAndMainVariantGroup;
-
-    /**
-     * @var \App\Model\Product\Product[][][]
-     */
-    private $variantsIndexedByPricingGroupIdAndMainVariantId;
-
-    /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
      */
     private $pricingGroupSettingFacade;
-
-    /**
-     * @var \App\Model\Product\ProductCachedAttributesFacade
-     */
-    private $productCachedAttributesFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting
@@ -93,9 +71,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroupFacade $mainVariantGroupFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
-     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
      * @param \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
      * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
@@ -109,20 +85,14 @@ class ProductExportRepository extends BaseProductExportRepository
         Domain $domain,
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
-        MainVariantGroupFacade $mainVariantGroupFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade,
-        ProductCachedAttributesFacade $productCachedAttributesFacade,
         PricingSetting $pricingSetting,
         ProductManualInputPriceRepository $productManualInputPriceRepository,
         ProductPriceCalculation $productPriceCalculation,
         CurrencyFacade $currencyFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
-        $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
-        $this->productsIndexedByPricingGroupIdAndMainVariantGroup = [];
-        $this->variantsIndexedByPricingGroupIdAndMainVariantId = [];
-        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->pricingSetting = $pricingSetting;
         $this->productManualInputPriceRepository = $productManualInputPriceRepository;
         $this->productPriceCalculation = $productPriceCalculation;
@@ -145,8 +115,6 @@ class ProductExportRepository extends BaseProductExportRepository
         $query = $queryBuilder->getQuery();
 
         $products = $query->getResult();
-        $this->productsIndexedByPricingGroupIdAndMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByPricingGroupIdAndMainVariantGroup($products, $domainId);
-        $this->variantsIndexedByPricingGroupIdAndMainVariantId = $this->productFacade->getVariantsIndexedByPricingGroupIdAndMainVariantId($products, $domainId);
 
         $result = [];
         /** @var \App\Model\Product\Product $product */
@@ -171,10 +139,10 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['action_price'] = $product->getActionPrice($domainId) ? (float)$product->getActionPrice($domainId)->getAmount() : null;
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
-        $result['main_variant_group_products'] = $this->getMainVariantGroupProductsData($product, $locale);
-        $result['second_distinguishing_parameter_values'] = $this->getSecondDistinguishingParameterValues($product, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
+        $result['minimum_amount'] = $product->getRealMinimumAmount();
+        $result['amount_multiplier'] = $product->getAmountMultiplier();
 
         return $result;
     }
@@ -209,31 +177,6 @@ class ProductExportRepository extends BaseProductExportRepository
     }
 
     /**
-     * @param \App\Model\Product\Product $product
-     * @param string $locale
-     * @return array
-     */
-    private function getMainVariantGroupProductsData(Product $product, string $locale): array
-    {
-        $mainVariantGroupProductsData = [];
-        /** @var \App\Model\Product\Product[][] $productsIndexedByMainVariantGroup */
-        foreach ($this->productsIndexedByPricingGroupIdAndMainVariantGroup as $pricingGroupId => $productsIndexedByMainVariantGroup) {
-            if ($product->getMainVariantGroup() !== null && count($productsIndexedByMainVariantGroup) > 0 && in_array($product->getMainVariantGroup()->getId(), array_keys($productsIndexedByMainVariantGroup), true)) {
-                foreach ($productsIndexedByMainVariantGroup[$product->getMainVariantGroup()->getId()] as $mainVariantGroupProduct) {
-                    /** @var \App\Model\Product\Product $mainVariantGroupProduct */
-                    $mainVariantGroupProductsData[] = [
-                        'pricing_group_id' => $pricingGroupId,
-                        'id' => $mainVariantGroupProduct->getId(),
-                        'name' => $mainVariantGroupProduct->getName($locale),
-                    ];
-                }
-            }
-        }
-
-        return $mainVariantGroupProductsData;
-    }
-
-    /**
      * @param array $baseParameters
      * @param \App\Model\Product\Product[] $variants
      * @param string $locale
@@ -249,31 +192,6 @@ class ProductExportRepository extends BaseProductExportRepository
         $parameters = array_merge($baseParameters, $parameters);
 
         return array_values(array_unique($parameters, SORT_REGULAR));
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param string $locale
-     * @return array
-     */
-    private function getSecondDistinguishingParameterValues(Product $product, string $locale): array
-    {
-        $secondDistinguishingParameterValues = [];
-        foreach ($this->variantsIndexedByPricingGroupIdAndMainVariantId as $pricingGroupId => $variantsIndexedByMainVariantId) {
-            if (isset($variantsIndexedByMainVariantId[$product->getId()])) {
-                $distinguishingParameterValuesForProduct = $this->productCachedAttributesFacade->findDistinguishingParameterValuesForProducts($variantsIndexedByMainVariantId[$product->getId()], $locale);
-                foreach ($distinguishingParameterValuesForProduct as $mainVariantId => $variantIdsIndexedByParameterValues) {
-                    foreach ($variantIdsIndexedByParameterValues as $parameterValue => $variantId) {
-                        $secondDistinguishingParameterValues[] = [
-                            'pricing_group_id' => $pricingGroupId,
-                            'value' => $parameterValue,
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $secondDistinguishingParameterValues;
     }
 
     /**

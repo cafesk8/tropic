@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Product;
 
-use App\Model\Product\Filter\ProductFilterConfig;
-use App\Model\Product\Filter\ProductFilterData;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig;
+use Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,10 +23,8 @@ class ProductFilterFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var \App\Model\Product\Filter\ProductFilterConfig $config */
+        /** @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig $config */
         $config = $options['product_filter_config'];
-
-        $moneyBuilder = $builder->create('money', MoneyType::class);
 
         $builder
             ->add('minimalPrice', MoneyType::class, [
@@ -67,7 +65,6 @@ class ProductFilterFormType extends AbstractType
                 'expanded' => true,
             ])
             ->add('search', SubmitType::class);
-        $this->addDistinguishingParameters($builder, $config);
     }
 
     /**
@@ -84,32 +81,5 @@ class ProductFilterFormType extends AbstractType
                 'method' => 'GET',
                 'csrf_protection' => false,
             ]);
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \App\Model\Product\Filter\ProductFilterConfig $config
-     */
-    private function addDistinguishingParameters(FormBuilderInterface $builder, ProductFilterConfig $config): void
-    {
-        $builder->add('colors', ChoiceType::class, [
-            'required' => false,
-            'choices' => $config->getColorChoices(),
-            'choice_label' => 'rgb',
-            'choice_name' => 'id',
-            'choice_value' => 'id',
-            'multiple' => true,
-            'expanded' => true,
-        ]);
-
-        $builder->add('sizes', ChoiceType::class, [
-            'required' => false,
-            'choices' => $config->getSizeChoices(),
-            'choice_label' => 'text',
-            'choice_name' => 'id',
-            'choice_value' => 'id',
-            'multiple' => true,
-            'expanded' => true,
-        ]);
     }
 }

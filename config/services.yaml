@@ -46,9 +46,6 @@ services:
     Shopsys\FrameworkBundle\Controller\Admin\ProductPickerController:
         class: App\Controller\Admin\ProductPickerController
 
-    Shopsys\FrameworkBundle\Controller\Admin\ParameterController:
-        class: App\Controller\Admin\ParameterController
-
     Shopsys\FrameworkBundle\Controller\Admin\ProductController:
         class: App\Controller\Admin\ProductController
 
@@ -160,19 +157,10 @@ services:
 
     Shopsys\FrameworkBundle\Model\Administrator\AdministratorDataFactoryInterface: '@App\Model\Administrator\AdministratorDataFactory'
 
-    shopsys.shop.product.distinguishing_parameters.cache_provider:
-        class: Doctrine\Common\Cache\RedisCache
-        calls:
-            - { method: setRedis, arguments: ['@snc_redis.distinguishing_parameters'] }
-
     shopsys.shop.component.friendly_url.cache_provider:
         class: Doctrine\Common\Cache\RedisCache
         calls:
             - { method: setRedis, arguments: ['@snc_redis.friendly_url'] }
-
-    App\Model\Product\CachedProductDistinguishingParameterValueFacade:
-        arguments:
-            - '@shopsys.shop.product.distinguishing_parameters.cache_provider'
 
     App\Component\Router\FriendlyUrl\FriendlyUrlCacheFacade:
         arguments:
@@ -297,8 +285,6 @@ services:
     Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade:
         class: App\Model\Product\ProductCachedAttributesFacade
 
-    Shopsys\FrameworkBundle\Model\Product\ProductFactory: '@App\Model\Product\ProductFactory'
-
     Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade: '@App\Model\Product\ProductVariantFacade'
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade: '@App\Model\Product\Parameter\ParameterFacade'
@@ -414,10 +400,6 @@ services:
 
     Shopsys\FrameworkBundle\Twig\NumberFormatterExtension: '@App\Twig\NumberFormatterExtension'
 
-    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfig: '@App\Model\Product\Filter\ProductFilterConfig'
-
-    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@App\Model\Product\Filter\ProductFilterConfigFactory'
-
     Shopsys\FrameworkBundle\Model\Product\Search\FilterQueryFactory: '@App\Model\Product\Search\FilterQueryFactory'
 
     Shopsys\FrameworkBundle\Model\Product\Listing\ProductListOrderingModeForListFacade: '@App\Model\Product\Listing\ProductListOrderingModeForListFacade'
@@ -453,10 +435,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterGridFactory: '@App\Model\Product\Parameter\ParameterGridFactory'
 
-    Shopsys\FrameworkBundle\Controller\Admin\GridController:
-        class: App\Controller\Admin\GridController
-        tags: ['controller.service_arguments']
-
     Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade: '@App\Model\Pricing\Currency\CurrencyFacade'
 
     App\Component\Mall\MallImportOrderClient:
@@ -488,12 +466,6 @@ services:
             - { name: kernel.event_listener, event: kernel.controller }
 
     App\Model\Gtm\GtmHelper: ~
-
-    Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
-
-    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterDataToQueryTransformer: '@App\Model\Product\Search\ProductFilterDataToQueryTransformer'
-
-    Shopsys\FrameworkBundle\Model\Product\Search\ProductFilterCountDataElasticsearchRepository: '@App\Model\Product\Search\ProductFilterCountDataElasticsearchRepository'
 
     Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactory: '@App\Model\Customer\DeliveryAddressDataFactory'
 
@@ -621,3 +593,5 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery: '@App\Model\Product\Search\FilterQuery'
 
     Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository: '@App\Model\Product\Search\ProductElasticsearchRepository'
+
+    Shopsys\ReadModelBundle\Product\Action\ProductActionViewFactory: '@App\Model\Product\View\ProductActionViewFactory'

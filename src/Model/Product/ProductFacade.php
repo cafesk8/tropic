@@ -10,8 +10,6 @@ use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroupFacade;
-use App\Model\Product\MainVariantGroup\MainVariantGroup;
-use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Product as ChildProduct;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
 use App\Model\Store\StoreFacade;
@@ -30,7 +28,6 @@ use Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade;
 use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
@@ -88,11 +85,6 @@ class ProductFacade extends BaseProductFacade
     private $storeFacade;
 
     /**
-     * @var \App\Model\Product\CachedProductDistinguishingParameterValueFacade
-     */
-    private $cachedProductDistinguishingParameterValueFacade;
-
-    /**
      * @var \App\Component\GoogleApi\GoogleClient
      */
     private $googleClient;
@@ -139,7 +131,6 @@ class ProductFacade extends BaseProductFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Product\StoreStock\ProductStoreStockFactory $productStoreStockFactory
      * @param \App\Model\Store\StoreFacade $storeFacade
-     * @param \App\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
      * @param \App\Component\GoogleApi\GoogleClient $googleClient
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Component\Setting\Setting $setting
@@ -172,7 +163,6 @@ class ProductFacade extends BaseProductFacade
         CurrentCustomerUser $currentCustomerUser,
         ProductStoreStockFactory $productStoreStockFactory,
         StoreFacade $storeFacade,
-        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
         GoogleClient $googleClient,
         PricingGroupFacade $pricingGroupFacade,
         Setting $setting,
@@ -207,7 +197,6 @@ class ProductFacade extends BaseProductFacade
         $this->currentCustomerUser = $currentCustomerUser;
         $this->productStoreStockFactory = $productStoreStockFactory;
         $this->storeFacade = $storeFacade;
-        $this->cachedProductDistinguishingParameterValueFacade = $cachedProductDistinguishingParameterValueFacade;
         $this->googleClient = $googleClient;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->setting = $setting;
@@ -249,20 +238,8 @@ class ProductFacade extends BaseProductFacade
         $product = parent::edit($productId, $productData);
 
         $this->updateProductStoreStocks($productData, $product);
-        $this->updateMainVariantGroup($productData, $product);
-
-        $this->cachedProductDistinguishingParameterValueFacade->invalidCacheByProduct($product);
 
         return $product;
-    }
-
-    /**
-     * @param \App\Model\Product\Parameter\Parameter $parameter
-     * @return \App\Model\Product\Product[]
-     */
-    public function getProductsWithDistinguishingParameter(Parameter $parameter): array
-    {
-        return $this->productRepository->getProductsWithDistinguishingParameter($parameter);
     }
 
     /**
@@ -321,23 +298,6 @@ class ProductFacade extends BaseProductFacade
         $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
         $this->em->flush($product);
-    }
-
-    /**
-     * @param \App\Model\Product\ProductData $productData
-     * @param \App\Model\Product\Product $product
-     */
-    private function updateMainVariantGroup(ProductData $productData, Product $product): void
-    {
-        $mainVariantGroup = $product->getMainVariantGroup();
-
-        if ($mainVariantGroup === null) {
-            return;
-        }
-
-        $mainVariantGroup->setDistinguishingParameter($productData->distinguishingParameterForMainVariantGroup);
-        $mainVariantGroup->addProducts(array_merge($productData->productsInGroup, [$product]));
-        $this->em->flush();
     }
 
     /**
@@ -461,24 +421,6 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \App\Model\Product\MainVariantGroup\MainVariantGroup $mainVariantGroup
-     * @param int $domainId
-     * @return \App\Model\Product\Product[]
-     */
-    public function getVariantsForMainVariantGroup(MainVariantGroup $mainVariantGroup, int $domainId): array
-    {
-        $defaultPricingGroup = $this->pricingGroupFacade->getById(
-            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, DomainHelper::CZECH_DOMAIN)
-        );
-
-        return $this->productRepository->getVariantsForMainVariantGroup(
-            $mainVariantGroup,
-            $domainId,
-            $defaultPricingGroup
-        );
-    }
-
-    /**
      * @param \App\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
      */
@@ -545,21 +487,6 @@ class ProductFacade extends BaseProductFacade
         }
 
         return $youtubeDetails;
-    }
-
-    /**
-     * @param \App\Model\Product\Product[] $products
-     * @return \App\Component\GoogleApi\Youtube\YoutubeView[][]
-     */
-    public function getYoutubeViewForMainVariants(array $products): array
-    {
-        $youtubeViewForMainVariants = [];
-
-        foreach ($products as $product) {
-            $youtubeViewForMainVariants[$product->getId()] = $this->getYoutubeViews($product);
-        }
-
-        return $youtubeViewForMainVariants;
     }
 
     /**
@@ -678,40 +605,6 @@ class ProductFacade extends BaseProductFacade
         $product->updateCzechNamesWithColor($color);
 
         $this->em->flush($product);
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param \App\Model\Product\Parameter\ParameterFacade $parameterFacade
-     */
-    public function fillVariantNamesFromMainVariantNames(Product $product, ParameterFacade $parameterFacade): void
-    {
-        if ($product->isMainVariant() === false) {
-            return;
-        }
-
-        $namesByLocale = $product->getNames();
-
-        /** @var \App\Model\Product\Product $variant */
-        foreach ($product->getVariants() as $variant) {
-            $variantSizeParameterValue = $parameterFacade->findSizeProductParameterValueByProductId($variant->getId());
-            if ($variantSizeParameterValue === null) {
-                return;
-            }
-
-            foreach ($namesByLocale as $locale => $name) {
-                if ($name !== null) {
-                    $variant->updateNameWithSize(
-                        $locale,
-                        $name,
-                        $variantSizeParameterValue->getValue()->getText()
-                    );
-                }
-            }
-
-            $this->em->flush();
-            $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $variant->getId(), $variant->getNames());
-        }
     }
 
     /**

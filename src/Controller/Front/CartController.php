@@ -560,14 +560,15 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
+     * @param \App\Model\Product\View\ProductActionView $productActionView
      * @param string $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function productActionAction(ProductActionView $productActionView, string $type = 'normal')
     {
         $form = $this->createForm(AddProductFormType::class, ['productId' => $productActionView->getId()], [
-             'action' => $this->generateUrl('front_cart_add_product'),
+            'action' => $this->generateUrl('front_cart_add_product'),
+            'minimum_amount' => $productActionView->getMinimumAmount(),
          ]);
 
         return $this->render('Front/Inline/Cart/productAction.html.twig', [

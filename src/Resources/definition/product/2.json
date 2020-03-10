@@ -264,30 +264,11 @@
           }
         }
       },
-      "main_variant_group_products": {
-        "type": "nested",
-        "properties": {
-          "pricing_group_id": {
-            "type": "integer"
-          },
-          "id": {
-            "type": "integer"
-          },
-          "name": {
-            "type": "text"
-          }
-        }
+      "minimum_amount": {
+        "type": "integer"
       },
-      "second_distinguishing_parameter_values": {
-        "type": "nested",
-        "properties": {
-          "pricing_group_id": {
-            "type": "integer"
-          },
-          "value": {
-            "type": "text"
-          }
-        }
+      "amount_multiplier": {
+        "type": "integer"
       }
     }
   }

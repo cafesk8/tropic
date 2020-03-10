@@ -9,8 +9,6 @@ use App\Model\Order\OrderData;
 use App\Model\Order\Preview\OrderPreview;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
-use App\Model\Product\Product;
-use App\Model\Product\ProductCachedAttributesFacade;
 use App\Twig\NumberFormatterExtension;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 
@@ -32,26 +30,18 @@ class GtmHelper
     private $numberFormatterExtension;
 
     /**
-     * @var \App\Model\Product\ProductCachedAttributesFacade
-     */
-    private $productCachedAttributesFacade;
-
-    /**
      * @param \App\Model\Gtm\GtmContainer $gtmContainer
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
      * @param \App\Twig\NumberFormatterExtension $numberFormatterExtension
-     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      */
     public function __construct(
         GtmContainer $gtmContainer,
         PriceExtension $priceExtension,
-        NumberFormatterExtension $numberFormatterExtension,
-        ProductCachedAttributesFacade $productCachedAttributesFacade
+        NumberFormatterExtension $numberFormatterExtension
     ) {
         $this->gtmContainer = $gtmContainer;
         $this->priceExtension = $priceExtension;
         $this->numberFormatterExtension = $numberFormatterExtension;
-        $this->productCachedAttributesFacade = $productCachedAttributesFacade;
     }
 
     /**
@@ -127,19 +117,5 @@ class GtmHelper
         }
 
         return $this->priceExtension->priceFilter($priceWithoutDiscount->getPriceWithVat());
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return string
-     */
-    public function getVariantByProduct(Product $product): string
-    {
-        $distinguishingParameterValue = $this->productCachedAttributesFacade->getProductDistinguishingParameterValue($product);
-        return sprintf(
-            '%s|%s',
-            $distinguishingParameterValue->getFirstDistinguishingParameterValue() ?? '',
-            $distinguishingParameterValue->getSecondDistinguishingParameterValue() ?? ''
-        );
     }
 }

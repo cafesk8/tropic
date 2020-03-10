@@ -49,14 +49,6 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Payment\PaymentFormType }
 
-    App\Form\Admin\VariantFormTypeExtension:
-        tags:
-            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\VariantFormType}
-
-    App\Form\Admin\ProductsTypeExtension:
-        tags:
-            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\ProductsType}
-
     App\Form\Admin\AdvertFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType}

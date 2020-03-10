@@ -89,11 +89,7 @@ class MallProductExportCronModule implements IteratedCronModuleInterface
 
         foreach ($productsToExport as $product) {
             try {
-                $preparedProductToExport = $this->productMallExportMapper->mapProductOrMainVariantGroup($product);
-
-                if ($preparedProductToExport === null) {
-                    continue;
-                }
+                $preparedProductToExport = $this->productMallExportMapper->mapProduct($product);
 
                 $isCreatedOrUpdated = $this->mallFacade->createOrUpdateProduct($preparedProductToExport);
 
