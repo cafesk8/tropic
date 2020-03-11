@@ -12,6 +12,13 @@ export default class CartRecalculator {
         // reload content after delay when clicking +/-
         $container.filterAllNodes('.js-cart-item .js-spinbox-plus, .js-cart-item .js-spinbox-minus').click(
             function (event) {
+                const $currentTarget = $(event.currentTarget);
+                const $warning = $currentTarget.closest('.js-spinbox-parent').find('.js-maximum-amount-warning');
+
+                if ($currentTarget.data('disabled') === 'disabled' && $warning.is(':visible')) {
+                    return false;
+                }
+
                 _this.reloadWithDelay(1000, _this);
                 event.preventDefault();
             }
@@ -68,6 +75,7 @@ export default class CartRecalculator {
     }
 
     reload () {
+        console.log('reload');
         const formData = $('.js-cart-form').serializeArray();
         formData.push({
             name: constant('\\App\\Controller\\Front\\CartController::RECALCULATE_ONLY_PARAMETER_NAME'),
@@ -97,6 +105,7 @@ export default class CartRecalculator {
     }
 
     reloadWithDelay (delay, cartRecalculator) {
+        console.log('delay');
         Timeout.setTimeoutAndClearPrevious(
             'cartRecalculator',
             function () {

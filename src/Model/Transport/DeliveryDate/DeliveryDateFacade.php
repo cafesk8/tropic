@@ -163,8 +163,7 @@ class DeliveryDateFacade
      */
     private function addTwoDaysForNonStoredProductInCentralStore(Product $product, DateTime $dateTime): void
     {
-        $productStoreStocks = $product->getStocksWithoutZeroQuantityOnCentralStore();
-        if (count($productStoreStocks) === 0) {
+        if ($product->getRealStockQuantity() <= 0) {
             $dateTime->add(new \DateInterval('P2D')); // add 2 days for expected delivery date
         }
     }

@@ -204,7 +204,7 @@ class Product extends BaseProduct
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
         $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = $productData->amountMultiplier;
+        $this->amountMultiplier = (int)$productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
     }
 
