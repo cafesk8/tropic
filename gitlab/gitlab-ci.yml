@@ -16,7 +16,7 @@ stages:
 
 .deploy: &deploy
     image:
-        name: shopsys/kubernetes-buildpack:0.3.0-dev
+        name: shopsys/kubernetes-buildpack:0.4.0-dev
     stage: deploy
     needs:
         - build
