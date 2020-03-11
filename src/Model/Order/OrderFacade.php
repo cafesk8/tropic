@@ -8,6 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallImportOrderClient;
 use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
 use App\Model\Order\Item\OrderItemFactory;
@@ -79,7 +80,6 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
- * @method updateOrderDataWithDeliveryAddress(\App\Model\Order\OrderData $orderData, \App\Model\Customer\DeliveryAddress|null $deliveryAddress)
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -307,6 +307,21 @@ class OrderFacade extends BaseOrderFacade
         }
 
         return $order;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
+     */
+    protected function updateOrderDataWithDeliveryAddress(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress)
+    {
+        if ($deliveryAddress !== null) {
+            $orderData->deliveryCompanyName = $deliveryAddress->getCompanyName();
+            $orderData->deliveryStreet = $deliveryAddress->getStreet();
+            $orderData->deliveryPostcode = $deliveryAddress->getPostcode();
+            $orderData->deliveryCity = $deliveryAddress->getCity();
+            $orderData->deliveryCountry = $deliveryAddress->getCountry();
+        }
     }
 
     /**
