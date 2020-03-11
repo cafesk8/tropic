@@ -99,6 +99,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param \App\Model\Product\View\ProductActionView $productActionView
      * @param \App\Model\Product\View\MainVariantGroupProductView[] $mainVariantGroupProductViews
      * @param \App\Model\Product\Product[] $variantsIndexedByMainVariantId
+     * @param array $absoluteUrlsIndexedByProductId
      * @return \App\Model\Product\View\ListedProductView
      */
     public function createFromProduct(
@@ -106,7 +107,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         ?ImageView $imageView,
         BaseProductActionView $productActionView,
         array $mainVariantGroupProductViews = [],
-        array $variantsIndexedByMainVariantId = []
+        array $variantsIndexedByMainVariantId = [],
+        array $absoluteUrlsIndexedByProductId = []
     ): BaseListedProductView {
         $secondDistinguishingParameterValues = $this->getSecondDistinguishingParameterValues($product, $variantsIndexedByMainVariantId);
 

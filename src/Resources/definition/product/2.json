@@ -275,6 +275,9 @@
           },
           "name": {
             "type": "text"
+          },
+          "detail_url": {
+            "type": "text"
           }
         }
       },

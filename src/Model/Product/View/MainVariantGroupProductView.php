@@ -24,13 +24,20 @@ class MainVariantGroupProductView
     private $image;
 
     /**
+     * @var string
+     */
+    private $detailUrl;
+
+    /**
      * @param string $name
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $image
+     * @param string $detailUrl
      */
-    public function __construct(string $name, ?ImageView $image)
+    public function __construct(string $name, ?ImageView $image, string $detailUrl)
     {
         $this->name = $name;
         $this->image = $image;
+        $this->detailUrl = $detailUrl;
     }
 
     /**
@@ -47,5 +54,13 @@ class MainVariantGroupProductView
     public function getImage(): ?ImageView
     {
         return $this->image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetailUrl(): string
+    {
+        return $this->detailUrl;
     }
 }

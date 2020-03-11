@@ -172,7 +172,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
         $result['action_price'] = $product->getActionPrice($domainId) ? (float)$product->getActionPrice($domainId)->getAmount() : null;
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
-        $result['main_variant_group_products'] = $this->getMainVariantGroupProductsData($product, $locale);
+        $result['main_variant_group_products'] = $this->getMainVariantGroupProductsData($product, $locale, $domainId);
         $result['second_distinguishing_parameter_values'] = $this->getSecondDistinguishingParameterValues($product, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);
@@ -215,9 +215,10 @@ class ProductExportRepository extends BaseProductExportRepository
     /**
      * @param \App\Model\Product\Product $product
      * @param string $locale
+     * @param int $domainId
      * @return array
      */
-    private function getMainVariantGroupProductsData(Product $product, string $locale): array
+    private function getMainVariantGroupProductsData(Product $product, string $locale, int $domainId): array
     {
         $mainVariantGroupProductsData = [];
         /** @var \App\Model\Product\Product[][] $productsIndexedByMainVariantGroup */
@@ -229,6 +230,7 @@ class ProductExportRepository extends BaseProductExportRepository
                         'pricing_group_id' => $pricingGroupId,
                         'id' => $mainVariantGroupProduct->getId(),
                         'name' => $mainVariantGroupProduct->getName($locale),
+                        'detail_url' => $this->extractDetailUrl($domainId, $mainVariantGroupProduct),
                     ];
                 }
             }

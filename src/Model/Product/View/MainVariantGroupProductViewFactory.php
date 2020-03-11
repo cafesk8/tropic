@@ -38,7 +38,8 @@ class MainVariantGroupProductViewFactory
             $mainVariantGroupProductId = $mainVariantGroupProductData['id'];
             $mainVariantGroupProductViews[] = new MainVariantGroupProductView(
                 $mainVariantGroupProductData['name'],
-                $imageViewsForMainVariantGroupProducts[$mainVariantGroupProductId]
+                $imageViewsForMainVariantGroupProducts[$mainVariantGroupProductId],
+                $mainVariantGroupProductData['detail_url']
             );
         }
 
@@ -48,16 +49,18 @@ class MainVariantGroupProductViewFactory
     /**
      * @param \App\Model\Product\Product[] $mainVariantGroupProducts
      * @param \Shopsys\ReadModelBundle\Image\ImageView[] $imageViewsForMainVariantGroupProducts
+     * @param array $absoluteUrlsIndexedByProductId
      * @return \App\Model\Product\View\MainVariantGroupProductView[]
      */
-    public function createMultipleFromMainVariantGroupProducts(array $mainVariantGroupProducts, array $imageViewsForMainVariantGroupProducts): array
+    public function createMultipleFromMainVariantGroupProducts(array $mainVariantGroupProducts, array $imageViewsForMainVariantGroupProducts, array $absoluteUrlsIndexedByProductId): array
     {
         $mainVariantGroupProductViews = [];
         foreach ($mainVariantGroupProducts as $mainVariantGroupProduct) {
             $mainVariantGroupProductId = $mainVariantGroupProduct->getId();
             $mainVariantGroupProductViews[] = new MainVariantGroupProductView(
                 $mainVariantGroupProduct->getName(),
-                $imageViewsForMainVariantGroupProducts[$mainVariantGroupProductId]
+                $imageViewsForMainVariantGroupProducts[$mainVariantGroupProductId],
+                $absoluteUrlsIndexedByProductId[$mainVariantGroupProductId]
             );
         }
 
