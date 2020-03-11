@@ -286,14 +286,19 @@
                     <label class="list-order-gifts__item__label">
                         {{ form_widget(child, {attr: { class: "list-order-gifts__item__input" }}) }}
                         {% if isEmptyValue %}
-                            <div class="list-order-gifts__item__image"></div>
+                            <div class="list-order-gifts__item__image">
+                                <div class="list-order-gifts__item__image__wrap">
+                                </div>
+                            </div>
                             <p class="list-order-gifts__item__name">
                                 {{- form_label(child) -}}
                             </p>
                         {% else %}
                             {% set product = productChoices[index].data %}
                             <div class="list-order-gifts__item__image">
-                                {{ image(product, { alt: product.name, size: 'thumbnail' }) }}
+                                <div class="list-order-gifts__item__image__wrap">
+                                    {{ image(product, { alt: product.name, size: 'thumbnail' }) }}
+                                </div>
                             </div>
                             <p class="list-order-gifts__item__name">
                                 {{ product.name }}

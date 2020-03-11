@@ -41,13 +41,10 @@
         }
 
         &__image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             height: @list-order-gifts-image-size;
             width: @list-order-gifts-image-size;
-            padding: 5px;
             margin-bottom: 10px;
+            padding: 5px;
 
             font-size: 0;
             border: 1px solid transparent;
@@ -56,6 +53,16 @@
             .list-order-gifts__item__input:checked ~ & {
                 box-shadow: @box-shadow-outer;
                 border: 1px solid @color-add;
+            }
+
+            &__wrap {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+
+            img {
+                .center-image();
             }
         }
 
