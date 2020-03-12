@@ -46,9 +46,15 @@
 
                                 <div class="list-products__item__info__availability">
                                     <div class="list-products__item__info__availability__spacer"></div>
-                                    <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                        {{ productView.availability }}
-                                    </div>
+                                    {% if productView.action.sellingDenied %}
+                                        <div class="list-products__item__info__availability__text" style="color: #6d6868;">
+                                            {{ 'Product no longer on sale'|trans }}
+                                        </div>
+                                    {% else %}
+                                        <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                            {{ productView.availability }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </a>
 
@@ -118,9 +124,15 @@
 
                                     <div class="{{ listCssClass }}__item__info__availability">
                                         <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
-                                        <div class="{{ listCssClass }}__item__info__availability__text" style="color: #7bbd70;">
-                                            {{ productView.availability }}
-                                        </div>
+                                        {% if productView.action.sellingDenied %}
+                                            <div class="list-products__item__info__availability__text" style="color: #6d6868;">
+                                                {{ 'Product no longer on sale'|trans }}
+                                            </div>
+                                        {% else %}
+                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #7bbd70;">
+                                                {{ productView.availability }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </a>
