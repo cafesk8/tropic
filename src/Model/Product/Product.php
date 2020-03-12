@@ -67,11 +67,11 @@ class Product extends BaseProduct
     protected $storeStocks;
 
     /**
-     * @var string|null
+     * @var int|null
      *
-     * @ORM\Column(type="string", length=20, nullable=true, unique=true)
+     * @ORM\Column(type="integer", nullable=true, unique=true)
      */
-    private $transferNumber;
+    private $pohodaId;
 
     /**
      * @var \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\ArrayCollection
@@ -174,7 +174,7 @@ class Product extends BaseProduct
         parent::__construct($productData, $variants);
 
         $this->storeStocks = new ArrayCollection();
-        $this->transferNumber = $productData->transferNumber;
+        $this->pohodaId = $productData->pohodaId;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
@@ -272,11 +272,11 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getTransferNumber(): ?string
+    public function getPohodaId(): ?int
     {
-        return $this->transferNumber;
+        return $this->pohodaId;
     }
 
     /**

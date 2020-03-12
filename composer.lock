@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5567be9aaa515478c1a3cc07e0cde8ca",
+    "content-hash": "8b559da9964c99dba4ae3d229d22a821",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -16582,6 +16582,7 @@
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*",
+        "ext-pdo_sqlsrv": "^5.8",
         "ext-redis": "*",
         "ext-xml": "*"
     },

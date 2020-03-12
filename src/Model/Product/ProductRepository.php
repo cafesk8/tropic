@@ -94,12 +94,12 @@ class ProductRepository extends BaseProductRepository
     }
 
     /**
-     * @param string $transferNumber
+     * @param int $pohodaId
      * @return \App\Model\Product\Product|null
      */
-    public function findByTransferNumber(string $transferNumber): ?Product
+    public function findByPohodaId(int $pohodaId): ?Product
     {
-        return $this->getProductRepository()->findOneBy(['transferNumber' => $transferNumber]);
+        return $this->getProductRepository()->findOneBy(['pohodaId' => $pohodaId]);
     }
 
     /**
