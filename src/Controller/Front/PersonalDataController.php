@@ -185,7 +185,7 @@ class PersonalDataController extends FrontBaseController
             return $this->render('Front/Content/PersonalData/detail.html.twig', [
                 'personalDataAccessRequest' => $personalDataAccessRequest,
                 'orders' => $orders,
-                'user' => $customerUser,
+                'customerUser' => $customerUser,
                 'newsletterSubscriber' => $newsletterSubscriber,
             ]);
         }
@@ -220,7 +220,7 @@ class PersonalDataController extends FrontBaseController
                 'personalDataAccessRequest' => $personalDataAccessRequest,
                 'domainName' => $this->domain->getName(),
                 'hash' => $hash,
-                'user' => $customerUser,
+                'customerUser' => $customerUser,
                 'newsletterSubscriber' => $newsletterSubscriber,
                 'ordersCount' => $ordersCount,
             ]);

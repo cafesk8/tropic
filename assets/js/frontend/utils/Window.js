@@ -1,7 +1,7 @@
-import { KeyCodes } from 'framework/common/utils/keyCodes';
-import Timeout from 'framework/common/utils/timeout';
+import { KeyCodes } from 'framework/common/utils/KeyCodes';
+import Timeout from 'framework/common/utils/Timeout';
 import Translator from 'bazinga-translator';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 const defaults = {
     content: '',
@@ -113,7 +113,7 @@ export default class Window {
         }
 
         if (this.options.buttonContinue) {
-            const $windowButtonContinue = $('<a href="" class="window-popup__actions__btn window-popup__actions__btn--continue window-button-continue btn"><i class="svg svg-arrow"></i></a>');
+            const $windowButtonContinue = $('<a href="" class="window-popup__actions__btn window-popup__actions__btn--continue btn--success btn"></a>');
             $windowButtonContinue
                 .append(document.createTextNode(this.options.textContinue))
                 .addClass(this.options.cssClassContinue)
@@ -129,7 +129,7 @@ export default class Window {
         }
 
         if (this.options.buttonCancel) {
-            const $windowButtonCancel = $('<a href="#" class="window-popup__actions__btn window-popup__actions__btn--cancel window-button-cancel btn"><i class="svg svg-arrow"></i></a>');
+            const $windowButtonCancel = $('<a href="#" class="window-popup__actions__btn window-popup__actions__btn--cancel window-button-cancel btn"></a>');
 
             $windowButtonCancel
                 .append(document.createTextNode(this.options.textCancel))

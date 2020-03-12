@@ -1,5 +1,6 @@
 /node_modules
 /assets/js/commands/translations/mocks/DummyClassWithError.js
+/assets/js/bundles
 
 # eslint-check-diff runs check with provided files that could contain even javascripts from tests folder
 /tests

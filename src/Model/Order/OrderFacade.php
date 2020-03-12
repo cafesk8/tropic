@@ -8,6 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallImportOrderClient;
 use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
 use App\Model\Order\Item\OrderItemFactory;
@@ -24,6 +25,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
@@ -277,9 +279,10 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
      * @return \App\Model\Order\Order
      */
-    public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
+    public function createOrderFromFront(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress): BaseOrder
     {
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
@@ -292,7 +295,7 @@ class OrderFacade extends BaseOrderFacade
         }
 
         /** @var \App\Model\Order\Order $order */
-        $order = parent::createOrderFromFront($orderData);
+        $order = parent::createOrderFromFront($orderData, $deliveryAddress);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
 
         /** @var \App\Model\Customer\User\CustomerUser $customer */
@@ -304,6 +307,21 @@ class OrderFacade extends BaseOrderFacade
         }
 
         return $order;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
+     */
+    protected function updateOrderDataWithDeliveryAddress(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress)
+    {
+        if ($deliveryAddress !== null) {
+            $orderData->deliveryCompanyName = $deliveryAddress->getCompanyName();
+            $orderData->deliveryStreet = $deliveryAddress->getStreet();
+            $orderData->deliveryPostcode = $deliveryAddress->getPostcode();
+            $orderData->deliveryCity = $deliveryAddress->getCity();
+            $orderData->deliveryCountry = $deliveryAddress->getCountry();
+        }
     }
 
     /**

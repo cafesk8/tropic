@@ -1,5 +1,5 @@
-import Ajax from 'framework/common/utils/ajax';
-import Register from 'framework/common/utils/register';
+import Ajax from 'framework/common/utils/Ajax';
+import Register from 'framework/common/utils/Register';
 import Responsive from '../utils/responsive';
 
 export default class CategoryPanel {

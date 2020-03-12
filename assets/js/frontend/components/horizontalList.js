@@ -1,6 +1,6 @@
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 import Responsive from '../utils/responsive';
-import Timeout from 'framework/common/utils/timeout';
+import Timeout from 'framework/common/utils/Timeout';
 
 (function ($) {
 

@@ -1,5 +1,5 @@
 import 'jquery.cookie';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 (function ($) {
 

@@ -50,7 +50,13 @@ class DeliveryAddressFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('addressFilled', CheckboxType::class, ['required' => false])
+            ->add('addressFilled', CheckboxType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'js-checkbox-toggle',
+                    'data-checkbox-toggle-container-class' => 'js-delivery-address-fields',
+                ],
+            ])
             ->add('companyName', TextType::class, [
                 'required' => false,
                 'constraints' => [
@@ -107,10 +113,10 @@ class DeliveryAddressFormType extends AbstractType
         if (DomainHelper::isEnglishDomain($this->domain) === true) {
             /** @var \App\Model\Customer\User\CustomerUser $customerUser */
             $customerUser = $options['user'];
-            if ($customerUser->getDeliveryAddress() === null || $customerUser->getDeliveryAddress()->getCountry() === null) {
+            if ($customerUser->getDefaultDeliveryAddress() === null || $customerUser->getDefaultDeliveryAddress()->getCountry() === null) {
                 $countries = $this->countryFacade->getAllEnabledOnDomain($options['domain_id']);
             } else {
-                $countries = [$customerUser->getDeliveryAddress()->getCountry()];
+                $countries = [$customerUser->getDefaultDeliveryAddress()->getCountry()];
             }
         } else {
             $countries = [

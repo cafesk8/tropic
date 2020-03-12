@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade as BaseParam
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @method \App\Model\Product\Parameter\Parameter getById(int $parameterId)
@@ -23,6 +24,7 @@ use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
  * @method \App\Model\Product\Parameter\Parameter create(\App\Model\Product\Parameter\ParameterData $parameterData)
  * @method \App\Model\Product\Parameter\Parameter|null findParameterByNames(string[] $namesByLocale)
  * @method \App\Model\Product\Parameter\ParameterValue getParameterValueByValueTextAndLocale(string $valueText, string $locale)
+ * @method dispatchParameterEvent(\App\Model\Product\Parameter\Parameter $parameter, string $eventType)
  */
 class ParameterFacade extends BaseParameterFacade
 {
@@ -73,6 +75,7 @@ class ParameterFacade extends BaseParameterFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Parameter\ParameterDataFactory $parameterDataFactory
      * @param \App\Model\Product\CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -81,9 +84,10 @@ class ParameterFacade extends BaseParameterFacade
         MainVariantGroupFacade $mainVariantGroupFacade,
         ProductFacade $productFacade,
         ParameterDataFactoryInterface $parameterDataFactory,
-        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade
+        CachedProductDistinguishingParameterValueFacade $cachedProductDistinguishingParameterValueFacade,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        parent::__construct($em, $parameterRepository, $parameterFactory);
+        parent::__construct($em, $parameterRepository, $parameterFactory, $eventDispatcher);
 
         $this->mainVariantGroupFacade = $mainVariantGroupFacade;
         $this->productFacade = $productFacade;

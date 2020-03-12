@@ -1,5 +1,5 @@
 import constant from 'framework/admin/utils/constant';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 (function ($) {
     new Register().registerCallback(function ($container) {

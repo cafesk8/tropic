@@ -1,0 +1,31 @@
+@list-addresses-item-gap: 15px;
+
+.list-addresses {
+    .reset-ul();
+
+    &__item {
+        margin-bottom: 20px;
+
+        &__in {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 400px;
+            width: 100%;
+
+            cursor: pointer;
+        }
+
+        &__left {
+            margin-right: @list-addresses-item-gap;
+        }
+
+        &__right {
+            margin-right: @list-addresses-item-gap;
+        }
+
+        &__remove {
+            margin-left: auto;
+        }
+    }
+}

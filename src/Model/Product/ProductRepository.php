@@ -57,6 +57,12 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
  * @method array getAllOfferedProducts(int $domainId, \App\Model\Pricing\Group\PricingGroup $pricingGroup)
  * @property \App\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository
  * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterRepository $productFilterRepository, \Shopsys\FrameworkBundle\Component\Doctrine\QueryBuilderExtender $queryBuilderExtender, \Shopsys\FrameworkBundle\Model\Localization\Localization $localization, \App\Model\Product\Search\ProductElasticsearchRepository $productElasticsearchRepository)
+ * @method markProductsForExport(\App\Model\Product\Product[] $products)
+ * @method array getProductsWithParameter(\App\Model\Product\Parameter\Parameter $parameter)
+ * @method \App\Model\Product\Product[] getProductsWithAvailability(\App\Model\Product\Availability\Availability $availability)
+ * @method \App\Model\Product\Product[] getProductsWithBrand(\App\Model\Product\Brand\Brand $brand)
+ * @method \App\Model\Product\Product[] getProductsWithFlag(\App\Model\Product\Flag\Flag $flag)
+ * @method \App\Model\Product\Product[] getProductsWithUnit(\Shopsys\FrameworkBundle\Model\Product\Unit\Unit $unit)
  */
 class ProductRepository extends BaseProductRepository
 {

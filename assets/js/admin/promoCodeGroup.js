@@ -1,5 +1,5 @@
 import Translator from 'bazinga-translator';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 (function ($) {
 

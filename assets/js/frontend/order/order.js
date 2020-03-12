@@ -1,5 +1,5 @@
-import Register from 'framework/common/utils/register';
-import Ajax from 'framework/common/utils/ajax';
+import Register from 'framework/common/utils/Register';
+import Ajax from 'framework/common/utils/Ajax';
 
 export default class PaymentTransportRelations {
 

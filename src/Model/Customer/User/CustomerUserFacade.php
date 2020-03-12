@@ -13,7 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
-use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade;
 use Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade as BaseCustomerUserFacade;
@@ -30,15 +31,12 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
  * @method \App\Model\Customer\User\CustomerUser|null findCustomerUserByEmailAndDomain(string $email, int $domainId)
  * @method \App\Model\Customer\User\CustomerUser register(\App\Model\Customer\User\CustomerUserData $customerUserData)
  * @method \App\Model\Customer\User\CustomerUser create(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
- * @method editDeliveryAddress(\App\Model\Customer\User\CustomerUser $customerUser, \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData $deliveryAddressData)
- * @method amendCustomerDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order)
  * @method setEmail(string $email, \App\Model\Customer\User\CustomerUser $customerUser)
  * @method \App\Model\Customer\User\CustomerUser getCustomerUserById(int $customerUserId)
- * @method \App\Model\Customer\User\CustomerUser createCustomerUser(\Shopsys\FrameworkBundle\Model\Customer\Customer $customer, \App\Model\Customer\User\CustomerUserData $customerUserData, \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressData|null $deliveryAddressData)
- * @method \App\Model\Customer\User\CustomerUser edit(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
+ * @method \App\Model\Customer\User\CustomerUser createCustomerUser(\Shopsys\FrameworkBundle\Model\Customer\Customer $customer, \App\Model\Customer\User\CustomerUserData $customerUserData)
  * @method \App\Model\Customer\User\CustomerUser editByAdmin(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
  * @method \App\Model\Customer\User\CustomerUser editByCustomerUser(int $customerUserId, \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData)
- * @method amendCustomerUserDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order)
+ * @method amendCustomerUserDataFromOrder(\App\Model\Customer\User\CustomerUser $customerUser, \App\Model\Order\Order $order, \App\Model\Customer\DeliveryAddress|null $deliveryAddress)
  */
 class CustomerUserFacade extends BaseCustomerUserFacade
 {
@@ -68,7 +66,6 @@ class CustomerUserFacade extends BaseCustomerUserFacade
      * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface $billingAddressFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFactoryInterface $deliveryAddressFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFactoryInterface $customerUserFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade $customerUserPasswordFacade
@@ -76,6 +73,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
      * @param \App\Model\Customer\TransferIds\UserTransferIdFacade $userTransferIdFacade
      * @param \App\Model\Customer\TransferIds\UserTransferIdDataFactory $userTransferIdDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade $deliveryAddressFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -83,20 +81,54 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         CustomerUserUpdateDataFactoryInterface $customerUserUpdateDataFactory,
         CustomerMailFacade $customerMailFacade,
         BillingAddressFactoryInterface $billingAddressFactory,
-        DeliveryAddressFactoryInterface $deliveryAddressFactory,
         BillingAddressDataFactoryInterface $billingAddressDataFactory,
         CustomerUserFactoryInterface $customerUserFactory,
         CustomerUserPasswordFacade $customerUserPasswordFacade,
         PricingGroupFacade $pricingGroupFacade,
         UserTransferIdFacade $userTransferIdFacade,
         UserTransferIdDataFactory $userTransferIdDataFactory,
-        CustomerFacade $customerFacade
+        CustomerFacade $customerFacade,
+        DeliveryAddressFacade $deliveryAddressFacade
     ) {
-        parent::__construct($em, $customerUserRepository, $customerUserUpdateDataFactory, $customerMailFacade, $billingAddressFactory, $deliveryAddressFactory, $billingAddressDataFactory, $customerUserFactory, $customerUserPasswordFacade, $customerFacade);
+        parent::__construct($em, $customerUserRepository, $customerUserUpdateDataFactory, $customerMailFacade, $billingAddressFactory, $billingAddressDataFactory, $customerUserFactory, $customerUserPasswordFacade, $customerFacade, $deliveryAddressFacade);
 
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->userTransferIdFacade = $userTransferIdFacade;
         $this->userTransferIdDataFactory = $userTransferIdDataFactory;
+    }
+
+    /**
+     * @param int $customerUserId
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData $customerUserUpdateData
+     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
+     * @return \App\Model\Customer\User\CustomerUser
+     */
+    protected function edit(
+        int $customerUserId,
+        CustomerUserUpdateData $customerUserUpdateData,
+        ?DeliveryAddress $deliveryAddress = null
+    ) {
+        $customerUser = $this->getCustomerUserById($customerUserId);
+        $customerUserUpdateData->deliveryAddressData->customer = $customerUser->getCustomer();
+
+        if ($deliveryAddress === null && $customerUserUpdateData->deliveryAddressData && $customerUserUpdateData->deliveryAddressData->addressFilled) {
+            $deliveryAddress = $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);
+            $customerUserUpdateData->customerUserData->defaultDeliveryAddress = $deliveryAddress;
+        }
+
+        if ($deliveryAddress !== null) {
+            $customerUserUpdateData->customerUserData->defaultDeliveryAddress = $deliveryAddress;
+        }
+
+        $customerUser->edit($customerUserUpdateData->customerUserData);
+
+        if ($customerUserUpdateData->customerUserData->password !== null) {
+            $this->customerUserPasswordFacade->changePassword($customerUser, $customerUserUpdateData->customerUserData->password);
+        }
+
+        $customerUser->getCustomer()->getBillingAddress()->edit($customerUserUpdateData->billingAddressData);
+
+        return $customerUser;
     }
 
     /**
@@ -269,15 +301,14 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         $deliveryAddressData = $customerUserUpdateData->deliveryAddressData;
         if ($customerUserData->memberOfLoyaltyProgram || $deliveryAddressData->addressFilled === true) {
             $deliveryAddressData->addressFilled = true;
-            $deliveryAddress = $this->deliveryAddressFactory->create($customerUserUpdateData->deliveryAddressData);
-            $this->em->persist($deliveryAddress);
+            $customerUserUpdateData->deliveryAddressData->customer = $customer;
+            $deliveryAddress = $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);
+            $customer->addDeliveryAddress($deliveryAddress);
+            $customerUserUpdateData->customerUserData->defaultDeliveryAddress = $deliveryAddress;
         }
 
         /** @var \App\Model\Customer\User\CustomerUser $customerUser */
-        $customerUser = $this->customerUserFactory->create(
-            $customerUserUpdateData->customerUserData,
-            $deliveryAddress
-        );
+        $customerUser = $this->customerUserFactory->create($customerUserUpdateData->customerUserData);
 
         $this->em->persist($customerUser);
         $this->em->flush();
