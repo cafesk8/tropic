@@ -135,7 +135,7 @@
                                     <div class="{{ listCssClass }}__item__info__availability">
                                         <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
                                         {% if productView.action.sellingDenied %}
-                                            <div class="list-products__item__info__availability__text" style="color: #6d6868;">
+                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #6d6868;">
                                                 {{ 'Product no longer on sale'|trans }}
                                             </div>
                                         {% else %}
