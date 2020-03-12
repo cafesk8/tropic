@@ -61,10 +61,10 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
     {
         $settingMenu = $event->getMenu();
 
-        $storeMenu = $settingMenu->addChild('stores', ['label' => t('Stores')]);
-        $storeMenu->addChild('store_list', ['route' => 'admin_store_list', 'label' => t('Stores')]);
-        $storeMenu->addChild('new', ['route' => 'admin_store_new', 'label' => t('New store'), 'display' => false]);
-        $storeMenu->addChild('edit', ['route' => 'admin_store_edit', 'label' => t('Editing store'), 'display' => false]);
+        $storeMenu = $settingMenu->addChild('stores', ['label' => t('Sklady a prodejny')]);
+        $storeMenu->addChild('store_list', ['route' => 'admin_store_list', 'label' => t('Sklady a prodejny')]);
+        $storeMenu->addChild('new', ['route' => 'admin_store_new', 'label' => t('Nový sklad'), 'display' => false]);
+        $storeMenu->addChild('edit', ['route' => 'admin_store_edit', 'label' => t('Upravit sklad'), 'display' => false]);
 
         $listsMenu = $settingMenu->getChild('lists');
         $parameterMenu = $listsMenu->getChild('parameters');

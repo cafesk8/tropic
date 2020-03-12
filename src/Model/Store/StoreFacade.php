@@ -10,7 +10,6 @@ use App\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule;
 use App\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule;
 use App\Model\Transfer\TransferFacade;
 use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
 class StoreFacade
@@ -36,11 +35,6 @@ class StoreFacade
     private $storeFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
-     */
-    private $domain;
-
-    /**
      * @var \App\Model\Transfer\TransferFacade
      */
     private $transferFacade;
@@ -50,7 +44,6 @@ class StoreFacade
      * @param \App\Model\Store\StoreRepository $storeRepository
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Store\StoreFactory $storeFactory
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Transfer\TransferFacade $transferFacade
      */
     public function __construct(
@@ -58,14 +51,12 @@ class StoreFacade
         StoreRepository $storeRepository,
         ImageFacade $imageFacade,
         StoreFactory $storeFactory,
-        Domain $domain,
         TransferFacade $transferFacade
     ) {
         $this->em = $em;
         $this->storeRepository = $storeRepository;
         $this->imageFacade = $imageFacade;
         $this->storeFactory = $storeFactory;
-        $this->domain = $domain;
         $this->transferFacade = $transferFacade;
     }
 
@@ -99,9 +90,9 @@ class StoreFacade
      * @param int $storeId
      * @return \App\Model\Store\Store
      */
-    public function getStoreForDomainAndForStoreListById(int $storeId): Store
+    public function getStoreForStoreListById(int $storeId): Store
     {
-        return $this->storeRepository->getStoreForDomainAndForStoreListById($storeId, $this->domain->getId());
+        return $this->storeRepository->getStoreForStoreListById($storeId);
     }
 
     /**
@@ -188,12 +179,11 @@ class StoreFacade
     }
 
     /**
-     * @param int $domainId
      * @return \App\Model\Store\Store[]
      */
-    public function getAllPickupPlacesForDomain(int $domainId): array
+    public function getAllPickupPlaces(): array
     {
-        return $this->storeRepository->getAllPickupPlacesForDomain($domainId);
+        return $this->storeRepository->getAllPickupPlaces();
     }
 
     /**
@@ -201,7 +191,7 @@ class StoreFacade
      */
     public function findRegionNamesForStoreList(): array
     {
-        return $this->storeRepository->findRegionNamesForStoreList($this->domain->getId());
+        return $this->storeRepository->findRegionNamesForStoreList();
     }
 
     /**
@@ -209,6 +199,6 @@ class StoreFacade
      */
     public function findStoresForStoreListIndexedByRegion(): array
     {
-        return $this->storeRepository->findStoresForStoreListIndexedByRegion($this->domain->getId());
+        return $this->storeRepository->findStoresForStoreListIndexedByRegion();
     }
 }

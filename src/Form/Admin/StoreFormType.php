@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Model\Country\CountryFacade;
 use App\Model\Store\Store;
 use App\Model\Store\StoreData;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Form\DomainType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
-use Shopsys\FrameworkBundle\Model\Country\CountryFacade;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -55,6 +54,7 @@ class StoreFormType extends AbstractType
     {
         $builder
             ->add($this->getBasicInformationGroup($builder))
+            ->add($this->getAdditionalInfoGroup($builder))
             ->add($this->getContactGroup($builder))
             ->add($this->getAddressGroup($builder))
             ->add($this->getDescriptionGroup($builder))
@@ -87,13 +87,6 @@ class StoreFormType extends AbstractType
         ]);
 
         $builderBasicInformationGroup
-            ->add('domainId', DomainType::class, [
-                'required' => true,
-                'label' => t('Domain'),
-                'attr' => [
-                    'class' => 'js-toggle-opt-group-control',
-                ],
-            ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
@@ -102,23 +95,9 @@ class StoreFormType extends AbstractType
                 ],
                 'label' => t('Name'),
             ])
-            ->add('openingHours', TextType::class, [
-                'required' => false,
-                'label' => t('Opening hours'),
-                'constraints' => [
-                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Opening hours cannot be longer than {{ limit }} characters']),
-                ],
-            ])
-            ->add('googleMapsLink', TextType::class, [
-                'required' => false,
-                'label' => t('Google Maps link'),
-                'constraints' => [
-                    new Constraints\Length(['max' => 500, 'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters']),
-                ],
-            ])
             ->add('position', IntegerType::class, [
                 'required' => false,
-                'label' => t('Order in list'),
+                'label' => t('Priorita'),
                 'constraints' => [
                     new Constraints\Length(['max' => 10, 'maxMessage' => 'Position in list cannot be longer than {{ limit }} characters']),
                 ],
@@ -138,17 +117,46 @@ class StoreFormType extends AbstractType
                 'required' => false,
                 'label' => t('Zobrazit na stránce prodejen'),
             ])
-            ->add('franchisor', YesNoType::class, [
-                'required' => false,
-                'label' => t('Je prodejna franchisa'),
-                'icon_title' => t('Změna této hodnoty se projeví do 2 hodin'),
-            ])
             ->add('centralStore', YesNoType::class, [
                 'required' => false,
                 'label' => t('Je sklad centrální'),
             ]);
 
         return $builderBasicInformationGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getAdditionalInfoGroup(FormBuilderInterface $builder): FormBuilderInterface
+    {
+        $infoGroup = $builder->create('additionalInfo', GroupType::class, [
+            'label' => t('Další informace'),
+        ]);
+
+        $infoGroup
+            ->add('openingHours', TextType::class, [
+                'required' => false,
+                'label' => t('Opening hours'),
+                'constraints' => [
+                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Opening hours cannot be longer than {{ limit }} characters']),
+                ],
+            ])
+            ->add('googleMapsLink', TextType::class, [
+                'required' => false,
+                'label' => t('Google Maps link'),
+                'constraints' => [
+                    new Constraints\Length(['max' => 500, 'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters']),
+                ],
+            ])
+            ->add('franchisor', YesNoType::class, [
+                'required' => false,
+                'label' => t('Je prodejna franchisa'),
+                'icon_title' => t('Změna této hodnoty se projeví do 2 hodin'),
+            ]);
+
+        return $infoGroup;
     }
 
     /**

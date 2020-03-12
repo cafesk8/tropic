@@ -326,6 +326,7 @@ class ImageDataFixture extends AbstractReferenceFixture implements DependentFixt
             TransportDataFixture::class,
             ProductDataFixture::class,
             SliderItemDataFixture::class,
+            StoreDataFixture::class,
         ];
     }
 }

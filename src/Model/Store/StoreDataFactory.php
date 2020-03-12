@@ -47,7 +47,6 @@ class StoreDataFactory
      */
     private function fillFromStore(StoreData $storeData, Store $store): void
     {
-        $storeData->domainId = $store->getDomainId();
         $storeData->name = $store->getName();
         $storeData->description = $store->getDescription();
         $storeData->street = $store->getStreet();
@@ -66,17 +65,5 @@ class StoreDataFactory
         $storeData->showOnStoreList = $store->isShowOnStoreList();
         $storeData->franchisor = $store->isFranchisor();
         $storeData->centralStore = $store->isCentralStore();
-    }
-
-    /**
-     * @param int $selectedDomainId
-     * @return \App\Model\Store\StoreData
-     */
-    public function createForDomainId(int $selectedDomainId): StoreData
-    {
-        $storeData = $this->create();
-        $storeData->domainId = $selectedDomainId;
-
-        return $storeData;
     }
 }

@@ -1,11 +1,19 @@
 {{ form_start(form, {attr: {class: 'js-add-product dont-print', 'data-ajax-url': url('front_cart_add_product_ajax'), 'multipleForm': true}}) }}
     <div class="box-detail-add__action{% if type == 'small' %} box-detail-add__action--in-product-list{% endif %}">
-        <div class="box-detail-add__action__spinbox">
+        <div class="box-detail-add__action__spinbox js-spinbox-parent{% if product.realStockQuantity < 1 %} display-none{% endif %}">
+            <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                {{ 'Větší množství není možné nakoupit'|trans }}
+            </div>
             <span class="form-input-spinbox{% if type == 'small' %} form-input-spinbox--small{% endif %} js-spinbox">
-                {{ form_widget(form.quantity, { attr: { class: 'form-input-spinbox__input input-no-style js-spinbox-input', 'data-spinbox-min': product.realMinimumAmount, 'data-spinbox-step': product.amountMultiplier } }) }}
-                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
-            </span>
+                    {{ form_widget(form.quantity, { attr: {
+                        class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                        'data-spinbox-min': product.realMinimumAmount,
+                        'data-spinbox-step': product.amountMultiplier,
+                        'data-spinbox-max': product.realStockQuantity
+                    } }) }}
+                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+                </span>
         </div>
 
         {% set cssClass = '' %}
@@ -16,7 +24,7 @@
         {% if type == 'large' %}
             {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__action__button btn--success btn--large', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
         {% elseif type == 'small' %}
-            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__action__button btn--success', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}   
+            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__action__button btn--success', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
         {% else %}
             {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'box-detail-add__action__button btn--success btn--full-width', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
         {% endif %}

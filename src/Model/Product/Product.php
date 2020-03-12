@@ -11,7 +11,6 @@ use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
@@ -48,7 +47,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  */
 class Product extends BaseProduct
 {
-    public const DECREASE_REAL_STOCK_QUANTITY_BY = 2;
     public const PRODUCT_TYPE_GIFT_CERTIFICATE_500 = 'gift_certificate_500';
     public const PRODUCT_TYPE_GIFT_CERTIFICATE_1000 = 'gift_certificate_1000';
     public const PRODUCT_TYPES_GIFT_CERTIFICATES = [
@@ -206,7 +204,7 @@ class Product extends BaseProduct
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
         $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = $productData->amountMultiplier;
+        $this->amountMultiplier = (int)$productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
     }
 
@@ -389,17 +387,15 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @return \App\Model\Product\StoreStock\ProductStoreStock[]
      */
-    public function getStocksWithoutZeroQuantityOnPickupPlaceStore(Domain $domain): array
+    public function getStocksWithoutZeroQuantityOnPickupPlaceStore(): array
     {
         $productStoreStocks = array_filter(
             $this->storeStocks->toArray(),
-            function (ProductStoreStock $productStoreStock) use ($domain) {
+            function (ProductStoreStock $productStoreStock) {
                 return $productStoreStock->getStockQuantity() > 0
-                    && $productStoreStock->getStore()->isPickupPlace() === true
-                    && $productStoreStock->getStore()->getDomainId() === $domain->getId();
+                    && $productStoreStock->getStore()->isPickupPlace() === true;
             }
         );
 
@@ -724,5 +720,26 @@ class Product extends BaseProduct
         }
 
         return $this->getStockQuantity();
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function subtractStockQuantity($quantity)
+    {
+        parent::subtractStockQuantity($quantity);
+        $remainingQuantity = $quantity;
+
+        foreach ($this->storeStocks as $productStoreStock) {
+            $availableQuantity = $productStoreStock->getStockQuantity();
+
+            if ($remainingQuantity > $availableQuantity) {
+                $productStoreStock->subtractStockQuantity($availableQuantity);
+                $remainingQuantity -= $availableQuantity;
+            } else {
+                $productStoreStock->subtractStockQuantity($remainingQuantity);
+                break;
+            }
+        }
     }
 }

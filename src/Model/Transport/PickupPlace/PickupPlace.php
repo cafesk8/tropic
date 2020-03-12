@@ -158,9 +158,9 @@ class PickupPlace implements PickupPlaceInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet(): string
+    public function getStreet(): ?string
     {
         return $this->street;
     }

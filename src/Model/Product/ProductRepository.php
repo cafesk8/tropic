@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Pricing\Group\PricingGroup;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
@@ -462,5 +462,28 @@ class ProductRepository extends BaseProductRepository
             ->andWhere('p.variantType = :mainVariantType')
             ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param int[] $sortedProductIds
+     * @return \App\Model\Product\Product[]
+     */
+    public function getVisibleExcludingVariantsByIds(int $domainId, PricingGroup $pricingGroup, array $sortedProductIds): array
+    {
+        if (count($sortedProductIds) === 0) {
+            return [];
+        }
+
+        $queryBuilder = $this->getAllVisibleQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder->andWhere('p.variantType != :variantTypeVariant')
+            ->setParameter('variantTypeVariant', Product::VARIANT_TYPE_VARIANT)
+            ->andWhere('p.id IN (:productIds)')
+            ->setParameter('productIds', $sortedProductIds)
+            ->addSelect('field(p.id, ' . implode(',', $sortedProductIds) . ') AS HIDDEN relevance')
+            ->orderBy('relevance');
+
+        return $queryBuilder->getQuery()->execute();
     }
 }

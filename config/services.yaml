@@ -594,4 +594,8 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository: '@App\Model\Product\Search\ProductElasticsearchRepository'
 
+    App\Model\Product\Availability\ProductAvailabilityCalculation: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCalculation: '@App\Model\Product\Availability\ProductAvailabilityCalculation'
+
     Shopsys\ReadModelBundle\Product\Action\ProductActionViewFactory: '@App\Model\Product\View\ProductActionViewFactory'

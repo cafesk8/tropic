@@ -1,12 +1,13 @@
 {% macro productAvailabilityWithDeliveryDate(product) %}
         {% set domain = getDomain() %}
         {% set deliveryDate = getDeliveryDate(product) %}
+
         {% set showDeliveryDate = product.usingStock
-            and product.stockQuantity > 0
+            and product.realStockQuantity > 0
             and deliveryDate is not null  %}
 
         {% set showNotAvailable = product.usingStock
-            and product.stockQuantity < 1
+            and product.realStockQuantity < 1
             and not product.outOfStockAction is same as(constant('OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY', product)) %}
 
         {% if showDeliveryDate %}

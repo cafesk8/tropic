@@ -19,7 +19,7 @@ class ProductActionViewFactory extends BaseProductActionViewFactory
     {
         return new ProductActionView(
             $product->getId(),
-            $product->isSellingDenied(),
+            $product->isSellingDenied() || $product->getCalculatedSellingDenied(),
             $product->isMainVariant(),
             $absoluteUrl,
             $product->getRealMinimumAmount(),
@@ -35,7 +35,7 @@ class ProductActionViewFactory extends BaseProductActionViewFactory
     {
         return new ProductActionView(
             $productArray['id'],
-            $productArray['selling_denied'],
+            $productArray['selling_denied'] || $productArray['calculated_selling_denied'],
             $productArray['is_main_variant'],
             $productArray['detail_url'],
             $productArray['minimum_amount'],

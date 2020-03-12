@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
-use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Grid\Grid;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
 use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
@@ -28,26 +27,18 @@ class StoreGridFactory
     protected $storeRepository;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade
-     */
-    private $adminDomainTabsFacade;
-
-    /**
      * @param \App\Model\Store\StoreRepository $storeRepository
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
-     * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(
         StoreRepository $storeRepository,
         GridFactory $gridFactory,
-        Localization $localization,
-        AdminDomainTabsFacade $adminDomainTabsFacade
+        Localization $localization
     ) {
         $this->gridFactory = $gridFactory;
         $this->localization = $localization;
         $this->storeRepository = $storeRepository;
-        $this->adminDomainTabsFacade = $adminDomainTabsFacade;
     }
 
     /**
@@ -55,9 +46,7 @@ class StoreGridFactory
      */
     public function create(): Grid
     {
-        $queryBuilder = $this->storeRepository->getAllForDomainQueryBuilder(
-            $this->adminDomainTabsFacade->getSelectedDomainId()
-        );
+        $queryBuilder = $this->storeRepository->getAllQueryBuilder();
 
         $dataSource = new QueryBuilderDataSource($queryBuilder, 's.id');
 

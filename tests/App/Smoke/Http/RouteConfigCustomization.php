@@ -449,6 +449,10 @@ class RouteConfigCustomization
             })
             ->customizeByRouteName(['front_download_uploaded_file'], function (RouteConfig $config) {
                 $config->skipRoute('Downloading uploaded files is not tested.');
+            })
+            ->customizeByRouteName(['front_store_detail'], function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Use ID 5 as default store.')
+                    ->setParameter('storeId', 5);
             });
     }
 

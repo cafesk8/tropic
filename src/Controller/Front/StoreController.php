@@ -48,7 +48,7 @@ class StoreController extends FrontBaseController
     {
         $storeId = $request->query->getInt('pickupPlaceId');
 
-        $stores = $this->storeFacade->getAllPickupPlacesForDomain($this->domain->getCurrentDomainConfig()->getId());
+        $stores = $this->storeFacade->getAllPickupPlaces();
 
         $chosenStore = null;
         if ($storeId > 0) {
@@ -82,7 +82,7 @@ class StoreController extends FrontBaseController
      */
     public function detailAction(int $storeId): Response
     {
-        $store = $this->storeFacade->getStoreForDomainAndForStoreListById($storeId);
+        $store = $this->storeFacade->getStoreForStoreListById($storeId);
 
         $loyaltyProgramArticle = $this->articleFacade->findArticleBySettingValueAndDomainId(
             Setting::LOYALTY_PROGRAM_ARTICLE_ID,

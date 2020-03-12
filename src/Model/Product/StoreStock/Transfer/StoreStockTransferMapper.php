@@ -8,7 +8,6 @@ use App\Component\Transfer\Logger\TransferLogger;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductDataFactory;
-use App\Model\Store\Store;
 use App\Model\Store\StoreFacade;
 
 class StoreStockTransferMapper
@@ -54,11 +53,9 @@ class StoreStockTransferMapper
             $store = $this->storeFacade->findByExternalNumber($stockQuantity->getSiteNumber());
 
             if ($store === null) {
-                if (in_array($stockQuantity->getSiteNumber(), Store::SPECIAL_STORES_NOT_ON_ESHOP, true) === false) {
-                    $transferLogger->addError(
-                        sprintf('Store with external number `%s` not found while updating product store stock quantities for product with ID `%s`.', $stockQuantity->getSiteNumber(), $product->getId())
-                    );
-                }
+                $transferLogger->addError(
+                    sprintf('Store with external number `%s` not found while updating product store stock quantities for product with ID `%s`.', $stockQuantity->getSiteNumber(), $product->getId())
+                );
                 continue;
             }
 
