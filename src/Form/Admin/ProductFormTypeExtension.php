@@ -40,7 +40,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
-    public const DISABLED_FIELDS = [];
+    public const DISABLED_FIELDS = [
+        'name',
+        'catnum',
+        'pohodaId',
+        'shortDescriptions',
+        'descriptions',
+        'usingStock',
+    ];
 
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
