@@ -55,7 +55,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param array $productArray
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \App\Model\Product\View\ListedProductView
      */
     public function createFromArray(
@@ -86,7 +86,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Product $product
+     * @param \App\Model\Product\Product $product
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
      * @return \App\Model\Product\View\ListedProductView

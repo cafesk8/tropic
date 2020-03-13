@@ -1,19 +1,19 @@
 {{ form_start(form, {attr: {class: 'js-add-product dont-print', 'data-ajax-url': url('front_cart_add_product_ajax'), 'multipleForm': true}}) }}
     <div class="in-add-to-cart{% if type == 'small' %} in-add-to-cart--in-product-list{% endif %}">
-        <div class="in-add-to-cart__spinbox js-spinbox-parent{% if product.realStockQuantity < 1 or not showAmountInput %} display-none{% endif %}">
+        <div class="in-add-to-cart__spinbox js-spinbox-parent{% if product.realStockQuantity < 1 or product.calculatedSellingDenied or not showAmountInput %} display-none{% endif %}">
             <div class="in-message in-message--warning js-maximum-amount-warning display-none">
                 {{ 'Větší množství není možné nakoupit'|trans }}
             </div>
             <span class="form-input-spinbox{% if type == 'small' %} form-input-spinbox--small{% endif %} js-spinbox">
-                    {{ form_widget(form.quantity, { attr: {
-                        class: 'form-input-spinbox__input input-no-style js-spinbox-input',
-                        'data-spinbox-min': product.realMinimumAmount,
-                        'data-spinbox-step': product.amountMultiplier,
-                        'data-spinbox-max': product.realStockQuantity
-                    } }) }}
-                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
-                </span>
+                {{ form_widget(form.quantity, { attr: {
+                    class: 'form-input-spinbox__input input-no-style js-spinbox-input',
+                    'data-spinbox-min': product.realMinimumAmount,
+                    'data-spinbox-step': product.amountMultiplier,
+                    'data-spinbox-max': product.realStockQuantity
+                } }) }}
+                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
+                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+            </span>
         </div>
 
         {% set cssClass = '' %}

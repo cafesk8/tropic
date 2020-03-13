@@ -45,11 +45,13 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param string|null $searchText
+     * @param string $orderingModeId
+     * @param int $page
      * @param int $limit
+     * @param int $brandId
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
      */
-    public function getPaginatedProductsForBrand($orderingModeId, $page, $limit, $brandId): PaginationResult
+    public function getPaginatedProductsForBrand(string $orderingModeId, int $page, int $limit, int $brandId): PaginationResult
     {
         $emptyProductFilterData = new ProductFilterData();
 
