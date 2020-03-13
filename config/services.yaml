@@ -615,3 +615,7 @@ services:
     App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade:
         arguments:
             $logger: '@monolog.logger.cron'
+
+    App\Component\Form\FormBuilderHelper:
+        arguments:
+            $disableFields: '%disable_form_fields_from_transfer%'

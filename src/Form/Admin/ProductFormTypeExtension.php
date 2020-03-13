@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
@@ -39,6 +40,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
+    public const DISABLED_FIELDS = [];
+
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
      */
@@ -90,7 +93,13 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $flashMessageSender;
 
     /**
+     * @var \App\Component\Form\FormBuilderHelper
+     */
+    private $formBuilderHelper;
+
+    /**
      * ProductFormTypeExtension constructor.
+     *
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
@@ -101,6 +110,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
+     * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
@@ -112,7 +122,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         GoogleClient $googleClient,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         FlagFacade $flagFacade,
-        FlashMessageSender $flashMessageSender
+        FlashMessageSender $flashMessageSender,
+        FormBuilderHelper $formBuilderHelper
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
@@ -124,6 +135,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->googleClient = $googleClient;
         $this->flagFacade = $flagFacade;
         $this->flashMessageSender = $flashMessageSender;
+        $this->formBuilderHelper = $formBuilderHelper;
     }
 
     /**
@@ -206,6 +218,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->extendAccessoriesGroup($builder);
         $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'), $product);
         $this->addAmountGroup($builder, $product);
+        $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
 
     /**
