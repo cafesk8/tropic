@@ -89,12 +89,8 @@
 
         color: @color-brown;
 
-        &:hover {
-            box-shadow: @shadow;
-        }
-
         &__in {
-            padding: 30px @list-top-products-item-padding 3px @list-top-products-item-padding;
+            padding: 0 @list-top-products-item-padding;
             height: 100%;
         }
 
@@ -102,9 +98,14 @@
             display: flex;
             height: 100%;
             flex-direction: column;
+            padding: 10px;
 
             text-decoration: none;
             color: @color-base;
+
+            &:hover {
+                box-shadow: @shadow;
+            }
         }
 
         &__image {
@@ -135,11 +136,14 @@
             line-height: @list-top-products-item-title-line-height;
             margin-bottom: 0;
             overflow: hidden;
-            padding: 0 30px;
             text-align: center;
 
             color: @color-gray-dark;
             font-weight: 400;
+
+            @media @query-md {
+                padding: 0 30px;
+            }
         }
 
         &__info {

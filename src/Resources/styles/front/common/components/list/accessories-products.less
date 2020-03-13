@@ -78,23 +78,25 @@
 
         color: @color-brown;
 
-        &:hover {
-            box-shadow: @shadow;
-        }
-
         &__in {
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: @list-accessories-products-item-padding;
+            padding: 0 @list-accessories-products-item-padding;
         }
 
         &__block {
             display: flex;
             flex-direction: column;
+            height: 100%;
+            padding: 10px;
 
             text-decoration: none;
             color: @color-base;
+
+            &:hover {
+                box-shadow: @shadow;
+            }
         }
 
         &__image {
