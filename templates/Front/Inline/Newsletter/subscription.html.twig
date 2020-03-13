@@ -12,7 +12,9 @@
                         {{ form_widget(form.email, { attr: {placeholder: 'Váš e-mail'|trans, class: 'footer-newsletter__input'} }) }}
                         {{ form_widget(form.send, { label: 'Přihlásit'|trans, attr: { class: "footer-newsletter__form__btn" }}) }}
                     </div>
-                    {{ form_errors(form.email) }}
+                    <div class="display-none">
+                        {{ form_errors(form.email) }}
+                    </div>
                 </div>
                 {{ form_errors(form, { errors_attr: { class : 'in-message--alert display-none' } }) }}
                 <div class="form-choice form-choice--white-text">
@@ -28,9 +30,11 @@
                                 {% endif %}
                             </span>
                         </label>
-                        <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicyAgreement.vars.id }} form-error form-error--choice display-none">
-                            <ul class="form-error__list"></ul>
-                        </span>
+                        <div class="display-none">
+                            <span class="js-validation-errors-list js-validation-error-list-{{ form.privacyPolicyAgreement.vars.id }} form-error form-error--choice display-none">
+                                <ul class="form-error__list"></ul>
+                            </span>
+                        </div>
                     </span>
                 </div>
             </div>
