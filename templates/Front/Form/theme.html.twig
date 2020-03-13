@@ -41,7 +41,7 @@
             {{ form_widget(form) }}
             {{ block('icon') }}
         </div>
-        <div class="form-line__error">
+        <div class="form-line__error {{ errorModificationClass|default('') }}">
             {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default('form-error--line'))}) %}
             {{ form_errors(form, { errors_attr: errors_attr } ) }}
         </div>
@@ -52,7 +52,7 @@
     <div class="{{ rowClass|default('form-line') }}">
         <div class="form-choice">
             {{ form_widget(form, { attr: { class: "css-checkbox" } }) }}
-            {{ form_label(form, label, { label_attr: { class: "input__label--full-width css-checkbox__image" }}) }}
+            {{ form_label(form, label, { label_attr: { class: "input-label--full-width css-checkbox__image" }}) }}
             {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default('form-error--choice'))}) %}
             {{ form_errors(form, { errors_attr: errors_attr } ) }}
             {{ block('icon') }}
@@ -68,8 +68,6 @@
         </div>
         <div class="form-line__error">
             {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default('form-error--line'))}) %}
-        </div>
-        <div class="form-line__error">
             {{ form_errors(form, { errors_attr: errors_attr } ) }}
         </div>
     </div>
@@ -88,7 +86,7 @@
                 {% set required_class = "" %}
             {% endif %}
 
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' input__label ' ~ required_class )|trim}) %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' input-label ' ~ required_class )|trim}) %}
 
             {% if label is empty %}
                 {% set label = name|humanize %}

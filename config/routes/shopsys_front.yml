@@ -86,6 +86,11 @@ front_newsletter_send:
     methods: [POST]
     condition: "request.isXmlHttpRequest()"
 
+front_order_change_payment_method:
+    path: /order/change-payment-method/{urlHash}
+    defaults: { _controller: App\Controller\Front\OrderController:changePaymentAction }
+    methods: [POST]
+
 front_order_gopay_status_notify:
     path: /order/gopay-status-notify/{orderId}
     defaults: { _controller: App\Controller\Front\GoPayController:gopayStatusNotifyAction }

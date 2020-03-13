@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Model\Advert\Advert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
@@ -70,6 +71,14 @@ class Category extends BaseCategory
     private $mallCategoryId;
 
     /**
+     * @var \App\Model\Advert\Advert|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Model\Advert\Advert", inversedBy="categories")
+     * @ORM\JoinColumn(name="advert_id", nullable=true, referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $advert;
+
+    /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -82,6 +91,7 @@ class Category extends BaseCategory
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
+        $this->advert = $categoryData->advert;
 
         $this->setTranslations($categoryData);
     }
@@ -99,6 +109,7 @@ class Category extends BaseCategory
         $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
         $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
+        $this->advert = $categoryData->advert;
 
         $this->setTranslations($categoryData);
     }
@@ -235,5 +246,21 @@ class Category extends BaseCategory
     public function setListable(bool $listable): void
     {
         $this->listable = $listable;
+    }
+
+    /**
+     * @return \App\Model\Advert\Advert|null
+     */
+    public function getAdvert(): ?Advert
+    {
+        return $this->advert;
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert|null $advert
+     */
+    public function setAdvert(?Advert $advert): void
+    {
+        $this->advert = $advert;
     }
 }

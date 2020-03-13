@@ -18,7 +18,14 @@ export default class AddProduct {
         event.preventDefault();
     }
 
-    static onSuccess (data) {
+    static onSuccess (data, textStatus, request) {
+        if (request.getResponseHeader('Content-Type').indexOf('json') > -1) {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+            location.reload();
+            return;
+        }
+
         const buttonContinueUrl = $($.parseHTML(data)).filterAllNodes('.js-add-product-url-cart').data('url');
         const isWide = $($.parseHTML(data)).filterAllNodes('.js-add-product-wide-window').data('wide');
         const cssClass = isWide ? 'window-popup--wide' : 'window-popup--standard';

@@ -12,8 +12,10 @@ use App\Model\Gtm\GtmFacade;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
+use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\PromoProduct\PromoProductInCartFacade;
+use App\Model\Product\View\ProductActionView;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
@@ -21,9 +23,7 @@ use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
-use Shopsys\ReadModelBundle\Product\Action\ProductActionView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -331,16 +331,17 @@ class CartController extends FrontBaseController
      * @param \App\Model\Product\Product $product
      * @param string $type
      * @param bool $disabled
+     * @param bool $showAmountInput
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addProductFormAction(Product $product, $type = 'normal', $disabled = false)
+    public function addProductFormAction(Product $product, $type = 'normal', $disabled = false, bool $showAmountInput = true)
     {
         $form = $this->createForm(AddProductFormType::class, ['productId' => $product->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
             'minimum_amount' => $product->getRealMinimumAmount(),
         ]);
 
-        $hardDisabled = $product->getRealStockQuantity() < 1;
+        $hardDisabled = $product->getRealStockQuantity() < 1 || $product->getCalculatedSellingDenied();
         if ($hardDisabled === true) {
             $disabled = true;
         }
@@ -351,6 +352,7 @@ class CartController extends FrontBaseController
             'type' => $type,
             'disabled' => $disabled,
             'hardDisabled' => $hardDisabled === true ? '1' : '0',
+            'showAmountInput' => $showAmountInput,
         ]);
     }
 
@@ -426,17 +428,24 @@ class CartController extends FrontBaseController
                 $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
                 $productsPrice = $orderPreview->getProductsPrice();
                 $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
+                $quantifiedItemPrice = $this->findQuantifiedItemPriceForProduct($addProductResult->getCartItem(), $orderPreview);
 
-                return $this->render('Front/Inline/Cart/afterAddWindow.html.twig', [
-                    'accessories' => $accessories,
-                    'ACCESSORIES_ON_BUY' => ModuleList::ACCESSORIES_ON_BUY,
-                    'cartItem' => $addProductResult->getCartItem(),
-                    'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
-                    'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
-                    'remainingPriceWithVat' => $remainingPriceWithVat,
-                    'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
-                    'quantifiedItemPrice' => $this->findQuantifiedItemPriceForProduct($addProductResult->getCartItem(), $orderPreview),
-                ]);
+                if ($request->request->get('add_product_form')['onlyRefresh']) {
+                    return $this->json(['refresh' => true]);
+                } else {
+                    return $this->render('Front/Inline/Cart/afterAddWindow.html.twig', [
+                        'accessories' => $accessories,
+                        'ACCESSORIES_ON_BUY' => ModuleList::ACCESSORIES_ON_BUY,
+                        'addedQuantity' => $addProductResult->getAddedQuantity(),
+                        'addedPrice' => $quantifiedItemPrice->getUnitPrice()->getPriceWithVat()->multiply($addProductResult->getAddedQuantity()),
+                        'cartItem' => $addProductResult->getCartItem(),
+                        'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
+                        'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
+                        'remainingPriceWithVat' => $remainingPriceWithVat,
+                        'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
+                        'quantifiedItemPrice' => $quantifiedItemPrice,
+                    ]);
+                }
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $ex) {
                 $this->getFlashMessageSender()->addErrorFlash(t('Selected product no longer available or doesn\'t exist.'));
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidQuantityException $ex) {
@@ -562,19 +571,23 @@ class CartController extends FrontBaseController
     /**
      * @param \App\Model\Product\View\ProductActionView $productActionView
      * @param string $type
+     * @param bool $showAmountInput
+     * @param bool $onlyRefresh
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function productActionAction(ProductActionView $productActionView, string $type = 'normal')
+    public function productActionAction(ProductActionView $productActionView, string $type = 'normal', bool $showAmountInput = true, bool $onlyRefresh = false)
     {
         $form = $this->createForm(AddProductFormType::class, ['productId' => $productActionView->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
             'minimum_amount' => $productActionView->getMinimumAmount(),
-         ]);
+            'only_refresh' => $onlyRefresh,
+        ]);
 
         return $this->render('Front/Inline/Cart/productAction.html.twig', [
-             'form' => $form->createView(),
-             'productActionView' => $productActionView,
-             'type' => $type,
-         ]);
+            'form' => $form->createView(),
+            'productActionView' => $productActionView,
+            'type' => $type,
+            'showAmountInput' => $showAmountInput,
+        ]);
     }
 }

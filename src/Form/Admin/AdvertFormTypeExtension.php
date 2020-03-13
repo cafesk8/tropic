@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Form\Admin;
 
 use App\Model\Advert\AdvertData;
+use App\Model\Advert\AdvertPositionRegistry;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Form\Admin\Advert\AdvertFormType;
+use Shopsys\FrameworkBundle\Form\CategoriesType;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Model\Advert\Advert;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -17,6 +20,26 @@ use Symfony\Component\Validator\Constraints;
 
 class AdvertFormTypeExtension extends AbstractTypeExtension
 {
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
+     * @var \App\Model\Advert\AdvertPositionRegistry
+     */
+    private $advertPositionRegistry;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Advert\AdvertPositionRegistry $advertPositionRegistry
+     */
+    public function __construct(Domain $domain, AdvertPositionRegistry $advertPositionRegistry)
+    {
+        $this->domain = $domain;
+        $this->advertPositionRegistry = $advertPositionRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,6 +64,16 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
             ],
         ]);
 
+        $settingsGroup->add('categories', CategoriesType::class, [
+            'attr' => [
+                'class' => 'js-advert-categories-type',
+            ],
+            'domain_id' => $this->domain->getId(),
+            'label' => t('Kategorie'),
+            'position' => ['after' => 'positionName'],
+            'required' => false,
+        ]);
+
         $settingsGroup->add('name', TextType::class, [
             'required' => true,
             'constraints' => [
@@ -50,10 +83,16 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $imagesGroup = $builder->get('image_group');
-        $imagesGroup->add('imageSizes', DisplayOnlyType::class, [
-            'data' => t('Pro plochy 1, 2, 3 - čtverec (380x230px), pro plochu 4 - velký obdelník na šířku (1180x387px).'),
-            'label' => t('Velikost obrázků'),
-        ]);
+
+        foreach ($this->advertPositionRegistry->getImageSizeRecommendationsIndexedByNames() as $name => $imageSizeRecommendation) {
+            $imagesGroup->add('imageSize-' . $name, DisplayOnlyType::class, [
+                'attr' => [
+                    'class' => 'js-image-size-recommendation js-image-size-recommendation-' . $name,
+                ],
+                'data' => $imageSizeRecommendation,
+                'label' => t('Doporučené rozměry obrázku'),
+            ]);
+        }
     }
 
     /**

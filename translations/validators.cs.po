@@ -14,13 +14,10 @@ msgid "Email cannot be longer than {{ limit }} characters"
 msgstr "E-mail nesmí být delší než {{ limit }} znaků"
 
 msgid "Externí ID nesmí být delší než {{ limit }} znaků"
-msgstr ""
+msgstr "Externí ID nesmí být delší než {{ limit }} znaků"
 
 msgid "First name cannot be longer than {{ limit }} characters"
 msgstr "Jméno nesmí být delší než {{ limit }} znaků"
-
-msgid "First name of contact person cannot be longer then {{ limit }} characters"
-msgstr "Jméno kontaktní osoby nesmí být delší než {{ limit }} znaků"
 
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
 msgstr "Link na Google mapy nesmí být delší než {{ limit }} znaků"
@@ -29,10 +26,7 @@ msgid "Heading (H1) cannot be longer than {{ limit }} characters"
 msgstr "Nadpis (H1) nesmí být delší než {{ limit }} znaků"
 
 msgid "Hodiny musí být v rozmezí od 0 do 23"
-msgstr ""
-
-msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
-msgstr "Hodnota nesmí byt delší než {{ limit }} znaků"
+msgstr "Hodiny musí být v rozmezí od 0 do 23"
 
 msgid "Identification number cannot be longer than {{ limit }} characters"
 msgstr "IČO nesmí být delší než {{ limit }} znaků"
@@ -43,11 +37,8 @@ msgstr "Obrázek může být pouze ve formátu JPG, GIF nebo PNG"
 msgid "Last name cannot be longer than {{ limit }} characters"
 msgstr "Příjmení nesmí být delší než {{ limit }} znaků"
 
-msgid "Last name of contact person cannot be longer than {{ limit }} characters"
-msgstr "Příjmení kontaktní osoby nesmí být delší než {{ limit }} znaků"
-
 msgid "Minuty musí být v rozmezí od 0 do 59"
-msgstr ""
+msgstr "Minuty musí být v rozmezí od 0 do 59"
 
 msgid "Musíte vybrat dopravce"
 msgstr "Musíte vybrat dopravce"
@@ -115,26 +106,14 @@ msgstr "Vyplňte svůj e-mail"
 msgid "Please enter first name"
 msgstr "Vyplňte své jméno"
 
-msgid "Please enter first name of contact person"
-msgstr "Vyplňte jméno kontaktní osoby"
-
-msgid "Please enter full name"
-msgstr "Vyplňte celé jméno"
-
 msgid "Please enter identification number"
-msgstr "Vyplňte IČ"
+msgstr "Vyplňte IČO"
 
 msgid "Please enter last name"
 msgstr "Vyplňte své příjmení"
 
-msgid "Please enter last name of contact person"
-msgstr "Vyplňte příjmení kontaktní osoby"
-
 msgid "Please enter name"
 msgstr "Vyplňte název"
-
-msgid "Please enter name of a store"
-msgstr "Vyplňte název prodejny"
 
 msgid "Please enter password"
 msgstr "Vyplňte své heslo"
@@ -173,10 +152,10 @@ msgid "Position in list cannot be longer than {{ limit }} characters"
 msgstr "Pořadí na výpisu nesmí být delší než {{ limit }} znaků"
 
 msgid "Poznámka nesmí být delší než {{ limit }} znaků"
-msgstr ""
+msgstr "Poznámka nesmí být delší než {{ limit }} znaků"
 
 msgid "Počet dnů do dodání musí být větší nebo roven nule"
-msgstr ""
+msgstr "Počet dnů do dodání musí být větší nebo roven nule"
 
 msgid "Price must be greater or equal to zero"
 msgstr "Cena musí být větší nebo rovna nule"
@@ -197,10 +176,10 @@ msgid "Tax number cannot be longer than {{ limit }} characters"
 msgstr "DIČ nesmí být delší než {{ limit }} znaků"
 
 msgid "Telefonní číslo musí být platné"
-msgstr ""
+msgstr "Telefonní číslo musí být platné"
 
 msgid "Telefonní číslo musí začínat znakem +"
-msgstr ""
+msgstr "Telefonní číslo musí začínat znakem +"
 
 msgid "Telephone number cannot be longer than {{ limit }} characters"
 msgstr "Telefonní číslo nesmí být delší než {{ limit }} znaků"
@@ -212,13 +191,13 @@ msgid "Uploaded image is to large ({{ size }} {{ suffix }}). Maximum size of an 
 msgstr "Nahraný obrázek je příliš veliký ({{ size }} {{ suffix }}). Maximální velikost obrázku je {{ limit }} {{ suffix }}."
 
 msgid "Vložené ID Youtube videa neobsahuje žádné video."
-msgstr ""
+msgstr "Vložené ID Youtube videa neobsahuje žádné video."
 
 msgid "Vyberte prosím pobočku"
-msgstr "Vyber pobočku"
+msgstr "Vyberte pobočku"
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
-msgstr "Vyplňte SKU dárkového certifikátu."
+msgstr "Vyplňte SKU dárkového poukazu."
 
 msgid "Vyplňte prosím deadline pro přijímání objednávek"
 msgstr "Vyplňte deadline pro přijímání objednávek"
@@ -230,7 +209,7 @@ msgid "Vyplňte prosím množství."
 msgstr "Vyplňte množství."
 
 msgid "Vyplňte prosím nominální hodnotu dárkového certifikátu."
-msgstr "Vyplňte nominální hodnotu dárkového certifikátu."
+msgstr "Vyplňte nominální hodnotu dárkového poukazu."
 
 msgid "Vyplňte prosím nominální hodnotu slevy."
 msgstr "Vyplňte nominální hodnotu slevy."
@@ -259,12 +238,8 @@ msgstr "Vyplňte ulici prodejny"
 msgid "You have to agree with privacy policy"
 msgstr "Musíte souhlasit se zpracováním osobních údajů"
 
-msgid "You have to agree with terms and conditions and privacy policy"
-msgstr "Musíte souhlasit s obchodními podmínkami a zpracováním osobních údajů"
-
 msgid "Zadejte prosím celé číslo."
 msgstr "Zadejte celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmí být delší než {{ limit }} znaků"
-

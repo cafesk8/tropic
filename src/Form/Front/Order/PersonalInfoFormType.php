@@ -17,6 +17,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -31,6 +33,7 @@ class PersonalInfoFormType extends AbstractType
     public const VALIDATION_GROUP_BILLING_ADDRESS_FILLED = 'billingAddressFilled';
     public const VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED = 'deliveryAddressRequired';
     public const VALIDATION_GROUP_PHONE_PLUS_REQUIRED = 'phonePlusRequired';
+    public const VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED = 'passwordRequired';
 
     /**
      * @var \App\Model\Country\CountryFacade
@@ -99,6 +102,26 @@ class PersonalInfoFormType extends AbstractType
                 'attr' => [
                     'class' => 'js-order-personal-info-form-email',
                 ],
+            ])
+            ->add('registration', CheckboxType::class, ['required' => false])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'options' => [
+                    'attr' => ['autocomplete' => 'new-password'],
+                ],
+                'first_options' => [
+                    'constraints' => [
+                        new Constraints\NotBlank([
+                            'groups' => [self::VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED],
+                            'message' => 'Please enter password',
+                        ]),
+                        new Constraints\Length([
+                            'min' => 6,
+                            'minMessage' => 'Password must be longer than {{ limit }} characters',
+                        ]),
+                    ],
+                ],
+                'invalid_message' => 'Passwords do not match',
             ])
             ->add('telephone', TextType::class, [
                 'constraints' => [
@@ -326,6 +349,10 @@ class PersonalInfoFormType extends AbstractType
                     /** @var \App\Model\Order\FrontOrderData $orderData */
                     $orderData = $form->getData();
 
+                    if ($orderData->registration) {
+                        $validationGroups[] = self::VALIDATION_GROUP_REGISTRATION_PASSWORD_REQUIRED;
+                    }
+
                     if ($orderData->companyCustomer) {
                         $validationGroups[] = self::VALIDATION_GROUP_COMPANY_CUSTOMER;
                     }
@@ -337,9 +364,7 @@ class PersonalInfoFormType extends AbstractType
                         $validationGroups[] = self::VALIDATION_GROUP_DELIVERY_ADDRESS_REQUIRED;
                     }
 
-                    if (DomainHelper::isGermanDomain($this->domain)
-                        || DomainHelper::isSlovakDomain($this->domain)
-                    ) {
+                    if (DomainHelper::isEnglishDomain($this->domain) || DomainHelper::isSlovakDomain($this->domain)) {
                         $validationGroups[] = self::VALIDATION_GROUP_PHONE_PLUS_REQUIRED;
                     }
 

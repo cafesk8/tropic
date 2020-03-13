@@ -37,7 +37,7 @@ class ArticleSettingsFormType extends AbstractType
         $articles = $this->articleFacade->getAllByDomainId($options['domain_id']);
 
         $builderSettingsGroup = $builder->create('settings', GroupType::class, [
-            'label' => t('Settings'),
+            'label' => t('Články věrnostního programu'),
         ]);
 
         $builderSettingsGroup
@@ -47,33 +47,12 @@ class ArticleSettingsFormType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'placeholder' => t('-- Choose article --'),
-                'label' => t('(Banner) Věrnostní program'),
-                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce zákazník stát členem Věrnostního programu, a také jako odkaz pro banner Věrnostní program'),
-            ])
-            ->add('ourStoryArticle', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('Banner Náš příběh'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Náš příběh'),
-            ])
-            ->add('ourValuesArticle', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('Banner Naše hodnoty'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako odkaz u banneru Naše hodnoty'),
+                'label' => t('Hlavní článek'),
+                'icon_title' => t('Vyberte článek, který se zobrazí v registraci u checkboxu, zda se chce zákazník stát členem Věrnostního programu.'),
             ]);
-
-        $builderArticleOnHeaderGroup = $this->createArticleOnHeaderPosition($builder, $articles);
 
         $builder
             ->add($builderSettingsGroup)
-            ->add($builderArticleOnHeaderGroup)
             ->add('save', SubmitType::class);
     }
 
@@ -89,48 +68,5 @@ class ArticleSettingsFormType extends AbstractType
                 'data_class' => ArticleSettingData::class,
                 'attr' => ['novalidate' => 'novalidate'],
             ]);
-    }
-
-    /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param \App\Model\Article\Article[] $articles
-     * @return \Symfony\Component\Form\FormBuilderInterface
-     */
-    private function createArticleOnHeaderPosition(FormBuilderInterface $builder, array $articles): FormBuilderInterface
-    {
-        $builderArticleOnHeaderGroup = $builder->create('article_on_header_setting', GroupType::class, [
-            'label' => t('Články v horním menu'),
-        ]);
-
-        $builderArticleOnHeaderGroup
-            ->add('firstArticleOnHeaderMenu', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('První článek v horním menu'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako první v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
-            ])
-            ->add('secondArticleOnHeaderMenu', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('Druhý článek v horním menu'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako druhý v horním menu hned za články které sou umístený v pozici "horní menu v přehlede článku"'),
-            ])
-            ->add('thirdArticleOnHeaderMenu', ChoiceType::class, [
-                'required' => false,
-                'choices' => $articles,
-                'choice_label' => 'name',
-                'choice_value' => 'id',
-                'placeholder' => t('-- Choose article --'),
-                'label' => t('Treti článek v horním menu'),
-                'icon_title' => t('Vyberte článek, který se zobrazí jako čtvrtý v horním menu hned za Blogem'),
-            ]);
-
-        return $builderArticleOnHeaderGroup;
     }
 }

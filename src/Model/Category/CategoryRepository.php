@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Model\Advert\Advert;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -264,5 +265,34 @@ class CategoryRepository extends BaseCategoryRepository
     public function getAllVisibleAndListableByDomainIdQueryBuilder(int $domainId): QueryBuilder
     {
         return $this->getAllVisibleByDomainIdQueryBuilder($domainId)->andWhere('c.listable = true');
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert $advert
+     * @param \App\Model\Category\Category[] $newCategories
+     */
+    public function removeAdvertFromCategories(Advert $advert, array $newCategories): void
+    {
+        $queryBuilder = $this->getQueryBuilder()
+            ->update(Category::class, 'c')
+            ->set('c.advert', 'NULL')
+            ->where('c.advert = :advert');
+
+        if (!empty($newCategories)) {
+            $queryBuilder->andWhere('c NOT IN (:categories)')
+                ->setParameter('categories', $newCategories);
+        }
+
+        $queryBuilder->setParameter('advert', $advert)
+            ->getQuery()->execute();
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert $advert
+     * @return \App\Model\Category\Category[]
+     */
+    public function getCategoriesByAdvert(Advert $advert): array
+    {
+        return $this->getCategoryRepository()->findBy(['advert' => $advert]);
     }
 }

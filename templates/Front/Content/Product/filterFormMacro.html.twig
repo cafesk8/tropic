@@ -5,6 +5,7 @@
         {% import 'Front/Content/Product/selectedFilterBoxMacro.html.twig' as selectedFilterBox %}
 
         {% set isSearch = page == 'search' %}
+        {% set domain = getDomain() %}
 
         {% if isSearch %}
             <input
@@ -34,13 +35,16 @@
                             <div class="box-price-slider__form__item__text">
                                 {{ 'Od'|trans }}
                             </div>
-                            {{ form_widget(filterForm.minimalPrice, {attr: { class: 'box-price-slider__form__item__input js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.minimalPrice|price }}) }}
+                            {{ form_widget(filterForm.minimalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate display-none', placeholder: priceRange.minimalPrice.amount|formatNumber }}) }}
+                            <input type="text" id="{{ filterForm.minimalPrice.vars.id }}Formatted" class="box-price-slider__form__item__input js-no-validate input" placeholder="{{ priceRange.minimalPrice.amount|formatNumber }}">
                         </div>
                         <div class="box-price-slider__form__item box-price-slider__form__item--right">
                             <div class="box-price-slider__form__item__text">
-                                {{ 'Do'|trans }}
+                                {{ 'do'|trans }}
                             </div>
-                            {{ form_widget(filterForm.maximalPrice, {attr: { class: 'box-price-slider__form__item__input js-product-filter-call-change-after-reset js-no-validate', placeholder: priceRange.maximalPrice|price }}) }}
+                            {{ form_widget(filterForm.maximalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate display-none', placeholder: priceRange.maximalPrice.amount|formatNumber }}) }}
+                            <input type="text" id="{{ filterForm.maximalPrice.vars.id }}Formatted" class="box-price-slider__form__item__input js-no-validate input" placeholder="{{ priceRange.maximalPrice.amount|formatNumber }}">
+                            <div class="box-price-slider__form__item__text">{{ currencySymbolByDomainId(domain.id) }}</div>
                         </div>
                     </div>
                 </div>
@@ -170,5 +174,8 @@
             </div>
         </div>
 
+        <script>
+            window.currentDomainLocale = '{{ domain.locale }}';
+        </script>
     {{ form_end(filterForm) }}
 {% endmacro %}

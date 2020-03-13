@@ -116,13 +116,19 @@
             height: 460
             crop: true
             occurrence: 'Front-end: Big banner, six position on homepage'
+        -   name: category
+            width: 1180
+            height: 150
+            crop: true
+            occurrence: 'Front-end: Banner for category'
+
 
 -   name: brand
     class: Shopsys\FrameworkBundle\Model\Product\Brand\Brand
     sizes:
         -   name: ~
-            width: 300
-            height: 200
+            width: 150
+            height: 150
             crop: false
             occurrence: 'Front-end: Brand page'
 

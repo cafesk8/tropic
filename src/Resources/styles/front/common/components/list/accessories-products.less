@@ -92,7 +92,6 @@
         &__block {
             display: flex;
             flex-direction: column;
-            height: 100%;
 
             text-decoration: none;
             color: @color-base;
@@ -110,10 +109,8 @@
                 height: @list-accessories-products-item-image-size;
             }
 
-
             img {
                 .center-image();
-                max-width: @list-accessories-products-item-image-size/2;
             }
         }
 
@@ -135,6 +132,8 @@
             text-align: center;
 
             &__availability {
+                margin-bottom: 10px;
+                
                 color: @color-brown-light;
                 font-size: @font-size-extra-small;
 
@@ -192,6 +191,11 @@
                     }
                 }
             }
+        }
+
+        &__button-add {
+            text-align: center;
+            margin-top: auto;
         }
     }
 }

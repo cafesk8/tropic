@@ -13,7 +13,7 @@ use Shopsys\FrameworkBundle\Model\Country\CountryData as BaseCountryData;
  * @ORM\Table(name="countries")
  * @ORM\Entity
  *
- * @method CountryTranslation translation(?string $locale = null)
+ * @method \Shopsys\FrameworkBundle\Model\Country\CountryTranslation translation(?string $locale = null)
  * @method setTranslations(\App\Model\Country\CountryData $countryData)
  * @method setDomains(\App\Model\Country\CountryData $countryData)
  * @method createDomains(\App\Model\Country\CountryData $countryData)

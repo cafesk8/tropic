@@ -6,15 +6,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/styleguide/styles/styleguide_' ~ getCssVersion() ~ '.css') }}" media="screen, projection">
 {% endblock %}
 
-{% block javascripts %}
-    <!-- codemirror -->
-    {{ importJavascripts([
-        'styleguide/styleguide.js',
-        'styleguide/plugins/codemirror/codemirror.minified.js'
-    ]) }}
-
-{% endblock %}
-
 {% block html_body %}
     <main class="container">
         <header class="styleguide-header">
@@ -120,21 +111,21 @@
                         <p class="styleguide-module__paragraph">We usualy have two colors: Primary and alternative.</p>
                         <ul class="styleguide-list--unstyled list-colors">
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: #333;">
+                                <div class="color" style="background: #181a22;">
                                     <span class="color__text">
                                         @color-base
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: #009BD9;">
+                                <div class="color" style="background: #181a22;">
                                     <span class="color__text">
                                         @color-primary
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: #a0c519;">
+                                <div class="color" style="background: #c0e314;">
                                     <span class="color__text">
                                         @color-add
                                     </span>
@@ -142,7 +133,7 @@
                             </li>
                             <li class="small-12 medium-2 column end">
                                 <div class="color" style="background: #f4f4f4;">
-                                    <span class="color__text" style="color: #000;">
+                                    <span class="color__text" style="color: #efefef;">
                                         @color-light
                                     </span>
                                 </div>
@@ -153,21 +144,21 @@
                         <p class="styleguide-module__paragraph ">Colors used for product availability.</p>
                         <ul class="styleguide-list--unstyled list-colors">
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: green;">
+                                <div class="color" style="background: #c0e314;">
                                     <span class="color__text">
                                         Product in stock
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: orange;">
+                                <div class="color" style="background: #ffa500;">
                                     <span class="color__text">
                                         Temporary unavailable
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column end">
-                                <div class="color" style="background: red;">
+                                <div class="color" style="background: #eb5013;">
                                     <span class="color__text">
                                         Sold out
                                     </span>
@@ -216,15 +207,12 @@
                             <br>
                             <span class="link-style link-style--alternative">Span which looks like alternative link</span>
                             <br>
-                            <span class="in-icon">
-                                <i class="svg svg-info in-icon__icon"></i>
-                                <span class="in-icon__label">Text with icon</span>
-                            </span>
-                            <br>
-                            <a href="#" class="in-icon in-icon--link">
-                                <i class="svg svg-info in-icon__icon"></i>
-                                <span class="in-icon__label">Link with icon</span>
-                            </a>
+                            <fieldset style="width: 200px" class="position-relative">
+                                <span class="in-icon">
+                                    <i class="svg svg-info in-icon__icon"></i>
+                                    <span class="in-icon__label">Text with icon</span>
+                                </span>
+                            </fieldset>
                         </p>
                     </section>
 
@@ -250,30 +238,28 @@
                     <section id="flags" class="styleguide-module anchor clearfix">
                         <h2 class="styleguide-module__title">Flags</h2>
                         <p class="styleguide-module__paragraph">Flag colors are loaded from administration as inline style. But you can override it by class modification.</p>
+                        <div class="in-flag in-flag--static">
+                            <span class="in-flag__item" style="background-color: #181a22;">
+                                TOP
+                            </span>
+                        </div>
                         <div style="position: relative; height: 100px;">
                             <div class="in-flag in-flag--in-list">
-                                <span class="in-flag__item" style="background-color: #d6fffa;">
-                                    TOP
-                                </span>
-                                <span class="in-flag__item in-flag__item--sales" style="background-color: #f9ffd6;">
-                                    Action
-                                </span>
-                                <span class="in-flag__item in-flag__item--news" style="background-color: #efd6ff;">
-                                    New
+                                <span class="in-flag__item" style="background-color: #181a22;">
+                                    ACTION
                                 </span>
                             </div>
                         </div>
                         <div class="styleguide-module__editor">
                             <textarea class="codemirror-html" id="html-flags">
-<div class="in-flag in-flag--in-list">
-    <span class="in-flag__item" style="background-color: #d6fffa;">
+<div class="in-flag in-flag--static">
+    <span class="in-flag__item" style="background-color: #181a22;">
         TOP
     </span>
-    <span class="in-flag__item in-flag__item--sales" style="background-color: #f9ffd6;">
-        Action
-    </span>
-    <span class="in-flag__item in-flag__item--news" style="background-color: #efd6ff;">
-        New
+</div>
+<div class="in-flag in-flag--in-list">
+    <span class="in-flag__item" style="background-color: #181a22;">
+        ACTION
     </span>
 </div>
                             </textarea>
@@ -293,6 +279,9 @@
                         </div>
                         <div class="in-message in-message--error">
                             <div>Error flash message</div>
+                        </div>
+                        <div class="in-message in-message--danger">
+                            <div>Danger flash message</div>
                         </div>
                         <div class="in-message in-message--alert">
                             <div>Alert flash message</div>
@@ -315,6 +304,10 @@
     <div>Error flash message</div>
 </div>
 
+<div class="in-message in-message--danger">
+    <div>Danger flash message</div>
+</div>
+
 <div class="in-message in-message--alert">
     <div>Alert flash message</div>
 </div>
@@ -327,10 +320,7 @@
 
                         <a href="#buttons" class="btn">Primary button</a> &nbsp;
                         <a href="#buttons" class="btn btn--success">Success button</a> &nbsp;
-                        <a href="#buttons" class="btn btn--success"><i class="svg svg-arrow"></i>Go to cart</a> &nbsp;
-                        <a href="#buttons" class="window-popup__actions__btn--continue window-button-continue btn btn--success">Go to cart <i class="svg svg-arrow"></i></a> &nbsp;
                         <a href="#buttons" class="btn btn--disabled">Disabled</a> &nbsp;
-                        <a href="#buttons" class="btn btn--outline">Outline</a> &nbsp;
                         <a href="#buttons" class="btn-no-style">No style</a> &nbsp;
                         <br><br>
                         <a href="#buttons" class="btn btn--small">Primary small</a> &nbsp;
@@ -339,17 +329,14 @@
 
                         <div class="styleguide-module__editor">
                             <textarea class="codemirror-html" id="html-buttons">
-<a href="#" class="btn">Primary button</a>
-<a href="#" class="btn btn--success">Success button</a>
-<a href="#" class="btn btn--success"><i class="svg svg-arrow"></i>Go to cart</a>
-<a href="#" class="window-popup__actions__btn--continue window-button-continue btn btn--success">Go to cart <i class="svg svg-arrow"></i></a>
-<a href="#" class="btn btn--disabled">Disabled</a>
-<a href="#" class="btn btn--outline">Outline</a>
-<a href="#" class="btn-no-style">No style</a>
+<a href="#buttons" class="btn">Primary button</a> &nbsp;
+<a href="#buttons" class="btn btn--success">Success button</a> &nbsp;
+<a href="#buttons" class="btn btn--disabled">Disabled</a> &nbsp;
+<a href="#buttons" class="btn-no-style">No style</a> &nbsp;
 
-<a href="#" class="btn btn--small">Primary small</a>
-<a href="#" class="btn">Primary</a>
-<a href="#" class="btn btn--large">Primary large</a>
+<a href="#buttons" class="btn btn--small">Primary small</a> &nbsp;
+<a href="#buttons" class="btn">Primary</a> &nbsp;
+<a href="#buttons" class="btn btn--large">Primary large</a> &nbsp;
                             </textarea>
                         </div>
                     </section>
@@ -359,186 +346,149 @@
 
                         <form class="snippet">
                             <fieldset>
-                                <dl class="form-line">
-                                    <dt>
-                                        <label for="registration_form_firstName" class="required">
+                                <div class="form-line">
+                                    <div class="form-line__input">
+                                        <label for="registration_form_firstName" class="input-label required">
                                             First name:
-                                            <span class="form-input-required">*</span>
                                         </label>
-                                    </dt>
-                                    <dd>
                                         <input type="text" id="registration_form_firstName"
                                                name="registration_form[firstName]" required="required" class="input">
+                                    </div>
+                                    <div class="form-line__error">
                                         <span class="js-validation-errors-list js-validation-error-list-registration_form_firstName form-error form-error--line display-none">
-                                            <span class="form-error__icon"><i class="svg svg-warning"></i></span>
                                             <ul class="form-error__list"></ul>
                                         </span>
-                                    </dd>
-                                </dl>
-                                <dl class="form-line">
-                                    <dt></dt>
-                                    <dd>
-                                        <div class="form-choice">
-                                            <div class="form-choice__input">
-                                                <input type="checkbox" id="order_personal_info_form_companyCustomer"
-                                                       name="order_personal_info_form[companyCustomer]"
-                                                       class="js-checkbox-toggle"
-                                                       data-checkbox-toggle-container-id="js-company-fields" value="1">
-                                            </div>
-                                            <div class="form-choice__label">
-                                                <label for="order_personal_info_form_companyCustomer">
-                                                    I buy on company behalf
-                                                </label>
-                                                <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyCustomer form-error form-error--choice display-none"
-                                                      style="display: none;"><span class="form-error__icon"><i
-                                                                class="svg svg-warning"></i></span>
-                                                    <ul class="form-error__list"></ul>
-                                                </span>
-
-                                            </div>
-                                        </div>
-                                    </dd>
-                                </dl>
+                                    </div>
+                                </div>
+                                <div class="form-choice">
+                                    <span class="form-choice__line">
+                                        <label>
+                                            <input type="checkbox" id="order_personal_info_form_companyCustomer"
+                                                name="order_personal_info_form[companyCustomer]"
+                                                class="css-checkbox js-checkbox-toggle"
+                                                data-checkbox-toggle-container-id="js-company-fields" value="1">
+                                            <span class="css-checkbox__image">
+                                                I buy on company behalf
+                                            </span>
+                                        </label>
+                                    </span>
+                                </div>
 
                                 <div id="js-company-fields" style="display: none;">
-                                    <dl class="form-line">
-                                        <dt>
-                                            <label for="order_personal_info_form_companyName" class="required">
-                                                Company name: <span class="form-input-required">*</span>
+                                    <div class="form-line">
+                                        <div class="form-line__input">
+                                            <label for="order_personal_info_form_companyName" class="input-label required">
+                                                Company name: 
                                             </label>
-                                        </dt>
-                                        <dd>
                                             <input type="text" id="order_personal_info_form_companyName"
                                                    name="order_personal_info_form[companyName]" required="required"
                                                    class="input">
-
-                                            <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyName form-error form-error--line display-none"><span
-                                                        class="form-error__icon"><i class="svg svg-warning"></i></span>
+                                        </div>
+                                        <div class="form-line__error">
+                                            <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyName form-error form-error--line display-none">
                                                 <ul class="form-error__list"></ul>
                                             </span>
-                                        </dd>
-                                    </dl>
+                                        </div>
+                                    </div>
 
-                                    <dl class="form-line">
-                                        <dt>
-                                            <label for="order_personal_info_form_companyNumber" class="required">
-                                                Company number: <span class="form-input-required">*</span>
+                                    <div class="form-line">
+                                        <div class="form-line__input">
+                                            <label for="order_personal_info_form_companyNumber" class="input-label required">
+                                                Company number:
                                             </label>
-                                        </dt>
-                                        <dd>
                                             <input type="text" id="order_personal_info_form_companyNumber"
                                                    name="order_personal_info_form[companyNumber]" required="required"
                                                    class="input">
-
-                                            <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyNumber form-error form-error--line display-none"><span
-                                                        class="form-error__icon"><i class="svg svg-warning"></i></span>
+                                        </div>
+                                        <div class="form-line__error">
+                                            <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyNumber form-error form-error--line display-none">
                                                 <ul class="form-error__list"></ul>
                                             </span>
-                                        </dd>
-                                    </dl>
+                                        </div>
+                                    </div>
 
-                                    <dl class="form-line">
-                                        <dt>
-                                            <label for="order_personal_info_form_companyTaxNumber">
+                                    <div class="form-line">
+                                        <div class="form-line__input">
+                                            <label for="order_personal_info_form_companyTaxNumber" class="input-label">
                                                 Tax number:
                                             </label>
-                                        </dt>
-                                        <dd>
                                             <input type="text" id="order_personal_info_form_companyTaxNumber"
                                                    name="order_personal_info_form[companyTaxNumber]" class="input">
-
-                                            <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyTaxNumber form-error form-error--line display-none"><span
-                                                        class="form-error__icon"><i class="svg svg-warning"></i></span>
+                                        </div>
+                                        <div class="form-line__error">
+                                            <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_companyTaxNumber form-error form-error--line display-none">
                                                 <ul class="form-error__list"></ul>
                                             </span>
-                                        </dd>
-                                    </dl>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <dl class="form-line">
-                                    <dt>
-                                        <label for="registration_form_password_first" class="required">
-                                            Password: <span class="form-input-required">*</span>
+                                <div class="form-line">
+                                    <div class="form-line__input">
+                                        <label for="registration_form_password_first" class="input-label required">
+                                            Password:
                                         </label>
-                                        <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip"
-                                           data-placement="right" title=""
-                                           data-original-title="Password must be at least six characters and can't be the same as entered email or its part before at sign."></i>
-                                    </dt>
-                                    <dd>
                                         <input type="password" id="registration_form_password_first"
                                                name="registration_form[password][first]" required="required"
                                                autocomplete="new-password" class="input">
-
-                                        <span class="js-validation-errors-list js-validation-error-list-registration_form_password_first form-error form-error--line display-none"><span
-                                                    class="form-error__icon"><i class="svg svg-warning"></i></span>
+                                        <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip"
+                                           data-placement="right" title=""
+                                           data-original-title="Password must be at least six characters and can't be the same as entered email or its part before at sign."></i>
+                                    </div>
+                                    <div class="form-line__error">
+                                        <span class="js-validation-errors-list js-validation-error-list-registration_form_password_first form-error form-error--line display-none">
                                             <ul class="form-error__list"></ul>
                                         </span>
-                                    </dd>
-                                </dl>
+                                    </div>
+                                </div>
 
-                                <dl class="form-line">
-                                    <dt></dt>
-                                    <dd>
-                                        <div class="form-choice">
-                                            <div class="form-choice__input">
-                                                <input type="checkbox" id="registration_form_privacyPolicy"
-                                                       name="registration_form[privacyPolicy]" required="required"
-                                                       value="1">
-                                            </div>
-                                            <div class="form-choice__label">
-                                                <label for="registration_form_privacyPolicy">
-                                                    I agree with <a href="http://127.0.0.1:8000/privacy-policy/"
-                                                                    target="_blank">privacy policy</a>.
-                                                </label>
-                                                <span class="js-validation-errors-list js-validation-error-list-registration_form_privacyPolicy form-error form-error--choice display-none">
-                                                    <span class="form-error__icon">
-                                                        <i class="svg svg-warning"></i>
-                                                    </span>
-                                                    <ul class="form-error__list"></ul>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </dd>
-                                </dl>
+                                <div class="form-choice">
+                                    <span class="form-choice__line">
+                                        <label>
+                                            <input type="checkbox" id="registration_form_privacyPolicy"
+                                                    name="registration_form[privacyPolicy]" required="required"
+                                                    value="1" class="css-checkbox">
+                                            <span class="css-checkbox__image">
+                                                I agree with <a href="http://127.0.0.1:8000/privacy-policy/"
+                                                                target="_blank">privacy policy</a>.
+                                            </span>
+                                        </label>
+                                    </span>
+                                </div>
 
-                                <dl class="form-line">
-                                    <dt></dt>
-                                    <dd>
-                                        <button type="submit" name="submit_button" class="btn">Submit form</button>
-                                    </dd>
-                                </dl>
+                                <div class="form-line">
+                                    <button type="submit" name="submit_button" class="btn">Submit form</button>
+                                </div>
 
                             </fieldset>
                         </form>
 
                         <h3 class="styleguide-module__title--small">Error field</h3>
                         <fieldset>
-                            <dl class="form-line">
-                                <dt>
-                                    <label for="order_personal_info_form_firstName" class="required">
-                                        First name: <span class="form-input-required">*</span>
+                            <div class="form-line">
+                                <div class="form-line__input">
+                                    <label for="order_personal_info_form_firstName" class="input-label required">
+                                        First name:
                                     </label>
-                                    <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip"
-                                       data-placement="right" title=""
-                                       data-original-title="Password must be at least six characters and can't be the same as entered email or its part before at sign."></i>
-                                </dt>
-                                <dd>
                                     <input id="order_personal_info_form_firstName"
                                            name="order_personal_info_form[firstName]" required="required"
                                            class="input form-input-error" type="text">
-
+                                    <i class="svg svg-info in-icon in-icon--info js-tooltip" data-toggle="tooltip"
+                                       data-placement="right" title=""
+                                       data-original-title="Password must be at least six characters and can't be the same as entered email or its part before at sign."></i>
+                                </div>
+                                <div class="form-line__error">
                                     <span class="js-validation-errors-list js-validation-error-list-order_personal_info_form_firstName form-error form-error--line display-none"
                                           style="display: block;">
-                                        <span class="form-error__icon"><i class="svg svg-warning"></i></span>
                                         <ul class="form-error__list">
                                             <li class="js-validation-errors-message js-validation-error-list-order_personal_info_form_firstName">This value is not a valid Name</li>
                                         </ul>
                                     </span>
-                                </dd>
-                            </dl>
+                                </div>
+                            </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
-                            <h3 class="styleguide-module__title--small">Select classic</h3>
+                            <h3>Select classic</h3>
                             <select id="select_1" name="select_1" class="input">
                                 <option value="1">Slovenská republika</option>
                                 <option value="2">Czech republic</option>
@@ -552,68 +502,81 @@
 </select>
                             </textarea>
                         </div>
+
                         <h3 class="styleguide-module__title--small">Radio</h3>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="radio" id="radio1" name="radio" class="css-radio"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="radio1">Radio input</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="radio" id="radio1" name="radio" class="css-radio"/>
+                                        <span class="css-radio__image">
+                                            Radio input
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="radio" id="radio2" name="radio" class="css-radio" checked="checked"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="radio2">Radio input selected</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="radio" id="radio2" name="radio" class="css-radio" checked="checked"/>
+                                        <span class="css-radio__image">
+                                            Radio input selected
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="radio" id="radio3" name="radio" class="css-radio" disabled="disabled"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="radio3">Radio input disabled</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="radio" id="radio3" name="radio" class="css-radio" disabled="disabled"/>
+                                        <span class="css-radio__image">
+                                            Radio input disabled
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="radio" id="radio4" name="radio2" class="css-radio" checked="checked"
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="radio" id="radio4" name="radio2" class="css-radio" checked="checked"
                                            disabled="disabled"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="radio4">Radio input selected disabled</label>
-                                </div>
+                                        <span class="css-radio__image">
+                                            Radio input selected disabled
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset" style="max-width: 200px;">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="radio" id="radio5" name="radio2" class="css-radio"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="radio5">Radio with longer text Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit,</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="radio" id="radio5" name="radio3" class="css-radio"/>
+                                        <span class="css-radio__image">
+                                            Radio with longer text Lorem ipsum dolor sit amet, consectetur
+                                        adipiscing elit,
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <div class="styleguide-module__editor">
                             <textarea class="codemirror-html" id="html-radiobuttons">
 <div class="form-choice">
-    <div class="form-choice__input">
-        <input type="radio" id="radio_1" name="radio2" class="css-radio"/>
-    </div>
-    <div class="form-choice__label">
-        <label for="radio_1">Radio text label</label>
-    </div>
+    <span class="form-choice__line">
+        <label>
+            <input type="radio" id="radio1" name="radio" class="css-radio"/>
+            <span class="css-radio__image">
+                Radio input
+            </span>
+        </label>
+    </span>
 </div>
                             </textarea>
                         </div>
@@ -621,89 +584,99 @@
                         <h3 class="styleguide-module__title--small">Checkbox</h3>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="checkbox" id="checkbox1" name="checkbox" class="css-checkbox"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="checkbox1">Checkbox input</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="checkbox" id="checkbox1" name="checkbox" class="css-checkbox"/>
+                                        <span class="css-checkbox__image">
+                                            Checkbox input
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="checkbox" id="checkbox2" name="checkbox" class="css-checkbox"
-                                           checked="checked"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="checkbox2">Checkbox checked</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="checkbox" id="checkbox2" name="checkbox" class="css-checkbox" checked="checked"/>
+                                        <span class="css-checkbox__image">
+                                            Checkbox checked
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="checkbox" id="checkbox3" name="checkbox" class="css-checkbox"
-                                           disabled="disabled"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="checkbox3">Checkbox disabled</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="checkbox" id="checkbox3" name="checkbox" class="css-checkbox" disabled="disabled"/>
+                                        <span class="css-checkbox__image">
+                                            Checkbox disabled
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="checkbox" id="checkbox4" name="checkbox-dis" class="css-checkbox"
-                                           disabled="disabled" checked="checked"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="checkbox4">Checkbox checked disabled</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="checkbox" id="checkbox4" name="checkbox" class="css-checkbox" 
+                                                disabled="disabled" checked="checked"/>
+                                        <span class="css-checkbox__image">
+                                            Checkbox checked disabled
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
 
                         <fieldset class="form-fieldset" style="max-width: 200px;">
                             <div class="form-choice">
-                                <div class="form-choice__input">
-                                    <input type="checkbox" id="checkbox4" name="checkbox-dis" class="css-checkbox"
-                                           disabled="disabled"/>
-                                </div>
-                                <div class="form-choice__label">
-                                    <label for="checkbox4">Checkbox with longer text Lorem ipsum dolor sit amet,
-                                        consectetur adipiscing elit,</label>
-                                </div>
+                                <span class="form-choice__line">
+                                    <label>
+                                        <input type="checkbox" id="checkbox5" name="checkbox" class="css-checkbox"/>
+                                        <span class="css-checkbox__image">
+                                            Checkbox with longer text Lorem ipsum dolor sit amet,
+                                        consectetur adipiscing elit,
+                                        </span>
+                                    </label>
+                                </span>
                             </div>
                         </fieldset>
                         <div class="styleguide-module__editor">
                             <textarea class="codemirror-html" id="html-checkboxes">
 <div class="form-choice">
-    <div class="form-choice__input">
-        <input type="checkbox" id="checkbox_1" name="checkbox" class="css-checkbox"/>
-    </div>
-    <div class="form-choice__label">
-        <label for="checkbox_1">Checkbox with text</label>
-    </div>
+    <span class="form-choice__line">
+        <label>
+            <input type="checkbox" id="checkbox6" name="checkbox" class="css-checkbox"/>
+            <span class="css-checkbox__image">
+                Checkbox with text
+            </span>
+        </label>
+    </span>
 </div>
                             </textarea>
                         </div>
 
                         <h3 class="styleguide-module__title--small">Spinbox / add basket</h3>
-                        <span class="form-input-spinbox js-spinbox">
-                            <input type="text" name="add_product_form[quantity]" required="required"
-                                   class="form-input-spinbox__input input-no-style js-spinbox-input input id__add_product_form_quantity"
-                                   data-spinbox-min="1" value="1">
-
-                            <button type="button"
-                                    class="btn-no-style form-input-spinbox__btn js-spinbox-plus">+</button>
-                            <button type="button"
-                                    class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">-</button>
-                        </span>
-                        <button type="submit" name="add_product_form[add]"
-                                class="btn--success  btn id__add_product_form_add">Add to cart
-                        </button>
-                        <input type="hidden" name="add_product_form[productId]"
-                               class="input id__add_product_form_productId" value="1">
+                        <div class="box-detail-add__action">
+                            <div class="box-detail-add__action__spinbox">
+                                <span class="form-input-spinbox js-spinbox">
+                                    <input type="text" name="add_product_form[quantity]" required="required" class="form-input-spinbox__input input-no-style js-spinbox-input input id__add_product_form_quantity" data-spinbox-min="1" data-spinbox-step="1" value="1">
+                                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">
+                                        <i class="svg svg-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">
+                                        <i class="svg svg-minus"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <button type="submit" name="add_product_form[add]" class="box-detail-add__action__button btn--success btn--large btn id__add_product_form_add" data-hard-disabled="0">
+                                <i class="svg svg-cart"></i>Přidat do košíku
+                            </button>
+                        </div>
 
                         <h3 class="styleguide-module__title--small">Price Slider</h3>
                         <div class="box-filter__price">
@@ -752,35 +725,6 @@
                                 data-maximal-value="21590.000000"
                             ></div>
                         </div>
-
-                        <h3 class="styleguide-module__title--small">Newsletter form error</h3>
-                        <div class="footer__newsletter">
-                            <div class="footer__newsletter__form">
-                                <div class="footer__newsletter__form__wrap">
-                                    <div class="footer__newsletter__form__in">
-                                                <input type="email" id="subscription_form_email" name="subscription_form[email]" required="required" placeholder="Enter email" class="footer__newsletter__input input">
-
-                                                <span class="js-validation-errors-list js-validation-error-list-subscription_form_email form-error  display-none"><span class="form-error__icon"><i class="svg svg-warning"></i></span><ul class="form-error__list"></ul></span>
-                                    </div>
-                                        <button type="submit" id="subscription_form_send" name="subscription_form[send]" class="footer__newsletter__form__btn btn">Log in</button>
-
-                                </div>
-                                <span class="js-validation-errors-list js-validation-error-list-subscription_form in-message in-message--alert display-none">
-                                    <ul class="in-message__list"></ul>
-                                </span>
-                                <div class="form-choice">
-                                    <div class="form-choice__input">
-                                        <input type="checkbox" id="subscription_form_privacyPolicyAgreement" name="subscription_form[privacyPolicyAgreement]" required="required" value="1">
-                                    </div>
-                                    <div class="form-choice__label">
-                                        <label for="subscription_form_privacyPolicyAgreement">
-                                            I agree with <a href="#" target="_blank">privacy policy</a>.
-                                        </label>
-                                        <span class="js-validation-errors-list js-validation-error-list-subscription_form_privacyPolicyAgreement form-error form-error--choice display-none"><span class="form-error__icon"><i class="svg svg-warning"></i></span><ul class="form-error__list"></ul></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </section>
 
                     <section id="toggle" class="styleguide-module anchor clearfix">
@@ -812,11 +756,18 @@
                         </div>
 
                         <h3 class="styleguide-module__title--small">Checkbox toggle</h3>
-                        <input type="checkbox" id="checkbox_toggle" name="checkbox_toggle" class="js-checkbox-toggle"
-                               data-checkbox-toggle-container-class="js-checkbox-show-hide-this" value="1">
-                        <label for="checkbox_toggle">
-                            Show/hide element by clicking on checkbox
-                        </label>
+                        <div class="form-choice">
+                            <span class="form-choice__line">
+                                <label>
+                                    <input type="checkbox" id="checkbox_toggle" name="checkbox_toggle" class="css-checkbox js-checkbox-toggle"
+                                            data-checkbox-toggle-container-class="js-checkbox-show-hide-this" value="1">
+                                    <span class="css-checkbox__image">
+                                        Show/hide element by clicking on checkbox
+                                    </span>
+                                </label>
+                            </span>
+                        </div>
+
                         <div class="js-checkbox-show-hide-this display-none">
                             This is checbox show hide element content
                         </div>
@@ -971,19 +922,18 @@
                                                            class="input id__front_login_form_password" type="password">
                                                 </div>
                                                 <div class="box-login__item box-login__item--checkbox">
-                                                    <label class="form-choice">
-                                                    <span class="form-choice__input">
-                                                    <input name="front_login_form[rememberMe]"
-                                                           class="id__front_login_form_rememberMe" value="1"
-                                                           type="checkbox">
-                                                    </span>
-                                                        <span class="form-choice__label">
-                                                    Remember my login
-                                                    <i class="svg svg-info in-icon in-icon--info js-tooltip"
-                                                       data-toggle="tooltip" data-placement="right" title=""
-                                                       data-original-title="We will remember your login on this computer for 30 days."></i>
-                                                    </span>
-                                                    </label>
+                                                    <div class="form-choice">
+                                                        <span class="form-choice__line">
+                                                            <label>
+                                                                <input name="front_login_form[rememberMe]"
+                                                                    class="css-checkbox id__front_login_form_rememberMe" value="1"
+                                                                    type="checkbox">
+                                                                <span class="css-checkbox__image">
+                                                                    Remember my login
+                                                                </span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <div class="box-login__item box-login__item--submit">
                                                     <button type="submit" name="front_login_form[login]"
@@ -1121,5 +1071,7 @@
             </main>
         </div>
     </main>
+
+    {{ encore_entry_script_tags('styleguide') }}
 
 {% endblock %}

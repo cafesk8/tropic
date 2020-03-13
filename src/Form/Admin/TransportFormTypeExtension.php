@@ -6,6 +6,7 @@ namespace App\Form\Admin;
 
 use App\Component\Balikobot\Shipper\ShipperFacade;
 use App\Component\Balikobot\Shipper\ShipperServiceFacade;
+use App\Component\MergadoTransportType\MergadoTransportTypeFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\Transport\Transport;
 use Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter;
@@ -49,21 +50,29 @@ class TransportFormTypeExtension extends AbstractTypeExtension
     private $countryFacade;
 
     /**
+     * @var \App\Component\MergadoTransportType\MergadoTransportTypeFacade
+     */
+    private $mergadoTransportTypeFacade;
+
+    /**
      * @param \App\Component\Balikobot\Shipper\ShipperFacade $shipperFacade
      * @param \App\Component\Balikobot\Shipper\ShipperServiceFacade $shipperServiceFacade
      * @param \Shopsys\FrameworkBundle\Component\Router\CurrentDomainRouter $currentDomainRouter
      * @param \App\Model\Country\CountryFacade $countryFacade
+     * @param \App\Component\MergadoTransportType\MergadoTransportTypeFacade $mergadoTransportTypeFacade
      */
     public function __construct(
         ShipperFacade $shipperFacade,
         ShipperServiceFacade $shipperServiceFacade,
         CurrentDomainRouter $currentDomainRouter,
-        CountryFacade $countryFacade
+        CountryFacade $countryFacade,
+        MergadoTransportTypeFacade $mergadoTransportTypeFacade
     ) {
         $this->shipperFacade = $shipperFacade;
         $this->shipperServiceFacade = $shipperServiceFacade;
         $this->currentDomainRouter = $currentDomainRouter;
         $this->countryFacade = $countryFacade;
+        $this->mergadoTransportTypeFacade = $mergadoTransportTypeFacade;
     }
 
     /**
@@ -180,6 +189,12 @@ class TransportFormTypeExtension extends AbstractTypeExtension
                 'class' => 'js-transport-type',
             ],
             'icon_title' => t('Změny se projeví několik minut po uložení z důvodu stahování aktuálních poboček.'),
+        ]);
+        $builderTransportTypeGroup->add('mergadoTransportType', ChoiceType::class, [
+            'label' => t('Typ dopravy pro Mergado'),
+            'choices' => $this->mergadoTransportTypeFacade->getShipperNamesIndexedByName(),
+            'required' => false,
+            'icon_title' => t('Při nevyplnění nebude doprava do Mergada exportována.'),
         ]);
 
         return $builderTransportTypeGroup;

@@ -17,6 +17,7 @@ class CountryDataFixture extends AbstractReferenceFixture
     public const COUNTRY_SLOVAKIA = 'country_slovakia';
     public const COUNTRY_GERMANY = 'country_germany';
     public const COUNTRY_FRANCE = 'country_france';
+    public const COUNTRY_GREAT_BRITAIN = 'country_great_britain';
 
     /**
      * @var \App\Model\Country\CountryFacade
@@ -85,6 +86,15 @@ class CountryDataFixture extends AbstractReferenceFixture
 
         $countryData->code = 'FR';
         $this->createCountry($countryData, self::COUNTRY_FRANCE);
+
+        $countryData = $this->countryDataFactory->create();
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $countryData->names[$locale] = t('Velká Británie', [], 'dataFixtures', $locale);
+        }
+
+        $countryData->code = 'GB';
+        $this->createCountry($countryData, self::COUNTRY_GREAT_BRITAIN);
     }
 
     /**

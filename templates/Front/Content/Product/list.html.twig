@@ -44,6 +44,13 @@
 
         <div class="web__line">
             <div class="web__container">
+                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert' : category.getAdvert()})) }}
+            </div>
+        </div>
+
+
+        <div class="web__line">
+            <div class="web__container">
                 <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
                     {% if paginationResult.results|length > 0 or filterFormSubmitted %}
                         <div class="box-list__panel js-product-list-panel">

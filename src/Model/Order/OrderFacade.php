@@ -8,21 +8,24 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Mall\MallImportOrderClient;
 use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
+use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
 use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\Mall\Exception\StatusChangException;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
+use App\Model\Order\Status\OrderStatus;
 use App\Model\Product\Gift\ProductGiftPriceCalculation;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Heureka\HeurekaFacade;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
@@ -462,7 +465,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Order\Order $order
      * @param \App\Model\Customer\User\CustomerUser $customer
      */
-    public function setCustomerToOrder(BaseOrder $order, CustomerUser $customer): void
+    public function setCustomerToOrder(BaseOrder $order, BaseCustomerUser $customer): void
     {
         $order->setCustomer($customer);
         $this->em->flush($order);
@@ -646,5 +649,18 @@ class OrderFacade extends BaseOrderFacade
                 $giftTotalPrice
             );
         }
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @return bool
+     */
+    public function isUnpaidOrderPaymentChangeable(Order $order): bool
+    {
+        return $order->getStatus()->getType() === OrderStatus::TYPE_NEW &&
+            $order->getPayment()->isGoPay() &&
+            count(array_filter($order->getGoPayTransactions(), function (GoPayTransaction $transaction) {
+                return $transaction->getGoPayStatus() === PaymentStatus::PAID;
+            })) === 0;
     }
 }

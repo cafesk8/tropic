@@ -23,4 +23,4 @@ front_blogcategory_detail:
 
 front_brand_detail:
     path: friendly-url
-    defaults: { _controller: App\Controller\Front\HomepageController:indexAction }
+    defaults: { _controller: App\Controller\Front\ProductController:listByBrandAction }

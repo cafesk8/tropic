@@ -1,0 +1,79 @@
+{% block begin %}
+<?xml version="1.0" encoding="utf-8"?>
+<CHANNEL xmlns="http://www.mergado.com/ns/1.2">
+    <GENERATOR>shopsys-mergado-feed-v1.0</GENERATOR>
+    <LINK>{{ domainConfig.url }}</LINK>
+{% endblock %}
+{% block item %}
+    <ITEM>
+        <ITEM_ID>{{ item.id }}</ITEM_ID>
+        {% if item.itemGroupId is not null -%}
+            <ITEMGROUP_ID>{{ item.itemGroupId }}</ITEMGROUP_ID>
+        {% endif -%}
+        {% if item.catnum is not null -%}
+            <PRODUCTNO>{{ item.catnum }}</PRODUCTNO>
+        {% endif -%}
+        {% if item.ean is not null -%}
+            <EAN>{{ item.ean }}</EAN>
+        {% endif -%}
+        {% if item.url is not null -%}
+            <URL>{{ item.url }}</URL>
+        {% endif -%}
+        <NAME_EXACT>{{ item.nameExact }}</NAME_EXACT>
+        <CATEGORY>{{ item.category }}</CATEGORY>
+        {% if item.descriptionShort is not null -%}
+            <DESCRIPTION_SHORT>{{ item.descriptionShort }}</DESCRIPTION_SHORT>
+        {% endif -%}
+        {% if item.description is not null -%}
+            <DESCRIPTION>
+                {{ item.description }}
+            </DESCRIPTION>
+        {% endif -%}
+        {% if item.benefits is not empty -%}
+            {% for benefit in item.benefits -%}
+                <BENEFIT>{{ benefit }}</BENEFIT>
+            {% endfor -%}
+        {% endif -%}
+        <BRAND>{{ item.brand }}</BRAND>
+        <PRICE>{{ item.priceWithoutVat }}</PRICE>
+        <PRICE_VAT>{{ item.priceWithVat }}</PRICE_VAT>
+        <CURRENCY>{{ item.currency }}</CURRENCY>
+        <AVAILABILITY>{{ item.availability }}</AVAILABILITY>
+        <DELIVERY_DAYS>{{ item.deliveryDays }}</DELIVERY_DAYS>
+        {% if item.image is not null -%}
+            <IMAGE>{{ item.image }}</IMAGE>
+        {% endif -%}
+        {% for alternativeImage in item.alternativeImages -%}
+            {% if alternativeImage != item.image -%}
+                <IMAGE_ALTERNATIVE>{{ alternativeImage }}</IMAGE_ALTERNATIVE>
+            {% endif -%}
+        {% endfor -%}
+        {% if item.video is not null -%}
+            <VIDEO>https://youtu.be/{{ item.video }}</VIDEO>
+        {% endif -%}
+        {% for alternativeVideo in item.alternativeVideos -%}
+            {% if alternativeVideo != item.video -%}
+                <VIDEO_ALTERNATIVE>https://youtu.be/{{ alternativeVideo }}</VIDEO_ALTERNATIVE>
+            {% endif -%}
+        {% endfor -%}
+        {% for paramName, paramVal in item.params -%}
+            <PARAM>
+                <NAME>{{ paramName }}</NAME>
+                <VALUE>{{ paramVal }}</VALUE>
+            </PARAM>
+        {% endfor -%}
+        {% for delivery in item.deliveries -%}
+            <DELIVERY>
+                <ID>{{ delivery.mergadoId }}</ID>
+                <PRICE>{{ delivery.price.getAmount() }}</PRICE>
+                {% if delivery.priceCod is not null -%}
+                    <PRICE_COD>{{ delivery.priceCod.getAmount() }}</PRICE_COD>
+                {% endif -%}
+            </DELIVERY>
+        {% endfor -%}
+    </ITEM>
+{% endblock %}
+
+{% block end %}
+</CHANNEL>
+{% endblock %}

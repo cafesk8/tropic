@@ -69,36 +69,6 @@ class ArticleSettingsController extends AdminBaseController
                 $selectedDomainId
             );
 
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->ourValuesArticle,
-                Setting::OUR_VALUES_ARTICLE_ID,
-                $selectedDomainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->ourStoryArticle,
-                Setting::OUR_STORY_ARTICLE_ID,
-                $selectedDomainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->firstArticleOnHeaderMenu,
-                Setting::FIRST_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
-                $selectedDomainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->secondArticleOnHeaderMenu,
-                Setting::SECOND_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
-                $selectedDomainId
-            );
-
-            $this->articleFacade->setArticleOnDomainInSettings(
-                $articleSettingData->thirdArticleOnHeaderMenu,
-                Setting::THIRD_ARTICLE_ON_HEADER_MENU_ARTICLE_ID,
-                $selectedDomainId
-            );
-
             $this->getFlashMessageSender()->addSuccessFlashTwig(t('Nastavení bylo uloženo.'));
             return $this->redirectToRoute('admin_articlesettings_setting');
         }

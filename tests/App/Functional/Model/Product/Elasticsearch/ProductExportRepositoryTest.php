@@ -49,6 +49,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
     {
         return [
             'id',
+            'gifts',
             'name',
             'catnum',
             'partno',

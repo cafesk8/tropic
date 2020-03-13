@@ -72,7 +72,7 @@ class AdvertDataFixture extends AbstractReferenceFixture implements DependentFix
         $this->addReference(self::ADVERT_THIRD_SQUARE, $advert);
 
         $advertData->domainId = 1;
-        $advertData->name = t('Zelí', [], 'dataFixtures');
+        $advertData->name = t('Hlavní banner titulní stránky', [], 'dataFixtures');
         $advertData->type = Advert::TYPE_IMAGE;
         $advertData->hidden = false;
         $advertData->positionName = 'fourthRectangle';

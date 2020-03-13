@@ -123,19 +123,19 @@ class MigrateProductDataCommand extends Command
         $productData->name = [
             DomainHelper::CZECH_LOCALE => $productData->name[DomainHelper::CZECH_LOCALE],
             DomainHelper::SLOVAK_LOCALE => $migrateProductData['nameSk'],
-            DomainHelper::GERMAN_LOCALE => $migrateProductData['nameDe'],
+            DomainHelper::ENGLISH_LOCALE => $migrateProductData['nameEn'],
         ];
 
         $productData->descriptions = [
             DomainHelper::CZECH_DOMAIN => $migrateProductData['descriptionCs'],
             DomainHelper::SLOVAK_DOMAIN => $migrateProductData['descriptionSk'],
-            DomainHelper::GERMAN_DOMAIN => $migrateProductData['descriptionDe'],
+            DomainHelper::ENGLISH_DOMAIN => $migrateProductData['descriptionEn'],
         ];
 
         $productData->shortDescriptions = [
             DomainHelper::CZECH_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionCs']),
             DomainHelper::SLOVAK_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionSk']),
-            DomainHelper::GERMAN_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionDe']),
+            DomainHelper::ENGLISH_DOMAIN => $this->getFilteredShortDescription($migrateProductData['shortDescriptionEn']),
         ];
 
         return $productData;
@@ -176,22 +176,22 @@ class MigrateProductDataCommand extends Command
     {
         $sql = 'SELECT 
                 fdfns.field_nazev_sk_value AS nameSk, 
-                fdfmd.field_nazev_de_value AS nameDe, 
+                fdfmd.field_nazev_en_value AS nameEn, 
                 frfdpc.field_dlouhy_popis_czlpk_value AS descriptionCs, 
                 frfdps.field_dlouhy_popis_sk_value AS descriptionSk, 
-                frfdpd.field_dlouhy_popis_de_value AS descriptionDe, 
+                frfdpd.field_dlouhy_popis_en_value AS descriptionEn, 
                 frfkpc.field_kratky_popis_czlpk_value AS shortDescriptionCs, 
                 frfkps.field_kratky_popis_sk_value AS shortDescriptionSk, 
-                frfkpd.field_kratky_popis_de_value AS shortDescriptionDe 
+                frfkpd.field_kratky_popis_en_value AS shortDescriptionEn 
             FROM `sklad_varianty` sv 
             LEFT JOIN `field_data_field_nazev_sk` fdfns ON fdfns.entity_id = sv.nid 
-            LEFT JOIN `field_data_field_nazev_de` fdfmd ON fdfmd.entity_id = sv.nid
+            LEFT JOIN `field_data_field_nazev_en` fdfmd ON fdfmd.entity_id = sv.nid
             LEFT JOIN `field_data_field_dlouhy_popis_czlpk` frfdpc ON frfdpc.entity_id = sv.nid
             LEFT JOIN `field_data_field_dlouhy_popis_sk` frfdps ON frfdps.entity_id = sv.nid
-            LEFT JOIN `field_data_field_dlouhy_popis_de` frfdpd ON frfdpd.entity_id = sv.nid
+            LEFT JOIN `field_data_field_dlouhy_popis_en` frfdpd ON frfdpd.entity_id = sv.nid
             LEFT JOIN `field_data_field_kratky_popis_czlpk` frfkpc ON frfkpc.entity_id = sv.nid
             LEFT JOIN `field_data_field_kratky_popis_sk` frfkps ON frfkps.entity_id = sv.nid
-            LEFT JOIN `field_data_field_kratky_popis_de` frfkpd ON frfkpd.entity_id = sv.nid
+            LEFT JOIN `field_data_field_kratky_popis_en` frfkpd ON frfkpd.entity_id = sv.nid
             WHERE sv.ean = :ean';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('ean', $product->getEan());

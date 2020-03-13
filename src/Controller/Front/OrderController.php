@@ -7,6 +7,7 @@ namespace App\Controller\Front;
 use App\Form\Front\Customer\Password\NewPasswordFormType;
 use App\Form\Front\Order\DomainAwareOrderFlowFactory;
 use App\Form\Front\Order\OrderFlow;
+use App\Form\Front\Order\PaymentFormType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Country\CountryFacade;
 use App\Model\Customer\User\CustomerUserFacade;
@@ -20,7 +21,10 @@ use App\Model\GoPay\GoPayTransactionFacade;
 use App\Model\GoPay\PaymentMethod\GoPayPaymentMethod;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Order\FrontOrderData;
+use App\Model\Order\Item\OrderItemDataFactory;
+use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\OrderData;
+use App\Model\Order\OrderDataFactory;
 use App\Model\Order\OrderDataMapper;
 use App\Model\Order\Preview\OrderPreviewFactory;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
@@ -35,6 +39,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\LegalConditions\LegalConditionsFacade;
 use Shopsys\FrameworkBundle\Model\Mail\Exception\MailException;
 use Shopsys\FrameworkBundle\Model\Newsletter\NewsletterFacade;
+use Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException;
 use Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade;
 use Shopsys\FrameworkBundle\Model\Order\Order;
 use Shopsys\FrameworkBundle\Model\Order\OrderFacade;
@@ -49,6 +54,7 @@ use Shopsys\FrameworkBundle\Model\Security\Roles;
 use Shopsys\FrameworkBundle\Model\Transport\TransportFacade;
 use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -195,6 +201,21 @@ class OrderController extends FrontBaseController
     private $goPayTransactionFacade;
 
     /**
+     * @var \App\Model\Order\OrderDataFactory
+     */
+    private $orderDataFactory;
+
+    /**
+     * @var \App\Model\Order\Item\OrderItemFactory
+     */
+    private $orderItemFactory;
+
+    /**
+     * @var \App\Model\Order\Item\OrderItemDataFactory
+     */
+    private $orderItemDataFactory;
+
+    /**
      * @param \App\Model\Order\OrderFacade $orderFacade
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \App\Model\Order\Preview\OrderPreviewFactory $orderPreviewFactory
@@ -222,6 +243,9 @@ class OrderController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Customer\Mail\CustomerMailFacade $customerMailFacade
      * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
      * @param \App\Model\GoPay\GoPayTransactionFacade $goPayTransactionFacade
+     * @param \App\Model\Order\OrderDataFactory $orderDataFactory
+     * @param \App\Model\Order\Item\OrderItemFactory $orderItemFactory
+     * @param \App\Model\Order\Item\OrderItemDataFactory $orderItemDataFactory
      */
     public function __construct(
         OrderFacade $orderFacade,
@@ -250,7 +274,10 @@ class OrderController extends FrontBaseController
         Authenticator $authenticator,
         CustomerMailFacade $customerMailFacade,
         CustomerUserUpdateDataFactory $customerUserUpdateDataFactory,
-        GoPayTransactionFacade $goPayTransactionFacade
+        GoPayTransactionFacade $goPayTransactionFacade,
+        OrderDataFactory $orderDataFactory,
+        OrderItemFactory $orderItemFactory,
+        OrderItemDataFactory $orderItemDataFactory
     ) {
         $this->orderFacade = $orderFacade;
         $this->cartFacade = $cartFacade;
@@ -279,9 +306,16 @@ class OrderController extends FrontBaseController
         $this->customerMailFacade = $customerMailFacade;
         $this->customerUserUpdateDataFactory = $customerUserUpdateDataFactory;
         $this->goPayTransactionFacade = $goPayTransactionFacade;
+        $this->orderDataFactory = $orderDataFactory;
+        $this->orderItemFactory = $orderItemFactory;
+        $this->orderItemDataFactory = $orderItemDataFactory;
     }
 
-    public function indexAction()
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request)
     {
         /** @var \Shopsys\FrameworkBundle\Component\FlashMessage\Bag $flashMessageBag */
         $flashMessageBag = $this->get('shopsys.shop.component.flash_message.bag.front');
@@ -328,17 +362,13 @@ class OrderController extends FrontBaseController
         }
 
         $form = $orderFlow->createForm();
+        $isValid = $orderFlow->isValid($form);
+        // FormData are filled during isValid() call
+        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
 
         $payment = $frontOrderFormData->payment;
         /** @var \App\Model\Transport\Transport $transport */
         $transport = $frontOrderFormData->transport;
-
-        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
-
-        $isValid = $orderFlow->isValid($form);
-        // FormData are filled during isValid() call
-        $orderData = $this->orderDataMapper->getOrderDataFromFrontOrderData($frontOrderFormData);
 
         if ($transport !== null && $transport->isPickupPlace()) {
             if ($orderData->pickupPlace !== null) {
@@ -353,6 +383,8 @@ class OrderController extends FrontBaseController
             }
         }
 
+        /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
@@ -366,6 +398,13 @@ class OrderController extends FrontBaseController
 
                 if ($frontOrderFormData->newsletterSubscription) {
                     $this->newsletterFacade->addSubscribedEmail($frontOrderFormData->email, $this->domain->getId());
+                }
+
+                if ($frontOrderFormData->registration) {
+                    $customerData = $this->customerUserUpdateDataFactory->createFromOrder($order, $frontOrderFormData->password, $this->domain->getId());
+                    $customer = $this->customerUserFacade->create($customerData);
+                    $this->authenticator->loginUser($customer, $request);
+                    $this->orderFacade->setCustomerToOrder($order, $customer);
                 }
 
                 $this->setGoPayBankSwiftSession($frontOrderFormData->payment, $frontOrderFormData->goPayBankSwift);
@@ -785,11 +824,36 @@ class OrderController extends FrontBaseController
             return $this->redirectToRoute('front_cart');
         }
 
-        return $this->render('Front/Content/Order/notPaid.html.twig', [
-            'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
-            'urlHash' => $urlHash,
-            'order' => $order,
-        ]);
+        if (!$order->getPayment()->isGoPay()) {
+            return $this->redirectToRoute('front_cart');
+        }
+
+        if ($this->orderFacade->isUnpaidOrderPaymentChangeable($order)) {
+            $payments = $this->paymentFacade->getVisibleOnCurrentDomainByTransport($order->getTransport());
+            $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($order->getCurrency()->getId());
+
+            $form = $this->createForm(PaymentFormType::class, [], [
+                'action' => $this->generateUrl('front_order_change_payment_method', ['urlHash' => $order->getUrlHash()]),
+                'method' => 'POST',
+                'payments' => $payments,
+                'goPayBankSwifts' => $goPayBankSwifts,
+            ]);
+
+            return $this->render('Front/Content/Order/changePayment.html.twig', [
+                'form' => $form->createView(),
+                'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
+                'payments' => $payments,
+                'urlHash' => $urlHash,
+                'unsuccessfulPayment' => $order->getPayment(),
+                'order' => $order,
+            ]);
+        } else {
+            return $this->render('Front/Content/Order/notPaid.html.twig', [
+                'goPayBankTransferIdentifier' => GoPayPaymentMethod::IDENTIFIER_BANK_TRANSFER,
+                'urlHash' => $urlHash,
+                'order' => $order,
+            ]);
+        }
     }
 
     /**
@@ -827,7 +891,8 @@ class OrderController extends FrontBaseController
                 return $this->redirectToRoute('front_homepage');
             }
         } else {
-            throw $this->createNotFoundException('Order has no payment method set as GoPay');
+            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nemá nastaven způsob platby prostřednictvím GoPay.'));
+            return $this->redirectToRoute('front_homepage');
         }
 
         $goPayBankSwift = $this->session->get(self::SESSION_GOPAY_CHOOSEN_SWIFT, null);
@@ -844,6 +909,60 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $urlHash
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function changePaymentAction(Request $request, string $urlHash): RedirectResponse
+    {
+        try {
+            $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
+        } catch (OrderNotFoundException $e) {
+            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nebyla nalezena.'));
+            return $this->redirectToRoute('front_homepage');
+        }
+
+        $payments = $this->paymentFacade->getVisibleOnCurrentDomainByTransport($order->getTransport());
+
+        $goPayBankSwifts = $this->goPayBankSwiftFacade->getAllByCurrencyId($order->getCurrency()->getId());
+
+        $form = $this->createForm(PaymentFormType::class, [], [
+            'payments' => $payments,
+            'goPayBankSwifts' => $goPayBankSwifts,
+        ]);
+
+        $form->handleRequest($request);
+
+        /** @var \App\Model\Payment\Payment $chosenPayment */
+        $chosenPayment = $form['payment']->getData();
+        $chosenGoPayPaymentSwift = $form['goPayBankSwift']->getData();
+        $this->setGoPayBankSwiftSession($chosenPayment, $chosenGoPayPaymentSwift);
+
+        $price = $this->paymentPriceCalculation->calculateIndependentPrice($chosenPayment, $order->getCurrency(), $this->domain->getId());
+        $orderPayment = $this->orderItemFactory->createPayment($order, $chosenPayment->getName(), $price, $chosenPayment->getPaymentDomain($this->domain->getId())->getVat()->getPercent(), 1, $chosenPayment);
+        $orderPaymentData = $this->orderItemDataFactory->createFromOrderItem($orderPayment);
+        $orderData = $this->orderDataFactory->createFromOrder($order);
+        $orderData->goPayId = null;
+        $orderData->orderPayment = $orderPaymentData;
+        $order->removeItem($order->getOrderPayment());
+        $this->orderFacade->edit($order->getId(), $orderData);
+
+        $this->session->set(self::SESSION_CREATED_ORDER, $order->getId());
+
+        $this->getFlashMessageSender()->addInfoFlash(t('Způsob platby byl úspěšně změněn'));
+
+        if ($this->getUser() instanceof CustomerUser) {
+            return $this->redirectToRoute('front_customer_order_detail_registered', [
+                'orderNumber' => $order->getNumber(),
+            ]);
+        } else {
+            return $this->redirectToRoute('front_customer_order_detail_unregistered', [
+                'urlHash' => $order->getUrlHash(),
+            ]);
+        }
     }
 
     /**

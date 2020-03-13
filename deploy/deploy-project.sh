@@ -2,7 +2,7 @@
 
 BASE_PATH="$(realpath "$(dirname "$0")/..")"
 CONFIGURATION_TARGET_PATH="${BASE_PATH}/var/deployment/kubernetes"
-BASIC_AUTH_PATH="${BASE_PATH}/deploy/basicHttpAuth"
+BASIC_AUTH_PATH="${CONFIGURATION_TARGET_PATH}/basicHttpAuth"
 DEPLOY_TARGET_PATH="${BASE_PATH}/var/deployment/deploy"
 APP_CONFIG_DIRECTORY="config"
 APP_CONFIG_PATH="${BASE_PATH}/${APP_CONFIG_DIRECTORY}"
@@ -22,6 +22,9 @@ function deploy() {
         ["parameters.elasticsearch_host"]='elasticsearch'
         ["parameters.mailer_host"]='shopmail.shopsys.cz'
         ["parameters.trusted_proxies[+]"]=10.0.0.0/8
+        ["parameters.gtm_config.cs.container_id"]="${GTM_CONTAINER_ID_CS}"
+        ["parameters.gtm_config.sk.container_id"]="${GTM_CONTAINER_ID_SK}"
+        ["parameters.gtm_config.en.container_id"]="${GTM_CONTAINER_ID_EN}"
     )
 
     VARS=(

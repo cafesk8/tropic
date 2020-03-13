@@ -5,245 +5,241 @@ msgstr ""
 "Language: en\n"
 
 msgid "City name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "City name cannot be longer than {{ limit }} characters"
 
 msgid "Company name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Company name cannot be longer than {{ limit }} characters"
 
 msgid "Email cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Email cannot be longer than {{ limit }} characters"
 
 msgid "Externí ID nesmí být delší než {{ limit }} znaků"
-msgstr ""
+msgstr "External ID cannot be longer than {{ limit }} characters"
 
 msgid "First name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "First name cannot be longer than {{ limit }} characters"
 
 msgid "Google Maps link cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Google Maps link cannot be longer than {{ limit }} characters"
 
 msgid "Heading (H1) cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Heading (H1) cannot be longer than {{ limit }} characters"
 
 msgid "Hodiny musí být v rozmezí od 0 do 23"
-msgstr ""
-
-msgid "Hodnota nemůže byt delší než {{ limit }} znaků"
-msgstr ""
+msgstr "Hours must be between 0 and 23"
 
 msgid "Identification number cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Heading (H1) cannot be longer than {{ limit }} characters"
 
 msgid "Image can be only in JPG, GIF or PNG format"
-msgstr ""
+msgstr "Image can be only in JPG, GIF or PNG format"
 
 msgid "Last name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Last name cannot be longer than {{ limit }} characters"
 
 msgid "Minuty musí být v rozmezí od 0 do 59"
-msgstr ""
+msgstr "Minutes must be between 0 and 59"
 
 msgid "Musíte vybrat dopravce"
-msgstr ""
+msgstr "Select a carrier"
 
 msgid "Musíte vybrat službu dopravce"
-msgstr ""
+msgstr "Select a carrier service"
 
 msgid "Name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Name cannot be longer than {{ limit }} characters"
 
 msgid "Opening hours cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Opening hours cannot be longer than {{ limit }} characters"
 
 msgid "Password cannot be same as e-mail"
-msgstr ""
+msgstr "Password cannot be same as e-mail"
 
 msgid "Password cannot be same as part of e-mail before at sign"
-msgstr ""
+msgstr "Password cannot be same as part of e-mail before at sign"
 
 msgid "Password must be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Password must be longer than {{ limit }} characters"
 
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Passwords do not match"
 
 msgid "Please choose a valid combination of transport and payment"
-msgstr ""
+msgstr "Please choose a valid combination of transport and payment"
 
 msgid "Please choose advertisement type"
-msgstr ""
+msgstr "Please choose advertisement type"
 
 msgid "Please choose article placement"
-msgstr ""
+msgstr "Please choose article placement"
 
 msgid "Please choose country"
-msgstr ""
+msgstr "Please choose country"
 
 msgid "Please choose payment type"
-msgstr ""
+msgstr "Please choose payment type"
 
 msgid "Please choose shipping type"
-msgstr ""
+msgstr "Please choose shipping type"
 
 msgid "Please enter city"
-msgstr ""
+msgstr "Please enter city"
 
 msgid "Please enter company name"
-msgstr ""
+msgstr "Please enter company name"
 
 msgid "Please enter content"
-msgstr ""
+msgstr "Please enter content"
 
 msgid "Please enter country of a store"
-msgstr ""
+msgstr "Please enter country of a store"
 
 msgid "Please enter date of creation"
-msgstr ""
+msgstr "Please enter date of creation"
 
 msgid "Please enter discount percentage"
-msgstr ""
+msgstr "Please enter discount percentage"
 
 msgid "Please enter e-mail"
-msgstr ""
+msgstr "Please enter e-mail"
 
 msgid "Please enter first name"
-msgstr ""
+msgstr "Please enter first name"
 
 msgid "Please enter identification number"
-msgstr ""
+msgstr "Please enter identification number"
 
 msgid "Please enter last name"
-msgstr ""
+msgstr "Please enter last name"
 
 msgid "Please enter name"
-msgstr ""
+msgstr "Please enter name"
 
 msgid "Please enter password"
-msgstr ""
+msgstr "Please enter password"
 
 msgid "Please enter price in correct format (positive number with decimal separator)"
-msgstr ""
+msgstr "Please enter price in correct format (positive number with decimal separator)"
 
 msgid "Please enter quantity"
-msgstr ""
+msgstr "Please enter quantity"
 
 msgid "Please enter stock in correct format (positive number >= 0)"
-msgstr ""
+msgstr "Please enter stock in correct format (positive number >= 0)"
 
 msgid "Please enter street"
-msgstr ""
+msgstr "Please enter street"
 
 msgid "Please enter telephone number"
-msgstr ""
+msgstr "Please enter telephone number"
 
 msgid "Please enter valid e-mail"
-msgstr ""
+msgstr "Please enter valid e-mail"
 
 msgid "Please enter valid quantity"
-msgstr ""
+msgstr "Please enter valid quantity"
 
 msgid "Please enter zip code"
-msgstr ""
+msgstr "Please enter zip code"
 
 msgid "Please select country"
-msgstr ""
+msgstr "Please select country"
 
 msgid "Pokud chcete informační řádek uživatelům zobrazit, musíte jej vyplnit"
-msgstr ""
+msgstr "Fill out the information bar to display it to users"
 
 msgid "Position in list cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Position in list cannot be longer than {{ limit }} characters"
 
 msgid "Poznámka nesmí být delší než {{ limit }} znaků"
-msgstr ""
+msgstr "Note cannot be longer than {{ limit }} characters"
 
 msgid "Počet dnů do dodání musí být větší nebo roven nule"
-msgstr ""
+msgstr "Days for delivery must be greater than or equal to zero"
 
 msgid "Price must be greater or equal to zero"
-msgstr ""
+msgstr "Price must be greater or equal to zero"
 
 msgid "Quantity must be greater than {{ compared_value }}"
-msgstr ""
+msgstr "Quantity must be greater than {{ compared_value }}"
 
 msgid "Region nesmí být delší než {{ limit }} znaků"
-msgstr ""
+msgstr "Region must not exceed {{ limit }} characters"
 
 msgid "Store name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Store name cannot be longer than {{ limit }} characters"
 
 msgid "Street name cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Street name cannot be longer than {{ limit }} characters"
 
 msgid "Tax number cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Tax number cannot be longer than {{ limit }} characters"
 
 msgid "Telefonní číslo musí být platné"
-msgstr ""
+msgstr "Phone number must be valid"
 
 msgid "Telefonní číslo musí začínat znakem +"
-msgstr ""
+msgstr "Phone number must start with symbol +"
 
 msgid "Telephone number cannot be longer than {{ limit }} characters"
-msgstr ""
+msgstr "Telephone number cannot be longer than {{ limit }} characters"
 
 msgid "This e-mail is already registered"
-msgstr ""
+msgstr "This e-mail is already registered"
 
 msgid "Uploaded image is to large ({{ size }} {{ suffix }}). Maximum size of an image is {{ limit }} {{ suffix }}."
-msgstr ""
+msgstr "Uploaded image is too large ({{ size }} {{ suffix }}). Maximum size of an image is {{ limit }} {{ suffix }}."
 
 msgid "Vložené ID Youtube videa neobsahuje žádné video."
-msgstr ""
+msgstr "Embedded Youtube video ID contains no video."
 
 msgid "Vyberte prosím pobočku"
-msgstr ""
+msgstr "Select a store"
 
 msgid "Vyplňte prosím SKU dárkového certifikátu."
-msgstr ""
+msgstr "Fill in SKU of gift certificate"
 
 msgid "Vyplňte prosím deadline pro přijímání objednávek"
-msgstr ""
+msgstr "Fill in the deadline for receiving orders"
 
 msgid "Vyplňte prosím jméno"
-msgstr ""
+msgstr "Fill in the name"
 
 msgid "Vyplňte prosím množství."
-msgstr ""
+msgstr "Fill in the quantity"
 
 msgid "Vyplňte prosím nominální hodnotu dárkového certifikátu."
-msgstr ""
+msgstr "Fill in the nominal value of the gift certificate"
 
 msgid "Vyplňte prosím nominální hodnotu slevy."
-msgstr ""
+msgstr "Fill in the nominal value of the discount"
 
 msgid "Vyplňte prosím počet dnů do dodání"
-msgstr ""
+msgstr "Fill in the number of days for delivery"
 
 msgid "Vyplňte prosím příjmení"
-msgstr ""
+msgstr "Fill in the last name"
 
 msgid "Vyplňte prosím text tlačítka"
-msgstr ""
+msgstr "Fill in the text of the button"
 
 msgid "Vyplňte, prosím, PSČ prodejny"
-msgstr ""
+msgstr "Fill in the zip code of the store"
 
 msgid "Vyplňte, prosím, město prodejny"
-msgstr ""
+msgstr "Fill in the city of the store"
 
 msgid "Vyplňte, prosím, název prodejny"
-msgstr ""
+msgstr "Fill in the name of the store"
 
 msgid "Vyplňte, prosím, ulici prodejny"
-msgstr ""
+msgstr "Fill in the street of the store"
 
 msgid "You have to agree with privacy policy"
-msgstr ""
+msgstr "You have to agree with privacy policy"
 
 msgid "Zadejte prosím celé číslo."
-msgstr ""
+msgstr "Fill in an integer."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
-msgstr ""
-
+msgstr "Zip code cannot be longer than {{ limit }} characters"

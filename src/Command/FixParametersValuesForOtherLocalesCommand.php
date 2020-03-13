@@ -91,7 +91,7 @@ class FixParametersValuesForOtherLocalesCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Fix parameters for sk and de locales');
+        $this->setDescription('Fix parameters for sk and en locales');
         $this->setDefinition([
             new InputOption(self::OPTION_NAME_PARAMETER_TYPE, null, InputOption::VALUE_REQUIRED, 'Parameter type: color or size'),
         ]);
@@ -114,7 +114,7 @@ class FixParametersValuesForOtherLocalesCommand extends Command
             $output->writeln($mainVariantProduct->getId());
             $productData = $this->productDataFactory->createFromProduct($mainVariantProduct);
 
-            foreach ([DomainHelper::SLOVAK_LOCALE, DomainHelper::GERMAN_LOCALE] as $locale) {
+            foreach ([DomainHelper::SLOVAK_LOCALE, DomainHelper::ENGLISH_LOCALE] as $locale) {
                 $productParametersByLocale = $this->parameterRepository->getAllProductParameterValuesByProductSortedByName($mainVariantProduct, $locale);
                 $this->updateProductByParameterIdAndLocale($output, $productParametersByLocale, $productData, $parameterSize->getId(), $locale);
                 $this->updateProductByParameterIdAndLocale($output, $productParametersByLocale, $productData, $parameterColor->getId(), $locale);

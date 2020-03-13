@@ -56,11 +56,21 @@
                                         </div>
                                     {% endif %}
                                 </div>
+
+                                {% if productView.getRandomGiftName() is not null %}
+                                    <div class="list-products__item__info__gift">
+                                        <span class="list-products__item__info__gift__icon">
+                                            <i class="svg svg-gift"></i>
+                                        </span>
+                                        <span class="list-products__item__info__gift__text-colored">{{ 'Dárek'|trans }}:</span>
+                                        {{ productView.getRandomGiftName() }}
+                                    </div>
+                                {% endif %}
                             </a>
 
                             <div class="list-products__item__hover">
                                 <div class="list-products__item__hover__wrap">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { productActionView: productView.action, type: 'small' } )) }}
+                                    {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', { product: productView.action.id, type: 'small' } )) }}
                                 </div>
                             </div>
                         </div>
@@ -71,7 +81,7 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type) %}
+{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
@@ -125,17 +135,22 @@
                                     <div class="{{ listCssClass }}__item__info__availability">
                                         <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
                                         {% if productView.action.sellingDenied %}
-                                            <div class="list-products__item__info__availability__text" style="color: #6d6868;">
+                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #6d6868;">
                                                 {{ 'Product no longer on sale'|trans }}
                                             </div>
                                         {% else %}
-                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #7bbd70;">
+                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                                 {{ productView.availability }}
                                             </div>
                                         {% endif %}
                                     </div>
                                 </div>
                             </a>
+                            {% if showButton %}
+                                <div class="{{ listCssClass }}__item__button-add">
+                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {productActionView: productView.action, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -192,6 +207,10 @@
 
                         <div class="{{ listCssClass }}__item__info__availability">
                             {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                        </div>
+
+                        <div class="{{ listCssClass }}__item__add-button">
+                            {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, showAmountInput: false, type: 'smallWithoutIcon'})) }}
                         </div>
                     </div>
                 </div>

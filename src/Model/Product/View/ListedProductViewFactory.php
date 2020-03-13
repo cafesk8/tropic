@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace App\Model\Product\View;
 
 use App\Model\Product\Pricing\ProductPrice;
+use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPrice;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\ReadModelBundle\Image\ImageView;
-use Shopsys\ReadModelBundle\Product\Action\ProductActionView;
-use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
+use Shopsys\ReadModelBundle\Product\Action\ProductActionView as BaseProductActionView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView as BaseListedProductView;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListedProductViewFactory;
 
@@ -29,17 +30,25 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private $pricingGroupSettingFacade;
 
     /**
+     * @var \App\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        ProductFacade $productFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -47,12 +56,12 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @return \Shopsys\ReadModelBundle\Product\Listed\ListedProductView
+     * @return \App\Model\Product\View\ListedProductView
      */
     public function createFromArray(
         array $productArray,
         ?ImageView $imageView,
-        ProductActionView $productActionView,
+        BaseProductActionView $productActionView,
         PricingGroup $pricingGroup
     ): BaseListedProductView {
         $sellingPrice = $this->getSellingPrice(
@@ -71,7 +80,32 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $sellingPrice,
             $productArray['flags'],
             $productActionView,
-            $imageView
+            $imageView,
+            $productArray['gifts']
+        );
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
+     * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
+     * @return \App\Model\Product\View\ListedProductView
+     */
+    public function createFromProduct(
+        Product $product,
+        ?ImageView $imageView,
+        BaseProductActionView $productActionView
+    ): BaseListedProductView {
+        return new ListedProductView(
+            $product->getId(),
+            $product->getName(),
+            $product->getShortDescription($this->domain->getId()),
+            $product->getCalculatedAvailability()->getName(),
+            $this->productCachedAttributesFacade->getProductSellingPrice($product),
+            $this->getFlagIdsForProduct($product),
+            $productActionView,
+            $imageView,
+            $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale())
         );
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category;
 
+use App\Model\Advert\Advert;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -175,5 +176,51 @@ class CategoryFacade extends BaseCategoryFacade
         }
 
         return implode($delimiter, $categoriesNamesInPath);
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert $advert
+     * @param \App\Model\Category\Category[] $newCategories
+     */
+    public function removeAdvertFromCategories(Advert $advert, array $newCategories): void
+    {
+        $this->categoryRepository->removeAdvertFromCategories($advert, $newCategories);
+    }
+
+    /**
+     * @param \App\Model\Advert\Advert $advert
+     * @return \App\Model\Category\Category[]
+     */
+    public function getCategoriesByAdvert(Advert $advert): array
+    {
+        return $this->categoryRepository->getCategoriesByAdvert($advert);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
+     * @param string $separator
+     * @return string|null
+     */
+    public function getCategoryFullPath(Product $product, DomainConfig $domainConfig, string $separator): ?string
+    {
+        $mainCategory = $this->findProductMainCategoryByDomainId($product, $domainConfig->getId());
+
+        if ($mainCategory === null) {
+            return null;
+        }
+
+        $categories = $this->getVisibleCategoriesInPathFromRootOnDomain(
+            $mainCategory,
+            $domainConfig->getId()
+        );
+
+        $categoryFullPath = null;
+        $categoryNames = [];
+        foreach ($categories as $category) {
+            $categoryNames[] = $category->getName($domainConfig->getLocale());
+        }
+
+        return $categoryFullPath ?? implode($separator, $categoryNames);
     }
 }

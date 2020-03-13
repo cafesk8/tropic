@@ -1,3 +1,4 @@
+import './changeOrderPayment';
 import './goPaySelection';
 import './order';
 import './orderRememberData';

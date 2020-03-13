@@ -128,8 +128,8 @@ services:
             - '%transfer_cs_password%'
             - '%transfer_sk_username%'
             - '%transfer_sk_password%'
-            - '%transfer_de_username%'
-            - '%transfer_de_password%'
+            - '%transfer_en_username%'
+            - '%transfer_en_password%'
 
     App\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:
@@ -580,6 +580,10 @@ services:
 
     Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@App\Model\Product\View\ListedProductViewElasticFacade'
 
+    App\Model\Product\View\ProductActionViewFactory: ~
+
+    Shopsys\ReadModelBundle\Product\Action\ProductActionViewFactory: '@App\Model\Product\View\ProductActionViewFactory'
+
     Shopsys\FrameworkBundle\Model\Product\BestsellingProduct\CachedBestsellingProductFacade: '@App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade'
 
     App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade:
@@ -607,8 +611,6 @@ services:
     App\Model\Product\Availability\ProductAvailabilityCalculation: ~
 
     Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCalculation: '@App\Model\Product\Availability\ProductAvailabilityCalculation'
-
-    Shopsys\ReadModelBundle\Product\Action\ProductActionViewFactory: '@App\Model\Product\View\ProductActionViewFactory'
 
     App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade:
         arguments:

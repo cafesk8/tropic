@@ -45,9 +45,26 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
     }
 
     /**
-     * @param string|null $searchText
+     * @param string $orderingModeId
+     * @param int $page
      * @param int $limit
+     * @param int $brandId
      * @return \Shopsys\FrameworkBundle\Component\Paginator\PaginationResult
+     */
+    public function getPaginatedProductsForBrand(string $orderingModeId, int $page, int $limit, int $brandId): PaginationResult
+    {
+        $emptyProductFilterData = new ProductFilterData();
+
+        $filterQuery = $this->createListableProductsForBrandFilterQuery($emptyProductFilterData, $orderingModeId, $page, $limit, $brandId);
+
+        $productsResult = $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery);
+
+        return new PaginationResult($page, $limit, $productsResult->getTotal(), $productsResult->getHits());
+    }
+
+    /**
+     * {@inheritdoc}
+     * Copy pasted from parent to create the proper instance of ProductFilterData - the class is overridden in this project
      */
     public function getSearchAutocompleteProducts(?string $searchText, int $limit): PaginationResult
     {

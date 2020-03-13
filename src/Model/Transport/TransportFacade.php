@@ -34,11 +34,10 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
  * @method \App\Model\Transport\Transport getById(int $id)
  * @method \App\Model\Transport\Transport[] getVisibleOnCurrentDomain(\App\Model\Payment\Payment[] $visiblePayments)
  * @method \App\Model\Transport\Transport[] getVisibleByDomainId(int $domainId, \App\Model\Payment\Payment[] $visiblePaymentsOnDomain)
- * @method updateTransportPrices(\App\Model\Transport\Transport $transport, array $pricesIndexedByDomainId)
  * @method \App\Model\Transport\Transport[] getAllIncludingDeleted()
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Transport\Transport $transport)
- * @method updateTransportPrices(\App\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId)
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Transport\Transport|null $transport)
+ * @method updateTransportPrices(\App\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId)
  */
 class TransportFacade extends BaseTransportFacade
 {

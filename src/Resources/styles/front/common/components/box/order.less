@@ -59,12 +59,21 @@
     }
 
     &__additional {
+        width: 100%;
         padding: 20px 15px 10px 15px;
 
         margin-bottom: 20px;
 
         @media @query-md {
             padding: 67px @box-order-additional-gap 38px @box-order-additional-gap;
+        }
+
+        @media @query-vl {
+            width: calc(~"100% - @{box-order-cart-width-small}")
+        }
+
+        @media @query-xl {
+            width: calc(~"100% - @{box-order-cart-width}")
         }
 
         &__title {
@@ -89,6 +98,40 @@
         @media @query-xl {
             width: @box-order-cart-width;
             padding-left: @box-order-cart-gap;
+        }
+    }
+
+    &__registration {
+        max-width: 400px;
+        width: 100%;
+
+        font-size: @font-size-small;
+
+        @media @query-sm {
+            padding-left: @input-label-width;
+        }
+
+        &__message {
+            padding: 8px 10px;
+            margin-bottom: 11px;
+
+            border-radius: @radius;
+            background-color: lighten(@color-info, 35%);
+        }
+
+        &__block {
+            padding: 8px 10px;
+
+            border-radius: @radius;
+            background-color: @color-light;
+
+            &--without-border-top {
+                border-radius: 0 0 @radius @radius;
+            }
+
+            &--without-border-bottom {
+                border-radius: @radius @radius 0 0;
+            }
         }
     }
 }

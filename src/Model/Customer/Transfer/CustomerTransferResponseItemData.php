@@ -171,7 +171,7 @@ class CustomerTransferResponseItemData implements TransferResponseItemDataInterf
             return DomainHelper::DOMAIN_ID_BY_COUNTRY_CODE[$this->getCountryCode()];
         }
 
-        return DomainHelper::GERMAN_DOMAIN;
+        return DomainHelper::ENGLISH_DOMAIN;
     }
 
     /**

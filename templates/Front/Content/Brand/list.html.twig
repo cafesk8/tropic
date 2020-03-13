@@ -1,0 +1,28 @@
+{% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
+
+{% block title %}
+    {{ 'Přehled značek'|trans }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="web__line">
+        <div class="web__container">
+            <h1>{{ 'Přehled značek'|trans }}</h1>
+
+            <div>
+                <ul class='list-images'>
+                    {% for brand in brands %}
+                        <li class="list-images__item">
+                            <a href="{{ url('front_brand_detail', { id: brand.id }) }}">
+                                <div class="list-images__item__label">{{ brand.name }}</div>
+                                <div class="list-images__item__image">
+                                    {{ image(brand, { alt: brand.name }) }}
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

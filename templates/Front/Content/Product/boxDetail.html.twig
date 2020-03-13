@@ -71,7 +71,18 @@
                 </h2>
 
                 <div class="box-detail__info__code">
-                    {{ 'Kód produktu'|trans }}: {{ product.catnum }}
+                    <span class="padding-right-10">
+                        {{ 'Kód produktu'|trans }}: {{ product.catnum }}
+                    </span>
+                {% if product.brand %}
+                    |
+                    <span class="padding-left-10">
+                        {{ 'Brand'|trans }}:
+                        <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
+                            <span itemprop="brand">{{ product.brand.name }}</span>
+                        </a>
+                    </span>
+                {% endif %}
                 </div>
 
                 <div class="box-detail__wrap">
@@ -188,7 +199,7 @@
                                         {{ gift.name }}
                                     </a>
                                     <div class="box-detail__gift__info__text">
-                                        {{ 'Ke každému nákupu dárek v hodnotě'|trans }}
+                                        {{ 'Vyberte si dárek'|trans }} <span class="box-detail__gift__info__text-colored">{{ 'zdarma'|trans }}</span> {{ 'v hodnotě'|trans }}
                                         <strong> {{ getProductSellingPrice(gift).priceWithVat|price }}</strong>
                                     </div>
                                 </div>

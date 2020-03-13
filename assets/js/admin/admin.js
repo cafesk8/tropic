@@ -1,4 +1,5 @@
 import 'framework/admin';
+import './banner';
 import './blogCategoryTree';
 import './category';
 import './categoryTree.sorting';

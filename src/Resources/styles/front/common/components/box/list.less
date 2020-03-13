@@ -8,6 +8,8 @@
 
 @box-list-bottom-gap: 62px;
 
+@box-list-producer-image-width: 150px;
+
 .box-list {
     &__row {
         display: flex;
@@ -158,11 +160,13 @@
 
         &__image {
             @media @query-md {
-                padding-right: 30px;
+                width: @box-list-producer-image-width;
+                margin-right: 30px;
             }
         }
 
         &__text {
+            flex: 1;
             margin-bottom: 20px;
         }
     }
@@ -209,15 +213,15 @@
 
         &__pagination {
             @media @query-md {
-                margin: 6px 0 6px auto;
+                margin-left: auto;
             }
 
             @media @query-vl {
-                margin: 0;
+                margin-left: 0;
             }
 
             @media @query-xl {
-                margin: 6px 0 6px auto;
+                margin-left: auto;
             }
         }
     }
