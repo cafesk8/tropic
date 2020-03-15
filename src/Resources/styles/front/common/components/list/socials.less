@@ -9,7 +9,7 @@
 
         background-color: @color-primary;
         border-radius: @radius;
-        border: 2px solid @color-gray-dark;
+        border: 2px solid @color-border;
     }
 
     @media @query-vl {
@@ -28,13 +28,12 @@
         align-items: center;
         text-align: center;
 
-        color: @color-brown;
-        border-bottom: 2px solid @color-gray-dark;
+        border-bottom: 2px solid @color-border;
 
         @media @query-vl {
             width: calc(~"@{calc-base}/3");
 
-            border-right: 2px solid @color-gray-dark;
+            border-right: 2px solid @color-border;
             border-bottom: 0;
         }
 
@@ -71,7 +70,7 @@
             margin-right: 12px;
 
             font-size: 30px;
-            color: @color-gray-dark;
+            color: @color-primary;
 
             &--facebook {
                 .list-socials__item:hover & {
