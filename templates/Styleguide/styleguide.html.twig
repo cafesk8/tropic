@@ -111,29 +111,29 @@
                         <p class="styleguide-module__paragraph">We usualy have two colors: Primary and alternative.</p>
                         <ul class="styleguide-list--unstyled list-colors">
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: #181a22;">
+                                <div class="color" style="background: #002b41;">
                                     <span class="color__text">
                                         @color-base
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: #181a22;">
+                                <div class="color" style="background: #0077b3;">
                                     <span class="color__text">
                                         @color-primary
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column ">
-                                <div class="color" style="background: #c0e314;">
+                                <div class="color" style="background: #3ea938;">
                                     <span class="color__text">
                                         @color-add
                                     </span>
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column end">
-                                <div class="color" style="background: #f4f4f4;">
-                                    <span class="color__text" style="color: #efefef;">
+                                <div class="color" style="background: #e5f1f7;">
+                                    <span class="color__text" style="color: #002b41;">
                                         @color-light
                                     </span>
                                 </div>
@@ -158,7 +158,7 @@
                                 </div>
                             </li>
                             <li class="small-12 medium-2 column end">
-                                <div class="color" style="background: #eb5013;">
+                                <div class="color" style="background: #d53030;">
                                     <span class="color__text">
                                         Sold out
                                     </span>
@@ -318,25 +318,67 @@
                     <section id="buttons" class="styleguide-module anchor clearfix">
                         <h2 class="styleguide-module__title">Buttons</h2>
 
-                        <a href="#buttons" class="btn">Primary button</a> &nbsp;
+                        <a href="#buttons" class="btn">Default button</a> &nbsp;
                         <a href="#buttons" class="btn btn--success">Success button</a> &nbsp;
+                        <a href="#buttons" class="btn-with-border">Button with border</a> &nbsp;
                         <a href="#buttons" class="btn btn--disabled">Disabled</a> &nbsp;
                         <a href="#buttons" class="btn-no-style">No style</a> &nbsp;
                         <br><br>
-                        <a href="#buttons" class="btn btn--small">Primary small</a> &nbsp;
                         <a href="#buttons" class="btn">Primary</a> &nbsp;
                         <a href="#buttons" class="btn btn--large">Primary large</a> &nbsp;
+                        <br><br>
+                        <a href="#buttons" class="btn btn--full-width">Full width</a> &nbsp;
+                        <br><br>
+                        <div class="in-add-to-cart">
+                            <div class="in-add-to-cart__spinbox js-spinbox-parent">
+                                <span class="form-input-spinbox js-spinbox">
+                                    <input type="text" name="add_product_form[quantity]" required="required" class="form-input-spinbox__input input-no-style js-spinbox-input input id__add_product_form_quantity" data-spinbox-min="1" data-spinbox-step="1" data-spinbox-max="110" value="1">
+                                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">
+                                        <i class="svg svg-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus btn--disabled">
+                                        <i class="svg svg-minus"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <button type="submit" name="add_product_form[add]" class="in-add-to-cart__button btn-no-style id__add_product_form_add" data-hard-disabled="0">
+                                Přidat do košíku
+                            </button>
+                        </div>
+                        <br><br>
+                        <a href="#buttons" class="btn-gradient">
+                            <span class="btn-gradient__in">Instagram</spam>
+                        </a> &nbsp;
 
                         <div class="styleguide-module__editor">
                             <textarea class="codemirror-html" id="html-buttons">
-<a href="#buttons" class="btn">Primary button</a> &nbsp;
+<a href="#buttons" class="btn">Default button</a> &nbsp;
 <a href="#buttons" class="btn btn--success">Success button</a> &nbsp;
+<a href="#buttons" class="btn-with-border">Button with border</a> &nbsp;
 <a href="#buttons" class="btn btn--disabled">Disabled</a> &nbsp;
 <a href="#buttons" class="btn-no-style">No style</a> &nbsp;
 
-<a href="#buttons" class="btn btn--small">Primary small</a> &nbsp;
 <a href="#buttons" class="btn">Primary</a> &nbsp;
 <a href="#buttons" class="btn btn--large">Primary large</a> &nbsp;
+
+<a href="#buttons" class="btn btn--full-width">Full width</a> &nbsp;
+
+<div class="in-add-to-cart">
+    <div class="in-add-to-cart__spinbox js-spinbox-parent">
+        <span class="form-input-spinbox js-spinbox">
+            <input type="text" name="add_product_form[quantity]" required="required" class="form-input-spinbox__input input-no-style js-spinbox-input input id__add_product_form_quantity" data-spinbox-min="1" data-spinbox-step="1" data-spinbox-max="110" value="1">
+            <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">
+                <i class="svg svg-plus"></i>
+            </button>
+            <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus btn--disabled">
+                <i class="svg svg-minus"></i>
+            </button>
+        </span>
+    </div>
+    <button type="submit" name="add_product_form[add]" class="in-add-to-cart__button btn-no-style id__add_product_form_add" data-hard-disabled="0">
+        Přidat do košíku
+    </button>
+</div>
                             </textarea>
                         </div>
                     </section>

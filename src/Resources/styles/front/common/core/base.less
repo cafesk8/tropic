@@ -89,7 +89,7 @@ h1 {
         margin-bottom: 20px;
         line-height: 42px;
 
-        font-size: 36px;
+        font-size: 42px;
     }
 }
 
@@ -107,9 +107,9 @@ h2 {
 
     @media @query-vl {
         margin-bottom: 20px;
-        line-height: 28px;
+        line-height: 42px;
 
-        font-size: 24px;
+        font-size: 36px;
     }
 }
 
@@ -125,32 +125,23 @@ h3 {
 
     @media @query-vl {
         margin-bottom: 20px;
-        line-height: 18px;
+        line-height: 24px;
 
-        font-size: 15px;
+        font-size: 18px;
     }
 }
 
 h4 {
     margin: 0 0 10px 0;
 
-    font-size: 19px;
+    font-size: @font-size-mobile;
     font-weight: bold;
 
     @media @query-md {
-        font-size: 20px;
-    }
-
-    @media @query-lg {
-        margin-bottom: 15px;
-
-        font-size: 21px;
-    }
-
-    @media @query-vl {
         margin-bottom: 20px;
+        line-height: 24px;
 
-        font-size: 21px;
+        font-size: 16px;
     }
 }
 
@@ -193,7 +184,7 @@ a {
     transition: @transition color;
 
     &:hover {
-        text-decoration: none;
+        text-decoration: underline;
         color: @color-link-hover;
     }
 }

@@ -13,7 +13,7 @@
         ></i>
     {% elseif isMultiple %}
         <a
-                class="js-products-picker-window-add-product btn btn--light btn--plus btn--small"
+                class="js-products-picker-window-add-product btn btn--light btn--plus"
                 href="#"
                 data-product-picker-instance-id="{{ jsInstanceId }}"
                 data-product-picker-product-id="{{ row.p.id }}"
@@ -27,7 +27,7 @@
     {% else %}
         <a
                 href="#"
-                class="btn btn--light btn--plus btn--small js-product-picker-select"
+                class="btn btn--light btn--plus js-product-picker-select"
                 data-instance-id="{{ parentInstanceId }}"
                 data-product-id="{{ row.p.id }}"
                 data-product-name="{{ row.pt.name }}"

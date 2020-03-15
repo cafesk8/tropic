@@ -39,7 +39,7 @@
                                 <td>
                                     <span class="margin-right-10">{{ order.status.name }}</span>
                                     {% if order.payment.goPay is same as (true) and order.gopayPaid == false %}
-                                        <a class="btn btn--success btn--mini" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
+                                        <a class="btn btn--success" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
                                             {{ 'Zaplatit'|trans }}
                                         </a>
                                     {% endif %}

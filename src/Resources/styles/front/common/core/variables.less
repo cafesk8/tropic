@@ -121,14 +121,16 @@
 
 //// Default box shadow settings
 @shadow: 0 2px 20px 0 rgba(0,0,0,0.1);
-@box-shadow-outer: 0 2px 4px 0 rgba(0,0,0,0.1);
-@box-shadow-inner: inset 0 -1px 2px 0 rgba(0,0,0,0.3);
+@box-shadow-outer: 0 2px 4px rgba(0, 0, 0, 0.2);
+@box-shadow-inner: inset 0 -1px 2px rgba(0, 0, 0, 0.3);
 @box-shadow: @box-shadow-inner, @box-shadow-outer;
 
 
 //// Default border radius value
-@radius: 6px;
+@radius: 8px;
+@radius-medium: 6px;
 @radius-small: 3px;
+
 
 //// Default postfixes for responsive helpers generator
 @postfixes: -tablet, -mobile, -mobile-small;
