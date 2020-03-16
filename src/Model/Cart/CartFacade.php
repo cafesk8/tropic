@@ -342,6 +342,22 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
+     * @return bool
+     */
+    public function showOnlyGiftCertificatePaymentsInCart(): bool
+    {
+        $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->isGiftCertificate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param \App\Model\Cart\Item\CartItem $cartItem
      * @param int|null $quantity
      * @return int

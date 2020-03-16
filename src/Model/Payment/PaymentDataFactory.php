@@ -54,6 +54,7 @@ class PaymentDataFactory extends BasePaymentDataFactory
         $paymentData->externalId = $payment->getExternalId();
         $paymentData->cashOnDelivery = $payment->isCashOnDelivery();
         $paymentData->hiddenByGoPay = $payment->isHiddenByGoPay();
+        $paymentData->usableForGiftCertificates = $payment->isUsableForGiftCertificates();
 
         return $paymentData;
     }
@@ -67,5 +68,6 @@ class PaymentDataFactory extends BasePaymentDataFactory
 
         $paymentData->cashOnDelivery = false;
         $paymentData->hiddenByGoPay = false;
+        $paymentData->usableForGiftCertificates = false;
     }
 }

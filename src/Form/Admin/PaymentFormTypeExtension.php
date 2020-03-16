@@ -70,6 +70,10 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
             ->add('cashOnDelivery', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dobírka'),
+            ])
+            ->add('usableForGiftCertificates', YesNoType::class, [
+                'required' => false,
+                'label' => t('Může být použit pro dárkové certifikáty'),
             ]);
 
         if ($options['payment'] !== null) {

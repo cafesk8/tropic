@@ -65,6 +65,13 @@ class Payment extends BasePayment
     private $hiddenByGoPay;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $usableForGiftCertificates;
+
+    /**
      * @param \App\Model\Payment\PaymentData $paymentData
      */
     public function __construct(BasePaymentData $paymentData)
@@ -76,6 +83,7 @@ class Payment extends BasePayment
         $this->externalId = $paymentData->externalId;
         $this->cashOnDelivery = $paymentData->cashOnDelivery;
         $this->hiddenByGoPay = $paymentData->hiddenByGoPay;
+        $this->usableForGiftCertificates = $paymentData->usableForGiftCertificates;
     }
 
     /**
@@ -89,6 +97,7 @@ class Payment extends BasePayment
         $this->setGoPayPaymentMethod($paymentData);
         $this->externalId = $paymentData->externalId;
         $this->cashOnDelivery = $paymentData->cashOnDelivery;
+        $this->usableForGiftCertificates = $paymentData->usableForGiftCertificates;
     }
 
     /**
@@ -177,5 +186,13 @@ class Payment extends BasePayment
     public function unHideByGoPay(): void
     {
         $this->hiddenByGoPay = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUsableForGiftCertificates(): bool
+    {
+        return $this->usableForGiftCertificates;
     }
 }
