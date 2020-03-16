@@ -9,10 +9,8 @@
                 <ul class="top-bar__menu top-bar__menu--mobile-visible">
                     <li class="top-bar__menu__item">
                         <span class="top-bar__menu__item__text">
-                            <a class="top-bar__menu__item__text__phone" href="tel:{{ shopInfoPhoneNumber }}">
-                                <strong>{{ shopInfoPhoneNumber }}</strong>
-                            </a>
-                            {{ shopInfoPhoneHours }}
+                            <span class="top-bar__menu__item__text__title">{{ 'Bonusový program'|trans }}:</span>
+                            {{ 'Slevy pro každého až 18 %'|trans }}
                         </span>
                     </li>
                 </ul>
@@ -41,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="web__container web__container--border-radius-top">
+    <div class="web__container web__container--dark web__container--border-radius">
         <header class="header {{ block('headerClass') }}">
             <div class="header__logo">
                 {% block logo %}
@@ -89,18 +87,24 @@
 
                 <div class="header__right__actions">
                     <div class="header__right__actions__item">
-                        <div class="box-dropdown box-dropdown--without-background box-dropdown--without-arrow js-hover-intent">
-                            <div class="box-dropdown__select js-responsive-toggle"
+                        <div class="box-dropdown js-hover-intent">
+                            <div class="box-dropdown__select box-dropdown__select--secondary js-responsive-toggle"
                                 data-element="js-header-customer"
                                 data-hide-on-click-out="true"
                                 data-parent-give-class="true"
                                 data-slide-toggle-disabled="true"
                             >
-                                {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
-                                    {{ 'Váš účet'|trans }}
-                                {% else %}
-                                    {{ 'Přihlášení'|trans }}
-                                {% endif %}
+                                <i class="box-dropdown__select__user svg svg-user"></i>
+                                <div class="box-dropdown__select__text">
+                                    {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
+                                        {{ 'Váš účet'|trans }}
+                                    {% else %}
+                                        {{ 'Přihlášení'|trans }}
+                                        <div class="box-dropdown__select__text__small">{{ 'a registrace'|trans }}</div>
+                                    {% endif %}
+                                </div>
+                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
+                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
                             </div>
                             <div class="box-dropdown__options
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}

@@ -1,5 +1,5 @@
 @top-bar-height: 34px;
-@top-bar-item-gap: 35px;
+@top-bar-item-gap: 42px;
 @top-bar-item-text-gap: 10px;
 
 .top-bar {
@@ -59,15 +59,25 @@
 
             &__link {
                 font-size: @font-size-extra-small;
+                font-family: @font-alt;
+                color: @color-base;
+
+                &:hover {
+                    color: @color-base;
+                }
             }
 
             &__text {
                 display: flex;
 
-                font-size: @font-size-extra-small;
+                font-size: 11px;
+                font-family: @font-alt;
+                text-transform: uppercase;
 
-                &__phone {
-                    margin-right: 18px;
+                &__title {
+                    margin-right: @margin-gap;
+
+                    font-weight: 700;
                 }
             }
         }

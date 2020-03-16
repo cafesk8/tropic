@@ -1,5 +1,5 @@
 // Default button
-@btn-height: 29px;
+@btn-height: 31px;
 @btn-padding-vertical: 6px;
 @btn-padding-horizontal: 15px;
 @btn-color: @color-f;
@@ -18,7 +18,7 @@
     text-align: center;
 
     border-radius: @radius;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 0;
     box-shadow: @box-shadow;
     color: @btn-color;
     background-color: @btn-bg;
@@ -61,21 +61,15 @@
 
 //// Modifications - size
 .btn {
-    @btn-large-height: 52px;
-    @btn-large-padding-vertical: 18px;
-    @btn-large-padding-horizontal: 16px;
-    @btn-large-padding-horizontal-mobile: 18px;
+    @btn-large-height: 54px;
+    @btn-large-padding-horizontal: 17px;
 
     &--large {
         min-height: @btn-large-height;
         line-height: @btn-large-height;
-        padding: 0 @btn-large-padding-horizontal-mobile;
+        padding: 0 @btn-large-padding-horizontal;
 
         font-size: 16px;
-
-        @media @query-md {
-            padding: 0 @btn-large-padding-horizontal;
-        }
     }
 
     &--full-width {
