@@ -284,8 +284,11 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress): BaseOrder
     {
+        $orderData->status = $this->orderStatusRepository->getDefault();
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
+        /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+        $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
         $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);
 
         foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
@@ -294,15 +297,17 @@ class OrderFacade extends BaseOrderFacade
             $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($validEnteredPromoCode->getCode());
         }
 
-        /** @var \App\Model\Order\Order $order */
-        $order = parent::createOrderFromFront($orderData, $deliveryAddress);
+        $this->updateOrderDataWithDeliveryAddress($orderData, $deliveryAddress);
+        $order = $this->createOrder($orderData, $orderPreview, $customerUser);
+        $this->orderProductFacade->subtractOrderProductsFromStock($order->getProductItems());
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
 
-        /** @var \App\Model\Customer\User\CustomerUser $customer */
-        $customer = $order->getCustomerUser();
-        if ($customer !== null) {
-            $order->setCustomerTransferId($customer->getTransferId());
-            $order->setMemberOfLoyaltyProgram($customer->isMemberOfLoyaltyProgram());
+        $this->cartFacade->deleteCartOfCurrentCustomerUser();
+
+        if ($customerUser !== null) {
+            $order->setCustomerTransferId($customerUser->getTransferId());
+            $order->setMemberOfLoyaltyProgram($customerUser->isMemberOfLoyaltyProgram());
+            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order, $deliveryAddress);
             $this->em->flush($order);
         }
 
