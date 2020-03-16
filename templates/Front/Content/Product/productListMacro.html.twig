@@ -64,7 +64,7 @@
 
                             <div class="list-products__item__hover">
                                 <div class="list-products__item__hover__wrap">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, type: 'small' })) }}
+                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { productActionView: productView.action } )) }}
                                 </div>
                             </div>
                         </div>

@@ -4,44 +4,35 @@
             {% set domainId = getDomain().id %}
 
             <div class="web__line">
-                <div class="web__container web__container--dark web__container--border-radius-bottom">
+                <div class="web__container web__container--light web__container--border-radius-bottom">
                     <div class="footer-top">
                         <div class="footer-top__info">
                             <div class="footer-top__socials">
                                 <ul class="list-socials">
                                     <li class="list-socials__item">
-                                        <a class="list-socials__item__link" href="https://www.facebook.com/shopsyscz/" target="_blank">
-                                            <i class="list-socials__item__icon list-socials__item__icon--facebook svg svg-facebook"></i>
-                                            <span class="list-socials__item__text">
-                                                {{ 'Facebook'|trans }}
-                                            </span>
+                                        <a class="list-socials__item__link btn-gradient" href="https://www.facebook.com/shopsyscz/" target="_blank">
+                                            <span class="btn-gradient__in">{{ 'Instagram'|trans }}</span>
                                         </a>
                                     </li>
                                     <li class="list-socials__item">
-                                        <a class="list-socials__item__link" href="https://www.instagram.com/shopsyscz/" target="_blank">
-                                            <i class="list-socials__item__icon list-socials__item__icon--instagram svg svg-instagram"></i>
-                                            <span class="list-socials__item__text">
-                                                {{ 'Instagram'|trans }}
-                                            </span>
+                                        <a class="list-socials__item__link list-socials__item__link--facebook btn-with-border" href="https://www.instagram.com/shopsyscz/" target="_blank">
+                                            {{ 'Facebook'|trans }}
                                         </a>
                                     </li>
                                     <li class="list-socials__item">
-                                        <a class="list-socials__item__link" href="https://www.youtube.com/user/netdevelo" target="_blank">
-                                            <i class="list-socials__item__icon list-socials__item__icon--youtube svg svg-youtube"></i>
-                                            <span class="list-socials__item__text">
-                                                {{ 'Youtube'|trans }}
-                                            </span>
+                                        <a class="list-socials__item__link list-socials__item__link--youtube btn-with-border" href="https://www.youtube.com/user/netdevelo" target="_blank">
+                                            {{ 'Youtube'|trans }}
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="footer-top__contact">
                                 <div class="box-contact">
-                                    <div class="box-contact__block box-contact__block--white-text">
+                                    <div class="box-contact__block">
                                         <div class="box-contact__block__text">
                                             <i class="svg svg-phone"></i>
                                             {{ 'Volejte na '|trans }}
-                                            <a class="box-contact__block__text__link" href="tel:{{ getShopInfoPhoneNumber() }}">
+                                            <a href="tel:{{ getShopInfoPhoneNumber() }}">
                                                 {{ getShopInfoPhoneNumber() }}
                                             </a>
                                         </div>
@@ -49,10 +40,10 @@
                                             {{ getShopInfoPhoneHours() }}
                                         </div>
                                     </div>
-                                    <div class="box-contact__block box-contact__block--white-text">
+                                    <div class="box-contact__block">
                                         <div class="box-contact__block__text">
                                             <i class="svg svg-mail"></i>
-                                            <a class="box-contact__block__text__link" href="mailto:{{ getShopInfoEmail() }}">{{ getShopInfoEmail() }}</a>
+                                            <a href="mailto:{{ getShopInfoEmail() }}">{{ getShopInfoEmail() }}</a>
                                         </div>
                                         <div class="box-contact__block__info">
                                             {{ 'Odpovíme Vám v co nejkratší možné době.'|trans }}

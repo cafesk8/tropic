@@ -112,18 +112,12 @@
             height: @list-menu-item-height;
             line-height: @list-menu-item-height;
 
-            color: @color-base;
             font-size: @font-size;
             text-decoration: none;
             transition: none;
 
             @media @query-vl {
                 padding: 0 15px;
-            }
-
-            &:hover {
-                color: @color-f;
-                text-decoration: underline;
             }
 
             &--with-dropdown {
@@ -136,6 +130,10 @@
                 color: @color-f;
                 font-size: 16px;
                 font-weight: 700;
+
+                &:hover {
+                    color: @color-f;
+                }
             }
 
             .open & {
@@ -145,12 +143,7 @@
             .list-menu--footer & {
                 padding: 0;
 
-                color: @color-f;
                 font-size: @font-size-small;
-
-                &:hover {
-                    text-decoration: none;
-                }
             }
         }
     }

@@ -21,7 +21,6 @@
             {% set cssClass = 'btn--disabled ' %}
         {% endif %}
 
-        
         {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style', disabled: disabled, 'data-hard-disabled': hardDisabled }}) }}
 
     </div>
