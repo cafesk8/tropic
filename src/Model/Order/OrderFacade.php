@@ -24,6 +24,7 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
+use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade;
@@ -281,8 +282,11 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
+        $orderData->status = $this->orderStatusRepository->getDefault();
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
+        /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+        $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
         $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);
 
         foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
@@ -291,19 +295,36 @@ class OrderFacade extends BaseOrderFacade
             $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($validEnteredPromoCode->getCode());
         }
 
-        /** @var \App\Model\Order\Order $order */
-        $order = parent::createOrderFromFront($orderData);
+        $this->updateOrderDataWithDeliveryAddress($orderData, null);
+        $order = $this->createOrder($orderData, $orderPreview, $customerUser);
+        $this->orderProductFacade->subtractOrderProductsFromStock($order->getProductItems());
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
 
-        /** @var \App\Model\Customer\User\CustomerUser $customer */
-        $customer = $order->getCustomerUser();
-        if ($customer !== null) {
-            $order->setCustomerTransferId($customer->getTransferId());
-            $order->setMemberOfLoyaltyProgram($customer->isMemberOfLoyaltyProgram());
+        $this->cartFacade->deleteCartOfCurrentCustomerUser();
+
+        if ($customerUser !== null) {
+            $order->setCustomerTransferId($customerUser->getTransferId());
+            $order->setMemberOfLoyaltyProgram($customerUser->isMemberOfLoyaltyProgram());
+            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order);
             $this->em->flush($order);
         }
 
         return $order;
+    }
+
+    /**
+     * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
+     */
+    protected function updateOrderDataWithDeliveryAddress(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress)
+    {
+        if ($deliveryAddress !== null) {
+            $orderData->deliveryCompanyName = $deliveryAddress->getCompanyName();
+            $orderData->deliveryStreet = $deliveryAddress->getStreet();
+            $orderData->deliveryPostcode = $deliveryAddress->getPostcode();
+            $orderData->deliveryCity = $deliveryAddress->getCity();
+            $orderData->deliveryCountry = $deliveryAddress->getCountry();
+        }
     }
 
     /**
