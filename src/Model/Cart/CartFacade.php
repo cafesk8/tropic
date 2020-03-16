@@ -333,7 +333,7 @@ class CartFacade extends BaseCartFacade
         $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
 
         foreach ($cart->getItems() as $cartItem) {
-            if ($cartItem->getProduct()->isProductTypeGiftCertificate() === false) {
+            if (!$cartItem->getProduct()->isGiftCertificate()) {
                 return false;
             }
         }

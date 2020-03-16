@@ -994,6 +994,9 @@
 20200304130413:
     class: App\Migrations\Version20200304130413
     skip: false
+20200313143330:
+    class: App\Migrations\Version20200313143330
+    skip: false
 20200325113600:
     class: App\Migrations\Version20200325113600
     skip: false

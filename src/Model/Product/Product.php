@@ -44,13 +44,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  */
 class Product extends BaseProduct
 {
-    public const PRODUCT_TYPE_GIFT_CERTIFICATE_500 = 'gift_certificate_500';
-    public const PRODUCT_TYPE_GIFT_CERTIFICATE_1000 = 'gift_certificate_1000';
-    public const PRODUCT_TYPES_GIFT_CERTIFICATES = [
-        self::PRODUCT_TYPE_GIFT_CERTIFICATE_500,
-        self::PRODUCT_TYPE_GIFT_CERTIFICATE_1000,
-    ];
-
     /**
      * @var \App\Model\Product\StoreStock\ProductStoreStock[]|\Doctrine\Common\Collections\Collection
      *
@@ -142,11 +135,11 @@ class Product extends BaseProduct
     protected $baseName;
 
     /**
-     * @var string|null
+     * @var bool
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="boolean")
      */
-    protected $productType;
+    protected $giftCertificate;
 
     /**
      * @var int
@@ -219,9 +212,9 @@ class Product extends BaseProduct
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->baseName = $productData->baseName;
-        $this->productType = $productData->productType;
+        $this->giftCertificate = $productData->giftCertificate;
         $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = $productData->amountMultiplier;
+        $this->amountMultiplier = (int)$productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
         if ($productData->variantId !== null) {
             $this->variantId = trim($productData->variantId);
@@ -688,19 +681,11 @@ class Product extends BaseProduct
     }
 
     /**
-     * @return string|null
-     */
-    public function getProductType(): ?string
-    {
-        return $this->productType;
-    }
-
-    /**
      * @return bool
      */
-    public function isProductTypeGiftCertificate(): bool
+    public function isGiftCertificate(): bool
     {
-        return in_array($this->productType, self::PRODUCT_TYPES_GIFT_CERTIFICATES, true);
+        return $this->giftCertificate;
     }
 
     /**
