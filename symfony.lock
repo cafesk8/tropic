@@ -2,8 +2,17 @@
     "arvenil/ninja-mutex": {
         "version": "0.4.1"
     },
+    "asm89/twig-cache-extension": {
+        "version": "1.4.0"
+    },
+    "aws/aws-sdk-php": {
+        "version": "3.133.14"
+    },
     "barryvdh/elfinder-flysystem-driver": {
         "version": "v0.2.1"
+    },
+    "beberlei/assert": {
+        "version": "v3.2.7"
     },
     "behat/gherkin": {
         "version": "v4.6.0"
@@ -16,6 +25,9 @@
     },
     "bmatzner/jquery-ui-bundle": {
         "version": "1.10.3"
+    },
+    "clue/stream-filter": {
+        "version": "v1.4.1"
     },
     "codeception/codeception": {
         "version": "2.3",
@@ -76,6 +88,9 @@
     },
     "composer/xdebug-handler": {
         "version": "1.4.0"
+    },
+    "consistence/consistence": {
+        "version": "1.1"
     },
     "craue/formflow-bundle": {
         "version": "3.2.1"
@@ -186,6 +201,9 @@
     "elasticsearch/elasticsearch": {
         "version": "v6.7.2"
     },
+    "emanueleminotto/twig-cache-bundle": {
+        "version": "1.0.5"
+    },
     "facebook/webdriver": {
         "version": "1.7.1"
     },
@@ -228,6 +246,21 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.37"
     },
+    "google/apiclient": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "49c5d7a66d863d28513979bf0666dc77599100c0"
+        },
+        "files": [
+            "config/packages/google_apiclient.yaml"
+        ]
+    },
+    "google/apiclient-services": {
+        "version": "v0.126"
+    },
     "google/auth": {
         "version": "v1.6.1"
     },
@@ -239,6 +272,9 @@
     },
     "google/crc32": {
         "version": "v0.1.0"
+    },
+    "gopay/payments-sdk-php": {
+        "version": "v1.4.1"
     },
     "guzzlehttp/guzzle": {
         "version": "6.4.1"
@@ -339,14 +375,26 @@
     "league/flysystem": {
         "version": "1.0.57"
     },
+    "league/flysystem-aws-s3-v3": {
+        "version": "1.0.23"
+    },
     "league/flysystem-cached-adapter": {
         "version": "1.0.9"
+    },
+    "league/iso3166": {
+        "version": "2.1.5"
     },
     "litipk/php-bignumbers": {
         "version": "0.8.6"
     },
+    "mallgroup/mpapi-client": {
+        "version": "3.11.6"
+    },
     "monolog/monolog": {
         "version": "1.25.1"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.5.0"
     },
     "myclabs/deep-copy": {
         "version": "1.9.3"
@@ -413,6 +461,9 @@
     "paragonie/random_compat": {
         "version": "v9.99.99"
     },
+    "paypal/rest-api-sdk-php": {
+        "version": "1.14.0"
+    },
     "phar-io/manifest": {
         "version": "1.0.3"
     },
@@ -428,6 +479,21 @@
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
+    "php-http/guzzle6-adapter": {
+        "version": "v2.0.1"
+    },
+    "php-http/httplug": {
+        "version": "2.1.0"
+    },
+    "php-http/message": {
+        "version": "1.8.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "v1.0.0"
+    },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
     },
@@ -442,6 +508,9 @@
     },
     "phpoption/phpoption": {
         "version": "1.5.2"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.23"
     },
     "phpspec/prophecy": {
         "version": "1.9.0"
@@ -488,6 +557,9 @@
             "tests/.gitignore"
         ]
     },
+    "picqer/php-barcode-generator": {
+        "version": "v0.3"
+    },
     "presta/sitemap-bundle": {
         "version": "v1.7.2"
     },
@@ -501,6 +573,9 @@
         "version": "1.0.1"
     },
     "psr/container": {
+        "version": "1.0.0"
+    },
+    "psr/http-client": {
         "version": "1.0.0"
     },
     "psr/http-message": {
@@ -643,6 +718,9 @@
     },
     "shopsys/read-model": {
         "version": "dev-mg-weird-flex-but-ok"
+    },
+    "simpod/sms-manager": {
+        "version": "v0.1.0"
     },
     "slam/php-cs-fixer-extensions": {
         "version": "v1.19.1"
@@ -921,6 +999,9 @@
         "files": [
             "config/packages/security.yaml"
         ]
+    },
+    "symfony/service-contracts": {
+        "version": "v1.1.8"
     },
     "symfony/stopwatch": {
         "version": "v3.4.33"
