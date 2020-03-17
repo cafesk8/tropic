@@ -1,27 +1,45 @@
+@contact-us-phone-icon-size: 25px;
+
 .contact-us {
     display: none;
 
     @media @query-lg {
-        display: block;
-        margin-top: 5px;
+        display: flex;
+        align-items: center;
 
-        color: @color-inactive;
-        font-size: 11px;
+        font-family: @font-alt;
 
-        &__phone {
-            display: inline-block;
-            margin-right: 10px;
+        &__open-hours {
+            opacity: 0.7;
 
-            .svg {
-                margin-right: 3px;
-
-                font-size: 10px;
-            }
+            font-size: @font-size-extra-small;
+            color: @color-f;
         }
 
-        &__email {
-            display: inline-block;
-            margin-left: 10px;
+        &__phone {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+
+            color: @color-f;
+            font-size: @font-size;
+            font-weight: 700;
+
+            &:hover {
+                text-decoration: none;
+                color: @color-f;
+
+                .contact-us__phone__text {
+                    text-decoration: underline;
+                }
+            }
+
+            .svg {
+                margin-right: 6px;
+                height: @contact-us-phone-icon-size;
+
+                font-size: @contact-us-phone-icon-size;
+            }
         }
     }
 }

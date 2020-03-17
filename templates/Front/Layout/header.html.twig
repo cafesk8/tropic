@@ -143,9 +143,18 @@
             </div>
 
             <div class="header__menu dont-print">
-                {% cache 'categories_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                
                     {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction')) }}
-                {% endcache %}
+                
+                <div class="contact-us">
+                    <div class="contact-us__open-hours">
+                        {{ shopInfoPhoneHours }}
+                    </div>
+                    <a class="contact-us__phone" href="tel:{{ shopInfoPhoneNumber }}">
+                        <i class="svg svg-phone"></i>
+                        <spam class="contact-us__phone__text">{{ shopInfoPhoneNumber }}</span>
+                    </a>
+                </div>
             </div>
         </header>
     </div>
