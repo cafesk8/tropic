@@ -16,7 +16,7 @@
                     <div class="box-contact__block">
                         {% if getShopInfoPhoneNumber() is not null %}
                             <a href="tel:{{ getShopInfoPhoneNumber() }}" class="box-contact__block__text">
-                                <i class="svg svg-phone"></i>
+                                {% include 'Front/Svg/phone.svg' %}
                                 {{ 'Volejte na '|trans }} {{ getShopInfoPhoneNumber() }}
                             </a>
                         {% endif %}

@@ -1,4 +1,4 @@
-@cart-icon-size: 27px;
+@cart-icon-size: 25px;
 @cart-icon-gap: 17px;
 @cart-number-size: 17px;
 
@@ -26,16 +26,35 @@
 
     &__icon {
         position: relative;
-        width: 20px;
-        margin-top: -6px;
-        margin-left: -9px;
         height: @cart-icon-size;
         text-align: left;
 
-        font-size: @cart-icon-size;
-
         @media @query-lg {
             float: left;
+            width: 20px;
+            margin-left: -9px;
+        }
+
+        .svg-icon {
+            &__item-1 {
+                fill: @color-f;
+
+                .open & {
+                    fill: @color-base;
+                }
+            }
+
+            &__item-2 {
+                fill: @color-turquoise;
+
+                @media @query-lg {
+                    fill: @color-f;
+                }
+
+                .open & {
+                    fill: @color-base;
+                }
+            }
         }
 
         &__count {

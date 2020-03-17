@@ -7,7 +7,7 @@
 
         <a href="{{ path('front_cart') }}" class="box-dropdown__select">
             <div class="cart__icon">
-                <i class="svg svg-cart"></i>
+                {% include 'Front/Svg/cart.svg' %}
                 {% if cart is not null %}
                     <span class="cart__icon__count">
                         {{ cart.itemsCount }}

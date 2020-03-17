@@ -3,6 +3,7 @@
 {% use 'Front/Layout/footer.html.twig' %}
 
 {% block headerClass %}{% endblock %}
+{% block headerLayoutClass %}{% endblock %}
 
 {% block html_body %}
     {% set adminLoggedAsCustomer = is_granted(constant('Shopsys\\FrameworkBundle\\Model\\Security\\Roles::ROLE_ADMIN_AS_CUSTOMER')) %}
@@ -23,7 +24,7 @@
     {% endif %}
     <div class="web__in">
         <div class="web__line">
-            <div class="web__header">
+            <div class="web__header {{ block('headerLayoutClass') }}">
                 {{ block('header') }}
                 {% block infoRow %}
                     {% if isInfoRowVisible() %}

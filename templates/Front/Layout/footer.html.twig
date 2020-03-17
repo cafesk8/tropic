@@ -30,7 +30,7 @@
                                 <div class="box-contact">
                                     <div class="box-contact__block">
                                         <div class="box-contact__block__text">
-                                            <i class="svg svg-phone"></i>
+                                            {% include 'Front/Svg/phone.svg' %}
                                             {{ 'Volejte na '|trans }}
                                             <a href="tel:{{ getShopInfoPhoneNumber() }}">
                                                 {{ getShopInfoPhoneNumber() }}

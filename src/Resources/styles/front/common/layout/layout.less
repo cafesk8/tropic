@@ -33,6 +33,22 @@ img {
         }
     }
 
+    &__header {
+        margin-bottom: 15px;
+
+        background-color: @color-base;
+
+        @media @query-lg {
+            margin-bottom: 25px;
+
+            background-color: transparent;
+        }
+
+        &--small {
+            background-color: @color-box;
+        }
+    }
+
     &__footer {
         flex: 0;
         will-change: padding;
@@ -74,6 +90,26 @@ img {
 
         &--border-radius {
             border-radius: @radius-big;
+        }
+
+        &--header {
+            padding: 0;
+            margin: 0;
+
+            @media @query-lg {
+                padding: 0 @web-padding-small;
+                margin: 0 @web-padding-small;
+
+                border-radius: @radius-big;
+            }
+
+            @media @query-vl {
+                padding: 0 @web-padding;
+            }
+
+            @media @query-xl {
+                margin: 0 auto;
+            }
         }
 
         &--top-line {

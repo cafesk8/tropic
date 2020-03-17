@@ -18,6 +18,12 @@
     </h1>
 {% endblock %}
 
+{% block logoMobile %}
+    <h1 class="logo">
+        <img src="{{ asset('assets/frontend/images/logo-mobile.png') }}" alt="{{ 'Online shop'|trans }}">
+    </h1>
+{% endblock %}
+
 {% block main_content %}
 
     {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}

@@ -705,25 +705,7 @@
 </div>
                             </textarea>
                         </div>
-
-                        <h3 class="styleguide-module__title--small">Spinbox / add basket</h3>
-                        <div class="box-detail-add__action">
-                            <div class="box-detail-add__action__spinbox">
-                                <span class="form-input-spinbox js-spinbox">
-                                    <input type="text" name="add_product_form[quantity]" required="required" class="form-input-spinbox__input input-no-style js-spinbox-input input id__add_product_form_quantity" data-spinbox-min="1" data-spinbox-step="1" value="1">
-                                    <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus">
-                                        <i class="svg svg-plus"></i>
-                                    </button>
-                                    <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus">
-                                        <i class="svg svg-minus"></i>
-                                    </button>
-                                </span>
-                            </div>
-                            <button type="submit" name="add_product_form[add]" class="box-detail-add__action__button btn--success btn--large btn id__add_product_form_add" data-hard-disabled="0">
-                                <i class="svg svg-cart"></i>Přidat do košíku
-                            </button>
-                        </div>
-
+                        
                         <h3 class="styleguide-module__title--small">Price Slider</h3>
                         <div class="box-filter__price">
                             <dl class="form-line">
@@ -881,8 +863,11 @@
                                                 <td>Personal collection</td>
                                                 <td>Credit card</td>
                                                 <td class="text-right">CZK1,916.00</td>
-                                                <td class="text-center"><a href="#tables" class="in-icon in-icon--detail"><i
-                                                                class="svg svg-search"></i></a></td>
+                                                <td class="text-center">
+                                                    <a href="#tables" class="in-icon in-icon--detail">
+                                                        {% include 'Front/Svg/search.svg' %}
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><a href="#tables">1506464371</a></td>
@@ -892,8 +877,11 @@
                                                 <td>Personal collection</td>
                                                 <td>Cash</td>
                                                 <td class="text-right">CZK6,150.00</td>
-                                                <td class="text-center"><a href="#tables" class="in-icon in-icon--detail"><i
-                                                                class="svg svg-search"></i></a></td>
+                                                <td class="text-center">
+                                                    <a href="#tables" class="in-icon in-icon--detail">
+                                                        {% include 'Front/Svg/search.svg' %}
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><a href="#tables">1506464374</a></td>
@@ -903,8 +891,11 @@
                                                 <td>PPL</td>
                                                 <td>Credit card</td>
                                                 <td class="text-right">CZK3,841.00</td>
-                                                <td class="text-center"><a href="#tables" class="in-icon in-icon--detail"><i
-                                                                class="svg svg-search"></i></a></td>
+                                                <td class="text-center">
+                                                    <a href="#tables" class="in-icon in-icon--detail">
+                                                        {% include 'Front/Svg/search.svg' %}
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><a href="#tables">1506464374</a></td>
@@ -914,8 +905,11 @@
                                                 <td>PPL</td>
                                                 <td>Credit card</td>
                                                 <td class="text-right">CZK3,841.00</td>
-                                                <td class="text-center"><a href="#tables" class="in-icon in-icon--detail"><i
-                                                                class="svg svg-search"></i></a></td>
+                                                <td class="text-center">
+                                                    <a href="#tables" class="in-icon in-icon--detail">
+                                                        {% include 'Front/Svg/search.svg' %}
+                                                    </a>
+                                                </td>
                                             </tr>
                                             </tbody>
                                         </table>

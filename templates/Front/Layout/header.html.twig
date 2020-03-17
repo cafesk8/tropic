@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="web__container web__container--dark web__container--border-radius">
+    <div class="web__container web__container--dark web__container--header">
         <header class="header {{ block('headerClass') }}">
             <div class="header__logo">
                 {% block logo %}
@@ -52,13 +52,16 @@
             <div class="header__right dont-print">
                 <div class="header__right__menu">
                     <div class="box-dropdown box-dropdown--without-arrow js-hover-intent box-dropdown--small-padding">
-                        <div class="box-dropdown__select js-responsive-toggle"
+                        <div class="box-dropdown__select box-dropdown__select--menu js-responsive-toggle"
                             data-element="js-header-burger-menu"
                             data-hide-on-click-out="true"
                             data-parent-give-class="true"
                             data-slide-toggle-disabled="true"
                         >
-                            <i class="header__right__search__icon-menu svg svg-burger-menu"></i>
+                            <div class="box-dropdown__select__menu">
+                                <i class="svg svg-burger-menu"></i>
+                                <span class="box-dropdown__select__menu__text">{{ 'Menu'|trans }}</span>
+                            </div>
                         </div>
                         <div class="box-dropdown__options box-dropdown__options--menu" id="js-header-burger-menu">
                             {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
@@ -69,6 +72,14 @@
                     </div>
                 </div>
 
+                <div class="header__right__logo">
+                    {% block logoMobile %}
+                        <a class="logo" href="{{ url('front_homepage') }}">
+                            <img src="{{ asset('assets/frontend/images/logo-mobile.png') }}" alt="{{ 'Online shop'|trans }}">
+                        </a>
+                    {% endblock %}
+                </div>
+
                 <div class="header__right__search">
                     <div class="box-dropdown box-dropdown--search box-dropdown--without-arrow box-dropdown--small-padding js-hover-intent js-search-opener">
                         <div class="box-dropdown__select js-responsive-toggle"
@@ -77,7 +88,9 @@
                             data-parent-give-class="true"
                             data-slide-toggle-disabled="true"
                         >
-                            <i class="svg svg-search"></i>
+                            <div class="box-dropdown__select__search">
+                                {% include 'Front/Svg/search.svg' %}
+                            </div>
                         </div>
                         <div class="box-dropdown__options box-dropdown__options--search" id="js-header-search">
                             {{ render(controller('App\\Controller\\Front\\SearchController:boxAction')) }}
@@ -94,7 +107,9 @@
                                 data-parent-give-class="true"
                                 data-slide-toggle-disabled="true"
                             >
-                                <i class="box-dropdown__select__user svg svg-user"></i>
+                                <div class="box-dropdown__select__user">
+                                    {% include 'Front/Svg/user.svg' %}
+                                </div>
                                 <div class="box-dropdown__select__text">
                                     {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
                                         {{ 'Váš účet'|trans }}
@@ -151,7 +166,7 @@
                         {{ shopInfoPhoneHours }}
                     </div>
                     <a class="contact-us__phone" href="tel:{{ shopInfoPhoneNumber }}">
-                        <i class="svg svg-phone"></i>
+                        {% include 'Front/Svg/phone.svg' %}
                         <spam class="contact-us__phone__text">{{ shopInfoPhoneNumber }}</span>
                     </a>
                 </div>
