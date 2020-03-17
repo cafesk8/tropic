@@ -1,34 +1,45 @@
 {% set buttonSizeClass = (type == 'large' ? ' btn--large ' : ' ') %}
+{% set productActionView = productView.action %}
 
 {% if productActionView.mainVariant %}
     <a href="{{ productActionView.detailUrl }}" class="btn btn--success {{ buttonSizeClass }}">
         {{- 'Choose variant'|trans -}}
     </a>
-{% elseif productActionView.sellingDenied %}
-    <a href="{{ productActionView.detailUrl }}" class="btn {{ buttonSizeClass }}">
-        {{- 'Product no longer on sale'|trans -}}
-    </a>
 {% else %}
+    {% set outOfStock = productView.stockQuantity <= 0 %}
+    {% set cssClass = '' %}
+    {% if outOfStock is same as (true) %}
+        {% set cssClass = 'btn--disabled ' %}
+    {% endif %}
     {{ form_start(form, {attr: {class: 'js-add-product dont-print', 'data-ajax-url': url('front_cart_add_product_ajax'), 'multipleForm': true}}) }}
-    <div class="box-detail-add__action{% if type == 'small' %} box-detail-add__action--in-product-list{% endif %}">
-        <div class="box-detail-add__action__spinbox">
-            <span class="form-input-spinbox{% if type == 'small' %} form-input-spinbox--small{% endif %} js-spinbox{% if not showAmountInput %} display-none{% endif %}">
+    <div class="in-add-to-cart{% if type == 'small' %} in-add-to-cart--in-product-list{% endif %}">
+        <div class="in-add-to-cart__spinbox js-spinbox-parent{% if not showAmountInput %} display-none{% endif %}">
+            {% if outOfStock is same as (false) %}
+                <div class="in-message in-message--warning js-maximum-amount-warning display-none">
+                    {{ 'Větší množství není možné nakoupit'|trans }}
+                </div>
+            {% endif %}
+            <span class="form-input-spinbox{% if type == 'small' %} form-input-spinbox--small{% endif %} js-spinbox">
                 {{ form_widget(form.quantity, { attr: {
                     class: 'form-input-spinbox__input input-no-style js-spinbox-input',
                     'data-spinbox-min': productActionView.minimumAmount,
-                    'data-spinbox-step': productActionView.amountMultiplier
+                    'data-spinbox-step': productActionView.amountMultiplier,
+                    'data-spinbox-max': productView.stockQuantity,
+                    'disabled': outOfStock ? 'disabled' : false
                 } }) }}
-                <button type="button" class="btn-no-style form-input-spinbox__btn js-spinbox-plus"><i class="svg svg-plus"></i></button>
-                <button type="button" class="btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus js-spinbox-minus"><i class="svg svg-minus"></i></button>
+                <button type="button" class="{{ cssClass }}btn-no-style form-input-spinbox__btn {% if not outOfStock %}js-spinbox-plus{% endif %}"><i class="svg svg-plus"></i></button>
+                <button type="button" class="{{ cssClass }}btn-no-style form-input-spinbox__btn form-input-spinbox__btn--minus {% if not outOfStock %}js-spinbox-minus{% endif %}"><i class="svg svg-minus"></i></button>
             </span>
         </div>
 
         {% if type == 'large' %}
-            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: 'box-detail-add__action__button btn--success btn--large' }}) }}
+            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn--success btn--large', 'disabled': outOfStock ? 'disabled' : false }}) }}
         {% elseif type == 'small' %}
-            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: 'box-detail-add__action__button btn--success' }}) }}
+            {{ form_widget(form.add, {label: '<i class="svg svg-cart"></i>Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn--success', 'disabled': outOfStock ? 'disabled' : false }}) }}
+        {% elseif type == 'smallWithoutIcon' %}
+            {{ form_widget(form.add, {label: 'Přidat&nbspdo&nbspkošíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button in-add-to-cart__button--small btn--success', 'disabled': outOfStock ? 'disabled' : false }}) }}
         {% else %}
-            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: 'box-detail-add__action__button btn--success btn--full-width' }}) }}
+            {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn--success btn--full-width', 'disabled': outOfStock ? 'disabled' : false }}) }}
         {% endif %}
     </div>
     {{ form_end(form) }}

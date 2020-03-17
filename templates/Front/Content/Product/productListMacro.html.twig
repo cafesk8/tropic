@@ -46,15 +46,9 @@
 
                                 <div class="list-products__item__info__availability">
                                     <div class="list-products__item__info__availability__spacer"></div>
-                                    {% if productView.action.sellingDenied %}
-                                        <div class="list-products__item__info__availability__text" style="color: #6d6868;">
-                                            {{ 'Product no longer on sale'|trans }}
-                                        </div>
-                                    {% else %}
-                                        <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                            {{ productView.availability }}
-                                        </div>
-                                    {% endif %}
+                                    <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                        {{ productView.availability }}
+                                    </div>
                                 </div>
 
                                 {% if productView.getRandomGiftName() is not null %}
@@ -70,7 +64,7 @@
 
                             <div class="list-products__item__hover">
                                 <div class="list-products__item__hover__wrap">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', { product: productView.action.id, type: 'small' } )) }}
+                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, type: 'small' })) }}
                                 </div>
                             </div>
                         </div>
@@ -133,22 +127,16 @@
                                     {% endif %}
 
                                     <div class="{{ listCssClass }}__item__info__availability">
-                                        <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
-                                        {% if productView.action.sellingDenied %}
-                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #6d6868;">
-                                                {{ 'Product no longer on sale'|trans }}
-                                            </div>
-                                        {% else %}
-                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {{ productView.availability }}
-                                            </div>
-                                        {% endif %}
+                                        <div class="list-products__item__info__availability__spacer"></div>
+                                        <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                            {{ productView.availability }}
+                                        </div>
                                     </div>
                                 </div>
                             </a>
                             {% if showButton %}
                                 <div class="{{ listCssClass }}__item__button-add">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {productActionView: productView.action, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
+                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
                                 </div>
                             {% endif %}
                         </div>
