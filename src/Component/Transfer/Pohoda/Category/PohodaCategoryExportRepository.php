@@ -84,4 +84,21 @@ class PohodaCategoryExportRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getAllPohodaIds(): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaCategory::COL_POHODA_ID);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT ID
+            FROM SkKat Category',
+            $resultSetMapping
+        );
+
+        return $query->getScalarResult();
+    }
 }

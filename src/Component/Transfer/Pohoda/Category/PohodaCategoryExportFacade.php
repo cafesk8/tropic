@@ -61,6 +61,14 @@ class PohodaCategoryExportFacade
     }
 
     /**
+     * @return array
+     */
+    public function getAllPohodaIds(): array
+    {
+        return $this->pohodaCategoryExportRepository->getAllPohodaIds();
+    }
+
+    /**
      * @param array $pohodaCategoriesData
      * @return \App\Component\Transfer\Pohoda\Category\PohodaCategory[]
      */

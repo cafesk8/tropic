@@ -95,7 +95,7 @@ class Category extends BaseCategory
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updatedByIsAt;
+    private $updatedByPohodaAt;
 
     /**
      * @var int|null
@@ -119,7 +119,7 @@ class Category extends BaseCategory
         $this->advert = $categoryData->advert;
         $this->pohodaId = $categoryData->pohodaId;
         $this->pohodaParentId = $categoryData->pohodaParentId;
-        $this->updatedByIsAt = $categoryData->updatedByIsAt;
+        $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
         $this->pohodaPosition = $categoryData->pohodaPosition;
 
         $this->setTranslations($categoryData);
@@ -139,7 +139,7 @@ class Category extends BaseCategory
         $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
         $this->advert = $categoryData->advert;
-        $this->updatedByIsAt = $categoryData->updatedByIsAt;
+        $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
         $this->pohodaParentId = $categoryData->pohodaParentId;
         $this->pohodaPosition = $categoryData->pohodaPosition;
 
@@ -299,9 +299,9 @@ class Category extends BaseCategory
     /**
      * @return \DateTime|null
      */
-    public function getUpdatedByIsAt(): ?\DateTime
+    public function getUpdatedByPohodaAt(): ?\DateTime
     {
-        return $this->updatedByIsAt;
+        return $this->updatedByPohodaAt;
     }
 
     /**

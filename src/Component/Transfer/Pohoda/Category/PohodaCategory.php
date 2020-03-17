@@ -61,7 +61,7 @@ class PohodaCategory
         $this->nameSk = TransformString::emptyToNull((string)$pohodaCategoryData[self::COL_NAME_SK]);
         $this->parentId = (int)$pohodaCategoryData[self::COL_PARENT_ID];
         $this->position = (int)$pohodaCategoryData[self::COL_POSITION];
-        $this->listable = (bool)$pohodaCategoryData[self::COL_LISTABLE];
+        $this->listable = !(bool)$pohodaCategoryData[self::COL_LISTABLE];
         $this->level = (int)$pohodaCategoryData[self::COL_LEVEL];
     }
 }

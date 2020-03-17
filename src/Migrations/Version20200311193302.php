@@ -15,7 +15,7 @@ class Version20200311193302 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->sql('ALTER TABLE categories ADD pohoda_id INT DEFAULT NULL');
-        $this->sql('ALTER TABLE categories ADD updated_by_is_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->sql('ALTER TABLE categories ADD updated_by_pohoda_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
         $this->sql('CREATE UNIQUE INDEX UNIQ_3AF3466828B287A8 ON categories (pohoda_id)');
 
         $this->sql(

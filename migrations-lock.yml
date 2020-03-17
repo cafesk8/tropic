@@ -1000,3 +1000,6 @@
 20200311193302:
     class: App\Migrations\Version20200311193302
     skip: false
+20200317091011:
+    class: App\Migrations\Version20200317091011
+    skip: false

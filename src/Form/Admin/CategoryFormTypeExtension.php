@@ -90,10 +90,13 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         );
 
         $builderSettingsGroup = $builder->get('settings');
+        /** @var \App\Model\Category\Category $category */
+        $category = $options['category'];
+
 
         $builderSettingsGroup
-            ->add('updatedByIsAt', DisplayOnlyType::class, [
-                'data' => $this->dateTimeFormatterExtension->formatDateTime($options['category']->getUpdatedByIsAt()) ?? t('Nikdy'),
+            ->add('updatedByPohodaAt', DisplayOnlyType::class, [
+                'data' => $category !== null ? $this->dateTimeFormatterExtension->formatDateTime($category->getUpdatedByPohodaAt()) : '-',
                 'label' => t('Poslední aktualizace z IS'),
             ])
             ->add('listable', YesNoType::class, [

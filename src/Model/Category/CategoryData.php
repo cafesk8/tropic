@@ -74,7 +74,7 @@ class CategoryData extends BaseCategoryData
     /**
      * @var \DateTime|null
      */
-    public $updatedByIsAt;
+    public $updatedByPohodaAt;
 
     /**
      * @var int|null

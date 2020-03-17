@@ -38,7 +38,7 @@ class PohodaCategoryMapper
         foreach ($this->domain->getAllIds() as $domainId) {
             $categoryData->enabled[$domainId] = $pohodaCategory->listable;
         }
-        $categoryData->updatedByIsAt = new \DateTime();
+        $categoryData->updatedByPohodaAt = new \DateTime();
         $categoryData->pohodaParentId = $pohodaCategory->parentId;
         $categoryData->pohodaPosition = $pohodaCategory->position;
     }

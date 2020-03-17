@@ -11,6 +11,7 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 
 /**
  * @property \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @method \App\Model\Category\Category getRootCategory()
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @property \App\Component\Image\ImageFacade $imageFacade
@@ -281,5 +282,19 @@ class CategoryFacade extends BaseCategoryFacade
         }
 
         $this->em->flush();
+    }
+
+    /**
+     * @param array $pohodaIds
+     * @return array
+     */
+    public function removeCategoriesExceptPohodaIds(array $pohodaIds): array
+    {
+        $categories = $this->categoryRepository->getCategoriesExceptPohodaIds($pohodaIds);
+        foreach ($categories as $category) {
+            $this->deleteById($category->getId());
+        }
+
+        return $categories;
     }
 }

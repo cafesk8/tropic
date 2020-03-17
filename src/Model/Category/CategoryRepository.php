@@ -326,4 +326,19 @@ class CategoryRepository extends BaseCategoryRepository
 
         return $pohodaCategories;
     }
+
+    /**
+     * @param array $pohodaIds
+     * @return array
+     */
+    public function getCategoriesExceptPohodaIds(array $pohodaIds): array
+    {
+        $queryBuilder = $this->getAllQueryBuilder();
+        if (count($pohodaIds) > 0) {
+            $queryBuilder->andWhere('c.pohodaId IS NOT NULL AND c.pohodaId NOT IN (:pohodaIds)')
+                ->setParameter('pohodaIds', $pohodaIds);
+        }
+
+        return $queryBuilder->getQuery()->execute();
+    }
 }
