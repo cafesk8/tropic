@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\Transfer\Pohoda\Category;
 
 use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
+use DateTime;
 use Symfony\Bridge\Monolog\Logger;
 
 class PohodaCategoryExportFacade
@@ -40,11 +41,21 @@ class PohodaCategoryExportFacade
     }
 
     /**
+     * @param \DateTime|null $lastModificationDate
+     * @return \App\Component\Transfer\Pohoda\Product\PohodaProduct[]
+     */
+    public function findPohodaCategoryIdsByLastUpdateTime(?DateTime $lastModificationDate): array
+    {
+        return $this->pohodaCategoryExportRepository->findPohodaCategoryIdsByLastUpdateTime($lastModificationDate);
+    }
+
+    /**
+     * @param int[] $pohodaCategoryIds
      * @return \App\Component\Transfer\Pohoda\Category\PohodaCategory[]
      */
-    public function findAll(): array
+    public function findPohodaCategoriesByPohodaCategoryIds(array $pohodaCategoryIds): array
     {
-        $pohodaCategoryResult = $this->pohodaCategoryExportRepository->findAll();
+        $pohodaCategoryResult = $this->pohodaCategoryExportRepository->findByPohodaCategoryIds($pohodaCategoryIds);
 
         return $this->getValidPohodaCategories($pohodaCategoryResult);
     }

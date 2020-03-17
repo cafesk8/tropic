@@ -295,4 +295,35 @@ class CategoryRepository extends BaseCategoryRepository
     {
         return $this->getCategoryRepository()->findBy(['advert' => $advert]);
     }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Model\Category\Category|null
+     */
+    public function getByPohodaId(int $pohodaId): ?Category
+    {
+        return $this->getCategoryRepository()->findOneBy(['pohodaId' => $pohodaId]);
+    }
+
+    /**
+     * @return \App\Model\Category\Category[][]
+     */
+    public function getAllIndexedByIdGroupedByPohodaParentId(): array
+    {
+        $pohodaCategories = [];
+
+        /** @var \App\Model\Category\Category[] $categories */
+        $categories = $this->getCategoryRepository()->createQueryBuilder('c')
+            ->where('c.pohodaParentId IS NOT NULL')
+            ->orderBy('c.pohodaParentId, c.pohodaPosition', 'ASC')
+            ->getQuery()->getResult();
+
+        foreach ($categories as $category) {
+            $pohodaParentId = $category->getPohodaParentId();
+
+            $pohodaCategories[$pohodaParentId][$category->getId()] = $category;
+        }
+
+        return $pohodaCategories;
+    }
 }

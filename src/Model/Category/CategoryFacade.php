@@ -223,4 +223,63 @@ class CategoryFacade extends BaseCategoryFacade
 
         return $categoryFullPath ?? implode($separator, $categoryNames);
     }
+
+    /**
+     * @return int[]
+     */
+    public function getCategoriesForOrderRecalculation(): array
+    {
+        $pohodaCategoriesIndexedByPohodaParent = $this->categoryRepository->getAllIndexedByIdGroupedByPohodaParentId();
+        $categoriesForOrderRecalculation = [];
+
+        foreach ($pohodaCategoriesIndexedByPohodaParent as $pohodaId => $categories) {
+            $categoryParentCategory = $this->categoryRepository->getByPohodaId($pohodaId);
+
+            if ($categoryParentCategory === null) {
+                $parentCategoryId = null;
+            } else {
+                $parentCategoryId = $categoryParentCategory->getId();
+            }
+
+            foreach ($categories as $category) {
+                $categoriesForOrderRecalculation[$category->getId()] = $parentCategoryId;
+            }
+        }
+        return $categoriesForOrderRecalculation;
+    }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Model\Category\Category|null
+     */
+    public function getByPohodaId(int $pohodaId): ?Category
+    {
+        return $this->categoryRepository->getByPohodaId($pohodaId);
+    }
+
+    /**
+     * @param null[]|int[] $parentIdByCategoryId
+     */
+    public function editOrdering($parentIdByCategoryId): void
+    {
+        $this->categoryRepository->getAll();
+
+        $rootCategory = $this->getRootCategory();
+        foreach ($parentIdByCategoryId as $categoryId => $parentId) {
+            if ($parentId === null) {
+                $parent = $rootCategory;
+            } else {
+                $parent = $this->categoryRepository->getById($parentId);
+            }
+
+            $category = $this->categoryRepository->getById($categoryId);
+            $category->setParent($parent);
+            // Category must be flushed after parent change before calling moveDown for correct calculation of lft and rgt
+            $this->em->flush($category);
+
+            $this->categoryRepository->moveDown($category, CategoryRepository::MOVE_DOWN_TO_BOTTOM);
+        }
+
+        $this->em->flush();
+    }
 }

@@ -633,3 +633,7 @@ services:
     App\Model\Product\Pricing\QuantifiedProductPriceCalculation: ~
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation: '@App\Model\Product\Pricing\QuantifiedProductPriceCalculation'
+
+    App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade:
+        arguments:
+            $logger: '@monolog.logger.cron'

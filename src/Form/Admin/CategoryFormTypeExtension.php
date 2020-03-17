@@ -8,9 +8,11 @@ use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
 use App\Model\Category\CategoryData;
+use App\Twig\DateTimeFormatterExtension;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Form\Admin\Category\CategoryFormType;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\Locale\LocalizedType;
 use Shopsys\FrameworkBundle\Form\SortableValuesType;
@@ -48,25 +50,33 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
     private $mallFacade;
 
     /**
+     * @var \App\Twig\DateTimeFormatterExtension
+     */
+    private $dateTimeFormatterExtension;
+
+    /**
      * CategoryFormTypeExtension constructor.
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabFacade
      * @param \Shopsys\FrameworkBundle\Form\Transformers\RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer
      * @param \App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer
      * @param \App\Component\Mall\MallFacade $mallFacade
+     * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
         AdminDomainTabsFacade $adminDomainTabFacade,
         RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer,
         BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer,
-        MallFacade $mallFacade
+        MallFacade $mallFacade,
+        DateTimeFormatterExtension $dateTimeFormatterExtension
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabFacade;
         $this->removeDuplicatesTransformer = $removeDuplicatesTransformer;
         $this->blogArticlesIdsToBlogArticlesTransformer = $blogArticlesIdsToBlogArticlesTransformer;
         $this->mallFacade = $mallFacade;
+        $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
     }
 
     /**
@@ -82,6 +92,10 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $builderSettingsGroup = $builder->get('settings');
 
         $builderSettingsGroup
+            ->add('updatedByIsAt', DisplayOnlyType::class, [
+                'data' => $this->dateTimeFormatterExtension->formatDateTime($options['category']->getUpdatedByIsAt()) ?? t('Nikdy'),
+                'label' => t('Poslední aktualizace z IS'),
+            ])
             ->add('listable', YesNoType::class, [
                 'required' => false,
                 'label' => t('Zobrazovat v menu a dalších výpisech'),
