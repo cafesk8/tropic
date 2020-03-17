@@ -49,7 +49,7 @@ class PohodaCategoryDataValidator
                     new Type(['type' => 'string']),
                     new NotBlank(),
                 ],
-                PohodaCategory::COL_LISTABLE => [
+                PohodaCategory::COL_NOT_LISTABLE => [
                     new Type(['type' => 'string']),
                     new NotBlank(),
                 ],

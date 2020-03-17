@@ -321,26 +321,10 @@ class Category extends BaseCategory
     }
 
     /**
-     * @param int|null $pohodaParentId
-     */
-    public function setPohodaParentId(?int $pohodaParentId): void
-    {
-        $this->pohodaParentId = $pohodaParentId;
-    }
-
-    /**
      * @return int|null
      */
     public function getPohodaPosition(): ?int
     {
         return $this->pohodaPosition;
-    }
-
-    /**
-     * @param int|null $pohodaPosition
-     */
-    public function setPohodaPosition(?int $pohodaPosition): void
-    {
-        $this->pohodaPosition = $pohodaPosition;
     }
 }

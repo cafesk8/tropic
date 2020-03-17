@@ -32,7 +32,7 @@ class PohodaCategoryExportRepository
      * @param int[] $pohodaCategoryIds
      * @return array
      */
-    public function findByPohodaCategoryIds(array $pohodaCategoryIds): array
+    public function getByPohodaCategoryIds(array $pohodaCategoryIds): array
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('ID', PohodaCategory::COL_POHODA_ID)
@@ -40,7 +40,7 @@ class PohodaCategoryExportRepository
             ->addScalarResult('Pozn', PohodaCategory::COL_NAME_SK)
             ->addScalarResult('RefNodeID', PohodaCategory::COL_PARENT_ID)
             ->addScalarResult('Poradi', PohodaCategory::COL_POSITION)
-            ->addScalarResult('Zobraz', PohodaCategory::COL_LISTABLE)
+            ->addScalarResult('Zobraz', PohodaCategory::COL_NOT_LISTABLE)
             ->addScalarResult('Node', PohodaCategory::COL_LEVEL);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
@@ -61,7 +61,7 @@ class PohodaCategoryExportRepository
      * @param \DateTime|null $lastUpdateTime
      * @return array
      */
-    public function findPohodaCategoryIdsByLastUpdateTime(?DateTime $lastUpdateTime): array
+    public function getPohodaCategoryIdsByLastUpdateTime(?DateTime $lastUpdateTime): array
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('ID', PohodaCategory::COL_POHODA_ID);

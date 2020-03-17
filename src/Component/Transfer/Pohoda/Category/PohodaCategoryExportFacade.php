@@ -44,18 +44,18 @@ class PohodaCategoryExportFacade
      * @param \DateTime|null $lastModificationDate
      * @return \App\Component\Transfer\Pohoda\Product\PohodaProduct[]
      */
-    public function findPohodaCategoryIdsByLastUpdateTime(?DateTime $lastModificationDate): array
+    public function getPohodaCategoryIdsByLastUpdateTime(?DateTime $lastModificationDate): array
     {
-        return $this->pohodaCategoryExportRepository->findPohodaCategoryIdsByLastUpdateTime($lastModificationDate);
+        return $this->pohodaCategoryExportRepository->getPohodaCategoryIdsByLastUpdateTime($lastModificationDate);
     }
 
     /**
      * @param int[] $pohodaCategoryIds
      * @return \App\Component\Transfer\Pohoda\Category\PohodaCategory[]
      */
-    public function findPohodaCategoriesByPohodaCategoryIds(array $pohodaCategoryIds): array
+    public function getPohodaCategoriesByPohodaCategoryIds(array $pohodaCategoryIds): array
     {
-        $pohodaCategoryResult = $this->pohodaCategoryExportRepository->findByPohodaCategoryIds($pohodaCategoryIds);
+        $pohodaCategoryResult = $this->pohodaCategoryExportRepository->getByPohodaCategoryIds($pohodaCategoryIds);
 
         return $this->getValidPohodaCategories($pohodaCategoryResult);
     }

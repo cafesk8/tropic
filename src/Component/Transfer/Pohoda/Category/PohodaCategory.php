@@ -13,7 +13,7 @@ class PohodaCategory
     public const COL_NAME_SK = 'nameSk';
     public const COL_PARENT_ID = 'parentId';
     public const COL_POSITION = 'position';
-    public const COL_LISTABLE = 'listable';
+    public const COL_NOT_LISTABLE = 'not_listable';
     public const COL_LEVEL = 'level';
 
     /**
@@ -61,7 +61,7 @@ class PohodaCategory
         $this->nameSk = TransformString::emptyToNull((string)$pohodaCategoryData[self::COL_NAME_SK]);
         $this->parentId = (int)$pohodaCategoryData[self::COL_PARENT_ID];
         $this->position = (int)$pohodaCategoryData[self::COL_POSITION];
-        $this->listable = !(bool)$pohodaCategoryData[self::COL_LISTABLE];
+        $this->listable = !(bool)$pohodaCategoryData[self::COL_NOT_LISTABLE];
         $this->level = (int)$pohodaCategoryData[self::COL_LEVEL];
     }
 }

@@ -63,7 +63,7 @@ class CategoryQueueImportCronModule extends AbstractTransferCronModule
         $transfer = $this->transferFacade->getByIdentifier(self::TRANSFER_IDENTIFIER);
         $dateTimeBeforeTransferFromPohodaServer = $this->pohodaEntityManager->getCurrentDateTimeFromPohodaDatabase();
 
-        $pohodaCategoryIds = $this->pohodaCategoryExportFacade->findPohodaCategoryIdsByLastUpdateTime($transfer->getLastStartAt());
+        $pohodaCategoryIds = $this->pohodaCategoryExportFacade->getPohodaCategoryIdsByLastUpdateTime($transfer->getLastStartAt());
         if (count($pohodaCategoryIds) === 0) {
             $this->logger->addInfo('Nejsou žádná data ke zpracování');
         } else {

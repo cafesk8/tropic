@@ -92,7 +92,7 @@ class CategoryImportFacade
     {
         $this->logger = $logger;
         $changedPohodaCategoryIds = $this->categoryQueueImportFacade->findChangedPohodaCategoryIds(self::MAX_BATCH_LIMIT);
-        $pohodaCategories = $this->pohodaCategoryExportFacade->findPohodaCategoriesByPohodaCategoryIds(
+        $pohodaCategories = $this->pohodaCategoryExportFacade->getPohodaCategoriesByPohodaCategoryIds(
             $changedPohodaCategoryIds
         );
         if (count($pohodaCategories) === 0) {
@@ -122,7 +122,7 @@ class CategoryImportFacade
         $updatedPohodaCategoryIds = [];
 
         foreach ($pohodaCategories as $pohodaCategory) {
-            $category = $this->categoryFacade->getByPohodaId($pohodaCategory->pohodaId);
+            $category = $this->categoryFacade->findByPohodaId($pohodaCategory->pohodaId);
             if ($category !== null) {
                 $updatedPohodaCategoryIds[] = $this->editCategoryByPohodaCategory($category, $pohodaCategory);
             } else {

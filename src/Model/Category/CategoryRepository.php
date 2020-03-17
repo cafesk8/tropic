@@ -300,7 +300,7 @@ class CategoryRepository extends BaseCategoryRepository
      * @param int $pohodaId
      * @return \App\Model\Category\Category|null
      */
-    public function getByPohodaId(int $pohodaId): ?Category
+    public function findByPohodaId(int $pohodaId): ?Category
     {
         return $this->getCategoryRepository()->findOneBy(['pohodaId' => $pohodaId]);
     }
@@ -329,7 +329,7 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param array $pohodaIds
-     * @return array
+     * @return \App\Model\Category\Category[]
      */
     public function getCategoriesExceptPohodaIds(array $pohodaIds): array
     {

@@ -233,8 +233,8 @@ class CategoryFacade extends BaseCategoryFacade
         $pohodaCategoriesIndexedByPohodaParent = $this->categoryRepository->getAllIndexedByIdGroupedByPohodaParentId();
         $categoriesForOrderRecalculation = [];
 
-        foreach ($pohodaCategoriesIndexedByPohodaParent as $pohodaId => $categories) {
-            $categoryParentCategory = $this->categoryRepository->getByPohodaId($pohodaId);
+        foreach ($pohodaCategoriesIndexedByPohodaParent as $parentCategoryPohodaId => $categories) {
+            $categoryParentCategory = $this->categoryRepository->findByPohodaId($parentCategoryPohodaId);
 
             if ($categoryParentCategory === null) {
                 $parentCategoryId = null;
@@ -253,40 +253,14 @@ class CategoryFacade extends BaseCategoryFacade
      * @param int $pohodaId
      * @return \App\Model\Category\Category|null
      */
-    public function getByPohodaId(int $pohodaId): ?Category
+    public function findByPohodaId(int $pohodaId): ?Category
     {
-        return $this->categoryRepository->getByPohodaId($pohodaId);
-    }
-
-    /**
-     * @param null[]|int[] $parentIdByCategoryId
-     */
-    public function editOrdering($parentIdByCategoryId): void
-    {
-        $this->categoryRepository->getAll();
-
-        $rootCategory = $this->getRootCategory();
-        foreach ($parentIdByCategoryId as $categoryId => $parentId) {
-            if ($parentId === null) {
-                $parent = $rootCategory;
-            } else {
-                $parent = $this->categoryRepository->getById($parentId);
-            }
-
-            $category = $this->categoryRepository->getById($categoryId);
-            $category->setParent($parent);
-            // Category must be flushed after parent change before calling moveDown for correct calculation of lft and rgt
-            $this->em->flush($category);
-
-            $this->categoryRepository->moveDown($category, CategoryRepository::MOVE_DOWN_TO_BOTTOM);
-        }
-
-        $this->em->flush();
+        return $this->categoryRepository->findByPohodaId($pohodaId);
     }
 
     /**
      * @param array $pohodaIds
-     * @return array
+     * @return \App\Model\Category\Category[]
      */
     public function removeCategoriesExceptPohodaIds(array $pohodaIds): array
     {
