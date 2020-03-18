@@ -222,10 +222,12 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOT_UNLIMITED;
                     }
 
-                    if ($promoCodeData->useNominalDiscount === true) {
-                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT;
-                    } else {
-                        $validationGroups[] = self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT;
+                    if ($promoCodeData->type === PromoCodeData::TYPE_PROMO_CODE) {
+                        if ($promoCodeData->useNominalDiscount) {
+                            $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT;
+                        } else {
+                            $validationGroups[] = self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT;
+                        }
                     }
 
                     if ($promoCodeData->type === PromoCodeData::TYPE_CERTIFICATE) {
@@ -357,13 +359,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     {
         $builder
             ->add('certificateSku', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vyplňte prosím SKU dárkového certifikátu.',
-                        'groups' => self::VALIDATION_GROUP_TYPE_CERTIFICATE,
-                    ]),
-                ],
+                'required' => false,
                 'label' => t('SKU certifikátu'),
                 'attr' => [
                     'class' => 'js-promo-code-certificate-field',
@@ -380,11 +376,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         'groups' => self::VALIDATION_GROUP_TYPE_CERTIFICATE,
                     ]),
                     new NotBlank([
-                        'message' => 'Vyplňte prosím nominální hodnotu dárkového certifikátu.',
+                        'message' => 'Vyplňte prosím nominální hodnotu dárkového poukazu.',
                         'groups' => self::VALIDATION_GROUP_TYPE_CERTIFICATE,
                     ]),
                 ],
-                'label' => $this->getLabelForMultidomainFieldValue(t('Hodnota certifikátu'), $promoCode, $domainId),
+                'label' => $this->getLabelForMultidomainFieldValue(t('Hodnota poukazu'), $promoCode, $domainId),
                 'attr' => [
                     'class' => 'js-promo-code-certificate-field',
                 ],
@@ -525,7 +521,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'required' => true,
             'choices' => [
                 t('Slevový kód') => PromoCodeData::TYPE_PROMO_CODE,
-                t('Dárkový certifikát') => PromoCodeData::TYPE_CERTIFICATE,
+                t('Dárkový poukaz') => PromoCodeData::TYPE_CERTIFICATE,
             ],
             'attr' => [
                 'class' => 'js-promo-code-promo-code-or-certificate',

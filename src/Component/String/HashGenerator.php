@@ -9,9 +9,9 @@ use Shopsys\FrameworkBundle\Component\String\HashGenerator as BaseHashGenerator;
 class HashGenerator extends BaseHashGenerator
 {
     /**
-     * There is missing characters 0 and O
+     * Excluding characters O, 0, I, L, 1
      */
-    public $charactersWithoutConfusingCharacters = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789abcdefghijklmnpqrstuvwxyz';
+    public $charactersWithoutConfusingCharacters = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789abcdefghjkmnpqrstuvwxyz';
 
     /**
      * @param int $length

@@ -70,11 +70,8 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
             ->add('cashOnDelivery', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dobírka'),
-            ])
-            ->add('usableForGiftCertificates', YesNoType::class, [
-                'required' => false,
-                'label' => t('Může být použit pro dárkové certifikáty'),
             ]);
+        $this->addGiftCertificateFields($builderBasicInformationGroup);
 
         if ($options['payment'] !== null) {
             /** @var \App\Model\Payment\Payment $payment */
@@ -91,6 +88,25 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                 ]);
             }
         }
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addGiftCertificateFields(FormBuilderInterface $builder): void
+    {
+        $builder
+            ->add('usableForGiftCertificates', YesNoType::class, [
+                'required' => false,
+                'label' => t('Může být použit pro dárkové poukazy'),
+            ])
+            ->add('activatesGiftCertificate', YesNoType::class, [
+                'required' => false,
+                'label' => t('Aktivovat dárkové poukazy v objednávce hned po zaplacení'),
+                'attr' => [
+                    'class' => 'js-payment-activates-gift-certificate',
+                ],
+            ]);
     }
 
     /**
