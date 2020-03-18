@@ -80,6 +80,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
+ * @property \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -128,7 +129,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \App\Model\Order\OrderRepository $orderRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderUrlGenerator $orderUrlGenerator
-     * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository $orderStatusRepository
+     * @param \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade $orderMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderHashGeneratorRepository $orderHashGeneratorRepository
      * @param \App\Component\Setting\Setting $setting
@@ -284,8 +285,11 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress): BaseOrder
     {
+        $orderData->status = $this->orderStatusRepository->getDefault();
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
+        /** @var \App\Model\Customer\User\CustomerUser $customerUser */
+        $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
         $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);
 
         foreach ($validEnteredPromoCodes as $validEnteredPromoCode) {
@@ -294,15 +298,17 @@ class OrderFacade extends BaseOrderFacade
             $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($validEnteredPromoCode->getCode());
         }
 
-        /** @var \App\Model\Order\Order $order */
-        $order = parent::createOrderFromFront($orderData, $deliveryAddress);
+        $this->updateOrderDataWithDeliveryAddress($orderData, $deliveryAddress);
+        $order = $this->createOrder($orderData, $orderPreview, $customerUser);
+        $this->orderProductFacade->subtractOrderProductsFromStock($order->getProductItems());
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
 
-        /** @var \App\Model\Customer\User\CustomerUser $customer */
-        $customer = $order->getCustomerUser();
-        if ($customer !== null) {
-            $order->setCustomerTransferId($customer->getTransferId());
-            $order->setMemberOfLoyaltyProgram($customer->isMemberOfLoyaltyProgram());
+        $this->cartFacade->deleteCartOfCurrentCustomerUser();
+
+        if ($customerUser !== null) {
+            $order->setCustomerTransferId($customerUser->getTransferId());
+            $order->setMemberOfLoyaltyProgram($customerUser->isMemberOfLoyaltyProgram());
+            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order, $deliveryAddress);
             $this->em->flush($order);
         }
 
