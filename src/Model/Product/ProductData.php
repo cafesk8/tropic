@@ -88,6 +88,11 @@ class ProductData extends BaseProductData
      */
     public $youtubeVideoIds;
 
+    /**
+     * @var string|null
+     */
+    public $variantId;
+
     public function __construct()
     {
         parent::__construct();

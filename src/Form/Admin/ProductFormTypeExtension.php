@@ -155,6 +155,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $builderBasicInformationGroup = $builder->get('basicInformationGroup');
         $builderBasicInformationGroup
+            ->add('variantId', TextType::class, [
+                'required' => false,
+                'label' => t('ID modifikace'),
+                'position' => ['before' => 'flags'],
+            ])
             ->add('finished', YesNoType::class, [
                 'required' => false,
                 'label' => t('Produkt je hotový'),

@@ -166,6 +166,13 @@ class Product extends BaseProduct
     protected $amountMultiplier;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    protected $variantId;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -175,16 +182,8 @@ class Product extends BaseProduct
 
         $this->storeStocks = new ArrayCollection();
         $this->pohodaId = $productData->pohodaId;
-        $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
-        $this->finished = $productData->finished;
-        $this->mallExport = $productData->mallExport;
-        $this->mallExportedAt = $productData->mallExportedAt;
         $this->updatedAt = $productData->updatedAt;
-        $this->baseName = $productData->baseName;
-        $this->productType = $productData->productType;
-        $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = $productData->amountMultiplier;
-        $this->youtubeVideoIds = $productData->youtubeVideoIds;
+        $this->fillCommonProperties($productData);
     }
 
     /**
@@ -197,6 +196,14 @@ class Product extends BaseProduct
     ) {
         parent::edit($productCategoryDomains, $productData);
 
+        $this->fillCommonProperties($productData);
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    protected function fillCommonProperties(ProductData $productData): void
+    {
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
@@ -204,8 +211,11 @@ class Product extends BaseProduct
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
         $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = (int)$productData->amountMultiplier;
+        $this->amountMultiplier = $productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
+        if ($productData->variantId !== null) {
+            $this->variantId = trim($productData->variantId);
+        }
     }
 
     /**
@@ -746,5 +756,13 @@ class Product extends BaseProduct
                 break;
             }
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVariantId(): ?string
+    {
+        return $this->variantId;
     }
 }
