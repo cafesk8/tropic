@@ -90,6 +90,8 @@
             background-color: @box-dropdown-menu-icon-background;
 
             @media @query-lg {
+                height: auto;
+
                 background-color: @box-dropdown-bg;
             }
 
@@ -357,14 +359,13 @@
 
 .box-dropdown__options {
     .box-dropdown--search & {
-        border-radius: 0;
-        background-color: transparent;
-        
         @media @query-lg {
             position: static;
             display: block;
 
             border: 0;
+            border-radius: 0;
+            background-color: transparent;
         }
     }
 
