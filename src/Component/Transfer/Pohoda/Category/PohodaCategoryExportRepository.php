@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace App\Component\Transfer\Pohoda\Category;
 
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
+use App\Component\Transfer\Pohoda\Helpers\PohodaDateTimeHelper;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 class PohodaCategoryExportRepository
 {
-    private const FIRST_UPDATE_TIME = '2000-01-01 00:00:00';
-
-    private const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
-
     /**
      * @var \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager
      */
@@ -79,7 +76,7 @@ class PohodaCategoryExportRepository
             $resultSetMapping
         )
             ->setParameters([
-                'lastUpdateDateTime' => $lastUpdateTime === null ? self::FIRST_UPDATE_TIME : $lastUpdateTime->format(self::DATE_TIME_FORMAT),
+                'lastUpdateDateTime' => $lastUpdateTime === null ? PohodaDateTimeHelper::FIRST_UPDATE_TIME : $lastUpdateTime->format(PohodaDateTimeHelper::DATE_TIME_FORMAT),
             ]);
 
         return $query->getResult();
