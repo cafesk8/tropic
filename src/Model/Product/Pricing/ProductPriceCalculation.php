@@ -112,17 +112,18 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $productActionPrice = Money::zero();
 
         foreach ($manualInputPrices as $manualInputPrice) {
+            if ($manualInputPrice !== null && $manualInputPrice['pricingGroupId'] === $defaultPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
+                $defaultPrice = Money::create($manualInputPrice['inputPrice']);
+                break;
+            }
+        }
+
+        foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null) {
-                ['inputPrice' => $calculatedInputPrice, 'pricingGroupId' => $pricingGroupId, 'actionPrice' => $actionPrice] = $manualInputPrice;
+                $productActionPrice = $manualInputPrice['actionPrice'] ? Money::create($manualInputPrice['actionPrice']) : Money::zero();
 
-                $productActionPrice = $actionPrice ? Money::create($actionPrice) : Money::zero();
-
-                if ($pricingGroupId === $defaultPricingGroup->getId() && $calculatedInputPrice !== null) {
-                    $defaultPrice = Money::create($calculatedInputPrice) ?? Money::zero();
-                }
-
-                if ($pricingGroupId === $pricingGroup->getId() && $calculatedInputPrice !== null) {
-                    $inputPrice = Money::create($calculatedInputPrice) ?? Money::zero();
+                if ($manualInputPrice['pricingGroupId'] === $pricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
+                    $inputPrice = $defaultPrice->multiply(strval($pricingGroup->getDiscountCoefficient()));
                 }
             }
         }
