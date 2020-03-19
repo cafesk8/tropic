@@ -2676,3 +2676,6 @@ msgstr "No gifts found."
 
 msgid "Žádné promo produkty nenalezeny."
 msgstr "No promo products found."
+
+msgid "Variant alias"
+msgstr "Modification name"

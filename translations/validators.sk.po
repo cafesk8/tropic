@@ -243,3 +243,6 @@ msgstr "Zadajte celé číslo."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "PSČ nesmie byť dlhšie ako {{ limit }} znakov"
+
+msgid "Variant alias cannot be longer then {{ limit }} characters"
+msgstr "Názov modifikácie nesmie byť dlhší ako {{ limit }} znakov"
