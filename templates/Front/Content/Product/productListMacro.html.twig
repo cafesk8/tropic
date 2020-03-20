@@ -181,12 +181,12 @@
                                         {% endif %}
                                     </div>
                                 </div>
+                                {% if showButton %}
+                                    <div class="{{ listCssClass }}__item__button-add">
+                                        {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {productActionView: productView.action, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
+                                    </div>
+                                {% endif %}
                             </a>
-                            {% if showButton %}
-                                <div class="{{ listCssClass }}__item__button-add">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {productActionView: productView.action, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
