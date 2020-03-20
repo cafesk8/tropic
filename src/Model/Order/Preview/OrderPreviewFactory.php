@@ -52,9 +52,10 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
     /**
      * @param \App\Model\Transport\Transport|null $transport
      * @param \App\Model\Payment\Payment|null $payment
+     * @param bool $simulateRegistration
      * @return \App\Model\Order\Preview\OrderPreview
      */
-    public function createForCurrentUser(?Transport $transport = null, ?Payment $payment = null)
+    public function createForCurrentUser(?Transport $transport = null, ?Payment $payment = null, bool $simulateRegistration = false)
     {
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($this->domain->getId());
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
@@ -70,7 +71,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             null,
             $this->cartFacade->getGifts(),
             $this->cartFacade->getPromoProducts(),
-            $validEnteredPromoCodes
+            $validEnteredPromoCodes,
+            $simulateRegistration
         );
     }
 
@@ -86,6 +88,7 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param \App\Model\Cart\Item\CartItem[] $giftsInCart
      * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $validEnteredPromoCodes
+     * @param bool $simulateRegistration
      * @return \App\Model\Order\Preview\OrderPreview
      */
     public function create(
@@ -99,7 +102,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?PromoCode $validEnteredPromoCode = null,
         ?array $giftsInCart = [],
         ?array $promoProductsInCart = [],
-        array $validEnteredPromoCodes = []
+        array $validEnteredPromoCodes = [],
+        bool $simulateRegistration = false
     ): OrderPreview {
         if ($promoCodeDiscountPercent !== null || $validEnteredPromoCode !== null) {
             throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$validEnteredPromoCode" argument is supported, you need to use "$promoCodes" array instead');
@@ -115,7 +119,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $validEnteredPromoCode,
             $giftsInCart,
             $promoProductsInCart,
-            $validEnteredPromoCodes
+            $validEnteredPromoCodes,
+            $simulateRegistration
         );
     }
 }

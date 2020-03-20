@@ -282,9 +282,11 @@ class OrderFacade extends BaseOrderFacade
      */
     public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
     {
-        $orderData->status = $this->orderStatusRepository->getDefault();
+        /** @var \App\Model\Order\Status\OrderStatus $defaultOrderStatus */
+        $defaultOrderStatus = $this->orderStatusRepository->getDefault();
+        $orderData->status = $defaultOrderStatus;
         $validEnteredPromoCodes = $this->currentPromoCodeFacade->getValidEnteredPromoCodes();
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment);
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($orderData->transport, $orderData->payment, $orderData->registration);
         /** @var \App\Model\Customer\User\CustomerUser $customerUser */
         $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
         $this->gtmHelper->amendGtmCouponToOrderData($orderData, $validEnteredPromoCodes, $orderPreview);

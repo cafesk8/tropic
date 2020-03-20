@@ -625,3 +625,11 @@ services:
     Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface: '@App\Model\Customer\BillingAddressDataFactory'
 
     Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface: '@App\Model\Customer\DeliveryAddressDataFactory'
+
+    App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser: '@App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser'
+
+    App\Model\Product\Pricing\QuantifiedProductPriceCalculation: ~
+
+    Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation: '@App\Model\Product\Pricing\QuantifiedProductPriceCalculation'

@@ -12,7 +12,8 @@ use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade as BaseOrderItemFac
  * @property \App\Model\Product\ProductRepository $productRepository
  * @property \App\Model\Order\Item\OrderItemFactory $orderItemFactory
  * @method \App\Model\Order\Item\OrderItem addProductToOrder(int $orderId, int $productId)
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Order\OrderRepository $orderRepository, \App\Model\Product\ProductRepository $productRepository, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation, \App\Model\Order\Item\OrderItemFactory $orderItemFactory)
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Order\OrderRepository $orderRepository, \App\Model\Product\ProductRepository $productRepository, \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation, \App\Model\Order\Item\OrderItemFactory $orderItemFactory)
+ * @property \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser
  */
 class OrderItemFacade extends BaseOrderItemFacade
 {

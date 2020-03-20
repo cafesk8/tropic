@@ -384,7 +384,7 @@ class OrderController extends FrontBaseController
         }
 
         /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $frontOrderFormData->registration);
         $payments = $this->paymentFacade->getVisibleOnCurrentDomain();
         $transports = $this->transportFacade->getVisibleOnCurrentDomain($payments);
         $this->checkTransportAndPaymentChanges($orderData, $orderPreview, $transports, $payments);
@@ -579,12 +579,15 @@ class OrderController extends FrontBaseController
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function previewAction(Request $request)
     {
         $transportId = $request->get('transportId');
         $paymentId = $request->get('paymentId');
         $orderStep = $request->get('orderStep');
+        $simulateRegistration = filter_var($request->get('registration', false), FILTER_VALIDATE_BOOLEAN);
+        $orderStep = $simulateRegistration ? '3' : $orderStep;
 
         if ($transportId === null) {
             $transport = null;
@@ -598,7 +601,7 @@ class OrderController extends FrontBaseController
             $payment = $this->paymentFacade->getById($paymentId);
         }
 
-        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment);
+        $orderPreview = $this->orderPreviewFactory->createForCurrentUser($transport, $payment, $simulateRegistration);
         $renderSubmitButton = $request->isXmlHttpRequest() === false || $orderStep === '1';
 
         return $this->render('Front/Content/Order/preview.html.twig', [

@@ -27,7 +27,7 @@
     {% endif %}
     <div class="box-preview__row box-preview__row--no-bottom{% if orderStep != "1" %} box-preview__row--without-radius-bottom{% else %} box-preview__row--without-radius{% endif %}">
         {% if orderStep > 1 %}
-            <ul class="list-cart-preview">
+            <ul id="js-order-preview-cart" class="list-cart-preview">
                 {% for quantifiedProductKey, quantifiedProduct in orderPreview.quantifiedProducts %}
                     {% set quantifiedProductPrice = orderPreview.quantifiedItemsPrices[quantifiedProductKey] %}
                     {{ _self.productPreviewItem(quantifiedProduct.product, quantifiedProduct.quantity, quantifiedProductPrice.totalPrice.priceWithVat) }}

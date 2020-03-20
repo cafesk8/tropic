@@ -53,6 +53,7 @@ class OrderDataMapper extends BaseOrderDataMapper
         }
 
         $orderData->deliveryCountry = $frontOrderData->country;
+        $orderData->registration = $frontOrderData->registration;
 
         return $orderData;
     }

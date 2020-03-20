@@ -57,7 +57,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     protected $registeredCustomerPricesByProductId;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
+     * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \App\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
