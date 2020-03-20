@@ -7,6 +7,7 @@ import './categoryTree.sorting';
 import './infoRow.validation';
 import './massEditProductConfirm';
 import './massEditProducts';
+import './orderGift';
 import './payment';
 import './productPickerAddAll';
 import './promoCode';

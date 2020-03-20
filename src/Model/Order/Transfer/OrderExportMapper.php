@@ -194,8 +194,7 @@ class OrderExportMapper
         $items = array_merge(
             $order->getProductItems(),
             $order->getGiftItems(),
-            $order->getGiftCertificationItems(),
-            $order->getPromoProductItems()
+            $order->getGiftCertificationItems()
         );
 
         /** @var \App\Model\Order\Item\OrderItem $item */

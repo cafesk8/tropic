@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
-use App\Model\Product\PromoProduct\PromoProduct;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Order\Item\Exception\WrongItemTypeException;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
@@ -36,8 +35,6 @@ class OrderItem extends BaseOrderItem
 
     public const TYPE_GIFT = 'gift';
 
-    public const TYPE_PROMO_PRODUCT = 'promo_product';
-
     /**
      * @var \App\Model\Order\Item\OrderItem|null
      *
@@ -59,14 +56,6 @@ class OrderItem extends BaseOrderItem
      * @ORM\Column(type="integer")
      */
     private $preparedQuantity;
-
-    /**
-     * @var \App\Model\Product\PromoProduct\PromoProduct|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Model\Product\PromoProduct\PromoProduct")
-     * @ORM\JoinColumn(nullable=true, name="promo_product_id", referencedColumnName="id", onDelete="CASCADE", unique=false)
-     */
-    private $promoProduct;
 
     /**
      * @param \App\Model\Order\Order $order
@@ -214,31 +203,5 @@ class OrderItem extends BaseOrderItem
     public function setPreparedQuantity(int $preparedQuantity): void
     {
         $this->preparedQuantity = $preparedQuantity;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param \App\Model\Product\PromoProduct\PromoProduct $promoProduct
-     */
-    public function setPromoProduct(Product $product, PromoProduct $promoProduct): void
-    {
-        $this->checkTypePromoProduct();
-        $this->product = $product;
-        $this->promoProduct = $promoProduct;
-    }
-
-    protected function checkTypePromoProduct(): void
-    {
-        if (!$this->isTypePromoProduct()) {
-            throw new WrongItemTypeException(self::TYPE_PROMO_PRODUCT, $this->type);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTypePromoProduct(): bool
-    {
-        return $this->type === self::TYPE_PROMO_PRODUCT;
     }
 }

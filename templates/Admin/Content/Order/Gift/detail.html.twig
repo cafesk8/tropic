@@ -1,7 +1,7 @@
 {% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
 
-{% block title %}- {{ 'Detail promo produktu'|trans }}{% endblock %}
-{% block h1 %}{{ 'Detail promo produktu'|trans }}{% endblock %}
+{% block title %}- {{ 'Detail dárku k objednávce'|trans }}{% endblock %}
+{% block h1 %}{{ 'Detail dárku k objednávce'|trans }}{% endblock %}
 
 {% block main_content %}
 
@@ -10,8 +10,8 @@
 
     {% embed '@ShopsysFramework/Admin/Inline/FixedBar/fixedBar.html.twig' %}
         {% block fixed_bar_content %}
-            <a href="{{ url('admin_promoproduct_list') }}" class="btn-link-style">{{ 'Back to overview'|trans }}</a>
-            {{ form_save(promoProduct|default(null), form) }}
+            <a href="{{ url('admin_ordergift_list') }}" class="btn-link-style">{{ 'Back to overview'|trans }}</a>
+            {{ form_save(orderGift|default(null), form) }}
         {% endblock %}
     {% endembed %}
     {{ form_end(form) }}

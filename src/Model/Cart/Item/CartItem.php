@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Cart\Item;
 
 use App\Model\Product\Product;
-use App\Model\Product\PromoProduct\PromoProduct;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
@@ -46,21 +45,12 @@ class CartItem extends BaseCartItem
     protected $cart;
 
     /**
-     * @var \App\Model\Product\PromoProduct\PromoProduct|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Model\Product\PromoProduct\PromoProduct")
-     * @ORM\JoinColumn(nullable=true, name="promo_product_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $promoProduct;
-
-    /**
      * @param \App\Model\Cart\Cart $cart
      * @param \App\Model\Product\Product $product
      * @param int $quantity
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
      * @param \App\Model\Product\Product|null $giftByProduct
      * @param \App\Model\Cart\Item\CartItem|null $mainCartItem
-     * @param \App\Model\Product\PromoProduct\PromoProduct|null $promoProduct
      */
     public function __construct(
         Cart $cart,
@@ -68,14 +58,12 @@ class CartItem extends BaseCartItem
         int $quantity,
         ?Money $watchedPrice,
         ?Product $giftByProduct = null,
-        ?self $mainCartItem = null,
-        ?PromoProduct $promoProduct = null
+        ?self $mainCartItem = null
     ) {
         parent::__construct($cart, $product, $quantity, $watchedPrice);
 
         $this->giftByProduct = $giftByProduct;
         $this->mainCartItem = $mainCartItem;
-        $this->promoProduct = $promoProduct;
     }
 
     /**
@@ -100,13 +88,5 @@ class CartItem extends BaseCartItem
     public function getMainCartItem(): ?self
     {
         return $this->mainCartItem;
-    }
-
-    /**
-     * @return \App\Model\Product\PromoProduct\PromoProduct|null
-     */
-    public function getPromoProduct(): ?PromoProduct
-    {
-        return $this->promoProduct;
     }
 }

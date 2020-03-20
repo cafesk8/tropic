@@ -59,7 +59,7 @@
             width: 70
             height: 70
             crop: false
-            occurrence: 'Front-end: Thumbnail of images under the main image in product detail, autocomplete, sets, variants, cartbox'
+            occurrence: 'Front-end: Thumbnail of images under the main image in product detail, autocomplete, sets, variants, cartbox, gifts selection in cart'
         -   name: list
             width: 220
             height: 220

@@ -46,25 +46,6 @@ export default class CartRecalculator {
 
                 _this.reloadWithDelay(1000, _this);
             });
-
-        $container.filterAllNodes('.js-cart-take-promo-product')
-            .change(function () {
-                const isCurrentChecked = $(this).is(':checked');
-                const cartItemPromoProductId = $(this).attr('data-cart-promo-product-id');
-                const cartItemProductId = $(this).attr('data-cart-product-id');
-
-                $('.js-cart-take-promo-product').each(function () {
-                    if ($(this).attr('data-cart-promo-product-id') !== cartItemPromoProductId
-                        || $(this).attr('data-cart-product-id') !== cartItemProductId
-                    ) {
-                        $(this).prop('checked', false);
-                    }
-                });
-
-                $(this).prop('checked', isCurrentChecked);
-
-                _this.reloadWithDelay(1000, _this);
-            });
     }
 
     reload () {
