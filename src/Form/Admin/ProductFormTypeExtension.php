@@ -29,8 +29,8 @@ use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -503,22 +503,20 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 ],
             ]);
         } else {
-            $amountGroup->add('minimumAmount', NumberType::class, [
+            $amountGroup->add('minimumAmount', IntegerType::class, [
                 'constraints' => [
                     new Constraints\GreaterThan(0),
                     new Constraints\NotBlank(),
                 ],
                 'label' => t('Minimum amount'),
-                'scale' => 0,
             ]);
 
-            $amountGroup->add('amountMultiplier', NumberType::class, [
+            $amountGroup->add('amountMultiplier', IntegerType::class, [
                 'constraints' => [
                     new Constraints\GreaterThan(0),
                     new Constraints\NotBlank(),
                 ],
                 'label' => t('Amount multiples'),
-                'scale' => 0,
             ]);
         }
 
