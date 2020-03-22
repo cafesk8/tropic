@@ -15,9 +15,9 @@ function deploy() {
     )
 
     declare -A PARAMETERS=(
-        ["parameters.database_name"]=${POSTGRES_DATABASE_NAME}
+        ["parameters.database_name"]=${PROJECT_NAME}
         ["parameters.database_port"]=${POSTGRES_DATABASE_PORT}
-        ["parameters.database_user"]=${POSTGRES_DATABASE_USER}
+        ["parameters.database_user"]=${PROJECT_NAME}
         ["parameters.database_password"]=${POSTGRES_DATABASE_PASSWORD}
         ["parameters.elasticsearch_host"]="${ELASTICSEARCH_URL}"
         ["parameters.mailer_host"]='shopmail.shopsys.cz'
@@ -39,10 +39,6 @@ function deploy() {
         S3_API_HOST
         S3_API_USERNAME
         S3_API_PASSWORD
-        S3_API_BUCKET_NAME
-
-        REDIS_PREFIX
-        ELASTIC_SEARCH_INDEX_PREFIX
     )
 
     source "${DEPLOY_TARGET_PATH}/functions.sh"

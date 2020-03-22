@@ -84,7 +84,6 @@ review:
         on_stop: review:stop
     variables:
         CI_NETWORK: ci_default
-        CI_NGINX_PROXY_NETWORK: ci_nginx-proxy-network
     needs:
         - build
     <<: *only-default
@@ -105,7 +104,6 @@ review:stop:
     variables:
         GIT_STRATEGY: none
         CI_NETWORK: ci_default
-        CI_NGINX_PROXY_NETWORK: ci_nginx-proxy-network
     tags:
         - review
     needs:
