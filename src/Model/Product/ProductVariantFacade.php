@@ -29,15 +29,4 @@ class ProductVariantFacade extends BaseProductVariantFacade
 
         return $mainVariant;
     }
-
-    /**
-     * @param \App\Model\Product\Product $variant
-     */
-    public function removeVariant(Product $variant): void
-    {
-        $mainVariant = $variant->getMainVariant();
-        $variant->unsetMainVariant();
-
-        $this->em->flush([$mainVariant, $variant]);
-    }
 }
