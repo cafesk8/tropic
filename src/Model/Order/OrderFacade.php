@@ -482,6 +482,10 @@ class OrderFacade extends BaseOrderFacade
 
         if ($originalOrderStatus !== $updatedOrder->getStatus()) {
             $this->sendSms($updatedOrder);
+
+            if ($updatedOrder->getStatus()->activatesGiftCertificates()) {
+                $this->activateGiftCertificates($updatedOrder);
+            }
         }
 
         return $updatedOrder;
