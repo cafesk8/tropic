@@ -75,6 +75,11 @@ class ProductFacade extends BaseProductFacade
     protected $productVariantTropicFacade;
 
     /**
+     * @var \App\Model\Product\ProductDataFactory
+     */
+    protected $productDataFactory;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
      */
     private $currentCustomerUser;
@@ -141,6 +146,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Component\Setting\Setting $setting
      * @param \Psr\Log\LoggerInterface $logger
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
+     * @param \App\Model\Product\ProductDataFactory $productDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -173,7 +179,8 @@ class ProductFacade extends BaseProductFacade
         PricingGroupFacade $pricingGroupFacade,
         Setting $setting,
         LoggerInterface $logger,
-        ProductVariantTropicFacade $productVariantTropicFacade
+        ProductVariantTropicFacade $productVariantTropicFacade,
+        ProductDataFactory $productDataFactory
     ) {
         parent::__construct(
             $em,
@@ -209,6 +216,7 @@ class ProductFacade extends BaseProductFacade
         $this->setting = $setting;
         $this->logger = $logger;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
+        $this->productDataFactory = $productDataFactory;
     }
 
     /**
@@ -282,6 +290,9 @@ class ProductFacade extends BaseProductFacade
     public function edit($productId, ProductData $productData): Product
     {
         $product = $this->getById($productId);
+        if ($product->isMainVariant() && !$this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
+            $this->disconnectVariantsFromMainVariant($product);
+        }
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
 
         parent::edit($productId, $productData);
@@ -801,5 +812,31 @@ class ProductFacade extends BaseProductFacade
         }
 
         return $giftNames;
+    }
+
+    /**
+     * @param int $productId
+     */
+    public function delete($productId)
+    {
+        $product = $this->getById($productId);
+
+        if ($product->isMainVariant()) {
+            $this->disconnectVariantsFromMainVariant($product);
+        }
+        parent::delete($productId);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $mainVariant
+     */
+    private function disconnectVariantsFromMainVariant(Product $mainVariant): void
+    {
+        foreach ($mainVariant->getVariants() as $variant) {
+            $variantData = $this->productDataFactory->createFromProduct($variant);
+            $variantData->variantId = null;
+            $variantData->hidden = true;
+            $this->edit($variant->getId(), $variantData);
+        }
     }
 }
