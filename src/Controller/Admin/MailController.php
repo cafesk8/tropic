@@ -4,15 +4,36 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Mail\AllMailTemplatesData;
 use App\Model\Order\Mail\OrderMail;
 use Shopsys\FrameworkBundle\Controller\Admin\MailController as BaseMailController;
 
 /**
  * @property \App\Model\Order\Mail\OrderMail $orderMail
- * @method __construct(\Shopsys\FrameworkBundle\Model\Customer\Mail\ResetPasswordMail $resetPasswordMail, \App\Model\Order\Mail\OrderMail $orderMail, \Shopsys\FrameworkBundle\Model\Customer\Mail\RegistrationMail $registrationMail, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade $mailSettingFacade, \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMail $personalDataAccessMail, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail $personalDataExportMail)
+ * @method __construct(\Shopsys\FrameworkBundle\Model\Customer\Mail\ResetPasswordMail $resetPasswordMail, \App\Model\Order\Mail\OrderMail $orderMail, \Shopsys\FrameworkBundle\Model\Customer\Mail\RegistrationMail $registrationMail, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \App\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade $mailSettingFacade, \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMail $personalDataAccessMail, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail $personalDataExportMail)
+ * @property \App\Model\Mail\MailTemplateFacade $mailTemplateFacade
  */
 class MailController extends BaseMailController
 {
+    /**
+     * @return array
+     */
+    protected function getTemplateParameters()
+    {
+        $selectedDomainId = $this->adminDomainTabsFacade->getSelectedDomainId();
+        $templateParameters = parent::getTemplateParameters();
+        $templateParameters['giftCertificateTemplate'] = $this->mailTemplateFacade->get(
+            AllMailTemplatesData::GIFT_CERTIFICATE,
+            $selectedDomainId
+        );
+        $templateParameters['giftCertificateActivatedTemplate'] = $this->mailTemplateFacade->get(
+            AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED,
+            $selectedDomainId
+        );
+
+        return $templateParameters;
+    }
+
     /**
      * @return array
      */

@@ -82,3 +82,7 @@ services:
     App\Form\Admin\PricingGroupFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Pricing\Group\PricingGroupFormType }
+
+    App\Form\Admin\AllMailTemplatesFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Mail\AllMailTemplatesFormType }
