@@ -26,7 +26,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @method setAvailabilityAndStock(\App\Model\Product\ProductData $productData)
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  * @method \App\Model\Product\Brand\Brand|null getBrand()
- * @method addVariant(\App\Model\Product\Product $variant)
  * @method addVariants(\App\Model\Product\Product[] $variants)
  * @method \App\Model\Product\Product[] getVariants()
  * @method setMainVariant(\App\Model\Product\Product $mainVariant)
@@ -216,6 +215,14 @@ class Product extends BaseProduct
         if ($productData->variantId !== null) {
             $this->variantId = trim($productData->variantId);
         }
+    }
+
+    /**
+     * @param string $variantType
+     */
+    public function setVariantType(string $variantType): void
+    {
+        $this->variantType = $variantType;
     }
 
     /**
@@ -764,5 +771,29 @@ class Product extends BaseProduct
     public function getVariantId(): ?string
     {
         return $this->variantId;
+    }
+
+    /**
+     * ProductIsAlreadyVariantException is not thrown in this overridden method
+     * @see \App\Model\Product\ProductVariantTropicFacade (refreshVariantStatus method)
+     * @param \App\Model\Product\Product $variant
+     */
+    public function addVariant(BaseProduct $variant)
+    {
+        if (!$this->isMainVariant()) {
+            throw new \Shopsys\FrameworkBundle\Model\Product\Exception\VariantCanBeAddedOnlyToMainVariantException(
+                $this->getId(),
+                $variant->getId()
+            );
+        }
+        if ($variant->isMainVariant()) {
+            throw new \Shopsys\FrameworkBundle\Model\Product\Exception\MainVariantCannotBeVariantException($variant->getId());
+        }
+
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setMainVariant($this);
+            $variant->copyProductCategoryDomains($this->productCategoryDomains->toArray());
+        }
     }
 }
