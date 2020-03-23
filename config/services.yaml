@@ -639,3 +639,5 @@ services:
             $logger: '@monolog.logger.cron'
 
     Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade: '@App\Model\Mail\MailTemplateFacade'
+
+    App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail: ~
