@@ -6,6 +6,7 @@ namespace App\Form\Admin;
 
 use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
+use App\Form\ProductsListType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
@@ -161,6 +162,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     {
         $product = $options['product'];
         /* @var $product \App\Model\Product\Product|null */
+
+        if ($product !== null && $product->isMainVariant()) {
+            $variantGroup = $builder->get('variantGroup');
+            $variantGroup->add('variants', ProductsListType::class, [
+                'label' => t('Varianty'),
+                'top_info_title' => t('Produkt je hlavní variantou.'),
+            ]);
+        }
 
         $builderBasicInformationGroup = $builder->get('basicInformationGroup');
         $builderBasicInformationGroup
