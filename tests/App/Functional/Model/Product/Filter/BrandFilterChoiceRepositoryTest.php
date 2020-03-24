@@ -67,7 +67,7 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
     {
         $brandFilterChoices = $this->getChoicesForSearchText('47');
 
-        $this->assertCount(1, $brandFilterChoices);
+        $this->assertCount(2, $brandFilterChoices);
 
         $this->assertSame(3, $brandFilterChoices[0]->getId());
     }
