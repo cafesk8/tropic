@@ -119,7 +119,7 @@ class PaymentDataFixture extends AbstractReferenceFixture implements DependentFi
         $paymentData->enabled[Domain::FIRST_DOMAIN_ID] = true;
         $paymentData->hidden = false;
         $paymentData->usableForGiftCertificates = true;
-        $paymentData->activatesGiftCertificate = true;
+        $paymentData->activatesGiftCertificates = true;
         $this->createPayment(self::PAYMENT_GOPAY, $paymentData, [
             TransportDataFixture::TRANSPORT_PERSONAL,
             TransportDataFixture::TRANSPORT_PPL,

@@ -137,13 +137,19 @@
             {{ self.mailTemplate(
                 'Dárkový poukaz'|trans,
                 giftCertificateTemplate,
-                form.giftCertificateTemplate
+                form.giftCertificateTemplate,
+                giftCertificateVariables,
+                [],
+                giftCertificateVariablesLabels
             ) }}
 
             {{ self.mailTemplate(
                 'Dárkový poukaz - aktivován'|trans,
                 giftCertificateActivatedTemplate,
-                form.giftCertificateActivatedTemplate
+                form.giftCertificateActivatedTemplate,
+                giftCertificateActivatedVariables,
+                [],
+                giftCertificateActivatedVariablesLabels
             ) }}
 
             {% embed '@ShopsysFramework/Admin/Inline/FixedBar/fixedBar.html.twig' %}

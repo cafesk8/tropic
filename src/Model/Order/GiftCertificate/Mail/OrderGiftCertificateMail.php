@@ -6,6 +6,7 @@ namespace App\Model\Order\GiftCertificate\Mail;
 
 use App\Component\Setting\Setting;
 use App\Model\Order\GiftCertificate\OrderGiftCertificate;
+use App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade;
 use Shopsys\FrameworkBundle\Model\Mail\MailTemplate;
 use Shopsys\FrameworkBundle\Model\Mail\MessageData;
 use Shopsys\FrameworkBundle\Model\Mail\MessageFactoryInterface;
@@ -13,8 +14,10 @@ use Shopsys\FrameworkBundle\Model\Mail\Setting\MailSetting;
 
 class OrderGiftCertificateMail implements MessageFactoryInterface
 {
-    const GIFT_CERTIFICATE_CODE = '{gift_certificate_code}';
-    const ORDER_NUMBER = '{order_number}';
+    public const VARIABLE_GIFT_CERTIFICATE_CODE = '{gift_certificate_code}';
+    public const VARIABLE_GIFT_CERTIFICATE_CURRENCY = '{gift_certificate_currency}';
+    public const VARIABLE_GIFT_CERTIFICATE_VALUE = '{gift_certificate_value}';
+    public const VARIABLE_ORDER_NUMBER = '{order_number}';
 
     /**
      * @var \App\Component\Setting\Setting
@@ -22,21 +25,28 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
     private $setting;
 
     /**
-     * @param \App\Component\Setting\Setting $setting
+     * @var \App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade
      */
-    public function __construct(Setting $setting)
+    private $orderGiftCertificatePdfFacade;
+
+    /**
+     * @param \App\Component\Setting\Setting $setting
+     * @param \App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade
+     */
+    public function __construct(Setting $setting, OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade)
     {
         $this->setting = $setting;
+        $this->orderGiftCertificatePdfFacade = $orderGiftCertificatePdfFacade;
     }
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Mail\MailTemplate $template
-     * @param \App\Model\Order\GiftCertificate\OrderGiftCertificate $personalData
+     * @param \App\Model\Order\GiftCertificate\OrderGiftCertificate $orderGiftCertificate
      * @return \Shopsys\FrameworkBundle\Model\Mail\MessageData
      */
-    public function createMessage(MailTemplate $template, $personalData)
+    public function createMessage(MailTemplate $template, $orderGiftCertificate)
     {
-        $order = $personalData->getOrder();
+        $order = $orderGiftCertificate->getOrder();
 
         return new MessageData(
             $order->getEmail(),
@@ -45,7 +55,9 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
             $template->getSubject(),
             $this->setting->getForDomain(MailSetting::MAIN_ADMIN_MAIL, $order->getDomainId()),
             $this->setting->getForDomain(MailSetting::MAIN_ADMIN_MAIL_NAME, $order->getDomainId()),
-            $this->getVariablesReplacementsForBody($personalData)
+            $this->getVariablesReplacementsForBody($orderGiftCertificate),
+            [],
+            $this->orderGiftCertificatePdfFacade->getFiles($orderGiftCertificate)
         );
     }
 
@@ -56,8 +68,23 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
     private function getVariablesReplacementsForBody(OrderGiftCertificate $orderGiftCertificate): array
     {
         return [
-            self::GIFT_CERTIFICATE_CODE => $orderGiftCertificate->getGiftCertificate()->getCode(),
-            self::ORDER_NUMBER => $orderGiftCertificate->getOrder()->getNumber(),
+            self::VARIABLE_GIFT_CERTIFICATE_CODE => $orderGiftCertificate->getGiftCertificate()->getCode(),
+            self::VARIABLE_GIFT_CERTIFICATE_CURRENCY => $orderGiftCertificate->getOrder()->getCurrency()->getCode(),
+            self::VARIABLE_GIFT_CERTIFICATE_VALUE => $orderGiftCertificate->getGiftCertificate()->getCertificateValue()->getAmount(),
+            self::VARIABLE_ORDER_NUMBER => $orderGiftCertificate->getOrder()->getNumber(),
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTemplateVariables(): array
+    {
+        return [
+            self::VARIABLE_GIFT_CERTIFICATE_CODE,
+            self::VARIABLE_GIFT_CERTIFICATE_CURRENCY,
+            self::VARIABLE_GIFT_CERTIFICATE_VALUE,
+            self::VARIABLE_ORDER_NUMBER,
         ];
     }
 }

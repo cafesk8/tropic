@@ -58,22 +58,22 @@ class MailTemplateFacade extends BaseMailTemplateFacade
     {
         $allMailTemplatesData = $this->allMailTemplatesDataFactory->createFromBase(parent::getAllMailTemplatesDataByDomainId($domainId));
 
-        $giftCertificate = $this->mailTemplateRepository
+        $giftCertificateTemplate = $this->mailTemplateRepository
             ->findByNameAndDomainId(AllMailTemplatesData::GIFT_CERTIFICATE, $domainId);
 
-        if ($giftCertificate !== null) {
-            $giftCertificateTemplateData = $this->mailTemplateDataFactory->createFromMailTemplate($giftCertificate);
+        if ($giftCertificateTemplate !== null) {
+            $giftCertificateTemplateData = $this->mailTemplateDataFactory->createFromMailTemplate($giftCertificateTemplate);
         } else {
             $giftCertificateTemplateData = $this->mailTemplateDataFactory->create();
         }
 
         $allMailTemplatesData->giftCertificateTemplate = $giftCertificateTemplateData;
 
-        $giftCertificateActivated = $this->mailTemplateRepository
+        $giftCertificateActivatedTemplate = $this->mailTemplateRepository
             ->findByNameAndDomainId(AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED, $domainId);
 
-        if ($giftCertificateActivated !== null) {
-            $giftCertificateActivatedTemplateData = $this->mailTemplateDataFactory->createFromMailTemplate($giftCertificateActivated);
+        if ($giftCertificateActivatedTemplate !== null) {
+            $giftCertificateActivatedTemplateData = $this->mailTemplateDataFactory->createFromMailTemplate($giftCertificateActivatedTemplate);
         } else {
             $giftCertificateActivatedTemplateData = $this->mailTemplateDataFactory->create();
         }

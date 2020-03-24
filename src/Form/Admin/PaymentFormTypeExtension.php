@@ -100,11 +100,11 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Může být použit pro dárkové poukazy'),
             ])
-            ->add('activatesGiftCertificate', YesNoType::class, [
+            ->add('activatesGiftCertificates', YesNoType::class, [
                 'required' => false,
                 'label' => t('Aktivovat dárkové poukazy v objednávce hned po zaplacení'),
                 'attr' => [
-                    'class' => 'js-payment-activates-gift-certificate',
+                    'class' => 'js-payment-activates-gift-certificates',
                 ],
             ]);
     }

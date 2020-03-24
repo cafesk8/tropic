@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\GiftCertificate\Mail;
 
-use App\Model\Mail\AllMailTemplatesData;
 use App\Model\Mail\MailTemplateFacade;
 use App\Model\Order\GiftCertificate\OrderGiftCertificate;
 use Shopsys\FrameworkBundle\Model\Mail\Mailer;
@@ -40,14 +39,18 @@ class OrderGiftCertificateMailFacade
 
     /**
      * @param \App\Model\Order\GiftCertificate\OrderGiftCertificate $orderGiftCertificate
+     * @param string $type
      */
-    public function sendGiftCertificateEmail(OrderGiftCertificate $orderGiftCertificate)
+    public function sendGiftCertificateEmail(OrderGiftCertificate $orderGiftCertificate, string $type)
     {
         $mailTemplate = $this->mailTemplateFacade->get(
-            AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED,
+            $type,
             $orderGiftCertificate->getOrder()->getDomainId()
         );
-        $messageData = $this->orderGiftCertificateMail->createMessage($mailTemplate, $orderGiftCertificate);
-        $this->mailer->send($messageData);
+
+        if ($mailTemplate->isSendMail()) {
+            $messageData = $this->orderGiftCertificateMail->createMessage($mailTemplate, $orderGiftCertificate);
+            $this->mailer->send($messageData);
+        }
     }
 }

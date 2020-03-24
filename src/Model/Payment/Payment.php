@@ -109,7 +109,7 @@ class Payment extends BasePayment
         $this->externalId = $paymentData->externalId;
         $this->cashOnDelivery = $paymentData->cashOnDelivery;
         $this->usableForGiftCertificates = $paymentData->usableForGiftCertificates;
-        $this->activatesGiftCertificates = $this->type !== self::TYPE_GOPAY ? false : $paymentData->activatesGiftCertificate;
+        $this->activatesGiftCertificates = $this->type !== self::TYPE_GOPAY ? false : $paymentData->activatesGiftCertificates;
     }
 
     /**

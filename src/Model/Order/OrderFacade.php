@@ -10,7 +10,6 @@ use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
 use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
-use App\Model\Order\GiftCertificate\OrderGiftCertificate;
 use App\Model\Order\GiftCertificate\OrderGiftCertificateFacade;
 use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\Mall\Exception\StatusChangException;
@@ -723,14 +722,11 @@ class OrderFacade extends BaseOrderFacade
                 $giftCertificates = $this->promoCodeFacade->createRandomCertificates($orderItem->getPriceWithVat(), $orderItem->getQuantity());
 
                 foreach ($giftCertificates as $giftCertificate) {
-                    $orderGiftCertificate = new OrderGiftCertificate($order, $giftCertificate);
-                    $this->em->persist($orderGiftCertificate);
+                    $orderGiftCertificate = $this->orderGiftCertificateFacade->create($order, $giftCertificate);
                     $order->addGiftCertificate($orderGiftCertificate);
                 }
             }
         }
-
-        $this->em->flush();
     }
 
     /**

@@ -7,17 +7,17 @@
         const $goPayType = 'goPay';
         const $paymentType = $('.js-payment-type');
         const $goPayPaymentMethodFormLine = $('.js-payment-gopay-payment-method').closest('.form-line');
-        const $activatesGiftCertificateFormLine = $('.js-payment-activates-gift-certificate').closest('.form-line');
+        const $activatesGiftCertificatesFormLine = $('.js-payment-activates-gift-certificates').closest('.form-line');
 
         const onPaymentChange = function () {
             const selectedType = $paymentType.val();
 
             if (selectedType === $goPayType) {
                 $goPayPaymentMethodFormLine.show();
-                $activatesGiftCertificateFormLine.show();
+                $activatesGiftCertificatesFormLine.show();
             } else {
                 $goPayPaymentMethodFormLine.hide();
-                $activatesGiftCertificateFormLine.hide();
+                $activatesGiftCertificatesFormLine.hide();
             }
         };
 

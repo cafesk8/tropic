@@ -23,14 +23,14 @@ class Version20200323103000 extends AbstractMigration
             $this->sql('INSERT INTO mail_templates(name, domain_id, subject, body, send_mail) VALUES (:name, :domainId, :subject, :body, TRUE)', [
                 'name' => AllMailTemplatesData::GIFT_CERTIFICATE,
                 'domainId' => $domainId,
-                'subject' => 'Dárkový poukaz',
-                'body' => 'Dobrý den,<br /><br />zakoupil/a jste dárkový poukaz s kódem <b>' . OrderGiftCertificateMail::GIFT_CERTIFICATE_CODE . '</b> v hodnotě <b>' . OrderGiftCertificateMail::GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::GIFT_CERTIFICATE_CURRENCY . '</b>. Tento poukaz však bude aktivován až po obdržení platby za objednávku ' . OrderGiftCertificateMail::ORDER_NUMBER . ', o čemž vás budeme informovat dalším emailem.',
+                'subject' => t('Dárkový poukaz', [], 'dataFixtures'),
+                'body' => t('Dobrý den,<br /><br />zakoupil/a jste dárkový poukaz s kódem <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b>. Tento poukaz však bude aktivován až po obdržení platby za objednávku ' . OrderGiftCertificateMail::VARIABLE_ORDER_NUMBER . ', o čemž vás budeme informovat dalším emailem.', [], 'dataFixtures'),
             ]);
             $this->sql('INSERT INTO mail_templates(name, domain_id, subject, body, send_mail) VALUES (:name, :domainId, :subject, :body, TRUE)', [
                 'name' => AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED,
                 'domainId' => $domainId,
-                'subject' => 'Dárkový poukaz - aktivován',
-                'body' => 'Dobrý den,<br /><br />váš dárkový poukaz s kódem <b>' . OrderGiftCertificateMail::GIFT_CERTIFICATE_CODE . '</b> v hodnotě <b>' . OrderGiftCertificateMail::GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::GIFT_CERTIFICATE_CURRENCY . '</b> byl právě aktivován. Děkujeme za váš nákup.',
+                'subject' => t('Dárkový poukaz - aktivován', [], 'dataFixtures'),
+                'body' => t('Dobrý den,<br /><br />váš dárkový poukaz s kódem <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b> byl právě aktivován. Děkujeme za váš nákup.', [], 'dataFixtures'),
             ]);
         }
     }
