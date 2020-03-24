@@ -42,7 +42,7 @@
 {% endmacro %}
 
 
-{% if variants|length > 0 or product.variants|length > 0 %}
+{% if product.variants|length > 0 %}
     <div class="box-detail__availability">
         <span class="box-detail__availability__status">
             <span class="box-detail__availability__date">
@@ -50,7 +50,7 @@
             </span>
         </span>
     </div>
-    {% for variant in variants if variant in product.variants %}
+    {% for variant in product.variants %}
         {{ _self.availibilityDetail(variant, true) }}
     {% endfor %}
 {% else %}

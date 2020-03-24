@@ -27,7 +27,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  * @method \App\Model\Product\Brand\Brand|null getBrand()
  * @method addVariants(\App\Model\Product\Product[] $variants)
- * @method \App\Model\Product\Product[] getVariants()
  * @method setMainVariant(\App\Model\Product\Product $mainVariant)
  * @method setTranslations(\App\Model\Product\ProductData $productData)
  * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
@@ -795,5 +794,27 @@ class Product extends BaseProduct
             $variant->setMainVariant($this);
             $variant->copyProductCategoryDomains($this->productCategoryDomains->toArray());
         }
+    }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getVariants()
+    {
+        $variants = $this->variants->toArray();
+        usort($variants, function (self $variant1, self $variant2) {
+            return $this->getVariantNumber($variant1->getVariantId()) - $this->getVariantNumber($variant2->getVariantId());
+        });
+
+        return $variants;
+    }
+
+    /**
+     * @param string $variantId
+     * @return int
+     */
+    private function getVariantNumber(string $variantId): int
+    {
+        return intval(substr($variantId, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR) + 1));
     }
 }

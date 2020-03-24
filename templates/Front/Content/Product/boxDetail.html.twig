@@ -1,4 +1,4 @@
-{% macro productBox(product, variants, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% set domain = getDomain() %}
@@ -100,7 +100,7 @@
                     <div class="box-detail__add-basket">
                         <div>
                             {% if product.calculatedAvailability %}
-                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
+                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
                             {% endif %}
                             <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
                                 <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
@@ -156,7 +156,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for variant in variants %}
+                                    {% for variant in product.variants %}
                                         <tr class="table-variants__row">
                                             <td class="table-variants__cell table-variants__cell--image">
                                                 <div class="table-variants__cell__image">
@@ -231,7 +231,6 @@
 
         {{ boxTabs.productTabs(
             product,
-            variants,
             productMainCategory,
             visible,
             youtubeDetails,
