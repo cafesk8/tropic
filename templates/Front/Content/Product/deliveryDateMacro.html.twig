@@ -10,20 +10,20 @@
         and not product.outOfStockAction is same as(constant('OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY', product)) %}
 
     {% if product.calculatedSellingDenied %}
-        {{ 'Product no longer on sale'|trans }}
+        <span class="in-availability__date in-availability__date--out-of-stock">{{ 'Product no longer on sale'|trans }}</span>
     {% elseif showDeliveryDate %}
         {% set expectedDeliveryDate = deliveryDate %}
         {% set friendlyDayInterval = expectedDeliveryDate.diff(date()) %}
-        <span class="box-detail__availability__date">
-                {{ expectedDeliveryDate|friendlyDay }}
+        <span class="in-availability__date">
+            {{ expectedDeliveryDate|friendlyDay }}
             {% if friendlyDayInterval.days >= 2 %}
                 {{ expectedDeliveryDate|formatDateCore('j. n.') }}
             {% endif %}
             {{ 'u&nbsp;tebe'|trans|raw }}
-            </span>
+        </span>
     {% elseif showNotAvailable %}
-        <span class="box-detail__availability__date box-detail__availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
+        <span class="in-availability__date in-availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
     {% else %}
-        <span class="box-detail__availability__date" style="color: {{ product.calculatedAvailability.rgbColor }}">{{ product.calculatedAvailability.name }}</span>
+        <span class="in-availability__date" style="color: {{ product.calculatedAvailability.rgbColor }}">{{ product.calculatedAvailability.name }}</span>
     {% endif %}
 {% endmacro %}

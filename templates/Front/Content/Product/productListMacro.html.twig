@@ -46,17 +46,17 @@
                                     </div>
                                 {% endif %}
 
-                                <div class="list-products__item__info__availability">
+                                <div class="in-availability">
                                     {% for parameterValue in productView.distinguishingParameterValues %}
                                         <span class="in-badge in-badge--product-list">{{ parameterValue }}</span>
                                     {% endfor %}
-                                    <div class="list-products__item__info__availability__spacer"></div>
+                                    <div class="in-availability__spacer"></div>
                                     {% if productView.action.sellingDenied %}
-                                        <div class="{{ listCssClass }}__item__info__availability__text" style="color: #6d6868;">
+                                        <div class="in-availability__text in-availability__text--out-of-stock">
                                             {{ 'Product no longer on sale'|trans }}
                                         </div>
                                     {% else %}
-                                        <div class="list-products__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                        <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                             {% if productsForMainVariantGroup is not empty %}
                                                 {{ 'Dostupnost dle varianty'|trans }}
                                             {% else %}
@@ -168,18 +168,18 @@
                                         </div>
                                     {% endif %}
 
-                                    <div class="{{ listCssClass }}__item__info__availability">
+                                    <div class="in-availability">
                                         {% for parameterValue in productView.distinguishingParameterValues %}
                                             <span class="in-badge">{{ parameterValue }}</span>
                                         {% endfor %}
 
-                                        <div class="{{ listCssClass }}__item__info__availability__spacer"></div>
+                                        <div class="in-availability__spacer"></div>
                                         {% if productView.action.sellingDenied %}
-                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: #6d6868;">
+                                            <div class="in-availability__text in-availability__text--out-of-stock">
                                                 {{ 'Product no longer on sale'|trans }}
                                             </div>
                                         {% else %}
-                                            <div class="{{ listCssClass }}__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                                 {% if productView.mainVariantGroupProductViews is not empty %}
                                                     {{ 'Dostupnost dle varianty'|trans }}
                                                 {% else %}
@@ -250,7 +250,7 @@
                         {% endif %}
 
                         {% if product.isMainVariant %}
-                            <div class="{{ listCssClass }}__item__info__availability">
+                            <div class="in-availability">
                                 {{ 'Dostupnost dle varianty'|trans }}
                             </div>
 
@@ -258,7 +258,7 @@
                                 {{- 'Choose variant'|trans -}}
                             </a>
                         {% else %}
-                            <div class="{{ listCssClass }}__item__info__availability">
+                            <div class="in-availability">
                                 {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
                             </div>
 
