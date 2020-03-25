@@ -28,6 +28,7 @@ use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 use Shopsys\FrameworkBundle\Twig\ProductExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -216,5 +217,17 @@ class ProductController extends BaseProductController
         $grid->addColumn('finished', 'p.finished', t('Produkt je hotový'), true);
 
         return $grid;
+    }
+
+    /**
+     * @deprecated since US-7741, variants are paired using variantId
+     * @see \App\Model\Product\ProductVariantTropicFacade, method refreshVariantStatus
+     *
+     * @Route("/product/create-variant/")
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function createVariantAction(Request $request)
+    {
+        throw new NotFoundHttpException('Deprecated, you should use Product::variantId to pair variants, see ProductVariantTropicFacade::refreshVariantStatus');
     }
 }

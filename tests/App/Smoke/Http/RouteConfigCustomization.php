@@ -260,6 +260,10 @@ class RouteConfigCustomization
             ->customizeByRouteName('admin_transferissue_detailedlist', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Message parameter is required')
                     ->setParameter('message', 'Test message');
+            })
+            ->customizeByRouteName('admin_product_createvariant', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Creating variants this way is not supported anymore')
+                    ->setExpectedStatusCode(404);
             });
     }
 

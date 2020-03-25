@@ -17,16 +17,15 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade as BaseProductVar
 class ProductVariantFacade extends BaseProductVariantFacade
 {
     /**
+     * @deprecated since US-7741, variants are paired using variantId
+     * @see \App\Model\Product\ProductVariantTropicFacade, method refreshVariantStatus
+     *
      * @param \App\Model\Product\Product $mainProduct
      * @param \App\Model\Product\Product[] $variants
      * @return \App\Model\Product\Product
      */
     public function createVariant(Product $mainProduct, array $variants)
     {
-        /** @var \App\Model\Product\Product $mainVariant */
-        $mainVariant = parent::createVariant($mainProduct, $variants);
-        $this->em->flush($mainProduct);
-
-        return $mainVariant;
+        @trigger_error('Deprecated, you should use Product::variantId to pair variants, see ProductVariantTropicFacade::refreshVariantStatus', E_USER_DEPRECATED);
     }
 }

@@ -22,7 +22,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @property \App\Model\Product\Product[]|\Doctrine\Common\Collections\Collection $variants
  * @property \App\Model\Product\Product|null $mainVariant
  * @method static \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
- * @method static \App\Model\Product\Product createMainVariant(\App\Model\Product\ProductData $productData, \App\Model\Product\Product[] $variants)
  * @method setAvailabilityAndStock(\App\Model\Product\ProductData $productData)
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  * @method \App\Model\Product\Brand\Brand|null getBrand()
@@ -182,6 +181,19 @@ class Product extends BaseProduct
         $this->pohodaId = $productData->pohodaId;
         $this->updatedAt = $productData->updatedAt;
         $this->fillCommonProperties($productData);
+    }
+
+    /**
+     * @deprecated since US-7741, variants are paired using variantId
+     * @see \App\Model\Product\ProductVariantTropicFacade, method refreshVariantStatus
+     *
+     * @param \App\Model\Product\ProductData $productData
+     * @param array $variants
+     * @return \App\Model\Product\Product|void
+     */
+    public static function createMainVariant(ProductData $productData, array $variants)
+    {
+        @trigger_error('Deprecated, you should use Product::variantId to pair variants, see ProductVariantTropicFacade::refreshVariantStatus', E_USER_DEPRECATED);
     }
 
     /**
