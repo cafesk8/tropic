@@ -7,6 +7,7 @@ namespace App\Controller\Front;
 use App\Model\Blog\Article\BlogArticle;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Category\BlogCategoryFacade;
+use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -51,11 +52,13 @@ class BlogArticleController extends FrontBaseController
         );
 
         $blogCategoryIds = $this->blogCategoryFacade->getBlogArticleBlogCategoryIdsWithDeepestLevel($blogArticle, $this->domain->getId());
+        $offeredArticleProducts = $this->filterOnlyOfferedProducts($blogArticle->getProducts());
 
         return $this->render('Front/Content/Blog/Article/detail.html.twig', [
             'blogArticle' => $blogArticle,
             'activeCategories' => $blogCategoryIds,
             'domainId' => $this->domain->getId(),
+            'articleProducts' => $offeredArticleProducts,
         ]);
     }
 
@@ -74,12 +77,27 @@ class BlogArticleController extends FrontBaseController
 
     /**
      * @param \App\Model\Blog\Article\BlogArticle $blogArticle
+     * @param \App\Model\Product\Product[] $articleProducts
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function productsAction(?BlogArticle $blogArticle): Response
+    public function productsAction(?BlogArticle $blogArticle, array $articleProducts): Response
     {
         return $this->render('Front/Content/Blog/Article/blogArticleProducts.html.twig', [
-            'articleProducts' => $blogArticle->getProducts(),
+            'articleProducts' => $articleProducts,
         ]);
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     * @return \App\Model\Product\Product[]
+     */
+    private function filterOnlyOfferedProducts(array $products): array
+    {
+        return array_filter($products, function (Product $product) {
+            if ($product->getCalculatedSellingDenied() === true || $product->isVisible() === false) {
+                return false;
+            }
+            return true;
+        });
     }
 }
