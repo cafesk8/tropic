@@ -77,12 +77,21 @@ class StoreRepository
     }
 
     /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getOrderedAllQueryBuilder(): QueryBuilder
+    {
+        return $this->getAllQueryBuilder()
+            ->orderBy('s.position', 'ASC');
+    }
+
+    /**
      * @param int $storeId
      * @return \App\Model\Store\Store
      */
     public function getStoreForStoreListById(int $storeId): Store
     {
-        $store = $this->getAllQueryBuilder()
+        $store = $this->getOrderedAllQueryBuilder()
             ->andWhere('s.id = :storeId')
             ->andWhere('s.showOnStoreList = true')
             ->setParameter('storeId', $storeId)
@@ -112,7 +121,7 @@ class StoreRepository
      */
     public function getAll(): array
     {
-        return $this->getStoreRepository()->findAll();
+        return $this->getOrderedAllQueryBuilder()->getQuery()->getResult();
     }
 
     /**
