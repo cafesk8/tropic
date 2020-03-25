@@ -6,6 +6,7 @@ namespace App\Model\Product;
 
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\Pricing\ProductPriceCalculation;
 use App\Model\Transport\DeliveryDate\DeliveryDateFacade;
 use App\Model\Transport\Transport;
@@ -14,9 +15,8 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterRepository;
-use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
-use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
@@ -52,12 +52,12 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
     private $currentCustomerUser;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice[]
+     * @var \App\Model\Product\Pricing\ProductPrice[]
      */
     protected $registeredCustomerPricesByProductId;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
+     * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      * @param \App\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
@@ -96,7 +96,17 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
+     * @return \App\Model\Product\Pricing\ProductPrice
+     */
+    public function getDefaultPrice(Product $product): ProductPrice
+    {
+        $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $this->domain->getId());
+        return $this->productPriceCalculation->calculatePrice($product, $this->domain->getId(), $defaultPricingGroup);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\Pricing\ProductPrice|null
      */
     public function getProductRegisteredCustomerPrice(Product $product): ?ProductPrice
     {
@@ -138,7 +148,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @param string|null $locale
      * @return \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue[]
      */
-    public function getProductParameterValues(Product $product, ?string $locale = null)
+    public function getProductParameterValues(BaseProduct $product, ?string $locale = null)
     {
         if (isset($this->parameterValuesByProductId[$product->getId()])) {
             return $this->parameterValuesByProductId[$product->getId()];

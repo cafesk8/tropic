@@ -7,7 +7,7 @@ namespace App\Model\Pricing\Group;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupData as BasePricingGroupData;
 
 /**
  * @ORM\Table(name="pricing_groups")
@@ -33,9 +33,9 @@ class PricingGroup extends BasePricingGroup
     private $minimalPrice;
 
     /**
-     * @var float|null
+     * @var float
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="float")
      */
     private $discount;
 
@@ -43,7 +43,7 @@ class PricingGroup extends BasePricingGroup
      * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param int $domainId
      */
-    public function __construct(PricingGroupData $pricingGroupData, $domainId)
+    public function __construct(BasePricingGroupData $pricingGroupData, $domainId)
     {
         parent::__construct($pricingGroupData, $domainId);
         $this->internalId = $pricingGroupData->internalId;
@@ -54,7 +54,7 @@ class PricingGroup extends BasePricingGroup
     /**
      * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
      */
-    public function edit(PricingGroupData $pricingGroupData): void
+    public function edit(BasePricingGroupData $pricingGroupData): void
     {
         parent::edit($pricingGroupData);
         $this->internalId = $pricingGroupData->internalId;
@@ -79,22 +79,18 @@ class PricingGroup extends BasePricingGroup
     }
 
     /**
-     * @return float|null
+     * @return float
      */
-    public function getDiscount(): ?float
+    public function getDiscount(): float
     {
         return $this->discount;
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getDiscountPercent(): int
+    public function getDiscountCoefficient(): float
     {
-        if ($this->discount === null) {
-            return 0;
-        }
-
-        return -(int)(100 - $this->discount * 100);
+        return (100 - $this->discount) / 100;
     }
 }

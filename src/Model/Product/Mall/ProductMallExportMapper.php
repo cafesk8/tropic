@@ -26,7 +26,7 @@ class ProductMallExportMapper
     private const CZECH_DOMAIN = DomainHelper::CZECH_DOMAIN;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser
+     * @var \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser
      */
     private $productPriceCalculationForCustomerUser;
 
@@ -66,7 +66,7 @@ class ProductMallExportMapper
     private $mallFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
+     * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade

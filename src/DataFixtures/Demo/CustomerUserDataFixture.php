@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator;
 use Shopsys\FrameworkBundle\Component\String\HashGenerator;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFactoryInterface;
@@ -98,6 +100,11 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
     protected $customerFactory;
 
     /**
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
      * @param \App\Model\Customer\User\CustomerUserFacade $customerUserFacade
      * @param \Faker\Generator $faker
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
@@ -108,18 +115,20 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
      * @param \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
      * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFactoryInterface $customerFactory
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         CustomerUserFacade $customerUserFacade,
         Generator $faker,
-        EntityManagerInterface $em,
+        EntityManagerDecorator $em,
         HashGenerator $hashGenerator,
         Domain $domain,
         CustomerUserUpdateDataFactoryInterface $customerUserUpdateDataFactory,
         CustomerUserDataFactoryInterface $customerUserDataFactory,
         BillingAddressDataFactoryInterface $billingAddressDataFactory,
         DeliveryAddressDataFactoryInterface $deliveryAddressDataFactory,
-        CustomerFactoryInterface $customerFactory
+        CustomerFactoryInterface $customerFactory,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         $this->customerUserFacade = $customerUserFacade;
         $this->faker = $faker;
@@ -131,6 +140,7 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
         $this->billingAddressDataFactory = $billingAddressDataFactory;
         $this->deliveryAddressDataFactory = $deliveryAddressDataFactory;
         $this->customerFactory = $customerFactory;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -169,6 +179,14 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
     {
         $customerUserUpdateData = $this->customerUserUpdateDataFactory->create();
         $customerUserData = $this->customerUserDataFactory->createForDomainId($domainId);
+
+        foreach ($this->pricingGroupFacade->getByDomainId($domainId) as $pricingGroup) {
+            if ($pricingGroup->getInternalId() === PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER) {
+                $customerUserData->pricingGroup = $pricingGroup;
+                break;
+            }
+        }
+
         $customerUserData->firstName = $data[self::KEY_CUSTOMER_USER_DATA][self::KEY_CUSTOMER_USER_DATA_FIRST_NAME] ?? null;
         $customerUserData->lastName = $data[self::KEY_CUSTOMER_USER_DATA][self::KEY_CUSTOMER_USER_DATA_LAST_NAME] ?? null;
         $customerUserData->email = $data[self::KEY_CUSTOMER_USER_DATA][self::KEY_CUSTOMER_USER_DATA_EMAIL] ?? null;

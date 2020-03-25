@@ -73,12 +73,12 @@ class UserDataFixture
     private $customerUserUpdateDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface
+     * @var \App\Model\Customer\BillingAddressDataFactory
      */
     private $billingAddressDataFactory;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface
+     * @var \App\Model\Customer\DeliveryAddressDataFactory
      */
     private $deliveryAddressDataFactory;
 
@@ -93,8 +93,8 @@ class UserDataFixture
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory $progressBarFactory
      * @param \App\Model\Customer\User\CustomerUserUpdateDataFactory $customerUserUpdateDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface $billingAddressDataFactory
-     * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressDataFactoryInterface $deliveryAddressDataFactory
+     * @param \App\Model\Customer\BillingAddressDataFactory $billingAddressDataFactory
+     * @param \App\Model\Customer\DeliveryAddressDataFactory $deliveryAddressDataFactory
      */
     public function __construct(
         $userCountPerDomain,

@@ -27,7 +27,7 @@ class GoogleFeedItemFactory extends BaseGoogleFeedItemFactory
     private $feedHelper;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
+     * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \App\Model\Product\Collection\ProductUrlsBatchLoader $productUrlsBatchLoader
      * @param \App\Model\Category\CategoryFacade $categoryFacade

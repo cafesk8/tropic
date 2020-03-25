@@ -8,7 +8,6 @@ use App\Controller\Front\ProductController;
 use App\DataFixtures\Demo\CustomerUserDataFixture;
 use App\DataFixtures\Demo\OrderDataFixture;
 use App\DataFixtures\Demo\PersonalDataAccessRequestDataFixture;
-use App\DataFixtures\Demo\PricingGroupDataFixture;
 use App\DataFixtures\Demo\PromoCodeDataFixture;
 use App\DataFixtures\Demo\UnitDataFixture;
 use App\DataFixtures\Demo\VatDataFixture;
@@ -208,12 +207,9 @@ class RouteConfigCustomization
                     ->setParameter('categoryId', 2);
             })
             ->customizeByRouteName('admin_pricinggroup_delete', function (RouteConfig $config) {
-                /** @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup $pricingGroup */
-                $pricingGroup = $this->getPersistentReferenceForDomain(PricingGroupDataFixture::PRICING_GROUP_REGISTERED_DOMAIN, Domain::FIRST_DOMAIN_ID);
-
-                $debugNote = sprintf('Delete pricing group "%s".', $pricingGroup->getName());
-                $config->changeDefaultRequestDataSet($debugNote)
-                    ->setParameter('id', $pricingGroup->getId());
+                $config->changeDefaultRequestDataSet('Delete pricing group with ID 5. 
+                It should be a group called Default that is automatically created for the second domain but not used in this project.')
+                    ->setParameter('id', 5);
             })
             ->customizeByRouteName('admin_product_edit', function (RouteConfig $config) {
                 $config->addExtraRequestDataSet('Edit product that is a main variant (ID 149).')

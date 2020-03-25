@@ -47,8 +47,8 @@ class ProductManualInputPriceFacade extends BaseProductManualInputPriceFacade
         $defaultInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $defaultPricingGroup);
         $manualInputPrice = $this->productManualInputPriceRepository->findByProductAndPricingGroup($product, $pricingGroup);
 
-        if ($defaultInputPrice !== null && $defaultInputPrice->getInputPrice() !== null && $pricingGroup->getInternalId() !== null && $pricingGroup->getDiscount() !== null) {
-            $inputPrice = $defaultInputPrice->getInputPrice()->multiply((string)$pricingGroup->getDiscount());
+        if ($defaultInputPrice !== null && $defaultInputPrice->getInputPrice() !== null && $pricingGroup->getInternalId() !== null && $defaultPricingGroup !== $pricingGroup) {
+            $inputPrice = $defaultInputPrice->getInputPrice()->multiply((string)$pricingGroup->getDiscountCoefficient());
         }
 
         if ($manualInputPrice === null) {

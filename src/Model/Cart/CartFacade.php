@@ -35,6 +35,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
  * @method \App\Model\Cart\Cart|null findCartOfCurrentCustomerUser()
  * @method \App\Model\Cart\Cart getCartOfCurrentCustomerUserCreateIfNotExists()
  * @method \App\Model\Cart\Cart getCartByCustomerUserIdentifierCreateIfNotExists(\Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier $customerUserIdentifier)
+ * @property \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculation
  */
 class CartFacade extends BaseCartFacade
 {
@@ -57,7 +58,7 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculation
+     * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculation
      * @param \App\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade

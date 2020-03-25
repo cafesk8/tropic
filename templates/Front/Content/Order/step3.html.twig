@@ -47,6 +47,9 @@
                                             {{ 'Chci se zaregistrovat'|trans }}
                                         </label>
 
+                                        <input type="checkbox" class="display-none js-order-transport-input" data-id="{{ transport.id }}" checked>
+                                        <input type="checkbox" class="display-none js-order-payment-input" data-id="{{ payment.id }}" checked>
+
                                         <div class="margin-top-10" id="js-password-fields">
                                             {{ form_row(form.password.first, {
                                                 label: 'Password'|trans,
@@ -162,11 +165,13 @@
                             </div>
                         </div>
                     </div>
+
                     <div id="js-order-preview" class="box-order__cart" data-url="{{ url('front_order_preview') }}">
                         {{ render(controller('App\\Controller\\Front\\OrderController:previewAction', {
                             transportId: transport is empty ? null : transport.id,
                             paymentId: payment is empty ? null : payment.id,
                             orderStep: '3',
+                            registration: form.registration.vars.checked,
                             formSubmit: form.save
                         })) }}
                     </div>

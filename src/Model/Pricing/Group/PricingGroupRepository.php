@@ -57,4 +57,14 @@ class PricingGroupRepository extends BasePricingGroupRepository
             ->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, SortableNullsWalker::class)
             ->getResult();
     }
+
+    /**
+     * @param string $internalId
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getByInternalIdAndDomainId(string $internalId, int $domainId): PricingGroup
+    {
+        return $this->getPricingGroupRepository()->findOneBy(['domainId' => $domainId, 'internalId' => $internalId]);
+    }
 }

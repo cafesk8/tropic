@@ -26,6 +26,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation;
 
 /**
  * @property \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
+ * @property \App\Model\Product\Pricing\QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price|null calculateRoundingPrice(\App\Model\Payment\Payment $payment, \App\Model\Pricing\Currency\Currency $currency, \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice, \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice)
  */
 class OrderPreviewCalculation extends BaseOrderPreviewCalculation
@@ -51,7 +52,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation
+     * @param \App\Model\Product\Pricing\QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation
      * @param \App\Model\Product\Pricing\QuantifiedProductDiscountCalculation $quantifiedProductDiscountCalculation
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
@@ -95,6 +96,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \App\Model\Cart\Item\CartItem[]|null $giftsInCart
      * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @param bool $simulateRegistration
      * @return \App\Model\Order\Preview\OrderPreview
      */
     public function calculatePreview(
@@ -108,7 +110,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         ?PromoCode $promoCode = null,
         ?array $giftsInCart = [],
         ?array $promoProductsInCart = [],
-        array $promoCodes = []
+        array $promoCodes = [],
+        bool $simulateRegistration = false
     ): BaseOrderPreview {
         if ($promoCodeDiscountPercent !== null || $promoCode !== null) {
             throw new InvalidArgumentException('Neither "$promoCodeDiscountPercent" nor "$promoCode" argument is supported, you need to use "$promoCodes" array instead');
@@ -117,7 +120,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $quantifiedItemsPrices = $this->quantifiedProductPriceCalculation->calculatePrices(
             $quantifiedProducts,
             $domainId,
-            $customerUser
+            $customerUser,
+            $simulateRegistration
         );
 
         $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);

@@ -28,16 +28,12 @@
                     {% if registrationForm is not null %}
                         <div class="box-order-done__club">
                             <div class="box-order-done__club__title">
-                                {{ 'Stačí zadat heslo a příště už nic'|trans }} <br>
-                                {{ 'zadávat nemusíte'|trans }}
+                                {{ 'Stačí zadat heslo a příště už nic<br>zadávat nemusíte'|transHtml }}
                             </div>
                             <div class="box-order-done__club__text">
-                                {{ 'Jako člen Věrnostního programu budete mít přístup k'|trans }}
-                                <strong>{{ 'historii svých objednávek,'|trans }}</strong>
-                                {{ 'možnost získat'|trans }}
-                                {{ '25 let záruku zdarma, objednat směnnou zásilku nebo '|trans }}
-                                <strong>{{ 'získat 3% slevu'|trans }}</strong>
-                                {{ 'na celý sortiment'|trans }}.
+                                {{ 'Jako registrovaný zákazník získáte <strong>slevu %discount% %</strong> na celý sortiment, přístup k <strong>historii svých objednávek</strong> a funkci předvyplnění údajů při další objednávce.'|transHtml({
+                                    '%discount%': getRegisteredCustomerPricingGroupDiscount()|formatNumber
+                                }) }}
                             </div>
                             {# Save password and user name hack.
                             * The browsers need field with name 'name' to store login (password stored by field with type password).

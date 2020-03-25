@@ -112,6 +112,11 @@ class OrderData extends BaseOrderData
      */
     public $trackingNumber;
 
+    /**
+     * @var bool
+     */
+    public $registration;
+
     public function __construct()
     {
         parent::__construct();
@@ -120,5 +125,6 @@ class OrderData extends BaseOrderData
         $this->memberOfLoyaltyProgram = false;
         $this->transportType = Transport::TYPE_NONE;
         $this->promoCodesCodes = [];
+        $this->registration = false;
     }
 }

@@ -12,6 +12,10 @@
                 {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
                 {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
                 {% set sellingPrice = getProductSellingPrice(product) %}
+                {# @var defaultPrice \App\Model\Product\Pricing\ProductPrice #}
+                {% set defaultPrice = getDefaultPrice(product) %}
+                {# @var registeredCustomerPrice \App\Model\Product\Pricing\ProductPrice #}
+                {% set registeredCustomerPrice = getProductRegisteredCustomerPrice(product) %}
 
                 <div class="box-detail__image__main">
                     {% if imageExists(product) %}
@@ -91,8 +95,7 @@
                             {% if product.calculatedAvailability %}
                                 {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
                             {% endif %}
-                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer"
-                                class="box-detail-add__prices">
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
                                 <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
                                     {{ sellingPrice.priceWithVat|price }}
                                 </div>
@@ -102,6 +105,15 @@
                                     </div>
                                     <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
                                         {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+                                    </div>
+                                {% endif %}
+                                {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) %}
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
+                                        {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
+                                    </div>
+                                {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) %}
+                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--not-registered">
+                                        {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
                                     </div>
                                 {% endif %}
                                 <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
