@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
+use App\Model\Pricing\Group\PricingGroupFacade;
 use DateTime;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData as BaseCustomerUserData;
@@ -17,11 +18,18 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 class CustomerUserDataFactory extends BaseCustomerUserDataFactory
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
      */
-    public function __construct(PricingGroupSettingFacade $pricingGroupSettingFacade)
+    private $pricingGroupFacade;
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     */
+    public function __construct(PricingGroupSettingFacade $pricingGroupSettingFacade, PricingGroupFacade $pricingGroupFacade)
     {
         parent::__construct($pricingGroupSettingFacade);
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -84,6 +92,7 @@ class CustomerUserDataFactory extends BaseCustomerUserDataFactory
         $customerUserData->telephone = $order->getTelephone();
         $customerUserData->createdAt = new DateTime();
         $customerUserData->password = $password;
+        $customerUserData->pricingGroup = $this->pricingGroupFacade->getForRegisteredCustomer();
 
         return $customerUserData;
     }
