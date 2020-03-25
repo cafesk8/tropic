@@ -26,19 +26,20 @@
         <div class="web__line">
             <div class="web__header {{ block('headerLayoutClass') }}">
                 {{ block('header') }}
-                {% block infoRow %}
-                    {% if isInfoRowVisible() %}
-                        <div class="web__container" id="js-info-row" data-now="{{ 'now'|formatDateCore(constant('App\\Component\\InfoRow\\InfoRowFacade::COOKIE_CLOSED_AT_FORMAT')) }}">
-                            <div class="box-info-row">
-                                {{ getInfoRowText() }}
-                                <span class="box-info-row__close js-info-row__close" >
-                                    <i class="svg svg-remove"></i>
-                                </span>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endblock %}
             </div>
+            
+            {% block infoRow %}
+                {% if isInfoRowVisible() %}
+                    <div class="web__container" id="js-info-row" data-now="{{ 'now'|formatDateCore(constant('App\\Component\\InfoRow\\InfoRowFacade::COOKIE_CLOSED_AT_FORMAT')) }}">
+                        <div class="box-info-row">
+                            {{ getInfoRowText() }}
+                            <span class="box-info-row__close js-info-row__close" >
+                                <i class="svg svg-remove"></i>
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endblock %}
 
             {% block content %}{% endblock %}
 

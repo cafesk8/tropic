@@ -5,6 +5,7 @@
 @list-menu-columns-gap-small: 16px;
 @list-menu-item-height: 36px;
 @list-menu-item-footer-gap: 47px;
+@list-menu-item-link-padding: 15px;
 
 // global settings
 .list-menu {
@@ -16,6 +17,7 @@
 
     @media @query-vl {
         flex-direction: row;
+        margin-left: -@list-menu-item-link-padding;
     }
 
     &--submenu {
@@ -124,11 +126,7 @@
             transition: none;
 
             @media @query-vl {
-                padding: 0 13px;
-            }
-
-            @media @query-xl {
-                padding: 0 15px;
+                padding: 0 @list-menu-item-link-padding;
             }
 
             &__arrow {
@@ -156,13 +154,9 @@
 
             &--level-1 {
                 color: @color-f;
-                font-size: @font-size-small;
+                font-size: 16px;
                 font-weight: 700;
                 text-transform: uppercase;
-
-                @media @query-xl {
-                    font-size: 16px;
-                }
 
                 &:hover {
                     color: @color-f;
