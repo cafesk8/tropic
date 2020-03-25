@@ -90,22 +90,22 @@
         color: @color-brown;
 
         &__in {
-            padding: 0 @list-top-products-item-padding;
-            height: 100%;
-        }
-
-        &__block {
-            display: flex;
-            height: 100%;
-            flex-direction: column;
+            margin: 0 @list-top-products-item-padding;
             padding: 10px;
-
-            text-decoration: none;
-            color: @color-base;
+            height: 100%;
 
             &:hover {
                 box-shadow: @shadow;
             }
+        }
+
+        &__block {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            text-decoration: none;
+            color: @color-base;
         }
 
         &__image {
