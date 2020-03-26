@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Form\FormBuilderHelper;
 use App\Component\Mall\MallFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer;
@@ -24,6 +25,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryFormTypeExtension extends AbstractTypeExtension
 {
+    public const DISABLED_FIELDS = [
+        'pohodaId',
+        'name',
+        'listable',
+        'updatedByPohodaAt',
+    ];
+
+    /**
+     * @var \App\Component\Form\FormBuilderHelper
+     */
+    protected $formBuilderHelper;
+
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
      */
@@ -62,6 +75,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
      * @param \App\Model\Blog\Article\BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer
      * @param \App\Component\Mall\MallFacade $mallFacade
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
@@ -69,7 +83,8 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         RemoveDuplicatesFromArrayTransformer $removeDuplicatesTransformer,
         BlogArticlesIdsToBlogArticlesTransformer $blogArticlesIdsToBlogArticlesTransformer,
         MallFacade $mallFacade,
-        DateTimeFormatterExtension $dateTimeFormatterExtension
+        DateTimeFormatterExtension $dateTimeFormatterExtension,
+        FormBuilderHelper $formBuilderHelper
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabFacade;
@@ -77,6 +92,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
         $this->blogArticlesIdsToBlogArticlesTransformer = $blogArticlesIdsToBlogArticlesTransformer;
         $this->mallFacade = $mallFacade;
         $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
+        $this->formBuilderHelper = $formBuilderHelper;
     }
 
     /**
@@ -152,6 +168,7 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
             );
 
         $builder->add($this->createMallGroup($builder));
+        $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
 
     /**
