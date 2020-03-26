@@ -1243,11 +1243,11 @@
         },
         {
             "name": "devops/kubernetes-deployment",
-            "version": "1.0.20",
+            "version": "1.0.23",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git",
-                "reference": "c751403d852cf1fbc8404eb848ff4b1d07133931"
+                "reference": "781fa52b120e0afbe56988396203cb2c0d894301"
             },
             "require": {
                 "arvenil/ninja-mutex": "^0.4.1",
@@ -1291,7 +1291,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2020-03-20T13:58:21+00:00"
+            "time": "2020-03-24T15:43:40+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -14092,6 +14092,7 @@
             ],
             "description": "This tool check syntax of PHP files about 20x faster than serial check.",
             "homepage": "https://github.com/JakubOnderka/PHP-Parallel-Lint",
+            "abandoned": "php-parallel-lint/php-parallel-lint",
             "time": "2015-12-15T10:42:16+00:00"
         },
         {
@@ -16301,12 +16302,12 @@
             "version": "v5.4.16",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Symplify/CodingStandard.git",
+                "url": "https://github.com/symplify/coding-standard.git",
                 "reference": "72a3b03f21be6c978a90ad567a29bd9261df0dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/CodingStandard/zipball/72a3b03f21be6c978a90ad567a29bd9261df0dfa",
+                "url": "https://api.github.com/repos/symplify/coding-standard/zipball/72a3b03f21be6c978a90ad567a29bd9261df0dfa",
                 "reference": "72a3b03f21be6c978a90ad567a29bd9261df0dfa",
                 "shasum": ""
             },
@@ -16350,12 +16351,12 @@
             "version": "v5.4.13",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Symplify/EasyCodingStandard.git",
+                "url": "https://github.com/symplify/easy-coding-standard.git",
                 "reference": "78090cd1450e9f5bf65b4fa02f7180d6b6061cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/EasyCodingStandard/zipball/78090cd1450e9f5bf65b4fa02f7180d6b6061cf9",
+                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/78090cd1450e9f5bf65b4fa02f7180d6b6061cf9",
                 "reference": "78090cd1450e9f5bf65b4fa02f7180d6b6061cf9",
                 "shasum": ""
             },
@@ -16414,12 +16415,12 @@
             "version": "v5.4.16",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Symplify/PackageBuilder.git",
+                "url": "https://github.com/symplify/package-builder.git",
                 "reference": "20e04ad9cd15a53527807a62c8b244d8a114f779"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/PackageBuilder/zipball/20e04ad9cd15a53527807a62c8b244d8a114f779",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/20e04ad9cd15a53527807a62c8b244d8a114f779",
                 "reference": "20e04ad9cd15a53527807a62c8b244d8a114f779",
                 "shasum": ""
             },
@@ -16601,5 +16602,6 @@
     },
     "platform-overrides": {
         "php": "7.2"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }

@@ -28,7 +28,7 @@ services:
             - "8000:8080"
 
     php-fpm:
-        image: php-fpm
+        image: ${TAG}
         container_name: shopsys-framework-php-fpm
         ports:
             - "35729:35729"
