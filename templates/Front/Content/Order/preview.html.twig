@@ -12,9 +12,7 @@
             <span class="list-cart-preview__item__title">
                 {{ product.name }}
             </span>
-            <div class="list-cart-preview__item__parameters">
-                {{ distinguishingParameter.writeParameters(product, 'list-cart-preview__item__parameters__text') }}
-            </div>
+            {{ distinguishingParameter.writeParameters(product, 'list-cart-preview__item__parameters') }}
         </div>
         <div class="list-cart-preview__item__price">
             {{ price|priceText }}

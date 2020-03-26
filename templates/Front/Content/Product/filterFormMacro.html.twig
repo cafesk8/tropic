@@ -44,7 +44,7 @@
                             </div>
                             {{ form_widget(filterForm.maximalPrice, {attr: { class: 'js-product-filter-call-change-after-reset js-no-validate display-none', placeholder: priceRange.maximalPrice.amount|formatNumber }}) }}
                             <input type="text" id="{{ filterForm.maximalPrice.vars.id }}Formatted" class="box-price-slider__form__item__input js-no-validate input" placeholder="{{ priceRange.maximalPrice.amount|formatNumber }}">
-                            <div class="box-price-slider__form__item__text">{{ currencySymbolByDomainId(domain.id) }}</div>
+                            <div class="box-price-slider__form__item__currency">{{ currencySymbolByDomainId(domain.id) }}</div>
                         </div>
                     </div>
                 </div>

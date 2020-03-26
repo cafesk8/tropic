@@ -78,20 +78,22 @@
 
         color: @color-brown;
 
-        &:hover {
-            box-shadow: @shadow;
-        }
-
         &__in {
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: @list-accessories-products-item-padding;
+            margin: 0 @list-accessories-products-item-padding;
+            padding: 10px;
+
+            &:hover {
+                box-shadow: @shadow;
+            }
         }
 
         &__block {
             display: flex;
             flex-direction: column;
+            flex: 1;
 
             text-decoration: none;
             color: @color-base;
