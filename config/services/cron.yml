@@ -150,14 +150,6 @@ services:
     #########################
     ## CATEGORIES TRANSFER ##
     #########################
-    App\Model\Category\Transfer\CategoryQueueImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
     App\Model\Category\Transfer\CategoryImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
-    App\Model\Category\Transfer\CategoryRemoveCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }

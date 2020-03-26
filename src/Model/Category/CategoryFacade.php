@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
-use App\Model\Category\Transfer\CategoryRemoveCronModule;
+use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
@@ -284,13 +284,13 @@ class CategoryFacade extends BaseCategoryFacade
         $categories = $this->categoryRepository->getCategoriesExceptPohodaIds($pohodaIds);
 
         $categoriesToRemovePercentage = (count($categories) / count($allCategories)) * 100;
-        if ($categoriesToRemovePercentage > CategoryRemoveCronModule::MAX_BATCH_CATEGORIES_REMOVE_PERCENT) {
+        if ($categoriesToRemovePercentage > CategoryRemoveFacade::MAX_BATCH_CATEGORIES_REMOVE_PERCENT) {
             throw new MaximumPercentageOfCategoriesToRemoveLimitExceeded(
                 sprintf(
                     'Trying to remove %s categories, which is %s percent of whole category tree, removing aborted. Maximum is %s percent.',
                     count($categories),
                     $categoriesToRemovePercentage,
-                    CategoryRemoveCronModule::MAX_BATCH_CATEGORIES_REMOVE_PERCENT
+                    CategoryRemoveFacade::MAX_BATCH_CATEGORIES_REMOVE_PERCENT
                 )
             );
         }

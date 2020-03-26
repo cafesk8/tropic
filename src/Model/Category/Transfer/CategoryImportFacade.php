@@ -10,8 +10,6 @@ use App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryDataFactory;
 use App\Model\Category\CategoryFacade;
-use Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRepository;
-use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 
 class CategoryImportFacade
 {
@@ -48,47 +46,30 @@ class CategoryImportFacade
     private $pohodaCategoryMapper;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRepository
-     */
-    private $categoryVisibilityRepository;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository
-     */
-    private $productVisibilityRepository;
-
-    /**
      * @param \App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade $pohodaCategoryExportFacade
      * @param \App\Model\Category\Transfer\CategoryQueueImportFacade $categoryQueueImportFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
      * @param \App\Model\Category\Transfer\PohodaCategoryMapper $pohodaCategoryMapper
-     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRepository $categoryVisibilityRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      */
     public function __construct(
         PohodaCategoryExportFacade $pohodaCategoryExportFacade,
         CategoryQueueImportFacade $categoryQueueImportFacade,
         CategoryFacade $categoryFacade,
         CategoryDataFactory $categoryDataFactory,
-        PohodaCategoryMapper $pohodaCategoryMapper,
-        CategoryVisibilityRepository $categoryVisibilityRepository,
-        ProductVisibilityRepository $productVisibilityRepository
+        PohodaCategoryMapper $pohodaCategoryMapper
     ) {
         $this->pohodaCategoryExportFacade = $pohodaCategoryExportFacade;
         $this->categoryQueueImportFacade = $categoryQueueImportFacade;
         $this->categoryFacade = $categoryFacade;
         $this->categoryDataFactory = $categoryDataFactory;
         $this->pohodaCategoryMapper = $pohodaCategoryMapper;
-        $this->categoryVisibilityRepository = $categoryVisibilityRepository;
-        $this->productVisibilityRepository = $productVisibilityRepository;
     }
 
     /**
      * @param \App\Component\Transfer\Logger\TransferLogger $logger
-     * @return bool
      */
-    public function processImport(TransferLogger $logger): bool
+    public function processImport(TransferLogger $logger): void
     {
         $this->logger = $logger;
         $changedPohodaCategoryIds = $this->categoryQueueImportFacade->findChangedPohodaCategoryIds(self::MAX_BATCH_LIMIT);
@@ -105,12 +86,7 @@ class CategoryImportFacade
             $categoriesForOrderRecalculation = $this->categoryFacade->getCategoriesForOrderRecalculation();
             $this->logger->addInfo('Proběhne přepočet kategorií', ['countCategoriesForOrderRecalculation' => count($categoriesForOrderRecalculation)]);
             $this->categoryFacade->editOrdering($categoriesForOrderRecalculation);
-
-            $this->categoryVisibilityRepository->refreshCategoriesVisibility();
-            $this->productVisibilityRepository->refreshProductsVisibility();
         }
-
-        return !$this->categoryQueueImportFacade->isQueueEmpty();
     }
 
     /**
