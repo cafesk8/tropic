@@ -26,6 +26,7 @@ class ProductVariantFacade extends BaseProductVariantFacade
         /** @var \App\Model\Product\Product $mainVariant */
         $mainVariant = parent::createVariant($mainProduct, $variants);
         $this->em->flush($mainProduct);
+        $this->scheduleForImmediateExport(array_merge([$mainProduct, $mainVariant], $variants));
 
         return $mainVariant;
     }
@@ -39,5 +40,16 @@ class ProductVariantFacade extends BaseProductVariantFacade
         $variant->unsetMainVariant();
 
         $this->em->flush([$mainVariant, $variant]);
+        $this->scheduleForImmediateExport([$mainVariant, $variant]);
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     */
+    private function scheduleForImmediateExport(array $products): void
+    {
+        foreach ($products as $product) {
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
+        }
     }
 }
