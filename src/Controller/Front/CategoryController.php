@@ -33,6 +33,11 @@ class CategoryController extends FrontBaseController
     private $horizontalCategoryFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]|null
+     */
+    private $categoriesWithLazyLoadedVisibleChildren;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade $topCategoryFacade
@@ -56,15 +61,25 @@ class CategoryController extends FrontBaseController
      */
     public function hoverMenuAction(bool $dropdownMenu = true): Response
     {
-        $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(
-            $this->categoryFacade->getRootCategory(),
-            $this->domain->getCurrentDomainConfig()
-        );
-
         return $this->render('Front/Content/Category/hoverMenu.html.twig', [
-            'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
+            'categoriesWithLazyLoadedVisibleChildren' => $this->getCategoriesWithLazyLoadedVisibleChildren(),
             'dropdownMenu' => $dropdownMenu,
         ]);
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]
+     */
+    private function getCategoriesWithLazyLoadedVisibleChildren(): array
+    {
+        if ($this->categoriesWithLazyLoadedVisibleChildren === null) {
+            $this->categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(
+                $this->categoryFacade->getRootCategory(),
+                $this->domain->getCurrentDomainConfig()
+            );
+        }
+
+        return $this->categoriesWithLazyLoadedVisibleChildren;
     }
 
     /**
