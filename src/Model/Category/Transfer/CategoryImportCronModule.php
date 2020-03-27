@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Category\Transfer;
 
+use App\Component\Redis\RedisFacade;
 use App\Component\Transfer\AbstractTransferCronModule;
 use App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade;
 use App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager;
@@ -46,6 +47,11 @@ class CategoryImportCronModule extends AbstractTransferCronModule
     protected $productVisibilityRepository;
 
     /**
+     * @var \App\Component\Redis\RedisFacade
+     */
+    protected $redisFacade;
+
+    /**
      * @var \App\Model\Category\Transfer\CategoryImportFacade
      */
     private $categoryImportFacade;
@@ -59,6 +65,7 @@ class CategoryImportCronModule extends AbstractTransferCronModule
      * @param \App\Model\Category\Transfer\CategoryRemoveFacade $categoryRemoveFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRepository $categoryVisibilityRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
+     * @param \App\Component\Redis\RedisFacade $redisFacade
      */
     public function __construct(
         TransferCronModuleDependency $transferCronModuleDependency,
@@ -68,7 +75,8 @@ class CategoryImportCronModule extends AbstractTransferCronModule
         PohodaEntityManager $pohodaEntityManager,
         CategoryRemoveFacade $categoryRemoveFacade,
         CategoryVisibilityRepository $categoryVisibilityRepository,
-        ProductVisibilityRepository $productVisibilityRepository
+        ProductVisibilityRepository $productVisibilityRepository,
+        RedisFacade $redisFacade
     ) {
         parent::__construct($transferCronModuleDependency);
 
@@ -79,6 +87,7 @@ class CategoryImportCronModule extends AbstractTransferCronModule
         $this->categoryRemoveFacade = $categoryRemoveFacade;
         $this->categoryVisibilityRepository = $categoryVisibilityRepository;
         $this->productVisibilityRepository = $productVisibilityRepository;
+        $this->redisFacade = $redisFacade;
     }
 
     /**
@@ -104,6 +113,7 @@ class CategoryImportCronModule extends AbstractTransferCronModule
         $this->logger->addInfo('Proběhne přepočet viditelnosti kategorií a produktů');
         $this->categoryVisibilityRepository->refreshCategoriesVisibility();
         $this->productVisibilityRepository->refreshProductsVisibility();
+        $this->redisFacade->clearCacheByPattern('twig:', 'categories');
 
         return !$this->categoryQueueImportFacade->isQueueEmpty();
     }
