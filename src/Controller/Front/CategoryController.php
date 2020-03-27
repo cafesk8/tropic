@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\HorizontalCategoryFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -62,14 +61,8 @@ class CategoryController extends FrontBaseController
             $this->domain->getCurrentDomainConfig()
         );
 
-        $categoriesForFirstColumn = $this->categoryFacade->getAllVisibleAndListableCategoriesForFirstColumnByDomainId($this->domain->getId());
-
         return $this->render('Front/Content/Category/hoverMenu.html.twig', [
             'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
-            'categoriesForFirstColumn' => $categoriesForFirstColumn,
-            'categoriesIdsForFirstColumn' => array_map(function (Category $category) {
-                return $category->getId();
-            }, $categoriesForFirstColumn),
             'dropdownMenu' => $dropdownMenu,
         ]);
     }
