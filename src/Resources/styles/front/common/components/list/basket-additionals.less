@@ -128,34 +128,6 @@
             padding: 0 15px;
             text-align: center;
 
-            &__availability {
-                margin-bottom: 10px;
-                
-                color: @color-brown-light;
-                font-size: @font-size-extra-small;
-
-                .in-badge {
-                    display: none;
-
-                    @media @query-md {
-                        display: inline;
-                    }
-                }
-
-                &__spacer {
-                    display: block;
-                    margin-bottom: 7px;
-                }
-
-                &__text {
-                    display: block;
-                    line-height: 18px;
-
-                    font-size: 13px;
-                    font-weight: 700;
-                }
-            }
-
             &__price {
                 &__item {
                     display: none;
@@ -194,6 +166,9 @@
             margin-top: auto;
 
             .btn {
+                padding: 0;
+                width: 100%;
+                
                 word-break: keep-all;
             }
         }
