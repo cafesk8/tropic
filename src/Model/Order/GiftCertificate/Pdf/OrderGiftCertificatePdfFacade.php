@@ -61,11 +61,17 @@ class OrderGiftCertificatePdfFacade
         $dompdf->loadHtml($html);
         $dompdf->render();
 
-        $filename = 'GiftCertificate' . strval(time()) . '.pdf';
-        file_put_contents($this->fileUpload->getTemporaryDirectory() . '/' . $filename, $dompdf->output());
+        $dirName = $this->fileUpload->getTemporaryDirectory();
+
+        if (!is_dir($dirName)) {
+            mkdir($dirName, 0777, true);
+        }
+
+        $fileName = 'GiftCertificate' . strval(time()) . substr(hash('sha256', $orderGiftCertificate->getGiftCertificate()->getCode()), 0, 8) . '.pdf';
+        file_put_contents($dirName . '/' . $fileName, $dompdf->output());
         $uploadedFileData = $this->uploadedFileDataFactory->createByEntity($orderGiftCertificate);
-        $uploadedFileData->uploadedFiles[] = $filename;
-        $uploadedFileData->uploadedFilenames[] = $filename;
+        $uploadedFileData->uploadedFiles[] = $fileName;
+        $uploadedFileData->uploadedFilenames[] = $fileName;
         $this->uploadedFileFacade->manageFiles($orderGiftCertificate, $uploadedFileData);
     }
 

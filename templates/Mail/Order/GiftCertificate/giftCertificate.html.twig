@@ -1,4 +1,11 @@
-<h1>Tropic Fishing</h1>
-<h2>{{ 'Dárkový poukaz'|trans }}</h2>
-<b>{{ giftCertificateCode }}</b>
-Hodnota: <b>{{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}</b>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body style="font-family: Firefly, DejaVu Sans, sans-serif;">
+    <h1>Tropic Fishing</h1>
+    <h2>{{ 'Dárkový poukaz'|trans }}</h2>
+    <b>{{ giftCertificateCode }}</b>
+    Hodnota: <b>{{ giftCertificateValue|priceWithCurrency(giftCertificateCurrency) }}</b>
+</body>
+</html>

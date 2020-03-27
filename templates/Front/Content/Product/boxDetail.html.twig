@@ -93,6 +93,10 @@
                     {% endif %}
                 </div>
 
+                {% if product.isGiftCertificate %}
+                    <div class="in-message--info">{{ 'Tento produkt je dárkovým kupónem, tudíž na něj nelze aplikovat žádné slevy.' }}</div>
+                {% endif %}
+
                 <div class="box-detail__wrap">
                     <div class="box-detail__add-basket">
                         <div>
