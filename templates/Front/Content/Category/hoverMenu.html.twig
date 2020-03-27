@@ -3,7 +3,7 @@
         <ul class="list-menu {{ modificationCLass }}">
             {% for categoryWithLazyLoadedVisibleChildren in categoriesWithLazyLoadedVisibleChildren %}
                 {% set category = categoryWithLazyLoadedVisibleChildren.category %}
-                {% set hasChildren = categoryWithLazyLoadedVisibleChildren.children|length > 0 %}
+                {% set hasChildren = categoryWithLazyLoadedVisibleChildren.hasChildren %}
                 {% if category.level == 1 %}
                     <li class="list-menu__item list-menu__item--main {% if hasChildren and dropdownMenu %}js-hover-intent{% endif %}">
                         <div class="list-menu__item__select">
