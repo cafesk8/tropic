@@ -20,9 +20,11 @@ class ProductOnCurrentDomainElasticFacade extends BaseProductOnCurrentDomainElas
      * @param int[] $ids
      * @return array
      */
-    public function getHitsForIds(array $ids): array
+    public function getSellableHitsForIds(array $ids): array
     {
-        $filterQuery = $this->filterQueryFactory->create($this->getIndexName())->filterIds(array_values($ids));
+        $filterQuery = $this->filterQueryFactory->create($this->getIndexName())
+            ->filterIds(array_values($ids))
+            ->filterOnlySellable();
 
         return $this->productElasticsearchRepository->getSortedProductsResultByFilterQuery($filterQuery)->getHits();
     }
