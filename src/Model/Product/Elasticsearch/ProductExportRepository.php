@@ -132,6 +132,33 @@ class ProductExportRepository extends BaseProductExportRepository
     /**
      * @param int $domainId
      * @param string $locale
+     * @param int[] $productIds
+     * @return array
+     */
+    public function getProductsDataForIds(int $domainId, string $locale, array $productIds): array
+    {
+        $queryBuilder = $this->createQueryBuilder($domainId)
+            ->andWhere('p.id IN (:productIds)')
+            ->setParameter('productIds', $productIds);
+
+        $query = $queryBuilder->getQuery();
+
+        /** @var \App\Model\Product\Product[] $products */
+        $products = $query->getResult();
+        $this->productsIndexedByPricingGroupIdAndMainVariantGroup = $this->mainVariantGroupFacade->getProductsIndexedByPricingGroupIdAndMainVariantGroup($products, $domainId);
+        $this->variantsIndexedByPricingGroupIdAndMainVariantId = $this->productFacade->getVariantsIndexedByPricingGroupIdAndMainVariantId($products, $domainId);
+
+        $result = [];
+        foreach ($products as $product) {
+            $result[$product->getId()] = $this->extractResult($product, $domainId, $locale);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param int $domainId
+     * @param string $locale
      * @param int $startFrom
      * @param int $batchSize
      * @return array
