@@ -582,6 +582,19 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $form = $context->getRoot();
         /** @var \App\Model\Product\Product|null $product */
         $product = $form->getConfig()->getOption('product');
+        if ($this->productVariantTropicFacade->isVariant($variantId)) {
+            $mainVariantVariantId = Product::getMainVariantVariantIdFromVariantVariantId($variantId);
+            $variantNumber = Product::getVariantNumber($variantId);
+            if (strlen($mainVariantVariantId) === 0
+                || strlen($variantNumber) === 0
+                || !preg_match('#^\d+$#', $variantNumber)
+            ) {
+                $context->addViolation(
+                    'Zadané ID modifikace má neplatný formát (očekává se nenulový počet znaků před i za lomítkem, přičemž část za lomítkem by měla obsahovat jen číslice)'
+                );
+                return;
+            }
+        }
         if ($variantId !== null) {
             $existingProductByVariantId = $this->productVariantTropicFacade->findByVariantId($variantId);
             if ($existingProductByVariantId !== null && ($product === null || $product !== null && $existingProductByVariantId->getId() !== $product->getId())) {

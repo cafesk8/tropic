@@ -54,7 +54,7 @@ class ProductVariantTropicFacade
             return null;
         }
 
-        return $this->productRepository->findMainVariantByVariantId($this->getMainVariantVariantIdFromVariantVariantId($variantId));
+        return $this->productRepository->findMainVariantByVariantId(Product::getMainVariantVariantIdFromVariantVariantId($variantId));
     }
 
     /**
@@ -82,14 +82,5 @@ class ProductVariantTropicFacade
     public function isMainVariant(?string $productVariantId): bool
     {
         return $productVariantId !== null && strpos($productVariantId, self::VARIANT_ID_SEPARATOR) === false;
-    }
-
-    /**
-     * @param string $variantId
-     * @return string
-     */
-    private function getMainVariantVariantIdFromVariantVariantId(string $variantId): string
-    {
-        return substr($variantId, 0, strpos($variantId, self::VARIANT_ID_SEPARATOR));
     }
 }

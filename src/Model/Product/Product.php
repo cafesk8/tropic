@@ -815,7 +815,7 @@ class Product extends BaseProduct
     {
         $variants = $this->variants->toArray();
         usort($variants, function (self $variant1, self $variant2) {
-            return $this->getVariantNumber($variant1->getVariantId()) - $this->getVariantNumber($variant2->getVariantId());
+            return intval(self::getVariantNumber($variant1->getVariantId())) - intval(self::getVariantNumber($variant2->getVariantId()));
         });
 
         return $variants;
@@ -823,10 +823,19 @@ class Product extends BaseProduct
 
     /**
      * @param string $variantId
-     * @return int
+     * @return string
      */
-    private function getVariantNumber(string $variantId): int
+    public static function getVariantNumber(string $variantId): string
     {
-        return intval(substr($variantId, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR) + 1));
+        return substr($variantId, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR) + 1);
+    }
+
+    /**
+     * @param string $variantId
+     * @return string
+     */
+    public static function getMainVariantVariantIdFromVariantVariantId(string $variantId): string
+    {
+        return substr($variantId, 0, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR));
     }
 }
