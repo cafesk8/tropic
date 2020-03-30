@@ -16,7 +16,6 @@ use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
-use App\Model\Product\View\ProductActionView;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
