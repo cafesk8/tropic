@@ -110,10 +110,13 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $inputPrice = Money::zero();
         $defaultPrice = Money::zero();
         $productActionPrice = Money::zero();
+        $defaultMaxInputPrice = Money::zero();
+        $maxInputPrice = Money::zero();
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null && $manualInputPrice['pricingGroupId'] === $defaultPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
                 $defaultPrice = Money::create($manualInputPrice['inputPrice']);
+                $defaultMaxInputPrice = Money::create($manualInputPrice['maxInputPrice']);
                 break;
             }
         }
@@ -123,9 +126,16 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
                 $productActionPrice = $manualInputPrice['actionPrice'] ? Money::create($manualInputPrice['actionPrice']) : Money::zero();
 
                 if ($manualInputPrice['pricingGroupId'] === $pricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
-                    $inputPrice = $defaultPrice->multiply(strval($pricingGroup->getDiscountCoefficient()));
+                    $pricingGroupCoefficient = strval($pricingGroup->getDiscountCoefficient());
+                    $inputPrice = $defaultPrice->multiply($pricingGroupCoefficient);
+                    $maxInputPrice = $defaultMaxInputPrice->multiply($pricingGroupCoefficient);
                 }
             }
+        }
+
+        $isPriceFrom = false;
+        if ($product->isMainVariant() && $maxInputPrice->isGreaterThan($inputPrice)) {
+            $isPriceFrom = true;
         }
 
         if ($productActionPrice->isZero() === false && $inputPrice->isGreaterThan($productActionPrice)) {
@@ -154,7 +164,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
 
         return new ProductPrice(
             $basePrice,
-            $product->isMainVariant(),
+            $isPriceFrom,
             $product->getId(),
             $pricingGroup,
             $defaultPricingGroup,
