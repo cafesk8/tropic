@@ -6,12 +6,12 @@ namespace App\Model\Product\Elasticsearch;
 
 use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Product\Pricing\ProductManualInputPriceRepository;
-use App\Model\Product\Pricing\ProductPriceCalculation;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository;
+use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
 use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportRepository as BaseProductExportRepository;
@@ -39,14 +39,14 @@ class ProductExportRepository extends BaseProductExportRepository
     protected $productFacade;
 
     /**
-     * @var \App\Model\Product\Pricing\ProductPriceCalculation
-     */
-    protected $productPriceCalculation;
-
-    /**
      * @var \App\Model\Pricing\Currency\CurrencyFacade
      */
     protected $currencyFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation
+     */
+    protected $basePriceCalculation;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
@@ -74,7 +74,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
      * @param \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
-     * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
@@ -88,15 +88,15 @@ class ProductExportRepository extends BaseProductExportRepository
         PricingGroupSettingFacade $pricingGroupSettingFacade,
         PricingSetting $pricingSetting,
         ProductManualInputPriceRepository $productManualInputPriceRepository,
-        ProductPriceCalculation $productPriceCalculation,
+        BasePriceCalculation $basePriceCalculation,
         CurrencyFacade $currencyFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->pricingSetting = $pricingSetting;
         $this->productManualInputPriceRepository = $productManualInputPriceRepository;
-        $this->productPriceCalculation = $productPriceCalculation;
         $this->currencyFacade = $currencyFacade;
+        $this->basePriceCalculation = $basePriceCalculation;
     }
 
     /**
@@ -161,7 +161,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $productManualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [$defaultPricingGroupOnDomain], $domainId);
         $manualInputPriceForDefaultPricingGroup = reset($productManualInputPrices);
         if ($manualInputPriceForDefaultPricingGroup !== false) {
-            $defaultPrice = $this->productPriceCalculation->calculateBasePriceRoundedByCurrency(
+            $defaultPrice = $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
                 Money::create($manualInputPriceForDefaultPricingGroup['inputPrice']),
                 $this->pricingSetting->getInputPriceType(),
                 $product->getVatForDomain($domainId),

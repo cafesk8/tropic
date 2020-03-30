@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Front\Cart;
 
+use App\Form\OrderGiftChoiceType;
 use App\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Form\Constraints\ConstraintValue;
 use Symfony\Component\Form\AbstractType;
@@ -62,11 +63,11 @@ class CartFormType extends AbstractType
                     'entry_type' => CheckboxType::class,
                 ],
             ])
-            ->add('chosenPromoProducts', CollectionType::class, [
-                'entry_type' => CollectionType::class,
-                'entry_options' => [
-                    'entry_type' => CheckboxType::class,
-                ],
+            ->add('orderGiftProduct', OrderGiftChoiceType::class, [
+                'required' => false,
+                'choices' => $options['offeredGifts'],
+                'label' => t('Vyberte si dárek'),
+                'placeholder' => t('Nechci žádný dárek'),
             ])
             ->add('submit', SubmitType::class);
 
@@ -89,7 +90,10 @@ class CartFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver
+            ->setRequired('offeredGifts')
+            ->setAllowedTypes('offeredGifts', 'array')
+            ->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
         ]);
     }

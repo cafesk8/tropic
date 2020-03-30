@@ -1,8 +1,8 @@
-import Ajax from 'framework/common/utils/ajax';
-import Timeout from 'framework/common/utils/timeout';
-import Register from 'framework/common/utils/register';
+import Ajax from 'framework/common/utils/Ajax';
+import Timeout from 'framework/common/utils/Timeout';
+import Register from 'framework/common/utils/Register';
 import constant from '../utils/constant';
-import { KeyCodes } from 'framework/common/utils/keyCodes';
+import { KeyCodes } from 'framework/common/utils/KeyCodes';
 
 export default class CartRecalculator {
 
@@ -45,25 +45,6 @@ export default class CartRecalculator {
                 const cartItemProductId = $(this).attr('data-cart-product-id');
                 $('.js-take-gift').each(function () {
                     if ($(this).attr('data-cart-product-id') === cartItemProductId) {
-                        $(this).prop('checked', false);
-                    }
-                });
-
-                $(this).prop('checked', isCurrentChecked);
-
-                _this.reloadWithDelay(1000, _this);
-            });
-
-        $container.filterAllNodes('.js-cart-take-promo-product')
-            .change(function () {
-                const isCurrentChecked = $(this).is(':checked');
-                const cartItemPromoProductId = $(this).attr('data-cart-promo-product-id');
-                const cartItemProductId = $(this).attr('data-cart-product-id');
-
-                $('.js-cart-take-promo-product').each(function () {
-                    if ($(this).attr('data-cart-promo-product-id') !== cartItemPromoProductId
-                        || $(this).attr('data-cart-product-id') !== cartItemProductId
-                    ) {
                         $(this).prop('checked', false);
                     }
                 });

@@ -24,7 +24,7 @@
             in our online store %domain%.'|trans({ '%domain%': domainName }) }}
         </div>
 
-        {% if user is null and newsletterSubscriber is null and ordersCount == 0 %}
+        {% if customerUser is null and newsletterSubscriber is null and ordersCount == 0 %}
             <div class="padding-20">
                 <h2>{{ 'No personal data for this e-mail address'|trans }}</h2>
             </div>

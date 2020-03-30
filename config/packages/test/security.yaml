@@ -8,4 +8,5 @@ security:
     # quicker password encryption in test data fixtures
     encoders:
         Symfony\Component\Security\Core\User\UserInterface:
-            id: App\Model\Customer\BushmanCustomPasswordEncoder
+            algorithm: bcrypt
+            cost: 4

@@ -1,6 +1,5 @@
-import $ from 'jquery';
 import 'slick-carousel';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 export default function slickInit () {
     $('#js-slider-homepage').not('.slick-initialized').slick({

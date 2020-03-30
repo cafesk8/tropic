@@ -44,7 +44,7 @@ class CustomerController extends BaseCustomerController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->customerUserFacade->editByAdmin($id, $customerUserUpdateData);
+            $this->customerUserFacade->editByAdmin((int)$id, $customerUserUpdateData);
 
             $this->getFlashMessageSender()->addSuccessFlashTwig(
                 t('Customer <strong><a href="{{ url }}">{{ name }}</a></strong> modified'),

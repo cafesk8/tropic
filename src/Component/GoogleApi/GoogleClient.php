@@ -21,7 +21,7 @@ class GoogleClient
     public function __construct(string $googleApiKey)
     {
         $googleClient = new Google_Client();
-        $googleClient->setApplicationName('Bushman Google API');
+        $googleClient->setApplicationName('B2C ready-made Google API');
         $googleClient->setScopes([
             'https://www.googleapis.com/auth/youtube.readonly',
         ]);

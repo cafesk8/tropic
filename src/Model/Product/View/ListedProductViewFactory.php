@@ -54,7 +54,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     /**
      * @param array $productArray
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
-     * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $productActionView
+     * @param \App\Model\Product\View\ProductActionView $productActionView
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \App\Model\Product\View\ListedProductView
      */

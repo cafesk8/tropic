@@ -1,4 +1,4 @@
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 import { addNewItemToCollection, removeItemFromCollection } from 'framework/admin/validation/customization/customizeCollectionBundle';
 
 (function ($) {

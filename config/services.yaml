@@ -396,10 +396,6 @@ services:
         arguments:
             - '@shopsys.shop.component.flash_message.sender.front'
 
-    App\Model\Customer\BushmanCustomPasswordEncoder:
-        arguments:
-            - '%securityBcryptCost%'
-
     Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@App\Model\Cart\CartFacade'
 
     Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface: '@App\Model\Cart\Item\CartItemFactory'
@@ -456,16 +452,13 @@ services:
 
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupRepository: '@App\Model\Pricing\Group\PricingGroupRepository'
 
-    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusDataFactoryInterface:
-        class: App\Model\Order\Status\OrderStatusDataFactory
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusDataFactoryInterface: '@App\Model\Order\Status\OrderStatusDataFactory'
 
     Shopsys\FrameworkBundle\Model\Order\Status\Grid\OrderStatusGridFactory: '@App\Model\Order\Status\Grid\OrderStatusGridFactory'
 
-    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade:
-        class: App\Model\Order\Status\OrderStatusFacade
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade: '@App\Model\Order\Status\OrderStatusFacade'
 
-    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository:
-        class: App\Model\Order\Status\OrderStatusRepository
+    Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository: '@App\Model\Order\Status\OrderStatusRepository'
 
     App\Model\Gtm\GtmContainer:
         arguments:

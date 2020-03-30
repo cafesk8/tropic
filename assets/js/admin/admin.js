@@ -1,4 +1,5 @@
-import 'framework/admin';
+import '../jQuery/registerJquery';
+import registerAdmin from 'framework/admin/registerAdmin';
 import './banner';
 import './blogCategoryTree';
 import './category';
@@ -6,6 +7,7 @@ import './categoryTree.sorting';
 import './infoRow.validation';
 import './massEditProductConfirm';
 import './massEditProducts';
+import './orderGift';
 import './payment';
 import './productPickerAddAll';
 import './promoCode';
@@ -17,3 +19,5 @@ import './windowOpener';
 import './youtubeId.validation';
 import './youtubeUrlParser';
 import './youtubeVideos';
+
+registerAdmin();

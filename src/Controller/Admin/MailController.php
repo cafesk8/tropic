@@ -9,7 +9,8 @@ use Shopsys\FrameworkBundle\Controller\Admin\MailController as BaseMailControlle
 
 /**
  * @property \App\Model\Order\Mail\OrderMail $orderMail
- * @method __construct(\Shopsys\FrameworkBundle\Model\Customer\Mail\ResetPasswordMail $resetPasswordMail, \App\Model\Order\Mail\OrderMail $orderMail, \Shopsys\FrameworkBundle\Model\Customer\Mail\RegistrationMail $registrationMail, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade $mailSettingFacade, \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMail $personalDataAccessMail, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail $personalDataExportMail)
+ * @method __construct(\Shopsys\FrameworkBundle\Model\Customer\Mail\ResetPasswordMail $resetPasswordMail, \App\Model\Order\Mail\OrderMail $orderMail, \Shopsys\FrameworkBundle\Model\Customer\Mail\RegistrationMail $registrationMail, \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade $mailSettingFacade, \App\Model\Order\Status\OrderStatusFacade $orderStatusFacade, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMail $personalDataAccessMail, \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail $personalDataExportMail)
+ * @property \App\Model\Order\Status\OrderStatusFacade $orderStatusFacade
  */
 class MailController extends BaseMailController
 {

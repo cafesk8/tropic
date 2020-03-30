@@ -6,11 +6,12 @@ namespace App\Model\Cart;
 
 use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Cart\Item\CartItem;
+use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Product\Product;
-use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade as BaseCartFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFactory;
@@ -22,6 +23,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 
@@ -45,16 +47,16 @@ class CartFacade extends BaseCartFacade
     protected $flashMessageSender;
 
     /**
-     * @var \App\Model\Product\ProductFacade
+     * @var \App\Model\Order\Gift\OrderGiftFacade
      */
-    private $productFacade;
+    protected $orderGiftFacade;
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
      * @param \App\Model\Product\ProductRepository $productRepository
-     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory  $customerUserIdentifierFactory
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifierFactory $customerUserIdentifierFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
@@ -62,7 +64,7 @@ class CartFacade extends BaseCartFacade
      * @param \App\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
-     * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -77,7 +79,7 @@ class CartFacade extends BaseCartFacade
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
         CartWatcherFacade $cartWatcherFacade,
-        ProductFacade $productFacade
+        OrderGiftFacade $orderGiftFacade
     ) {
         parent::__construct(
             $em,
@@ -94,7 +96,7 @@ class CartFacade extends BaseCartFacade
         );
 
         $this->flashMessageSender = $flashMessageSender;
-        $this->productFacade = $productFacade;
+        $this->orderGiftFacade = $orderGiftFacade;
     }
 
     /**
@@ -273,59 +275,6 @@ class CartFacade extends BaseCartFacade
     }
 
     /**
-     * @return \App\Model\Cart\Item\CartItem[]
-     */
-    public function getPromoProducts(): array
-    {
-        $cart = $this->findCartOfCurrentCustomerUser();
-
-        if ($cart === null) {
-            return [];
-        }
-
-        return $cart->getPromoProductItems();
-    }
-
-    /**
-     * @param \App\Model\Product\PromoProduct\PromoProduct[] $promoProductsInCart
-     * @param mixed[] $selectedPromoProducts
-     */
-    public function updatePromoProducts(array $promoProductsInCart, array $selectedPromoProducts): void
-    {
-        $cart = $this->findCartOfCurrentCustomerUser();
-
-        if ($cart === null) {
-            return;
-        }
-
-        $this->removeAllPromoProductsItems($cart);
-
-        $promoProductItems = $cart->updatePromoProductsItems(
-            $this->cartItemFactory,
-            $this->productFacade,
-            $promoProductsInCart,
-            $selectedPromoProducts
-        );
-        foreach ($promoProductItems as $promoProductItem) {
-            $this->em->persist($promoProductItem);
-        }
-
-        $this->em->flush();
-    }
-
-    /**
-     * @param \App\Model\Cart\Cart $cart
-     */
-    private function removeAllPromoProductsItems(Cart $cart): void
-    {
-        $allRemovedPromoProductItems = $cart->removeAllPromoProductsAndGetThem();
-        foreach ($allRemovedPromoProductItems as $removedPromoProductItem) {
-            $this->em->remove($removedPromoProductItem);
-        }
-        $this->em->flush();
-    }
-
-    /**
      * @return bool
      */
     public function showEmailTransportInCart(): bool
@@ -391,5 +340,54 @@ class CartFacade extends BaseCartFacade
         }
 
         return $desiredQuantity;
+    }
+
+    /**
+     * @param \App\Model\Product\Product|null $product
+     */
+    public function setOrderGiftProduct(?Product $product): void
+    {
+        $cart = $this->findCartOfCurrentCustomerUser();
+        if ($cart !== null) {
+            $cart->setOrderGiftProduct($product);
+            $this->em->flush();
+        }
+    }
+
+    /**
+     * @return \App\Model\Product\Product|null
+     */
+    public function getOrderGiftProduct(): ?Product
+    {
+        $cart = $this->findCartOfCurrentCustomerUser();
+        if ($cart !== null) {
+            return $cart->getOrderGiftProduct();
+        }
+
+        return null;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductPriceWithVat
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     */
+    public function verifySelectedOrderGift(Money $totalProductPriceWithVat, int $domainId, PricingGroup $pricingGroup): void
+    {
+        /** @var \App\Model\Cart\Cart|null $cart */
+        $cart = $this->findCartOfCurrentCustomerUser();
+
+        if ($cart !== null) {
+            $currentOrderGiftProduct = $cart->getOrderGiftProduct();
+            $isOrderGiftProductValid = $this->orderGiftFacade->isOrderGiftProductValid($currentOrderGiftProduct, $totalProductPriceWithVat, $domainId, $pricingGroup);
+
+            if ($isOrderGiftProductValid === false) {
+                $this->flashMessageSender->addInfoFlashTwig(
+                    t('Již nemáte nárok na vybraný dárek k nákupu s názvem <strong>{{ name }}</strong> proto Vám byl odebrán. Prosím překontrolujte si objednávku'),
+                    ['name' => $currentOrderGiftProduct->getName()]
+                );
+                $this->setOrderGiftProduct(null);
+            }
+        }
     }
 }

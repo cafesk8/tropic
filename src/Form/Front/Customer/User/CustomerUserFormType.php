@@ -6,6 +6,7 @@ namespace App\Form\Front\Customer\User;
 
 use Shopsys\FrameworkBundle\Form\Constraints\FieldsAreNotIdentical;
 use Shopsys\FrameworkBundle\Form\Constraints\NotIdenticalToEmailLocalPart;
+use Shopsys\FrameworkBundle\Form\DeliveryAddressChoiceType;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData;
 use Symfony\Component\Form\AbstractType;
@@ -64,7 +65,8 @@ class CustomerUserFormType extends AbstractType
                     ],
                 ],
                 'invalid_message' => 'Passwords do not match',
-            ]);
+            ])
+            ->add('defaultDeliveryAddress', DeliveryAddressChoiceType::class);
 
         /** @var \App\Model\Customer\User\CustomerUser $customer */
         $customer = $options['user'];

@@ -70,7 +70,6 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'ordering_priority',
             'calculated_selling_denied',
             'selling_denied',
-            'main_variant',
             'main_variant_id',
             'visibility',
             'is_main_variant',

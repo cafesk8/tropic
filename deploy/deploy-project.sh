@@ -19,7 +19,7 @@ function deploy() {
         ["parameters.database_port"]=${POSTGRES_DATABASE_PORT}
         ["parameters.database_user"]=${PROJECT_NAME}
         ["parameters.database_password"]=${POSTGRES_DATABASE_PASSWORD}
-        ["parameters.elasticsearch_host"]="${ELASTICSEARCH_URL}"
+        ["parameters.elasticsearch_host"]=${ELASTICSEARCH_URL}
         ["parameters.mailer_host"]='shopmail.shopsys.cz'
         ["parameters.trusted_proxies[+]"]=10.0.0.0/8
         ["parameters.gtm_config.cs.container_id"]="${GTM_CONTAINER_ID_CS}"

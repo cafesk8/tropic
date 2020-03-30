@@ -1,19 +1,19 @@
 {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
 
-{% macro availibilityDetail(product, setDisplayNone) %}
-    <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}box-detail__availability js-detail-availability js-detail-availability-{{ product.id }}">
-        <span class="box-detail__availability__status">
+{% macro availabilityDetail(product, setDisplayNone) %}
+    <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}in-availability in-availability--big js-detail-availability js-detail-availability-{{ product.id }}">
+        <span class="in-availability__status">
             {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
         </span>
 
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
-            <span class="box-detail__availability__text">
+            <span class="in-availability__text-big">
                 {{ 'nebo ihned na '}}
             </span>
             <a
                 href="#"
-                class="box-detail__availability__stores underline-small js-detail-availability-window-opener"
+                class="in-availability__stores-big underline-small js-detail-availability-window-opener"
                 data-product-id="{{ product.id }}"
                 >
                 {% transchoice stocksWithoutZeroQuantityOnPickupPlaceStore|length with { '%stocksWithoutZeroQuantityOnStoreCount%': stocksWithoutZeroQuantityOnPickupPlaceStore|length } %}
@@ -43,16 +43,20 @@
 
 
 {% if variants|length > 0 or product.variants|length > 0 %}
-    <div class="box-detail__availability">
-        <span class="box-detail__availability__status">
-            <span class="box-detail__availability__date">
-                {{ 'Skladem, ihned k odeslání'|trans }}
+    <div class="in-availability in-availability--big js-product-variant-detail-select-info">
+        <span class="in-availability__status">
+            <span class="in-availability__date">
+                {% if product.isMainVariant %}
+                    {{ 'Pro zobrazení dostupnosti vyberte variantu'|trans }}
+                {% else %}
+                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                {% endif %}
             </span>
         </span>
     </div>
     {% for variant in variants if variant in product.variants %}
-        {{ _self.availibilityDetail(variant, true) }}
+        {{ _self.availabilityDetail(variant, true) }}
     {% endfor %}
 {% else %}
-    {{ _self.availibilityDetail(product, false) }}
+    {{ _self.availabilityDetail(product, false) }}
 {% endif %}

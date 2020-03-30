@@ -161,12 +161,16 @@
 
             border: 3px solid @color-box;
             border-radius: @radius;
-            border-top-right-radius: 0;
+            border-top-right-radius: @radius;
+
+            @media @query-vl {
+                border-top-right-radius: 0;
+            }
         }
 
         .box-dropdown--search & {
             border-top-right-radius: @radius;
-            
+
             @media @query-lg {
                 position: static;
                 display: block;
@@ -245,6 +249,8 @@
         &.box-dropdown__options--basket {
             left: -228px;
             width: 304px;
+
+            background-color: @color-light;
 
             @media @query-md {
                 right: -120px;

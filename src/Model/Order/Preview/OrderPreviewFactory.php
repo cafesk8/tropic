@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
+use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Transport\Transport;
 
 /**
@@ -70,8 +71,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             null,
             null,
             $this->cartFacade->getGifts(),
-            $this->cartFacade->getPromoProducts(),
             $validEnteredPromoCodes,
+            $this->cartFacade->getOrderGiftProduct(),
             $simulateRegistration
         );
     }
@@ -86,8 +87,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
      * @param string|null $promoCodeDiscountPercent
      * @param \App\Model\Order\PromoCode\PromoCode|null $validEnteredPromoCode
      * @param \App\Model\Cart\Item\CartItem[] $giftsInCart
-     * @param \App\Model\Cart\Item\CartItem[]|null $promoProductsInCart
      * @param \App\Model\Order\PromoCode\PromoCode[] $validEnteredPromoCodes
+     * @param \App\Model\Product\Product|null $orderGiftProduct
      * @param bool $simulateRegistration
      * @return \App\Model\Order\Preview\OrderPreview
      */
@@ -101,8 +102,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
         ?string $promoCodeDiscountPercent = null,
         ?PromoCode $validEnteredPromoCode = null,
         ?array $giftsInCart = [],
-        ?array $promoProductsInCart = [],
         array $validEnteredPromoCodes = [],
+        ?Product $orderGiftProduct = null,
         bool $simulateRegistration = false
     ): OrderPreview {
         if ($promoCodeDiscountPercent !== null || $validEnteredPromoCode !== null) {
@@ -118,8 +119,8 @@ class OrderPreviewFactory extends BaseOrderPreviewFactory
             $promoCodeDiscountPercent,
             $validEnteredPromoCode,
             $giftsInCart,
-            $promoProductsInCart,
             $validEnteredPromoCodes,
+            $orderGiftProduct,
             $simulateRegistration
         );
     }

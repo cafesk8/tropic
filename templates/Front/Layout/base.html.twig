@@ -17,15 +17,10 @@
             var isEnglishDomain = '{{ isEnglishDomain() }}' == 1;
             var isSlovakDomain = '{{ isSlovakDomain() }}' == 1;
         </script>
-        {{ encore_entry_script_tags('jquery') }}
-        {{ importJavascripts([
-            'bundles/fpjsformvalidator/js/fp_js_validator.js'
-        ]) }}
-        {{ js_validator_config() }}
-        {{ init_js_validation() }}
 
         {{ render(controller('App\\Controller\\Front\\HeurekaController:embedWidgetAction')) }}
 
+        {{ encore_entry_script_tags('frontend') }}
         {% block javascripts %}{% endblock %}
 
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/assets/frontend/images/favicons/apple-touch-icon.png') }}">
@@ -49,8 +44,8 @@
 
         {% block html_body %}{% endblock %}
 
-        {{ encore_entry_script_tags('frontend') }}
-
         {% block javascripts_bottom %}{% endblock %}
+        {{ js_validator_config() }}
+        {{ init_js_validation() }}
     </body>
 </html>

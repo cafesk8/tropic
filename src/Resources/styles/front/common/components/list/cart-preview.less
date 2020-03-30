@@ -1,6 +1,6 @@
 @list-cart-preview-image-size: 50px + @list-cart-preview-item-gap;
 @list-cart-preview-amount-width: 35px;
-@list-cart-preview-price-width: 90px;
+@list-cart-preview-price-width: 60px;
 @list-cart-preview-item-bottom-gap: 25px;
 @list-cart-preview-item-title-lines: 2;
 @list-cart-preview-item-title-line-height: 18px;
@@ -10,6 +10,10 @@
     .reset-ul();
     display: flex;
     flex-direction: column;
+
+    &__title {
+        margin-bottom: 10px;
+    }
 
     &__item {
         width: 100%;
@@ -54,11 +58,8 @@
         }
 
         &__title {
-            display: flex;
-            align-items: center;
             line-height: @list-cart-preview-item-title-line-height;
-            max-height: @list-cart-preview-item-title-lines*@list-cart-preview-item-title-line-height;
-            margin-bottom: @list-cart-preview-item-gap;
+            max-height: 3 * @list-cart-preview-item-title-line-height;
             overflow: hidden;
             padding-right: @list-cart-preview-item-gap;
 
@@ -66,23 +67,26 @@
             font-size: @font-size;
             text-decoration: none;
 
+            @media @query-md {
+                max-height: @list-cart-preview-item-title-lines * @list-cart-preview-item-title-line-height;
+            }
+
             @media @query-vl {
                 display : block;
             }
         }
 
         &__parameters {
-            &__text {
-                display: block;
-                margin-bottom: @list-cart-preview-item-gap;
-                padding-right: @list-cart-preview-item-gap;
+            display: block;
+            margin-top: @list-cart-preview-item-gap;
+            margin-bottom: @list-cart-preview-item-gap;
+            padding-right: @list-cart-preview-item-gap;
 
-                color: @color-brown-light;
-                font-size: @font-size-small;
+            color: @color-brown-light;
+            font-size: @font-size-small;
 
-                &:last-child {
-                    margin-bottom: 0;
-                }
+            &:last-child {
+                margin-bottom: 0;
             }
         }
 
