@@ -1,4 +1,5 @@
 {% block footer %}
+    {% set shopInfoPhoneHours = getShopInfoPhoneHours() %}
     <div class="footer">
         {% block footer__links %}
             {% set domainId = getDomain().id %}
@@ -40,17 +41,17 @@
                                 <div class="footer-top__socials">
                                     <ul class="list-socials">
                                         <li class="list-socials__item">
-                                            <a class="list-socials__item__link list-socials__item__link--instagram btn-gradient" href="https://www.instagram.com/shopsyscz/" target="_blank">
+                                            <a class="list-socials__item__link list-socials__item__link--instagram btn-gradient" href="https://www.instagram.com/tropicfishing/" target="_blank">
                                                 <span class="btn-gradient__in">{{ 'Instagram'|trans }}</span>
                                             </a>
                                         </li>
                                         <li class="list-socials__item">
-                                            <a class="list-socials__item__link list-socials__item__link--facebook btn-with-border" href="https://www.facebook.com/shopsyscz/" target="_blank">
+                                            <a class="list-socials__item__link list-socials__item__link--facebook btn-with-border" href="https://www.facebook.com/tropicliberec.cz/" target="_blank">
                                                 {{ 'Facebook'|trans }}
                                             </a>
                                         </li>
                                         <li class="list-socials__item">
-                                            <a class="list-socials__item__link list-socials__item__link--youtube btn-with-border" href="https://www.youtube.com/user/netdevelo" target="_blank">
+                                            <a class="list-socials__item__link list-socials__item__link--youtube btn-with-border" href="https://www.youtube.com/channel/UC6o1AK-Fi_XkISYidB3NOOA" target="_blank">
                                                 {{ 'Youtube'|trans }}
                                             </a>
                                         </li>
@@ -64,7 +65,7 @@
                                         <a class="footer-top__contact__link" href="mailto:{{ getShopInfoEmail() }}">{{ getShopInfoEmail() }}</a>
                                     </div>
                                     <div class="footer-top__contact__text-bottom">
-                                        {{ 'Na e-maily a telefony odpovídáme v pracovní dny 9–12 a 13–16 hodin.'|trans }}
+                                        {{ 'Na e-maily a telefony odpovídáme v pracovní dny'|trans }} {{ shopInfoPhoneHours }}.
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +76,7 @@
                                 <h2 class="footer-banner__title">
                                     {{ 'Čeká na vás 500 m²,<br> kde si určitě vyberete.'|trans|raw }}
                                 </h2>
-                                <a class="footer-banner__button btn-gradient btn-gradient--green" href="">
+                                <a class="footer-banner__button btn-gradient btn-gradient--green" href="{{ url('front_store_index') }}">
                                     <span class="btn-gradient__in">{{ 'Naše prodejna'|trans }}</span>
                                 </a>
                             </div>
@@ -90,14 +91,10 @@
 
         <div class="web__line">
             <footer class="web__container web__container--transparent footer-bottom">
-                <div class="footer-bottom__domains js-not-implemented-yet">
+                <div class="footer-bottom__domains">
                     <div class="footer-bottom__domains__item">
                         <img class="footer-bottom__domains__item__icon" src="{{ asset('assets/frontend/images/slovakia.png') }}" alt="{{ 'Slovakia'|trans }}"/>
-                        <a class="footer-bottom__domains__item__link" href="">{{ 'Tovar na Slovensko'|trans }}</a>
-                    </div>
-                    <div class="footer-bottom__domains__item">
-                        <img class="footer-bottom__domains__item__icon" src="{{ asset('assets/frontend/images/slovakia.png') }}" alt="{{ 'Slovakia'|trans }}"/>
-                        <a class="footer-bottom__domains__item__link" href="">{{ 'International orders'|trans }}</a>
+                        <a class="footer-bottom__domains__item__link" href="{{ findUrlByDomainId('front_homepage', [], 2)}}">{{ 'Tovar na Slovensko'|trans }}</a>
                     </div>
                 </div>
                 <div class="footer-bottom__copyright dont-print">

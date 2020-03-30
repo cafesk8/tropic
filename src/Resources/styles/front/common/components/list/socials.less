@@ -12,8 +12,12 @@
     margin-left: -@list-socials-item-gap-mobile;
 
     @media @query-lg {
-        width: auto;
+        width: 100%;
         margin-left: -@list-socials-item-gap;
+    }
+
+    @media @query-vl {
+        width: auto;
     }
 
     &__item {
@@ -26,6 +30,9 @@
 
         @media @query-lg {
             margin-left: @list-socials-item-gap;
+        }
+
+        @media @query-vl {
             width: @list-socials-item-width;
         }
 
@@ -47,7 +54,8 @@
                 border-color: @list-socials-facebook-color;
 
                 &:hover {
-                    color: @list-socials-facebook-color;
+                    border-color: @color-primary;
+                    color: @color-primary;
                 }
             }
 
@@ -55,7 +63,8 @@
                 border-color: @color-red;
 
                 &:hover {
-                    color: @color-red;
+                    border-color: @color-primary;
+                    color: @color-primary;
                 }
             }
         }
