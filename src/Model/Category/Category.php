@@ -79,6 +79,31 @@ class Category extends BaseCategory
     private $advert;
 
     /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true, unique=true)
+     */
+    private $pohodaId;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pohodaParentId;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedByPohodaAt;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pohodaPosition;
+
+    /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
@@ -92,6 +117,10 @@ class Category extends BaseCategory
         $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
         $this->advert = $categoryData->advert;
+        $this->pohodaId = $categoryData->pohodaId;
+        $this->pohodaParentId = $categoryData->pohodaParentId;
+        $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
+        $this->pohodaPosition = $categoryData->pohodaPosition;
 
         $this->setTranslations($categoryData);
     }
@@ -110,6 +139,9 @@ class Category extends BaseCategory
         $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
         $this->advert = $categoryData->advert;
+        $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
+        $this->pohodaParentId = $categoryData->pohodaParentId;
+        $this->pohodaPosition = $categoryData->pohodaPosition;
 
         $this->setTranslations($categoryData);
     }
@@ -262,5 +294,37 @@ class Category extends BaseCategory
     public function setAdvert(?Advert $advert): void
     {
         $this->advert = $advert;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getUpdatedByPohodaAt(): ?\DateTime
+    {
+        return $this->updatedByPohodaAt;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaId(): ?int
+    {
+        return $this->pohodaId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaParentId(): ?int
+    {
+        return $this->pohodaParentId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaPosition(): ?int
+    {
+        return $this->pohodaPosition;
     }
 }

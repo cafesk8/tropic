@@ -50,5 +50,9 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->leftBannerTexts = $category->getLeftBannerTexts();
         $categoryData->rightBannerTexts = $category->getRightBannerTexts();
         $categoryData->advert = $category->getAdvert();
+        $categoryData->pohodaId = $category->getPohodaId();
+        $categoryData->pohodaParentId = $category->getPohodaParentId();
+        $categoryData->updatedByPohodaAt = $category->getUpdatedByPohodaAt();
+        $categoryData->pohodaPosition = $category->getPohodaPosition();
     }
 }

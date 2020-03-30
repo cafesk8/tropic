@@ -47,4 +47,12 @@ class FormBuilderHelper
             $this->walkFormElements($element->all(), $disabledFields);
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function getDisableFields(): bool
+    {
+        return $this->disableFields;
+    }
 }

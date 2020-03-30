@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use App\Model\Category\Transfer\CategoryRemoveFacade;
+use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
 /**
  * @property \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
+ * @property \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
  * @method \App\Model\Category\Category getRootCategory()
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @property \App\Component\Image\ImageFacade $imageFacade
@@ -73,9 +76,14 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]
      */
-    public function getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(Category $parentCategory, DomainConfig $domainConfig): array
-    {
-        $categories = $this->categoryRepository->getTranslatedVisibleAndListableSubcategoriesByDomain($parentCategory, $domainConfig);
+    public function getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(
+        Category $parentCategory,
+        DomainConfig $domainConfig
+    ): array {
+        $categories = $this->categoryRepository->getTranslatedVisibleAndListableSubcategoriesByDomain(
+            $parentCategory,
+            $domainConfig
+        );
 
         $categoriesWithLazyLoadedVisibleAndListableChildren = $this->categoryWithLazyLoadedVisibleChildrenFactory
             ->createCategoriesWithLazyLoadedVisibleAndListableChildren($categories, $domainConfig);
@@ -119,8 +127,11 @@ class CategoryFacade extends BaseCategoryFacade
      * @param string|null $searchText
      * @return \App\Model\Category\Category[]
      */
-    public function getVisibleAndListableByDomainAndSearchText(int $domainId, string $locale, ?string $searchText): array
-    {
+    public function getVisibleAndListableByDomainAndSearchText(
+        int $domainId,
+        string $locale,
+        ?string $searchText
+    ): array {
         $categories = $this->categoryRepository->getVisibleAndListableByDomainIdAndSearchText(
             $domainId,
             $locale,
@@ -146,7 +157,10 @@ class CategoryFacade extends BaseCategoryFacade
      */
     public function findMallCategoryForProduct(Product $product, int $domainId): ?string
     {
-        return $this->categoryRepository->findMallCategoryForProduct($product->isVariant() ? $product->getMainVariant() : $product, $domainId);
+        return $this->categoryRepository->findMallCategoryForProduct(
+            $product->isVariant() ? $product->getMainVariant() : $product,
+            $domainId
+        );
     }
 
     /**
@@ -166,8 +180,11 @@ class CategoryFacade extends BaseCategoryFacade
      * @param string $delimiter
      * @return string
      */
-    public function getCategoriesNamesInPathAsString(Category $destinationCategory, string $locale, string $delimiter = '/'): string
-    {
+    public function getCategoriesNamesInPathAsString(
+        Category $destinationCategory,
+        string $locale,
+        string $delimiter = '/'
+    ): string {
         $categoriesInPath = $this->getCategoriesInPath($destinationCategory);
 
         $categoriesNamesInPath = [];
@@ -222,5 +239,66 @@ class CategoryFacade extends BaseCategoryFacade
         }
 
         return $categoryFullPath ?? implode($separator, $categoryNames);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getCategoriesForOrderRecalculation(): array
+    {
+        $pohodaCategoriesIndexedByPohodaParent = $this->categoryRepository->getAllIndexedByIdGroupedByPohodaParentId();
+        $categoriesForOrderRecalculation = [];
+
+        foreach ($pohodaCategoriesIndexedByPohodaParent as $parentCategoryPohodaId => $categories) {
+            $categoryParentCategory = $this->categoryRepository->findByPohodaId($parentCategoryPohodaId);
+
+            if ($categoryParentCategory === null) {
+                $parentCategoryId = null;
+            } else {
+                $parentCategoryId = $categoryParentCategory->getId();
+            }
+
+            foreach ($categories as $category) {
+                $categoriesForOrderRecalculation[$category->getId()] = $parentCategoryId;
+            }
+        }
+        return $categoriesForOrderRecalculation;
+    }
+
+    /**
+     * @param int $pohodaId
+     * @return \App\Model\Category\Category|null
+     */
+    public function findByPohodaId(int $pohodaId): ?Category
+    {
+        return $this->categoryRepository->findByPohodaId($pohodaId);
+    }
+
+    /**
+     * @param array $pohodaIds
+     * @return \App\Model\Category\Category[]
+     */
+    public function removeCategoriesExceptPohodaIds(array $pohodaIds): array
+    {
+        $allCategories = $this->categoryRepository->getAll();
+        $categories = $this->categoryRepository->getCategoriesExceptPohodaIds($pohodaIds);
+
+        $categoriesToRemovePercentage = (count($categories) / count($allCategories)) * 100;
+        if ($categoriesToRemovePercentage > CategoryRemoveFacade::MAX_BATCH_CATEGORIES_REMOVE_PERCENT) {
+            throw new MaximumPercentageOfCategoriesToRemoveLimitExceeded(
+                sprintf(
+                    'Trying to remove %s categories, which is %s percent of whole category tree, removing aborted. Maximum is %s percent.',
+                    count($categories),
+                    $categoriesToRemovePercentage,
+                    CategoryRemoveFacade::MAX_BATCH_CATEGORIES_REMOVE_PERCENT
+                )
+            );
+        }
+
+        foreach ($categories as $category) {
+            $this->deleteById($category->getId());
+        }
+
+        return $categories;
     }
 }

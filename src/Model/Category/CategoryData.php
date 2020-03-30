@@ -61,6 +61,26 @@ class CategoryData extends BaseCategoryData
      */
     public $advert;
 
+    /**
+     * @var int|null
+     */
+    public $pohodaId;
+
+    /**
+     * @var int|null
+     */
+    public $pohodaParentId;
+
+    /**
+     * @var \DateTime|null
+     */
+    public $updatedByPohodaAt;
+
+    /**
+     * @var int|null
+     */
+    public $pohodaPosition;
+
     public function __construct()
     {
         parent::__construct();

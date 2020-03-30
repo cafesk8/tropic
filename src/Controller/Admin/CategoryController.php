@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Component\Form\FormBuilderHelper;
 use App\Component\Redis\RedisFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,6 +26,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class CategoryController extends BaseCategoryController
 {
     /**
+     * @var \App\Component\Form\FormBuilderHelper
+     */
+    protected $formBuilderHelper;
+
+    /**
      * @var \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade
      */
     private $categoryBlogArticleFacade;
@@ -42,6 +48,7 @@ class CategoryController extends BaseCategoryController
      * @param \Shopsys\FrameworkBundle\Model\AdminNavigation\BreadcrumbOverrider $breadcrumbOverrider
      * @param \App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade $categoryBlogArticleFacade
      * @param \App\Component\Redis\RedisFacade $redisFacade
+     * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -50,12 +57,14 @@ class CategoryController extends BaseCategoryController
         Domain $domain,
         BreadcrumbOverrider $breadcrumbOverrider,
         CategoryBlogArticleFacade $categoryBlogArticleFacade,
-        RedisFacade $redisFacade
+        RedisFacade $redisFacade,
+        FormBuilderHelper $formBuilderHelper
     ) {
         parent::__construct($categoryFacade, $categoryDataFactory, $session, $domain, $breadcrumbOverrider);
 
         $this->categoryBlogArticleFacade = $categoryBlogArticleFacade;
         $this->redisFacade = $redisFacade;
+        $this->formBuilderHelper = $formBuilderHelper;
     }
 
     /**
@@ -194,5 +203,44 @@ class CategoryController extends BaseCategoryController
         $this->redisFacade->clearCacheByPattern('twig:', 'categories');
 
         return new Response('OK - dummy');
+    }
+
+    /**
+     * @Route("/category/list/")
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function listAction(Request $request)
+    {
+        if (count($this->domain->getAll()) > 1) {
+            if ($request->query->has('domain')) {
+                $domainId = (int)$request->query->get('domain');
+            } else {
+                $domainId = (int)$this->session->get('categories_selected_domain_id', static::ALL_DOMAINS);
+            }
+        } else {
+            $domainId = static::ALL_DOMAINS;
+        }
+
+        if ($domainId !== static::ALL_DOMAINS) {
+            try {
+                $this->domain->getDomainConfigById($domainId);
+            } catch (\Shopsys\FrameworkBundle\Component\Domain\Exception\InvalidDomainIdException $ex) {
+                $domainId = static::ALL_DOMAINS;
+            }
+        }
+
+        $this->session->set('categories_selected_domain_id', $domainId);
+
+        if ($domainId === static::ALL_DOMAINS) {
+            $categoriesWithPreloadedChildren = $this->categoryFacade->getAllCategoriesWithPreloadedChildren($request->getLocale());
+        } else {
+            $categoriesWithPreloadedChildren = $this->categoryFacade->getVisibleCategoriesWithPreloadedChildrenForDomain($domainId, $request->getLocale());
+        }
+
+        return $this->render('Admin/Content/Category/list.html.twig', [
+            'categoriesWithPreloadedChildren' => $categoriesWithPreloadedChildren,
+            'isForAllDomains' => ($domainId === static::ALL_DOMAINS),
+            'disableTreeEditing' => $this->formBuilderHelper->getDisableFields(),
+        ]);
     }
 }
