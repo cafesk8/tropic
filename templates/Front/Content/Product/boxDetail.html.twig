@@ -139,7 +139,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for variant in product.variants %}
+                                    {% for variant in filterOnlyVisibleVariants(product) %}
                                         <tr class="table-variants__row">
                                             <td class="table-variants__cell table-variants__cell--image">
                                                 <div class="table-variants__cell__image">
