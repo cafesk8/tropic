@@ -1,0 +1,16 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+
+{% block title %}- {{ 'Vyjmutí ze slev'|trans }}{% endblock %}
+{% block h1 %}{{ 'Vyjmutí ze slev'|trans }}{% endblock %}
+
+{% block main_content %}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {% embed '@ShopsysFramework/Admin/Inline/FixedBar/fixedBar.html.twig' %}
+            {% block fixed_bar_content %}
+                {{ form_widget(form.save, { label: 'Save changes'|trans }) }}
+            {% endblock %}
+        {% endembed %}
+    {{ form_end(form) }}
+{% endblock %}

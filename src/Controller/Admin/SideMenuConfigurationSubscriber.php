@@ -52,6 +52,11 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $transportAndPaymentMenu = $pricingMenu->getChild('free_transport_and_payment');
         $transportAndPaymentMenu->setLabel(t('Doprava zdarma'));
+
+        $pricingMenu->addChild('admin_discount_exclusion', [
+            'label' => t('Vyjmutí ze slev'),
+            'route' => 'admin_discountexclusion_detail',
+        ]);
     }
 
     /**

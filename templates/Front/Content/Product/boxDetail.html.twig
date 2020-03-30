@@ -1,4 +1,4 @@
-{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
@@ -102,6 +102,11 @@
                         <div>
                             {% if not product.isMainVariant and product.calculatedAvailability %}
                                 {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
+                            {% endif %}
+                            {% if product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
+                                <div class="in-message--info">
+                                    {{ registrationDiscountExclusionText }}
+                                </div>
                             {% endif %}
                             <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
                                 {% if not product.isMainVariant %}

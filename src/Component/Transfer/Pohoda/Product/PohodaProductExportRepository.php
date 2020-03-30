@@ -41,10 +41,11 @@ class PohodaProductExportRepository
             ->addScalarResult('Nazev', PohodaProduct::COL_NAME)
             ->addScalarResult('Nazev1', PohodaProduct::COL_NAME_SK)
             ->addScalarResult('Popis', PohodaProduct::COL_SHORT_DESCRIPTION)
-            ->addScalarResult('Popis2', PohodaProduct::COL_LONG_DESCRIPTION);
+            ->addScalarResult('Popis2', PohodaProduct::COL_LONG_DESCRIPTION)
+            ->addScalarResult('VPrVyjmProdSl', PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
-            'SELECT Product.ID, Product.IDS, Product.Nazev, Product.Nazev1, Product.Popis, Product.Popis2 
+            'SELECT Product.ID, Product.IDS, Product.Nazev, Product.Nazev1, Product.Popis, Product.Popis2, Product.VPrVyjmProdSl 
              FROM Skz Product
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1

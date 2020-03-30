@@ -26,5 +26,6 @@ class PohodaProductMapper
         $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
         $productData->usingStock = true;
+        $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
     }
 }

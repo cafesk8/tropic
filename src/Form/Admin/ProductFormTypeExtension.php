@@ -49,6 +49,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'shortDescriptions',
         'descriptions',
         'usingStock',
+        'registrationDiscountDisabled',
     ];
 
     /**
@@ -313,6 +314,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $builderPricesGroup = $builder->get('pricesGroup');
+        $builderPricesGroup->add('registrationDiscountDisabled', YesNoType::class, [
+            'label' => t('Vyjmout ze slev za registraci'),
+            'position' => ['before' => 'actionPrices'],
+        ]);
         $actionPriceOptionsByDomainId = [];
 
         foreach ($this->domain->getAll() as $domainConfig) {

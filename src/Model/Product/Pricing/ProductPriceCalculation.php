@@ -104,7 +104,9 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             if ($manualInputPrice !== null) {
                 $productActionPrice = $manualInputPrice['actionPrice'] ? Money::create($manualInputPrice['actionPrice']) : Money::zero();
 
-                if ($manualInputPrice['pricingGroupId'] === $pricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
+                if ($product->isRegistrationDiscountDisabled()) {
+                    $inputPrice = $defaultPrice;
+                } elseif ($manualInputPrice['pricingGroupId'] === $pricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
                     $pricingGroupCoefficient = strval($pricingGroup->getDiscountCoefficient());
                     $inputPrice = $defaultPrice->multiply($pricingGroupCoefficient);
                     $maxInputPrice = $defaultMaxInputPrice->multiply($pricingGroupCoefficient);
