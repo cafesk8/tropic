@@ -79,7 +79,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             $limit
         );
 
-        return $this->createFromArray($this->productOnCurrentDomainFacade->getHitsForIds($lastVisitedProductIds));
+        return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($lastVisitedProductIds));
     }
 
     /**
@@ -94,6 +94,6 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
             $this->currentCustomerUser->getPricingGroup()
         );
 
-        return $this->createFromArray($this->productOnCurrentDomainFacade->getHitsForIds($bestsellingProductIds));
+        return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($bestsellingProductIds));
     }
 }

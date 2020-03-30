@@ -15,7 +15,7 @@ use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\PromoProduct\PromoProductInCartFacade;
-use App\Model\Product\View\ProductActionView;
+use App\Model\Product\View\ListedProductView;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\ErrorExtractor;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
@@ -569,23 +569,23 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \App\Model\Product\View\ProductActionView $productActionView
+     * @param \App\Model\Product\View\ListedProductView $listedProductView
      * @param string $type
      * @param bool $showAmountInput
      * @param bool $onlyRefresh
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function productActionAction(ProductActionView $productActionView, string $type = 'normal', bool $showAmountInput = true, bool $onlyRefresh = false)
+    public function productActionAction(ListedProductView $listedProductView, string $type = 'normal', bool $showAmountInput = true, bool $onlyRefresh = false)
     {
-        $form = $this->createForm(AddProductFormType::class, ['productId' => $productActionView->getId()], [
+        $form = $this->createForm(AddProductFormType::class, ['productId' => $listedProductView->getAction()->getId()], [
             'action' => $this->generateUrl('front_cart_add_product'),
-            'minimum_amount' => $productActionView->getMinimumAmount(),
+            'minimum_amount' => $listedProductView->getAction()->getMinimumAmount(),
             'only_refresh' => $onlyRefresh,
         ]);
 
         return $this->render('Front/Inline/Cart/productAction.html.twig', [
             'form' => $form->createView(),
-            'productActionView' => $productActionView,
+            'productView' => $listedProductView,
             'type' => $type,
             'showAmountInput' => $showAmountInput,
         ]);

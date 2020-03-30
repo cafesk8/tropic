@@ -130,3 +130,19 @@ services:
     App\Model\Product\Transfer\ProductImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    ######################################
+    ## FRAMEWORK REORDERED CRON MODULES ##
+    ######################################
+
+    Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }

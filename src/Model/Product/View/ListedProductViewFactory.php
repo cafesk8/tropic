@@ -81,7 +81,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['flags'],
             $productActionView,
             $imageView,
-            $productArray['gifts']
+            $productArray['gifts'],
+            $productArray['stock_quantity']
         );
     }
 
@@ -105,7 +106,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $this->getFlagIdsForProduct($product),
             $productActionView,
             $imageView,
-            $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale())
+            $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale()),
+            $product->getStockQuantity()
         );
     }
 

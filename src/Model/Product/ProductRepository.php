@@ -488,27 +488,4 @@ class ProductRepository extends BaseProductRepository
             ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->getQuery()->getResult();
     }
-
-    /**
-     * @param int $domainId
-     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @param int[] $sortedProductIds
-     * @return \App\Model\Product\Product[]
-     */
-    public function getVisibleExcludingVariantsByIds(int $domainId, PricingGroup $pricingGroup, array $sortedProductIds): array
-    {
-        if (count($sortedProductIds) === 0) {
-            return [];
-        }
-
-        $queryBuilder = $this->getAllVisibleQueryBuilder($domainId, $pricingGroup);
-        $queryBuilder->andWhere('p.variantType != :variantTypeVariant')
-            ->setParameter('variantTypeVariant', Product::VARIANT_TYPE_VARIANT)
-            ->andWhere('p.id IN (:productIds)')
-            ->setParameter('productIds', $sortedProductIds)
-            ->addSelect('field(p.id, ' . implode(',', $sortedProductIds) . ') AS HIDDEN relevance')
-            ->orderBy('relevance');
-
-        return $queryBuilder->getQuery()->execute();
-    }
 }

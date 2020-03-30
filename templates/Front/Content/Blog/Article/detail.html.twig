@@ -44,12 +44,12 @@
                     <div class="box-blog__section">
                         {{ render(controller('App\\Controller\\Front\\BlogCategoryController:listAction', {blogArticle: blogArticle})) }}
                     </div>
-                    {% if blogArticle.hasProducts() %}
+                    {% if articleProducts is not empty %}
                         <div class="box-blog__section">
                             <div class="box-blog__section__title">
                                 {{ 'V článku píšeme o těchto produktech'|trans }}
                             </div>
-                            {{ render(controller('App\\Controller\\Front\\BlogArticleController:productsAction', {blogArticle: blogArticle})) }}
+                            {{ render(controller('App\\Controller\\Front\\BlogArticleController:productsAction', {blogArticle: blogArticle, articleProducts: articleProducts})) }}
                         </div>
                     {% endif %}
                 </div>
