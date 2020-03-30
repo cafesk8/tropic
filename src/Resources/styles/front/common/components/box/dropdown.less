@@ -1,7 +1,7 @@
 @box-dropdown-bg: @color-add;
 @box-dropdown-bg-hover: @color-box;
 
-@box-dropdown-padding-horizontal: 18px;
+@box-dropdown-padding-horizontal: 10px;
 @box-dropdown-padding-horizontal-small: 11px;
 @box-dropdown-padding-vertical: 0;
 @box-dropdown-padding-vertical-small: 0;
@@ -47,7 +47,7 @@
         @media @query-lg {
             width: auto;
             height: @box-dropdown-item-height;
-            padding: @box-dropdown-padding-vertical 32px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
+            padding: @box-dropdown-padding-vertical 40px @box-dropdown-padding-vertical @box-dropdown-padding-horizontal;
 
             border-radius: @radius;
             background-color: @box-dropdown-bg;
@@ -146,8 +146,7 @@
             height: @box-dropdown-icon-size;
 
             @media @query-lg {
-                margin-right: 10px;
-                margin-left: -10px;   
+                margin-right: 10px; 
                 opacity: 0.5;
 
                 .open & {
@@ -312,7 +311,7 @@
 
     .box-dropdown--without-arrow & {
         @media @query-lg {
-            padding-right: @box-dropdown-padding-horizontal;
+            padding-right: 30px;
         }
     }
 
