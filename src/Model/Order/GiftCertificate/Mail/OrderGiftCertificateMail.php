@@ -16,6 +16,7 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
 {
     public const VARIABLE_GIFT_CERTIFICATE_CODE = '{gift_certificate_code}';
     public const VARIABLE_GIFT_CERTIFICATE_CURRENCY = '{gift_certificate_currency}';
+    public const VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL = '{gift_certificate_valid_until}';
     public const VARIABLE_GIFT_CERTIFICATE_VALUE = '{gift_certificate_value}';
     public const VARIABLE_ORDER_NUMBER = '{order_number}';
 
@@ -70,7 +71,8 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
         return [
             self::VARIABLE_GIFT_CERTIFICATE_CODE => $orderGiftCertificate->getGiftCertificate()->getCode(),
             self::VARIABLE_GIFT_CERTIFICATE_CURRENCY => $orderGiftCertificate->getOrder()->getCurrency()->getCode(),
-            self::VARIABLE_GIFT_CERTIFICATE_VALUE => $orderGiftCertificate->getGiftCertificate()->getCertificateValue()->getAmount(),
+            self::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL => $orderGiftCertificate->getGiftCertificate()->getValidTo()->format('d.m.Y H:i:s'),
+            self::VARIABLE_GIFT_CERTIFICATE_VALUE => (string)round((float)$orderGiftCertificate->getGiftCertificate()->getCertificateValue()->getAmount(), 2),
             self::VARIABLE_ORDER_NUMBER => $orderGiftCertificate->getOrder()->getNumber(),
         ];
     }
@@ -83,6 +85,7 @@ class OrderGiftCertificateMail implements MessageFactoryInterface
         return [
             self::VARIABLE_GIFT_CERTIFICATE_CODE,
             self::VARIABLE_GIFT_CERTIFICATE_CURRENCY,
+            self::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL,
             self::VARIABLE_GIFT_CERTIFICATE_VALUE,
             self::VARIABLE_ORDER_NUMBER,
         ];

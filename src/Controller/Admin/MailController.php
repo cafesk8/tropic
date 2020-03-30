@@ -112,6 +112,7 @@ class MailController extends BaseMailController
         return [
             OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE => t('Kód dárkového poukazu'),
             OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY => t('Měna dárkového poukazu'),
+            OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL => t('Čas konce platnosti poukazu'),
             OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE => t('Hodnota dárkového poukazu'),
             OrderGiftCertificateMail::VARIABLE_ORDER_NUMBER => t('Číslo objednávky, ve které byl dárkový poukaz zakoupen'),
         ];

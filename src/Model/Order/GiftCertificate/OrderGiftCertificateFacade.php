@@ -9,7 +9,8 @@ use App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMailFacade;
 use App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade;
 use App\Model\Order\Order;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeFacade;
+use App\Model\Order\PromoCode\PromoCodeDataFactory;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderGiftCertificateFacade
@@ -18,11 +19,6 @@ class OrderGiftCertificateFacade
      * @var \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator
      */
     private $em;
-
-    /**
-     * @var \App\Model\Order\PromoCode\PromoCodeFacade
-     */
-    private $promoCodeFacade;
 
     /**
      * @var \App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMailFacade
@@ -40,24 +36,29 @@ class OrderGiftCertificateFacade
     private $orderGiftCertificatePdfFacade;
 
     /**
+     * @var \App\Model\Order\PromoCode\PromoCodeDataFactory
+     */
+    private $promoCodeDataFactory;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $em
-     * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMailFacade $orderGiftCertificateMailFacade
      * @param \App\Model\Order\GiftCertificate\OrderGiftCertificateFactory $orderGiftCertificateFactory
      * @param \App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade
+     * @param \App\Model\Order\PromoCode\PromoCodeDataFactory $promoCodeDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
-        PromoCodeFacade $promoCodeFacade,
         OrderGiftCertificateMailFacade $orderGiftCertificateMailFacade,
         OrderGiftCertificateFactory $orderGiftCertificateFactory,
-        OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade
+        OrderGiftCertificatePdfFacade $orderGiftCertificatePdfFacade,
+        PromoCodeDataFactory $promoCodeDataFactory
     ) {
         $this->em = $em;
-        $this->promoCodeFacade = $promoCodeFacade;
         $this->orderGiftCertificateMailFacade = $orderGiftCertificateMailFacade;
         $this->orderGiftCertificateFactory = $orderGiftCertificateFactory;
         $this->orderGiftCertificatePdfFacade = $orderGiftCertificatePdfFacade;
+        $this->promoCodeDataFactory = $promoCodeDataFactory;
     }
 
     /**
@@ -81,10 +82,14 @@ class OrderGiftCertificateFacade
      */
     public function activate(array $orderGiftCertificates): void
     {
-        $giftCertificates = array_map(function (OrderGiftCertificate $orderGiftCertificate) {
+        foreach ($orderGiftCertificates as $orderGiftCertificate) {
+            $promoCodeData = $this->promoCodeDataFactory->createFromPromoCode($orderGiftCertificate->getGiftCertificate());
+            $promoCodeData->usageLimit = 1;
+            $promoCodeData->validTo = new DateTime('+365 days');
+            $orderGiftCertificate->getGiftCertificate()->edit($promoCodeData);
             $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED);
-            return $orderGiftCertificate->getGiftCertificate();
-        }, $orderGiftCertificates);
-        $this->promoCodeFacade->activate($giftCertificates);
+        }
+
+        $this->em->flush();
     }
 }

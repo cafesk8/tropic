@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\HashGenerator;
@@ -184,15 +185,8 @@ class PromoCodeFacade extends BasePromoCodeFacade
         $promoCodeData->quantity = $quantity;
         $promoCodeData->type = PromoCodeData::TYPE_CERTIFICATE;
         $promoCodeData->useNominalDiscount = true;
+        $promoCodeData->validTo = new DateTime('+365 days');
 
         return $this->massCreate($promoCodeData);
-    }
-
-    /**
-     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
-     */
-    public function activate(array $promoCodes): void
-    {
-        $this->promoCodeRepository->activate($promoCodes);
     }
 }

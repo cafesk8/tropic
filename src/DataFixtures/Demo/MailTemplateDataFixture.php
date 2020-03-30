@@ -154,6 +154,7 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             váš dárkový poukaz s kódem 
             <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě 
             <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b> byl právě aktivován. 
+            Certifikát je platný do ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL . '. 
             Děkujeme za váš nákup.', [], 'dataFixtures', $locale);
 
             $this->createMailTemplate($manager, AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED, $mailTemplateData, $domainId);
