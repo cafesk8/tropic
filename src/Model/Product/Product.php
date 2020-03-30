@@ -255,7 +255,12 @@ class Product extends BaseProduct
      */
     public function getStoreStocks(): array
     {
-        return $this->storeStocks->toArray();
+        $storeStocks = $this->storeStocks->toArray();
+        usort($storeStocks, function (ProductStoreStock $storeStockA, ProductStoreStock $storeStockB) {
+            return $storeStockA->getStore()->getPosition() - $storeStockB->getStore()->getPosition();
+        });
+
+        return $storeStocks;
     }
 
     public function clearStoreStocks(): void
@@ -379,7 +384,7 @@ class Product extends BaseProduct
     public function getStocksWithoutZeroQuantityOnStore(): array
     {
         return array_filter(
-            $this->storeStocks->toArray(),
+            $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
                 return $productStoreStock->getStockQuantity() > 0 && $productStoreStock->getStore()->isFranchisor() === false;
             }
@@ -392,7 +397,7 @@ class Product extends BaseProduct
     public function getStocksWithoutZeroQuantityOnPickupPlaceStore(): array
     {
         $productStoreStocks = array_filter(
-            $this->storeStocks->toArray(),
+            $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
                 return $productStoreStock->getStockQuantity() > 0
                     && $productStoreStock->getStore()->isPickupPlace() === true;
@@ -430,7 +435,7 @@ class Product extends BaseProduct
     public function getStocksWithoutZeroQuantityOnCentralStore(): array
     {
         return array_filter(
-            $this->storeStocks->toArray(),
+            $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
                 return $productStoreStock->getStockQuantity() > 0
                     && $productStoreStock->getStore()->isCentralStore();
@@ -730,7 +735,7 @@ class Product extends BaseProduct
         parent::subtractStockQuantity($quantity);
         $remainingQuantity = $quantity;
 
-        foreach ($this->storeStocks as $productStoreStock) {
+        foreach ($this->getStoreStocks() as $productStoreStock) {
             $availableQuantity = $productStoreStock->getStockQuantity();
 
             if ($remainingQuantity > $availableQuantity) {

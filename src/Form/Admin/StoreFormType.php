@@ -10,12 +10,12 @@ use App\Model\Store\StoreData;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
+use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
 use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ImageUploadType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,7 +53,7 @@ class StoreFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add($this->getBasicInformationGroup($builder))
+            ->add($this->getBasicInformationGroup($builder, $options['store']))
             ->add($this->getAdditionalInfoGroup($builder))
             ->add($this->getContactGroup($builder))
             ->add($this->getAddressGroup($builder))
@@ -78,9 +78,10 @@ class StoreFormType extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Store\Store $store
      * @return \Symfony\Component\Form\FormBuilderInterface
      */
-    private function getBasicInformationGroup(FormBuilderInterface $builder): FormBuilderInterface
+    private function getBasicInformationGroup(FormBuilderInterface $builder, ?Store $store): FormBuilderInterface
     {
         $builderBasicInformationGroup = $builder->create('basicInformation', GroupType::class, [
             'label' => t('Basic information'),
@@ -94,14 +95,17 @@ class StoreFormType extends AbstractType
                     new Constraints\Length(['max' => 100, 'maxMessage' => 'Store name cannot be longer than {{ limit }} characters']),
                 ],
                 'label' => t('Name'),
-            ])
-            ->add('position', IntegerType::class, [
-                'required' => false,
-                'label' => t('Priorita'),
-                'constraints' => [
-                    new Constraints\Length(['max' => 10, 'maxMessage' => 'Position in list cannot be longer than {{ limit }} characters']),
-                ],
-            ])
+            ]);
+
+        if ($store !== null) {
+            $builderBasicInformationGroup
+                ->add('position', DisplayOnlyType::class, [
+                    'data' => $store->getPosition(),
+                    'label' => t('Priorita'),
+                ]);
+        }
+
+        $builderBasicInformationGroup
             ->add('pickupPlace', YesNoType::class, [
                 'required' => false,
                 'label' => t('Odběrné místo'),
@@ -207,39 +211,39 @@ class StoreFormType extends AbstractType
                 new Constraints\Length(['max' => 100, 'maxMessage' => 'City name cannot be longer than {{ limit }} characters']),
             ],
         ])
-        ->add('street', TextType::class, [
-            'required' => true,
-            'label' => t('Street'),
-            'constraints' => [
-                new Constraints\NotBlank(['message' => 'Vyplňte, prosím, ulici prodejny']),
-                new Constraints\Length(['max' => 100, 'maxMessage' => 'Street name cannot be longer than {{ limit }} characters']),
-            ],
-        ])
-        ->add('postcode', TextType::class, [
-            'required' => true,
-            'constraints' => [
-                new Constraints\NotBlank(['message' => 'Vyplňte, prosím, PSČ prodejny']),
-                new Constraints\Length(['max' => 30, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
-            ],
-            'label' => t('Postcode'),
-        ])
-        ->add('region', TextType::class, [
-            'required' => false,
-            'label' => t('Kraj'),
-            'constraints' => [
-                new Constraints\Length(['max' => 200, 'maxMessage' => 'Region nesmí být delší než {{ limit }} znaků']),
-            ],
-        ])
-        ->add('country', ChoiceType::class, [
-            'required' => true,
-            'label' => t('Country'),
-            'choices' => $this->countryFacade->getAllEnabledOnDomain($this->adminDomainTabsFacade->getSelectedDomainId()),
-            'choice_label' => 'name',
-            'choice_value' => 'id',
-            'constraints' => [
-                new Constraints\NotBlank(['message' => 'Please enter country of a store']),
-            ],
-        ]);
+            ->add('street', TextType::class, [
+                'required' => true,
+                'label' => t('Street'),
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Vyplňte, prosím, ulici prodejny']),
+                    new Constraints\Length(['max' => 100, 'maxMessage' => 'Street name cannot be longer than {{ limit }} characters']),
+                ],
+            ])
+            ->add('postcode', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Vyplňte, prosím, PSČ prodejny']),
+                    new Constraints\Length(['max' => 30, 'maxMessage' => 'Zip code cannot be longer than {{ limit }} characters']),
+                ],
+                'label' => t('Postcode'),
+            ])
+            ->add('region', TextType::class, [
+                'required' => false,
+                'label' => t('Kraj'),
+                'constraints' => [
+                    new Constraints\Length(['max' => 200, 'maxMessage' => 'Region nesmí být delší než {{ limit }} znaků']),
+                ],
+            ])
+            ->add('country', ChoiceType::class, [
+                'required' => true,
+                'label' => t('Country'),
+                'choices' => $this->countryFacade->getAllEnabledOnDomain($this->adminDomainTabsFacade->getSelectedDomainId()),
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'constraints' => [
+                    new Constraints\NotBlank(['message' => 'Please enter country of a store']),
+                ],
+            ]);
 
         return $builderAddressGroup;
     }
