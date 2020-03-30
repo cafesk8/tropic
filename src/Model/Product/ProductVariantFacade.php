@@ -12,7 +12,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade as BaseProductVar
  * @property \App\Model\Product\ProductFacade $productFacade
  * @property \App\Model\Product\ProductDataFactory $productDataFactory
  * @property \App\Component\Image\ImageFacade $imageFacade
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Product\ProductFacade $productFacade, \App\Model\Product\ProductDataFactory $productDataFactory, \App\Component\Image\ImageFacade $imageFacade, \Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface $productFactory, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\Search\Export\ProductSearchExportScheduler $productSearchExportScheduler)
  * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Product\ProductFacade $productFacade, \App\Model\Product\ProductDataFactory $productDataFactory, \App\Component\Image\ImageFacade $imageFacade, \Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface $productFactory, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler $productExportScheduler)
  */
 class ProductVariantFacade extends BaseProductVariantFacade
@@ -27,6 +26,7 @@ class ProductVariantFacade extends BaseProductVariantFacade
         /** @var \App\Model\Product\Product $mainVariant */
         $mainVariant = parent::createVariant($mainProduct, $variants);
         $this->em->flush($mainProduct);
+        $this->scheduleForImmediateExport(array_merge([$mainProduct, $mainVariant], $variants));
 
         return $mainVariant;
     }
@@ -40,5 +40,16 @@ class ProductVariantFacade extends BaseProductVariantFacade
         $variant->unsetMainVariant();
 
         $this->em->flush([$mainVariant, $variant]);
+        $this->scheduleForImmediateExport([$mainVariant, $variant]);
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     */
+    private function scheduleForImmediateExport(array $products): void
+    {
+        foreach ($products as $product) {
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
+        }
     }
 }

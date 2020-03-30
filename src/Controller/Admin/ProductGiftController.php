@@ -170,14 +170,14 @@ class ProductGiftController extends AdminBaseController
     public function deleteAction(int $id): Response
     {
         try {
-            $productGiftName = $this->productGiftFacade->getById($id)->getGift()->getName();
+            $productGift = $this->productGiftFacade->getById($id);
 
-            $this->productGiftFacade->delete($id);
+            $this->productGiftFacade->delete($productGift);
 
             $this->getFlashMessageSender()->addSuccessFlashTwig(
                 t('Dárek <strong>{{ name }}</strong> byl smazán'),
                 [
-                    'name' => $productGiftName,
+                    'name' => $productGift->getGift()->getName(),
                 ]
             );
         } catch (ProductGiftNotFoundException $exception) {

@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Product;
 
@@ -40,24 +41,32 @@ class MainVariantGroupFacade
     private $pricingGroupFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler
+     */
+    private $productExportScheduler;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \App\Model\Product\MainVariantGroup\MainVariantGroupRepository $mainVariantGroupRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportScheduler $productExportScheduler
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         MainVariantGroupRepository $mainVariantGroupRepository,
         Domain $domain,
         CurrentCustomerUser $currentCustomerUser,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        ProductExportScheduler $productExportScheduler
     ) {
         $this->entityManager = $entityManager;
         $this->mainVariantGroupRepository = $mainVariantGroupRepository;
         $this->domain = $domain;
         $this->currentCustomerUser = $currentCustomerUser;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->productExportScheduler = $productExportScheduler;
     }
 
     /**
@@ -77,6 +86,7 @@ class MainVariantGroupFacade
         }
 
         $this->entityManager->flush();
+        $this->scheduleForImmediateExport($products);
 
         return $mainVariantGroup;
     }
@@ -95,6 +105,7 @@ class MainVariantGroupFacade
         }
 
         $this->entityManager->flush();
+        $this->scheduleForImmediateExport($products);
 
         return $mainVariantGroup;
     }
@@ -180,5 +191,15 @@ class MainVariantGroupFacade
         }
 
         return $mainVariantGroups;
+    }
+
+    /**
+     * @param \App\Model\Product\Product[] $products
+     */
+    private function scheduleForImmediateExport(array $products): void
+    {
+        foreach ($products as $product) {
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
+        }
     }
 }
