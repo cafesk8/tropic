@@ -64,7 +64,7 @@
             line-height: @cart-number-size + 1px;
             min-width: @cart-number-size;
             padding: 0 4px;
-            top: -1px;
+            top: -6px;
             right: -11px;
             text-align: center;
 
@@ -73,6 +73,10 @@
             font-weight: 300;
             border-radius: 20px;
             background-color: @color-red;
+
+            @media @query-lg {
+                right: -16px;
+            }
         }
     }
 }
