@@ -454,4 +454,12 @@ class PromoCode extends BasePromoCode
     {
         return $this->limits->toArray();
     }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->usageLimit !== 0;
+    }
 }
