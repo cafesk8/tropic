@@ -270,8 +270,19 @@
         text-transform: uppercase;
 
         @media @query-lg {
-            line-height: 48px;
             margin-bottom: 20px;
+        }
+
+        @media @query-vl {
+            line-height: 48px;
+        }
+
+        br {
+            display: none;
+
+            @media @query-xl {
+                display: block;
+            }
         }
     }
 
@@ -281,10 +292,15 @@
 
     &__text {
         line-height: 36px;
+        margin: 0;
 
         color: @color-f;
         font-size: @font-size-big;
         font-family: @font-alt;
+
+        @media @query-vl {
+            margin-top: 18px;
+        }
     }
 }
 
