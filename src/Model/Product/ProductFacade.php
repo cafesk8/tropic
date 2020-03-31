@@ -297,6 +297,9 @@ class ProductFacade extends BaseProductFacade
 
         parent::edit($productId, $productData);
         $this->updateProductStoreStocks($productData, $product);
+        if ($product->isVariant()) {
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
+        }
 
         return $product;
     }
