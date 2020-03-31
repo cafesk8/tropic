@@ -1,3 +1,8 @@
+@list-socials-item-width: 143px;
+@list-socials-item-gap: 10px;
+
+@list-socials-facebook-color: #204beb;
+
 .list-socials {
     display: none;
 
@@ -6,10 +11,7 @@
         display: flex;
         width: 100%;
         flex-direction: column;
-
-        background-color: @color-primary;
-        border-radius: @radius;
-        border: 2px solid @color-gray-dark;
+        margin-left: -@list-socials-item-gap;
     }
 
     @media @query-vl {
@@ -17,81 +19,30 @@
         width: 100%;
     }
 
-    @media @query-xl {
-        height: @footer-top-social-height;
-    }
-
     &__item {
         display: flex;
-        width: 100%;
+        width: @list-socials-item-width;
         justify-content: center;
         align-items: center;
         text-align: center;
-
-        color: @color-brown;
-        border-bottom: 2px solid @color-gray-dark;
-
-        @media @query-vl {
-            width: calc(~"@{calc-base}/3");
-
-            border-right: 2px solid @color-gray-dark;
-            border-bottom: 0;
-        }
-
-        &:last-child {
-            border-right: 0;
-            border-bottom: 0;
-        }
+        margin-left: @list-socials-item-gap;
 
         &__link {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            line-height: @footer-top-social-height;
             width: 100%;
 
-            font-size: @font-size-small;
-            font-weight: bold;
-            color: @color-f;
-            text-transform: uppercase;
-            text-decoration: none;
-
-            @media @query-xl {
-                height: @footer-top-social-height;
-                flex-direction: row;
-            }
-
-            &:hover {
-                color: @color-f;
-            }
-        }
-
-        &__icon {
-            align-self: center;
-            margin-right: 12px;
-
-            font-size: 30px;
-            color: @color-gray-dark;
-
             &--facebook {
-                .list-socials__item:hover & {
-                    color: @color-facebook;
-                }
-            }
+                border-color: @list-socials-facebook-color;
 
-            &--instagram {
-                .list-socials__item:hover & {
-                    color: @color-instagram;
+                &:hover {
+                    color: @list-socials-facebook-color;
                 }
             }
 
             &--youtube {
-                padding-top: 3px;
+                border-color: @color-red;
 
-                font-size: 33px;
-
-                .list-socials__item:hover & {
-                    color: @color-youtube;
+                &:hover {
+                    color: @color-red;
                 }
             }
         }

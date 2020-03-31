@@ -34,12 +34,12 @@
                         </thead>
                         {% for order in orders %}
                             <tr>
-                                <td><a href="{{ url('front_customer_order_detail_registered', { orderNumber: order.number }) }}"><span class="underline-small">{{ order.number }}</span></a></td>
+                                <td><a href="{{ url('front_customer_order_detail_registered', { orderNumber: order.number }) }}"><span>{{ order.number }}</span></a></td>
                                 <td>{{ order.createdAt|formatDate }}</td>
                                 <td>
                                     <span class="margin-right-10">{{ order.status.name }}</span>
                                     {% if order.payment.goPay is same as (true) and order.gopayPaid == false %}
-                                        <a class="btn btn--success btn--mini" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
+                                        <a class="btn btn--success" href="{{ url('front_order_repeat_gopay_payment', { urlHash: order.urlHash }) }}">
                                             {{ 'Zaplatit'|trans }}
                                         </a>
                                     {% endif %}
@@ -50,7 +50,7 @@
                                 <td class="text-right">{{ order.totalPriceWithVat|priceWithCurrency(order.currency) }}</td>
                                 <td class="text-center">
                                     <a href="{{ url('front_customer_order_detail_registered', { orderNumber: order.number }) }}" class="in-icon in-icon--detail">
-                                        <i class="svg svg-search"></i>
+                                        {% include 'Front/Svg/search.svg' %}
                                     </a>
                                 </td>
                             </tr>

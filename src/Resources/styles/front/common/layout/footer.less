@@ -2,7 +2,7 @@
 @footer-top-social-height: 66px;
 @footer-top-info-socials-width: 46%;
 @footer-top-links-title: 120px;
-@footer-tab-border-color: @color-gray-dark;
+@footer-tab-border-color: @color-border;
 @footer-tab-arrow-size: 12px;
 @footer-tab-height: 52px;
 
@@ -73,7 +73,6 @@
             position: relative;
             line-height: @footer-tab-height;
 
-            color: @color-add;
             font-size: @font-size-small;
             font-weight: bold;
             text-transform: uppercase;
@@ -122,8 +121,6 @@
     padding-bottom: 111px;
     text-align: center;
 
-    color: @color-brown;
-
     @media @query-lg {
         display: flex;
         flex-direction: column;
@@ -146,14 +143,6 @@
 
     &__shopsys {
         font-size: 13px;
-
-        &__link {
-            color: @color-brown;
-
-            &:hover {
-                color: @color-base;
-            }
-        }
 
         &__image {
             display: inline-block;

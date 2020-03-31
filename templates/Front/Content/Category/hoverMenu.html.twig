@@ -10,6 +10,9 @@
                             <a href="{{ url('front_product_list', { id: category.id }) }}"
                             class="list-menu__item__link{% if hasChildren %} list-menu__item__link--with-dropdown{% endif %} list-menu__item__link--level-{{ category.level }}">
                                 {{ category.name }}
+                                {% if hasChildren %}
+                                    <i class="list-menu__item__link__arrow svg svg-triangle"></i>
+                                {% endif %}
                             </a>
                         </div>
                         {% if hasChildren %}

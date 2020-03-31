@@ -18,7 +18,7 @@
         <div class="box-login__buttons">
             {{ form_widget(form.login, {label: 'Přihlásit se'|trans, attr: {class: 'btn btn--success'}}) }}
             <div class="box-login__buttons__lost">
-                <a href="{{ url('front_registration_reset_password') }}" class="box-login__buttons__lost__link underline">
+                <a href="{{ url('front_registration_reset_password') }}" class="box-login__buttons__lost__link">
                 {{ 'Zapomenuté heslo?'|trans }}</a>
             </div>
         </div>
@@ -26,6 +26,6 @@
 </div>
 <div class="box-login__social">
     <div class="box-login__social__title box-login__social__title--without-buttons">
-        <a href="{{ url('front_registration_register') }}" class="box-login__social__title__link underline">{{ 'Registrujte se'|trans }}</a>
+        <a href="{{ url('front_registration_register') }}" class="box-login__social__title__link">{{ 'Registrujte se'|trans }}</a>
     </div>
 </div>

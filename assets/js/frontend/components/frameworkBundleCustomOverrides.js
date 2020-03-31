@@ -23,7 +23,7 @@ import Translator from 'bazinga-translator';
                     + '        </ul>'
                     + '        <div class="box-popup-add__action__buttons__back">'
                     + '            <i class="svg svg-triangle"></i>'
-                    + '            <a href="#" class="box-popup-add__action__buttons__back__link underline-small js-window-button-close">'
+                    + '            <a href="#" class="box-popup-add__action__buttons__back__link js-window-button-close">'
                     + Translator.trans('Zpět do e-shopu')
                     + '            </a>'
                     + '        </div>'

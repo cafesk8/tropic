@@ -34,12 +34,12 @@
                     <div class="in-tab__wrap in-tab__wrap--small-gap">
                         <div class="in-tab__head dont-print">
                             {% if foundCategories|length > 0 %}
-                                <a href="#" class="in-tab__head__item underline js-tabs-button" data-tab-id="categories">
+                                <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="categories">
                                     {{ 'Kategorie'|trans }} ({{ foundCategories|length }})
                                 </a>
                             {% endif %}
                             {% if paginationResult.results|length > 0 %}
-                                <a href="#" class="in-tab__head__item underline js-tabs-button" data-tab-id="products">
+                                <a href="#" class="in-tab__head__item js-tabs-button" data-tab-id="products">
                                     {{ 'Produkty'|trans }} ({{ paginationResult.totalCount }})
                                 </a>
                             {% endif %}

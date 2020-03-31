@@ -61,7 +61,7 @@
                             <label class="css-checkbox__image" for="{{ form.customerUserData.memberOfLoyaltyProgram.vars.id }}">
                                 {% if loyaltyProgramArticle is not null %}
                                     {% set articleUrl = url('front_article_detail', {'id': loyaltyProgramArticle.id}) %}
-                                    {{ 'Chci být členem <a href="%url%" target="_blank"><span class="underline-small">Věrnostního programu</span></a>.'|trans({'%url%': articleUrl})|raw }}
+                                    {{ 'Chci být členem <a href="%url%" target="_blank">Věrnostního programu</a>.'|trans({'%url%': articleUrl})|raw }}
                                 {% else %}
                                     {{ 'Chci být členem Věrnostního programu'|trans }}
                                 {% endif %}
@@ -111,7 +111,7 @@
                             <label class="css-checkbox__image margin-bottom-10" for="{{ form.privacyPolicy.vars.id }}">
                                 {% if privacyPolicyArticle is not null %}
                                     {% set articleUrl = url('front_article_detail', {'id': privacyPolicyArticle.id}) %}
-                                    {{ 'Souhlasím se <a href="%url%" target="_blank"><span class="underline-small">zpracováním osobních údajů</span></a>.'|trans({'%url%': articleUrl})|raw }}
+                                    {{ 'Souhlasím se <a href="%url%" target="_blank">zpracováním osobních údajů</a>.'|trans({'%url%': articleUrl})|raw }}
                                 {% else %}
                                     {{ 'Souhlasím se zpracováním osobních údajů.'|trans }}
                                 {% endif %}

@@ -1,11 +1,11 @@
 // Default button
-@btn-height: 40px;
-@btn-padding-vertical: 0;
-@btn-padding-horizontal: 24px;
+@btn-height: 31px;
+@btn-padding-vertical: 6px;
+@btn-padding-horizontal: 15px;
 @btn-color: @color-f;
 @btn-color-hover: @color-f;
-@btn-bg: @color-gray;
-@btn-bg-hover: darken(@btn-bg, 5%);
+@btn-bg: @color-turquoise;
+@btn-bg-hover: @color-primary;
 
 .btn {
     width: auto;
@@ -17,66 +17,39 @@
     transition: @transition background, @transition color;
     text-align: center;
 
-    border-radius: @radius-small;
-    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: @radius;
+    border: 0;
     box-shadow: @box-shadow;
     color: @btn-color;
-    background: @btn-bg;
+    background-color: @btn-bg;
     cursor: pointer;
     font-weight: bold;
-    text-decoration: none;
-    font-size: 16px;
+    text-transform: uppercase;
+    font-size: @font-size-extra-small;
     outline: 0;
 
     &:hover {
         color: @btn-color-hover;
-        background: @btn-bg-hover;
+        background-color: @btn-bg-hover;
+        text-decoration: none;
     }
 }
 
 //// Modifications - color
 .btn {
     // call to action button
-    @btn-success-color: @color-base;
-    @btn-success-color-hover: @color-base;
+    @btn-success-color: @color-f;
+    @btn-success-color-hover: @color-f;
     @btn-success-bg: @color-add;
     @btn-success-bg-hover: darken(@btn-success-bg, 5%);
 
     &--success {
         color: @btn-success-color;
-        background: @btn-success-bg;
+        background-color: @btn-success-bg;
 
         &:hover {
             color: @btn-success-color-hover;
-            background: @btn-success-bg-hover;
-        }
-    }
-
-    // primary button
-    @btn-primary-color: @color-f;
-    @btn-primary-color-hover: @color-f;
-    @btn-primary-bg: @color-blue;
-    @btn-primary-bg-hover: darken(@btn-primary-bg, 5%);
-
-    &--primary {
-        color: @btn-primary-color;
-        background: @btn-primary-bg;
-
-        &:hover {
-            color: @btn-primary-color-hover;
-            background: @btn-primary-bg-hover;
-        }
-    }
-
-    &--secondary {
-        color: @color-f;
-        text-transform: uppercase;
-
-        background-color: @color-black;
-
-        &:hover {
-            color: @color-f;
-            background-color: darken(@color-black, 5%);
+            background-color: @btn-success-bg-hover;
         }
     }
 
@@ -88,86 +61,92 @@
 
 //// Modifications - size
 .btn {
-    @btn-large-padding-vertical: 4px;
-    @btn-large-padding-horizontal: 25px;
-    @btn-large-padding-horizontal-mobile: 20px;
+    @btn-large-height: 54px;
+    @btn-large-padding-horizontal: 17px;
 
     &--large {
-        padding: @btn-large-padding-vertical @btn-large-padding-horizontal-mobile;
+        min-height: @btn-large-height;
+        line-height: @btn-large-height;
+        padding: 0 @btn-large-padding-horizontal;
 
-        font-size: 20px;
-
-        @media @query-md {
-            padding-left: @btn-large-padding-horizontal;
-            padding-right: @btn-large-padding-horizontal;
-        }
-    }
-
-    @btn-small-padding-vertical: 5px;
-    @btn-small-padding-horizontal: 10px;
-    @btn-small-height: @btn-height - 16;
-
-    &--small {
-        height: @btn-small-height;
-        line-height: @btn-small-height;
-        min-height: @btn-small-height;
+        font-size: 16px;
     }
 
     &--full-width {
         width: 100%;
     }
+}
 
-    &--with-input {
-        height: @input-height;
-        line-height: @input-height;
-        min-height: @input-height;
+// Button with border
+@btn-with-border-height: 42px;
+@btn-with-border-padding-vertical: 6px;
+@btn-with-border-padding-horizontal: 17px;
+@btn-with-border-color: @color-base;
+@btn-with-border-color-hover: @color-add;
+@btn-with-border-bg: @color-turquoise;
+@btn-with-border-bg-hover: @color-primary;
+@btn-with-border-size-border: 3px;
 
-        border-radius: 0 @radius @radius 0;
-    }
+.btn-with-border {
+    width: auto;
+    min-height: @btn-with-border-height - (@btn-with-border-size-border * 2);
+    padding: 0 @btn-with-border-padding-horizontal;
+    line-height: @btn-with-border-height - (@btn-with-border-size-border * 2);
+    vertical-align: middle;
+    display: inline-block;
+    transition: @transition background, @transition color;
+    text-align: center;
 
-    @btn-mini-padding-horizontal: 7px;
-    @btn-mini-height: 22px;
+    border-radius: @radius;
+    border: @btn-with-border-size-border solid @color-add;
+    color: @btn-with-border-color;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: @font-size-small;
+    outline: 0;
 
-    &--mini {
-        line-height: @btn-mini-height - 8px;
-        min-height: @btn-mini-height;
-        padding: 2px @btn-mini-padding-horizontal;
-
-        font-size: @font-size;
+    &:hover {
+        color: @btn-with-border-color-hover;
+        text-decoration: none;
     }
 }
 
-// Button with icon
-.btn--with-icon {
-    display: inline-flex;
-    align-items: center;
+@btn-gradient-height: 42px;
+@btn-gradient-width: 143px;
+@btn-gradient-padding-horizontal: 20px;
+@btn-gradient-color: @color-base;
+@btn-gradient-border-size: 3px;
 
-    &:before {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 1;
-        font-weight: normal;
-        font-style: normal;
-        speak: none;
-        text-decoration: inherit;
-        text-transform: none;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-family: "svg";
+@btn-gradient-inner-background: @color-light;
+
+.btn-gradient {
+    display: inline-block;
+    width: @btn-gradient-width;
+    min-height: @btn-gradient-height - (@btn-gradient-border-size * 2);
+    line-height: @btn-gradient-height - (@btn-gradient-border-size * 2);
+    padding: @btn-gradient-border-size;
+
+    text-transform: uppercase;
+    font-size: @font-size-small;
+    font-weight: 700;
+    color: @btn-gradient-color;
+    border-radius: @radius;
+    transition: none;
+    background: linear-gradient(90deg, rgba(253,244,151,1) 0%, rgba(253,89,73,1) 33%, rgba(214,36,159,1) 66%, rgba(40,90,235,1) 100%);
+
+    &:hover {
+        text-decoration: none;
+        color: @color-primary;
+        background: @color-primary;
     }
 
-    &--right {
-        &:before {
-            order: 1;
-            margin-left: 5px;
-        }
-    }
+    &__in {
+        display: block;
+        text-align: center;
 
-    &--left {
-        &:before {
-            margin-right: 5px;
-        }
+        background-color: @btn-gradient-inner-background;
+        border-radius: @radius - 3;
     }
 }
 

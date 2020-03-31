@@ -1,9 +1,11 @@
 @list-menu-padding-right: 25px;
-@list-menu-arrow-size: 25px;
+@list-menu-arrow-size: 10px;
 @list-menu-columns-count: 3;
-@list-menu-columns-gap: 8px;
+@list-menu-columns-gap: 30px;
+@list-menu-columns-gap-small: 16px;
 @list-menu-item-height: 36px;
 @list-menu-item-footer-gap: 47px;
+@list-menu-item-link-padding: 15px;
 
 // global settings
 .list-menu {
@@ -15,6 +17,7 @@
 
     @media @query-vl {
         flex-direction: row;
+        margin-left: -@list-menu-item-link-padding;
     }
 
     &--submenu {
@@ -67,6 +70,10 @@
             padding: 0 20px;
 
             @media @query-vl {
+                padding: 0;
+            }
+
+            @media @query-xl {
                 padding: 0 @list-menu-columns-gap 0 0;
             }
         }
@@ -96,6 +103,8 @@
                 top: @list-menu-item-height - 1px;
                 z-index: @z-index-above;
                 padding: 5px 0;
+                width: calc(~"100% + 10px");
+                min-width: 200px;
 
                 background-color: @color-f;
                 border-radius: 0 @radius @radius @radius;
@@ -112,18 +121,29 @@
             height: @list-menu-item-height;
             line-height: @list-menu-item-height;
 
-            color: @color-base;
             font-size: @font-size;
             text-decoration: none;
             transition: none;
 
             @media @query-vl {
-                padding: 0 15px;
+                padding: 0 @list-menu-item-link-padding;
             }
 
-            &:hover {
-                color: @color-f;
-                text-decoration: underline;
+            &__arrow {
+                display: none;
+
+                @media @query-vl {
+                    display: inline-block;
+                    height: @list-menu-arrow-size;
+                    margin-left: 5px;
+                    opacity: 0.5;
+
+                    font-size: @list-menu-arrow-size;
+
+                    .open & {
+                        transform: rotate(180deg);
+                    }
+                }
             }
 
             &--with-dropdown {
@@ -134,8 +154,17 @@
 
             &--level-1 {
                 color: @color-f;
-                font-size: 16px;
+                font-size: @font-size;
                 font-weight: 700;
+                text-transform: uppercase;
+
+                @media @query-xl {
+                    font-size: 16px;
+                }
+
+                &:hover {
+                    color: @color-f;
+                }
             }
 
             .open & {
@@ -145,12 +174,7 @@
             .list-menu--footer & {
                 padding: 0;
 
-                color: @color-f;
                 font-size: @font-size-small;
-
-                &:hover {
-                    text-decoration: none;
-                }
             }
         }
     }

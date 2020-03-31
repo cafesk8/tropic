@@ -244,8 +244,8 @@ msgstr "Chcete darček"
 msgid "Chceš promo produkt"
 msgstr "Chcete promo produkt"
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
-msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Vernostného programu</span></a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Věrnostního programu</a>."
+msgstr "Chcem byť členom <a href=\"%url%\" target=\"_blank\">Vernostného programu</a>."
 
 msgid "Chci být členem Věrnostního programu"
 msgstr "Chcem byť členom Vernostného programu"
@@ -1912,8 +1912,8 @@ msgstr "Zmazať všetky"
 msgid "Snažíte se koupit více kusů, než je skladem."
 msgstr "Snažíte sa kúpiť viac kusov, než je skladom."
 
-msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">zpracováním osobních údajů</span></a>."
-msgstr "Súhlasím so <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">spracovaním osobných údajov</span></a>."
+msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>."
+msgstr "Súhlasím so <a href=\"%url%\" target=\"_blank\">spracovaním osobných údajov</a>."
 
 msgid "Souhlasím se zpracováním osobních údajů."
 msgstr "Súhlasím so spracovaním osobných údajov."
