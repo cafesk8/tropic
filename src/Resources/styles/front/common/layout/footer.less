@@ -228,7 +228,8 @@
     padding: 30px 20px;
 
     border-radius: @radius-big;
-    background-color: @color-base;
+    background: @color-base url('@{path-design}/footer-bg.png') -159px bottom no-repeat;
+    background-size: cover;
     box-shadow: 0 10px 20px 0 rgba(0,0,0,0.3);
 
     @media @query-lg {
@@ -239,6 +240,8 @@
         height: @footer-banner-height;
         margin: 0;
         padding: 70px;
+
+        background: @color-base url('@{path-design}/footer-bg.png') center bottom no-repeat;
     }
 
     &__left {
