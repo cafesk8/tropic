@@ -72,7 +72,7 @@ class OrderItemFactory extends BaseOrderItemFactory
      * @param \App\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $certificatePrice
-     * @param string $certificateSku
+     * @param string|null $certificateSku
      * @param string $vatPercent
      * @return \App\Model\Order\Item\OrderItem
      */
@@ -80,7 +80,7 @@ class OrderItemFactory extends BaseOrderItemFactory
         Order $order,
         string $name,
         Price $certificatePrice,
-        string $certificateSku,
+        ?string $certificateSku,
         string $vatPercent
     ): BaseOrderItem {
         /** @var \App\Model\Order\Item\OrderItem $orderCertification */
