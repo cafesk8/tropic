@@ -24,7 +24,7 @@ class HashGenerator extends BaseHashGenerator
         $hash = '';
         for ($i = 1; $i <= $length; $i++) {
             $randomIndex = random_int(0, $numberOfChars - 1);
-            $hash .= $this->charactersWithoutConfusingCharacters[$randomIndex];
+            $hash .= ($i > 1 && $i % 4 === 1 ? '-' : '') . $this->charactersWithoutConfusingCharacters[$randomIndex];
         }
 
         return $hash;
