@@ -118,12 +118,14 @@ class PromoCodeController extends FrontBaseController
         } catch (\Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException $ex) {
             return new JsonResponse([
                 'result' => false,
-                'message' => t('{{title}} není platný. Prosím, zkontrolujte ho.', ['{{title}}' => $this->getErrorMessageTitle()]),
+                'message' => t('{{title}} není platný. Prosím, zkontrolujte ho.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
         } catch (\App\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException $ex) {
+            $message = $promoCode->isActive() ? '{{title}} byl již vyčerpán.' : '{{title}} není aktivní.';
+
             return new JsonResponse([
                 'result' => false,
-                'message' => t('{{title}} byl již vyčerpán.', ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
+                'message' => t($message, ['{{title}}' => $this->getErrorMessageTitle($promoCode)]),
             ]);
         } catch (\App\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow $ex) {
             $message = $this->getPromoCodeIsNotValidMessage($request, $promoCode);
@@ -187,11 +189,11 @@ class PromoCodeController extends FrontBaseController
     private function getErrorMessageTitle(?PromoCode $promoCode = null): string
     {
         if ($promoCode === null) {
-            return t('Slevový kupón nebo certifikát');
+            return t('Slevový kupón nebo dárkový poukaz');
         }
 
         if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-            return t('Dárkový certifikát');
+            return t('Dárkový poukaz');
         }
 
         return t('Slevový kupón');

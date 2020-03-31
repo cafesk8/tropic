@@ -151,7 +151,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $defaultCurrency
         );
 
-        if ($product->isProductTypeGiftCertificate()) {
+        if ($product->isGiftCertificate()) {
             $basePrice = $defaultPrice;
         } else {
             $basePrice = $this->calculateBasePriceRoundedByCurrency(

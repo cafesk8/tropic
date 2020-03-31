@@ -22,4 +22,9 @@ class OrderStatusData extends BaseOrderStatusData
      * @var bool|null
      */
     public $checkOrderReadyStatus;
+
+    /**
+     * @var bool
+     */
+    public $activatesGiftCertificates;
 }

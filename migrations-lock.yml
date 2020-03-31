@@ -994,6 +994,24 @@
 20200304130413:
     class: App\Migrations\Version20200304130413
     skip: false
+20200313143330:
+    class: App\Migrations\Version20200313143330
+    skip: false
+20200316145242:
+    class: App\Migrations\Version20200316145242
+    skip: false
+20200317095318:
+    class: App\Migrations\Version20200317095318
+    skip: false
+20200317162807:
+    class: App\Migrations\Version20200317162807
+    skip: false
+20200323094650:
+    class: App\Migrations\Version20200323094650
+    skip: false
+20200323103000:
+    class: App\Migrations\Version20200323103000
+    skip: false
 20200325113600:
     class: App\Migrations\Version20200325113600
     skip: false

@@ -18,6 +18,7 @@ class OrderStatusDataFactory extends BaseOrderStatusDataFactory
         $orderStatusData = new OrderStatusData();
         $this->fillNew($orderStatusData);
         $orderStatusData->checkOrderReadyStatus = false;
+        $orderStatusData->activatesGiftCertificates = false;
 
         return $orderStatusData;
     }
@@ -44,5 +45,6 @@ class OrderStatusDataFactory extends BaseOrderStatusDataFactory
         $orderStatusData->transferStatus = $orderStatus->getTransferStatus();
         $orderStatusData->smsAlertType = $orderStatus->getSmsAlertType();
         $orderStatusData->checkOrderReadyStatus = $orderStatus->isCheckOrderReadyStatus();
+        $orderStatusData->activatesGiftCertificates = $orderStatus->activatesGiftCertificates();
     }
 }

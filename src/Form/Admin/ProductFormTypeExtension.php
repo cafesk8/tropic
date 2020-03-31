@@ -237,14 +237,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Generovat tento produkt do HS-SPORT XML feedu'),
             ])
-            ->add('productType', ChoiceType::class, [
+            ->add('giftCertificate', YesNoType::class, [
                 'required' => false,
-                'label' => t('Typ produktu'),
-                'choices' => [
-                    t('Dárkový certifikát 500 Kč') => Product::PRODUCT_TYPE_GIFT_CERTIFICATE_500,
-                    t('Dárkový certifikát 1000 Kč') => Product::PRODUCT_TYPE_GIFT_CERTIFICATE_1000,
-                ],
-                'placeholder' => '',
+                'label' => t('Dárkový poukaz'),
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);

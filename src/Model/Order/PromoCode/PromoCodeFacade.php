@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Order\PromoCode;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\HashGenerator;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade as BasePromoCodeFacade;
@@ -36,22 +38,30 @@ class PromoCodeFacade extends BasePromoCodeFacade
     private $promoCodeLimitFacade;
 
     /**
+     * @var \App\Model\Order\PromoCode\PromoCodeDataFactory
+     */
+    private $promoCodeDataFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Order\PromoCode\PromoCodeRepository $promoCodeRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFactoryInterface $promoCodeFactory
      * @param \App\Component\String\HashGenerator $hashGenerator
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
+     * @param \App\Model\Order\PromoCode\PromoCodeDataFactory $promoCodeDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
         PromoCodeRepository $promoCodeRepository,
         PromoCodeFactoryInterface $promoCodeFactory,
         HashGenerator $hashGenerator,
-        PromoCodeLimitFacade $promoCodeLimitFacade
+        PromoCodeLimitFacade $promoCodeLimitFacade,
+        PromoCodeDataFactory $promoCodeDataFactory
     ) {
         parent::__construct($em, $promoCodeRepository, $promoCodeFactory);
         $this->hashGenerator = $hashGenerator;
         $this->promoCodeLimitFacade = $promoCodeLimitFacade;
+        $this->promoCodeDataFactory = $promoCodeDataFactory;
     }
 
     /**
@@ -109,11 +119,13 @@ class PromoCodeFacade extends BasePromoCodeFacade
 
     /**
      * @param \App\Model\Order\PromoCode\PromoCodeData $promoCodeData
+     * @return \App\Model\Order\PromoCode\PromoCode[]
      */
-    public function massCreate(PromoCodeData $promoCodeData): void
+    public function massCreate(PromoCodeData $promoCodeData): array
     {
         $existingPromoCodeCodes = $this->promoCodeRepository->getAllPromoCodeCodes();
         $generatedPromoCodeCount = 0;
+        $generatedPromoCodes = [];
         $toFlush = [];
 
         while ($generatedPromoCodeCount < $promoCodeData->quantity) {
@@ -128,6 +140,7 @@ class PromoCodeFacade extends BasePromoCodeFacade
 
                 $existingPromoCodeCodes[] = $code;
                 $generatedPromoCodeCount++;
+                $generatedPromoCodes[] = $promoCode;
             }
 
             if ($generatedPromoCodeCount % self::MASS_CREATE_BATCH_SIZE === 0) {
@@ -136,7 +149,9 @@ class PromoCodeFacade extends BasePromoCodeFacade
             }
         }
 
-        $this->flushAndClear($toFlush);
+        $this->em->flush($toFlush);
+
+        return $generatedPromoCodes;
     }
 
     /**
@@ -154,5 +169,24 @@ class PromoCodeFacade extends BasePromoCodeFacade
     public function deleteByPrefix(string $prefix): void
     {
         $this->promoCodeRepository->deleteByPrefix($prefix);
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $value
+     * @param int $quantity
+     * @return \App\Model\Order\PromoCode\PromoCode[]
+     */
+    public function createRandomCertificates(Money $value, int $quantity): array
+    {
+        $promoCodeData = $this->promoCodeDataFactory->create();
+        $promoCodeData->certificateValue = $value;
+        $promoCodeData->massGenerate = true;
+        $promoCodeData->usageLimit = 0;
+        $promoCodeData->quantity = $quantity;
+        $promoCodeData->type = PromoCodeData::TYPE_CERTIFICATE;
+        $promoCodeData->useNominalDiscount = true;
+        $promoCodeData->validTo = new DateTime('+365 days');
+
+        return $this->massCreate($promoCodeData);
     }
 }

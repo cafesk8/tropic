@@ -637,3 +637,11 @@ services:
     App\Component\Transfer\Pohoda\Category\PohodaCategoryExportFacade:
         arguments:
             $logger: '@monolog.logger.cron'
+
+    Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade: '@App\Model\Mail\MailTemplateFacade'
+
+    App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail: ~
+
+    App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade:
+        arguments:
+            $templating: '@templating'

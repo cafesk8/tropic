@@ -333,12 +333,28 @@ class CartFacade extends BaseCartFacade
         $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
 
         foreach ($cart->getItems() as $cartItem) {
-            if ($cartItem->getProduct()->isProductTypeGiftCertificate() === false) {
+            if (!$cartItem->getProduct()->isGiftCertificate()) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function showOnlyGiftCertificatePaymentsInCart(): bool
+    {
+        $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->isGiftCertificate()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

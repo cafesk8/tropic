@@ -3,3 +3,8 @@
     types:
         -   name: default
             multiple: true
+-   name: giftCertificate
+    class: App\Model\Order\GiftCertificate\OrderGiftCertificate
+    types:
+        -   name: default
+            multiple: false

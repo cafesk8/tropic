@@ -10,12 +10,15 @@ use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
 use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
+use App\Model\Order\GiftCertificate\OrderGiftCertificateFacade;
 use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\Mall\Exception\StatusChangException;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
+use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Order\Status\OrderStatus;
 use App\Model\Product\Gift\ProductGiftPriceCalculation;
+use App\Model\Product\Product;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -123,6 +126,16 @@ class OrderFacade extends BaseOrderFacade
     private $smsMessageFactory;
 
     /**
+     * @var \App\Model\Order\PromoCode\PromoCodeFacade
+     */
+    private $promoCodeFacade;
+
+    /**
+     * @var \App\Model\Order\GiftCertificate\OrderGiftCertificateFacade
+     */
+    private $orderGiftCertificateFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \App\Model\Order\OrderRepository $orderRepository
@@ -155,6 +168,8 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Model\Gtm\GtmHelper $gtmHelper
      * @param \App\Component\SmsManager\SmsManagerFactory $smsManagerFactory
      * @param \App\Component\SmsManager\SmsMessageFactory $smsMessageFactory
+     * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
+     * @param \App\Model\Order\GiftCertificate\OrderGiftCertificateFacade $orderGiftCertificateFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -188,7 +203,9 @@ class OrderFacade extends BaseOrderFacade
         MallImportOrderClient $mallImportOrderClient,
         GtmHelper $gtmHelper,
         SmsManagerFactory $smsManagerFactory,
-        SmsMessageFactory $smsMessageFactory
+        SmsMessageFactory $smsMessageFactory,
+        PromoCodeFacade $promoCodeFacade,
+        OrderGiftCertificateFacade $orderGiftCertificateFacade
     ) {
         parent::__construct(
             $em,
@@ -225,6 +242,8 @@ class OrderFacade extends BaseOrderFacade
         $this->gtmHelper = $gtmHelper;
         $this->smsManagerFactory = $smsManagerFactory;
         $this->smsMessageFactory = $smsMessageFactory;
+        $this->promoCodeFacade = $promoCodeFacade;
+        $this->orderGiftCertificateFacade = $orderGiftCertificateFacade;
     }
 
     /**
@@ -301,6 +320,7 @@ class OrderFacade extends BaseOrderFacade
         $order = $this->createOrder($orderData, $orderPreview, $customerUser);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getProductItems());
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
+        $this->processGiftCertificates($order);
 
         $this->cartFacade->deleteCartOfCurrentCustomerUser();
 
@@ -461,6 +481,10 @@ class OrderFacade extends BaseOrderFacade
 
         if ($originalOrderStatus !== $updatedOrder->getStatus()) {
             $this->sendSms($updatedOrder);
+
+            if ($updatedOrder->getStatus()->activatesGiftCertificates()) {
+                $this->activateGiftCertificates($updatedOrder);
+            }
         }
 
         return $updatedOrder;
@@ -508,6 +532,7 @@ class OrderFacade extends BaseOrderFacade
         $quantifiedItemDiscountsIndexedByPromoCodeId = $orderPreview->getQuantifiedItemsDiscountsIndexedByPromoCodeId();
 
         foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
+            /** @var \App\Model\Product\Product $product */
             $product = $quantifiedProduct->getProduct();
 
             $quantifiedItemPrice = $quantifiedItemPrices[$index];
@@ -685,5 +710,30 @@ class OrderFacade extends BaseOrderFacade
             count(array_filter($order->getGoPayTransactions(), function (GoPayTransaction $transaction) {
                 return $transaction->getGoPayStatus() === PaymentStatus::PAID;
             })) === 0;
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     */
+    private function processGiftCertificates(Order $order): void
+    {
+        foreach ($order->getItems() as $orderItem) {
+            if ($orderItem->isTypeProduct() && $orderItem->getProduct() instanceof Product && $orderItem->getProduct()->isGiftCertificate()) {
+                $giftCertificates = $this->promoCodeFacade->createRandomCertificates($orderItem->getPriceWithVat(), $orderItem->getQuantity());
+
+                foreach ($giftCertificates as $giftCertificate) {
+                    $orderGiftCertificate = $this->orderGiftCertificateFacade->create($order, $giftCertificate);
+                    $order->addGiftCertificate($orderGiftCertificate);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     */
+    public function activateGiftCertificates(Order $order): void
+    {
+        $this->orderGiftCertificateFacade->activate($order->getGiftCertificates());
     }
 }

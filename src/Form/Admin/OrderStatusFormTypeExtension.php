@@ -8,6 +8,7 @@ use App\Model\Order\Status\OrderStatus;
 use App\Model\Order\Status\OrderStatusData;
 use Shopsys\FrameworkBundle\Form\Admin\Order\Status\OrderStatusFormType;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +32,10 @@ class OrderStatusFormTypeExtension extends AbstractTypeExtension
                 t('SMS alert 2 dny do vyzvednutí') => OrderStatus::SMS_ALERT_2_DAY_BEFORE,
             ],
             'label' => t('Typ sms alertu'),
+        ]);
+
+        $builder->add('activatesGiftCertificates', CheckboxType::class, [
+            'label' => 'Aktivuje dárkové certifikáty',
         ]);
     }
 

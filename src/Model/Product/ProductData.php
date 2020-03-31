@@ -69,9 +69,9 @@ class ProductData extends BaseProductData
     public $baseName;
 
     /**
-     * @var string|null
+     * @var bool
      */
-    public $productType;
+    public $giftCertificate;
 
     /**
      * @var int
@@ -104,5 +104,6 @@ class ProductData extends BaseProductData
         $this->minimumAmount = 1;
         $this->amountMultiplier = 1;
         $this->youtubeVideoIds = [];
+        $this->giftCertificate = false;
     }
 }

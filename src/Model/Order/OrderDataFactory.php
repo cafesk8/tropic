@@ -53,5 +53,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->transportType = $order->getTransportType();
         $orderData->promoCodesCodes[] = $order->getPromoCodesCodes();
         $orderData->trackingNumber = $order->getTrackingNumber();
+        $orderData->giftCertificates = $order->getGiftCertificates();
     }
 }
