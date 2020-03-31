@@ -22,13 +22,10 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @property \App\Model\Product\Product[]|\Doctrine\Common\Collections\Collection $variants
  * @property \App\Model\Product\Product|null $mainVariant
  * @method static \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
- * @method static \App\Model\Product\Product createMainVariant(\App\Model\Product\ProductData $productData, \App\Model\Product\Product[] $variants)
  * @method setAvailabilityAndStock(\App\Model\Product\ProductData $productData)
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  * @method \App\Model\Product\Brand\Brand|null getBrand()
- * @method addVariant(\App\Model\Product\Product $variant)
  * @method addVariants(\App\Model\Product\Product[] $variants)
- * @method \App\Model\Product\Product[] getVariants()
  * @method setMainVariant(\App\Model\Product\Product $mainVariant)
  * @method setTranslations(\App\Model\Product\ProductData $productData)
  * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
@@ -166,6 +163,13 @@ class Product extends BaseProduct
     protected $amountMultiplier;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    protected $variantId;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -175,16 +179,21 @@ class Product extends BaseProduct
 
         $this->storeStocks = new ArrayCollection();
         $this->pohodaId = $productData->pohodaId;
-        $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
-        $this->finished = $productData->finished;
-        $this->mallExport = $productData->mallExport;
-        $this->mallExportedAt = $productData->mallExportedAt;
         $this->updatedAt = $productData->updatedAt;
-        $this->baseName = $productData->baseName;
-        $this->productType = $productData->productType;
-        $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = $productData->amountMultiplier;
-        $this->youtubeVideoIds = $productData->youtubeVideoIds;
+        $this->fillCommonProperties($productData);
+    }
+
+    /**
+     * @deprecated since US-7741, variants are paired using variantId
+     * @see \App\Model\Product\ProductVariantTropicFacade, method refreshVariantStatus
+     *
+     * @param \App\Model\Product\ProductData $productData
+     * @param array $variants
+     * @return \App\Model\Product\Product|void
+     */
+    public static function createMainVariant(ProductData $productData, array $variants)
+    {
+        @trigger_error('Deprecated, you should use Product::variantId to pair variants, see ProductVariantTropicFacade::refreshVariantStatus', E_USER_DEPRECATED);
     }
 
     /**
@@ -197,6 +206,14 @@ class Product extends BaseProduct
     ) {
         parent::edit($productCategoryDomains, $productData);
 
+        $this->fillCommonProperties($productData);
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    protected function fillCommonProperties(ProductData $productData): void
+    {
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
@@ -204,8 +221,19 @@ class Product extends BaseProduct
         $this->baseName = $productData->baseName;
         $this->productType = $productData->productType;
         $this->minimumAmount = $productData->minimumAmount;
-        $this->amountMultiplier = (int)$productData->amountMultiplier;
+        $this->amountMultiplier = $productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
+        if ($productData->variantId !== null) {
+            $this->variantId = trim($productData->variantId);
+        }
+    }
+
+    /**
+     * @param string $variantType
+     */
+    public function setVariantType(string $variantType): void
+    {
+        $this->variantType = $variantType;
     }
 
     /**
@@ -746,5 +774,68 @@ class Product extends BaseProduct
                 break;
             }
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVariantId(): ?string
+    {
+        return $this->variantId;
+    }
+
+    /**
+     * ProductIsAlreadyVariantException is not thrown in this overridden method
+     * @see \App\Model\Product\ProductVariantTropicFacade (refreshVariantStatus method)
+     * @param \App\Model\Product\Product $variant
+     */
+    public function addVariant(BaseProduct $variant)
+    {
+        if (!$this->isMainVariant()) {
+            throw new \Shopsys\FrameworkBundle\Model\Product\Exception\VariantCanBeAddedOnlyToMainVariantException(
+                $this->getId(),
+                $variant->getId()
+            );
+        }
+        if ($variant->isMainVariant()) {
+            throw new \Shopsys\FrameworkBundle\Model\Product\Exception\MainVariantCannotBeVariantException($variant->getId());
+        }
+
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setMainVariant($this);
+            $variant->copyProductCategoryDomains($this->productCategoryDomains->toArray());
+        }
+    }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getVariants()
+    {
+        $variants = $this->variants->toArray();
+        usort($variants, function (self $variant1, self $variant2) {
+            return intval(self::getVariantNumber($variant1->getVariantId())) - intval(self::getVariantNumber($variant2->getVariantId()));
+        });
+
+        return $variants;
+    }
+
+    /**
+     * @param string $variantId
+     * @return string
+     */
+    public static function getVariantNumber(string $variantId): string
+    {
+        return substr($variantId, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR) + 1);
+    }
+
+    /**
+     * @param string $variantId
+     * @return string
+     */
+    public static function getMainVariantVariantIdFromVariantVariantId(string $variantId): string
+    {
+        return substr($variantId, 0, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR));
     }
 }

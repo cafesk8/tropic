@@ -1,6 +1,5 @@
 {% macro productTabs(
     product,
-    variants,
     productMainCategory,
     visible,
     youtubeDetails,
@@ -16,7 +15,7 @@
 
     {% set productParameterValues = getProductParameterValues(product) %}
     {% if product.getDescription(domain.id)
-        or productParameterValues > 0
+        or productParameterValues > 0 and not product.isMainVariant
     %}
     <div class="box-detail__content {% if visible == false %}display-none{% endif %}">
         <div class="in-tab in-tab--full-width js-anchor-tabs">
@@ -72,7 +71,7 @@
                 </div>
 
                 <div class="in-tab__content__right">
-                    {% if productParameterValues > 0 %}
+                    {% if productParameterValues > 0 and not product.isMainVariant %}
 
                         <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
                             <a href="#" class="in-tab__content__title__link">

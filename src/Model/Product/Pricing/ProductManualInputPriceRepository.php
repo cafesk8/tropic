@@ -8,6 +8,7 @@ use App\Model\Product\ProductDomain;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository as BaseProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice[] getByProduct(\App\Model\Product\Product $product)
@@ -25,7 +26,7 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
     {
         $queryBuilder = $this->getProductManualInputPriceRepository()
             ->createQueryBuilder('pmip')
-            ->select('MAX(pmip.inputPrice) as inputPrice, IDENTITY(pmip.pricingGroup) as pricingGroupId, MIN(pd.actionPrice) as actionPrice')
+            ->select('MIN(pmip.inputPrice) as inputPrice, MAX(pmip.inputPrice) as maxInputPrice, IDENTITY(pmip.pricingGroup) as pricingGroupId, MIN(pd.actionPrice) as actionPrice')
             ->where('pmip.pricingGroup IN (:pricingGroups)')
             ->groupBy('pmip.pricingGroup')
             ->setParameter('pricingGroups', $pricingGroups);
@@ -33,6 +34,8 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
         if ($product->isMainVariant()) {
             $queryBuilder
                 ->join(Product::class, 'p', Join::WITH, 'pmip.product = p.id AND p.mainVariant = :mainVariantId')
+                ->leftJoin(ProductVisibility::class, 'pv', Join::WITH, 'p.id = pv.product')
+                ->andWhere('pv.visible = true')
                 ->setParameter('mainVariantId', $product);
         } else {
             $queryBuilder

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\Performance;
 
 use App\DataFixtures\Demo\ProductDataFixture as DemoProductDataFixture;
+use App\Model\Product\ProductVariantTropicFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator as Faker;
 use Shopsys\FrameworkBundle\Component\Console\ProgressBarFactory;
@@ -18,7 +19,6 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
-use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ProductDataFixture
@@ -46,11 +46,6 @@ class ProductDataFixture
      * @var \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade
      */
     private $sqlLoggerFacade;
-
-    /**
-     * @var \App\Model\Product\ProductVariantFacade
-     */
-    private $productVariantFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade
@@ -112,7 +107,6 @@ class ProductDataFixture
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Component\Doctrine\SqlLoggerFacade $sqlLoggerFacade
-     * @param \App\Model\Product\ProductVariantFacade $productVariantFacade
      * @param \Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade $persistentReferenceFacade
      * @param \App\Model\Category\CategoryRepository $categoryRepository
      * @param \Faker\Generator $faker
@@ -126,7 +120,6 @@ class ProductDataFixture
         EntityManagerInterface $em,
         ProductFacade $productFacade,
         SqlLoggerFacade $sqlLoggerFacade,
-        ProductVariantFacade $productVariantFacade,
         PersistentReferenceFacade $persistentReferenceFacade,
         CategoryRepository $categoryRepository,
         Faker $faker,
@@ -139,7 +132,6 @@ class ProductDataFixture
         $this->em = $em;
         $this->productFacade = $productFacade;
         $this->sqlLoggerFacade = $sqlLoggerFacade;
-        $this->productVariantFacade = $productVariantFacade;
         $this->persistentReferenceFacade = $persistentReferenceFacade;
         $this->categoryRepository = $categoryRepository;
         $this->countImported = 0;
@@ -213,12 +205,21 @@ class ProductDataFixture
 
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
             try {
-                $mainProduct = $this->getProductByCatnum($mainVariantCatnum . $uniqueIndex);
-                $variants = [];
-                foreach ($variantsCatnums as $variantCatnum) {
-                    $variants[] = $this->getProductByCatnum($variantCatnum . $uniqueIndex);
+                $mainVariantCatnumWithUniqueIndex = $mainVariantCatnum . $uniqueIndex;
+                /** @var \App\Model\Product\Product $mainVariant */
+                $mainVariant = $this->getProductByCatnum($mainVariantCatnumWithUniqueIndex);
+                $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
+                $mainVariantData->variantId = $mainVariantCatnumWithUniqueIndex;
+                $this->productFacade->edit($mainVariant->getId(), $mainVariantData);
+
+                foreach ($variantsCatnums as $key => $variantCatnum) {
+                    $variantCatnumWithUniqueIndex = $variantCatnum . $uniqueIndex;
+                    $variant = $this->getProductByCatnum($variantCatnumWithUniqueIndex);
+                    $variantData = $this->productDataFactory->createFromProduct($variant);
+                    $variantVariantId = sprintf('%s%s%s', $mainVariantCatnum, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR, $key + 1);
+                    $variantData->variantId = $variantVariantId;
+                    $this->productFacade->edit($variant->getId(), $variantData);
                 }
-                $this->productVariantFacade->createVariant($mainProduct, $variants);
             } catch (\Doctrine\ORM\NoResultException $e) {
                 continue;
             }

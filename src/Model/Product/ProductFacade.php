@@ -56,7 +56,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFactoryInterface;
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @property \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
  * @method \App\Model\Product\Product getById(int $productId)
- * @method \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
  * @method \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice[] getAllProductSellingPricesByDomainId(\App\Model\Product\Product $product, int $domainId)
  * @method createProductVisibilities(\App\Model\Product\Product $product)
  * @method refreshProductAccessories(\App\Model\Product\Product $product, \App\Model\Product\Product[] $accessories)
@@ -69,6 +68,16 @@ class ProductFacade extends BaseProductFacade
      * @var \App\Model\Product\ProductRepository
      */
     protected $productRepository;
+
+    /**
+     * @var \App\Model\Product\ProductVariantTropicFacade
+     */
+    protected $productVariantTropicFacade;
+
+    /**
+     * @var \App\Model\Product\ProductDataFactory
+     */
+    protected $productDataFactory;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
@@ -136,6 +145,8 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Component\Setting\Setting $setting
      * @param \Psr\Log\LoggerInterface $logger
+     * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
+     * @param \App\Model\Product\ProductDataFactory $productDataFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -167,7 +178,9 @@ class ProductFacade extends BaseProductFacade
         GoogleClient $googleClient,
         PricingGroupFacade $pricingGroupFacade,
         Setting $setting,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProductVariantTropicFacade $productVariantTropicFacade,
+        ProductDataFactory $productDataFactory
     ) {
         parent::__construct(
             $em,
@@ -202,6 +215,28 @@ class ProductFacade extends BaseProductFacade
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->setting = $setting;
         $this->logger = $logger;
+        $this->productVariantTropicFacade = $productVariantTropicFacade;
+        $this->productDataFactory = $productDataFactory;
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     * @return \App\Model\Product\Product
+     */
+    public function create(ProductData $productData)
+    {
+        /** @var \App\Model\Product\Product $product */
+        $product = parent::create($productData);
+        if ($product->isVariant()) {
+            $mainVariant = $product->getMainVariant();
+            $mainVariant->markForVisibilityRecalculation();
+            $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
+            $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
+            $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
+        }
+
+        return $product;
     }
 
     /**
@@ -223,7 +258,26 @@ class ProductFacade extends BaseProductFacade
      */
     public function setAdditionalDataAfterCreate(BaseProduct $product, ProductData $productData): void
     {
-        parent::setAdditionalDataAfterCreate($product, $productData);
+        // Persist of ProductCategoryDomain requires known primary key of Product
+        // @see https://github.com/doctrine/doctrine2/issues/4869
+        $productCategoryDomains = $this->productCategoryDomainFactory->createMultiple($product, $productData->categoriesByDomainId);
+        $product->setProductCategoryDomains($productCategoryDomains);
+        $this->em->flush($product);
+        $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
+
+        $this->saveParameters($product, $productData->parameters);
+        $this->createProductVisibilities($product);
+        $this->refreshProductManualInputPrices($product, $productData->manualInputPricesByPricingGroupId);
+        $this->refreshProductAccessories($product, $productData->accessories);
+        $this->productHiddenRecalculator->calculateHiddenForProduct($product);
+        $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
+
+        $this->imageFacade->manageImages($product, $productData->images);
+        $this->friendlyUrlFacade->createFriendlyUrls('front_product_detail', $product->getId(), $product->getNames());
+
+        $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($product);
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
+        $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($product);
 
         $this->updateProductStoreStocks($productData, $product);
     }
@@ -235,10 +289,17 @@ class ProductFacade extends BaseProductFacade
      */
     public function edit($productId, ProductData $productData): Product
     {
-        /** @var \App\Model\Product\Product $product */
-        $product = parent::edit($productId, $productData);
+        $product = $this->getById($productId);
+        if ($product->isMainVariant() && !$this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
+            $this->disconnectVariantsFromMainVariant($product);
+        }
+        $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
 
+        parent::edit($productId, $productData);
         $this->updateProductStoreStocks($productData, $product);
+        if ($product->isVariant()) {
+            $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
+        }
 
         return $product;
     }
@@ -754,5 +815,31 @@ class ProductFacade extends BaseProductFacade
         }
 
         return $giftNames;
+    }
+
+    /**
+     * @param int $productId
+     */
+    public function delete($productId)
+    {
+        $product = $this->getById($productId);
+
+        if ($product->isMainVariant()) {
+            $this->disconnectVariantsFromMainVariant($product);
+        }
+        parent::delete($productId);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $mainVariant
+     */
+    private function disconnectVariantsFromMainVariant(Product $mainVariant): void
+    {
+        foreach ($mainVariant->getVariants() as $variant) {
+            $variantData = $this->productDataFactory->createFromProduct($variant);
+            $variantData->variantId = null;
+            $variantData->hidden = true;
+            $this->edit($variant->getId(), $variantData);
+        }
     }
 }

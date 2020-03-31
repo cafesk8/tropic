@@ -141,5 +141,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->minimumAmount = $product->getMinimumAmount();
         $productData->amountMultiplier = $product->getAmountMultiplier();
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
+        $productData->variantId = $product->getVariantId();
     }
 }

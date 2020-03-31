@@ -6,12 +6,14 @@ namespace App\Form\Admin;
 
 use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
+use App\Form\ProductsListType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
+use App\Model\Product\ProductVariantTropicFacade;
 use App\Twig\DateTimeFormatterExtension;
 use App\Twig\ProductExtension;
 use Google_Service_Exception;
@@ -48,6 +50,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'descriptions',
         'usingStock',
     ];
+
+    /**
+     * @var \App\Model\Product\ProductVariantTropicFacade
+     */
+    protected $productVariantTropicFacade;
 
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
@@ -118,6 +125,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
+     * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
@@ -130,7 +138,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         FlagFacade $flagFacade,
         FlashMessageSender $flashMessageSender,
-        FormBuilderHelper $formBuilderHelper
+        FormBuilderHelper $formBuilderHelper,
+        ProductVariantTropicFacade $productVariantTropicFacade
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
@@ -143,6 +152,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->flagFacade = $flagFacade;
         $this->flashMessageSender = $flashMessageSender;
         $this->formBuilderHelper = $formBuilderHelper;
+        $this->productVariantTropicFacade = $productVariantTropicFacade;
     }
 
     /**
@@ -153,8 +163,24 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $product = $options['product'];
         /* @var $product \App\Model\Product\Product|null */
 
+        if ($product !== null && $product->isMainVariant()) {
+            $variantGroup = $builder->get('variantGroup');
+            $variantGroup->add('variants', ProductsListType::class, [
+                'label' => t('Varianty'),
+                'top_info_title' => t('Produkt je hlavní variantou.'),
+            ]);
+        }
+
         $builderBasicInformationGroup = $builder->get('basicInformationGroup');
         $builderBasicInformationGroup
+            ->add('variantId', TextType::class, [
+                'required' => false,
+                'label' => t('ID modifikace'),
+                'position' => ['before' => 'flags'],
+                'constraints' => [
+                    new Callback([$this, 'validateVariantId']),
+                ],
+            ])
             ->add('finished', YesNoType::class, [
                 'required' => false,
                 'label' => t('Produkt je hotový'),
@@ -543,6 +569,43 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $this->flashMessageSender->addInfoFlash(t('Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
             $this->flashMessageSender->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
             $this->flashMessageSender->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
+        }
+    }
+
+    /**
+     * @param string|null $variantId
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     */
+    public function validateVariantId(?string $variantId, ExecutionContextInterface $context): void
+    {
+        /** @var \Symfony\Component\Form\Form $form */
+        $form = $context->getRoot();
+        /** @var \App\Model\Product\Product|null $product */
+        $product = $form->getConfig()->getOption('product');
+        if ($this->productVariantTropicFacade->isVariant($variantId)) {
+            $mainVariantVariantId = Product::getMainVariantVariantIdFromVariantVariantId($variantId);
+            $variantNumber = Product::getVariantNumber($variantId);
+            if (strlen($mainVariantVariantId) === 0
+                || strlen($variantNumber) === 0
+                || !preg_match('#^\d+$#', $variantNumber)
+            ) {
+                $context->addViolation(
+                    'Zadané ID modifikace má neplatný formát (očekává se nenulový počet znaků před i za lomítkem, přičemž část za lomítkem by měla obsahovat jen číslice)'
+                );
+                return;
+            }
+        }
+        if ($variantId !== null) {
+            $existingProductByVariantId = $this->productVariantTropicFacade->findByVariantId($variantId);
+            if ($existingProductByVariantId !== null && ($product === null || $product !== null && $existingProductByVariantId->getId() !== $product->getId())) {
+                $context->addViolation('Zadané ID modifikace je již v systému přiřazeno jinému produktu');
+            }
+        }
+
+        if ($this->productVariantTropicFacade->isVariant($variantId)
+            && $this->productVariantTropicFacade->findMainVariantByVariantId($variantId) === null
+        ) {
+            $context->addViolation('Není možné vyvořit variantu, pro kterou neexistuje odpovídající hlavní varianta');
         }
     }
 }

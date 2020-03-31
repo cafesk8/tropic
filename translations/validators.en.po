@@ -243,3 +243,6 @@ msgstr "Fill in an integer."
 
 msgid "Zip code cannot be longer than {{ limit }} characters"
 msgstr "Zip code cannot be longer than {{ limit }} characters"
+
+msgid "Variant alias cannot be longer then {{ limit }} characters"
+msgstr "Modification name cannot be longer than {{ limit }} characters"

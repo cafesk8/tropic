@@ -2700,3 +2700,6 @@ msgstr "Žádné dárky nenalezeny."
 
 msgid "Žádné promo produkty nenalezeny."
 msgstr "Žádné promo produkty nenalezeny."
+
+msgid "Variant alias"
+msgstr "Název modifikace"

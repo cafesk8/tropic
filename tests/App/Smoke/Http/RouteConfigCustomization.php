@@ -212,8 +212,8 @@ class RouteConfigCustomization
                     ->setParameter('id', 5);
             })
             ->customizeByRouteName('admin_product_edit', function (RouteConfig $config) {
-                $config->addExtraRequestDataSet('Edit product that is a main variant (ID 149).')
-                    ->setParameter('id', 149);
+                $config->addExtraRequestDataSet('Edit product that is a main variant (ID 69).')
+                    ->setParameter('id', 69);
                 $config->addExtraRequestDataSet('Edit product that is a variant (ID 75).')
                     ->setParameter('id', 75);
             })
@@ -260,6 +260,10 @@ class RouteConfigCustomization
             ->customizeByRouteName('admin_transferissue_detailedlist', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Message parameter is required')
                     ->setParameter('message', 'Test message');
+            })
+            ->customizeByRouteName('admin_product_createvariant', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Creating variants this way is not supported anymore')
+                    ->setExpectedStatusCode(404);
             });
     }
 
@@ -337,7 +341,7 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet('Use ID 1 as default product.')
                     ->setParameter('id', 1);
                 $config->addExtraRequestDataSet('See detail of a product that is main variant')
-                    ->setParameter('id', 150);
+                    ->setParameter('id', 69);
             })
             ->customizeByRouteName('front_product_list', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Use ID 2 as default category (ID 1 is the root).')

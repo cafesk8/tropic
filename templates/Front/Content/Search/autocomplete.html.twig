@@ -37,7 +37,11 @@
                                 {% if not product.calculatedSellingDenied %}
                                     <span class="search-hint__product__item__price">
                                         {% set sellingPrice = getProductSellingPrice(product) %}
-                                        {{ sellingPrice.priceWithVat|price }}
+                                        {% if sellingPrice.priceFrom %}
+                                            {{ 'from %price%'|trans({'%price%': sellingPrice.priceWithVat|price}) }}
+                                        {% else %}
+                                            {{ sellingPrice.priceWithVat|price }}
+                                        {% endif %}
                                         {% if sellingPrice.isActionPrice %}
                                             <span class="search-hint__product__item__price search-hint__product__item__price--old">
                                                 {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
