@@ -994,7 +994,6 @@
 20200304130413:
     class: App\Migrations\Version20200304130413
     skip: false
-<<<<<<< HEAD
 20200127085928:
     class: Shopsys\FrameworkBundle\Migrations\Version20200127085928
     skip: false
