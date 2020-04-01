@@ -1,6 +1,5 @@
 {% macro productTabs(
     product,
-    variants,
     productMainCategory,
     visible,
     youtubeDetails,
@@ -16,7 +15,7 @@
 
     {% set productParameterValues = getProductParameterValues(product) %}
     {% if product.getDescription(domain.id)
-        or productParameterValues > 0
+        or productParameterValues > 0 and not product.isMainVariant
     %}
     <div class="box-detail__content {% if visible == false %}display-none{% endif %}">
         <div class="in-tab in-tab--full-width js-anchor-tabs">
@@ -24,7 +23,7 @@
                 <div class="in-tab__content__left">
                     {% if product.getDescription(domain.id) %}
                         <div class="in-tab__content__title js-tabs-button active" data-tab-id="description">
-                            <a href="#" class="in-tab__content__title__link underline">
+                            <a href="#" class="in-tab__content__title__link">
                                 {{ descriptionHeadline }}
                             </a>
                             <i class="svg svg-triangle"></i>
@@ -43,7 +42,7 @@
                     {% if youtubeDetails %}
                         <div id="video">
                             <div class="in-tab__content__title js-tabs-button active" data-tab-id="videos">
-                                <a href="#" class="in-tab__content__title__link underline">
+                                <a href="#" class="in-tab__content__title__link">
                                     {{ videosHeadline }}
                                 </a>
                                 <i class="svg svg-triangle"></i>
@@ -72,10 +71,10 @@
                 </div>
 
                 <div class="in-tab__content__right">
-                    {% if productParameterValues > 0 %}
+                    {% if productParameterValues > 0 and not product.isMainVariant %}
 
                         <div class="in-tab__content__title js-tabs-button active" data-tab-id="parameters">
-                            <a href="#" class="in-tab__content__title__link underline">
+                            <a href="#" class="in-tab__content__title__link">
                                 {{ parametersHeadline }}
                             </a>
                             <i class="svg svg-triangle"></i>

@@ -12,8 +12,6 @@
     &__item {
         margin-bottom: 25px;
 
-        color: @color-brown;
-
         &__in {
             display: flex;
             flex-direction: row;
@@ -46,13 +44,22 @@
 
                 font-size: @font-size;
                 font-weight: 400;
-                color: @color-gray-dark;
+                color: @color-base;
 
                 &:hover {
                     text-decoration: underline;
                 }
             }
 
+<<<<<<< HEAD
+=======
+            &__availability {
+                margin-bottom: 10px;
+                
+                font-size: @font-size-extra-small;
+            }
+
+>>>>>>> master
             &__price {
                 &__item {
                     display: none;
@@ -61,7 +68,7 @@
                         display: block;
                         padding: 5px 0;
 
-                        color: @color-gray-dark;
+                        color: @color-price;
                         font-weight: 700;
                     }
 
@@ -70,7 +77,7 @@
                         padding-left: 5px;
                         font-weight: normal;
                         font-size: 11px;
-                        color: @color-gray-dark;
+                        color: @color-price-old;
                         text-decoration: line-through;
                     }
 

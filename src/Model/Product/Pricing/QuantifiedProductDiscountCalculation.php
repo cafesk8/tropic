@@ -8,6 +8,7 @@ use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Order\PromoCode\PromoCodeLimitFacade;
 use App\Model\Product\Product;
+use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
@@ -27,14 +28,21 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
     private $promoCodeLimitFacade;
 
     /**
+     * @var \App\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Rounding $rounding
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(PriceCalculation $priceCalculation, Rounding $rounding, PromoCodeLimitFacade $promoCodeLimitFacade)
+    public function __construct(PriceCalculation $priceCalculation, Rounding $rounding, PromoCodeLimitFacade $promoCodeLimitFacade, ProductFacade $productFacade)
     {
         parent::__construct($priceCalculation, $rounding);
         $this->promoCodeLimitFacade = $promoCodeLimitFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -135,6 +143,10 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             function (QuantifiedItemPrice $quantifiedItemsPrice) use ($promoCode) {
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
+
+                if ($this->productFacade->getById($productPrice->getProductId())->isGiftCertificate()) {
+                    return false;
+                }
 
                 if ($promoCode->getLimitType() !== PromoCode::LIMIT_TYPE_ALL
                     &&

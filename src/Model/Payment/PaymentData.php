@@ -36,6 +36,16 @@ class PaymentData extends BasePaymentData
      */
     public $hiddenByGoPay;
 
+    /**
+     * @var bool
+     */
+    public $usableForGiftCertificates;
+
+    /**
+     * @var bool
+     */
+    public $activatesGiftCertificates;
+
     public function __construct()
     {
         parent::__construct();

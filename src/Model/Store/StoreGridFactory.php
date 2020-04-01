@@ -46,7 +46,7 @@ class StoreGridFactory
      */
     public function create(): Grid
     {
-        $queryBuilder = $this->storeRepository->getAllQueryBuilder();
+        $queryBuilder = $this->storeRepository->getOrderedAllQueryBuilder();
 
         $dataSource = new QueryBuilderDataSource($queryBuilder, 's.id');
 

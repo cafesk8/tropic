@@ -25,6 +25,20 @@ class PromoCodeRepository extends BasePromoCodeRepository
     }
 
     /**
+     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
+     */
+//    public function activate(array $promoCodes): void
+//    {
+//        $this->getAllQueryBuilder()
+//            ->update(PromoCode::class, 'pc')
+//            ->set('pc.usageLimit', 1)
+//            ->set('pc.validTo', '\'' . date('Y-m-d H:i:s', strtotime('+365 days')) . '\'')
+//            ->where('pc IN (:promoCodes)')
+//            ->setParameter('promoCodes', $promoCodes)
+//            ->getQuery()->execute();
+//    }
+
+    /**
      * @return string[]
      */
     public function getAllPromoCodeCodes(): array

@@ -36,7 +36,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
     public function testProductMainVariantIsListed()
     {
-        $this->getAllListableQueryBuilderTest(148, true);
+        $this->getAllListableQueryBuilderTest(69, true);
     }
 
     /**
@@ -82,7 +82,7 @@ class ProductRepositoryTest extends TransactionFunctionalTestCase
 
     public function testProductMainVariantIsNotSellable()
     {
-        $this->getAllSellableQueryBuilderTest(148, false);
+        $this->getAllSellableQueryBuilderTest(69, false);
     }
 
     /**

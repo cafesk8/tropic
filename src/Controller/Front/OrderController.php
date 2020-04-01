@@ -785,6 +785,10 @@ class OrderController extends FrontBaseController
 
             if ($this->goPayFacadeOnCurrentDomain->isOrderGoPayUnpaid($order)) {
                 return $this->redirectToRoute('front_order_not_paid', ['urlHash' => $urlHash]);
+            } else {
+                if ($order->getPayment()->activatesGiftCertificates()) {
+                    $this->orderFacade->activateGiftCertificates($order);
+                }
             }
         }
 

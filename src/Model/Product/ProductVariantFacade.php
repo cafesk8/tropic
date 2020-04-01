@@ -17,39 +17,15 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade as BaseProductVar
 class ProductVariantFacade extends BaseProductVariantFacade
 {
     /**
+     * @deprecated since US-7741, variants are paired using variantId
+     * @see \App\Model\Product\ProductVariantTropicFacade, method refreshVariantStatus
+     *
      * @param \App\Model\Product\Product $mainProduct
      * @param \App\Model\Product\Product[] $variants
      * @return \App\Model\Product\Product
      */
     public function createVariant(Product $mainProduct, array $variants)
     {
-        /** @var \App\Model\Product\Product $mainVariant */
-        $mainVariant = parent::createVariant($mainProduct, $variants);
-        $this->em->flush($mainProduct);
-        $this->scheduleForImmediateExport(array_merge([$mainProduct, $mainVariant], $variants));
-
-        return $mainVariant;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $variant
-     */
-    public function removeVariant(Product $variant): void
-    {
-        $mainVariant = $variant->getMainVariant();
-        $variant->unsetMainVariant();
-
-        $this->em->flush([$mainVariant, $variant]);
-        $this->scheduleForImmediateExport([$mainVariant, $variant]);
-    }
-
-    /**
-     * @param \App\Model\Product\Product[] $products
-     */
-    private function scheduleForImmediateExport(array $products): void
-    {
-        foreach ($products as $product) {
-            $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
-        }
+        @trigger_error('Deprecated, you should use Product::variantId to pair variants, see ProductVariantTropicFacade::refreshVariantStatus', E_USER_DEPRECATED);
     }
 }

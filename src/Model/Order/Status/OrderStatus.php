@@ -43,6 +43,13 @@ class OrderStatus extends BaseOrderStatus
     protected $checkOrderReadyStatus;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $activatesGiftCertificates;
+
+    /**
      * @param \App\Model\Order\Status\OrderStatusData $orderStatusData
      * @param int $type
      */
@@ -52,6 +59,7 @@ class OrderStatus extends BaseOrderStatus
         $this->transferStatus = $orderStatusData->transferStatus;
         $this->smsAlertType = $orderStatusData->smsAlertType;
         $this->checkOrderReadyStatus = $orderStatusData->checkOrderReadyStatus;
+        $this->activatesGiftCertificates = $orderStatusData->activatesGiftCertificates;
     }
 
     /**
@@ -62,6 +70,7 @@ class OrderStatus extends BaseOrderStatus
         parent::edit($orderStatusData);
         $this->transferStatus = $orderStatusData->transferStatus;
         $this->smsAlertType = $orderStatusData->smsAlertType;
+        $this->activatesGiftCertificates = $orderStatusData->activatesGiftCertificates;
     }
 
     /**
@@ -94,5 +103,13 @@ class OrderStatus extends BaseOrderStatus
     public function isCanceled(): bool
     {
         return $this->getType() === self::TYPE_CANCELED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function activatesGiftCertificates(): bool
+    {
+        return $this->activatesGiftCertificates;
     }
 }

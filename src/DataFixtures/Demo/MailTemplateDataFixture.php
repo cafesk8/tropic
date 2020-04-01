@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Mail\AllMailTemplatesData;
+use App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -136,18 +138,38 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             tým {domain}', [], 'dataFixtures', $locale);
 
             $this->createMailTemplate($manager, MailTemplate::PERSONAL_DATA_EXPORT_NAME, $mailTemplateData, $domainId);
+
+            $mailTemplateData->subject = t('Dárkový poukaz', [], 'dataFixtures', $locale);
+            $mailTemplateData->body = t('Dobrý den,<br /><br />
+            zakoupil/a jste dárkový poukaz s kódem 
+            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě 
+            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b>. 
+            Tento poukaz však bude aktivován až po obdržení platby za objednávku ' . OrderGiftCertificateMail::VARIABLE_ORDER_NUMBER . ', 
+            o čemž vás budeme informovat dalším emailem.', [], 'dataFixtures', $locale);
+
+            $this->createMailTemplate($manager, AllMailTemplatesData::GIFT_CERTIFICATE, $mailTemplateData, $domainId);
+
+            $mailTemplateData->subject = t('Dárkový poukaz - aktivován', [], 'dataFixtures', $locale);
+            $mailTemplateData->body = t('Dobrý den,<br /><br />
+            váš dárkový poukaz s kódem 
+            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CODE . '</b> v hodnotě 
+            <b>' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALUE . ' ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_CURRENCY . '</b> byl právě aktivován. 
+            Certifikát je platný do ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL . '. 
+            Děkujeme za váš nákup.', [], 'dataFixtures', $locale);
+
+            $this->createMailTemplate($manager, AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED, $mailTemplateData, $domainId);
         }
     }
 
     /**
      * @param \Shopsys\FrameworkBundle\Component\EntityExtension\EntityManagerDecorator $manager
-     * @param mixed $name
+     * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Mail\MailTemplateData $mailTemplateData
      * @param int $domainId
      */
     protected function createMailTemplate(
         ObjectManager $manager,
-        $name,
+        string $name,
         MailTemplateData $mailTemplateData,
         int $domainId
     ) {

@@ -137,9 +137,10 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->mallExportedAt = $product->getMallExportedAt();
         $productData->updatedAt = $product->getUpdatedAt();
         $productData->baseName = $product->getBaseName();
-        $productData->productType = $product->getProductType();
+        $productData->giftCertificate = $product->isGiftCertificate();
         $productData->minimumAmount = $product->getMinimumAmount();
         $productData->amountMultiplier = $product->getAmountMultiplier();
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
+        $productData->variantId = $product->getVariantId();
     }
 }

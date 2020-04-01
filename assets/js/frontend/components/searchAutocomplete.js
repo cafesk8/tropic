@@ -11,6 +11,7 @@ export default class SearchAutocomplete {
 
         this.$input = null;
         this.$searchAutocompleteResults = null;
+        this.$searchForm = $('#js-search-autocomplete');
         this.requestTimer = null;
         this.resultExists = false;
         this.searchDataCache = {};
@@ -26,6 +27,7 @@ export default class SearchAutocomplete {
         searchAutocomplete.$input.on('focus', function () {
             if (searchAutocomplete.resultExists) {
                 searchAutocomplete.$searchAutocompleteResults.show();
+                searchAutocomplete.$searchForm.addClass('active');
             }
         });
 
@@ -50,6 +52,7 @@ export default class SearchAutocomplete {
         const $autocompleteElements = searchAutocomplete.$input.add(searchAutocomplete.$searchAutocompleteResults);
         if (searchAutocomplete.resultExists && $(event.target).closest($autocompleteElements).length === 0) {
             searchAutocomplete.$searchAutocompleteResults.hide();
+            searchAutocomplete.$searchForm.removeClass('active');
         }
     }
 
@@ -65,6 +68,7 @@ export default class SearchAutocomplete {
         } else {
             searchAutocomplete.resultExists = false;
             searchAutocomplete.$searchAutocompleteResults.hide();
+            searchAutocomplete.$searchForm.removeClass('active');
         }
     }
 
@@ -92,8 +96,10 @@ export default class SearchAutocomplete {
 
         if (this.resultExists) {
             this.$searchAutocompleteResults.show();
+            this.$searchForm.addClass('active');
         } else {
             this.$searchAutocompleteResults.hide();
+            this.$searchForm.removeClass('active');
         }
 
         this.$searchAutocompleteResults.html(responseHtml);

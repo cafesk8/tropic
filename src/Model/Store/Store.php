@@ -76,7 +76,7 @@ class Store implements PickupPlaceInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=false)
      * @Gedmo\SortablePosition
      */
     private $position;

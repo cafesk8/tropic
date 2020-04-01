@@ -35,7 +35,7 @@
         top: calc(~"@{list-basket-additionals-item-image-size}/2");
 
         cursor: pointer;
-        color: @color-gray-dark;
+        color: @color-primary;
         font-size: @list-basket-additionals-arrow-size;
         height: @list-basket-additionals-arrow-size + 2px;
 
@@ -44,8 +44,7 @@
         }
 
         &.slick-disabled {
-            color: @color-gray-dark;
-            opacity: 0.2;
+            color: @color-inactive;
         }
 
         &--prev {
@@ -74,8 +73,6 @@
 
     &__item {
         width: calc(~"@{calc-base}/@{list-basket-additionals-item-count}");
-
-        color: @color-brown;
 
         &__in {
             display: flex;
@@ -119,7 +116,7 @@
             overflow: hidden;
 
             font-weight: 400;
-            color: @color-gray-dark;
+            color: @color-base;
         }
 
         &__info {
@@ -127,6 +124,36 @@
             padding: 0 15px;
             text-align: center;
 
+<<<<<<< HEAD
+=======
+            &__availability {
+                margin-bottom: 10px;
+                
+                font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
+
+                &__text {
+                    display: block;
+                    line-height: 18px;
+
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+            }
+
+>>>>>>> master
             &__price {
                 &__item {
                     display: none;
@@ -135,6 +162,7 @@
                         display: block;
                         padding: 5px 0;
 
+                        color: @color-price;
                         font-size: 16px;
                         font-weight: 700;
                     }
@@ -144,7 +172,7 @@
                         padding-left: 5px;
                         font-weight: normal;
                         font-size: 11px;
-                        color: @color-brown-light;
+                        color: @color-price-old;
                         text-decoration: line-through;
                     }
 

@@ -133,7 +133,7 @@
                     {{ 'souhlasím s '|trans }}
                     {% if termsAndConditionsArticle is not null %}
                         <a href="{{ url('front_article_detail', { id: termsAndConditionsArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
-                            <span class="underline-small">
+                            <span>
                                 {{ 'obchodními podmínkami'|trans }}
                             </span>
                         </a>
@@ -143,7 +143,7 @@
                     {{ ' e-shopu a souhlasím se zpracováním'|trans}}
                     {% if privacyPolicyArticle is not null %}
                         <a href="{{ url('front_article_detail', { id: privacyPolicyArticle.id }) }}" target="_blank" class="box-preview__conditions__link">
-                            <span class="underline-small">
+                            <span>
                                 {{ 'osobních údajů'|trans }}
                             </span>
                         </a>
@@ -173,16 +173,16 @@
 
             <div class="in-action__back">
                 {% if orderStep == 1 %}
-                    <a href="{{ url('front_homepage') }}" class="in-action__link underline">
+                    <a href="{{ url('front_homepage') }}" class="in-action__link">
                         {{ 'Zpět do e-shopu'|trans }}
                     </a>
                 {% elseif orderStep == 2 %}
-                    <a href="{{ url('front_cart') }}" class="in-action__link underline">
+                    <a href="{{ url('front_cart') }}" class="in-action__link">
                         {{ 'Zpět do košíku'|trans }}
                     </a>
                 {% elseif orderStep == 3 %}
                     <button type="submit" name="flow_order_transition" value="back" class="in-action__link js-no-validate-button">
-                        <span class="underline">
+                        <span>
                             {{ 'Zpět'|trans }}
                         </span>
                     </button>

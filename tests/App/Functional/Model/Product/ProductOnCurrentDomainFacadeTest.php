@@ -53,7 +53,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
         $productFilterData->maximalPrice = $this->priceConverter->convertPriceWithVatToPriceInDomainDefaultCurrency(Money::create(10000), Domain::FIRST_DOMAIN_ID);
         $paginationResult = $this->getPaginationResultInCategory($productFilterData, $category);
 
-        $this->assertCount(22, $paginationResult->getResults());
+        $this->assertCount(24, $paginationResult->getResults());
     }
 
     public function testFilterByStockAvailability()

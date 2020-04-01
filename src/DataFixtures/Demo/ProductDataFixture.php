@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use App\Component\Domain\DomainHelper;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
+use App\Model\Product\ProductVariantTropicFacade;
 use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,14 +16,12 @@ use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceConverter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterFacade;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactory;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
-use Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade;
 
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
@@ -33,11 +31,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      * @var \App\Model\Product\ProductFacade
      */
     protected $productFacade;
-
-    /**
-     * @var \App\Model\Product\ProductVariantFacade
-     */
-    protected $productVariantFacade;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
@@ -101,7 +94,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
     /**
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \App\Model\Product\ProductVariantFacade $productVariantFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
@@ -113,7 +105,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
      */
     public function __construct(
         ProductFacade $productFacade,
-        ProductVariantFacade $productVariantFacade,
         Domain $domain,
         PricingGroupFacade $pricingGroupFacade,
         ProductDataFactoryInterface $productDataFactory,
@@ -124,7 +115,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         PriceConverter $priceConverter
     ) {
         $this->productFacade = $productFacade;
-        $this->productVariantFacade = $productVariantFacade;
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->productDataFactory = $productDataFactory;
@@ -5642,23 +5632,20 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     {
         $variantCatnumsByMainVariantCatnum = $this->getVariantCatnumsByMainVariantCatnum();
 
-        $parameter = $this->parameterFacade->findOrCreateParameterByNames(
-            \App\Model\Product\Parameter\ParameterFacade::PARAMETER_SIZE,
-            \App\Model\Product\Parameter\Parameter::TYPE_SIZE
-        );
-
         foreach ($variantCatnumsByMainVariantCatnum as $mainVariantCatnum => $variantsCatnums) {
-            /** @var \App\Model\Product\Product $mainProduct */
-            $mainProduct = $this->productsByCatnum[$mainVariantCatnum];
-            $this->setParameterToMainVariant($parameter, $mainProduct);
+            /** @var \App\Model\Product\Product $mainVariant */
+            $mainVariant = $this->productsByCatnum[$mainVariantCatnum];
+            $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
+            $mainVariantData->variantId = $mainVariantCatnum;
+            $this->productFacade->edit($mainVariant->getId(), $mainVariantData);
 
-            $variants = [];
-            foreach ($variantsCatnums as $variantCatnum) {
-                $variants[] = $this->productsByCatnum[$variantCatnum];
+            foreach ($variantsCatnums as $key => $variantCatnum) {
+                $variant = $this->productsByCatnum[$variantCatnum];
+                $variantData = $this->productDataFactory->createFromProduct($variant);
+                $variantVariantId = sprintf('%s%s%s', $mainVariantCatnum, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR, $key + 1);
+                $variantData->variantId = $variantVariantId;
+                $this->productFacade->edit($variant->getId(), $variantData);
             }
-
-            $mainVariant = $this->productVariantFacade->createVariant($mainProduct, $variants);
-            $this->addProductReference($mainVariant);
         }
     }
 
@@ -5869,23 +5856,5 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         }
 
         $productData->stockQuantityByStoreId = $fakeStoreData;
-    }
-
-    /**
-     * @param \App\Model\Product\Parameter\Parameter $parameter
-     * @param \App\Model\Product\Product $mainVariant
-     */
-    private function setParameterToMainVariant(Parameter $parameter, Product $mainVariant)
-    {
-        $parameterValueNames = ['XL', 'L', 'M'];
-        $productData = $this->productDataFactory->createFromProduct($mainVariant);
-        $parameterValueData = $this->parameterValueDataFactory->create();
-        $parameterValueData->text = $parameterValueNames[$mainVariant->getId() % 3];
-        $parameterValueData->locale = DomainHelper::DOMAIN_ID_TO_LOCALE[Domain::FIRST_DOMAIN_ID];
-        $productParameterValueData = $this->productParameterValueDataFactory->create();
-        $productParameterValueData->parameter = $parameter;
-        $productParameterValueData->parameterValueData = $parameterValueData;
-        $productData->parameters[] = $productParameterValueData;
-        $this->productFacade->edit($mainVariant->getId(), $productData);
     }
 }

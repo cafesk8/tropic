@@ -39,7 +39,7 @@
         transform: translateY(-50%);
 
         cursor: pointer;
-        color: @color-gray-dark;
+        color: @color-primary;
         font-size: @list-top-products-arrow-size;
         height: @list-top-products-arrow-size + 2px;
 
@@ -48,8 +48,7 @@
         }
 
         &.slick-disabled {
-            color: @color-gray-dark;
-            opacity: 0.2;
+            color: @color-inactive;
         }
 
         &--prev {
@@ -87,7 +86,13 @@
     &__item {
         width: calc(~"@{calc-base}/@{list-top-products-item-count}");
 
+<<<<<<< HEAD
         color: @color-brown;
+=======
+        &:hover {
+            box-shadow: @shadow;
+        }
+>>>>>>> master
 
         &__in {
             margin: 0 @list-top-products-item-padding;
@@ -138,7 +143,7 @@
             overflow: hidden;
             text-align: center;
 
-            color: @color-gray-dark;
+            color: @color-base;
             font-weight: 400;
 
             @media @query-md {
@@ -151,6 +156,34 @@
             text-align: center;
             margin-top: auto;
 
+<<<<<<< HEAD
+=======
+            &__availability {
+                font-size: @font-size-extra-small;
+
+                .in-badge {
+                    display: none;
+
+                    @media @query-md {
+                        display: inline;
+                    }
+                }
+
+                &__spacer {
+                    display: block;
+                    margin-bottom: 7px;
+                }
+
+                &__text {
+                    display: block;
+                    line-height: 18px;
+
+                    font-size: 13px;
+                    font-weight: 700;
+                }
+            }
+
+>>>>>>> master
             &__price {
                 &__item {
                     display: none;
@@ -161,7 +194,7 @@
 
                         font-weight: 700;
                         font-size: 16px;
-                        color: @color-gray-dark;
+                        color: @color-price;
                     }
 
                     &__old {
@@ -169,7 +202,7 @@
                         padding-left: 5px;
                         font-weight: normal;
                         font-size: 11px;
-                        color: @color-brown-light;
+                        color: @color-price-old;
                         text-decoration: line-through;
                     }
 

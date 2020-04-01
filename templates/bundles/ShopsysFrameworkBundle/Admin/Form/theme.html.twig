@@ -55,6 +55,7 @@
     </tr>
 {% endmacro %}
 
+<<<<<<< HEAD
 {# copy-pasted from parent, just "js-symbol-after-input" class added #}
 {# see https://github.com/shopsys/shopsys/pull/1707 #}
 {% block appendix_block %}
@@ -67,4 +68,49 @@
            title="{{ attr.iconTitle|default('') }}"
         ></i>
     {% endif %}
+=======
+{% block products_list_row -%}
+    {% if top_info_title is not empty %}
+        <strong>{{ top_info_title }}</strong>
+    {% endif %}
+    <div class="wrap-divider">
+        <div class="form-group">
+            <div class="form-group__title">
+                {{- form_label(form) -}}
+
+                <div class="form-group__error">
+                    {{- form_errors(form) -}}
+                </div>
+            </div>
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock %}
+
+{% block products_list_label -%}
+    {{ label }}
+{% endblock -%}
+
+{% block products_list_widget %}
+    <table class="table-form">
+        <thead>
+        <tr class="table-form__row">
+            <td class="table-form__cell">{{ 'Name'|trans }}</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in form.vars.products %}
+            <tr class="table-form__row">
+                <td class="table-form__cell">
+                {% if product is not null %}
+                    <a href="{{ url('admin_product_edit', {id: product.id}) }}" target="_blank" class="btn-link-style btn-link-style--iconic-l">
+                        <span>{{ product|productListDisplayName }}</span>&nbsp;<i class="svg svg-forward-page"></i>
+                    </a>
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+>>>>>>> master
 {% endblock %}

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\HorizontalCategoryFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -34,6 +33,11 @@ class CategoryController extends FrontBaseController
     private $horizontalCategoryFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]|null
+     */
+    private $categoriesWithLazyLoadedVisibleChildren;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Model\Category\TopCategory\TopCategoryFacade $topCategoryFacade
@@ -57,21 +61,25 @@ class CategoryController extends FrontBaseController
      */
     public function hoverMenuAction(bool $dropdownMenu = true): Response
     {
-        $categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(
-            $this->categoryFacade->getRootCategory(),
-            $this->domain->getCurrentDomainConfig()
-        );
-
-        $categoriesForFirstColumn = $this->categoryFacade->getAllVisibleAndListableCategoriesForFirstColumnByDomainId($this->domain->getId());
-
         return $this->render('Front/Content/Category/hoverMenu.html.twig', [
-            'categoriesWithLazyLoadedVisibleChildren' => $categoriesWithLazyLoadedVisibleChildren,
-            'categoriesForFirstColumn' => $categoriesForFirstColumn,
-            'categoriesIdsForFirstColumn' => array_map(function (Category $category) {
-                return $category->getId();
-            }, $categoriesForFirstColumn),
+            'categoriesWithLazyLoadedVisibleChildren' => $this->getCategoriesWithLazyLoadedVisibleChildren(),
             'dropdownMenu' => $dropdownMenu,
         ]);
+    }
+
+    /**
+     * @return \Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildren[]
+     */
+    private function getCategoriesWithLazyLoadedVisibleChildren(): array
+    {
+        if ($this->categoriesWithLazyLoadedVisibleChildren === null) {
+            $this->categoriesWithLazyLoadedVisibleChildren = $this->categoryFacade->getCategoriesWithLazyLoadedVisibleAndListableChildrenForParent(
+                $this->categoryFacade->getRootCategory(),
+                $this->domain->getCurrentDomainConfig()
+            );
+        }
+
+        return $this->categoriesWithLazyLoadedVisibleChildren;
     }
 
     /**

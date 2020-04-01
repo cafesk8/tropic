@@ -208,3 +208,5 @@ services:
     App\Model\Product\Pricing\QuantifiedProductPriceCalculation: ~
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation: '@App\Model\Product\Pricing\QuantifiedProductPriceCalculation'
+
+    App\Model\Product\ProductVariantTropicFacade: ~

@@ -10,7 +10,7 @@
             <div class="list-tags">
                 {{ render(controller('App\\Controller\\Front\\BlogArticleController:mainBlogCategoryForBlogArticleAction', { blogArticle: blogArticle, spanClass: 'list-tags__tag' })) }}
             </div>
-            <a href="#" class="list-articles__item__content__title underline">
+            <a href="#" class="list-articles__item__content__title">
                 {{ blogArticle.name }}
             </a>
             <div class="list-articles__item__content__text">

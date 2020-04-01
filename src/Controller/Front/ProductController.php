@@ -196,12 +196,9 @@ class ProductController extends FrontBaseController
         $domainId = $this->domain->getId();
         $productMainCategory = $this->categoryFacade->getProductMainCategoryByDomainId($product, $domainId);
 
-        $allVariants = $this->productOnCurrentDomainFacade->getVariantsForProduct($product);
-
         return $this->render('Front/Content/Product/detail.html.twig', [
             'product' => $product,
             'accessories' => $accessories,
-            'allVariants' => $allVariants,
             'productMainCategory' => $productMainCategory,
             'productVisibleProductCategoryDomains' => $this->categoryFacade->getProductVisibleAndListableProductCategoryDomains($product, $domainId),
             'domainId' => $domainId,

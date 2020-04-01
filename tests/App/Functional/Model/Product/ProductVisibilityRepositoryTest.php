@@ -509,10 +509,8 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $variant1 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '53');
         /** @var \App\Model\Product\Product $variant2 */
         $variant2 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '54');
-        /** @var \App\Model\Product\Product $variant3 */
-        $variant3 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
         /** @var \App\Model\Product\Product $mainVariant */
-        $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '148');
+        $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
 
         $variant1productData = $productDataFactory->createFromProduct($variant1);
         $variant1productData->hidden = true;
@@ -522,12 +520,10 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
 
         $em->refresh($variant1);
         $em->refresh($variant2);
-        $em->refresh($variant3);
         $em->refresh($mainVariant);
 
         $this->assertFalse($variant1->isVisible());
         $this->assertTrue($variant2->isVisible());
-        $this->assertTrue($variant3->isVisible());
         $this->assertTrue($mainVariant->isVisible());
     }
 
@@ -545,10 +541,8 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $variant1 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '53');
         /** @var \App\Model\Product\Product $variant2 */
         $variant2 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '54');
-        /** @var \App\Model\Product\Product $variant3 */
-        $variant3 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
         /** @var \App\Model\Product\Product $mainVariant */
-        $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '148');
+        $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
 
         $variant1productData = $productDataFactory->createFromProduct($variant1);
         $variant1productData->hidden = true;
@@ -558,20 +552,14 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $variant2productData->hidden = true;
         $productFacade->edit($variant2->getId(), $variant2productData);
 
-        $variant3productData = $productDataFactory->createFromProduct($variant3);
-        $variant3productData->hidden = true;
-        $productFacade->edit($variant3->getId(), $variant3productData);
-
         $productVisibilityRepository->refreshProductsVisibility(true);
 
         $em->refresh($variant1);
         $em->refresh($variant2);
-        $em->refresh($variant3);
         $em->refresh($mainVariant);
 
         $this->assertFalse($variant1->isVisible());
         $this->assertFalse($variant2->isVisible());
-        $this->assertFalse($variant3->isVisible());
         $this->assertFalse($mainVariant->isVisible());
     }
 
@@ -589,10 +577,8 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
         $variant1 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '53');
         /** @var \App\Model\Product\Product $variant2 */
         $variant2 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '54');
-        /** @var \App\Model\Product\Product $variant3 */
-        $variant3 = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
         /** @var \App\Model\Product\Product $mainVariant */
-        $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '148');
+        $mainVariant = $this->getReference(ProductDataFixture::PRODUCT_PREFIX . '69');
 
         $mainVariantproductData = $productDataFactory->createFromProduct($mainVariant);
         $mainVariantproductData->hidden = true;
@@ -602,12 +588,10 @@ class ProductVisibilityRepositoryTest extends TransactionFunctionalTestCase
 
         $em->refresh($variant1);
         $em->refresh($variant2);
-        $em->refresh($variant3);
         $em->refresh($mainVariant);
 
         $this->assertFalse($variant1->isVisible());
         $this->assertFalse($variant2->isVisible());
-        $this->assertFalse($variant3->isVisible());
         $this->assertFalse($mainVariant->isVisible());
     }
 }

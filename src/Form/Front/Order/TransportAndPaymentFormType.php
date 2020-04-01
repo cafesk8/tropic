@@ -116,7 +116,8 @@ class TransportAndPaymentFormType extends AbstractType
     {
         $country = $options['country'] ?? $this->countryFacade->getHackedCountry();
 
-        $payments = $this->paymentFacade->getVisibleByDomainId($options['domain_id']);
+        $showOnlyGiftCertificatePaymentsInCart = $this->cartFacade->showOnlyGiftCertificatePaymentsInCart();
+        $payments = $this->paymentFacade->getVisibleByDomainIdAndGiftCertificateUsability($options['domain_id'], $showOnlyGiftCertificatePaymentsInCart);
 
         $showEmailTransportInCart = $this->cartFacade->showEmailTransportInCart();
         $transports = $this->transportFacade->getVisibleByDomainIdAndCountryAndTransportEmailType(

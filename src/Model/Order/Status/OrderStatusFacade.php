@@ -12,9 +12,7 @@ use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade as BaseOrderSta
  * @method \App\Model\Order\Status\OrderStatus getById($orderStatusId)
  * @property \App\Model\Order\OrderRepository $orderRepository
  * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository, \App\Model\Order\OrderRepository $orderRepository, \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade, \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFactoryInterface $orderStatusFactory)
- * @method \App\Model\Order\Status\OrderStatus create(\App\Model\Order\Status\OrderStatusData $orderStatusFormData)
  * @method \App\Model\Order\Status\OrderStatus edit(int $orderStatusId, \App\Model\Order\Status\OrderStatusData $orderStatusData)
- * @method \App\Model\Order\Status\OrderStatus getById(int $orderStatusId)
  * @method \App\Model\Order\Status\OrderStatus[] getAllExceptId(int $orderStatusId)
  * @method bool isOrderStatusUsed(\App\Model\Order\Status\OrderStatus $orderStatus)
  * @method \App\Model\Order\Status\OrderStatus[] getAll()

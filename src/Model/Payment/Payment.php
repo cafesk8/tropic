@@ -65,16 +65,27 @@ class Payment extends BasePayment
     private $hiddenByGoPay;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $usableForGiftCertificates;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $activatesGiftCertificates;
+
+    /**
      * @param \App\Model\Payment\PaymentData $paymentData
      */
     public function __construct(BasePaymentData $paymentData)
     {
         parent::__construct($paymentData);
 
-        $this->type = $paymentData->type;
-        $this->setGoPayPaymentMethod($paymentData);
-        $this->externalId = $paymentData->externalId;
-        $this->cashOnDelivery = $paymentData->cashOnDelivery;
+        $this->fillCommonProperties($paymentData);
         $this->hiddenByGoPay = $paymentData->hiddenByGoPay;
     }
 
@@ -85,10 +96,20 @@ class Payment extends BasePayment
     {
         parent::edit($paymentData);
 
+        $this->fillCommonProperties($paymentData);
+    }
+
+    /**
+     * @param \App\Model\Payment\PaymentData $paymentData
+     */
+    private function fillCommonProperties(PaymentData $paymentData): void
+    {
         $this->type = $paymentData->type;
         $this->setGoPayPaymentMethod($paymentData);
         $this->externalId = $paymentData->externalId;
         $this->cashOnDelivery = $paymentData->cashOnDelivery;
+        $this->usableForGiftCertificates = $paymentData->usableForGiftCertificates;
+        $this->activatesGiftCertificates = $this->type !== self::TYPE_GOPAY ? false : $paymentData->activatesGiftCertificates;
     }
 
     /**
@@ -177,5 +198,21 @@ class Payment extends BasePayment
     public function unHideByGoPay(): void
     {
         $this->hiddenByGoPay = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUsableForGiftCertificates(): bool
+    {
+        return $this->usableForGiftCertificates;
+    }
+
+    /**
+     * @return bool
+     */
+    public function activatesGiftCertificates(): bool
+    {
+        return $this->activatesGiftCertificates;
     }
 }

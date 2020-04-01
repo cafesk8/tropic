@@ -494,4 +494,33 @@ class ProductRepository extends BaseProductRepository
             ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->getQuery()->getResult();
     }
+
+    /**
+     * @param string $mainVariantVariantId
+     * @return \App\Model\Product\Product|null
+     */
+    public function findMainVariantByVariantId(string $mainVariantVariantId): ?Product
+    {
+        /** @var \App\Model\Product\Product|null $mainVariant */
+        $mainVariant = $this->getProductRepository()->findOneBy([
+            'variantType' => Product::VARIANT_TYPE_MAIN,
+            'variantId' => $mainVariantVariantId,
+        ]);
+
+        return $mainVariant;
+    }
+
+    /**
+     * @param string $variantId
+     * @return \App\Model\Product\Product|null
+     */
+    public function findByVariantId(string $variantId): ?Product
+    {
+        /** @var \App\Model\Product\Product|null $product */
+        $product = $this->getProductRepository()->findOneBy([
+            'variantId' => $variantId,
+        ]);
+
+        return $product;
+    }
 }

@@ -1,11 +1,11 @@
 @form-input-spinbox-padding-vertical: 3px;
 @form-input-spinbox-buttons-width: 29px;
 @form-input-spinbox-buttons-width-small: 23px;
-@form-input-spinbox-height: 48px;
+@form-input-spinbox-height: 32px;
 @form-input-spinbox-height-small: 40px;
-@form-input-spinbox-input-width: 102px;
+@form-input-spinbox-input-width: 88px;
 @form-input-spinbox-input-width-small: 72px;
-@form-inpit-spinbox-button-icon-size: @font-size;
+@form-inpit-spinbox-button-icon-size: 12px;
 
 .form-input-spinbox {
     display: inline-block;
@@ -14,28 +14,12 @@
     position: relative;
     padding: 0 @form-input-spinbox-buttons-width;
     
-    border: 1px solid @color-border-dark;
-    border-radius: @radius-small;
-    box-shadow: @box-shadow-outer;
-
-    &--small {
-        width: @form-input-spinbox-input-width-small;
-        padding: 0 @form-input-spinbox-buttons-width-small;
-    }
+    border-radius: @radius-medium;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    background-color: @color-f;
 
     .box-detail-sets & {
         display: none;
-    }
-
-    &__label {
-        position: absolute;
-        top: 6px;
-        left: 8px;
-
-        color: @color-brown-light;
-        font-size: @font-size-small;
-        text-transform: uppercase;
-        z-index: 1;
     }
 
     &__input {
@@ -45,15 +29,8 @@
         text-align: center;
 
         color: @color-base;
-        font-size: 20px;
-        font-weight: 700;
-
-        .form-input-spinbox--small & {
-            height: @form-input-spinbox-height-small;
-            line-height: @form-input-spinbox-height-small;
-
-            font-size: @font-size;
-        }
+        font-size: 15px;
+        border-radius: 0;
 
         &:focus {
             border: 0;
@@ -71,30 +48,27 @@
         height: @form-input-spinbox-height - 0.5px;
         text-align: center;
 
-        background-color: @color-f;
-        border-radius: 0 @radius-small @radius-small 0;
+        border-radius: 0 @radius-medium @radius-medium 0;
         color: @color-gray;
         font-size: @form-inpit-spinbox-button-icon-size;
         cursor: pointer;
+
+        &:hover {
+            .svg {
+                color: @color-add;
+            }
+        }
 
         &--minus {
             left: 0;
             right: auto;
 
-            border-radius: @radius-small 0 0 @radius-small;
-        }
-
-        .form-input-spinbox--small & {
-            height: @form-input-spinbox-height-small - 0.5px;
-            width: @form-input-spinbox-buttons-width-small;
+            border-radius: @radius-medium 0 0 @radius-medium;
         }
 
         .svg {
             height: @form-inpit-spinbox-button-icon-size;
-        }
-
-        &:hover {
-            background: darken(@color-light, 5%);
+            color: @color-gray;
         }
     }
 }

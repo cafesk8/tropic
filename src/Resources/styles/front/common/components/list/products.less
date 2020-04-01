@@ -41,7 +41,6 @@
         margin-bottom: 50px;
         z-index: @z-index-normal;
 
-        color: @color-brown;
         background-color: @color-f;
         border-bottom: 1px solid @color-border;
 
@@ -146,12 +145,17 @@
 
                 font-size: @list-products-item-font-size;
                 font-weight: 400;
-                color: @color-gray-dark;
+                color: @color-base;
             }
 
+<<<<<<< HEAD
             &__gift {
                 margin-bottom: 10px;
                 line-height: 17px;
+=======
+            &__availability {
+                font-size: @font-size-extra-small;
+>>>>>>> master
 
                 font-size: 13px;
 
@@ -224,6 +228,7 @@
                         display: block;
                         padding: 2px 0;
 
+                        color: @color-price;
                         font-size: 16px;
                         font-weight: 700;
                     }
@@ -233,7 +238,7 @@
                         padding-left: 5px;
                         font-weight: normal;
                         font-size: 13px;
-                        color: @color-brown-light;
+                        color: @color-price-old;
                         text-decoration: line-through;
                     }
 
@@ -301,7 +306,7 @@
                 line-height: @list-products-item-variants-height;
 
                 cursor: pointer;
-                color: @color-gray-dark;
+                color: @color-primary;
                 font-size: @list-products-item-variants-arrow-size;
 
                 &:hover {
@@ -309,8 +314,7 @@
                 }
 
                 &.slick-disabled {
-                    color: @color-gray-dark;
-                    opacity: 0.2;
+                    color: @color-inactive;
                 }
 
                 &--prev {

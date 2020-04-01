@@ -244,8 +244,8 @@ msgstr "Do you want a gift"
 msgid "Chceš promo produkt"
 msgstr "Do you want a promo product"
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
-msgstr "I want to become a member of <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Loyalty program</span></a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Věrnostního programu</a>."
+msgstr "I want to become a member of <a href=\"%url%\" target=\"_blank\">Loyalty program</a>."
 
 msgid "Chci být členem Věrnostního programu"
 msgstr "I want to become a member of Loyalty program"
@@ -1855,8 +1855,8 @@ msgstr "Delete all"
 msgid "Snažíte se koupit více kusů, než je skladem."
 msgstr "You are trying to buy more pieces than there are in stock."
 
-msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">zpracováním osobních údajů</span></a>."
-msgstr "I agree to the <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">processing of personal data</span></a>."
+msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>."
+msgstr "I agree to the <a href=\"%url%\" target=\"_blank\">processing of personal data</a>."
 
 msgid "Souhlasím se zpracováním osobních údajů."
 msgstr "I agree to the processing of personal data."
@@ -2676,3 +2676,6 @@ msgstr "No gifts found."
 
 msgid "Žádné promo produkty nenalezeny."
 msgstr "No promo products found."
+
+msgid "Variant alias"
+msgstr "Modification name"

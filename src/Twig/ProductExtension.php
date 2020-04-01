@@ -16,7 +16,9 @@ use App\Model\Product\ProductFacade;
 use App\Model\TransportAndPayment\FreeTransportAndPaymentFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository;
 use Shopsys\ReadModelBundle\Product\Listed\ListedProductView;
 use Twig\TwigFunction;
 
@@ -26,6 +28,16 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @var \App\Model\Product\ProductCachedAttributesFacade
      */
     protected $productCachedAttributesFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser
+     */
+    protected $currentCustomerUser;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository
+     */
+    protected $productVisibilityRepository;
 
     /**
      * @var \App\Model\Product\Parameter\ParameterFacade
@@ -78,6 +90,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository
      */
     public function __construct(
         CategoryFacade $categoryFacade,
@@ -87,7 +101,9 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         Domain $domain,
         FlagFacade $flagFacade,
         ProductFacade $productFacade,
-        AvailabilityFacade $availabilityFacade
+        AvailabilityFacade $availabilityFacade,
+        CurrentCustomerUser $currentCustomerUser,
+        ProductVisibilityRepository $productVisibilityRepository
     ) {
         parent::__construct($categoryFacade, $productCachedAttributesFacade);
 
@@ -97,6 +113,8 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         $this->flagFacade = $flagFacade;
         $this->productFacade = $productFacade;
         $this->availabilityFacade = $availabilityFacade;
+        $this->currentCustomerUser = $currentCustomerUser;
+        $this->productVisibilityRepository = $productVisibilityRepository;
     }
 
     /**
@@ -132,6 +150,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             new TwigFunction(
                 'getAvailabilityColor',
                 [$this, 'getAvailabilityColor']
+            ),
+            new TwigFunction(
+                'filterOnlyVisibleVariants',
+                [$this, 'filterOnlyVisibleVariants']
             ),
         ];
     }
@@ -230,5 +252,23 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
         }
 
         return $this->availabilityColorsIndexedByName[$availability] ?? AvailabilityData::DEFAULT_COLOR;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return \App\Model\Product\Product[]
+     */
+    public function filterOnlyVisibleVariants(Product $product): array
+    {
+        $domainId = $this->domain->getId();
+        $pricingGroup = $this->currentCustomerUser->getPricingGroup();
+        return array_filter($product->getVariants(), function (Product $variant) use ($domainId, $pricingGroup) {
+            $productVisibility = $this->productVisibilityRepository->getProductVisibility(
+                $variant,
+                $pricingGroup,
+                $domainId
+            );
+            return $productVisibility->isVisible();
+        });
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\App\Functional\Model\Product;
 
 use App\DataFixtures\Demo\AvailabilityDataFixture;
-use App\Model\Product\ProductVariantFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -22,12 +21,7 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
     private $productFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVariantFacade
-     */
-    private $productVariantFacade;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\ProductDataFactory
+     * @var \App\Model\Product\ProductDataFactory
      */
     private $productDataFactory;
 
@@ -36,6 +30,9 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
      */
     private $vatFacade;
 
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
     private $domain;
 
     protected function setUp(): void
@@ -43,7 +40,6 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
         parent::setUp();
         $container = $this->getContainer();
         $this->productFacade = $container->get(ProductFacade::class);
-        $this->productVariantFacade = $container->get(ProductVariantFacade::class);
         $this->productDataFactory = $container->get(ProductDataFactoryInterface::class);
         $this->vatFacade = $container->get(VatFacade::class);
         $this->domain = $container->get(Domain::class);
@@ -71,12 +67,14 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
         $productData = $this->productDataFactory->create();
         $productData->availability = $this->getReference($availabilityReference);
         $this->setVats($productData);
+        $productData->variantId = '123';
         $mainProduct = $this->productFacade->create($productData);
+        $productData->variantId = '123/2';
         $secondProduct = $this->productFacade->create($productData);
+        $productData->variantId = '123/3';
         $thirdProduct = $this->productFacade->create($productData);
-        $mainVariant = $this->productVariantFacade->createVariant($mainProduct, [$secondProduct, $thirdProduct]);
-        $this->assertTrue($mainVariant->isMainVariant());
-        $this->assertContainsAllVariants([$mainProduct, $secondProduct, $thirdProduct], $mainVariant);
+        $this->assertTrue($mainProduct->isMainVariant());
+        $this->assertContainsAllVariants([$secondProduct, $thirdProduct], $mainProduct);
     }
 
     /**
@@ -116,12 +114,14 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
             $productData->outOfStockAvailability = $this->getReference($outOfStockAvailabilityReference);
         }
         $this->setVats($productData);
+        $productData->variantId = '123';
         $mainProduct = $this->productFacade->create($productData);
+        $productData->variantId = '123/2';
         $secondProduct = $this->productFacade->create($productData);
+        $productData->variantId = '123/3';
         $thirdProduct = $this->productFacade->create($productData);
-        $mainVariant = $this->productVariantFacade->createVariant($mainProduct, [$secondProduct, $thirdProduct]);
-        $this->assertTrue($mainVariant->isMainVariant());
-        $this->assertContainsAllVariants([$mainProduct, $secondProduct, $thirdProduct], $mainVariant);
+        $this->assertTrue($mainProduct->isMainVariant());
+        $this->assertContainsAllVariants([$secondProduct, $thirdProduct], $mainProduct);
     }
 
     /**

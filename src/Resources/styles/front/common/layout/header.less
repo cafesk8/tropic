@@ -1,16 +1,16 @@
 @header-cart-width: 38px;
-@header-height: 35px;
+@header-height: 52px;
 @header-mobile-button-size: 28px;
 @header-mobile-button-info-size: 16px;
 @header-mobile-button-dropdown-position: @web-header-mobile-dropdown-position;
 @header-search-icon-size: 18px;
-@header-item-gap: 34px;
+@header-item-gap: 16px;
 @header-item-gap-small: 10px;
-@header-logo-width: 250px;
+@header-logo-width: 232px;
 @header-logo-width-small: 169px;
-@header-search-width: 490px;
+@header-search-width: 426px;
 @header-search-width-small: 400px;
-@header-right-actions-width: 344px;
+@header-right-actions-width: 354px;
 
 .header {
     position: relative;
@@ -18,13 +18,17 @@
     flex-wrap: wrap;
     align-items: center;
     min-height: @header-height;
-    padding: 12px 0 0;
+
+    @media @query-lg {
+        padding: 20px 10px 0;
+    }
 
     @media @query-vl {
-        padding: 12px 0 20px;
+        padding: 30px 0 0;
     }
 
     &--small {
+        justify-content: space-between;
         margin-bottom: 29px;
         
         @media @query-lg {
@@ -40,26 +44,28 @@
     @media @query-vl {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         width: 100%;
         margin-top: 10px;
-        padding: 0 15px;
 
-        background-color: @color-primary;
+        background-color: @color-base;
         border-radius: @radius;
     }
 }
 
 // Left part of header with logo
 .header__logo {
-    width: 100%;
-    text-align: left;
+    display: none;
 
-    @media @query-vl {
-        flex: 1;
+    @media @query-lg {
+        display: block;
+        text-align: left;
+        width: @header-logo-width;
     }
 
     .header--small & {
+        display: block;
         width: @header-logo-width-small;
         margin: 0 auto 15px auto;
 
@@ -75,21 +81,40 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
+
+    @media @query-lg {
+        margin: 20px 0;
+    }
 
     @media @query-vl {
-        width: auto;
-        justify-content: flex-end;
+        width: calc(~"100% - @{header-logo-width}");
+        justify-content: space-between;
         margin: 0;
     }
 
     &__menu {
         display: flex;
         align-items: center;
+        margin-right: @header-item-gap;
+
+        @media @query-lg {
+            margin-right: 0;
+        }
 
         @media @query-vl {
             display: none!important;
+        }
+    }
+
+    &__logo {
+        display: flex;
+
+        @media @query-lg {
+            display: none;
+        }
+
+        img {
+            width: 52px;
         }
     }
 
@@ -98,38 +123,42 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-end;
+        padding-right: 12px;
+
+        @media @query-lg {
+            padding-right: 0;
+        }
 
         @media @query-vl {
             width: @header-right-actions-width;
         }
 
         &__item {
-            margin-left: @header-item-gap-small;
-
             @media @query-lg {
-                margin-left: @header-item-gap - 18px;
+                margin-left: @header-item-gap-small;
+            }
+
+            @media @query-vl {
+                margin-left: @header-item-gap;
             }
         }
     }
 
     &__search {
-        margin-left: @header-item-gap-small;
+        margin-left: auto;
         
         @media @query-lg {
-            margin-left: @header-item-gap;
             width: @header-search-width-small;
+            margin-left: @header-item-gap-small;
+        }
+
+        @media @query-vl {
+            margin-left: @header-item-gap;
         }
 
         @media @query-xl {
+            margin-left: 74px;
             width: @header-search-width;
-        }
-
-        &__icon-menu {
-            position: relative;
-            line-height: @header-search-icon-size;
-            top: 2px;
-
-            font-size: @header-search-icon-size;
         }
 
         &__icon-search {
@@ -151,7 +180,6 @@
 
     font-size: @font-size-extra-small;
     font-family: @font-alt;
-    color: @color-brown-dark;
 
     @media @query-vl {
         flex-direction: row;

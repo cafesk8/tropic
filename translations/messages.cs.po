@@ -244,8 +244,8 @@ msgstr "Chcete dárek"
 msgid "Chceš promo produkt"
 msgstr "Chcete promo produkt"
 
-msgid "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
-msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">Věrnostního programu</span></a>."
+msgid "Chci být členem <a href=\"%url%\" target=\"_blank\">Věrnostního programu</a>."
+msgstr "Chci být členem <a href=\"%url%\" target=\"_blank\">Věrnostního programu</a>."
 
 msgid "Chci být členem Věrnostního programu"
 msgstr "Chci být členem Věrnostního programu"
@@ -1873,8 +1873,8 @@ msgstr "Smazat všechny"
 msgid "Snažíte se koupit více kusů, než je skladem."
 msgstr "Snažíte se koupit více kusů, než máme skladem."
 
-msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">zpracováním osobních údajů</span></a>."
-msgstr "Souhlasím se <a href=\"%url%\" target=\"_blank\"><span class=\"underline-small\">zpracováním osobních údajů</span></a>."
+msgid "Souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>."
+msgstr "Souhlasím se <a href=\"%url%\" target=\"_blank\">zpracováním osobních údajů</a>."
 
 msgid "Souhlasím se zpracováním osobních údajů."
 msgstr "Souhlasím se zpracováním osobních údajů."
@@ -2700,3 +2700,6 @@ msgstr "Žádné dárky nenalezeny."
 
 msgid "Žádné promo produkty nenalezeny."
 msgstr "Žádné promo produkty nenalezeny."
+
+msgid "Variant alias"
+msgstr "Název modifikace"

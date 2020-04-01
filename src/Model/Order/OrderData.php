@@ -117,6 +117,11 @@ class OrderData extends BaseOrderData
      */
     public $registration;
 
+    /**
+     * @var \App\Model\Order\GiftCertificate\OrderGiftCertificate[]
+     */
+    public $giftCertificates;
+
     public function __construct()
     {
         parent::__construct();
@@ -126,5 +131,6 @@ class OrderData extends BaseOrderData
         $this->transportType = Transport::TYPE_NONE;
         $this->promoCodesCodes = [];
         $this->registration = false;
+        $this->giftCertificates = [];
     }
 }

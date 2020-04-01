@@ -5,15 +5,16 @@
 @path-design: '../images';
 @path-font: '../fonts';
 
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap&subset=latin-ext');
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Kanit:300,400,500,600,700&display=swap&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap');
+
 
 // Fonts
-@font-base: 'Roboto Condensed', sans-serif;
-@font-alt: 'Roboto', sans-serif;
+@font-base: 'Kanit', sans-serif;
+@font-alt: 'Source Sans Pro', sans-serif;
 @font: @font-base;
 
-@font-size-extra-small: 12px;
+@font-size-extra-small: 13px;
 @font-size-small: 14px;
 @font-size: 15px;
 @font-size-big: 18px;
@@ -27,11 +28,7 @@
 @web-header-mobile-dropdown-position: 95px;
 
 @margin-gap: 20px;
-@web-scrollbar-size: 17px;
-@arrow-size: 6px;
 @calc-base: 99.99%;
-@underline-gap: 1px;
-@underline-gap-hover: 1px;
 
 // Z-index level
 @z-index-under: -1;
@@ -59,47 +56,41 @@
 @color-e: #eee;
 @color-f: #fff;
 
-
 //// Classic colors of design
-@color-blue: #009bd9;
-@color-green: #c0e314;
-@color-red: #eb5013;
-
-@color-black: #181a22;
-@color-pink: #ff91fa;
-@color-gray-light: #d7d9da;
-@color-gray: #8991a3;
-@color-gray-dark: #384149;
+@color-blue: #0077b3;
+@color-blue-dark: #002b41;
+@color-blue-light: #e5f1f7;
+@color-turquoise: #30b0d5;
+@color-green: #3ea938;
+@color-green-light: #85c598;
+@color-green-2: #b3ce4d;
+@color-red: #d53030;
+@color-gray: #85949f;
 @color-orange: #ffa500;
-@color-brown: #6c6868;
-@color-brown-dark: #433e3e;
-@color-brown-light: #6d6868;
-@color-brown-light-2: #646464;
 
 //// Context colors
 ////// Base color of text
-@color-base: @color-black;
+@color-base: @color-blue-dark;
 
 ////// Color, which is main in design (used in titles or links, other significant places)
-@color-primary: @color-black;
+@color-primary: @color-blue;
 
 ////// Color, which is additional in design (second main color)
 @color-add: @color-green;
 
 ////// Color, which is the most used grey in design
-@color-light: #efefef;
+@color-light: @color-blue-light;
 
 ////// Color for common prices
-@color-price: @color-gray-dark;
+@color-price: @color-base;
 ////// Color for more visible prices (main price)
-@color-price-main: @color-base;
-@color-price-old: @color-brown;
-@color-price-save: @color-pink;
-@color-price-discount: @color-pink;
+@color-price-main: @color-red;
+@color-price-old: @color-gray;
+@color-price-discount: @color-red;
 
 ////// Color for main links and its hover color
-@color-link: @color-black;
-@color-link-hover: @color-black;
+@color-link: @color-primary;
+@color-link-hover: @color-primary;
 
 ////// Special colors
 @color-info: @color-green;
@@ -107,10 +98,10 @@
 @color-warning: @color-orange;
 
 ////// Color for inactive text (muted)
-@color-inactive: @color-a;
+@color-inactive: @color-gray;
 ////// Base color of border
 @color-border: @color-light;
-@color-border-dark: #cdcdcd;
+@color-border-dark: @color-turquoise;
 ////// Base color for background of components
 @color-box: @color-light;
 
@@ -131,14 +122,17 @@
 
 //// Default box shadow settings
 @shadow: 0 2px 20px 0 rgba(0,0,0,0.1);
-@box-shadow-outer: 0 2px 4px 0 rgba(0,0,0,0.1);
-@box-shadow-inner: inset 0 -1px 2px 0 rgba(0,0,0,0.3);
+@box-shadow-outer: 0 2px 4px rgba(0, 0, 0, 0.2);
+@box-shadow-inner: inset 0 -1px 2px rgba(0, 0, 0, 0.3);
 @box-shadow: @box-shadow-inner, @box-shadow-outer;
 
 
 //// Default border radius value
-@radius: 6px;
+@radius-big: 16px;
+@radius: 8px;
+@radius-medium: 6px;
 @radius-small: 3px;
+
 
 //// Default postfixes for responsive helpers generator
 @postfixes: -tablet, -mobile, -mobile-small;

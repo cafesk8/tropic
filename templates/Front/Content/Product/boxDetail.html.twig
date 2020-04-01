@@ -1,4 +1,5 @@
-{% macro productBox(product, variants, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+    {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% set domain = getDomain() %}
@@ -12,10 +13,6 @@
                 {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
                 {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
                 {% set sellingPrice = getProductSellingPrice(product) %}
-                {# @var defaultPrice \App\Model\Product\Pricing\ProductPrice #}
-                {% set defaultPrice = getDefaultPrice(product) %}
-                {# @var registeredCustomerPrice \App\Model\Product\Pricing\ProductPrice #}
-                {% set registeredCustomerPrice = getProductRegisteredCustomerPrice(product) %}
 
                 <div class="box-detail__image__main">
                     {% if imageExists(product) %}
@@ -44,7 +41,7 @@
                         <div class="box-gallery__links">
                             {% if galleryImages|length > showGalleryMaxCount %}
                                 <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
-                                    <a href="#" class="box-gallery__item__link underline">
+                                    <a href="#" class="box-gallery__item__link">
                                         {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
                                     </a>
                                 </div>
@@ -75,49 +72,43 @@
                 </h2>
 
                 <div class="box-detail__info__code">
-                    <span class="padding-right-10">
-                        {{ 'Kód produktu'|trans }}: {{ product.catnum }}
-                    </span>
-                {% if product.brand %}
-                    |
-                    <span class="padding-left-10">
+                    {% if not product.isMainVariant %}
+                        <span class="padding-right-10">
+                            {{ 'Kód produktu'|trans }}: {{ product.catnum }}
+                        </span>
+                        {% if product.brand %}
+                            |
+                            <span class="padding-left-10">
+                                {{ 'Brand'|trans }}:
+                                <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
+                                    <span itemprop="brand">{{ product.brand.name }}</span>
+                                </a>
+                            </span>
+                        {% endif %}
+                    {% elseif product.brand %}
                         {{ 'Brand'|trans }}:
                         <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
                             <span itemprop="brand">{{ product.brand.name }}</span>
                         </a>
-                    </span>
-                {% endif %}
+                    {% endif %}
                 </div>
+
+                {% if product.isGiftCertificate %}
+                    <div class="in-message--info">{{ 'Tento produkt je dárkovým kupónem, tudíž na něj nelze aplikovat žádné slevy.' }}</div>
+                {% endif %}
 
                 <div class="box-detail__wrap">
                     <div class="box-detail__add-basket">
                         <div>
-                            {% if product.calculatedAvailability %}
-                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product, variants: variants } %}
+                            {% if not product.isMainVariant and product.calculatedAvailability %}
+                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
                             {% endif %}
                             <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
-                                <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
-                                    {{ sellingPrice.priceWithVat|price }}
-                                </div>
-                                {% if sellingPrice.isActionPrice %}
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-                                        {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
-                                    </div>
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-                                        {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
-                                    </div>
+                                {% if not product.isMainVariant %}
+                                    {{ self.productPrice(product) }}
+                                    <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                                    <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
                                 {% endif %}
-                                {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) %}
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
-                                        {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
-                                    </div>
-                                {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) %}
-                                    <div class="box-detail-add__prices__item box-detail-add__prices__item--not-registered">
-                                        {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
-                                    </div>
-                                {% endif %}
-                                <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
-                                <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
                                 <link itemprop="availability"
                                     href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
                             </div>
@@ -145,11 +136,14 @@
                                                 >
                                             {% endif %}
                                         </th>
+                                        <th class="table-variants__cell">{{ 'Dostupnost'|trans }}</th>
+                                        <th class="table-variants__cell">{{ 'Kód produktu'|trans }}</th>
+                                        <th class="table-variants__cell">{{ 'Parametry'|trans }}</th>
                                         <th class="table-variants__cell table-variants__cell--action"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for variant in variants %}
+                                    {% for variant in filterOnlyVisibleVariants(product) %}
                                         <tr class="table-variants__row">
                                             <td class="table-variants__cell table-variants__cell--image">
                                                 <div class="table-variants__cell__image">
@@ -170,7 +164,20 @@
                                                 {% endif %}
                                             </td>
                                             <td class="table-variants__cell table-variants__cell--price">
-                                                {{ getProductSellingPrice(variant).priceWithVat|price }}
+                                                {{ self.productPrice(variant) }}
+                                            </td>
+                                            <td class="table-variants__cell">
+                                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: variant, variants: {} } %}
+                                            </td>
+                                            <td class="table-variants__cell">
+                                                {{ variant.catnum }}
+                                            </td>
+                                            <td>
+                                                {% set productParameterValues = getProductParameterValues(variant) %}
+                                                {% for productParameterValue in productParameterValues %}
+                                                    {{ productParameterValue.parameter.name }}:
+                                                    {{ productParameterValue.value.text }}
+                                                {% endfor %}
                                             </td>
                                             <td class="table-variants__cell table-variants__cell--action">
                                                 {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}
@@ -224,7 +231,6 @@
 
         {{ boxTabs.productTabs(
             product,
-            variants,
             productMainCategory,
             visible,
             youtubeDetails,
@@ -235,4 +241,33 @@
         ) }}
     </div>
 
+{% endmacro %}
+
+{% macro productPrice(product) %}
+    {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
+    {% set sellingPrice = getProductSellingPrice(product) %}
+    {# @var defaultPrice \App\Model\Product\Pricing\ProductPrice #}
+    {% set defaultPrice = getDefaultPrice(product) %}
+    {# @var registeredCustomerPrice \App\Model\Product\Pricing\ProductPrice #}
+    {% set registeredCustomerPrice = getProductRegisteredCustomerPrice(product) %}
+    <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
+        {{ sellingPrice.priceWithVat|price }}
+    </div>
+    {% if sellingPrice.isActionPrice %}
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
+            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+        </div>
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
+            {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+        </div>
+    {% endif %}
+    {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) %}
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
+            {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
+        </div>
+    {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) %}
+        <div class="box-detail-add__prices__item box-detail-add__prices__item--not-registered">
+            {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
+        </div>
+    {% endif %}
 {% endmacro %}

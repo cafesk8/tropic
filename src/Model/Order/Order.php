@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Order;
 
 use App\Model\Order\Exception\UnsupportedOrderExportStatusException;
+use App\Model\Order\GiftCertificate\OrderGiftCertificate;
 use App\Model\Store\Store;
 use App\Model\Transport\PickupPlace\PickupPlace;
 use App\Model\Transport\Transport;
@@ -281,6 +282,13 @@ class Order extends BaseOrder
     private $trackingNumber;
 
     /**
+     * @var \App\Model\Order\GiftCertificate\OrderGiftCertificate[]|\Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Model\Order\GiftCertificate\OrderGiftCertificate", mappedBy="order", cascade={"persist"})
+     */
+    private $giftCertificates;
+
+    /**
      * @param \App\Model\Order\OrderData $orderData
      * @param string $orderNumber
      * @param string $urlHash
@@ -336,6 +344,7 @@ class Order extends BaseOrder
         $this->memberOfLoyaltyProgram = $orderData->memberOfLoyaltyProgram;
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
+        $this->giftCertificates = new ArrayCollection();
     }
 
     /**
@@ -361,6 +370,7 @@ class Order extends BaseOrder
         $this->memberOfLoyaltyProgram = $orderData->memberOfLoyaltyProgram;
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
+        $this->giftCertificates = new ArrayCollection($orderData->giftCertificates);
 
         return $orderEditResult;
     }
@@ -823,5 +833,21 @@ class Order extends BaseOrder
     public function getPostcode()
     {
         return $this->postcode;
+    }
+
+    /**
+     * @return \App\Model\Order\GiftCertificate\OrderGiftCertificate[]
+     */
+    public function getGiftCertificates(): array
+    {
+        return $this->giftCertificates->toArray();
+    }
+
+    /**
+     * @param \App\Model\Order\GiftCertificate\OrderGiftCertificate $giftCertificate
+     */
+    public function addGiftCertificate(OrderGiftCertificate $giftCertificate): void
+    {
+        $this->giftCertificates->add($giftCertificate);
     }
 }

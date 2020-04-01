@@ -112,4 +112,22 @@ class PaymentFacade extends BasePaymentFacade
 
         return $payments;
     }
+
+    /**
+     * @param int $domainId
+     * @param bool $onlyUsableForGiftCertificates
+     * @return \App\Model\Payment\Payment[]
+     */
+    public function getVisibleByDomainIdAndGiftCertificateUsability(int $domainId, bool $onlyUsableForGiftCertificates): array
+    {
+        $payments = $this->getVisibleByDomainId($domainId);
+
+        if (!$onlyUsableForGiftCertificates) {
+            return $payments;
+        }
+
+        return array_filter($payments, function (Payment $payment) use ($onlyUsableForGiftCertificates) {
+            return $payment->isUsableForGiftCertificates() === $onlyUsableForGiftCertificates;
+        });
+    }
 }
