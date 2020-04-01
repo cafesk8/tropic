@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f09fcf8176186a23b8a4fe588c76707",
+    "content-hash": "049ab769e4b8d0ba904a9b9f29c4b132",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -14281,6 +14281,7 @@
             ],
             "description": "This tool check syntax of PHP files about 20x faster than serial check.",
             "homepage": "https://github.com/JakubOnderka/PHP-Parallel-Lint",
+            "abandoned": "php-parallel-lint/php-parallel-lint",
             "time": "2015-12-15T10:42:16+00:00"
         },
         {
@@ -16490,12 +16491,12 @@
             "version": "v5.4.16",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Symplify/CodingStandard.git",
+                "url": "https://github.com/symplify/coding-standard.git",
                 "reference": "72a3b03f21be6c978a90ad567a29bd9261df0dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/CodingStandard/zipball/72a3b03f21be6c978a90ad567a29bd9261df0dfa",
+                "url": "https://api.github.com/repos/symplify/coding-standard/zipball/72a3b03f21be6c978a90ad567a29bd9261df0dfa",
                 "reference": "72a3b03f21be6c978a90ad567a29bd9261df0dfa",
                 "shasum": ""
             },
@@ -16539,12 +16540,12 @@
             "version": "v5.4.13",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Symplify/EasyCodingStandard.git",
+                "url": "https://github.com/symplify/easy-coding-standard.git",
                 "reference": "78090cd1450e9f5bf65b4fa02f7180d6b6061cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/EasyCodingStandard/zipball/78090cd1450e9f5bf65b4fa02f7180d6b6061cf9",
+                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/78090cd1450e9f5bf65b4fa02f7180d6b6061cf9",
                 "reference": "78090cd1450e9f5bf65b4fa02f7180d6b6061cf9",
                 "shasum": ""
             },
@@ -16603,12 +16604,12 @@
             "version": "v5.4.16",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Symplify/PackageBuilder.git",
+                "url": "https://github.com/symplify/package-builder.git",
                 "reference": "20e04ad9cd15a53527807a62c8b244d8a114f779"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Symplify/PackageBuilder/zipball/20e04ad9cd15a53527807a62c8b244d8a114f779",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/20e04ad9cd15a53527807a62c8b244d8a114f779",
                 "reference": "20e04ad9cd15a53527807a62c8b244d8a114f779",
                 "shasum": ""
             },
