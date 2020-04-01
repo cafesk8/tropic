@@ -11,11 +11,10 @@
     width: auto;
     min-height: @btn-height;
     padding: 0 @btn-padding-horizontal;
-    line-height: @btn-height;
-    vertical-align: middle;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: @transition background, @transition color;
-    text-align: center;
 
     border-radius: @radius;
     border: 0;
@@ -32,6 +31,11 @@
         color: @btn-color-hover;
         background-color: @btn-bg-hover;
         text-decoration: none;
+    }
+
+    .svg {
+        height: @font-size-extra-small;
+        margin-right: 10px;
     }
 }
 
@@ -53,6 +57,21 @@
         }
     }
 
+    @btn-secondary-color: @color-f;
+    @btn-secondary-color-hover: @color-f;
+    @btn-secondary-bg: @color-primary;
+    @btn-secondary-bg-hover: darken(@btn-secondary-bg, 5%);
+
+    &--secondary {
+        color: @btn-secondary-color;
+        background-color: @btn-secondary-bg;
+
+        &:hover {
+            color: @btn-secondary-color-hover;
+            background-color: @btn-secondary-bg-hover;
+        }
+    }
+
     &--disabled {
         opacity: 0.5;
         cursor: no-drop;
@@ -63,13 +82,32 @@
 .btn {
     @btn-large-height: 54px;
     @btn-large-padding-horizontal: 17px;
+    @btn-large-font-size: 16px;
 
     &--large {
         min-height: @btn-large-height;
-        line-height: @btn-large-height;
         padding: 0 @btn-large-padding-horizontal;
 
-        font-size: 16px;
+        font-size: @btn-large-font-size;
+
+        .svg {
+            height: @btn-large-font-size;
+        }
+    }
+
+    @btn-big-height: 42px;
+    @btn-big-padding-horizontal: 32px;
+    @btn-large-font-size: @font-size-small;
+
+    &--big  {
+        min-height: @btn-big-height;
+        padding: 0 @btn-big-padding-horizontal;
+
+        font-size: @btn-large-font-size;
+
+        .svg {
+            height: @btn-large-font-size;
+        }
     }
 
     &--full-width {
@@ -94,7 +132,7 @@
     line-height: @btn-with-border-height - (@btn-with-border-size-border * 2);
     vertical-align: middle;
     display: inline-block;
-    transition: @transition background, @transition color;
+    transition: none;
     text-align: center;
 
     border-radius: @radius;
@@ -134,6 +172,10 @@
     border-radius: @radius;
     transition: none;
     background: linear-gradient(90deg, rgba(253,244,151,1) 0%, rgba(253,89,73,1) 33%, rgba(214,36,159,1) 66%, rgba(40,90,235,1) 100%);
+
+    &--green {
+        background: linear-gradient(90deg, rgba(39,125,168,1) 0%, rgba(88,182,167,1) 33%, rgba(155,201,98,1) 66%, rgba(93,169,75,1) 100%);
+    }
 
     &:hover {
         text-decoration: none;

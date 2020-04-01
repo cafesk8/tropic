@@ -28,6 +28,7 @@ import './responsiveTab';
 import './responsiveToggle';
 import './responsiveTooltip';
 import './safariDetection';
+import './scrollToPosition';
 import './searchAutocomplete';
 import './selectric';
 import './spinbox';
