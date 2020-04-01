@@ -55,7 +55,6 @@
     </tr>
 {% endmacro %}
 
-<<<<<<< HEAD
 {# copy-pasted from parent, just "js-symbol-after-input" class added #}
 {# see https://github.com/shopsys/shopsys/pull/1707 #}
 {% block appendix_block %}
@@ -68,7 +67,7 @@
            title="{{ attr.iconTitle|default('') }}"
         ></i>
     {% endif %}
-=======
+
 {% block products_list_row -%}
     {% if top_info_title is not empty %}
         <strong>{{ top_info_title }}</strong>
@@ -112,5 +111,4 @@
         {% endfor %}
         </tbody>
     </table>
->>>>>>> master
 {% endblock %}

@@ -13,11 +13,7 @@
             </span>
             <a
                 href="#"
-<<<<<<< HEAD
                 class="in-availability__stores-big underline-small js-detail-availability-window-opener"
-=======
-                class="box-detail__availability__stores js-detail-availability-window-opener"
->>>>>>> master
                 data-product-id="{{ product.id }}"
                 >
                 {% transchoice stocksWithoutZeroQuantityOnPickupPlaceStore|length with { '%stocksWithoutZeroQuantityOnStoreCount%': stocksWithoutZeroQuantityOnPickupPlaceStore|length } %}
@@ -46,8 +42,7 @@
 {% endmacro %}
 
 
-<<<<<<< HEAD
-{% if variants|length > 0 or product.variants|length > 0 %}
+{% if product.variants|length > 0 %}
     <div class="in-availability in-availability--big js-product-variant-detail-select-info">
         <span class="in-availability__status">
             <span class="in-availability__date">
@@ -59,20 +54,8 @@
             </span>
         </span>
     </div>
-    {% for variant in variants if variant in product.variants %}
+{% for variant in product.variants %}
         {{ _self.availabilityDetail(variant, true) }}
-=======
-{% if product.variants|length > 0 %}
-    <div class="box-detail__availability">
-        <span class="box-detail__availability__status">
-            <span class="box-detail__availability__date">
-                {{ 'Skladem, ihned k odeslání'|trans }}
-            </span>
-        </span>
-    </div>
-    {% for variant in product.variants %}
-        {{ _self.availibilityDetail(variant, true) }}
->>>>>>> master
     {% endfor %}
 {% else %}
     {{ _self.availabilityDetail(product, false) }}

@@ -5,12 +5,7 @@
             {% set domainId = getDomain().id %}
 
             <div class="web__line">
-<<<<<<< HEAD
-                <div class="web__container web__container--dark web__container--border-radius-bottom">
-                    {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
-=======
                 <div class="web__container web__container--light web__container--footer">
->>>>>>> master
                     <div class="footer-top">
                         <div class="footer-top__scroll-top">
                             <a href="#top" class="btn btn--secondary btn--big js-scroll-to-position">
@@ -18,6 +13,7 @@
                                 {{ 'Přesunout nahoru'|trans }}
                             </a>
                         </div>
+                        {{ render(controller('App\\Controller\\Front\\NewsletterController:subscriptionAction')) }}
 
                         <div class="footer-top__wrap">
                             <div class="footer-top__links">
