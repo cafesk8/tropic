@@ -35,6 +35,7 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
             $queryBuilder
                 ->join(Product::class, 'p', Join::WITH, 'pmip.product = p.id AND p.mainVariant = :mainVariantId')
                 ->leftJoin(ProductVisibility::class, 'pv', Join::WITH, 'p.id = pv.product')
+                ->andWhere('p.calculatedSellingDenied = false')
                 ->andWhere('pv.visible = true')
                 ->setParameter('mainVariantId', $product);
         } else {
