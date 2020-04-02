@@ -50,6 +50,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'descriptions',
         'usingStock',
         'registrationDiscountDisabled',
+        'manualInputPricesByPricingGroupId',
+        'vatsIndexedByDomainId',
     ];
 
     /**

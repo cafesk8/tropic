@@ -40,5 +40,6 @@ class PricingGroupDataFactory extends BasePricingGroupDataFactory
         $pricingGroupData->internalId = $pricingGroup->getInternalId();
         $pricingGroupData->minimalPrice = $pricingGroup->getMinimalPrice();
         $pricingGroupData->discount = $pricingGroup->getDiscount();
+        $pricingGroupData->calculatedFromDefault = $pricingGroup->isCalculatedFromDefault();
     }
 }

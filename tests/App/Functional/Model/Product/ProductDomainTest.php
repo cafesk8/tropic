@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\App\Functional\Model\Product;
 
 use App\DataFixtures\Demo\AvailabilityDataFixture;
+use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface;
@@ -128,7 +128,7 @@ class ProductDomainTest extends TransactionFunctionalTestCase
     {
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade */
+        /** @var \App\Model\Pricing\Vat\VatFacade $vatFacade */
         $vatFacade = $this->getContainer()->get(VatFacade::class);
         $productVatsIndexedByDomainId = [];
         foreach ($domain->getAllIds() as $domainId) {

@@ -86,3 +86,7 @@ services:
     App\Form\Admin\AllMailTemplatesFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Mail\AllMailTemplatesFormType }
+
+    App\Form\Admin\VatFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Vat\VatFormType }

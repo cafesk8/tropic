@@ -43,7 +43,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     private $priceCalculation;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade
+     * @var \App\Model\Pricing\Vat\VatFacade
      */
     private $vatFacade;
 
@@ -59,7 +59,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \App\Model\Payment\PaymentPriceCalculation $paymentPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation $orderPriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
+     * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(

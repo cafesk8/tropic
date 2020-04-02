@@ -19,6 +19,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductDomain as BaseProductDomain;
  * @ORM\Entity
  * @property \App\Model\Product\Product $product
  * @method __construct(\App\Model\Product\Product $product, int $domainId)
+ * @property \App\Model\Pricing\Vat\Vat $vat
+ * @method \App\Model\Pricing\Vat\Vat getVat()
+ * @method setVat(\App\Model\Pricing\Vat\Vat $vat)
  */
 class ProductDomain extends BaseProductDomain
 {

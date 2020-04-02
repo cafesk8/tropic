@@ -50,6 +50,7 @@ parameters:
         Shopsys\FrameworkBundle\Model\Country\Country: App\Model\Country\Country
         Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency: App\Model\Pricing\Currency\Currency
         Shopsys\FrameworkBundle\Model\Product\Availability\Availability: App\Model\Product\Availability\Availability
+        Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat: App\Model\Pricing\Vat\Vat
     build-version: '0000000000000000'
     securityBcryptCost: 12
     # All time values are displayed in this timezone (default is PHP timezone)

@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Model\Order\Mall;
 
 use App\Component\Domain\DomainHelper;
+use App\Model\Pricing\Vat\VatDataFactory;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDataFactory;
 use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFactoryInterface;
 
 class MallImportPriceCalculatorCalculation
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDataFactoryInterface
+     * @var \App\Model\Pricing\Vat\VatDataFactory
      */
     private $vatDataFactory;
 
@@ -31,7 +31,7 @@ class MallImportPriceCalculatorCalculation
 
     /**
      * PriceCalculatorMallImportCalculation constructor.
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDataFactory $vatDataFactory
+     * @param \App\Model\Pricing\Vat\VatDataFactory $vatDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFactoryInterface $vatFactory
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
      */
@@ -61,14 +61,16 @@ class MallImportPriceCalculatorCalculation
 
     /**
      * @param string $percentVat
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Vat\Vat
+     * @return \App\Model\Pricing\Vat\Vat
      */
     public function getVat(string $percentVat): Vat
     {
         $vatData = $this->vatDataFactory->create();
         $vatData->name = 'orderItemVat';
         $vatData->percent = $percentVat;
+        /** @var \App\Model\Pricing\Vat\Vat $vat */
+        $vat = $this->vatFactory->create($vatData, DomainHelper::CZECH_DOMAIN);
 
-        return $this->vatFactory->create($vatData, DomainHelper::CZECH_DOMAIN);
+        return $vat;
     }
 }

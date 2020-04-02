@@ -8,6 +8,7 @@ use Shopsys\FrameworkBundle\Model\Payment\PaymentData as BasePaymentData;
 
 /**
  * @property \App\Model\Transport\Transport[] $transports
+ * @property \App\Model\Pricing\Vat\Vat[] $vatsIndexedByDomainId
  */
 class PaymentData extends BasePaymentData
 {
