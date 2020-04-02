@@ -144,6 +144,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
+        $result['variants_aliases'] = $this->getVariantsAliases($product, $locale);
 
         return $result;
     }
@@ -212,5 +213,20 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $categoryIds;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param string $locale
+     * @return string[]
+     */
+    private function getVariantsAliases(Product $product, string $locale): array
+    {
+        $variantsAliases = [];
+        foreach ($product->getVariants() as $variant) {
+            $variantsAliases[] = $variant->getVariantAlias($locale);
+        }
+
+        return array_filter($variantsAliases);
     }
 }

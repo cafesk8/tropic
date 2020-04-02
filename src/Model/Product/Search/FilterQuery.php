@@ -17,13 +17,32 @@ use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
  * @method \App\Model\Product\Search\FilterQuery filterOnlyInStock()
  * @method \App\Model\Product\Search\FilterQuery filterOnlySellable()
  * @method \App\Model\Product\Search\FilterQuery filterOnlyVisible(\App\Model\Pricing\Group\PricingGroup $pricingGroup)
- * @method \App\Model\Product\Search\FilterQuery search(string $text)
  * @method \App\Model\Product\Search\FilterQuery setPage(int $page)
  * @method \App\Model\Product\Search\FilterQuery setLimit(int $limit)
  * @method \App\Model\Product\Search\FilterQuery setFrom(int $from)
  */
 class FilterQuery extends BaseFilterQuery
 {
+    /**
+     * @param string $text
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function search(string $text): BaseFilterQuery
+    {
+        $variantsAliasesFields = [
+            'variants_aliases.full_with_diacritic^60',
+            'variants_aliases.full_without_diacritic^50',
+            'variants_aliases^45',
+            'variants_aliases.edge_ngram_with_diacritic^40',
+            'variants_aliases.edge_ngram_without_diacritic^35',
+        ];
+        /** @var \App\Model\Product\Search\FilterQuery $clone */
+        $clone = parent::search($text);
+        $clone->match['multi_match']['fields'] = array_merge($clone->match['multi_match']['fields'], $variantsAliasesFields);
+
+        return $clone;
+    }
+
     /**
      * @param string $orderingModeId
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup

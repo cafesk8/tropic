@@ -26,6 +26,15 @@ use Shopsys\FrameworkBundle\Model\Product\ProductFacade;
 class ProductDataFixture extends AbstractReferenceFixture implements DependentFixtureInterface
 {
     public const PRODUCT_PREFIX = 'product_';
+    public const MAIN_VARIANT_1_CATNUM = '9176544M';
+    public const MAIN_VARIANT_2_CATNUM = '32PFL4400';
+    public const MAIN_VARIANT_3_CATNUM = '7700769XCX';
+    public const VARIANT_1_CATNUM = '9176544';
+    public const VARIANT_2_CATNUM = '9176588';
+    public const VARIANT_3_CATNUM = '9176554';
+    public const VARIANT_4_CATNUM = '9176578';
+    public const VARIANT_5_CATNUM = '7700777';
+    public const VARIANT_6_CATNUM = '7700769Z';
 
     /**
      * @var \App\Model\Product\ProductFacade
@@ -2223,7 +2232,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '9176544';
+        $productData->catnum = self::VARIANT_1_CATNUM;
         $productData->partno = '32PFL4308I';
         $productData->ean = '8845781243205';
 
@@ -2266,7 +2275,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '9176588';
+        $productData->catnum = self::VARIANT_2_CATNUM;
         $productData->partno = '32PFL4308J';
         $productData->ean = '8845781243205';
 
@@ -2836,7 +2845,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '9176544M';
+        $productData->catnum = self::MAIN_VARIANT_1_CATNUM;
         $productData->partno = '32PFL4308';
         $productData->ean = '8845781243205';
 
@@ -3009,7 +3018,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '9176554';
+        $productData->catnum = self::VARIANT_3_CATNUM;
         $productData->partno = '32PFL4360';
         $productData->ean = '8845781243205';
 
@@ -3052,7 +3061,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '9176578';
+        $productData->catnum = self::VARIANT_4_CATNUM;
         $productData->partno = 'T27D590EY';
         $productData->ean = '8845781243205';
 
@@ -3181,7 +3190,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '7700777';
+        $productData->catnum = self::VARIANT_5_CATNUM;
         $productData->partno = '22HD44D';
         $productData->ean = '8845781245937';
 
@@ -3213,7 +3222,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '7700769Z';
+        $productData->catnum = self::VARIANT_6_CATNUM;
         $productData->partno = '22HD44D';
         $productData->ean = '8845781245938';
 
@@ -3331,8 +3340,8 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '32PFL4400';
-        $productData->partno = '32PFL4400';
+        $productData->catnum = self::MAIN_VARIANT_2_CATNUM;
+        $productData->partno = self::MAIN_VARIANT_2_CATNUM;
         $productData->ean = '8845781243205';
 
         foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
@@ -3363,7 +3372,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $productData = $this->productDataFactory->create();
 
-        $productData->catnum = '7700769XCX';
+        $productData->catnum = self::MAIN_VARIANT_3_CATNUM;
         $productData->partno = '22HD44D';
         $productData->ean = '8845781245938';
 
@@ -5613,19 +5622,62 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     public static function getVariantCatnumsByMainVariantCatnum(): array
     {
         return [
-            '9176544M' => [
-                '9176544',
-                '9176588',
+            self::MAIN_VARIANT_1_CATNUM => [
+                self::VARIANT_1_CATNUM,
+                self::VARIANT_2_CATNUM,
             ],
-            '32PFL4400' => [
-                '9176554',
-                '9176578',
+            self::MAIN_VARIANT_2_CATNUM => [
+                self::VARIANT_3_CATNUM,
+                self::VARIANT_4_CATNUM,
             ],
-            '7700769XCX' => [
-                '7700777',
-                '7700769Z',
+            self::MAIN_VARIANT_3_CATNUM => [
+                self::VARIANT_5_CATNUM,
+                self::VARIANT_6_CATNUM,
             ],
         ];
+    }
+
+    /**
+     * @param string $catnum
+     * @return array
+     */
+    private function getVariantAliasesByCatnum(string $catnum): array
+    {
+        $variantAliases = [];
+        switch ($catnum) {
+            case self::VARIANT_1_CATNUM:
+                foreach ($this->domain->getAllLocales() as $locale) {
+                    $variantAliases[$locale] = t('36 palců Hyundai', [], 'dataFixtures', $locale);
+                }
+                return $variantAliases;
+            case self::VARIANT_2_CATNUM:
+                foreach ($this->domain->getAllLocales() as $locale) {
+                    $variantAliases[$locale] = t('Unikátní alias', [], 'dataFixtures', $locale);
+                }
+                return $variantAliases;
+            case self::VARIANT_3_CATNUM:
+                foreach ($this->domain->getAllLocales() as $locale) {
+                    $variantAliases[$locale] = t('36 palců Philips', [], 'dataFixtures', $locale);
+                }
+                return $variantAliases;
+            case self::VARIANT_4_CATNUM:
+                foreach ($this->domain->getAllLocales() as $locale) {
+                    $variantAliases[$locale] = t('27 palců Philips', [], 'dataFixtures', $locale);
+                }
+                return $variantAliases;
+            case self::VARIANT_5_CATNUM:
+                foreach ($this->domain->getAllLocales() as $locale) {
+                    $variantAliases[$locale] = t('51,5 palců Hyundai', [], 'dataFixtures', $locale);
+                }
+                return $variantAliases;
+            case self::VARIANT_6_CATNUM:
+                foreach ($this->domain->getAllLocales() as $locale) {
+                    $variantAliases[$locale] = t('60 palců Hyundai', [], 'dataFixtures', $locale);
+                }
+                return $variantAliases;
+            default:
+                return $variantAliases;
+        }
     }
 
     protected function createVariants(): void
@@ -5644,6 +5696,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
                 $variantData = $this->productDataFactory->createFromProduct($variant);
                 $variantVariantId = sprintf('%s%s%s', $mainVariantCatnum, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR, $key + 1);
                 $variantData->variantId = $variantVariantId;
+                $variantData->variantAlias = $this->getVariantAliasesByCatnum($variantCatnum);
                 $this->productFacade->edit($variant->getId(), $variantData);
             }
         }
