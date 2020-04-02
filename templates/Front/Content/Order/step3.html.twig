@@ -13,6 +13,7 @@
             <div class="box-order">
                 <div class="box-order__message">
                     {{ form_errors(form) }}
+                    {{ render(controller('App\\Controller\\Front\\FlashMessageController:indexAction')) }}
                 </div>
                 <div class="box-order__wrap">
                     <div class="box-order__info">
