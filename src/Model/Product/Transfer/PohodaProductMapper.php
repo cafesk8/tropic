@@ -72,6 +72,13 @@ class PohodaProductMapper
                     $domainId
                 )->getId()] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->purchasePrice));
             }
+
+            if ($pohodaProduct->standardPrice !== null) {
+                $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getByNameAndDomainId(
+                    PricingGroup::PRICING_GROUP_STANDARD_PRICE,
+                    $domainId
+                )->getId()] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->standardPrice));
+            }
         }
 
         $productData->vatsIndexedByDomainId[DomainHelper::CZECH_DOMAIN] = $this->vatFacade->getByPohodaId($pohodaProduct->vatRateId);
