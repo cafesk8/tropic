@@ -638,3 +638,5 @@ services:
     App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade:
         arguments:
             $templating: '@templating'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
