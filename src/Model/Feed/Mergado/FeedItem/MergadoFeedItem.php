@@ -39,7 +39,7 @@ class MergadoFeedItem implements FeedItemInterface
     protected $nameExact;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $category;
 
@@ -125,7 +125,7 @@ class MergadoFeedItem implements FeedItemInterface
      * @param string|null $ean
      * @param string|null $url
      * @param string|null $nameExact
-     * @param string $category
+     * @param string|null $category
      * @param string|null $descriptionShort
      * @param string|null $description
      * @param string[] $benefits
@@ -149,7 +149,7 @@ class MergadoFeedItem implements FeedItemInterface
         ?string $ean,
         ?string $url,
         ?string $nameExact,
-        string $category,
+        ?string $category,
         ?string $descriptionShort,
         ?string $description,
         array $benefits,
@@ -247,9 +247,9 @@ class MergadoFeedItem implements FeedItemInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCategory(): string
+    public function getCategory(): ?string
     {
         return $this->category;
     }

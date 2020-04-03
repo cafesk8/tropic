@@ -54,6 +54,14 @@ services:
     #        tags:
     #            - { name: shopsys.cron, hours: '23', minutes: '00' }
 
+    Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
+    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
+        tags:
+            - { name: shopsys.cron, hours: '*', minutes: '*' }
+
     App\Model\Product\Mall\MallProductDeleteCronModule:
         tags:
             - { name: shopsys.cron, hours: '23', minutes: '00' }
@@ -132,16 +140,6 @@ services:
             - { name: shopsys.cron, hours: '*', minutes: '*' }
 
     ######################################
-    ## FRAMEWORK REORDERED CRON MODULES ##
-    ######################################
-
-    Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
-    Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
 
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule:
         tags:

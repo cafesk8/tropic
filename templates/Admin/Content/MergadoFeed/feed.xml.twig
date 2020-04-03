@@ -20,7 +20,9 @@
             <URL>{{ item.url }}</URL>
         {% endif -%}
         <NAME_EXACT>{{ item.nameExact }}</NAME_EXACT>
-        <CATEGORY>{{ item.category }}</CATEGORY>
+        {% if item.category is not null %}
+            <CATEGORY>{{ item.category }}</CATEGORY>
+        {% endif %}
         {% if item.descriptionShort is not null -%}
             <DESCRIPTION_SHORT>{{ item.descriptionShort }}</DESCRIPTION_SHORT>
         {% endif -%}
