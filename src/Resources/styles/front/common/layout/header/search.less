@@ -29,7 +29,6 @@
                 font-family: @font-alt;
                 border: none;
                 box-shadow: none;
-                background-color: transparent;
                 border-radius: @radius 0 0 @radius;
 
                 @media @query-vl {
@@ -41,13 +40,13 @@
                     opacity: 0.5;
                     font-family: @font-alt;
                 }
-
+                  
                 &:-ms-input-placeholder { /* Internet Explorer 10-11 */
                     color: @color-0;
                     opacity: 0.5;
                     font-family: @font-alt;
                 }
-
+                  
                 &::placeholder {
                     color: @color-0;
                     opacity: 0.5;
@@ -78,16 +77,16 @@
     &__autocomplete {
         position: absolute;
         width: 100%;
-        top: @search-input-height-small + 2px;
+        top: @search-input-height-small;
         left: 0;
         z-index: @z-index-above;
         padding: 20px;
 
         background-color: @color-box;
-        border-radius: 0 0 @radius @radius;
+        border-radius: 0 0 @radius @radius; 
 
         @media @query-vl {
-            top: @search-input-height + 2px;
+            top: @search-input-height;
         }
     }
 
