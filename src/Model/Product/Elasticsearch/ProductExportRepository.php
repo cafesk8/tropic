@@ -133,7 +133,7 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     protected function extractResult(Product $product, int $domainId, string $locale): array
     {
-        $variants = $this->productFacade->getVariantsForProduct($product, $domainId);
+        $variants = $this->productFacade->getVisibleVariantsForProduct($product, $domainId);
         $result = parent::extractResult($product, $domainId, $locale);
 
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
@@ -144,7 +144,7 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
-        $result['variants_aliases'] = $this->getVariantsAliases($product, $locale);
+        $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
 
         return $result;
     }
@@ -218,12 +218,13 @@ class ProductExportRepository extends BaseProductExportRepository
     /**
      * @param \App\Model\Product\Product $product
      * @param string $locale
+     * @param int $domainId
      * @return string[]
      */
-    private function getVariantsAliases(Product $product, string $locale): array
+    private function getVariantsAliases(Product $product, string $locale, int $domainId): array
     {
         $variantsAliases = [];
-        foreach ($product->getVariants() as $variant) {
+        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
             $variantsAliases[] = $variant->getVariantAlias($locale);
         }
 

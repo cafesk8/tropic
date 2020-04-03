@@ -547,4 +547,20 @@ class ProductRepository extends BaseProductRepository
 
         return $queryBuilder;
     }
+
+    /**
+     * @param \App\Model\Product\Product $mainVariant
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Product[]
+     */
+    public function getAllVisibleVariantsByMainVariant(Product $mainVariant, int $domainId, PricingGroup $pricingGroup): array
+    {
+        $queryBuilder = $this->getAllVisibleQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->andWhere('p.mainVariant = :mainVariant')
+            ->setParameter('mainVariant', $mainVariant);
+
+        return $queryBuilder->getQuery()->execute();
+    }
 }
