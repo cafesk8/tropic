@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
-use App\Model\Product\ProductDomain;
 use Doctrine\ORM\Query\Expr\Join;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository as BaseProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductDomain;
 use Shopsys\FrameworkBundle\Model\Product\ProductVisibility;
 
 /**
@@ -26,7 +26,7 @@ class ProductManualInputPriceRepository extends BaseProductManualInputPriceRepos
     {
         $queryBuilder = $this->getProductManualInputPriceRepository()
             ->createQueryBuilder('pmip')
-            ->select('MIN(pmip.inputPrice) as inputPrice, MAX(pmip.inputPrice) as maxInputPrice, IDENTITY(pmip.pricingGroup) as pricingGroupId, MIN(pd.actionPrice) as actionPrice')
+            ->select('MIN(pmip.inputPrice) as inputPrice, MAX(pmip.inputPrice) as maxInputPrice, IDENTITY(pmip.pricingGroup) as pricingGroupId')
             ->where('pmip.pricingGroup IN (:pricingGroups)')
             ->groupBy('pmip.pricingGroup')
             ->setParameter('pricingGroups', $pricingGroups);

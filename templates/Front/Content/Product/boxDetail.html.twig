@@ -265,6 +265,7 @@
     <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
         {{ sellingPrice.priceWithVat|price }}
     </div>
+    {#
     {% if sellingPrice.isActionPrice %}
         <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
             {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
@@ -273,6 +274,7 @@
             {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
         </div>
     {% endif %}
+    #}
     {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) %}
         <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
             {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}

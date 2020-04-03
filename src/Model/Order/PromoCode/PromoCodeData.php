@@ -90,11 +90,6 @@ class PromoCodeData extends BasePromoCodeData
     /**
      * @var string|null
      */
-    public $usageType;
-
-    /**
-     * @var string|null
-     */
     public $userType;
 
     /**

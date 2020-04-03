@@ -32,6 +32,7 @@
                                             {% else %}
                                                 {{ productSellingPrice.priceWithVat|price }}
                                             {% endif %}
+                                            {#
                                             {% if (productSellingPrice.isActionPrice and not productSellingPrice.priceFrom) %}
                                                 <div class="list-products__item__info__price__item__old">
                                                     {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
@@ -40,6 +41,7 @@
                                                     -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                                 </div>
                                             {% endif %}
+                                            #}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -124,6 +126,7 @@
                                                 {% else %}
                                                     {{ productSellingPrice.priceWithVat|price }}
                                                 {% endif %}
+                                                {#
                                                 {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
                                                     <div class="{{ listCssClass }}__item__info__price__item__old">
                                                         {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
@@ -132,6 +135,7 @@
                                                         -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                                     </div>
                                                 {% endif %}
+                                                #}
                                             </div>
                                         </div>
                                     {% endif %}
@@ -255,6 +259,7 @@
                                     {% else %}
                                         {{ productSellingPrice.priceWithVat|price }}
                                     {% endif %}
+                                    {#
                                     {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
                                         <div class="{{ listCssClass }}__item__info__price__item__old">
                                             {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
@@ -263,6 +268,7 @@
                                             -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                         </div>
                                     {% endif %}
+                                    #}
                                 </div>
                             </div>
                         {% endif %}

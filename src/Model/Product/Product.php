@@ -11,7 +11,6 @@ use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
@@ -34,7 +33,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method addVariants(\App\Model\Product\Product[] $variants)
  * @method setMainVariant(\App\Model\Product\Product $mainVariant)
  * @method setTranslations(\App\Model\Product\ProductData $productData)
- * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
  * @method refreshVariants(\App\Model\Product\Product[] $currentVariants)
  * @method addNewVariants(\App\Model\Product\Product[] $currentVariants)
  * @method unsetRemovedVariants(\App\Model\Product\Product[] $currentVariants)
@@ -44,6 +42,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  * @method \App\Model\Pricing\Vat\Vat getVatForDomain(int $domainId)
  * @method changeVatForDomain(\App\Model\Pricing\Vat\Vat $vat, int $domainId)
+ * @method setDomains(\App\Model\Product\ProductData $productData)
+ * @method createDomains(\App\Model\Product\ProductData $productData)
  */
 class Product extends BaseProduct
 {
@@ -65,13 +65,6 @@ class Product extends BaseProduct
      * @ORM\Column(type="integer", nullable=true, unique=true)
      */
     private $pohodaId;
-
-    /**
-     * @var \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Model\Product\ProductDomain", mappedBy="product", cascade={"persist"}, fetch="EXTRA_LAZY")
-     */
-    protected $domains;
 
     /**
      * @var \App\Model\Product\Flag\Flag[]|\Doctrine\Common\Collections\Collection
@@ -268,21 +261,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param \App\Model\Product\ProductData $productData
-     */
-    protected function createDomains(BaseProductData $productData)
-    {
-        $domainIds = array_keys($productData->seoTitles);
-
-        foreach ($domainIds as $domainId) {
-            $productDomain = new ProductDomain($this, $domainId);
-            $this->domains->add($productDomain);
-        }
-
-        $this->setDomains($productData);
-    }
-
-    /**
      * @return \App\Model\Product\StoreStock\ProductStoreStock[]
      */
     public function getStoreStocks(): array
@@ -329,28 +307,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param int $domainId
-     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
-     */
-    public function getActionPrice(int $domainId): ?Money
-    {
-        /** @var \App\Model\Product\ProductDomain $productDomain */
-        $productDomain = $this->getProductDomain($domainId);
-        return $productDomain->getActionPrice();
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
-     * @param int $domainId
-     */
-    public function setActionPrice(?Money $actionPrice, int $domainId): void
-    {
-        /** @var \App\Model\Product\ProductDomain $productDomain */
-        $productDomain = $this->getProductDomain($domainId);
-        $productDomain->setActionPrice($actionPrice);
-    }
-
-    /**
      * @param int|null $limit
      * @return \App\Model\Product\Flag\Flag[]
      */
@@ -394,20 +350,6 @@ class Product extends BaseProduct
         }
 
         return $productCategories;
-    }
-
-    /**
-     * @param \App\Model\Product\ProductData $productData
-     */
-    protected function setDomains(BaseProductData $productData): void
-    {
-        parent::setDomains($productData);
-
-        /** @var \App\Model\Product\ProductDomain $productDomain */
-        foreach ($this->domains as $productDomain) {
-            $domainId = $productDomain->getDomainId();
-            $productDomain->setActionPrice($productData->actionPrices[$domainId]);
-        }
     }
 
     /**

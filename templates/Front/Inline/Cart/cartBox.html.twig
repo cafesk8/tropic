@@ -45,9 +45,11 @@
                                     <div class="cart-detail__item__content">
                                         <a class="cart-detail__item__content__title" href="{{ url('front_product_detail', {id: cartItem.product.id}) }}" title="Product name">{{ cartItem.product.name }}</a>
                                         <span class="cart-detail__item__content__price"> {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
+                                            {#
                                             {% if quantifiedItemPrice.unitPrice.isActionPrice %}
                                                 <span class="cart-detail__item__content__price__old">{{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}</span>
                                             {% endif %}
+                                            #}
                                         </span>
                                     </div>
                                     <div class="cart-detail__item__pieces">

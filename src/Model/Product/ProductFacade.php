@@ -430,17 +430,6 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
-     * @param \App\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPrice
-     * @param int $domainId
-     */
-    public function setActionPriceForProduct(Product $product, ?Money $actionPrice, int $domainId): void
-    {
-        $product->setActionPrice($actionPrice, $domainId);
-        $this->em->flush();
-    }
-
-    /**
      * @param int $limit
      * @return \App\Model\Product\Product[]
      */

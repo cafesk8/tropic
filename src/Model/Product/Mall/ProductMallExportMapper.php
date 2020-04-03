@@ -199,13 +199,8 @@ class ProductMallExportMapper
 
             /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
             $productPrice = $this->productPriceCalculationForCustomerUser->calculatePriceForCustomerUserAndDomainId($product, self::CZECH_DOMAIN);
-            if ($productPrice->isActionPriceByUsedForPromoCode()) {
-                $mallProduct->setPurchasePrice((float)$productPrice->defaultProductPrice()->getPriceWithVat()->getAmount());
-                $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
-            } else {
-                $mallProduct->setPurchasePrice((float)$productPrice->getPriceWithVat()->getAmount());
-                $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
-            }
+            $mallProduct->setPurchasePrice((float)$productPrice->getPriceWithVat()->getAmount());
+            $mallProduct->setPrice((float)$productPrice->getPriceWithVat()->getAmount());
         }
 
         return $mallProduct;

@@ -34,11 +34,6 @@ class ProductData extends BaseProductData
     public $productsInGroup;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\Money\Money[]
-     */
-    public $actionPrices;
-
-    /**
      * @var bool
      */
     public $generateToHsSportXmlFeed;
@@ -102,7 +97,6 @@ class ProductData extends BaseProductData
     {
         parent::__construct();
         $this->productsInGroup = [];
-        $this->actionPrices = [];
         $this->mallExport = false;
         $this->mallExportedAt = null;
         $this->updatedAt = new DateTime();

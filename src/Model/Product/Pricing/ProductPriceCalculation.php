@@ -109,7 +109,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
 
         $inputPrice = Money::zero();
         $defaultPrice = Money::zero();
-        $productActionPrice = Money::zero();
         $defaultMaxInputPrice = Money::zero();
         $maxInputPrice = Money::zero();
 
@@ -123,8 +122,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null) {
-                $productActionPrice = $manualInputPrice['actionPrice'] ? Money::create($manualInputPrice['actionPrice']) : Money::zero();
-
                 if ($manualInputPrice['pricingGroupId'] === $pricingGroup->getId()) {
                     if (!$pricingGroup->isCalculatedFromDefault()) {
                         $inputPrice = $manualInputPrice['inputPrice'] ? Money::create($manualInputPrice['inputPrice']) : Money::zero();
@@ -143,10 +140,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $isPriceFrom = false;
         if ($product->isMainVariant() && $maxInputPrice->isGreaterThan($inputPrice)) {
             $isPriceFrom = true;
-        }
-
-        if (!$productActionPrice->isZero() && $inputPrice->isGreaterThan($productActionPrice) && !$pricingGroup->isCalculatedFromDefault()) {
-            $inputPrice = $productActionPrice;
         }
 
         $defaultCurrency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
@@ -173,9 +166,6 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $basePrice,
             $isPriceFrom,
             $product->getId(),
-            $pricingGroup,
-            $defaultPricingGroup,
-            $product->getActionPrice($domainId),
             $defaultPrice
         );
     }

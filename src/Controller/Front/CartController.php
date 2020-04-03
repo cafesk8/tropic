@@ -13,7 +13,6 @@ use App\Model\Customer\User\CustomerUser;
 use App\Model\Gtm\GtmFacade;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Preview\OrderPreviewFactory;
-use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
@@ -96,11 +95,6 @@ class CartController extends FrontBaseController
     private $gtmFacade;
 
     /**
-     * @var \App\Model\Order\PromoCode\CurrentPromoCodeFacade
-     */
-    private $currentPromoCodeFacade;
-
-    /**
      * @var \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface
      */
     private $listedProductViewFacade;
@@ -119,7 +113,6 @@ class CartController extends FrontBaseController
      * @param \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface $tokenManager
      * @param \App\Model\Product\Gift\ProductGiftInCartFacade $productGiftInCartFacade
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
-     * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
@@ -135,7 +128,6 @@ class CartController extends FrontBaseController
         CsrfTokenManagerInterface $tokenManager,
         ProductGiftInCartFacade $productGiftInCartFacade,
         GtmFacade $gtmFacade,
-        CurrentPromoCodeFacade $currentPromoCodeFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         ProductFacade $productFacade,
         OrderGiftFacade $orderGiftFacade,
@@ -150,7 +142,6 @@ class CartController extends FrontBaseController
         $this->tokenManager = $tokenManager;
         $this->productGiftInCartFacade = $productGiftInCartFacade;
         $this->gtmFacade = $gtmFacade;
-        $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->productFacade = $productFacade;
         $this->orderGiftFacade = $orderGiftFacade;
@@ -217,7 +208,6 @@ class CartController extends FrontBaseController
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
         $topProducts = $this->listedProductViewFacade->getAllTop();
         $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
-        $this->currentPromoCodeFacade->checkProductActionPriceType($quantifiedItemsPrices);
         $this->gtmFacade->onCartPage($orderPreview);
         return $this->render('Front/Content/Cart/index.html.twig', [
             'cart' => $cart,

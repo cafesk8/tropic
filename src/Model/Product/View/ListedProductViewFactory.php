@@ -9,7 +9,6 @@ use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -25,11 +24,6 @@ use Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFactory as BaseListe
 class ListedProductViewFactory extends BaseListedProductViewFactory
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
-     */
-    private $pricingGroupSettingFacade;
-
-    /**
      * @var \App\Model\Product\ProductFacade
      */
     private $productFacade;
@@ -37,17 +31,14 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade,
         ProductFacade $productFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
-        $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->productFacade = $productFacade;
     }
 
@@ -68,7 +59,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['prices'],
             $pricingGroup,
             $productArray['id'],
-            $this->getMoney($productArray['action_price']),
             $this->getPriceFromPriceArray($productArray['default_price'])
         );
 
@@ -115,7 +105,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param array $pricesArray
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param int $productId
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $actionPriceForCurrentDomain
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $defaultProductPrice
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
@@ -123,7 +112,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         array $pricesArray,
         PricingGroup $pricingGroup,
         int $productId,
-        ?Money $actionPriceForCurrentDomain,
         ?Price $defaultProductPrice
     ): ?BaseProductPrice {
         $pricingGroupId = $pricingGroup->getId();
@@ -134,9 +122,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
                     $price,
                     $priceArray['price_from'],
                     $productId,
-                    $pricingGroup,
-                    $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($pricingGroup->getDomainId()),
-                    $actionPriceForCurrentDomain,
                     $defaultProductPrice
                 );
             }
@@ -155,14 +140,5 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         $priceWithVat = Money::create((string)$priceArray['price_with_vat']);
 
         return new Price($priceWithoutVat, $priceWithVat);
-    }
-
-    /**
-     * @param float|null $amount
-     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
-     */
-    private function getMoney(?float $amount): ?Money
-    {
-        return $amount !== null ? Money::create((string)$amount) : null;
     }
 }
