@@ -112,35 +112,9 @@ services:
     Shopsys\FrameworkBundle\Component\Image\ImageFactoryInterface:
         alias: App\Component\Image\ImageFactory
 
-    App\Component\Rest\RestClient:
-        class: App\Component\Rest\RestClient
-        factory: 'App\Component\Rest\RestClientFactory:create'
-        arguments:
-            - '%transfer_host%'
-            - '%transfer_cs_username%'
-            - '%transfer_cs_password%'
-
-    App\Component\Rest\MultidomainRestClient:
-        factory: 'App\Component\Rest\MultidomainRestClientFactory:create'
-        arguments:
-            - '%transfer_host%'
-            - '%transfer_cs_username%'
-            - '%transfer_cs_password%'
-            - '%transfer_sk_username%'
-            - '%transfer_sk_password%'
-            - '%transfer_en_username%'
-            - '%transfer_en_password%'
-
     App\Component\Transfer\Logger\TransferLoggerFactory:
         arguments:
             - '@monolog.logger.cron'
-
-    App\Component\Transfer\TransferConfig:
-        arguments:
-            - '%transfer_host%'
-            - '%transfer_cs_username%'
-            - '%transfer_cs_password%'
-            - '%transfer_enabled%'
 
     App\Component\Transfer\TransferCronModuleDependency: ~
 
@@ -505,11 +479,6 @@ services:
             - { name: kernel.event_subscriber }
 
     Shopsys\FrameworkBundle\Component\Log\SlowLogSubscriber: '@App\Component\Log\SlowLogSubscriber'
-
-    Shopsys\FrameworkBundle\Model\Security\LoginListener:
-        class: App\Model\Security\LoginListener
-        tags:
-            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
 
     Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFacade: '@App\Model\Order\Item\OrderItemFacade'
 

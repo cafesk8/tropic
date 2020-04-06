@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
-use App\Model\Product\StoreStock\Transfer\AllCzechStoreStockImportCronModule;
-use App\Model\Product\StoreStock\Transfer\AllGermanStoreStockImportCronModule;
-use App\Model\Product\StoreStock\Transfer\AllSlovakStoreStockImportCronModule;
-use App\Model\Product\StoreStock\Transfer\ChangedStoreStockImportCronModule;
-use App\Model\Transfer\TransferFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 
@@ -35,29 +30,21 @@ class StoreFacade
     private $storeFactory;
 
     /**
-     * @var \App\Model\Transfer\TransferFacade
-     */
-    private $transferFacade;
-
-    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Store\StoreRepository $storeRepository
      * @param \App\Component\Image\ImageFacade $imageFacade
      * @param \App\Model\Store\StoreFactory $storeFactory
-     * @param \App\Model\Transfer\TransferFacade $transferFacade
      */
     public function __construct(
         EntityManagerInterface $em,
         StoreRepository $storeRepository,
         ImageFacade $imageFacade,
-        StoreFactory $storeFactory,
-        TransferFacade $transferFacade
+        StoreFactory $storeFactory
     ) {
         $this->em = $em;
         $this->storeRepository = $storeRepository;
         $this->imageFacade = $imageFacade;
         $this->storeFactory = $storeFactory;
-        $this->transferFacade = $transferFacade;
     }
 
     /**
@@ -124,7 +111,6 @@ class StoreFacade
         $this->em->flush();
 
         $this->uploadImage($store, $storeData);
-        $this->resetStockImportCronModules();
 
         return $store;
     }
@@ -140,11 +126,6 @@ class StoreFacade
         $store->edit($storeData);
         $this->uploadImage($store, $storeData);
 
-        // reset transfer only in change
-        if ($isStoreFranchiseChanged) {
-            $this->resetStockImportCronModules();
-        }
-
         return $store;
     }
 
@@ -158,21 +139,12 @@ class StoreFacade
         $this->em->flush();
     }
 
-    private function resetStockImportCronModules(): void
-    {
-        $this->transferFacade->resetTransferByTransferId(AllCzechStoreStockImportCronModule::TRANSFER_IDENTIFIER);
-        $this->transferFacade->resetTransferByTransferId(AllSlovakStoreStockImportCronModule::TRANSFER_IDENTIFIER);
-        $this->transferFacade->resetTransferByTransferId(AllGermanStoreStockImportCronModule::TRANSFER_IDENTIFIER);
-        $this->transferFacade->resetTransferByTransferId(ChangedStoreStockImportCronModule::TRANSFER_IDENTIFIER);
-    }
-
     /**
      * @param int $storeId
      */
     public function delete(int $storeId): void
     {
         $store = $this->storeRepository->getById($storeId);
-        $this->resetStockImportCronModules();
 
         $this->em->remove($store);
         $this->em->flush();

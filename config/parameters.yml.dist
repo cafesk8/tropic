@@ -57,15 +57,6 @@ parameters:
     payPalClientSecret: EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL
     payPalMode: SANDBOX
 
-    transfer_enabled: true
-    transfer_host: 'http://webappa7.azurewebsites.net'
-    transfer_cs_username: ''
-    transfer_cs_password: ''
-    transfer_sk_username: ''
-    transfer_sk_password: ''
-    transfer_en_username: ''
-    transfer_en_password: ''
-
     # testing credentials
     balikobot:
         username: testtestcztest
