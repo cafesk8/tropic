@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice as BaseProductPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -29,17 +31,25 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private $productFacade;
 
     /**
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
-     * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -53,7 +63,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         array $productArray,
         ?ImageView $imageView,
         BaseProductActionView $productActionView,
-        PricingGroup $pricingGroup
+        BasePricingGroup $pricingGroup
     ): BaseListedProductView {
         $sellingPrice = $this->getSellingPrice(
             $productArray['prices'],
@@ -110,7 +120,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      */
     private function getSellingPrice(
         array $pricesArray,
-        PricingGroup $pricingGroup,
+        BasePricingGroup $pricingGroup,
         int $productId,
         ?Price $defaultProductPrice
     ): ?BaseProductPrice {
@@ -122,8 +132,26 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
                     $price,
                     $priceArray['price_from'],
                     $productId,
-                    $defaultProductPrice
+                    $defaultProductPrice,
+                    $this->getStandardPrice($pricesArray)
                 );
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $pricesArray
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
+     */
+    private function getStandardPrice(array $pricesArray): ?Price
+    {
+        $standardPricePricingGroupId = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $this->domain->getId())->getId();
+
+        foreach ($pricesArray as $priceArray) {
+            if ($priceArray['pricing_group_id'] === $standardPricePricingGroupId) {
+                return $this->getPriceFromPriceArray($priceArray);
             }
         }
 

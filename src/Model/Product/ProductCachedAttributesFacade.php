@@ -96,16 +96,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 
     /**
      * @param \App\Model\Product\Product $product
-     * @return \App\Model\Product\Pricing\ProductPrice
-     */
-    public function getDefaultPrice(Product $product): ProductPrice
-    {
-        $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $this->domain->getId());
-        return $this->productPriceCalculation->calculatePrice($product, $this->domain->getId(), $defaultPricingGroup);
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
      * @return \App\Model\Product\Pricing\ProductPrice|null
      */
     public function getProductRegisteredCustomerPrice(Product $product): ?ProductPrice

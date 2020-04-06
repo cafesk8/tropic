@@ -1,27 +1,21 @@
-{% macro list(productFlags, classAddition, onlyFirst) %}
-
-    {% if productFlags|length > 0 %}
+{% macro list(productFlags, classAddition, onlyFirst, sellingPrice) %}
+    {% if productFlags|length > 0 or (sellingPrice is not null and sellingPrice.hasHigherStandardPrice) %}
         <div class="in-flag dont-print {{ classAddition }}">
             {% for productFlag in productFlags %}
-                {% if onlyFirst %}
-                    {% if loop.first %}
-                        <span
-                            class="in-flag__item"
-                            style="background-color: {{ productFlag.rgbColor }};"
-                        >
-                            {{ productFlag.name }}
-                        </span>
-                    {% endif %}
-                {% else %}
-                    <span
-                        class="in-flag__item"
-                        style="background-color: {{ productFlag.rgbColor }};"
-                    >
-                        {{ productFlag.name }}
-                    </span>
+                {% if (onlyFirst and loop.first) or not onlyFirst %}
+                    {{ _self.detail(productFlag.name, productFlag.rgbColor) }}
                 {% endif %}
             {% endfor %}
+
+            {% if not onlyFirst and sellingPrice.hasHigherStandardPrice %}
+                {{ _self.detail('%discountValue% % sleva'|trans({'%discountValue%': sellingPrice.pricePercentageDifference}), '#d53030') }}
+            {% endif %}
         </div>
     {% endif %}
+{% endmacro %}
 
+{% macro detail(name, color) %}
+    <span class="in-flag__item" style="background-color: {{ color }};">
+        {{ name }}
+    </span>
 {% endmacro %}

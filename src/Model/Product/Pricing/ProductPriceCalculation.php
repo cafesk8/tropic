@@ -6,11 +6,12 @@ namespace App\Model\Product\Pricing;
 
 use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Vat\Vat;
+use App\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
 use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
@@ -85,7 +86,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \App\Model\Product\Pricing\ProductPrice
      */
-    public function calculatePrice(Product $product, $domainId, PricingGroup $pricingGroup)
+    public function calculatePrice(Product $product, $domainId, BasePricingGroup $pricingGroup)
     {
         return $this->calculateProductPriceForPricingGroup($product, $pricingGroup);
     }
@@ -95,22 +96,25 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @return \App\Model\Product\Pricing\ProductPrice
      */
-    protected function calculateProductPriceForPricingGroup(Product $product, PricingGroup $pricingGroup)
+    protected function calculateProductPriceForPricingGroup(Product $product, BasePricingGroup $pricingGroup)
     {
         $domainId = $pricingGroup->getDomainId();
         $defaultPricingGroup = $this->pricingGroupFacade->getById(
             $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
         );
+        $standardPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $domainId);
 
         $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [
             $pricingGroup,
             $defaultPricingGroup,
+            $standardPricingGroup,
         ], $domainId);
 
         $inputPrice = Money::zero();
         $defaultPrice = Money::zero();
         $defaultMaxInputPrice = Money::zero();
         $maxInputPrice = Money::zero();
+        $standardPriceInput = null;
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null && $manualInputPrice['pricingGroupId'] === $defaultPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
@@ -133,6 +137,8 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
                         $inputPrice = $defaultPrice->multiply($pricingGroupCoefficient);
                         $maxInputPrice = $defaultMaxInputPrice->multiply($pricingGroupCoefficient);
                     }
+                } elseif ($manualInputPrice['pricingGroupId'] === $standardPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
+                    $standardPriceInput = Money::create($manualInputPrice['inputPrice']);
                 }
             }
         }
@@ -162,11 +168,23 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             );
         }
 
+        $standardPrice = null;
+
+        if ($standardPriceInput !== null) {
+            $standardPrice = $this->calculateBasePriceRoundedByCurrency(
+                $standardPriceInput,
+                $this->pricingSetting->getInputPriceType(),
+                $product->getVatForDomain($domainId),
+                $defaultCurrency
+            );
+        }
+
         return new ProductPrice(
             $basePrice,
             $isPriceFrom,
             $product->getId(),
-            $defaultPrice
+            $defaultPrice,
+            $standardPrice
         );
     }
 

@@ -1,4 +1,5 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
+    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
 
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for productView in productViews %}
@@ -15,7 +16,7 @@
                                 {% if freeTransportAndPaymentFlagId is not null %}
                                     {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                 {% endif %}
-                                {{ renderFlagsByIds(productFlagIds) }}
+                                {{ renderFlagsByIds(productFlagIds, '', false, productSellingPrice) }}
                             </div>
                         </a>
                         <div class="list-products__item__info">
@@ -32,16 +33,15 @@
                                             {% else %}
                                                 {{ productSellingPrice.priceWithVat|price }}
                                             {% endif %}
-                                            {#
-                                            {% if (productSellingPrice.isActionPrice and not productSellingPrice.priceFrom) %}
+
+                                            {% if productSellingPrice.hasHigherStandardPrice %}
                                                 <div class="list-products__item__info__price__item__old">
-                                                    {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                 </div>
                                                 <div class="list-products__item__info__price__item__discount">
                                                     -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                                 </div>
                                             {% endif %}
-                                            #}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -126,16 +126,15 @@
                                                 {% else %}
                                                     {{ productSellingPrice.priceWithVat|price }}
                                                 {% endif %}
-                                                {#
-                                                {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+
+                                                {% if productSellingPrice.hasHigherStandardPrice %}
                                                     <div class="{{ listCssClass }}__item__info__price__item__old">
-                                                        {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                                        {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                     </div>
                                                     <div class="{{ listCssClass }}__item__info__price__item__discount">
                                                         -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                                     </div>
                                                 {% endif %}
-                                                #}
                                             </div>
                                         </div>
                                     {% endif %}
@@ -231,7 +230,6 @@
 {% endmacro %}
 
 {% macro verticalList(products, listCssClass, productHeadingTagName) %}
-    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
     <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
         {% for product in products %}
@@ -259,16 +257,15 @@
                                     {% else %}
                                         {{ productSellingPrice.priceWithVat|price }}
                                     {% endif %}
-                                    {#
-                                    {% if productSellingPrice.isActionPrice and not productSellingPrice.priceFrom %}
+
+                                    {% if productSellingPrice.hasHigherStandardPrice %}
                                         <div class="{{ listCssClass }}__item__info__price__item__old">
-                                            {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                            {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                         </div>
                                         <div class="{{ listCssClass }}__item__info__price__item__discount">
                                             -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
                                         </div>
                                     {% endif %}
-                                    #}
                                 </div>
                             </div>
                         {% endif %}

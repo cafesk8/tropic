@@ -124,10 +124,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
     {
         return [
             new TwigFunction(
-                'getDefaultPrice',
-                [$this, 'getDefaultPrice']
-            ),
-            new TwigFunction(
                 'getProductRegisteredCustomerPrice',
                 [$this, 'getProductRegisteredCustomerPrice']
             ),
@@ -156,15 +152,6 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 [$this, 'filterOnlyVisibleVariants']
             ),
         ];
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @return \App\Model\Product\Pricing\ProductPrice
-     */
-    public function getDefaultPrice(Product $product): ProductPrice
-    {
-        return $this->productCachedAttributesFacade->getDefaultPrice($product);
     }
 
     /**
