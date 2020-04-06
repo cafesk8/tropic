@@ -8,7 +8,7 @@
                 <div class="web__container web__container--light web__container--footer">
                     <div class="footer-top">
                         <div class="footer-top__scroll-top">
-                            <a href="#top" class="btn btn--secondary btn--big js-scroll-to-position">
+                            <a href="#top" data-space-above-position="0" class="btn btn--secondary btn--big js-scroll-to-position">
                                 <i class="footer-top__scroll-top__button-icon svg svg-triangle"></i>
                                 {{ 'Přesunout nahoru'|trans }}
                             </a>
@@ -64,9 +64,11 @@
                                         {{ 'nebo pište na'|trans }}
                                         <a class="footer-top__contact__link" href="mailto:{{ getShopInfoEmail() }}">{{ getShopInfoEmail() }}</a>
                                     </div>
-                                    <div class="footer-top__contact__text-bottom">
-                                        {{ 'Na e-maily a telefony odpovídáme v pracovní dny'|trans }} {{ shopInfoPhoneHours }}.
-                                    </div>
+                                    {% if shopInfoPhoneHours|length > 0%}
+                                        <div class="footer-top__contact__text-bottom">
+                                            {{ shopInfoPhoneHours }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -105,9 +107,15 @@
                 </div>
                 <div class="footer-bottom__shopsys dont-print">
                     {{ 'E-shop na míru od'|trans }}
-                    <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
-                        <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
-                    </a>
+                    {% if isEnglishDomain() is same as (true) %}
+                        <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
+                            <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                        </a>
+                    {% else %}
+                        <a href="https://www.shopsys.cz" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
+                            <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                        </a>
+                    {% endif %}
                 </div>
             </footer>
         </div>
