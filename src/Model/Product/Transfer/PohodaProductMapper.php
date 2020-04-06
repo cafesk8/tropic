@@ -7,6 +7,7 @@ namespace App\Model\Product\Transfer;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Model\Product\ProductData;
+use Shopsys\FrameworkBundle\Component\String\TransformString;
 
 class PohodaProductMapper
 {
@@ -20,8 +21,8 @@ class PohodaProductMapper
     ): void {
         $productData->pohodaId = $pohodaProduct->pohodaId;
         $productData->catnum = $pohodaProduct->catnum;
-        $productData->name[DomainHelper::CZECH_LOCALE] = $pohodaProduct->name;
-        $productData->name[DomainHelper::SLOVAK_LOCALE] = $pohodaProduct->nameSk;
+        $productData->name[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->name);
+        $productData->name[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->nameSk);
         $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
         $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
         $productData->usingStock = true;
