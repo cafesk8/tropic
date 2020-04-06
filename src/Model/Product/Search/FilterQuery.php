@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Model\Product\Search;
 
 use App\Model\Product\Listing\ProductListOrderingConfig;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery as BaseFilterQuery;
 
 /**
  * @method \App\Model\Product\Search\FilterQuery filterByParameters(array $parameters)
- * @method \App\Model\Product\Search\FilterQuery filterByPrices(\App\Model\Pricing\Group\PricingGroup $pricingGroup, \Shopsys\FrameworkBundle\Component\Money\Money|null $minimalPrice, \Shopsys\FrameworkBundle\Component\Money\Money|null $maximalPrice)
  * @method \App\Model\Product\Search\FilterQuery filterByCategory(int[] $categoryIds)
  * @method \App\Model\Product\Search\FilterQuery filterByBrands(int[] $brandIds)
  * @method \App\Model\Product\Search\FilterQuery filterByFlags(int[] $flagIds)
@@ -196,5 +196,54 @@ class FilterQuery extends BaseFilterQuery
         unset($query['type']);
 
         return $query;
+    }
+
+    /**
+     * The difference with the parent method is that we use prices_for_filter here instead of prices field.
+     * Thanks to that, we are able to filter main variants by their sellable variant prices, regardless the main variant "price from"
+     *
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $minimalPrice
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $maximalPrice
+     * @return \App\Model\Product\Search\FilterQuery
+     */
+    public function filterByPrices(PricingGroup $pricingGroup, ?Money $minimalPrice = null, ?Money $maximalPrice = null): BaseFilterQuery
+    {
+        $clone = clone $this;
+
+        $prices = [];
+        if ($minimalPrice !== null) {
+            $prices['gte'] = (float)$minimalPrice->getAmount();
+        }
+        if ($maximalPrice !== null) {
+            $prices['lte'] = (float)$maximalPrice->getAmount();
+        }
+
+        $clone->filters[] = [
+            'nested' => [
+                'path' => 'prices_for_filter',
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            'match_all' => new \stdClass(),
+                        ],
+                        'filter' => [
+                            [
+                                'term' => [
+                                    'prices_for_filter.pricing_group_id' => $pricingGroup->getId(),
+                                ],
+                            ],
+                            [
+                                'range' => [
+                                    'prices_for_filter.price_with_vat' => $prices,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        return $clone;
     }
 }

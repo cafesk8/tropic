@@ -25,6 +25,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['minimum_amount'] = $product['minimum_amount'] ?? 1;
         $result['amount_multiplier'] = $product['amount_multiplier'] ?? 1;
         $result['variants_aliases'] = $result['variants_aliases'] ?? [];
+        $result['prices_for_filter'] = $result['prices_for_filter'] ?? [];
 
         return $result;
     }

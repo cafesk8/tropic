@@ -225,6 +225,17 @@
           }
         }
       },
+      "prices_for_filter": {
+        "type": "nested",
+        "properties": {
+          "pricing_group_id": {
+            "type": "integer"
+          },
+          "price_with_vat": {
+            "type": "float"
+          }
+        }
+      },
       "selling_from": {
         "type": "date"
       },

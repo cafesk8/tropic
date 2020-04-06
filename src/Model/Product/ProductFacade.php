@@ -612,6 +612,24 @@ class ProductFacade extends BaseProductFacade
     }
 
     /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return \App\Model\Product\Product[]
+     */
+    public function getSellableVariantsForProduct(Product $product, int $domainId): array
+    {
+        $defaultPricingGroup = $this->pricingGroupRepository->getById(
+            $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
+        );
+
+        return $this->productRepository->getAllSellableVariantsByMainVariant(
+            $product,
+            $domainId,
+            $defaultPricingGroup
+        );
+    }
+
+    /**
      * @param string $parameterType
      * @param int $limit
      * @return \App\Model\Product\Product[]

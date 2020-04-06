@@ -148,6 +148,7 @@ class ProductExportRepository extends BaseProductExportRepository
         if ($product->isMainVariant()) {
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }
+        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
 
         return $result;
     }
@@ -247,5 +248,46 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return array_filter($variantsCatnums);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return array
+     */
+    private function getPricesForFilterIncludingVariants(Product $product, int $domainId): array
+    {
+        if ($product->isMainVariant() === false) {
+            return $this->getPricesForFilter($product, $domainId);
+        } else {
+            $pricesForFilter = [];
+            foreach ($this->productFacade->getSellableVariantsForProduct($product, $domainId) as $variant) {
+                $variantPrices = $this->getPricesForFilter($variant, $domainId);
+                $pricesForFilter = array_merge($pricesForFilter, $variantPrices);
+            }
+
+            return $pricesForFilter;
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return array
+     */
+    private function getPricesForFilter(Product $product, int $domainId): array
+    {
+        $pricesForFilter = [];
+        $productSellingPrices = $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId);
+        foreach ($productSellingPrices as $productSellingPrice) {
+            $sellingPrice = $productSellingPrice->getSellingPrice();
+
+            $pricesForFilter[] = [
+                'pricing_group_id' => $productSellingPrice->getPricingGroup()->getId(),
+                'price_with_vat' => (float)$sellingPrice->getPriceWithVat()->getAmount(),
+            ];
+        }
+
+        return $pricesForFilter;
     }
 }
