@@ -2,7 +2,8 @@
   "settings": {
     "index": {
       "number_of_shards": 1,
-      "number_of_replicas": 0
+      "number_of_replicas": 0,
+      "max_ngram_diff": 18
     },
     "analysis": {
       "filter": {
@@ -18,6 +19,11 @@
           "type": "edgeNGram",
           "min_gram": 2,
           "max_gram": 20
+        },
+        "ngram_filter": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 20
         }
       },
       "tokenizer": {
@@ -27,6 +33,13 @@
         }
       },
       "analyzer": {
+        "catnum_ngram_analyzer": {
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase",
+            "ngram_filter"
+          ]
+        },
         "full_with_diacritic": {
           "tokenizer": "keep_special_chars",
           "filter": [
@@ -125,10 +138,10 @@
         "type": "text",
         "analyzer": "keyword",
         "fields": {
-          "edge_ngram": {
+          "ngram": {
             "type": "text",
-            "analyzer": "edge_ngram_unanalyzed",
-            "search_analyzer": "keyword"
+            "analyzer": "catnum_ngram_analyzer",
+            "search_analyzer": "full_without_diacritic"
           }
         }
       },

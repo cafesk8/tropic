@@ -29,16 +29,34 @@ class FilterQuery extends BaseFilterQuery
      */
     public function search(string $text): BaseFilterQuery
     {
-        $variantsAliasesFields = [
-            'variants_aliases.full_with_diacritic^60',
-            'variants_aliases.full_without_diacritic^50',
-            'variants_aliases^45',
-            'variants_aliases.edge_ngram_with_diacritic^40',
-            'variants_aliases.edge_ngram_without_diacritic^35',
-        ];
         /** @var \App\Model\Product\Search\FilterQuery $clone */
-        $clone = parent::search($text);
-        $clone->match['multi_match']['fields'] = array_merge($clone->match['multi_match']['fields'], $variantsAliasesFields);
+        $clone = clone $this;
+
+        $clone->match = [
+            'multi_match' => [
+                'query' => $text,
+                'fields' => [
+                    'name.full_with_diacritic^60',
+                    'name.full_without_diacritic^50',
+                    'name^45',
+                    'name.edge_ngram_with_diacritic^40',
+                    'name.edge_ngram_without_diacritic^35',
+                    'catnum^50',
+                    'catnum.ngram^25',
+                    'partno^40',
+                    'partno.edge_ngram^20',
+                    'ean^60',
+                    'ean.edge_ngram^30',
+                    'short_description^5',
+                    'description^5',
+                    'variants_aliases.full_with_diacritic^60',
+                    'variants_aliases.full_without_diacritic^50',
+                    'variants_aliases^45',
+                    'variants_aliases.edge_ngram_with_diacritic^40',
+                    'variants_aliases.edge_ngram_without_diacritic^35',
+                ],
+            ],
+        ];
 
         return $clone;
     }

@@ -145,6 +145,9 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
         $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
+        if ($product->isMainVariant()) {
+            $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
+        }
 
         return $result;
     }
@@ -229,5 +232,20 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return array_filter($variantsAliases);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string[]
+     */
+    private function getVariantsCatnums(Product $product, int $domainId): array
+    {
+        $variantsCatnums = [];
+        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+            $variantsCatnums[] = $variant->getCatnum();
+        }
+
+        return array_filter($variantsCatnums);
     }
 }
