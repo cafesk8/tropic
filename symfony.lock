@@ -1036,6 +1036,9 @@
             "translations/.gitignore"
         ]
     },
+    "symfony/translation-contracts": {
+        "version": "v1.1.7"
+    },
     "symfony/twig-bridge": {
         "version": "v3.4.33"
     },
