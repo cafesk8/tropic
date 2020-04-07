@@ -8,7 +8,7 @@
                 {% for breadcrumbItem in breadcrumbItems %}
                     <span class="box-breadcrumb__item box-breadcrumb__item--separator"><i class="svg svg-arrow"></i></span>
                     {% if breadcrumbItem.routeName is not null %}
-                        <a href="{{ url(breadcrumbItem.routeName, breadcrumbItem.routeParameters) }}" class="box-breadcrumb__item">
+                        <a class="box-breadcrumb__item" href="{{ url(breadcrumbItem.routeName, breadcrumbItem.routeParameters) }}">
                             {{- breadcrumbItem.name -}}
                         </a>
                     {% else %}

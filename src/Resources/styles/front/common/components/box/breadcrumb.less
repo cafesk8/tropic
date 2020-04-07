@@ -1,10 +1,13 @@
-@box-breadcrumb-padding-horizontal: 12px;
+@box-breadcrumb-padding-horizontal: 20px;
 @box-breadcrumb-padding-vertical: 15px;
 @box-breadcrumb-font-size: @font-size-small;
 @box-breadcrumb-top-move: -11px;
-@box-breadcrumb-bottom-gap: 30px;
+@box-breadcrumb-bottom-gap: 25px;
 
 .box-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     margin-bottom: @box-breadcrumb-bottom-gap;
 
     font-size: 0;
@@ -19,23 +22,23 @@
     }
 
     &__item {
-        display: inline-block;
-        vertical-align: middle;
         margin-bottom: @box-breadcrumb-padding-vertical;
 
-        color: @color-base;
+        color: @color-primary;
         font-size: @box-breadcrumb-font-size;
-        font-weight: 700;
+        text-decoration: underline;
 
         &--current {
-            font-weight: 400;
-            color: @color-gray;
+            color: @color-base;
+            text-decoration: none;
         }
 
         &--separator {
             position: relative;
             margin: 0 @box-breadcrumb-padding-horizontal;
             top: @box-breadcrumb-top-move;
+
+            text-decoration: none;
 
             .box-detail & {
                 margin: 0 @box-breadcrumb-padding-horizontal @box-breadcrumb-padding-vertical;
@@ -44,15 +47,10 @@
 
             .svg {
                 transform: rotate(-90deg);
-                opacity: 0.2;
 
-                font-size: 9px;
+                font-size: 16px;
                 color: @color-primary;
             }
-        }
-
-        &--icon {
-            text-decoration: none;
         }
     }
 }
