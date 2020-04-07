@@ -9,7 +9,7 @@ use Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItem as BaseGoogle
 class GoogleFeedItem extends BaseGoogleFeedItem
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $catnum;
 
@@ -19,17 +19,17 @@ class GoogleFeedItem extends BaseGoogleFeedItem
     private $categoryFullPath;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCatnum(): string
+    public function getCatnum(): ?string
     {
         return $this->catnum;
     }
 
     /**
-     * @param string $catnum
+     * @param string|null $catnum
      */
-    public function setCatnum(string $catnum): void
+    public function setCatnum(?string $catnum): void
     {
         $this->catnum = $catnum;
     }
@@ -43,7 +43,7 @@ class GoogleFeedItem extends BaseGoogleFeedItem
     }
 
     /**
-     * @param string $categoryFullPath|null
+     * @param string|null $categoryFullPath
      */
     public function setCategoryFullPath(?string $categoryFullPath): void
     {
