@@ -1,6 +1,4 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
-    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
-
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for productView in productViews %}
             <li class="list-products__item
@@ -34,7 +32,7 @@
                                                 {{ productSellingPrice.priceWithVat|price }}
                                             {% endif %}
 
-                                            {% if productSellingPrice.hasHigherStandardPrice %}
+                                            {% if productSellingPrice.hasHigherStandardPrice and not productSellingPrice.priceFrom %}
                                                 <div class="list-products__item__info__price__item__old">
                                                     {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                 </div>
@@ -88,7 +86,6 @@
 {% endmacro %}
 
 {% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
-    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
@@ -127,7 +124,7 @@
                                                     {{ productSellingPrice.priceWithVat|price }}
                                                 {% endif %}
 
-                                                {% if productSellingPrice.hasHigherStandardPrice %}
+                                                {% if productSellingPrice.hasHigherStandardPrice and not productSellingPrice.priceFrom %}
                                                     <div class="{{ listCssClass }}__item__info__price__item__old">
                                                         {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                     </div>
@@ -258,7 +255,7 @@
                                         {{ productSellingPrice.priceWithVat|price }}
                                     {% endif %}
 
-                                    {% if productSellingPrice.hasHigherStandardPrice %}
+                                    {% if productSellingPrice.hasHigherStandardPrice and not productSellingPrice.priceFrom %}
                                         <div class="{{ listCssClass }}__item__info__price__item__old">
                                             {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                         </div>

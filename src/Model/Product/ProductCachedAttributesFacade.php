@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
-use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\Pricing\ProductPriceCalculation;
@@ -104,7 +103,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
             return $this->registeredCustomerPricesByProductId[$product->getId()];
         }
 
-        $registeredCustomerPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $this->domain->getId());
+        $registeredCustomerPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($this->domain->getId());
 
         /** @var \App\Model\Customer\User\CustomerUser $customerUser */
         $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();

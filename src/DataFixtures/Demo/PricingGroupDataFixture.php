@@ -60,7 +60,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
             $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, $domainId);
 
-            $registeredPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
+            $registeredPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
             $registeredPricingGroup = $registeredPricingGroup ?? $this->createRegisteredCustomerPricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_REGISTERED_DOMAIN, $registeredPricingGroup, $domainId);
 
@@ -68,7 +68,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
             $purchasePricingGroup = $purchasePricingGroup ?? $this->createPurchasePricePricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_PURCHASE_DOMAIN, $purchasePricingGroup, $domainId);
 
-            $standardPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $domainId);
+            $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
             $standardPricingGroup = $standardPricingGroup ?? $this->createStandardPricePricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_STANDARD_DOMAIN, $standardPricingGroup, $domainId);
         }

@@ -147,7 +147,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      */
     private function getStandardPrice(array $pricesArray): ?Price
     {
-        $standardPricePricingGroupId = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $this->domain->getId())->getId();
+        $standardPricePricingGroupId = $this->pricingGroupFacade->getStandardPricePricingGroup($this->domain->getId())->getId();
 
         foreach ($pricesArray as $priceArray) {
             if ($priceArray['pricing_group_id'] === $standardPricePricingGroupId) {

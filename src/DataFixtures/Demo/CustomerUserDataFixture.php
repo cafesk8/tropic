@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -181,7 +180,7 @@ class CustomerUserDataFixture extends AbstractReferenceFixture implements Depend
         $customerUserData = $this->customerUserDataFactory->createForDomainId($domainId);
 
         foreach ($this->pricingGroupFacade->getByDomainId($domainId) as $pricingGroup) {
-            if ($pricingGroup->getInternalId() === PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER) {
+            if ($pricingGroup->isRegisteredCustomerPricingGroup()) {
                 $customerUserData->pricingGroup = $pricingGroup;
                 break;
             }

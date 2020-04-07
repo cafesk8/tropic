@@ -74,10 +74,9 @@ class PohodaProductMapper
             }
 
             if ($pohodaProduct->standardPrice !== null) {
-                $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getByNameAndDomainId(
-                    PricingGroup::PRICING_GROUP_STANDARD_PRICE,
-                    $domainId
-                )->getId()] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->standardPrice));
+                $productData->manualInputPricesByPricingGroupId[
+                    $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()
+                ] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->standardPrice));
             }
         }
 

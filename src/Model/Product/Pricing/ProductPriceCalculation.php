@@ -102,7 +102,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $defaultPricingGroup = $this->pricingGroupFacade->getById(
             $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
         );
-        $standardPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $domainId);
+        $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
 
         $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [
             $pricingGroup,

@@ -117,4 +117,20 @@ class PricingGroup extends BasePricingGroup
     {
         return $this->calculatedFromDefault;
     }
+
+    /**
+     * @return bool
+     */
+    public function isRegisteredCustomerPricingGroup(): bool
+    {
+        return $this->internalId === self::PRICING_GROUP_REGISTERED_CUSTOMER;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStandardPricePricingGroup(): bool
+    {
+        return $this->internalId === self::PRICING_GROUP_STANDARD_PRICE;
+    }
 }
