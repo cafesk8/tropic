@@ -16,7 +16,6 @@
                 </ul>
 
                 <ul class="top-bar__menu">
-                    {{ render(controller('App\\Controller\\Front\\ArticleController:headerListAction')) }}
                     <li class="top-bar__menu__item">
                         <a href="{{ url(
                             'front_blogcategory_detail', {
@@ -25,16 +24,15 @@
                         ) }}"
                         class="top-bar__menu__item__link"
                         >
-                            {{ 'Blog'|trans }}
+                            {{ 'Magazín'|trans }}
                         </a>
                     </li>
-                    {% if domainId != 3 %}
-                        <li class="top-bar__menu__item">
-                            <a href="{{ url('front_store_index') }}" class="top-bar__menu__item__link">
-                                {{ 'Prodejny'|trans }}
-                            </a>
-                        </li>
-                    {% endif %}
+                    {{ render(controller('App\\Controller\\Front\\ArticleController:headerListAction')) }}
+                    <li class="top-bar__menu__item">
+                        <a href="{{ url('front_about_us_info') }}" class="top-bar__menu__item__link">
+                            {{ 'Kontakt'|trans }}
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
