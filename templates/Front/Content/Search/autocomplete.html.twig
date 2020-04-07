@@ -42,13 +42,11 @@
                                         {% else %}
                                             {{ sellingPrice.priceWithVat|price }}
                                         {% endif %}
-                                        {#
-                                        {% if sellingPrice.isActionPrice %}
+                                        {% if sellingPrice.hasHigherStandardPrice %}
                                             <span class="search-hint__product__item__price search-hint__product__item__price--old">
-                                                {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+                                                {{ sellingPrice.standardPrice.priceWithVat|price }}
                                             </span>
                                         {% endif %}
-                                        #}
                                     </span>
                                 {% endif %}
                             </span>

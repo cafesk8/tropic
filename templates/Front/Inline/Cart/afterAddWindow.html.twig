@@ -25,13 +25,11 @@
                         <span class="box-popup-add__content__product__name__price__main">
                             {{ quantifiedItemPrice.unitPrice.priceWithVat|price }}
                         </span>
-                        {#
-                        {% if quantifiedItemPrice.unitPrice.isActionPrice %}
+                        {% if quantifiedItemPrice.unitPrice.hasHigherStandardPrice %}
                             <span class="box-popup-add__content__product__name__price__old">
-                                {{ quantifiedItemPrice.unitPrice.defaultProductPrice.priceWithVat|price }}
+                                {{ quantifiedItemPrice.unitPrice.standardPrice.priceWithVat|price }}
                             </span>
                         {% endif %}
-                        #}
                     </span>
                 {% endif %}
             </div>
