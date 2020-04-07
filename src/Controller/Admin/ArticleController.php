@@ -30,7 +30,6 @@ class ArticleController extends BaseArticleController
         $gridFooter = $this->getGrid(BaseArticle::PLACEMENT_FOOTER);
         $gridNone = $this->getGrid(BaseArticle::PLACEMENT_NONE);
         $gridShopping = $this->getGrid(Article::PLACEMENT_SHOPPING);
-        $gridAbout = $this->getGrid(Article::PLACEMENT_ABOUT);
         $gridServices = $this->getGrid(Article::PLACEMENT_SERVICES);
 
         $articlesCountOnSelectedDomain = $this->articleFacade->getAllArticlesCountByDomainId($this->adminDomainTabsFacade->getSelectedDomainId());
@@ -40,7 +39,6 @@ class ArticleController extends BaseArticleController
             'gridViewFooter' => $gridFooter->createView(),
             'gridViewNone' => $gridNone->createView(),
             'gridViewShopping' => $gridShopping->createView(),
-            'gridViewAbout' => $gridAbout->createView(),
             'gridViewServices' => $gridServices->createView(),
             'articlesCountOnSelectedDomain' => $articlesCountOnSelectedDomain,
         ]);
