@@ -95,6 +95,15 @@ class PricingGroupFacade extends BasePricingGroupFacade
     }
 
     /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup|null
+     */
+    public function getSalePricePricingGroup(int $domainId): ?PricingGroup
+    {
+        return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_SALE_PRICE, $domainId);
+    }
+
+    /**
      * @return \App\Model\Pricing\Group\PricingGroup[]
      */
     public function getAllOrderedByInternalId(): array

@@ -80,9 +80,23 @@ class PohodaProductExportFacade
                 continue;
             }
 
-            $pohodaProducts[] = new PohodaProduct($pohodaProductData);
+            $pohodaProducts[$pohodaProductData[PohodaProduct::COL_CATNUM]] = new PohodaProduct($pohodaProductData);
         }
 
         return $pohodaProducts;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct[] $pohodaProducts
+     */
+    public function addSaleInformationToPohodaProducts(array &$pohodaProducts): void
+    {
+        $saleInformation = $this->pohodaProductExportRepository->getSaleInformationByCatnums(array_map(function (PohodaProduct $pohodaProduct) {
+            return $pohodaProduct->catnum;
+        }, $pohodaProducts));
+
+        foreach ($saleInformation as $information) {
+            $pohodaProducts[$information[PohodaProduct::COL_CATNUM]]->saleInformation[$information[PohodaProduct::COL_STOCK_ID]] = $information[PohodaProduct::COL_SELLING_PRICE];
+        }
     }
 }

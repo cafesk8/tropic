@@ -79,6 +79,7 @@ class ProductImportFacade
         $pohodaProducts = $this->pohodaProductExportFacade->findPohodaProductsByPohodaIds(
             $changedPohodaProductIds
         );
+        $this->pohodaProductExportFacade->addSaleInformationToPohodaProducts($pohodaProducts);
         $updatedPohodaProductIds = [];
 
         if (count($pohodaProducts) === 0) {

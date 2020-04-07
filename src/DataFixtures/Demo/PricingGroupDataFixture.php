@@ -19,6 +19,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     public const PRICING_GROUP_REGISTERED_DOMAIN = 'pricing_group_registered_domain';
     public const PRICING_GROUP_PURCHASE_DOMAIN = 'pricing_group_purchase_domain';
     public const PRICING_GROUP_STANDARD_DOMAIN = 'pricing_group_standard_domain';
+    public const PRICING_GROUP_SALE_DOMAIN = 'pricing_group_sale_domain';
 
     /**
      * @var \App\Model\Pricing\Group\PricingGroupFacade
@@ -71,6 +72,10 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
             $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
             $standardPricingGroup = $standardPricingGroup ?? $this->createStandardPricePricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_STANDARD_DOMAIN, $standardPricingGroup, $domainId);
+
+            $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
+            $salePricingGroup = $salePricingGroup ?? $this->createSalePricePricingGroup($domainId);
+            $this->addReferenceForDomain(self::PRICING_GROUP_SALE_DOMAIN, $salePricingGroup, $domainId);
         }
     }
 
@@ -115,6 +120,20 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_STANDARD_PRICE;
         $pricingGroupData->minimalPrice = null;
         $pricingGroupData->calculatedFromDefault = false;
+
+        return $this->pricingGroupFacade->create($pricingGroupData, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    private function createSalePricePricingGroup(int $domainId): PricingGroup
+    {
+        $pricingGroupData = $this->pricingGroupDataFactory->create();
+        $pricingGroupData->name = t('Cena pro Výprodej', [], 'dataFixtures', DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId]);
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_SALE_PRICE;
+        $pricingGroupData->minimalPrice = Money::zero();
 
         return $this->pricingGroupFacade->create($pricingGroupData, $domainId);
     }

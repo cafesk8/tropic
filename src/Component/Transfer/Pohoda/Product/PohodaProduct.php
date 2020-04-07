@@ -17,6 +17,7 @@ class PohodaProduct
     public const COL_SELLING_VAT_RATE_ID = 'vatRateId';
     public const COL_PURCHASE_PRICE = 'purchasePriceWithVat';
     public const COL_STANDARD_PRICE = 'standardPriceWithVat';
+    public const COL_STOCK_ID = 'stockId';
 
     /**
      * @var int
@@ -74,6 +75,11 @@ class PohodaProduct
     public $standardPrice;
 
     /**
+     * @var array
+     */
+    public $saleInformation;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
@@ -89,5 +95,6 @@ class PohodaProduct
         $this->vatRateId = (int)$pohodaProductData[self::COL_SELLING_VAT_RATE_ID];
         $this->purchasePrice = $pohodaProductData[self::COL_PURCHASE_PRICE];
         $this->standardPrice = $pohodaProductData[self::COL_STANDARD_PRICE];
+        $this->saleInformation = [];
     }
 }

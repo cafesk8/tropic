@@ -16,6 +16,15 @@ class PohodaProductExportRepository
 
     private const POHODA_STOCK_TROPIC_ID = 10;
 
+    private const POHODA_STOCK_SALE_ID = 2;
+
+    private const POHODA_STOCK_STORE_SALE_ID = 13;
+
+    public const SALE_STOCK_IDS_ORDERED_BY_PRIORITY = [
+        self::POHODA_STOCK_SALE_ID,
+        self::POHODA_STOCK_STORE_SALE_ID,
+    ];
+
     /**
      * @var \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager
      */
@@ -105,6 +114,39 @@ class PohodaProductExportRepository
             ->setParameters([
                 'defaultStockId' => self::DEFAULT_POHODA_STOCK_ID,
                 'lastUpdateDateTime' => $lastUpdateTime === null ? PohodaDateTimeHelper::FIRST_UPDATE_TIME : $lastUpdateTime->format(PohodaDateTimeHelper::DATE_TIME_FORMAT),
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param string[] $catnums
+     * @return array
+     */
+    public function getSaleInformationByCatnums(array $catnums)
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID)
+            ->addScalarResult('IDS', PohodaProduct::COL_CATNUM)
+            ->addScalarResult('RefSklad', PohodaProduct::COL_STOCK_ID)
+            ->addScalarResult('ProdejDPH', PohodaProduct::COL_SELLING_PRICE);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT 
+                Product.ID, 
+                Product.IDS, 
+                Product.RefSklad,
+                Product.ProdejDPH 
+             FROM Skz Product
+             WHERE Product.IDS IN (:catnums)
+                AND Product.IObchod = 1
+                AND Product.RefSklad IN (:stocks)
+             ORDER BY Product.DatSave',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'catnums' => $catnums,
+                'stocks' => self::SALE_STOCK_IDS_ORDERED_BY_PRIORITY,
             ]);
 
         return $query->getResult();
