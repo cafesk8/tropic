@@ -50,9 +50,15 @@
             {% endif %}
         </div>
     </div>
+    
+    <div class="web__line">
+        <div class="web__container">
+            {% include 'Front/Content/ReasonsToBuy/index.html.twig' %}
+        </div>
+    </div>
+
     {% block last_visited_products %}
         {{ render(controller('App\\Controller\\Front\\LastVisitedProductsController:showAction')) }}
     {% endblock %}
-    </div>
 
 {% endblock %}

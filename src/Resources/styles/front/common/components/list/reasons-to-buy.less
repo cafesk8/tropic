@@ -1,0 +1,44 @@
+@list-reasons-to-buy-icon-size: 30px;
+@list-reasons-to-buy-item-gap: 12px;
+
+.list-reasons-to-buy {
+    .reset-ul();
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    @media @query-lg {
+        flex-direction: row;
+        margin-left: -@list-reasons-to-buy-item-gap;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        padding: 11px 21px;
+        margin-bottom: @list-reasons-to-buy-item-gap;
+
+        border-radius: @radius;
+        background-color: @color-light;
+
+        @media @query-lg {
+            width: calc(~"100% / 2 - @{list-reasons-to-buy-item-gap}");
+            padding: 16px 19px;
+            margin-left: @list-reasons-to-buy-item-gap;
+        }
+
+        &__icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: @list-reasons-to-buy-icon-size;
+            margin-right: 20px;
+        }
+
+        &__text {
+            margin: 0;
+
+            font-size: @font-size-small;
+        }
+    }
+}
