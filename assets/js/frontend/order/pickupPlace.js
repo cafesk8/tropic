@@ -1,7 +1,7 @@
-import Ajax from 'framework/common/utils/ajax';
-import Window from '../utils/window';
-import Register from 'framework/common/utils/register';
-import Timeout from 'framework/common/utils/timeout';
+import Ajax from 'framework/common/utils/Ajax';
+import Window from '../utils/Window';
+import Register from 'framework/common/utils/Register';
+import Timeout from 'framework/common/utils/Timeout';
 import windowClose from '../utils/windowFunctions';
 
 (function ($) {

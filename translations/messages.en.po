@@ -1051,7 +1051,7 @@ msgstr "New blog category"
 msgid "New store"
 msgstr "New store"
 
-msgid "Nezapomeň: tvoje objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit! Bushman.cz"
+msgid "Nezapomeňte: vaše objednávka č. %%orderNo%% bude ješte 2 dny připravena na prodejně %%storeName%%. Je čas vyrazit!"
 msgstr ""
 
 msgid "Nezlevněné produkty"

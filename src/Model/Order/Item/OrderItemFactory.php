@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
-use App\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItem as BaseOrderItem;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderItemFactory as BaseOrderItemFactory;
 use Shopsys\FrameworkBundle\Model\Order\Order;
@@ -141,48 +140,5 @@ class OrderItemFactory extends BaseOrderItemFactory
         $orderProductGift->setTotalPrice($totalPrice);
 
         return $orderProductGift;
-    }
-
-    /**
-     * @param \App\Model\Order\Order $order
-     * @param string $name
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
-     * @param string $vatPercent
-     * @param int $quantity
-     * @param string|null $unitName
-     * @param string|null $catnum
-     * @param \App\Model\Product\Product $product
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
-     * @param \App\Model\Product\PromoProduct\PromoProduct $promoProduct
-     * @return \App\Model\Order\Item\OrderItem
-     */
-    public function createPromoProduct(
-        Order $order,
-        string $name,
-        Price $price,
-        string $vatPercent,
-        int $quantity,
-        ?string $unitName,
-        ?string $catnum,
-        Product $product,
-        Price $totalPrice,
-        PromoProduct $promoProduct
-    ): BaseOrderItem {
-        $promoProductOrderItem = new OrderItem(
-            $order,
-            $name,
-            $price,
-            $vatPercent,
-            $quantity,
-            OrderItem::TYPE_PROMO_PRODUCT,
-            $unitName,
-            $catnum
-        );
-
-        $promoProductOrderItem->setPromoProduct($product, $promoProduct);
-        $promoProductOrderItem->setEan($product->getEan());
-        $promoProductOrderItem->setTotalPrice($totalPrice);
-
-        return $promoProductOrderItem;
     }
 }

@@ -7,9 +7,20 @@ namespace App\Model\Category;
 use App\Model\Advert\Advert;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
+use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
+use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
+use Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade;
 use Shopsys\FrameworkBundle\Model\Category\CategoryFacade as BaseCategoryFacade;
+use Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Category\CategoryRepository;
+use Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRecalculationScheduler;
+use Shopsys\FrameworkBundle\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory;
+use Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory;
 use Shopsys\FrameworkBundle\Model\Product\Product;
+use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
 /**
  * @property \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
@@ -17,7 +28,6 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
  * @method \App\Model\Category\Category getRootCategory()
  * @property \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
  * @property \App\Component\Image\ImageFacade $imageFacade
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Category\CategoryRepository $categoryRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRecalculationScheduler $categoryVisibilityRecalculationScheduler, \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade, \App\Component\Image\ImageFacade $imageFacade, \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginCrudExtensionFacade, \Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory, \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory, \Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface $categoryFactory)
  * @method \App\Model\Category\Category getById(int $categoryId)
  * @method \App\Model\Category\Category create(\App\Model\Category\CategoryData $categoryData)
  * @method \App\Model\Category\Category edit(int $categoryId, \App\Model\Category\CategoryData $categoryData)
@@ -43,6 +53,41 @@ class CategoryFacade extends BaseCategoryFacade
      * @var \App\Model\Category\CategoryRepository
      */
     protected $categoryRepository;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade
+     */
+    protected $productVisibilityFacade;
+
+    /**
+     * @param \Doctrine\ORM\EntityManagerInterface $em
+     * @param \App\Model\Category\CategoryRepository $categoryRepository
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRecalculationScheduler $categoryVisibilityRecalculationScheduler
+     * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
+     * @param \App\Component\Image\ImageFacade $imageFacade
+     * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginCrudExtensionFacade
+     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory
+     * @param \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
+     * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface $categoryFactory
+     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     */
+    public function __construct(
+        EntityManagerInterface $em,
+        CategoryRepository $categoryRepository,
+        Domain $domain,
+        CategoryVisibilityRecalculationScheduler $categoryVisibilityRecalculationScheduler,
+        FriendlyUrlFacade $friendlyUrlFacade,
+        ImageFacade $imageFacade,
+        PluginCrudExtensionFacade $pluginCrudExtensionFacade,
+        CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory,
+        CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory,
+        CategoryFactoryInterface $categoryFactory,
+        ProductVisibilityFacade $productVisibilityFacade
+    ) {
+        parent::__construct($em, $categoryRepository, $domain, $categoryVisibilityRecalculationScheduler, $friendlyUrlFacade, $imageFacade, $pluginCrudExtensionFacade, $categoryWithPreloadedChildrenFactory, $categoryWithLazyLoadedVisibleChildrenFactory, $categoryFactory);
+        $this->productVisibilityFacade = $productVisibilityFacade;
+    }
 
     /**
      * @return \App\Model\Category\Category[]
@@ -300,5 +345,17 @@ class CategoryFacade extends BaseCategoryFacade
         }
 
         return $categories;
+    }
+
+    /**
+     * see https://github.com/shopsys/shopsys/issues/1763
+     * @param int $categoryId
+     */
+    public function deleteById($categoryId)
+    {
+        $category = $this->categoryRepository->getById($categoryId);
+        $this->productVisibilityFacade->markProductsForRecalculationAffectedByCategory($category);
+
+        parent::deleteById($categoryId);
     }
 }

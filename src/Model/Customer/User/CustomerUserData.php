@@ -9,6 +9,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData as BaseCustomer
 
 /**
  * @property \App\Model\Pricing\Group\PricingGroup|null $pricingGroup
+ * @property \App\Model\Customer\DeliveryAddress|null $defaultDeliveryAddress
  */
 class CustomerUserData extends BaseCustomerUserData
 {

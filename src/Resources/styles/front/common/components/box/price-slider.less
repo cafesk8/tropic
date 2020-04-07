@@ -1,6 +1,6 @@
-@box-price-slider-inputs-gap: 10px;
+@box-price-slider-inputs-gap: 5px;
 
-@box-price-slider-form-text-width: 25px;
+@box-price-slider-form-input-width: 60px;
 
 .box-price-slider {
     display: flex;
@@ -21,18 +21,31 @@
             width: @calc-base / 2;
 
             &__text {
-                padding-right: 4px;
-                width: @box-price-slider-form-text-width;
+                padding-right: @box-price-slider-inputs-gap;
+
+                font-size: @font-size-small;
+                color: @color-gray;
+            }
+
+            &__currency {
+                padding-left: @box-price-slider-inputs-gap;
 
                 font-size: @font-size-small;
                 color: @color-gray;
             }
 
             input {
-                max-width: calc(~"100% - @{box-price-slider-form-text-width}");
+                padding-right: 3px;
+                padding-left: 3px;
+                text-align: center;
                 
                 font-size: @font-size-small;
                 font-weight: 700;
+
+                @media @query-lg {
+                    width: @box-price-slider-form-input-width;
+                    max-width: @box-price-slider-form-input-width;
+                }
 
                 &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
                     color: @color-base;
@@ -52,11 +65,7 @@
             }
 
             &--left {
-                padding-right: @box-price-slider-inputs-gap/2;
-            }
-
-            &--right {
-                padding-left: @box-price-slider-inputs-gap/2;
+                padding-right: @box-price-slider-inputs-gap;
             }
         }
     }

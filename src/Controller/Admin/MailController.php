@@ -19,6 +19,7 @@ use Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail;
 
 /**
  * @property \App\Model\Order\Mail\OrderMail $orderMail
+ * @property \App\Model\Order\Status\OrderStatusFacade $orderStatusFacade
  * @property \App\Model\Mail\MailTemplateFacade $mailTemplateFacade
  */
 class MailController extends BaseMailController
@@ -35,7 +36,7 @@ class MailController extends BaseMailController
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \App\Model\Mail\MailTemplateFacade $mailTemplateFacade
      * @param \Shopsys\FrameworkBundle\Model\Mail\Setting\MailSettingFacade $mailSettingFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusFacade $orderStatusFacade
+     * @param \App\Model\Order\Status\OrderStatusFacade $orderStatusFacade
      * @param \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataAccessMail $personalDataAccessMail
      * @param \Shopsys\FrameworkBundle\Model\PersonalData\Mail\PersonalDataExportMail $personalDataExportMail
      * @param \App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail $orderGiftCertificateMail

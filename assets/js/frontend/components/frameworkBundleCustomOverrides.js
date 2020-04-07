@@ -1,4 +1,4 @@
-import Window from '../utils/window';
+import Window from '../utils/Window';
 import Translator from 'bazinga-translator';
 
 (function ($) {

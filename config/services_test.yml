@@ -122,10 +122,6 @@ services:
         arguments:
             - '@shopsys.shop.component.flash_message.sender.front'
 
-    App\Model\Customer\BushmanCustomPasswordEncoder:
-        arguments:
-            - '%securityBcryptCost%'
-
     Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@App\Model\Cart\CartFacade'
 
     Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface: '@App\Model\Cart\Item\CartItemFactory'

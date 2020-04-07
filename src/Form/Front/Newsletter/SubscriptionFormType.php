@@ -52,6 +52,7 @@ class SubscriptionFormType extends AbstractType
         $resolver->setDefaults([
             'attr' => ['novalidate' => 'novalidate'],
             TimedFormTypeExtension::OPTION_ENABLED => true,
+            TimedFormTypeExtension::OPTION_MINIMUM_SECONDS => 1,
         ]);
     }
 }

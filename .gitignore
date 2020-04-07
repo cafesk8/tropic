@@ -21,6 +21,7 @@
 /.env.local.php
 /.env.*.local
 /assets/js/translations.json
+/assets/js/bundles
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

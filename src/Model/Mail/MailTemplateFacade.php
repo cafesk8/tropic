@@ -16,6 +16,7 @@ use Shopsys\FrameworkBundle\Model\Mail\MailTemplateRepository;
 
 /**
  * @method \Shopsys\FrameworkBundle\Model\Mail\MailTemplate[] getFilteredOrderStatusMailTemplatesIndexedByOrderStatusId(\App\Model\Order\Status\OrderStatus[] $orderStatuses, \Shopsys\FrameworkBundle\Model\Mail\MailTemplate[] $mailTemplates)
+ * @property \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
  */
 class MailTemplateFacade extends BaseMailTemplateFacade
 {

@@ -1,4 +1,4 @@
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 import PaymentTransportRelations from './order.js';
 
 export default class GoPaySelection {

@@ -57,7 +57,7 @@
         "dompdf/dompdf": "^0.8.5",
         "elasticsearch/elasticsearch": "v7.5.0 as 6.0.1",
         "emanueleminotto/twig-cache-bundle": "^1.0",
-        "fp/jsformvalidator-bundle": "^1.5.1",
+        "fp/jsformvalidator-bundle": "1.5.x-dev",
         "friendsofsymfony/ckeditor-bundle": "^2.1",
         "fzaninotto/faker": "^1.7.1",
         "google/apiclient": "^2.0",

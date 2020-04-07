@@ -59,12 +59,12 @@ parameters:
 
     transfer_enabled: true
     transfer_host: 'http://webappa7.azurewebsites.net'
-    transfer_cs_username: 'bushmantest_vo'
-    transfer_cs_password: 'BusLpk*155heslo'
-    transfer_sk_username: 'bushmantest_sk'
-    transfer_sk_password: 'BusSK*475heslo'
-    transfer_en_username: 'bushmantest_de'
-    transfer_en_password: 'BusDE*852heslo'
+    transfer_cs_username: ''
+    transfer_cs_password: ''
+    transfer_sk_username: ''
+    transfer_sk_password: ''
+    transfer_en_username: ''
+    transfer_en_password: ''
 
     # testing credentials
     balikobot:

@@ -62,7 +62,7 @@
             box-shadow: @shadow;
 
             @media @query-lg {
-                margin-bottom: -4px;
+                margin-bottom: 3px;
             }
 
             &:after {
@@ -72,7 +72,7 @@
 
         &--with-variants:hover {
             @media @query-lg {
-                margin-bottom: -82px;
+                margin-bottom: -73px;
             }
         }
 
@@ -90,7 +90,7 @@
 
         &__block {
             display: flex;
-            height: 100%;
+            flex: 1;
             flex-direction: column;
 
             text-decoration: none;
@@ -148,28 +148,31 @@
                 color: @color-base;
             }
 
-            &__availability {
-                font-size: @font-size-extra-small;
+            &__gift {
+                margin-bottom: 10px;
+                line-height: 17px;
 
-                .in-badge {
-                    display: none;
+                font-size: 13px;
 
-                    @media @query-md {
-                        display: inline;
+                &__icon {
+                    display: inline-block;
+                    position: relative;
+                    width: @font-size;
+
+                    .svg {
+                        position: absolute;
+                        left: 0;
+                        top: -14px;
+
+                        color: @color-base;
+                        font-size: @font-size;
                     }
                 }
 
-                &__spacer {
-                    display: block;
-                    margin-bottom: 7px;
-                }
-
-                &__text {
-                    display: block;
-                    line-height: 18px;
-
-                    font-size: 13px;
+                &__text-colored {
+                    text-transform: uppercase;
                     font-weight: 700;
+                    color: @color-add;
                 }
 
                 &__stores {
@@ -253,13 +256,13 @@
 
             .list-products__item:hover & {
                 @media @query-lg {
-                    height: 54px;
+                    height: 47px;
                 }
             }
 
             .list-products__item--with-variants:hover & {
                 @media @query-lg {
-                    height: 132px;
+                    height: 123px;
                     margin-top: 0;
                 }
             }
@@ -274,7 +277,7 @@
             display: flex;
             flex-direction: row;
             justify-content: center;
-            margin: 10.5px 0;
+            margin-bottom: 10.5px;
 
             &__slider {
                 width: 100%;

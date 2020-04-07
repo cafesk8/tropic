@@ -48,11 +48,11 @@ class MergadoTransportTypeFacade
     }
 
     /**
-     * @param string $mergadoTransportType
+     * @param string|null $mergadoTransportType
      * @return bool
      */
-    public function isMergadoTransportTypeAllowed(string $mergadoTransportType): bool
+    public function isMergadoTransportTypeAllowed(?string $mergadoTransportType): bool
     {
-        return !(array_key_exists($mergadoTransportType, $this->getShipperNamesIndexedById()) === false);
+        return array_key_exists($mergadoTransportType, $this->getShipperNamesIndexedById()) === true;
     }
 }

@@ -55,6 +55,20 @@
     </tr>
 {% endmacro %}
 
+{# copy-pasted from parent, just "js-symbol-after-input" class added #}
+{# see https://github.com/shopsys/shopsys/pull/1707 #}
+{% block appendix_block %}
+    {% if symbolAfterInput is defined %}
+        <span class="form-line__item form-line__item--text form-line__item--fixed-width-left js-symbol-after-input">{{ symbolAfterInput }}</span>
+    {% endif %}
+    {% if attr.icon is defined %}
+        <i class="svg svg-{{ attr.iconType|default('info') }} in-icon cursor-help form-line__item form-line__item--info js-tooltip"
+           data-toggle="tooltip" data-placement="{{ attr.iconPlacement|default('right') }}"
+           title="{{ attr.iconTitle|default('') }}"
+        ></i>
+    {% endif %}
+{%- endblock %}
+
 {% block products_list_row -%}
     {% if top_info_title is not empty %}
         <strong>{{ top_info_title }}</strong>

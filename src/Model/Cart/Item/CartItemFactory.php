@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Cart\Item;
 
-use App\Model\Product\PromoProduct\PromoProduct;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem as BaseCartItem;
@@ -20,7 +19,6 @@ class CartItemFactory extends BaseCartItemFactory
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
      * @param \App\Model\Product\Product|null $gift
      * @param \App\Model\Cart\Item\CartItem|null $mainCartItem
-     * @param \App\Model\Product\PromoProduct\PromoProduct|null $promoProduct
      * @return \App\Model\Cart\Item\CartItem
      */
     public function create(
@@ -29,9 +27,8 @@ class CartItemFactory extends BaseCartItemFactory
         int $quantity,
         ?Money $watchedPrice,
         ?Product $gift = null,
-        ?CartItem $mainCartItem = null,
-        ?PromoProduct $promoProduct = null
+        ?CartItem $mainCartItem = null
     ): BaseCartItem {
-        return new CartItem($cart, $product, $quantity, $watchedPrice, $gift, $mainCartItem, $promoProduct);
+        return new CartItem($cart, $product, $quantity, $watchedPrice, $gift, $mainCartItem);
     }
 }

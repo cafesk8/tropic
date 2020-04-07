@@ -220,18 +220,18 @@ class OrderFlow extends FormFlow
             $newFormAddressData['telephone'] = $customerUser->getTelephone();
         }
 
-        if ($customerUser->getDeliveryAddress() !== null) {
+        if ($customerUser->getDefaultDeliveryAddress() !== null) {
             if ($oldFormAddressData['street'] === '') {
-                $newFormAddressData['street'] = $customerUser->getDeliveryAddress()->getStreet();
+                $newFormAddressData['street'] = $customerUser->getDefaultDeliveryAddress()->getStreet();
             }
             if ($oldFormAddressData['city'] === '') {
-                $newFormAddressData['city'] = $customerUser->getDeliveryAddress()->getCity();
+                $newFormAddressData['city'] = $customerUser->getDefaultDeliveryAddress()->getCity();
             }
             if ($oldFormAddressData['postcode'] === '') {
-                $newFormAddressData['postcode'] = $customerUser->getDeliveryAddress()->getPostcode();
+                $newFormAddressData['postcode'] = $customerUser->getDefaultDeliveryAddress()->getPostcode();
             }
             if ($oldFormAddressData['country'] === '') {
-                $newFormAddressData['country'] = $customerUser->getDeliveryAddress()->getCountry();
+                $newFormAddressData['country'] = $customerUser->getDefaultDeliveryAddress()->getCountry();
             }
         }
 

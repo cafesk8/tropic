@@ -1,5 +1,5 @@
-import Register from 'framework/common/utils/register';
-import Window from 'framework/admin/utils/window';
+import Register from 'framework/common/utils/Register';
+import Window from 'framework/admin/utils/Window';
 
 new Register().registerCallback(function ($container) {
     $container.filterAllNodes('.js-window-opener-admin').on('click', function (event) {

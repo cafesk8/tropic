@@ -1,3 +1,1 @@
-# Bushman Project
-
-**[Migration instructions](migration.md)**
+# B2C ready-made Project

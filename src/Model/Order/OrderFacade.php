@@ -24,6 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GoPay\Definition\Response\PaymentStatus;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -82,6 +83,7 @@ use Shopsys\FrameworkBundle\Twig\NumberFormatterExtension;
  * @method fillOrderTransport(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method fillOrderRounding(\App\Model\Order\Order $order, \App\Model\Order\Preview\OrderPreview $orderPreview, string $locale)
  * @method refreshOrderItemsWithoutTransportAndPayment(\App\Model\Order\Order $order, \App\Model\Order\OrderData $orderData)
+ * @property \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
  */
 class OrderFacade extends BaseOrderFacade
 {
@@ -140,7 +142,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \App\Model\Order\OrderRepository $orderRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderUrlGenerator $orderUrlGenerator
-     * @param \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusRepository $orderStatusRepository
+     * @param \App\Model\Order\Status\OrderStatusRepository $orderStatusRepository
      * @param \Shopsys\FrameworkBundle\Model\Order\Mail\OrderMailFacade $orderMailFacade
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderHashGeneratorRepository $orderHashGeneratorRepository
      * @param \App\Component\Setting\Setting $setting
@@ -297,9 +299,10 @@ class OrderFacade extends BaseOrderFacade
 
     /**
      * @param \App\Model\Order\OrderData $orderData
+     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
      * @return \App\Model\Order\Order
      */
-    public function createOrderFromFront(BaseOrderData $orderData): BaseOrder
+    public function createOrderFromFront(BaseOrderData $orderData, ?DeliveryAddress $deliveryAddress): BaseOrder
     {
         /** @var \App\Model\Order\Status\OrderStatus $defaultOrderStatus */
         $defaultOrderStatus = $this->orderStatusRepository->getDefault();
@@ -316,7 +319,7 @@ class OrderFacade extends BaseOrderFacade
             $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($validEnteredPromoCode->getCode());
         }
 
-        $this->updateOrderDataWithDeliveryAddress($orderData, null);
+        $this->updateOrderDataWithDeliveryAddress($orderData, $deliveryAddress);
         $order = $this->createOrder($orderData, $orderPreview, $customerUser);
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getProductItems());
         $this->orderProductFacade->subtractOrderProductsFromStock($order->getGiftItems());
@@ -327,7 +330,7 @@ class OrderFacade extends BaseOrderFacade
         if ($customerUser !== null) {
             $order->setCustomerTransferId($customerUser->getTransferId());
             $order->setMemberOfLoyaltyProgram($customerUser->isMemberOfLoyaltyProgram());
-            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order);
+            $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order, $deliveryAddress);
             $this->em->flush($order);
         }
 
@@ -411,7 +414,7 @@ class OrderFacade extends BaseOrderFacade
         parent::fillOrderItems($order, $orderPreview);
 
         $this->fillOrderGifts($order, $orderPreview);
-        $this->fillOrderPromoProducts($order, $orderPreview);
+        $this->fillOrderGift($order, $orderPreview);
 
         $promoCodes = $orderPreview->getPromoCodesIndexedById();
         foreach ($promoCodes as $promoCode) {
@@ -422,6 +425,31 @@ class OrderFacade extends BaseOrderFacade
                     $promoCode
                 );
             }
+        }
+    }
+
+    /**
+     * @param \App\Model\Order\Order $order
+     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
+     */
+    private function fillOrderGift(Order $order, OrderPreview $orderPreview)
+    {
+        $orderGiftProduct = $orderPreview->getOrderGiftProduct();
+
+        if ($orderGiftProduct !== null) {
+            $giftPrice = new Price(Money::zero(), Money::zero());
+
+            $this->orderItemFactory->createGift(
+                $order,
+                $orderGiftProduct->getName($this->domain->getLocale()),
+                $giftPrice,
+                $orderGiftProduct->getVatForDomain($order->getDomainId())->getPercent(),
+                1,
+                $orderGiftProduct->getUnit()->getName($this->domain->getLocale()),
+                $orderGiftProduct->getCatnum(),
+                $orderGiftProduct,
+                $giftPrice
+            );
         }
     }
 
@@ -625,43 +653,6 @@ class OrderFacade extends BaseOrderFacade
             $promoCode->getCertificateSku(),
             $this->vatFacade->getDefaultVatForDomain($order->getDomainId())->getPercent()
         );
-    }
-
-    /**
-     * @param \App\Model\Order\Order $order
-     * @param \App\Model\Order\Preview\OrderPreview $orderPreview
-     */
-    private function fillOrderPromoProducts(BaseOrder $order, OrderPreview $orderPreview): void
-    {
-        /** @var \App\Model\Cart\Item\CartItem $promoProductCartItem */
-        foreach ($orderPreview->getPromoProductCartItems() as $promoProductCartItem) {
-            $product = $promoProductCartItem->getProduct();
-            $promoProduct = $promoProductCartItem->getPromoProduct();
-
-            if (!$this->orderItemFactory instanceof OrderItemFactory) {
-                $message = 'Object "' . get_class($this->orderItemFactory) . '" has to be instance of \App\Model\Order\Item\OrderItemFactory.';
-                throw new \Symfony\Component\Config\Definition\Exception\InvalidTypeException($message);
-            }
-
-            $promoProductOrderItemPrice = new Price($promoProductCartItem->getWatchedPrice(), $promoProductCartItem->getWatchedPrice());
-            $promoProductOrderItemTotalPrice = new Price(
-                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity()),
-                $promoProductCartItem->getWatchedPrice()->multiply($promoProductCartItem->getQuantity())
-            );
-
-            $this->orderItemFactory->createPromoProduct(
-                $order,
-                $product->getName($this->domain->getLocale()),
-                $promoProductOrderItemPrice,
-                $product->getVatForDomain($order->getDomainId())->getPercent(),
-                $promoProductCartItem->getQuantity(),
-                $product->getUnit()->getName($this->domain->getLocale()),
-                $product->getCatnum(),
-                $product,
-                $promoProductOrderItemTotalPrice,
-                $promoProduct
-            );
-        }
     }
 
     /**

@@ -152,32 +152,35 @@
                                         {% else %}
                                             {% do form.chosenGifts.setRendered %}
                                         {% endif %}
-
                                     {% endfor %}
-                                    {% if promoProducts|length > 0 %}
-                                        <div class="table-cart__gifts--promo">
-                                            <h3>{{ 'Promo produkty k objednávce'|trans }}</h3>
-                                            {% for promoProductByPromoProductId in promoProducts %}
-                                                {% for productId, promoProduct in promoProductByPromoProductId %}
-                                                    <div class="table-cart__gifts__item">
-                                                        {{ form_widget(form.chosenPromoProducts[promoProduct.id][productId], {
-                                                            attr: {
-                                                                class: 'css-checkbox js-cart-take-promo-product',
-                                                                'data-cart-promo-product-id': promoProduct.id,
-                                                                'data-cart-product-id': productId
-                                                            }
-                                                        }) }}
-                                                        <label class="css-checkbox__image" for="{{ form.chosenPromoProducts[promoProduct.id][productId].vars.id }}">
-                                                            {{ 'Chceš promo produkt'|trans }}
-                                                            {{ getProductById(productId).name }}
-                                                            {{ 'za zvýhodněnou cenu'|trans }} {{ promoProduct.price|price }}{{ '?' }}
-                                                        </label>
-                                                    </div>
+
+                                    {% if form.orderGiftProduct.vars.choices|length > 0 %}
+                                        <div class="table-cart__order-gifts">
+                                            {{ form_row(form.orderGiftProduct) }}
+                                        </div>
+                                    {% else %}
+                                        {% do form.orderGiftProduct.setRendered %}
+                                    {% endif %}
+
+                                    {% if nextLevelGifts is not empty and nextLevelDifference is not null %}
+                                        <div class="table-cart__next-gifts">
+                                            <p class="table-cart__next-gifts__title">
+                                                {{ 'Nakupte ještě za %nextLevelDifference% a vybírejte z těchto dárků:'|trans({'%nextLevelDifference%': nextLevelDifference|price}) }}
+                                            </p>
+                                            <ul class="list-next-gifts">
+                                                {% for nextLevelGift in nextLevelGifts %}
+                                                    <li class="list-next-gifts__item">
+                                                        <div class="list-next-gifts__item__image">
+                                                            {{ image(nextLevelGift, { alt: nextLevelGift.name, size: 'thumbnail' }) }}
+                                                        </div>
+                                                        <p class="list-next-gifts__item__name">
+                                                            {{ nextLevelGift.name }}
+                                                        </p>
+                                                    </li>
                                                 {% endfor %}
-                                            {% endfor %}
+                                            </ul>
                                         </div>
                                     {% endif %}
-                                    {% do form.chosenPromoProducts.setRendered %}
                                 </div>
 
                                 {% if isFreeTransportAndPaymentActive %}

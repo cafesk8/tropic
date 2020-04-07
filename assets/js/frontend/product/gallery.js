@@ -1,9 +1,8 @@
-import $ from 'jquery';
 import '../components/filterAllNodes';
 import 'magnific-popup';
 import 'slick-carousel';
 import Responsive from '../utils/responsive';
-import Register from 'framework/common/utils/register';
+import Register from 'framework/common/utils/Register';
 
 export default class ProductDetail {
 

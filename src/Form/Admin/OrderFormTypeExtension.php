@@ -146,6 +146,9 @@ class OrderFormTypeExtension extends AbstractTypeExtension
         ];
         $codeFieldType = get_class($builder->get('deliveryPostcode')->getType()->getInnerType());
         $builder->add('deliveryPostcode', $codeFieldType, $codeFieldOptions);
+        $builder->remove('deliveryFirstName');
+        $builder->remove('deliveryLastName');
+        $builder->remove('deliveryTelephone');
     }
 
     /**

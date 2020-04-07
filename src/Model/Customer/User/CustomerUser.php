@@ -9,7 +9,6 @@ use App\Model\Customer\TransferIds\UserTransferId;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser as BaseCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData as BaseCustomerUserData;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
@@ -25,11 +24,10 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
  *     }
  * )
  * @ORM\Entity
- * @property \App\Model\Customer\DeliveryAddress|null $deliveryAddress
+ * @property \App\Model\Customer\DeliveryAddress|null $defaultDeliveryAddress
  * @property \App\Model\Pricing\Group\PricingGroup $pricingGroup
- * @method \App\Model\Customer\DeliveryAddress|null getDeliveryAddress()
  * @method \App\Model\Pricing\Group\PricingGroup getPricingGroup()
- * @method setDeliveryAddress(\App\Model\Customer\DeliveryAddress|null $deliveryAddress)
+ * @method \App\Model\Customer\DeliveryAddress|null getDefaultDeliveryAddress()
  */
 class CustomerUser extends BaseCustomerUser
 {
@@ -101,13 +99,10 @@ class CustomerUser extends BaseCustomerUser
 
     /**
      * @param \App\Model\Customer\User\CustomerUserData $customerUserData
-     * @param \App\Model\Customer\DeliveryAddress|null $deliveryAddress
      */
-    public function __construct(
-        BaseCustomerUserData $customerUserData,
-        ?DeliveryAddress $deliveryAddress
-    ) {
-        parent::__construct($customerUserData, $deliveryAddress);
+    public function __construct(BaseCustomerUserData $customerUserData)
+    {
+        parent::__construct($customerUserData);
 
         $this->transferId = $customerUserData->transferId;
         $this->memberOfLoyaltyProgram = $customerUserData->memberOfLoyaltyProgram;

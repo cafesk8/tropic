@@ -234,6 +234,11 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_CERTIFICATE;
                     } else {
                         $validationGroups[] = self::VALIDATION_GROUP_TYPE_PROMO_CODE;
+                        if ($promoCodeData->useNominalDiscount === true) {
+                            $validationGroups[] = self::VALIDATION_GROUP_TYPE_NOMINAL_DISCOUNT;
+                        } else {
+                            $validationGroups[] = self::VALIDATION_GROUP_TYPE_PERCENT_DISCOUNT;
+                        }
                     }
 
                     if ($promoCodeData->limitType === PromoCode::LIMIT_TYPE_BRANDS) {

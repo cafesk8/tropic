@@ -100,12 +100,14 @@
 
             color: @color-base;
             font-size: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
 
             .list-benefits--small & {
                 width: calc(~"@{calc-base} - @{list-benefits-icon-size-small}");
                 font-size: @font-size-small
+            }
+
+            &__link {
+                font-weight: 700;
             }
         }
     }
