@@ -543,13 +543,9 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityGridFactory: '@App\Model\Product\Availability\AvailabilityGridFactory'
 
-    App\Model\Product\Search\ProductElasticsearchRepository: ~
-
     App\Model\Product\Search\FilterQuery: ~
 
     Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery: '@App\Model\Product\Search\FilterQuery'
-
-    Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository: '@App\Model\Product\Search\ProductElasticsearchRepository'
 
     App\Model\Product\Availability\ProductAvailabilityCalculation: ~
 
