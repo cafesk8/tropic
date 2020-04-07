@@ -15,7 +15,7 @@ import Timeout from 'framework/common/utils/Timeout';
             const nextArrow = $currentGallery.filterAllNodes('.js-horizontal-list-action-next');
 
             const types = {
-                'last-visited': [1, 2, 3, 3, 6],
+                'last-visited': [1, 2, 3, 3, 5],
                 'top-products': [1, 2, 3, 3, 4],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],
