@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\DiscountExclusion\DiscountExclusionFacade;
 use App\Form\Front\Cart\AddProductFormType;
 use App\Form\Front\Cart\CartFormType;
 use App\Model\Cart\Cart;
@@ -105,6 +106,11 @@ class CartController extends FrontBaseController
     private $listedProductViewFacade;
 
     /**
+     * @var \App\Component\DiscountExclusion\DiscountExclusionFacade
+     */
+    private $discountExclusionFacade;
+
+    /**
      * @param \App\Model\Cart\CartFacade $cartFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\TransportAndPayment\FreeTransportAndPaymentFacade $freeTransportAndPaymentFacade
@@ -118,6 +124,7 @@ class CartController extends FrontBaseController
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
+     * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      */
     public function __construct(
         CartFacade $cartFacade,
@@ -132,7 +139,8 @@ class CartController extends FrontBaseController
         ListedProductViewFacadeInterface $listedProductViewFacade,
         ProductFacade $productFacade,
         OrderGiftFacade $orderGiftFacade,
-        PricingGroupSettingFacade $pricingGroupSettingFacade
+        PricingGroupSettingFacade $pricingGroupSettingFacade,
+        DiscountExclusionFacade $discountExclusionFacade
     ) {
         $this->cartFacade = $cartFacade;
         $this->domain = $domain;
@@ -147,6 +155,7 @@ class CartController extends FrontBaseController
         $this->productFacade = $productFacade;
         $this->orderGiftFacade = $orderGiftFacade;
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
+        $this->discountExclusionFacade = $discountExclusionFacade;
     }
 
     /**
@@ -227,6 +236,7 @@ class CartController extends FrontBaseController
             'locale' => $this->domain->getLocale(),
             'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser)),
             'nextLevelDifference' => $this->orderGiftFacade->getNextLevelDifference($productsPrice->getPriceWithVat(), $domainId),
+            'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
         ]);
     }
 

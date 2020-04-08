@@ -126,6 +126,11 @@
                                                             {% endfor %}
                                                         </div>
                                                     {% endif %}
+                                                    {% if cartItem.product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
+                                                        <div class="in-message--info">
+                                                            {{ registrationDiscountExclusionText }}
+                                                        </div>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

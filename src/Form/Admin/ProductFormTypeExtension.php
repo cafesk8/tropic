@@ -316,7 +316,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $builderPricesGroup = $builder->get('pricesGroup');
         $builderPricesGroup->add('registrationDiscountDisabled', YesNoType::class, [
             'label' => t('Vyjmout ze slev za registraci'),
-            'position' => ['before' => 'actionPrices'],
+            'position' => 'first',
         ]);
         $actionPriceOptionsByDomainId = [];
 
