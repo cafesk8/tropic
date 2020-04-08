@@ -37,7 +37,7 @@
         <title>{% block title %}{{ 'Shopsys Commerce Cloud'|trans }}{% endblock %} {{ getSeoTitleAddOn() }}</title>
     </head>
 
-    <body class="web domain{{ getDomain().id }}">
+    <body class="web domain{{ getDomain().id }}" id="top">
         {{ render(controller('App\\Controller\\Front\\GtmController:bodyAction')) }}
         {{ render(controller('App\\Controller\\Front\\ScriptController:embedAllPagesScriptsAction')) }}
         {{ render(controller('App\\Controller\\Front\\ScriptController:embedAllPagesGoogleAnalyticsScriptAction')) }}
