@@ -20,12 +20,6 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
-    "bmatzner/jquery-bundle": {
-        "version": "2.2.2"
-    },
-    "bmatzner/jquery-ui-bundle": {
-        "version": "1.10.3"
-    },
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
@@ -55,6 +49,15 @@
             "tests/functional.suite.yml",
             "tests/unit.suite.yml"
         ]
+    },
+    "codeception/lib-asserts": {
+        "version": "1.11.0"
+    },
+    "codeception/module-db": {
+        "version": "1.0.1"
+    },
+    "codeception/module-webdriver": {
+        "version": "1.0.7"
     },
     "codeception/phpunit-wrapper": {
         "version": "7.7.1"
@@ -207,12 +210,6 @@
     "emanueleminotto/twig-cache-bundle": {
         "version": "1.0.5"
     },
-    "facebook/webdriver": {
-        "version": "1.7.1"
-    },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "firebase/php-jwt": {
         "version": "v5.0.0"
     },
@@ -310,12 +307,6 @@
     "heureka/overeno-zakazniky": {
         "version": "v2.0.6"
     },
-    "illuminate/contracts": {
-        "version": "v5.8.35"
-    },
-    "illuminate/support": {
-        "version": "v5.8.35"
-    },
     "incenteev/composer-parameter-handler": {
         "version": "v2.1.3"
     },
@@ -375,6 +366,9 @@
     "kriswallsmith/assetic": {
         "version": "v1.4.0"
     },
+    "lcobucci/jwt": {
+        "version": "3.3.1"
+    },
     "league/flysystem": {
         "version": "1.0.57"
     },
@@ -402,17 +396,23 @@
     "myclabs/deep-copy": {
         "version": "1.9.3"
     },
-    "nesbot/carbon": {
-        "version": "2.26.0"
+    "nette/application": {
+        "version": "v3.0.4"
     },
     "nette/bootstrap": {
         "version": "v2.4.6"
+    },
+    "nette/component-model": {
+        "version": "v3.0.0"
     },
     "nette/di": {
         "version": "v2.4.15"
     },
     "nette/finder": {
         "version": "v2.5.1"
+    },
+    "nette/http": {
+        "version": "v3.0.4"
     },
     "nette/neon": {
         "version": "v3.0.0"
@@ -422,6 +422,9 @@
     },
     "nette/robot-loader": {
         "version": "v3.1.1"
+    },
+    "nette/routing": {
+        "version": "v3.0.0"
     },
     "nette/utils": {
         "version": "v2.5.3"
@@ -502,6 +505,9 @@
     },
     "php-http/promise": {
         "version": "v1.0.0"
+    },
+    "php-webdriver/webdriver": {
+        "version": "1.8.2"
     },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
@@ -653,6 +659,9 @@
     "sebastian/resource-operations": {
         "version": "2.0.1"
     },
+    "sebastian/type": {
+        "version": "1.1.3"
+    },
     "sebastian/version": {
         "version": "2.0.1"
     },
@@ -664,9 +673,6 @@
     },
     "sensio/framework-extra-bundle": {
         "version": "v3.0.29"
-    },
-    "sensio/generator-bundle": {
-        "version": "v3.1.7"
     },
     "sensiolabs/security-checker": {
         "version": "4.0",
@@ -701,9 +707,6 @@
     "shopsys/http-smoke-testing": {
         "version": "dev-mg-weird-flex-but-ok"
     },
-    "shopsys/jparser": {
-        "version": "0.1"
-    },
     "shopsys/migrations": {
         "version": "dev-mg-weird-flex-but-ok"
     },
@@ -721,9 +724,6 @@
     },
     "simpod/sms-manager": {
         "version": "v0.1.0"
-    },
-    "slam/php-cs-fixer-extensions": {
-        "version": "v1.19.1"
     },
     "slevomat/coding-standard": {
         "version": "4.8.7"
@@ -785,17 +785,14 @@
     "symfony/asset": {
         "version": "v3.4.33"
     },
-    "symfony/assetic-bundle": {
-        "version": "v2.8.2"
-    },
     "symfony/browser-kit": {
         "version": "v3.4.33"
     },
     "symfony/cache": {
         "version": "v3.4.33"
     },
-    "symfony/class-loader": {
-        "version": "v3.4.33"
+    "symfony/cache-contracts": {
+        "version": "v1.1.7"
     },
     "symfony/config": {
         "version": "v3.4.33"
@@ -840,8 +837,14 @@
     "symfony/dotenv": {
         "version": "v3.4.33"
     },
+    "symfony/error-handler": {
+        "version": "v4.4.7"
+    },
     "symfony/event-dispatcher": {
         "version": "v3.4.33"
+    },
+    "symfony/event-dispatcher-contracts": {
+        "version": "v1.1.7"
     },
     "symfony/expression-language": {
         "version": "v3.4.33"
@@ -927,9 +930,6 @@
     "symfony/options-resolver": {
         "version": "v3.4.33"
     },
-    "symfony/polyfill-apcu": {
-        "version": "v1.12.0"
-    },
     "symfony/polyfill-ctype": {
         "version": "v1.12.0"
     },
@@ -945,19 +945,10 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.12.0"
     },
-    "symfony/polyfill-php56": {
-        "version": "v1.12.0"
-    },
-    "symfony/polyfill-php70": {
-        "version": "v1.12.0"
-    },
     "symfony/polyfill-php72": {
         "version": "v1.12.0"
     },
     "symfony/polyfill-php73": {
-        "version": "v1.12.0"
-    },
-    "symfony/polyfill-util": {
         "version": "v1.12.0"
     },
     "symfony/process": {
@@ -1062,6 +1053,9 @@
     "symfony/var-dumper": {
         "version": "v3.4.33"
     },
+    "symfony/var-exporter": {
+        "version": "v4.4.7"
+    },
     "symfony/web-link": {
         "version": "v3.4.33"
     },
@@ -1122,8 +1116,11 @@
     "symfony/yaml": {
         "version": "v3.4.33"
     },
-    "symplify/better-phpdoc-parser": {
-        "version": "v5.4.16"
+    "symplify/auto-bind-parameter": {
+        "version": "v7.2.2"
+    },
+    "symplify/autowire-array-parameter": {
+        "version": "v7.2.2"
     },
     "symplify/coding-standard": {
         "version": "v5.4.16"
@@ -1134,8 +1131,11 @@
     "symplify/package-builder": {
         "version": "v5.4.16"
     },
-    "symplify/token-runner": {
-        "version": "v5.4.13"
+    "symplify/set-config-resolver": {
+        "version": "v7.2.8"
+    },
+    "symplify/smart-file-system": {
+        "version": "v7.2.8"
     },
     "theseer/tokenizer": {
         "version": "1.1.3"
