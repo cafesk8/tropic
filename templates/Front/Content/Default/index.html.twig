@@ -26,12 +26,13 @@
 
 {% block main_content %}
 
-    {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
     <div class="web__line">
         <div class="web__container">
             {% include 'Front/Content/Benefits/list.html.twig' %}
         </div>
     </div>
+
+    {{ render(controller('App\\Controller\\Front\\AdvertController:bannerAction')) }}
 
     {% if topProducts is not empty %}
         <div class="web__line">
@@ -77,47 +78,6 @@
                     <a href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link">{{ 'Přejít na výpis všech článků'|trans }}</a>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="web__line">
-        <div class="web__container">
-            <ul class="list-article-main">
-                <li class="list-article-main__item">
-                    <div class="list-article-main__item__image" style="background: url({{ asset('assets/frontend/images/homepage_ideo_bann_2.jpg') }}); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                    </div>
-                    <div class="list-article-main__item__content">
-                        <div class="list-article-main__item__content__title">
-                            {{ 'Specialisti na běh'|trans }}
-                        </div>
-                        <div class="list-article-main__item__content__text">
-                            {{ 'Zaměřujeme se na triatlon. Proto vám dokážeme poradit vybrat správné cyklistické a plavecké vybavení, ale také běžecké.'|trans }}
-                        </div>
-                        <div class="list-article-main__item__content__bottom">
-                            <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_homepage') }}">
-                                {{ 'Vše pro běhání'|trans }}
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                <li class="list-article-main__item">
-                    <div class="list-article-main__item__image" style="background: url({{ asset('assets/frontend/images/homepage_ideo_bann_3.jpg') }}); background-position: center; background-size: cover; background-repeat: no-repeat;">
-                    </div>
-                    <div class="list-article-main__item__content">
-                        <div class="list-article-main__item__content__title">
-                            {{ 'Poradíme s plaváním'|trans }}
-                        </div>
-                        <div class="list-article-main__item__content__text">
-                            {{ 'Nemusíte mít za sebou naplavaných tisíce kilometrů, abyste zlepšili techniku a také výdrž. Poradíme vám.'|trans }}
-                        </div>
-                        <div class="list-article-main__item__content__bottom">
-                            <a class="list-article-main__item__content__bottom__button btn btn--success" href="{{ url('front_homepage') }}">
-                                {{ 'Plavecké potřeby'|trans }}
-                            </a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
         </div>
     </div>
 
