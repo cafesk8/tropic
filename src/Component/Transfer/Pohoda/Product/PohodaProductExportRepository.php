@@ -123,7 +123,7 @@ class PohodaProductExportRepository
      * @param string[] $catnums
      * @return array
      */
-    public function getSaleInformationByCatnums(array $catnums)
+    public function getSaleInformationByCatnums(array $catnums): array
     {
         $resultSetMapping = new ResultSetMapping();
         $resultSetMapping->addScalarResult('ID', PohodaProduct::COL_POHODA_ID)

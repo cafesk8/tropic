@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\Exception\PricingGroupNotFoundException;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface;
 
 class PricingGroupDataFixture extends AbstractReferenceFixture
@@ -61,20 +62,36 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
             $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, $domainId);
 
-            $registeredPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
-            $registeredPricingGroup = $registeredPricingGroup ?? $this->createRegisteredCustomerPricingGroup($domainId);
+            try {
+                $registeredPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
+            } catch (PricingGroupNotFoundException $exception) {
+                $registeredPricingGroup = $this->createRegisteredCustomerPricingGroup($domainId);
+            }
+
             $this->addReferenceForDomain(self::PRICING_GROUP_REGISTERED_DOMAIN, $registeredPricingGroup, $domainId);
 
-            $purchasePricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId);
-            $purchasePricingGroup = $purchasePricingGroup ?? $this->createPurchasePricePricingGroup($domainId);
+            try {
+                $purchasePricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId);
+            } catch (PricingGroupNotFoundException $exception) {
+                $purchasePricingGroup = $this->createPurchasePricePricingGroup($domainId);
+            }
+
             $this->addReferenceForDomain(self::PRICING_GROUP_PURCHASE_DOMAIN, $purchasePricingGroup, $domainId);
 
-            $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
-            $standardPricingGroup = $standardPricingGroup ?? $this->createStandardPricePricingGroup($domainId);
+            try {
+                $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+            } catch (PricingGroupNotFoundException $exception) {
+                $standardPricingGroup = $this->createStandardPricePricingGroup($domainId);
+            }
+
             $this->addReferenceForDomain(self::PRICING_GROUP_STANDARD_DOMAIN, $standardPricingGroup, $domainId);
 
-            $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
-            $salePricingGroup = $salePricingGroup ?? $this->createSalePricePricingGroup($domainId);
+            try {
+                $salePricingGroup = $this->pricingGroupFacade->getSalePricePricingGroup($domainId);
+            } catch (PricingGroupNotFoundException $exception) {
+                $salePricingGroup = $this->createSalePricePricingGroup($domainId);
+            }
+
             $this->addReferenceForDomain(self::PRICING_GROUP_SALE_DOMAIN, $salePricingGroup, $domainId);
         }
     }

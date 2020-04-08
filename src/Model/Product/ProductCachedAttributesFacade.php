@@ -108,7 +108,7 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         /** @var \App\Model\Customer\User\CustomerUser $customerUser */
         $customerUser = $this->currentCustomerUser->findCurrentCustomerUser();
 
-        if ($registeredCustomerPricingGroup === null || ($customerUser !== null && $customerUser->getPricingGroup()->getId() === $registeredCustomerPricingGroup->getId())) {
+        if ($customerUser !== null && $customerUser->getPricingGroup()->isRegisteredCustomerPricingGroup()) {
             return null;
         }
 

@@ -64,7 +64,6 @@ class ProductImportFacade
         $this->productFacade = $productFacade;
         $this->productDataFactory = $productDataFactory;
         $this->pohodaProductMapper = $pohodaProductMapper;
-
         $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
     }
 
@@ -79,7 +78,6 @@ class ProductImportFacade
         $pohodaProducts = $this->pohodaProductExportFacade->findPohodaProductsByPohodaIds(
             $changedPohodaProductIds
         );
-        $this->pohodaProductExportFacade->addSaleInformationToPohodaProducts($pohodaProducts);
         $updatedPohodaProductIds = [];
 
         if (count($pohodaProducts) === 0) {

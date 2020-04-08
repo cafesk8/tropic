@@ -23,7 +23,7 @@ class PricingGroupRepository extends BasePricingGroupRepository
      * @param int $domainId
      * @return null|\App\Model\Pricing\Group\PricingGroup
      */
-    public function getByNameAndDomainId(string $name, int $domainId): ?PricingGroup
+    public function findByNameAndDomainId(string $name, int $domainId): ?PricingGroup
     {
         return $this->getPricingGroupRepository()
             ->createQueryBuilder('pg')
