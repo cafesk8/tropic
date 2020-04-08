@@ -83,10 +83,12 @@ class HomepageController extends FrontBaseController
     {
         $sliderItems = $this->sliderItemFacade->getAllVisibleOnCurrentDomain();
         $topProducts = $this->listedProductViewFacade->getAllTop();
+        $priceBombProducts = $this->listedProductViewFacade->getPriceBombProducts(2);
 
         return $this->render('Front/Content/Default/index.html.twig', [
             'sliderItems' => $sliderItems,
             'topProducts' => $topProducts,
+            'priceBombProducts' => $priceBombProducts,
             'title' => $this->seoSettingFacade->getTitleMainPage($this->domain->getId()),
             'metaDescription' => $this->seoSettingFacade->getDescriptionMainPage($this->domain->getId()),
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(

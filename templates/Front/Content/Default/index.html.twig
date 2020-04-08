@@ -48,6 +48,21 @@
         </div>
     {% endif %}
 
+    {% if priceBombProducts is not empty %}
+        <div class="web__line">
+            <div class="web__container">
+                <div class="box-top-products">
+                    <h1 class="box-top-products__title">
+                        {{ 'Cenová bomba'|trans }}
+                    </h1>
+                    <div class="box-top-products__in">
+                        {{ productList.horizontalList(priceBombProducts, "list-top-products", 'h3', 'top-products', false) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="web__line">
         <div class="web__container">
             <div class="box-articles">
