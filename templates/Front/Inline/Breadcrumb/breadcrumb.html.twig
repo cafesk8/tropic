@@ -6,7 +6,7 @@
                     {{ 'Úvod'|trans }}
                 </a>
                 {% for breadcrumbItem in breadcrumbItems %}
-                    <span class="box-breadcrumb__item box-breadcrumb__item--separator"><i class="svg svg-arrow"></i></span>
+                    <span class="box-breadcrumb__item box-breadcrumb__item--separator"><i class="svg svg-fish"></i></span>
                     {% if breadcrumbItem.routeName is not null %}
                         <a class="box-breadcrumb__item" href="{{ url(breadcrumbItem.routeName, breadcrumbItem.routeParameters) }}">
                             {{- breadcrumbItem.name -}}
