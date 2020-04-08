@@ -1,0 +1,9 @@
+<div class="box-articles">
+    <h2 class="box-articles__title">
+        {{ 'Shopsys magazín'|trans }}
+    </h2>
+    <a class="box-articles__link" href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}">
+        {{ 'Přejít na výpis všech článků'|trans }}
+    </a>
+    {% include 'Front/Content/Article/list.html.twig' with { blogArticles: blogArticles, cssClass: articleClassModification } %}
+</div>

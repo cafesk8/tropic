@@ -72,19 +72,8 @@
     {% endif %}
 
     <div class="web__line">
-        <div class="web__container">
-            <div class="box-articles">
-                <h2 class="box-articles__title-big">
-                    {{ 'Shopsys magazín'|trans }}
-                </h2>
-                <div class="box-articles__title-small">
-                    {{ 'Představujeme trendy, radíme jak trénovat a ukazujeme naši firmu'|trans }}
-                </div>
-                {% include 'Front/Content/Article/list.html.twig' with { blogArticles: homepageBlogArticles } %}
-                <div class="box-articles__bottom">
-                    <a href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link">{{ 'Přejít na výpis všech článků'|trans }}</a>
-                </div>
-            </div>
+        <div class="web__container web__container--border-radius web__container--dark">
+            {% include 'Front/Content/Article/index.html.twig' with { blogArticles: homepageBlogArticles, articleClassModification: 'list-articles--white' } %}
         </div>
     </div>
 
