@@ -1,5 +1,5 @@
 <div class="web__line">
-    <div class="web__container">
+    <div class="web__container web__container--no-padding">
         <div class="list-grid-images">
             <ul class="list-grid-images__portrait">
                 {% if fourthRectangle is not null %}
@@ -15,9 +15,6 @@
                     <li class="list-grid-images__landscape__item">
                         <a href="{{ firstSquare.link }}" class="list-grid-images__landscape__link">
                             {{ image(firstSquare, {size: 'square', alt: firstSquare.name}) }}
-                            <div class="list-grid-images__content">
-                                <span class="list-grid-images__content__text">{{ firstSquare.name }}</span>
-                            </div>
                         </a>
                     </li>
                 {% endif %}
@@ -25,9 +22,6 @@
                     <li class="list-grid-images__landscape__item">
                         <a href="{{ secondSquare.link }}" class="list-grid-images__landscape__link">
                             {{ image(secondSquare, {size: 'square', alt: secondSquare.name}) }}
-                            <div class="list-grid-images__content">
-                                <span class="list-grid-images__content__text">{{ secondSquare.name }}</span>
-                            </div>
                         </a>
                     </li>
                 {% endif %}
@@ -35,9 +29,6 @@
                     <li class="list-grid-images__landscape__item">
                         <a href="{{ thirdSquare.link }}" class="list-grid-images__landscape__link">
                             {{ image(thirdSquare, {size: 'square', alt: thirdSquare.name}) }}
-                            <div class="list-grid-images__content">
-                                <span class="list-grid-images__content__text">{{ thirdSquare.name }}</span>
-                            </div>
                         </a>
                     </li>
                 {% endif %}
