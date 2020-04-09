@@ -7,7 +7,6 @@ namespace App\Form\Admin;
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Product\Brand\BrandFacade;
-use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -126,10 +125,6 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
             'multiple' => false,
             'expanded' => false,
             'required' => true,
-        ]);
-
-        $basicInformationsFormGroup->add('combinable', YesNoType::class, [
-            'label' => t('Kombinovatelný'),
         ]);
 
         $this->extendCodeField($builder, $basicInformationsFormGroup);

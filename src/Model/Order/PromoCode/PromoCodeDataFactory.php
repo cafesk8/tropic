@@ -78,7 +78,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->type = PromoCodeData::TYPE_PROMO_CODE;
         $promoCodeData->certificateValue = Money::zero();
         $promoCodeData->userType = PromoCode::USER_TYPE_ALL;
-        $promoCodeData->combinable = false;
         $promoCodeData->limitType = PromoCode::LIMIT_TYPE_ALL;
         $promoCodeData->limits = [];
         $promoCodeData->brandLimits = [];
@@ -139,7 +138,6 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         $promoCodeData->certificateValue = $promoCode->getCertificateValue();
         $promoCodeData->certificateSku = $promoCode->getCertificateSku();
         $promoCodeData->userType = $promoCode->getUserType();
-        $promoCodeData->combinable = $promoCode->isCombinable();
         $promoCodeData->limitType = $promoCode->getLimitType();
     }
 }

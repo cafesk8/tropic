@@ -136,13 +136,6 @@ class PromoCode extends BasePromoCode
     private $userType;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $combinable;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="string", length=50, nullable=false)
@@ -177,7 +170,6 @@ class PromoCode extends BasePromoCode
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUserType($promoCodeData->userType);
-        $this->combinable = $promoCodeData->combinable;
         $this->setLimitType($promoCodeData->limitType);
 
         $this->limits = new ArrayCollection();
@@ -203,7 +195,6 @@ class PromoCode extends BasePromoCode
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
         $this->setUserType($promoCodeData->userType);
-        $this->combinable = $promoCodeData->combinable;
         $this->setLimitType($promoCodeData->limitType);
         foreach ($promoCodeData->limits as $limit) {
             $this->limits->add($limit);
@@ -392,7 +383,7 @@ class PromoCode extends BasePromoCode
      */
     public function isCombinable(): bool
     {
-        return $this->combinable;
+        return $this->type === PromoCodeData::TYPE_CERTIFICATE;
     }
 
     /**

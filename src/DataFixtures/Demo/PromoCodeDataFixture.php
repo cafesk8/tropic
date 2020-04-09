@@ -48,14 +48,12 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         $promoCodeData->code = 'promo10';
         $promoCodeData->percent = 10.0;
         $promoCodeData->useNominalDiscount = false;
-        $promoCodeData->combinable = true;
         $this->promoCodeFacade->create($promoCodeData);
 
         $promoCodeData->unlimited = true;
         $promoCodeData->code = 'promo4';
         $promoCodeData->percent = 4.0;
         $promoCodeData->useNominalDiscount = false;
-        $promoCodeData->combinable = false;
         $this->promoCodeFacade->create($promoCodeData);
 
         $promoCodeData->unlimited = false;
@@ -64,13 +62,11 @@ class PromoCodeDataFixture extends AbstractReferenceFixture
         $promoCodeData->code = 'promo15';
         $promoCodeData->percent = 15.0;
         $promoCodeData->useNominalDiscount = false;
-        $promoCodeData->combinable = true;
         $this->promoCodeFacade->create($promoCodeData);
 
         $promoCodeData->usageLimit = 1;
         $promoCodeData->quantity = 10;
         $promoCodeData->prefix = 'spring_';
-        $promoCodeData->combinable = false;
         $this->promoCodeFacade->massCreate($promoCodeData);
         $promoCodeData->prefix = self::PROMO_CODE_PREFIX_SUMMER;
         $this->promoCodeFacade->massCreate($promoCodeData);

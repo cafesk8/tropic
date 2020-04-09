@@ -93,11 +93,6 @@ class PromoCodeData extends BasePromoCodeData
     public $userType;
 
     /**
-     * @var bool|null
-     */
-    public $combinable;
-
-    /**
      * @var string
      */
     public $limitType;
