@@ -19,6 +19,7 @@ class PohodaProduct
     public const COL_STANDARD_PRICE = 'standardPriceWithVat';
     public const COL_STOCK_ID = 'stockId';
     public const COL_SALE_INFORMATION = 'saleInformation';
+    public const COL_VARIANT_ID = 'variantId';
 
     /**
      * @var int
@@ -81,6 +82,11 @@ class PohodaProduct
     public $saleInformation;
 
     /**
+     * @var string|null
+     */
+    public $variantId;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
@@ -97,5 +103,6 @@ class PohodaProduct
         $this->purchasePrice = $pohodaProductData[self::COL_PURCHASE_PRICE];
         $this->standardPrice = $pohodaProductData[self::COL_STANDARD_PRICE];
         $this->saleInformation = $pohodaProductData[self::COL_SALE_INFORMATION];
+        $this->variantId = (string)$pohodaProductData[self::COL_VARIANT_ID];
     }
 }

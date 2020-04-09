@@ -88,7 +88,7 @@ class ProductImportFacade
         }
         $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
 
-        return !$this->productInfoQueueImportFacade->isQueueEmpty();
+        return !$this->productInfoQueueImportFacade->isQueueEmpty() && count($changedPohodaProductIds) === self::PRODUCT_EXPORT_MAX_BATCH_LIMIT;
     }
 
     /**
