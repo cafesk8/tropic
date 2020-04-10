@@ -1,36 +1,17 @@
 {% if categories|length > 0 %}
-    {% if title|default('') %}
-        <h3 class="list-categories__title">{{ title }}</h3>
-    {% endif %}
-
     <ul class="list-categories js-tabs-content {{ cssClass|default('') }}" data-tab-id="categories">
         {% for category in categories %}
             <li class="list-categories__item">
                 <a href="{{ url('front_product_list', { id: category.id }) }}"
-                class="list-categories__link">
-                    {{ image(category, { alt: category.name }) }}
-                    <div class="list-categories__button">
-                        {{ category.name }}
+                class="list-categories__item__link">
+                    <div class="list-categories__item__image">
+                        {{ image(category, { alt: category.name }) }}
                     </div>
+                    <p class="list-categories__item__text js-not-implemented-yet">
+                        {{ category.name }} (10)
+                    </p>
                 </a>
             </li>
-            {% if currentCategory is defined %}
-                {% if loop.index == 2 and currentCategory.rightBannerText is not null %}
-                    <li class="list-categories__item">
-                        <span class="list-categories__item__text">
-                            {{ currentCategory.rightBannerText }}
-                        </span>
-                    </li>
-                {% endif %}
-
-                {% if loop.index == 5 and currentCategory.leftBannerText is not null %}
-                    <li class="list-categories__item">
-                        <span class="list-categories__item__text list-categories__item__text--text-right">
-                            {{ currentCategory.leftBannerText }}
-                        </span>
-                    </li>
-                {% endif %}
-            {% endif %}
         {% endfor %}
     </ul>
 {% endif %}

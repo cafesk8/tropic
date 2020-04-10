@@ -36,11 +36,7 @@
             </div>
 
             <div>
-                <div class="box-list__row">
-                    <div class="box-list__row__column box-list__row__column--order">
-                        {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
-                    </div>
-                </div>
+                {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
                 {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: false, hiddenFilterFormButton: true } %}
             </div>
 
