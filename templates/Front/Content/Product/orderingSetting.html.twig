@@ -1,14 +1,15 @@
 
 <div class="box-order-type">
+    <div class="box-order-type__list">
     {% for orderingModeId, orderingModeName in orderingModesNames %}
         {% if activeOrderingModeId == orderingModeId %}
-            <span class="box-order-type__item active">
+            <span class="box-order-type__list__item active">
                 {{ orderingModeName }}
             </span>
         {% else %}
             <a
                 href="#"
-                class="box-order-type__item js-product-list-ordering-mode"
+                class="box-order-type__list__item js-product-list-ordering-mode"
                 data-cookie-name="{{ cookieName }}"
                 data-ordering-mode="{{ orderingModeId }}"
             >
@@ -16,4 +17,8 @@
             </a>
         {% endif %}
     {% endfor %}
+    </div>
+    <div class="box-order-type__count js-not-implemented-yet">
+        Zobrazuji 1-45 z 86
+    </div>
 </div>

@@ -3,10 +3,8 @@
 .in-place {
     margin-bottom: @in-place-margin;
     text-align: center;
-    overflow: hidden;
 
     font-size: 0;
-    border-radius: @radius-big;
 
     &--preCategory, &--category {
         display: none;
@@ -15,5 +13,9 @@
             display: block;
             margin-bottom: 30px;
         }
+    }
+
+    img {
+        border-radius: @radius-big;
     }
 }
