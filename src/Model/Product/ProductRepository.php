@@ -10,6 +10,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValue;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
@@ -522,5 +523,44 @@ class ProductRepository extends BaseProductRepository
         ]);
 
         return $product;
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @param string $locale
+     * @param string|null $searchText
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getOfferedBySearchTextQueryBuilder(
+        int $domainId,
+        BasePricingGroup $pricingGroup,
+        string $locale,
+        ?string $searchText
+    ): QueryBuilder {
+        $queryBuilder = $this->getAllOfferedQueryBuilder($domainId, $pricingGroup);
+
+        $this->addTranslation($queryBuilder, $locale);
+        $this->addDomain($queryBuilder, $domainId);
+
+        $this->productElasticsearchRepository->filterBySearchText($queryBuilder, $searchText);
+
+        return $queryBuilder;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $mainVariant
+     * @param int $domainId
+     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
+     * @return \App\Model\Product\Product[]
+     */
+    public function getAllVisibleVariantsByMainVariant(Product $mainVariant, int $domainId, PricingGroup $pricingGroup): array
+    {
+        $queryBuilder = $this->getAllVisibleQueryBuilder($domainId, $pricingGroup);
+        $queryBuilder
+            ->andWhere('p.mainVariant = :mainVariant')
+            ->setParameter('mainVariant', $mainVariant);
+
+        return $queryBuilder->getQuery()->execute();
     }
 }

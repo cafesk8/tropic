@@ -2,7 +2,8 @@
   "settings": {
     "index": {
       "number_of_shards": 1,
-      "number_of_replicas": 0
+      "number_of_replicas": 0,
+      "max_ngram_diff": 18
     },
     "analysis": {
       "filter": {
@@ -27,6 +28,11 @@
           "type": "edgeNGram",
           "min_gram": 2,
           "max_gram": 20
+        },
+        "ngram_filter": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 20
         }
       },
       "tokenizer": {
@@ -36,6 +42,13 @@
         }
       },
       "analyzer": {
+        "catnum_ngram_analyzer": {
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase",
+            "ngram_filter"
+          ]
+        },
         "full_with_diacritic": {
           "tokenizer": "keep_special_chars",
           "filter": [
@@ -133,10 +146,10 @@
         "type": "text",
         "analyzer": "keyword",
         "fields": {
-          "edge_ngram": {
+          "ngram": {
             "type": "text",
-            "analyzer": "edge_ngram_unanalyzed",
-            "search_analyzer": "keyword"
+            "analyzer": "catnum_ngram_analyzer",
+            "search_analyzer": "full_without_diacritic"
           }
         }
       },
@@ -212,6 +225,17 @@
           }
         }
       },
+      "prices_for_filter": {
+        "type": "nested",
+        "properties": {
+          "pricing_group_id": {
+            "type": "integer"
+          },
+          "price_with_vat": {
+            "type": "float"
+          }
+        }
+      },
       "selling_from": {
         "type": "date"
       },
@@ -277,6 +301,35 @@
       },
       "amount_multiplier": {
         "type": "integer"
+      },
+      "variants_aliases": {
+        "type": "text",
+        "analyzer": "stemming",
+        "fields": {
+          "full_with_diacritic": {
+            "type": "text",
+            "analyzer": "full_with_diacritic"
+          },
+          "full_without_diacritic": {
+            "type": "text",
+            "analyzer": "full_without_diacritic"
+          },
+          "edge_ngram_with_diacritic": {
+            "type": "text",
+            "analyzer": "edge_ngram_with_diacritic",
+            "search_analyzer": "full_with_diacritic"
+          },
+          "edge_ngram_without_diacritic": {
+            "type": "text",
+            "analyzer": "edge_ngram_without_diacritic",
+            "search_analyzer": "full_without_diacritic"
+          },
+          "keyword": {
+            "type": "icu_collation_keyword",
+            "language": "sk",
+            "index": false
+          }
+        }
       }
     }
   }

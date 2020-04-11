@@ -133,7 +133,7 @@ class ProductExportRepository extends BaseProductExportRepository
      */
     protected function extractResult(Product $product, int $domainId, string $locale): array
     {
-        $variants = $this->productFacade->getVariantsForProduct($product, $domainId);
+        $variants = $this->productFacade->getVisibleVariantsForProduct($product, $domainId);
         $result = parent::extractResult($product, $domainId, $locale);
 
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
@@ -144,6 +144,11 @@ class ProductExportRepository extends BaseProductExportRepository
         $result['gifts'] = $this->productFacade->getProductGiftNames($product, $domainId, $locale);
         $result['minimum_amount'] = $product->getRealMinimumAmount();
         $result['amount_multiplier'] = $product->getAmountMultiplier();
+        $result['variants_aliases'] = $this->getVariantsAliases($product, $locale, $domainId);
+        if ($product->isMainVariant()) {
+            $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
+        }
+        $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
 
         return $result;
     }
@@ -212,5 +217,77 @@ class ProductExportRepository extends BaseProductExportRepository
         }
 
         return $categoryIds;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param string $locale
+     * @param int $domainId
+     * @return string[]
+     */
+    private function getVariantsAliases(Product $product, string $locale, int $domainId): array
+    {
+        $variantsAliases = [];
+        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+            $variantsAliases[] = $variant->getVariantAlias($locale);
+        }
+
+        return array_filter($variantsAliases);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string[]
+     */
+    private function getVariantsCatnums(Product $product, int $domainId): array
+    {
+        $variantsCatnums = [];
+        foreach ($this->productFacade->getVisibleVariantsForProduct($product, $domainId) as $variant) {
+            $variantsCatnums[] = $variant->getCatnum();
+        }
+
+        return array_filter($variantsCatnums);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return array
+     */
+    private function getPricesForFilterIncludingVariants(Product $product, int $domainId): array
+    {
+        if ($product->isMainVariant() === false) {
+            return $this->getPricesForFilter($product, $domainId);
+        } else {
+            $pricesForFilter = [];
+            foreach ($this->productFacade->getSellableVariantsForProduct($product, $domainId) as $variant) {
+                $variantPrices = $this->getPricesForFilter($variant, $domainId);
+                $pricesForFilter = array_merge($pricesForFilter, $variantPrices);
+            }
+
+            return $pricesForFilter;
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return array
+     */
+    private function getPricesForFilter(Product $product, int $domainId): array
+    {
+        $pricesForFilter = [];
+        $productSellingPrices = $this->productFacade->getAllProductSellingPricesByDomainId($product, $domainId);
+        foreach ($productSellingPrices as $productSellingPrice) {
+            $sellingPrice = $productSellingPrice->getSellingPrice();
+
+            $pricesForFilter[] = [
+                'pricing_group_id' => $productSellingPrice->getPricingGroup()->getId(),
+                'price_with_vat' => (float)$sellingPrice->getPriceWithVat()->getAmount(),
+            ];
+        }
+
+        return $pricesForFilter;
     }
 }
