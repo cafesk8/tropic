@@ -1,9 +1,8 @@
 @ui-slider-bg: @color-add;
 @ui-slider-height: 8px;
 @ui-slider-handle-height: 18px;
-@ui-slider-handle-position: -8px;
+@ui-slider-handle-position: -6px;
 @ui-slider-primary-color: @color-add;
-
 
 .ui-slider {
     display: block;
@@ -12,17 +11,16 @@
     top: 1px;
 
     background-color: @color-f;
-    border: 2px solid @color-border;
+    border: 1px solid @color-border-dark;
+    border-radius: @radius;
 }
 
 .ui-slider-range {
     height: @ui-slider-height;
     position: absolute;
-    top: -3px;
+    top: -1px;
 
-    background-color: @ui-slider-bg;
-    border: 1px solid rgba(0,0,0,0.1);
-    box-shadow: @box-shadow;
+    background-color: @color-green-light;
 }
 
 .ui-slider-handle {
@@ -41,5 +39,9 @@
 
     &:hover {
         background-color: darken(@ui-slider-primary-color, 10%);
+    }
+
+    &:focus {
+        outline: none;
     }
 }
