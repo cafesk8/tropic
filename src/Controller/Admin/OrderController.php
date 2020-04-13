@@ -106,7 +106,7 @@ class OrderController extends BaseOrderController
             try {
                 $order = $this->orderFacade->edit($id, $orderData);
 
-                $this->getFlashMessageSender()->addSuccessFlashTwig(
+                $this->addSuccessFlashTwig(
                     t('Order Nr. <strong><a href="{{ url }}">{{ number }}</a></strong> modified'),
                     [
                         'number' => $order->getNumber(),
@@ -115,13 +115,13 @@ class OrderController extends BaseOrderController
                 );
                 return $this->redirectToRoute('admin_order_list');
             } catch (\Shopsys\FrameworkBundle\Model\Customer\Exception\CustomerUserNotFoundException $e) {
-                $this->getFlashMessageSender()->addErrorFlash(
+                $this->addErrorFlash(
                     t('Entered customer not found, please check entered data.')
                 );
             } catch (\Shopsys\FrameworkBundle\Model\Mail\Exception\MailException $e) {
-                $this->getFlashMessageSender()->addErrorFlash(t('Unable to send updating e-mail'));
+                $this->addErrorFlash(t('Unable to send updating e-mail'));
             } catch (StatusChangException $statusChangException) {
-                $this->getFlashMessageSender()->addErrorFlash(
+                $this->addErrorFlash(
                     t('Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%).', [
                         '%errorMessage%' => $statusChangException->getMessage(),
                     ])
@@ -132,7 +132,7 @@ class OrderController extends BaseOrderController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         $this->breadcrumbOverrider->overrideLastItem(t('Editing order - Nr. %number%', ['%number%' => $order->getNumber()]));
@@ -237,7 +237,7 @@ class OrderController extends BaseOrderController
         $response->headers->set('Content-Type', 'text/csv');
         $response->headers->set('Content-Disposition', 'attachment; filename="export-objednavek.csv"');
 
-        $this->getFlashMessageSender()->addSuccessFlash(t('Bulk editing done'));
+        $this->addSuccessFlash(t('Bulk editing done'));
 
         return $response;
     }

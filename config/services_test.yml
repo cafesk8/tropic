@@ -46,8 +46,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
         class: App\Model\Cart\CartWatcher\CartWatcherFacade
-        arguments:
-            - '@shopsys.shop.component.flash_message.sender.front'
 
     Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserDataFactoryInterface: '@App\Model\Customer\User\CustomerUserDataFactory'
 
@@ -113,10 +111,6 @@ services:
     Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade: '@App\Model\Pricing\Group\PricingGroupFacade'
 
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlFacade: '@App\Component\Router\FriendlyUrl\FriendlyUrlFacade'
-
-    App\Model\Cart\CartFacade:
-        arguments:
-            - '@shopsys.shop.component.flash_message.sender.front'
 
     Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@App\Model\Cart\CartFacade'
 

@@ -16,7 +16,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
  * @ORM\Table(name="categories")
  * @ORM\Entity
  *
- * @method CategoryTranslation translation(?string $locale = null)
+ * @method \App\Model\Category\CategoryTranslation translation(?string $locale = null)
  * @property \App\Model\Category\CategoryTranslation[]|\Doctrine\Common\Collections\Collection $translations
  * @property \App\Model\Category\Category|null $parent
  * @property \App\Model\Category\Category[]|\Doctrine\Common\Collections\Collection $children

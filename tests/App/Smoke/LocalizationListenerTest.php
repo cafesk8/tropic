@@ -18,9 +18,9 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         $router = $this->getContainer()->get(CurrentDomainRouter::class);
         $productUrl = $router->generate('front_product_detail', ['id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $crawler = $this->getClient()->request('GET', $productUrl);
+        $crawler = $this->findClient()->request('GET', $productUrl);
 
-        $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->findClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
             $crawler->filter('html:contains("Přidat do košíku")')->count()
@@ -40,9 +40,9 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         /** @var \Symfony\Component\Routing\RouterInterface $router */
         $router = $this->getContainer()->get(DomainRouterFactory::class)->getRouter(2);
         $productUrl = $router->generate('front_product_detail', ['id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
-        $crawler = $this->getClient()->request('GET', $productUrl);
+        $crawler = $this->findClient()->request('GET', $productUrl);
 
-        $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->findClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
             $crawler->filter('html:contains("Pridať do košíka")')->count()
@@ -62,9 +62,9 @@ class LocalizationListenerTest extends TransactionFunctionalTestCase
         /** @var \Symfony\Component\Routing\RouterInterface $router */
         $router = $this->getContainer()->get(DomainRouterFactory::class)->getRouter(3);
         $productUrl = $router->generate('front_product_detail', ['id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
-        $crawler = $this->getClient()->request('GET', $productUrl);
+        $crawler = $this->findClient()->request('GET', $productUrl);
 
-        $this->assertSame(200, $this->getClient()->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->findClient()->getResponse()->getStatusCode());
         $this->assertGreaterThan(
             0,
             $crawler->filter('html:contains("Add to cart")')->count()

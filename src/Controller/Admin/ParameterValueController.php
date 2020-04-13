@@ -7,9 +7,9 @@ namespace App\Controller\Admin;
 use App\Model\Product\Parameter\AdminSelectedParameter;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValueInlineEdit;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ParameterValueController extends AdminBaseController
 {

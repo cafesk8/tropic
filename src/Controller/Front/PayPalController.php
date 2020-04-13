@@ -62,7 +62,7 @@ class PayPalController extends FrontBaseController
         try {
             $this->payPalFacade->updateOrderPayPalStatus($order);
         } catch (\PayPal\Exception\PayPalConnectionException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Connection to PayPal gateway failed.'));
+            $this->addErrorFlash(t('Connection to PayPal gateway failed.'));
         }
     }
 
@@ -71,7 +71,7 @@ class PayPalController extends FrontBaseController
      */
     private function orderNotFoundRedirect(): RedirectResponse
     {
-        $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
+        $this->addErrorFlash(t('Order not found.'));
 
         return $this->redirectToRoute('front_cart');
     }

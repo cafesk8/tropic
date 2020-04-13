@@ -15,6 +15,7 @@ services:
     App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager: '@doctrine.orm.pohoda_entity_manager'
 
     doctrine.orm.pohoda_entity_manager:
+        public: true
         class: App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager
         lazy: true # important, frontend does not need PohodaEntityManager, see ocramius/proxy-manager
         factory: [App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager, create]
@@ -119,8 +120,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
         class: App\Model\Cart\CartWatcher\CartWatcherFacade
-        arguments:
-            - '@shopsys.shop.component.flash_message.sender.front'
 
     Shopsys\FrameworkBundle\Model\Order\OrderFlowFactoryInterface: '@App\Form\Front\Order\DomainAwareOrderFlowFactory'
 
@@ -361,10 +360,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@App\Model\Breadcrumb\SimpleBreadcrumbGenerator'
 
-    App\Model\Cart\CartFacade:
-        arguments:
-            - '@shopsys.shop.component.flash_message.sender.front'
-
     Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@App\Model\Cart\CartFacade'
 
     Shopsys\FrameworkBundle\Model\Cart\Item\CartItemFactoryInterface: '@App\Model\Cart\Item\CartItemFactory'
@@ -501,10 +496,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@App\Model\Security\FrontLogoutHandler'
 
-    App\Component\Error\LogoutExceptionSubscriber:
-        arguments:
-            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
-
     App\Controller\Front\ErrorController:
         arguments:
             $environment: '%kernel.environment%'
@@ -581,10 +572,6 @@ services:
 
     App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail: ~
 
-    App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade:
-        arguments:
-            $templating: '@templating'
-
     Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository: '@App\Model\Product\Filter\PriceRangeRepository'
@@ -602,3 +589,9 @@ services:
     Shopsys\FrameworkBundle\Component\Domain\DomainDataCreator: '@App\Component\Domain\DomainDataCreator'
 
     Shopsys\FrameworkBundle\Model\Pricing\Vat\VatGridFactory: '@App\Model\Pricing\Vat\VatGridFactory'
+
+    App\Controller\Front\RobotsController:
+        arguments:
+            $sitemapsUrlPrefix: '%shopsys.sitemaps_url_prefix%'
+
+    App\Component\FlashMessage\ErrorExtractor: ~

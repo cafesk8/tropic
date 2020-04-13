@@ -1063,8 +1063,8 @@ msgstr "Neobmedzovať"
 msgid "Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%)."
 msgstr "Nepodarilo sa zmeniť stav objednávky na Mall.cz (%errorMessage%)."
 
-msgid "Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
-msgstr "Nepodarilo pripojiť ku Google API, takže sa neskontrolovala platnosť ID Youtube videa."
+msgid "Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
+msgstr "Nepodarilo sa pripojiť ku Google API, takže sa neskontrolovala platnosť ID Youtube videa."
 
 msgid "Nepovinný název pro administraci"
 msgstr "Nepovinný názov pre administráciu"

@@ -9,10 +9,10 @@ use App\Model\Store\Exception\StoreNotFoundException;
 use App\Model\Store\StoreDataFactory;
 use App\Model\Store\StoreFacade;
 use App\Model\Store\StoreGridFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class StoreController extends AdminBaseController
 {
@@ -63,7 +63,7 @@ class StoreController extends AdminBaseController
 
             $store = $this->storeFacade->create($storeData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('Store <strong><a href="{{ url }}">{{ name }}</a></strong> successfully created'),
                     [
@@ -76,7 +76,7 @@ class StoreController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Store/new.html.twig', [
@@ -95,7 +95,7 @@ class StoreController extends AdminBaseController
         try {
             $store = $this->storeFacade->getById($id);
         } catch (StoreNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Store doesn\'t exist'));
+            $this->addErrorFlash(t('Store doesn\'t exist'));
 
             return $this->redirectToRoute('admin_store_list');
         }
@@ -112,7 +112,7 @@ class StoreController extends AdminBaseController
 
             $this->storeFacade->edit($store, $storeData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('Store <strong><a href="{{ url }}">{{ name }}</a></strong> modified'),
                     [
@@ -124,7 +124,7 @@ class StoreController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Store/edit.html.twig', [
@@ -158,14 +158,14 @@ class StoreController extends AdminBaseController
 
             $this->storeFacade->delete($id);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Store <strong>{{ name }}</strong> has been removed'),
                 [
                     'name' => $storeName,
                 ]
             );
         } catch (StoreNotFoundException $exception) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Selected store doesn\'t exist'));
+            $this->addErrorFlash(t('Selected store doesn\'t exist'));
         }
 
         return $this->redirectToRoute('admin_store_list');

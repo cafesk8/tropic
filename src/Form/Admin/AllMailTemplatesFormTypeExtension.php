@@ -47,8 +47,8 @@ class AllMailTemplatesFormTypeExtension extends AbstractTypeExtension
     /**
      * @return string
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return AllMailTemplatesFormType::class;
+        yield AllMailTemplatesFormType::class;
     }
 }

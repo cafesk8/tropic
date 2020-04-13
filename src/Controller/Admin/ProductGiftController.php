@@ -9,12 +9,12 @@ use App\Model\Product\ProductGift\Exception\ProductGiftNotFoundException;
 use App\Model\Product\ProductGift\ProductGiftDataFactory;
 use App\Model\Product\ProductGift\ProductGiftFacade;
 use App\Model\Product\ProductGift\ProductGiftGridFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ProductGiftController extends AdminBaseController
 {
@@ -77,7 +77,7 @@ class ProductGiftController extends AdminBaseController
 
             $productGift = $this->productGiftFacade->create($productGiftData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('Dárek <strong><a href="{{ url }}">{{ name }}</a></strong> byl úspěšně vytvořen'),
                     [
@@ -90,7 +90,7 @@ class ProductGiftController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/ProductGift/new.html.twig', [
@@ -109,7 +109,7 @@ class ProductGiftController extends AdminBaseController
         try {
             $productGift = $this->productGiftFacade->getById($id);
         } catch (ProductGiftNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Dárek neexistuje'));
+            $this->addErrorFlash(t('Dárek neexistuje'));
 
             return $this->redirectToRoute('admin_productgift_list');
         }
@@ -126,7 +126,7 @@ class ProductGiftController extends AdminBaseController
 
             $this->productGiftFacade->edit($productGift, $productGiftData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('Dárek <strong><a href="{{ url }}">{{ name }}</a></strong> byl editován'),
                     [
@@ -138,7 +138,7 @@ class ProductGiftController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/ProductGift/edit.html.twig', [
@@ -174,14 +174,14 @@ class ProductGiftController extends AdminBaseController
 
             $this->productGiftFacade->delete($productGift);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Dárek <strong>{{ name }}</strong> byl smazán'),
                 [
                     'name' => $productGift->getGift()->getName(),
                 ]
             );
         } catch (ProductGiftNotFoundException $exception) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Vybraný dárek neexistuje'));
+            $this->addErrorFlash(t('Vybraný dárek neexistuje'));
         }
 
         return $this->redirectToRoute('admin_productgift_list');

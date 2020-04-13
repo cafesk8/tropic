@@ -30,8 +30,8 @@ class AdministratorFormTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return AdministratorFormType::class;
+        yield AdministratorFormType::class;
     }
 }

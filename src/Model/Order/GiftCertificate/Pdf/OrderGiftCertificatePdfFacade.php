@@ -9,14 +9,14 @@ use App\Model\Order\GiftCertificate\OrderGiftCertificate;
 use Dompdf\Dompdf;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactory;
 use Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade;
-use Symfony\Bridge\Twig\TwigEngine;
+use Twig\Environment;
 
 class OrderGiftCertificatePdfFacade
 {
     /**
-     * @var \Symfony\Bridge\Twig\TwigEngine
+     * @var \Twig\Environment
      */
-    private $templating;
+    private $twigEnvironment;
 
     /**
      * @var \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade
@@ -34,14 +34,14 @@ class OrderGiftCertificatePdfFacade
     private $uploadedFileDataFactory;
 
     /**
-     * @param \Symfony\Bridge\Twig\TwigEngine $templating
+     * @param \Twig\Environment $twigEnvironment
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileFacade $uploadedFileFacade
      * @param \App\Component\FileUpload\FileUpload $fileUpload
      * @param \Shopsys\FrameworkBundle\Component\UploadedFile\UploadedFileDataFactory $uploadedFileDataFactory
      */
-    public function __construct(TwigEngine $templating, UploadedFileFacade $uploadedFileFacade, FileUpload $fileUpload, UploadedFileDataFactory $uploadedFileDataFactory)
+    public function __construct(Environment $twigEnvironment, UploadedFileFacade $uploadedFileFacade, FileUpload $fileUpload, UploadedFileDataFactory $uploadedFileDataFactory)
     {
-        $this->templating = $templating;
+        $this->twigEnvironment = $twigEnvironment;
         $this->uploadedFileFacade = $uploadedFileFacade;
         $this->fileUpload = $fileUpload;
         $this->uploadedFileDataFactory = $uploadedFileDataFactory;
@@ -53,7 +53,7 @@ class OrderGiftCertificatePdfFacade
     public function create(OrderGiftCertificate $orderGiftCertificate): void
     {
         $dompdf = new Dompdf();
-        $html = $this->templating->render('Mail/Order/GiftCertificate/giftCertificate.html.twig', [
+        $html = $this->twigEnvironment->render('Mail/Order/GiftCertificate/giftCertificate.html.twig', [
             'giftCertificateCode' => $orderGiftCertificate->getGiftCertificate()->getCode(),
             'giftCertificateCurrency' => $orderGiftCertificate->getOrder()->getCurrency(),
             'giftCertificateValue' => $orderGiftCertificate->getGiftCertificate()->getCertificateValue(),

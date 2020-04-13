@@ -139,7 +139,7 @@ class ProductController extends BaseProductController
 
             if ($submitAndExportButton->isClicked()) {
                 $this->cronModuleFacade->scheduleModuleByServiceId(ProductExportCronModule::class);
-                $this->getFlashMessageSender()->addInfoFlash(
+                $this->addInfoFlash(
                     t('Byl naplánován export produktů do Elasticsearch, který bude proveden do 5-ti minut')
                 );
             }
@@ -171,7 +171,7 @@ class ProductController extends BaseProductController
         $countOfProductsToEdit = $this->massEditFacade->getCountOfSelectedProducts($formData, $queryBuilder, $checkedProductsIds);
 
         if ($countOfProductsToEdit > MassEditFacade::MASS_EDIT_MAX_LIMIT) {
-            $this->getFlashMessageSender()->addInfoFlash(
+            $this->addInfoFlash(
                 t(
                     'Maximální počet produktů, které můžete upravit pomocí hromadných operací, je {{maxProductCount}}. Máte vybráno {{selectedProductCount}} produktů',
                     [
@@ -186,7 +186,7 @@ class ProductController extends BaseProductController
 
         $this->massEditFacade->performMassEdit($formData, $queryBuilder, $checkedProductsIds);
 
-        $this->getFlashMessageSender()->addSuccessFlash(t('Bulk editing done'));
+        $this->addSuccessFlash(t('Bulk editing done'));
     }
 
     /**

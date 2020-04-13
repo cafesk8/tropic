@@ -149,7 +149,7 @@ class BlogArticleController extends AdminBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->blogArticleFacade->edit($id, $blogArticleData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('Blog article <strong><a href="{{ url }}">{{ name }}</a></strong> was modified'),
                     [
@@ -161,7 +161,7 @@ class BlogArticleController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         $this->breadcrumbOverrider->overrideLastItem(t('Editing blog article - %name%', ['%name%' => $blogArticle->getName()]));
@@ -189,7 +189,7 @@ class BlogArticleController extends AdminBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $blogArticle = $this->blogArticleFacade->create($blogArticleData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('Blog article <strong><a href="{{ url }}">{{ name }}</a></strong> created'),
                     [
@@ -201,7 +201,7 @@ class BlogArticleController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Blog/Article/new.html.twig', [
@@ -222,14 +222,14 @@ class BlogArticleController extends AdminBaseController
 
             $this->blogArticleFacade->delete($id);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Blog article <strong>{{ name }}</strong> deleted'),
                 [
                     'name' => $fullName,
                 ]
             );
         } catch (\Shopsys\FrameworkBundle\Model\Article\Exception\ArticleNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Selected blog article doesn\'t exist.'));
+            $this->addErrorFlash(t('Selected blog article doesn\'t exist.'));
         }
 
         return $this->redirectToRoute('admin_blogarticle_list');

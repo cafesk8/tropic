@@ -74,7 +74,7 @@
 {%- endblock textarea_row %}
 
 {% block form_label %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if label is not same as(false) %}
             {% if not compound %}
                 {% set label_attr = label_attr|merge({'for': id}) %}
@@ -100,19 +100,19 @@
                 {% if not withoutColon|default(false) %}:{% endif %}
             </label>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_label %}
 
 {% block checkbox_label %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set withoutColon = true %}
         {{ block('form_label') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock checkbox_label %}
 
 {% block form_errors %}
     {% set errors_attr = errors_attr|default({})|merge({'class': (errors_attr.class|default(''))}) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <span class="js-validation-errors-list js-validation-error-list-{{ form.vars.id }} {{ form.parent ? 'form-error' : 'in-message' }} {{ errors_attr.class }}">
             <ul class="{{ form.parent ? 'form-error__list' : 'in-message__list' }}">
                 {% if errors|length > 0 %}
@@ -123,7 +123,7 @@
                 {% if not form.vars.required %}<span class="form-input-not-required">{{ 'Nepovinný údaj'|trans }}</span>{% endif %}
             </ul>
         </span>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_errors %}
 
 {% block form_widget_simple %}
@@ -188,7 +188,7 @@
 {% endblock choice_widget_options %}
 
 {% block choice_widget_expanded %}
-    {% spaceless %}
+    {% apply spaceless %}
             <div {{ block('widget_container_attributes') }}>
             {% for child in form %}
                 <div class="radio checkbox">
@@ -201,7 +201,7 @@
                 {{ empty_message|default('Nothing to choose from.'|trans) }}
             {% endfor %}
             </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_expanded %}
 
 {% block widget_attributes -%}
@@ -257,14 +257,14 @@
 {% endblock honey_pot_row %}
 
 {% block date_picker_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set attr = attr|merge({'class': ((attr.class|default('') ~ ' js-date-picker')|trim)}) %}
         {{- block('form_widget') -}}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock date_picker_widget %}
 
 {% block icon %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if icon is defined %}
             <i class="{{ icon.format|default('svg') }} {{ icon.format|default('svg') }}-{{ icon.type|default('info') }} {{ icon.class|default('') }}"
                 data-toggle="tooltip"
@@ -272,11 +272,11 @@
                 title="{{ icon.title }}">
             </i>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block order_gift_choice_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <h3 class="list-order-gifts-title">{{- form_label(form) -}}</h3>
         <ul class="list-order-gifts">
             {% set productChoices = form.vars.choices %}
@@ -308,5 +308,5 @@
                 </li>
             {% endfor %}
         </ul>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock order_gift_choice_row %}

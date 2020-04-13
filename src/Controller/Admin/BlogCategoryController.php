@@ -87,7 +87,7 @@ class BlogCategoryController extends AdminBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->blogCategoryFacade->edit($id, $blogCategoryData);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Blog category <strong><a href="{{ url }}">{{ name }}</a></strong> was modified'),
                 [
                     'name' => $blogCategory->getName(),
@@ -99,7 +99,7 @@ class BlogCategoryController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         $this->breadcrumbOverrider->overrideLastItem(t('Editing blog category - %name%', ['%name%' => $blogCategory->getName()]));
@@ -128,7 +128,7 @@ class BlogCategoryController extends AdminBaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $blogCategory = $this->blogCategoryFacade->create($blogCategoryData);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Blog category <strong><a href="{{ url }}">{{ name }}</a></strong> created'),
                 [
                     'name' => $blogCategory->getName(),
@@ -140,7 +140,7 @@ class BlogCategoryController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Blog/Category/new.html.twig', [
@@ -223,14 +223,14 @@ class BlogCategoryController extends AdminBaseController
 
             $this->blogCategoryFacade->deleteById($id);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Blog category <strong>{{ name }}</strong> deleted'),
                 [
                     'name' => $fullName,
                 ]
             );
         } catch (\App\Model\Blog\Category\Exception\BlogCategoryNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Selected blog category doesn\'t exist.'));
+            $this->addErrorFlash(t('Selected blog category doesn\'t exist.'));
         }
 
         return $this->redirectToRoute('admin_blogcategory_list');

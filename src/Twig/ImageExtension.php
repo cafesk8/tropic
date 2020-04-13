@@ -8,8 +8,8 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Image\ImageLocator;
 use Shopsys\ReadModelBundle\Twig\ImageExtension as BaseImageExtension;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Asset\Package;
+use Twig\Environment;
 
 /**
  * @property \App\Component\Image\ImageFacade $imageFacade
@@ -31,7 +31,7 @@ class ImageExtension extends BaseImageExtension
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Component\Image\ImageLocator $imageLocator
      * @param \App\Component\Image\ImageFacade $imageFacade
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     * @param \Twig\Environment $twigEnvironment
      * @param bool $isLazyLoadEnabled
      */
     public function __construct(
@@ -40,10 +40,10 @@ class ImageExtension extends BaseImageExtension
         Domain $domain,
         ImageLocator $imageLocator,
         ImageFacade $imageFacade,
-        EngineInterface $templating,
+        Environment $twigEnvironment,
         bool $isLazyLoadEnabled
     ) {
-        parent::__construct($frontDesignImageUrlPrefix, $domain, $imageLocator, $imageFacade, $templating, $isLazyLoadEnabled);
+        parent::__construct($frontDesignImageUrlPrefix, $domain, $imageLocator, $imageFacade, $twigEnvironment, $isLazyLoadEnabled);
         $this->assetsPackage = $assetsPackage;
     }
 
@@ -75,7 +75,7 @@ class ImageExtension extends BaseImageExtension
             $htmlAttributes['src'] = $this->getImagePlaceholder();
         }
 
-        return $this->templating->render('@ShopsysFramework/Common/image.html.twig', [
+        return $this->twigEnvironment->render('@ShopsysFramework/Common/image.html.twig', [
             'attr' => $htmlAttributes,
             'additionalImagesData' => $additionalImagesData,
             'imageCssClass' => $this->getImageCssClass($entityName, $attributes['type'], $attributes['size']),

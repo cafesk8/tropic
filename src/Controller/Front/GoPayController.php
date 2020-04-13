@@ -65,7 +65,7 @@ class GoPayController extends FrontBaseController
         try {
             $this->goPayTransactionFacade->updateOrderTransactions($order);
         } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+            $this->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
     }
 
@@ -74,7 +74,7 @@ class GoPayController extends FrontBaseController
      */
     private function orderNotFoundRedirect(): \Symfony\Component\HttpFoundation\RedirectResponse
     {
-        $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
+        $this->addErrorFlash(t('Order not found.'));
 
         return $this->redirectToRoute('front_cart');
     }

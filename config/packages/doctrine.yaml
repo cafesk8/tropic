@@ -23,7 +23,10 @@ doctrine:
                 password: "%pohoda_database_password%"
                 charset: "%pohoda_database_charset%"
         types:
-            money: \Shopsys\FrameworkBundle\Component\Doctrine\MoneyType
+            money:
+                class: \Shopsys\FrameworkBundle\Component\Doctrine\MoneyType
+            tsvector:
+                class: \Intaro\PostgresSearchBundle\DBAL\TsvectorType
 
     orm:
         default_entity_manager: default

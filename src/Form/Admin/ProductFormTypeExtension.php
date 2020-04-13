@@ -9,7 +9,6 @@ use App\Component\GoogleApi\GoogleClient;
 use App\Form\ProductGroupItemsListType;
 use App\Form\ProductsListType;
 use App\Model\Blog\Article\BlogArticleFacade;
-use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
@@ -21,7 +20,7 @@ use Google_Service_Exception;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
+use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageTrait;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
@@ -41,6 +40,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
+    use FlashMessageTrait;
+
     public const DISABLED_FIELDS = [
         'name',
         'catnum',
@@ -97,11 +98,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $flagFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
-     */
-    private $flashMessageSender;
-
-    /**
      * @var \App\Component\Form\FormBuilderHelper
      */
     private $formBuilderHelper;
@@ -116,7 +112,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Component\GoogleApi\GoogleClient $googleClient
      * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
-     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      */
@@ -128,7 +123,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         GoogleClient $googleClient,
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         FlagFacade $flagFacade,
-        FlashMessageSender $flashMessageSender,
         FormBuilderHelper $formBuilderHelper,
         ProductVariantTropicFacade $productVariantTropicFacade
     ) {
@@ -139,7 +133,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->productExtension = $productExtension;
         $this->googleClient = $googleClient;
         $this->flagFacade = $flagFacade;
-        $this->flashMessageSender = $flashMessageSender;
         $this->formBuilderHelper = $formBuilderHelper;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
     }
@@ -340,9 +333,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType(): string
+    public static function getExtendedTypes(): iterable
     {
-        return ProductFormType::class;
+        yield ProductFormType::class;
     }
 
     /**
@@ -570,9 +563,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 $context->addViolation('Vložené ID Youtube videa neobsahuje žádné video.');
             }
         } catch (Google_Service_Exception $googleServiceException) {
-            $this->flashMessageSender->addInfoFlash(t('Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
-            $this->flashMessageSender->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
-            $this->flashMessageSender->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
+            $this->addInfoFlash(t('Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
+            $this->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
+            $this->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
         }
     }
 

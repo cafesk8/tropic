@@ -112,8 +112,8 @@ class PaymentFormTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return PaymentFormType::class;
+        yield PaymentFormType::class;
     }
 }

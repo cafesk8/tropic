@@ -1036,7 +1036,7 @@ msgstr "Neomezovat"
 msgid "Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%)."
 msgstr "Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%)."
 
-msgid "Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
+msgid "Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
 msgstr "Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
 
 msgid "Nepovinný název pro administraci"

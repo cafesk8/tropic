@@ -28,7 +28,7 @@ abstract class FunctionalTestCase extends WebTestCase
         $this->domain->switchDomainById(Domain::FIRST_DOMAIN_ID);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->setUpDomain();
@@ -41,7 +41,7 @@ abstract class FunctionalTestCase extends WebTestCase
      * @param array $kernelOptions
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function getClient(
+    protected function findClient(
         $createNew = false,
         $username = null,
         $password = null,
@@ -76,7 +76,7 @@ abstract class FunctionalTestCase extends WebTestCase
      */
     protected function getContainer()
     {
-        return $this->getClient()->getContainer();
+        return $this->findClient()->getContainer();
     }
 
     /**

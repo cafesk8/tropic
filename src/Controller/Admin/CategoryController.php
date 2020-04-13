@@ -7,7 +7,6 @@ namespace App\Controller\Admin;
 use App\Component\Form\FormBuilderHelper;
 use App\Component\Redis\RedisFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\CategoryController as BaseCategoryController;
@@ -18,6 +17,7 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @property \App\Model\Category\CategoryDataFactory $categoryDataFactory
@@ -91,7 +91,7 @@ class CategoryController extends BaseCategoryController
             $this->categoryFacade->edit($id, $categoryData);
             $this->categoryBlogArticleFacade->saveBlogArticlesToCategory($category, $categoryData->blogArticles);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Category<strong><a href="{{ url }}">{{ name }}</a></strong> was modified'),
                 [
                     'name' => $category->getName(),
@@ -104,7 +104,7 @@ class CategoryController extends BaseCategoryController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         $this->breadcrumbOverrider->overrideLastItem(t('Editing category - %name%', ['%name%' => $category->getName()]));
@@ -136,7 +136,7 @@ class CategoryController extends BaseCategoryController
             $category = $this->categoryFacade->create($categoryData);
             $this->categoryBlogArticleFacade->saveBlogArticlesToCategory($category, $categoryData->blogArticles);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Category <strong><a href="{{ url }}">{{ name }}</a></strong> created'),
                 [
                     'name' => $category->getName(),
@@ -149,7 +149,7 @@ class CategoryController extends BaseCategoryController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('@ShopsysFramework/Admin/Content/Category/new.html.twig', [
@@ -169,7 +169,7 @@ class CategoryController extends BaseCategoryController
 
             $this->categoryFacade->deleteById($id);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Category <strong>{{ name }}</strong> deleted'),
                 [
                     'name' => $fullName,
@@ -178,7 +178,7 @@ class CategoryController extends BaseCategoryController
 
             $this->redisFacade->clearCacheByPattern('twig:', 'categories');
         } catch (\Shopsys\FrameworkBundle\Model\Category\Exception\CategoryNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Selected category doesn\'t exist.'));
+            $this->addErrorFlash(t('Selected category doesn\'t exist.'));
         }
 
         return $this->redirectToRoute('admin_category_list');

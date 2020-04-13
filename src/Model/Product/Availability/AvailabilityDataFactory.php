@@ -9,8 +9,8 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityData as BaseA
 use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactory as BaseAvailabilityDataFactory;
 
 /**
- * @method fillNew(AvailabilityData $availabilityData)
- * @method fillFromAvailability(AvailabilityData $availabilityData, Availability $availability)
+ * @method fillNew(\App\Model\Product\Availability\AvailabilityData $availabilityData)
+ * @method fillFromAvailability(\App\Model\Product\Availability\AvailabilityData $availabilityData, \App\Model\Product\Availability\Availability $availability)
  * @method fillNew(\App\Model\Product\Availability\AvailabilityData $availabilityData)
  * @method fillFromAvailability(\App\Model\Product\Availability\AvailabilityData $availabilityData, \App\Model\Product\Availability\Availability $availability)
  */

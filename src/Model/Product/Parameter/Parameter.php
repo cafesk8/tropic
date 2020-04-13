@@ -8,13 +8,12 @@ use App\Model\Product\Parameter\Exception\InvalidParameterTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\Parameter as BaseParameter;
 use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterData;
-use Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterTranslation;
 
 /**
  * @ORM\Table(name="parameters")
  * @ORM\Entity
  *
- * @method ParameterTranslation translation(?string $locale = null)
+ * @method \Shopsys\FrameworkBundle\Model\Product\Parameter\ParameterTranslation translation(?string $locale = null)
  * @method setTranslations(\App\Model\Product\Parameter\ParameterData $parameterData)
  */
 class Parameter extends BaseParameter

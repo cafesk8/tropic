@@ -38,8 +38,8 @@ class ParameterFormTypeExtension extends AbstractTypeExtension
     /**
      * @return string The name of the type being extended
      */
-    public function getExtendedType(): string
+    public static function getExtendedTypes(): iterable
     {
-        return ParameterFormType::class;
+        yield ParameterFormType::class;
     }
 }

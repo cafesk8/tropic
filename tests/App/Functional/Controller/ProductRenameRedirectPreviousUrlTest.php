@@ -37,7 +37,7 @@ class ProductRenameRedirectPreviousUrlTest extends TransactionFunctionalTestCase
 
         $productFacade->edit(self::TESTED_PRODUCT_ID, $productData);
 
-        $client = $this->getClient();
+        $client = $this->findClient();
         $client->request('GET', '/' . $previousFriendlyUrlSlug);
 
         // Should be 301 (moved permanently), because old product urls should be permanently redirected
