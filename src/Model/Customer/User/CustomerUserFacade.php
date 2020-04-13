@@ -11,7 +11,9 @@ use App\Model\Pricing\Group\PricingGroupFacade;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressDataFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFacade;
 use Shopsys\FrameworkBundle\Model\Customer\BillingAddressFactoryInterface;
+use Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\CustomerFacade;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddress;
 use Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade;
@@ -20,6 +22,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFacade as BaseCustomerUserFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserPasswordFacade;
+use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRefreshTokenChainFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserUpdateDataFactoryInterface;
@@ -75,6 +78,9 @@ class CustomerUserFacade extends BaseCustomerUserFacade
      * @param \App\Model\Customer\TransferIds\UserTransferIdDataFactory $userTransferIdDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerFacade $customerFacade
      * @param \Shopsys\FrameworkBundle\Model\Customer\DeliveryAddressFacade $deliveryAddressFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\CustomerDataFactoryInterface $customerDataFactory
+     * @param \Shopsys\FrameworkBundle\Model\Customer\BillingAddressFacade $billingAddressFacade
+     * @param \Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRefreshTokenChainFacade $customerUserRefreshTokenChainFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -89,9 +95,26 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         UserTransferIdFacade $userTransferIdFacade,
         UserTransferIdDataFactory $userTransferIdDataFactory,
         CustomerFacade $customerFacade,
-        DeliveryAddressFacade $deliveryAddressFacade
+        DeliveryAddressFacade $deliveryAddressFacade,
+        CustomerDataFactoryInterface $customerDataFactory,
+        BillingAddressFacade $billingAddressFacade,
+        CustomerUserRefreshTokenChainFacade $customerUserRefreshTokenChainFacade
     ) {
-        parent::__construct($em, $customerUserRepository, $customerUserUpdateDataFactory, $customerMailFacade, $billingAddressFactory, $billingAddressDataFactory, $customerUserFactory, $customerUserPasswordFacade, $customerFacade, $deliveryAddressFacade);
+        parent::__construct(
+            $em,
+            $customerUserRepository,
+            $customerUserUpdateDataFactory,
+            $customerMailFacade,
+            $billingAddressFactory,
+            $billingAddressDataFactory,
+            $customerUserFactory,
+            $customerUserPasswordFacade,
+            $customerFacade,
+            $deliveryAddressFacade,
+            $customerDataFactory,
+            $billingAddressFacade,
+            $customerUserRefreshTokenChainFacade
+        );
 
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->userTransferIdFacade = $userTransferIdFacade;
@@ -296,7 +319,10 @@ class CustomerUserFacade extends BaseCustomerUserFacade
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
         $customerUserData->pricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($customerUserUpdateData->customerUserData->domainId);
-        $customer = $this->customerFacade->createCustomerWithBillingAddress($customerUserUpdateData->billingAddressData);
+        $customer = $this->createCustomerWithBillingAddress(
+            $customerUserUpdateData->customerUserData->domainId,
+            $customerUserUpdateData->billingAddressData
+        );
         $customerUserUpdateData->customerUserData->customer = $customer;
 
         $deliveryAddress = null;
@@ -305,7 +331,9 @@ class CustomerUserFacade extends BaseCustomerUserFacade
             $deliveryAddressData->addressFilled = true;
             $customerUserUpdateData->deliveryAddressData->customer = $customer;
             $deliveryAddress = $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);
-            $customer->addDeliveryAddress($deliveryAddress);
+            $customerData = $this->customerDataFactory->createFromCustomer($customer);
+            $customerData->deliveryAddresses[] = $deliveryAddress;
+            $this->customerFacade->edit($customer->getId(), $customerData);
             $customerUserUpdateData->customerUserData->defaultDeliveryAddress = $deliveryAddress;
         }
 
