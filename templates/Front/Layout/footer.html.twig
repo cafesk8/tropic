@@ -95,10 +95,10 @@
                 <div class="footer-bottom__domains">
                     <div class="footer-bottom__domains__item">
                         {% if isSlovakDomain() is same as (true) %}
-                            <img class="footer-bottom__domains__item__icon" src="{{ asset('assets/frontend/images/czechia.png') }}" alt="{{ 'Czechia'|trans }}"/>
+                            <img class="footer-bottom__domains__item__icon" src="{{ asset('public/frontend/images/czechia.png') }}" alt="{{ 'Czechia'|trans }}"/>
                             <a class="footer-bottom__domains__item__link" href="{{ findUrlByDomainId('front_homepage', [], 1)}}">{{ 'Zboží do Česka'|trans }}</a>
                         {% else %}
-                            <img class="footer-bottom__domains__item__icon" src="{{ asset('assets/frontend/images/slovakia.png') }}" alt="{{ 'Slovakia'|trans }}"/>
+                            <img class="footer-bottom__domains__item__icon" src="{{ asset('public/frontend/images/slovakia.png') }}" alt="{{ 'Slovakia'|trans }}"/>
                             <a class="footer-bottom__domains__item__link" href="{{ findUrlByDomainId('front_homepage', [], 2)}}">{{ 'Tovar na Slovensko'|trans }}</a>
                         {% endif %}
                     </div>
@@ -113,11 +113,11 @@
                     {{ 'E-shop na míru od'|trans }}
                     {% if isEnglishDomain() is same as (true) %}
                         <a href="https://www.shopsys.com" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
-                            <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                            <img class="footer-bottom__shopsys__image" src="{{ asset('public/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
                         </a>
                     {% else %}
                         <a href="https://www.shopsys.cz" title="{{ 'Shopsys Framework'|trans }}" target="_blank" class="footer-bottom__shopsys__link">
-                            <img class="footer-bottom__shopsys__image" src="{{ asset('assets/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
+                            <img class="footer-bottom__shopsys__image" src="{{ asset('public/frontend/images/shopsys.svg') }}" alt="{{ 'Shopsys Framework'|trans }}">
                         </a>
                     {% endif %}
                 </div>

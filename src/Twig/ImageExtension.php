@@ -49,7 +49,7 @@ class ImageExtension extends BaseImageExtension
 
     private function getImagePlaceholder()
     {
-        return $this->assetsPackage->getUrl('assets/frontend/images/design/placeholder.gif');
+        return $this->assetsPackage->getUrl('public/frontend/images/design/placeholder.gif');
     }
 
     /**

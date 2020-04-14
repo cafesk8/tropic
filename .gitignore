@@ -9,7 +9,6 @@
 /PRODUCTION
 /TEST
 /MAINTENANCE
-/Gruntfile.js
 /.php_cs.cache
 /.docker-sync
 .DS_Store
@@ -23,6 +22,8 @@
 /assets/js/translations.json
 /assets/js/bundles
 /.phpunit.result.cache
+/assets/public/admin_svg.less
+/assets/public/frontend_svg.less
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

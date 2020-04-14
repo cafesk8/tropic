@@ -42,7 +42,7 @@
             <div class="header__logo">
                 {% block logo %}
                 <a class="logo" href="{{ url('front_homepage') }}">
-                    <img src="{{ asset('assets/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
+                    <img src="{{ asset('public/frontend/images/logo.png') }}" alt="{{ 'Online shop'|trans }}">
                 </a>
                 {% endblock %}
             </div>
@@ -72,7 +72,7 @@
                 <div class="header__right__logo">
                     {% block logoMobile %}
                         <a class="logo" href="{{ url('front_homepage') }}">
-                            <img src="{{ asset('assets/frontend/images/logo-mobile.png') }}" alt="{{ 'Online shop'|trans }}">
+                            <img src="{{ asset('public/frontend/images/logo-mobile.png') }}" alt="{{ 'Online shop'|trans }}">
                         </a>
                     {% endblock %}
                 </div>
@@ -115,8 +115,12 @@
                                         <div class="box-dropdown__select__text__small">{{ 'a registrace'|trans }}</div>
                                     {% endif %}
                                 </div>
-                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
-                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
+                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up">
+                                    <i class="svg svg-triangle"></i>
+                                </i>
+                                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down">
+                                    <i class="svg svg-triangle"></i>
+                                </i>
                             </div>
                             <div class="box-dropdown__options
                                 {% if is_granted('ROLE_LOGGED_CUSTOMER') %}
