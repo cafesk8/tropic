@@ -187,12 +187,6 @@
                         <a href="{{ productView.action.detailUrl }}" class="list-last-visited__item__block">
                             <div class="list-last-visited__item__image dont-print">
                                 {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
-                                {% set productFlagIds = productView.flagIds %}
-                                {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                {% if freeTransportAndPaymentFlagId is not null %}
-                                    {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
-                                {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, 'in-flag--slider', true) }}
                             </div>
 
                             <div class="list-last-visited__item__info">

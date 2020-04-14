@@ -10,7 +10,7 @@
                     {% include 'Front/Svg/delivery.svg' %}
                 </div>
                 <p class="list-reasons-to-buy__item__text">
-                    {{ 'Doprava ZDARMA od 1 000 Kč'|trans }}
+                    {{ 'Doprava ZDARMA od<br> 1 000 Kč'|trans|raw }}
                 </p>
             </li>
             <li class="list-reasons-to-buy__item">
@@ -18,7 +18,7 @@
                     {% include 'Front/Svg/heart.svg' %}
                 </div>
                 <p class="list-reasons-to-buy__item__text">
-                    {{ 'Rybářům pomáháme od roku 2003'|trans }}
+                    {{ 'Rybářům pomáháme od<br> roku 2003'|trans|raw }}
                 </p>
             </li>
             <li class="list-reasons-to-buy__item">
@@ -45,7 +45,7 @@
                 </div>
                 <p class="list-reasons-to-buy__item__text">
                     {{ 'Každý týden'|trans }}
-                    <a class="list-reasons-to-buy__item__text__link js-not-implemented-yet" href="">{{ 'nová nabídka'|trans }}</a>
+                    <a class="list-reasons-to-buy__item__text__link js-not-implemented-yet" href="">{{ 'nová nabídka'|trans }}<br></a>
                     {{ 'za výhodné ceny'|trans }}
                 </p>
             </li>
