@@ -904,6 +904,9 @@ msgstr "JURA Impressa J9 TFT Carbon Automatický kávovar/espresso,barevný LCD"
 msgid "MIO Cyclo 100, bicycle computer, 1,8\""
 msgstr "MIO Cyclo 100, cyklopočítač na jízdní kolo, 1,8\""
 
+msgid "Magazín"
+msgstr "Magazín"
+
 msgid "Magazine capacity for beans"
 msgstr "Kapacita zásobníku na zrna"
 

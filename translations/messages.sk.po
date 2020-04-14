@@ -913,6 +913,9 @@ msgstr "Prihlásiť sa"
 msgid "Magyarország"
 msgstr "Maďarsko"
 
+msgid "Magazín"
+msgstr "Magazín"
+
 msgid "Main variant"
 msgstr "Hlavná varianta"
 

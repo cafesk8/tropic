@@ -883,6 +883,9 @@ msgstr "Log out"
 msgid "Login"
 msgstr "Login"
 
+msgid "Magazín"
+msgstr "Magazine"
+
 msgid "Main variant"
 msgstr "Main variant"
 

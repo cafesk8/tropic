@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends FrontBaseController
 {
-    private const LIMIT_FOR_HEADER_ARTICLES = 3;
+    private const LIMIT_FOR_HEADER_ARTICLES = 4;
 
     /**
      * @var \App\Model\Article\ArticleFacade
@@ -59,7 +59,7 @@ class ArticleController extends FrontBaseController
 
         return $this->render('Front/Content/Article/footerMenu.html.twig', [
             'articles' => $articles,
-            'isPlacementAboutUs' => $placement === Article::PLACEMENT_ABOUT,
+            'isPlacementServices' => $placement === Article::PLACEMENT_SERVICES,
         ]);
     }
 

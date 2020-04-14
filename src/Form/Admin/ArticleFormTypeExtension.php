@@ -34,7 +34,6 @@ class ArticleFormTypeExtension extends AbstractTypeExtension
                 t('in upper menu') => Article::PLACEMENT_TOP_MENU,
                 t('without positioning') => Article::PLACEMENT_NONE,
                 t('o nákupu') => Article::PLACEMENT_SHOPPING,
-                t('o nás') => Article::PLACEMENT_ABOUT,
                 t('naše služby') => Article::PLACEMENT_SERVICES,
             ],
             'placeholder' => t('-- Choose article position --'),

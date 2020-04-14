@@ -172,14 +172,6 @@ front_store_list:
     defaults: { _controller: App\Controller\Front\StoreController:listAction }
     condition: "request.isXmlHttpRequest()"
 
-front_store_index:
-    path: /stores/
-    defaults: { _controller: App\Controller\Front\StoreController:indexAction }
-
-front_store_detail:
-    path: /stores/detail/{storeId}
-    defaults: { _controller: App\Controller\Front\StoreController:detailAction }
-
 front_order_register_customer:
     path: /order/register-customer/{orderId}
     defaults: { _controller: App\Controller\Front\OrderController:registerCustomerAction }

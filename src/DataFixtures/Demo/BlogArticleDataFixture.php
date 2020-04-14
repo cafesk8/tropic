@@ -79,7 +79,7 @@ class BlogArticleDataFixture extends AbstractReferenceFixture
 
         $mainPageBlogCategoryData = $this->blogCategoryDataFactory->createFromBlogCategory($mainPageBlogCategory);
         foreach ($this->domain->getAllLocales() as $locale) {
-            $mainPageBlogCategoryData->names[$locale] = t('Hlavní stránka blogu - %locale%', ['%locale%' => $locale], 'dataFixtures', $locale);
+            $mainPageBlogCategoryData->names[$locale] = t('Magazín', ['%locale%' => $locale], 'dataFixtures', $locale);
         }
         $this->blogCategoryFacade->edit($mainPageBlogCategory->getId(), $mainPageBlogCategoryData);
 

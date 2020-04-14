@@ -904,6 +904,9 @@ msgstr ""
 msgid "MIO Cyclo 100, bicycle computer, 1,8\""
 msgstr ""
 
+msgid "Magazín"
+msgstr "Magazine"
+
 msgid "Magazine capacity for beans"
 msgstr ""
 
