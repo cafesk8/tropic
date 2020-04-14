@@ -4,14 +4,14 @@
     <item>
         <g:id>{{ item.id }}</g:id>
         <title>{{ item.title }}</title>
-        {% if item.catnum %}
-            <g:item_group_id>{{ item.catnum }}</g:item_group_id>
-        {% endif %}
+        {% if item.groupId is not null -%}
+            <g:item_group_id>{{ item.groupId }}</g:item_group_id>
+        {% endif -%}
         <g:description>{{ item.description|striptags|replace({"\n": ' '})|trim }}</g:description>
         <link>{{ item.link }}</link>
         {% if item.categoryFullPath is not null -%}
             <g:product_type>{{ item.categoryFullPath }}</g:product_type>
-        {% endif %}
+        {% endif -%}
         {% if item.imageLink is not null -%}
             <g:image_link>{{ item.imageLink }}</g:image_link>
         {% endif -%}
@@ -20,11 +20,11 @@
         {%  if item.brand is not null -%}
             <g:brand>{{ item.brand }}</g:brand>
         {% endif -%}
-        {% for type, value in item.identifiers %}
+        {% for type, value in item.identifiers -%}
             <g:{{ type }}>{{ value }}</g:{{ type }}>
-        {% else %}
+        {% else -%}
             <g:identifier_exists>no</g:identifier_exists>
-        {% endfor %}
+        {% endfor -%}
         <g:adult>no</g:adult>
         <g:condition>new</g:condition>
     </item>

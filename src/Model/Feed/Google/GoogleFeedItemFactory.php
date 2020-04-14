@@ -71,7 +71,8 @@ class GoogleFeedItemFactory extends BaseGoogleFeedItemFactory
             $this->getCurrency($domainConfig)
         );
 
-        $googleFeedItem->setCatnum($product->getCatnum());
+        $mainVariantId = $product->isVariant() ? $product->getMainVariant()->getId() : null;
+        $googleFeedItem->setGroupId($mainVariantId);
         $googleFeedItem->setCategoryFullPath($categoryFullPath);
 
         return $googleFeedItem;
