@@ -14,24 +14,23 @@
                                 {% if freeTransportAndPaymentFlagId is not null %}
                                     {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                 {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, '', false, productSellingPrice) }}
+                                {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice) }}
                             </div>
                         </a>
                         <div class="list-products__item__info">
-                            <a href="{{ productView.action.detailUrl }}">
+                            <a class="list-products__item__info__link" href="{{ productView.action.detailUrl }}">
                                 <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
                                     {{ productView.name|striptags|raw }}
                                 <{{ '/' ~ productHeadingTagName|default('h2') }}>
 
                                 {% if productSellingPrice is not null %}
                                     <div class="list-products__item__info__price">
-                                        <div class="list-products__item__info__price__item__main">
-                                            {% if productSellingPrice.hasHigherStandardPrice %}
-                                                <div class="list-products__item__info__price__item__old">
-                                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
-                                                </div>
-                                            {% endif %}
-
+                                        {% if productSellingPrice.hasHigherStandardPrice %}
+                                            <div class="list-products__item__info__price__old">
+                                                {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="{% if productSellingPrice.hasHigherStandardPrice %}list-products__item__info__price__main{% endif %}">
                                             {% if productSellingPrice.priceFrom %}
                                                 {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                             {% else %}
@@ -42,7 +41,6 @@
                                 {% endif %}
 
                                 <div class="in-availability">
-                                    <div class="in-availability__spacer"></div>
                                     {% if productView.action.sellingDenied %}
                                         <div class="in-availability__text in-availability__text--out-of-stock">
                                             {{ 'Product no longer on sale'|trans }}
@@ -70,9 +68,7 @@
                             </a>
 
                             <div class="list-products__item__hover">
-                                <div class="list-products__item__hover__wrap">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
-                                </div>
+                                {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
                             </div>
                         </div>
                     </div>
@@ -131,7 +127,6 @@
                                     {% endif %}
 
                                     <div class="in-availability">
-                                        <div class="in-availability__spacer"></div>
                                         {% if productView.action.sellingDenied %}
                                             <div class="in-availability__text in-availability__text--out-of-stock">
                                                 {{ 'Product no longer on sale'|trans }}

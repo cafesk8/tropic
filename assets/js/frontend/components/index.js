@@ -33,4 +33,3 @@ import './searchAutocomplete';
 import './selectric';
 import './spinbox';
 import './todo';
-import './toggleElement';
