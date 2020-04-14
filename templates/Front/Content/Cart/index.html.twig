@@ -109,7 +109,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="table-cart__cell__price js-cart-item-total-price">
-                                                    {% if cartItemPrice.unitPrice.hasHigherStandardPrice %} %}
+                                                    {% if cartItemPrice.unitPrice.hasHigherStandardPrice %}
                                                         <span class="table-cart__cell__price__line-through">{{ cartItemPrice.unitPrice.standardPrice.priceWithVat|price }}</span>
                                                     {% endif %}
                                                     <div class="table-cart__cell__price__primary">
