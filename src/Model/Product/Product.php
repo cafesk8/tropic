@@ -219,8 +219,11 @@ class Product extends BaseProduct
         $this->minimumAmount = $productData->minimumAmount;
         $this->amountMultiplier = (int)$productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
+
         if ($productData->variantId !== null) {
             $this->variantId = trim($productData->variantId);
+        } else {
+            $this->variantId = null;
         }
         $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
     }

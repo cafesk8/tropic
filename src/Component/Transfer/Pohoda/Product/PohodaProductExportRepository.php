@@ -56,7 +56,9 @@ class PohodaProductExportRepository
             ->addScalarResult('RelDPHp', PohodaProduct::COL_SELLING_VAT_RATE_ID)
             ->addScalarResult('NakupDPH', PohodaProduct::COL_PURCHASE_PRICE)
             ->addScalarResult('VPrBCena', PohodaProduct::COL_STANDARD_PRICE)
-            ->addScalarResult('ObjNazev', PohodaProduct::COL_VARIANT_ID);
+            ->addScalarResult('ObjNazev', PohodaProduct::COL_VARIANT_ID)
+            ->addScalarResult('SText', PohodaProduct::COL_VARIANT_ALIAS)
+            ->addScalarResult('SText1', PohodaProduct::COL_VARIANT_ALIAS_SK);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT 
@@ -71,7 +73,9 @@ class PohodaProductExportRepository
                 Product.RelDPHp, 
                 Product.NakupDPH, 
                 Product.VPrBCena,
-                Product.ObjNazev
+                Product.ObjNazev, 
+                Product.SText,
+                Product.SText1
              FROM Skz Product
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1
