@@ -370,7 +370,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $manualInputPricesByPricingGroup->add($pricingGroup->getId(), MoneyType::class, [
                 'scale' => 6,
                 'required' => false,
-                'disabled' => $pricingGroup->getInternalId() !== null && $pricingGroup->getInternalId() !== PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER,
+                'disabled' => $pricingGroup->getInternalId() !== null && $pricingGroup->isCalculatedFromDefault(),
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
