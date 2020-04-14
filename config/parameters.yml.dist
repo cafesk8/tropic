@@ -5,12 +5,6 @@ parameters:
     database_user: root
     database_password: root
 
-    migration_database_host: 10.10.12.249
-    migration_database_port: ~
-    migration_database_name: dbsklad
-    migration_database_user: root
-    migration_database_password: sQTn8KnpAztVMu8Z
-
     elasticsearch_host: elasticsearch:9200
 
     redis_host: redis
@@ -56,15 +50,6 @@ parameters:
     payPalClientId: AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS
     payPalClientSecret: EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL
     payPalMode: SANDBOX
-
-    transfer_enabled: true
-    transfer_host: 'http://webappa7.azurewebsites.net'
-    transfer_cs_username: ''
-    transfer_cs_password: ''
-    transfer_sk_username: ''
-    transfer_sk_password: ''
-    transfer_en_username: ''
-    transfer_en_password: ''
 
     # testing credentials
     balikobot:

@@ -41,11 +41,6 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
     private $transferLoggerFactory;
 
     /**
-     * @var \App\Component\Transfer\TransferConfig
-     */
-    private $transferConfig;
-
-    /**
      * @var \DateTime
      */
     private $startAt;
@@ -65,7 +60,6 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
         $this->sqlLoggerFacade = $transferCronModuleDependency->getSqlLoggerFacade();
         $this->validator = $transferCronModuleDependency->getValidator();
         $this->transferLoggerFactory = $transferCronModuleDependency->getTransferLoggerFactory();
-        $this->transferConfig = $transferCronModuleDependency->getTransferConfig();
         $this->transferIssueFacade = $transferCronModuleDependency->getTransferIssueFacade();
     }
 
@@ -129,18 +123,6 @@ abstract class AbstractTransferCronModule implements IteratedCronModuleInterface
      */
     public function isSkipped(): bool
     {
-        if ($this->transferConfig->isEnabled() === false) {
-            $this->logger->addInfo('All transfers are disabled');
-
-            return true;
-        }
-
-        if ($this->transferConfig->areCredentialsFilled() === false) {
-            $this->logger->addWarning('Transfer credentials are not filled. All transfers are being skipped');
-
-            return true;
-        }
-
         if ($this->transferFacade->isEnabled($this->getTransferIdentifier()) === false) {
             $this->logger->addInfo(sprintf('Transfer `%s` is skipped, because it is not enabled', $this->getTransferIdentifier()));
 

@@ -39,11 +39,6 @@ class TransferCronModuleDependency
     private $transferLoggerFactory;
 
     /**
-     * @var \App\Component\Transfer\TransferConfig
-     */
-    private $transferConfig;
-
-    /**
      * @var \App\Model\Transfer\Issue\TransferIssueFacade
      */
     private $transferIssueFacade;
@@ -54,7 +49,6 @@ class TransferCronModuleDependency
      * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
      * @param \App\Model\Transfer\TransferFacade $transferFacade
      * @param \App\Component\Transfer\Logger\TransferLoggerFactory $transferLoggerFactory
-     * @param \App\Component\Transfer\TransferConfig $transferConfig
      * @param \App\Model\Transfer\Issue\TransferIssueFacade $transferIssueFacade
      */
     public function __construct(
@@ -63,7 +57,6 @@ class TransferCronModuleDependency
         ValidatorInterface $validator,
         TransferFacade $transferFacade,
         TransferLoggerFactory $transferLoggerFactory,
-        TransferConfig $transferConfig,
         TransferIssueFacade $transferIssueFacade
     ) {
         $this->em = $em;
@@ -71,7 +64,6 @@ class TransferCronModuleDependency
         $this->validator = $validator;
         $this->transferFacade = $transferFacade;
         $this->transferLoggerFactory = $transferLoggerFactory;
-        $this->transferConfig = $transferConfig;
         $this->transferIssueFacade = $transferIssueFacade;
     }
 
@@ -113,14 +105,6 @@ class TransferCronModuleDependency
     public function getTransferLoggerFactory(): TransferLoggerFactory
     {
         return $this->transferLoggerFactory;
-    }
-
-    /**
-     * @return \App\Component\Transfer\TransferConfig
-     */
-    public function getTransferConfig(): TransferConfig
-    {
-        return $this->transferConfig;
     }
 
     /**
