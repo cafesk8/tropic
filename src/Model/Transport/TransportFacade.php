@@ -38,6 +38,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportVisibilityCalculation;
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Transport\Transport $transport)
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Transport\Transport|null $transport)
  * @method updateTransportPrices(\App\Model\Transport\Transport $transport, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId)
+ * @method \App\Model\Transport\Transport getByUuid(string $uuid)
  */
 class TransportFacade extends BaseTransportFacade
 {

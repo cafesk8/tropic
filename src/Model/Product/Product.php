@@ -22,7 +22,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Product|null $mainVariant
  * @method static \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
  * @method setAvailabilityAndStock(\App\Model\Product\ProductData $productData)
- * @method \App\Model\Product\Availability\Availability getAvailability()
+ * @method \App\Model\Product\Availability\Availability|null getAvailability()
  * @method \App\Model\Product\Availability\Availability|null getOutOfStockAvailability()
  * @method \App\Model\Product\Availability\Availability getCalculatedAvailability()
  * @method setAvailability(\App\Model\Product\Availability\Availability $availability)

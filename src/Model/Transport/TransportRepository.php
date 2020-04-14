@@ -15,6 +15,7 @@ use Shopsys\FrameworkBundle\Model\Transport\TransportRepository as BaseTransport
  * @method \App\Model\Transport\Transport[] getAllIncludingDeleted()
  * @method \App\Model\Transport\Transport|null findById(int $id)
  * @method \App\Model\Transport\Transport getById(int $id)
+ * @method \App\Model\Transport\Transport getOneByUuid(string $uuid)
  */
 class TransportRepository extends BaseTransportRepository
 {
