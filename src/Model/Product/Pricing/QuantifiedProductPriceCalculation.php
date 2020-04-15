@@ -13,6 +13,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculat
 /**
  * @property \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser
  * @method __construct(\App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser, \Shopsys\FrameworkBundle\Model\Pricing\Rounding $rounding, \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation)
+ * @method \Shopsys\FrameworkBundle\Component\Money\Money getTotalPriceVatAmount(\Shopsys\FrameworkBundle\Component\Money\Money $totalPriceWithVat, \App\Model\Pricing\Vat\Vat $vat)
  */
 class QuantifiedProductPriceCalculation extends BaseQuantifiedProductPriceCalculation
 {

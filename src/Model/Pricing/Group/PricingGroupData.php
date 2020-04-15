@@ -23,8 +23,15 @@ class PricingGroupData extends BasePricingGroupData
      */
     public $discount;
 
+    /**
+     * @var bool
+     */
+    public $calculatedFromDefault;
+
     public function __construct()
     {
         $this->discount = 0;
+        $this->calculatedFromDefault = false;
+        $this->minimalPrice = null;
     }
 }

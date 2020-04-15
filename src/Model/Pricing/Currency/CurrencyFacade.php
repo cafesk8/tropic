@@ -11,7 +11,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade as BaseCurrenc
  * @property \App\Model\Order\OrderRepository $orderRepository
  * @property \App\Model\Payment\PaymentRepository $paymentRepository
  * @property \App\Model\Transport\TransportRepository $transportRepository
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyRepository $currencyRepository, \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting, \App\Model\Order\OrderRepository $orderRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \App\Model\Payment\PaymentRepository $paymentRepository, \App\Model\Transport\TransportRepository $transportRepository, \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceFactoryInterface $paymentPriceFactory, \Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface $transportPriceFactory, \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFactoryInterface $currencyFactory, \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade)
+ * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyRepository $currencyRepository, \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting, \App\Model\Order\OrderRepository $orderRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \App\Model\Payment\PaymentRepository $paymentRepository, \App\Model\Transport\TransportRepository $transportRepository, \Shopsys\FrameworkBundle\Model\Payment\PaymentPriceFactoryInterface $paymentPriceFactory, \Shopsys\FrameworkBundle\Model\Transport\TransportPriceFactoryInterface $transportPriceFactory, \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFactoryInterface $currencyFactory, \App\Model\Pricing\Vat\VatFacade $vatFacade)
  * @method \App\Model\Pricing\Currency\Currency getById(int $currencyId)
  * @method \App\Model\Pricing\Currency\Currency create(\Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyData $currencyData)
  * @method \App\Model\Pricing\Currency\Currency edit(int $currencyId, \Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyData $currencyData)
@@ -23,6 +23,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade as BaseCurrenc
  * @method bool isDefaultCurrency(\App\Model\Pricing\Currency\Currency $currency)
  * @method \App\Model\Pricing\Currency\Currency[] getCurrenciesUsedInOrders()
  * @method \App\Model\Pricing\Currency\Currency[] getAllIndexedById()
+ * @property \App\Model\Pricing\Vat\VatFacade $vatFacade
  */
 class CurrencyFacade extends BaseCurrencyFacade
 {

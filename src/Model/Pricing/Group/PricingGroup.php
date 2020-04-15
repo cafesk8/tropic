@@ -17,6 +17,7 @@ class PricingGroup extends BasePricingGroup
 {
     public const PRICING_GROUP_ORDINARY_CUSTOMER = 'ordinary_customer';
     public const PRICING_GROUP_REGISTERED_CUSTOMER = 'registered_customer';
+    public const PRICING_GROUP_PURCHASE_PRICE = 'purchase_price';
 
     /**
      * @var string|null
@@ -40,15 +41,20 @@ class PricingGroup extends BasePricingGroup
     private $discount;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $calculatedFromDefault;
+
+    /**
      * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
      * @param int $domainId
      */
     public function __construct(BasePricingGroupData $pricingGroupData, $domainId)
     {
         parent::__construct($pricingGroupData, $domainId);
-        $this->internalId = $pricingGroupData->internalId;
-        $this->minimalPrice = $pricingGroupData->minimalPrice;
-        $this->discount = $pricingGroupData->discount;
+        $this->fillCommonProperties($pricingGroupData);
     }
 
     /**
@@ -57,9 +63,18 @@ class PricingGroup extends BasePricingGroup
     public function edit(BasePricingGroupData $pricingGroupData): void
     {
         parent::edit($pricingGroupData);
+        $this->fillCommonProperties($pricingGroupData);
+    }
+
+    /**
+     * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
+     */
+    private function fillCommonProperties(PricingGroupData $pricingGroupData): void
+    {
         $this->internalId = $pricingGroupData->internalId;
         $this->minimalPrice = $pricingGroupData->minimalPrice;
         $this->discount = $pricingGroupData->discount;
+        $this->calculatedFromDefault = $pricingGroupData->calculatedFromDefault;
     }
 
     /**
@@ -92,5 +107,13 @@ class PricingGroup extends BasePricingGroup
     public function getDiscountCoefficient(): float
     {
         return (100 - $this->discount) / 100;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCalculatedFromDefault(): bool
+    {
+        return $this->calculatedFromDefault;
     }
 }

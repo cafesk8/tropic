@@ -108,7 +108,7 @@ class OrderFacade extends BaseOrderFacade
     private $mallImportOrderClient;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade
+     * @var \App\Model\Pricing\Vat\VatFacade
      */
     private $vatFacade;
 
@@ -165,7 +165,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \Shopsys\FrameworkBundle\Model\Transport\TransportPriceCalculation $transportPriceCalculation
      * @param \App\Model\Order\Item\OrderItemFactory $orderItemFactory
      * @param \App\Model\Product\Gift\ProductGiftPriceCalculation $productGiftPriceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade
+     * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \App\Component\Mall\MallImportOrderClient $mallImportOrderClient
      * @param \App\Model\Gtm\GtmHelper $gtmHelper
      * @param \App\Component\SmsManager\SmsManagerFactory $smsManagerFactory

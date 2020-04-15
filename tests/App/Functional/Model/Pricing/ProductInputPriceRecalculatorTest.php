@@ -6,12 +6,12 @@ namespace Tests\App\Functional\Model\Pricing;
 
 use App\DataFixtures\Demo\PricingGroupDataFixture;
 use App\DataFixtures\Demo\UnitDataFixture;
+use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
-use Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceRecalculator;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPrice;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
@@ -85,7 +85,7 @@ class ProductInputPriceRecalculatorTest extends TransactionFunctionalTestCase
     {
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Domain $domain */
         $domain = $this->getContainer()->get(Domain::class);
-        /** @var \Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade $vatFacade */
+        /** @var \App\Model\Pricing\Vat\VatFacade $vatFacade */
         $vatFacade = $this->getContainer()->get(VatFacade::class);
         $productVatsIndexedByDomainId = [];
         foreach ($domain->getAllIds() as $domainId) {

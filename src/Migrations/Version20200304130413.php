@@ -17,7 +17,7 @@ class Version20200304130413 extends AbstractMigration
     {
         $this->sql('UPDATE pricing_groups SET discount = 0 WHERE discount IS NULL;');
         $this->sql('ALTER TABLE pricing_groups ALTER discount SET NOT NULL;');
-        $this->sql('UPDATE pricing_groups SET discount = 3 WHERE internal_id = \':internalId\' IS NULL;', [
+        $this->sql('UPDATE pricing_groups SET discount = 3 WHERE internal_id = \':internalId\';', [
             'internalId' => PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER,
         ]);
     }

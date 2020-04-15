@@ -606,3 +606,19 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository: '@App\Model\Product\Filter\PriceRangeRepository'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDataFactoryInterface: '@App\Model\Pricing\Vat\VatDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDataFactory: '@App\Model\Pricing\Vat\VatDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Vat\VatFacade: '@App\Model\Pricing\Vat\VatFacade'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Vat\VatRepository: '@App\Model\Pricing\Vat\VatRepository'
+
+    App\Component\Domain\DomainDataCreator: ~
+
+    Shopsys\FrameworkBundle\Component\Domain\DomainDataCreator: '@App\Component\Domain\DomainDataCreator'
+
+    Shopsys\FrameworkBundle\Model\Pricing\Vat\VatGridFactory: '@App\Model\Pricing\Vat\VatGridFactory'
+
+

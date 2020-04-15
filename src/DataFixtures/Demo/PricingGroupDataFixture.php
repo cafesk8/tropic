@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Pricing\Group\PricingGroup;
-use App\Model\Pricing\Group\PricingGroupData;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupDataFactoryInterface;
 
 class PricingGroupDataFixture extends AbstractReferenceFixture
 {
     public const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
     public const PRICING_GROUP_REGISTERED_DOMAIN = 'pricing_group_registered_domain';
+    public const PRICING_GROUP_PURCHASE_DOMAIN = 'pricing_group_purchase_domain';
 
     /**
      * @var \App\Model\Pricing\Group\PricingGroupFacade
@@ -52,42 +54,47 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
      */
     public function load(ObjectManager $manager)
     {
-        /**
-         * The pricing group is created with specific ID in database migration.
-         * @see \Shopsys\FrameworkBundle\Migrations\Version20180603135346
-         */
-        $defaultPricingGroup = $this->pricingGroupFacade->getById(1);
-
-        $defaultPricingGroupData = $this->pricingGroupDataFactory->createFromPricingGroup($defaultPricingGroup);
-        $defaultPricingGroupData->name = 'Běžný zákazník';
-        $defaultPricingGroupData->internalId = PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
-        $defaultPricingGroupData->discount = 0;
-
-        $this->pricingGroupFacade->edit($defaultPricingGroup->getId(), $defaultPricingGroupData);
-        $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, Domain::FIRST_DOMAIN_ID);
-
-        $this->createPricingGroup($defaultPricingGroupData, self::PRICING_GROUP_BASIC_DOMAIN, false);
-
         foreach ($this->domain->getAllIds() as $domainId) {
+            /** Default pricing groups are created in migration Version20180603135346 and DomainDataCreator */
+            $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $domainId);
+            $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, $domainId);
+
             $registeredPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
+            $registeredPricingGroup = $registeredPricingGroup ?? $this->createRegisteredCustomerPricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_REGISTERED_DOMAIN, $registeredPricingGroup, $domainId);
+
+            $purchasePricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId);
+            $purchasePricingGroup = $purchasePricingGroup ?? $this->createPurchasePricePricingGroup($domainId);
+            $this->addReferenceForDomain(self::PRICING_GROUP_PURCHASE_DOMAIN, $purchasePricingGroup, $domainId);
         }
     }
 
     /**
-     * @param \App\Model\Pricing\Group\PricingGroupData $pricingGroupData
-     * @param string $referenceName
-     * @param bool $firstDomain
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
      */
-    protected function createPricingGroup(PricingGroupData $pricingGroupData, $referenceName, $firstDomain = true)
+    private function createRegisteredCustomerPricingGroup(int $domainId): PricingGroup
     {
-        foreach ($this->domain->getAllIds() as $domainId) {
-            if ($firstDomain === false && $domainId === Domain::FIRST_DOMAIN_ID) {
-                continue;
-            }
+        $pricingGroupData = $this->pricingGroupDataFactory->create();
+        $pricingGroupData->name = t('Registrovaný zákazník', [], 'dataFixtures', DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId]);
+        $pricingGroupData->discount = 3;
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER;
+        $pricingGroupData->minimalPrice = Money::zero();
+        $pricingGroupData->calculatedFromDefault = true;
 
-            $pricingGroup = $this->pricingGroupFacade->create($pricingGroupData, $domainId);
-            $this->addReferenceForDomain($referenceName, $pricingGroup, $domainId);
-        }
+        return $this->pricingGroupFacade->create($pricingGroupData, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    private function createPurchasePricePricingGroup(int $domainId): PricingGroup
+    {
+        $pricingGroupData = $this->pricingGroupDataFactory->create();
+        $pricingGroupData->name = t('Nákupní cena', [], 'dataFixtures', DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId]);
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_PURCHASE_PRICE;
+
+        return $this->pricingGroupFacade->create($pricingGroupData, $domainId);
     }
 }

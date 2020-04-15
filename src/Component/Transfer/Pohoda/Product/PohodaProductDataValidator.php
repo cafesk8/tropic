@@ -49,6 +49,14 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED => [
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_SELLING_PRICE => [
+                    new Type(['type' => 'numeric']),
+                    new NotBlank(),
+                ],
+                PohodaProduct::COL_SELLING_VAT_RATE_ID => [
+                    new Type(['type' => 'numeric']),
+                    new NotBlank(),
+                ],
             ],
         ]));
 

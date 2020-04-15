@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
-use App\Model\Product\Availability\Availability;
-use App\Model\Product\Brand\Brand;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\StoreStock\ProductStoreStock;
@@ -44,6 +42,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Availability\Availability|null $outOfStockAvailability
  * @property \App\Model\Product\Availability\Availability $calculatedAvailability
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
+ * @method \App\Model\Pricing\Vat\Vat getVatForDomain(int $domainId)
+ * @method changeVatForDomain(\App\Model\Pricing\Vat\Vat $vat, int $domainId)
  */
 class Product extends BaseProduct
 {
