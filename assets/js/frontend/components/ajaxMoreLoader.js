@@ -63,10 +63,10 @@ export default class AjaxMoreLoader {
     updateLoadMoreButton () {
         const remaining = this.totalCount - this.page * this.pageSize;
         const loadNextCount = remaining >= this.pageSize ? this.pageSize : remaining;
-        const buttonText = this.options.buttonTextCallback(loadNextCount);
+        const buttonText = this.options.buttonTextCallback(loadNextCount) + '<i class="box-list__actions__button__icon svg svg-triangle"></i>';
 
         this.$loadMoreButton
-            .append(buttonText)
+            .html(buttonText)
             .toggle(remaining > 0);
     }
 

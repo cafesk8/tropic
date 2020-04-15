@@ -83,7 +83,9 @@
                 {% endif %}
 
                 <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                    {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                    <div class="box-list__products">
+                        {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                    </div>
                 </div>
             </div>
         </div>

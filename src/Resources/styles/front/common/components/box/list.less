@@ -89,6 +89,11 @@
             flex-direction: row;
         }
 
+        @media @query-vl {
+            width: calc(~"100% - (@{box-list-panel-width} + @{box-list-panel-gap})");
+            margin-left: auto;
+        }
+
         &__title {
             margin-bottom: 11px;
             line-height: 45px;
