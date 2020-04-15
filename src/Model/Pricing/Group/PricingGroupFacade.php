@@ -9,7 +9,6 @@ use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade as BasePricin
 
 /**
  * @property \App\Model\Customer\User\CustomerUserRepository $customerUserRepository
- * @method __construct(\Doctrine\ORM\EntityManagerInterface $em, \App\Model\Pricing\Group\PricingGroupRepository $pricingGroupRepository, \Shopsys\FrameworkBundle\Component\Domain\Domain $domain, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler $productPriceRecalculationScheduler, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade, \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository $productVisibilityRepository, \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductCalculatedPriceRepository $productCalculatedPriceRepository, \App\Model\Customer\User\CustomerUserRepository $customerUserRepository, \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFactoryInterface $pricingGroupFactory)
  * @method \App\Model\Pricing\Group\PricingGroup getById(int $pricingGroupId)
  * @method \App\Model\Pricing\Group\PricingGroup create(\App\Model\Pricing\Group\PricingGroupData $pricingGroupData, int $domainId)
  * @method \App\Model\Pricing\Group\PricingGroup edit(int $pricingGroupId, \App\Model\Pricing\Group\PricingGroupData $pricingGroupData)
