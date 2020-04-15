@@ -93,6 +93,11 @@ class ProductData extends BaseProductData
      */
     public $variantId;
 
+    /**
+     * @var bool
+     */
+    public $registrationDiscountDisabled;
+
     public function __construct()
     {
         parent::__construct();
@@ -105,5 +110,6 @@ class ProductData extends BaseProductData
         $this->amountMultiplier = 1;
         $this->youtubeVideoIds = [];
         $this->giftCertificate = false;
+        $this->registrationDiscountDisabled = false;
     }
 }

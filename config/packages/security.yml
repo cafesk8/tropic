@@ -142,6 +142,7 @@ security:
         - { path: ^/admin/transfer-issues, roles: ROLE_ADMIN }
         - { path: ^/admin/multidomain, roles: ROLE_ADMIN }
         - { path: ^/admin/contact-form, roles: ROLE_ADMIN }
+        - { path: ^/admin/discount-exclusion, roles: ROLE_ADMIN }
         - { path: ^/admin/, roles: ROLE_SUPER_ADMIN }
 
         - { path: ^/efconnect, roles: ROLE_ADMIN }

@@ -1,4 +1,4 @@
-{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
@@ -105,6 +105,11 @@
                             {% endif %}
                             <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
                                 {% if not product.isMainVariant %}
+                                    {% if product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
+                                        <div class="in-message--info">
+                                            {{ registrationDiscountExclusionText }}
+                                        </div>
+                                    {% endif %}
                                     {{ self.productPrice(product) }}
                                     <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
                                     <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
@@ -178,6 +183,13 @@
                                                     {{ productParameterValue.parameter.name }}:
                                                     {{ productParameterValue.value.text }}
                                                 {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% if variant.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
+                                                    <div class="in-message--info">
+                                                        {{ registrationDiscountExclusionText }}
+                                                    </div>
+                                                {% endif %}
                                             </td>
                                             <td class="table-variants__cell table-variants__cell--action">
                                                 {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}

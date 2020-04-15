@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use App\Component\Domain\DomainHelper;
+use App\Model\Product\Availability\Availability;
+use App\Model\Product\Brand\Brand;
 use App\Model\Product\Exception\ProductIsNotMainVariantException;
 use App\Model\Product\Mall\ProductMallExportMapper;
 use App\Model\Product\StoreStock\ProductStoreStock;
@@ -12,8 +14,9 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
-use Shopsys\FrameworkBundle\Model\Product\ProductData;
+use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
 /**
  * @ORM\Table(name="products")
@@ -23,7 +26,12 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @property \App\Model\Product\Product|null $mainVariant
  * @method static \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
  * @method setAvailabilityAndStock(\App\Model\Product\ProductData $productData)
- * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
+ * @method \App\Model\Product\Availability\Availability getAvailability()
+ * @method \App\Model\Product\Availability\Availability|null getOutOfStockAvailability()
+ * @method \App\Model\Product\Availability\Availability getCalculatedAvailability()
+ * @method setAvailability(\App\Model\Product\Availability\Availability $availability)
+ * @method setOutOfStockAvailability(\App\Model\Product\Availability\Availability|null $outOfStockAvailability)
+ * @method setCalculatedAvailability(\App\Model\Product\Availability\Availability $calculatedAvailability)
  * @method \App\Model\Product\Brand\Brand|null getBrand()
  * @method addVariants(\App\Model\Product\Product[] $variants)
  * @method setMainVariant(\App\Model\Product\Product $mainVariant)
@@ -35,12 +43,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData;
  * @property \App\Model\Product\Availability\Availability|null $availability
  * @property \App\Model\Product\Availability\Availability|null $outOfStockAvailability
  * @property \App\Model\Product\Availability\Availability $calculatedAvailability
- * @method \App\Model\Product\Availability\Availability getAvailability()
- * @method \App\Model\Product\Availability\Availability|null getOutOfStockAvailability()
- * @method \App\Model\Product\Availability\Availability getCalculatedAvailability()
- * @method setAvailability(\App\Model\Product\Availability\Availability $availability)
- * @method setOutOfStockAvailability(\App\Model\Product\Availability\Availability|null $outOfStockAvailability)
- * @method setCalculatedAvailability(\App\Model\Product\Availability\Availability $calculatedAvailability)
+ * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  */
 class Product extends BaseProduct
 {
@@ -163,10 +166,17 @@ class Product extends BaseProduct
     protected $variantId;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $registrationDiscountDisabled;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
-    protected function __construct(ProductData $productData, ?array $variants = null)
+    protected function __construct(BaseProductData $productData, ?array $variants = null)
     {
         parent::__construct($productData, $variants);
 
@@ -184,7 +194,7 @@ class Product extends BaseProduct
      * @param array $variants
      * @return \App\Model\Product\Product|void
      */
-    public static function createMainVariant(ProductData $productData, array $variants)
+    public static function createMainVariant(BaseProductData $productData, array $variants)
     {
         @trigger_error('Deprecated, you should use Product::variantId to pair variants, see ProductVariantTropicFacade::refreshVariantStatus', E_USER_DEPRECATED);
     }
@@ -195,7 +205,7 @@ class Product extends BaseProduct
      */
     public function edit(
         array $productCategoryDomains,
-        ProductData $productData
+        BaseProductData $productData
     ) {
         parent::edit($productCategoryDomains, $productData);
 
@@ -219,6 +229,7 @@ class Product extends BaseProduct
         if ($productData->variantId !== null) {
             $this->variantId = trim($productData->variantId);
         }
+        $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
     }
 
     /**
@@ -259,7 +270,7 @@ class Product extends BaseProduct
     /**
      * @param \App\Model\Product\ProductData $productData
      */
-    protected function createDomains(ProductData $productData)
+    protected function createDomains(BaseProductData $productData)
     {
         $domainIds = array_keys($productData->seoTitles);
 
@@ -388,7 +399,7 @@ class Product extends BaseProduct
     /**
      * @param \App\Model\Product\ProductData $productData
      */
-    protected function setDomains(ProductData $productData): void
+    protected function setDomains(BaseProductData $productData): void
     {
         parent::setDomains($productData);
 
@@ -470,7 +481,7 @@ class Product extends BaseProduct
     public function getMainVariant(): BaseProduct
     {
         if (!$this->isVariant()) {
-            throw new \Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException();
+            throw new ProductIsNotVariantException();
         }
 
         return $this->mainVariant;
@@ -822,5 +833,13 @@ class Product extends BaseProduct
     public static function getMainVariantVariantIdFromVariantVariantId(string $variantId): string
     {
         return substr($variantId, 0, strpos($variantId, ProductVariantTropicFacade::VARIANT_ID_SEPARATOR));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegistrationDiscountDisabled(): bool
+    {
+        return $this->registrationDiscountDisabled;
     }
 }

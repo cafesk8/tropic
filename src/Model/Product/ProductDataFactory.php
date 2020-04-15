@@ -142,5 +142,6 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->amountMultiplier = $product->getAmountMultiplier();
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
         $productData->variantId = $product->getVariantId();
+        $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
     }
 }

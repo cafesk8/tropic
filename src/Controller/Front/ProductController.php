@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\Component\DiscountExclusion\DiscountExclusionFacade;
 use App\Component\Setting\Setting;
 use App\Form\Front\Product\ProductFilterFormType;
 use App\Model\Article\ArticleFacade;
@@ -122,6 +123,11 @@ class ProductController extends FrontBaseController
     private $listedProductViewFacade;
 
     /**
+     * @var \App\Component\DiscountExclusion\DiscountExclusionFacade
+     */
+    private $discountExclusionFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -139,6 +145,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Gtm\GtmFacade $gtmFacade
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -157,7 +164,8 @@ class ProductController extends FrontBaseController
         ArticleFacade $articleFacade,
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
-        BrandFacade $brandFacade
+        BrandFacade $brandFacade,
+        DiscountExclusionFacade $discountExclusionFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -176,10 +184,12 @@ class ProductController extends FrontBaseController
         $this->gtmFacade = $gtmFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
+        $this->discountExclusionFacade = $discountExclusionFacade;
     }
 
     /**
      * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function detailAction($id)
     {
@@ -211,6 +221,7 @@ class ProductController extends FrontBaseController
             'youtubeDetails' => $this->productFacade->getYoutubeViews($product),
             'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
             'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
+            'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
         ]);
     }
 

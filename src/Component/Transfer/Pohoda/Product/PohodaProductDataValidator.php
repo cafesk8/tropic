@@ -45,6 +45,10 @@ class PohodaProductDataValidator
                     new Type(['type' => 'string']),
                     new NotBlank(),
                 ],
+                // It is a string with 0 or 1 so we cannot validate bool here
+                PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED => [
+                    new NotBlank(),
+                ],
             ],
         ]));
 

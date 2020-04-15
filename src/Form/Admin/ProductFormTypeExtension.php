@@ -49,6 +49,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'shortDescriptions',
         'descriptions',
         'usingStock',
+        'registrationDiscountDisabled',
     ];
 
     /**
@@ -348,6 +349,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private function getPricesGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
     {
         $pricesGroupBuilder = $builder->get('pricesGroup');
+        $pricesGroupBuilder->add('registrationDiscountDisabled', YesNoType::class, [
+            'label' => t('Vyjmout ze slev za registraci'),
+            'position' => 'first',
+        ]);
 
         $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');
         $productCalculatedPricesGroup->remove('manualInputPricesByPricingGroupId');
