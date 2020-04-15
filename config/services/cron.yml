@@ -12,11 +12,11 @@ services:
         arguments:
             - '%gopay_config%'
         tags:
-            - { name: shopsys.cron, hours: '3', minutes: '50', readableFrequency: '1x za den' }
+            - { name: shopsys.cron, hours: '3', minutes: '50', readableName: 'Stažení GoPay platebních metod' }
 
     App\Component\Balikobot\Pickup\DownloadPickupPlacesCronModule:
         tags:
-            - { name: shopsys.cron, hours: '1', minutes: '00', readableFrequency: 'v 01:00 a při změně dopravy' }
+            - { name: shopsys.cron, hours: '1', minutes: '00', readableName: 'Stažení Balikobot odběrných míst' }
 
     #    App\Model\Product\Mall\MallProductExportCronModule:
     #        tags:
@@ -24,15 +24,15 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Recalculate product availabilities' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet dostupností produktů' }
 
     Shopsys\FrameworkBundle\Model\Product\ProductVisibilityImmediateCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Recalculate immediate product visibilities' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)' }
 
-    App\Model\Product\Mall\MallProductDeleteCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '23', minutes: '00' }
+#    App\Model\Product\Mall\MallProductDeleteCronModule:
+#        tags:
+#            - { name: shopsys.cron, hours: '23', minutes: '00', readableName: 'Smazání produktů z Mall' }
 
     #################################
     ## PAYMENT GATES CRON INSTANCE ##
@@ -40,11 +40,11 @@ services:
 
     App\Model\GoPay\OrderGoPayStatusUpdateCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableFrequency: '1x za hodinu' }
+            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableName: 'Aktualizace objednávek pro platby GoPay' }
 
     App\Model\PayPal\OrderPayPalStatusUpdateCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableFrequency: '1x za hodinu' }
+            - { name: shopsys.cron, hours: '*', minutes: '15', instanceName: customers, readableName: 'Aktualizace objednávek pro platby PayPal' }
 
     #####################################
     ## PRODUCTS TRANSFER CRON INSTANCE ##
@@ -52,20 +52,20 @@ services:
 
     App\Model\Product\Transfer\ProductImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných produktů z Pohoda IS' }
 
     ######################################
 
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export all products to Elasticsearch" }
+            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: "Export všech produktů do Elasticsearch" }
 
     #########################
     ## CATEGORIES TRANSFER ##
     #########################
     App\Model\Category\Transfer\CategoryImportCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Import změněných kategorií z Pohoda IS' }
 
     #########################
 
@@ -74,47 +74,43 @@ services:
     overriddenDailyFeedCronModule:
         class: App\Model\Feed\DailyFeedCronModule
         tags:
-            - { name: shopsys.cron, hours: '*/6', minutes: '0', readableName: 'Generate daily feeds' }
+            - { name: shopsys.cron, hours: '*/6', minutes: '0', readableName: 'Generování denních feedů' }
 
     Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule: ~
 
     overriddenHourlyFeedCronModule:
         class: Shopsys\FrameworkBundle\Model\Feed\HourlyFeedCronModule
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '10', readableName: 'Generate hourly feeds' }
+            - { name: shopsys.cron, hours: '*', minutes: '10', readableName: 'Generování hodinových feedů' }
 
     Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule: ~
 
     overriddenSitemapCronModule:
         class: Shopsys\FrameworkBundle\Model\Sitemap\SitemapCronModule
         tags:
-            - { name: shopsys.cron, hours: '4', minutes: '0', readableName: 'Generate Sitemap' }
+            - { name: shopsys.cron, hours: '4', minutes: '0', readableName: 'Generování sitemap' }
 
     Shopsys\FrameworkBundle\Model\Pricing\Vat\VatDeletionCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Delete vats' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Smazání starých sazeb DPH' }
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Recalculate product prices' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet cen produktů' }
 
     Shopsys\FrameworkBundle\Model\Product\ProductVisibilityMidnightCronModule:
         tags:
-            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Recalculate midnight product visibilities' }
+            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Přepočet viditelností produktů (všechny produkty)' }
 
     Shopsys\FrameworkBundle\Model\Product\Elasticsearch\ProductExportChangedCronModule:
         tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export changed products to Elasticsearch" }
-
-    Shopsys\ProductFeed\HeurekaBundle\Model\HeurekaCategory\HeurekaCategoryCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '3', minutes: '0', readableName: 'Download Heureka categories' }
+            - { name: shopsys.cron, hours: '*', minutes: '*', readableName: "Export změněných produktů do Elasticsearch" }
 
     Shopsys\FrameworkBundle\Model\Cart\Item\DeleteOldCartsCronModule:
         tags:
-            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Delete old customer carts' }
+            - { name: shopsys.cron, hours: '0', minutes: '0', readableName: 'Smazání starých košíků' }
 
     # This module should run as last because it creates multiple kernels and fake requests.
     Shopsys\FrameworkBundle\Component\Error\ErrorPageCronModule:
         tags:
-            - { name: shopsys.cron, hours: '21', minutes: '10', readableName: 'Generate Error pages' }
+            - { name: shopsys.cron, hours: '21', minutes: '10', readableName: 'Vygenerování chybových stránek' }
