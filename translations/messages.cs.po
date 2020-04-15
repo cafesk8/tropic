@@ -1394,7 +1394,7 @@ msgid "Please enter promo code."
 msgstr "Zadejte slevový kupón."
 
 msgid "Please enter valid quantity you want to add to cart."
-msgstr "Zadejte platné množství, které chceš vložit do košíku."
+msgstr "Zadejte platné množství, které chcete vložit do košíku."
 
 msgid "Please excuse this error, we are working on fixing it. If needed, contact us on %mail% or by phone %phone%."
 msgstr "Za tuto chybu se omlouváme, pracujeme na tom, abychom ji co nejdříve opravili. Kontaktovat nás můžete na %mail% nebo telefonicky %phone%."
