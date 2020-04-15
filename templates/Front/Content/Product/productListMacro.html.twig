@@ -15,7 +15,7 @@
                                 {% if freeTransportAndPaymentFlagId is not null %}
                                     {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                 {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list') }}
+                                {{ renderFlagsByIds(productFlagIds) }}
                             </div>
                         </a>
                         <div class="list-products__item__info">
@@ -106,7 +106,7 @@
                                     {% if freeTransportAndPaymentFlagId is not null %}
                                         {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                     {% endif %}
-                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--in-list', true) }}
+                                    {{ renderFlagsByIds(productFlagIds, '', true) }}
                                 </div>
 
                                 <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__title">
@@ -170,6 +170,60 @@
         </span>
     </div>
 
+{% endmacro %}
+
+{% macro lastVisitedList(productViews, productHeadingTagName, type, onlyRefresh = false) %}
+    {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    <div class="list-last-visited js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
+
+        <span class="list-last-visited__arrow list-last-visited__arrow--prev js-horizontal-list-action-prev">
+            <i class="svg svg-triangle"></i>
+        </span>
+
+        <div class="list-last-visited__in">
+            <div class="list-last-visited__list js-horizontal-list-slides">
+                {% for productView in productViews %}
+                    <div class="list-last-visited__item">
+                        <a href="{{ productView.action.detailUrl }}" class="list-last-visited__item__block">
+                            <div class="list-last-visited__item__image dont-print">
+                                {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
+                            </div>
+
+                            <div class="list-last-visited__item__info">
+                                <{{ productHeadingTagName|default('h2') }} class="list-last-visited__item__info__title">
+                                    {{ productView.name|striptags|raw }}
+                                <{{ '/' ~ productHeadingTagName|default('h2') }}>
+
+                                {% set productSellingPrice = productView.sellingPrice %}
+                                {% if productSellingPrice is not null %}
+                                    <div class="list-last-visited__item__info__price">
+                                        <div class="list-last-visited__item__info__price__main">
+                                            {{ productSellingPrice.priceWithVat|price }}
+                                        </div>
+                                        {% if productSellingPrice.isActionPrice %}
+                                            <div class="list-last-visited__item__info__price__old">
+                                                {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                <div class="list-last-visited__item__info__availability">
+                                    <div class="list-last-visited__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                        {{ productView.availability }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <span class="list-last-visited__arrow list-last-visited__arrow--next js-horizontal-list-action-next">
+            <i class="svg svg-triangle"></i>
+        </span>
+    </div>
 {% endmacro %}
 
 {% macro verticalList(products, listCssClass, productHeadingTagName) %}

@@ -4,11 +4,11 @@
     <div class="web__line">
         <div class="web__container">
             <div class="box-last-visited">
-                <h2 class="box-last-visited__title">
-                    {{ 'Naposledy prohlížené produkty'|trans }}
-                </h2>
+                <h3 class="box-last-visited__title">
+                    {{ 'Naposledy navštívené produkty'|trans }}
+                </h3>
 
-                {{ productList.horizontalList(productViews,  "list-last-visited", 'h3', 'last-visited', false) }}
+                {{ productList.lastVisitedList(productViews, 'h3', 'last-visited') }}
             </div>
         </div>
     </div>

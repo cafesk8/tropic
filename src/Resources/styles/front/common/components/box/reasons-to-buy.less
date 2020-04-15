@@ -1,0 +1,38 @@
+@box-reasons-to-buy-left-width: 34%;
+
+.box-reasons-to-buy {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+
+    @media @query-lg {
+        flex-direction: row;
+        margin-bottom: 70px;
+    }
+
+    &__title {
+        color: @color-primary;
+    }
+
+    &__link {
+        font-size: @font-size-small;
+        text-decoration: underline;
+    }
+
+    &__left {
+        text-align: center;
+        margin-bottom: 20px;
+
+        @media @query-lg {
+            width: @box-reasons-to-buy-left-width;
+            text-align: left;
+            margin-bottom: 0;
+        }
+    }
+
+    &__right {
+        @media @query-lg {
+            width: calc(~"100% - @{box-reasons-to-buy-left-width}");
+        }
+    }
+}
