@@ -2,7 +2,7 @@
 {% set productActionView = productView.action %}
 
 {% if productActionView.mainVariant %}
-    <a href="{{ productActionView.detailUrl }}" class="btn btn--success {{ buttonSizeClass }}">
+    <a href="{{ productActionView.detailUrl }}" class="btn btn--big btn--success {{ buttonSizeClass }}">
         {{- 'Choose variant'|trans -}}
     </a>
 {% else %}

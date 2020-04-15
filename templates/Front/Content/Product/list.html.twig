@@ -57,31 +57,30 @@
                             {% endif %}
                         </div>
                         {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
-                        {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="web__line">
-            <div class="web__container web__container--top-line">
-                <div class="box-list__bottom">
-                    <div class="box-list__bottom__description">
-                        <div class="box-list__bottom__title">
-                            {{ category.name }}
+                        <div class="box-list__products">
+                            {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
                         </div>
-                        <div class="box-list__bottom__description__text in-user-text js-category-description ">
-                            {{ category.getDescription(domain.id)|raw }}
-                        </div>
-                    </div>
-                    {% if categoriesBlogArticles|length > 0 %}
-                        <div class="box-list__bottom__article">
-                            <div class="box-list__bottom__title">
-                                {{ 'Mohlo by vás zajímat'|trans }}
+                        {% if category.legendaryCategory == true %}
+                            <div class="box-list__bottom">
+                                <div class="box-list__bottom__description">
+                                    <h3 class="box-list__bottom__title">
+                                        {{ category.name }}
+                                    </h3>
+                                    <div class="box-list__bottom__description__text in-user-text js-category-description ">
+                                        {{ category.getDescription(domain.id)|raw }}
+                                    </div>
+                                </div>
+                                {% if categoriesBlogArticles|length > 0 %}
+                                    <div class="box-list__bottom__article">
+                                        <h3 class="box-list__bottom__article__title">
+                                            {{ 'Mohlo by vás zajímat'|trans }}
+                                        </h3>
+                                        {% include 'Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list list-articles--white' } %}
+                                    </div>
+                                {% endif %}
                             </div>
-                            {% include 'Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list' } %}
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

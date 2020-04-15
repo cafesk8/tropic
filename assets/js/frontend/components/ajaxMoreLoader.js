@@ -66,7 +66,7 @@ export default class AjaxMoreLoader {
         const buttonText = this.options.buttonTextCallback(loadNextCount);
 
         this.$loadMoreButton
-            .val(buttonText)
+            .append(buttonText)
             .toggle(remaining > 0);
     }
 
