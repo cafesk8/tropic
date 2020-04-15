@@ -6,6 +6,7 @@ namespace App\Model\Product\View;
 
 use App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade;
 use App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade;
+use App\Model\Product\PriceBombProduct\PriceBombProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
@@ -37,6 +38,11 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
     private $lastVisitedProductsFacade;
 
     /**
+     * @var \App\Model\Product\PriceBombProduct\PriceBombProductFacade
+     */
+    protected $priceBombProductFacade;
+
+    /**
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Accessory\ProductAccessoryFacade $productAccessoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -48,6 +54,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
      * @param \Shopsys\ReadModelBundle\Image\ImageViewFacade $imageViewFacade
      * @param \App\Model\Product\BestsellingProduct\CachedBestsellingProductFacade $cachedBestsellingProductFacade
      * @param \App\Model\Product\LastVisitedProducts\LastVisitedProductsFacade $lastVisitedProductsFacade
+     * @param \App\Model\Product\PriceBombProduct\PriceBombProductFacade $priceBombProductFacade
      */
     public function __construct(
         ProductFacade $productFacade,
@@ -60,11 +67,13 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         ProductActionViewFacade $productActionViewFacade,
         ImageViewFacade $imageViewFacade,
         CachedBestsellingProductFacade $cachedBestsellingProductFacade,
-        LastVisitedProductsFacade $lastVisitedProductsFacade
+        LastVisitedProductsFacade $lastVisitedProductsFacade,
+        PriceBombProductFacade $priceBombProductFacade
     ) {
         parent::__construct($productFacade, $productAccessoryFacade, $domain, $currentCustomerUser, $topProductFacade, $productOnCurrentDomainFacade, $listedProductViewFactory, $productActionViewFacade, $imageViewFacade);
         $this->cachedBestsellingProductFacade = $cachedBestsellingProductFacade;
         $this->lastVisitedProductsFacade = $lastVisitedProductsFacade;
+        $this->priceBombProductFacade = $priceBombProductFacade;
     }
 
     /**
@@ -95,5 +104,20 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
         );
 
         return $this->createFromArray($this->productOnCurrentDomainFacade->getSellableHitsForIds($bestsellingProductIds));
+    }
+
+    /**
+     * @param int|null $limit
+     * @return \Shopsys\ReadModelBundle\Product\Listed\ListedProductView[]
+     */
+    public function getPriceBombProducts(?int $limit = null): array
+    {
+        $priceBombProducts = $this->priceBombProductFacade->getPriceBombProducts(
+            $this->domain->getId(),
+            $this->currentCustomerUser->getPricingGroup(),
+            $limit
+        );
+
+        return $this->createFromProducts($priceBombProducts);
     }
 }

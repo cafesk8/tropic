@@ -87,6 +87,11 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $marketingMenu->addChild('articles_settings', ['route' => 'admin_articlesettings_setting', 'label' => t('Věrnostní program')]);
 
+        $priceBombProducts = $marketingMenu->addChild('price_bomb_products', [
+            'route' => 'admin_pricebombproduct_list',
+            'label' => t('Cenové bomby na titulní stránce'),
+        ]);
+
         $marketingMenu->addChild('stores', [
             'route' => 'admin_inforow_detail',
             'label' => t('Informační řádek'),
@@ -109,5 +114,6 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
 
         $menuManipulator = new MenuManipulator();
         $menuManipulator->moveToPosition($adverts, 1);
+        $menuManipulator->moveToPosition($priceBombProducts, 4);
     }
 }
