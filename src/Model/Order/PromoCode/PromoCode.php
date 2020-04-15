@@ -21,10 +21,6 @@ class PromoCode extends BasePromoCode
     public const MAX_CODES_GENERATE = 9999;
     public const MASS_GENERATED_CODE_LENGTH = 16;
 
-    public const USAGE_TYPE_ALL = 'all';
-    public const USAGE_TYPE_WITH_ACTION_PRICE = 'withActionPrice';
-    public const USAGE_TYPE_NO_ACTION_PRICE = 'noActionPrice';
-
     public const USER_TYPE_ALL = 'all_users';
     public const USER_TYPE_LOGGED = 'logged_users';
     public const USER_TYPE_LOYALTY_PROGRAM_MEMBERS = 'loyalty_program_member_users';
@@ -137,13 +133,6 @@ class PromoCode extends BasePromoCode
      *
      * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $usageType;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=50, nullable=false)
-     */
     private $userType;
 
     /**
@@ -187,7 +176,6 @@ class PromoCode extends BasePromoCode
         $this->type = $promoCodeData->type;
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
-        $this->setUsageType($promoCodeData->usageType);
         $this->setUserType($promoCodeData->userType);
         $this->combinable = $promoCodeData->combinable;
         $this->setLimitType($promoCodeData->limitType);
@@ -214,7 +202,6 @@ class PromoCode extends BasePromoCode
         $this->type = $promoCodeData->type;
         $this->certificateValue = $promoCodeData->certificateValue;
         $this->certificateSku = $promoCodeData->certificateSku;
-        $this->setUsageType($promoCodeData->usageType);
         $this->setUserType($promoCodeData->userType);
         $this->combinable = $promoCodeData->combinable;
         $this->setLimitType($promoCodeData->limitType);
@@ -354,25 +341,6 @@ class PromoCode extends BasePromoCode
     public function getCertificateSku(): ?string
     {
         return $this->certificateSku;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsageType(): string
-    {
-        return $this->usageType;
-    }
-
-    /**
-     * @param string $usageType
-     */
-    public function setUsageType(string $usageType): void
-    {
-        if (in_array($usageType, [self::USAGE_TYPE_ALL, self::USAGE_TYPE_NO_ACTION_PRICE, self::USAGE_TYPE_WITH_ACTION_PRICE], true) === false) {
-            throw new InvalidPromoCodeUsageTypeException(sprintf('Invalid promo code use type `%s`', $usageType));
-        }
-        $this->usageType = $usageType;
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Model\Product\Pricing\ProductPrice;
 use Shopsys\ReadModelBundle\Flag\FlagsProvider;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Twig\Extension\AbstractExtension;
@@ -47,9 +48,10 @@ class FlagsExtension extends AbstractExtension
      * @param int[] $flagIds
      * @param string $classAddition
      * @param bool $onlyFirst
+     * @param \App\Model\Product\Pricing\ProductPrice|null $productPrice
      * @return string
      */
-    public function renderFlagsByIds(array $flagIds, string $classAddition = '', bool $onlyFirst = false): string
+    public function renderFlagsByIds(array $flagIds, string $classAddition = '', bool $onlyFirst = false, ?ProductPrice $productPrice = null): string
     {
         return $this->templating->render(
             'Front/Inline/Product/productFlags.html.twig',
@@ -57,6 +59,7 @@ class FlagsExtension extends AbstractExtension
                 'flags' => $this->flagsProvider->getFlagsByIds($flagIds),
                 'classAddition' => $classAddition,
                 'onlyFirst' => $onlyFirst,
+                'sellingPrice' => $productPrice,
             ]
         );
     }

@@ -18,6 +18,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     public const PRICING_GROUP_BASIC_DOMAIN = 'pricing_group_basic_domain';
     public const PRICING_GROUP_REGISTERED_DOMAIN = 'pricing_group_registered_domain';
     public const PRICING_GROUP_PURCHASE_DOMAIN = 'pricing_group_purchase_domain';
+    public const PRICING_GROUP_STANDARD_DOMAIN = 'pricing_group_standard_domain';
 
     /**
      * @var \App\Model\Pricing\Group\PricingGroupFacade
@@ -59,13 +60,17 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
             $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, $domainId);
 
-            $registeredPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
+            $registeredPricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
             $registeredPricingGroup = $registeredPricingGroup ?? $this->createRegisteredCustomerPricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_REGISTERED_DOMAIN, $registeredPricingGroup, $domainId);
 
             $purchasePricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId);
             $purchasePricingGroup = $purchasePricingGroup ?? $this->createPurchasePricePricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_PURCHASE_DOMAIN, $purchasePricingGroup, $domainId);
+
+            $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+            $standardPricingGroup = $standardPricingGroup ?? $this->createStandardPricePricingGroup($domainId);
+            $this->addReferenceForDomain(self::PRICING_GROUP_STANDARD_DOMAIN, $standardPricingGroup, $domainId);
         }
     }
 
@@ -94,6 +99,22 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
         $pricingGroupData = $this->pricingGroupDataFactory->create();
         $pricingGroupData->name = t('Nákupní cena', [], 'dataFixtures', DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId]);
         $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_PURCHASE_PRICE;
+
+        return $this->pricingGroupFacade->create($pricingGroupData, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    private function createStandardPricePricingGroup(int $domainId): PricingGroup
+    {
+        $pricingGroupData = $this->pricingGroupDataFactory->create();
+        $pricingGroupData->name = t('Běžná cena', [], 'dataFixtures', DomainHelper::DOMAIN_ID_TO_LOCALE[$domainId]);
+        $pricingGroupData->discount = 0;
+        $pricingGroupData->internalId = PricingGroup::PRICING_GROUP_STANDARD_PRICE;
+        $pricingGroupData->minimalPrice = null;
+        $pricingGroupData->calculatedFromDefault = false;
 
         return $this->pricingGroupFacade->create($pricingGroupData, $domainId);
     }

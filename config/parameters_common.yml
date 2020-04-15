@@ -37,7 +37,6 @@ parameters:
         Shopsys\FrameworkBundle\Model\Payment\Payment: App\Model\Payment\Payment
         Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup: App\Model\Pricing\Group\PricingGroup
         Shopsys\FrameworkBundle\Model\Product\Product: App\Model\Product\Product
-        Shopsys\FrameworkBundle\Model\Product\ProductDomain: App\Model\Product\ProductDomain
         Shopsys\FrameworkBundle\Model\Product\Brand\Brand: App\Model\Product\Brand\Brand
         Shopsys\FrameworkBundle\Model\Product\Flag\Flag: App\Model\Product\Flag\Flag
         Shopsys\FrameworkBundle\Model\Cart\Item\CartItem: App\Model\Cart\Item\CartItem

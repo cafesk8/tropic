@@ -70,10 +70,6 @@ class PromoCodeFacade extends BasePromoCodeFacade
      */
     public function create(BasePromoCodeData $promoCodeData)
     {
-        if ($promoCodeData->limitType === PromoCode::LIMIT_TYPE_PRODUCTS) {
-            $promoCodeData->usageType = PromoCode::USAGE_TYPE_ALL;
-        }
-
         /** @var \App\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = parent::create($promoCodeData);
         $this->refreshPromoCodeLimits($promoCode, $promoCodeData);
@@ -88,10 +84,6 @@ class PromoCodeFacade extends BasePromoCodeFacade
      */
     public function edit($promoCodeId, BasePromoCodeData $promoCodeData)
     {
-        if ($promoCodeData->limitType === PromoCode::LIMIT_TYPE_PRODUCTS) {
-            $promoCodeData->usageType = PromoCode::USAGE_TYPE_ALL;
-        }
-
         /** @var \App\Model\Order\PromoCode\PromoCode $promoCode */
         $promoCode = parent::edit($promoCodeId, $promoCodeData);
         $this->refreshPromoCodeLimits($promoCode, $promoCodeData);

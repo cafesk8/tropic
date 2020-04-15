@@ -66,12 +66,12 @@ class PohodaProductMapper
                 $domainId
             )->getId()] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->sellingPrice));
 
-            if ($pohodaProduct->purchasePrice !== null) {
-                $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getByNameAndDomainId(
-                    PricingGroup::PRICING_GROUP_PURCHASE_PRICE,
-                    $domainId
-                )->getId()] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->purchasePrice));
-            }
+            $productData->manualInputPricesByPricingGroupId[
+                $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId)->getId()
+            ] = $this->getPriceFromString($pohodaProduct->purchasePrice);
+            $productData->manualInputPricesByPricingGroupId[
+                $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()
+            ] = $this->getPriceFromString($pohodaProduct->standardPrice);
         }
 
         $productData->vatsIndexedByDomainId[DomainHelper::CZECH_DOMAIN] = $this->vatFacade->getByPohodaId($pohodaProduct->vatRateId);
@@ -92,5 +92,18 @@ class PohodaProductMapper
         }
 
         return $price;
+    }
+
+    /**
+     * @param string|null $priceString
+     * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
+     */
+    private function getPriceFromString(?string $priceString): ?Money
+    {
+        if ($priceString === null) {
+            return null;
+        }
+
+        return Money::create($this->fixInvalidPriceFormat($priceString));
     }
 }

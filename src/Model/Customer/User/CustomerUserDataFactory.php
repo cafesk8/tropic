@@ -92,7 +92,7 @@ class CustomerUserDataFactory extends BaseCustomerUserDataFactory
         $customerUserData->telephone = $order->getTelephone();
         $customerUserData->createdAt = new DateTime();
         $customerUserData->password = $password;
-        $customerUserData->pricingGroup = $this->pricingGroupFacade->getForRegisteredCustomer();
+        $customerUserData->pricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
 
         return $customerUserData;
     }

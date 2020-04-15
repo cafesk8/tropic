@@ -161,14 +161,6 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                     return false;
                 }
 
-                if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_WITH_ACTION_PRICE) {
-                    return $productPrice->isActionPriceByUsedForPromoCode() === true;
-                }
-
-                if ($promoCode->getUsageType() === PromoCode::USAGE_TYPE_NO_ACTION_PRICE) {
-                    return $productPrice->isActionPriceByUsedForPromoCode() === false;
-                }
-
                 return true;
             }
         );

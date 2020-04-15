@@ -27,7 +27,6 @@ use App\Model\Order\OrderData;
 use App\Model\Order\OrderDataFactory;
 use App\Model\Order\OrderDataMapper;
 use App\Model\Order\Preview\OrderPreviewFactory;
-use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\PayPal\PayPalFacade;
 use App\Model\Security\CustomerLoginHandler;
 use Exception;
@@ -668,10 +667,6 @@ class OrderController extends FrontBaseController
     {
         $orderId = $this->session->get(self::SESSION_CREATED_ORDER, null);
         $this->session->remove(self::SESSION_CREATED_ORDER);
-
-        if ($this->session->has(CurrentPromoCodeFacade::SESSION_CART_PRODUCT_PRICES_TYPE) === true) {
-            $this->session->remove(CurrentPromoCodeFacade::SESSION_CART_PRODUCT_PRICES_TYPE);
-        }
 
         if ($orderId === null) {
             return $this->redirectToRoute('front_cart');

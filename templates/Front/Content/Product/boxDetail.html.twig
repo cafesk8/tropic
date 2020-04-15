@@ -24,7 +24,8 @@
                         {{ noimage({ alt: product.name }) }}
                     {% endif %}
                 </div>
-                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail') }}
+
+                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice) }}
 
                 {% if showGallery %}
                     <div class="box-gallery dont-print js-gallery">
@@ -259,20 +260,24 @@
     {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
     {% set sellingPrice = getProductSellingPrice(product) %}
     {# @var defaultPrice \App\Model\Product\Pricing\ProductPrice #}
-    {% set defaultPrice = getDefaultPrice(product) %}
+    {% set defaultPrice = sellingPrice.defaultProductPrice %}
+    {# @var standardPrice \App\Model\Product\Pricing\ProductPrice #}
+    {% set standardPrice = sellingPrice.standardPrice %}
     {# @var registeredCustomerPrice \App\Model\Product\Pricing\ProductPrice #}
     {% set registeredCustomerPrice = getProductRegisteredCustomerPrice(product) %}
     <div class="box-detail-add__prices__item box-detail-add__prices__item--main">
         {{ sellingPrice.priceWithVat|price }}
     </div>
-    {% if sellingPrice.isActionPrice %}
+
+    {% if sellingPrice.hasHigherStandardPrice %}
         <div class="box-detail-add__prices__item box-detail-add__prices__item--old">
-            {{ sellingPrice.defaultProductPrice.priceWithVat|price }}
+            {{ standardPrice.priceWithVat|price }}
         </div>
         <div class="box-detail-add__prices__item box-detail-add__prices__item--save">
-            {{ 'ušetříte '|trans }} {{ sellingPrice.actionPriceDifference|price }}
+            {{ 'ušetříte '|trans }} {{ sellingPrice.standardPriceDifference|price }}
         </div>
     {% endif %}
+
     {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) %}
         <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
             {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}

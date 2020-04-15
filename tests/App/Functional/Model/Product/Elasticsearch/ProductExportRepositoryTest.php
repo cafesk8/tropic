@@ -57,7 +57,6 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'description',
             'selling_from',
             'short_description',
-            'action_price',
             'availability',
             'brand',
             'flags',

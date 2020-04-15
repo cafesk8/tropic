@@ -295,7 +295,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
     {
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
-        $customerUserData->pricingGroup = $this->pricingGroupFacade->getForRegisteredCustomer();
+        $customerUserData->pricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($customerUserUpdateData->customerUserData->domainId);
         $customer = $this->customerFacade->createCustomerWithBillingAddress($customerUserUpdateData->billingAddressData);
         $customerUserUpdateData->customerUserData->customer = $customer;
 

@@ -137,7 +137,6 @@ class ProductExportRepository extends BaseProductExportRepository
         $result = parent::extractResult($product, $domainId, $locale);
 
         $result['selling_from'] = ($product->getSellingFrom() !== null) ? $product->getSellingFrom()->format('Y-m-d') : date('Y-m-d');
-        $result['action_price'] = $product->getActionPrice($domainId) ? (float)$product->getActionPrice($domainId)->getAmount() : null;
         $result['parameters'] = $this->extractParametersForProductIncludingVariants($result['parameters'], $variants, $locale);
         $result['main_variant_id'] = $product->isVariant() ? $product->getMainVariant()->getId() : null;
         $result['default_price'] = $this->getDefaultPriceArray($product, $domainId);

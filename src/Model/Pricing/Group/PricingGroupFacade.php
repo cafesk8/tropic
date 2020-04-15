@@ -77,20 +77,21 @@ class PricingGroupFacade extends BasePricingGroupFacade
     }
 
     /**
-     * @param string $internalId
-     * @return \App\Model\Pricing\Group\PricingGroup
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup|null
      */
-    private function getByInternalId(string $internalId): PricingGroup
+    public function getRegisteredCustomerPricingGroup(int $domainId): ?PricingGroup
     {
-        return $this->pricingGroupRepository->getByNameAndDomainId($internalId, $this->domain->getId());
+        return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
     }
 
     /**
-     * @return \App\Model\Pricing\Group\PricingGroup
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup|null
      */
-    public function getForRegisteredCustomer(): PricingGroup
+    public function getStandardPricePricingGroup(int $domainId): ?PricingGroup
     {
-        return $this->getByInternalId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER);
+        return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $domainId);
     }
 
     /**

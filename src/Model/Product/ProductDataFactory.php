@@ -105,8 +105,6 @@ class ProductDataFactory extends BaseProductDataFactory
     public function fillNew(BaseProductData $productData)
     {
         parent::fillNew($productData);
-        $nullForAllDomains = $this->getNullForAllDomains();
-        $productData->actionPrices = $nullForAllDomains;
 
         $productData->stockQuantityByStoreId = [];
         $productData->generateToHsSportXmlFeed = true;
@@ -124,10 +122,6 @@ class ProductDataFactory extends BaseProductDataFactory
 
         foreach ($product->getStoreStocks() as $storeStock) {
             $productData->stockQuantityByStoreId[$storeStock->getStore()->getId()] = $storeStock->getStockQuantity();
-        }
-
-        foreach ($this->domain->getAllIds() as $domainId) {
-            $productData->actionPrices[$domainId] = $product->getActionPrice($domainId);
         }
 
         $productData->pohodaId = $product->getPohodaId();

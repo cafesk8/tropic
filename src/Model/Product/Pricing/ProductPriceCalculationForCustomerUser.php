@@ -53,7 +53,7 @@ class ProductPriceCalculationForCustomerUser extends BaseProductPriceCalculation
     {
         if ($customerUser === null) {
             if ($simulateRegistration) {
-                $pricingGroup = $this->pricingGroupFacade->getForRegisteredCustomer();
+                $pricingGroup = $this->pricingGroupFacade->getRegisteredCustomerPricingGroup($domainId);
             } else {
                 $pricingGroup = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
             }

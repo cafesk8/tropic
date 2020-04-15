@@ -18,6 +18,7 @@ class PricingGroup extends BasePricingGroup
     public const PRICING_GROUP_ORDINARY_CUSTOMER = 'ordinary_customer';
     public const PRICING_GROUP_REGISTERED_CUSTOMER = 'registered_customer';
     public const PRICING_GROUP_PURCHASE_PRICE = 'purchase_price';
+    public const PRICING_GROUP_STANDARD_PRICE = 'standard_price';
 
     /**
      * @var string|null
@@ -115,5 +116,21 @@ class PricingGroup extends BasePricingGroup
     public function isCalculatedFromDefault(): bool
     {
         return $this->calculatedFromDefault;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegisteredCustomerPricingGroup(): bool
+    {
+        return $this->internalId === self::PRICING_GROUP_REGISTERED_CUSTOMER;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStandardPricePricingGroup(): bool
+    {
+        return $this->internalId === self::PRICING_GROUP_STANDARD_PRICE;
     }
 }
