@@ -11,7 +11,6 @@ use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
@@ -44,6 +43,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method changeVatForDomain(\App\Model\Pricing\Vat\Vat $vat, int $domainId)
  * @method setDomains(\App\Model\Product\ProductData $productData)
  * @method createDomains(\App\Model\Product\ProductData $productData)
+ * @method \App\Model\Product\Product getMainVariant()
  */
 class Product extends BaseProduct
 {
@@ -418,18 +418,6 @@ class Product extends BaseProduct
                     && $productStoreStock->getStore()->isCentralStore();
             }
         );
-    }
-
-    /**
-     * @return \App\Model\Product\Product
-     */
-    public function getMainVariant(): BaseProduct
-    {
-        if (!$this->isVariant()) {
-            throw new ProductIsNotVariantException();
-        }
-
-        return $this->mainVariant;
     }
 
     /**
