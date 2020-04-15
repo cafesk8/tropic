@@ -26,19 +26,16 @@
                                 {% if productSellingPrice is not null %}
                                     <div class="list-products__item__info__price">
                                         <div class="list-products__item__info__price__item__main">
+                                            {% if productSellingPrice.hasHigherStandardPrice %}
+                                                <div class="list-products__item__info__price__item__old">
+                                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                                </div>
+                                            {% endif %}
+
                                             {% if productSellingPrice.priceFrom %}
                                                 {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                             {% else %}
                                                 {{ productSellingPrice.priceWithVat|price }}
-                                            {% endif %}
-
-                                            {% if productSellingPrice.hasHigherStandardPrice and not productSellingPrice.priceFrom %}
-                                                <div class="list-products__item__info__price__item__old">
-                                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
-                                                </div>
-                                                <div class="list-products__item__info__price__item__discount">
-                                                    -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
-                                                </div>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -118,19 +115,16 @@
                                     {% if productSellingPrice is not null %}
                                         <div class="{{ listCssClass }}__item__info__price">
                                             <div class="{{ listCssClass }}__item__info__price__item__main">
+                                                {% if productSellingPrice.hasHigherStandardPrice %}
+                                                    <div class="{{ listCssClass }}__item__info__price__item__old">
+                                                        {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                                    </div>
+                                                {% endif %}
+
                                                 {% if productSellingPrice.priceFrom %}
                                                     {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                                 {% else %}
                                                     {{ productSellingPrice.priceWithVat|price }}
-                                                {% endif %}
-
-                                                {% if productSellingPrice.hasHigherStandardPrice and not productSellingPrice.priceFrom %}
-                                                    <div class="{{ listCssClass }}__item__info__price__item__old">
-                                                        {{ productSellingPrice.standardPrice.priceWithVat|price }}
-                                                    </div>
-                                                    <div class="{{ listCssClass }}__item__info__price__item__discount">
-                                                        -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
-                                                    </div>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -249,19 +243,16 @@
                         {% if productSellingPrice is not null %}
                             <div class="{{ listCssClass }}__item__info__price">
                                 <div class="{{ listCssClass }}__item__info__price__item__main">
+                                    {% if productSellingPrice.hasHigherStandardPrice %}
+                                        <div class="{{ listCssClass }}__item__info__price__item__old">
+                                            {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                        </div>
+                                    {% endif %}
+
                                     {% if productSellingPrice.priceFrom %}
                                         {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                     {% else %}
                                         {{ productSellingPrice.priceWithVat|price }}
-                                    {% endif %}
-
-                                    {% if productSellingPrice.hasHigherStandardPrice and not productSellingPrice.priceFrom %}
-                                        <div class="{{ listCssClass }}__item__info__price__item__old">
-                                            {{ productSellingPrice.standardPrice.priceWithVat|price }}
-                                        </div>
-                                        <div class="{{ listCssClass }}__item__info__price__item__discount">
-                                            -{{ productSellingPrice.pricePercentageDifference|formatPercent }}
-                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
