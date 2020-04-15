@@ -191,14 +191,15 @@
                                 {% set productSellingPrice = productView.sellingPrice %}
                                 {% if productSellingPrice is not null %}
                                     <div class="list-last-visited__item__info__price">
+                                        {% if productSellingPrice.hasHigherStandardPrice %}
+                                            <div class="list-last-visited__item__info__price__old">
+                                                {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                            </div>
+                                        {% endif %}
+
                                         <div class="list-last-visited__item__info__price__main">
                                             {{ productSellingPrice.priceWithVat|price }}
                                         </div>
-                                        {% if productSellingPrice.isActionPrice %}
-                                            <div class="list-last-visited__item__info__price__old">
-                                                {{ productSellingPrice.defaultProductPrice.priceWithVat|price }}
-                                            </div>
-                                        {% endif %}
                                     </div>
                                 {% endif %}
 
