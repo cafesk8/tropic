@@ -75,6 +75,7 @@
                 <div class="box-filter__choice" id="{{ filterForm.flags.vars.id }}">
                     <div class="box-filter__title">
                         {{ 'Flags'|trans }}
+                        <span>({{ filterForm.flags|length }})</span>
                     </div>
                     {% for flagForm in filterForm.flags %}
                         <label class="form-choice">
@@ -105,6 +106,7 @@
                 <div class="box-filter__choice" id="{{ filterForm.brands.vars.id }}">
                     <div class="box-filter__title">
                         {{ 'Brand'|trans }}
+                        <span>({{ filterForm.brands|length }})</span>
                     </div>
                     {% for brandForm in filterForm.brands %}
                         <label class="form-choice">
@@ -136,9 +138,10 @@
                         {% for parameterId, parameterForm in filterForm.parameters %}
                             <div class="js-product-filter-parameter">
                                 <div class="box-filter__choice" id="{{ parameterForm.vars.id }}">
-                                    <span class="box-filter__title js-product-filter-parameter-label">
-                                        {{ parameterForm.vars.label }}:
-                                    </span>
+                                    <div class="box-filter__title js-product-filter-parameter-label">
+                                        {{ parameterForm.vars.label }}
+                                        <span>({{ parameterForm|length }})</span>
+                                    </div>
                                     {% for parameterValueForm in parameterForm %}
                                         <label class="form-choice js-product-filter-parameter-value">
                                             {{ form_widget(parameterValueForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.parameters.vars.id ~ '_' ~ parameterId ~ '_' ~ parameterValueForm.vars.value } }) }}
