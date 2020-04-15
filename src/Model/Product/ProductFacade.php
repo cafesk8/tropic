@@ -78,12 +78,12 @@ class ProductFacade extends BaseProductFacade
     /**
      * @var \App\Model\Product\ProductVariantTropicFacade
      */
-    protected $productVariantTropicFacade;
+    private $productVariantTropicFacade;
 
     /**
      * @var \App\Model\Product\ProductDataFactory
      */
-    protected $productDataFactory;
+    private $productDataFactory;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser

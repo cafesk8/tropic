@@ -46,7 +46,7 @@ class DataLayerMapper
     /**
      * @var \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade
      */
-    protected $administratorFrontSecurityFacade;
+    private $administratorFrontSecurityFacade;
 
     /**
      * @var \App\Model\Category\CategoryFacade
