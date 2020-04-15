@@ -110,6 +110,7 @@ final class ProductVariantCreationTest extends TransactionFunctionalTestCase
         $productData->usingStock = true;
         $productData->stockQuantity = $quantity;
         $productData->outOfStockAction = $outOfStockAction;
+        $productData->availability = $this->getReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
         if ($outOfStockAvailabilityReference !== null) {
             $productData->outOfStockAvailability = $this->getReference($outOfStockAvailabilityReference);
         }
