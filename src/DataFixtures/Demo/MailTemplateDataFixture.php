@@ -117,7 +117,7 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
 
             $mailTemplateData->subject = t('Přehled osobních údajů - {domain}', [], 'dataFixtures', $locale);
             $mailTemplateData->body = t('Vážený zákazníku,<br /><br />
-            na základě vašeho zadaného emailu {e-mail}, Vám zasíláme odkaz na zobrazení osobních údajů. Klikem na odkaz níže se dostanete na stránku s <br/>  
+            na základě vašeho zadaného emailu {email}, Vám zasíláme odkaz na zobrazení osobních údajů. Klikem na odkaz níže se dostanete na stránku s <br/>  
             přehledem všech osobních údajů, které k Vašemu e-mailu evidujeme na našem e-shopu {domain}.<br/><br/>
             Pro zobrazení osobních údajů klikněte zde - {url}<br/>
             Odkaz je platný 24 hodin.<br/><br/>
@@ -128,7 +128,7 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
 
             $mailTemplateData->subject = t('Export osobních údajů - {domain}', [], 'dataFixtures', $locale);
             $mailTemplateData->body = t('Vážený zákazníku,<br/><br/>
-            na základě vašeho zadaného emailu {e-mail}, Vám zasíláme odkaz ke stažení Vašich<br/>
+            na základě vašeho zadaného emailu {email}, Vám zasíláme odkaz ke stažení Vašich<br/>
             údajů evidovaných na našem internetovém obchodě ve strojově čitelném formátu.<br/>
             Klikem na odkaz se dostanete na stránku s s možností stažení těchto informací, které k<br/>
             Vašemu e-mailu evidujeme na našem internetovém obchodu {domain}.<br/><br/>

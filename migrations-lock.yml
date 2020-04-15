@@ -1120,3 +1120,6 @@
 20200330150340:
     class: Shopsys\FrameworkBundle\Migrations\Version20200330150340
     skip: false
+20200415214922:
+    class: App\Migrations\Version20200415214922
+    skip: false
