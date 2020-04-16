@@ -210,6 +210,7 @@ class Product extends BaseProduct
      */
     protected function fillCommonProperties(ProductData $productData): void
     {
+        $this->catnum = $productData->catnum;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
