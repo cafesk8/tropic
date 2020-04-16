@@ -77,6 +77,7 @@ class PohodaProductExportFacade
             } catch (PohodaInvalidDataException $exc) {
                 $this->logger->addError('Položka není validní a nebude přenesena.', [
                     'pohodaId' => $pohodaProductData[PohodaProduct::COL_POHODA_ID],
+                    'productName' => $pohodaProductData[PohodaProduct::COL_NAME],
                     'exceptionMessage' => $exc->getMessage(),
                 ]);
                 continue;
@@ -116,5 +117,15 @@ class PohodaProductExportFacade
         }
 
         return $reindexedPohodaProductsResult;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLogs(): array
+    {
+        return array_filter($this->logger->getLogs(), function (array $log) {
+            return $log['priority'] === Logger::ERROR;
+        });
     }
 }
