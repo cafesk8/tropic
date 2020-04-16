@@ -58,6 +58,8 @@ class PohodaProductExportFacade
         $pohodaProductsResult = $this->pohodaProductExportRepository->findByPohodaProductIds(
             $pohodaProductIds
         );
+        $pohodaProductsResult = $this->reindexPohodaProductsResultByCatnums($pohodaProductsResult);
+        $this->addSaleInformationToPohodaProductsResult($pohodaProductsResult);
 
         return $this->getValidPohodaProducts($pohodaProductsResult);
     }
@@ -80,9 +82,39 @@ class PohodaProductExportFacade
                 continue;
             }
 
-            $pohodaProducts[] = new PohodaProduct($pohodaProductData);
+            $pohodaProducts[$pohodaProductData[PohodaProduct::COL_CATNUM]] = new PohodaProduct($pohodaProductData);
         }
 
         return $pohodaProducts;
+    }
+
+    /**
+     * @param array $pohodaProductsResult
+     */
+    private function addSaleInformationToPohodaProductsResult(array &$pohodaProductsResult): void
+    {
+        $saleInformation = $this->pohodaProductExportRepository->getSaleInformationByCatnums(array_column($pohodaProductsResult, PohodaProduct::COL_CATNUM));
+
+        foreach ($saleInformation as $information) {
+            if (isset($pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]])) {
+                $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_SALE_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = $information[PohodaProduct::COL_SELLING_PRICE];
+            }
+        }
+    }
+
+    /**
+     * @param array $pohodaProductsResult
+     * @return array
+     */
+    private function reindexPohodaProductsResultByCatnums(array $pohodaProductsResult): array
+    {
+        $reindexedPohodaProductsResult = [];
+
+        foreach ($pohodaProductsResult as $pohodaProductResult) {
+            $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]] = $pohodaProductResult;
+            $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_SALE_INFORMATION] = [];
+        }
+
+        return $reindexedPohodaProductsResult;
     }
 }

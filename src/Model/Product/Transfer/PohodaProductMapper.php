@@ -6,6 +6,7 @@ namespace App\Model\Product\Transfer;
 
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
@@ -61,6 +62,7 @@ class PohodaProductMapper
         $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
 
         foreach ($this->domain->getAllIds() as $domainId) {
+            $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
             $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getByNameAndDomainId(
                 PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER,
                 $domainId
@@ -72,6 +74,16 @@ class PohodaProductMapper
             $productData->manualInputPricesByPricingGroupId[
                 $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()
             ] = $this->getPriceFromString($pohodaProduct->standardPrice);
+
+            $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] = null;
+
+            foreach (PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY as $stockId) {
+                if (isset($pohodaProduct->saleInformation[$stockId])) {
+                    $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] =
+                        $this->getPriceFromString($pohodaProduct->saleInformation[$stockId]);
+                    break;
+                }
+            }
         }
 
         $productData->vatsIndexedByDomainId[DomainHelper::CZECH_DOMAIN] = $this->vatFacade->getByPohodaId($pohodaProduct->vatRateId);

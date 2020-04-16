@@ -64,7 +64,6 @@ class ProductImportFacade
         $this->productFacade = $productFacade;
         $this->productDataFactory = $productDataFactory;
         $this->pohodaProductMapper = $pohodaProductMapper;
-
         $this->productInfoQueueImportFacade = $productInfoQueueImportFacade;
     }
 

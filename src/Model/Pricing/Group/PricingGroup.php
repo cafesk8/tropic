@@ -19,6 +19,7 @@ class PricingGroup extends BasePricingGroup
     public const PRICING_GROUP_REGISTERED_CUSTOMER = 'registered_customer';
     public const PRICING_GROUP_PURCHASE_PRICE = 'purchase_price';
     public const PRICING_GROUP_STANDARD_PRICE = 'standard_price';
+    public const PRICING_GROUP_SALE_PRICE = 'sale_price';
 
     /**
      * @var string|null

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Pricing\Group;
 
+use Shopsys\FrameworkBundle\Model\Pricing\Group\Exception\PricingGroupNotFoundException;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade as BasePricingGroupFacade;
 
 /**
@@ -59,11 +60,17 @@ class PricingGroupFacade extends BasePricingGroupFacade
     /**
      * @param string $name
      * @param int $domainId
-     * @return \App\Model\Pricing\Group\PricingGroup|null
+     * @return \App\Model\Pricing\Group\PricingGroup
      */
-    public function getByNameAndDomainId(string $name, int $domainId): ?PricingGroup
+    public function getByNameAndDomainId(string $name, int $domainId): PricingGroup
     {
-        return $this->pricingGroupRepository->getByNameAndDomainId($name, $domainId);
+        $pricingGroup = $this->pricingGroupRepository->findByNameAndDomainId($name, $domainId);
+
+        if ($pricingGroup === null) {
+            throw new PricingGroupNotFoundException('Cannot find pricing group ' . $name . ' on domain ID ' . $domainId);
+        }
+
+        return $pricingGroup;
     }
 
     /**
@@ -78,20 +85,29 @@ class PricingGroupFacade extends BasePricingGroupFacade
 
     /**
      * @param int $domainId
-     * @return \App\Model\Pricing\Group\PricingGroup|null
+     * @return \App\Model\Pricing\Group\PricingGroup
      */
-    public function getRegisteredCustomerPricingGroup(int $domainId): ?PricingGroup
+    public function getRegisteredCustomerPricingGroup(int $domainId): PricingGroup
     {
         return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
     }
 
     /**
      * @param int $domainId
-     * @return \App\Model\Pricing\Group\PricingGroup|null
+     * @return \App\Model\Pricing\Group\PricingGroup
      */
-    public function getStandardPricePricingGroup(int $domainId): ?PricingGroup
+    public function getStandardPricePricingGroup(int $domainId): PricingGroup
     {
         return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_STANDARD_PRICE, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getSalePricePricingGroup(int $domainId): PricingGroup
+    {
+        return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_SALE_PRICE, $domainId);
     }
 
     /**

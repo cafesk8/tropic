@@ -57,6 +57,9 @@ class PohodaProductDataValidator
                     new Type(['type' => 'numeric']),
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_SALE_INFORMATION => [
+                    new Type(['type' => 'array']),
+                ],
             ],
         ]));
 
