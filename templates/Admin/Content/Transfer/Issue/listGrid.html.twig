@@ -15,5 +15,8 @@
     {% else %}
         {{ value }}
     {% endif %}
+{% endblock %}
 
+{% block grid_value_cell_id_createdAt %}
+    {{ value|formatDateTime }}
 {% endblock %}
