@@ -132,7 +132,7 @@ class ImageExtensionTest extends FunctionalTestCase
         bool $enableLazyLoad = false
     ): ImageExtension {
         $imageLocator = $this->getContainer()->get(ImageLocator::class);
-        $templating = $this->getContainer()->get('templating');
+        $templating = $this->getContainer()->get('twig');
         $domain = $this->getContainer()->get(Domain::class);
         $imageFacade = $imageFacade ?: $this->getContainer()->get(ImageFacade::class);
 

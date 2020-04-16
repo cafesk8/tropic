@@ -132,9 +132,9 @@ class RouteConfigCustomization
                     $config->changeDefaultRequestDataSet($debugNote)
                         ->addCallDuringTestExecution(function (RequestDataSet $requestDataSet, ContainerInterface $container) {
                             /** @var \Shopsys\FrameworkBundle\Component\Router\Security\RouteCsrfProtector $routeCsrfProtector */
-                            $routeCsrfProtector = $container->get(RouteCsrfProtector::class);
+                            $routeCsrfProtector = $container->get('test.service_container')->get(RouteCsrfProtector::class);
                             /** @var \Symfony\Component\Security\Csrf\CsrfTokenManager $csrfTokenManager */
-                            $csrfTokenManager = $container->get('security.csrf.token_manager');
+                            $csrfTokenManager = $container->get('test.service_container')->get('security.csrf.token_manager');
 
                             $tokenId = $routeCsrfProtector->getCsrfTokenId($requestDataSet->getRouteName());
                             $token = $csrfTokenManager->getToken($tokenId);
@@ -324,7 +324,7 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->addCallDuringTestExecution(function (RequestDataSet $requestDataSet, ContainerInterface $container) {
                         /** @var \Symfony\Component\Security\Csrf\CsrfTokenManager $csrfTokenManager */
-                        $csrfTokenManager = $container->get('security.csrf.token_manager');
+                        $csrfTokenManager = $container->get('test.service_container')->get('security.csrf.token_manager');
 
                         $token = $csrfTokenManager->getToken('frontend_logout');
 
