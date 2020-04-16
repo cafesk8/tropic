@@ -11,7 +11,6 @@ use App\Model\Product\StoreStock\ProductStoreStock;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 
@@ -44,6 +43,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method changeVatForDomain(\App\Model\Pricing\Vat\Vat $vat, int $domainId)
  * @method setDomains(\App\Model\Product\ProductData $productData)
  * @method createDomains(\App\Model\Product\ProductData $productData)
+ * @method \App\Model\Product\Product getMainVariant()
  */
 class Product extends BaseProduct
 {
@@ -210,6 +210,7 @@ class Product extends BaseProduct
      */
     protected function fillCommonProperties(ProductData $productData): void
     {
+        $this->catnum = $productData->catnum;
         $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
         $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
@@ -219,8 +220,11 @@ class Product extends BaseProduct
         $this->minimumAmount = $productData->minimumAmount;
         $this->amountMultiplier = (int)$productData->amountMultiplier;
         $this->youtubeVideoIds = $productData->youtubeVideoIds;
+
         if ($productData->variantId !== null) {
             $this->variantId = trim($productData->variantId);
+        } else {
+            $this->variantId = null;
         }
         $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
     }
@@ -415,18 +419,6 @@ class Product extends BaseProduct
                     && $productStoreStock->getStore()->isCentralStore();
             }
         );
-    }
-
-    /**
-     * @return \App\Model\Product\Product
-     */
-    public function getMainVariant(): BaseProduct
-    {
-        if (!$this->isVariant()) {
-            throw new ProductIsNotVariantException();
-        }
-
-        return $this->mainVariant;
     }
 
     /**

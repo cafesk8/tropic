@@ -49,6 +49,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'registrationDiscountDisabled',
         'manualInputPricesByPricingGroupId',
         'vatsIndexedByDomainId',
+        'variantId',
     ];
 
     /**

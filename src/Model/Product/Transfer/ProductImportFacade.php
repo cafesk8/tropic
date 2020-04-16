@@ -87,8 +87,9 @@ class ProductImportFacade
             $updatedPohodaProductIds = $this->updateProductsByPohodaProducts($pohodaProducts);
         }
         $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
+        $this->copyErrorsToTransferLogger();
 
-        return !$this->productInfoQueueImportFacade->isQueueEmpty();
+        return !$this->productInfoQueueImportFacade->isQueueEmpty() && count($changedPohodaProductIds) === self::PRODUCT_EXPORT_MAX_BATCH_LIMIT;
     }
 
     /**
@@ -108,28 +109,32 @@ class ProductImportFacade
             }
         }
 
-        return $updatedPohodaProductIds;
+        return array_filter($updatedPohodaProductIds);
     }
 
     /**
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
-     * @return int
+     * @return int|null
      */
-    private function createProductByPohodaProduct(PohodaProduct $pohodaProduct): int
+    private function createProductByPohodaProduct(PohodaProduct $pohodaProduct): ?int
     {
         $productData = $this->productDataFactory->create();
 
         try {
             $this->pohodaProductMapper->mapPohodaProductToProductData($pohodaProduct, $productData);
         } catch (Exception $exc) {
-            $this->logger->addError('Vytvoření položky selhalo', [
-                'pohodaId' => $pohodaProduct->pohodaId,
-                'productName' => $pohodaProduct->name,
-                'exceptionMessage' => $exc->getMessage(),
-            ]);
+            $this->logError($exc, $pohodaProduct);
+
+            return null;
         }
 
-        $createdProduct = $this->productFacade->create($productData);
+        try {
+            $createdProduct = $this->productFacade->create($productData);
+        } catch (Exception $exc) {
+            $this->logError($exc, $pohodaProduct);
+
+            return null;
+        }
 
         $this->logger->addInfo('Produkt vytvořen', [
             'pohodaId' => $createdProduct->getPohodaId(),
@@ -142,21 +147,27 @@ class ProductImportFacade
     /**
      * @param \App\Model\Product\Product $product
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
-     * @return int
+     * @return int|null
      */
-    private function editProductByPohodaProduct(Product $product, PohodaProduct $pohodaProduct): int
+    private function editProductByPohodaProduct(Product $product, PohodaProduct $pohodaProduct): ?int
     {
         $productData = $this->productDataFactory->createFromProduct($product);
+
         try {
             $this->pohodaProductMapper->mapPohodaProductToProductData($pohodaProduct, $productData);
         } catch (Exception $exc) {
-            $this->logger->addError('Editace položky selhala.', [
-                'productId' => $product->getId(),
-                'productName' => $pohodaProduct->name,
-                'exceptionMessage' => $exc->getMessage(),
-            ]);
+            $this->logError($exc, $pohodaProduct);
+
+            return null;
         }
-        $editedProduct = $this->productFacade->edit($product->getId(), $productData);
+
+        try {
+            $editedProduct = $this->productFacade->edit($product->getId(), $productData);
+        } catch (Exception $exc) {
+            $this->logError($exc, $pohodaProduct);
+
+            return null;
+        }
 
         $this->logger->addInfo('Produkt upraven', [
             'pohodaId' => $editedProduct->getPohodaId(),
@@ -164,5 +175,25 @@ class ProductImportFacade
         ]);
 
         return $editedProduct->getPohodaId();
+    }
+
+    private function copyErrorsToTransferLogger(): void
+    {
+        foreach ($this->pohodaProductExportFacade->getLogs() as $log) {
+            $this->logger->addError($log['message'], $log['context']);
+        }
+    }
+
+    /**
+     * @param \Exception $exception
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     */
+    private function logError(Exception $exception, PohodaProduct $pohodaProduct)
+    {
+        $this->logger->addError('Import položky selhal.', [
+            'pohodaId' => $pohodaProduct->pohodaId,
+            'productName' => $pohodaProduct->name,
+            'exceptionMessage' => $exception->getMessage(),
+        ]);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product;
 
 use App\Model\Product\Exception\CreatingVariantWithoutMainVariantException;
+use Shopsys\FrameworkBundle\Model\Product\Exception\ProductIsNotVariantException;
 
 class ProductVariantTropicFacade
 {
@@ -30,7 +31,12 @@ class ProductVariantTropicFacade
     public function refreshVariantStatus(Product $product, ?string $variantId): void
     {
         if ($variantId === null) {
-            $product->setVariantType(Product::VARIANT_TYPE_NONE);
+            try {
+                $product->getMainVariant();
+                $product->unsetMainVariant();
+            } catch (ProductIsNotVariantException $exception) {
+                $product->setVariantType(Product::VARIANT_TYPE_NONE);
+            }
         } elseif ($this->isMainVariant($variantId)) {
             $product->setVariantType(Product::VARIANT_TYPE_MAIN);
         } else {
