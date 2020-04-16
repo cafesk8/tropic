@@ -27,6 +27,11 @@ class PohodaProductDataValidator
     private $productVariantTropicFacade;
 
     /**
+     * @var string[]
+     */
+    private $variantIdsCache;
+
+    /**
      * @param \Symfony\Component\Validator\Validator\ValidatorInterface $validator
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      */
@@ -34,6 +39,7 @@ class PohodaProductDataValidator
     {
         $this->validator = $validator;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
+        $this->variantIdsCache = [];
     }
 
     /**
@@ -79,6 +85,8 @@ class PohodaProductDataValidator
 
         if (count($violations) > 0) {
             throw new PohodaInvalidDataException($violations);
+        } else {
+            $this->variantIdsCache[] = $pohodaProductData[PohodaProduct::COL_VARIANT_ID];
         }
     }
 
@@ -105,7 +113,10 @@ class PohodaProductDataValidator
 
         if ($variantId !== null) {
             $existingProductByVariantId = $this->productVariantTropicFacade->findByVariantId($variantId);
-            if ($existingProductByVariantId !== null && $existingProductByVariantId->getPohodaId() !== (int)$pohodaProductData[PohodaProduct::COL_POHODA_ID]) {
+            if (($existingProductByVariantId !== null
+                    && $existingProductByVariantId->getPohodaId() !== (int)$pohodaProductData[PohodaProduct::COL_POHODA_ID])
+                || in_array($pohodaProductData[PohodaProduct::COL_VARIANT_ID], $this->variantIdsCache, true)
+            ) {
                 $context->addViolation('Zadané ID modifikace je již v systému přiřazeno jinému produktu');
             }
         }
