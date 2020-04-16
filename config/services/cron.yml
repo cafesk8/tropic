@@ -30,9 +30,9 @@ services:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*', readableName: 'Přepočet viditelností produktů (pouze produkty označené k přepočtu)' }
 
-#    App\Model\Product\Mall\MallProductDeleteCronModule:
-#        tags:
-#            - { name: shopsys.cron, hours: '23', minutes: '00', readableName: 'Smazání produktů z Mall' }
+    #    App\Model\Product\Mall\MallProductDeleteCronModule:
+    #        tags:
+    #            - { name: shopsys.cron, hours: '23', minutes: '00', readableName: 'Smazání produktů z Mall' }
 
     #################################
     ## PAYMENT GATES CRON INSTANCE ##
