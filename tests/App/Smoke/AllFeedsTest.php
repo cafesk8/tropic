@@ -23,7 +23,7 @@ class AllFeedsTest extends FunctionalTestCase
      */
     private $filesystem;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->feedFacade = $this->getContainer()->get(FeedFacade::class);
         $this->filesystem = $this->getContainer()->get(FilesystemInterface::class);

@@ -28,7 +28,7 @@ abstract class ProductOnCurrentDomainFacadeTest extends TransactionFunctionalTes
      */
     protected $priceConverter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->priceConverter = $this->getContainer()->get(PriceConverter::class);
         parent::setUp();

@@ -20,7 +20,7 @@ class OrderTransportAndPaymentTest extends TransactionFunctionalTestCase
      */
     private $domain;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->domain = $this->getContainer()->get(Domain::class);
         parent::setUp();

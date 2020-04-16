@@ -25,7 +25,7 @@ class CustomerUserFacadeTest extends TransactionFunctionalTestCase
      */
     protected $customerUserUpdateDataFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->customerUserFacade = $this->getContainer()->get(CustomerUserFacade::class);

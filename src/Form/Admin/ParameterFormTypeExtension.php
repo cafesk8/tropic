@@ -36,7 +36,7 @@ class ParameterFormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return string The name of the type being extended
+     * {@inheritdoc}
      */
     public static function getExtendedTypes(): iterable
     {

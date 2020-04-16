@@ -24,7 +24,7 @@ class AllPagesTest extends KernelTestCase
 {
     public const PASSES = 5;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
