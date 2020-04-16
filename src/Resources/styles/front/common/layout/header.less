@@ -18,13 +18,15 @@
     flex-wrap: wrap;
     align-items: center;
     min-height: @header-height;
+    margin: 0 -@web-padding-small;
 
     @media @query-lg {
-        padding: 20px 10px 0;
+        padding-top: 20px;
+        margin: 0;
     }
 
     @media @query-vl {
-        padding: 30px 0 0;
+        padding-top: 30px;
     }
 
     &--small {
@@ -32,7 +34,7 @@
         margin-bottom: 29px;
         
         @media @query-lg {
-            padding: 15px 0 0;
+            padding-top: 15px;
         }
     }
 }

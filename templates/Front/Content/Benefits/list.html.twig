@@ -1,26 +1,27 @@
 <ul class="list-benefits {{ cssClass|default('') }}">
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
-            <i class="svg svg-exchange"></i>
+            {% include 'Front/Svg/heart.svg' %}
         </span>
         <span class="list-benefits__item__text">
-            {{ 'Vrácení zdarma <strong>do 30 dnů</strong>'|trans|raw }}
+            {{ 'Již 19 let nadšeně podporujeme rybáře'|trans }}
         </span>
     </li>
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
-            <i class="svg svg-delivery-truck"></i>
+            {% include 'Front/Svg/delivery.svg' %}
         </span>
         <span class="list-benefits__item__text">
-            {{ 'Doprava zdarma při nákupu <strong>nad 2&nbsp;500&nbsp;Kč</strong>'|trans|raw }}
+            {{ 'Doprava zdarma pro členy'|trans }}
+            <a class="list-benefits__item__text__link js-not-implemented-yet" href="#">{{ 'tropic klubu'|trans }}</a>
         </span>
     </li>
     <li class="list-benefits__item">
         <span class="list-benefits__item__icon">
-            <i class="svg svg-towel"></i>
+            {% include 'Front/Svg/like.svg' %}
         </span>
         <span class="list-benefits__item__text">
-            {{ 'Vyzkoušení zdarma na <a class="list-benefits__item__text__link" href="%url%">naší prodejně</a>'|transHtml({ '%url%': url('front_store_index') })|raw }}
+            {{ 'Rybařině rozumíme. V týmu je i mistr světa'|trans }}
         </span>
     </li>
 </ul>

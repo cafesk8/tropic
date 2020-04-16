@@ -1,49 +1,38 @@
 .box-articles {
-    &--with-border {
-        margin-bottom: 26px;
-        
-        border-bottom: 1px solid @color-border;
+    padding: 28px 0;
+    margin-bottom: 27px;
+
+    @media @query-lg {
+        padding: 50px 0;
+        margin-bottom: 70px;
     }
 
-    &__title-big {
+    &__title {
         display: block;
         text-align: center;
         line-height: 42px;
         margin-bottom: 8px;
 
-        color: @color-base;
+        color: @color-f;
         font-size: 36px;
     }
 
-    &__title-small {
+    &__link {
         display: block;
-        line-height: 18px;
         text-align: center;
         margin-bottom: 22px;
+        line-height: 18px;
+        opacity: 0.6;
 
-        color: @color-base;
-        font-size: @font-size-extra-small;
-        font-family: @font-alt;
-        text-transform: uppercase;
+        text-decoration: underline;
+        color: @color-f;
 
-        @media @query-vl {
+        @media @query-lg {
             margin-bottom: 69px;
         }
-    }
 
-    &__bottom {
-        text-align: center;
-        margin-bottom: 61px;
-
-        &--small-gap {
-            margin-bottom: 29px;
-        }
-
-        &__link {
-            line-height: 18px;
-
-            font-size: @font-size-small;
-            text-transform: uppercase;
+        &:hover {
+            color: @color-f;
         }
     }
 }

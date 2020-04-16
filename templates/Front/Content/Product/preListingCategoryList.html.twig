@@ -20,6 +20,8 @@
                     {{ category.getSeoH1(domain.id)|default(category.name) }}
                 </div>
 
+                {% include 'Front/Content/Benefits/list.html.twig' %}
+
                 {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert': category.getAdvert(), 'sizeInfoName': 'category' })) }}
 
                 {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
@@ -32,17 +34,8 @@
     {# TODO CODER: style blogArticles (Zeny na cestach in inVision) #}
     {% if categoriesBlogArticles|length > 0 %}
         <div class="web__line">
-            <div class="web__container">
-                <div class="box-articles box-articles--with-border">
-                    <h2 class="box-articles__title-big">
-                        {{ 'Mohlo by vás zajímat'|trans }}
-                    </h2>
-                    <div class="box-articles__title-small"></div>
-                    {% include 'Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles } %}
-                    <div class="box-articles__bottom box-articles__bottom--small-gap">
-                        <a href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link">{{ 'Přejít na výpis všech článků'|trans }}</a>
-                    </div>
-                </div>
+            <div class="web__container web__container--border-radius web__container--dark">
+                {% include 'Front/Content/Article/index.html.twig' with { blogArticles: categoriesBlogArticles, articleClassModification: 'list-articles--white' } %}
             </div>
         </div>
     {% endif %}

@@ -29,22 +29,11 @@
             }
         }
 
-        @media @query-lg {
-            width: 100%;
-            padding: 0;
-
-            &:nth-child(even) {
-                padding: 0;
-            }
-        }
-
         @media @query-vl {
-            width: 100%/2;
             flex-direction: column;
             padding-right: 60px;
 
             &:nth-child(even) {
-                padding-right: 0;
                 padding-left: 60px;
             }
         }
@@ -70,17 +59,19 @@
         &__image {
             width: 100%;
             text-align: center;
-            overflow: hidden;
+            margin-bottom: 10px;
 
             font-size: 0;
-            border-radius: @radius;
 
             @media @query-xl {
                 width: @list-articles-item-image-width;
                 margin-right: @list-articles-item-image-gap;
+                margin-bottom: 0;
             }
 
             img {
+                border-radius: @radius;
+
                 @media @query-md {
                     max-width: @list-articles-item-image-width;
                     max-height: @list-articles-item-image-height;
@@ -100,16 +91,19 @@
             &__title {
                 margin-top: 10px;
                 margin-bottom: 5px;
-                line-height: 30px;
+                line-height: 21px;
 
                 color: @color-base;
                 font-size: 18px;
                 font-weight: 700;
-                text-decoration: none;
-                text-transform: uppercase;
+                text-decoration: underline;
 
                 @media @query-vl {
                     margin-top: 0;
+                }
+
+                .list-articles--white & {
+                    color: @color-f;
                 }
             }
 
@@ -118,12 +112,24 @@
                 margin-bottom: 10px;
 
                 color: @color-base;
+                font-size: 16px;
+                font-family: @font-alt;
+
+                .list-articles--white & {
+                    opacity: 0.6;
+
+                    color: @color-f;
+                }
             }
 
             &__date {
                 font-size: 12px;
                 font-weight: 700;
                 font-family: @font-alt;
+
+                .list-articles--white & {
+                    color: @color-f;
+                }
             }
         }
     }

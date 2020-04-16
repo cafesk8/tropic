@@ -42,19 +42,8 @@
 
     {% if productBlogArticles|length > 0 %}
         <div class="web__line">
-            <div class="web__container">
-                <div class="box-articles box-articles--with-border">
-                    <h2 class="box-articles__title-big">
-                        {{ 'Články k přečtení'|trans }}
-                    </h2>
-                    <div class="box-articles__title-small">
-                        {{ 'O produktu %s se dozvíte více v těchto článcích:'|trans|format(product.name) }}
-                    </div>
-                    {% include 'Front/Content/Article/list.html.twig' with { blogArticles: productBlogArticles } %}
-                    <div class="box-articles__bottom box-articles__bottom--small-gap">
-                        <a href="{{ url('front_blogcategory_detail', { id: constant('App\\Model\\Blog\\Category\\BlogCategory::BLOG_MAIN_PAGE_CATEGORY_ID')}) }}" class="box-articles__bottom__link">{{ 'Přejít na výpis všech článků'|trans }}</a>
-                    </div>
-                </div>
+            <div class="web__container web__container--border-radius web__container--dark">
+                {% include 'Front/Content/Article/index.html.twig' with { blogArticles: productBlogArticles, articleClassModification: 'list-articles--white' } %}
             </div>
         </div>
     {% endif %}
