@@ -84,7 +84,7 @@ class OrderGiftController extends AdminBaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $orderGiftData = $form->getData();
 
             $orderGift = $this->orderGiftFacade->create($orderGiftData);

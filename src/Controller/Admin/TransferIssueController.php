@@ -70,7 +70,7 @@ class TransferIssueController extends AdminBaseController
         $form = $this->createForm(TransferIssueSearchFormType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $filteredTransfer = $form->getData()['transfer'];
 
             if ($filteredTransfer !== null) {

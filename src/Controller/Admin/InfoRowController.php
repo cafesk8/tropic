@@ -52,7 +52,7 @@ class InfoRowController extends AdminBaseController
         $form = $this->createForm(InfoRowFormType::class, $infoRowFormData);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $infoRowFormData = $form->getData();
             $this->infoRowFacade->setInfoRow(
                 $infoRowFormData['visibility'],

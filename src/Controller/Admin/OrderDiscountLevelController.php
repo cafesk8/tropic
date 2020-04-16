@@ -84,7 +84,7 @@ class OrderDiscountLevelController extends AdminBaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $orderDiscountLevelData = $form->getData();
 
             $orderDiscountLevel = $this->orderDiscountLevelFacade->create($orderDiscountLevelData);

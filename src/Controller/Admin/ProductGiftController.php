@@ -72,7 +72,7 @@ class ProductGiftController extends AdminBaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $productGiftData = $form->getData();
 
             $productGift = $this->productGiftFacade->create($productGiftData);

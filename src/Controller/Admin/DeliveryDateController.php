@@ -51,7 +51,7 @@ class DeliveryDateController extends AdminBaseController
         $form = $this->createForm(DeliveryDateSettingFormType::class, $formData);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $hours = $form->get('deadline')->get('hours')->getData();
             $minutes = $form->get('deadline')->get('minutes')->getData();
             $this->setting->setForDomain(Setting::ORDER_TRANSPORT_DEADLINE_HOURS, $hours, $this->adminDomainTabsFacade->getSelectedDomainId());

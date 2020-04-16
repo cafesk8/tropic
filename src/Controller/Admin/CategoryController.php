@@ -87,7 +87,7 @@ class CategoryController extends BaseCategoryController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryFacade->edit($id, $categoryData);
             $this->categoryBlogArticleFacade->saveBlogArticlesToCategory($category, $categoryData->blogArticles);
 
@@ -130,7 +130,7 @@ class CategoryController extends BaseCategoryController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $categoryData = $form->getData();
 
             $category = $this->categoryFacade->create($categoryData);
