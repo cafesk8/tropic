@@ -70,11 +70,9 @@
         &__image {
             width: 100%;
             text-align: center;
-            overflow: hidden;
             margin-bottom: 10px;
 
             font-size: 0;
-            border-radius: @radius;
 
             @media @query-xl {
                 width: @list-articles-item-image-width;
@@ -83,6 +81,8 @@
             }
 
             img {
+                border-radius: @radius;
+
                 @media @query-md {
                     max-width: @list-articles-item-image-width;
                     max-height: @list-articles-item-image-height;
