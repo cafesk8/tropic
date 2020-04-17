@@ -64,7 +64,7 @@
                     </div>
                     <div class="box-filter__choice__content" id="filter-flags">
                         {% for flagForm in filterForm.flags %}
-                            <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label inactive{% endif %}">
+                            <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label{% endif %}{% if not flagForm.vars.checked %} inactive{% endif %}">
                                 <span class="form-choice__line">
                                     {{ form_widget(flagForm, { attr: { class: 'css-checkbox', 'data-filter-name-with-entity-id': filterForm.flags.vars.id ~ '_' ~ flagForm.vars.value }}) }}
                                     <span class="form-choice__label css-checkbox__image">
@@ -83,8 +83,8 @@
                                 </span>
                             </label>
                             {% if loop.index > visibleChoicesLimit and loop.last %}
-                                <div class="js-product-filter-box-button">{{ 'Zobrazit všechny'|trans }}</div>
-                                <div class="js-product-filter-box-button inactive">{{ 'Skrýt ostatní'|trans }}</div>
+                                <div class="js-product-filter-box-button-show">{{ 'Zobrazit všechny'|trans }}</div>
+                                <div class="js-product-filter-box-button-hide inactive">{{ 'Skrýt ostatní'|trans }}</div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -101,7 +101,7 @@
                     </div>
                     <div class="box-filter__choice__content" id="filter-brand">
                         {% for brandForm in filterForm.brands %}
-                            <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label inactive{% endif %}">
+                            <label class="form-choice form-choice--block{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label{% endif %}{% if not brandForm.vars.checked %} inactive{% endif %}">
                                 {{ form_widget(brandForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.brands.vars.id ~ '_' ~ brandForm.vars.value } }) }}
                                 <span class="form-choice__label css-checkbox__image">
                                     <span class="form-choice__label__text">{{ brandForm.vars.label }}</span>
@@ -119,8 +119,8 @@
                                 </span>
                             </label>
                             {% if loop.index > visibleChoicesLimit and loop.last %}
-                                <div class="js-product-filter-box-button">{{ 'Zobrazit všechny'|trans }}</div>
-                                <div class="js-product-filter-box-button inactive">{{ 'Skrýt ostatní'|trans }}</div>
+                                <div class="js-product-filter-box-button-show">{{ 'Zobrazit všechny'|trans }}</div>
+                                <div class="js-product-filter-box-button-hide inactive">{{ 'Skrýt ostatní'|trans }}</div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -141,7 +141,7 @@
                                     </span>
                                     <div class="box-filter__choice__content display-none" id="filter-{{ parameterForm.vars.id }}">
                                         {% for parameterValueForm in parameterForm %}
-                                            <label class="form-choice form-choice--block js-product-filter-parameter-value{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label inactive{% endif %}">
+                                            <label class="form-choice form-choice--block js-product-filter-parameter-value{% if loop.index > visibleChoicesLimit %} js-product-filter-box-label{% endif %}{% if not parameterValueForm.vars.checked %} inactive{% endif %}">
                                                 {{ form_widget(parameterValueForm, { attr: { class: 'form-choice__input css-checkbox', 'data-filter-name-with-entity-id': filterForm.parameters.vars.id ~ '_' ~ parameterId ~ '_' ~ parameterValueForm.vars.value } }) }}
                                                 <span class="form-choice__label css-checkbox__image">
                                                     <span class="form-choice__label__text">{{ parameterValueForm.vars.label }}</span>
@@ -161,8 +161,8 @@
                                                 </span>
                                             </label>
                                             {% if loop.index > visibleChoicesLimit and loop.last %}
-                                                <div class="js-product-filter-box-button">{{ 'Zobrazit všechny'|trans }}</div>
-                                                <div class="js-product-filter-box-button inactive">{{ 'Skrýt ostatní'|trans }}</div>
+                                                <div class="js-product-filter-box-button-show">{{ 'Zobrazit všechny'|trans }}</div>
+                                                <div class="js-product-filter-box-button-hide inactive">{{ 'Skrýt ostatní'|trans }}</div>
                                             {% endif %}
                                         {% endfor %}
                                     </div>
