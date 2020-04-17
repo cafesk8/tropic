@@ -595,3 +595,8 @@ services:
             $sitemapsUrlPrefix: '%shopsys.sitemaps_url_prefix%'
 
     App\Component\FlashMessage\ErrorExtractor: ~
+
+    # see https://github.com/shopsys/shopsys/pull/1789
+    Shopsys\FrameworkBundle\Model\Security\Authenticator:
+        arguments:
+            - '@security.token_storage'
