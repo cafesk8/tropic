@@ -50,8 +50,6 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->name = t('Výprodej', [], 'dataFixtures');
         $storeData->position = 0;
         $storeData->postcode = '';
-        $storeData->pickupPlace = false;
-        $storeData->franchisor = false;
         $storeData->centralStore = true;
         $storeData->showOnStoreList = false;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
@@ -76,12 +74,16 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $this->createStore($storeData, self::REFERENCE_STORE_EXTERNAL_STOCK);
 
         $storeData->description = t('Skladové zásoby na prodejně', [], 'dataFixtures');
-        $storeData->name = t('Prodejna', [], 'dataFixtures');
+        $storeData->name = t('Kamenná prodejna v Liberci', [], 'dataFixtures');
         $storeData->position = 4;
-        $storeData->city = 'Liberec';
-        $storeData->street = 'Dr. Milady Horákové 76';
+        $storeData->city = 'Horní Růžodol, Liberec';
+        $storeData->region = 'Liberecký';
+        $storeData->street = 'Dr. Milady Horákové 11';
         $storeData->postcode = '460 07';
         $storeData->openingHours = t('Po - Pá: 9:00 - 18:00, So: 9:00 - 12:00', [], 'dataFixtures');
+        $storeData->googleMapsLink = 'https://www.google.com/maps/place/Tropic+Liberec+Ltd./@50.754004,15.054671,15z/data=!4m5!3m4!1s0x0:0x1bdf572ee2cd0366!8m2!3d50.754004!4d15.054671';
+        $storeData->email = 'prodejna@tropicliberec.cz';
+        $storeData->telephone = '+420 777 862 119';
         $storeData->pickupPlace = true;
         $storeData->centralStore = false;
         $storeData->showOnStoreList = true;

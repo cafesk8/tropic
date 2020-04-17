@@ -350,7 +350,7 @@ class Product extends BaseProduct
         return array_filter(
             $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
-                return $productStoreStock->getStockQuantity() > 0 && $productStoreStock->getStore()->isFranchisor() === false;
+                return $productStoreStock->getStockQuantity() > 0;
             }
         );
     }
