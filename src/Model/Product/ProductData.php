@@ -36,16 +36,6 @@ class ProductData extends BaseProductData
     /**
      * @var bool
      */
-    public $generateToHsSportXmlFeed;
-
-    /**
-     * @var bool|null
-     */
-    public $finished;
-
-    /**
-     * @var bool
-     */
     public $mallExport;
 
     /**

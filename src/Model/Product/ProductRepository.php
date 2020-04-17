@@ -213,7 +213,6 @@ class ProductRepository extends BaseProductRepository
             ->andWhere('p.variantType IN (:variantTypes)')
             ->setParameter('variantTypes', [Product::VARIANT_TYPE_MAIN, Product::VARIANT_TYPE_NONE])
             ->andWhere('p.calculatedSellingDenied = false')
-            ->andWhere('p.generateToHsSportXmlFeed = true')
             ->orderBy('p.id', 'asc')
             ->setMaxResults($maxResults);
 

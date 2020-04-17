@@ -107,8 +107,6 @@ class ProductDataFactory extends BaseProductDataFactory
         parent::fillNew($productData);
 
         $productData->stockQuantityByStoreId = [];
-        $productData->generateToHsSportXmlFeed = true;
-        $productData->finished = false;
         $productData->youtubeVideoIds = [];
     }
 
@@ -125,8 +123,6 @@ class ProductDataFactory extends BaseProductDataFactory
         }
 
         $productData->pohodaId = $product->getPohodaId();
-        $productData->generateToHsSportXmlFeed = $product->isGenerateToHsSportXmlFeed();
-        $productData->finished = $product->isFinished();
         $productData->mallExport = $product->isMallExport();
         $productData->mallExportedAt = $product->getMallExportedAt();
         $productData->updatedAt = $product->getUpdatedAt();
