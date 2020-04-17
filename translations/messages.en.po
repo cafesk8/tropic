@@ -49,6 +49,9 @@ msgstr "702 00 Ostrava"
 msgid "<i class=\"svg svg-cart\"></i>Přidat do košíku"
 msgstr "<i class=\"svg svg-cart\"></i>Add to cart"
 
+msgid "a další kategorie"
+msgstr "{1} ...and another %count% category|[2,Inf[ ...and another %count% categories"
+
 msgid "Add"
 msgstr "Add"
 

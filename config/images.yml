@@ -43,6 +43,11 @@
             height: 56
             crop: false
             occurrence: 'Front-end: Product list by category'
+        -   name: dropdown
+            width: 80
+            height: 80
+            crop: false
+            occurrence: 'Dropdown menu in header'
 
 -   name: product
     class: Shopsys\FrameworkBundle\Model\Product\Product
