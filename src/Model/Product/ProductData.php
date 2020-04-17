@@ -83,6 +83,11 @@ class ProductData extends BaseProductData
      */
     public $registrationDiscountDisabled;
 
+    /**
+     * @var \DateTime|null
+     */
+    public $updatedByPohodaAt;
+
     public function __construct()
     {
         parent::__construct();
