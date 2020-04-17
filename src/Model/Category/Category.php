@@ -33,13 +33,6 @@ class Category extends BaseCategory
      *
      * @ORM\Column(type="boolean")
      */
-    private $displayedInHorizontalMenu;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
     private $listable;
 
     /**
@@ -48,20 +41,6 @@ class Category extends BaseCategory
      * @ORM\Column(type="boolean")
      */
     private $preListingCategory;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $displayedInFirstColumn;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $legendaryCategory;
 
     /**
      * @var string|null
@@ -110,11 +89,8 @@ class Category extends BaseCategory
     {
         parent::__construct($categoryData);
 
-        $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
         $this->listable = $categoryData->listable;
         $this->preListingCategory = $categoryData->preListingCategory;
-        $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
-        $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
         $this->advert = $categoryData->advert;
         $this->pohodaId = $categoryData->pohodaId;
@@ -132,11 +108,8 @@ class Category extends BaseCategory
     {
         parent::edit($categoryData);
 
-        $this->displayedInHorizontalMenu = $categoryData->displayedInHorizontalMenu;
         $this->listable = $categoryData->listable;
         $this->preListingCategory = $categoryData->preListingCategory;
-        $this->displayedInFirstColumn = $categoryData->displayedInFirstColumn;
-        $this->legendaryCategory = $categoryData->legendaryCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
         $this->advert = $categoryData->advert;
         $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
@@ -144,14 +117,6 @@ class Category extends BaseCategory
         $this->pohodaPosition = $categoryData->pohodaPosition;
 
         $this->setTranslations($categoryData);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDisplayedInHorizontalMenu(): bool
-    {
-        return $this->displayedInHorizontalMenu;
     }
 
     /**
@@ -169,22 +134,6 @@ class Category extends BaseCategory
     public function getNameWithLevelPad(?string $locale = null): string
     {
         return str_repeat('-', $this->level < 1 ? 0 : $this->level - 1) . ' ' . parent::getName($locale);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDisplayedInFirstColumn(): bool
-    {
-        return $this->displayedInFirstColumn;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLegendaryCategory(): bool
-    {
-        return $this->legendaryCategory;
     }
 
     /**

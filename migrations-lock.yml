@@ -313,9 +313,6 @@
 20190416130355:
     class: App\Migrations\Version20190416130355
     skip: false
-20190503153037:
-    class: App\Migrations\Version20190503153037
-    skip: false
 20190426111214:
     class: App\Migrations\Version20190426111214
     skip: false
@@ -424,9 +421,6 @@
 20190710083659:
     class: App\Migrations\Version20190710083659
     skip: false
-20190711121847:
-    class: App\Migrations\Version20190711121847
-    skip: false
 20190712102008:
     class: App\Migrations\Version20190712102008
     skip: false
@@ -519,9 +513,6 @@
     skip: false
 20190822142492:
     class: App\Migrations\Version20190822142492
-    skip: false
-20190819100442:
-    class: App\Migrations\Version20190819100442
     skip: false
 20190823162522:
     class: App\Migrations\Version20190823162522
@@ -1074,4 +1065,7 @@
     skip: false
 20200417110800:
     class: App\Migrations\Version20200417110800
+    skip: false
+20200417114600:
+    class: App\Migrations\Version20200417114600
     skip: false

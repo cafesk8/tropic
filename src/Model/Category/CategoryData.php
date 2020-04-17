@@ -14,11 +14,6 @@ class CategoryData extends BaseCategoryData
     /**
      * @var bool
      */
-    public $displayedInHorizontalMenu = false;
-
-    /**
-     * @var bool
-     */
     public $listable = true;
 
     /**
@@ -30,16 +25,6 @@ class CategoryData extends BaseCategoryData
      * @var \App\Model\Blog\Article\BlogArticle[]
      */
     public $blogArticles;
-
-    /**
-     * @var bool
-     */
-    public $displayedInFirstColumn;
-
-    /**
-     * @var bool
-     */
-    public $legendaryCategory;
 
     /**
      * @var string|null
@@ -86,8 +71,6 @@ class CategoryData extends BaseCategoryData
         parent::__construct();
 
         $this->blogArticles = [];
-        $this->displayedInFirstColumn = false;
-        $this->legendaryCategory = false;
         $this->leftBannerTexts = [];
         $this->rightBannerTexts = [];
         $this->advert = null;

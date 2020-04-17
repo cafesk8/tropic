@@ -889,9 +889,6 @@ msgstr "Priezvisko"
 msgid "Last order"
 msgstr "Posledná objednávka"
 
-msgid "Legendární kategorie"
-msgstr "Špeciálne kategórie"
-
 msgid "Levý textový baner dole"
 msgstr "Ľavý textový banner dole"
 
