@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Customer\User;
 
-use App\Model\Customer\TransferIds\UserTransferId;
 use DateTime;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Form\Admin\QuickSearch\QuickSearchFormData;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository as BaseCustomerUserRepository;
@@ -87,32 +85,9 @@ class CustomerUserRepository extends BaseCustomerUserRepository
         QuickSearchFormData $quickSearchData
     ) {
         $queryBuilder = parent::getCustomerUserListQueryBuilderByQuickSearchData($domainId, $quickSearchData);
-
-        if ($quickSearchData->text !== null && $quickSearchData->text !== '') {
-            $queryBuilder->leftJoin(UserTransferId::class, 'uti', Join::WITH, 'uti.customer = u')
-                ->orWhere('NORMALIZE(uti.ean) LIKE NORMALIZE(:text)')
-                ->orWhere('NORMALIZE(u.ean) LIKE NORMALIZE(:text)');
-        }
-
         $queryBuilder->addSelect('u.exportStatus');
 
         return $queryBuilder;
-    }
-
-    /**
-     * @param string $ean
-     * @return bool
-     */
-    public function eanUsed(string $ean): bool
-    {
-        $customerUser = $this->getCustomerUserRepository()->findOneBy(['ean' => $ean]);
-
-        $eanUsed = false;
-        if ($customerUser !== null) {
-            $eanUsed = true;
-        }
-
-        return $eanUsed;
     }
 
     /**
