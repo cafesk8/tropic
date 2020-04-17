@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Transfer;
 
+use App\Component\Transfer\Logger\TransferLogger;
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade;
+
 class ProductInfoQueueImportFacade
 {
     /**
@@ -12,11 +15,40 @@ class ProductInfoQueueImportFacade
     private $productInfoQueueImportRepository;
 
     /**
-     * @param \App\Model\Product\Transfer\ProductInfoQueueImportRepository $productInfoQueueImportRepository
+     * @var \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade
      */
-    public function __construct(ProductInfoQueueImportRepository $productInfoQueueImportRepository)
-    {
+    private $pohodaProductExportFacade;
+
+    /**
+     * @param \App\Model\Product\Transfer\ProductInfoQueueImportRepository $productInfoQueueImportRepository
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProductExportFacade $pohodaProductExportFacade
+     */
+    public function __construct(
+        ProductInfoQueueImportRepository $productInfoQueueImportRepository,
+        PohodaProductExportFacade $pohodaProductExportFacade
+    ) {
         $this->productInfoQueueImportRepository = $productInfoQueueImportRepository;
+        $this->pohodaProductExportFacade = $pohodaProductExportFacade;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Logger\TransferLogger $transferLogger
+     * @param \DateTime $dateTimeBeforeTransferFromPohodaServer
+     * @param \DateTime|null $lastModificationDate
+     */
+    public function importDataToQueue(
+        TransferLogger $transferLogger,
+        \DateTime $dateTimeBeforeTransferFromPohodaServer,
+        ?\DateTime $lastModificationDate
+    ): void {
+        $transferLogger->addInfo('Spuštěn import do fronty produktů', ['transferLastStartAt' => $lastModificationDate]);
+        $pohodaProductIds = $this->pohodaProductExportFacade->findPohodaProductIdsFromLastModificationDate($lastModificationDate);
+        if (count($pohodaProductIds) === 0) {
+            $transferLogger->addInfo('Nejsou žádná data pro uložení do fronty');
+        } else {
+            $this->insertChangedPohodaProductIds($pohodaProductIds, $dateTimeBeforeTransferFromPohodaServer);
+            $transferLogger->addInfo('Celkem nových změněných produktů ve frontě', ['pohodaProductIdsCount' => count($pohodaProductIds)]);
+        }
     }
 
     /**

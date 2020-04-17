@@ -90,6 +90,7 @@ class PohodaProductExportRepository
         $pohodaProductsResult = [];
         foreach ($pohodaProductResult as $pohodaProduct) {
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]] = $pohodaProduct;
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_CATEGORIES] = [];
         }
 
         return $pohodaProductsResult;
