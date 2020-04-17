@@ -1,6 +1,7 @@
 -   pathsToCheck:
         - .
     excludedPaths:
+        - ./var
         - ./vendor
         - ./node_modules
         - ./config/domains_urls.yml
