@@ -22,6 +22,9 @@ class PohodaProduct
     public const COL_VARIANT_ID = 'variantId';
     public const COL_VARIANT_ALIAS = 'variantAlias';
     public const COL_VARIANT_ALIAS_SK = 'variantAliasSk';
+    public const COL_PRODUCT_CATEGORIES = 'productCategories';
+    public const COL_PRODUCT_REF_CATEGORY_ID = 'productPohodaId';
+    public const COL_CATEGORY_REF_CATEGORY_ID = 'categoryPohodaId';
 
     /**
      * @var int
@@ -99,6 +102,11 @@ class PohodaProduct
     public $variantAliasSk;
 
     /**
+     * @var int[]
+     */
+    public $pohodaCategoryIds;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
@@ -118,5 +126,6 @@ class PohodaProduct
         $this->variantId = (string)$pohodaProductData[self::COL_VARIANT_ID];
         $this->variantAlias = (string)$pohodaProductData[self::COL_VARIANT_ALIAS];
         $this->variantAliasSk = (string)$pohodaProductData[self::COL_VARIANT_ALIAS_SK];
+        $this->pohodaCategoryIds = $pohodaProductData[self::COL_PRODUCT_CATEGORIES];
     }
 }
