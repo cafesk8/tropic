@@ -56,6 +56,7 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @method \App\Model\Country\Country|null getDeliveryCountry()
  * @method \App\Model\Order\Item\OrderItem[] getProductItems()
  * @method \App\Model\Administrator\Administrator|null getCreatedAsAdministrator()
+ * @method fillCommonFields(\App\Model\Order\OrderData $orderData)
  */
 class Order extends BaseOrder
 {
