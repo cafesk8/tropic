@@ -32,8 +32,14 @@
             </span>
         </div>
 
-        
-        {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: 'in-add-to-cart__button btn-no-style' }}) }}
+        {% set cssClass = '' %}
+        {% set hardDisabled = 0 %}
+        {% if outOfStock is same as (true) %}
+            {% set cssClass = 'btn--disabled ' %}
+            {% set hardDisabled = 1 %}
+        {% endif %}
+
+        {{ form_widget(form.add, {label: 'Přidat do košíku'|trans, attr: {class: cssClass ~ 'in-add-to-cart__button btn-no-style', disabled: outOfStock, 'data-hard-disabled': hardDisabled }}) }}
 
     </div>
     {{ form_end(form) }}
