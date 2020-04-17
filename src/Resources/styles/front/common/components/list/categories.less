@@ -47,6 +47,10 @@
             display: flex;
             width: 100%;
             flex-direction: row;
+
+            &:hover {
+                text-decoration: none;
+            }
         }
 
         &__image {
@@ -57,18 +61,24 @@
             height: @list-categories-image-size;
         }
 
-        &__text {
+        &__info {
             display: flex;
             align-items: center;
             width: calc(~"100% - @{list-categories-image-size}");
             padding-left: 16px;
+        }
+
+        &__text {
             line-height: 21px;
             margin: 0;
 
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 600;
             color: @color-primary;
-            text-decoration: underline;
+
+            &__name {
+                text-decoration: underline;
+            }
         }
     }
 }

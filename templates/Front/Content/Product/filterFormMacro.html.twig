@@ -18,7 +18,7 @@
         {{ selectedFilterBox.filterBox(filterForm, resetUrl, filterFormSubmitted) }}
         <div class="box-filter__bottom">
             <div class="box-filter__choice">
-                <div class="box-filter__choice__title js-responsive-toggle" data-element="filter-price">
+                <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-price">
                     {{ 'Cena'|trans }}
                     <i class="svg svg-triangle"></i>
                 </div>
@@ -57,7 +57,7 @@
                 {% do filterForm.flags.setRendered %}
             {% else %}
                 <div class="box-filter__choice" id="{{ filterForm.flags.vars.id }}">
-                    <div class="box-filter__choice__title js-responsive-toggle" data-element="filter-flags">
+                    <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-flags">
                         {{ 'Podle akce'|trans }}
                         <i class="svg svg-triangle"></i>
                     </div>
@@ -90,7 +90,7 @@
                 {% do filterForm.brands.setRendered %}
             {% else %}
                 <div class="box-filter__choice" id="{{ filterForm.brands.vars.id }}">
-                    <div class="box-filter__choice__title js-responsive-toggle" data-element="filter-brand">
+                    <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-brand">
                         {{ 'Značky'|trans }}
                         <i class="svg svg-triangle"></i>
                     </div>

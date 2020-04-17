@@ -7,9 +7,12 @@
                     <div class="list-categories__item__image">
                         {{ image(category, { alt: category.name }) }}
                     </div>
-                    <p class="list-categories__item__text js-not-implemented-yet">
-                        {{ category.name }} (10)
-                    </p>
+                    <div class="list-categories__item__info">
+                        <p class="list-categories__item__text">
+                            <span class="list-categories__item__text__name">{{ category.name }}</span> 
+                            <span class="list-categories__item__text__count js-not-implemented-yet">(10)</span>
+                        </p>
+                    </div>
                 </a>
             </li>
         {% endfor %}
