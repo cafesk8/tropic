@@ -25,16 +25,14 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @ORM\Table(name="orders")
  * @ORM\Entity
  *
- * @property \App\Model\Transport\Transport $transport
- * @method \App\Model\Transport\Transport getTransport()
- * @method \App\Model\Payment\Payment getPayment()
- * @method \App\Model\Country\Country getCountry()
  * @property \App\Model\Customer\User\CustomerUser|null $customerUser
  * @property \App\Model\Order\Item\OrderItem[]|\Doctrine\Common\Collections\Collection $items
+ * @property \App\Model\Transport\Transport $transport
  * @property \App\Model\Payment\Payment $payment
  * @property \App\Model\Order\Status\OrderStatus $status
  * @property \App\Model\Country\Country $country
  * @property \App\Model\Country\Country|null $deliveryCountry
+ * @property \App\Model\Pricing\Currency\Currency $currency
  * @property \App\Model\Administrator\Administrator|null $createdAsAdministrator
  * @method editData(\App\Model\Order\OrderData $orderData)
  * @method editOrderTransport(\App\Model\Order\OrderData $orderData)
@@ -43,19 +41,21 @@ use Shopsys\FrameworkBundle\Model\Order\OrderEditResult;
  * @method addItem(\App\Model\Order\Item\OrderItem $item)
  * @method removeItem(\App\Model\Order\Item\OrderItem $item)
  * @method setStatus(\App\Model\Order\Status\OrderStatus $status)
+ * @method \App\Model\Payment\Payment getPayment()
  * @method \App\Model\Order\Item\OrderItem getOrderPayment()
+ * @method \App\Model\Transport\Transport getTransport()
  * @method \App\Model\Order\Item\OrderItem getOrderTransport()
  * @method \App\Model\Order\Status\OrderStatus getStatus()
+ * @method \App\Model\Pricing\Currency\Currency getCurrency()
+ * @method \App\Model\Customer\User\CustomerUser|null getCustomerUser()
  * @method \App\Model\Order\Item\OrderItem[] getItems()
  * @method \App\Model\Order\Item\OrderItem[] getItemsWithoutTransportAndPayment()
  * @method \App\Model\Order\Item\OrderItem[] getTransportAndPaymentItems()
  * @method \App\Model\Order\Item\OrderItem getItemById(int $orderItemId)
+ * @method \App\Model\Country\Country getCountry()
  * @method \App\Model\Country\Country|null getDeliveryCountry()
  * @method \App\Model\Order\Item\OrderItem[] getProductItems()
  * @method \App\Model\Administrator\Administrator|null getCreatedAsAdministrator()
- * @property \App\Model\Pricing\Currency\Currency $currency
- * @method \App\Model\Pricing\Currency\Currency getCurrency()
- * @method \App\Model\Customer\User\CustomerUser|null getCustomerUser()
  */
 class Order extends BaseOrder
 {
