@@ -19,11 +19,6 @@ class CustomerUserData extends BaseCustomerUserData
     public $transferId;
 
     /**
-     * @var bool
-     */
-    public $memberOfLoyaltyProgram;
-
-    /**
      * @var string
      */
     public $exportStatus = CustomerUser::EXPORT_NOT_YET;

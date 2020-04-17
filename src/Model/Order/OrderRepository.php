@@ -120,7 +120,6 @@ class OrderRepository extends BaseOrderRepository
             ->where('o.createdAt > :startTime')
             ->andWhere('o.createdAt < :endTime')
             ->andWhere('o.customer is not null')
-            ->andWhere('u.memberOfLoyaltyProgram = TRUE')
             ->groupBy('o.customer')
             ->setParameter('startTime', $startTime)
             ->setParameter('endTime', $endTime);

@@ -145,11 +145,6 @@ class PromoCodeController extends FrontBaseController
                 'result' => false,
                 'message' => t('Slevový kupón mohou aplikovat pouze přihlášení zákazníci.'),
             ]);
-        } catch (\App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedLoyaltyProgramMembers $ex) {
-            return new JsonResponse([
-                'result' => false,
-                'message' => t('Slevový kupón mohou aplikovat pouze přihlášení členové Věrnostního programu.'),
-            ]);
         } catch (PromoCodeNotCombinableException $ex) {
             return new JsonResponse([
                 'result' => false,

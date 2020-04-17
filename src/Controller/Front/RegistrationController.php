@@ -105,9 +105,7 @@ class RegistrationController extends FrontBaseController
         $domainId = $this->domain->getId();
         $customerUserUpdateData = $this->customerUserUpdateDataFactory->createForDomainId($domainId);
 
-        $form = $this->createForm(RegistrationFormType::class, $customerUserUpdateData, [
-            'domain_id' => $domainId,
-        ]);
+        $form = $this->createForm(RegistrationFormType::class, $customerUserUpdateData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

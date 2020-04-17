@@ -39,7 +39,6 @@ class CustomerUserFacadeTest extends TransactionFunctionalTestCase
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
         $customerUserData->email = self::EXISTING_EMAIL_ON_DOMAIN_2;
-        $customerUserData->memberOfLoyaltyProgram = false;
         $customerUserUpdateData->customerUserData = $customerUserData;
 
         $this->customerUserFacade->editByAdmin($customerUser->getId(), $customerUserUpdateData);
@@ -58,7 +57,6 @@ class CustomerUserFacadeTest extends TransactionFunctionalTestCase
         $customerUserData->firstName = 'John';
         $customerUserData->lastName = 'Doe';
         $customerUserData->password = 'password';
-        $customerUserData->memberOfLoyaltyProgram = false;
         $customerUserUpdateData->customerUserData = $customerUserData;
 
         $this->customerUserFacade->create($customerUserUpdateData);
@@ -73,7 +71,6 @@ class CustomerUserFacadeTest extends TransactionFunctionalTestCase
         /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
         $customerUserData = $customerUserUpdateData->customerUserData;
         $customerUserData->password = 'password';
-        $customerUserData->memberOfLoyaltyProgram = false;
         $customerUserUpdateData->customerUserData = $customerUserData;
         $this->expectException(\Shopsys\FrameworkBundle\Model\Customer\Exception\DuplicateEmailException::class);
 
@@ -88,7 +85,6 @@ class CustomerUserFacadeTest extends TransactionFunctionalTestCase
         $customerUserData = $customerUserUpdateData->customerUserData;
         $customerUserData->password = 'password';
         $customerUserData->email = mb_strtoupper(self::EXISTING_EMAIL_ON_DOMAIN_1);
-        $customerUserData->memberOfLoyaltyProgram = false;
         $customerUserUpdateData->customerUserData = $customerUserData;
         $this->expectException(\Shopsys\FrameworkBundle\Model\Customer\Exception\DuplicateEmailException::class);
 

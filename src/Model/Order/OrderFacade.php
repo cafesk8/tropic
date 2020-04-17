@@ -329,7 +329,6 @@ class OrderFacade extends BaseOrderFacade
 
         if ($customerUser !== null) {
             $order->setCustomerTransferId($customerUser->getTransferId());
-            $order->setMemberOfLoyaltyProgram($customerUser->isMemberOfLoyaltyProgram());
             $this->customerUserFacade->amendCustomerUserDataFromOrder($customerUser, $order, $deliveryAddress);
             $this->em->flush($order);
         }

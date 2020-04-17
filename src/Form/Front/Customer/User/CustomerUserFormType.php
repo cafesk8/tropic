@@ -7,10 +7,8 @@ namespace App\Form\Front\Customer\User;
 use Shopsys\FrameworkBundle\Form\Constraints\FieldsAreNotIdentical;
 use Shopsys\FrameworkBundle\Form\Constraints\NotIdenticalToEmailLocalPart;
 use Shopsys\FrameworkBundle\Form\DeliveryAddressChoiceType;
-use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserData;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -67,16 +65,6 @@ class CustomerUserFormType extends AbstractType
                 'invalid_message' => 'Passwords do not match',
             ])
             ->add('defaultDeliveryAddress', DeliveryAddressChoiceType::class);
-
-        /** @var \App\Model\Customer\User\CustomerUser $customer */
-        $customer = $options['user'];
-
-        if ($customer->isMemberOfLoyaltyProgram() === false) {
-            $builder
-                ->add('memberOfLoyaltyProgram', CheckboxType::class, [
-                    'required' => true,
-                ]);
-        }
     }
 
     /**
@@ -85,8 +73,6 @@ class CustomerUserFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('user')
-            ->addAllowedTypes('user', CustomerUser::class)
             ->setDefaults([
                 'data_class' => CustomerUserData::class,
                 'attr' => ['novalidate' => 'novalidate'],

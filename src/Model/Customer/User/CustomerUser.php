@@ -58,13 +58,6 @@ class CustomerUser extends BaseCustomerUser
     private $transferId;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $memberOfLoyaltyProgram;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="string", length=50, nullable=false)
@@ -105,7 +98,6 @@ class CustomerUser extends BaseCustomerUser
         parent::__construct($customerUserData);
 
         $this->transferId = $customerUserData->transferId;
-        $this->memberOfLoyaltyProgram = $customerUserData->memberOfLoyaltyProgram;
         $this->exportStatus = $customerUserData->exportStatus;
         $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
         $this->userTransferId = new ArrayCollection();
@@ -117,7 +109,6 @@ class CustomerUser extends BaseCustomerUser
     public function edit(BaseCustomerUserData $customerUserData)
     {
         parent::edit($customerUserData);
-        $this->memberOfLoyaltyProgram = $customerUserData->memberOfLoyaltyProgram;
         $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
 
         $this->setExportStatus(self::EXPORT_NOT_YET);
@@ -145,14 +136,6 @@ class CustomerUser extends BaseCustomerUser
     public function setTransferId(string $transferId): void
     {
         $this->transferId = $transferId;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMemberOfLoyaltyProgram(): bool
-    {
-        return $this->memberOfLoyaltyProgram;
     }
 
     /**
@@ -240,7 +223,6 @@ class CustomerUser extends BaseCustomerUser
     {
         $this->transferId = $transferId->getTransferId();
         $this->pricingGroup = $newPricingGroup;
-        $this->memberOfLoyaltyProgram = true;
     }
 
     /**

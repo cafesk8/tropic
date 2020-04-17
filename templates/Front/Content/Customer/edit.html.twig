@@ -31,17 +31,6 @@
                 </div>
 
                 <div class="wrap-box">
-                    <h2 class="wrap-box__title">{{ 'Věrnostní program'|trans }}</h2>
-                    <div class="wrap-box__in">
-                        {% if customer.memberOfLoyaltyProgram %}
-                            {{ 'Jste členem Věrnostního programu'|trans }}
-                        {% else %}
-                            {{ form_row(form.customerUserData.memberOfLoyaltyProgram, { label: 'Chci se stát členem Věrnostního programu'|trans}) }}
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="wrap-box">
                     <h2 class="wrap-box__title">{{ 'Changing password'|trans }}</h2>
                     <div class="wrap-box__in" id="{{ form.customerUserData.password.vars.id }}">
                         <div class="form-line">

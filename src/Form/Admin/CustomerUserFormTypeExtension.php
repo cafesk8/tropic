@@ -26,10 +26,6 @@ class CustomerUserFormTypeExtension extends AbstractTypeExtension
             $systemDataGroupBuilder->add('transferId', DisplayOnlyType::class, [
                 'label' => t('ID z IS'),
                 'data' => $customerUser->getTransferId() ?? t('ID nenastaveno'),
-            ])
-            ->add('memberOfLoyaltyProgram', DisplayOnlyType::class, [
-                'label' => t('Členem Věrnostního programu'),
-                'data' => $customerUser->isMemberOfLoyaltyProgram() === true ? t('Ano') : t('Ne'),
             ]);
         }
     }

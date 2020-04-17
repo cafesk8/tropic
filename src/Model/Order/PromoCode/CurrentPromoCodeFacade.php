@@ -8,7 +8,6 @@ use App\Model\Cart\Cart;
 use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
-use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedLoyaltyProgramMembers;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -166,10 +165,6 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     {
         if ($promoCode->isUserTypeLogged() === true && $customerUser === null) {
             throw new PromoCodeIsOnlyForLoggedCustomers($promoCode->getCode());
-        }
-
-        if ($promoCode->isUserTypeLoyaltyProgramMembers() === true && ($customerUser === null || $customerUser->isMemberOfLoyaltyProgram() === false)) {
-            throw new PromoCodeIsOnlyForLoggedLoyaltyProgramMembers($promoCode->getCode());
         }
     }
 

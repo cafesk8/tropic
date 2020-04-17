@@ -301,7 +301,7 @@ class CustomerUserFacade extends BaseCustomerUserFacade
 
         $deliveryAddress = null;
         $deliveryAddressData = $customerUserUpdateData->deliveryAddressData;
-        if ($customerUserData->memberOfLoyaltyProgram || $deliveryAddressData->addressFilled === true) {
+        if ($deliveryAddressData->addressFilled === true) {
             $deliveryAddressData->addressFilled = true;
             $customerUserUpdateData->deliveryAddressData->customer = $customer;
             $deliveryAddress = $this->deliveryAddressFacade->create($customerUserUpdateData->deliveryAddressData);

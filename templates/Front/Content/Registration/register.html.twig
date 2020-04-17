@@ -57,55 +57,6 @@
                 <div class="wrap-article__row">
                     <div class="wrap-article__row__full">
                         <div class="form-line">
-                            {{ form_widget(form.customerUserData.memberOfLoyaltyProgram, { attr: {class: 'css-checkbox js-checkbox-toggle', 'data-checkbox-toggle-container-id': 'js-delivery-fields' }}) }}
-                            <label class="css-checkbox__image" for="{{ form.customerUserData.memberOfLoyaltyProgram.vars.id }}">
-                                {% if loyaltyProgramArticle is not null %}
-                                    {% set articleUrl = url('front_article_detail', {'id': loyaltyProgramArticle.id}) %}
-                                    {{ 'Chci být členem <a href="%url%" target="_blank">Věrnostního programu</a>.'|trans({'%url%': articleUrl})|raw }}
-                                {% else %}
-                                    {{ 'Chci být členem Věrnostního programu'|trans }}
-                                {% endif %}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div id="js-delivery-fields">
-                    <div class="wrap-article__row">
-                        <div class="wrap-article__row__half">
-                            {{ form_row(form.deliveryAddressData.companyName, { label: 'Company name'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
-                        </div>
-                        <div class="wrap-article__row__half">
-                            {{ form_row(form.deliveryAddressData.street, { label: 'Street'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
-                        </div>
-                    </div>
-                    <div class="wrap-article__row">
-                        <div class="wrap-article__row__half">
-                            {{ form_row(form.deliveryAddressData.city, { label: 'City'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' } }) }}
-                        </div>
-                        <div class="wrap-article__row__half">
-                            {{ form_row(form.deliveryAddressData.postcode, { label: 'Postcode'|trans, attr: { class: 'form-line__input--full'}, errors_attr: { class: 'form-error--under' }}) }}
-                        </div>
-                    </div>
-                    {% if form.deliveryAddressData.country is defined %}
-                        <div class="wrap-article__row__full">
-                            <div class="form-line">
-                                <div class="form-line__input form-line__input--full">
-                                    <label class="input-label" for="{{ form.deliveryAddressData.country.vars.id }}">
-                                        {{ 'Country'|trans }}
-                                    </label>
-                                    {{ form_widget(form.deliveryAddressData.country) }}
-                                </div>
-                                <div class="form-line__error">
-                                    {{ form_errors(form.deliveryAddressData.country, {errors_attr: { class: 'form-error--under' }}) }}
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-
-                <div class="wrap-article__row">
-                    <div class="wrap-article__row__full">
-                        <div class="form-line">
                             {{ form_widget(form.privacyPolicy, { attr: {class: 'css-checkbox'}}) }}
 
                             <label class="css-checkbox__image margin-bottom-10" for="{{ form.privacyPolicy.vars.id }}">
