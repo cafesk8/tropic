@@ -10,11 +10,11 @@ use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedLoyaltyProgramMembers;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
-use App\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\CurrentPromoCodeFacade as BaseCurrentPromoCodeFacade;
+use Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeFacade;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -88,13 +88,20 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
 
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
         $codesInSession = $this->getEnteredCodesFromSession();
+
         if ($promoCode === null) {
-            throw new \Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException($enteredCode);
+            throw new InvalidPromoCodeException($enteredCode);
         } elseif (in_array($enteredCode, $codesInSession, true)) {
             throw new PromoCodeAlreadyAppliedException($enteredCode);
         } else {
-            $this->checkExistingPromoCodeIsCombinable($codesInSession);
-            $codesInSession[] = $enteredCode;
+            $indexToReplace = $promoCode->isCombinable() ? null : $this->getNotCombinableCodeIndex($codesInSession);
+
+            if ($indexToReplace === null) {
+                $codesInSession[] = $enteredCode;
+            } else {
+                $codesInSession[$indexToReplace] = $enteredCode;
+            }
+
             $this->session->set(static::PROMO_CODE_SESSION_KEY, $codesInSession);
         }
     }
@@ -109,15 +116,13 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         $promoCode = $this->promoCodeFacade->findPromoCodeByCode($enteredCode);
 
         if ($promoCode === null || $promoCode->getDomainId() !== $this->domain->getId()) {
-            throw new \Shopsys\FrameworkBundle\Model\Order\PromoCode\Exception\InvalidPromoCodeException($enteredCode);
+            throw new InvalidPromoCodeException($enteredCode);
         } elseif ($promoCode->hasRemainingUses() === false) {
             throw new \App\Model\Order\PromoCode\Exception\UsageLimitPromoCodeException($enteredCode);
         } elseif ($this->isPromoCodeValidInItsValidDates($promoCode) === false) {
             throw new \App\Model\Order\PromoCode\Exception\PromoCodeIsNotValidNow($enteredCode);
         } elseif ($promoCode->getMinOrderValue() !== null && $totalWatchedPriceOfProducts->isLessThan($promoCode->getMinOrderValue())) {
             throw new \App\Model\Order\PromoCode\Exception\MinimalOrderValueException($enteredCode, $promoCode->getMinOrderValue());
-        } elseif (!$promoCode->isCombinable() && count($this->getValidEnteredPromoCodes()) > 1) {
-            throw new PromoCodeNotCombinableException($enteredCode);
         }
 
         $this->checkPromoCodeUserTypeValidity($promoCode, $customerUser);
@@ -169,17 +174,20 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     }
 
     /**
-     * @param string[] $promoCodes
+     * @param string[] $promoCodeCodes
+     * @return int|null
      */
-    private function checkExistingPromoCodeIsCombinable(array $promoCodes)
+    private function getNotCombinableCodeIndex(array $promoCodeCodes): ?int
     {
-        if (count($promoCodes) === 1) {
-            $promoCodeCode = reset($promoCodes);
+        foreach ($promoCodeCodes as $index => $promoCodeCode) {
             $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+
             if ($promoCode !== null && !$promoCode->isCombinable()) {
-                throw new PromoCodeNotCombinableException($promoCode->getCode());
+                return $index;
             }
         }
+
+        return null;
     }
 
     /**
