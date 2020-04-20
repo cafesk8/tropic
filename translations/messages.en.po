@@ -862,9 +862,6 @@ msgstr "Last name"
 msgid "Last order"
 msgstr "Last order"
 
-msgid "Legendární kategorie"
-msgstr "Special categories"
-
 msgid "Levý textový baner dole"
 msgstr "Text banner to the lower left side"
 

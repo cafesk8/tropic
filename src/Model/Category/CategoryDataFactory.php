@@ -41,11 +41,8 @@ class CategoryDataFactory extends BaseCategoryDataFactory
     {
         parent::fillFromCategory($categoryData, $category);
 
-        $categoryData->displayedInHorizontalMenu = $category->isDisplayedInHorizontalMenu();
         $categoryData->listable = $category->isListable();
         $categoryData->preListingCategory = $category->isPreListingCategory();
-        $categoryData->displayedInFirstColumn = $category->isDisplayedInFirstColumn();
-        $categoryData->legendaryCategory = $category->isLegendaryCategory();
         $categoryData->mallCategoryId = $category->getMallCategoryId();
         $categoryData->leftBannerTexts = $category->getLeftBannerTexts();
         $categoryData->rightBannerTexts = $category->getRightBannerTexts();

@@ -98,15 +98,6 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
-     * @param int $domainId
-     * @return \App\Model\Category\Category[]
-     */
-    public function getAllVisibleAndListableCategoriesForFirstColumnByDomainId(int $domainId): array
-    {
-        return $this->categoryRepository->getAllVisibleCategoriesForFirstColumnByDomainId($domainId);
-    }
-
-    /**
      * @param \App\Model\Category\Category $category
      * @param int $domainId
      * @return \App\Model\Category\Category[]
@@ -184,15 +175,6 @@ class CategoryFacade extends BaseCategoryFacade
         );
 
         return $categories;
-    }
-
-    /**
-     * @param int $domainId
-     * @return int|null
-     */
-    public function getHighestLegendaryCategoryIdByDomainId(int $domainId): ?int
-    {
-        return $this->categoryRepository->getHighestLegendaryCategoryIdByDomainId($domainId);
     }
 
     /**

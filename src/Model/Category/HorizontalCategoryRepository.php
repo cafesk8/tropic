@@ -28,7 +28,6 @@ class HorizontalCategoryRepository
     public function getCategoriesForHorizontalMenu(int $domainId): array
     {
         $queryBuilder = $this->categoryRepository->getAllVisibleAndListableByDomainIdQueryBuilder($domainId);
-        $queryBuilder->andWhere('c.displayedInHorizontalMenu = TRUE');
 
         return $queryBuilder->getQuery()->execute();
     }

@@ -122,21 +122,9 @@ class CategoryFormTypeExtension extends AbstractTypeExtension
                 'required' => false,
                 'label' => t('Zobrazovat v menu a dalších výpisech'),
             ])
-            ->add('displayedInHorizontalMenu', YesNoType::class, [
-                'required' => false,
-                'label' => t('V hlavním menu'),
-            ])
-            ->add('displayedInFirstColumn', YesNoType::class, [
-                'required' => false,
-                'label' => t('V prvním sloupci'),
-            ])
             ->add('preListingCategory', YesNoType::class, [
                 'required' => false,
                 'label' => t('Předvýpis kategorií'),
-            ])
-            ->add('legendaryCategory', YesNoType::class, [
-                'required' => false,
-                'label' => t('Legendární kategorie'),
             ])
             ->add('leftBannerTexts', LocalizedType::class, [
                 'required' => false,

@@ -48,7 +48,6 @@ class CustomerUserDataFactory extends BaseCustomerUserDataFactory
     {
         $customerUserData = new CustomerUserData();
         $this->fillForDomainId($customerUserData, $domainId);
-        $customerUserData->memberOfLoyaltyProgram = false;
 
         return $customerUserData;
     }
@@ -73,7 +72,6 @@ class CustomerUserDataFactory extends BaseCustomerUserDataFactory
     protected function fillFromUser(BaseCustomerUserData $customerUserData, BaseCustomerUser $customerUser): void
     {
         parent::fillFromUser($customerUserData, $customerUser);
-        $customerUserData->memberOfLoyaltyProgram = $customerUser->isMemberOfLoyaltyProgram();
         $customerUserData->pricingGroupUpdatedAt = $customerUser->getPricingGroupUpdatedAt();
     }
 

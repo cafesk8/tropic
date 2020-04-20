@@ -165,10 +165,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'constraints' => [
                     new Callback([$this, 'validateVariantId']),
                 ],
-            ])
-            ->add('finished', YesNoType::class, [
-                'required' => false,
-                'label' => t('Produkt je hotový'),
             ]);
 
         $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
@@ -188,6 +184,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
                 return [];
             },
+            'required' => false,
         ]);
 
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
@@ -217,10 +214,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->extendCatnum($builder->get('basicInformationGroup'));
 
         $builder->get('basicInformationGroup')
-            ->add('generateToHsSportXmlFeed', YesNoType::class, [
-                'required' => false,
-                'label' => t('Generovat tento produkt do HS-SPORT XML feedu'),
-            ])
             ->add('giftCertificate', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dárkový poukaz'),

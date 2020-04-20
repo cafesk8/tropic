@@ -153,11 +153,6 @@ class StoreFormType extends AbstractType
                 'constraints' => [
                     new Constraints\Length(['max' => 500, 'maxMessage' => 'Google Maps link cannot be longer than {{ limit }} characters']),
                 ],
-            ])
-            ->add('franchisor', YesNoType::class, [
-                'required' => false,
-                'label' => t('Je prodejna franchisa'),
-                'icon_title' => t('Změna této hodnoty se projeví do 2 hodin'),
             ]);
 
         return $infoGroup;

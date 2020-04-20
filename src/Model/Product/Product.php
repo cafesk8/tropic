@@ -83,18 +83,6 @@ class Product extends BaseProduct
     protected $productGifts;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    protected $generateToHsSportXmlFeed;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    protected $finished;
-
-    /**
      * @var string[]
      *
      * @ORM\Column(type="json", nullable=false)
@@ -211,8 +199,6 @@ class Product extends BaseProduct
     protected function fillCommonProperties(ProductData $productData): void
     {
         $this->catnum = $productData->catnum;
-        $this->generateToHsSportXmlFeed = $productData->generateToHsSportXmlFeed;
-        $this->finished = $productData->finished;
         $this->mallExport = $productData->mallExport;
         $this->mallExportedAt = $productData->mallExportedAt;
         $this->baseName = $productData->baseName;
@@ -364,7 +350,7 @@ class Product extends BaseProduct
         return array_filter(
             $this->getStoreStocks(),
             function (ProductStoreStock $productStoreStock) {
-                return $productStoreStock->getStockQuantity() > 0 && $productStoreStock->getStore()->isFranchisor() === false;
+                return $productStoreStock->getStockQuantity() > 0;
             }
         );
     }
@@ -419,22 +405,6 @@ class Product extends BaseProduct
                     && $productStoreStock->getStore()->isCentralStore();
             }
         );
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGenerateToHsSportXmlFeed(): bool
-    {
-        return $this->generateToHsSportXmlFeed;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFinished(): bool
-    {
-        return $this->finished;
     }
 
     /**

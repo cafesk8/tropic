@@ -7,7 +7,6 @@ namespace App\Controller\Front;
 use App\Component\Setting\Setting;
 use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
-use App\Model\Category\CategoryFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade;
 use Shopsys\FrameworkBundle\Model\Slider\SliderItemFacade;
@@ -38,11 +37,6 @@ class HomepageController extends FrontBaseController
     private $blogArticleFacade;
 
     /**
-     * @var \App\Model\Category\CategoryFacade
-     */
-    private $categoryFacade;
-
-    /**
      * @var \App\Model\Article\ArticleFacade
      */
     private $articleFacade;
@@ -57,7 +51,6 @@ class HomepageController extends FrontBaseController
      * @param \Shopsys\FrameworkBundle\Model\Seo\SeoSettingFacade $seoSettingFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
-     * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Article\ArticleFacade $articleFacade
      * @param \App\Model\Product\View\ListedProductViewElasticFacade $listedProductViewFacade
      */
@@ -66,7 +59,6 @@ class HomepageController extends FrontBaseController
         SeoSettingFacade $seoSettingFacade,
         Domain $domain,
         BlogArticleFacade $blogArticleFacade,
-        CategoryFacade $categoryFacade,
         ArticleFacade $articleFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade
     ) {
@@ -74,7 +66,6 @@ class HomepageController extends FrontBaseController
         $this->seoSettingFacade = $seoSettingFacade;
         $this->domain = $domain;
         $this->blogArticleFacade = $blogArticleFacade;
-        $this->categoryFacade = $categoryFacade;
         $this->articleFacade = $articleFacade;
         $this->listedProductViewFacade = $listedProductViewFacade;
     }
@@ -97,7 +88,6 @@ class HomepageController extends FrontBaseController
                 self::HOMEPAGE_ARTICLES_LIMIT
             ),
             'domainId' => $this->domain->getId(),
-            'legendaryCategoryId' => $this->categoryFacade->getHighestLegendaryCategoryIdByDomainId($this->domain->getId()),
             'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
         ]);
     }

@@ -49,7 +49,6 @@ class OrderDataFactory extends BaseOrderDataFactory
         $orderData->gtmCoupons[] = $order->getGtmCoupons();
         $orderData->store = $order->getStore();
         $orderData->pickupPlace = $order->getPickupPlace();
-        $orderData->memberOfLoyaltyProgram = $order->isMemberOfLoyaltyProgram();
         $orderData->transportType = $order->getTransportType();
         $orderData->promoCodesCodes[] = $order->getPromoCodesCodes();
         $orderData->trackingNumber = $order->getTrackingNumber();

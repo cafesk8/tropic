@@ -254,13 +254,6 @@ class Order extends BaseOrder
     private $gtmCoupons;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $memberOfLoyaltyProgram;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="string", length=50, nullable=false)
@@ -341,7 +334,6 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
-        $this->memberOfLoyaltyProgram = $orderData->memberOfLoyaltyProgram;
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
         $this->giftCertificates = new ArrayCollection();
@@ -367,7 +359,6 @@ class Order extends BaseOrder
         $this->mallStatus = $orderData->mallStatus;
         $this->statusCheckedAt = $orderData->statusCheckedAt;
         $this->gtmCoupons = $this->getPromoCodesString($orderData->gtmCoupons);
-        $this->memberOfLoyaltyProgram = $orderData->memberOfLoyaltyProgram;
         $this->promoCodesCodes = $this->getPromoCodesString($orderData->promoCodesCodes);
         $this->trackingNumber = $orderData->trackingNumber;
         $this->giftCertificates = new ArrayCollection($orderData->giftCertificates);
@@ -542,22 +533,6 @@ class Order extends BaseOrder
     public function setCustomerTransferId(?string $customerTransferId): void
     {
         $this->customerTransferId = $customerTransferId;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMemberOfLoyaltyProgram(): bool
-    {
-        return $this->memberOfLoyaltyProgram;
-    }
-
-    /**
-     * @param bool $memberOfLoyaltyProgram
-     */
-    public function setMemberOfLoyaltyProgram(bool $memberOfLoyaltyProgram): void
-    {
-        $this->memberOfLoyaltyProgram = $memberOfLoyaltyProgram;
     }
 
     /**

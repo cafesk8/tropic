@@ -206,9 +206,9 @@ class CartController extends FrontBaseController
         $form->handleRequest($request);
 
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
-        $topProducts = $this->listedProductViewFacade->getAllTop();
         $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
         $this->gtmFacade->onCartPage($orderPreview);
+
         return $this->render('Front/Content/Cart/index.html.twig', [
             'cart' => $cart,
             'cartItems' => $cartItems,
@@ -222,7 +222,6 @@ class CartController extends FrontBaseController
             'productsPrice' => $productsPrice,
             'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
             'promoCodesIndexedById' => $orderPreview->getPromoCodesIndexedById(),
-            'topProducts' => $topProducts,
             'locale' => $this->domain->getLocale(),
             'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser)),
             'nextLevelDifference' => $this->orderGiftFacade->getNextLevelDifference($productsPrice->getPriceWithVat(), $domainId),

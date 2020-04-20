@@ -135,13 +135,6 @@ class Store implements PickupPlaceInterface
      *
      * @ORM\Column(type="boolean")
      */
-    private $franchisor;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
     private $centralStore;
 
     /**
@@ -164,7 +157,6 @@ class Store implements PickupPlaceInterface
         $this->region = $storeData->region;
         $this->externalNumber = $storeData->externalNumber;
         $this->showOnStoreList = $storeData->showOnStoreList;
-        $this->franchisor = $storeData->franchisor;
         $this->centralStore = $storeData->centralStore;
     }
 
@@ -197,7 +189,6 @@ class Store implements PickupPlaceInterface
         $this->region = $storeData->region;
         $this->externalNumber = $storeData->externalNumber;
         $this->showOnStoreList = $storeData->showOnStoreList;
-        $this->franchisor = $storeData->franchisor;
         $this->centralStore = $storeData->centralStore;
     }
 
@@ -343,14 +334,6 @@ class Store implements PickupPlaceInterface
     public function isShowOnStoreList(): bool
     {
         return $this->showOnStoreList;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFranchisor(): bool
-    {
-        return $this->franchisor;
     }
 
     /**

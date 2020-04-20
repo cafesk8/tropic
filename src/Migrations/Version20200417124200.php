@@ -7,21 +7,20 @@ namespace App\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 
-class Version20190819100442 extends AbstractMigration
+class Version20200417124200 extends AbstractMigration
 {
     /**
      * @param \Doctrine\DBAL\Schema\Schema $schema
      */
-    public function up(Schema $schema): void
+    public function up(Schema $schema)
     {
-        $this->sql('ALTER TABLE categories ADD legendary_category BOOLEAN NOT NULL DEFAULT FALSE ');
-        $this->sql('ALTER TABLE categories ALTER legendary_category DROP DEFAULT');
+        $this->sql('ALTER TABLE stores DROP COLUMN IF EXISTS franchisor;');
     }
 
     /**
      * @param \Doctrine\DBAL\Schema\Schema $schema
      */
-    public function down(Schema $schema): void
+    public function down(Schema $schema)
     {
     }
 }

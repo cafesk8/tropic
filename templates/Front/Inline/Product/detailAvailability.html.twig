@@ -9,17 +9,14 @@
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
             <span class="in-availability__text-big">
-                {{ 'nebo ihned na '}}
+                {{ 'nebo dnes na'|trans }}
             </span>
             <a
                 href="#"
                 class="in-availability__stores-big underline-small js-detail-availability-window-opener"
                 data-product-id="{{ product.id }}"
                 >
-                {% transchoice stocksWithoutZeroQuantityOnPickupPlaceStore|length with { '%stocksWithoutZeroQuantityOnStoreCount%': stocksWithoutZeroQuantityOnPickupPlaceStore|length } %}
-                {1} %stocksWithoutZeroQuantityOnStoreCount% prodejně|
-                [2,Inf] %stocksWithoutZeroQuantityOnStoreCount% prodejnách
-                {% endtranschoice %}
+                {{ 'prodejně'|trans }}
             </a>
         {% endif %}
         <div class="display-none js-availability-table_{{ product.id }}">

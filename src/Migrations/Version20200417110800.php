@@ -7,15 +7,15 @@ namespace App\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Shopsys\MigrationBundle\Component\Doctrine\Migrations\AbstractMigration;
 
-class Version20190711121847 extends AbstractMigration
+class Version20200417110800 extends AbstractMigration
 {
     /**
      * @param \Doctrine\DBAL\Schema\Schema $schema
      */
     public function up(Schema $schema)
     {
-        $this->sql('ALTER TABLE categories ADD displayed_in_first_column BOOLEAN NOT NULL DEFAULT FALSE');
-        $this->sql('ALTER TABLE categories ALTER displayed_in_first_column DROP DEFAULT');
+        $this->sql('ALTER TABLE products DROP COLUMN IF EXISTS finished;');
+        $this->sql('ALTER TABLE products DROP COLUMN IF EXISTS generate_to_hs_sport_xml_feed;');
     }
 
     /**

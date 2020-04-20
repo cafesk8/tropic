@@ -313,9 +313,6 @@
 20190416130355:
     class: App\Migrations\Version20190416130355
     skip: false
-20190503153037:
-    class: App\Migrations\Version20190503153037
-    skip: false
 20190426111214:
     class: App\Migrations\Version20190426111214
     skip: false
@@ -424,9 +421,6 @@
 20190710083659:
     class: App\Migrations\Version20190710083659
     skip: false
-20190711121847:
-    class: App\Migrations\Version20190711121847
-    skip: false
 20190712102008:
     class: App\Migrations\Version20190712102008
     skip: false
@@ -490,14 +484,8 @@
 20190801121143:
     class: App\Migrations\Version20190801121143
     skip: false
-20190731151412:
-    class: App\Migrations\Version20190731151412
-    skip: false
 20190814092835:
     class: App\Migrations\Version20190814092835
-    skip: false
-20190816074929:
-    class: App\Migrations\Version20190816074929
     skip: false
 20190812162326:
     class: App\Migrations\Version20190812162326
@@ -525,9 +513,6 @@
     skip: false
 20190822142492:
     class: App\Migrations\Version20190822142492
-    skip: false
-20190819100442:
-    class: App\Migrations\Version20190819100442
     skip: false
 20190823162522:
     class: App\Migrations\Version20190823162522
@@ -997,9 +982,6 @@
 20200211110913:
     class: Shopsys\FrameworkBundle\Migrations\Version20200211110913
     skip: false
-20200306175812:
-    class: App\Migrations\Version20200306175812
-    skip: false
 20200309100421:
     class: App\Migrations\Version20200309100421
     skip: false
@@ -1077,4 +1059,16 @@
     skip: false
 20200409131600:
     class: App\Migrations\Version20200409131600
+    skip: false
+20200417110800:
+    class: App\Migrations\Version20200417110800
+    skip: false
+20200417114600:
+    class: App\Migrations\Version20200417114600
+    skip: false
+20200417124200:
+    class: App\Migrations\Version20200417124200
+    skip: false
+20200417143600:
+    class: App\Migrations\Version20200417143600
     skip: false

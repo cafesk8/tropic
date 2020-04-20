@@ -91,11 +91,6 @@ class StoreData
     /**
      * @var bool
      */
-    public $franchisor;
-
-    /**
-     * @var bool
-     */
     public $centralStore;
 
     public function __construct()
@@ -103,7 +98,6 @@ class StoreData
         $this->images = new ImageUploadData();
         $this->pickupPlace = false;
         $this->showOnStoreList = true;
-        $this->franchisor = false;
         $this->centralStore = false;
     }
 }

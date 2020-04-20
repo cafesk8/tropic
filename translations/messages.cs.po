@@ -865,9 +865,6 @@ msgstr "Příjmení"
 msgid "Last order"
 msgstr "Poslední objednávka"
 
-msgid "Legendární kategorie"
-msgstr "Speciální kategorie"
-
 msgid "Levý textový baner dole"
 msgstr "Levý textový baner dole"
 

@@ -78,8 +78,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->rightBannerTexts[$locale] = t('Red seems a little smaller next to blue and green, but that\'s probably just an optical illusion', [], 'dataFixtures');
         }
         $categoryData->preListingCategory = true;
-        $categoryData->legendaryCategory = true;
-        $categoryData->displayedInHorizontalMenu = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_ELECTRONICS);
 
@@ -92,8 +90,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->rightBannerTexts[$locale] = null;
         }
         $categoryData->preListingCategory = false;
-        $categoryData->displayedInHorizontalMenu = false;
-        $categoryData->legendaryCategory = true;
         $categoryElectronics = $this->getReference(self::CATEGORY_ELECTRONICS);
         $categoryData->parent = $categoryElectronics;
         $this->createCategory($categoryData, self::CATEGORY_TV);
@@ -104,8 +100,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->descriptions[$domainConfig->getId()] = t('A camera is an optical instrument for recording or capturing images, which may be stored locally, '
                 . 'transmitted to another location, or both.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
-        $categoryData->legendaryCategory = false;
         $this->createCategory($categoryData, self::CATEGORY_PHOTO);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -114,7 +108,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->descriptions[$domainConfig->getId()] = t('A printer is a peripheral which makes a persistent human readable representation of graphics or text on paper '
                 . 'or similar physical media.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PRINTERS);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -125,7 +118,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'time-sharing models that allowed larger, more expensive minicomputer and mainframe systems to be used by many people, '
                 . 'usually at the same time.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PC);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -136,7 +128,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'into electronic signals suitable for transmission via cables or other transmission media over long distances, '
                 . 'and replays such signals simultaneously in audible form to its user.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_PHONES);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -148,7 +139,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'a cooking pot in the kettle family. Cold water is poured into a separate chamber, which is than heated up to the '
                 . 'boiling point, and directed into the funnel.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_COFFEE);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -159,7 +149,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'is a page. A set of text-filled or illustrated pages produced in electronic format is known as an electronic book, '
                 . 'or e-book.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = true;
         $categoryData->parent = $rootCategory;
         $this->createCategory($categoryData, self::CATEGORY_BOOKS);
 
@@ -170,7 +159,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'Playing with toys is an enjoyable means of training young children for life in society. Different materials are '
                 . 'used to make toys enjoyable to all ages.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = true;
         $this->createCategory($categoryData, self::CATEGORY_TOYS);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -179,7 +167,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->descriptions[$domainConfig->getId()] = t('A garden tool is any one of many tools made for gardens and gardening and overlaps with the range of tools '
                 . 'made for agriculture and horticulture. Garden tools can also be hand tools and power tools.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_GARDEN_TOOLS);
 
         foreach ($this->domain->getAll() as $domainConfig) {
@@ -190,7 +177,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'is ingested by an organism and assimilated by the organism\'s cells to provide energy, maintain life, '
                 . 'or stimulate growth.', [], 'dataFixtures', $locale);
         }
-        $categoryData->displayedInHorizontalMenu = false;
         $this->createCategory($categoryData, self::CATEGORY_FOOD);
     }
 

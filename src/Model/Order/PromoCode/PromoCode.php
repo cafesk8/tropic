@@ -23,7 +23,6 @@ class PromoCode extends BasePromoCode
 
     public const USER_TYPE_ALL = 'all_users';
     public const USER_TYPE_LOGGED = 'logged_users';
-    public const USER_TYPE_LOYALTY_PROGRAM_MEMBERS = 'loyalty_program_member_users';
 
     public const LIMIT_TYPE_ALL = 'all';
     public const LIMIT_TYPE_BRANDS = 'brands';
@@ -347,7 +346,7 @@ class PromoCode extends BasePromoCode
      */
     public function setUserType(string $userType): void
     {
-        if (in_array($userType, [self::USER_TYPE_ALL, self::USER_TYPE_LOGGED, self::USER_TYPE_LOYALTY_PROGRAM_MEMBERS], true) === false) {
+        if (in_array($userType, [self::USER_TYPE_ALL, self::USER_TYPE_LOGGED], true) === false) {
             throw new InvalidPromoCodeUsageTypeException(sprintf('Invalid promo code user type `%s`', $userType));
         }
 
@@ -368,14 +367,6 @@ class PromoCode extends BasePromoCode
     public function isUserTypeLogged(): bool
     {
         return $this->userType === self::USER_TYPE_LOGGED;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUserTypeLoyaltyProgramMembers(): bool
-    {
-        return $this->userType === self::USER_TYPE_LOYALTY_PROGRAM_MEMBERS;
     }
 
     /**

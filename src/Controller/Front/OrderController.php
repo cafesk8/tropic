@@ -424,8 +424,6 @@ class OrderController extends FrontBaseController
 
                 $this->orderFacade->sendSms($order);
 
-                $this->session->set(self::SESSION_CREATED_ORDER, $order->getId());
-
                 return $this->redirectToRoute('front_order_sent');
             }
         }
@@ -700,14 +698,6 @@ class OrderController extends FrontBaseController
             }
         }
 
-        $registrationForm = null;
-
-        if ($goPayData === null && $payPalApprovalLink === null && $this->isUserLoggedOrRegistered($order->getEmail()) === false) {
-            $registrationForm = $this->createForm(NewPasswordFormType::class, null, [
-                'action' => $this->generateUrl('front_order_register_customer', ['orderId' => $orderId]),
-            ]);
-        }
-
         $this->gtmFacade->onOrderSentPage($order);
 
         return $this->render('Front/Content/Order/sent.html.twig', [
@@ -715,7 +705,6 @@ class OrderController extends FrontBaseController
             'order' => $order,
             'goPayData' => $goPayData,
             'payPalApprovalLink' => $payPalApprovalLink,
-            'registrationForm' => $registrationForm !== null ? $registrationForm->createView() : null,
             'homepageBlogArticles' => $this->blogArticleFacade->getHomepageBlogArticlesByDomainId(
                 $this->domain->getId(),
                 $this->domain->getLocale(),

@@ -35,9 +35,7 @@ class CustomerUserUpdateFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customerUserData', CustomerUserFormType::class, [
-                'user' => $options['user'],
-            ])
+            ->add('customerUserData', CustomerUserFormType::class)
             ->add('billingAddressData', BillingAddressFormType::class, [
                 'domain_id' => $options['domain_id'],
             ])

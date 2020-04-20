@@ -88,11 +88,6 @@ class OrderData extends BaseOrderData
     public $mallStatus;
 
     /**
-     * @var bool
-     */
-    public $memberOfLoyaltyProgram;
-
-    /**
      * @var string|null
      */
     public $transportType;
@@ -127,7 +122,6 @@ class OrderData extends BaseOrderData
         parent::__construct();
         $this->updatedAt = new DateTime();
         $this->statusCheckedAt = new DateTime();
-        $this->memberOfLoyaltyProgram = false;
         $this->transportType = Transport::TYPE_NONE;
         $this->promoCodesCodes = [];
         $this->registration = false;

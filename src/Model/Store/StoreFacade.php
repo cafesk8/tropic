@@ -122,7 +122,6 @@ class StoreFacade
      */
     public function edit(Store $store, StoreData $storeData): Store
     {
-        $isStoreFranchiseChanged = $store->isFranchisor() !== $storeData->franchisor;
         $store->edit($storeData);
         $this->uploadImage($store, $storeData);
 

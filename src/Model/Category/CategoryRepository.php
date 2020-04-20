@@ -46,18 +46,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomain;
 class CategoryRepository extends BaseCategoryRepository
 {
     /**
-     * @param int $domainId
-     * @return \App\Model\Category\Category[]
-     */
-    public function getAllVisibleCategoriesForFirstColumnByDomainId(int $domainId): array
-    {
-        return $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId)
-            ->andWhere('c.displayedInFirstColumn = TRUE')
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
      * @return \Doctrine\ORM\EntityRepository
      */
     private function getProductCategoryDomainRepository(): EntityRepository
@@ -155,27 +143,6 @@ class CategoryRepository extends BaseCategoryRepository
         return $this->getProductVisibleAndListableProductCategoryDomainsQueryBuilder($product, $domainId)
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * @param int $domainId
-     * @return int|null
-     */
-    public function getHighestLegendaryCategoryIdByDomainId(int $domainId): ?int
-    {
-        /** @var \App\Model\Category\Category|null $highestCategory */
-        $highestCategory = $this
-            ->getAllVisibleByDomainIdQueryBuilder($domainId)
-            ->andWhere('c.legendaryCategory = TRUE')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        if ($highestCategory !== null) {
-            return $highestCategory->getId();
-        }
-
-        return null;
     }
 
     /**
