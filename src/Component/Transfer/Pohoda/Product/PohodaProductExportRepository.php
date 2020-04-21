@@ -12,16 +12,27 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 class PohodaProductExportRepository
 {
-    private const DEFAULT_POHODA_STOCK_ID = self::POHODA_STOCK_TROPIC_ID;
+    public const DEFAULT_POHODA_STOCK_ID = self::POHODA_STOCK_TROPIC_ID;
 
-    private const POHODA_STOCK_TROPIC_ID = 10;
+    public const POHODA_STOCK_SALE_ID = 2;
 
-    private const POHODA_STOCK_SALE_ID = 2;
+    public const POHODA_STOCK_STORE_ID = 4;
 
-    private const POHODA_STOCK_STORE_SALE_ID = 13;
+    public const POHODA_STOCK_TROPIC_ID = 10;
+
+    public const POHODA_STOCK_EXTERNAL_ID = 11;
+
+    public const POHODA_STOCK_STORE_SALE_ID = 13;
 
     public const SALE_STOCK_IDS_ORDERED_BY_PRIORITY = [
         self::POHODA_STOCK_SALE_ID,
+        self::POHODA_STOCK_STORE_SALE_ID,
+    ];
+
+    public const PRODUCT_STOCK_IDS = [
+        self::POHODA_STOCK_SALE_ID,
+        self::POHODA_STOCK_STORE_ID,
+        self::POHODA_STOCK_TROPIC_ID,
         self::POHODA_STOCK_STORE_SALE_ID,
     ];
 
@@ -160,6 +171,48 @@ class PohodaProductExportRepository
             ->setParameters([
                 'catnums' => $catnums,
                 'stocks' => self::SALE_STOCK_IDS_ORDERED_BY_PRIORITY,
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param string[] $catnums
+     * @return array
+     */
+    public function getStockInformationByCatnums(array $catnums): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('IDS', PohodaProduct::COL_CATNUM)
+            ->addScalarResult('RefSklad', PohodaProduct::COL_STOCK_ID)
+            ->addScalarResult('VPrExtSklad', PohodaProduct::COL_EXTERNAL_STOCK)
+            ->addScalarResult('StavZ', PohodaProduct::COL_STOCK_TOTAL)
+            ->addScalarResult('Rezer', PohodaProduct::COL_STOCK_RESERVED)
+            ->addScalarResult('ObjedP', PohodaProduct::COL_STOCK_ORDERED_P)
+            ->addScalarResult('ObjedV', PohodaProduct::COL_STOCK_ORDERED_V)
+            ->addScalarResult('Reklam', PohodaProduct::COL_STOCK_COMPLAINT);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT
+                Product.IDS,
+                Product.RefSklad,
+                SUM(Product.VPrExtSklad) AS "VPrExtSklad",
+                SUM(Stock.StavZ) AS "StavZ",
+                SUM(Stock.Rezer) AS "Rezer",
+                SUM(Stock.ObjedP) AS "ObjedP",
+                SUM(Stock.ObjedV) AS "ObjedV",
+                SUM(Stock.Reklam) AS "Reklam"
+            FROM SKzBuf Stock
+            JOIN Skz Product ON Product.ID = Stock.RefSKz
+            WHERE Product.IDS IN (:catnums)
+                AND Product.IObchod = 1
+                AND Product.RefSklad IN (:stocks)
+            GROUP BY Product.IDS, Product.RefSklad',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'catnums' => $catnums,
+                'stocks' => self::PRODUCT_STOCK_IDS,
             ]);
 
         return $query->getResult();

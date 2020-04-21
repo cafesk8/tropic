@@ -61,6 +61,7 @@ class PohodaProductExportFacade
         $this->addProductCategoriesToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
 
         $pohodaProductsResult = $this->reindexPohodaProductsResultByCatnums($pohodaProductsResult);
+        $this->addStocksInformationToPohodaProductsResult($pohodaProductsResult);
         $this->addSaleInformationToPohodaProductsResult($pohodaProductsResult);
 
         return $this->getValidPohodaProducts($pohodaProductsResult);
@@ -94,6 +95,24 @@ class PohodaProductExportFacade
     /**
      * @param array $pohodaProductsResult
      */
+    private function addStocksInformationToPohodaProductsResult(array &$pohodaProductsResult): void
+    {
+        $stocksInformation = $this->pohodaProductExportRepository->getStockInformationByCatnums(array_column($pohodaProductsResult, PohodaProduct::COL_CATNUM));
+        foreach ($stocksInformation as $information) {
+            if (isset($pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]])) {
+                $availableStock = $information[PohodaProduct::COL_STOCK_TOTAL] - $information[PohodaProduct::COL_STOCK_ORDERED_P] - $information[PohodaProduct::COL_STOCK_ORDERED_V] - $information[PohodaProduct::COL_STOCK_RESERVED] - $information[PohodaProduct::COL_STOCK_COMPLAINT];
+
+                $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = (int)$availableStock;
+                if ((int)$information[PohodaProduct::COL_STOCK_ID] === PohodaProductExportRepository::DEFAULT_POHODA_STOCK_ID && $information[PohodaProduct::COL_EXTERNAL_STOCK] !== null) {
+                    $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID] = (int)$information[PohodaProduct::COL_EXTERNAL_STOCK];
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array $pohodaProductsResult
+     */
     private function addSaleInformationToPohodaProductsResult(array &$pohodaProductsResult): void
     {
         $saleInformation = $this->pohodaProductExportRepository->getSaleInformationByCatnums(array_column($pohodaProductsResult, PohodaProduct::COL_CATNUM));
@@ -116,6 +135,7 @@ class PohodaProductExportFacade
         foreach ($pohodaProductsResult as $pohodaProductResult) {
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]] = $pohodaProductResult;
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_SALE_INFORMATION] = [];
+            $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION] = [];
         }
 
         return $reindexedPohodaProductsResult;
