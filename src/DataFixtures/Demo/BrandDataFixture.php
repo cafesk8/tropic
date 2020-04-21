@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use App\Model\Product\Brand\Brand;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -37,9 +36,8 @@ class BrandDataFixture extends AbstractReferenceFixture
     public const BRAND_OLYMPUS = 'brand_olympus';
     public const BRAND_HYUNDAI = 'brand_hyundai';
     public const BRAND_NIKON = 'brand_nikon';
-    public const BRAND_SHOPSYS = 'brand_shopsys';
 
-    /** @var \App\Model\Product\Brand\BrandFacade */
+    /** @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade */
     protected $brandFacade;
 
     /** @var \App\Model\Product\Brand\BrandDataFactory */
@@ -51,7 +49,7 @@ class BrandDataFixture extends AbstractReferenceFixture
     protected $domain;
 
     /**
-     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Model\Product\Brand\BrandDataFactory $brandDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
@@ -71,9 +69,6 @@ class BrandDataFixture extends AbstractReferenceFixture
 
         foreach ($this->getBrandNamesIndexedByBrandConstants() as $brandConstant => $brandName) {
             $brandData->name = $brandName;
-            if ($brandConstant === self::BRAND_SHOPSYS) {
-                $brandData->type = Brand::TYPE_MAIN_SHOPSYS;
-            }
 
             foreach ($this->domain->getAllLocales() as $locale) {
                 $brandData->descriptions[$locale] = t('Toto je popis značky %brandName%.', ['%brandName%' => $brandData->name], 'dataFixtures', $locale);
@@ -114,7 +109,6 @@ class BrandDataFixture extends AbstractReferenceFixture
             self::BRAND_OLYMPUS => 'Olympus',
             self::BRAND_HYUNDAI => 'Hyundai',
             self::BRAND_NIKON => 'Nikon',
-            self::BRAND_SHOPSYS => 'Shopsys',
         ];
     }
 }

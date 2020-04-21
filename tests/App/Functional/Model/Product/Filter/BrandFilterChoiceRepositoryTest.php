@@ -17,7 +17,7 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
     {
         $brandFilterChoices = $this->getChoicesForCategoryReference(CategoryDataFixture::CATEGORY_BOOKS);
 
-        $this->assertCount(1, $brandFilterChoices);
+        $this->assertCount(0, $brandFilterChoices);
     }
 
     public function testBrandFilterChoicesFromCategoryWithBrands(): void
@@ -67,7 +67,7 @@ class BrandFilterChoiceRepositoryTest extends TransactionFunctionalTestCase
     {
         $brandFilterChoices = $this->getChoicesForSearchText('47');
 
-        $this->assertCount(2, $brandFilterChoices);
+        $this->assertCount(1, $brandFilterChoices);
 
         $this->assertSame(3, $brandFilterChoices[0]->getId());
     }

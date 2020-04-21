@@ -16,7 +16,7 @@ class BrandDataFactory extends BaseBrandDataFactory
 {
     /**
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
-     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Component\Image\ImageFacade $imageFacade
      */
@@ -36,7 +36,6 @@ class BrandDataFactory extends BaseBrandDataFactory
     {
         $brandData = new BrandData();
         $this->fillNew($brandData);
-        $brandData->type = Brand::TYPE_DEFAULT;
 
         return $brandData;
     }
@@ -49,7 +48,6 @@ class BrandDataFactory extends BaseBrandDataFactory
     {
         $brandData = new BrandData();
         $this->fillFromBrand($brandData, $brand);
-        $brandData->type = $brand->getType();
 
         return $brandData;
     }

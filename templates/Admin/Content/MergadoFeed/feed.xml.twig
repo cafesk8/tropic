@@ -36,7 +36,9 @@
                 <BENEFIT>{{ benefit }}</BENEFIT>
             {% endfor -%}
         {% endif -%}
-        <BRAND>{{ item.brand }}</BRAND>
+        {% if item.brand is not null %}
+            <BRAND>{{ item.brand }}</BRAND>
+        {% endif %}
         <PRICE>{{ item.priceWithoutVat }}</PRICE>
         <PRICE_VAT>{{ item.priceWithVat }}</PRICE_VAT>
         <CURRENCY>{{ item.currency }}</CURRENCY>

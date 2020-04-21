@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
-use App\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
@@ -24,11 +23,6 @@ use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 class ProductDataFactory extends BaseProductDataFactory
 {
     /**
-     * @var \App\Model\Product\Brand\BrandFacade
-     */
-    private $brandFacade;
-
-    /**
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceFacade $productInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
@@ -41,7 +35,6 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginDataFormExtensionFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface $productParameterValueDataFactory
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      */
     public function __construct(
         VatFacade $vatFacade,
@@ -55,8 +48,7 @@ class ProductDataFactory extends BaseProductDataFactory
         ImageFacade $imageFacade,
         PluginCrudExtensionFacade $pluginDataFormExtensionFacade,
         ProductParameterValueDataFactoryInterface $productParameterValueDataFactory,
-        PricingGroupFacade $pricingGroupFacade,
-        BrandFacade $brandFacade
+        PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct(
             $vatFacade,
@@ -72,7 +64,6 @@ class ProductDataFactory extends BaseProductDataFactory
             $productParameterValueDataFactory,
             $pricingGroupFacade
         );
-        $this->brandFacade = $brandFacade;
     }
 
     /**
@@ -82,7 +73,6 @@ class ProductDataFactory extends BaseProductDataFactory
     {
         $productData = new ProductData();
         $this->fillNew($productData);
-        $productData->brand = $this->brandFacade->getMainShopsysBrand();
 
         return $productData;
     }

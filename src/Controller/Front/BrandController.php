@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
-use App\Model\Product\Brand\BrandFacade;
+use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Symfony\Component\HttpFoundation\Response;
 
 class BrandController extends FrontBaseController
 {
     /**
-     * @var \App\Model\Product\Brand\BrandFacade
+     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
      */
     private $brandFacade;
 
     /**
-     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      */
     public function __construct(
         BrandFacade $brandFacade

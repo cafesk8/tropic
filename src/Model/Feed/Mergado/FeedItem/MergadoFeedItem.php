@@ -59,7 +59,7 @@ class MergadoFeedItem implements FeedItemInterface
     protected $benefits;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $brand;
 
@@ -129,7 +129,7 @@ class MergadoFeedItem implements FeedItemInterface
      * @param string|null $descriptionShort
      * @param string|null $description
      * @param string[] $benefits
-     * @param string $brand
+     * @param string|null $brand
      * @param string $price
      * @param string $priceWithVat
      * @param string $currency
@@ -153,7 +153,7 @@ class MergadoFeedItem implements FeedItemInterface
         ?string $descriptionShort,
         ?string $description,
         array $benefits,
-        string $brand,
+        ?string $brand,
         string $price,
         string $priceWithVat,
         string $currency,
@@ -279,9 +279,9 @@ class MergadoFeedItem implements FeedItemInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getBrand(): string
+    public function getBrand(): ?string
     {
         return $this->brand;
     }

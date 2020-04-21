@@ -125,7 +125,6 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $countData->countByBrandId = [
             2 => 6,
             14 => 2,
-            25 => 2,
         ];
         $countData->countByFlagId = [
             1 => 5,
@@ -249,7 +248,6 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         ];
         $countData->countByBrandId = [
             14 => 2,
-            25 => 2,
         ];
         $countData->countByParameterIdAndValueId = [
             32 => [
@@ -306,9 +304,6 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
 
         $countData = new ProductFilterCountData();
         $countData->countInStock = 4;
-        $countData->countByBrandId = [
-            25 => 1,
-        ];
         $countData->countByParameterIdAndValueId = [
             32 => [
                 $this->getParameterValueIdForFirstDomain('Yes') => 4,
@@ -367,7 +362,6 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $countData->countByBrandId = [
             2 => 4,
             14 => 2,
-            25 => 2,
         ];
         $countData->countByFlagId = [
             1 => 4,
