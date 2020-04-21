@@ -11,8 +11,10 @@ use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
+use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
+use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
@@ -40,17 +42,29 @@ class PohodaProductMapper
     private $categoryFacade;
 
     /**
+     * @var \App\Model\Store\StoreFacade
+     */
+    private $storeFacade;
+
+    /**
+     * @var array
+     */
+    private $storesMapByPohodaId;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
+     * @param \App\Model\Store\StoreFacade $storeFacade
      */
-    public function __construct(Domain $domain, PricingGroupFacade $pricingGroupFacade, VatFacade $vatFacade, CategoryFacade $categoryFacade)
+    public function __construct(Domain $domain, PricingGroupFacade $pricingGroupFacade, VatFacade $vatFacade, CategoryFacade $categoryFacade, StoreFacade $storeFacade)
     {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->vatFacade = $vatFacade;
         $this->categoryFacade = $categoryFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -112,6 +126,39 @@ class PohodaProductMapper
         $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
         $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
         $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
+        $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
+        /* Please remove this after user story "Zobrazení skladové zásoby u produktu" - this line is temporarily for import */
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+    }
+
+    /**
+     * @param array $stocksInformation
+     * @return array
+     */
+    private function getMappedProductStocks(array $stocksInformation): array
+    {
+        $this->loadStoresMapByPohodaId();
+        $productStocks = [];
+        foreach ($stocksInformation as $pohodaStockId => $stock) {
+            if (isset($this->storesMapByPohodaId[$pohodaStockId])) {
+                $productStocks[$this->storesMapByPohodaId[$pohodaStockId]] = $stock;
+            }
+        }
+
+        return $productStocks;
+    }
+
+    private function loadStoresMapByPohodaId(): void
+    {
+        if (empty($this->storesMapByPohodaId)) {
+            $this->storesMapByPohodaId = [];
+            $stores = $this->storeFacade->getAll();
+            foreach ($stores as $store) {
+                if ($store->getExternalNumber() !== null) {
+                    $this->storesMapByPohodaId[$store->getExternalNumber()] = $store->getId();
+                }
+            }
+        }
     }
 
     /**
