@@ -27,6 +27,7 @@
             display: inline-block;
             vertical-align: middle;
             min-width: @in-paging-size;
+            padding: 0 5px;
             height: @in-paging-size;
             line-height: @in-paging-size;
             margin: @in-paging-item-gap / 2;
@@ -36,24 +37,29 @@
             border-radius: @radius-small;
             box-shadow: @box-shadow-outer;
 
+            &:hover {
+                text-decoration: none;
+            }
+
             &--num {
                 text-decoration: none;
-                background: @color-gray;
+                background-color: @color-turquoise;
                 border: 1px solid rgba(0,0,0,0.1);
                 color: @color-f;
+                transition: @transition;
 
                 &:hover {
-                    background: darken(@color-gray, 5%);
+                    background-color: darken(@color-primary, 5%);
                     color: @color-f;
                 }
 
                 &--active {
-                    background: @color-f;
+                    background-color: @color-f;
                     color: @color-base;
                     border: 1px solid @color-border-dark;
 
                     &:hover {
-                        background: @color-f;
+                        background-color: @color-f;
                         color: @color-base;
                     }
                 }

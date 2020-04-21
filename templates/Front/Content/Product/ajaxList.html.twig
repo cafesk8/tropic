@@ -17,6 +17,14 @@
         </div>
     </div>
     <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-        {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
+        {% if visibleChildren is not empty %}
+            <div class="box-list__categories">
+                {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren} %}
+            </div>
+        {% endif %}
+        {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForListAction')) }}
+        <div class="box-list__products">
+            {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted} %}
+        </div>
     </div>
 </div>

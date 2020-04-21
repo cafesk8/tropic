@@ -58,12 +58,7 @@
 
     <div class="web__line">
         <div class="web__container">
-            <div class="box-list__row">
-                <div class="box-list__row__column"></div>
-                <div class="box-list__row__column box-list__row__column--order">
-                    {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
-                </div>
-            </div>
+            {{ render(controller('App\\Controller\\Front\\ProductController:selectOrderingModeForSearchAction')) }}
         </div>
     </div>
 
@@ -88,7 +83,9 @@
                 {% endif %}
 
                 <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                    {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                    <div class="box-list__products">
+                        {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                    </div>
                 </div>
             </div>
         </div>

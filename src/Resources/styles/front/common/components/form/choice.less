@@ -6,7 +6,7 @@
     margin-bottom: 14px;
 
     &--block {
-        display: block;
+        width: 100%;
         margin-right: 0;
     }
 
@@ -27,5 +27,11 @@
 
     &__label {
         position: relative;
+
+        input:checked ~ & {
+            .form-choice__label__text {
+                font-weight: 700;
+            }
+        }
     }
 }

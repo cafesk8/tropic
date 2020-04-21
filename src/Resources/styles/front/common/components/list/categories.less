@@ -1,7 +1,7 @@
-@list-categories-item-gap: 20px;
-
 @list-categories-columns-count: 3;
-@list-categories-small-btn-height: @btn-height - 16;
+
+@list-categories-image-size: 56px;
+@list-categories-item-border-size: 1px;
 
 .list-categories {
     .reset-ul();
@@ -9,45 +9,25 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: -@list-categories-item-gap;
-
-    &__title {
-        margin-bottom: 30px;
-
-        font-family: @font-alt;
-        font-size: 18px; 
-        font-weight: 700;
-        text-transform: uppercase;
-    }
-
-    &__link {
-        position: relative;
-        overflow: hidden;
-        text-align: center;
-        
-        border-radius: @radius;
-
-        @media @query-lg {
-            width: 100%;
-        }
-    }
+    margin: 0 -@list-categories-item-border-size -@list-categories-item-border-size 0;
 
     &__item {
         display: flex;
         justify-content: center;
         width: 100%;
-        margin-left: @list-categories-item-gap;
-        margin-bottom: @list-categories-item-gap * 2;
+        padding: 4px 10px;
 
         font-size: 0;
+        border-bottom: @list-categories-item-border-size solid @color-border;
+        border-right: @list-categories-item-border-size solid @color-border;
 
         @media @query-lg {
-            width: calc(~"@{calc-base}/@{list-categories-columns-count} - @{list-categories-item-gap}");
+            width: calc(~"@{calc-base} / @{list-categories-columns-count}");
             margin-right: 0;
         }
 
         .list-categories--four-on-row & {
-            width: calc(~"@{calc-base}/2 - @{list-categories-item-gap}");
+            width: calc(~"@{calc-base} / 2");
             max-height: 300px;
 
             img {
@@ -55,7 +35,7 @@
             }
 
             @media @query-md {
-                width: calc(~"@{calc-base}/4 - @{list-categories-item-gap}");
+                width: calc(~"@{calc-base} / 4");
 
                 img {
                     max-height: 200px;
@@ -63,85 +43,42 @@
             }
         }
 
-        .list-categories--six-on-row & {
-            width: calc(~"@{calc-base}/2 - @{list-categories-item-gap}");
-            max-height: 300px;
+        &__link {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
 
-            img {
-                max-height: 150px;
+            &:hover {
+                text-decoration: none;
             }
+        }
 
-            @media @query-md {
-                width: calc(~"@{calc-base}/3 - @{list-categories-item-gap}");
-            }
+        &__image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: @list-categories-image-size;
+            height: @list-categories-image-size;
+        }
 
-            @media @query-lg {
-                width: calc(~"@{calc-base}/4 - @{list-categories-item-gap}");
-            }
-
-            @media @query-vl {
-                width: calc(~"@{calc-base}/5 - @{list-categories-item-gap}");
-
-                img {
-                    max-height: 130px;
-                }
-            }
-
-            @media @query-xl {
-                width: calc(~"@{calc-base}/6 - @{list-categories-item-gap}");
-            }
+        &__info {
+            display: flex;
+            align-items: center;
+            width: calc(~"100% - @{list-categories-image-size}");
+            padding-left: 16px;
         }
 
         &__text {
-            display: flex;
-            align-items: center;
-            line-height: 26px;
-            padding: 0 31px;
-            text-align: center;
+            line-height: 21px;
+            margin: 0;
 
-            color: @color-base;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: @color-primary;
 
-            @media @query-md {
-                line-height: 30px;
-
-                font-size: 18px;
+            &__name {
+                text-decoration: underline;
             }
-
-            @media @query-vl {
-                line-height: 36px;
-                text-align: left;
-
-                font-size: 24px;
-            }
-
-            &--text-right {
-                @media @query-lg {
-                    text-align: right;
-                    padding-top: 20px;
-                    padding-left: 66px;
-                }
-            }
-        }
-    }
-
-
-    &__button {
-        position: absolute;
-        bottom: 0;
-        display: block;
-        width: 100%;
-        text-align: center;
-        text-transform: uppercase;
-        padding: 10px;
-
-        background-color: @color-primary;
-        color: @color-f;
-        font-size: 16px;
-        font-weight: 700;
-
-        .list-categories--six-on-row & {
-            font-size: 12px;
         }
     }
 }

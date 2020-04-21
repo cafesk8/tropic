@@ -3,8 +3,8 @@
     <div id="js-selected-filters-box" class="box-filter__top">
         {% if filterFormSubmitted %}
             <div class="box-filter__selected">
-                <div class="box-filter__title box-filter__title--small-gap">
-                    {{ 'Vybrané filtry'|trans }}
+                <div class="box-filter__title">
+                    {{ 'Vaše filtry'|trans }}
                 </div>
                 {% if filterForm.minimalPrice.vars.data|length > 0 %}
                     {{ _self.filterRow('Cena od'|trans, filterForm.minimalPrice.vars.data|formatNumber ~ ' ' ~ currencySymbolByDomainId(domainId), filterForm.minimalPrice.vars.id, true) }}
@@ -36,9 +36,12 @@
                     {% endfor %}
                 {% endif %}
                 <div class="box-filter__selected__remove">
-                    <a href="{{ resetUrl }}" class="box-filter__selected__remove__link js-product-filter-reset-button">
-                        {{ 'Zrušit všechny filtry'|trans }}
+                    <a href="{{ resetUrl }}" class="box-filter__selected__remove__button btn js-product-filter-reset-button">
+                        {{ 'Smazat filtry'|trans }}
                     </a>
+                </div>
+                <div class="box-filter__selected__count js-not-implemented-yet">
+                    {{ 'Zobrazeno 55 produktů'|trans }}
                 </div>
             </div>
         {% endif %}

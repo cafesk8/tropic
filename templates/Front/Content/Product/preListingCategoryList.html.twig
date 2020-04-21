@@ -19,10 +19,10 @@
                 <div class="box-prelist__title">
                     {{ category.getSeoH1(domain.id)|default(category.name) }}
                 </div>
+                
+                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert': category.getAdvert(), 'sizeInfoName': 'category' })) }}
 
                 {% include 'Front/Content/Benefits/list.html.twig' %}
-
-                {{ render(controller('App\\Controller\\Front\\AdvertController:boxAction', {'advert': category.getAdvert(), 'sizeInfoName': 'category' })) }}
 
                 {% include 'Front/Content/Category/categoryList.html.twig' with {'categories': visibleChildren, 'currentCategory': category} %}
             </div>

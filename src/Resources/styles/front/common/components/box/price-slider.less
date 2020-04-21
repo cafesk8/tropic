@@ -1,13 +1,12 @@
-@box-price-slider-inputs-gap: 5px;
+@box-price-slider-inputs-gap: 8px;
 
-@box-price-slider-form-input-width: 60px;
+@box-price-slider-form-input-width: 65px;
+@box-price-slider-form-input-height: 36px;
 
 .box-price-slider {
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
-
-    border-radius: @radius-small;
 
     &__form {
         display: flex;
@@ -18,49 +17,40 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            width: @calc-base / 2;
 
             &__text {
                 padding-right: @box-price-slider-inputs-gap;
-
-                font-size: @font-size-small;
-                color: @color-gray;
             }
 
             &__currency {
                 padding-left: @box-price-slider-inputs-gap;
-
-                font-size: @font-size-small;
-                color: @color-gray;
             }
 
             input {
                 padding-right: 3px;
                 padding-left: 3px;
                 text-align: center;
+                width: @box-price-slider-form-input-width;
+                max-width: @box-price-slider-form-input-width;
+                height: @box-price-slider-form-input-height;
                 
                 font-size: @font-size-small;
-                font-weight: 700;
-
-                @media @query-lg {
-                    width: @box-price-slider-form-input-width;
-                    max-width: @box-price-slider-form-input-width;
-                }
+                font-weight: 400;
 
                 &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
                     color: @color-base;
                     opacity: 1; /* Firefox */
-                    font-weight: 700;
+                    font-weight: 400;
                 }
     
                 &:-ms-input-placeholder { /* Internet Explorer 10-11 */
                     color: @color-base;
-                    font-weight: 700;
+                    font-weight: 400;
                 }
     
                 &::-ms-input-placeholder { /* Microsoft Edge */
                     color: @color-base;
-                    font-weight: 700;
+                    font-weight: 400;
                 }
             }
 

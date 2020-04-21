@@ -12,9 +12,7 @@
                     {{ render(controller('App\\Controller\\Front\\BlogArticleController:mainBlogCategoryForBlogArticleAction', { blogArticle: blogArticle, spanClass: 'list-tags__tag' })) }}
                 </div>
                 <a href="{{ url }}" class="list-articles__item__content__title">
-                    <span>
-                        {{ blogArticle.name }}
-                    </span>
+                    {{ blogArticle.name }}
                 </a>
                 <div class="list-articles__item__content__text">
                     {{ blogArticle.perex }}

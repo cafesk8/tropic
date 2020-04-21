@@ -2,7 +2,7 @@
 @in-add-to-cart-button-padding: 13px;
 
 .in-add-to-cart {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     padding: @in-add-to-cart-inset-gap @in-add-to-cart-inset-gap @in-add-to-cart-inset-gap + 1;
 
@@ -39,8 +39,7 @@
 
         .in-add-to-cart--small & {
             padding: 0 @in-add-to-cart-button-padding / 2;
-
-            font-size: @font-size-extra-small - 1;
+            margin: 0 auto;
         }
 
         .svg {
@@ -49,10 +48,6 @@
             margin-right: 10px;
 
             font-size: 27px;
-
-            .in-add-to-cart--in-product-list & {
-                margin-right: 5px;
-            }
         }
 
         &:hover {
@@ -60,3 +55,7 @@
         }
     }
 }
+
+.in-add-to-cart-variant {
+    font-size: 16px;
+} 

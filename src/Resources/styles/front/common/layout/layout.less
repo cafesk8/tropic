@@ -69,17 +69,14 @@ img {
             margin: 0 @web-padding-small;
         }
 
-        @media @query-vl {
-            padding: 0 @web-padding;
-        }
-
         @media @query-xl {
             width: @web-width;
+            padding: 0 @web-padding;
             margin: 0 auto;
         }
 
         &--no-padding {
-            @media @query-vl {
+            @media @query-xl {
                 padding: 0;
             }
         }
@@ -104,10 +101,6 @@ img {
             @media @query-lg {
                 border-radius: @radius-big;
             }
-        }
-
-        &--top-line {
-            border-top: 1px solid @color-gray;
         }
 
         &--dark {

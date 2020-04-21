@@ -1,9 +1,11 @@
-@box-filter-padding: 30px;
-@box-filter-title-bottom-gap: 22px;
+@box-filter-padding: 17px;
+@box-filter-title-bottom-gap: 20px;
 @box-filter-section-gap: 50px;
 @box-filter-width: @box-list-panel-width;
 @box-filter-gap: @box-list-panel-gap;
-@box-filter-selected-cross-size: 11px;
+@box-filter-selected-cross-size: 12px;
+@box-filter-choice-arrow-size: 11px;
+@box-filter-choice-border-color: rgba(48,176,213,0.3);
 
 .box-filter {
     width: @box-filter-width;
@@ -17,7 +19,7 @@
     }
 
     &.active-mobile {
-        width: calc(~"100% - @{web-padding-small} * 2");
+        width: calc(~"100% - @{web-padding-small}");
         margin-right: 0;
 
         @media @query-vl {
@@ -26,47 +28,49 @@
     }
 
     &__top {
-        margin-bottom: 16px;
-        padding: @box-filter-padding;
+        margin-bottom: 20px;
+        padding: 3px;
 
-        background-color: @color-box;
+        background: linear-gradient(90deg, rgba(39,125,168,1) 0%, rgba(88,182,167,1) 33%, rgba(155,201,98,1) 66%, rgba(93,169,75,1) 100%);
         border-radius: @radius;
     }
 
     &__bottom {
-        border: 3px solid @color-border;
+        background-color: @color-box;
         border-radius: @radius;
     }
 
     &__title {
         display: block;
         margin-bottom: @box-filter-title-bottom-gap;
-        line-height: 15px;
+        line-height: 18px;
 
         color: @color-base;
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         text-transform: uppercase;
         text-decoration: none;
-
-        &--small-gap {
-            margin-bottom: 12px;
-        }
+        letter-spacing: 0.3px;
     }
 
     &__selected {
         display: flex;
         flex-direction: column;
+        padding: 22px @box-filter-padding @box-filter-padding;
+
+        background-color: @color-f;
+        border-radius: @radius - 2px;
 
         &__item {
             position: relative;
-            margin-bottom: 5px;
-            padding: 8px 27px 7px 12px;
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            line-height: 18px;
 
-            font-size: 13px;
-            border-radius: @radius-small;
+            font-size: @font-size-small;
+            border-radius: @radius;
             color: @color-base;
-            background-color: @color-f;
+            background-color: @color-light;
 
             .svg {
                 position: absolute;
@@ -75,33 +79,69 @@
 
                 cursor: pointer;
                 font-size: @box-filter-selected-cross-size;
-                color: @color-gray;
+                color: @color-turquoise;
             }
         }
 
         &__remove {
-            margin-top: 10px;
+            margin-bottom: 8px;
+        }
 
-            &__link {
-                font-size: 14px;
-                text-transform: uppercase;
-            }
+        &__count {
+            line-height: 18px;
+
+            font-size: @font-size-extra-small;
+            font-family: @font-alt;
         }
     }
 
     &__choice {
-        padding: 26px @box-filter-padding 20px @box-filter-padding;
         margin-bottom: -1px;
 
-        border-bottom: 1px solid @color-border;
+        border-bottom: 1px solid @box-filter-choice-border-color;
+
+        &--without-border {
+            border-bottom: 0;
+        }
 
         &__title {
-            display: inline-block;
-            vertical-align: middle;
-            margin: 0 10px 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            line-height: 18px;
+            padding: @box-filter-padding;
 
-            font-weight: bold;
+            color: @color-base;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+
+            &.open {
+                .svg {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .svg {
+                height: @box-filter-choice-arrow-size;
+
+                font-size: @box-filter-choice-arrow-size;
+                color: @color-turquoise;
+                transition: @transition;
+            }
         }
+
+        &__content {
+            padding: 0 @box-filter-padding;
+        }
+    }
+
+    &__price {
+        margin-bottom: 20px;
+        padding-top: 4px;
     }
 
     &__action {
