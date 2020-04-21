@@ -6,7 +6,6 @@ namespace App\Form\Admin;
 
 use App\Model\Order\PromoCode\PromoCode;
 use App\Model\Order\PromoCode\PromoCodeData;
-use App\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -22,6 +21,7 @@ use Shopsys\FrameworkBundle\Form\ProductsType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Product\Brand\Brand;
+use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 use Shopsys\FrameworkBundle\Twig\PriceExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -66,7 +66,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     private $priceExtension;
 
     /**
-     * @var \App\Model\Product\Brand\BrandFacade
+     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
      */
     private $brandFacade;
 
@@ -78,7 +78,7 @@ class PromoCodeFormTypeExtension extends AbstractTypeExtension
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Twig\PriceExtension $priceExtension
-     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      */
     public function __construct(Domain $domain, PriceExtension $priceExtension, BrandFacade $brandFacade, AdminDomainTabsFacade $adminDomainTabsFacade)

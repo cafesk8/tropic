@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Model\Order\PromoCode;
 
 use App\Model\Category\CategoryFacade;
-use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode as BasePromoCode;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeData as BasePromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCodeDataFactory as BasePromoCodeDataFactory;
+use Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade;
 
 class PromoCodeDataFactory extends BasePromoCodeDataFactory
 {
@@ -31,7 +31,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     private $productFacade;
 
     /**
-     * @var \App\Model\Product\Brand\BrandFacade
+     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
      */
     private $brandFacade;
 
@@ -43,7 +43,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
-     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      */
@@ -101,7 +101,9 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
         foreach ($promoCodeData->limits as $limit) {
             switch ($limit->getType()) {
                 case PromoCode::LIMIT_TYPE_BRANDS:
-                    $promoCodeData->brandLimits[] = $this->brandFacade->getById($limit->getObjectId());
+                    /** @var \App\Model\Product\Brand\Brand $brand */
+                    $brand = $this->brandFacade->getById($limit->getObjectId());
+                    $promoCodeData->brandLimits[] = $brand;
                     break;
                 case PromoCode::LIMIT_TYPE_CATEGORIES:
                     $promoCodeData->categoryLimits[] = $this->categoryFacade->getById($limit->getObjectId());

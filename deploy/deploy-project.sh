@@ -25,6 +25,7 @@ function deploy() {
         ["parameters.gtm_config.cs.container_id"]="${GTM_CONTAINER_ID_CS}"
         ["parameters.gtm_config.sk.container_id"]="${GTM_CONTAINER_ID_SK}"
         ["parameters.gtm_config.en.container_id"]="${GTM_CONTAINER_ID_EN}"
+        ["parameters.disable_form_fields_from_transfer"]=${DISABLE_FORM_FIELDS_FROM_TRANSFER}
     )
 
     VARS=(
