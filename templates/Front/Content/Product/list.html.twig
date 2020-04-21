@@ -67,26 +67,24 @@
 
         <div class="web__line">
             <div class="web__container">
-                {% if category.legendaryCategory == true %}
-                    <div class="box-list__bottom">
-                        <div class="box-list__bottom__description">
-                            <h3 class="box-list__bottom__title">
-                                {{ category.name }}
-                            </h3>
-                            <div class="box-list__bottom__description__text in-user-text js-category-description ">
-                                {{ category.getDescription(domain.id)|raw }}
-                            </div>
+                <div class="box-list__bottom">
+                    <div class="box-list__bottom__description">
+                        <h3 class="box-list__bottom__title">
+                            {{ category.name }}
+                        </h3>
+                        <div class="box-list__bottom__description__text in-user-text js-category-description ">
+                            {{ category.getDescription(domain.id)|raw }}
                         </div>
-                        {% if categoriesBlogArticles|length > 0 %}
-                            <div class="box-list__bottom__article">
-                                <h3 class="box-list__bottom__article__title">
-                                    {{ 'Mohlo by vás zajímat'|trans }}
-                                </h3>
-                                {% include 'Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list list-articles--white' } %}
-                            </div>
-                        {% endif %}
                     </div>
-                {% endif %}
+                    {% if categoriesBlogArticles|length > 0 %}
+                        <div class="box-list__bottom__article">
+                            <h3 class="box-list__bottom__article__title">
+                                {{ 'Mohlo by vás zajímat'|trans }}
+                            </h3>
+                            {% include 'Front/Content/Article/list.html.twig' with { blogArticles: categoriesBlogArticles, cssClass: 'list-articles--product-list list-articles--white' } %}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
