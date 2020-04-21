@@ -1,0 +1,17 @@
+{% extends '@ShopsysFramework/Admin/Layout/layoutWithPanel.html.twig' %}
+
+{% block title %}- {{ 'Seznam slev na celý nákup'|trans }}{% endblock %}
+{% block h1 %}{{ 'Seznam slev na celý nákup'|trans }}{% endblock %}
+
+{% block btn %}
+    <a href="{{ url('admin_orderdiscountlevel_new') }}" class="btn btn--plus wrap-bar__btn">
+        <i class="btn__icon">+</i>
+        {{ 'Vytvořit novou slevu na celý nákup'|trans }}
+    </a>
+{% endblock %}
+
+{% block main_content %}
+    {{ render(controller('ShopsysFrameworkBundle:Admin/Domain:domainTabs')) }}
+
+    {{ gridView.render() }}
+{% endblock %}

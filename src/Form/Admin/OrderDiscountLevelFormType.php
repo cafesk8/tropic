@@ -4,49 +4,51 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
-use App\Model\Order\Gift\OrderGift;
-use App\Model\Order\Gift\OrderGiftData;
-use App\Model\Order\Gift\OrderGiftFacade;
+use App\Model\Order\Discount\OrderDiscountLevel;
+use App\Model\Order\Discount\OrderDiscountLevelData;
+use App\Model\Order\Discount\OrderDiscountLevelFacade;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DomainType;
-use Shopsys\FrameworkBundle\Form\ProductsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class OrderGiftFormType extends AbstractType
+class OrderDiscountLevelFormType extends AbstractType
 {
     /**
      * @var \App\Model\Pricing\Currency\CurrencyFacade
      */
-    protected $currencyFacade;
+    private $currencyFacade;
 
     /**
-     * @var \App\Model\Order\Gift\OrderGiftFacade
+     * @var \App\Model\Order\Discount\OrderDiscountLevelFacade
      */
-    protected $orderGiftFacade;
+    private $orderDiscountLevelFacade;
 
     /**
-     * @var \App\Model\Order\Gift\OrderGift|null
+     * @var \App\Model\Order\Discount\OrderDiscountLevel|null
      */
-    protected $orderGift;
+    private $orderDiscountLevel;
 
     /**
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
-     * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
+     * @param \App\Model\Order\Discount\OrderDiscountLevelFacade $orderDiscountLevelFacade
      */
-    public function __construct(CurrencyFacade $currencyFacade, OrderGiftFacade $orderGiftFacade)
+    public function __construct(CurrencyFacade $currencyFacade, OrderDiscountLevelFacade $orderDiscountLevelFacade)
     {
         $this->currencyFacade = $currencyFacade;
-        $this->orderGiftFacade = $orderGiftFacade;
+        $this->orderDiscountLevelFacade = $orderDiscountLevelFacade;
     }
 
     /**
@@ -55,12 +57,12 @@ class OrderGiftFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->orderGift = $options['orderGift'];
+        $this->orderDiscountLevel = $options['orderDiscountLevel'];
         $domainId = $options['domainId'];
         $builder
             ->add('domainId', DomainType::class, [
                 'label' => t('Doména'),
-                'disabled' => $this->orderGift !== null,
+                'disabled' => $this->orderDiscountLevel !== null,
                 'attr' => [
                     'class' => 'js-domain-id-select',
                 ],
@@ -81,11 +83,17 @@ class OrderGiftFormType extends AbstractType
                 ],
                 'currency' => $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId)->getCode(),
             ])
-            ->add('products', ProductsType::class, [
-                'label' => t('Nabízené produkty'),
+            ->add('discountPercent', PercentType::class, [
+                'label' => t('Procentuální výše slevy'),
+                'type' => 'integer',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Vyberte prosím nějaké produkty',
+                        'message' => 'Zadejte prosím výši slevy',
+                    ]),
+                    new Regex(['pattern' => '/^\d+$/', 'message' => 'Zadejte prosím celé číslo.']),
+                    new Range([
+                        'min' => 1,
+                        'max' => 99,
                     ]),
                 ],
             ])
@@ -98,12 +106,12 @@ class OrderGiftFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired('orderGift')
+            ->setRequired('orderDiscountLevel')
             ->setRequired('domainId')
-            ->setAllowedTypes('orderGift', [OrderGift::class, 'null'])
+            ->setAllowedTypes('orderDiscountLevel', [OrderDiscountLevel::class, 'null'])
             ->setAllowedTypes('domainId', ['int'])
             ->setDefaults([
-                'data_class' => OrderGiftData::class,
+                'data_class' => OrderDiscountLevelData::class,
                 'attr' => ['novalidate' => 'novalidate'],
             ]);
     }
@@ -119,15 +127,15 @@ class OrderGiftFormType extends AbstractType
         }
         /** @var \Symfony\Component\Form\Form $form */
         $form = $context->getRoot();
-        /** @var \App\Model\Order\Gift\OrderGiftData $orderGiftData */
-        $orderGiftData = $form->getData();
+        /** @var \App\Model\Order\Discount\OrderDiscountLevelData $orderDiscountLevelData */
+        $orderDiscountLevelData = $form->getData();
 
         $exceptLevel = null;
-        if ($this->orderGift instanceof OrderGift) {
-            $exceptLevel = $this->orderGift->getPriceLevelWithVat();
+        if ($this->orderDiscountLevel instanceof OrderDiscountLevel) {
+            $exceptLevel = $this->orderDiscountLevel->getPriceLevelWithVat();
         }
 
-        $allLevels = $this->orderGiftFacade->getAllLevelsOnDomainExceptLevel($orderGiftData->domainId, $exceptLevel);
+        $allLevels = $this->orderDiscountLevelFacade->getAllLevelsOnDomainExceptLevel($orderDiscountLevelData->domainId, $exceptLevel);
         foreach ($allLevels as $level) {
             if ($priceLevel->getAmount() === $level->getAmount()) {
                 $context->addViolation('Tato hladina ceny objednávky již existuje');

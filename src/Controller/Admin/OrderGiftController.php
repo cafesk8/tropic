@@ -9,12 +9,10 @@ use App\Model\Order\Exception\OrderGiftNotFoundException;
 use App\Model\Order\Gift\OrderGiftDataFactory;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Gift\OrderGiftGridFactory;
-use App\Model\Pricing\Currency\CurrencyFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,29 +39,21 @@ class OrderGiftController extends AdminBaseController
     protected $adminDomainTabsFacade;
 
     /**
-     * @var \App\Model\Pricing\Currency\CurrencyFacade
-     */
-    protected $currencyFacade;
-
-    /**
      * @param \App\Model\Order\Gift\OrderGiftDataFactory $orderGiftDataFactory
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      * @param \App\Model\Order\Gift\OrderGiftGridFactory $orderGiftGridFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
-     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
         OrderGiftDataFactory $orderGiftDataFactory,
         OrderGiftFacade $orderGiftFacade,
         OrderGiftGridFactory $orderGiftGridFactory,
-        AdminDomainTabsFacade $adminDomainTabsFacade,
-        CurrencyFacade $currencyFacade
+        AdminDomainTabsFacade $adminDomainTabsFacade
     ) {
         $this->orderGiftDataFactory = $orderGiftDataFactory;
         $this->orderGiftFacade = $orderGiftFacade;
         $this->orderGiftGridFactory = $orderGiftGridFactory;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
-        $this->currencyFacade = $currencyFacade;
     }
 
     /**
@@ -189,20 +179,5 @@ class OrderGiftController extends AdminBaseController
         }
 
         return $this->redirectToRoute('admin_ordergift_list');
-    }
-
-    /**
-     * @Route("/product/order-gift/get-currency-symbol/", methods={"post"}, condition="request.isXmlHttpRequest()")
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function currencySymbolAction(Request $request)
-    {
-        $domainId = $request->get('domainId');
-        $currencySymbol = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId)->getCode();
-
-        $responseData = ['success' => true, 'currencySymbol' => $currencySymbol];
-
-        return new JsonResponse($responseData);
     }
 }
