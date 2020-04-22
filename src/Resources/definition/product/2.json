@@ -327,6 +327,9 @@
             "index": false
           }
         }
+      },
+      "variants_count": {
+        "type": "integer"
       }
     }
   }

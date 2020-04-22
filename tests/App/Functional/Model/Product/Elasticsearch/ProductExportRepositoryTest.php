@@ -80,6 +80,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'minimum_amount',
             'amount_multiplier',
             'variants_aliases',
+            'variants_count',
             'prices_for_filter',
         ];
     }

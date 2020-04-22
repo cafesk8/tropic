@@ -1462,6 +1462,9 @@ msgstr "Number of working days until delivery"
 msgid "Počet produktů, ke kerým je dárek přiřazen"
 msgstr "Amount of products with linked gift"
 
+msgid "Počet variant"
+msgstr "{1} %variantsCount% variant|[2,Inf[ %variantsCount% variants"
+
 msgid "Pošta bez hranic"
 msgstr "Mail without borders"
 

@@ -737,6 +737,14 @@ class Product extends BaseProduct
     }
 
     /**
+     * @return int
+     */
+    public function getVariantsCount(): int
+    {
+        return $this->variants->count();
+    }
+
+    /**
      * @return \App\Model\Product\Product[]
      */
     public function getVariants()

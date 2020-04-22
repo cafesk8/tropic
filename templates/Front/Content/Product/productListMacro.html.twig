@@ -14,7 +14,7 @@
                                 {% if freeTransportAndPaymentFlagId is not null %}
                                     {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                 {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice) }}
+                                {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                             </div>
                         </a>
                         <div class="list-products__item__info">

@@ -28,16 +28,22 @@ class ListedProductView extends BaseListedProductView
     private $stockQuantity;
 
     /**
+     * @var int
+     */
+    private $variantsCount;
+
+    /**
      * @param int $id
      * @param string $name
      * @param string|null $shortDescription
      * @param string $availability
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice $sellingPrice
      * @param array $flagIds
-     * @param \App\Model\Product\View\ProductActionView $action
+     * @param \Shopsys\ReadModelBundle\Product\Action\ProductActionView $action
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $image
      * @param string[][] $gifts
      * @param int $stockQuantity
+     * @param int $variantsCount
      */
     public function __construct(
         int $id,
@@ -49,12 +55,14 @@ class ListedProductView extends BaseListedProductView
         ProductActionView $action,
         ?ImageView $image,
         array $gifts,
-        int $stockQuantity
+        int $stockQuantity,
+        int $variantsCount
     ) {
         parent::__construct($id, $name, $shortDescription, $availability, $sellingPrice, $flagIds, $action, $image);
 
         $this->stockQuantity = $stockQuantity;
         $this->gifts = $gifts;
+        $this->variantsCount = $variantsCount;
     }
 
     /**
@@ -91,5 +99,13 @@ class ListedProductView extends BaseListedProductView
     public function getStockQuantity(): int
     {
         return $this->stockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVariantsCount(): int
+    {
+        return $this->variantsCount;
     }
 }
