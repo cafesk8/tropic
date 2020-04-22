@@ -18,6 +18,7 @@ use App\Model\Product\ProductVariantTropicFacade;
 use App\Twig\DateTimeFormatterExtension;
 use App\Twig\ProductExtension;
 use Google_Service_Exception;
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
@@ -243,6 +244,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('giftCertificate', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dárkový poukaz'),
+            ])
+            ->add('generateToMergadoXmlFeeds', MultidomainType::class, [
+                'label' => t('Generovat tento produkt do MERGADO XML feedu'),
+                'entry_type' => YesNoType::class,
+                'required' => false,
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);

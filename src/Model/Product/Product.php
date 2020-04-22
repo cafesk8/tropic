@@ -41,9 +41,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method \App\Model\Category\Category[][] getCategoriesIndexedByDomainId()
  * @method \App\Model\Pricing\Vat\Vat getVatForDomain(int $domainId)
  * @method changeVatForDomain(\App\Model\Pricing\Vat\Vat $vat, int $domainId)
- * @method setDomains(\App\Model\Product\ProductData $productData)
- * @method createDomains(\App\Model\Product\ProductData $productData)
  * @method \App\Model\Product\Product getMainVariant()
+ * @property \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\Collection $domains
+ * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
  */
 class Product extends BaseProduct
 {
@@ -427,6 +427,15 @@ class Product extends BaseProduct
     }
 
     /**
+     * @param mixed $domainId
+     * @return bool
+     */
+    public function isGenerateToMergadoXmlFeed($domainId): bool
+    {
+        return $this->getProductDomain($domainId)->isGenerateToMergadoXmlFeed();
+    }
+
+    /**
      * @return bool
      */
     public function isMallExport(): bool
@@ -796,5 +805,33 @@ class Product extends BaseProduct
     public function isPohodaProductTypeSingle(): bool
     {
         return $this->pohodaProductType === self::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    protected function createDomains(BaseProductData $productData): void
+    {
+        $domainIds = array_keys($productData->seoTitles);
+
+        foreach ($domainIds as $domainId) {
+            $productDomain = new ProductDomain($this, $domainId);
+            $this->domains->add($productDomain);
+        }
+
+        $this->setDomains($productData);
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    protected function setDomains(BaseProductData $productData): void
+    {
+        parent::setDomains($productData);
+
+        foreach ($this->domains as $productDomain) {
+            $domainId = $productDomain->getDomainId();
+            $productDomain->setGenerateToMergadoXmlFeed($productData->generateToMergadoXmlFeeds[$domainId]);
+        }
     }
 }

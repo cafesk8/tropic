@@ -661,9 +661,6 @@ msgstr "GEIS"
 msgid "GLS"
 msgstr "GLS"
 
-msgid "Generovat tento produkt do HS-SPORT XML feedu"
-msgstr "Generovať tento produkt do HS-SPORT XML feedu"
-
 msgid "GoPay"
 msgstr "GoPay"
 

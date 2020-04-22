@@ -105,6 +105,10 @@ class ProductDataFactory extends BaseProductDataFactory
     {
         parent::fillNew($productData);
 
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $productData->generateToMergadoXmlFeeds[$domainId] = true;
+        }
+
         $productData->stockQuantityByStoreId = [];
         $productData->youtubeVideoIds = [];
     }
@@ -134,6 +138,10 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->variantId = $product->getVariantId();
         $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
         $productData->groupItems = $this->getProductGroups($product);
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);
+        }
     }
 
     /**
