@@ -3,28 +3,34 @@ import Register from 'framework/common/utils/Register';
 export default class ProductFilterBox {
 
     constructor ($container) {
-        $container.filterAllNodes('.js-product-filter-open-button').click(event => {
-            $(event.target).toggleClass('active');
-            $container.filterAllNodes('.js-product-filter').toggleClass('active');
-        });
-
         const _this = this;
-        $container.filterAllNodes('.js-product-filter-box-arrow').on('click', event => {
-            _this.toggleFilterBox($(event.target).closest('.js-product-filter-box'));
+        $container.filterAllNodes('.js-product-filter-box-button-show').on('click', event => {
+            _this.showFilterBox($(event.target).closest('.js-product-filter-box'));
+        });
+        $container.filterAllNodes('.js-product-filter-box-button-hide').on('click', event => {
+            _this.hideFilterBox($(event.target).closest('.js-product-filter-box'));
         });
     }
 
-    toggleFilterBox ($parameterContainer) {
-        const $productFilterParameterLabel = $parameterContainer.find('.js-product-filter-box-label');
-        $productFilterParameterLabel.toggleClass('active');
+    showFilterBox ($parameterContainer) {
+        $parameterContainer.find('.js-product-filter-box-label').each(function () {
+            $(this).removeClass('inactive');
+        });
 
-        const parameterFilterFormId = $parameterContainer.data('product-filter-box-id');
+        $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('inactive');
+        $parameterContainer.find('.js-product-filter-box-button-hide').toggleClass('inactive');
+    }
 
-        if ($productFilterParameterLabel.hasClass('active')) {
-            $parameterContainer.find('#' + parameterFilterFormId).slideDown('fast');
-        } else {
-            $parameterContainer.find('#' + parameterFilterFormId).slideUp('fast');
-        }
+    hideFilterBox ($parameterContainer) {
+        $parameterContainer.find('.js-product-filter-box-label').each(function () {
+            const $choiceInput = $(this).find('input');
+            if ($choiceInput.prop('checked') === false) {
+                $(this).addClass('inactive');
+            }
+        });
+
+        $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('inactive');
+        $parameterContainer.find('.js-product-filter-box-button-hide').toggleClass('inactive');
     }
 
     static init ($container) {
