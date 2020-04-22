@@ -57,13 +57,17 @@ class CategoryController extends FrontBaseController
 
     /**
      * @param bool $dropdownMenu
+     * @param bool $showImage
+     * @param bool $children
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function hoverMenuAction(bool $dropdownMenu = true): Response
+    public function hoverMenuAction(bool $dropdownMenu = true, bool $showImage = true, bool $children = false): Response
     {
         return $this->render('Front/Content/Category/hoverMenu.html.twig', [
             'categoriesWithLazyLoadedVisibleChildren' => $this->getCategoriesWithLazyLoadedVisibleChildren(),
             'dropdownMenu' => $dropdownMenu,
+            'showImage' => $showImage,
+            'children' => $children,
         ]);
     }
 
@@ -100,18 +104,6 @@ class CategoryController extends FrontBaseController
         $categories = $this->horizontalCategoryFacade->getCategoriesForHorizontalMenuOnCurrentDomain();
 
         return $this->render('Front/Inline/Category/horizontalMenu.html.twig', [
-            'categories' => $categories,
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function horizontalMenuMobileAction(): Response
-    {
-        $categories = $this->horizontalCategoryFacade->getCategoriesForHorizontalMenuOnCurrentDomain();
-
-        return $this->render('Front/Inline/Category/horizontalMenuMobile.html.twig', [
             'categories' => $categories,
         ]);
     }

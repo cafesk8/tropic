@@ -63,8 +63,7 @@
                         </div>
                         <div class="box-dropdown__options box-dropdown__options--menu" id="js-header-burger-menu">
                             {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
-                                {{ render(controller('App\\Controller\\Front\\CategoryController:horizontalMenuMobileAction')) }}
-                                {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction', { dropdownMenu: false })) }}
+                                {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction', { dropdownMenu: false, showImage: false })) }}
                             {% endcache %}
                         </div>
                     </div>
@@ -156,8 +155,7 @@
             </div>
 
             <div class="header__menu dont-print">
-                
-                    {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction')) }}
+                {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction')) }}
                 
                 <div class="contact-us">
                     <div class="contact-us__open-hours">
