@@ -50,30 +50,26 @@ class Cart extends BaseCart
     /**
      * @param \App\Model\Cart\Item\CartItemFactory $cartItemFactory
      * @param \App\Model\Product\Gift\ProductGiftInCart[][] $productGiftsInCart
-     * @param mixed[][] $selectedGifts
      * @return \App\Model\Cart\Item\CartItem[]
      */
-    public function updateGifts(CartItemFactoryInterface $cartItemFactory, array $productGiftsInCart, array $selectedGifts): array
+    public function addAllGifts(CartItemFactoryInterface $cartItemFactory, array $productGiftsInCart): array
     {
         $cartGifts = [];
 
-        foreach ($selectedGifts as $giftMainVariantId => $giftVariants) {
-            foreach ($giftVariants as $selectedVariantGiftId => $isSelected) {
-                if ($isSelected === true) {
-                    $productGiftInCart = $productGiftsInCart[$giftMainVariantId][$selectedVariantGiftId];
+        foreach ($productGiftsInCart as $productGiftInCart) {
+            foreach ($productGiftInCart as $productGiftVariantInCart) {
+                $cartGift = $cartItemFactory->create(
+                    $this,
+                    $productGiftVariantInCart->getGift(),
+                    $productGiftVariantInCart->getQuantity(),
+                    $productGiftVariantInCart->getPrice(),
+                    $productGiftVariantInCart->getProduct(),
+                    $this->getItemByProductId($productGiftVariantInCart->getProduct()->getId())
+                );
 
-                    $cartGift = $cartItemFactory->create(
-                        $this,
-                        $productGiftInCart->getGift(),
-                        $productGiftInCart->getQuantity(),
-                        $productGiftInCart->getPrice(),
-                        $productGiftInCart->getProduct(),
-                        $this->getItemByProductId($productGiftInCart->getProduct()->getId())
-                    );
-                    $this->addItem($cartGift);
+                $this->addItem($cartGift);
 
-                    $cartGifts[] = $cartGift;
-                }
+                $cartGifts[] = $cartGift;
             }
         }
 
@@ -98,7 +94,7 @@ class Cart extends BaseCart
     /**
      * @return \App\Model\Cart\Item\CartItem[]
      */
-    public function removeAllGift(): array
+    public function removeAllGifts(): array
     {
         $removedGifts = [];
         foreach ($this->getGifts() as $gift) {
@@ -107,27 +103,6 @@ class Cart extends BaseCart
         }
 
         return $removedGifts;
-    }
-
-    /**
-     * @param \App\Model\Cart\Item\CartItem $cartItem
-     * @return \App\Model\Cart\Item\CartItem|null
-     */
-    public function removeGifByCartItem(CartItem $cartItem): ?CartItem
-    {
-        /** @var \App\Model\Cart\Item\CartItem $productInCart */
-        foreach ($this->items as $productInCart) {
-            if ($productInCart->getGiftByProduct() === null) {
-                continue;
-            }
-
-            if ($productInCart->getProduct() === $cartItem->getProduct()) {
-                $this->items->removeElement($productInCart);
-                return $productInCart;
-            }
-        }
-
-        return null;
     }
 
     /**
