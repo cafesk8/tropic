@@ -51,5 +51,6 @@ class CategoryDataFactory extends BaseCategoryDataFactory
         $categoryData->pohodaParentId = $category->getPohodaParentId();
         $categoryData->updatedByPohodaAt = $category->getUpdatedByPohodaAt();
         $categoryData->pohodaPosition = $category->getPohodaPosition();
+        $categoryData->type = $category->getType();
     }
 }

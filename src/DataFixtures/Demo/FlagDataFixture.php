@@ -23,7 +23,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     protected $flagFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface
+     * @var \App\Model\Product\Flag\FlagDataFactory
      */
     protected $flagDataFactory;
 
@@ -34,7 +34,7 @@ class FlagDataFixture extends AbstractReferenceFixture
 
     /**
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface $flagDataFactory
+     * @param \App\Model\Product\Flag\FlagDataFactory $flagDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
@@ -76,6 +76,7 @@ class FlagDataFixture extends AbstractReferenceFixture
 
         $flagData->rgbColor = '#f9ffd6';
         $flagData->visible = true;
+        $flagData->sale = true;
         $this->createFlag($flagData, self::FLAG_ACTION_PRODUCT);
     }
 

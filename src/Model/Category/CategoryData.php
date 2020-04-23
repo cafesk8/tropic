@@ -66,6 +66,11 @@ class CategoryData extends BaseCategoryData
      */
     public $pohodaPosition;
 
+    /**
+     * @var string|null
+     */
+    public $type;
+
     public function __construct()
     {
         parent::__construct();
@@ -74,5 +79,6 @@ class CategoryData extends BaseCategoryData
         $this->leftBannerTexts = [];
         $this->rightBannerTexts = [];
         $this->advert = null;
+        $this->type = null;
     }
 }

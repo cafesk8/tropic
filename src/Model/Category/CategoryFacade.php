@@ -340,4 +340,28 @@ class CategoryFacade extends BaseCategoryFacade
 
         parent::deleteById($categoryId);
     }
+
+    /**
+     * @return array
+     */
+    public function getSaleCategories(): array
+    {
+        return $this->categoryRepository->getByType(Category::SALE_TYPE);
+    }
+
+    /**
+     * @param \App\Model\Category\Category[] $categories
+     */
+    public function hideCategories(array $categories): void
+    {
+        $this->categoryRepository->hideCategories($categories);
+    }
+
+    /**
+     * @param \App\Model\Category\Category[] $categories
+     */
+    public function showCategories(array $categories): void
+    {
+        $this->categoryRepository->showCategories($categories);
+    }
 }

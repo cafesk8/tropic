@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Model\Category\Category;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -24,6 +25,7 @@ class CategoryDataFixture extends AbstractReferenceFixture
     public const CATEGORY_TOYS = 'category_toys';
     public const CATEGORY_GARDEN_TOOLS = 'category_garden_tools';
     public const CATEGORY_FOOD = 'category_food';
+    public const CATEGORY_SALE = 'category_sale';
 
     /**
      * @var \App\Model\Category\CategoryFacade
@@ -178,6 +180,15 @@ class CategoryDataFixture extends AbstractReferenceFixture
                 . 'or stimulate growth.', [], 'dataFixtures', $locale);
         }
         $this->createCategory($categoryData, self::CATEGORY_FOOD);
+
+        foreach ($this->domain->getAll() as $domainConfig) {
+            $locale = $domainConfig->getLocale();
+            $categoryData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);
+            $categoryData->descriptions[$domainConfig->getId()] = t('Prohlédněte si produkty s výprodejovými cenami', [], 'dataFixtures', $locale);
+            $categoryData->type = Category::SALE_TYPE;
+            $categoryData->listable = false;
+        }
+        $this->createCategory($categoryData, self::CATEGORY_SALE);
     }
 
     /**

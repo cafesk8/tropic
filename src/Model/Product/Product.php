@@ -43,6 +43,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method \App\Model\Product\Product getMainVariant()
  * @property \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\Collection $domains
  * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
+ * @method editFlags(\App\Model\Product\Flag\Flag[] $flags)
  */
 class Product extends BaseProduct
 {
@@ -252,14 +253,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * @inheritDoc
-     */
-    public function editFlags(array $flags): void
-    {
-        parent::editFlags($flags);
-    }
-
-    /**
      * @return string[]
      */
     public function getYoutubeVideoIds(): ?array
@@ -319,11 +312,7 @@ class Product extends BaseProduct
      */
     public function getFlags(?int $limit = null)
     {
-        if ($limit !== null) {
-            return $this->flags->slice(0, $limit);
-        }
-
-        return $this->flags->toArray();
+        return $this->flags->slice(0, $limit);
     }
 
     /**
