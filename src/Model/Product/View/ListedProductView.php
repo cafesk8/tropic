@@ -68,14 +68,21 @@ class ListedProductView extends BaseListedProductView
     /**
      * @return string
      */
-    public function getRandomGiftName(): ?string
+    public function getFirstGiftLabel(): ?string
     {
         if (empty($this->gifts)) {
             return null;
         }
-        $randomGiftKey = array_rand($this->gifts);
 
-        return $this->gifts[$randomGiftKey]['name'];
+        return $this->gifts[0]['name'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getGiftsCount(): int
+    {
+        return count($this->gifts);
     }
 
     /**

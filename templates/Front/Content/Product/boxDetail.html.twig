@@ -94,6 +94,18 @@
                     {% endif %}
                 </div>
 
+                {% for gift in product.gifts(domain.id) %}
+                    {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
+                        and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
+                        <div class="box-detail__item__info__gift_row">
+                            <div class="box-detail__item__info__gift">
+                                <span class="box-detail__item__info__gift__title">{{ 'Dárek'|trans }}</span>
+                                {{ gift.name }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
                 {% if product.isGiftCertificate %}
                     <div class="in-message--info">{{ 'Tento produkt je dárkovým kupónem, tudíž na něj nelze aplikovat žádné slevy.' }}</div>
                 {% endif %}
@@ -213,31 +225,6 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% for gift in product.gifts(domain.id) %}
-                        {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
-                            and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
-                            <div class="box-detail__gift">
-                                <div class="box-detail__gift__image">
-                                    {% if imageExists(gift.productForCreatingImageAccordingToVariant) %}
-                                        {{ image(gift.productForCreatingImageAccordingToVariant, { size: 'gift' }) }}
-                                    {% else %}
-                                        {{ noimage({ alt: gift.name }) }}
-                                    {% endif %}
-                                </div>
-                                <div class="box-detail__gift__info">
-                                    <a href="{{ url('front_product_detail', { id: gift.id }) }}"
-                                       class="box-detail__gift__info__title">
-                                        {{ 'Dárek'|trans }}
-                                        {{ gift.name }}
-                                    </a>
-                                    <div class="box-detail__gift__info__text">
-                                        {{ 'Vyberte si dárek'|trans }} <span class="box-detail__gift__info__text-colored">{{ 'zdarma'|trans }}</span> {{ 'v hodnotě'|trans }}
-                                        <strong> {{ getProductSellingPrice(gift).priceWithVat|price }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
                 </div>
             </div>
         </div>
