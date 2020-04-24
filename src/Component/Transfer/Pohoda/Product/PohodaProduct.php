@@ -7,6 +7,7 @@ namespace App\Component\Transfer\Pohoda\Product;
 class PohodaProduct
 {
     public const COL_POHODA_ID = 'pohodaId';
+    public const COL_POHODA_PRODUCT_TYPE = 'pohodaProductType';
     public const COL_NAME = 'name';
     public const COL_NAME_SK = 'nameSk';
     public const COL_CATNUM = 'catnum';
@@ -18,21 +19,32 @@ class PohodaProduct
     public const COL_PURCHASE_PRICE = 'purchasePriceWithVat';
     public const COL_STANDARD_PRICE = 'standardPriceWithVat';
     public const COL_STOCK_ID = 'stockId';
-    public const COL_SALE_INFORMATION = 'saleInformation';
     public const COL_VARIANT_ID = 'variantId';
     public const COL_VARIANT_ALIAS = 'variantAlias';
     public const COL_VARIANT_ALIAS_SK = 'variantAliasSk';
     public const COL_PRODUCT_CATEGORIES = 'productCategories';
-    public const COL_PRODUCT_REF_CATEGORY_ID = 'productPohodaId';
+    public const COL_PRODUCT_REF_ID = 'productPohodaId';
     public const COL_CATEGORY_REF_CATEGORY_ID = 'categoryPohodaId';
+
     public const COL_EXTERNAL_STOCK = 'externalStock';
     public const COL_STOCK_TOTAL = 'totalStock';
+
+    public const COL_PRODUCT_GROUP_ITEM_REF_ID = 'groupItemPohodaId';
+    public const COL_PRODUCT_GROUP_ITEM_COUNT = 'productGroupItemCount';
+
+    public const COL_SALE_INFORMATION = 'saleInformation';
     public const COL_STOCKS_INFORMATION = 'stockInformation';
+    public const COL_PRODUCT_GROUP_ITEMS = 'productGroupItems';
 
     /**
      * @var int
      */
     public $pohodaId;
+
+    /**
+     * @var int
+     */
+    public $pohodaProductType;
 
     /**
      * @var string
@@ -115,11 +127,17 @@ class PohodaProduct
     public $stocksInformation;
 
     /**
+     * @var array
+     */
+    public $productGroups;
+
+    /**
      * @param array $pohodaProductData
      */
     public function __construct(array $pohodaProductData)
     {
         $this->pohodaId = (int)$pohodaProductData[self::COL_POHODA_ID];
+        $this->pohodaProductType = (int)$pohodaProductData[self::COL_POHODA_PRODUCT_TYPE];
         $this->catnum = (string)$pohodaProductData[self::COL_CATNUM];
         $this->name = (string)$pohodaProductData[self::COL_NAME];
         $this->nameSk = (string)$pohodaProductData[self::COL_NAME_SK];
@@ -136,5 +154,6 @@ class PohodaProduct
         $this->variantAliasSk = (string)$pohodaProductData[self::COL_VARIANT_ALIAS_SK];
         $this->pohodaCategoryIds = $pohodaProductData[self::COL_PRODUCT_CATEGORIES];
         $this->stocksInformation = $pohodaProductData[self::COL_STOCKS_INFORMATION];
+        $this->productGroups = $pohodaProductData[self::COL_PRODUCT_GROUP_ITEMS];
     }
 }
