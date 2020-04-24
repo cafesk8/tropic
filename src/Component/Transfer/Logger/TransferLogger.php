@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Component\Transfer\Logger;
 
 use App\Model\Transfer\Issue\TransferIssueData;
+use App\Model\Transfer\Issue\TransferIssueFacade;
 use Symfony\Bridge\Monolog\Logger;
 
 class TransferLogger
@@ -30,17 +31,25 @@ class TransferLogger
     private $transferIssuesGroupId;
 
     /**
+     * @var \App\Model\Transfer\Issue\TransferIssueFacade
+     */
+    private $transferIssueFacade;
+
+    /**
      * @param string $transferIdentifier
      * @param \Symfony\Bridge\Monolog\Logger $logger
+     * @param \App\Model\Transfer\Issue\TransferIssueFacade $transferIssueFacade
      */
     public function __construct(
         string $transferIdentifier,
-        Logger $logger
+        Logger $logger,
+        TransferIssueFacade $transferIssueFacade
     ) {
         $this->transferIdentifier = $transferIdentifier;
         $this->logger = $logger;
         $this->transferIssuesData = [];
         $this->transferIssuesGroupId = uniqid($transferIdentifier . '_');
+        $this->transferIssueFacade = $transferIssueFacade;
     }
 
     /**
@@ -122,5 +131,14 @@ class TransferLogger
     public function getAllTransferIssuesDataCount(): int
     {
         return count($this->transferIssuesData);
+    }
+
+    public function persistTransferIssues(): void
+    {
+        $transferIssuesData = $this->getAllTransferIssuesDataAndCleanQueue();
+
+        if (count($transferIssuesData) > 0) {
+            $this->transferIssueFacade->createMultiple($transferIssuesData);
+        }
     }
 }
