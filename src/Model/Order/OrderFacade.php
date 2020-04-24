@@ -776,4 +776,12 @@ class OrderFacade extends BaseOrderFacade
     {
         $this->orderGiftCertificateFacade->activate($order->getGiftCertificates());
     }
+
+    /**
+     * @return \App\Model\Order\Order[]
+     */
+    public function findAll(): array
+    {
+        return $this->orderRepository->findAll();
+    }
 }

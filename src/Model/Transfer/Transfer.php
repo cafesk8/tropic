@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Transfer
 {
+    public const IDENTIFIER_EXPORT_CUSTOMERS = 'export_customers';
+
     /**
      * @var int
      * @ORM\Column(type="integer")
