@@ -30,10 +30,10 @@ class AdvertPositionRegistry extends BaseAdvertPositionRegistry
     public function getImageSizeRecommendationsIndexedByNames(): array
     {
         return [
-            'firstSquare' => t('šířka: 380px, výška: 230px'),
-            'secondSquare' => t('šířka: 380px, výška: 230px'),
-            'thirdSquare' => t('šířka: 380px, výška: 230px'),
-            'fourthRectangle' => t('šířka: 1180px, výška: 387px'),
+            'firstSquare' => t('šířka: 429px, výška: 322px'),
+            'secondSquare' => t('šířka: 429px, výška: 322px'),
+            'thirdSquare' => t('šířka: 429px, výška: 322px'),
+            'fourthRectangle' => t('šířka: 1320px, výška: 322px'),
             self::CATEGORY_ADVERT_POSITION => t('šířka: 1180px, výška: 150px'),
         ];
     }
