@@ -51,7 +51,7 @@ class PohodaProductDataValidator
             'allowExtraFields' => true,
             'fields' => [
                 PohodaProduct::COL_POHODA_ID => [
-                    new Type(['type' => 'string']),
+                    new Type(['type' => 'numeric']),
                     new NotBlank(),
                 ],
                 PohodaProduct::COL_CATNUM => [

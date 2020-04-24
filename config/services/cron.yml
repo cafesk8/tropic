@@ -50,10 +50,6 @@ services:
     ## PRODUCTS TRANSFER CRON INSTANCE ##
     #####################################
 
-    App\Model\Product\Transfer\ProductInfoQueueImportCronModule:
-        tags:
-            - { name: shopsys.cron, hours: '*', minutes: '*' }
-
     App\Model\Product\Transfer\ProductImportCronModule:
         tags:
             - { name: shopsys.cron, hours: '*', minutes: '*' }

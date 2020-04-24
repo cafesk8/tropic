@@ -50,6 +50,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'manualInputPricesByPricingGroupId',
         'vatsIndexedByDomainId',
         'variantId',
+        'categoriesByDomainId',
     ];
 
     /**
@@ -165,6 +166,14 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'constraints' => [
                     new Callback([$this, 'validateVariantId']),
                 ],
+            ])
+            ->add('updatedByPohodaAt', DisplayOnlyType::class, [
+                'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getUpdatedByPohodaAt()) : '-',
+                'label' => t('Poslední aktualizace z IS'),
+            ])
+            ->add('pohodaId', DisplayOnlyType::class, [
+                'data' => $product !== null && $product->getPohodaId() !== null ? $product->getPohodaId() : '-',
+                'label' => t('Pohoda ID'),
             ]);
 
         $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();

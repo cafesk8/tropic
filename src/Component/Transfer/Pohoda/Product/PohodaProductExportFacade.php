@@ -58,6 +58,8 @@ class PohodaProductExportFacade
         $pohodaProductsResult = $this->pohodaProductExportRepository->findByPohodaProductIds(
             $pohodaProductIds
         );
+        $this->addProductCategoriesToPohodaProductsResult($pohodaProductsResult, $pohodaProductIds);
+
         $pohodaProductsResult = $this->reindexPohodaProductsResultByCatnums($pohodaProductsResult);
         $this->addSaleInformationToPohodaProductsResult($pohodaProductsResult);
 
@@ -127,5 +129,39 @@ class PohodaProductExportFacade
         return array_filter($this->logger->getLogs(), function (array $log) {
             return $log['priority'] === Logger::ERROR;
         });
+    }
+
+    /**
+     * @param array $pohodaProductsResult
+     * @param array $pohodaProductIds
+     */
+    private function addProductCategoriesToPohodaProductsResult(array &$pohodaProductsResult, array $pohodaProductIds): void
+    {
+        $pohodaCategoryIds = $this->getProductCategoriesByPohodaIds($pohodaProductIds);
+
+        foreach ($pohodaCategoryIds as $pohodaProductId => $pohodaCategoryId) {
+            if (isset($pohodaProductsResult[$pohodaProductId])) {
+                $pohodaProductsResult[$pohodaProductId][PohodaProduct::COL_PRODUCT_CATEGORIES] = $pohodaCategoryId;
+            }
+        }
+    }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductCategoriesByPohodaIds(array $pohodaProductIds): array
+    {
+        $pohodaProductCategories = $this->pohodaProductExportRepository->getProductCategoriesByPohodaIds($pohodaProductIds);
+        $productCategories = [];
+
+        foreach ($pohodaProductCategories as $pohodaProductCategory) {
+            $pohodaCategoryId = (int)$pohodaProductCategory[PohodaProduct::COL_CATEGORY_REF_CATEGORY_ID];
+            if ($pohodaCategoryId > 0) {
+                $productCategories[(int)$pohodaProductCategory[PohodaProduct::COL_PRODUCT_REF_CATEGORY_ID]][] = $pohodaCategoryId;
+            }
+        }
+
+        return $productCategories;
     }
 }

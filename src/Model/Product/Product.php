@@ -154,6 +154,13 @@ class Product extends BaseProduct
     protected $registrationDiscountDisabled;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedByPohodaAt;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -213,6 +220,7 @@ class Product extends BaseProduct
             $this->variantId = null;
         }
         $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
+        $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
     }
 
     /**
@@ -745,5 +753,13 @@ class Product extends BaseProduct
     public function isRegistrationDiscountDisabled(): bool
     {
         return $this->registrationDiscountDisabled;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getUpdatedByPohodaAt(): ?\DateTime
+    {
+        return $this->updatedByPohodaAt;
     }
 }

@@ -86,7 +86,14 @@ class PohodaProductExportRepository
                 'pohodaProductIds' => $pohodaProductIds,
             ]);
 
-        return $query->getResult();
+        $pohodaProductResult = $query->getResult();
+        $pohodaProductsResult = [];
+        foreach ($pohodaProductResult as $pohodaProduct) {
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]] = $pohodaProduct;
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_CATEGORIES] = [];
+        }
+
+        return $pohodaProductsResult;
     }
 
     /**
@@ -153,6 +160,32 @@ class PohodaProductExportRepository
             ->setParameters([
                 'catnums' => $catnums,
                 'stocks' => self::SALE_STOCK_IDS_ORDERED_BY_PRIORITY,
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductCategoriesByPohodaIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_CATEGORY_ID)
+            ->addScalarResult('RefKat', PohodaProduct::COL_CATEGORY_REF_CATEGORY_ID);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT CategoryProduct.RefAg, CategoryProduct.RefKat
+            FROM SkRefKat CategoryProduct
+            JOIN Skz Product ON Product.ID = CategoryProduct.RefAg
+            WHERE CategoryProduct.RefAg IN (:pohodaProductIds)
+               AND Product.IObchod = 1
+            ORDER BY Product.DatSave',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'pohodaProductIds' => $pohodaProductIds,
             ]);
 
         return $query->getResult();

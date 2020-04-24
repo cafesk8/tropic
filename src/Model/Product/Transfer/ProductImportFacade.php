@@ -81,9 +81,9 @@ class ProductImportFacade
         $updatedPohodaProductIds = [];
 
         if (count($pohodaProducts) === 0) {
-            $this->logger->addInfo('Nejsou žádná data ke zpracování');
+            $this->logger->addInfo('Nejsou žádná data ve frontě ke zpracování');
         } else {
-            $this->logger->addInfo('Proběhne uložení produktů', ['pohodaProductsCount' => count($pohodaProducts)]);
+            $this->logger->addInfo('Proběhne uložení produktů z fronty', ['pohodaProductsCount' => count($pohodaProducts)]);
             $updatedPohodaProductIds = $this->updateProductsByPohodaProducts($pohodaProducts);
         }
         $this->productInfoQueueImportFacade->removeProductsFromQueue($updatedPohodaProductIds);
@@ -188,7 +188,7 @@ class ProductImportFacade
      * @param \Exception $exception
      * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
      */
-    private function logError(Exception $exception, PohodaProduct $pohodaProduct)
+    private function logError(Exception $exception, PohodaProduct $pohodaProduct): void
     {
         $this->logger->addError('Import položky selhal.', [
             'pohodaId' => $pohodaProduct->pohodaId,

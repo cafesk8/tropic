@@ -7,10 +7,12 @@ namespace App\Model\Product\Transfer;
 use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
+use App\Model\Category\CategoryFacade;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\ProductData;
+use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
@@ -33,15 +35,22 @@ class PohodaProductMapper
     private $vatFacade;
 
     /**
+     * @var \App\Model\Category\CategoryFacade
+     */
+    private $categoryFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
+     * @param \App\Model\Category\CategoryFacade $categoryFacade
      */
-    public function __construct(Domain $domain, PricingGroupFacade $pricingGroupFacade, VatFacade $vatFacade)
+    public function __construct(Domain $domain, PricingGroupFacade $pricingGroupFacade, VatFacade $vatFacade, CategoryFacade $categoryFacade)
     {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->vatFacade = $vatFacade;
+        $this->categoryFacade = $categoryFacade;
     }
 
     /**
@@ -53,6 +62,7 @@ class PohodaProductMapper
         ProductData $productData
     ): void {
         $productData->pohodaId = $pohodaProduct->pohodaId;
+        $productData->updatedByPohodaAt = new \DateTime();
         $productData->catnum = $pohodaProduct->catnum;
         $productData->name[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->name);
         $productData->name[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->nameSk);
@@ -61,7 +71,17 @@ class PohodaProductMapper
         $productData->usingStock = true;
         $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
 
+        $categories = [];
+        foreach ($pohodaProduct->pohodaCategoryIds as $pohodaCategoryId) {
+            $category = $this->categoryFacade->findByPohodaId($pohodaCategoryId);
+            if ($category === null) {
+                throw new CategoryDoesntExistInEShopException(sprintf('Category pohodaId=%d doesn´t exist in e-shop database', $pohodaCategoryId));
+            }
+            $categories[] = $category;
+        }
+
         foreach ($this->domain->getAllIds() as $domainId) {
+            $productData->categoriesByDomainId[$domainId] = $categories;
             $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
             $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getByNameAndDomainId(
                 PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER,
