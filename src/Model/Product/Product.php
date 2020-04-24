@@ -31,7 +31,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @method \App\Model\Product\Brand\Brand|null getBrand()
  * @method addVariants(\App\Model\Product\Product[] $variants)
  * @method setMainVariant(\App\Model\Product\Product $mainVariant)
- * @method setTranslations(\App\Model\Product\ProductData $productData)
  * @method refreshVariants(\App\Model\Product\Product[] $currentVariants)
  * @method addNewVariants(\App\Model\Product\Product[] $currentVariants)
  * @method unsetRemovedVariants(\App\Model\Product\Product[] $currentVariants)
@@ -205,9 +204,8 @@ class Product extends BaseProduct
         array $productCategoryDomains,
         BaseProductData $productData
     ) {
-        parent::edit($productCategoryDomains, $productData);
-
         $this->fillCommonProperties($productData);
+        parent::edit($productCategoryDomains, $productData);
     }
 
     /**
@@ -840,6 +838,22 @@ class Product extends BaseProduct
         foreach ($this->domains as $productDomain) {
             $domainId = $productDomain->getDomainId();
             $productDomain->setGenerateToMergadoXmlFeed($productData->generateToMergadoXmlFeeds[$domainId]);
+        }
+    }
+
+    /**
+     * Temporary fix for empty variant aliases
+     *
+     * @param \App\Model\Product\ProductData $productData
+     */
+    protected function setTranslations(BaseProductData $productData)
+    {
+        parent::setTranslations($productData);
+
+        if ($this->isVariant()) {
+            foreach ($productData->variantAlias as $locale => $variantAlias) {
+                $this->translation($locale)->setVariantAlias($variantAlias ?? self::getVariantNumber($this->getVariantId()));
+            }
         }
     }
 }
