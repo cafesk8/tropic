@@ -15,6 +15,7 @@ function deploy() {
     )
 
     declare -A PARAMETERS=(
+        ["parameters.database_host"]=${POSTGRES_DATABASE_IP_ADDRESS}
         ["parameters.database_name"]=${PROJECT_NAME}
         ["parameters.database_port"]=${POSTGRES_DATABASE_PORT}
         ["parameters.database_user"]=${PROJECT_NAME}
@@ -28,23 +29,26 @@ function deploy() {
         ["parameters.disable_form_fields_from_transfer"]=${DISABLE_FORM_FIELDS_FROM_TRANSFER}
     )
 
+    declare -A ENVIRONMENT_VARIABLES=(
+        ["S3_API_HOST"]=${S3_API_HOST}
+        ["S3_API_USERNAME"]=${S3_API_USERNAME}
+        ["S3_API_PASSWORD"]=${S3_API_PASSWORD}
+        ["S3_API_BUCKET_NAME"]=${PROJECT_NAME}
+        ["REDIS_PREFIX"]=${PROJECT_NAME}
+        ["ELASTIC_SEARCH_INDEX_PREFIX"]=${PROJECT_NAME}
+   )
+
     VARS=(
-        POSTGRES_DATABASE_IP_ADDRESS
-        ELASTICSEARCH_IP_ADDRESS_HOST
-        ELASTICSEARCH_HOST_PORT
         TAG
         PROJECT_NAME
         BASE_PATH
         APP_CONFIG_DIRECTORY
-
-        S3_API_HOST
-        S3_API_USERNAME
-        S3_API_PASSWORD
     )
 
     source "${DEPLOY_TARGET_PATH}/functions.sh"
     source "${DEPLOY_TARGET_PATH}/parts/parameters.sh"
     source "${DEPLOY_TARGET_PATH}/parts/domains.sh"
+    source "${DEPLOY_TARGET_PATH}/parts/environment-variables.sh"
     source "${DEPLOY_TARGET_PATH}/parts/kubernetes-variables.sh"
     source "${DEPLOY_TARGET_PATH}/parts/deploy.sh"
 }
