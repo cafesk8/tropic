@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
+use App\Model\Order\PromoCode\Exception\PromoCodeIsNotBetterThanOrderLevelDiscountException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotCombinableException;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade;
@@ -160,6 +160,11 @@ class PromoCodeController extends FrontBaseController
                 'result' => false,
                 'message' => t('Tento slevový kupón nelze aplikovat na žádný produkt v košíku.'),
             ]);
+        } catch (PromoCodeIsNotBetterThanOrderLevelDiscountException $ex) {
+            return new JsonResponse([
+                'result' => false,
+                'message' => t('Tento slevový kupón neposkytuje výhodnější slevu než aktuálně aktivní sleva na celý nákup.'),
+            ]);
         }
 
         $this->getFlashMessageSender()->addSuccessFlash(t('Promo code added to order'));
@@ -177,7 +182,7 @@ class PromoCodeController extends FrontBaseController
             return t('Slevový kupón nebo dárkový poukaz');
         }
 
-        if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+        if ($promoCode->isTypeGiftCertificate()) {
             return t('Dárkový poukaz');
         }
 

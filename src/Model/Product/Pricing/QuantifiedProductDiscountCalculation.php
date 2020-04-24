@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
+use App\Model\Order\Discount\OrderDiscountLevel;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Order\PromoCode\PromoCodeLimitFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
@@ -55,7 +55,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
     public function calculateDiscountsRoundedByCurrency(array $quantifiedItemsPrices, ?string $discountPercent, Currency $currency, ?PromoCode $promoCode = null): array
     {
         $quantifiedItemsDiscounts = $this->initQuantifiedItemsDiscounts($quantifiedItemsPrices);
-        $isCertificate = $promoCode !== null && $promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE;
+        $isCertificate = $promoCode !== null && $promoCode->isTypeGiftCertificate();
         if ($promoCode === null || $isCertificate === true) {
             return $quantifiedItemsDiscounts;
         }
@@ -187,5 +187,109 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         }
 
         return $discountPercentForOrder;
+    }
+
+    /**
+     * Inspired by original calculateDiscountsRoundedByCurrency (@see \App\Model\Product\Pricing\QuantifiedProductDiscountCalculation)
+     * The original method is already overridden to work with extended promo codes
+     *
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \App\Model\Pricing\Currency\Currency $currency
+     * @param \App\Model\Order\Discount\OrderDiscountLevel|null $orderDiscountLevel
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[]
+     */
+    public function calculateQuantifiedItemsDiscountsRoundedByCurrency(
+        array $quantifiedItemsPrices,
+        Currency $currency,
+        ?OrderDiscountLevel $orderDiscountLevel
+    ): array {
+        if ($orderDiscountLevel === null) {
+            return [];
+        }
+        $filteredQuantifiedItemsPrices = $this->filterQuantifiedItemsPricesByDiscountExclusion($quantifiedItemsPrices);
+        $quantifiedItemsDiscounts = [];
+        foreach ($filteredQuantifiedItemsPrices as $quantifiedItemIndex => $quantifiedItemPrice) {
+            $quantifiedItemsDiscounts[$quantifiedItemIndex] = $this->calculateDiscountRoundedByCurrency(
+                $quantifiedItemPrice,
+                (string)$orderDiscountLevel->getDiscountPercent(),
+                $currency
+            );
+        }
+
+        return $quantifiedItemsDiscounts;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
+     */
+    private function filterQuantifiedItemsPricesByDiscountExclusion(array $quantifiedItemsPrices): array
+    {
+        return array_filter(
+            $quantifiedItemsPrices,
+            function (QuantifiedItemPrice $quantifiedItemsPrice) {
+                /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
+                $productPrice = $quantifiedItemsPrice->getUnitPrice();
+
+                if ($this->productFacade->getById($productPrice->getProductId())->isRegistrationDiscountDisabled()) {
+                    return false;
+                }
+
+                return true;
+            }
+        );
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @param \App\Model\Pricing\Currency\Currency $currency
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
+     */
+    public function getQuantifiedItemsDiscountsIndexedByPromoCodeId(array $quantifiedItemsPrices, array $promoCodes, Currency $currency): array
+    {
+        $quantifiedItemsDiscountsIndexedByPromoCodeId = [];
+        $quantifiedItemsPricesForDiscountsCalculation = $quantifiedItemsPrices;
+        foreach ($promoCodes as $promoCode) {
+            $quantifiedItemsPricesForDiscountsCalculation = $this->getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(
+                $quantifiedItemsPricesForDiscountsCalculation,
+                $quantifiedItemsDiscountsIndexedByPromoCodeId
+            );
+            $quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()] = $this->calculateDiscountsRoundedByCurrency(
+                $quantifiedItemsPricesForDiscountsCalculation,
+                $promoCode->getPercent(),
+                $currency,
+                $promoCode
+            );
+        }
+
+        return $quantifiedItemsDiscountsIndexedByPromoCodeId;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
+     */
+    private function getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId)
+    {
+        if (empty($quantifiedItemsDiscountsIndexedByPromoCodeId)) {
+            return $quantifiedItemsPrices;
+        }
+
+        $quantifiedItemsPricesMinusAlreadyAppliedDiscounts = [];
+        foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
+            foreach ($quantifiedItemsDiscounts as $itemId => $quantifiedItemDiscount) {
+                $totalPrice = $quantifiedItemsPrices[$itemId]->getTotalPrice();
+                $subtractAmount = $quantifiedItemDiscount === null ? Price::zero() : $quantifiedItemDiscount;
+                $quantifiedItemsPricesMinusAlreadyAppliedDiscounts[$itemId] = new QuantifiedItemPrice(
+                    $quantifiedItemsPrices[$itemId]->getUnitPrice(),
+                    $totalPrice->subtract($subtractAmount),
+                    $quantifiedItemsPrices[$itemId]->getVat()
+                );
+            }
+        }
+
+        return $quantifiedItemsPricesMinusAlreadyAppliedDiscounts;
     }
 }

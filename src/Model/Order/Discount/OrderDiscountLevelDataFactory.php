@@ -8,6 +8,7 @@ class OrderDiscountLevelDataFactory
 {
     /**
      * @param int $domainId
+     * @return \App\Model\Order\Discount\OrderDiscountLevelData
      */
     public function createForDomainId(int $domainId): OrderDiscountLevelData
     {

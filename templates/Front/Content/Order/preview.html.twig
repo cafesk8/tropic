@@ -51,16 +51,28 @@
 
         <table id="js-order-preview-fees" class="table-cart-preview">
             <tbody>
-                {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
+                {% if orderPreview.activeOrderDiscountLevel is not null %}
                     <tr class="table-cart-preview__row">
                         <td class="table-cart-preview__cell">
-                            {{ 'Sleva'|trans }}
-                            <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
+                            {{ 'Sleva na celý nákup %percent% %'|trans({'%percent%': orderPreview.activeOrderDiscountLevel.discountPercent}) }}
                         </td>
                         <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
-                            - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                            - {{ orderPreview.totalDiscount.priceWithVat|price }}
                         </td>
                     </tr>
+                {% endif %}
+                {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
+                    {% if orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId] is defined %}
+                        <tr class="table-cart-preview__row">
+                            <td class="table-cart-preview__cell">
+                                {{ 'Sleva'|trans }}
+                                <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
+                            </td>
+                            <td class="table-cart-preview__cell table-cart-preview__cell--price  table-cart-preview__cell--important">
+                                - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
 
                 {% if orderPreview.transport is not empty %}

@@ -51,7 +51,7 @@ class OrderDiscountLevelRepository
      * @param int $id
      * @return \App\Model\Order\Discount\OrderDiscountLevel|null
      */
-    private function findById(int $id): ?OrderDiscountLevel
+    public function findById(int $id): ?OrderDiscountLevel
     {
         return $this->getOrderDiscountLevelRepository()->find($id);
     }
@@ -100,5 +100,28 @@ class OrderDiscountLevelRepository
             ->where('odl.domainId = :domainId')
             ->setParameter('domainId', $domainId)
             ->orderBy('odl.priceLevelWithVat');
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductsPrice
+     * @return \App\Model\Order\Discount\OrderDiscountLevel|null
+     */
+    public function findMatchingLevel(int $domainId, Money $totalProductsPrice): ?OrderDiscountLevel
+    {
+        /** @var \App\Model\Order\Discount\OrderDiscountLevel|null $orderDiscountLevel */
+        $orderDiscountLevel = $this->entityManager->createQueryBuilder()
+            ->select('odl')
+            ->from(OrderDiscountLevel::class, 'odl')
+            ->where('odl.domainId = :domainId AND odl.priceLevelWithVat <= :totalProductsPrice')
+            ->orderBy('odl.priceLevelWithVat', 'DESC')
+            ->setMaxResults(1)
+            ->setParameters([
+                'domainId' => $domainId,
+                'totalProductsPrice' => $totalProductsPrice->getAmount(),
+            ])
+            ->getQuery()->getOneOrNullResult();
+
+        return $orderDiscountLevel;
     }
 }

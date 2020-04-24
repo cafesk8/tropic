@@ -224,6 +224,7 @@ class CartController extends FrontBaseController
             'nextLevelGifts' => $this->orderGiftFacade->getAllListableNextLevelGiftProductsByTotalProductPrice($productsPrice->getPriceWithVat(), $domainId, $this->getCurrentPricingGroup($customerUser)),
             'nextLevelDifference' => $this->orderGiftFacade->getNextLevelDifference($productsPrice->getPriceWithVat(), $domainId),
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
+            'quantifiedItemsDiscountsByIndex' => $orderPreview->getQuantifiedItemsDiscounts(),
         ]);
     }
 

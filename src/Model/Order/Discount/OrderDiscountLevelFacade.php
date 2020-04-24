@@ -64,6 +64,15 @@ class OrderDiscountLevelFacade
 
     /**
      * @param int $id
+     * @return \App\Model\Order\Discount\OrderDiscountLevel|null
+     */
+    public function findById(int $id): ?OrderDiscountLevel
+    {
+        return $this->orderDiscountLevelRepository->findById($id);
+    }
+
+    /**
+     * @param int $id
      */
     public function delete(int $id)
     {
@@ -80,5 +89,15 @@ class OrderDiscountLevelFacade
     public function getAllLevelsOnDomainExceptLevel(int $domainId, ?Money $exceptLevel = null): array
     {
         return $this->orderDiscountLevelRepository->getAllLevelsOnDomainExceptLevel($domainId, $exceptLevel);
+    }
+
+    /**
+     * @param int $domainId
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $totalProductsPrice
+     * @return \App\Model\Order\Discount\OrderDiscountLevel|null
+     */
+    public function findMatchingLevel(int $domainId, Money $totalProductsPrice): ?OrderDiscountLevel
+    {
+        return $this->orderDiscountLevelRepository->findMatchingLevel($domainId, $totalProductsPrice);
     }
 }

@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
+use App\Model\Order\Discount\OrderDiscountCalculation;
+use App\Model\Order\Discount\OrderDiscountLevel;
+use App\Model\Order\Discount\OrderDiscountLevelFacade;
+use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation as BaseOrderPreviewCalculation;
@@ -38,6 +42,31 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     protected $quantifiedProductDiscountCalculation;
 
     /**
+     * @var \App\Model\Order\Discount\OrderDiscountLevelFacade
+     */
+    private $orderDiscountLevelFacade;
+
+    /**
+     * @var \App\Model\Order\PromoCode\CurrentPromoCodeFacade
+     */
+    private $currentPromoCodeFacade;
+
+    /**
+     * @var \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade
+     */
+    private $currentOrderDiscountLevelFacade;
+
+    /**
+     * @var \App\Model\Order\Discount\OrderDiscountCalculation
+     */
+    private $orderDiscountCalculation;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation
      */
     private $priceCalculation;
@@ -61,6 +90,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Order\Discount\OrderDiscountLevelFacade $orderDiscountLevelFacade
+     * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
+     * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+     * @param \App\Model\Order\Discount\OrderDiscountCalculation $orderDiscountCalculation
+     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation,
@@ -70,7 +104,12 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         OrderPriceCalculation $orderPriceCalculation,
         PriceCalculation $priceCalculation,
         VatFacade $vatFacade,
-        Domain $domain
+        Domain $domain,
+        OrderDiscountLevelFacade $orderDiscountLevelFacade,
+        CurrentPromoCodeFacade $currentPromoCodeFacade,
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
+        OrderDiscountCalculation $orderDiscountCalculation,
+        FlashMessageSender $flashMessageSender
     ) {
         parent::__construct(
             $quantifiedProductPriceCalculation,
@@ -83,6 +122,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         $this->priceCalculation = $priceCalculation;
         $this->vatFacade = $vatFacade;
         $this->domain = $domain;
+        $this->orderDiscountLevelFacade = $orderDiscountLevelFacade;
+        $this->currentPromoCodeFacade = $currentPromoCodeFacade;
+        $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
+        $this->orderDiscountCalculation = $orderDiscountCalculation;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -124,23 +168,64 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $customerUser,
             $simulateRegistration
         );
+        $productsPriceWithoutDiscounts = $this->getProductsPriceWithoutDiscounts($quantifiedItemsPrices);
+        $productsPrice = $productsPriceWithoutDiscounts;
+        $quantifiedItemsDiscountsByIndex = [];
+        $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->quantifiedProductDiscountCalculation->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);
 
-        $quantifiedItemsDiscountsIndexedByPromoCodeId = $this->getQuantifiedItemsDiscountsIndexedByPromoCodeId($quantifiedItemsPrices, $promoCodes, $currency);
+        $matchingOrderDiscountLevel = $this->orderDiscountLevelFacade->findMatchingLevel($domainId, $productsPriceWithoutDiscounts->getPriceWithVat());
+        $promoCodeTypePromoCode = $this->findPromoCodeTypePromoCode($promoCodes);
 
-        $productsPrice = $this->getProductsPriceAffectedByMultiplePromoCodes($quantifiedItemsPrices, $quantifiedItemsDiscountsIndexedByPromoCodeId);
+        $existsOrderDiscountLevel = $matchingOrderDiscountLevel !== null;
+        $existsPromoCodeDiscount = $promoCodeTypePromoCode !== null;
+
+        if ($existsPromoCodeDiscount || $existsOrderDiscountLevel) {
+            $existBothPromoCodeAndOrderDiscountLevelDiscounts = $existsPromoCodeDiscount && $existsOrderDiscountLevel;
+            $isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel = false;
+            if ($existBothPromoCodeAndOrderDiscountLevelDiscounts) {
+                $isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel = $this->orderDiscountCalculation->isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel(
+                    $quantifiedProducts,
+                    $promoCodeTypePromoCode,
+                    $domainId,
+                    $customerUser,
+                    $matchingOrderDiscountLevel->getId()
+                );
+            }
+            if ($existsPromoCodeDiscount && !$existsOrderDiscountLevel || $existBothPromoCodeAndOrderDiscountLevelDiscounts && $isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel) {
+                $matchingOrderDiscountLevel = null;
+                if ($this->currentOrderDiscountLevelFacade->getActiveOrderLevelDiscountId() !== null) {
+                    $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
+                    $this->flashMessageSender->addInfoFlash(t('Automatická sleva na celý nákup byla deaktivována, protože sleva získaná díky kuponu je pro vás výhodnější.'));
+                }
+                $productsPrice = $this->getProductsPriceAffectedByMultiplePromoCodes(
+                    $productsPriceWithoutDiscounts,
+                    $quantifiedItemsDiscountsIndexedByPromoCodeId
+                );
+            }
+            if ($existsOrderDiscountLevel && !$existsPromoCodeDiscount || $existBothPromoCodeAndOrderDiscountLevelDiscounts && !$isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel) {
+                $promoCodes = $this->removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel($matchingOrderDiscountLevel, $promoCodes);
+                $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency($quantifiedItemsPrices, $currency, $matchingOrderDiscountLevel);
+                $productsPrice = $this->getProductsPriceAffectedByOrderDiscountLevel(
+                    $productsPriceWithoutDiscounts,
+                    $quantifiedItemsDiscountsByIndex
+                );
+            }
+        }
+
         $totalGiftPrice = $this->getTotalGiftsPrice($giftsInCart);
         $productsPrice = $productsPrice->add($totalGiftPrice);
         $transportPrice = $this->getTransportPrice($transport, $currency, $productsPrice, $domainId);
         $paymentPrice = $this->getPaymentPrice($payment, $currency, $productsPrice, $domainId);
         $roundingPrice = $this->getRoundingPrice($payment, $currency, $productsPrice, $paymentPrice, $transportPrice);
-        $totalDiscount = $this->calculateTotalDiscount($quantifiedItemsDiscountsIndexedByPromoCodeId, $promoCodes);
+        $totalDiscount = $this->orderDiscountCalculation->calculateTotalDiscount($promoCodes, $quantifiedItemsDiscountsByIndex, $quantifiedItemsDiscountsIndexedByPromoCodeId);
         $totalPriceWithoutGiftCertificate = $this->calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
 
-        $totalPrice = $this->getTotalPrice($totalPriceWithoutGiftCertificate, $promoCodes);
+        $totalPrice = $this->getTotalPriceAffectedByGiftCertificates($totalPriceWithoutGiftCertificate, $promoCodes);
 
         $orderPreview = new OrderPreview(
             $quantifiedProducts,
             $quantifiedItemsPrices,
+            $quantifiedItemsDiscountsByIndex,
             $productsPrice,
             $totalPrice,
             $transport,
@@ -151,7 +236,8 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             $totalPriceWithoutGiftCertificate,
             $giftsInCart,
             $quantifiedItemsDiscountsIndexedByPromoCodeId,
-            $orderGiftProduct
+            $orderGiftProduct,
+            $matchingOrderDiscountLevel
         );
         $orderPreview->setPromoCodes($promoCodes);
         $orderPreview->setTotalDiscount($totalDiscount);
@@ -160,48 +246,18 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
+     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @return \App\Model\Order\PromoCode\PromoCode|null
      */
-    protected function getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId)
+    private function findPromoCodeTypePromoCode(array $promoCodes): ?PromoCode
     {
-        if (empty($quantifiedItemsDiscountsIndexedByPromoCodeId)) {
-            return $quantifiedItemsPrices;
-        }
-
-        $quantifiedItemsPricesMinusAlreadyAppliedDiscounts = [];
-        foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
-            foreach ($quantifiedItemsDiscounts as $itemId => $quantifiedItemDiscount) {
-                $totalPrice = $quantifiedItemsPrices[$itemId]->getTotalPrice();
-                $subtractAmount = $quantifiedItemDiscount === null ? Price::zero() : $quantifiedItemDiscount;
-                $quantifiedItemsPricesMinusAlreadyAppliedDiscounts[$itemId] = new QuantifiedItemPrice(
-                    $quantifiedItemsPrices[$itemId]->getUnitPrice(),
-                    $totalPrice->subtract($subtractAmount),
-                    $quantifiedItemsPrices[$itemId]->getVat()
-                );
+        foreach ($promoCodes as $promoCode) {
+            if ($promoCode->isTypePromoCode()) {
+                return $promoCode;
             }
         }
 
-        return $quantifiedItemsPricesMinusAlreadyAppliedDiscounts;
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $transportPrice
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $paymentPrice
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $roundingPrice
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
-     */
-    protected function calculateTotalPrice(
-        Price $productsPrice,
-        ?Price $transportPrice = null,
-        ?Price $paymentPrice = null,
-        ?Price $roundingPrice = null
-    ): Price {
-        $totalPrice = parent::calculateTotalPrice($productsPrice, $transportPrice, $paymentPrice, $roundingPrice);
-
-        return $totalPrice;
+        return null;
     }
 
     /**
@@ -291,90 +347,44 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     }
 
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
-     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
-     */
-    protected function calculateTotalDiscount(array $quantifiedItemsDiscountsIndexedByPromoCodeId, array $promoCodes): Price
-    {
-        $totalDiscount = Price::zero();
-        foreach ($promoCodes as $promoCode) {
-            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
-                $totalDiscount->add(new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue()));
-            } else {
-                $totalDiscountForPromoCode = $this->calculateTotalDiscountForPromoCode($quantifiedItemsDiscountsIndexedByPromoCodeId, $promoCode);
-
-                $totalDiscount->add($totalDiscountForPromoCode);
-            }
-        }
-
-        return $totalDiscount;
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPriceWithoutDiscounts
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function getProductsPriceAffectedByMultiplePromoCodes(array $quantifiedItemsPrices, array $quantifiedItemsDiscountsIndexedByPromoCodeId): Price
-    {
-        $finalPrice = Price::zero();
-
-        foreach ($quantifiedItemsPrices as $quantifiedItemPrice) {
-            $finalPrice = $finalPrice->add($quantifiedItemPrice->getTotalPrice());
-        }
+    private function getProductsPriceAffectedByMultiplePromoCodes(
+        Price $productsPriceWithoutDiscounts,
+        array $quantifiedItemsDiscountsIndexedByPromoCodeId
+    ): Price {
+        $productsPrice = $productsPriceWithoutDiscounts;
 
         foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promCodeId => $quantifiedItemsDiscounts) {
             foreach ($quantifiedItemsDiscounts as $quantifiedItemDiscount) {
                 if ($quantifiedItemDiscount !== null) {
-                    $finalPrice = $finalPrice->subtract($quantifiedItemDiscount);
+                    $productsPrice = $productsPrice->subtract($quantifiedItemDiscount);
                 }
             }
         }
 
-        return $finalPrice;
+        return $productsPrice;
     }
 
     /**
-     * @param array $quantifiedItemsDiscountsIndexedByPromoCodeId
-     * @param \App\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPriceWithoutDiscounts
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[] $quantifiedItemsDiscountsByIndex
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function calculateTotalDiscountForPromoCode(array $quantifiedItemsDiscountsIndexedByPromoCodeId, PromoCode $promoCode): Price
-    {
-        return array_reduce($quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()], function ($totalDiscount, $quantifiedItemsDiscount) {
-            if ($quantifiedItemsDiscount === null) {
-                return $totalDiscount;
+    private function getProductsPriceAffectedByOrderDiscountLevel(
+        Price $productsPriceWithoutDiscounts,
+        array $quantifiedItemsDiscountsByIndex
+    ): Price {
+        $productsPrice = $productsPriceWithoutDiscounts;
+        foreach ($quantifiedItemsDiscountsByIndex as $quantifiedItemDiscount) {
+            if ($quantifiedItemDiscount !== null) {
+                $productsPrice = $productsPrice->subtract($quantifiedItemDiscount);
             }
-
-            return $totalDiscount->add($quantifiedItemsDiscount);
-        }, Price::zero());
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
-     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
-     * @param \App\Model\Pricing\Currency\Currency $currency
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price[][]
-     */
-    protected function getQuantifiedItemsDiscountsIndexedByPromoCodeId(array $quantifiedItemsPrices, array $promoCodes, Currency $currency): array
-    {
-        $quantifiedItemsDiscountsIndexedByPromoCodeId = [];
-        $quantifiedItemsPricesForDiscountsCalculation = $quantifiedItemsPrices;
-        foreach ($promoCodes as $promoCode) {
-            $quantifiedItemsPricesForDiscountsCalculation = $this->getQuantifiedItemsPricesMinusAlreadyAppliedDiscounts(
-                $quantifiedItemsPricesForDiscountsCalculation,
-                $quantifiedItemsDiscountsIndexedByPromoCodeId
-            );
-            $quantifiedItemsDiscountsIndexedByPromoCodeId[$promoCode->getId()] = $this->quantifiedProductDiscountCalculation->calculateDiscountsRoundedByCurrency(
-                $quantifiedItemsPricesForDiscountsCalculation,
-                $promoCode->getPercent(),
-                $currency,
-                $promoCode
-            );
         }
 
-        return $quantifiedItemsDiscountsIndexedByPromoCodeId;
+        return $productsPrice;
     }
 
     /**
@@ -382,11 +392,11 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
      * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
      */
-    protected function getTotalPrice(Price $totalPriceWithoutGiftCertificate, array $promoCodes): Price
+    protected function getTotalPriceAffectedByGiftCertificates(Price $totalPriceWithoutGiftCertificate, array $promoCodes): Price
     {
         $certificatesPrice = Price::zero();
         foreach ($promoCodes as $promoCode) {
-            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            if ($promoCode->isTypeGiftCertificate()) {
                 $certificatesTotalPriceWithVat = $promoCode->getCertificateValue();
                 $certificatedTotalVatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($certificatesTotalPriceWithVat, $this->vatFacade->getDefaultVatForDomain($this->domain->getId()));
                 $certificatesTotalPriceWithoutVat = $certificatesTotalPriceWithVat->subtract($certificatedTotalVatAmount);
@@ -401,5 +411,41 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
         }
 
         return $totalPrice;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[] $quantifiedItemsPrices
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
+     */
+    private function getProductsPriceWithoutDiscounts(array $quantifiedItemsPrices): Price
+    {
+        $productsPrice = Price::zero();
+
+        foreach ($quantifiedItemsPrices as $quantifiedItemPrice) {
+            $productsPrice = $productsPrice->add($quantifiedItemPrice->getTotalPrice());
+        }
+
+        return $productsPrice;
+    }
+
+    /**
+     * @param \App\Model\Order\Discount\OrderDiscountLevel $activeOrderDiscountLevel
+     * @param \App\Model\Order\PromoCode\PromoCode[] $promoCodes
+     * @return \App\Model\Order\PromoCode\PromoCode[]
+     */
+    private function removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel(OrderDiscountLevel $activeOrderDiscountLevel, array $promoCodes): array
+    {
+        $removedPromoCodesCount = $this->currentPromoCodeFacade->removeAllEnteredPromoCodesThatAreNotGiftCertificates();
+        if ($removedPromoCodesCount > 0) {
+            $this->flashMessageSender->addSuccessFlash(t('Byla aktivována automatická sleva na celý nákup ve výši %percent% %, která je pro vás výhodnější než použitý slevový kupón, takže byl kupón z košíku odstraněn.', ['%percent%' => $activeOrderDiscountLevel->getDiscountPercent()]));
+        } elseif ($activeOrderDiscountLevel->getId() !== $this->currentOrderDiscountLevelFacade->getActiveOrderLevelDiscountId()) {
+            $this->flashMessageSender->addSuccessFlash(t('Byla aktivována automatická sleva na celý nákup ve výši %percent% %.', ['%percent%' => $activeOrderDiscountLevel->getDiscountPercent()]));
+        }
+        $this->currentOrderDiscountLevelFacade->setActiveOrderLevelDiscountId($activeOrderDiscountLevel->getId());
+        $promoCodes = array_filter($promoCodes, function (PromoCode $promoCode) {
+            return $promoCode->isTypeGiftCertificate();
+        });
+
+        return $promoCodes;
     }
 }

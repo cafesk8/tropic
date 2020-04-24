@@ -10,11 +10,11 @@ use App\Component\SmsManager\SmsManagerFactory;
 use App\Component\SmsManager\SmsMessageFactory;
 use App\Model\GoPay\GoPayTransaction;
 use App\Model\Gtm\GtmHelper;
+use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\GiftCertificate\OrderGiftCertificateFacade;
 use App\Model\Order\Item\OrderItemFactory;
 use App\Model\Order\Mall\Exception\StatusChangException;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Order\Status\OrderStatus;
 use App\Model\Product\Gift\ProductGiftPriceCalculation;
@@ -138,6 +138,11 @@ class OrderFacade extends BaseOrderFacade
     private $orderGiftCertificateFacade;
 
     /**
+     * @var \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade
+     */
+    private $currentOrderDiscountLevelFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Order\OrderNumberSequenceRepository $orderNumberSequenceRepository
      * @param \App\Model\Order\OrderRepository $orderRepository
@@ -172,6 +177,7 @@ class OrderFacade extends BaseOrderFacade
      * @param \App\Component\SmsManager\SmsMessageFactory $smsMessageFactory
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \App\Model\Order\GiftCertificate\OrderGiftCertificateFacade $orderGiftCertificateFacade
+     * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -207,7 +213,8 @@ class OrderFacade extends BaseOrderFacade
         SmsManagerFactory $smsManagerFactory,
         SmsMessageFactory $smsMessageFactory,
         PromoCodeFacade $promoCodeFacade,
-        OrderGiftCertificateFacade $orderGiftCertificateFacade
+        OrderGiftCertificateFacade $orderGiftCertificateFacade,
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
     ) {
         parent::__construct(
             $em,
@@ -246,6 +253,7 @@ class OrderFacade extends BaseOrderFacade
         $this->smsMessageFactory = $smsMessageFactory;
         $this->promoCodeFacade = $promoCodeFacade;
         $this->orderGiftCertificateFacade = $orderGiftCertificateFacade;
+        $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
     }
 
     /**
@@ -326,6 +334,7 @@ class OrderFacade extends BaseOrderFacade
         $this->processGiftCertificates($order);
 
         $this->cartFacade->deleteCartOfCurrentCustomerUser();
+        $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
 
         if ($customerUser !== null) {
             $order->setCustomerTransferId($customerUser->getTransferId());
@@ -417,7 +426,7 @@ class OrderFacade extends BaseOrderFacade
 
         $promoCodes = $orderPreview->getPromoCodesIndexedById();
         foreach ($promoCodes as $promoCode) {
-            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            if ($promoCode->isTypeGiftCertificate()) {
                 $this->setGiftCertificate(
                     $orderPreview,
                     $order,
@@ -557,6 +566,7 @@ class OrderFacade extends BaseOrderFacade
     ): void {
         $quantifiedItemPrices = $orderPreview->getQuantifiedItemsPrices();
         $quantifiedItemDiscountsIndexedByPromoCodeId = $orderPreview->getQuantifiedItemsDiscountsIndexedByPromoCodeId();
+        $orderDiscountLevelQuantifiedItemDiscountsByIndex = $orderPreview->getQuantifiedItemsDiscounts();
 
         foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
             /** @var \App\Model\Product\Product $product */
@@ -583,6 +593,16 @@ class OrderFacade extends BaseOrderFacade
                     $promoCode = $orderPreview->getPromoCodeById($promoCodeId);
                     $this->addOrderItemDiscount($orderItem, $quantifiedItemDiscount, $locale, (float)$orderPreview->getPromoCodeDiscountPercent(), $promoCode);
                 }
+            }
+
+            $orderDiscountLevel = $orderPreview->getActiveOrderDiscountLevel();
+            if ($orderDiscountLevel !== null && array_key_exists($index, $orderDiscountLevelQuantifiedItemDiscountsByIndex)) {
+                $this->addOrderDiscountLevelItem(
+                    $orderItem,
+                    $orderDiscountLevelQuantifiedItemDiscountsByIndex[$index],
+                    $locale,
+                    $orderDiscountLevel->getDiscountPercent()
+                );
             }
         }
     }
@@ -615,6 +635,34 @@ class OrderFacade extends BaseOrderFacade
         );
 
         $this->orderItemFactory->createPromoCode(
+            $name,
+            $quantifiedItemDiscount->inverse(),
+            $orderItem
+        );
+    }
+
+    /**
+     * @param \App\Model\Order\Item\OrderItem $orderItem
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $quantifiedItemDiscount
+     * @param string $locale
+     * @param int $discountPercent
+     */
+    private function addOrderDiscountLevelItem(
+        OrderItem $orderItem,
+        Price $quantifiedItemDiscount,
+        string $locale,
+        int $discountPercent
+    ): void {
+        $discountValue = $this->numberFormatterExtension->formatPercent('-' . $discountPercent, $locale);
+
+        $name = sprintf(
+            '%s %s - %s',
+            t('Sleva na celý nákup', [], 'messages', $locale),
+            $discountValue,
+            $orderItem->getName()
+        );
+
+        $this->orderItemFactory->createOrderDiscountLevel(
             $name,
             $quantifiedItemDiscount->inverse(),
             $orderItem

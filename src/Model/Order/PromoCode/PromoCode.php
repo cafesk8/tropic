@@ -412,4 +412,20 @@ class PromoCode extends BasePromoCode
     {
         return $this->usageLimit !== 0;
     }
+
+    /**
+     * @return bool
+     */
+    public function isTypeGiftCertificate(): bool
+    {
+        return $this->type === PromoCodeData::TYPE_CERTIFICATE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypePromoCode(): bool
+    {
+        return $this->type === PromoCodeData::TYPE_PROMO_CODE;
+    }
 }

@@ -6,7 +6,10 @@ namespace App\Model\Order\PromoCode;
 
 use App\Model\Cart\Cart;
 use App\Model\Customer\User\CustomerUser;
+use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
+use App\Model\Order\Discount\OrderDiscountCalculation;
 use App\Model\Order\PromoCode\Exception\PromoCodeAlreadyAppliedException;
+use App\Model\Order\PromoCode\Exception\PromoCodeIsNotBetterThanOrderLevelDiscountException;
 use App\Model\Order\PromoCode\Exception\PromoCodeIsOnlyForLoggedCustomers;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use DateTime;
@@ -33,16 +36,36 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
     private $promoCodeLimitFacade;
 
     /**
+     * @var \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade
+     */
+    private $currentOrderDiscountLevelFacade;
+
+    /**
+     * @var \App\Model\Order\Discount\OrderDiscountCalculation
+     */
+    private $orderDiscountCalculation;
+
+    /**
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
      * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+     * @param \App\Model\Order\Discount\OrderDiscountCalculation $orderDiscountCalculation
      */
-    public function __construct(PromoCodeFacade $promoCodeFacade, PromoCodeLimitFacade $promoCodeLimitFacade, SessionInterface $session, Domain $domain)
-    {
+    public function __construct(
+        PromoCodeFacade $promoCodeFacade,
+        PromoCodeLimitFacade $promoCodeLimitFacade,
+        SessionInterface $session,
+        Domain $domain,
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
+        OrderDiscountCalculation $orderDiscountCalculation
+    ) {
         parent::__construct($promoCodeFacade, $session);
         $this->domain = $domain;
         $this->promoCodeLimitFacade = $promoCodeLimitFacade;
+        $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
+        $this->orderDiscountCalculation = $orderDiscountCalculation;
     }
 
     /**
@@ -219,6 +242,8 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
      */
     public function checkApplicability(PromoCode $promoCode, Cart $cart): void
     {
+        $this->checkPromoCodeValueIsHigherThanOrderLevelDiscountValue($promoCode, $cart);
+
         if ($promoCode->getLimitType() === PromoCode::LIMIT_TYPE_ALL) {
             return;
         }
@@ -232,5 +257,45 @@ class CurrentPromoCodeFacade extends BaseCurrentPromoCodeFacade
         }
 
         throw new PromoCodeNotApplicableException($promoCode->getCode());
+    }
+
+    /**
+     * @return int
+     */
+    public function removeAllEnteredPromoCodesThatAreNotGiftCertificates(): int
+    {
+        $enteredCodesFromSession = $this->getEnteredCodesFromSession();
+        $removedPromoCodesCount = 0;
+        foreach ($enteredCodesFromSession as $promoCodeCode) {
+            $promoCode = $this->promoCodeFacade->findPromoCodeByCode($promoCodeCode);
+            if ($promoCode !== null && $promoCode->isTypeGiftCertificate() === false) {
+                $this->removeEnteredPromoCodeByCode($promoCodeCode);
+                $removedPromoCodesCount++;
+            }
+        }
+
+        return $removedPromoCodesCount;
+    }
+
+    /**
+     * @param \App\Model\Order\PromoCode\PromoCode $promoCode
+     * @param \App\Model\Cart\Cart $cart
+     * @throws \App\Model\Order\PromoCode\Exception\PromoCodeIsNotBetterThanOrderLevelDiscountException
+     */
+    private function checkPromoCodeValueIsHigherThanOrderLevelDiscountValue(PromoCode $promoCode, Cart $cart): void
+    {
+        $activeOrderLevelDiscountId = $this->currentOrderDiscountLevelFacade->getActiveOrderLevelDiscountId();
+        if (!$promoCode->isTypeGiftCertificate()
+            && $activeOrderLevelDiscountId !== null
+            && !$this->orderDiscountCalculation->isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel(
+                $cart->getQuantifiedProducts(),
+                $promoCode,
+                $this->domain->getId(),
+                $cart->getCustomerUser(),
+                $activeOrderLevelDiscountId
+            )
+        ) {
+            throw new PromoCodeIsNotBetterThanOrderLevelDiscountException($promoCode->getCode());
+        }
     }
 }
