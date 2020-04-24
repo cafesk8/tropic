@@ -88,6 +88,16 @@ class ProductData extends BaseProductData
      */
     public $updatedByPohodaAt;
 
+    /**
+     * @var array[]
+     */
+    public $groupItems;
+
+    /**
+     * @var int
+     */
+    public $pohodaProductType;
+
     public function __construct()
     {
         parent::__construct();
@@ -100,5 +110,6 @@ class ProductData extends BaseProductData
         $this->youtubeVideoIds = [];
         $this->giftCertificate = false;
         $this->registrationDiscountDisabled = false;
+        $this->groupItems = [];
     }
 }

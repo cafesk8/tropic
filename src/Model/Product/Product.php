@@ -47,6 +47,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  */
 class Product extends BaseProduct
 {
+    public const POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT = 1;
+    public const POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP = 5;
+
     /**
      * @var \App\Model\Product\StoreStock\ProductStoreStock[]|\Doctrine\Common\Collections\Collection
      *
@@ -161,6 +164,13 @@ class Product extends BaseProduct
     private $updatedByPohodaAt;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pohodaProductType;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -221,6 +231,7 @@ class Product extends BaseProduct
         }
         $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
+        $this->pohodaProductType = $productData->pohodaProductType;
     }
 
     /**
@@ -761,5 +772,29 @@ class Product extends BaseProduct
     public function getUpdatedByPohodaAt(): ?\DateTime
     {
         return $this->updatedByPohodaAt;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaProductType(): ?int
+    {
+        return $this->pohodaProductType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPohodaProductTypeGroup(): bool
+    {
+        return $this->pohodaProductType === self::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPohodaProductTypeSingle(): bool
+    {
+        return $this->pohodaProductType === self::POHODA_PRODUCT_TYPE_ID_SINGLE_PRODUCT;
     }
 }
