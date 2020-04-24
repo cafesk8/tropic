@@ -70,9 +70,9 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
                 $row['usageLimitOrUnlimited'] = $row['pc']['unlimited'] === true ? '-' : $row['pc']['usageLimit'];
 
                 if ($row['pc']['validTo'] === null) {
-                    $row['unlimitedOrValidTo'] = $row['pc']['unlimited'];
+                    $row['validTo'] = t('Neomezeno');
                 } else {
-                    $row['unlimitedOrValidTo'] = t('Do') . ' ' . $this->dateTimeFormatterExtension->formatDate($row['pc']['validTo'], $this->localization->getAdminLocale());
+                    $row['validTo'] = t('Do') . ' ' . $this->dateTimeFormatterExtension->formatDate($row['pc']['validTo'], $this->localization->getAdminLocale());
                 }
 
                 return $row;
@@ -87,7 +87,7 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
         $grid->addColumn('percent', 'pc.percent', t('Discount'), true);
         $grid->addColumn('number_of_uses', 'pc.numberOfUses', t('Kolikrát použito'), true);
         $grid->addColumn('usage_limit', 'usageLimitOrUnlimited', t('Maximální počet použití'), true);
-        $grid->addColumn('unlimited', 'unlimitedOrValidTo', t('Neomezený'), true);
+        $grid->addColumn('unlimited', 'validTo', t('Platnost'), true);
         $grid->addColumn('prefix', 'pc.prefix', t('Prefix'), true);
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
