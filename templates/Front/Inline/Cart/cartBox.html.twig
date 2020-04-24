@@ -37,7 +37,7 @@
                     <div class="cart-detail__wrap">
                         <ul class="cart-detail">
                             {% for cartItem in cartItems %}
-                                {% set quantifiedItemPrice = quantifiedItemsPrices[loop.index0] %}
+                                {% set quantifiedItemPrice = orderPreview.quantifiedItemsPrices[loop.index0] %}
                                 <li class="cart-detail__item">
                                     <div class="cart-detail__item__image">
                                             {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail' }) }}
@@ -59,6 +59,17 @@
                                 </li>
                             {% endfor %}
                         </ul>
+
+                        {% for promoCodeId, promoCode in orderPreview.promoCodesIndexedById %}
+                            <div class="cart-detail__promo-code__item">
+                                {{ 'Sleva'|trans }}
+                                <span class="next-line"></span> {{ '(kód %code%)'|trans({ '%code%': promoCode.code }) }}
+                                <span class="cart-detail__promo-code__discount">
+                                    - {{ orderPreview.getTotalItemDiscountsIndexedByPromoCodeId[promoCodeId].priceWithVat|price }}
+                                </span>
+                            </div>
+                        {% endfor %}
+
                         <div class="cart-detail__total">
                             <div class="cart-detail__total__text">
                                 {{ 'Celkem'|trans }}
