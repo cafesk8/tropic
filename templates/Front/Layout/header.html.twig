@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="box-dropdown__options box-dropdown__options--menu" id="js-header-burger-menu">
-                            {% cache 'categories_mobile_for_domain_' ~ getDomain().id {time: 60 * 60 * 24} %}
+                            {% cache 'categories_mobile_for_domain_' ~ domainId {time: 60 * 60 * 24} %}
                                 {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction', { dropdownMenu: false, showImage: false })) }}
                             {% endcache %}
                         </div>
@@ -155,15 +155,17 @@
             </div>
 
             <div class="header__menu dont-print">
-                {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction')) }}
-                
+                {% cache 'categories_for_domain_' ~ domainId {time: 60 * 60 * 24} %}
+                    {{ render(controller('App\\Controller\\Front\\CategoryController:hoverMenuAction')) }}
+                {% endcache %}
+
                 <div class="contact-us">
                     <div class="contact-us__open-hours">
                         {{ shopInfoPhoneHours }}
                     </div>
                     <a class="contact-us__phone" href="tel:{{ shopInfoPhoneNumber }}">
                         {% include 'Front/Svg/phone.svg' %}
-                        <spam class="contact-us__phone__text">{{ shopInfoPhoneNumber }}</span>
+                        <span class="contact-us__phone__text">{{ shopInfoPhoneNumber }}</span>
                     </a>
                 </div>
             </div>
