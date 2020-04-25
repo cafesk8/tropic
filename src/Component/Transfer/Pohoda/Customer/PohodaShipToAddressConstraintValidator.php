@@ -32,7 +32,7 @@ class PohodaShipToAddressConstraintValidator extends ConstraintValidator
      * @param array $pohodaAddress
      * @param \Symfony\Component\Validator\Constraint $constraint
      */
-    public function validate($pohodaAddress, Constraint $constraint)
+    public function validate($pohodaAddress, Constraint $constraint): void
     {
         if (empty($pohodaAddress)) {
             return;

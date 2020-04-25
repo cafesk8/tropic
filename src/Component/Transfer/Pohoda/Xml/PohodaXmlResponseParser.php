@@ -14,7 +14,7 @@ class PohodaXmlResponseParser
      * @param string $mServerResponse
      * @return \App\Component\Transfer\Pohoda\Response\PohodaAddressBookResponse[]
      */
-    public function parseAddressBookResponses(string $mServerResponse)
+    public function parseAddressBookResponses(string $mServerResponse): array
     {
         $mServerResponseXml = new SimpleXMLElement($mServerResponse);
 

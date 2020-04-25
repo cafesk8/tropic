@@ -34,7 +34,7 @@ class PohodaAddressConstraintValidator extends ConstraintValidator
      * @throws \App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException
      * @internal param $ \App\Component\Transfer\Pohoda\Customer\PohodaAddress
      */
-    public function validate($pohodaAddress, Constraint $constraint)
+    public function validate($pohodaAddress, Constraint $constraint): void
     {
         $violations = $this->validator->validate($pohodaAddress, new Collection([
             'allowExtraFields' => true,

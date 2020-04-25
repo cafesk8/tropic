@@ -74,7 +74,7 @@ class CustomerExportFacade
     /**
      * @param \App\Model\Customer\User\CustomerUser[] $customersUsers
      */
-    public function processExportCustomersUsers(array $customersUsers)
+    public function processExportCustomersUsers(array $customersUsers): void
     {
         $pohodaCustomers = [];
 
@@ -116,7 +116,7 @@ class CustomerExportFacade
     /**
      * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomer[] $pohodaCustomers
      */
-    private function saveExportCustomersUsersResponse(array $pohodaCustomers)
+    private function saveExportCustomersUsersResponse(array $pohodaCustomers): void
     {
         foreach ($pohodaCustomers as $pohodaCustomer) {
             if (!isset($pohodaCustomer->addressBookResponse)) {

@@ -91,7 +91,7 @@ class MServerClient
      * @throws \App\Component\Transfer\Pohoda\Exception\PohodaMServerException
      * @return string
      */
-    private function send(string $pohodaStwInstance, string $xmlData)
+    private function send(string $pohodaStwInstance, string $xmlData): string
     {
         $connectionUrl = $this->pohodaMServerUrl . ':' . $this->pohodaMServerPort . '/xml';
 
@@ -134,7 +134,7 @@ class MServerClient
      * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomer[] $pohodaCustomers
      * @return \App\Component\Transfer\Pohoda\Customer\PohodaCustomer[]
      */
-    public function exportAddressBook(array $pohodaCustomers)
+    public function exportAddressBook(array $pohodaCustomers): array
     {
         $validPohodaCustomers = [];
 

@@ -39,7 +39,7 @@ class PohodaCustomer
     /**
      * @return array
      */
-    public function getAsArray()
+    public function getAsArray(): array
     {
         return [
             'dataPackItemId' => $this->dataPackItemId,

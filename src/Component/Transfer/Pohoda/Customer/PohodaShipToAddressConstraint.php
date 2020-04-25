@@ -14,7 +14,7 @@ class PohodaShipToAddressConstraint extends Constraint
     /**
      * @return string
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -22,7 +22,7 @@ class PohodaShipToAddressConstraint extends Constraint
     /**
      * @return string
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return \get_class($this) . 'Validator';
     }

@@ -14,7 +14,7 @@ class PohodaCustomerMapper
      * @param \App\Model\Customer\User\CustomerUser $customerUser
      * @return \App\Component\Transfer\Pohoda\Customer\PohodaCustomer
      */
-    public function mapCustomerUserToPohodaCustomer(CustomerUser $customerUser)
+    public function mapCustomerUserToPohodaCustomer(CustomerUser $customerUser): PohodaCustomer
     {
         $pohodaCustomer = new PohodaCustomer();
         $pohodaCustomer->dataPackItemId = 'adr' . time() . '-' . $customerUser->getId();
@@ -52,7 +52,6 @@ class PohodaCustomerMapper
             $pohodaCustomer->shipToAddress = $pohodaDeliveryAddress;
         }
 
-        //TODO Doplnit ostatni atributy a odstranit email z adres
         return $pohodaCustomer;
     }
 }
