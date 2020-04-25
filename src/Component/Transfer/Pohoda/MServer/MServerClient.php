@@ -6,6 +6,7 @@ namespace App\Component\Transfer\Pohoda\MServer;
 
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator;
+use App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser;
 
 class MServerClient
 {
@@ -42,12 +43,18 @@ class MServerClient
     private $pohodaCompanyIco;
 
     /**
+     * @var \App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser
+     */
+    private $pohodaXmlResponseParser;
+
+    /**
      * @param string $pohodaMServerUrl
      * @param string $pohodaMServerPort
      * @param string $pohodaMServerLogin
      * @param string $pohodaMServerPassword
      * @param string $pohodaCompanyIco
      * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator $pohodaXmlGenerator
+     * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser $pohodaXmlResponseParser
      */
     public function __construct(
         string $pohodaMServerUrl,
@@ -55,7 +62,8 @@ class MServerClient
         string $pohodaMServerLogin,
         string $pohodaMServerPassword,
         string $pohodaCompanyIco,
-        PohodaXmlGenerator $pohodaXmlGenerator
+        PohodaXmlGenerator $pohodaXmlGenerator,
+        PohodaXmlResponseParser $pohodaXmlResponseParser
     ) {
         $this->pohodaXmlGenerator = $pohodaXmlGenerator;
 
@@ -64,17 +72,17 @@ class MServerClient
         $this->pohodaMServerLogin = $pohodaMServerLogin;
         $this->pohodaMServerPassword = $pohodaMServerPassword;
         $this->pohodaCompanyIco = $pohodaCompanyIco;
+        $this->pohodaXmlResponseParser = $pohodaXmlResponseParser;
     }
 
     /**
      * @param string $pohodaStwInstance
      * @param string $xmlData
      * @throws \App\Component\Transfer\Pohoda\Exception\PohodaMServerException
+     * @return string
      */
     private function send(string $pohodaStwInstance, string $xmlData)
     {
-        $xmlData = $this->prepareEncodedData($xmlData);
-
         $connectionUrl = $this->pohodaMServerUrl . ':' . $this->pohodaMServerPort . '/xml';
 
         $pohodaStwAuthorization = base64_encode($this->pohodaMServerLogin . ':' . $this->pohodaMServerPassword);
@@ -82,7 +90,7 @@ class MServerClient
         $headers = [
             'Content-Type: text/xml',
             'STW-Application: Shopsys',
-            'STW-Instance: ' . $this->prepareEncodedData($pohodaStwInstance),
+            'STW-Instance: ' . $this->pohodaXmlGenerator->prepareEncodedData($pohodaStwInstance),
             'STW-Authorization: Basic ' . $pohodaStwAuthorization,
         ];
 
@@ -108,19 +116,13 @@ class MServerClient
         }
 
         curl_close($mServerConnection);
-    }
 
-    /**
-     * @param string $data
-     * @return bool|false|string
-     */
-    private function prepareEncodedData(string $data)
-    {
-        return iconv('UTF-8', 'WINDOWS-1250', $data);
+        return $mServerResult;
     }
 
     /**
      * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomer[] $pohodaCustomers
+     * @return \App\Component\Transfer\Pohoda\Customer\PohodaCustomer[]
      */
     public function exportAddressBook(array $pohodaCustomers)
     {
@@ -132,9 +134,19 @@ class MServerClient
             ]
         );
 
-        $this->send(
+        $mServerResponse = $this->send(
             self::POHODA_STW_INSTANCE_EXPORT_ADDRESSBOOK,
             $xmlData
         );
+
+        $addressBookResponses = $this->pohodaXmlResponseParser->parseAddressBookResponses($mServerResponse);
+
+        foreach ($pohodaCustomers as $pohodaCustomer) {
+            if (array_key_exists($pohodaCustomer->dataPackItemId, $addressBookResponses)) {
+                $pohodaCustomer->addressBookResponse = $addressBookResponses[$pohodaCustomer->dataPackItemId];
+            }
+        }
+
+        return $pohodaCustomers;
     }
 }

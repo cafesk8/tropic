@@ -30,6 +30,17 @@ class PohodaXmlGenerator
     {
         $template = $this->twig->load($templateFilePath);
 
-        return $template->renderBlock('main_content', $data);
+        $xmlData = $template->renderBlock('main_content', $data);
+
+        return $this->prepareEncodedData($xmlData);
+    }
+
+    /**
+     * @param string $data
+     * @return string
+     */
+    public function prepareEncodedData(string $data): string
+    {
+        return (string)iconv('UTF-8', 'WINDOWS-1250', $data);
     }
 }

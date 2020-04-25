@@ -12,6 +12,11 @@ class PohodaCustomer
     public $dataPackItemId;
 
     /**
+     * @var \App\Component\Transfer\Pohoda\Response\PohodaAddressBookResponse|null
+     */
+    public $addressBookResponse;
+
+    /**
      * @var int|null
      */
     public $eshopId;
