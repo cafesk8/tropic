@@ -91,6 +91,12 @@ class CustomerUser extends BaseCustomerUser
     private $pricingGroupUpdatedAt;
 
     /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true, unique=true)
+     */
+    private $pohodaId;
+
+    /**
      * @param \App\Model\Customer\User\CustomerUserData $customerUserData
      */
     public function __construct(BaseCustomerUserData $customerUserData)
@@ -101,6 +107,7 @@ class CustomerUser extends BaseCustomerUser
         $this->exportStatus = $customerUserData->exportStatus;
         $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
         $this->userTransferId = new ArrayCollection();
+        $this->pohodaId = $customerUserData->pohodaId;
     }
 
     /**
@@ -112,6 +119,8 @@ class CustomerUser extends BaseCustomerUser
         $this->pricingGroupUpdatedAt = $customerUserData->pricingGroupUpdatedAt;
 
         $this->setExportStatus(self::EXPORT_NOT_YET);
+
+        $this->pohodaId = $customerUserData->pohodaId;
     }
 
     /**
@@ -231,5 +240,13 @@ class CustomerUser extends BaseCustomerUser
     public function getPricingGroupUpdatedAt(): \DateTime
     {
         return $this->pricingGroupUpdatedAt;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPohodaId(): ?int
+    {
+        return $this->pohodaId;
     }
 }

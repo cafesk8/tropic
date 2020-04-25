@@ -73,6 +73,7 @@ class CustomerUserDataFactory extends BaseCustomerUserDataFactory
     {
         parent::fillFromUser($customerUserData, $customerUser);
         $customerUserData->pricingGroupUpdatedAt = $customerUser->getPricingGroupUpdatedAt();
+        $customerUserData->pohodaId = $customerUser->getPohodaId();
     }
 
     /**
