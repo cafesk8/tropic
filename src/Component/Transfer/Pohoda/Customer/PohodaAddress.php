@@ -14,11 +14,6 @@ class PohodaAddress
     /**
      * @var string|null
      */
-    public $division;
-
-    /**
-     * @var string|null
-     */
     public $name;
 
     /**

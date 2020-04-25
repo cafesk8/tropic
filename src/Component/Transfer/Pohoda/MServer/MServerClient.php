@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\Transfer\Pohoda\MServer;
 
+use App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator;
+use App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException;
 use App\Component\Transfer\Pohoda\Exception\PohodaMServerException;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator;
 use App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser;
@@ -48,6 +50,11 @@ class MServerClient
     private $pohodaXmlResponseParser;
 
     /**
+     * @var \App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator
+     */
+    private $pohodaCustomerValidator;
+
+    /**
      * @param string $pohodaMServerUrl
      * @param string $pohodaMServerPort
      * @param string $pohodaMServerLogin
@@ -55,6 +62,7 @@ class MServerClient
      * @param string $pohodaCompanyIco
      * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlGenerator $pohodaXmlGenerator
      * @param \App\Component\Transfer\Pohoda\Xml\PohodaXmlResponseParser $pohodaXmlResponseParser
+     * @param \App\Component\Transfer\Pohoda\Customer\PohodaCustomerValidator $pohodaCustomerValidator
      */
     public function __construct(
         string $pohodaMServerUrl,
@@ -63,7 +71,8 @@ class MServerClient
         string $pohodaMServerPassword,
         string $pohodaCompanyIco,
         PohodaXmlGenerator $pohodaXmlGenerator,
-        PohodaXmlResponseParser $pohodaXmlResponseParser
+        PohodaXmlResponseParser $pohodaXmlResponseParser,
+        PohodaCustomerValidator $pohodaCustomerValidator
     ) {
         $this->pohodaXmlGenerator = $pohodaXmlGenerator;
 
@@ -73,6 +82,7 @@ class MServerClient
         $this->pohodaMServerPassword = $pohodaMServerPassword;
         $this->pohodaCompanyIco = $pohodaCompanyIco;
         $this->pohodaXmlResponseParser = $pohodaXmlResponseParser;
+        $this->pohodaCustomerValidator = $pohodaCustomerValidator;
     }
 
     /**
@@ -126,11 +136,23 @@ class MServerClient
      */
     public function exportAddressBook(array $pohodaCustomers)
     {
+        $validPohodaCustomers = [];
+
+        foreach ($pohodaCustomers as $pohodaCustomer) {
+            try {
+                $this->pohodaCustomerValidator->validate($pohodaCustomer);
+            } catch (PohodaInvalidDataException $exc) {
+                continue;
+            }
+
+            $validPohodaCustomers[] = $pohodaCustomer;
+        }
+
         $xmlData = $this->pohodaXmlGenerator->generateXmlRequest(
             'Component/Transfer/Pohoda/Customer/addressBook.xml.twig',
             [
                 'pohodaCompanyIco' => $this->pohodaCompanyIco,
-                'pohodaCustomers' => $pohodaCustomers,
+                'pohodaCustomers' => $validPohodaCustomers,
             ]
         );
 

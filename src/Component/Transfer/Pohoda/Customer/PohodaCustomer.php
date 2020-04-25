@@ -30,4 +30,18 @@ class PohodaCustomer
      * @var \App\Component\Transfer\Pohoda\Customer\PohodaAddress|null
      */
     public $shipToAddress;
+
+    /**
+     * @return array
+     */
+    public function getAsArray()
+    {
+        return [
+            'dataPackItemId' => $this->dataPackItemId,
+            'addressBookResponse' => (array)$this->addressBookResponse,
+            'eshopId' => $this->eshopId,
+            'address' => (array)$this->address,
+            'shipToAddress' => (array)$this->shipToAddress,
+        ];
+    }
 }
