@@ -19,6 +19,7 @@ class PohodaCustomerMapper
         $pohodaCustomer = new PohodaCustomer();
         $pohodaCustomer->dataPackItemId = 'adr' . time() . '-' . $customerUser->getId();
         $pohodaCustomer->eshopId = $customerUser->getId();
+        $pohodaCustomer->priceIds = $customerUser->getPricingGroup()->getPohodaIdent();
 
         $pohodaBillingAddress = new PohodaAddress();
         $pohodaBillingAddress->company = $customerUser->getCustomer()->getBillingAddress()->getCompanyName();
@@ -51,6 +52,7 @@ class PohodaCustomerMapper
             $pohodaCustomer->shipToAddress = $pohodaDeliveryAddress;
         }
 
+        //TODO Doplnit ostatni atributy a odstranit email z adres
         return $pohodaCustomer;
     }
 }

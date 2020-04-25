@@ -22,6 +22,11 @@ class PohodaCustomer
     public $eshopId;
 
     /**
+     * @var string|null
+     */
+    public $priceIds;
+
+    /**
      * @var \App\Component\Transfer\Pohoda\Customer\PohodaAddress|null
      */
     public $address;
@@ -40,6 +45,7 @@ class PohodaCustomer
             'dataPackItemId' => $this->dataPackItemId,
             'addressBookResponse' => (array)$this->addressBookResponse,
             'eshopId' => $this->eshopId,
+            'priceIds' => $this->priceIds,
             'address' => (array)$this->address,
             'shipToAddress' => (array)$this->shipToAddress,
         ];

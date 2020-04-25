@@ -15,6 +15,7 @@ class PricingGroupGridFactory extends BasePricingGroupGridFactory
     {
         $grid = parent::create();
         $grid->addColumn('discount', 'pg.discount', t('Sleva %'));
+        $grid->addColumn('pohodaIdent', 'pg.pohodaIdent', t('Identifikátor pro IS Pohoda'));
 
         return $grid;
     }

@@ -41,5 +41,6 @@ class PricingGroupDataFactory extends BasePricingGroupDataFactory
         $pricingGroupData->minimalPrice = $pricingGroup->getMinimalPrice();
         $pricingGroupData->discount = $pricingGroup->getDiscount();
         $pricingGroupData->calculatedFromDefault = $pricingGroup->isCalculatedFromDefault();
+        $pricingGroupData->pohodaIdent = $pricingGroup->getPohodaIdent();
     }
 }

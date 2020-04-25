@@ -37,6 +37,14 @@ class PohodaCustomerValidator
                     new Type(['type' => 'string']),
                     new Length(['min' => 10, 'max' => 100]),
                 ],
+                'priceIds' => [
+                    new Type(['type' => 'string']),
+                    new Length([
+                        'min' => 0,
+                        'max' => 10,
+                        'maxMessage' => 'Identifikátor cenové skupiny musí obsahovat maximálně 10 znaků',
+                    ]),
+                ],
                 'address' => [
                     new PohodaAddressConstraint(),
                 ],
