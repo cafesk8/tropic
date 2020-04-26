@@ -12,7 +12,7 @@
 	xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" >
 
 {% for pohodaCustomer in pohodaCustomers %}
-	<dat:dataPackItem id="adr{{ date().timestamp }}-{{ pohodaCustomer.eshopId }}" version="2.0">
+	<dat:dataPackItem id="{{ pohodaCustomer.dataPackItemId }}" version="2.0">
 		<adb:addressbook version="2.0">
 			<adb:actionType>
 				<adb:update update="true" add="true">
