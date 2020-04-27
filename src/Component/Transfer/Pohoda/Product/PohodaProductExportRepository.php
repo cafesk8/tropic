@@ -72,7 +72,8 @@ class PohodaProductExportRepository
             ->addScalarResult('ObjNazev', PohodaProduct::COL_VARIANT_ID)
             ->addScalarResult('SText', PohodaProduct::COL_VARIANT_ALIAS)
             ->addScalarResult('SText1', PohodaProduct::COL_VARIANT_ALIAS_SK)
-            ->addScalarResult('RelSkTyp', PohodaProduct::COL_POHODA_PRODUCT_TYPE);
+            ->addScalarResult('RelSkTyp', PohodaProduct::COL_POHODA_PRODUCT_TYPE)
+            ->addScalarResult('VPrAutPrepEUR', PohodaProduct::COL_AUTO_EUR_PRICE);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT 
@@ -90,7 +91,8 @@ class PohodaProductExportRepository
                 Product.ObjNazev, 
                 Product.SText,
                 Product.SText1,
-                Product.RelSkTyp
+                Product.RelSkTyp,
+                Product.VPrAutPrepEUR
              FROM Skz Product
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1

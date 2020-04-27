@@ -80,6 +80,9 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_VARIANT_ID => [
                     new Callback(['callback' => [$this, 'validateVariantId'], 'payload' => $pohodaProductData]),
                 ],
+                PohodaProduct::COL_AUTO_EUR_PRICE => [
+                    new NotBlank(),
+                ],
             ],
         ]));
 

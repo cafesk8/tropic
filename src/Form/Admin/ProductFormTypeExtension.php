@@ -53,6 +53,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'variantId',
         'categoriesByDomainId',
         'storeStock',
+        'eurCalculatedAutomatically',
     ];
 
     /**
@@ -355,6 +356,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $pricesGroupBuilder->add('registrationDiscountDisabled', YesNoType::class, [
             'label' => t('Vyjmout ze slev za registraci'),
             'position' => 'first',
+        ]);
+        $pricesGroupBuilder->add('eurCalculatedAutomatically', YesNoType::class, [
+            'label' => t('Ceny se automaticky přepočítávají na Euro'),
+            'position' => ['after' => 'registrationDiscountDisabled'],
         ]);
 
         $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');

@@ -103,6 +103,11 @@ class ProductData extends BaseProductData
      */
     public $pohodaProductType;
 
+    /**
+     * @var bool
+     */
+    public $eurCalculatedAutomatically;
+
     public function __construct()
     {
         parent::__construct();
@@ -117,5 +122,6 @@ class ProductData extends BaseProductData
         $this->registrationDiscountDisabled = false;
         $this->groupItems = [];
         $this->generateToMergadoXmlFeeds = [];
+        $this->eurCalculatedAutomatically = true;
     }
 }

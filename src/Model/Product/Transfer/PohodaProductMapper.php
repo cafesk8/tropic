@@ -142,6 +142,7 @@ class PohodaProductMapper
         $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
         $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
         $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
+        $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
         /* Please remove this after user story "Zobrazení skladové zásoby u produktu" - this line is temporarily for import */
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
