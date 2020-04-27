@@ -72,159 +72,134 @@
                     {{ product.getSeoH1(domain.id)|default(product.name) }}
                 </h2>
 
-                <div class="box-detail__info__code">
-                    {% if not product.isMainVariant %}
-                        <span class="padding-right-10">
-                            {{ 'Kód produktu'|trans }}: {{ product.catnum }}
-                        </span>
-                        {% if product.brand %}
-                            |
-                            <span class="padding-left-10">
-                                {{ 'Brand'|trans }}:
-                                <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
-                                    <span itemprop="brand">{{ product.brand.name }}</span>
-                                </a>
-                            </span>
-                        {% endif %}
-                    {% elseif product.brand %}
-                        {{ 'Brand'|trans }}:
-                        <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
-                            <span itemprop="brand">{{ product.brand.name }}</span>
-                        </a>
-                    {% endif %}
-                </div>
-
                 {% for gift in product.gifts(domain.id) %}
                     {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
                         and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
-                        <div class="box-detail__item__info__gift_row">
-                            <div class="box-detail__item__info__gift">
-                                <span class="box-detail__item__info__gift__title">{{ 'Dárek'|trans }}</span>
-                                {{ gift.name }}
-                            </div>
-                        </div>
+                        <a class="box-detail__gift" href="{{ url('front_product_detail', { id: gift.id }) }}">
+                            <strong>{{ 'DÁREK'|trans }}</strong> {{ gift.name }}
+                        </a>
                     {% endif %}
                 {% endfor %}
 
-                {% if product.isGiftCertificate %}
-                    <div class="in-message--info">{{ 'Tento produkt je dárkovým kupónem, tudíž na něj nelze aplikovat žádné slevy.' }}</div>
-                {% endif %}
+                <div class="box-detail__add-basket">
+                    {% if product.isGiftCertificate %}
+                        <div class="box-detail__add-basket__message">
+                            {{ 'Na tento produkt se nevztahují slevové kupóny' }}
+                        </div>
+                    {% endif %}
 
-                <div class="box-detail__wrap">
-                    <div class="box-detail__add-basket">
-                        <div>
-                            {% if not product.isMainVariant and product.calculatedAvailability %}
-                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
+                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
+                        {% if not product.isMainVariant %}
+                            {% if product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
+                                <div class="in-message--info">
+                                    {{ registrationDiscountExclusionText }}
+                                </div>
                             {% endif %}
-                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
-                                {% if not product.isMainVariant %}
-                                    {% if product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
-                                        <div class="in-message--info">
-                                            {{ registrationDiscountExclusionText }}
-                                        </div>
+                            {{ self.productPrice(product) }}
+                            <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
+                            <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
+                        {% endif %}
+                        <link itemprop="availability"
+                            href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
+                    </div>
+
+                    {% if not product.isMainVariant and product.calculatedAvailability %}
+                        {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
+                    {% endif %}
+
+                    {% if product.isMainVariant and not product.calculatedSellingDenied %}
+                        <table {% if getProductSellingPrice(product) is not null %}itemprop="offers"
+                            itemscope
+                            itemtype="http://schema.org/AggregateOffer" {% endif %}
+                            class="table-variants"
+                        >
+                            <thead>
+                            <tr class="table-variants__row">
+                                <th class="table-variants__cell table-variants__cell--image"></th>
+                                <th class="table-variants__cell table-variants__cell--name">{{ 'Name'|trans }}</th>
+                                <th class="table-variants__cell table-variants__cell--price">
+                                    {{ 'Price including VAT'|trans }}
+                                    {% if getProductSellingPrice(product) is not null %}
+                                        <meta itemprop="priceCurrency"
+                                            content="{{ currencyCode(domain.id) }}"
+                                        >
+                                        <meta itemprop="lowPrice"
+                                            content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
+                                        >
+                                        <link itemprop="availability"
+                                            href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
+                                        >
                                     {% endif %}
-                                    {{ self.productPrice(product) }}
-                                    <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
-                                    <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">
-                                {% endif %}
-                                <link itemprop="availability"
-                                    href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}">
-                            </div>
-                            {% if product.isMainVariant and not product.calculatedSellingDenied %}
-                                <table {% if getProductSellingPrice(product) is not null %}itemprop="offers"
-                                    itemscope
-                                    itemtype="http://schema.org/AggregateOffer" {% endif %}
-                                    class="table-variants"
-                                >
-                                    <thead>
-                                    <tr class="table-variants__row">
-                                        <th class="table-variants__cell table-variants__cell--image"></th>
-                                        <th class="table-variants__cell table-variants__cell--name">{{ 'Name'|trans }}</th>
-                                        <th class="table-variants__cell table-variants__cell--price">
-                                            {{ 'Price including VAT'|trans }}
-                                            {% if getProductSellingPrice(product) is not null %}
-                                                <meta itemprop="priceCurrency"
-                                                    content="{{ currencyCode(domain.id) }}"
-                                                >
-                                                <meta itemprop="lowPrice"
-                                                    content="{{ getProductSellingPrice(product).priceWithVat|moneyFormat }}"
-                                                >
-                                                <link itemprop="availability"
-                                                    href="{{ product.calculatedSellingDenied ? 'http://schema.org/OutOfStock' : 'http://schema.org/InStock' }}"
-                                                >
+                                </th>
+                                <th class="table-variants__cell">{{ 'Dostupnost'|trans }}</th>
+                                <th class="table-variants__cell">{{ 'Kód produktu'|trans }}</th>
+                                <th class="table-variants__cell">{{ 'Parametry'|trans }}</th>
+                                <th class="table-variants__cell table-variants__cell--action"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for variant in filterOnlyVisibleVariants(product) %}
+                                <tr class="table-variants__row">
+                                    <td class="table-variants__cell table-variants__cell--image">
+                                        <div class="table-variants__cell__image">
+                                            {% if imageExists(variant) %}
+                                                <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
+                                                    {{ image(variant, { size: 'thumbnail' }) }}
+                                                </a>
+                                            {% else %}
+                                                {{ noimage() }}
                                             {% endif %}
-                                        </th>
-                                        <th class="table-variants__cell">{{ 'Dostupnost'|trans }}</th>
-                                        <th class="table-variants__cell">{{ 'Kód produktu'|trans }}</th>
-                                        <th class="table-variants__cell">{{ 'Parametry'|trans }}</th>
-                                        <th class="table-variants__cell table-variants__cell--action"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for variant in filterOnlyVisibleVariants(product) %}
-                                        <tr class="table-variants__row">
-                                            <td class="table-variants__cell table-variants__cell--image">
-                                                <div class="table-variants__cell__image">
-                                                    {% if imageExists(variant) %}
-                                                        <a href="{{ imageUrl(variant, 'original') }}" class="js-popup-image">
-                                                            {{ image(variant, { size: 'thumbnail' }) }}
-                                                        </a>
-                                                    {% else %}
-                                                        {{ noimage() }}
-                                                    {% endif %}
-                                                </div>
-                                            </td>
-                                            <td class="table-variants__cell table-variants__cell--name">
-                                                {% if variant.variantAlias is not null %}
-                                                    {{ variant.variantAlias }}
-                                                {% else %}
-                                                    {{ variant.name }}
-                                                {% endif %}
-                                            </td>
-                                            <td class="table-variants__cell table-variants__cell--price">
-                                                {{ self.productPrice(variant) }}
-                                            </td>
-                                            <td class="table-variants__cell">
-                                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: variant, variants: {} } %}
-                                            </td>
-                                            <td class="table-variants__cell">
-                                                {{ variant.catnum }}
-                                            </td>
-                                            <td>
-                                                {% set productParameterValues = getProductParameterValues(variant) %}
-                                                {% for productParameterValue in productParameterValues %}
-                                                    {{ productParameterValue.parameter.name }}:
-                                                    {{ productParameterValue.value.text }}
-                                                {% endfor %}
-                                            </td>
-                                            <td>
-                                                {% if variant.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
-                                                    <div class="in-message--info">
-                                                        {{ registrationDiscountExclusionText }}
-                                                    </div>
-                                                {% endif %}
-                                            </td>
-                                            <td class="table-variants__cell table-variants__cell--action">
-                                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% endif %}
-                            {% if not product.isMainVariant %}
-                                <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
-                                    {% if not product.calculatedSellingDenied %}
-                                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, type: 'large' })) }}
-                                    {% else %}
-                                        <div>
-                                            {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
                                         </div>
-                                    {% endif %}
+                                    </td>
+                                    <td class="table-variants__cell table-variants__cell--name">
+                                        {% if variant.variantAlias is not null %}
+                                            {{ variant.variantAlias }}
+                                        {% else %}
+                                            {{ variant.name }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="table-variants__cell table-variants__cell--price">
+                                        {{ self.productPrice(variant) }}
+                                    </td>
+                                    <td class="table-variants__cell">
+                                        {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: variant, variants: {} } %}
+                                    </td>
+                                    <td class="table-variants__cell">
+                                        {{ variant.catnum }}
+                                    </td>
+                                    <td>
+                                        {% set productParameterValues = getProductParameterValues(variant) %}
+                                        {% for productParameterValue in productParameterValues %}
+                                            {{ productParameterValue.parameter.name }}:
+                                            {{ productParameterValue.value.text }}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if variant.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
+                                            <div class="in-message--info">
+                                                {{ registrationDiscountExclusionText }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td class="table-variants__cell table-variants__cell--action">
+                                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: variant, type: 'small'})) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if not product.isMainVariant %}
+                        <div class="box-detail-add js-product-detail-main-add-to-cart-wrapper">
+                            {% if not product.calculatedSellingDenied %}
+                                {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, type: 'large' })) }}
+                            {% else %}
+                                <div>
+                                    {{ 'This product is no longer available for purchase. Have a look at similar products <a href="%url%">here</a>.'|transHtml({"%url%": url('front_product_list', { id: productMainCategory.id })}) }}
                                 </div>
                             {% endif %}
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

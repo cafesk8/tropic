@@ -3,6 +3,7 @@
 .box-detail-add {
     &__prices {
         display: flex;
+        flex-wrap: wrap;
         flex-direction: column;
         margin-bottom: 30px;
 
@@ -33,6 +34,10 @@
 
             &--save {
                 color: @color-gray;
+            }
+
+            &--registered {
+                width: 100%;
             }
         }
     }

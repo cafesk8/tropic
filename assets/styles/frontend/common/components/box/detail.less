@@ -1,4 +1,4 @@
-@box-detail-info-width: 548px;
+@box-detail-info-width: 500px;
 @box-detail-info-width-small: 400px;
 @box-detail-info-gap: 80px;
 @box-detail-info-gap-small: 40px;
@@ -10,8 +10,6 @@
 
 @box-detail-params-title-width: 32%;
 @box-detail-info-padding: 30px;
-
-@box-detail-gift-image-size: 50px;
 
 .box-detail {
     &__product {
@@ -51,14 +49,6 @@
         }
     }
 
-    &__wrap {
-        margin-bottom: 15px;
-
-        border: solid @color-border;
-        border-width: 3px;
-        border-radius: @radius;
-    }
-
     &__info {
         margin-bottom: @margin-gap;
 
@@ -73,17 +63,10 @@
         }
 
         &__title {
-            line-height: 42px;
-            margin-bottom: 0;
+            line-height: 36px;
+            margin-bottom: 10px;
 
-            font-size: 36px;
-        }
-
-        &__code {
-            margin-bottom: @margin-gap;
-
-            color: @color-gray;
-            font-size: @font-size-small;
+            font-size: 30px;
         }
 
         &__description {
@@ -134,59 +117,41 @@
         }
     }
 
-    &__add-basket {
-        padding: 0;
+    &__gift {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 0 6px;
+        line-height: 21px;
+        
+        font-size: @font-size-small;
+        background-color: rgba(213,48,48,0.15);
+        color: @color-red;
+        border-radius: @radius-very-small;
+        transition: @transition;
 
-        font-weight: bold;
-
-        &--empty {
-            padding: 0;
-        }
-
-        & > div {
-            padding: @box-detail-info-padding;
+        &:hover {
+            text-decoration: none;
+            color: @color-red;
+            background-color: rgba(213,48,48,0.20);
         }
     }
 
-    &__gift {
-        display: flex;
-        flex-direction: row;
-        padding: 10px @box-detail-info-padding;
+    &__add-basket {
+        padding: 50px 50px 20px;
 
-        background-color: @color-f;
-        border-top: 1px solid @color-light;
+        border-radius: @radius;
+        background-color: @color-box;
 
-        &__image {
-            display: flex;
-            position: relative;
-            height: @box-detail-gift-image-size;
-            width: @box-detail-gift-image-size;
-            margin-right: 20px;
+        &__message {
+            margin: -40px -40px 40px;
+            padding: 10px 40px;
+            line-height: 18px; 
 
-            img {
-                .center-image();
-            }
-        }
-
-        &__info {
-            &__title {
-                display: block;
-                margin-bottom: 7px;
-
-                color: @color-base;
-                font-weight: 700;
-                text-transform: uppercase;
-                text-decoration: none;
-            }
-
-            &__text {
-                color: @color-base;
-            }
-
-            &__text-colored {
-                color: @color-add;
-                font-weight: 700;
-            }
+            border-radius: @radius;
+            background-color: @color-f;
+            font-family: @font-alt;
+            font-weight: 600;
+            font-size: @font-size + 1px;
         }
     }
 
