@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="tail.svg"
+   inkscape:version="0.92.4 (fd57863, 2020-04-02)">
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Path</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="2.3177389"
+     inkscape:cx="-1.5873871"
+     inkscape:cy="30.94519"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+  <title
+     id="title2">Path</title>
+  <desc
+     id="desc4">Created with Sketch.</desc>
+  <g
+     id="Page-1"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1"
+     transform="matrix(28.166667,0,0,28.166667,129.5,2.499994)">
+    <g
+       id="TFish_Vypis-clanku"
+       transform="translate(-1036,-435)"
+       style="fill:#31abc2;fill-rule:nonzero">
+      <g
+         id="kategorie-článku-modrý-box"
+         transform="translate(1005,342)">
+        <g
+           id="txt-obsah"
+           transform="translate(19,80)">
+          <g
+             id="odrážky"
+             transform="translate(12,13)">
+            <path
+               d="M 9,18 C 7.7762478,15.298246 7.0946644,12.245614 7.0946644,9 7.0946644,5.754386 7.7762478,2.7017544 9,0 H 8.302926 C 5.979346,2.6666667 3.1600689,5.9649123 0,9 c 3.1600689,3.035088 5.979346,6.333333 8.302926,9 z"
+               id="Path"
+               transform="matrix(-1,0,0,1,9,0)"
+               inkscape:connector-curvature="0" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
