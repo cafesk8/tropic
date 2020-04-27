@@ -11,7 +11,6 @@ use App\Component\Setting\Setting;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\Exception\SaleCategoryNotFoundException;
-use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Group\ProductGroupFactory;
@@ -830,8 +829,8 @@ class ProductFacade extends BaseProductFacade
                 $firstPricingGroup = $first->getPricingGroup();
                 /** @var \App\Model\Pricing\Group\PricingGroup $secondPricingGroup */
                 $secondPricingGroup = $second->getPricingGroup();
-                $isFirstOrdinary = $firstPricingGroup->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
-                $isSecondOrdinary = $secondPricingGroup->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER;
+                $isFirstOrdinary = $firstPricingGroup->isOrdinaryCustomerPricingGroup();
+                $isSecondOrdinary = $secondPricingGroup->isOrdinaryCustomerPricingGroup();
 
                 if ($isFirstOrdinary && !$isSecondOrdinary) {
                     return -1;

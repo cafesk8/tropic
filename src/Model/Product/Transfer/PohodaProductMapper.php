@@ -8,7 +8,8 @@ use App\Component\Domain\DomainHelper;
 use App\Component\Transfer\Pohoda\Product\PohodaProduct;
 use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\CategoryFacade;
-use App\Model\Pricing\Group\PricingGroup;
+use App\Model\Pricing\Currency\Currency;
+use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
@@ -59,12 +60,18 @@ class PohodaProductMapper
     private $productFacade;
 
     /**
+     * @var \App\Model\Pricing\Currency\CurrencyFacade
+     */
+    private $currencyFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Store\StoreFacade $storeFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
         Domain $domain,
@@ -72,7 +79,8 @@ class PohodaProductMapper
         VatFacade $vatFacade,
         CategoryFacade $categoryFacade,
         StoreFacade $storeFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        CurrencyFacade $currencyFacade
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -80,6 +88,7 @@ class PohodaProductMapper
         $this->categoryFacade = $categoryFacade;
         $this->storeFacade = $storeFacade;
         $this->productFacade = $productFacade;
+        $this->currencyFacade = $currencyFacade;
     }
 
     /**
@@ -112,28 +121,7 @@ class PohodaProductMapper
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->categoriesByDomainId[$domainId] = $categories;
-            $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
-            $productData->manualInputPricesByPricingGroupId[$this->pricingGroupFacade->getByNameAndDomainId(
-                PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER,
-                $domainId
-            )->getId()] = Money::create($this->fixInvalidPriceFormat($pohodaProduct->sellingPrice));
-
-            $productData->manualInputPricesByPricingGroupId[
-                $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId)->getId()
-            ] = $this->getPriceFromString($pohodaProduct->purchasePrice);
-            $productData->manualInputPricesByPricingGroupId[
-                $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()
-            ] = $this->getPriceFromString($pohodaProduct->standardPrice);
-
-            $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] = null;
-
-            foreach (PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY as $stockId) {
-                if (isset($pohodaProduct->saleInformation[$stockId])) {
-                    $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] =
-                        $this->getPriceFromString($pohodaProduct->saleInformation[$stockId]);
-                    break;
-                }
-            }
+            $this->addPricesForDomain($pohodaProduct, $productData, $domainId);
         }
 
         $productData->vatsIndexedByDomainId[DomainHelper::CZECH_DOMAIN] = $this->vatFacade->getByPohodaId($pohodaProduct->vatRateId);
@@ -219,14 +207,55 @@ class PohodaProductMapper
 
     /**
      * @param string|null $priceString
+     * @param string $currencyMultiplier
      * @return \Shopsys\FrameworkBundle\Component\Money\Money|null
      */
-    private function getPriceFromString(?string $priceString): ?Money
+    private function getPriceFromString(?string $priceString, string $currencyMultiplier): ?Money
     {
         if ($priceString === null) {
             return null;
         }
 
-        return Money::create($this->fixInvalidPriceFormat($priceString));
+        return Money::create($this->fixInvalidPriceFormat($priceString))->divide($currencyMultiplier, 2);
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     * @param int $domainId
+     */
+    private function addPricesForDomain(PohodaProduct $pohodaProduct, ProductData $productData, int $domainId): void
+    {
+        if ($domainId !== DomainHelper::CZECH_DOMAIN && !$pohodaProduct->automaticEurCalculation) {
+            return;
+        }
+
+        $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
+        $currencyMultiplier = '1';
+
+        if ($domainId !== DomainHelper::CZECH_DOMAIN && $pohodaProduct->automaticEurCalculation && $currency->getCode() === Currency::CODE_EUR) {
+            $currencyMultiplier = $currency->getExchangeRate();
+        }
+
+        $productData->manualInputPricesByPricingGroupId[
+            $this->pricingGroupFacade->getOrdinaryCustomerPricingGroup($domainId)->getId()
+        ] = $this->getPriceFromString($pohodaProduct->sellingPrice, $currencyMultiplier);
+        $productData->manualInputPricesByPricingGroupId[
+            $this->pricingGroupFacade->getPurchasePricePricingGroup($domainId)->getId()
+        ] = $this->getPriceFromString($pohodaProduct->purchasePrice, $currencyMultiplier);
+        $productData->manualInputPricesByPricingGroupId[
+            $this->pricingGroupFacade->getStandardPricePricingGroup($domainId)->getId()
+        ] = $this->getPriceFromString($pohodaProduct->standardPrice, $currencyMultiplier);
+
+        $salePricingGroupId = $this->pricingGroupFacade->getSalePricePricingGroup($domainId)->getId();
+        $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] = null;
+
+        foreach (PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY as $stockId) {
+            if (isset($pohodaProduct->saleInformation[$stockId])) {
+                $productData->manualInputPricesByPricingGroupId[$salePricingGroupId] =
+                    $this->getPriceFromString($pohodaProduct->saleInformation[$stockId], $currencyMultiplier);
+                break;
+            }
+        }
     }
 }

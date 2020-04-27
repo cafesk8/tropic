@@ -161,6 +161,6 @@ class PohodaProduct
         $this->pohodaCategoryIds = $pohodaProductData[self::COL_PRODUCT_CATEGORIES];
         $this->stocksInformation = $pohodaProductData[self::COL_STOCKS_INFORMATION];
         $this->productGroups = $pohodaProductData[self::COL_PRODUCT_GROUP_ITEMS];
-        $this->automaticEurCalculation = $pohodaProductData[self::COL_AUTO_EUR_PRICE];
+        $this->automaticEurCalculation = (bool)$pohodaProductData[self::COL_AUTO_EUR_PRICE];
     }
 }

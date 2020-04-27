@@ -27,36 +27,6 @@ class PricingGroupFacade extends BasePricingGroupFacade
     protected $pricingGroupRepository;
 
     /**
-     * @return \App\Model\Pricing\Group\PricingGroup[][]
-     */
-    public function getAllIndexedByDomainIdOrderedByMinimalPrice(): array
-    {
-        $pricingGroupsByDomainId = [];
-        foreach ($this->domain->getAll() as $domain) {
-            $domainId = $domain->getId();
-            $pricingGroups = $this->pricingGroupRepository->getPricingGroupsByDomainId($domainId);
-
-            usort(
-                $pricingGroups,
-                function (PricingGroup $first, PricingGroup $second) {
-                    if ($first->getMinimalPrice() === null) {
-                        return -1;
-                    }
-
-                    if ($second->getMinimalPrice() === null) {
-                        return 1;
-                    }
-                    return $first->getMinimalPrice()->compare($second->getMinimalPrice());
-                }
-            );
-
-            $pricingGroupsByDomainId[$domainId] = $pricingGroups;
-        }
-
-        return $pricingGroupsByDomainId;
-    }
-
-    /**
      * @param string $name
      * @param int $domainId
      * @return \App\Model\Pricing\Group\PricingGroup
@@ -86,9 +56,27 @@ class PricingGroupFacade extends BasePricingGroupFacade
      * @param int $domainId
      * @return \App\Model\Pricing\Group\PricingGroup
      */
+    public function getOrdinaryCustomerPricingGroup(int $domainId): PricingGroup
+    {
+        return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
     public function getRegisteredCustomerPricingGroup(int $domainId): PricingGroup
     {
         return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_REGISTERED_CUSTOMER, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return \App\Model\Pricing\Group\PricingGroup
+     */
+    public function getPurchasePricePricingGroup(int $domainId): PricingGroup
+    {
+        return $this->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId);
     }
 
     /**
@@ -117,11 +105,11 @@ class PricingGroupFacade extends BasePricingGroupFacade
         $pricingGroups = $this->getAll();
 
         usort($pricingGroups, function (PricingGroup $first, PricingGroup $second) {
-            if ($first->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER) {
+            if ($first->isOrdinaryCustomerPricingGroup()) {
                 return 0;
             }
 
-            if ($second->getInternalId() === PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER) {
+            if ($second->isOrdinaryCustomerPricingGroup()) {
                 return -1;
             }
 
