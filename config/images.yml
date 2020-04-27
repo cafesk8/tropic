@@ -61,8 +61,8 @@
             additionalSizes:
                 - {width: 710, height: ~, media: "(min-width: 480px) and (max-width: 768px)"}
         -   name: thumbnail
-            width: 70
-            height: 70
+            width: 50
+            height: 50
             crop: false
             occurrence: 'Front-end: Thumbnail of images under the main image in product detail, autocomplete, sets, variants, cartbox, gifts selection in cart'
         -   name: list
