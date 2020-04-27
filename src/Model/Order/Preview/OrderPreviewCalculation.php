@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\Discount\OrderDiscountCalculation;
 use App\Model\Order\Discount\OrderDiscountLevel;
@@ -12,7 +13,6 @@ use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Order\PromoCode\PromoCode;
 use InvalidArgumentException;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUser;
 use Shopsys\FrameworkBundle\Model\Order\OrderPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
@@ -62,7 +62,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
     private $orderDiscountCalculation;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
+     * @var \App\Component\FlashMessage\FlashMessageSender
      */
     private $flashMessageSender;
 
@@ -94,7 +94,7 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
      * @param \App\Model\Order\Discount\OrderDiscountCalculation $orderDiscountCalculation
-     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         QuantifiedProductPriceCalculation $quantifiedProductPriceCalculation,

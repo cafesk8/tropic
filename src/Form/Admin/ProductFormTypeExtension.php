@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
 use App\Form\ProductGroupItemsListType;
@@ -20,7 +21,6 @@ use Google_Service_Exception;
 use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageTrait;
 use Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType;
 use Shopsys\FrameworkBundle\Form\Constraints\NotNegativeMoneyAmount;
 use Shopsys\FrameworkBundle\Form\DisplayOnlyType;
@@ -40,8 +40,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductFormTypeExtension extends AbstractTypeExtension
 {
-    use FlashMessageTrait;
-
     public const DISABLED_FIELDS = [
         'name',
         'catnum',
@@ -61,6 +59,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @var \App\Model\Product\ProductVariantTropicFacade
      */
     protected $productVariantTropicFacade;
+
+    /**
+     * @var \App\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
 
     /**
      * @var \App\Model\Blog\Article\BlogArticleFacade
@@ -114,6 +117,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
@@ -124,7 +128,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         DateTimeFormatterExtension $dateTimeFormatterExtension,
         FlagFacade $flagFacade,
         FormBuilderHelper $formBuilderHelper,
-        ProductVariantTropicFacade $productVariantTropicFacade
+        ProductVariantTropicFacade $productVariantTropicFacade,
+        FlashMessageSender $flashMessageSender
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
@@ -135,6 +140,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->flagFacade = $flagFacade;
         $this->formBuilderHelper = $formBuilderHelper;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -563,9 +569,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 $context->addViolation('Vložené ID Youtube videa neobsahuje žádné video.');
             }
         } catch (Google_Service_Exception $googleServiceException) {
-            $this->addInfoFlash(t('Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
-            $this->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
-            $this->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
+            $this->flashMessageSender->addInfoFlash(t('Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa.'));
+            $this->flashMessageSender->addInfoFlash(t('Pokud ID Youtube videa není platné, tak se video nebude zobrazovat na frontendu.'));
+            $this->flashMessageSender->addInfoFlash(t('ID Youtube videa bylo přesto k produktu uloženo.'));
         }
     }
 

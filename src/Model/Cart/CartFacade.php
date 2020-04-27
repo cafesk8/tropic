@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Cart;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Cart\Item\CartItem;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
@@ -11,7 +12,6 @@ use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageTrait;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade as BaseCartFacade;
@@ -42,8 +42,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
  */
 class CartFacade extends BaseCartFacade
 {
-    use FlashMessageTrait;
-
     /**
      * @var \App\Model\Order\Gift\OrderGiftFacade
      */
@@ -53,6 +51,11 @@ class CartFacade extends BaseCartFacade
      * @var \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade
      */
     private $currentOrderDiscountLevelFacade;
+
+    /**
+     * @var \App\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
 
     /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
@@ -68,6 +71,7 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -82,7 +86,8 @@ class CartFacade extends BaseCartFacade
         CartRepository $cartRepository,
         CartWatcherFacade $cartWatcherFacade,
         OrderGiftFacade $orderGiftFacade,
-        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
+        FlashMessageSender $flashMessageSender
     ) {
         parent::__construct(
             $em,
@@ -100,6 +105,7 @@ class CartFacade extends BaseCartFacade
 
         $this->orderGiftFacade = $orderGiftFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -150,7 +156,7 @@ class CartFacade extends BaseCartFacade
                     $correctedCartQuantitiesByCartItemId[$cartItem->getId()] = $newCartItemQuantity;
                 }
             } catch (InvalidCartItemException $exception) {
-                $this->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
+                $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
         }
 
@@ -176,7 +182,7 @@ class CartFacade extends BaseCartFacade
                 $cartItem = $cart->getItemById($cartItemId);
                 $modifyFormData[$cartItemId] = $this->getValidCartItemQuantity($cartItem, (int)$quantity);
             } catch (InvalidCartItemException $exception) {
-                $this->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
+                $this->flashMessageSender->addErrorFlashTwig(t('Došlo ke změnám v košíku. Prosím, překontrolujte si produkty.'));
             }
         }
 
@@ -322,7 +328,7 @@ class CartFacade extends BaseCartFacade
 
         if ($product->isUsingStock()) {
             if ($realMinimumAmount > $realStockQuantity) {
-                $this->addErrorFlash(t('Produkt %name% musel být z košíku odstraněn, protože není skladem.', [
+                $this->flashMessageSender->addErrorFlash(t('Produkt %name% musel být z košíku odstraněn, protože není skladem.', [
                     '%name%' => $cartItem->getName($this->domain->getLocale()),
                 ]));
 
@@ -330,7 +336,7 @@ class CartFacade extends BaseCartFacade
             }
 
             if ($desiredQuantity > $realStockQuantity) {
-                $this->addErrorFlash(t('Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
+                $this->flashMessageSender->addErrorFlash(t('Položka %name% je skladem k dispozici v počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
                     '%name%' => $cartItem->getName($this->domain->getLocale()),
                     '%quantity%' => $realStockQuantity,
                 ]));
@@ -340,7 +346,7 @@ class CartFacade extends BaseCartFacade
         }
 
         if ($desiredQuantity < $realMinimumAmount) {
-            $this->addErrorFlash(t('Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
+            $this->flashMessageSender->addErrorFlash(t('Položku %name% je možné nakoupit v minimálním počtu %quantity% ks, počet kusů ve Vašem košíku jsme proto upravili.', [
                 '%name%' => $cartItem->getName($this->domain->getLocale()),
                 '%quantity%' => $realMinimumAmount,
             ]));
@@ -349,7 +355,7 @@ class CartFacade extends BaseCartFacade
         }
 
         if ($desiredQuantity % $product->getAmountMultiplier() !== 0) {
-            $this->addErrorFlash(t('Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili.', [
+            $this->flashMessageSender->addErrorFlash(t('Položku %name% je možné nakoupit po násobcích %multiplier%, počet kusů ve Vašem košíku jsme proto upravili.', [
                 '%name%' => $cartItem->getName($this->domain->getLocale()),
                 '%multiplier%' => $product->getAmountMultiplier(),
             ]));
@@ -400,7 +406,7 @@ class CartFacade extends BaseCartFacade
             $isOrderGiftProductValid = $this->orderGiftFacade->isOrderGiftProductValid($currentOrderGiftProduct, $totalProductPriceWithVat, $domainId, $pricingGroup);
 
             if ($isOrderGiftProductValid === false) {
-                $this->addInfoFlashTwig(
+                $this->flashMessageSender->addInfoFlashTwig(
                     t('Již nemáte nárok na vybraný dárek k nákupu s názvem <strong>{{ name }}</strong> proto Vám byl odebrán. Prosím překontrolujte si objednávku'),
                     ['name' => $currentOrderGiftProduct->getName()]
                 );

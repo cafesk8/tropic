@@ -327,10 +327,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@App\Model\Order\Preview\OrderPreviewFactory'
 
-    App\Model\Order\Preview\OrderPreviewCalculation:
-        arguments:
-            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
-
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation: '@App\Model\Order\Preview\OrderPreviewCalculation'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation: '@App\Model\Product\Pricing\QuantifiedProductDiscountCalculation'
@@ -600,3 +596,5 @@ services:
     Shopsys\FrameworkBundle\Model\Security\Authenticator:
         arguments:
             - '@security.token_storage'
+
+    App\Component\FlashMessage\FlashMessageSender: ~

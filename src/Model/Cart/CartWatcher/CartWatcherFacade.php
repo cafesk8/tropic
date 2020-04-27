@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Cart\CartWatcher;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\Discount\OrderDiscountLevelFacade;
@@ -13,10 +14,8 @@ use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessage;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageTrait;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatcherFacade;
@@ -30,7 +29,10 @@ use Twig\Environment;
  */
 class CartWatcherFacade extends BaseCartWatcherFacade
 {
-    use FlashMessageTrait;
+    /**
+     * @var \App\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
 
     /**
      * @var \App\Model\Order\PromoCode\CurrentPromoCodeFacade
@@ -74,6 +76,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Twig\Environment $twigEnvironment
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
         FlashBagInterface $flashBag,
@@ -86,7 +89,8 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         OrderDiscountLevelFacade $orderDiscountLevelFacade,
         CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
         Domain $domain,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
+        FlashMessageSender $flashMessageSender
     ) {
         parent::__construct($flashBag, $em, $cartWatcher, $currentCustomerUser, $twigEnvironment);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
@@ -95,6 +99,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         $this->orderDiscountLevelFacade = $orderDiscountLevelFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
         $this->domain = $domain;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -150,7 +155,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
             $product = $giftCartItem->getProduct();
             try {
                 if (!$this->productFacade->isProductMarketable($product)) {
-                    $this->addErrorFlashTwig(
+                    $this->flashMessageSender->addErrorFlashTwig(
                         t('Product <strong>{{ name }}</strong> you had in cart is no longer available. Please check your order.'),
                         ['name' => $product->getName()]
                     );
