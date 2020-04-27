@@ -21,11 +21,11 @@ class PohodaXmlGenerator
         $this->twig = $twig;
     }
 
-	/**
-	 * @param string $templateFilePath
-	 * @param array $data
-	 * @return string
-	 */
+    /**
+     * @param string $templateFilePath
+     * @param array $data
+     * @return string
+     */
     public function generateXmlRequest(string $templateFilePath, array $data): string
     {
         $template = $this->twig->load($templateFilePath);

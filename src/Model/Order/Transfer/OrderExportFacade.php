@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Transfer;
 
-use App\Component\Transfer\Logger\TransferLogger;
 use App\Model\Customer\Transfer\CustomerExportFacade;
 use App\Model\Order\OrderFacade;
 

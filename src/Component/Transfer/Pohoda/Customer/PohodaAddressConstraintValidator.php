@@ -31,8 +31,6 @@ class PohodaAddressConstraintValidator extends ConstraintValidator
     /**
      * @param array $pohodaAddress
      * @param \Symfony\Component\Validator\Constraint $constraint
-     * @throws \App\Component\Transfer\Pohoda\Exception\PohodaInvalidDataException
-     * @internal param $ \App\Component\Transfer\Pohoda\Customer\PohodaAddress
      */
     public function validate($pohodaAddress, Constraint $constraint): void
     {

@@ -135,7 +135,11 @@ class CustomerExportFacade
             $customerUser = $this->customerUserFacade->getCustomerUserById($pohodaCustomer->eshopId);
 
             $customerUserUpdateData = $this->customerUserUpdateDataFactory->createFromCustomerUser($customerUser);
-            $customerUserUpdateData->customerUserData->pohodaId = $pohodaCustomer->addressBookResponse->producedDetailId;
+
+            /** @var \App\Model\Customer\User\CustomerUserData $customerUserData */
+            $customerUserData = $customerUserUpdateData->customerUserData;
+
+            $customerUserData->pohodaId = $pohodaCustomer->addressBookResponse->producedDetailId;
 
             $this->customerUserFacade->editByCustomerUser($customerUser->getId(), $customerUserUpdateData);
         }
