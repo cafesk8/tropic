@@ -151,3 +151,17 @@ repository:clean:
     script:
         - ./gitlab/scripts/repository-clean.sh
 
+security:check:
+    stage: service
+    tags:
+        - docker
+    needs:
+        - build
+    only:
+        refs:
+            - master
+    except:
+        - schedules
+    script:
+        - docker run -i ${TAG} composer security-check
+
