@@ -17,13 +17,6 @@ class ParameterValue extends BaseParameterValue
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $hsFeedId;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     protected $rgb;
@@ -42,7 +35,6 @@ class ParameterValue extends BaseParameterValue
     {
         parent::__construct($parameterData);
 
-        $this->hsFeedId = $parameterData->hsFeedId;
         $this->rgb = $parameterData->rgb;
         $this->mallName = $parameterData->mallName;
     }
@@ -54,17 +46,8 @@ class ParameterValue extends BaseParameterValue
     {
         parent::edit($parameterData);
 
-        $this->hsFeedId = $parameterData->hsFeedId;
         $this->rgb = $parameterData->rgb;
         $this->mallName = $parameterData->mallName;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHsFeedId(): ?string
-    {
-        return $this->hsFeedId;
     }
 
     /**

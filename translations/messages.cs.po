@@ -673,9 +673,6 @@ msgstr "Status platby GoPay"
 msgid "Google Maps link"
 msgstr "Google Maps link"
 
-msgid "HS feed ID"
-msgstr "HS feed ID"
-
 msgid "Heading (H1)"
 msgstr "Nadpis (H1)"
 

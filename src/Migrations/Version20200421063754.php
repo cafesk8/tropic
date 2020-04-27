@@ -17,6 +17,7 @@ class Version20200421063754 extends AbstractMigration
         $this->sql('ALTER TABLE product_domains ADD generate_to_mergado_xml_feed BOOLEAN NOT NULL DEFAULT TRUE');
         $this->sql('ALTER TABLE product_domains ALTER generate_to_mergado_xml_feed DROP DEFAULT');
         $this->sql('ALTER TABLE products DROP COLUMN generate_to_hs_sport_xml_feed');
+        $this->sql('ALTER TABLE parameter_values DROP COLUMN hs_feed_id');
     }
 
     /**

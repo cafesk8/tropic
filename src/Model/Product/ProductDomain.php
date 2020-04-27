@@ -47,7 +47,7 @@ class ProductDomain extends BaseProductDomain
     /**
      * @param bool $isGenerateToMergadoXmlFeed
      */
-    public function setGenerateToMergadoXmlFeed($isGenerateToMergadoXmlFeed): void
+    public function setGenerateToMergadoXmlFeed(bool $isGenerateToMergadoXmlFeed): void
     {
         $this->generateToMergadoXmlFeed = $isGenerateToMergadoXmlFeed;
     }

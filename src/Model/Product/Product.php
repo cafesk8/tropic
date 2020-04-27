@@ -427,10 +427,10 @@ class Product extends BaseProduct
     }
 
     /**
-     * @param mixed $domainId
+     * @param int $domainId
      * @return bool
      */
-    public function isGenerateToMergadoXmlFeed($domainId): bool
+    public function isGenerateToMergadoXmlFeed(int $domainId): bool
     {
         return $this->getProductDomain($domainId)->isGenerateToMergadoXmlFeed();
     }

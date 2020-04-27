@@ -676,9 +676,6 @@ msgstr "Stav platby GoPay"
 msgid "Google Maps link"
 msgstr "Odkaz na Mapy Google"
 
-msgid "HS feed ID"
-msgstr "ID informačného kanála HS"
-
 msgid "Heading (H1)"
 msgstr "Titulok (H1)"
 
