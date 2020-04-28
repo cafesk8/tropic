@@ -1,0 +1,15 @@
+@wrap-gradient-border-size: 3px;
+
+.wrap-gradient {
+    padding: @wrap-gradient-border-size;
+
+    background: linear-gradient(90deg, #277da8 0%, #58b6a7 33%, #9bc962 66%, #5da94b 100%);
+    border-radius: @radius;
+
+    &__in {
+        padding: 20px;
+
+        background-color: @color-f;
+        border-radius: @radius - 2px;
+    }
+}
