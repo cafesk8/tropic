@@ -25,12 +25,8 @@ class PohodaProduct
     public const COL_PRODUCT_CATEGORIES = 'productCategories';
     public const COL_PRODUCT_REF_CATEGORY_ID = 'productPohodaId';
     public const COL_CATEGORY_REF_CATEGORY_ID = 'categoryPohodaId';
-    public const COL_EXTERNAL_STOCK = 'VPrExtSklad';
-    public const COL_STOCK_TOTAL = 'StavZ';
-    public const COL_STOCK_RESERVED = 'Rezer';
-    public const COL_STOCK_ORDERED_P = 'ObjedP';
-    public const COL_STOCK_ORDERED_V = 'ObjedV';
-    public const COL_STOCK_COMPLAINT = 'Reklam';
+    public const COL_EXTERNAL_STOCK = 'externalStock';
+    public const COL_STOCK_TOTAL = 'totalStock';
     public const COL_STOCKS_INFORMATION = 'stockInformation';
 
     /**

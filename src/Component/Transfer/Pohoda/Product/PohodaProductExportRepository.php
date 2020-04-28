@@ -186,28 +186,19 @@ class PohodaProductExportRepository
         $resultSetMapping->addScalarResult('IDS', PohodaProduct::COL_CATNUM)
             ->addScalarResult('RefSklad', PohodaProduct::COL_STOCK_ID)
             ->addScalarResult('VPrExtSklad', PohodaProduct::COL_EXTERNAL_STOCK)
-            ->addScalarResult('StavZ', PohodaProduct::COL_STOCK_TOTAL)
-            ->addScalarResult('Rezer', PohodaProduct::COL_STOCK_RESERVED)
-            ->addScalarResult('ObjedP', PohodaProduct::COL_STOCK_ORDERED_P)
-            ->addScalarResult('ObjedV', PohodaProduct::COL_STOCK_ORDERED_V)
-            ->addScalarResult('Reklam', PohodaProduct::COL_STOCK_COMPLAINT);
+            ->addScalarResult('VPrDispStav', PohodaProduct::COL_STOCK_TOTAL);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT
                 Product.IDS,
                 Product.RefSklad,
-                SUM(Product.VPrExtSklad) AS "VPrExtSklad",
-                SUM(Stock.StavZ) AS "StavZ",
-                SUM(Stock.Rezer) AS "Rezer",
-                SUM(Stock.ObjedP) AS "ObjedP",
-                SUM(Stock.ObjedV) AS "ObjedV",
-                SUM(Stock.Reklam) AS "Reklam"
-            FROM SKzBuf Stock
-            JOIN Skz Product ON Product.ID = Stock.RefSKz
+                Product.VPrExtSklad,
+                Product.VPrDispStav
+            FROM Skz Product
             WHERE Product.IDS IN (:catnums)
                 AND Product.IObchod = 1
                 AND Product.RefSklad IN (:stocks)
-            GROUP BY Product.IDS, Product.RefSklad',
+            ORDER BY Product.IDS',
             $resultSetMapping
         )
             ->setParameters([

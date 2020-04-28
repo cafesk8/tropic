@@ -79,7 +79,6 @@ class ProductImportFacade
             $changedPohodaProductIds
         );
         $updatedPohodaProductIds = [];
-
         if (count($pohodaProducts) === 0) {
             $this->logger->addInfo('Nejsou žádná data ve frontě ke zpracování');
         } else {

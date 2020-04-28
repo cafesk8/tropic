@@ -100,9 +100,9 @@ class PohodaProductExportFacade
         $stocksInformation = $this->pohodaProductExportRepository->getStockInformationByCatnums(array_column($pohodaProductsResult, PohodaProduct::COL_CATNUM));
         foreach ($stocksInformation as $information) {
             if (isset($pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]])) {
-                $availableStock = $information[PohodaProduct::COL_STOCK_TOTAL] - $information[PohodaProduct::COL_STOCK_ORDERED_P] - $information[PohodaProduct::COL_STOCK_ORDERED_V] - $information[PohodaProduct::COL_STOCK_RESERVED] - $information[PohodaProduct::COL_STOCK_COMPLAINT];
+                $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = (int)$information[PohodaProduct::COL_STOCK_TOTAL];
 
-                $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][$information[PohodaProduct::COL_STOCK_ID]] = (int)$availableStock;
+                // External stock is on product on default stock TROPIC
                 if ((int)$information[PohodaProduct::COL_STOCK_ID] === PohodaProductExportRepository::DEFAULT_POHODA_STOCK_ID && $information[PohodaProduct::COL_EXTERNAL_STOCK] !== null) {
                     $pohodaProductsResult[$information[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION][PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID] = (int)$information[PohodaProduct::COL_EXTERNAL_STOCK];
                 }
@@ -135,7 +135,13 @@ class PohodaProductExportFacade
         foreach ($pohodaProductsResult as $pohodaProductResult) {
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]] = $pohodaProductResult;
             $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_SALE_INFORMATION] = [];
-            $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION] = [];
+            $reindexedPohodaProductsResult[$pohodaProductResult[PohodaProduct::COL_CATNUM]][PohodaProduct::COL_STOCKS_INFORMATION] = [
+                PohodaProductExportRepository::POHODA_STOCK_SALE_ID => 0,
+                PohodaProductExportRepository::POHODA_STOCK_STORE_ID => 0,
+                PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID => 0,
+                PohodaProductExportRepository::POHODA_STOCK_STORE_SALE_ID => 0,
+                PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID => 0,
+            ];
         }
 
         return $reindexedPohodaProductsResult;
