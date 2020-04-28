@@ -521,13 +521,13 @@ msgid "Dárek neexistuje"
 msgstr "Dárek neexistuje"
 
 msgid "Dárkový certifikát"
-msgstr "Dárkový certifikát"
+msgstr "Dárkový poukaz"
 
 msgid "Dárkový certifikát 1000 Kč"
-msgstr "Dárkový certifikát 1000 Kč"
+msgstr "Dárkový poukaz 1000 Kč"
 
 msgid "Dárkový certifikát 500 Kč"
-msgstr "Dárkový certifikát 500 Kč"
+msgstr "Dárkový poukaz 500 Kč"
 
 msgid "Dárky k produktům"
 msgstr ""
@@ -707,7 +707,7 @@ msgid "Hodnota"
 msgstr "Hodnota"
 
 msgid "Hodnota certifikátu"
-msgstr "Hodnota certifikátu"
+msgstr "Hodnota dárkového poukazu"
 
 msgid "Hodnoty parametra"
 msgstr "Hodnoty parametru"
@@ -965,7 +965,7 @@ msgid "My orders"
 msgstr "Mé objednávky"
 
 msgid "Mám slevový poukaz nebo dárkový certifikát"
-msgstr "Mám slevový poukaz nebo dárkový certifikát"
+msgstr "Mám slevový poukaz nebo dárkový poukaz"
 
 msgid "Máte dopravu zdarma!"
 msgstr "Máte dopravu zdarma!"

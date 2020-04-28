@@ -283,7 +283,7 @@ class CartController extends FrontBaseController
 
         $renderFlashMessage = $request->query->getBoolean('renderFlashMessages', false);
 
-        $productsPrice = $orderPreview->getProductsPrice();
+        $productsPrice = $orderPreview->getTotalPrice();
 
         $domainId = $this->domain->getId();
         $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat(
@@ -294,7 +294,7 @@ class CartController extends FrontBaseController
         return $this->render('Front/Inline/Cart/cartBox.html.twig', [
             'cart' => $cart,
             'cartItems' => $cart === null ? [] : $cart->getItems(),
-            'quantifiedItemsPrices' => $orderPreview->getQuantifiedItemsPrices(),
+            'orderPreview' => $orderPreview,
             'productsPrice' => $productsPrice,
             'renderFlashMessages' => $renderFlashMessage,
             'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),

@@ -7,9 +7,11 @@ namespace App\Model\Order\PromoCode\Grid;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Grid\GridFactory;
-use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderDataSource;
+use Shopsys\FrameworkBundle\Component\Grid\QueryBuilderWithRowManipulatorDataSource;
+use Shopsys\FrameworkBundle\Model\Localization\Localization;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\Grid\PromoCodeGridFactory as BasePromoCodeGridFactory;
 use Shopsys\FrameworkBundle\Model\Order\PromoCode\PromoCode;
+use Shopsys\FrameworkBundle\Twig\DateTimeFormatterExtension;
 
 class PromoCodeGridFactory extends BasePromoCodeGridFactory
 {
@@ -19,14 +21,33 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
     private $adminDomainTabsFacade;
 
     /**
+     * @var \App\Twig\DateTimeFormatterExtension
+     */
+    private $dateTimeFormatterExtension;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Model\Localization\Localization
+     */
+    protected $localization;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Component\Grid\GridFactory $gridFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
+     * @param \App\Twig\DateTimeFormatterExtension $dateTimeFormatterExtension
+     * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
      */
-    public function __construct(EntityManagerInterface $em, GridFactory $gridFactory, AdminDomainTabsFacade $adminDomainTabsFacade)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        GridFactory $gridFactory,
+        AdminDomainTabsFacade $adminDomainTabsFacade,
+        DateTimeFormatterExtension $dateTimeFormatterExtension,
+        Localization $localization
+    ) {
         parent::__construct($em, $gridFactory);
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
+        $this->dateTimeFormatterExtension = $dateTimeFormatterExtension;
+        $this->localization = $localization;
     }
 
     /**
@@ -42,7 +63,21 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
             ->where('pc.domainId = :selectedDomainId')
             ->setParameter('selectedDomainId', $this->adminDomainTabsFacade->getSelectedDomainId());
 
-        $dataSource = new QueryBuilderDataSource($queryBuilder, 'pc.id');
+        $dataSource = new QueryBuilderWithRowManipulatorDataSource(
+            $queryBuilder,
+            'pc.id',
+            function ($row) {
+                $row['usageLimitOrUnlimited'] = $row['pc']['unlimited'] === true ? '-' : $row['pc']['usageLimit'];
+
+                if ($row['pc']['validTo'] === null) {
+                    $row['validTo'] = t('Neomezeno');
+                } else {
+                    $row['validTo'] = t('Do') . ' ' . $this->dateTimeFormatterExtension->formatDate($row['pc']['validTo'], $this->localization->getAdminLocale());
+                }
+
+                return $row;
+            }
+        );
 
         $grid = $this->gridFactory->create('promoCodeList', $dataSource);
         $grid->setDefaultOrder('code');
@@ -51,8 +86,8 @@ class PromoCodeGridFactory extends BasePromoCodeGridFactory
         $grid->addColumn('code', 'pc.code', t('Code'), true);
         $grid->addColumn('percent', 'pc.percent', t('Discount'), true);
         $grid->addColumn('number_of_uses', 'pc.numberOfUses', t('Kolikrát použito'), true);
-        $grid->addColumn('usage_limit', 'pc.usageLimit', t('Maximální počet použití'), true);
-        $grid->addColumn('unlimited', 'pc.unlimited', t('Neomezený'), true);
+        $grid->addColumn('usage_limit', 'usageLimitOrUnlimited', t('Maximální počet použití'), true);
+        $grid->addColumn('unlimited', 'validTo', t('Platnost'), true);
         $grid->addColumn('prefix', 'pc.prefix', t('Prefix'), true);
 
         $grid->setActionColumnClassAttribute('table-col table-col-10');
