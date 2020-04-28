@@ -186,7 +186,6 @@ class CategoryDataFixture extends AbstractReferenceFixture
             $categoryData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);
             $categoryData->descriptions[$domainConfig->getId()] = t('Prohlédněte si produkty s výprodejovými cenami', [], 'dataFixtures', $locale);
             $categoryData->type = Category::SALE_TYPE;
-            $categoryData->listable = false;
         }
         $this->createCategory($categoryData, self::CATEGORY_SALE);
     }

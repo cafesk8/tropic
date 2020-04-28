@@ -36,7 +36,7 @@ class FlagGridFactory extends BaseFlagGridFactory
         $grid->addDeleteActionColumn('admin_flag_delete', ['id' => 'a.id'])
             ->setConfirmMessage(t('Do you really want to remove this flag?'));
 
-        $grid->setTheme('Admin/Content/Flag/listGrid.html.twig');
+        $grid->setTheme('@ShopsysFramework/Admin/Content/Flag/listGrid.html.twig');
 
         $grid->enableDragAndDrop(Flag::class);
 

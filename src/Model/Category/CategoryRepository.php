@@ -311,38 +311,10 @@ class CategoryRepository extends BaseCategoryRepository
 
     /**
      * @param string $type
-     * @return \App\Model\Category\Category[]
+     * @return \App\Model\Category\Category|null
      */
-    public function getByType(string $type): array
+    public function getByType(string $type): ?Category
     {
-        return $this->getCategoryRepository()->findBy(['type' => $type]);
-    }
-
-    /**
-     * @param \App\Model\Category\Category[] $categories
-     */
-    public function hideCategories(array $categories): void
-    {
-        $this->getQueryBuilder()
-            ->update(Category::class, 'c')
-            ->where('c IN (:categories)')
-            ->setParameter('categories', $categories)
-            ->set('c.listable', 'FALSE')
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * @param \App\Model\Category\Category[] $categories
-     */
-    public function showCategories(array $categories): void
-    {
-        $this->getQueryBuilder()
-            ->update(Category::class, 'c')
-            ->where('c IN (:categories)')
-            ->setParameter('categories', $categories)
-            ->set('c.listable', 'TRUE')
-            ->getQuery()
-            ->execute();
+        return $this->getCategoryRepository()->findOneBy(['type' => $type]);
     }
 }

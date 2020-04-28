@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -533,6 +534,29 @@ class ProductRepository extends BaseProductRepository
         $queryBuilder
             ->andWhere('p.mainVariant = :mainVariant')
             ->setParameter('mainVariant', $mainVariant);
+
+        return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * @param int $domainId
+     * @param \App\Model\Category\Category $category
+     * @return \App\Model\Product\Product[]
+     */
+    public function getListableInCategoryIndependentOfPricingGroup(int $domainId, Category $category): array
+    {
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('p')
+            ->from(Product::class, 'p')
+            ->join(ProductVisibility::class, 'prv', Join::WITH, 'prv.product = p.id')
+            ->where('prv.domainId = :domainId')
+            ->andWhere('prv.visible = TRUE')
+            ->andWhere('p.calculatedSellingDenied = FALSE')
+            ->andWhere('p.variantType != :variantTypeVariant')
+            ->setParameter('domainId', $domainId)
+            ->setParameter('variantTypeVariant', Product::VARIANT_TYPE_VARIANT)
+            ->orderBy('p.id');
+        $this->filterByCategory($queryBuilder, $category, $domainId);
 
         return $queryBuilder->getQuery()->execute();
     }

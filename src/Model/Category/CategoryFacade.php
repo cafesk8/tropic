@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
+use App\Model\Product\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -60,6 +62,16 @@ class CategoryFacade extends BaseCategoryFacade
     protected $productVisibilityFacade;
 
     /**
+     * @var \App\Model\Category\CategoryDataFactory
+     */
+    private $categoryDataFactory;
+
+    /**
+     * @var \App\Model\Product\ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -71,6 +83,8 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface $categoryFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
+     * @param \App\Model\Product\ProductRepository $productRepository
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -83,10 +97,14 @@ class CategoryFacade extends BaseCategoryFacade
         CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory,
         CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory,
         CategoryFactoryInterface $categoryFactory,
-        ProductVisibilityFacade $productVisibilityFacade
+        ProductVisibilityFacade $productVisibilityFacade,
+        CategoryDataFactory $categoryDataFactory,
+        ProductRepository $productRepository
     ) {
         parent::__construct($em, $categoryRepository, $domain, $categoryVisibilityRecalculationScheduler, $friendlyUrlFacade, $imageFacade, $pluginCrudExtensionFacade, $categoryWithPreloadedChildrenFactory, $categoryWithLazyLoadedVisibleChildrenFactory, $categoryFactory);
         $this->productVisibilityFacade = $productVisibilityFacade;
+        $this->categoryDataFactory = $categoryDataFactory;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -342,26 +360,37 @@ class CategoryFacade extends BaseCategoryFacade
     }
 
     /**
-     * @return array
+     * @return \App\Model\Category\Category
      */
-    public function getSaleCategories(): array
+    public function getSaleCategory(): Category
     {
-        return $this->categoryRepository->getByType(Category::SALE_TYPE);
+        $category = $this->categoryRepository->getByType(Category::SALE_TYPE);
+
+        if ($category === null) {
+            throw new SaleCategoryNotFoundException('Category with type "' . Category::SALE_TYPE . '" was not found!');
+        }
+
+        return $category;
     }
 
-    /**
-     * @param \App\Model\Category\Category[] $categories
-     */
-    public function hideCategories(array $categories): void
+    public function refreshSaleCategoryVisibility(): void
     {
-        $this->categoryRepository->hideCategories($categories);
-    }
+        try {
+            $saleCategory = $this->getSaleCategory();
+        } catch (SaleCategoryNotFoundException $exception) {
+            return;
+        }
 
-    /**
-     * @param \App\Model\Category\Category[] $categories
-     */
-    public function showCategories(array $categories): void
-    {
-        $this->categoryRepository->showCategories($categories);
+        $categoryData = $this->categoryDataFactory->createFromCategory($saleCategory);
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            if (count($this->productRepository->getListableInCategoryIndependentOfPricingGroup($domainId, $saleCategory)) > 0) {
+                $categoryData->enabled[$domainId] = true;
+            } else {
+                $categoryData->enabled[$domainId] = false;
+            }
+        }
+
+        $this->edit($saleCategory->getId(), $categoryData);
     }
 }
