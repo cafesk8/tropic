@@ -12,9 +12,12 @@
 .box-list {
     &__title {
         display: block;
-        margin-bottom: @box-list-item-gap;
 
         color: @color-base;
+
+        @media @query-lg {
+            margin-bottom: @box-list-item-gap;
+        }
     }
 
     &__banner {
@@ -26,6 +29,7 @@
     }
 
     &__wrap {
+        position: relative;
         display: flex;
         flex-direction: row;
     }
@@ -33,6 +37,7 @@
     &__panel {
         display: none;
         position: absolute;
+        width: 100%;
 
         @media @query-vl {
             display: block;
@@ -43,7 +48,7 @@
 
         &.active {
             display: block;
-            z-index: @z-index-menu;
+            z-index: @z-index-above;
 
             @media @query-vl {
                 position: relative;
@@ -77,6 +82,14 @@
 
         @media @query-vl {
             display: none;
+        }
+
+        &__button {
+            width: 100%;
+
+            @media @query-lg {
+                width: auto;
+            }
         }
     }
 

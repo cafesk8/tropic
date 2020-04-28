@@ -45,7 +45,7 @@
                 {% endif %}
                 <div class="list-menu__submenu__item__content">
                     <a href="{{ url('front_product_list', { id: category.id }) }}"
-                       class="list-menu__submenu__item__title">
+                       class="list-menu__submenu__item__title list-menu__submenu__item__title--level-{{ category.level }}">
                         {{ category.name }}
                     </a>
                     {% if hasChildren and category.level == 2 %}

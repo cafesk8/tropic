@@ -19,12 +19,8 @@
     }
 
     &.active-mobile {
-        width: calc(~"100% - @{web-padding-small}");
+        width: 100%;
         margin-right: 0;
-
-        @media @query-vl {
-            width: 100%;
-        }
     }
 
     &__top {
@@ -86,13 +82,6 @@
         &__remove {
             margin-bottom: 8px;
         }
-
-        &__count {
-            line-height: 18px;
-
-            font-size: @font-size-extra-small;
-            font-family: @font-alt;
-        }
     }
 
     &__choice {
@@ -136,6 +125,15 @@
 
         &__content {
             padding: 0 @box-filter-padding;
+
+            &__more {
+                margin-bottom: 15px;
+
+                cursor: pointer;
+                text-decoration: underline;
+                font-size: @font-size-extra-small + 1px;
+                font-family: @font-alt;
+            }
         }
     }
 

@@ -83,8 +83,10 @@
                                 </span>
                             </label>
                             {% if loop.index > visibleChoicesLimit and loop.last %}
-                                <div class="js-product-filter-box-button-show">{{ 'Zobrazit všechny'|trans }}</div>
-                                <div class="js-product-filter-box-button-hide inactive">{{ 'Skrýt ostatní'|trans }}</div>
+                                <div class="box-filter__choice__content__more">
+                                    <span class="js-product-filter-box-button-show">{{ 'zobrazit všechny'|trans }}</span>
+                                    <span class="js-product-filter-box-button-hide display-none">{{ 'skrýt ostatní'|trans }}</span>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -96,7 +98,7 @@
             {% else %}
                 <div class="box-filter__choice js-product-filter-box" id="{{ filterForm.brands.vars.id }}">
                     <div class="box-filter__choice__title js-responsive-toggle open" data-element="filter-brand">
-                        {{ 'Značky'|trans }}
+                        {{ 'Značky'|trans }} ({{ filterForm.brands|length }})
                         <i class="svg svg-triangle"></i>
                     </div>
                     <div class="box-filter__choice__content" id="filter-brand">
@@ -119,8 +121,10 @@
                                 </span>
                             </label>
                             {% if loop.index > visibleChoicesLimit and loop.last %}
-                                <div class="js-product-filter-box-button-show">{{ 'Zobrazit všechny'|trans }}</div>
-                                <div class="js-product-filter-box-button-hide inactive">{{ 'Skrýt ostatní'|trans }}</div>
+                                <div class="box-filter__choice__content__more">
+                                    <span class="js-product-filter-box-button-show">{{ 'zobrazit všechny'|trans }}</span>
+                                    <span class="js-product-filter-box-button-hide display-none">{{ 'skrýt ostatní'|trans }}</span>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -136,7 +140,7 @@
                             <div class="js-product-filter-parameter">
                                 <div class="box-filter__choice js-product-filter-box" id="{{ parameterForm.vars.id }}">
                                     <span class="box-filter__choice__title js-product-filter-parameter-label js-responsive-toggle" data-element="filter-{{ parameterForm.vars.id }}">
-                                        {{ parameterForm.vars.label }}:
+                                        {{ parameterForm.vars.label }} ({{ parameterForm|length }})
                                         <i class="svg svg-triangle"></i>
                                     </span>
                                     <div class="box-filter__choice__content display-none" id="filter-{{ parameterForm.vars.id }}">
@@ -161,8 +165,10 @@
                                                 </span>
                                             </label>
                                             {% if loop.index > visibleChoicesLimit and loop.last %}
-                                                <div class="js-product-filter-box-button-show">{{ 'Zobrazit všechny'|trans }}</div>
-                                                <div class="js-product-filter-box-button-hide inactive">{{ 'Skrýt ostatní'|trans }}</div>
+                                                <div class="box-filter__choice__content__more">
+                                                    <span class="js-product-filter-box-button-show">{{ 'zobrazit všechny'|trans }}</span>
+                                                    <span class="js-product-filter-box-button-hide display-none">{{ 'skrýt ostatní'|trans }}</span>
+                                                </div>
                                             {% endif %}
                                         {% endfor %}
                                     </div>

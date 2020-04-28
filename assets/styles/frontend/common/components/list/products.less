@@ -1,8 +1,7 @@
 @list-products-item-count: 4;
 @list-products-item-padding: 15px;
 @list-products-item-image-height: 220px;
-@list-products-item-image-height-small: 110px;
-@list-products-item-image-bottom-gap: 42px;
+@list-products-item-image-height-small: 240px;
 @list-products-item-title-line-height: @font-size-small+4px;
 @list-products-item-title-rows: 2;
 @list-products-item-font-size: 16px;
@@ -14,7 +13,7 @@
 @list-products-item-variants-min-width: 232px;
 @list-products-item-variants-image-width: 49px;
 
-@list-products-item-count-sm: 2;
+@list-products-item-count-sm: 1;
 @list-products-item-count-md: 2;
 @list-products-item-count-lg: 2;
 @list-products-item-count-xl: 3;
@@ -24,8 +23,11 @@
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    margin-top: 25px;
     margin-bottom: 20px;
+
+    @media @query-vl {
+        margin-top: 25px;
+    }
 
     &__in {
         position: relative;
@@ -106,7 +108,10 @@
 
         &__image-wrap {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex: 1;
+            
             text-decoration: none;
         }
 
@@ -121,7 +126,6 @@
 
             @media @query-md {
                 height: @list-products-item-image-height;
-                margin-bottom: @list-products-item-image-bottom-gap;
             }
 
             img {
@@ -145,10 +149,8 @@
 
             &__title {
                 display: block;
-                height: 2 * @list-products-item-line-height;
                 line-height: @list-products-item-line-height;
                 margin-bottom: 7px;
-                overflow: hidden;
 
                 font-size: @list-products-item-font-size;
                 font-weight: 400;
