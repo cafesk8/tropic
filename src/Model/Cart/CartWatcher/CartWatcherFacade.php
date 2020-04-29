@@ -95,11 +95,12 @@ class CartWatcherFacade extends BaseCartWatcherFacade
      */
     public function checkCartModifications(Cart $cart, ?CustomerUser $customerUser = null): void
     {
-        parent::checkCartModifications($cart);
-
         $this->checkOrderDiscountLevel($cart->getTotalWatchedPriceOfProducts());
         $this->checkValidityOfEnteredPromoCodes($cart, $customerUser);
         $this->checkValidityOfGifts($cart);
+        // parent method must be called after our checks because we need to perform checks with the previous watched price
+        // that might change during checkModifiedPrices() call
+        parent::checkCartModifications($cart);
     }
 
     /**
