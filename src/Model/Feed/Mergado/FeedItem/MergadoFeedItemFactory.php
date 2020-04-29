@@ -124,7 +124,7 @@ class MergadoFeedItemFactory
     public function create(Product $product, DomainConfig $domainConfig): MergadoFeedItem
     {
         $productImages = $this->getAllImageUrlsByProduct($product, $domainConfig);
-        $productVideos = $product->getYoutubeVideoIds();
+        $productVideos = $product->isVariant() ? $product->getMainVariant()->getYoutubeVideoIds() : $product->getYoutubeVideoIds();
         $currency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainConfig->getId());
 
         return new MergadoFeedItem(
@@ -135,8 +135,8 @@ class MergadoFeedItemFactory
             $this->productUrlsBatchLoader->getProductUrl($product, $domainConfig),
             $product->getName($domainConfig->getLocale()),
             $this->categoryFacade->getCategoryFullPath($product, $domainConfig, ' / '),
-            $product->getShortDescription($domainConfig->getId()),
-            $product->getDescription($domainConfig->getId()),
+            $this->getShortDescription($product, $domainConfig->getId()),
+            $this->getDescription($product, $domainConfig->getId()),
             $this->getBenefits($product, $domainConfig),
             $this->getBrandName($product),
             $this->getPrice($product, $domainConfig)->getPriceWithoutVat()->getAmount(),
@@ -238,11 +238,43 @@ class MergadoFeedItemFactory
 
     /**
      * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string|null
+     */
+    protected function getShortDescription(Product $product, int $domainId): ?string
+    {
+        if ($product->isVariant()) {
+            return $product->getMainVariant()->getShortDescription($domainId);
+        }
+
+        return $product->getShortDescription($domainId);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param int $domainId
+     * @return string|null
+     */
+    protected function getDescription(Product $product, int $domainId): ?string
+    {
+        if ($product->isVariant()) {
+            return $product->getMainVariant()->getDescription($domainId);
+        }
+
+        return $product->getDescription($domainId);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
      * @return string|null
      */
     protected function getBrandName(Product $product): ?string
     {
-        $brand = $product->getBrand();
+        if ($product->isVariant()) {
+            $brand = $product->getMainVariant()->getBrand();
+        } else {
+            $brand = $product->getBrand();
+        }
 
         return $brand !== null ? $brand->getName() : null;
     }

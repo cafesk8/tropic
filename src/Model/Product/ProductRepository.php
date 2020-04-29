@@ -212,7 +212,9 @@ class ProductRepository extends BaseProductRepository
             ->addSelect('b')->leftJoin('p.brand', 'b')
             ->andWhere('p.calculatedSellingDenied = false')
             ->andWhere('pd.generateToMergadoXmlFeed = true')
+            ->andWhere('p.variantType != :mainVariantType')
             ->orderBy('p.id', 'asc')
+            ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->setMaxResults($maxResults);
 
         $this->addTranslation($queryBuilder, $domainConfig->getLocale());

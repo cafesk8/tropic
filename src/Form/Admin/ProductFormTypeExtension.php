@@ -223,6 +223,19 @@ class ProductFormTypeExtension extends AbstractTypeExtension
 
         $builder->add($builderStoreStockGroup);
 
+        $mergadoFeedGroup = $builder->create('generateToMergadoXmlFeeds', GroupType::class, [
+            'label' => t('Mergado feed'),
+            'position' => ['after' => 'seoGroup'],
+        ]);
+
+        $mergadoFeedGroup->add('generateToMergadoXmlFeeds', MultidomainType::class, [
+            'label' => t('Generovat tento produkt do Mergado XML feedu'),
+            'entry_type' => YesNoType::class,
+            'required' => false,
+         ]);
+
+        $builder->add($mergadoFeedGroup);
+
         if ($product !== null) {
             $builder->add($this->getArticlesGroup($builder, $product));
         }
@@ -244,11 +257,6 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('giftCertificate', YesNoType::class, [
                 'required' => false,
                 'label' => t('Dárkový poukaz'),
-            ])
-            ->add('generateToMergadoXmlFeeds', MultidomainType::class, [
-                'label' => t('Generovat tento produkt do MERGADO XML feedu'),
-                'entry_type' => YesNoType::class,
-                'required' => false,
             ]);
 
         $this->extendOutOfStockAction($builder->get('displayAvailabilityGroup')->get('stockGroup'), $product);
