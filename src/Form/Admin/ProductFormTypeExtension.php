@@ -51,6 +51,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'vatsIndexedByDomainId',
         'variantId',
         'categoriesByDomainId',
+        'storeStock',
     ];
 
     /**

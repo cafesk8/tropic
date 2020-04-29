@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Store\StoreData;
 use App\Model\Store\StoreDataFactory;
 use App\Model\Store\StoreFacade;
@@ -53,24 +54,28 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->centralStore = true;
         $storeData->showOnStoreList = false;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $storeData->externalNumber = (string)PohodaProductExportRepository::POHODA_STOCK_SALE_ID;
         $this->createStore($storeData, self::REFERENCE_STORE_SALE_STOCK);
 
         $storeData->description = t('Výprodejový sklad na prodejně', [], 'dataFixtures');
         $storeData->name = t('Prodejna - výprodej', [], 'dataFixtures');
         $storeData->position = 1;
         $storeData->centralStore = false;
+        $storeData->externalNumber = (string)PohodaProductExportRepository::POHODA_STOCK_STORE_SALE_ID;
         $this->createStore($storeData, self::REFERENCE_STORE_SALE_STORE);
 
         $storeData->description = '';
         $storeData->name = t('Interní sklad', [], 'dataFixtures');
         $storeData->position = 2;
         $storeData->centralStore = true;
+        $storeData->externalNumber = (string)PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID;
         $this->createStore($storeData, self::REFERENCE_STORE_INTERNAL_STOCK);
 
         $storeData->description = '';
         $storeData->name = t('Externí sklad', [], 'dataFixtures');
         $storeData->position = 3;
         $storeData->centralStore = false;
+        $storeData->externalNumber = (string)PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID;
         $this->createStore($storeData, self::REFERENCE_STORE_EXTERNAL_STOCK);
 
         $storeData->description = t('Skladové zásoby na prodejně', [], 'dataFixtures');
@@ -88,6 +93,7 @@ class StoreDataFixture extends AbstractReferenceFixture implements DependentFixt
         $storeData->centralStore = false;
         $storeData->showOnStoreList = true;
         $storeData->country = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
+        $storeData->externalNumber = (string)PohodaProductExportRepository::POHODA_STOCK_STORE_ID;
         $this->createStore($storeData, self::REFERENCE_STORE_STORE_STOCK);
     }
 
