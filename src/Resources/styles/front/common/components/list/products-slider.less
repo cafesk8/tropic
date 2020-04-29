@@ -21,9 +21,16 @@
     padding: 0 @list-products-slider-side-gap;
     margin-bottom: -@list-products-slider-button-height;
 
+    &.list-products-slider--with-button {
+        .slick-list {
+            padding: 40px @list-products-slider-item-gap (30px + @list-products-slider-button-height) 0;
+        }
+    }
+
     .slick-list {
         overflow: hidden;
-        padding: 40px @list-products-slider-item-gap (30px + @list-products-slider-button-height) 0;
+        
+        padding: 40px @list-products-slider-item-gap 40px 0;
     }
 
     .slick-track {
@@ -49,6 +56,10 @@
             &.slick-active {
                 button {
                     background-color: @color-turquoise;
+
+                    &:hover {
+                        background-color: @color-turquoise;
+                    }
                 }
             }
 
@@ -66,6 +77,10 @@
 
                 &:focus {
                     outline: 0;
+                }
+
+                &:hover {
+                    background-color: darken(@color-light, 10%);
                 }
             }
         }
@@ -128,11 +143,13 @@
 
         &:hover {
             @media @query-lg {
-                z-index: 1;
-                margin-bottom: -@list-products-slider-button-height;
+                .list-products-slider--with-button & {
+                    z-index: 1;
+                    margin-bottom: -@list-products-slider-button-height;
 
-                .list-products-slider__item__hover {
-                    height: @list-products-slider-button-height;
+                    .list-products-slider__item__hover {
+                        height: @list-products-slider-button-height;
+                    }
                 }
 
                 .list-products-slider__item__in {
