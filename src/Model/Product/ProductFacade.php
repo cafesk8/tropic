@@ -11,6 +11,8 @@ use App\Component\Setting\Setting;
 use App\Model\Category\Category;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Group\ProductGroupFacade;
+use App\Model\Product\Group\ProductGroupFactory;
 use App\Model\Product\Product as ChildProduct;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
 use App\Model\Store\StoreFacade;
@@ -121,6 +123,16 @@ class ProductFacade extends BaseProductFacade
     private $logger;
 
     /**
+     * @var \App\Model\Product\Group\ProductGroupFacade
+     */
+    private $productGroupFacade;
+
+    /**
+     * @var \App\Model\Product\Group\ProductGroupFactory
+     */
+    private $productGroupFactory;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -153,6 +165,8 @@ class ProductFacade extends BaseProductFacade
      * @param \Psr\Log\LoggerInterface $logger
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
+     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Group\ProductGroupFactory $productGroupFactory
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -186,7 +200,9 @@ class ProductFacade extends BaseProductFacade
         Setting $setting,
         LoggerInterface $logger,
         ProductVariantTropicFacade $productVariantTropicFacade,
-        ProductDataFactory $productDataFactory
+        ProductDataFactory $productDataFactory,
+        ProductGroupFacade $productGroupFacade,
+        ProductGroupFactory $productGroupFactory
     ) {
         parent::__construct(
             $em,
@@ -223,6 +239,8 @@ class ProductFacade extends BaseProductFacade
         $this->logger = $logger;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
         $this->productDataFactory = $productDataFactory;
+        $this->productGroupFacade = $productGroupFacade;
+        $this->productGroupFactory = $productGroupFactory;
     }
 
     /**
@@ -275,6 +293,7 @@ class ProductFacade extends BaseProductFacade
         $this->createProductVisibilities($product);
         $this->refreshProductManualInputPrices($product, $productData->manualInputPricesByPricingGroupId);
         $this->refreshProductAccessories($product, $productData->accessories);
+        $this->refreshProductGroups($product, $productData->groupItems);
         $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
 
@@ -302,6 +321,7 @@ class ProductFacade extends BaseProductFacade
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
 
         parent::edit($productId, $productData);
+        $this->refreshProductGroups($product, $productData->groupItems);
         $this->updateProductStoreStocks($productData, $product);
         if ($product->isVariant()) {
             $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
@@ -853,6 +873,32 @@ class ProductFacade extends BaseProductFacade
             $variantData->variantId = null;
             $variantData->hidden = true;
             $this->edit($variant->getId(), $variantData);
+        }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @param array $groupItems
+     */
+    private function refreshProductGroups(Product $product, array $groupItems): void
+    {
+        $oldGroupItems = $this->productGroupFacade->getAllByMainProduct($product);
+        foreach ($oldGroupItems as $oldGroupItem) {
+            $this->em->remove($oldGroupItem);
+        }
+        $this->em->flush($oldGroupItems);
+
+        $toFlush = [];
+        foreach ($groupItems as $groupItemArray) {
+            if (isset($groupItemArray['item'], $groupItemArray['item_count'])) {
+                $groupItem = $this->productGroupFactory->create($product, $groupItemArray['item'], $groupItemArray['item_count']);
+                $this->em->persist($groupItem);
+                $toFlush[] = $groupItem;
+            }
+        }
+
+        if (count($toFlush) > 0) {
+            $this->em->flush($toFlush);
         }
     }
 }

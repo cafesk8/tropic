@@ -13,11 +13,13 @@ use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
+use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
 use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
+use Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException;
 
 class PohodaProductMapper
 {
@@ -52,19 +54,32 @@ class PohodaProductMapper
     private $storesMapByPohodaId;
 
     /**
+     * @var \App\Model\Product\ProductFacade
+     */
+    private $productFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Store\StoreFacade $storeFacade
+     * @param \App\Model\Product\ProductFacade $productFacade
      */
-    public function __construct(Domain $domain, PricingGroupFacade $pricingGroupFacade, VatFacade $vatFacade, CategoryFacade $categoryFacade, StoreFacade $storeFacade)
-    {
+    public function __construct(
+        Domain $domain,
+        PricingGroupFacade $pricingGroupFacade,
+        VatFacade $vatFacade,
+        CategoryFacade $categoryFacade,
+        StoreFacade $storeFacade,
+        ProductFacade $productFacade
+    ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->vatFacade = $vatFacade;
         $this->categoryFacade = $categoryFacade;
         $this->storeFacade = $storeFacade;
+        $this->productFacade = $productFacade;
     }
 
     /**
@@ -76,6 +91,7 @@ class PohodaProductMapper
         ProductData $productData
     ): void {
         $productData->pohodaId = $pohodaProduct->pohodaId;
+        $productData->pohodaProductType = $pohodaProduct->pohodaProductType;
         $productData->updatedByPohodaAt = new \DateTime();
         $productData->catnum = $pohodaProduct->catnum;
         $productData->name[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->name);
@@ -129,6 +145,7 @@ class PohodaProductMapper
         $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
         /* Please remove this after user story "Zobrazení skladové zásoby u produktu" - this line is temporarily for import */
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
     }
 
     /**
@@ -159,6 +176,29 @@ class PohodaProductMapper
                 }
             }
         }
+    }
+
+    /**
+     * @param array $pohodaProductGroups
+     * @return array
+     */
+    private function getMappedProductGroupItems(array $pohodaProductGroups): array
+    {
+        $productGroupItems = [];
+        foreach ($pohodaProductGroups as $pohodaProductGroup) {
+            $productGroupItemPohodaId = (int)$pohodaProductGroup[PohodaProduct::COL_PRODUCT_GROUP_ITEM_REF_ID];
+            $productGroupItem = $this->productFacade->findByPohodaId($productGroupItemPohodaId);
+
+            if ($productGroupItem === null) {
+                throw new ProductNotFoundException(sprintf('Group item pohodaId=%d not found!', $productGroupItemPohodaId));
+            }
+            $productGroupItems[] = [
+                'item' => $productGroupItem,
+                'item_count' => (int)$pohodaProductGroup[PohodaProduct::COL_PRODUCT_GROUP_ITEM_COUNT],
+            ];
+        }
+
+        return $productGroupItems;
     }
 
     /**

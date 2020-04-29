@@ -6,6 +6,7 @@ namespace App\Form\Admin;
 
 use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
+use App\Form\ProductGroupItemsListType;
 use App\Form\ProductsListType;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Pricing\Group\PricingGroup;
@@ -177,6 +178,21 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'label' => t('Pohoda ID'),
             ]);
 
+        if ($product !== null) {
+            if ($product->isPohodaProductTypeGroup()) {
+                $pohodaProductType = t('Výrobek');
+            } elseif ($product->isPohodaProductTypeSingle()) {
+                $pohodaProductType = t('Karta');
+            } else {
+                $pohodaProductType = '-';
+            }
+            $builderBasicInformationGroup
+                ->add('pohodaProductType', DisplayOnlyType::class, [
+                    'data' => $pohodaProductType,
+                    'label' => t('Typ produktu z Pohody'),
+                ]);
+        }
+
         $defaultFlagForFreeTransportAndPayment = $this->flagFacade->getDefaultFlagForFreeTransportAndPayment();
         $builderBasicInformationGroup->add('flags', ChoiceType::class, [
             'choices' => $this->flagFacade->getAll(),
@@ -233,6 +249,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->extendAccessoriesGroup($builder);
         $this->extendDisplayAvailabilityGroup($builder->get('displayAvailabilityGroup'), $product);
         $this->addAmountGroup($builder, $product);
+        $this->addProductGroupItemsGroup($builder, $product);
+
         $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
     }
 
@@ -269,6 +287,30 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         return $articlesGroup;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param \App\Model\Product\Product $product
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    public function addProductGroupItemsGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
+    {
+        $groupItemGroup = $builder->create('groupItemsGroup', GroupType::class, [
+            'label' => t('Položky setu'),
+            'position' => ['after' => 'accessories'],
+        ]);
+
+        if ($product !== null) {
+            $groupItemGroup->add('groupItems', ProductGroupItemsListType::class, [
+                'label' => t('Položky setu'),
+                'required' => false,
+                'main_product' => $product,
+                'top_info_title' => !$product->isPohodaProductTypeGroup() ? t('Produkt není v Pohodě typu "Výrobek"') : '',
+            ]);
+        }
+
+        return $builder->add($groupItemGroup);
     }
 
     /**

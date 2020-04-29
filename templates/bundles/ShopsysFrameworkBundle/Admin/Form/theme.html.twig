@@ -113,3 +113,43 @@
         </tbody>
     </table>
 {% endblock %}
+
+{% block product_group_items_list_row -%}
+    <div class="wrap-divider">
+        <div class="form-group">
+            {% if top_info_title is not empty %}
+                <strong>{{ top_info_title }}</strong>
+            {% endif %}
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock %}
+
+{% block product_group_items_list_widget %}
+    {% if form.vars.products is not empty %}
+        <table class="table-form">
+            <thead>
+            <tr class="table-form__row">
+                <td class="table-form__cell">{{ 'Name'|trans }}</td>
+                <td class="table-form__cell">{{ 'Počet kusů'|trans }}</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in form.vars.products %}
+                {% if product is not null %}
+                <tr class="table-form__row">
+                    <td class="table-form__cell">
+                        <a href="{{ url('admin_product_edit', {id: product.item.id}) }}" target="_blank" class="btn-link-style btn-link-style--iconic-l">
+                            <span>{{ product.item|productListDisplayName }}</span>&nbsp;<i class="svg svg-forward-page"></i>
+                        </a>
+                    </td>
+                    <td class="table-form__cell">
+                        {{ product.item_count }}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

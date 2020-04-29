@@ -36,6 +36,8 @@ class PohodaProductExportRepository
         self::POHODA_STOCK_STORE_SALE_ID,
     ];
 
+    private const PRODUCT_TYPE_GROUP_ID = 5;
+
     /**
      * @var \App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager
      */
@@ -69,7 +71,8 @@ class PohodaProductExportRepository
             ->addScalarResult('VPrBCena', PohodaProduct::COL_STANDARD_PRICE)
             ->addScalarResult('ObjNazev', PohodaProduct::COL_VARIANT_ID)
             ->addScalarResult('SText', PohodaProduct::COL_VARIANT_ALIAS)
-            ->addScalarResult('SText1', PohodaProduct::COL_VARIANT_ALIAS_SK);
+            ->addScalarResult('SText1', PohodaProduct::COL_VARIANT_ALIAS_SK)
+            ->addScalarResult('RelSkTyp', PohodaProduct::COL_POHODA_PRODUCT_TYPE);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT 
@@ -86,7 +89,8 @@ class PohodaProductExportRepository
                 Product.VPrBCena,
                 Product.ObjNazev, 
                 Product.SText,
-                Product.SText1
+                Product.SText1,
+                Product.RelSkTyp
              FROM Skz Product
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1
@@ -102,6 +106,7 @@ class PohodaProductExportRepository
         foreach ($pohodaProductResult as $pohodaProduct) {
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]] = $pohodaProduct;
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_CATEGORIES] = [];
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_GROUP_ITEMS] = [];
         }
 
         return $pohodaProductsResult;
@@ -216,7 +221,7 @@ class PohodaProductExportRepository
     public function getProductCategoriesByPohodaIds(array $pohodaProductIds): array
     {
         $resultSetMapping = new ResultSetMapping();
-        $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_CATEGORY_ID)
+        $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_ID)
             ->addScalarResult('RefKat', PohodaProduct::COL_CATEGORY_REF_CATEGORY_ID);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
@@ -230,6 +235,38 @@ class PohodaProductExportRepository
         )
             ->setParameters([
                 'pohodaProductIds' => $pohodaProductIds,
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductGroupsByPohodaIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_ID)
+            ->addScalarResult('RefSKz', PohodaProduct::COL_PRODUCT_GROUP_ITEM_REF_ID)
+            ->addScalarResult('Mnozstvi', PohodaProduct::COL_PRODUCT_GROUP_ITEM_COUNT);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT ProductGroup.RefAg, ProductGroup.RefSKz, ProductGroup.Mnozstvi
+            FROM SKzPol AS ProductGroup
+            JOIN Skz AS ProductGroupItem ON ProductGroupItem.ID = ProductGroup.RefSKz
+            JOIN Skz AS MainProduct ON MainProduct.ID = ProductGroup.RefAg
+            WHERE ProductGroup.RefAg IN(:pohodaProductIds)
+                AND ProductGroupItem.RefSklad = :defaultStock
+                AND ProductGroupItem.IObchod = 1
+                AND MainProduct.RelSkTyp = :productTypeGroup
+            ORDER BY ProductGroup.OrderFld',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'pohodaProductIds' => $pohodaProductIds,
+                'defaultStock' => self::DEFAULT_POHODA_STOCK_ID,
+                'productTypeGroup' => self::PRODUCT_TYPE_GROUP_ID,
             ]);
 
         return $query->getResult();

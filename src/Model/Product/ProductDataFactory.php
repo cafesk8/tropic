@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Group\ProductGroupFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
@@ -23,6 +24,11 @@ use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 class ProductDataFactory extends BaseProductDataFactory
 {
     /**
+     * @var \App\Model\Product\Group\ProductGroupFacade
+     */
+    private $productGroupFacade;
+
+    /**
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceFacade $productInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
@@ -35,6 +41,7 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade $pluginDataFormExtensionFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface $productParameterValueDataFactory
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      */
     public function __construct(
         VatFacade $vatFacade,
@@ -48,7 +55,8 @@ class ProductDataFactory extends BaseProductDataFactory
         ImageFacade $imageFacade,
         PluginCrudExtensionFacade $pluginDataFormExtensionFacade,
         ProductParameterValueDataFactoryInterface $productParameterValueDataFactory,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        ProductGroupFacade $productGroupFacade
     ) {
         parent::__construct(
             $vatFacade,
@@ -64,6 +72,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $productParameterValueDataFactory,
             $pricingGroupFacade
         );
+        $this->productGroupFacade = $productGroupFacade;
     }
 
     /**
@@ -113,6 +122,7 @@ class ProductDataFactory extends BaseProductDataFactory
         }
 
         $productData->pohodaId = $product->getPohodaId();
+        $productData->pohodaProductType = $product->getPohodaProductType();
         $productData->mallExport = $product->isMallExport();
         $productData->mallExportedAt = $product->getMallExportedAt();
         $productData->updatedAt = $product->getUpdatedAt();
@@ -123,5 +133,23 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
         $productData->variantId = $product->getVariantId();
         $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
+        $productData->groupItems = $this->getProductGroups($product);
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return array
+     */
+    protected function getProductGroups(Product $product): array
+    {
+        $productGroups = [];
+        foreach ($this->productGroupFacade->getAllByMainProduct($product) as $groupItem) {
+            $productGroups[] = [
+                'item' => $groupItem->getItem(),
+                'item_count' => $groupItem->getItemCount(),
+            ];
+        }
+
+        return $productGroups;
     }
 }
