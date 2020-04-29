@@ -203,12 +203,20 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
                 );
             }
             if ($existsOrderDiscountLevel && !$existsPromoCodeDiscount || $existBothPromoCodeAndOrderDiscountLevelDiscounts && !$isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel) {
-                $promoCodes = $this->removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel($matchingOrderDiscountLevel, $promoCodes);
                 $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency($quantifiedItemsPrices, $currency, $matchingOrderDiscountLevel);
-                $productsPrice = $this->getProductsPriceAffectedByOrderDiscountLevel(
-                    $productsPriceWithoutDiscounts,
-                    $quantifiedItemsDiscountsByIndex
-                );
+                if (!empty($quantifiedItemsDiscountsByIndex)) {
+                    $promoCodes = $this->removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel($matchingOrderDiscountLevel, $promoCodes);
+                    $productsPrice = $this->getProductsPriceAffectedByOrderDiscountLevel(
+                        $productsPriceWithoutDiscounts,
+                        $quantifiedItemsDiscountsByIndex
+                    );
+                } elseif ($this->currentOrderDiscountLevelFacade->getActiveOrderLevelDiscountId() !== null) {
+                    $matchingOrderDiscountLevel = null;
+                    $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
+                    $this->flashMessageSender->addInfoFlash(t('Automatická sleva na celý nákup byla deaktivována, protože ji nelze aplikovat na žádný produkt v košíku.'));
+                } else {
+                    $matchingOrderDiscountLevel = null;
+                }
             }
         }
 
