@@ -205,7 +205,9 @@ class OrderPreviewCalculation extends BaseOrderPreviewCalculation
             if ($existsOrderDiscountLevel && !$existsPromoCodeDiscount || $existBothPromoCodeAndOrderDiscountLevelDiscounts && !$isDiscountByPromoCodeBetterThanDiscountByOrderDiscountLevel) {
                 $quantifiedItemsDiscountsByIndex = $this->quantifiedProductDiscountCalculation->calculateQuantifiedItemsDiscountsRoundedByCurrency($quantifiedItemsPrices, $currency, $matchingOrderDiscountLevel);
                 if (!empty($quantifiedItemsDiscountsByIndex)) {
-                    $promoCodes = $this->removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel($matchingOrderDiscountLevel, $promoCodes);
+                    if ($simulateRegistration === false) {
+                        $promoCodes = $this->removeAllPromoCodesThatAreNotGiftCertificatesAndActivateOrderDiscountLevel($matchingOrderDiscountLevel, $promoCodes);
+                    }
                     $productsPrice = $this->getProductsPriceAffectedByOrderDiscountLevel(
                         $productsPriceWithoutDiscounts,
                         $quantifiedItemsDiscountsByIndex
