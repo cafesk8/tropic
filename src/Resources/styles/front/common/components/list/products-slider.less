@@ -1,0 +1,249 @@
+@list-products-slider-item-count: 4;
+// different between list-products-slider-item-gap and list-products-slider-item-inner-padding hast to be min. 20px, becouse it is size of shadow
+@list-products-slider-item-gap: 30px;
+@list-products-slider-item-inner-padding: 10px;
+@list-products-slider-item-image-height: 160px;
+@list-products-slider-item-image-height-small: 110px;
+
+@list-products-slider-arrow-size: 38px;
+@list-products-slider-arrow-gap: 20px;
+@list-products-slider-side-gap: 40px;
+@list-products-slider-button-height: 47px;
+
+@list-products-slider-dots-item-gap: 10px;
+@list-products-slider-dots-item-size: 10px;
+
+.list-products-slider {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    padding: 0 @list-products-slider-side-gap;
+    margin-bottom: -@list-products-slider-button-height;
+
+    .slick-list {
+        overflow: hidden;
+        padding: 40px @list-products-slider-item-gap (30px + @list-products-slider-button-height) 0;
+    }
+
+    .slick-track {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+    }
+
+    .slick-dots {
+        .reset-ul();
+        position: absolute;
+        left: 50%;
+        top: 20px;
+        transform: translateX(-50%);
+        display: flex;
+        margin-left: -@list-products-slider-dots-item-gap;
+
+        li {
+            margin-left: @list-products-slider-dots-item-gap;
+
+            font-size: 0;
+
+            &.slick-active {
+                button {
+                    background-color: @color-turquoise;
+                }
+            }
+
+            button {
+                width: @list-products-slider-dots-item-size;
+                height: @list-products-slider-dots-item-size;
+                padding: 0;
+                cursor: pointer;
+                
+                border: 0;
+                font-size: 0;
+                background-color: @color-light;
+                border-radius: 50px;
+                transition: @transition;
+
+                &:focus {
+                    outline: 0;
+                }
+            }
+        }
+    }
+
+    &__arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        cursor: pointer;
+        color: @color-turquoise;
+        font-size: @list-products-slider-arrow-size;
+        height: @list-products-slider-arrow-size + 2px;
+        transition: @transition;
+
+        &:hover {
+            color: darken(@color-turquoise, 10%);
+        }
+
+        &.slick-disabled {
+            opacity: 0.3;
+            cursor: auto;
+
+            &:hover {
+                color: @color-turquoise;
+            }
+        }
+
+        &--prev {
+            left: 0;
+        }
+
+        &--next {
+            right: 0;
+            transform: rotate(180deg) translateY(50%);
+        }
+    }
+
+    &__list {
+        display: none;
+
+        &.slick-initialized {
+            display: block;
+        }
+    }
+
+    &__in {
+        position: relative;
+        width: 100%;
+    }
+
+    &__item {
+        margin-left: @list-products-slider-item-gap;
+        width: calc(~"@{calc-base}/@{list-products-slider-item-count}");
+
+        &:focus {
+            outline: 0;
+        }
+
+        &:hover {
+            @media @query-lg {
+                z-index: 1;
+                margin-bottom: -@list-products-slider-button-height;
+
+                .list-products-slider__item__hover {
+                    height: @list-products-slider-button-height;
+                }
+
+                .list-products-slider__item__in {
+                    margin: 0 -@list-products-slider-item-inner-padding;
+                    padding: @list-products-slider-item-inner-padding;
+
+                    box-shadow: @shadow;
+                }
+            }
+        }
+
+        &__in {
+            height: 100%;
+            padding: @list-products-slider-item-inner-padding 0;
+
+            border-radius: @radius-big;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+
+        &__block {
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+
+            text-decoration: none;
+            color: @color-base;
+        }
+
+        &__image-wrap {
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        &__image {
+            display: flex;
+            position: relative;
+            align-self: center;
+            margin-bottom: 10px;
+            height: @list-products-slider-item-image-height-small;
+            width: 100%;
+
+            @media @query-vl {
+                height: @list-products-slider-item-image-height;
+            }
+
+            img {
+                .center-image();
+                max-height: @list-products-slider-item-image-height-small;
+
+                @media @query-vl {
+                    max-height: @list-products-slider-item-image-height;
+                }
+            }
+        }
+
+        &__info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            text-align: center;
+
+            &__link {
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+
+            &__title {
+                display: block;
+                line-height: 21px;
+                margin-bottom: 5px;
+                overflow: hidden;
+                text-align: center;
+    
+                color: @color-base;
+                font-weight: 400;
+                font-size: @font-size;
+            }
+
+            &__price {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                color: @color-price;
+                font-size: @font-size-small;
+                font-weight: 700;
+
+                &__main {
+                    color: @color-price-main;
+                }
+
+                &__old {
+                    display: inline;
+                    padding-right: 10px;
+                    font-weight: 300;
+                    color: @color-price-old;
+                    text-decoration: line-through;
+                }
+            }
+        }
+
+        &__hover {
+            height: 0;
+            overflow: hidden;
+            margin-top: auto;
+            margin-bottom: -5px;
+        }
+    }
+}

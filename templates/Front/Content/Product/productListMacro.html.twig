@@ -84,83 +84,87 @@
     </ul>
 {% endmacro %}
 
-{% macro horizontalList(productViews, listCssClass = 'list-products', productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
-    <div class="{{ listCssClass }} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
+{% macro horizontalList(productViews, productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
+    <div class="list-products-slider js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
-        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--prev js-horizontal-list-action-prev">
+        <span class="list-products-slider__arrow list-products-slider__arrow--prev js-horizontal-list-action-prev">
             <i class="svg svg-slider-arrow"></i>
         </span>
 
-        <div class="{{ listCssClass }}__in">
-            <div class="{{ listCssClass }}__list js-horizontal-list-slides">
+        <div class="list-products-slider__in">
+            <div class="list-products-slider__list js-horizontal-list-slides">
                 {% for productView in productViews %}
-                    <div class="{{ listCssClass }}__item">
-                        <div class="{{ listCssClass }}__item__in">
-                            <a href="{{ productView.action.detailUrl }}" class="{{ listCssClass }}__item__block">
-                                <div class="{{ listCssClass }}__item__image dont-print">
-                                    {{ image(productView.image, { size: 'list', alt: productView.name, lazy: true }) }}
-                                    {% set productFlagIds = productView.flagIds %}
-                                    {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                    {% if freeTransportAndPaymentFlagId is not null %}
-                                        {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
-                                    {% endif %}
-                                    {{ renderFlagsByIds(productFlagIds, '', true) }}
-                                </div>
+                    <div class="list-products-slider__item">
+                        <div class="list-products-slider__item__in">
+                            <div class="list-products-slider__item__block">
+                                <a class="list-products-slider__item__image-wrap" href="{{ productView.action.detailUrl }}">
+                                    <div class="list-products-slider__item__image dont-print">
+                                        {{ image(productView.image, { size: 'listSlider', alt: productView.name, lazy: true }) }}
+                                        {% set productFlagIds = productView.flagIds %}
+                                        {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                                        {% if freeTransportAndPaymentFlagId is not null %}
+                                            {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                                        {% endif %}
+                                    </div>
+                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--slider', true) }}
+                                </a>
 
-                                <{{ productHeadingTagName|default('h2') }} class="{{ listCssClass }}__item__title">
-                                    {{ productView.name|striptags|raw }}
-                                <{{ '/' ~ productHeadingTagName|default('h2') }}>
+                                <div class="list-products-slider__item__info">
+                                    <a class="list-products-slider__item__info__link" href="{{ productView.action.detailUrl }}">
+                                        {% set productSellingPrice = productView.sellingPrice %}
 
-                                <div class="{{ listCssClass }}__item__info">
-                                    {% set productSellingPrice = productView.sellingPrice %}
+                                        <{{ productHeadingTagName|default('h2') }} class="list-products-slider__item__info__title">
+                                            {{ productView.name|striptags|raw }}
+                                        <{{ '/' ~ productHeadingTagName|default('h2') }}>
 
-                                    {% if productSellingPrice is not null %}
-                                        <div class="{{ listCssClass }}__item__info__price">
-                                            <div class="{{ listCssClass }}__item__info__price__item__main">
+                                        {% if productSellingPrice is not null %}
+                                            <div class="list-products-slider__item__info__price">
                                                 {% if productSellingPrice.hasHigherStandardPrice %}
-                                                    <div class="{{ listCssClass }}__item__info__price__item__old">
+                                                    <div class="list-products-slider__item__info__price__old">
                                                         {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                     </div>
                                                 {% endif %}
-
-                                                {% if productSellingPrice.priceFrom %}
-                                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                                {% else %}
-                                                    {{ productSellingPrice.priceWithVat|price }}
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    <div class="in-availability">
-                                        {% if productView.action.sellingDenied %}
-                                            <div class="in-availability__text in-availability__text--out-of-stock">
-                                                {{ 'Product no longer on sale'|trans }}
-                                            </div>
-                                        {% else %}
-                                            <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
-                                                {% if productView.action.isMainVariant %}
-                                                    {{ 'Dostupnost dle varianty'|trans }}
-                                                {% else %}
-                                                    {{ productView.availability }}
-                                                {% endif %}
+                                                
+                                                <div class="{% if productSellingPrice.hasHigherStandardPrice %}list-products-slider__item__info__price__main{% endif %}">
+                                                    {% if productSellingPrice.priceFrom %}
+                                                        {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                                    {% else %}
+                                                        {{ productSellingPrice.priceWithVat|price }}
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         {% endif %}
-                                    </div>
+
+                                        <div class="in-availability">
+                                            {% if productView.action.sellingDenied %}
+                                                <div class="in-availability__text in-availability__text--out-of-stock">
+                                                    {{ 'Product no longer on sale'|trans }}
+                                                </div>
+                                            {% else %}
+                                                <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                                                    {% if productView.action.isMainVariant %}
+                                                        {{ 'Dostupnost dle varianty'|trans }}
+                                                    {% else %}
+                                                        {{ productView.availability }}
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                    {% if showButton %}
+                                        <div class="list-products-slider__item__hover">
+                                            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
+                                        </div>
+                                    {% endif %}
                                 </div>
-                            </a>
-                            {% if showButton %}
-                                <div class="{{ listCssClass }}__item__button-add">
-                                    {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
-                                </div>
-                            {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-        <span class="{{ listCssClass }}__arrow {{ listCssClass }}__arrow--next js-horizontal-list-action-next">
+        <span class="list-products-slider__arrow list-products-slider__arrow--next js-horizontal-list-action-next">
             <i class="svg svg-slider-arrow"></i>
         </span>
     </div>

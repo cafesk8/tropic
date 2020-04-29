@@ -16,17 +16,17 @@ import Timeout from 'framework/common/utils/Timeout';
 
             const types = {
                 'last-visited': [1, 2, 3, 3, 5],
-                'top-products': [1, 2, 3, 3, 4],
+                'top-products': [1, 2, 3, 4, 6],
+                'accessories-products': [1, 2, 3, 4, 6],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],
-                'accessories-products': [1, 2, 3, 3, 4],
                 'basket-additionals': [1, 2, 3, 2, 3]
             };
 
             const selectedType = types[galleryType];
 
             $currentGallery.find('.js-horizontal-list-slides').slick({
-                dots: false,
+                dots: true,
                 arrows: true,
                 slidesToShow: 1,
                 slidesToScroll: 1,
