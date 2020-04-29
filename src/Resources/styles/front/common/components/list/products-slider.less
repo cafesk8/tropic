@@ -89,12 +89,12 @@
     &__arrow {
         position: absolute;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(50%);
+        height: @list-products-slider-arrow-size;
 
         cursor: pointer;
         color: @color-turquoise;
         font-size: @list-products-slider-arrow-size;
-        height: @list-products-slider-arrow-size + 2px;
         transition: @transition;
 
         &:hover {
@@ -112,11 +112,16 @@
 
         &--prev {
             left: 0;
+            transform: rotate(180deg);
         }
 
         &--next {
             right: 0;
-            transform: rotate(180deg) translateY(50%);
+            transform: translateY(-50%);
+        }
+
+        .svg {
+            height: @list-products-slider-arrow-size;
         }
     }
 
