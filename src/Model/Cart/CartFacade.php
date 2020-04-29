@@ -6,6 +6,7 @@ namespace App\Model\Cart;
 
 use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Cart\Item\CartItem;
+use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,6 +53,11 @@ class CartFacade extends BaseCartFacade
     protected $orderGiftFacade;
 
     /**
+     * @var \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade
+     */
+    private $currentOrderDiscountLevelFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
@@ -65,6 +71,7 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartRepository $cartRepository
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
+     * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -79,7 +86,8 @@ class CartFacade extends BaseCartFacade
         CartItemFactoryInterface $cartItemFactory,
         CartRepository $cartRepository,
         CartWatcherFacade $cartWatcherFacade,
-        OrderGiftFacade $orderGiftFacade
+        OrderGiftFacade $orderGiftFacade,
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
     ) {
         parent::__construct(
             $em,
@@ -97,6 +105,7 @@ class CartFacade extends BaseCartFacade
 
         $this->flashMessageSender = $flashMessageSender;
         $this->orderGiftFacade = $orderGiftFacade;
+        $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
     }
 
     /**
@@ -404,5 +413,11 @@ class CartFacade extends BaseCartFacade
                 $this->setOrderGiftProduct(null);
             }
         }
+    }
+
+    public function cleanAdditionalData()
+    {
+        parent::cleanAdditionalData();
+        $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
     }
 }
