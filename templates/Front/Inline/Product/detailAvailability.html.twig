@@ -3,6 +3,9 @@
 {% macro availabilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}in-availability in-availability--big js-detail-availability js-detail-availability-{{ product.id }}">
         <span class="in-availability__status">
+            <div class="in-availability__status__icon">
+                <i class="svg svg-checked"></i>
+            </div>
             {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
         </span>
 
