@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcf2416266cfd85460693d31a45415d2",
+    "content-hash": "0f568606d46292e99876de5724001f70",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
@@ -1165,11 +1165,11 @@
         },
         {
             "name": "devops/kubernetes-deployment",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://gitlab+deploy-token-4:yqMfHR2F4qc6rbFequP4@gitlab.shopsys.cz/devops/kubernetes-deployment.git",
-                "reference": "82bd83ca47d2f0d5006c956cc80798ab007f9ad4"
+                "reference": "659aa82c62b708a12c3a040effee409aff04fe29"
             },
             "require": {
                 "arvenil/ninja-mutex": "^0.4.1",
@@ -1213,7 +1213,7 @@
                 "shopsys",
                 "symfony"
             ],
-            "time": "2020-04-23T15:03:28+00:00"
+            "time": "2020-04-28T22:36:16+00:00"
         },
         {
             "name": "doctrine/annotations",
