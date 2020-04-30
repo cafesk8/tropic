@@ -29,7 +29,7 @@ class PaymentDomainTest extends TransactionFunctionalTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->paymentDataFactory = $this->getContainer()->get(PaymentDataFactoryInterface::class);

@@ -31,7 +31,7 @@ class BrandDomainTest extends TransactionFunctionalTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->brandDataFactory = $this->getContainer()->get(BrandDataFactoryInterface::class);

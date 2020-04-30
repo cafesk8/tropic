@@ -317,9 +317,6 @@ class OrderController extends FrontBaseController
      */
     public function indexAction(Request $request)
     {
-        /** @var \Shopsys\FrameworkBundle\Component\FlashMessage\Bag $flashMessageBag */
-        $flashMessageBag = $this->get('shopsys.shop.component.flash_message.bag.front');
-
         $cart = $this->cartFacade->findCartOfCurrentCustomerUser();
         if ($cart === null) {
             return $this->redirectToRoute('front_cart');
@@ -392,7 +389,7 @@ class OrderController extends FrontBaseController
         if ($isValid) {
             if ($orderFlow->nextStep()) {
                 $form = $orderFlow->createForm();
-            } elseif ($flashMessageBag->isEmpty()) {
+            } elseif ($this->isFlashMessageBagEmpty()) {
                 $deliveryAddress = $orderData->deliveryAddressSameAsBillingAddress === false ? $frontOrderFormData->deliveryAddress : null;
                 $order = $this->orderFacade->createOrderFromFront($orderData, $deliveryAddress);
                 $this->orderFacade->sendHeurekaOrderInfo($order, $frontOrderFormData->disallowHeurekaVerifiedByCustomers);
@@ -417,7 +414,7 @@ class OrderController extends FrontBaseController
                 try {
                     $this->sendMail($order);
                 } catch (Exception $e) {
-                    $this->getFlashMessageSender()->addErrorFlash(
+                    $this->addErrorFlash(
                         t('Unable to send some e-mails, please contact us for order verification.')
                     );
                 }
@@ -634,7 +631,7 @@ class OrderController extends FrontBaseController
         );
 
         if ($transportAndPaymentCheckResult->isTransportPriceChanged()) {
-            $this->getFlashMessageSender()->addInfoFlashTwig(
+            $this->addInfoFlashTwig(
                 t('The price of shipping {{ transportName }} changed during ordering process. Check your order, please.'),
                 [
                     'transportName' => $orderData->transport->getName(),
@@ -642,7 +639,7 @@ class OrderController extends FrontBaseController
             );
         }
         if ($transportAndPaymentCheckResult->isPaymentPriceChanged()) {
-            $this->getFlashMessageSender()->addInfoFlashTwig(
+            $this->addInfoFlashTwig(
                 t('The price of payment {{ paymentName }} changed during ordering process. Check your order, please.'),
                 [
                     'paymentName' => $orderData->payment->getName(),
@@ -681,7 +678,7 @@ class OrderController extends FrontBaseController
                 $goPayData = $this->goPayFacadeOnCurrentDomain->sendPaymentToGoPay($order, $goPayBankSwift);
                 $this->goPayTransactionFacade->createNewTransactionByOrder($order, (string)$goPayData['goPayId']);
             } catch (\App\Model\GoPay\Exception\GoPayException $e) {
-                $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+                $this->addErrorFlash(t('Connection to GoPay gateway failed.'));
             }
         }
 
@@ -694,7 +691,7 @@ class OrderController extends FrontBaseController
                 $payPalPayment = $this->payPalFacade->sendPayment($order);
                 $payPalApprovalLink = $payPalPayment->getApprovalLink();
             } catch (\PayPal\Exception\PayPalConnectionException $e) {
-                $this->getFlashMessageSender()->addErrorFlash(t('Connection to PayPal gateway failed.'));
+                $this->addErrorFlash(t('Connection to PayPal gateway failed.'));
             }
         }
 
@@ -734,7 +731,7 @@ class OrderController extends FrontBaseController
             try {
                 $this->customerMailFacade->sendRegistrationMail($newlyRegisteredUser);
             } catch (\Swift_SwiftException | MailException $exception) {
-                $this->getFlashMessageSender()->addErrorFlash(
+                $this->addErrorFlash(
                     t('Unable to send some e-mails, please contact us for registration verification.')
                 );
             }
@@ -742,7 +739,7 @@ class OrderController extends FrontBaseController
             $this->orderFacade->setCustomerToOrder($order, $newlyRegisteredUser);
 
             $this->authenticator->loginUser($newlyRegisteredUser, $request);
-            $this->getFlashMessageSender()->addSuccessFlash(t('You have been successfully registered.'));
+            $this->addSuccessFlash(t('You have been successfully registered.'));
             return $this->redirectToRoute('front_customer_orders');
         }
 
@@ -759,7 +756,7 @@ class OrderController extends FrontBaseController
             /** @var \App\Model\Order\Order $order */
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
+            $this->addErrorFlash(t('Order not found.'));
 
             return $this->redirectToRoute('front_cart');
         }
@@ -813,7 +810,7 @@ class OrderController extends FrontBaseController
         try {
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Order not found.'));
+            $this->addErrorFlash(t('Order not found.'));
 
             return $this->redirectToRoute('front_cart');
         }
@@ -858,7 +855,7 @@ class OrderController extends FrontBaseController
         try {
             $this->goPayTransactionFacade->updateOrderTransactions($order);
         } catch (GoPayNotConfiguredException | GoPayPaymentDownloadException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+            $this->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
     }
 
@@ -872,7 +869,7 @@ class OrderController extends FrontBaseController
             /** @var \App\Model\Order\Order $order */
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (\Shopsys\FrameworkBundle\Model\Order\Exception\OrderNotFoundException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nebyla nalezena.'));
+            $this->addErrorFlash(t('Objednávka nebyla nalezena.'));
 
             return $this->redirectToRoute('front_homepage');
         }
@@ -881,11 +878,11 @@ class OrderController extends FrontBaseController
 
         if ($order->getPayment()->isGoPay()) {
             if ($order->isGopayPaid() !== false) {
-                $this->getFlashMessageSender()->addErrorFlash(t('Objednávka je již zaplacená.'));
+                $this->addErrorFlash(t('Objednávka je již zaplacená.'));
                 return $this->redirectToRoute('front_homepage');
             }
         } else {
-            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nemá nastaven způsob platby prostřednictvím GoPay.'));
+            $this->addErrorFlash(t('Objednávka nemá nastaven způsob platby prostřednictvím GoPay.'));
             return $this->redirectToRoute('front_homepage');
         }
 
@@ -896,7 +893,7 @@ class OrderController extends FrontBaseController
 
             $this->goPayTransactionFacade->createNewTransactionByOrder($order, (string)$goPayData['goPayId']);
         } catch (\App\Model\GoPay\Exception\GoPayException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Connection to GoPay gateway failed.'));
+            $this->addErrorFlash(t('Connection to GoPay gateway failed.'));
         }
 
         return $this->render('Front/Content/Order/repeatGoPayPayment.html.twig', [
@@ -915,7 +912,7 @@ class OrderController extends FrontBaseController
         try {
             $order = $this->orderFacade->getByUrlHashAndDomain($urlHash, $this->domain->getId());
         } catch (OrderNotFoundException $e) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Objednávka nebyla nalezena.'));
+            $this->addErrorFlash(t('Objednávka nebyla nalezena.'));
             return $this->redirectToRoute('front_homepage');
         }
 
@@ -946,7 +943,7 @@ class OrderController extends FrontBaseController
 
         $this->session->set(self::SESSION_CREATED_ORDER, $order->getId());
 
-        $this->getFlashMessageSender()->addInfoFlash(t('Způsob platby byl úspěšně změněn'));
+        $this->addInfoFlash(t('Způsob platby byl úspěšně změněn'));
 
         if ($this->getUser() instanceof CustomerUser) {
             return $this->redirectToRoute('front_customer_order_detail_registered', [

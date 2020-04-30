@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
-use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;

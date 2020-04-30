@@ -6,16 +6,16 @@ namespace App\Twig;
 
 use App\Model\Product\Pricing\ProductPrice;
 use Shopsys\ReadModelBundle\Flag\FlagsProvider;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class FlagsExtension extends AbstractExtension
 {
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     * @var \Twig\Environment
      */
-    protected $templating;
+    protected $twigEnvironment;
 
     /**
      * @var \Shopsys\ReadModelBundle\Flag\FlagsProvider
@@ -24,13 +24,13 @@ class FlagsExtension extends AbstractExtension
 
     /**
      * @param \Shopsys\ReadModelBundle\Flag\FlagsProvider $flagsProvider
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
+     * @param \Twig\Environment $twigEnvironment
      */
     public function __construct(
         FlagsProvider $flagsProvider,
-        EngineInterface $templating
+        Environment $twigEnvironment
     ) {
-        $this->templating = $templating;
+        $this->twigEnvironment = $twigEnvironment;
         $this->flagsProvider = $flagsProvider;
     }
 
@@ -59,7 +59,7 @@ class FlagsExtension extends AbstractExtension
         ?ProductPrice $productPrice = null,
         int $variantsCount = 0
     ): string {
-        return $this->templating->render(
+        return $this->twigEnvironment->render(
             'Front/Inline/Product/productFlags.html.twig',
             [
                 'flags' => $this->flagsProvider->getFlagsByIds($flagIds),

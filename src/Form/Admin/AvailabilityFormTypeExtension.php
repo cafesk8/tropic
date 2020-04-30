@@ -31,8 +31,8 @@ class AvailabilityFormTypeExtension extends AbstractTypeExtension
     /**
      * @inheritDoc
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return AvailabilityFormType::class;
+        yield AvailabilityFormType::class;
     }
 }

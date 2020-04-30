@@ -2,10 +2,13 @@ domains:
     -   id: 1
         name: "Tropic CZ"
         locale: cs
+        styles_directory: common
     -   id: 2
         name: "Tropic SK"
         locale: sk
+        styles_directory: domain2
     -   id: 3
         name: "Tropic EN"
         locale: en
+        styles_directory: domain2
 

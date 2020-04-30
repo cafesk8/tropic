@@ -1030,7 +1030,7 @@ msgstr "No restriction"
 msgid "Nepodařilo se změnit stav objednávky na Mall.cz (%errorMessage%)."
 msgstr "Failed to change order status on Mall.cz (%errorMessage%)."
 
-msgid "Nepovedlo připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
+msgid "Nepovedlo se připojit ke Google API, takže se nezkontrolovala platnost ID Youtube videa."
 msgstr "Failed to connect to Google API, so Youtube video ID was not validated."
 
 msgid "Nepovinný název pro administraci"

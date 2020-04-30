@@ -6,11 +6,11 @@ namespace App\Controller\Admin;
 
 use App\Component\Setting\Setting;
 use App\Form\Admin\DeliveryDateSettingFormType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DeliveryDateController extends AdminBaseController
 {
@@ -51,13 +51,13 @@ class DeliveryDateController extends AdminBaseController
         $form = $this->createForm(DeliveryDateSettingFormType::class, $formData);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $hours = $form->get('deadline')->get('hours')->getData();
             $minutes = $form->get('deadline')->get('minutes')->getData();
             $this->setting->setForDomain(Setting::ORDER_TRANSPORT_DEADLINE_HOURS, $hours, $this->adminDomainTabsFacade->getSelectedDomainId());
             $this->setting->setForDomain(Setting::ORDER_TRANSPORT_DEADLINE_MINUTES, $minutes, $this->adminDomainTabsFacade->getSelectedDomainId());
 
-            $this->getFlashMessageSender()->addSuccessFlash(t('Nastavení bylo uloženo.'));
+            $this->addSuccessFlash(t('Nastavení bylo uloženo.'));
         }
 
         return $this->render('Admin/Content/DeliveryDate/setting.html.twig', [

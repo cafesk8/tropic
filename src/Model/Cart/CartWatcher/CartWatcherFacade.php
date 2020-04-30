@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Cart\CartWatcher;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use App\Model\Customer\User\CustomerUser;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
 use App\Model\Order\Discount\OrderDiscountLevelFacade;
@@ -13,12 +14,14 @@ use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
+use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessage;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatcherFacade;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Twig\Environment;
 
 /**
  * @property \App\Model\Cart\CartWatcher\CartWatcher $cartWatcher
@@ -26,6 +29,11 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
  */
 class CartWatcherFacade extends BaseCartWatcherFacade
 {
+    /**
+     * @var \App\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
+
     /**
      * @var \App\Model\Order\PromoCode\CurrentPromoCodeFacade
      */
@@ -57,7 +65,7 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
+     * @param \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface $flashBag
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
@@ -67,9 +75,11 @@ class CartWatcherFacade extends BaseCartWatcherFacade
      * @param \App\Model\Order\Discount\OrderDiscountLevelFacade $orderDiscountLevelFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \Twig\Environment $twigEnvironment
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
-        FlashMessageSender $flashMessageSender,
+        FlashBagInterface $flashBag,
         EntityManagerInterface $em,
         CartWatcher $cartWatcher,
         CurrentCustomerUser $currentCustomerUser,
@@ -78,15 +88,18 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         ProductFacade $productFacade,
         OrderDiscountLevelFacade $orderDiscountLevelFacade,
         CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
-        Domain $domain
+        Domain $domain,
+        Environment $twigEnvironment,
+        FlashMessageSender $flashMessageSender
     ) {
-        parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomerUser);
+        parent::__construct($flashBag, $em, $cartWatcher, $currentCustomerUser, $twigEnvironment);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
         $this->productFacade = $productFacade;
         $this->orderDiscountLevelFacade = $orderDiscountLevelFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
         $this->domain = $domain;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**
@@ -116,10 +129,11 @@ class CartWatcherFacade extends BaseCartWatcherFacade
                 $this->currentPromoCodeFacade->checkPromoCodeValidity($enteredCode, $cart->getTotalWatchedPriceOfProducts(), $customerUser);
                 $this->currentPromoCodeFacade->checkApplicability($this->promoCodeFacade->findPromoCodeByCode($enteredCode), $cart);
             } catch (PromoCodeNotApplicableException $exception) {
-                $this->flashMessageSender->addErrorFlash(t('Slevový kupón nelze aplikovat na žádný produkt v košíku.'));
+                $this->flashBag->add(FlashMessage::KEY_ERROR, t('Slevový kupón nelze aplikovat na žádný produkt v košíku.'));
                 $this->currentPromoCodeFacade->removeEnteredPromoCodeByCode($enteredCode);
             } catch (\Exception $exception) {
-                $this->flashMessageSender->addErrorFlash(
+                $this->flashBag->add(
+                    FlashMessage::KEY_ERROR,
                     t('Platnost slevového kupónu "%code%" vypršela. Prosím, zkontrolujte ho.', [
                         '%code%' => $enteredCode,
                     ])
@@ -151,7 +165,8 @@ class CartWatcherFacade extends BaseCartWatcherFacade
                     $toFlush[] = $giftCartItem;
                 }
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $e) {
-                $this->flashMessageSender->addErrorFlash(
+                $this->flashBag->add(
+                    FlashMessage::KEY_ERROR,
                     t('Product you had in cart is no longer in available. Please check your order.')
                 );
             }

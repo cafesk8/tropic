@@ -3,7 +3,7 @@
 {% block title %}Shopsys Framework styleguide{% endblock %}
 
 {% block meta_robots %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/styleguide/styles/styleguide_' ~ getCssVersion() ~ '.css') }}" media="screen, projection">
+    {{ encore_entry_link_tags('styleguide-style') }}
 {% endblock %}
 
 {% block html_body %}
@@ -484,7 +484,7 @@
                                     <div class="form-line">
                                         <div class="form-line__input">
                                             <label for="order_personal_info_form_companyName" class="input-label required">
-                                                Company name: 
+                                                Company name:
                                             </label>
                                             <input type="text" id="order_personal_info_form_companyName"
                                                    name="order_personal_info_form[companyName]" required="required"
@@ -728,7 +728,7 @@
                             <div class="form-choice">
                                 <span class="form-choice__line">
                                     <label>
-                                        <input type="checkbox" id="checkbox4" name="checkbox" class="css-checkbox" 
+                                        <input type="checkbox" id="checkbox4" name="checkbox" class="css-checkbox"
                                                 disabled="disabled" checked="checked"/>
                                         <span class="css-checkbox__image">
                                             Checkbox checked disabled
@@ -765,7 +765,7 @@
 </div>
                             </textarea>
                         </div>
-                        
+
                         <h3 class="styleguide-module__title--small">Price Slider</h3>
                         <div class="box-filter__price">
                             <dl class="form-line">
@@ -1067,7 +1067,9 @@
 
                             <div class="in-overlay__in in-overlay__in--absolute">
                                 <div class="in-overlay__spinner in-overlay__spinner--absolute">
-                                    <span class="in-overlay__spinner__icon"></span>
+                                    <span class="in-overlay__spinner__icon">
+                                        <i class="svg svg-spinner"></i>
+                                    </span>
                                     <span class="in-overlay__spinner__message"></span>
                                 </div>
                             </div>
@@ -1076,7 +1078,9 @@
                             <textarea class="codemirror-html" id="html-list-simple">
 <div class="in-overlay__in">
     <div class="in-overlay__spinner">
-        <span class="in-overlay__spinner__icon"></span>
+        <span class="in-overlay__spinner__icon">
+            <i class="svg svg-spinner"></i>
+        </span>
         <span class="in-overlay__spinner__message"></span>
     </div>
 </div>

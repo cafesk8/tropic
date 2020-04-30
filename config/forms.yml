@@ -40,8 +40,6 @@ services:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Transport\TransportFormType }
 
     App\Form\Admin\ProductFormTypeExtension:
-        arguments:
-            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.admin'
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\ProductFormType }
 
@@ -65,11 +63,6 @@ services:
     App\Form\Admin\ParameterFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\Parameter\ParameterFormType}
-
-    Shopsys\FrameworkBundle\Form\WysiwygTypeExtension:
-        class: App\Form\WysiwygTypeExtension
-        tags:
-            - { name: form.type_extension, extended_type: FOS\CKEditorBundle\Form\Type\CKEditorType }
 
     App\Form\Admin\CountryFormTypeExtension:
         tags:

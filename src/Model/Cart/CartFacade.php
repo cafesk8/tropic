@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Cart;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use App\Model\Cart\Exception\OutOfStockException;
 use App\Model\Cart\Item\CartItem;
 use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
@@ -11,7 +12,6 @@ use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
 use Shopsys\FrameworkBundle\Model\Cart\CartFacade as BaseCartFacade;
@@ -43,11 +43,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductRepository;
 class CartFacade extends BaseCartFacade
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
-     */
-    protected $flashMessageSender;
-
-    /**
      * @var \App\Model\Order\Gift\OrderGiftFacade
      */
     protected $orderGiftFacade;
@@ -58,7 +53,11 @@ class CartFacade extends BaseCartFacade
     private $currentOrderDiscountLevelFacade;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
+     * @var \App\Component\FlashMessage\FlashMessageSender
+     */
+    private $flashMessageSender;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\CartFactory $cartFactory
      * @param \App\Model\Product\ProductRepository $productRepository
@@ -72,9 +71,9 @@ class CartFacade extends BaseCartFacade
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade $cartWatcherFacade
      * @param \App\Model\Order\Gift\OrderGiftFacade $orderGiftFacade
      * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
     public function __construct(
-        FlashMessageSender $flashMessageSender,
         EntityManagerInterface $em,
         CartFactory $cartFactory,
         ProductRepository $productRepository,
@@ -87,7 +86,8 @@ class CartFacade extends BaseCartFacade
         CartRepository $cartRepository,
         CartWatcherFacade $cartWatcherFacade,
         OrderGiftFacade $orderGiftFacade,
-        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
+        FlashMessageSender $flashMessageSender
     ) {
         parent::__construct(
             $em,
@@ -103,9 +103,9 @@ class CartFacade extends BaseCartFacade
             $cartWatcherFacade
         );
 
-        $this->flashMessageSender = $flashMessageSender;
         $this->orderGiftFacade = $orderGiftFacade;
         $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**

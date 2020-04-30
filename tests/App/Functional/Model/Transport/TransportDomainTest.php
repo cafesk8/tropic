@@ -29,7 +29,7 @@ class TransportDomainTest extends TransactionFunctionalTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->transportDataFactory = $this->getContainer()->get(TransportDataFactoryInterface::class);

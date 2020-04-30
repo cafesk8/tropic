@@ -18,7 +18,7 @@ class IndependentTransportVisibilityCalculationTest extends TransactionFunctiona
      */
     private $localization;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->localization = $this->getContainer()->get(Localization::class);
         parent::setUp();

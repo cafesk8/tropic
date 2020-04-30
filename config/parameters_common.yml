@@ -55,3 +55,4 @@ parameters:
     securityBcryptCost: 12
     # All time values are displayed in this timezone (default is PHP timezone)
     shopsys.display_timezone: Europe/Prague
+    shopsys.display_cron_overview_for_superadmin_only: false

@@ -54,7 +54,7 @@ class PriceBombProductController extends AdminBaseController
 
             $this->priceBombProductFacade->savePriceBombProductsForDomain($domainId, $products);
 
-            $this->getFlashMessageSender()->addSuccessFlash(t('Product settings on the main page successfully changed'));
+            $this->addSuccessFlash(t('Product settings on the main page successfully changed'));
         }
 
         return $this->render('Admin/Content/PriceBombProduct/list.html.twig', [

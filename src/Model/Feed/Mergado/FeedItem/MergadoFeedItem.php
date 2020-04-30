@@ -11,112 +11,112 @@ class MergadoFeedItem implements FeedItemInterface
     /**
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
      * @var int|null
      */
-    protected $itemGroupId;
+    private $itemGroupId;
 
     /**
      * @var string|null
      */
-    protected $catnum;
+    private $catnum;
 
     /**
      * @var string|null
      */
-    protected $ean;
+    private $ean;
 
     /**
      * @var string|null
      */
-    protected $url;
+    private $url;
 
     /**
      * @var string|null
      */
-    protected $nameExact;
+    private $nameExact;
 
     /**
      * @var string|null
      */
-    protected $category;
+    private $category;
 
     /**
      * @var string|null
      */
-    protected $descriptionShort;
+    private $descriptionShort;
 
     /**
      * @var string|null
      */
-    protected $description;
+    private $description;
 
     /**
      * @var string[]
      */
-    protected $benefits;
+    private $benefits;
 
     /**
      * @var string|null
      */
-    protected $brand;
+    private $brand;
 
     /**
      * @var string
      */
-    protected $priceWithoutVat;
+    private $priceWithoutVat;
 
     /**
      * @var string
      */
-    protected $priceWithVat;
+    private $priceWithVat;
 
     /**
      * @var string
      */
-    protected $currency;
+    private $currency;
 
     /**
      * @var string
      */
-    protected $availability;
+    private $availability;
 
     /**
      * @var int
      */
-    protected $deliveryDays;
+    private $deliveryDays;
 
     /**
      * @var string|null
      */
-    protected $image;
+    private $image;
 
     /**
      * @var string[]
      */
-    protected $alternativeImages;
+    private $alternativeImages;
 
     /**
      * @var string|null
      */
-    protected $video;
+    private $video;
 
     /**
      * @var string[]
      */
-    protected $alternativeVideos;
+    private $alternativeVideos;
 
     /**
      * @var string[]
      */
-    protected $params;
+    private $params;
 
     /**
      * @var \App\Model\Feed\Mergado\FeedItem\MergadoFeedDeliveryItem[]
      */
-    protected $deliveries;
+    private $deliveries;
 
     /**
      * @param int $id

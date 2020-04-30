@@ -22,7 +22,7 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\Product|null $mainVariant
  * @method static \App\Model\Product\Product create(\App\Model\Product\ProductData $productData)
  * @method setAvailabilityAndStock(\App\Model\Product\ProductData $productData)
- * @method \App\Model\Product\Availability\Availability getAvailability()
+ * @method \App\Model\Product\Availability\Availability|null getAvailability()
  * @method \App\Model\Product\Availability\Availability|null getOutOfStockAvailability()
  * @method \App\Model\Product\Availability\Availability getCalculatedAvailability()
  * @method setAvailability(\App\Model\Product\Availability\Availability $availability)
@@ -59,7 +59,7 @@ class Product extends BaseProduct
      *   cascade={"persist", "remove"}
      * )
      */
-    protected $storeStocks;
+    private $storeStocks;
 
     /**
      * @var int|null
@@ -82,21 +82,21 @@ class Product extends BaseProduct
      *
      * @ORM\ManyToMany(targetEntity="App\Model\Product\ProductGift\ProductGift", mappedBy="products", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
-    protected $productGifts;
+    private $productGifts;
 
     /**
      * @var string[]
      *
      * @ORM\Column(type="json", nullable=false)
      */
-    protected $youtubeVideoIds;
+    private $youtubeVideoIds;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    protected $mallExport;
+    private $mallExport;
 
     /**
      * @var \DateTime|null
@@ -118,42 +118,42 @@ class Product extends BaseProduct
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $baseName;
+    private $baseName;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    protected $giftCertificate;
+    private $giftCertificate;
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    protected $minimumAmount;
+    private $minimumAmount;
 
     /**
      * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    protected $amountMultiplier;
+    private $amountMultiplier;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
-    protected $variantId;
+    private $variantId;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", nullable=false)
      */
-    protected $registrationDiscountDisabled;
+    private $registrationDiscountDisabled;
 
     /**
      * @var \DateTime|null
@@ -211,7 +211,7 @@ class Product extends BaseProduct
     /**
      * @param \App\Model\Product\ProductData $productData
      */
-    protected function fillCommonProperties(ProductData $productData): void
+    private function fillCommonProperties(ProductData $productData): void
     {
         $this->catnum = $productData->catnum;
         $this->mallExport = $productData->mallExport;

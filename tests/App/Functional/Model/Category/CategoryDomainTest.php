@@ -32,7 +32,7 @@ class CategoryDomainTest extends TransactionFunctionalTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->categoryDataFactory = $this->getContainer()->get(CategoryDataFactoryInterface::class);

@@ -15,6 +15,7 @@ services:
     App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager: '@doctrine.orm.pohoda_entity_manager'
 
     doctrine.orm.pohoda_entity_manager:
+        public: true
         class: App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager
         lazy: true # important, frontend does not need PohodaEntityManager, see ocramius/proxy-manager
         factory: [App\Component\Transfer\Pohoda\Doctrine\PohodaEntityManager, create]
@@ -119,8 +120,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade:
         class: App\Model\Cart\CartWatcher\CartWatcherFacade
-        arguments:
-            - '@shopsys.shop.component.flash_message.sender.front'
 
     Shopsys\FrameworkBundle\Model\Order\OrderFlowFactoryInterface: '@App\Form\Front\Order\DomainAwareOrderFlowFactory'
 
@@ -328,10 +327,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewFactory: '@App\Model\Order\Preview\OrderPreviewFactory'
 
-    App\Model\Order\Preview\OrderPreviewCalculation:
-        arguments:
-            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
-
     Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreviewCalculation: '@App\Model\Order\Preview\OrderPreviewCalculation'
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductDiscountCalculation: '@App\Model\Product\Pricing\QuantifiedProductDiscountCalculation'
@@ -360,10 +355,6 @@ services:
     Shopsys\FrameworkBundle\Component\Router\FriendlyUrl\FriendlyUrlRepository: '@App\Component\Router\FriendlyUrl\FriendlyUrlRepository'
 
     Shopsys\FrameworkBundle\Model\Breadcrumb\SimpleBreadcrumbGenerator: '@App\Model\Breadcrumb\SimpleBreadcrumbGenerator'
-
-    App\Model\Cart\CartFacade:
-        arguments:
-            - '@shopsys.shop.component.flash_message.sender.front'
 
     Shopsys\FrameworkBundle\Model\Cart\CartFacade: '@App\Model\Cart\CartFacade'
 
@@ -501,10 +492,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Security\FrontLogoutHandler: '@App\Model\Security\FrontLogoutHandler'
 
-    App\Component\Error\LogoutExceptionSubscriber:
-        arguments:
-            $flashMessageSender: '@shopsys.shop.component.flash_message.sender.front'
-
     App\Controller\Front\ErrorController:
         arguments:
             $environment: '%kernel.environment%'
@@ -543,13 +530,9 @@ services:
 
     Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityGridFactory: '@App\Model\Product\Availability\AvailabilityGridFactory'
 
-    App\Model\Product\Search\ProductElasticsearchRepository: ~
-
     App\Model\Product\Search\FilterQuery: ~
 
     Shopsys\FrameworkBundle\Model\Product\Search\FilterQuery: '@App\Model\Product\Search\FilterQuery'
-
-    Shopsys\FrameworkBundle\Model\Product\Search\ProductElasticsearchRepository: '@App\Model\Product\Search\ProductElasticsearchRepository'
 
     App\Model\Product\Availability\ProductAvailabilityCalculation: ~
 
@@ -585,10 +568,6 @@ services:
 
     App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail: ~
 
-    App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade:
-        arguments:
-            $templating: '@templating'
-
     Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository: '@App\Model\Product\Filter\PriceRangeRepository'
@@ -606,3 +585,28 @@ services:
     Shopsys\FrameworkBundle\Component\Domain\DomainDataCreator: '@App\Component\Domain\DomainDataCreator'
 
     Shopsys\FrameworkBundle\Model\Pricing\Vat\VatGridFactory: '@App\Model\Pricing\Vat\VatGridFactory'
+
+    App\Controller\Front\RobotsController:
+        arguments:
+            $sitemapsUrlPrefix: '%shopsys.sitemaps_url_prefix%'
+
+    App\Component\FlashMessage\ErrorExtractor: ~
+
+    # see https://github.com/shopsys/shopsys/pull/1789
+    Shopsys\FrameworkBundle\Model\Security\Authenticator:
+        arguments:
+            - '@security.token_storage'
+
+    App\Component\FlashMessage\FlashMessageSender: ~
+
+    # in order to avoid the error message 'The service "main_filesystem" has a dependency on a non-existent service "DevOps\KubernetesDeployment\Component\FileSystem\FilesystemFactoryDecorator.inner"',
+    # "$inner" argument definition has been removed.
+    # see https://gitlab.shopsys.cz/devops/kubernetes-deployment/-/merge_requests/3
+    DevOps\KubernetesDeployment\Component\FileSystem\FileSystemFactoryDecorator:
+        decorates: Shopsys\FrameworkBundle\Component\Filesystem\MainFilesystemFactory
+        arguments:
+            $s3ApiHost: '%env(S3_API_HOST)%'
+            $s3ApiUsername: '%env(S3_API_USERNAME)%'
+            $s3ApiPassword: '%env(S3_API_PASSWORD)%'
+            $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
+

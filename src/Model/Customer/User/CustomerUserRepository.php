@@ -18,6 +18,7 @@ use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserRepository as BaseCu
  * @method replaceUsersPricingGroup(\App\Model\Pricing\Group\PricingGroup $oldPricingGroup, \App\Model\Pricing\Group\PricingGroup $newPricingGroup)
  * @method \App\Model\Customer\User\CustomerUser|null getCustomerUserByEmailAndDomain(string $email, int $domainId)
  * @method replaceCustomerUsersPricingGroup(\App\Model\Pricing\Group\PricingGroup $oldPricingGroup, \App\Model\Pricing\Group\PricingGroup $newPricingGroup)
+ * @method \App\Model\Customer\User\CustomerUser getOneByUuid(string $uuid)
  */
 class CustomerUserRepository extends BaseCustomerUserRepository
 {

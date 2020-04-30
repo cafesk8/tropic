@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\Error;
 
+use App\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
-use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Exception\LogoutException;
 class LogoutExceptionSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender
+     * @var \App\Component\FlashMessage\FlashMessageSender
      */
     private $flashMessageSender;
 
@@ -37,17 +37,17 @@ class LogoutExceptionSubscriber implements EventSubscriberInterface
     private $domain;
 
     /**
-     * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser $currentCustomerUser
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
+     * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
      */
-    public function __construct(FlashMessageSender $flashMessageSender, CurrentCustomerUser $currentCustomerUser, RouterInterface $router, Domain $domain)
+    public function __construct(CurrentCustomerUser $currentCustomerUser, RouterInterface $router, Domain $domain, FlashMessageSender $flashMessageSender)
     {
-        $this->flashMessageSender = $flashMessageSender;
         $this->currentCustomerUser = $currentCustomerUser;
         $this->router = $router;
         $this->domain = $domain;
+        $this->flashMessageSender = $flashMessageSender;
     }
 
     /**

@@ -146,50 +146,6 @@ class FilterQuery extends BaseFilterQuery
     /**
      * @inheritDoc
      */
-    public function getQuery(): array
-    {
-        $query = parent::getQuery();
-        unset($query['type']);
-
-        return $query;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getAbsoluteNumbersAggregationQuery(): array
-    {
-        $query = parent::getAbsoluteNumbersAggregationQuery();
-        unset($query['type']);
-
-        return $query;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFlagsPlusNumbersQuery(array $selectedFlags): array
-    {
-        $query = parent::getFlagsPlusNumbersQuery($selectedFlags);
-        unset($query['type']);
-
-        return $query;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getBrandsPlusNumbersQuery(array $selectedBrandsIds): array
-    {
-        $query = parent::getBrandsPlusNumbersQuery($selectedBrandsIds);
-        unset($query['type']);
-
-        return $query;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getParametersPlusNumbersQuery(int $selectedParameterId, array $selectedValuesIds): array
     {
         $query = parent::getParametersPlusNumbersQuery($selectedParameterId, $selectedValuesIds);

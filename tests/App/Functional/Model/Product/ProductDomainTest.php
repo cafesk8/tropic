@@ -38,7 +38,7 @@ class ProductDomainTest extends TransactionFunctionalTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->productDataFactory = $this->getContainer()->get(ProductDataFactoryInterface::class);

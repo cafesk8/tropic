@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Test;
 
+use PHPUnit\Framework\TestCase;
 use Shopsys\FrameworkBundle\Component\DataFixture\PersistentReferenceFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Environment\EnvironmentType;
@@ -28,10 +29,48 @@ abstract class FunctionalTestCase extends WebTestCase
         $this->domain->switchDomainById(Domain::FIRST_DOMAIN_ID);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->setUpDomain();
+    }
+
+    /**
+     * @var string[]|null
+     */
+    private static $phpUnitTestCaseProperties = null;
+
+    /**
+     * @return string[]
+     */
+    private static function getPhpUnitTestCaseProperties(): array
+    {
+        if (self::$phpUnitTestCaseProperties === null) {
+            self::$phpUnitTestCaseProperties = [];
+
+            $testCaseReflectionClass = new \ReflectionClass(TestCase::class);
+            $properties = $testCaseReflectionClass->getProperties();
+            foreach ($properties as $property) {
+                self::$phpUnitTestCaseProperties[] = $property->getName();
+            }
+        }
+
+        return self::$phpUnitTestCaseProperties;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $reflectionClass = new \ReflectionClass($this);
+        $properties = $reflectionClass->getProperties();
+        $excludedProperties = self::getPhpUnitTestCaseProperties();
+        foreach ($properties as $property) {
+            if (in_array($property->getName(), $excludedProperties, true) === false) {
+                $property->setAccessible(true);
+                $property->setValue($this, null);
+            }
+        }
     }
 
     /**
@@ -41,7 +80,7 @@ abstract class FunctionalTestCase extends WebTestCase
      * @param array $kernelOptions
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    protected function getClient(
+    protected function findClient(
         $createNew = false,
         $username = null,
         $password = null,
@@ -76,7 +115,7 @@ abstract class FunctionalTestCase extends WebTestCase
      */
     protected function getContainer()
     {
-        return $this->getClient()->getContainer();
+        return $this->findClient()->getContainer()->get('test.service_container');
     }
 
     /**

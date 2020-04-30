@@ -46,11 +46,11 @@ class DiscountExclusionController extends AdminBaseController
                     $this->discountExclusionFacade->setRegistrationDiscountExclusionText($discountExclusionText, $domainId);
                 }
 
-                $this->getFlashMessageSender()->addSuccessFlashTwig(t('Změny byly úspěšně uloženy'));
+                $this->addSuccessFlashTwig(t('Změny byly úspěšně uloženy'));
 
                 return $this->redirectToRoute('admin_discountexclusion_detail');
             } else {
-                $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+                $this->addErrorFlash(t('Please check the correctness of all data filled.'));
             }
         }
 

@@ -27,7 +27,7 @@ class ArticleTest extends TransactionFunctionalTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->articleDataFactory = $this->getContainer()->get(ArticleDataFactoryInterface::class);

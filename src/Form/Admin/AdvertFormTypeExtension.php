@@ -108,8 +108,8 @@ class AdvertFormTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return AdvertFormType::class;
+        yield AdvertFormType::class;
     }
 }

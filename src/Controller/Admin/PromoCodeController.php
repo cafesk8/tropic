@@ -40,7 +40,7 @@ class PromoCodeController extends BasePromoCodeController
             if ($form->isValid()) {
                 $this->promoCodeFacade->massCreate($promoCodeData);
 
-                $this->getFlashMessageSender()->addSuccessFlashTwig(
+                $this->addSuccessFlashTwig(
                     t('Bylo vytvořeno <strong>{{ quantity }}</strong> slevových kupónů'),
                     [
                         'quantity' => $promoCodeData->quantity,
@@ -49,7 +49,7 @@ class PromoCodeController extends BasePromoCodeController
 
                 return $this->redirectToRoute('admin_promocode_list');
             } else {
-                $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+                $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
             }
         }
 
@@ -69,7 +69,7 @@ class PromoCodeController extends BasePromoCodeController
     public function deleteMassAction(string $prefix): Response
     {
         $this->promoCodeFacade->deleteByPrefix($prefix);
-        $this->getFlashMessageSender()->addSuccessFlash(t('Slevové kupóny byly smazány.'));
+        $this->addSuccessFlash(t('Slevové kupóny byly smazány.'));
 
         return $this->redirectToRoute('admin_promocode_list');
     }

@@ -9,12 +9,12 @@ use App\Model\Order\Exception\OrderGiftNotFoundException;
 use App\Model\Order\Gift\OrderGiftDataFactory;
 use App\Model\Order\Gift\OrderGiftFacade;
 use App\Model\Order\Gift\OrderGiftGridFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\Router\Security\Annotation\CsrfProtection;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class OrderGiftController extends AdminBaseController
 {
@@ -84,12 +84,12 @@ class OrderGiftController extends AdminBaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $orderGiftData = $form->getData();
 
             $orderGift = $this->orderGiftFacade->create($orderGiftData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('<a href="{{ url }}">Dárek k objednávce</a> byl úspěšně vytvořen'),
                     [
@@ -101,7 +101,7 @@ class OrderGiftController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Order/Gift/new.html.twig', [
@@ -120,7 +120,7 @@ class OrderGiftController extends AdminBaseController
         try {
             $orderGift = $this->orderGiftFacade->getById($id);
         } catch (OrderGiftNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Dárek k objednávce neexistuje'));
+            $this->addErrorFlash(t('Dárek k objednávce neexistuje'));
 
             return $this->redirectToRoute('admin_ordergift_list');
         }
@@ -138,7 +138,7 @@ class OrderGiftController extends AdminBaseController
 
             $this->orderGiftFacade->edit($orderGift, $orderGiftData);
 
-            $this->getFlashMessageSender()
+            $this
                 ->addSuccessFlashTwig(
                     t('<a href="{{ url }}">Dárek k objednávce</a> byl úspěšně upraven'),
                     [
@@ -150,7 +150,7 @@ class OrderGiftController extends AdminBaseController
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Order/Gift/edit.html.twig', [
@@ -171,11 +171,11 @@ class OrderGiftController extends AdminBaseController
         try {
             $this->orderGiftFacade->delete($id);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Dárek byl smazán')
             );
         } catch (OrderGiftNotFoundException $exception) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Vybraný dárek neexistuje'));
+            $this->addErrorFlash(t('Vybraný dárek neexistuje'));
         }
 
         return $this->redirectToRoute('admin_ordergift_list');

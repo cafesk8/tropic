@@ -37,7 +37,7 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
      */
     protected $productOnCurrentDomainFacade;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->productFilterConfigFactory = $this->getContainer()->get(ProductFilterConfigFactory::class);

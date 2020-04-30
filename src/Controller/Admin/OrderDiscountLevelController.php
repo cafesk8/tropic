@@ -84,24 +84,23 @@ class OrderDiscountLevelController extends AdminBaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $orderDiscountLevelData = $form->getData();
 
             $orderDiscountLevel = $this->orderDiscountLevelFacade->create($orderDiscountLevelData);
 
-            $this->getFlashMessageSender()
-                ->addSuccessFlashTwig(
-                    t('<a href="{{ url }}">Sleva na celý nákup</a> byla úspěšně vytvořena'),
-                    [
+            $this->addSuccessFlashTwig(
+                t('<a href="{{ url }}">Sleva na celý nákup</a> byla úspěšně vytvořena'),
+                [
                         'url' => $this->generateUrl('admin_orderdiscountlevel_edit', ['id' => $orderDiscountLevel->getId()]),
                     ]
-                );
+            );
 
             return $this->redirectToRoute('admin_orderdiscountlevel_list');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Order/DiscountLevel/new.html.twig', [
@@ -120,7 +119,7 @@ class OrderDiscountLevelController extends AdminBaseController
         try {
             $orderDiscountLevel = $this->orderDiscountLevelFacade->getById($id);
         } catch (OrderDiscountLevelNotFoundException $ex) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Sleva na celý nákup neexistuje'));
+            $this->addErrorFlash(t('Sleva na celý nákup neexistuje'));
 
             return $this->redirectToRoute('admin_orderdiscountlevel_list');
         }
@@ -138,19 +137,18 @@ class OrderDiscountLevelController extends AdminBaseController
 
             $this->orderDiscountLevelFacade->edit($orderDiscountLevel, $orderDiscountLevelData);
 
-            $this->getFlashMessageSender()
-                ->addSuccessFlashTwig(
-                    t('<a href="{{ url }}">Sleva na celý nákup</a> byla úspěšně upravena'),
-                    [
+            $this->addSuccessFlashTwig(
+                t('<a href="{{ url }}">Sleva na celý nákup</a> byla úspěšně upravena'),
+                [
                         'url' => $this->generateUrl('admin_orderdiscountlevel_edit', ['id' => $orderDiscountLevel->getId()]),
                     ]
-                );
+            );
 
             return $this->redirectToRoute('admin_orderdiscountlevel_list');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/Order/DiscountLevel/edit.html.twig', [
@@ -171,11 +169,11 @@ class OrderDiscountLevelController extends AdminBaseController
         try {
             $this->orderDiscountLevelFacade->delete($id);
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(
+            $this->addSuccessFlashTwig(
                 t('Sleva na celý nákup byla smazána')
             );
         } catch (OrderDiscountLevelNotFoundException $exception) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Vybraná sleva na celý nákup neexistuje'));
+            $this->addErrorFlash(t('Vybraná sleva na celý nákup neexistuje'));
         }
 
         return $this->redirectToRoute('admin_orderdiscountlevel_list');

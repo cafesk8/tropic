@@ -6,11 +6,11 @@ namespace App\Controller\Admin;
 
 use App\Component\InfoRow\InfoRowFacade;
 use App\Form\Admin\InfoRowFormType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class InfoRowController extends AdminBaseController
 {
@@ -52,20 +52,20 @@ class InfoRowController extends AdminBaseController
         $form = $this->createForm(InfoRowFormType::class, $infoRowFormData);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $infoRowFormData = $form->getData();
             $this->infoRowFacade->setInfoRow(
                 $infoRowFormData['visibility'],
                 $infoRowFormData['text'],
                 $selectedDomainId
             );
-            $this->getFlashMessageSender()->addSuccessFlashTwig(t('Změny v informačním řádky byly úspěšně uloženy'));
+            $this->addSuccessFlashTwig(t('Změny v informačním řádky byly úspěšně uloženy'));
 
             return $this->redirectToRoute('admin_inforow_detail');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlash(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlash(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/infoRow/edit.html.twig', [

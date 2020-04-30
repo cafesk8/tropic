@@ -9,6 +9,6 @@
     {% set mallId = row.order.mallOrderId %}
     {{ value }}
     {% if mallId is not null %}
-        <img src="{{ asset('assets/admin/images/icons/mall.png') }}" alt="{{ 'Objednávka z Mall.cz'|trans }}">
+        <img src="{{ asset('public/admin/images/icons/mall.png') }}" alt="{{ 'Objednávka z Mall.cz'|trans }}">
     {% endif %}
 {% endblock %}

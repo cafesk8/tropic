@@ -29,6 +29,7 @@ use Shopsys\FrameworkBundle\Model\Pricing\Currency\Currency;
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getIndependentBasePricesIndexedByDomainId(\App\Model\Payment\Payment $payment)
  * @method \Shopsys\FrameworkBundle\Model\Pricing\Price[] getPricesIndexedByDomainId(\App\Model\Payment\Payment|null $payment)
  * @method updatePaymentPrices(\App\Model\Payment\Payment $payment, \Shopsys\FrameworkBundle\Component\Money\Money[] $pricesIndexedByDomainId, \App\Model\Pricing\Vat\Vat[] $vatsIndexedByDomainId)
+ * @method \App\Model\Payment\Payment getByUuid(string $uuid)
  */
 class PaymentFacade extends BasePaymentFacade
 {

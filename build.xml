@@ -13,7 +13,7 @@
     <import file="${path.vendor}/devops/kubernetes-deployment/build.xml"/>
     <import file="${path.framework}/build.xml"/>
 
-    <target name="build-demo" depends="production-protection,wipe,build-version-generate,composer-prod,redis-check,npm,dirs-create,assets,db-demo,elasticsearch-index-recreate,elasticsearch-export,grunt,error-pages-generate,warmup,clean-redis-old" description="Builds application for production with clean demo DB."/>
+    <target name="build-demo" depends="production-protection,wipe,build-version-generate,composer-prod,redis-check,npm,dirs-create,assets,db-demo,elasticsearch-index-recreate,elasticsearch-export,error-pages-generate,warmup,clean-redis-old" description="Builds application for production with clean demo DB."/>
 
     <target name="tests-acceptance">
         <echo level="info" message="Acceptance tests are turned off on this project"/>
@@ -40,7 +40,7 @@
         <phingcall target="tests-smoke"/>
     </target>
 
-    <target name="build-deploy-part-2-db-dependent" depends="elasticsearch-index-migrate,redis-check,db-migrations-count-with-maintenance,db-migrations,domains-data-create,friendly-urls-generate,domains-urls-replace,elasticsearch-export,grunt,error-pages-generate,warmup" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
+    <target name="build-deploy-part-2-db-dependent" depends="elasticsearch-index-migrate,redis-check,db-migrations-count-with-maintenance,db-migrations,domains-data-create,friendly-urls-generate,domains-urls-replace,elasticsearch-export,error-pages-generate,warmup" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
 
     <target name="clean-all" depends="clean, clean-redis" description="Second part of application build for production preserving your DB (must be run with maintenance page when containing DB migrations)."/>
 

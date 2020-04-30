@@ -8,11 +8,11 @@ use App\Component\Setting\Setting;
 use App\Form\Admin\ArticleSettingsFormType;
 use App\Model\Article\ArticleFacade;
 use App\Model\Article\ArticleSettingDataFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Controller\Admin\AdminBaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleSettingsController extends AdminBaseController
 {
@@ -69,12 +69,12 @@ class ArticleSettingsController extends AdminBaseController
                 $selectedDomainId
             );
 
-            $this->getFlashMessageSender()->addSuccessFlashTwig(t('Nastavení bylo uloženo.'));
+            $this->addSuccessFlashTwig(t('Nastavení bylo uloženo.'));
             return $this->redirectToRoute('admin_articlesettings_setting');
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
-            $this->getFlashMessageSender()->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
+            $this->addErrorFlashTwig(t('Please check the correctness of all data filled.'));
         }
 
         return $this->render('Admin/Content/ArticleSettings/setting.html.twig', [

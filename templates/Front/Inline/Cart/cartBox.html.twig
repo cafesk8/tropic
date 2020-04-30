@@ -22,8 +22,12 @@
                 {% endif %}
             </span>
             {% if cart is not null %}
-                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up"></i>
-                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down"></i>
+                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--up">
+                    <i class="svg svg-triangle"></i>
+                </i>
+                <i class="box-dropdown__select__arrow box-dropdown__select__arrow--down">
+                    <i class="svg svg-triangle"></i>
+                </i>
             {% endif %}
         </a>
         {% if cart is not null %}

@@ -20,7 +20,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
      */
     private $domain;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->repository = $this->getContainer()->get(ProductExportRepository::class);

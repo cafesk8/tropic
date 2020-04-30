@@ -7,13 +7,12 @@ namespace App\Model\Order\Status;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatus as BaseOrderStatus;
 use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusData;
-use Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusTranslation;
 
 /**
  * @ORM\Table(name="order_statuses")
  * @ORM\Entity
  *
- * @method OrderStatusTranslation translation(?string $locale = null)
+ * @method \Shopsys\FrameworkBundle\Model\Order\Status\OrderStatusTranslation translation(?string $locale = null)
  * @method setTranslations(\App\Model\Order\Status\OrderStatusData $orderStatusData)
  */
 class OrderStatus extends BaseOrderStatus

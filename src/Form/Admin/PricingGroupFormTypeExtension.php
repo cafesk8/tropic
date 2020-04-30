@@ -30,8 +30,8 @@ class PricingGroupFormTypeExtension extends AbstractTypeExtension
     /**
      * @inheritDoc
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return PricingGroupFormType::class;
+        yield PricingGroupFormType::class;
     }
 }

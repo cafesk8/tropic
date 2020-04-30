@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Product\Pricing;
 
 use App\Model\Pricing\Currency\Currency;
-use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;

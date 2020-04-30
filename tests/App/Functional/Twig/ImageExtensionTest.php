@@ -20,7 +20,7 @@ class ImageExtensionTest extends FunctionalTestCase
 
         $domain = $container->get(Domain::class);
         $imageLocator = $container->get(ImageLocator::class);
-        $templating = $container->get('templating');
+        $templating = $container->get('twig');
 
         $imageFacade = $this->createMock(ImageFacade::class);
 

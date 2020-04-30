@@ -132,9 +132,9 @@ class RouteConfigCustomization
                     $config->changeDefaultRequestDataSet($debugNote)
                         ->addCallDuringTestExecution(function (RequestDataSet $requestDataSet, ContainerInterface $container) {
                             /** @var \Shopsys\FrameworkBundle\Component\Router\Security\RouteCsrfProtector $routeCsrfProtector */
-                            $routeCsrfProtector = $container->get(RouteCsrfProtector::class);
+                            $routeCsrfProtector = $container->get('test.service_container')->get(RouteCsrfProtector::class);
                             /** @var \Symfony\Component\Security\Csrf\CsrfTokenManager $csrfTokenManager */
-                            $csrfTokenManager = $container->get('security.csrf.token_manager');
+                            $csrfTokenManager = $container->get('test.service_container')->get('security.csrf.token_manager');
 
                             $tokenId = $routeCsrfProtector->getCsrfTokenId($requestDataSet->getRouteName());
                             $token = $csrfTokenManager->getToken($tokenId);
@@ -179,6 +179,27 @@ class RouteConfigCustomization
             ->customizeByRouteName(['admin_login_sso', 'admin_customer_loginasuser'], function (RouteConfig $config, RouteInfo $info) {
                 $debugNote = sprintf('Route "%s" should always just redirect.', $info->getRouteName());
                 $config->changeDefaultRequestDataSet($debugNote)
+                    ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName('admin_default_schedulecron', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Standard admin is not allowed to schedule cron')
+                    ->setExpectedStatusCode(302);
+                $config->addExtraRequestDataSet('Superadmin can schedule cron')
+                    ->setAuth(new BasicHttpAuth('superadmin', 'admin123'))
+                    ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName('admin_default_cronenable', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Standard admin is not allowed to enable cron')
+                    ->setExpectedStatusCode(302);
+                $config->addExtraRequestDataSet('Superadmin can enable cron')
+                    ->setAuth(new BasicHttpAuth('superadmin', 'admin123'))
+                    ->setExpectedStatusCode(302);
+            })
+            ->customizeByRouteName('admin_default_crondisable', function (RouteConfig $config) {
+                $config->changeDefaultRequestDataSet('Standard admin is not allowed to disable cron')
+                    ->setExpectedStatusCode(302);
+                $config->addExtraRequestDataSet('Superadmin can disable cron')
+                    ->setAuth(new BasicHttpAuth('superadmin', 'admin123'))
                     ->setExpectedStatusCode(302);
             })
             ->customizeByRouteName('admin_administrator_edit', function (RouteConfig $config) {
@@ -303,7 +324,7 @@ class RouteConfigCustomization
                 $config->changeDefaultRequestDataSet($debugNote)
                     ->addCallDuringTestExecution(function (RequestDataSet $requestDataSet, ContainerInterface $container) {
                         /** @var \Symfony\Component\Security\Csrf\CsrfTokenManager $csrfTokenManager */
-                        $csrfTokenManager = $container->get('security.csrf.token_manager');
+                        $csrfTokenManager = $container->get('test.service_container')->get('security.csrf.token_manager');
 
                         $token = $csrfTokenManager->getToken('frontend_logout');
 

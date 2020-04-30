@@ -15,7 +15,7 @@ class ProductGiftDataFixture extends AbstractReferenceFixture implements Depende
     /**
      * @var \App\Model\Product\ProductGift\ProductGiftDataFactory
      */
-    protected $productGiftDataFactory;
+    private $productGiftDataFactory;
 
     /**
      * @var \App\Model\Product\ProductGift\ProductGiftFacade

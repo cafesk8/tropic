@@ -15,10 +15,9 @@ use App\Model\Order\Order;
 use App\Model\Product\ProductCachedAttributesFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
+use Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Product\Product;
-use Shopsys\FrameworkBundle\Model\Security\Roles;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DataLayerMapper
 {
@@ -45,14 +44,14 @@ class DataLayerMapper
     ];
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade
+     */
+    private $administratorFrontSecurityFacade;
+
+    /**
      * @var \App\Model\Category\CategoryFacade
      */
     private $categoryFacade;
-
-    /**
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
 
     /**
      * @var \App\Model\Product\ProductCachedAttributesFacade
@@ -72,23 +71,23 @@ class DataLayerMapper
     /**
      * DataLayerMapper constructor.
      * @param \App\Model\Category\CategoryFacade $categoryFacade
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
      * @param \App\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Gtm\GtmHelper $gtmHelper
+     * @param \Shopsys\FrameworkBundle\Model\Administrator\Security\AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
      */
     public function __construct(
         CategoryFacade $categoryFacade,
-        AuthorizationCheckerInterface $authorizationChecker,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         Domain $domain,
-        GtmHelper $gtmHelper
+        GtmHelper $gtmHelper,
+        AdministratorFrontSecurityFacade $administratorFrontSecurityFacade
     ) {
         $this->categoryFacade = $categoryFacade;
-        $this->authorizationChecker = $authorizationChecker;
         $this->productCachedAttributesFacade = $productCachedAttributesFacade;
         $this->domain = $domain;
         $this->gtmHelper = $gtmHelper;
+        $this->administratorFrontSecurityFacade = $administratorFrontSecurityFacade;
     }
 
     /**
@@ -112,7 +111,7 @@ class DataLayerMapper
             $dataLayerUser->setId((string)$currentCustomerUser->getId());
             $dataLayerUser->setState(DataLayerUser::STATE_LOGGED_IN);
 
-            if ($this->authorizationChecker->isGranted(Roles::ROLE_ADMIN_AS_CUSTOMER)) {
+            if ($this->administratorFrontSecurityFacade->isAdministratorLoggedAsCustomer()) {
                 $dataLayerUser->setType(DataLayerUser::TYPE_ADMIN);
             } else {
                 $dataLayerUser->setType(DataLayerUser::TYPE_CUSTOMER);

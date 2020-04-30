@@ -5,6 +5,7 @@
         </div>
         {% for blogCategory in blogCategories %}
             <a href="{{ url('front_blogcategory_detail', { id: blogCategory.id }) }}" class="box-blog__categories__item box-blog__categories__item--level-{{ blogCategory.level }}{{ blogCategory.id in activeCategoryIds ? ' active' : '' }}">
+                <i class="svg svg-tail"></i>
                 {{ blogCategory.name }}
             </a>
         {% endfor %}
