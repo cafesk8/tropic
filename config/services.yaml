@@ -598,3 +598,15 @@ services:
             - '@security.token_storage'
 
     App\Component\FlashMessage\FlashMessageSender: ~
+
+    # in order to avoid the error message 'The service "main_filesystem" has a dependency on a non-existent service "DevOps\KubernetesDeployment\Component\FileSystem\FilesystemFactoryDecorator.inner"',
+    # "$inner" argument definition has been removed.
+    # see https://gitlab.shopsys.cz/devops/kubernetes-deployment/-/merge_requests/3
+    DevOps\KubernetesDeployment\Component\FileSystem\FileSystemFactoryDecorator:
+        decorates: Shopsys\FrameworkBundle\Component\Filesystem\MainFilesystemFactory
+        arguments:
+            $s3ApiHost: '%env(S3_API_HOST)%'
+            $s3ApiUsername: '%env(S3_API_USERNAME)%'
+            $s3ApiPassword: '%env(S3_API_PASSWORD)%'
+            $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
+
