@@ -172,8 +172,8 @@
             crop: true
             occurrence: 'Front-end: Blog article detail'
         -   name: list
-            width: 310
-            height: 250
+            width: 220
+            height: 220
             crop: true
             occurrence: 'Front-end: Blog article list'
         -   name: thumbnail

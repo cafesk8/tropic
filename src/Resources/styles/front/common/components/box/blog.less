@@ -1,7 +1,10 @@
-@box-blog-panel-width: 320px;
+@box-blog-panel-width: 385px;
+@box-blog-panel-width-medium: 300px;
 @box-blog-panel-gap: 50px;
 @box-blog-padding: 30px;
-@box-blog-title-bottom-gap: 11px;
+@box-blog-title-bottom-gap: 20px;
+@box-blog-list-inset-gap: 14px;
+@box-blog-subcategory-gap: 10px;
 
 .box-blog {
     display: flex;
@@ -21,11 +24,15 @@
         flex-direction: column;
         width: 100%;
         order: 2;
-        margin-bottom: 50px;
+        margin-bottom: 70px;
 
         @media @query-vl {
-            width: calc(~"@{calc-base} - @{box-blog-panel-width} - @{box-blog-panel-gap}");
+            width: calc(~"@{calc-base} - @{box-blog-panel-width-medium} - @{box-blog-panel-gap}");
             order: 1;
+        }
+
+        @media @query-xl {
+            width: calc(~"@{calc-base} - @{box-blog-panel-width} - @{box-blog-panel-gap}");
         }
 
         &__button {
@@ -46,8 +53,12 @@
 
         @media @query-vl {
             order: 2;
-            width: @box-blog-panel-width + @box-blog-panel-gap;
+            width: @box-blog-panel-width-medium + @box-blog-panel-gap;
             padding-left: @box-blog-panel-gap;
+        }
+
+        @media @query-xl {
+            width: @box-blog-panel-width + @box-blog-panel-gap;
         }
     }
 
@@ -56,8 +67,8 @@
         padding: @box-blog-padding;
         padding-bottom: 0;
 
-        border: 3px solid @color-border;
-        border-radius: @radius;
+        border: 3px solid @color-base;
+        border-radius: @radius-big;
 
         &__title {
             margin-bottom: 25px;
@@ -69,12 +80,11 @@
 
     &__title {
         display: block;
-        text-align: center;
-        margin: 0 auto 33px;
+        line-height: 42px;
 
         color: @color-base;
         font-weight: 700;
-        font-size: 36px;
+        font-size: 45px;
     }
 
     &__categories {
@@ -82,40 +92,71 @@
         flex-direction: column;
         margin: -@box-blog-padding;
         margin-bottom: 0;
-        padding: @box-blog-padding;
+        padding: @box-blog-padding @box-blog-padding 52px;
 
-        background-color: @color-box;
+        background-color: @color-base;
+        border-radius: @radius;
 
         &__title {
             display: block;
             margin-bottom: @box-blog-title-bottom-gap;
 
-            color: @color-base;
-            font-size: 15px;
+            color: @color-turquoise;
+            font-size: @font-size-big;
             font-weight: 700;
             text-transform: uppercase;
-            text-decoration: none;
         }
 
         &__item {
+            .svg-tail;
+            .svg;
             position: relative;
-            margin-bottom: 6px;
-            padding: 5px 12px;
+            padding: 12px 35px;
+            margin: 0 -@box-blog-list-inset-gap;
 
-            color: @color-base;
-            background-color: @color-f;
-            font-size: 13px;
-            text-decoration: none;
-            text-transform: uppercase;
+            color: @color-f;
+            font-size: 16px;
+            text-decoration: underline;
             border-radius: @radius;
 
-            &.active {
-                background-color: @color-gray;
+            &:hover {
                 color: @color-f;
             }
 
-            &:last-child {
-                margin-bottom: 0;
+            &:before {
+                position: absolute;
+                top: 50%;
+                left: 7px;
+                transform: translateY(-50%);
+
+                font-size: @font-size-big;
+                color: @color-turquoise;
+            }
+
+            &.active {
+                text-decoration: none;
+                background-color: @color-f;
+                color: @color-base;
+
+                &:before {
+                    color: @color-add;
+                }
+            }
+
+            &--level-2 {
+                margin-left: -@box-blog-list-inset-gap + @box-blog-subcategory-gap;
+            }
+
+            &--level-3 {
+                margin-left: -@box-blog-list-inset-gap + @box-blog-subcategory-gap * 2;
+            }
+
+            &--level-4 {
+                margin-left: -@box-blog-list-inset-gap + @box-blog-subcategory-gap * 3;
+            }
+
+            &--level-5 {
+                margin-left: -@box-blog-list-inset-gap + @box-blog-subcategory-gap * 4;
             }
         }
     }

@@ -1,5 +1,5 @@
-@list-articles-blog-item-image-width: 310px;
-@list-articles-blog-item-image-height: 250px;
+@list-articles-blog-item-image-width: 200px;
+@list-articles-blog-item-image-height: 200px;
 @list-articles-blog-item-image-gap: 40px;
 
 .list-articles-blog {
@@ -17,7 +17,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        margin-bottom: 47px;
+        margin-bottom: 55px;
         padding: 0;
 
         @media @query-md {
@@ -27,9 +27,11 @@
         &__image {
             width: 100%;
             text-align: center;
+            margin-bottom: 10px;
 
             @media @query-md {
                 width: @list-articles-blog-item-image-width;
+                margin-bottom: 0;
             }
 
             @media @query-xl {
@@ -40,7 +42,8 @@
                 max-width: @list-articles-blog-item-image-width;
                 max-height: @list-articles-blog-item-image-height;
 
-                border-radius: @radius;
+                border-radius: @radius-big;
+                box-shadow: 0 2px 14px 0 rgba(0,0,0,0.3);
             }
         }
 
@@ -58,31 +61,26 @@
             }
 
             &__title {
-                margin-top: 10px;
-                margin-bottom: 27px;
-                line-height: 32px;
+                margin-bottom: 16px;
+                line-height: 24px;
 
                 color: @color-base;
-                font-size: 18px;
+                font-size: 30px + 1px;
                 font-weight: 700;
-                text-decoration: none;
-                text-transform: uppercase;
-
-                @media @query-vl {
-                    margin-top: 0;
-                }
+                font-family: @font-alt;
+                text-decoration: underline;
             }
 
             &__text {
-                line-height: 26px;
+                line-height: 30px;
                 margin-bottom: 10px;
 
                 font-family: @font-alt;
-                font-size: 16px;
+                font-size: 16px + 1px;
             }
 
             &__date {
-                font-size: 12px;
+                font-size: 12px + 1px;
                 font-weight: 700;
                 font-family: @font-alt;
             }

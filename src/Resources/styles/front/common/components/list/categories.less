@@ -11,6 +11,27 @@
     flex-wrap: wrap;
     margin: 0 -@list-categories-item-border-size -@list-categories-item-border-size 0;
 
+    &__title {
+        margin-bottom: 30px;
+
+        font-family: @font-alt;
+        font-size: @font-size-big + 1px; 
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    &__link {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        
+        border-radius: @radius;
+
+        @media @query-lg {
+            width: 100%;
+        }
+    }
+
     &__item {
         display: flex;
         justify-content: center;
