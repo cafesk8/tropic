@@ -163,6 +163,7 @@ class CartController extends FrontBaseController
         $domainId = $this->domain->getId();
 
         $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
+        $this->cartFacade->addAllGifts($cartGiftsByProductId);
         /** @var \App\Model\Order\Preview\OrderPreview $orderPreview */
         $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
         $productsPrice = $orderPreview->getProductsPrice();
@@ -181,9 +182,6 @@ class CartController extends FrontBaseController
             try {
                 $this->cartFacade->changeQuantities($form->getData()['quantities']);
                 $this->cartFacade->setOrderGiftProduct($form->getData()['orderGiftProduct']);
-
-                $cartGiftsByProductId = $this->productGiftInCartFacade->getProductGiftInCartByProductId($cartItems);
-                $this->cartFacade->updateGifts($cartGiftsByProductId, $form->getData()['chosenGifts']);
 
                 if (!$request->get(self::RECALCULATE_ONLY_PARAMETER_NAME, false)) {
                     return $this->redirectToRoute('front_order_index');

@@ -56,10 +56,19 @@
                                     {% endif %}
                                 </div>
 
-                                {% if productView.getRandomGiftName() is not null %}
+                                {% if productView.getGiftsCount() > 0 %}
                                     <div class="list-products__item__info__gift">
-                                        <span class="list-products__item__info__gift__title">{{ 'Dárek'|trans }}</span>
-                                        {{ productView.getRandomGiftName() }}
+                                        {% if productView.getGiftsCount() is same as (1) %}
+                                            <span class="list-products__item__info__gift__title">{{ 'Dárek'|trans }}</span>
+                                            {{ productView.getFirstGiftLabel() }}
+                                        {% else %}
+                                            <span class="list-products__item__info__gift__count">
+                                                {% set giftCount = productView.getGiftsCount() %}
+                                                {% transchoice giftCount with {'%count%': giftCount} %}
+                                                    [2,4] %count% dárky zdarma | [5,Inf] %count% dárků zdarma
+                                                {% endtranschoice %}
+                                            </span>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             </a>

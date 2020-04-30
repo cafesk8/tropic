@@ -206,9 +206,8 @@ class CartFacade extends BaseCartFacade
 
     /**
      * @param \App\Model\Product\Gift\ProductGiftInCart[] $productGiftInCart
-     * @param mixed[] $selectedGifts
      */
-    public function updateGifts(array $productGiftInCart, array $selectedGifts): void
+    public function addAllGifts(array $productGiftInCart): void
     {
         $cart = $this->findCartOfCurrentCustomerUser();
 
@@ -218,7 +217,7 @@ class CartFacade extends BaseCartFacade
 
         $this->removeAllGifts($cart);
 
-        $cartGifts = $cart->updateGifts($this->cartItemFactory, $productGiftInCart, $selectedGifts);
+        $cartGifts = $cart->addAllGifts($this->cartItemFactory, $productGiftInCart);
         foreach ($cartGifts as $cartGift) {
             $this->em->persist($cartGift);
         }
@@ -231,7 +230,7 @@ class CartFacade extends BaseCartFacade
      */
     private function removeAllGifts(Cart $cart): void
     {
-        $allRemovedGifts = $cart->removeAllGift();
+        $allRemovedGifts = $cart->removeAllGifts();
         foreach ($allRemovedGifts as $removedGift) {
             $this->em->remove($removedGift);
         }

@@ -8,7 +8,6 @@ use App\Form\OrderGiftChoiceType;
 use App\Model\Cart\CartFacade;
 use Shopsys\FrameworkBundle\Form\Constraints\ConstraintValue;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -55,12 +54,6 @@ class CartFormType extends AbstractType
                             ]),
                         ],
                     ]),
-                ],
-            ])
-            ->add('chosenGifts', CollectionType::class, [
-                'entry_type' => CollectionType::class,
-                'entry_options' => [
-                    'entry_type' => CheckboxType::class,
                 ],
             ])
             ->add('orderGiftProduct', OrderGiftChoiceType::class, [

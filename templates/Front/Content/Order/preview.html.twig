@@ -35,7 +35,9 @@
             </ul>
             <ul class="list-cart-preview">
                 {% set orderGiftProduct = orderPreview.orderGiftProduct %}
-                <li class="list-cart-preview__title">{{ 'Dárek k vaší objednávce:'|trans }}</li>
+                {% if orderGiftProduct is not null or orderPreview.gifts is not empty %}
+                    <li class="list-cart-preview__title">{{ 'Dárek k vaší objednávce:'|trans }}</li>
+                {% endif %}
                 {% if orderGiftProduct is not null %}
                     {{ _self.productPreviewItem(orderGiftProduct, 1, orderGiftProductPrice) }}
                 {% endif %}

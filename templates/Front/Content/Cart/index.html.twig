@@ -84,6 +84,17 @@
                                                     <a class="table-cart__cell__name__title" href="{{ cartItemUrl }}" title="{{ cartItem.name }}">
                                                         {{ cartItem.name }}
                                                     </a>
+                                                    {% if cartItem.product.id in cartGiftsByProductId|keys %}
+                                                        {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
+                                                        {% for giftVariant in cartItemGift %}
+                                                            <div class="table-cart__item__info__gift_row">
+                                                                <div class="table-cart__item__info__gift">
+                                                                    <span class="table-cart__item__info__gift__title">{{ 'Dárek'|trans }}</span>
+                                                                    {{ giftVariant.gift.name }}
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             <div class="table-cart__row__right">
@@ -131,29 +142,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {% if cartItem.product.id in cartGiftsByProductId|keys %}
-                                            {% set cartItemGift = cartGiftsByProductId[cartItem.product.id] %}
-                                            <div class="table-cart__gifts">
-                                                {% for giftVariant in cartItemGift %}
-                                                    <div class="table-cart__gifts__item">
-                                                        {{ form_widget(form.chosenGifts[cartItem.product.id][giftVariant.gift.id], {
-                                                            attr: {
-                                                                class: 'css-checkbox js-take-gift',
-                                                                'data-cart-product-id': cartItem.product.id
-                                                            }
-                                                        }) }}
-                                                        <label class="css-checkbox__image" for="{{ form.chosenGifts[cartItem.product.id][giftVariant.gift.id].vars.id }}">
-                                                            {{ 'Chceš dárek'|trans }}
-                                                            {{ giftVariant.gift.name }}
-                                                            {{ 'zdarma' }}
-                                                            {{ 'v hodnotě'|trans }} {{ getProductSellingPrice(giftVariant.gift).priceWithVat|price }}{{ '?' }}                                                        </label>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {% do form.chosenGifts.setRendered %}
-                                        {% endif %}
                                     {% endfor %}
 
                                     {% if form.orderGiftProduct.vars.choices|length > 0 %}
