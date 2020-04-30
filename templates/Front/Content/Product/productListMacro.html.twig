@@ -153,7 +153,7 @@
                                     </a>
                                     {% if showButton %}
                                         <div class="list-products-slider__item__hover">
-                                            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: false, onlyRefresh: onlyRefresh})) }}
+                                            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', {listedProductView: productView, showAmountInput: false, onlyRefresh: onlyRefresh, type: 'slider'})) }}
                                         </div>
                                     {% endif %}
                                 </div>

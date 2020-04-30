@@ -9,7 +9,7 @@
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
             <span class="in-availability__text-big">
-                {{ 'nebo dnes na'|trans }}
+                {{ 'nebo na'|trans }}
             </span>
             <a
                 href="#"

@@ -16,14 +16,19 @@ import Timeout from 'framework/common/utils/Timeout';
 
             const types = {
                 'last-visited': [1, 2, 3, 3, 5],
-                'top-products': [1, 2, 3, 4, 6],
+                'top-products': [1, 2, 3, 4, 4],
                 'accessories-products': [1, 2, 3, 4, 6],
                 'products': [2, 3, 2, 3, 6],
                 'references': [1, 2, 3, 3, 4],
                 'basket-additionals': [1, 2, 3, 2, 3]
             };
 
+            const slideTypes = {
+                ...types
+            };
+
             const selectedType = types[galleryType];
+            const selectedSlideTypes = slideTypes[galleryType];
 
             $currentGallery.find('.js-horizontal-list-slides').slick({
                 dots: true,
@@ -40,35 +45,35 @@ import Timeout from 'framework/common/utils/Timeout';
                         breakpoint: Responsive.SM,
                         settings: {
                             slidesToShow: selectedType[0],
-                            slidesToScroll: 1
+                            slidesToScroll: selectedSlideTypes[0]
                         }
                     },
                     {
                         breakpoint: Responsive.MD,
                         settings: {
                             slidesToShow: selectedType[1],
-                            slidesToScroll: 1
+                            slidesToScroll: selectedSlideTypes[1]
                         }
                     },
                     {
                         breakpoint: Responsive.LG,
                         settings: {
                             slidesToShow: selectedType[2],
-                            slidesToScroll: 1
+                            slidesToScroll: selectedSlideTypes[2]
                         }
                     },
                     {
                         breakpoint: Responsive.VL,
                         settings: {
                             slidesToShow: selectedType[3],
-                            slidesToScroll: 1
+                            slidesToScroll: selectedSlideTypes[3]
                         }
                     },
                     {
                         breakpoint: Responsive.XL,
                         settings: {
                             slidesToShow: selectedType[4],
-                            slidesToScroll: 1
+                            slidesToScroll: selectedSlideTypes[4]
                         }
                     }
                 ]
