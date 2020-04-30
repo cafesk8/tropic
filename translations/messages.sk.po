@@ -1501,6 +1501,9 @@ msgstr "Počet prac. dní do dodania"
 msgid "Počet produktů, ke kerým je dárek přiřazen"
 msgstr "Počet produktov, ku ktorým je darček priradený"
 
+msgid "Počet variant"
+msgstr "{1} %variantsCount% variant|[2,4] %variantsCount% varianty|[5,Inf[ %variantsCount% variantov"
+
 msgid "Pošta bez hranic"
 msgstr "Pošta bez hraníc"
 

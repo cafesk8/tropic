@@ -49,10 +49,16 @@ class FlagsExtension extends AbstractExtension
      * @param string $classAddition
      * @param bool $onlyFirst
      * @param \App\Model\Product\Pricing\ProductPrice|null $productPrice
+     * @param int $variantsCount
      * @return string
      */
-    public function renderFlagsByIds(array $flagIds, string $classAddition = '', bool $onlyFirst = false, ?ProductPrice $productPrice = null): string
-    {
+    public function renderFlagsByIds(
+        array $flagIds,
+        string $classAddition = '',
+        bool $onlyFirst = false,
+        ?ProductPrice $productPrice = null,
+        int $variantsCount = 0
+    ): string {
         return $this->templating->render(
             'Front/Inline/Product/productFlags.html.twig',
             [
@@ -60,6 +66,7 @@ class FlagsExtension extends AbstractExtension
                 'classAddition' => $classAddition,
                 'onlyFirst' => $onlyFirst,
                 'sellingPrice' => $productPrice,
+                'variantsCount' => $variantsCount,
             ]
         );
     }

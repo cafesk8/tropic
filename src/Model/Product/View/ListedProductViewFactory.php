@@ -82,7 +82,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productActionView,
             $imageView,
             $productArray['gifts'],
-            $productArray['stock_quantity']
+            $productArray['stock_quantity'],
+            $productArray['variants_count']
         );
     }
 
@@ -107,7 +108,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productActionView,
             $imageView,
             $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale()),
-            $product->getStockQuantity()
+            $product->getStockQuantity(),
+            $product->getVariantsCount()
         );
     }
 

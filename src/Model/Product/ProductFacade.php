@@ -13,7 +13,6 @@ use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Group\ProductGroupFactory;
-use App\Model\Product\Product as ChildProduct;
 use App\Model\Product\StoreStock\ProductStoreStockFactory;
 use App\Model\Store\StoreFacade;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,7 +36,6 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationScheduler;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice;
-use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductData;
@@ -251,14 +249,7 @@ class ProductFacade extends BaseProductFacade
     {
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
-        if ($product->isVariant()) {
-            $mainVariant = $product->getMainVariant();
-            $mainVariant->markForVisibilityRecalculation();
-            $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
-            $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
-            $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
-            $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
-        }
+        $this->scheduleRecalculationsForMainVariant($product);
 
         return $product;
     }
@@ -315,16 +306,27 @@ class ProductFacade extends BaseProductFacade
     public function edit($productId, ProductData $productData): Product
     {
         $product = $this->getById($productId);
+        $originalMainVariant = $product->isVariant() ? $product->getMainVariant() : null;
+
         if ($product->isMainVariant() && !$this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
             $this->disconnectVariantsFromMainVariant($product);
         }
+
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
 
         parent::edit($productId, $productData);
         $this->refreshProductGroups($product, $productData->groupItems);
         $this->updateProductStoreStocks($productData, $product);
+
         if ($product->isVariant()) {
             $this->productExportScheduler->scheduleRowIdForImmediateExport($product->getId());
+            $originalMainVariant = $originalMainVariant === $product->getMainVariant() ? null : $originalMainVariant;
+        }
+
+        $this->scheduleRecalculationsForMainVariant($product);
+
+        if ($originalMainVariant !== null) {
+            $this->scheduleRecalculationsForMainVariant($originalMainVariant);
         }
 
         return $product;
@@ -499,7 +501,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Product $product
      * @param \Shopsys\FrameworkBundle\Component\Money\Money[]|null[] $manualInputPrices
      */
-    protected function refreshProductManualInputPrices(Product $product, array $manualInputPrices)
+    protected function refreshProductManualInputPrices(BaseProduct $product, array $manualInputPrices)
     {
         foreach ($this->pricingGroupRepository->getAll() as $pricingGroup) {
             $this->productManualInputPriceFacade->refresh(
@@ -724,12 +726,9 @@ class ProductFacade extends BaseProductFacade
      * @param int $id
      * @return \App\Model\Product\Product
      */
-    public function getSellableById($id): ChildProduct
+    public function getSellableById($id): Product
     {
-        /** @var \App\Model\Product\Product $product */
-        $product = $this->productRepository->getSellableById($id, $this->domain->getId(), $this->currentCustomerUser->getPricingGroup());
-
-        return $product;
+        return $this->productRepository->getSellableById($id, $this->domain->getId(), $this->currentCustomerUser->getPricingGroup());
     }
 
     /**
@@ -838,7 +837,6 @@ class ProductFacade extends BaseProductFacade
      */
     public function getProductGiftNames(Product $product, int $domainId, string $locale): array
     {
-        /** @var \App\Model\Product\Product[] $gifts */
         $gifts = $product->getGifts($domainId);
         $giftNames = [];
         foreach ($gifts as $gift) {
@@ -900,5 +898,18 @@ class ProductFacade extends BaseProductFacade
         if (count($toFlush) > 0) {
             $this->em->flush($toFlush);
         }
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     */
+    private function scheduleRecalculationsForMainVariant(Product $product)
+    {
+        $mainVariant = $product->isVariant() ? $product->getMainVariant() : $product;
+        $mainVariant->markForVisibilityRecalculation();
+        $this->productAvailabilityRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
+        $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
+        $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
+        $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
     }
 }
