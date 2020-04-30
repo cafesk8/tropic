@@ -64,7 +64,6 @@ class ParameterValueGridFactory implements GridFactoryInterface
 
         $grid->addColumn('text', 'pv.text', t('Hodnota'), true);
         $grid->addColumn('rgb', 'pv.rgb', t('Barva'), true);
-        $grid->addColumn('hsFeedId', 'pv.hsFeedId', t('HS feed ID'), true);
         $grid->addColumn('mallName', 'pv.mallName', t('Mall hodnota'), true);
         $grid->addColumn('locale', 'pv.locale', t('Jazyk'), true);
 

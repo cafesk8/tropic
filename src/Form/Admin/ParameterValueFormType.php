@@ -22,7 +22,6 @@ class ParameterValueFormType extends AbstractType
         $builder
             ->add('text', TextType::class, ['disabled' => true])
             ->add('rgb', ColorPickerType::class, ['required' => false])
-            ->add('hsFeedId', TextType::class, ['required' => false])
             ->add('mallName', TextType::class, ['required' => false]);
     }
 

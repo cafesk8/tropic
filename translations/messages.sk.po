@@ -661,9 +661,6 @@ msgstr "GEIS"
 msgid "GLS"
 msgstr "GLS"
 
-msgid "Generovat tento produkt do HS-SPORT XML feedu"
-msgstr "Generovať tento produkt do HS-SPORT XML feedu"
-
 msgid "GoPay"
 msgstr "GoPay"
 
@@ -678,9 +675,6 @@ msgstr "Stav platby GoPay"
 
 msgid "Google Maps link"
 msgstr "Odkaz na Mapy Google"
-
-msgid "HS feed ID"
-msgstr "ID informačného kanála HS"
 
 msgid "Heading (H1)"
 msgstr "Titulok (H1)"

@@ -164,10 +164,6 @@ services:
 
     Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation: '@App\Form\Admin\AdvancedSearch\AdvancedSearchOrderFilterTranslation'
 
-    Shopsys\ProductFeed\HeurekaBundle\Model\FeedItem\HeurekaFeedItemFactory: '@App\Model\Feed\Heureka\HeurekaFeedItemFactory'
-
-    Shopsys\ProductFeed\GoogleBundle\Model\FeedItem\GoogleFeedItemFactory: '@App\Model\Feed\Google\GoogleFeedItemFactory'
-
     App\Model\Feed\FeedHelper: ~
 
     Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface: '@App\Model\Product\View\ListedProductViewElasticFacade'

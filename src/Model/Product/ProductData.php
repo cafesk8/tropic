@@ -34,6 +34,11 @@ class ProductData extends BaseProductData
     public $productsInGroup;
 
     /**
+     * @var bool[]
+     */
+    public $generateToMergadoXmlFeeds;
+
+    /**
      * @var bool
      */
     public $mallExport;
@@ -111,5 +116,6 @@ class ProductData extends BaseProductData
         $this->giftCertificate = false;
         $this->registrationDiscountDisabled = false;
         $this->groupItems = [];
+        $this->generateToMergadoXmlFeeds = [];
     }
 }

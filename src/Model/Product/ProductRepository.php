@@ -206,40 +206,15 @@ class ProductRepository extends BaseProductRepository
      * @param int $maxResults
      * @return \App\Model\Product\Product[]|\Doctrine\Common\Collections\ArrayCollection
      */
-    public function getProductsForHsSportXmlFeed(DomainConfig $domainConfig, PricingGroup $pricingGroup, ?int $lastSeekId, int $maxResults): iterable
-    {
-        $queryBuilder = $this->getAllVisibleQueryBuilder($domainConfig->getId(), $pricingGroup)
-            ->addSelect('b')->leftJoin('p.brand', 'b')
-            ->andWhere('p.variantType IN (:variantTypes)')
-            ->setParameter('variantTypes', [Product::VARIANT_TYPE_MAIN, Product::VARIANT_TYPE_NONE])
-            ->andWhere('p.calculatedSellingDenied = false')
-            ->orderBy('p.id', 'asc')
-            ->setMaxResults($maxResults);
-
-        $this->addTranslation($queryBuilder, $domainConfig->getLocale());
-        $this->addDomain($queryBuilder, $domainConfig->getId());
-        $queryBuilder->addSelect('v')->join('pd.vat', 'v');
-
-        if ($lastSeekId !== null) {
-            $queryBuilder->andWhere('p.id > :lastProductId')->setParameter('lastProductId', $lastSeekId);
-        }
-
-        return $queryBuilder->getQuery()->execute();
-    }
-
-    /**
-     * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
-     * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
-     * @param int|null $lastSeekId
-     * @param int $maxResults
-     * @return \App\Model\Product\Product[]|\Doctrine\Common\Collections\ArrayCollection
-     */
     public function getProductsForMergadoXmlFeed(DomainConfig $domainConfig, PricingGroup $pricingGroup, ?int $lastSeekId, int $maxResults): iterable
     {
         $queryBuilder = $this->getAllVisibleQueryBuilder($domainConfig->getId(), $pricingGroup)
             ->addSelect('b')->leftJoin('p.brand', 'b')
             ->andWhere('p.calculatedSellingDenied = false')
+            ->andWhere('pd.generateToMergadoXmlFeed = true')
+            ->andWhere('p.variantType != :mainVariantType')
             ->orderBy('p.id', 'asc')
+            ->setParameter('mainVariantType', Product::VARIANT_TYPE_MAIN)
             ->setMaxResults($maxResults);
 
         $this->addTranslation($queryBuilder, $domainConfig->getLocale());

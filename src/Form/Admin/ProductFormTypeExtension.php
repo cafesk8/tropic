@@ -18,6 +18,7 @@ use App\Model\Product\ProductVariantTropicFacade;
 use App\Twig\DateTimeFormatterExtension;
 use App\Twig\ProductExtension;
 use Google_Service_Exception;
+use Shopsys\FormTypesBundle\MultidomainType;
 use Shopsys\FormTypesBundle\YesNoType;
 use Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
@@ -221,6 +222,19 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $builderStoreStockGroup->add('stockQuantityByStoreId', StoreStockType::class);
 
         $builder->add($builderStoreStockGroup);
+
+        $mergadoFeedGroup = $builder->create('generateToMergadoXmlFeeds', GroupType::class, [
+            'label' => t('Mergado feed'),
+            'position' => ['after' => 'seoGroup'],
+        ]);
+
+        $mergadoFeedGroup->add('generateToMergadoXmlFeeds', MultidomainType::class, [
+            'label' => t('Generovat tento produkt do Mergado XML feedu'),
+            'entry_type' => YesNoType::class,
+            'required' => false,
+         ]);
+
+        $builder->add($mergadoFeedGroup);
 
         if ($product !== null) {
             $builder->add($this->getArticlesGroup($builder, $product));
