@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Product\View;
 
 use App\Model\Pricing\Group\PricingGroupFacade;
+use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -35,20 +36,28 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private $pricingGroupFacade;
 
     /**
+     * @var \App\Model\Product\Group\ProductGroupFacade
+     */
+    private $productGroupFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
+     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
-        PricingGroupFacade $pricingGroupFacade
+        PricingGroupFacade $pricingGroupFacade,
+        ProductGroupFacade $productGroupFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
         $this->pricingGroupFacade = $pricingGroupFacade;
+        $this->productGroupFacade = $productGroupFacade;
     }
 
     /**
@@ -82,7 +91,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $imageView,
             $productArray['gifts'],
             $productArray['stock_quantity'],
-            $productArray['variants_count']
+            $productArray['variants_count'],
+            $productArray['group_items']
         );
     }
 
@@ -108,7 +118,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $imageView,
             $this->productFacade->getProductGiftNames($product, $this->domain->getId(), $this->domain->getLocale()),
             $product->getStockQuantity(),
-            $product->getVariantsCount()
+            $product->getVariantsCount(),
+            $this->productGroupFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale())
         );
     }
 

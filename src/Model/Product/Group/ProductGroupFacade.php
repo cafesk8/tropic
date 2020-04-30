@@ -29,4 +29,20 @@ class ProductGroupFacade
     {
         return $this->productGroupRepository->getAllByMainProduct($mainProduct);
     }
+
+    /**
+     * @param \App\Model\Product\Product $mainProduct
+     * @param string $locale
+     * @return array[]
+     */
+    public function getAllForElasticByMainProduct(Product $mainProduct, string $locale): array
+    {
+        return array_map(function (ProductGroup $productGroup) use ($locale) {
+            return [
+                'id' => $productGroup->getItem()->getId(),
+                'name' => $productGroup->getItem()->getName($locale),
+                'amount' => $productGroup->getItemCount(),
+            ];
+        }, $this->getAllByMainProduct($mainProduct));
+    }
 }

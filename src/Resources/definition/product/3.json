@@ -322,6 +322,20 @@
       },
       "variants_count": {
         "type": "integer"
+      },
+      "group_items": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "text"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        }
       }
     }
   }

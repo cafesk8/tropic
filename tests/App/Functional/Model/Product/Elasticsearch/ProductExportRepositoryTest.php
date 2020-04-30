@@ -48,6 +48,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
     private function getExpectedStructure(): array
     {
         return [
+            'group_items',
             'id',
             'gifts',
             'name',
