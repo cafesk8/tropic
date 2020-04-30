@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Model\Cart\CartWatcher;
 
 use App\Model\Customer\User\CustomerUser;
+use App\Model\Order\Discount\CurrentOrderDiscountLevelFacade;
+use App\Model\Order\Discount\OrderDiscountLevelFacade;
 use App\Model\Order\PromoCode\CurrentPromoCodeFacade;
 use App\Model\Order\PromoCode\Exception\PromoCodeNotApplicableException;
 use App\Model\Order\PromoCode\PromoCodeFacade;
 use App\Model\Product\ProductFacade;
 use Doctrine\ORM\EntityManagerInterface;
+use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\Cart;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcherFacade as BaseCartWatcherFacade;
@@ -38,6 +42,21 @@ class CartWatcherFacade extends BaseCartWatcherFacade
     private $productFacade;
 
     /**
+     * @var \App\Model\Order\Discount\OrderDiscountLevelFacade
+     */
+    private $orderDiscountLevelFacade;
+
+    /**
+     * @var \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade
+     */
+    private $currentOrderDiscountLevelFacade;
+
+    /**
+     * @var \Shopsys\FrameworkBundle\Component\Domain\Domain
+     */
+    private $domain;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\FlashMessage\FlashMessageSender $flashMessageSender
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher
@@ -45,6 +64,9 @@ class CartWatcherFacade extends BaseCartWatcherFacade
      * @param \App\Model\Order\PromoCode\CurrentPromoCodeFacade $currentPromoCodeFacade
      * @param \App\Model\Order\PromoCode\PromoCodeFacade $promoCodeFacade
      * @param \App\Model\Product\ProductFacade $productFacade
+     * @param \App\Model\Order\Discount\OrderDiscountLevelFacade $orderDiscountLevelFacade
+     * @param \App\Model\Order\Discount\CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade
+     * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
         FlashMessageSender $flashMessageSender,
@@ -53,12 +75,18 @@ class CartWatcherFacade extends BaseCartWatcherFacade
         CurrentCustomerUser $currentCustomerUser,
         CurrentPromoCodeFacade $currentPromoCodeFacade,
         PromoCodeFacade $promoCodeFacade,
-        ProductFacade $productFacade
+        ProductFacade $productFacade,
+        OrderDiscountLevelFacade $orderDiscountLevelFacade,
+        CurrentOrderDiscountLevelFacade $currentOrderDiscountLevelFacade,
+        Domain $domain
     ) {
         parent::__construct($flashMessageSender, $em, $cartWatcher, $currentCustomerUser);
         $this->currentPromoCodeFacade = $currentPromoCodeFacade;
         $this->promoCodeFacade = $promoCodeFacade;
         $this->productFacade = $productFacade;
+        $this->orderDiscountLevelFacade = $orderDiscountLevelFacade;
+        $this->currentOrderDiscountLevelFacade = $currentOrderDiscountLevelFacade;
+        $this->domain = $domain;
     }
 
     /**
@@ -67,10 +95,12 @@ class CartWatcherFacade extends BaseCartWatcherFacade
      */
     public function checkCartModifications(Cart $cart, ?CustomerUser $customerUser = null): void
     {
-        parent::checkCartModifications($cart);
-
+        $this->checkOrderDiscountLevel($cart->getTotalWatchedPriceOfProducts());
         $this->checkValidityOfEnteredPromoCodes($cart, $customerUser);
         $this->checkValidityOfGifts($cart);
+        // parent method must be called after our checks because we need to perform checks with the previous watched price
+        // that might change during checkModifiedPrices() call
+        parent::checkCartModifications($cart);
     }
 
     /**
@@ -129,6 +159,18 @@ class CartWatcherFacade extends BaseCartWatcherFacade
 
         if (count($toFlush) > 0) {
             $this->em->flush($toFlush);
+        }
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Component\Money\Money $productsPrice
+     */
+    private function checkOrderDiscountLevel(Money $productsPrice): void
+    {
+        $activeOrderDiscountLevel = $this->orderDiscountLevelFacade->findMatchingLevel($this->domain->getId(), $productsPrice);
+        if ($this->currentOrderDiscountLevelFacade->getActiveOrderLevelDiscountId() !== null && $activeOrderDiscountLevel === null) {
+            $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
+            $this->flashMessageSender->addInfoFlash(t('Automatická sleva na celý nákup byla deaktivována, protože cena produktů v košíku není dostatečná'));
         }
     }
 }

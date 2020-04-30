@@ -1,0 +1,13 @@
+{% extends '@ShopsysFramework/Admin/Grid/Grid.html.twig' %}
+
+{% block grid_no_data %}
+    {{ 'Žádné slevy na celý nákup nenalezeny.'|trans }}
+{% endblock %}
+
+{% block grid_value_cell_id_priceLevelWithVat %}
+    {{ value|priceWithAdminDomainTabDomainCurrency }}
+{% endblock %}
+
+{% block grid_value_cell_id_discountPercent %}
+    {{ value|formatPercent }}
+{% endblock %}

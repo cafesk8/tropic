@@ -35,6 +35,8 @@ class OrderItem extends BaseOrderItem
 
     public const TYPE_GIFT = 'gift';
 
+    public const TYPE_ORDER_DISCOUNT_LEVEL = 'order_discount_level';
+
     /**
      * @var \App\Model\Order\Item\OrderItem|null
      *

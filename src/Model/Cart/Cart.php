@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Cart;
 
 use App\Model\Cart\Item\CartItem;
+use App\Model\Customer\User\CustomerUser;
 use App\Model\Product\Product;
 use Doctrine\ORM\Mapping as ORM;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -179,5 +180,13 @@ class Cart extends BaseCart
     public function setOrderGiftProduct(?Product $orderGiftProduct): void
     {
         $this->orderGiftProduct = $orderGiftProduct;
+    }
+
+    /**
+     * @return \App\Model\Customer\User\CustomerUser|null
+     */
+    public function getCustomerUser(): ?CustomerUser
+    {
+        return $this->customerUser;
     }
 }

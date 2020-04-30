@@ -18,9 +18,10 @@ use Tests\FrameworkBundle\Test\IsMoneyEqual;
 final class OrderFacadeEditTest extends TransactionFunctionalTestCase
 {
     private const ORDER_ID = 10;
-    private const PRODUCT_ITEM_ID = 45;
-    private const PAYMENT_ITEM_ID = 46;
-    private const TRANSPORT_ITEM_ID = 47;
+    private const PRODUCT_ITEM_ID = 65;
+    private const ORDER_DISCOUNT_LEVEL_ITEM_ID = 66;
+    private const PAYMENT_ITEM_ID = 67;
+    private const TRANSPORT_ITEM_ID = 68;
 
     /**
      * @var \Shopsys\FrameworkBundle\Model\Order\Order
@@ -51,6 +52,8 @@ final class OrderFacadeEditTest extends TransactionFunctionalTestCase
         $this->orderDataFactory = $this->getContainer()->get(OrderDataFactoryInterface::class);
         $this->orderItemDataFactory = $this->getContainer()->get(OrderItemDataFactoryInterface::class);
         $this->orderFacade = $this->getContainer()->get(OrderFacade::class);
+
+        $this->removeDiscountFromOrder();
     }
 
     public function testEditProductItem(): void
@@ -251,5 +254,16 @@ final class OrderFacadeEditTest extends TransactionFunctionalTestCase
         }
 
         throw new \RuntimeException(sprintf('Order item with the name "%s" was not found in the order.', $name));
+    }
+
+    /**
+     * It is not a purpose of these tests to test automatic order discounts
+     * and it is not worth fixing the prices in the tests because of the newly applied order discount level
+     */
+    private function removeDiscountFromOrder(): void
+    {
+        $this->order->removeItem($this->order->getItemById(self::ORDER_DISCOUNT_LEVEL_ITEM_ID));
+        $orderData = $this->orderDataFactory->createFromOrder($this->order);
+        $this->orderFacade->edit(self::ORDER_ID, $orderData);
     }
 }

@@ -68,6 +68,34 @@ class OrderItemFactory extends BaseOrderItemFactory
     }
 
     /**
+     * @param string $name
+     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $price
+     * @param \App\Model\Order\Item\OrderItem $orderItem
+     * @return \App\Model\Order\Item\OrderItem
+     */
+    public function createOrderDiscountLevel(
+        string $name,
+        Price $price,
+        OrderItem $orderItem
+    ): BaseOrderItem {
+        /** @var \App\Model\Order\Item\OrderItem $orderDiscountLevel */
+        $orderDiscountLevel = new OrderItem(
+            $orderItem->getOrder(),
+            $name,
+            $price,
+            $orderItem->getVatPercent(),
+            1,
+            OrderItem::TYPE_ORDER_DISCOUNT_LEVEL,
+            null,
+            null
+        );
+
+        $orderDiscountLevel->setMainOrderItem($orderItem);
+
+        return $orderDiscountLevel;
+    }
+
+    /**
      * @param \App\Model\Order\Order $order
      * @param string $name
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $certificatePrice

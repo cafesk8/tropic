@@ -57,6 +57,10 @@ class SideMenuConfigurationSubscriber implements EventSubscriberInterface
             'label' => t('Vyjmutí ze slev'),
             'route' => 'admin_discountexclusion_detail',
         ]);
+
+        $orderDiscountLevelMenu = $pricingMenu->addChild('admin_orderdiscountlevel_list', ['route' => 'admin_orderdiscountlevel_list', 'label' => t('Sleva na celý nákup')]);
+        $orderDiscountLevelMenu->addChild('new', ['route' => 'admin_orderdiscountlevel_new', 'label' => t('Nová sleva na celý nákup'), 'display' => false]);
+        $orderDiscountLevelMenu->addChild('edit', ['route' => 'admin_orderdiscountlevel_edit', 'label' => t('Editace slevy na celý nákup'), 'display' => false]);
     }
 
     /**

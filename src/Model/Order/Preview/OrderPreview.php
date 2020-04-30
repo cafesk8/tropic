@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Preview;
 
+use App\Model\Order\Discount\OrderDiscountLevel;
 use App\Model\Order\PromoCode\PromoCode;
-use App\Model\Order\PromoCode\PromoCodeData;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview as BaseOrderPreview;
 use Shopsys\FrameworkBundle\Model\Payment\Payment;
 use Shopsys\FrameworkBundle\Model\Pricing\Price;
@@ -24,6 +24,11 @@ class OrderPreview extends BaseOrderPreview
      * @var \App\Model\Product\Product|null
      */
     protected $orderGiftProduct;
+
+    /**
+     * @var \App\Model\Order\Discount\OrderDiscountLevel|null
+     */
+    protected $activeOrderDiscountLevel;
 
     /**
      * @var \App\Model\Order\PromoCode\PromoCode[]
@@ -53,6 +58,7 @@ class OrderPreview extends BaseOrderPreview
     /**
      * @param array $quantifiedProductsByIndex
      * @param array $quantifiedItemsPricesByIndex
+     * @param array $quantifiedItemsDiscountsByIndex
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $productsPrice
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price $totalPrice
      * @param \App\Model\Transport\Transport|null $transport
@@ -64,10 +70,12 @@ class OrderPreview extends BaseOrderPreview
      * @param \App\Model\Cart\Item\CartItem[] $gifts
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Price[][]|mixed[][] $quantifiedItemsDiscountsIndexedByPromoCodeId
      * @param \App\Model\Product\Product|null $orderGiftProduct
+     * @param \App\Model\Order\Discount\OrderDiscountLevel|null $activeOrderDiscountLevel
      */
     public function __construct(
         array $quantifiedProductsByIndex,
         array $quantifiedItemsPricesByIndex,
+        array $quantifiedItemsDiscountsByIndex,
         Price $productsPrice,
         Price $totalPrice,
         ?Transport $transport = null,
@@ -78,12 +86,13 @@ class OrderPreview extends BaseOrderPreview
         ?Price $totalPriceWithoutGiftCertificate = null,
         array $gifts = [],
         array $quantifiedItemsDiscountsIndexedByPromoCodeId = [],
-        ?Product $orderGiftProduct = null
+        ?Product $orderGiftProduct = null,
+        ?OrderDiscountLevel $activeOrderDiscountLevel = null
     ) {
         parent::__construct(
             $quantifiedProductsByIndex,
             $quantifiedItemsPricesByIndex,
-            [],
+            $quantifiedItemsDiscountsByIndex,
             $productsPrice,
             $totalPrice,
             $transport,
@@ -98,6 +107,7 @@ class OrderPreview extends BaseOrderPreview
         $this->quantifiedItemsDiscountsIndexedByPromoCodeId = $quantifiedItemsDiscountsIndexedByPromoCodeId;
         $this->promoCodesIndexedById = [];
         $this->orderGiftProduct = $orderGiftProduct;
+        $this->activeOrderDiscountLevel = $activeOrderDiscountLevel;
     }
 
     /**
@@ -121,6 +131,9 @@ class OrderPreview extends BaseOrderPreview
      */
     public function setPromoCodes(array $promoCodes): void
     {
+        if (empty($promoCodes)) {
+            $this->promoCodesIndexedById = [];
+        }
         foreach ($promoCodes as $promoCode) {
             $this->promoCodesIndexedById[$promoCode->getId()] = $promoCode;
         }
@@ -199,7 +212,7 @@ class OrderPreview extends BaseOrderPreview
         $totalItemsDiscounts = [];
         foreach ($this->quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
             $promoCode = $this->getPromoCodeById($promoCodeId);
-            if ($promoCode->getType() === PromoCodeData::TYPE_CERTIFICATE) {
+            if ($promoCode->isTypeGiftCertificate()) {
                 $totalItemsDiscounts[$promoCodeId] = new Price($promoCode->getCertificateValue(), $promoCode->getCertificateValue());
                 continue;
             }
@@ -213,5 +226,13 @@ class OrderPreview extends BaseOrderPreview
         }
 
         return $totalItemsDiscounts;
+    }
+
+    /**
+     * @return \App\Model\Order\Discount\OrderDiscountLevel|null
+     */
+    public function getActiveOrderDiscountLevel(): ?OrderDiscountLevel
+    {
+        return $this->activeOrderDiscountLevel;
     }
 }

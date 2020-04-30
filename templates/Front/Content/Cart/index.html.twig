@@ -123,10 +123,16 @@
                                                     <div class="table-cart__cell__price__primary">
                                                         {{ cartItemPrice.unitPrice.priceWithVat|price }}
                                                     </div>
+                                                    {%  if quantifiedItemsDiscountsByIndex[index] is defined %}
+                                                        {% set quantifiedItemDiscount = quantifiedItemsDiscountsByIndex[index] %}
+                                                        <div class="table-cart__cell__discount">
+                                                            -{{ quantifiedItemDiscount.priceWithVat|price }}
+                                                        </div>
+                                                    {% endif %}
                                                     {% if promoCodesIndexedById is not empty %}
                                                         <div class="table-cart__cell__discount">
                                                             {% for promoCodeId, promoCode in promoCodesIndexedById %}
-                                                                {% if cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is not null %}
+                                                                {% if cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is defined and cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index] is not null %}
                                                                     &nbsp;{{ promoCode.code }}&nbsp;
                                                                     -{{ cartItemDiscountsIndexedByPromoCodeId[promoCodeId][index].priceWithVat|price }}
                                                                     <br>
