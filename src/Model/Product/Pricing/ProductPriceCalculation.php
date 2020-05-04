@@ -6,17 +6,13 @@ namespace App\Model\Product\Pricing;
 
 use App\Component\Domain\DomainHelper;
 use App\Model\Pricing\Currency\Currency;
-use App\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Setting\Setting;
 use Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\Currency\CurrencyFacade;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup as BasePricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupFacade;
-use Shopsys\FrameworkBundle\Model\Pricing\Price;
-use Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation;
 use Shopsys\FrameworkBundle\Model\Pricing\PricingSetting;
-use Shopsys\FrameworkBundle\Model\Pricing\Rounding;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceRepository;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculation as BaseProductPriceCalculation;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -42,24 +38,12 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
     private $pricingGroupFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation
-     */
-    private $priceCalculation;
-
-    /**
-     * @var \Shopsys\FrameworkBundle\Model\Pricing\Rounding
-     */
-    private $rounding;
-
-    /**
      * @param \Shopsys\FrameworkBundle\Model\Pricing\BasePriceCalculation $basePriceCalculation
      * @param \Shopsys\FrameworkBundle\Model\Pricing\PricingSetting $pricingSetting
      * @param \App\Model\Product\Pricing\ProductManualInputPriceRepository $productManualInputPriceRepository
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \App\Component\Setting\Setting $setting
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\PriceCalculation $priceCalculation
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Rounding $rounding
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
@@ -69,15 +53,11 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         ProductRepository $productRepository,
         Setting $setting,
         PricingGroupFacade $pricingGroupFacade,
-        PriceCalculation $priceCalculation,
-        Rounding $rounding,
         CurrencyFacade $currencyFacade
     ) {
         parent::__construct($basePriceCalculation, $pricingSetting, $productManualInputPriceRepository, $productRepository, $currencyFacade);
         $this->setting = $setting;
         $this->pricingGroupFacade = $pricingGroupFacade;
-        $this->priceCalculation = $priceCalculation;
-        $this->rounding = $rounding;
     }
 
     /**
@@ -167,14 +147,16 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $isPriceFrom = true;
         }
 
-        $defaultPrice = $this->calculateBasePriceRoundedByCurrency(
+        $defaultCurrency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
+
+        $defaultPrice = $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
             $defaultPrice,
             $this->pricingSetting->getInputPriceType(),
             $product->getVatForDomain($domainId),
             $defaultCurrency
         );
 
-        $basePrice = $this->calculateBasePriceRoundedByCurrency(
+        $basePrice = $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
             $inputPrice,
             $this->pricingSetting->getInputPriceType(),
             $product->getVatForDomain($domainId),
@@ -184,7 +166,7 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
         $standardPrice = null;
 
         if ($standardPriceInput !== null) {
-            $standardPrice = $this->calculateBasePriceRoundedByCurrency(
+            $standardPrice = $this->basePriceCalculation->calculateBasePriceRoundedByCurrency(
                 $standardPriceInput,
                 $this->pricingSetting->getInputPriceType(),
                 $product->getVatForDomain($domainId),
@@ -199,57 +181,5 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
             $defaultPrice,
             $standardPrice
         );
-    }
-
-    /**
-     * copy-pasted from BasePriceCalculation where the method is deprecated since 8.1
-     *
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money $inputPrice
-     * @param int $inputPriceType
-     * @param \App\Model\Pricing\Vat\Vat $vat
-     * @param \App\Model\Pricing\Currency\Currency $currency
-     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price
-     */
-    public function calculateBasePriceRoundedByCurrency(
-        Money $inputPrice,
-        int $inputPriceType,
-        Vat $vat,
-        Currency $currency
-    ): Price {
-        $basePriceWithVat = $this->getBasePriceWithVatRoundedByCurrency($inputPrice, $inputPriceType, $vat, $currency);
-        $vatAmount = $this->priceCalculation->getVatAmountByPriceWithVat($basePriceWithVat, $vat);
-        $basePriceWithoutVat = $this->rounding->roundPriceWithoutVat($basePriceWithVat->subtract($vatAmount));
-
-        return new Price($basePriceWithoutVat, $basePriceWithVat);
-    }
-
-    /**
-     * copy-pasted from BasePriceCalculation where the method is deprecated since 8.1
-     *
-     * @param \Shopsys\FrameworkBundle\Component\Money\Money $inputPrice
-     * @param int $inputPriceType
-     * @param \App\Model\Pricing\Vat\Vat $vat
-     * @param \App\Model\Pricing\Currency\Currency $currency
-     * @return \Shopsys\FrameworkBundle\Component\Money\Money
-     */
-    protected function getBasePriceWithVatRoundedByCurrency(
-        Money $inputPrice,
-        int $inputPriceType,
-        Vat $vat,
-        Currency $currency
-    ): Money {
-        switch ($inputPriceType) {
-            case PricingSetting::INPUT_PRICE_TYPE_WITH_VAT:
-                return $this->rounding->roundPriceWithVatByCurrency($inputPrice, $currency);
-
-            case PricingSetting::INPUT_PRICE_TYPE_WITHOUT_VAT:
-                return $this->rounding->roundPriceWithVatByCurrency(
-                    $this->priceCalculation->applyVatPercent($inputPrice, $vat),
-                    $currency
-                );
-
-            default:
-                throw new \Shopsys\FrameworkBundle\Model\Pricing\Exception\InvalidInputPriceTypeException();
-        }
     }
 }
