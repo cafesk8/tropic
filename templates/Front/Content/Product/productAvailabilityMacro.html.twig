@@ -1,0 +1,21 @@
+{% macro productAvailability(product) %}
+
+    {% set inStock = product.usingStock
+        and product.realStockQuantity > 0 %}
+
+    {% set showNotAvailable = product.usingStock
+        and product.realStockQuantity < 1
+        and not product.outOfStockAction is same as(constant('OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY', product)) %}
+
+    {% if product.calculatedSellingDenied %}
+        <span class="in-availability__date in-availability__date--out-of-stock">{{ 'Product no longer on sale'|trans }}</span>
+    {% elseif inStock %}
+        <span class="in-availability__date">
+            {{ 'Skladem v eshopu'|trans }}
+        </span>
+    {% elseif showNotAvailable %}
+        <span class="in-availability__date in-availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
+    {% else %}
+        <span class="in-availability__date" style="color: {{ product.calculatedAvailability.rgbColor }}">{{ product.calculatedAvailability.name }}</span>
+    {% endif %}
+{% endmacro %}

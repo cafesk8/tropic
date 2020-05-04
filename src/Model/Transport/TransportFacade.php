@@ -192,19 +192,6 @@ class TransportFacade extends BaseTransportFacade
     /**
      * @param int $domainId
      * @param \App\Model\Payment\Payment[] $visiblePaymentsOnDomain
-     * @return \App\Model\Transport\Transport[]
-     */
-    public function getVisibleByDomainIdWithoutPickUpPlaces(int $domainId, array $visiblePaymentsOnDomain): array
-    {
-        $transports = $this->transportRepository->getAllByDomainId($domainId);
-        $transports = $this->filterTransportsWithoutPickUpPlaces($transports);
-
-        return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
-    }
-
-    /**
-     * @param int $domainId
-     * @param \App\Model\Payment\Payment[] $visiblePaymentsOnDomain
      * @param bool $showEmailTransportInCart
      * @return \App\Model\Transport\Transport[]
      */
@@ -213,23 +200,6 @@ class TransportFacade extends BaseTransportFacade
         $transports = $this->transportRepository->getAllByDomainIdAndTransportEmailType($domainId, $showEmailTransportInCart);
 
         return $this->transportVisibilityCalculation->filterVisible($transports, $visiblePaymentsOnDomain, $domainId);
-    }
-
-    /**
-     * @param \App\Model\Transport\Transport[] $transports
-     * @return \App\Model\Transport\Transport[]
-     */
-    private function filterTransportsWithoutPickUpPlaces(array $transports): array
-    {
-        $noPickUpPlaceTransports = [];
-
-        foreach ($transports as $transport) {
-            if (!$transport->isPickupPlaceType()) {
-                $noPickUpPlaceTransports[] = $transport;
-            }
-        }
-
-        return $noPickUpPlaceTransports;
     }
 
     /**

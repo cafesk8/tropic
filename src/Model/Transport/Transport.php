@@ -87,13 +87,6 @@ class Transport extends BaseTransport
     protected $countries;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", nullable=false)
-     */
-    private $deliveryDays;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
@@ -135,7 +128,6 @@ class Transport extends BaseTransport
         $this->chooseStore = $transportData->transportType === self::TYPE_PERSONAL_TAKE_STORE;
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
-        $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
         $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
@@ -156,7 +148,6 @@ class Transport extends BaseTransport
         $this->chooseStore = $transportData->transportType === self::TYPE_PERSONAL_TAKE_STORE;
         $this->countries = $transportData->countries;
         $this->mallType = $transportData->mallType;
-        $this->deliveryDays = $transportData->deliveryDays;
         $this->externalId = $transportData->externalId;
         $this->setTransportType($transportData->transportType);
         $this->trackingUrlPattern = $transportData->trackingUrlPattern;
@@ -263,14 +254,6 @@ class Transport extends BaseTransport
     public function getMallType(): ?string
     {
         return $this->mallType;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDeliveryDays(): int
-    {
-        return $this->deliveryDays;
     }
 
     /**

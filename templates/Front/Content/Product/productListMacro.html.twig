@@ -124,7 +124,7 @@
                                                         {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                     </div>
                                                 {% endif %}
-                                                
+
                                                 <div class="{% if productSellingPrice.hasHigherStandardPrice %}list-products-slider__item__info__price__main{% endif %}">
                                                     {% if productSellingPrice.priceFrom %}
                                                         {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
@@ -226,7 +226,7 @@
 {% endmacro %}
 
 {% macro verticalList(products, listCssClass, productHeadingTagName) %}
-    {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+    {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
     <div class="{{ listCssClass }}" data-count-of-product="{{ products|length }}">
         {% for product in products %}
             <div class="{{ listCssClass }}__item">
@@ -273,7 +273,7 @@
                             </a>
                         {% else %}
                             <div class="in-availability">
-                                {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                                {{ availability.productAvailability(product) }}
                             </div>
 
                             <div class="{{ listCssClass }}__item__add-button">

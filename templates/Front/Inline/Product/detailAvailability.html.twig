@@ -1,4 +1,4 @@
-{% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+{% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
 
 {% macro availabilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}in-availability in-availability--big js-detail-availability js-detail-availability-{{ product.id }}">
@@ -6,7 +6,7 @@
             <div class="in-availability__status__icon">
                 <i class="svg svg-checked"></i>
             </div>
-            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+            {{ availability.productAvailability(product) }}
         </span>
 
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
@@ -49,7 +49,7 @@
                 {% if product.isMainVariant %}
                     {{ 'Pro zobrazení dostupnosti vyberte variantu'|trans }}
                 {% else %}
-                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                    {{ availability.productAvailability(product) }}
                 {% endif %}
             </span>
         </span>

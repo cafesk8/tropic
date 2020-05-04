@@ -90,7 +90,6 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         }
 
         $transportData->mergadoTransportType = MergadoTransportTypeFacade::CZECH_POST;
-        $transportData->deliveryDays = 2;
         $this->setPriceForAllDomains($transportData, Money::create('99.95'));
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_CZECH_REPUBLIC);
         $transportData->countries[] = $this->getReference(CountryDataFixture::COUNTRY_SLOVAKIA);
@@ -101,7 +100,6 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         foreach ($this->domain->getAllLocales() as $locale) {
             $transportData->name[$locale] = t('PPL', [], 'dataFixtures', $locale);
         }
-        $transportData->deliveryDays = 1;
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
@@ -120,7 +118,6 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
             $transportData->description[$locale] = t('Uvítá Vás milý personál!', [], 'dataFixtures', $locale);
             $transportData->instructions[$locale] = t('Těšíme se na Vaši návštěvu.', [], 'dataFixtures', $locale);
         }
-        $transportData->deliveryDays = 1;
         $transportData->balikobotShipper = null;
         $transportData->balikobotShipperService = null;
         $transportData->mergadoTransportType = MergadoTransportTypeFacade::OWN_TRANSPORT;
@@ -134,7 +131,6 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         foreach ($this->domain->getAllLocales() as $locale) {
             $transportData->name[$locale] = t('PPL - de', [], 'dataFixtures', $locale);
         }
-        $transportData->deliveryDays = 3;
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
@@ -148,7 +144,6 @@ class TransportDataFixture extends AbstractReferenceFixture implements Dependent
         foreach ($this->domain->getAllLocales() as $locale) {
             $transportData->name[$locale] = t('PPL - fr', [], 'dataFixtures', $locale);
         }
-        $transportData->deliveryDays = 1;
         $transportData->transportType = Transport::TYPE_PERSONAL_TAKE_BALIKOBOT;
         $transportData->balikobotShipper = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER;
         $transportData->balikobotShipperService = TransportPickupPlaceDataFixture::BALIKOBOT_SHIPPER_SERVICE;
