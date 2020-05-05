@@ -20,7 +20,7 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
     public const AVAILABILITY_PREPARING = 'availability_preparing';
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade
+     * @var \App\Model\Product\Availability\AvailabilityFacade
      */
     protected $availabilityFacade;
 
@@ -90,13 +90,8 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
         $availabilityData->rgbColor = '#666666';
         $this->createAvailability($availabilityData, self::AVAILABILITY_ON_REQUEST);
 
-        foreach ($this->domain->getAllLocales() as $locale) {
-            $availabilityData->name[$locale] = t('Nedostupné', [], 'dataFixtures', $locale);
-        }
-
-        $availabilityData->dispatchTime = null;
-        $availabilityData->rgbColor = '#ff0000';
-        $this->createAvailability($availabilityData, self::AVAILABILITY_OUT_OF_STOCK);
+        $defaultOutOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
+        $this->addReference(self::AVAILABILITY_OUT_OF_STOCK, $defaultOutOfStockAvailability);
     }
 
     /**
