@@ -94,11 +94,11 @@ review:stop:
     stage: review
     variables:
         GIT_STRATEGY: none
-    tags:
-        - review
     needs:
         - build
     <<: *only-default
+    tags:
+        - review
     script:
         - cp /home/ci/docker-compose-review.yml ./docker-compose.yml
         - docker-compose exec -T php-fpm php phing -D production.confirm.action=y product-search-delete-structure
