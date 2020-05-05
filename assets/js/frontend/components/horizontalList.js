@@ -23,9 +23,8 @@ import Timeout from 'framework/common/utils/Timeout';
                 'basket-additionals': [1, 2, 3, 2, 3]
             };
 
-            const slideTypes = {
-                ...types
-            };
+            // at the moment, number of displayed slides equals number of slides to slide, however, there is a chance the configuration will differ in the future
+            const slideTypes = types;
 
             const selectedType = types[galleryType];
             const selectedSlideTypes = slideTypes[galleryType];
