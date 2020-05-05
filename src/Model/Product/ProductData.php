@@ -113,6 +113,11 @@ class ProductData extends BaseProductData
      */
     public $eurCalculatedAutomatically;
 
+    /**
+     * @var string|null
+     */
+    public $deliveryDays;
+
     public function __construct()
     {
         parent::__construct();

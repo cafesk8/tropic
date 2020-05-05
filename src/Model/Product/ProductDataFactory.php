@@ -140,6 +140,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->eurCalculatedAutomatically = $product->isEurCalculatedAutomatically();
         $productData->promoDiscountDisabled = $product->isPromoDiscountDisabled();
         $productData->groupItems = $this->getProductGroups($product);
+        $productData->deliveryDays = $product->getDeliveryDays();
 
         foreach ($this->domain->getAllIds() as $domainId) {
             $productData->generateToMergadoXmlFeeds[$domainId] = $product->isGenerateToMergadoXmlFeed($domainId);

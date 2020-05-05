@@ -59,6 +59,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'storeStock',
         'accessories',
         'eurCalculatedAutomatically',
+        'deliveryDays',
     ];
 
     /**
@@ -483,6 +484,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add('mallExportedAt', DisplayOnlyType::class, [
                 'label' => t('Exportováno do Mall.cz'),
                 'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getMallExportedAt()) : '~',
+            ])
+            ->add('deliveryDays', TextType::class, [
+                'required' => false,
+                'label' => t('Dodání'),
             ]);
 
         $stockGroup = $displayAvailabilityGroup->get('stockGroup');

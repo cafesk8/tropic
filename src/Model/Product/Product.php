@@ -193,6 +193,13 @@ class Product extends BaseProduct
     private $productGroups;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $deliveryDays;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -256,6 +263,7 @@ class Product extends BaseProduct
         $this->pohodaProductType = $productData->pohodaProductType;
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
         $this->productGroups = new ArrayCollection();
+        $this->deliveryDays = $productData->deliveryDays;
     }
 
     /**
@@ -901,5 +909,13 @@ class Product extends BaseProduct
     public function getProductGroups(): array
     {
         return $this->productGroups->toArray();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDeliveryDays(): ?string
+    {
+        return $this->deliveryDays;
     }
 }
