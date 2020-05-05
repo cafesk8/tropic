@@ -1,4 +1,4 @@
-{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, productGroups) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
@@ -12,69 +12,77 @@
         <div class="web__line">
             <div class="web__container">
                 <div class="box-detail__product">
-                    <div class="box-detail__image">
-                        {% set galleryImages = getImages(product) %}
-                        {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
-                        {# @var sellingPrice \App\Model\Product\Pricing\ProductPrice #}
-                        {% set sellingPrice = getProductSellingPrice(product) %}
+                    {# @var \App\Model\Product\Pricing\ProductPrice sellingPrice  #}
+                    {% set sellingPrice = getProductSellingPrice(product) %}
+                    {% set typeSet = product.pohodaProductType is same as(5) %}
 
-                        <div class="box-detail__image__main">
-                            {% if imageExists(product) %}
-                                <a href="{{ imageUrl(product, 'original') }}"
-                                class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
-                                    {{ image(product, { itemprop: 'image' }) }}
-                                </a>
-                            {% else %}
-                                {{ noimage({ alt: product.name }) }}
+                    {% if not typeSet %}
+                        <div class="box-detail__image">
+                            {% set galleryImages = getImages(product) %}
+                            {% set showGallery = galleryImages|length > 0 or youtubeDetails %}
+
+                            <div class="box-detail__image__main">
+                                {% if imageExists(product) %}
+                                    <a href="{{ imageUrl(product, 'original') }}"
+                                    class="{{ showGallery ? 'js-gallery-main-image' : 'js-popup-image' }}">
+                                        {{ image(product, { itemprop: 'image' }) }}
+                                    </a>
+                                {% else %}
+                                    {{ noimage({ alt: product.name }) }}
+                                {% endif %}
+                            </div>
+
+                            {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, product.variantsCount) }}
+
+                            {% if showGallery %}
+                                <div class="box-gallery dont-print js-gallery">
+                                    <div class="box-gallery__images">
+                                        {% for galleryImage in galleryImages %}
+                                            <div class="box-gallery__item{% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
+                                                <a href="{{ imageUrl(galleryImage, 'original') }}"
+                                                class="box-gallery__item__link js-gallery-slide-link">
+                                                    {{ image(galleryImage, {size: 'thumbnail'}) }}
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="box-gallery__links">
+                                        {% if galleryImages|length > showGalleryMaxCount %}
+                                            <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
+                                                <a href="#" class="box-gallery__item__link">
+                                                    {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                        {% if youtubeDetails %}
+                                            <div class="box-gallery__item box-gallery__item--video">
+                                                <a
+                                                    href="#video"
+                                                    class="box-gallery__item__link js-anchor-link"
+                                                >
+                                                    <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
+                                                        alt="{{ youtubeDetails|first.getVideoTitle() }}"
+                                                        title="{{ youtubeDetails|first.getVideoTitle() }}">
+                                                    <div class="box-gallery__item__link__play">
+                                                        <div class="box-gallery__item__link__play__icon"></div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             {% endif %}
                         </div>
-
-                        {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, product.variantsCount) }}
-
-                        {% if showGallery %}
-                            <div class="box-gallery dont-print js-gallery">
-                                <div class="box-gallery__images">
-                                    {% for galleryImage in galleryImages %}
-                                        <div class="box-gallery__item {% if loop.index > showGalleryMaxCount %} display-none{% endif %} js-gallery-item">
-                                            <a href="{{ imageUrl(galleryImage, 'original') }}"
-                                            class="box-gallery__item__link js-gallery-slide-link">
-                                                {{ image(galleryImage, {size: 'thumbnail'}) }}
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <div class="box-gallery__links">
-                                    {% if galleryImages|length > showGalleryMaxCount %}
-                                        <div class="box-gallery__item box-gallery__item--more js-gallery-item-more">
-                                            <a href="#" class="box-gallery__item__link">
-                                                {{ 'Další'|trans }} ({{ galleryImages|length - showGalleryMaxCount }})
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                    {% if youtubeDetails %}
-                                        <div class="box-gallery__item box-gallery__item--video">
-                                            <a
-                                                href="#video"
-                                                class="box-gallery__item__link js-anchor-link"
-                                            >
-                                                <img src="{{ youtubeDetails|first.getThumbnailUrl() }}"
-                                                    alt="{{ youtubeDetails|first.getVideoTitle() }}"
-                                                    title="{{ youtubeDetails|first.getVideoTitle() }}">
-                                                <div class="box-gallery__item__link__play">
-                                                    <div class="box-gallery__item__link__play__icon"></div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
+                    {% endif %}
 
                     <div class="box-detail__info">
                         <h2 class="box-detail__info__title" itemprop="name">
                             {{ product.getSeoH1(domain.id)|default(product.name) }}
                         </h2>
+
+                        {% if typeSet %}
+                            {{ product.getShortDescription(domain.id) }}
+                        {% endif %}
 
                         {% for gift in product.gifts(domain.id) %}
                             {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
@@ -195,6 +203,44 @@
             </div>
         </div>
 
+        {% if typeSet %}
+            {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+
+            <div>
+                {% for productGroup in productGroups %}
+                    {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
+                    <div>
+                        <div class="item-image">
+                            {{ image(product) }}
+                        </div>
+                        <div class="item-name">
+                            {{ productGroup.item.name }}
+                        </div>
+                        <div class="item-price">
+                            {% if productSellingPrice is not null %}
+                                {% if productSellingPrice.priceFrom %}
+                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                {% else %}
+                                    {{ productSellingPrice.priceWithVat|price }}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="item-availabilty">
+                            {% if productGroup.item.isMainVariant %}
+                                <div class="in-availability">
+                                    {{ 'Dostupnost dle varianty'|trans }}
+                                </div>
+                            {% else %}
+                                <div class="in-availability">
+                                    {{ deliveryDate.productAvailabilityWithDeliveryDate(productGroup.item) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         {% if accessories|length > 0 %}
             <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
                 <div class="web__container web__container--no-padding">
@@ -224,7 +270,6 @@
             </div>
         </div>
     </div>
-
 {% endmacro %}
 
 {% macro productPrice(product) %}

@@ -11,6 +11,7 @@ use App\Model\Article\ArticleFacade;
 use App\Model\Blog\Article\BlogArticleFacade;
 use App\Model\Category\CategoryBlogArticle\CategoryBlogArticleFacade;
 use App\Model\Gtm\GtmFacade;
+use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Category\Category;
@@ -129,6 +130,11 @@ class ProductController extends FrontBaseController
     private $discountExclusionFacade;
 
     /**
+     * @var \App\Model\Product\Group\ProductGroupFacade
+     */
+    private $productGroupFacade;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Twig\RequestExtension $requestExtension
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -147,6 +153,7 @@ class ProductController extends FrontBaseController
      * @param \Shopsys\ReadModelBundle\Product\Listed\ListedProductViewFacadeInterface $listedProductViewFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Component\DiscountExclusion\DiscountExclusionFacade $discountExclusionFacade
+     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      */
     public function __construct(
         RequestExtension $requestExtension,
@@ -166,7 +173,8 @@ class ProductController extends FrontBaseController
         GtmFacade $gtmFacade,
         ListedProductViewFacadeInterface $listedProductViewFacade,
         BrandFacade $brandFacade,
-        DiscountExclusionFacade $discountExclusionFacade
+        DiscountExclusionFacade $discountExclusionFacade,
+        ProductGroupFacade $productGroupFacade
     ) {
         $this->requestExtension = $requestExtension;
         $this->categoryFacade = $categoryFacade;
@@ -186,6 +194,7 @@ class ProductController extends FrontBaseController
         $this->listedProductViewFacade = $listedProductViewFacade;
         $this->brandFacade = $brandFacade;
         $this->discountExclusionFacade = $discountExclusionFacade;
+        $this->productGroupFacade = $productGroupFacade;
     }
 
     /**
@@ -225,6 +234,7 @@ class ProductController extends FrontBaseController
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
             'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
             'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
+            'productGroups' => $this->productGroupFacade->getAllByMainProduct($product),
         ]);
     }
 
