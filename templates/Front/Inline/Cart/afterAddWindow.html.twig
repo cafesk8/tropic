@@ -13,9 +13,6 @@
             <div class="box-popup-add__content__product__image">
                 {{ image(cartItem.product.productForCreatingImageAccordingToVariant, { size: 'thumbnail', lazy: false }) }}
             </div>
-            <div class="box-popup-add__content__product__pieces display-none">
-                {{ cartItem.quantity|formatNumber }} {{ cartItem.product.unit.name }}
-            </div>
             <div class="box-popup-add__content__product__name">
                 <span class="box-popup-add__content__product__name__title">
                     {{ cartItem.product.name }}
