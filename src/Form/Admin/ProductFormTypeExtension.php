@@ -435,10 +435,22 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      */
     private function extendOutOfStockAction(FormBuilderInterface $builder, ?Product $product): void
     {
-        if ($product !== null && $product->isMainVariant()) {
+        if ($product !== null) {
             $codeFieldOptions = $builder->get('outOfStockAction')->getOptions();
-            $codeFieldOptions['constraints'] = null;
             $codeFieldType = get_class($builder->get('outOfStockAction')->getType()->getInnerType());
+
+            if ($product->isMainVariant()) {
+                $codeFieldOptions['constraints'] = null;
+            }
+
+            if ($product->isPohodaProductTypeGroup()) {
+                $codeFieldType = DisplayOnlyType::class;
+                $codeFieldOptions = [
+                    'data' => t('Exclude from sale'),
+                    'label' => $codeFieldOptions['label'],
+                ];
+            }
+
             $builder->add('outOfStockAction', $codeFieldType, $codeFieldOptions);
         }
     }

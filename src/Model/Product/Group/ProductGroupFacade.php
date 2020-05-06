@@ -32,6 +32,15 @@ class ProductGroupFacade
     }
 
     /**
+     * @param \App\Model\Product\Product $item
+     * @return \App\Model\Product\Group\ProductGroup[]
+     */
+    public function getAllByItem(Product $item): array
+    {
+        return $this->productGroupRepository->getAllByItem($item);
+    }
+
+    /**
      * @param \App\Model\Product\Product $mainProduct
      * @param string $locale
      * @return array[]
