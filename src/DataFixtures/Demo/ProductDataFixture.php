@@ -5690,6 +5690,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
     {
         $this->addFakeStoreStocks($productData);
         $productData->outOfStockAvailability = $this->persistentReferenceFacade->getReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
+
         /** @var \App\Model\Product\Product $product */
         $product = $this->productFacade->create($productData);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Group\ProductGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +13,6 @@ use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator as Ba
 
 /**
  * @method calculateSellingDeniedForProduct(\App\Model\Product\Product $product)
- * @method calculateIndependent(\App\Model\Product\Product[] $products)
  * @method propagateMainVariantSellingDeniedToVariants(\App\Model\Product\Product[] $products)
  * @method propagateVariantsSellingDeniedToMainVariant(\App\Model\Product\Product[] $products)
  */
@@ -24,13 +24,20 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
     private $productGroupFacade;
 
     /**
+     * @var \App\Model\Product\Availability\AvailabilityFacade
+     */
+    private $availabilityFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $entityManager
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      */
-    public function __construct(EntityManagerInterface $entityManager, ProductGroupFacade $productGroupFacade)
+    public function __construct(EntityManagerInterface $entityManager, ProductGroupFacade $productGroupFacade, AvailabilityFacade $availabilityFacade)
     {
         parent::__construct($entityManager);
         $this->productGroupFacade = $productGroupFacade;
+        $this->availabilityFacade = $availabilityFacade;
     }
 
     /**
@@ -89,5 +96,27 @@ class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalcula
 
             $qb->getQuery()->execute();
         }
+    }
+
+    /**
+     * @param array $products
+     */
+    protected function calculateIndependent(array $products): void
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->update(\App\Model\Product\Product::class, 'p')
+            ->set('p.calculatedSellingDenied', '
+                CASE
+                    WHEN p.calculatedAvailability = :currentlyOutOfStockAvailability
+                    THEN TRUE
+                    ELSE p.sellingDenied
+                END
+            ')
+            ->setParameter('currentlyOutOfStockAvailability', $this->availabilityFacade->getDefaultOutOfStockAvailability());
+
+        if (count($products) > 0) {
+            $qb->andWhere('p IN (:products)')->setParameter('products', $products);
+        }
+        $qb->getQuery()->execute();
     }
 }
