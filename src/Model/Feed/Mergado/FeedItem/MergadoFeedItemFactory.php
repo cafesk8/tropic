@@ -143,7 +143,7 @@ class MergadoFeedItemFactory
             $this->getPrice($product, $domainConfig)->getPriceWithVat()->getAmount(),
             $currency->getCode(),
             $this->getProductAvailability($product),
-            $product->isUsingStock() && $product->getStockQuantity() > 0 ? 0 : (int)$product->getCalculatedAvailability()->getDispatchTime(),
+            $this->getProductDeliveryDays($product),
             $this->productUrlsBatchLoader->getProductImageUrl($product, $domainConfig),
             $productImages,
             $productVideos[self::FIRST_YOUTUBE_VIDEO_ID_INDEX] ?? null,
@@ -204,15 +204,28 @@ class MergadoFeedItemFactory
      */
     private function getProductAvailability(Product $product): string
     {
-        if ($product->isUsingStock() && $product->getStockQuantity() > 0) {
-            return 'in stock';
-        }
-
-        if (!$product->isUsingStock() && $product->getCalculatedAvailability()->getDispatchTime() < self::AVAILABILITY_DISPATCH_TIME_DAYS) {
+        if ($product->isAvailableInDays() || $product->isAvailable()) {
             return 'in stock';
         }
 
         return 'out of stock';
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return int
+     */
+    private function getProductDeliveryDays(Product $product): int
+    {
+        if ($product->isAvailableInDays()) {
+            return (int)preg_replace('/-.*$/', '', $product->getDeliveryDays());
+        }
+
+        if ($product->isAvailable()) {
+            return 0;
+        }
+
+        return -1;
     }
 
     /**
