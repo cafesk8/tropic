@@ -159,6 +159,8 @@ class ProductExportRepository extends BaseProductExportRepository
             $result['catnum'] = array_merge([$result['catnum']], $this->getVariantsCatnums($product, $domainId));
         }
         $result['prices_for_filter'] = $this->getPricesForFilterIncludingVariants($product, $domainId);
+        $result['delivery_days'] = $product->getDeliveryDays();
+        $result['is_available_in_days'] = $product->isAvailableInDays();
 
         return $result;
     }

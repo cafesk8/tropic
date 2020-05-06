@@ -312,6 +312,21 @@ class Product extends BaseProduct
     }
 
     /**
+     * @return int
+     */
+    public function getExternalStockQuantity(): int
+    {
+        $externalStockQuantity = 0;
+        foreach ($this->storeStocks as $storeStock) {
+            if ($storeStock->getStockQuantity() !== null && $storeStock->getStore()->isExternalStock()) {
+                $externalStockQuantity += $storeStock->getStockQuantity();
+            }
+        }
+
+        return $externalStockQuantity;
+    }
+
+    /**
      * @param \App\Model\Product\StoreStock\ProductStoreStock $storeStock
      */
     public function addStoreStock(ProductStoreStock $storeStock): void
@@ -917,5 +932,37 @@ class Product extends BaseProduct
     public function getDeliveryDays(): ?string
     {
         return $this->deliveryDays;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductOnlyAtExternalStock(): bool
+    {
+        return $this->getExternalStockQuantity() > 0 && $this->getRealStockQuantity() === $this->getExternalStockQuantity();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductAvailable(): bool
+    {
+        return $this->getRealStockQuantity() > 0 || ($this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() === null);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductAvailableInDays(): bool
+    {
+        return $this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() !== null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductCurrentlyOutOfStock(): bool
+    {
+        return $this->getRealStockQuantity() < 1;
     }
 }

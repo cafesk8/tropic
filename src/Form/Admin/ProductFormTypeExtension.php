@@ -60,6 +60,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'accessories',
         'eurCalculatedAutomatically',
         'deliveryDays',
+        'usingStock',
+        'outOfStockAction',
+        'outOfStockAvailability',
     ];
 
     /**
