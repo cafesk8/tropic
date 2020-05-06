@@ -39,4 +39,13 @@ class ProductGroupRepository
     {
         return $this->getProductGroupRepository()->findBy(['mainProduct' => $mainProduct]);
     }
+
+    /**
+     * @param \App\Model\Product\Product $item
+     * @return \App\Model\Product\Group\ProductGroup[]
+     */
+    public function getAllByItem(Product $item): array
+    {
+        return $this->getProductGroupRepository()->findBy(['item' => $item]);
+    }
 }

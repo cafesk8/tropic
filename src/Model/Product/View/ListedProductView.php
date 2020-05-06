@@ -71,7 +71,7 @@ class ListedProductView extends BaseListedProductView
         $this->gifts = $gifts;
         $this->variantsCount = $variantsCount;
         $this->groupItems = array_map(function (array $groupItem) {
-            return new ListedGroupItem($groupItem['id'], $groupItem['name'], $groupItem['amount']);
+            return new ListedGroupItem($groupItem['id'], $groupItem['name'], $groupItem['amount'], $groupItem['image']);
         }, $groupItems);
     }
 

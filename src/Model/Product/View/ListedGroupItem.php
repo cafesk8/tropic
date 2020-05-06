@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
+use Shopsys\ReadModelBundle\Image\ImageView;
+
 class ListedGroupItem
 {
     /**
@@ -22,15 +24,22 @@ class ListedGroupItem
     private $amount;
 
     /**
+     * @var \Shopsys\ReadModelBundle\Image\ImageView|null
+     */
+    private $image;
+
+    /**
      * @param int $id
      * @param string $name
      * @param int $amount
+     * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      */
-    public function __construct(int $id, string $name, int $amount)
+    public function __construct(int $id, string $name, int $amount, ?ImageView $imageView)
     {
         $this->id = $id;
         $this->name = $name;
         $this->amount = $amount;
+        $this->image = $imageView;
     }
 
     /**
@@ -58,6 +67,14 @@ class ListedGroupItem
     }
 
     /**
+     * @return \Shopsys\ReadModelBundle\Image\ImageView|null
+     */
+    public function getImage(): ?ImageView
+    {
+        return $this->image;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -66,6 +83,7 @@ class ListedGroupItem
             'id' => $this->getId(),
             'name' => $this->getName(),
             'amount' => $this->getAmount(),
+            'image' => $this->getImage(),
         ];
     }
 }

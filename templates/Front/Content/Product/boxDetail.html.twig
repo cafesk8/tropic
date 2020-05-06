@@ -1,4 +1,4 @@
-{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText, productGroups) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
@@ -207,7 +207,7 @@
             {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
 
             <div>
-                {% for productGroup in productGroups %}
+                {% for productGroup in product.productGroups %}
                     {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
                     <div>
                         <div class="item-image">

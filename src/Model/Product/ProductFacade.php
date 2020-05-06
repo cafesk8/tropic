@@ -8,6 +8,7 @@ use App\Component\Domain\DomainHelper;
 use App\Component\GoogleApi\GoogleClient;
 use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Category\Category;
 use App\Model\Category\CategoryFacade;
 use App\Model\Category\Exception\SaleCategoryNotFoundException;
@@ -321,6 +322,7 @@ class ProductFacade extends BaseProductFacade
     public function edit($productId, BaseProductData $productData): Product
     {
         $product = $this->getById($productId);
+
         $originalMainVariant = $product->isVariant() ? $product->getMainVariant() : null;
 
         if ($product->isMainVariant() && !$this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
@@ -359,7 +361,23 @@ class ProductFacade extends BaseProductFacade
         $product->clearStoreStocks();
         $this->em->flush();
 
-        foreach ($productData->stockQuantityByStoreId as $storeId => $stockQuantity) {
+        if ($product->isPohodaProductTypeGroup()) {
+            $internalStockId = $this->storeFacade->findByExternalNumber((string)PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID)->getId();
+            $stockQuantities = [$internalStockId => 9999999];
+            $groupStockQuantities = [];
+
+            foreach ($product->getProductGroups() as $productGroup) {
+                $groupStockQuantities[] = $this->productGroupFacade->getStockQuantity($productGroup);
+            }
+
+            foreach ($groupStockQuantities as $groupStockQuantity) {
+                $stockQuantities[$internalStockId] = $stockQuantities[$internalStockId] > $groupStockQuantity ? $groupStockQuantity : $stockQuantities[$internalStockId];
+            }
+        } else {
+            $stockQuantities = $productData->stockQuantityByStoreId;
+        }
+
+        foreach ($stockQuantities as $storeId => $stockQuantity) {
             $storeStock = $this->productStoreStockFactory->create(
                 $product,
                 $this->storeFacade->getById($storeId),
@@ -909,6 +927,7 @@ class ProductFacade extends BaseProductFacade
             if (isset($groupItemArray['item'], $groupItemArray['item_count'])) {
                 $groupItem = $this->productGroupFactory->create($product, $groupItemArray['item'], $groupItemArray['item_count']);
                 $this->em->persist($groupItem);
+                $product->addProductGroup($groupItem);
                 $toFlush[] = $groupItem;
             }
         }

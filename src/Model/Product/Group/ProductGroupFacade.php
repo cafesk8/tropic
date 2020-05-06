@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Group;
 
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Product\Product;
 
 class ProductGroupFacade
@@ -44,5 +45,27 @@ class ProductGroupFacade
                 'amount' => $productGroup->getItemCount(),
             ];
         }, $this->getAllByMainProduct($mainProduct));
+    }
+
+    /**
+     * @param \App\Model\Product\Group\ProductGroup $productGroup
+     * @return int
+     */
+    public function getStockQuantity(ProductGroup $productGroup): int
+    {
+        $quantity = 0;
+
+        foreach ($productGroup->getItem()->getStoreStocks() as $storeStock) {
+            if (!in_array((int)$storeStock->getStore()->getExternalNumber(), [
+                PohodaProductExportRepository::POHODA_STOCK_TROPIC_ID,
+                PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID,
+            ], true)) {
+                continue;
+            }
+
+            $quantity += $storeStock->getStockQuantity();
+        }
+
+        return (int)floor($quantity / $productGroup->getItemCount());
     }
 }
