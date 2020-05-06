@@ -98,7 +98,7 @@ class ProductFacadeTest extends TransactionFunctionalTestCase
             ],
             [
                 'hidden' => false,
-                'sellingDenied' => false,
+                'sellingDenied' => true,
                 'stockQuantity' => 0,
                 'outOfStockAction' => Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE,
                 'calculatedHidden' => false,

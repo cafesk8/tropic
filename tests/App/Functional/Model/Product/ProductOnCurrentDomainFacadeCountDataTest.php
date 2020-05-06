@@ -420,44 +420,68 @@ abstract class ProductOnCurrentDomainFacadeCountDataTest extends ParameterTransa
         $filterData->inStock = true;
 
         $countData = new ProductFilterCountData();
-        $countData->countInStock = 2;
+        $countData->countInStock = 6;
         $countData->countByBrandId = [
             3 => 1,
             20 => 1,
+            19 => 2,
+            1 => 1,
+            15 => 1,
         ];
         $countData->countByFlagId = [
-            1 => 2,
+            1 => 6,
+            2 => 2,
+            3 => 1,
         ];
         $countData->countByParameterIdAndValueId = [
             17 => [
-                $this->getParameterValueIdForFirstDomain('Yes') => 1,
+                $this->getParameterValueIdForFirstDomain('Yes') => 2,
             ],
             11 => [
-                $this->getParameterValueIdForFirstDomain('123.8x58.6 mm') => 1,
+                $this->getParameterValueIdForFirstDomain('123.8x58.6 mm') => 2,
             ],
             19 => [
-                $this->getParameterValueIdForFirstDomain('No') => 1,
+                $this->getParameterValueIdForFirstDomain('No') => 2,
             ],
             12 => [
-                $this->getParameterValueIdForFirstDomain('No') => 1,
+                $this->getParameterValueIdForFirstDomain('No') => 2,
             ],
             18 => [
-                $this->getParameterValueIdForFirstDomain('No') => 1,
+                $this->getParameterValueIdForFirstDomain('No') => 2,
             ],
             14 => [
-                $this->getParameterValueIdForFirstDomain('16mil.') => 1,
+                $this->getParameterValueIdForFirstDomain('16mil.') => 2,
             ],
             16 => [
-                $this->getParameterValueIdForFirstDomain('2') => 1,
+                $this->getParameterValueIdForFirstDomain('2') => 2,
             ],
             15 => [
-                $this->getParameterValueIdForFirstDomain('1.7GHz') => 1,
+                $this->getParameterValueIdForFirstDomain('1.7GHz') => 2,
             ],
             13 => [
-                $this->getParameterValueIdForFirstDomain('1024 MB') => 1,
+                $this->getParameterValueIdForFirstDomain('1024 MB') => 2,
             ],
             10 => [
-                $this->getParameterValueIdForFirstDomain('112 g') => 1,
+                $this->getParameterValueIdForFirstDomain('112 g') => 2,
+            ],
+            3 => [
+                $this->getParameterValueIdForFirstDomain('800 × 480 px') => 2,
+            ],
+            47 => [
+                $this->getParameterValueIdForFirstDomain('4.5"') => 2,
+                $this->getParameterValueIdForFirstDomain('5.5"') => 1,
+            ],
+            48 => [
+                $this->getParameterValueIdForFirstDomain('TFT') => 2,
+                $this->getParameterValueIdForFirstDomain('Super LCD') => 1,
+            ],
+            49 => [
+                $this->getParameterValueIdForFirstDomain('5 Mpx') => 2,
+                $this->getParameterValueIdForFirstDomain('13 Mpx') => 1,
+            ],
+            52 => [
+                $this->getParameterValueIdForFirstDomain('250 kWh/rok') => 1,
+                $this->getParameterValueIdForFirstDomain('275 kWh/rok') => 1,
             ],
         ];
 

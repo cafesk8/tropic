@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\App\Smoke\Http;
 
 use App\Controller\Front\ProductController;
+use App\DataFixtures\Demo\AvailabilityDataFixture;
 use App\DataFixtures\Demo\CustomerUserDataFixture;
 use App\DataFixtures\Demo\OrderDataFixture;
 use App\DataFixtures\Demo\PersonalDataAccessRequestDataFixture;
@@ -285,6 +286,17 @@ class RouteConfigCustomization
             ->customizeByRouteName('admin_product_createvariant', function (RouteConfig $config) {
                 $config->changeDefaultRequestDataSet('Creating variants this way is not supported anymore')
                     ->setExpectedStatusCode(404);
+            })
+            ->customizeByRouteName('admin_availability_delete', function (RouteConfig $config) {
+                /** @var \App\Model\Product\Availability\Availability $availability */
+                $availability = $this->getPersistentReference(AvailabilityDataFixture::AVAILABILITY_OUT_OF_STOCK);
+                /** @var \App\Model\Product\Availability\Availability $newAvailability */
+                $newAvailability = $this->getPersistentReference(AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+
+                $debugNote = sprintf('Delete availability "%s" and replace it by "%s".', $availability->getName(), $newAvailability->getName());
+                $config->changeDefaultRequestDataSet($debugNote)
+                    ->setParameter('id', $availability->getId())
+                    ->setParameter('newId', $newAvailability->getId());
             });
     }
 
