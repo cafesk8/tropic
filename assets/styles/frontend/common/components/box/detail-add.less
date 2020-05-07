@@ -1,15 +1,48 @@
 @box-detail-add-price-font-size-main: 36px;
 @box-detial-add-item-gap: 20px;
 
+@box-detail-add-message-side-margin: 40px;
+
+@box-detail-add-action-spinbox-width: 108px;
+
 .box-detail-add {
+    &__message {
+        display: flex;
+        align-items: center;
+        margin: -20px 0 @box-detial-add-item-gap;
+        width: 100%;
+        padding: 10px 40px;
+        line-height: 18px; 
+
+        border-radius: @radius;
+        background-color: @color-f;
+        font-family: @font-alt;
+        font-weight: 600;
+        font-size: @font-size + 1px;
+
+        @media @query-vl {
+            width: calc(~"100% + (@{box-detail-add-message-side-margin} * 2)");
+            margin: -20px -@box-detail-add-message-side-margin (@box-detial-add-item-gap + 10px);
+        }
+
+        &__icon {
+            margin-right: 10px;
+            margin-bottom: -7px;
+        }
+    }
+
     &__prices {
-        margin-bottom: 30px;
+        margin-bottom: @box-detial-add-item-gap;
 
         @media @query-md {
             display: flex;
             flex-wrap: wrap;
             flex-direction: row;
             align-items: flex-end;
+        }
+
+        @media @query-vl {
+            margin-bottom: @box-detial-add-item-gap + 10px;
         }
 
         &__item {
@@ -68,16 +101,30 @@
 
     &__action {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: wrap;
-        margin-bottom: @box-detial-add-item-gap + 10px;
+        margin-bottom: @box-detial-add-item-gap;
+
+        @media @query-md {
+            flex-direction: row;
+        }
+
+        @media @query-vl {
+            margin-bottom: @box-detial-add-item-gap + 10px;
+        }
 
         &__spinbox {
-            margin-right: @box-detial-add-item-gap;
+            width: @box-detail-add-action-spinbox-width;
+            margin-bottom: @box-detial-add-item-gap;
+
+            @media @query-md {
+                margin-bottom: 0;
+            }
         }
 
         &__availability {
             display: flex;
+            width: calc(~"100% - @{box-detail-add-action-spinbox-width}");
             align-items: center;
         }
     }

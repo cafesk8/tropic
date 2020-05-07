@@ -85,17 +85,23 @@
                         {% endfor %}
 
                         <div class="box-detail__add-basket">
-                            {% if product.isGiftCertificate %}
-                                <div class="box-detail__add-basket__message">
-                                    {{ 'Na tento produkt se nevztahují slevové kupóny' }}
-                                </div>
-                            {% endif %}
-
                             <div class="box-detail-add">
                                 <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="box-detail-add__prices">
+                                    {% if product.isGiftCertificate %}
+                                        <div class="box-detail-add__message">
+                                            <div class="box-detail-add__message__icon">
+                                                {% include 'Front/Svg/info.svg' %}
+                                            </div>
+                                            {{ 'Na tento produkt se nevztahují slevové kupóny' }}
+                                        </div>
+                                    {% endif %}
+                                    
                                     {% if not product.isMainVariant %}
                                         {% if product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
-                                            <div class="in-message--info">
+                                            <div class="box-detail-add__message">
+                                                <div class="box-detail-add__message__icon">
+                                                    {% include 'Front/Svg/info.svg' %}
+                                                </div>
                                                 {{ registrationDiscountExclusionText }}
                                             </div>
                                         {% endif %}

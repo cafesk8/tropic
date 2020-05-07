@@ -2,17 +2,14 @@
 
 {% macro availabilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}in-availability in-availability--big js-detail-availability js-detail-availability-{{ product.id }}">
-        <span class="in-availability__status">
-            <div class="in-availability__status__icon">
-                <i class="svg svg-checked"></i>
-            </div>
+        <div class="in-availability__status">
             {{ availability.productAvailability(product) }}
-        </span>
+        </div>
 
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
             <span class="in-availability__text-big">
-                {{ 'nebo na'|trans }}
+                {{ 'nebo na'|trans }}&nbsp
             </span>
             <a
                 href="#"
@@ -44,7 +41,7 @@
 
 {% if product.variants|length > 0 %}
     <div class="in-availability in-availability--big js-product-variant-detail-select-info">
-        <span class="in-availability__status">
+        <div class="in-availability__status">
             <span class="in-availability__date">
                 {% if product.isMainVariant %}
                     {{ 'Pro zobrazení dostupnosti vyberte variantu'|trans }}
@@ -52,7 +49,7 @@
                     {{ availability.productAvailability(product) }}
                 {% endif %}
             </span>
-        </span>
+        </div>
     </div>
 {% for variant in product.variants %}
         {{ _self.availabilityDetail(variant, true) }}

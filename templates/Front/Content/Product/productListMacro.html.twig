@@ -30,7 +30,7 @@
                                                 {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                             </div>
                                         {% endif %}
-                                        <div class="{% if productSellingPrice.hasHigherStandardPrice %}list-products__item__info__price__main{% endif %}">
+                                        <div {% if productSellingPrice.hasHigherStandardPrice %}class="list-products__item__info__price__main"{% endif %}>
                                             {% if productSellingPrice.priceFrom %}
                                                 {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
                                             {% else %}

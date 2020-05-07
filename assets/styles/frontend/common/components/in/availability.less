@@ -39,8 +39,6 @@
     }
 
     &__text-big {
-        padding: 4px 5px 0 0;
-
         font-size: @font-size-small;
         font-weight: 400;
         white-space: nowrap;
@@ -58,39 +56,24 @@
     }
 
     &__stores-big {
-        padding-top: 4px;
-
         font-size: @font-size-small;
-        font-weight: 700;
+        font-weight: 400;
         white-space: nowrap;
-        text-decoration: none;
     }
 
     &__status {
         display: flex;
         align-items: center;
-        padding-right: 5px;
+        width: 100%;
+        line-height: 17px;
 
         font-size: @font-size-big;
         white-space: nowrap;
-
-        &__icon {
-            display: flex;
-            margin-right: 5px;
-            width: @in-availability-icon-size;
-            height: @in-availability-icon-size;
-
-            font-size: @in-availability-icon-size;
-            color: @color-add;
-
-            .svg {
-                height: @in-availability-icon-size;
-            }
-        }
     }
 
     &__date {
         color: @color-green;
+        font-weight: 500;
 
         &--not-available {
             color: @color-gray;

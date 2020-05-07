@@ -142,11 +142,15 @@
             line-height: @list-menu-item-height;
 
             font-size: @font-size;
-            text-decoration: none;
             transition: none;
+            text-decoration: none;
 
             @media @query-vl {
                 padding: 0 @list-menu-item-link-padding;
+            }
+
+            &:hover {
+                text-decoration: underline;
             }
 
             &__arrow {
