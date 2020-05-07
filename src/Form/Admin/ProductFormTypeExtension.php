@@ -233,6 +233,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ]);
 
         $builderStoreStockGroup = $builder->create('storeStock', GroupType::class, [
+            'disabled' => $product !== null && $product->isPohodaProductTypeGroup(),
             'label' => t('Skladové zásoby'),
             'position' => ['after' => 'displayAvailabilityGroup'],
         ]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Group\ProductGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -46,18 +47,21 @@ class ProductHiddenRecalculator extends BaseProductHiddenRecalculator
         if ($product === null || !$product->isPohodaProductTypeGroup()) {
             parent::executeQuery($product);
         } else {
-            $hide = false;
+            $productIds = array_map(function (ProductGroup $productGroup) {
+                return $productGroup->getItem()->getId();
+            }, $product->getProductGroups());
 
-            foreach ($product->getProductGroups() as $productGroup) {
-                if ($productGroup->getItem()->getCalculatedSellingDenied()) {
-                    $hide = true;
-                    break;
-                }
-            }
+            $results = $this->em->createQueryBuilder()
+                ->select('p.id')
+                ->from(Product::class, 'p')
+                ->where('p.id IN (:productIds)')
+                ->andWhere('p.calculatedSellingDenied = TRUE')
+                ->setParameter('productIds', $productIds)
+                ->getQuery()->getResult();
 
             $qb = $this->em->createQueryBuilder()
                 ->update(Product::class, 'p')
-                ->set('p.calculatedHidden', $hide ? 'TRUE' : 'FALSE')
+                ->set('p.calculatedHidden', count($results) > 0 ? 'TRUE' : 'FALSE')
                 ->where('p = :product')
                 ->setParameter('product', $product);
 

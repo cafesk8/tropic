@@ -265,7 +265,7 @@ class ProductFacade extends BaseProductFacade
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
         $this->scheduleRecalculationsForMainVariant($product);
-//        $this->refreshMainProducts($product);
+        $this->refreshMainProducts($product);
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
 
@@ -322,7 +322,6 @@ class ProductFacade extends BaseProductFacade
         $this->updateMainProductsStoreStocks($product);
 
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
-        $this->em->refresh($product);
         $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->em->flush($product);
     }
@@ -366,7 +365,6 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->productSellingDeniedRecalculator->calculateSellingDeniedForProduct($product);
-        $this->em->refresh($product);
         $this->productHiddenRecalculator->calculateHiddenForProduct($product);
         $this->em->flush($product);
         $this->refreshMainProducts($product);

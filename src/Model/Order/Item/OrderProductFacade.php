@@ -4,52 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model\Order\Item;
 
-use App\Model\Product\Group\ProductGroupFacade;
-use Doctrine\ORM\EntityManagerInterface;
-use Shopsys\FrameworkBundle\Model\Module\ModuleFacade;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
 use Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade as BaseOrderProductFacade;
-use Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler;
-use Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator;
-use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator;
-use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 
 class OrderProductFacade extends BaseOrderProductFacade
 {
-    /**
-     * @var \App\Model\Product\Group\ProductGroupFacade
-     */
-    private $productGroupFacade;
-
-    /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator $productSellingDeniedRecalculator
-     * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
-     * @param \Shopsys\FrameworkBundle\Model\Module\ModuleFacade $moduleFacade
-     * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
-     */
-    public function __construct(
-        EntityManagerInterface $em,
-        ProductHiddenRecalculator $productHiddenRecalculator,
-        ProductSellingDeniedRecalculator $productSellingDeniedRecalculator,
-        ProductAvailabilityRecalculationScheduler $productAvailabilityRecalculationScheduler,
-        ProductVisibilityFacade $productVisibilityFacade,
-        ModuleFacade $moduleFacade,
-        ProductGroupFacade $productGroupFacade
-    ) {
-        parent::__construct(
-            $em,
-            $productHiddenRecalculator,
-            $productSellingDeniedRecalculator,
-            $productAvailabilityRecalculationScheduler,
-            $productVisibilityFacade,
-            $moduleFacade
-        );
-        $this->productGroupFacade = $productGroupFacade;
-    }
-
     /**
      * @param \App\Model\Order\Item\OrderItem[] $orderProducts
      */
@@ -63,7 +22,7 @@ class OrderProductFacade extends BaseOrderProductFacade
                 $product->subtractStockQuantity($orderProductUsingStock->getQuantity());
 
                 if ($product->isPohodaProductTypeGroup()) {
-                    foreach ($this->productGroupFacade->getAllByMainProduct($product) as $productGroup) {
+                    foreach ($product->getProductGroups() as $productGroup) {
                         $productGroup->getItem()->subtractStockQuantity($orderProductUsingStock->getQuantity() * $productGroup->getItemCount());
                     }
                 }
@@ -86,7 +45,7 @@ class OrderProductFacade extends BaseOrderProductFacade
                 $product->addStockQuantity($orderProductUsingStock->getQuantity());
 
                 if ($product->isPohodaProductTypeGroup()) {
-                    foreach ($this->productGroupFacade->getAllByMainProduct($product) as $productGroup) {
+                    foreach ($product->getProductGroups() as $productGroup) {
                         $productGroup->getItem()->addStockQuantity($orderProductUsingStock->getQuantity() * $productGroup->getItemCount());
                     }
                 }
