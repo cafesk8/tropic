@@ -65,6 +65,7 @@ class PohodaProductExportRepository
             ->addScalarResult('Popis', PohodaProduct::COL_SHORT_DESCRIPTION)
             ->addScalarResult('Popis2', PohodaProduct::COL_LONG_DESCRIPTION)
             ->addScalarResult('VPrVyjmProdSl', PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED)
+            ->addScalarResult('VPrVyjmProdAkc', PohodaProduct::COL_PROMO_DISCOUNT_DISABLED)
             ->addScalarResult('ProdejDPH', PohodaProduct::COL_SELLING_PRICE)
             ->addScalarResult('RelDPHp', PohodaProduct::COL_SELLING_VAT_RATE_ID)
             ->addScalarResult('NakupDPH', PohodaProduct::COL_PURCHASE_PRICE)
@@ -84,6 +85,7 @@ class PohodaProductExportRepository
                 Product.Popis, 
                 Product.Popis2, 
                 Product.VPrVyjmProdSl,
+                Product.VPrVyjmProdAkc,
                 Product.ProdejDPH, 
                 Product.RelDPHp, 
                 Product.NakupDPH, 

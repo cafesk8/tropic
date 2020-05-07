@@ -41,6 +41,16 @@ class DiscountExclusionDataFixture extends AbstractReferenceFixture
                 t('Na tento produkt se nevztahuje sleva pro registrované zákazníky', [], 'dataFixtures', $domainConfig->getLocale()),
                 $domainConfig->getId()
             );
+
+            $this->discountExclusionFacade->setPromoDiscountExclusionText(
+                t('Na tento produkt se nevztahuje sleva za slevové kupóny', [], 'dataFixtures', $domainConfig->getLocale()),
+                $domainConfig->getId()
+            );
+
+            $this->discountExclusionFacade->setAllDiscountExclusionText(
+                t('Na tento produkt se nevztahují žádné slevy', [], 'dataFixtures', $domainConfig->getLocale()),
+                $domainConfig->getId()
+            );
         }
     }
 }

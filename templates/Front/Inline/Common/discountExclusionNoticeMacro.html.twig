@@ -1,0 +1,20 @@
+{% macro discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
+    {% if product.isRegistrationDiscountDisabled and product.isPromoDiscountDisabled %}
+        {{ _self.discountExclusionNoticeDetail(allDiscountExclusionText) }}
+    {% elseif product.isRegistrationDiscountDisabled %}
+        {{ _self.discountExclusionNoticeDetail(registrationDiscountExclusionText) }}
+    {% elseif product.isPromoDiscountDisabled %}
+        {{ _self.discountExclusionNoticeDetail(promoDiscountExclusionText) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro discountExclusionNoticeDetail(discountExclusionText) %}
+    {% if discountExclusionText is not empty %}
+        <div class="box-detail-add__message">
+            <div class="box-detail-add__message__icon">
+                {% include 'Front/Svg/info.svg' %}
+            </div>
+            {{ discountExclusionText }}
+        </div>
+    {% endif %}
+{% endmacro %}

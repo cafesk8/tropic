@@ -10,6 +10,8 @@ use Shopsys\FrameworkBundle\Component\Domain\Domain;
 class DiscountExclusionFacade
 {
     public const SETTING_REGISTRATION_DISCOUNT_EXCLUSION = 'registrationDiscountText';
+    public const SETTING_PROMO_DISCOUNT_EXCLUSION = 'promoDiscountText';
+    public const SETTING_ALL_DISCOUNT_EXCLUSION = 'allDiscountText';
 
     /**
      * @var \App\Component\Setting\Setting
@@ -32,26 +34,27 @@ class DiscountExclusionFacade
     }
 
     /**
-     * @param int $domainId
-     * @return string
+     * @return string[]
      */
-    public function getRegistrationDiscountExclusionText(int $domainId): string
+    public function getRegistrationDiscountExclusionTexts(): array
     {
-        return $this->setting->getForDomain(self::SETTING_REGISTRATION_DISCOUNT_EXCLUSION, $domainId);
+        return $this->getDiscountExclusionTexts(self::SETTING_REGISTRATION_DISCOUNT_EXCLUSION);
     }
 
     /**
      * @return string[]
      */
-    public function getRegistrationDiscountExclusionTexts(): array
+    public function getPromoDiscountExclusionTexts(): array
     {
-        $registrationDiscountExclusionTexts = [];
+        return $this->getDiscountExclusionTexts(self::SETTING_PROMO_DISCOUNT_EXCLUSION);
+    }
 
-        foreach ($this->domain->getAllIds() as $domainId) {
-            $registrationDiscountExclusionTexts[$domainId] = $this->getRegistrationDiscountExclusionText($domainId);
-        }
-
-        return $registrationDiscountExclusionTexts;
+    /**
+     * @return string[]
+     */
+    public function getAllDiscountExclusionTexts(): array
+    {
+        return $this->getDiscountExclusionTexts(self::SETTING_ALL_DISCOUNT_EXCLUSION);
     }
 
     /**
@@ -61,5 +64,75 @@ class DiscountExclusionFacade
     public function setRegistrationDiscountExclusionText(string $text, int $domainId): void
     {
         $this->setting->setForDomain(self::SETTING_REGISTRATION_DISCOUNT_EXCLUSION, $text, $domainId);
+    }
+
+    /**
+     * @param string $text
+     * @param int $domainId
+     */
+    public function setPromoDiscountExclusionText(string $text, int $domainId): void
+    {
+        $this->setting->setForDomain(self::SETTING_PROMO_DISCOUNT_EXCLUSION, $text, $domainId);
+    }
+
+    /**
+     * @param string $text
+     * @param int $domainId
+     */
+    public function setAllDiscountExclusionText(string $text, int $domainId): void
+    {
+        $this->setting->setForDomain(self::SETTING_ALL_DISCOUNT_EXCLUSION, $text, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return string
+     */
+    public function getRegistrationDiscountExclusionText(int $domainId): string
+    {
+        return $this->getDiscountExclusionText(self::SETTING_REGISTRATION_DISCOUNT_EXCLUSION, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return string
+     */
+    public function getPromoDiscountExclusionText(int $domainId): string
+    {
+        return $this->getDiscountExclusionText(self::SETTING_PROMO_DISCOUNT_EXCLUSION, $domainId);
+    }
+
+    /**
+     * @param int $domainId
+     * @return string
+     */
+    public function getAllDiscountExclusionText(int $domainId): string
+    {
+        return $this->getDiscountExclusionText(self::SETTING_ALL_DISCOUNT_EXCLUSION, $domainId);
+    }
+
+    /**
+     * @param string $exclusionType
+     * @param int $domainId
+     * @return string
+     */
+    private function getDiscountExclusionText(string $exclusionType, int $domainId): string
+    {
+        return $this->setting->getForDomain($exclusionType, $domainId);
+    }
+
+    /**
+     * @param string $exclusionType
+     * @return string[]
+     */
+    private function getDiscountExclusionTexts(string $exclusionType): array
+    {
+        $registrationDiscountExclusionTexts = [];
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            $registrationDiscountExclusionTexts[$domainId] = $this->getDiscountExclusionText($exclusionType, $domainId);
+        }
+
+        return $registrationDiscountExclusionTexts;
     }
 }

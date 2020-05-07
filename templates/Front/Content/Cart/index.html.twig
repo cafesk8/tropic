@@ -47,6 +47,7 @@
 {% endblock %}
 
 {% block main_content %}
+    {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
     <div class="web__line">
         <div class="web__container web__container--transparent">
             {% include 'Front/Inline/OrderProgress/index.html.twig' with {step: '1'} only %}
@@ -140,11 +141,7 @@
                                                             {% endfor %}
                                                         </div>
                                                     {% endif %}
-                                                    {% if cartItem.product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
-                                                        <div class="in-message--info">
-                                                            {{ registrationDiscountExclusionText }}
-                                                        </div>
-                                                    {% endif %}
+                                                    {{ discountExclusion.discountExclusionNotice(cartItem.product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                                 </div>
                                             </div>
                                         </div>

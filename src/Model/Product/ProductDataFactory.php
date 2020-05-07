@@ -138,6 +138,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->variantId = $product->getVariantId();
         $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
         $productData->eurCalculatedAutomatically = $product->isEurCalculatedAutomatically();
+        $productData->promoDiscountDisabled = $product->isPromoDiscountDisabled();
         $productData->groupItems = $this->getProductGroups($product);
 
         foreach ($this->domain->getAllIds() as $domainId) {

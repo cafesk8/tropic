@@ -51,6 +51,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'descriptions',
         'usingStock',
         'registrationDiscountDisabled',
+        'promoDiscountDisabled',
+        'manualInputPricesByPricingGroupId',
         'vatsIndexedByDomainId',
         'variantId',
         'categoriesByDomainId',
@@ -257,6 +259,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         }
 
         $this->addVideoGroup($builder);
+        $this->addDiscountExclusionGroup($builder);
 
         if ($product === null || ($product !== null && $product->isMainVariant() === false)) {
             $builder->add($this->getPricesGroup($builder, $product));
@@ -369,13 +372,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private function getPricesGroup(FormBuilderInterface $builder, ?Product $product): FormBuilderInterface
     {
         $pricesGroupBuilder = $builder->get('pricesGroup');
-        $pricesGroupBuilder->add('registrationDiscountDisabled', YesNoType::class, [
-            'label' => t('Vyjmout ze slev za registraci'),
-            'position' => 'first',
-        ]);
         $pricesGroupBuilder->add('eurCalculatedAutomatically', YesNoType::class, [
             'label' => t('Ceny se automaticky přepočítávají na Euro'),
-            'position' => ['after' => 'registrationDiscountDisabled'],
+            'position' => 'first',
         ]);
 
         $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');
@@ -659,5 +658,26 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     public function getExtendedType(): string
     {
         return ProductFormType::class;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     */
+    private function addDiscountExclusionGroup(FormBuilderInterface $builder): void
+    {
+        $discountExclusionGroup = $builder->create('discountExclusionGroup', GroupType::class, [
+            'label' => t('Vyjmutí ze slev'),
+            'position' => ['before' => 'pricesGroup'],
+        ]);
+
+        $discountExclusionGroup->add('registrationDiscountDisabled', YesNoType::class, [
+            'label' => t('Vyjmout ze slev za registraci'),
+        ]);
+
+        $discountExclusionGroup->add('promoDiscountDisabled', YesNoType::class, [
+            'label' => t('Vyjmout ze slev za slevové kupóny'),
+        ]);
+
+        $builder->add($discountExclusionGroup);
     }
 }

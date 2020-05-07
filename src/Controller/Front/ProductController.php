@@ -223,6 +223,8 @@ class ProductController extends FrontBaseController
             'productSizeArticleId' => $this->setting->getForDomain(Setting::PRODUCT_SIZE_ARTICLE_ID, $domainId),
             'loyaltyProgramArticle' => $this->articleFacade->findArticleBySettingValueAndDomainId(Setting::LOYALTY_PROGRAM_ARTICLE_ID, $this->domain->getId()),
             'registrationDiscountExclusionText' => $this->discountExclusionFacade->getRegistrationDiscountExclusionText($this->domain->getId()),
+            'promoDiscountExclusionText' => $this->discountExclusionFacade->getPromoDiscountExclusionText($this->domain->getId()),
+            'allDiscountExclusionText' => $this->discountExclusionFacade->getAllDiscountExclusionText($this->domain->getId()),
         ]);
     }
 

@@ -1,8 +1,9 @@
-{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText) %}
+{% macro productBox(product, productMainCategory, visible, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) %}
     {% import _self as self %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
     {% import 'Front/Content/Product/boxTabs.html.twig' as boxTabs %}
     {% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
+    {% import 'Front/Inline/Common/discountExclusionNoticeMacro.html.twig' as discountExclusion %}
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
@@ -74,7 +75,7 @@
                         <h2 class="box-detail__info__title" itemprop="name">
                             {{ product.getSeoH1(domain.id)|default(product.name) }}
                         </h2>
-                        
+
                         {% for gift in product.gifts(domain.id) %}
                             {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
                                 and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
@@ -95,16 +96,9 @@
                                             {{ 'Na tento produkt se nevztahují slevové kupóny' }}
                                         </div>
                                     {% endif %}
-                                    
+
                                     {% if not product.isMainVariant %}
-                                        {% if product.isRegistrationDiscountDisabled and registrationDiscountExclusionText is not empty %}
-                                            <div class="box-detail-add__message">
-                                                <div class="box-detail-add__message__icon">
-                                                    {% include 'Front/Svg/info.svg' %}
-                                                </div>
-                                                {{ registrationDiscountExclusionText }}
-                                            </div>
-                                        {% endif %}
+                                        {{ discountExclusion.discountExclusionNotice(product, registrationDiscountExclusionText, promoDiscountExclusionText, allDiscountExclusionText) }}
                                         {{ self.productPrice(product) }}
                                         <meta itemprop="priceCurrency" content="{{ currencyCode(domain.id) }}">
                                         <meta itemprop="price" content="{{ sellingPrice.priceWithVat|moneyFormat }}">

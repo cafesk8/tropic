@@ -66,6 +66,9 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_REGISTRATION_DISCOUNT_DISABLED => [
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_PROMO_DISCOUNT_DISABLED => [
+                    new NotBlank(),
+                ],
                 PohodaProduct::COL_SELLING_PRICE => [
                     new Type(['type' => 'numeric']),
                     new NotBlank(),
