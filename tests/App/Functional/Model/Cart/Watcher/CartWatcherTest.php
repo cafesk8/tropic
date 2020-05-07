@@ -6,13 +6,13 @@ namespace Tests\App\Functional\Model\Cart\Watcher;
 
 use App\DataFixtures\Demo\PricingGroupDataFixture;
 use App\DataFixtures\Demo\ProductDataFixture;
+use App\Model\Cart\Cart;
+use App\Model\Cart\CartWatcher\CartWatcher;
+use App\Model\Cart\Item\CartItem;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Product;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
-use Shopsys\FrameworkBundle\Model\Cart\Cart;
-use  Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
-use Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Customer\User\CustomerUserIdentifier;
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductManualInputPriceFacade;
@@ -37,7 +37,7 @@ class CartWatcherTest extends TransactionFunctionalTestCase
         $cartItem = new CartItem($cart, $product, 1, $productPrice->getPriceWithVat());
         $cart->addItem($cartItem);
 
-        /** @var \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher */
+        /** @var \App\Model\Cart\CartWatcher\CartWatcher $cartWatcher */
         $cartWatcher = $this->getContainer()->get(CartWatcher::class);
 
         $modifiedItems1 = $cartWatcher->getModifiedPriceItemsAndUpdatePrices($cart);
@@ -78,7 +78,7 @@ class CartWatcherTest extends TransactionFunctionalTestCase
         $cart = new Cart($customerUserIdentifier->getCartIdentifier());
         $cart->addItem($cartItemMock);
 
-        /** @var \Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher $cartWatcher */
+        /** @var \App\Model\Cart\CartWatcher\CartWatcher $cartWatcher */
         $cartWatcher = $this->getContainer()->get(CartWatcher::class);
 
         $notListableItems = $cartWatcher->getNotListableItems($cart, $currentCustomerMock);

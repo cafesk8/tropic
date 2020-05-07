@@ -18,10 +18,9 @@ use App\Model\Product\Gift\ProductGiftInCartFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Model\Cart\AddProductResult;
-use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem;
 use Shopsys\FrameworkBundle\Model\Module\ModuleList;
-use Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice;
 use Shopsys\FrameworkBundle\Model\Order\Preview\OrderPreview;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroup;
 use Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade;
@@ -347,9 +346,11 @@ class CartController extends FrontBaseController
             try {
                 $formData = $form->getData();
 
-                $addProductResult = $this->cartFacade->addProduct($product, (int)$formData['quantity']);
+                $addProductResults = $this->cartFacade->addProduct($product, (int)$formData['quantity']);
 
-                $this->sendAddProductResultFlashMessage($addProductResult);
+                foreach ($addProductResults as $addProductResult) {
+                    $this->sendAddProductResultFlashMessage($addProductResult);
+                }
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $ex) {
                 $this->addErrorFlash(t('Selected product no longer available or doesn\'t exist.'));
             } catch (\Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidQuantityException $ex) {
@@ -393,7 +394,7 @@ class CartController extends FrontBaseController
             try {
                 $formData = $form->getData();
 
-                $addProductResult = $this->cartFacade->addProduct($product, (int)$formData['quantity']);
+                $addProductResults = $this->cartFacade->addProduct($product, (int)$formData['quantity']);
 
                 $accessories = $this->listedProductViewFacade->getAccessories(
                     (int)$formData['productId'],
@@ -405,23 +406,20 @@ class CartController extends FrontBaseController
                 $orderPreview = $this->orderPreviewFactory->createForCurrentUser();
                 $productsPrice = $orderPreview->getProductsPrice();
                 $remainingPriceWithVat = $this->freeTransportAndPaymentFacade->getRemainingPriceWithVat($productsPrice->getPriceWithVat(), $domainId);
-                $quantifiedItemPrice = $this->findQuantifiedItemPriceForProduct($addProductResult->getCartItem(), $orderPreview);
+                $quantifiedItemPricesIndexedByCartItemId = $this->getQuantifiedItemPricesForProductItems($addProductResults, $orderPreview);
 
                 if ($request->request->get('add_product_form')['onlyRefresh']) {
                     return $this->json(['refresh' => true]);
                 } else {
-                    return $this->render('Front/Inline/Cart/afterAddWindow.html.twig', [
+                    return $this->render('Front/Inline/Cart/afterAddWindow.html.twig', array_merge([
                         'accessories' => $accessories,
                         'ACCESSORIES_ON_BUY' => ModuleList::ACCESSORIES_ON_BUY,
-                        'addedQuantity' => $addProductResult->getAddedQuantity(),
-                        'addedPrice' => $quantifiedItemPrice->getUnitPrice()->getPriceWithVat()->multiply($addProductResult->getAddedQuantity()),
-                        'cartItem' => $addProductResult->getCartItem(),
                         'isFreeTransportAndPaymentActive' => $this->freeTransportAndPaymentFacade->isActive($domainId),
                         'isPaymentAndTransportFree' => $this->freeTransportAndPaymentFacade->isFree($productsPrice->getPriceWithVat(), $domainId),
                         'remainingPriceWithVat' => $remainingPriceWithVat,
                         'percentsForFreeTransportAndPayment' => $this->freeTransportAndPaymentFacade->getPercentsForFreeTransportAndPayment($productsPrice->getPriceWithVat(), $domainId),
-                        'quantifiedItemPrice' => $quantifiedItemPrice,
-                    ]);
+                        'quantifiedItemPricesIndexedByCartItemId' => $quantifiedItemPricesIndexedByCartItemId,
+                    ], $this->getAddedItemsParameters($addProductResults)));
                 }
             } catch (\Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException $ex) {
                 $this->addErrorFlash(t('Selected product no longer available or doesn\'t exist.'));
@@ -448,27 +446,30 @@ class CartController extends FrontBaseController
     }
 
     /**
-     * @param \App\Model\Cart\Item\CartItem $cartItem
+     * @param \Shopsys\FrameworkBundle\Model\Cart\AddProductResult[] $addProductResults
      * @param \App\Model\Order\Preview\OrderPreview $orderPreview
-     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice|null
+     * @return \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedItemPrice[]
      */
-    private function findQuantifiedItemPriceForProduct(CartItem $cartItem, OrderPreview $orderPreview): ?QuantifiedItemPrice
+    private function getQuantifiedItemPricesForProductItems(array $addProductResults, OrderPreview $orderPreview): array
     {
-        $quantifiedProductIndex = null;
-        foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
-            if ($quantifiedProduct->getProduct()->getId() === $cartItem->getProduct()->getId()) {
-                $quantifiedProductIndex = $index;
-                break;
+        $quantifiedItemsPricesForProductItems = [];
+        foreach ($addProductResults as $addProductResult) {
+            /** @var \App\Model\Cart\Item\CartItem $addedCartItem */
+            $addedCartItem = $addProductResult->getCartItem();
+            $addedProduct = $addedCartItem->getProduct();
+
+            $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
+            foreach ($orderPreview->getQuantifiedProducts() as $index => $quantifiedProduct) {
+                if ($quantifiedProduct->getProduct()->getId() === $addedProduct->getId()) {
+                    if ($quantifiedProduct->isSaleItem() && $addedCartItem->isSaleItem()
+                    || !$quantifiedProduct->isSaleItem() && !$addedCartItem->isSaleItem()) {
+                        $quantifiedItemsPricesForProductItems[$addedCartItem->getId()] = $quantifiedItemsPrices[$index];
+                    }
+                }
             }
         }
 
-        $quantifiedItemsPrices = $orderPreview->getQuantifiedItemsPrices();
-
-        if ($quantifiedProductIndex === null && array_key_exists($quantifiedProductIndex, $quantifiedItemsPrices) === false) {
-            return null;
-        }
-
-        return $quantifiedItemsPrices[$quantifiedProductIndex];
+        return $quantifiedItemsPricesForProductItems;
     }
 
     /**
@@ -580,5 +581,32 @@ class CartController extends FrontBaseController
         }
 
         return $pricingGroup;
+    }
+
+    /**
+     * @param \Shopsys\FrameworkBundle\Model\Cart\AddProductResult[] $addProductResults
+     * @return array
+     */
+    private function getAddedItemsParameters(array $addProductResults): array
+    {
+        $addedItems = [];
+        $totalAddedPrice = Money::zero();
+        $totalAddedQuantity = 0;
+        foreach ($addProductResults as $addProductResult) {
+            $addedCartItem = $addProductResult->getCartItem();
+            $addedItems[] = $addedCartItem;
+            $addedItemPrice = $addedCartItem->getWatchedPrice();
+            $addedItemQuantity = $addProductResult->getAddedQuantity();
+            if ($addedItemPrice !== null) {
+                $totalAddedPrice = $totalAddedPrice->add($addedItemPrice->multiply($addedItemQuantity));
+            }
+            $totalAddedQuantity += $addedItemQuantity;
+        }
+
+        return [
+            'addedQuantity' => $totalAddedQuantity,
+            'addedPrice' => $totalAddedPrice,
+            'addedItems' => $addedItems,
+        ];
     }
 }

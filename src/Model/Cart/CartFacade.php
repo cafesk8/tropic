@@ -192,25 +192,119 @@ class CartFacade extends BaseCartFacade
     /**
      * @param \App\Model\Product\Product $product
      * @param int $quantity
-     * @return \Shopsys\FrameworkBundle\Model\Cart\AddProductResult
+     * @return \Shopsys\FrameworkBundle\Model\Cart\AddProductResult[]
      */
-    public function addProduct(Product $product, int $quantity): AddProductResult
+    public function addProduct(Product $product, int $quantity): array
     {
         $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
 
-        $productQuantityInCart = 0;
-
+        $cartItemsByProductId = [];
         try {
-            $cartItemByProductId = $cart->getItemByProductId($product->getId());
-            $productQuantityInCart = $cartItemByProductId->getQuantity();
+            $cartItemsByProductId = $cart->getItemsByProductId($product->getId());
         } catch (InvalidCartItemException $ex) {
+        }
+
+        $productQuantityInCart = 0;
+        foreach ($cartItemsByProductId as $cartItem) {
+            $productQuantityInCart += $cartItem->getQuantity();
         }
 
         if ($product->isUsingStock() && ($productQuantityInCart + $quantity) > $product->getStockQuantity()) {
             throw new OutOfStockException();
         }
 
-        return parent::addProductToCart($product->getId(), $quantity);
+        return $this->addProductItemsToCart($product->getId(), $quantity, $cartItemsByProductId);
+    }
+
+    /**
+     * Inspired by the parent method addProductToCart
+     *
+     * @param int $productId
+     * @param int $quantity
+     * @param \App\Model\Cart\Item\CartItem[] $cartItemsByProductId
+     * @return \Shopsys\FrameworkBundle\Model\Cart\AddProductResult[]
+     */
+    private function addProductItemsToCart($productId, $quantity, array $cartItemsByProductId = []): array
+    {
+        $addProductResults = [];
+        $product = $this->productRepository->getSellableById(
+            $productId,
+            $this->domain->getId(),
+            $this->currentCustomerUser->getPricingGroup()
+        );
+        $cart = $this->getCartOfCurrentCustomerUserCreateIfNotExists();
+
+        if (!is_int($quantity) || $quantity <= 0) {
+            throw new \Shopsys\FrameworkBundle\Model\Cart\Exception\InvalidQuantityException($quantity);
+        }
+
+        $remainingQuantityToAdd = $quantity;
+
+        // changing quantity of the existing cart items
+        $availableSaleStockQuantity = $product->getRealSaleStocksQuantity();
+        $availableNonSaleStockQuantity = $product->getRealNonSaleStocksQuantity();
+        foreach ($cartItemsByProductId as $cartItem) {
+            if ($cartItem->isSaleItem() && $availableSaleStockQuantity > 0) {
+                $currentSaleQuantityInCart = $cartItem->getQuantity();
+                $availableSaleStockQuantity -= $currentSaleQuantityInCart;
+                $saleQuantityToAdd = $availableSaleStockQuantity;
+                if ($saleQuantityToAdd > 0) {
+                    if ($saleQuantityToAdd > $remainingQuantityToAdd) {
+                        $saleQuantityToAdd = $remainingQuantityToAdd;
+                    }
+                    $cartItem->changeQuantity($currentSaleQuantityInCart + $saleQuantityToAdd);
+                    $remainingQuantityToAdd -= $saleQuantityToAdd;
+                    $availableSaleStockQuantity -= $saleQuantityToAdd;
+                    $addProductResults[] = new AddProductResult($cartItem, false, $saleQuantityToAdd);
+                }
+            } elseif ($availableSaleStockQuantity <= 0 && $remainingQuantityToAdd > 0) {
+                $currentNonSaleQuantity = $cartItem->getQuantity();
+                $availableNonSaleStockQuantity -= $currentNonSaleQuantity;
+                $nonSaleQuantityToAdd = $availableNonSaleStockQuantity;
+                if ($nonSaleQuantityToAdd > 0) {
+                    if ($nonSaleQuantityToAdd > $remainingQuantityToAdd) {
+                        $nonSaleQuantityToAdd = $remainingQuantityToAdd;
+                    }
+                    $cartItem->changeQuantity($currentNonSaleQuantity + $nonSaleQuantityToAdd);
+                    $remainingQuantityToAdd -= $nonSaleQuantityToAdd;
+                    $addProductResults[] = new AddProductResult($cartItem, false, $nonSaleQuantityToAdd);
+                }
+            }
+            $cartItem->changeAddedAt(new \DateTime());
+        }
+
+        // adding new sale cart item
+        if ($remainingQuantityToAdd > 0 && $availableSaleStockQuantity > 0) {
+            if ($availableSaleStockQuantity <= $remainingQuantityToAdd) {
+                $saleCartItemQuantity = $availableSaleStockQuantity;
+            } else {
+                $saleCartItemQuantity = $remainingQuantityToAdd;
+            }
+            $saleProductPrice = $this->productPriceCalculation->calculatePriceForCurrentUser($product, true);
+            $saleCartItem = $this->cartItemFactory->create($cart, $product, $saleCartItemQuantity, $saleProductPrice->getPriceWithVat(), null, null, true);
+            $cart->addItem($saleCartItem);
+            $this->em->persist($saleCartItem);
+            $remainingQuantityToAdd -= $saleCartItemQuantity;
+            $addProductResults[] = new AddProductResult($saleCartItem, true, $saleCartItemQuantity);
+        }
+
+        // adding new non-sale item
+        if ($remainingQuantityToAdd > 0 && $availableNonSaleStockQuantity > 0) {
+            $productPrice = $this->productPriceCalculation->calculatePriceForCurrentUser($product);
+            $nonSaleCartItem = $this->cartItemFactory->create($cart, $product, $remainingQuantityToAdd, $productPrice->getPriceWithVat());
+            $cart->addItem($nonSaleCartItem);
+            $this->em->persist($nonSaleCartItem);
+            $addProductResults[] = new AddProductResult($nonSaleCartItem, true, $remainingQuantityToAdd);
+        }
+
+        if (empty($addProductResults)) {
+            throw new OutOfStockException();
+        }
+        $cart->setModifiedNow();
+
+        $this->em->flush();
+
+        return $addProductResults;
     }
 
     /**
@@ -324,7 +418,11 @@ class CartFacade extends BaseCartFacade
         $desiredQuantity = $quantity ?? $cartItem->getQuantity();
         $product = $cartItem->getProduct();
         $realMinimumAmount = $product->getRealMinimumAmount();
-        $realStockQuantity = $product->getRealStockQuantity();
+        if ($cartItem->isSaleItem()) {
+            $realStockQuantity = $product->getRealSaleStocksQuantity();
+        } else {
+            $realStockQuantity = $product->getRealNonSaleStocksQuantity();
+        }
 
         if ($product->isUsingStock()) {
             if ($realMinimumAmount > $realStockQuantity) {
@@ -419,5 +517,16 @@ class CartFacade extends BaseCartFacade
     {
         parent::cleanAdditionalData();
         $this->currentOrderDiscountLevelFacade->unsetActiveOrderLevelDiscount();
+    }
+
+    /**
+     * @deprecated since TF-214, use CartFacade::addProduct instead
+     * @param int $productId
+     * @param int $quantity
+     * @return \Shopsys\FrameworkBundle\Model\Cart\AddProductResult|void
+     */
+    public function addProductToCart($productId, $quantity)
+    {
+        @trigger_error('Deprecated, you should use CartFacade::addProduct instead.', E_USER_DEPRECATED);
     }
 }

@@ -18,7 +18,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculat
 class QuantifiedProductPriceCalculation extends BaseQuantifiedProductPriceCalculation
 {
     /**
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\QuantifiedProduct $quantifiedProduct
+     * @param \App\Model\Order\Item\QuantifiedProduct $quantifiedProduct
      * @param int $domainId
      * @param \App\Model\Customer\User\CustomerUser|null $customerUser
      * @param bool $simulateRegistration
@@ -36,7 +36,8 @@ class QuantifiedProductPriceCalculation extends BaseQuantifiedProductPriceCalcul
             $product,
             $domainId,
             $customerUser,
-            $simulateRegistration
+            $simulateRegistration,
+            $quantifiedProduct->isSaleItem()
         );
 
         $totalPriceWithVat = $this->getTotalPriceWithVat($quantifiedProduct, $productPrice);

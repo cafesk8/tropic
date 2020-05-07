@@ -27,7 +27,7 @@ class MallImportOrderFactory
     private $orderFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade
+     * @var \App\Model\Order\Item\OrderProductFacade
      */
     private $orderProductFacade;
 
@@ -40,7 +40,7 @@ class MallImportOrderFactory
      * @param \App\Model\Order\Mall\MallImportOrderDataMapper $mallImportOrderDataMapper
      * @param \App\Model\Order\Mall\MallImportOrderPreviewFactory $mallImportOrderPreviewFactory
      * @param \App\Model\Order\OrderFacade $orderFacade
-     * @param \Shopsys\FrameworkBundle\Model\Order\Item\OrderProductFacade $orderProductFacade
+     * @param \App\Model\Order\Item\OrderProductFacade $orderProductFacade
      * @param \App\Component\Mall\MallImportOrderClient $mallImportOrderClient
      */
     public function __construct(

@@ -19,6 +19,7 @@ class CartItemFactory extends BaseCartItemFactory
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
      * @param \App\Model\Product\Product|null $gift
      * @param \App\Model\Cart\Item\CartItem|null $mainCartItem
+     * @param bool $saleItem
      * @return \App\Model\Cart\Item\CartItem
      */
     public function create(
@@ -27,8 +28,9 @@ class CartItemFactory extends BaseCartItemFactory
         int $quantity,
         ?Money $watchedPrice,
         ?Product $gift = null,
-        ?CartItem $mainCartItem = null
+        ?CartItem $mainCartItem = null,
+        bool $saleItem = false
     ): BaseCartItem {
-        return new CartItem($cart, $product, $quantity, $watchedPrice, $gift, $mainCartItem);
+        return new CartItem($cart, $product, $quantity, $watchedPrice, $gift, $mainCartItem, $saleItem);
     }
 }

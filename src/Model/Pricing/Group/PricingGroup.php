@@ -142,4 +142,12 @@ class PricingGroup extends BasePricingGroup
     {
         return $this->internalId === self::PRICING_GROUP_STANDARD_PRICE;
     }
+
+    /**
+     * @return bool
+     */
+    public function isSalePricePricingGroup(): bool
+    {
+        return $this->internalId === self::PRICING_GROUP_SALE_PRICE;
+    }
 }

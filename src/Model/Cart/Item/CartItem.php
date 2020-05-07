@@ -21,6 +21,13 @@ use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem as BaseCartItem;
 class CartItem extends BaseCartItem
 {
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     *
+     * @var bool
+     */
+    private $saleItem;
+
+    /**
      * @var \App\Model\Product\Product|null
      *
      * @ORM\ManyToOne(targetEntity="Shopsys\FrameworkBundle\Model\Product\Product")
@@ -51,6 +58,7 @@ class CartItem extends BaseCartItem
      * @param \Shopsys\FrameworkBundle\Component\Money\Money|null $watchedPrice
      * @param \App\Model\Product\Product|null $giftByProduct
      * @param \App\Model\Cart\Item\CartItem|null $mainCartItem
+     * @param bool $saleItem
      */
     public function __construct(
         Cart $cart,
@@ -58,16 +66,18 @@ class CartItem extends BaseCartItem
         int $quantity,
         ?Money $watchedPrice,
         ?Product $giftByProduct = null,
-        ?self $mainCartItem = null
+        ?self $mainCartItem = null,
+        bool $saleItem = false
     ) {
         parent::__construct($cart, $product, $quantity, $watchedPrice);
 
         $this->giftByProduct = $giftByProduct;
         $this->mainCartItem = $mainCartItem;
+        $this->saleItem = $saleItem;
     }
 
     /**
-     * @return \App\Model\Product\Product:null
+     * @return \App\Model\Product\Product|null
      */
     public function getGiftByProduct(): ?Product
     {
@@ -88,5 +98,27 @@ class CartItem extends BaseCartItem
     public function getMainCartItem(): ?self
     {
         return $this->mainCartItem;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSaleItem(): bool
+    {
+        return $this->saleItem;
+    }
+
+    /**
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getName(?string $locale = null): ?string
+    {
+        $name = parent::getName($locale);
+        if ($name !== null && $this->isSaleItem()) {
+            return sprintf('%s - %s', $name, t('Výprodej'));
+        }
+
+        return $name;
     }
 }

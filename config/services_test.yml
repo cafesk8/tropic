@@ -203,3 +203,13 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Filter\ParameterFilterChoiceRepository: '@App\Model\Product\Filter\ParameterFilterChoiceRepository'
 
     Shopsys\FrameworkBundle\Model\Product\Filter\PriceRangeRepository: '@App\Model\Product\Filter\PriceRangeRepository'
+
+    App\Model\Cart\CartWatcher\CartWatcher: ~
+
+    Shopsys\FrameworkBundle\Model\Cart\Watcher\CartWatcher: '@App\Model\Cart\CartWatcher\CartWatcher'
+
+    App\Model\Order\Gift\OrderGiftFacade: ~
+
+    App\Model\Order\Discount\CurrentOrderDiscountLevelFacade: ~
+
+    App\Component\FlashMessage\FlashMessageSender: ~

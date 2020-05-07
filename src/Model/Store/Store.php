@@ -352,4 +352,13 @@ class Store implements PickupPlaceInterface
     {
         return (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_EXTERNAL_ID;
     }
+    
+    /**
+     * @return bool
+     */
+    public function isSaleStock(): bool
+    {
+        return (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_SALE_ID
+            || (int)$this->externalNumber === PohodaProductExportRepository::POHODA_STOCK_STORE_SALE_ID;
+    }
 }

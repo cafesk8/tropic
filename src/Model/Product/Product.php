@@ -742,13 +742,18 @@ class Product extends BaseProduct
 
     /**
      * @param int $quantity
+     * @param bool $saleItem
      */
-    public function subtractStockQuantity($quantity)
+    public function subtractStockQuantity($quantity, bool $saleItem = false)
     {
         parent::subtractStockQuantity($quantity);
         $remainingQuantity = $quantity;
 
         foreach ($this->getStoreStocks() as $productStoreStock) {
+            $isSaleStock = $productStoreStock->getStore()->isSaleStock();
+            if (($isSaleStock && !$saleItem) || (!$isSaleStock && $saleItem)) {
+                continue;
+            }
             $availableQuantity = $productStoreStock->getStockQuantity();
 
             if ($remainingQuantity > $availableQuantity) {
@@ -941,6 +946,7 @@ class Product extends BaseProduct
     }
 
     /**
+<<<<<<< HEAD
      * @return \App\Model\Product\Group\ProductGroup[]
      */
     public function getProductGroups(): array
@@ -987,5 +993,61 @@ class Product extends BaseProduct
     public function isCurrentlyOutOfStock(): bool
     {
         return $this->getRealStockQuantity() < 1;
+    }
+
+    /**
+     * @return int
+     */
+    private function getSaleStocksQuantity(): int
+    {
+        $stockQuantity = 0;
+        foreach ($this->getStoreStocks() as $productStoreStock) {
+            if ($this->isInSaleStock($productStoreStock)) {
+                $stockQuantity += $productStoreStock->getStockQuantity();
+            }
+        }
+
+        return $stockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealSaleStocksQuantity(): int
+    {
+        if ($this->getSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($this->getSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $this->getSaleStocksQuantity();
+    }
+
+    /**
+     * @return int
+     */
+    private function getNonSaleStocksQuantity(): int
+    {
+        return $this->stockQuantity - $this->getSaleStocksQuantity();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealNonSaleStocksQuantity(): int
+    {
+        if ($this->getNonSaleStocksQuantity() % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($this->getNonSaleStocksQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
+        }
+
+        return $this->getNonSaleStocksQuantity();
+    }
+
+    /**
+     * @param \App\Model\Product\StoreStock\ProductStoreStock $productStoreStock
+     * @return bool
+     */
+    private function isInSaleStock(ProductStoreStock $productStoreStock): bool
+    {
+        return $productStoreStock->getStore()->isSaleStock() && $productStoreStock->getStockQuantity() > 0;
     }
 }
