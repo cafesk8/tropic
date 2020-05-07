@@ -86,6 +86,7 @@
 
         &__button {
             width: 100%;
+            font-size: @font-size-small;
 
             @media @query-lg {
                 width: auto;
@@ -109,12 +110,17 @@
 
         &__title {
             margin-bottom: 11px;
-            line-height: 45px;
+            line-height: 26px;
 
             color: @color-base;
-            font-family: @font-alt;
-            font-size: 25px;
+            font-size: 20px;
             font-weight: 700;
+
+            @media @query-lg {
+                line-height: 45px;
+
+                font-size: 30px;
+            }
         }
 
         &__description {
