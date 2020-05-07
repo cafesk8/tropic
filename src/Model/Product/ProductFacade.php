@@ -420,6 +420,13 @@ class ProductFacade extends BaseProductFacade
         }
 
         $product->setStockQuantity($totalStockQuantity);
+
+        $realStockQuantity = $totalStockQuantity;
+        if ($product->getStockQuantity() % $product->getAmountMultiplier() !== 0) {
+            $realStockQuantity = (int)floor($product->getStockQuantity() / $product->getAmountMultiplier()) * $product->getAmountMultiplier();
+        }
+        $product->setRealStockQuantity($realStockQuantity);
+
         $this->em->flush($product);
     }
 

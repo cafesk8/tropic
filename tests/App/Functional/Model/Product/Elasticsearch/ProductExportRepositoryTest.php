@@ -73,6 +73,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'selling_denied',
             'main_variant_id',
             'visibility',
+            'is_available_in_days',
             'is_main_variant',
             'uuid',
             'unit',

@@ -200,6 +200,13 @@ class Product extends BaseProduct
     private $deliveryDays;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $realStockQuantity;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -321,6 +328,19 @@ class Product extends BaseProduct
             if ($storeStock->getStockQuantity() !== null && $storeStock->getStore()->isExternalStock()) {
                 $externalStockQuantity += $storeStock->getStockQuantity();
             }
+        }
+
+        return $externalStockQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRealExternalStockQuantity(): int
+    {
+        $externalStockQuantity = $this->getExternalStockQuantity();
+        if ($externalStockQuantity % $this->getAmountMultiplier() !== 0) {
+            return (int)floor($externalStockQuantity / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
         }
 
         return $externalStockQuantity;
@@ -505,6 +525,14 @@ class Product extends BaseProduct
     public function setStockQuantity(int $stockQuantity): void
     {
         $this->stockQuantity = $stockQuantity;
+    }
+
+    /**
+     * @param int $realStockQuantity
+     */
+    public function setRealStockQuantity(int $realStockQuantity): void
+    {
+        $this->realStockQuantity = $realStockQuantity;
     }
 
     /**
@@ -709,13 +737,7 @@ class Product extends BaseProduct
      */
     public function getRealStockQuantity(): int
     {
-        if (!$this->isUsingStock()) {
-            return PHP_INT_MAX;
-        } elseif ($this->getStockQuantity() % $this->getAmountMultiplier() !== 0) {
-            return (int)floor($this->getStockQuantity() / $this->getAmountMultiplier()) * $this->getAmountMultiplier();
-        }
-
-        return $this->getStockQuantity();
+        return (int)$this->realStockQuantity;
     }
 
     /**
@@ -939,21 +961,22 @@ class Product extends BaseProduct
      */
     public function isProductOnlyAtExternalStock(): bool
     {
-        return $this->getExternalStockQuantity() > 0 && $this->getRealStockQuantity() === $this->getExternalStockQuantity();
+        return $this->getRealExternalStockQuantity() > 0 && $this->getRealExternalStockQuantity() === $this->getRealStockQuantity();
     }
 
     /**
      * @return bool
      */
-    public function isProductAvailable(): bool
+    public function isAvailable(): bool
     {
-        return $this->getRealStockQuantity() > 0 || ($this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() === null);
+        return (!$this->isAvailableInDays() && $this->getRealStockQuantity() > 0)
+            || ($this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() === null);
     }
 
     /**
      * @return bool
      */
-    public function isProductAvailableInDays(): bool
+    public function isAvailableInDays(): bool
     {
         return $this->isProductOnlyAtExternalStock() && $this->getDeliveryDays() !== null;
     }
@@ -961,7 +984,7 @@ class Product extends BaseProduct
     /**
      * @return bool
      */
-    public function isProductCurrentlyOutOfStock(): bool
+    public function isCurrentlyOutOfStock(): bool
     {
         return $this->getRealStockQuantity() < 1;
     }

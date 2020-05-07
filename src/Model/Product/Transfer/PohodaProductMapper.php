@@ -12,7 +12,6 @@ use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
-use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
