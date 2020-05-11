@@ -104,6 +104,7 @@ parameters:
         PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff:
             - '*/src/Controller/Front/OrderController.php'
             - '*/src/DataFixtures/Demo/ProductDataFixture.php'
+            - '*/src/Model/Product/Pricing/ProductPriceCalculation.php'
 
         PHP_CodeSniffer\Standards\PSR2\Sniffs\Methods\MethodDeclarationSniff.Underscore:
             - '*/tests/App/Test/Codeception/Helper/CloseNewlyOpenedWindowsHelper.php'
