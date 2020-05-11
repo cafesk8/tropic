@@ -30,6 +30,10 @@
         height: @in-flag-item-height + @in-flag-item-gap;
     }
 
+    &--product-set {
+        position: static;
+    }
+
     &__item {
         min-height: @in-flag-item-height;
         margin-bottom: @in-flag-item-gap;
@@ -44,7 +48,7 @@
         background-color: @color-light;
         text-transform: uppercase;
 
-        .in-flag--detail & {
+        .in-flag--detail &, .in-flag--product-set & {
             line-height: 21px;
             padding: 1px 10px;
 
