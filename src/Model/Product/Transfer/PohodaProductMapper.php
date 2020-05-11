@@ -16,6 +16,7 @@ use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
 use App\Model\Product\Transfer\Exception\CategoryDoesntExistInEShopException;
+use App\Model\Product\Transfer\Exception\ProductDoesntExistInEShopException;
 use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -99,17 +100,22 @@ class PohodaProductMapper
         PohodaProduct $pohodaProduct,
         ProductData $productData
     ): void {
-        $productData->pohodaId = $pohodaProduct->pohodaId;
-        $productData->pohodaProductType = $pohodaProduct->pohodaProductType;
-        $productData->updatedByPohodaAt = new \DateTime();
-        $productData->catnum = $pohodaProduct->catnum;
-        $productData->name[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->name);
-        $productData->name[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->nameSk);
-        $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
-        $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
-        $productData->usingStock = true;
-        $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
+        $this->mapBasicInfoToProductData($pohodaProduct, $productData);
+        $this->mapDomainDataToProductData($pohodaProduct, $productData);
+        $this->mapRelatedProductsToProductData($pohodaProduct, $productData);
+        $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
+        /* Please remove this after user story "Zobrazení skladové zásoby u produktu" - this line is temporarily for import */
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
+        $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
+    }
 
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function mapDomainDataToProductData(PohodaProduct $pohodaProduct, ProductData $productData): void
+    {
         $categories = [];
         foreach ($pohodaProduct->pohodaCategoryIds as $pohodaCategoryId) {
             $category = $this->categoryFacade->findByPohodaId($pohodaCategoryId);
@@ -130,11 +136,41 @@ class PohodaProductMapper
         $productData->variantId = TransformString::emptyToNull($pohodaProduct->variantId);
         $productData->variantAlias[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAlias);
         $productData->variantAlias[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->variantAliasSk);
-        $productData->eurCalculatedAutomatically = $pohodaProduct->automaticEurCalculation;
-        $productData->stockQuantityByStoreId = $this->getMappedProductStocks($pohodaProduct->stocksInformation);
-        /* Please remove this after user story "Zobrazení skladové zásoby u produktu" - this line is temporarily for import */
-        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
-        $productData->groupItems = $this->getMappedProductGroupItems($pohodaProduct->productGroups);
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function mapBasicInfoToProductData(PohodaProduct $pohodaProduct, ProductData $productData): void
+    {
+        $productData->pohodaId = $pohodaProduct->pohodaId;
+        $productData->pohodaProductType = $pohodaProduct->pohodaProductType;
+        $productData->updatedByPohodaAt = new \DateTime();
+        $productData->catnum = $pohodaProduct->catnum;
+        $productData->name[DomainHelper::CZECH_LOCALE] = TransformString::emptyToNull($pohodaProduct->name);
+        $productData->name[DomainHelper::SLOVAK_LOCALE] = TransformString::emptyToNull($pohodaProduct->nameSk);
+        $productData->shortDescriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->shortDescription;
+        $productData->descriptions[DomainHelper::CZECH_DOMAIN] = $pohodaProduct->longDescription;
+        $productData->usingStock = true;
+        $productData->registrationDiscountDisabled = $pohodaProduct->registrationDiscountDisabled;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function mapRelatedProductsToProductData(PohodaProduct $pohodaProduct, ProductData $productData): void
+    {
+        $productData->accessories = [];
+        foreach ($pohodaProduct->relatedProducts as $relatedProductArray) {
+            $relatedProductPohodaId = (int)$relatedProductArray[PohodaProduct::COL_RELATED_PRODUCT_REF_ID];
+            $relatedProduct = $this->productFacade->findByPohodaId($relatedProductPohodaId);
+            if ($relatedProduct === null) {
+                throw new ProductDoesntExistInEShopException(sprintf('Product pohodaId=%d doesn´t exist in e-shop database', $relatedProductPohodaId));
+            }
+            $productData->accessories[$relatedProductArray[PohodaProduct::COL_RELATED_PRODUCT_POSITION]] = $relatedProduct;
+        }
     }
 
     /**

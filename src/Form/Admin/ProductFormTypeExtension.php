@@ -57,6 +57,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'variantId',
         'categoriesByDomainId',
         'storeStock',
+        'accessories',
         'eurCalculatedAutomatically',
     ];
 
@@ -461,10 +462,9 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      */
     private function extendAccessoriesGroup(FormBuilderInterface $builder): void
     {
-        $codeFieldOptions = $builder->get('accessories')->getOptions();
-        $codeFieldOptions['label'] = t('Související zboží');
-        $codeFieldType = get_class($builder->get('accessories')->getType()->getInnerType());
-        $builder->add('accessories', $codeFieldType, $codeFieldOptions);
+        $builder->add('accessories', ProductsListType::class, [
+            'label' => t('Související zboží'),
+        ]);
     }
 
     /**

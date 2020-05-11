@@ -111,6 +111,7 @@ class PohodaProductExportRepository
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]] = $pohodaProduct;
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_CATEGORIES] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_GROUP_ITEMS] = [];
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_RELATED_PRODUCTS] = [];
         }
 
         return $pohodaProductsResult;
@@ -243,6 +244,36 @@ class PohodaProductExportRepository
 
         return $query->getResult();
     }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getRelatedProductsByPohodaIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_ID)
+            ->addScalarResult('RefSKz', PohodaProduct::COL_RELATED_PRODUCT_REF_ID)
+            ->addScalarResult('OrderFld', PohodaProduct::COL_RELATED_PRODUCT_POSITION);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT RelatedProducts.RefAg, RelatedProducts.RefSKz, RelatedProducts.OrderFld
+            FROM SkzIoZbozi RelatedProducts
+            JOIN Skz Product ON Product.ID = RelatedProducts.RefSkz
+            WHERE RelatedProducts.RefAg IN (:pohodaProductIds)
+                AND Product.IObchod = 1
+                AND Product.RefSklad = :defaultStockId
+            ORDER BY Product.DatSave',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'defaultStockId' => self::DEFAULT_POHODA_STOCK_ID,
+                'pohodaProductIds' => $pohodaProductIds,
+            ]);
+
+        return $query->getResult();
+    }
+
 
     /**
      * @param int[] $pohodaProductIds

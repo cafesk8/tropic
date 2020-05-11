@@ -26,6 +26,8 @@ class PohodaProduct
     public const COL_PRODUCT_CATEGORIES = 'productCategories';
     public const COL_PRODUCT_REF_ID = 'productPohodaId';
     public const COL_CATEGORY_REF_CATEGORY_ID = 'categoryPohodaId';
+    public const COL_RELATED_PRODUCT_REF_ID = 'relatedProductPohodaId';
+    public const COL_RELATED_PRODUCT_POSITION = 'relatedProductOrder';
     public const COL_AUTO_EUR_PRICE = 'automaticEurPrice';
 
     public const COL_EXTERNAL_STOCK = 'externalStock';
@@ -37,6 +39,7 @@ class PohodaProduct
     public const COL_SALE_INFORMATION = 'saleInformation';
     public const COL_STOCKS_INFORMATION = 'stockInformation';
     public const COL_PRODUCT_GROUP_ITEMS = 'productGroupItems';
+    public const COL_RELATED_PRODUCTS = 'relatedProducts';
 
     /**
      * @var int
@@ -139,6 +142,11 @@ class PohodaProduct
     public $productGroups;
 
     /**
+     * @var array
+     */
+    public $relatedProducts;
+
+    /**
      * @var bool
      */
     public $automaticEurCalculation;
@@ -169,5 +177,6 @@ class PohodaProduct
         $this->stocksInformation = $pohodaProductData[self::COL_STOCKS_INFORMATION];
         $this->productGroups = $pohodaProductData[self::COL_PRODUCT_GROUP_ITEMS];
         $this->automaticEurCalculation = (bool)$pohodaProductData[self::COL_AUTO_EUR_PRICE];
+        $this->relatedProducts = $pohodaProductData[self::COL_RELATED_PRODUCTS];
     }
 }
