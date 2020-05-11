@@ -84,4 +84,12 @@ class FlagFacade extends BaseFlagFacade
             $this->setting->get(Setting::FREE_TRANSPORT_FLAG),
         ]);
     }
+
+    /**
+     * @return \App\Model\Product\Flag\Flag[]
+     */
+    public function getSaleFlags(): array
+    {
+        return $this->flagRepository->getSaleFlags();
+    }
 }

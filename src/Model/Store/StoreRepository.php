@@ -82,7 +82,8 @@ class StoreRepository
     public function getOrderedAllQueryBuilder(): QueryBuilder
     {
         return $this->getAllQueryBuilder()
-            ->orderBy('s.position', 'ASC');
+            ->orderBy('s.position', 'ASC')
+            ->indexBy('s', 's.id');
     }
 
     /**

@@ -79,14 +79,7 @@ class FlagDataFixture extends AbstractReferenceFixture
         $flagData->visible = true;
         $this->createFlag($flagData, self::FLAG_ACTION_PRODUCT);
 
-        foreach ($this->domain->getAllLocales() as $locale) {
-            $flagData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);
-        }
-
-        $flagData->rgbColor = '#abcdef';
-        $flagData->visible = true;
-        $flagData->sale = true;
-        $this->createFlag($flagData, self::FLAG_SALE_PRODUCT);
+        $this->createSaleFlagReference();
     }
 
     /**
@@ -99,5 +92,20 @@ class FlagDataFixture extends AbstractReferenceFixture
         if ($referenceName !== null) {
             $this->addReference($referenceName, $flag);
         }
+    }
+
+    /**
+     * The sale flag is created in the database migration, @see \App\Migrations\Version20200511164719
+     */
+    private function createSaleFlagReference(): void
+    {
+        $saleFlags = $this->flagFacade->getSaleFlags();
+        $saleFlag = reset($saleFlags);
+        $saleFlagData = $this->flagDataFactory->createFromFlag($saleFlag);
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $saleFlagData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);
+        }
+        $this->flagFacade->edit($saleFlag->getId(), $saleFlagData);
+        $this->addReference(self::FLAG_SALE_PRODUCT, $saleFlag);
     }
 }
