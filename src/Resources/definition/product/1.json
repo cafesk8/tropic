@@ -342,6 +342,9 @@
             "type": "integer"
           }
         }
+      },
+      "real_sale_stocks_quantity": {
+        "type": "integer"
       }
     }
   }

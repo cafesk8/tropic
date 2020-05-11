@@ -172,4 +172,12 @@ class StoreFacade
     {
         return $this->storeRepository->findStoresForStoreListIndexedByRegion();
     }
+
+    /**
+     * @return \App\Model\Store\Store[]
+     */
+    public function getAllSaleStocks(): array
+    {
+        return $this->storeRepository->getAllSaleStocks();
+    }
 }

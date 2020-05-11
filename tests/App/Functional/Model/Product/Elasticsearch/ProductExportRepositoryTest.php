@@ -85,6 +85,7 @@ class ProductExportRepositoryTest extends TransactionFunctionalTestCase
             'variants_aliases',
             'variants_count',
             'prices_for_filter',
+            'real_sale_stocks_quantity',
         ];
     }
 }

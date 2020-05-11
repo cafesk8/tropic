@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Store;
 
+use App\Component\Transfer\Pohoda\Product\PohodaProductExportRepository;
 use App\Model\Store\Exception\StoreNotFoundException;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
@@ -113,6 +114,19 @@ class StoreRepository
         $queryBuilder = $this->getAllQueryBuilder();
         $queryBuilder->andWhere('s.pickupPlace = true');
         $queryBuilder->orderBy('s.position, s.name', 'asc');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @return \App\Model\Store\Store[]
+     */
+    public function getAllSaleStocks(): array
+    {
+        $queryBuilder = $this->getAllQueryBuilder();
+        $queryBuilder
+            ->andWhere('s.externalNumber in (:saleExternalNumbers)')
+            ->setParameter('saleExternalNumbers', PohodaProductExportRepository::SALE_STOCK_IDS_ORDERED_BY_PRIORITY);
 
         return $queryBuilder->getQuery()->getResult();
     }

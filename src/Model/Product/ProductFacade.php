@@ -1098,7 +1098,7 @@ class ProductFacade extends BaseProductFacade
             if ($quantityInSaleStocks > 0 && !in_array($saleFlag, $flags, true)) {
                 $flags[] = $saleFlag;
             } elseif ($quantityInSaleStocks <= 0) {
-                $key = array_search($saleFlag, $flags);
+                $key = array_search($saleFlag, $flags, true);
                 if ($key !== false) {
                     unset($flags[$key]);
                 }
