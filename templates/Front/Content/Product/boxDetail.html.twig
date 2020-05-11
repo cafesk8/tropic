@@ -320,11 +320,11 @@
         </div>
     {% endif %}
 
-    {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) %}
+    {% if registeredCustomerPrice and sellingPrice.priceWithVat.greaterThan(registeredCustomerPrice.priceWithVat) and not product.isInAnySaleStock() %}
         <div class="box-detail-add__prices__item box-detail-add__prices__item--registered">
             {{ 'Nebo <strong>%price%</strong> po přihlášení'|transHtml({'%price%': registeredCustomerPrice.priceWithVat|price}) }}
         </div>
-    {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) %}
+    {% elseif defaultPrice and sellingPrice.priceWithVat.lessThan(defaultPrice.priceWithVat) and not product.isInAnySaleStock() %}
         <div class="box-detail-add__prices__item box-detail-add__prices__item--not-registered">
             {{ 'Cena pro nepřihlášené zákazníky: <strong>%price%</strong>'|transHtml({'%price%': defaultPrice.priceWithVat|price}) }}
         </div>

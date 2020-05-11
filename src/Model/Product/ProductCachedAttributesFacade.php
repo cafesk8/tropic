@@ -15,6 +15,9 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceCalculationForCust
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade as BaseProductCachedAttributesFacade;
 
+/**
+ * @property \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForCustomerUser
+ */
 class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
 {
     /**
@@ -138,5 +141,23 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         $this->parameterValuesByProductId[$product->getId()] = $productParameterValues;
 
         return $productParameterValues;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $product
+     * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
+     */
+    public function getProductSellingPrice(BaseProduct $product)
+    {
+        if (isset($this->sellingPricesByProductId[$product->getId()])) {
+            return $this->sellingPricesByProductId[$product->getId()];
+        }
+        $productPrice = $this->productPriceCalculationForCustomerUser->calculatePriceForCurrentUser(
+            $product,
+            $product->isInAnySaleStock()
+        );
+        $this->sellingPricesByProductId[$product->getId()] = $productPrice;
+
+        return $productPrice;
     }
 }

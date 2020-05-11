@@ -947,6 +947,7 @@ class Product extends BaseProduct
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      * @return \App\Model\Product\Group\ProductGroup[]
      */
     public function getProductGroups(): array
@@ -993,6 +994,14 @@ class Product extends BaseProduct
     public function isCurrentlyOutOfStock(): bool
     {
         return $this->getRealStockQuantity() < 1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInAnySaleStock(): bool
+    {
+        return $this->getRealSaleStocksQuantity() > 0;
     }
 
     /**
