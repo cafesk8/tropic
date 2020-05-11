@@ -274,7 +274,6 @@ class PohodaProductExportRepository
         return $query->getResult();
     }
 
-
     /**
      * @param int[] $pohodaProductIds
      * @return array
