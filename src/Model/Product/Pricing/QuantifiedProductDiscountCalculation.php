@@ -143,8 +143,13 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
             function (QuantifiedItemPrice $quantifiedItemsPrice) use ($promoCode) {
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
+                $product = $this->productFacade->getById($productPrice->getProductId());
 
-                if ($this->productFacade->getById($productPrice->getProductId())->isGiftCertificate()) {
+                if ($product->isGiftCertificate()) {
+                    return false;
+                }
+
+                if ($product->isPromoDiscountDisabled() && !$promoCode->isTypeGiftCertificate()) {
                     return false;
                 }
 
@@ -231,7 +236,7 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
                 /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
                 $productPrice = $quantifiedItemsPrice->getUnitPrice();
 
-                if ($this->productFacade->getById($productPrice->getProductId())->isRegistrationDiscountDisabled()) {
+                if ($this->productFacade->getById($productPrice->getProductId())->isPromoDiscountDisabled()) {
                     return false;
                 }
 
@@ -281,7 +286,11 @@ class QuantifiedProductDiscountCalculation extends BaseQuantifiedProductDiscount
         foreach ($quantifiedItemsDiscountsIndexedByPromoCodeId as $promoCodeId => $quantifiedItemsDiscounts) {
             foreach ($quantifiedItemsDiscounts as $itemId => $quantifiedItemDiscount) {
                 $totalPrice = $quantifiedItemsPrices[$itemId]->getTotalPrice();
-                $subtractAmount = $quantifiedItemDiscount === null ? Price::zero() : $quantifiedItemDiscount;
+                /** @var \App\Model\Product\Pricing\ProductPrice $productPrice */
+                $productPrice = $quantifiedItemsPrices[$itemId]->getUnitPrice();
+                $product = $this->productFacade->getById($productPrice->getProductId());
+
+                $subtractAmount = $quantifiedItemDiscount === null || $product->isPromoDiscountDisabled() ? Price::zero() : $quantifiedItemDiscount;
                 $quantifiedItemsPricesMinusAlreadyAppliedDiscounts[$itemId] = new QuantifiedItemPrice(
                     $quantifiedItemsPrices[$itemId]->getUnitPrice(),
                     $totalPrice->subtract($subtractAmount),
