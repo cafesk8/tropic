@@ -275,6 +275,7 @@
                 .list-menu__submenu--children & {
                     @media @query-vl {
                         padding: 0;
+                        width: 100%;
                     }
                 }
             }
@@ -284,6 +285,7 @@
 
                 font-size: @font-size;
                 color: @list-menu-submenu-item-color;
+                text-decoration: none;
 
                 @media @query-vl {
                     font-weight: 700;
@@ -292,6 +294,24 @@
 
                 &:hover {
                     color: @list-menu-submenu-item-color;
+                }
+
+                &--level-2 {
+                    font-weight: 600;
+                    color: @color-primary;
+
+                    &:hover {
+                        color: @color-primary;
+                        text-decoration: underline;
+                    }
+
+                    @media @query-vl {
+                        color: @list-menu-submenu-item-color;
+
+                        &:hover {
+                            color: @list-menu-submenu-item-color;
+                        }
+                    }
                 }
 
                 .list-menu__submenu--children & {

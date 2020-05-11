@@ -17,8 +17,8 @@ export default class ProductFilterBox {
             $(this).removeClass('inactive');
         });
 
-        $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('inactive');
-        $parameterContainer.find('.js-product-filter-box-button-hide').toggleClass('inactive');
+        $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('display-none');
+        $parameterContainer.find('.js-product-filter-box-button-hide').toggleClass('display-none');
     }
 
     hideFilterBox ($parameterContainer) {
@@ -29,8 +29,8 @@ export default class ProductFilterBox {
             }
         });
 
-        $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('inactive');
-        $parameterContainer.find('.js-product-filter-box-button-hide').toggleClass('inactive');
+        $parameterContainer.find('.js-product-filter-box-button-show').toggleClass('display-none');
+        $parameterContainer.find('.js-product-filter-box-button-hide').toggleClass('display-none');
     }
 
     static init ($container) {

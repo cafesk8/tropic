@@ -66,8 +66,8 @@
             crop: false
             occurrence: 'Front-end: Thumbnail of images under the main image in product detail, autocomplete, sets, variants, cartbox, gifts selection in cart'
         -   name: list
-            width: 220
-            height: 220
+            width: 240
+            height: 240
             crop: false
             occurrence: 'Front-end: Listing of products in section, listing of products on special offer'
             additionalSizes:
