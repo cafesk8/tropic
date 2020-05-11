@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Paginator\PaginationResult;
 use Shopsys\FrameworkBundle\Component\Paginator\QueryPaginator;
-use Shopsys\FrameworkBundle\Model\Category\Category;
+use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
 use Shopsys\FrameworkBundle\Model\Category\CategoryDomain;
 use Shopsys\FrameworkBundle\Model\Category\CategoryRepository as BaseCategoryRepository;
 use Shopsys\FrameworkBundle\Model\Product\Product;
@@ -179,7 +179,7 @@ class CategoryRepository extends BaseCategoryRepository
      * @param int $domainId
      * @return array
      */
-    public function getAllVisibleAndListableChildrenByCategoryAndDomainId(Category $category, int $domainId): array
+    public function getAllVisibleAndListableChildrenByCategoryAndDomainId(BaseCategory $category, int $domainId): array
     {
         $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId)
             ->andWhere('c.parent = :category')
@@ -193,7 +193,7 @@ class CategoryRepository extends BaseCategoryRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig $domainConfig
      * @return \App\Model\Category\Category[]
      */
-    public function getTranslatedVisibleAndListableSubcategoriesByDomain(Category $parentCategory, DomainConfig $domainConfig): array
+    public function getTranslatedVisibleAndListableSubcategoriesByDomain(BaseCategory $parentCategory, DomainConfig $domainConfig): array
     {
         $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainConfig->getId());
         $this->addTranslation($queryBuilder, $domainConfig->getLocale());
@@ -215,7 +215,7 @@ class CategoryRepository extends BaseCategoryRepository
         $queryBuilder = $this->getAllVisibleAndListableByDomainIdQueryBuilder($domainId);
 
         $queryBuilder
-            ->join(Category::class, 'cc', Join::WITH, 'cc.parent = c')
+            ->join(BaseCategory::class, 'cc', Join::WITH, 'cc.parent = c')
             ->join(CategoryDomain::class, 'ccd', Join::WITH, 'ccd.category = cc.id')
             ->andWhere('ccd.domainId = :domainId')
             ->andWhere('ccd.visible = TRUE')
@@ -241,7 +241,7 @@ class CategoryRepository extends BaseCategoryRepository
     public function removeAdvertFromCategories(Advert $advert, array $newCategories): void
     {
         $queryBuilder = $this->getQueryBuilder()
-            ->update(Category::class, 'c')
+            ->update(BaseCategory::class, 'c')
             ->set('c.advert', 'NULL')
             ->where('c.advert = :advert');
 
@@ -267,7 +267,7 @@ class CategoryRepository extends BaseCategoryRepository
      * @param int $pohodaId
      * @return \App\Model\Category\Category|null
      */
-    public function findByPohodaId(int $pohodaId): ?Category
+    public function findByPohodaId(int $pohodaId): ?BaseCategory
     {
         return $this->getCategoryRepository()->findOneBy(['pohodaId' => $pohodaId]);
     }
@@ -307,5 +307,14 @@ class CategoryRepository extends BaseCategoryRepository
         }
 
         return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * @param string $type
+     * @return \App\Model\Category\Category|null
+     */
+    public function getByType(string $type): ?Category
+    {
+        return $this->getCategoryRepository()->findOneBy(['type' => $type]);
     }
 }

@@ -12,4 +12,9 @@ class FlagData extends BaseFlagData
      * @var int|null
      */
     public $position;
+
+    /**
+     * @var bool
+     */
+    public $sale;
 }

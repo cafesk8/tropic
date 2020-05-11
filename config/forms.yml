@@ -83,3 +83,7 @@ services:
     App\Form\Admin\VatFormTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Vat\VatFormType }
+
+    App\Form\Admin\FlagFormTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Shopsys\FrameworkBundle\Form\Admin\Product\Flag\FlagFormType }

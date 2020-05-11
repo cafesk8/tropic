@@ -44,7 +44,7 @@ class ProductController extends FrontBaseController
     protected $brandFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory
+     * @var \App\Model\Product\Filter\ProductFilterConfigFactory
      */
     private $productFilterConfigFactory;
 
@@ -133,7 +133,7 @@ class ProductController extends FrontBaseController
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Product\ProductOnCurrentDomainElasticFacade $productOnCurrentDomainFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
+     * @param \App\Model\Product\Filter\ProductFilterConfigFactory $productFilterConfigFactory
      * @param \App\Model\Product\Listing\ProductListOrderingModeForListFacade $productListOrderingModeForListFacade
      * @param \App\Model\Product\Listing\ProductListOrderingModeForBrandFacade $productListOrderingModeForBrandFacade
      * @param \App\Model\Product\Listing\ProductListOrderingModeForSearchFacade $productListOrderingModeForSearchFacade

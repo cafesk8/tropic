@@ -17,3 +17,5 @@ services:
         arguments:
             - '%shopsys.entity_extension.map%'
             - '%shopsys.framework.root_dir%'
+
+    Shopsys\FrameworkBundle\Command\RecalculationsCommand: '@App\Command\RecalculationsCommand'

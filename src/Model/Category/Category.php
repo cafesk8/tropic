@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Shopsys\FrameworkBundle\Model\Category\Category as BaseCategory;
-use Shopsys\FrameworkBundle\Model\Category\CategoryData;
 use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
 
 /**
@@ -28,6 +28,8 @@ use Shopsys\FrameworkBundle\Model\Category\CategoryData as BaseCategoryData;
  */
 class Category extends BaseCategory
 {
+    public const SALE_TYPE = 'sale';
+
     /**
      * @var bool
      *
@@ -83,22 +85,21 @@ class Category extends BaseCategory
     private $pohodaPosition;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, length=20)
+     */
+    private $type;
+
+    /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
     public function __construct(BaseCategoryData $categoryData)
     {
         parent::__construct($categoryData);
 
-        $this->listable = $categoryData->listable;
-        $this->preListingCategory = $categoryData->preListingCategory;
-        $this->mallCategoryId = $categoryData->mallCategoryId;
-        $this->advert = $categoryData->advert;
         $this->pohodaId = $categoryData->pohodaId;
-        $this->pohodaParentId = $categoryData->pohodaParentId;
-        $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
-        $this->pohodaPosition = $categoryData->pohodaPosition;
-
-        $this->setTranslations($categoryData);
+        $this->fillCommonProperties($categoryData);
     }
 
     /**
@@ -108,6 +109,14 @@ class Category extends BaseCategory
     {
         parent::edit($categoryData);
 
+        $this->fillCommonProperties($categoryData);
+    }
+
+    /**
+     * @param \App\Model\Category\CategoryData $categoryData
+     */
+    private function fillCommonProperties(CategoryData $categoryData): void
+    {
         $this->listable = $categoryData->listable;
         $this->preListingCategory = $categoryData->preListingCategory;
         $this->mallCategoryId = $categoryData->mallCategoryId;
@@ -115,7 +124,7 @@ class Category extends BaseCategory
         $this->updatedByPohodaAt = $categoryData->updatedByPohodaAt;
         $this->pohodaParentId = $categoryData->pohodaParentId;
         $this->pohodaPosition = $categoryData->pohodaPosition;
-
+        $this->type = $categoryData->type;
         $this->setTranslations($categoryData);
     }
 
@@ -201,7 +210,7 @@ class Category extends BaseCategory
     /**
      * @param \App\Model\Category\CategoryData $categoryData
      */
-    protected function setTranslations(CategoryData $categoryData): void
+    protected function setTranslations(BaseCategoryData $categoryData): void
     {
         parent::setTranslations($categoryData);
 
@@ -248,7 +257,7 @@ class Category extends BaseCategory
     /**
      * @return \DateTime|null
      */
-    public function getUpdatedByPohodaAt(): ?\DateTime
+    public function getUpdatedByPohodaAt(): ?DateTime
     {
         return $this->updatedByPohodaAt;
     }
@@ -275,5 +284,21 @@ class Category extends BaseCategory
     public function getPohodaPosition(): ?int
     {
         return $this->pohodaPosition;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSaleType(): bool
+    {
+        return $this->type === self::SALE_TYPE;
     }
 }

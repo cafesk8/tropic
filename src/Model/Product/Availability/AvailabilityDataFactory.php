@@ -11,8 +11,6 @@ use Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityDataFactory a
 /**
  * @method fillNew(\App\Model\Product\Availability\AvailabilityData $availabilityData)
  * @method fillFromAvailability(\App\Model\Product\Availability\AvailabilityData $availabilityData, \App\Model\Product\Availability\Availability $availability)
- * @method fillNew(\App\Model\Product\Availability\AvailabilityData $availabilityData)
- * @method fillFromAvailability(\App\Model\Product\Availability\AvailabilityData $availabilityData, \App\Model\Product\Availability\Availability $availability)
  */
 class AvailabilityDataFactory extends BaseAvailabilityDataFactory
 {

@@ -9,6 +9,8 @@ use App\Component\GoogleApi\GoogleClient;
 use App\Component\GoogleApi\Youtube\YoutubeView;
 use App\Component\Setting\Setting;
 use App\Model\Category\Category;
+use App\Model\Category\CategoryFacade;
+use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Pricing\Group\PricingGroup;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Group\ProductGroupFacade;
@@ -19,6 +21,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Google_Service_Exception;
 use Psr\Log\LoggerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
+use Shopsys\FrameworkBundle\Component\Domain\Exception\NoDomainSelectedException;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\Plugin\PluginCrudExtensionFacade;
@@ -38,7 +41,7 @@ use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculationSched
 use Shopsys\FrameworkBundle\Model\Product\Pricing\ProductSellingPrice;
 use Shopsys\FrameworkBundle\Model\Product\Product as BaseProduct;
 use Shopsys\FrameworkBundle\Model\Product\ProductCategoryDomainFactoryInterface;
-use Shopsys\FrameworkBundle\Model\Product\ProductData;
+use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
 use Shopsys\FrameworkBundle\Model\Product\ProductFacade as BaseProductFacade;
 use Shopsys\FrameworkBundle\Model\Product\ProductFactoryInterface;
 use Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator;
@@ -132,6 +135,11 @@ class ProductFacade extends BaseProductFacade
     private $productGroupFactory;
 
     /**
+     * @var \App\Model\Category\CategoryFacade
+     */
+    private $categoryFacade;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Product\ProductRepository $productRepository
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
@@ -166,6 +174,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\ProductDataFactory $productDataFactory
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      * @param \App\Model\Product\Group\ProductGroupFactory $productGroupFactory
+     * @param \App\Model\Category\CategoryFacade $categoryFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -201,7 +210,8 @@ class ProductFacade extends BaseProductFacade
         ProductVariantTropicFacade $productVariantTropicFacade,
         ProductDataFactory $productDataFactory,
         ProductGroupFacade $productGroupFacade,
-        ProductGroupFactory $productGroupFactory
+        ProductGroupFactory $productGroupFactory,
+        CategoryFacade $categoryFacade
     ) {
         parent::__construct(
             $em,
@@ -240,17 +250,22 @@ class ProductFacade extends BaseProductFacade
         $this->productDataFactory = $productDataFactory;
         $this->productGroupFacade = $productGroupFacade;
         $this->productGroupFactory = $productGroupFactory;
+        $this->categoryFacade = $categoryFacade;
     }
 
     /**
      * @param \App\Model\Product\ProductData $productData
      * @return \App\Model\Product\Product
      */
-    public function create(ProductData $productData)
+    public function create(BaseProductData $productData)
     {
+        $this->processAssignmentIntoSaleCategory($productData);
+
         /** @var \App\Model\Product\Product $product */
         $product = parent::create($productData);
         $this->scheduleRecalculationsForMainVariant($product);
+
+        $this->categoryFacade->refreshSaleCategoryVisibility();
 
         return $product;
     }
@@ -272,7 +287,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\Product $product
      * @param \App\Model\Product\ProductData $productData
      */
-    public function setAdditionalDataAfterCreate(BaseProduct $product, ProductData $productData): void
+    public function setAdditionalDataAfterCreate(BaseProduct $product, BaseProductData $productData): void
     {
         // Persist of ProductCategoryDomain requires known primary key of Product
         // @see https://github.com/doctrine/doctrine2/issues/4869
@@ -304,7 +319,7 @@ class ProductFacade extends BaseProductFacade
      * @param \App\Model\Product\ProductData $productData
      * @return \App\Model\Product\Product
      */
-    public function edit($productId, ProductData $productData): Product
+    public function edit($productId, BaseProductData $productData): Product
     {
         $product = $this->getById($productId);
         $originalMainVariant = $product->isVariant() ? $product->getMainVariant() : null;
@@ -314,6 +329,7 @@ class ProductFacade extends BaseProductFacade
         }
 
         $this->productVariantTropicFacade->refreshVariantStatus($product, $productData->variantId);
+        $this->processAssignmentIntoSaleCategory($productData);
 
         parent::edit($productId, $productData);
         $this->refreshProductGroups($product, $productData->groupItems);
@@ -330,24 +346,16 @@ class ProductFacade extends BaseProductFacade
             $this->scheduleRecalculationsForMainVariant($originalMainVariant);
         }
 
-        return $product;
-    }
+        $this->categoryFacade->refreshSaleCategoryVisibility();
 
-    /**
-     * @param \App\Model\Product\Product $mainVariant
-     */
-    public function flushMainVariant(Product $mainVariant): void
-    {
-        $toFlush = $mainVariant->getVariants();
-        $toFlush[] = $mainVariant;
-        $this->em->flush($toFlush);
+        return $product;
     }
 
     /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product $product
      */
-    private function updateProductStoreStocks(ProductData $productData, Product $product): void
+    private function updateProductStoreStocks(BaseProductData $productData, Product $product): void
     {
         $product->clearStoreStocks();
         $this->em->flush();
@@ -773,8 +781,18 @@ class ProductFacade extends BaseProductFacade
      */
     public function getByCategoryIdsIndexedById(array $categoryIds): array
     {
-        $products = $this->productRepository->getByCategoryIds($categoryIds, $this->domain->getId());
+        $products = [];
         $indexedProducts = [];
+
+        try {
+            $domainIds = [$this->domain->getId()];
+        } catch (NoDomainSelectedException $exception) {
+            $domainIds = $this->domain->getAllIds();
+        }
+
+        foreach ($domainIds as $domainId) {
+            $products = array_merge($products, $this->productRepository->getByCategoryIds($categoryIds, $domainId));
+        }
 
         array_walk($products, function (Product $product) use (&$indexedProducts) {
             $indexedProducts[$product->getId()] = $product;
@@ -912,5 +930,71 @@ class ProductFacade extends BaseProductFacade
         $this->productVisibilityFacade->refreshProductsVisibilityForMarkedDelayed();
         $this->productPriceRecalculationScheduler->scheduleProductForImmediateRecalculation($mainVariant);
         $this->productExportScheduler->scheduleRowIdForImmediateExport($mainVariant->getId());
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     * @return bool
+     */
+    private function haveSaleFlag(ProductData $productData): bool
+    {
+        foreach ($productData->flags as $flag) {
+            if ($flag->isSale()) {
+                return true;
+            }
+        }
+
+        foreach ($productData->variants as $variant) {
+            $hasSaleFlag = $this->hasVariantSaleFlag($variant);
+
+            if ($hasSaleFlag) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $variant
+     * @return bool
+     */
+    private function hasVariantSaleFlag(Product $variant): bool
+    {
+        foreach ($variant->getFlags() as $flag) {
+            if ($flag->isSale()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \App\Model\Product\ProductData $productData
+     */
+    private function processAssignmentIntoSaleCategory(ProductData $productData): void
+    {
+        try {
+            $saleCategory = $this->categoryFacade->getSaleCategory();
+        } catch (SaleCategoryNotFoundException $exception) {
+            return;
+        }
+
+        if ($this->haveSaleFlag($productData)) {
+            foreach ($this->domain->getAllIds() as $domainId) {
+                if (!in_array($saleCategory, $productData->categoriesByDomainId[$domainId], true)) {
+                    $productData->categoriesByDomainId[$domainId][] = $saleCategory;
+                }
+            }
+        } else {
+            foreach ($productData->categoriesByDomainId as $domainId => $categories) {
+                foreach ($categories as $index => $category) {
+                    if ($category->getId() === $saleCategory->getId()) {
+                        unset($productData->categoriesByDomainId[$domainId][$index]);
+                    }
+                }
+            }
+        }
     }
 }

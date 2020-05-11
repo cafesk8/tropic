@@ -610,3 +610,6 @@ services:
             $s3ApiPassword: '%env(S3_API_PASSWORD)%'
             $s3ApiBucketName: '%env(S3_API_BUCKET_NAME)%'
 
+    Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface: '@App\Model\Product\Flag\FlagDataFactory'
+
+    Shopsys\FrameworkBundle\Model\Product\Filter\ProductFilterConfigFactory: '@App\Model\Product\Filter\ProductFilterConfigFactory'

@@ -16,6 +16,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     public const FLAG_NEW_PRODUCT = 'flag_new_product';
     public const FLAG_TOP_PRODUCT = 'flag_top_product';
     public const FLAG_ACTION_PRODUCT = 'flag_action';
+    public const FLAG_SALE_PRODUCT = 'flag_sale';
 
     /**
      * @var \App\Model\Product\Flag\FlagFacade
@@ -23,7 +24,7 @@ class FlagDataFixture extends AbstractReferenceFixture
     protected $flagFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface
+     * @var \App\Model\Product\Flag\FlagDataFactory
      */
     protected $flagDataFactory;
 
@@ -34,7 +35,7 @@ class FlagDataFixture extends AbstractReferenceFixture
 
     /**
      * @param \App\Model\Product\Flag\FlagFacade $flagFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Flag\FlagDataFactoryInterface $flagDataFactory
+     * @param \App\Model\Product\Flag\FlagDataFactory $flagDataFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      */
     public function __construct(
@@ -77,6 +78,15 @@ class FlagDataFixture extends AbstractReferenceFixture
         $flagData->rgbColor = '#f9ffd6';
         $flagData->visible = true;
         $this->createFlag($flagData, self::FLAG_ACTION_PRODUCT);
+
+        foreach ($this->domain->getAllLocales() as $locale) {
+            $flagData->name[$locale] = t('Výprodej', [], 'dataFixtures', $locale);
+        }
+
+        $flagData->rgbColor = '#abcdef';
+        $flagData->visible = true;
+        $flagData->sale = true;
+        $this->createFlag($flagData, self::FLAG_SALE_PRODUCT);
     }
 
     /**

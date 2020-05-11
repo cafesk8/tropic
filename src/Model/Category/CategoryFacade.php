@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Model\Category;
 
 use App\Model\Advert\Advert;
+use App\Model\Category\Exception\SaleCategoryNotFoundException;
 use App\Model\Category\Transfer\CategoryRemoveFacade;
 use App\Model\Category\Transfer\Exception\MaximumPercentageOfCategoriesToRemoveLimitExceeded;
+use App\Model\Product\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Config\DomainConfig;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -60,6 +62,16 @@ class CategoryFacade extends BaseCategoryFacade
     protected $productVisibilityFacade;
 
     /**
+     * @var \App\Model\Category\CategoryDataFactory
+     */
+    private $categoryDataFactory;
+
+    /**
+     * @var \App\Model\Product\ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * @param \Doctrine\ORM\EntityManagerInterface $em
      * @param \App\Model\Category\CategoryRepository $categoryRepository
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
@@ -71,6 +83,8 @@ class CategoryFacade extends BaseCategoryFacade
      * @param \App\Model\Category\CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryFactoryInterface $categoryFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
+     * @param \App\Model\Category\CategoryDataFactory $categoryDataFactory
+     * @param \App\Model\Product\ProductRepository $productRepository
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -83,10 +97,14 @@ class CategoryFacade extends BaseCategoryFacade
         CategoryWithPreloadedChildrenFactory $categoryWithPreloadedChildrenFactory,
         CategoryWithLazyLoadedVisibleChildrenFactory $categoryWithLazyLoadedVisibleChildrenFactory,
         CategoryFactoryInterface $categoryFactory,
-        ProductVisibilityFacade $productVisibilityFacade
+        ProductVisibilityFacade $productVisibilityFacade,
+        CategoryDataFactory $categoryDataFactory,
+        ProductRepository $productRepository
     ) {
         parent::__construct($em, $categoryRepository, $domain, $categoryVisibilityRecalculationScheduler, $friendlyUrlFacade, $imageFacade, $pluginCrudExtensionFacade, $categoryWithPreloadedChildrenFactory, $categoryWithLazyLoadedVisibleChildrenFactory, $categoryFactory);
         $this->productVisibilityFacade = $productVisibilityFacade;
+        $this->categoryDataFactory = $categoryDataFactory;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -339,5 +357,40 @@ class CategoryFacade extends BaseCategoryFacade
         $this->productVisibilityFacade->markProductsForRecalculationAffectedByCategory($category);
 
         parent::deleteById($categoryId);
+    }
+
+    /**
+     * @return \App\Model\Category\Category
+     */
+    public function getSaleCategory(): Category
+    {
+        $category = $this->categoryRepository->getByType(Category::SALE_TYPE);
+
+        if ($category === null) {
+            throw new SaleCategoryNotFoundException('Category with type "' . Category::SALE_TYPE . '" was not found!');
+        }
+
+        return $category;
+    }
+
+    public function refreshSaleCategoryVisibility(): void
+    {
+        try {
+            $saleCategory = $this->getSaleCategory();
+        } catch (SaleCategoryNotFoundException $exception) {
+            return;
+        }
+
+        $categoryData = $this->categoryDataFactory->createFromCategory($saleCategory);
+
+        foreach ($this->domain->getAllIds() as $domainId) {
+            if (count($this->productRepository->getListableInCategoryIndependentOfPricingGroup($domainId, $saleCategory)) > 0) {
+                $categoryData->enabled[$domainId] = true;
+            } else {
+                $categoryData->enabled[$domainId] = false;
+            }
+        }
+
+        $this->edit($saleCategory->getId(), $categoryData);
     }
 }

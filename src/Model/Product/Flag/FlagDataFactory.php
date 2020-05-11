@@ -17,6 +17,7 @@ class FlagDataFactory extends BaseFlagDataFactory
     {
         $flagData = new FlagData();
         $this->fillNew($flagData);
+
         return $flagData;
     }
 
@@ -34,11 +35,21 @@ class FlagDataFactory extends BaseFlagDataFactory
 
     /**
      * @param \App\Model\Product\Flag\FlagData $flagData
+     * @param \App\Model\Product\Flag\Flag $flag
+     */
+    protected function fillFromFlag(BaseFlagData $flagData, BaseFlag $flag)
+    {
+        parent::fillFromFlag($flagData, $flag);
+        $flagData->sale = $flag->isSale();
+    }
+
+    /**
+     * @param \App\Model\Product\Flag\FlagData $flagData
      */
     protected function fillNew(BaseFlagData $flagData): void
     {
         parent::fillNew($flagData);
-
         $flagData->position = 0;
+        $flagData->sale = false;
     }
 }
