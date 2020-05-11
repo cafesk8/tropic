@@ -1,6 +1,6 @@
 @in-message-alert: #F7D6D6;
 @in-message-warning: @color-orange;
-@in-message-info: #BAE3F2;
+@in-message-info: @color-f;
 @in-message-success: @color-green;
 
 @in-message-alert-text: @color-red;
@@ -9,15 +9,19 @@
 @in-message-success-text: @color-green;
 
 @in-message-bottom-gap: 10px;
-@in-message-bottom-padding: 6px 9px;
+@in-message-bottom-padding: 10px 15px;
 
 .in-message {
-    display: block;
+    display: flex;
+    align-items: center;
+    padding: @in-message-bottom-padding;
+    margin-bottom: @in-message-bottom-gap;
 
-    font-size: 14px;
-    text-transform: none;
-    font-weight: normal;
-    border-radius: @radius-medium;
+    border-radius: @radius;
+    background-color: @color-f;
+    font-family: @font-alt;
+    font-weight: 600;
+    font-size: @font-size + 1px;
 
     li {
         color: @in-message-alert-text;
@@ -29,11 +33,7 @@
 
     &--error,
     &--danger {
-        padding: @in-message-bottom-padding;
-        margin-bottom: @in-message-bottom-gap;
-
         color: @in-message-alert-text;
-        border: 1px solid @in-message-alert;
         background: lighten(@in-message-alert, 5%);
 
         li {
@@ -42,11 +42,7 @@
     }
 
     &--warning {
-        padding: @in-message-bottom-padding;
-        margin-bottom: @in-message-bottom-gap;
-
-        color: @in-message-warning-text;
-        border: 1px solid @in-message-warning;
+        color: @color-0;
         background: lighten(@in-message-warning, 10%);
 
         li {
@@ -55,11 +51,7 @@
     }
 
     &--info {
-        padding: @in-message-bottom-padding;
-        margin-bottom: @in-message-bottom-gap;
-
         color: @in-message-info-text;
-        border: 1px solid @in-message-info;
         background: lighten(@in-message-info, 10%);
 
         li {
@@ -68,11 +60,7 @@
     }
 
     &--success {
-        padding: @in-message-bottom-padding;
-        margin-bottom: @in-message-bottom-gap;
-
         color: @in-message-success-text;
-        border: 1px solid @in-message-success;
         background: lighten(@in-message-success, 50%);
 
         li {
@@ -81,11 +69,7 @@
     }
 
     &--alert {
-        padding: @in-message-bottom-padding;
-        margin-bottom: @in-message-bottom-gap;
-
         color: @in-message-alert-text;
-        border: 1px solid @in-message-alert;
         background: lighten(@in-message-alert, 5%);
 
         li {

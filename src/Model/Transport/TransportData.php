@@ -48,11 +48,6 @@ class TransportData extends BaseTransportData
     public $mallType;
 
     /**
-     * @var int
-     */
-    public $deliveryDays;
-
-    /**
      * @var string|null
      */
     public $externalId;
@@ -73,6 +68,5 @@ class TransportData extends BaseTransportData
         $this->pickupPlace = false;
         $this->initialDownload = false;
         $this->transportType = Transport::TYPE_NONE;
-        $this->deliveryDays = 0;
     }
 }

@@ -1,15 +1,15 @@
-{% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+{% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
 
 {% macro availabilityDetail(product, setDisplayNone) %}
     <div class="{% if setDisplayNone is same as (true) %}display-none {% endif %}in-availability in-availability--big js-detail-availability js-detail-availability-{{ product.id }}">
-        <span class="in-availability__status">
-            {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
-        </span>
+        <div class="in-availability__status">
+            {{ availability.productAvailability(product) }}
+        </div>
 
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
         {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
             <span class="in-availability__text-big">
-                {{ 'nebo dnes na'|trans }}
+                {{ 'nebo na'|trans }}&nbsp
             </span>
             <a
                 href="#"
@@ -41,15 +41,15 @@
 
 {% if product.variants|length > 0 %}
     <div class="in-availability in-availability--big js-product-variant-detail-select-info">
-        <span class="in-availability__status">
+        <div class="in-availability__status">
             <span class="in-availability__date">
                 {% if product.isMainVariant %}
                     {{ 'Pro zobrazení dostupnosti vyberte variantu'|trans }}
                 {% else %}
-                    {{ deliveryDate.productAvailabilityWithDeliveryDate(product) }}
+                    {{ availability.productAvailability(product) }}
                 {% endif %}
             </span>
-        </span>
+        </div>
     </div>
 {% for variant in product.variants %}
         {{ _self.availabilityDetail(variant, true) }}

@@ -2,13 +2,12 @@
 {% if productViews|length > 0 %}
     <div class="web__line">
         <div class="web__container">
-            <div id="top-products" class="box-top-products">
-                <div class="box-top-products__title">
+            <div id="top-products" class="box-products-slider">
+                <div class="box-products-slider__title">
                     {{ 'Nejoblíbenější kousky'|trans }}
                 </div>
-                <div class="box-top-products__in">
-                    {{ productList.horizontalList(productViews, "list-top-products", 'h3', 'top-products', false) }}
-                </div>
+                <a href="#" class="box-products-slider__subtitle js-not-implemented-yet">{{ 'Přejít na všechny'|trans }}</a>
+                {{ productList.horizontalList(productViews, 'h3', 'top-products', false) }}
             </div>
         </div>
     </div>

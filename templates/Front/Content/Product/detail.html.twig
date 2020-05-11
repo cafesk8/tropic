@@ -1,10 +1,9 @@
 {% extends 'Front/Layout/layoutWithoutPanel.html.twig' %}
 {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
-{% import 'Front/Content/Product/productListMacro.html.twig' as productList %}
 {% import 'Front/Content/Product/boxDetail.html.twig' as boxDetail %}
 
 {% set domain = getDomain() %}
-{% set accessoriesHeadline = 'Související zboží'|trans %}
+{% set accessoriesHeadline = 'K produktu budete potřebovat'|trans %}
 
 {% block meta_description %}
     {{- product.getSeoMetaDescription(domain.id)|default(getSeoMetaDescription()) -}}
@@ -19,26 +18,9 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="web__line">
-        <div class="web__container">
-            <div itemscope itemtype="http://schema.org/Product">
-                {{ boxDetail.productBox(product, productMainCategory, true, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText) }}
-            </div>
-        </div>
+    <div itemscope itemtype="http://schema.org/Product">
+        {{ boxDetail.productBox(product, productMainCategory, true, youtubeDetails, productSizeArticleId, loyaltyProgramArticle, accessories, accessoriesHeadline, productVisibleProductCategoryDomains, registrationDiscountExclusionText) }}
     </div>
-
-    {% if accessories|length > 0 %}
-        <div class="web__line js-tabs-button js-tabs-content" data-tab-id="accessories">
-            <div class="web__container">
-                <div class="box-accessories">
-                    <h2 class="box-accessories__title">
-                        {{ accessoriesHeadline }}
-                    </h2>
-                    {{ productList.horizontalList(accessories, "list-accessories-products", 'h3', 'accessories-products', true) }}
-                </div>
-            </div>
-        </div>
-    {% endif %}
 
     {% if productBlogArticles|length > 0 %}
         <div class="web__line">

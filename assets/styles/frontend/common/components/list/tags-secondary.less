@@ -1,0 +1,32 @@
+@list-tags-secondary-item-gap: 10px;
+
+.list-tags-secondary {
+    .reset-ul();
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: -@list-tags-secondary-item-gap;
+    margin-bottom: -@list-tags-secondary-item-gap;
+
+    &__item {
+        margin-left: @list-tags-secondary-item-gap;
+        margin-bottom: @list-tags-secondary-item-gap;
+
+        &__tag {
+            display: block;
+            padding: 5px 10px;
+            
+            color: @color-base;
+            font-size: 14px;
+            border-radius: @radius;
+            background-color: @color-light;
+            transition: @transition;
+            text-decoration: none;
+
+            &:hover {
+                background-color: darken(@color-light, 10%);
+                color: @color-base;
+            }
+        }
+    }
+}

@@ -36,14 +36,13 @@
 
     {% if topProducts is not empty %}
         <div class="web__line">
-            <div class="web__container">
-                <div id="top-products" class="box-top-products">
-                    <h1 class="box-top-products__title">
+            <div class="web__container web__container--no-padding">
+                <div id="top-products" class="box-products-slider">
+                    <h1 class="box-products-slider__title">
                         {{ 'Vybíráme to nejlepší'|trans }}
                     </h1>
-                    <div class="box-top-products__in">
-                        {{ productList.horizontalList(topProducts, "list-top-products", 'h3', 'top-products', false) }}
-                    </div>
+                    <a href="#" class="box-products-slider__subtitle js-not-implemented-yet">{{ 'Přejít na všechny'|trans }}</a>
+                    {{ productList.horizontalList(topProducts, 'h3', 'top-products', false) }}
                 </div>
             </div>
         </div>
@@ -51,14 +50,13 @@
 
     {% if priceBombProducts is not empty %}
         <div class="web__line">
-            <div class="web__container">
-                <div class="box-top-products">
-                    <h1 class="box-top-products__title">
+            <div class="web__container web__container--no-padding">
+                <div class="box-products-slider">
+                    <h1 class="box-products-slider__title">
                         {{ 'Cenová bomba'|trans }}
                     </h1>
-                    <div class="box-top-products__in">
-                        {{ productList.horizontalList(priceBombProducts, "list-top-products", 'h3', 'top-products', false) }}
-                    </div>
+                    <a href="#" class="box-products-slider__subtitle js-not-implemented-yet">{{ 'Přejít na všechny'|trans }}</a>
+                    {{ productList.horizontalList(priceBombProducts, 'h3', 'top-products', false) }}
                 </div>
             </div>
         </div>

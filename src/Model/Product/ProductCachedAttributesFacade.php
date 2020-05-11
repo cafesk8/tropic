@@ -7,9 +7,6 @@ namespace App\Model\Product;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\Pricing\ProductPriceCalculation;
-use App\Model\Transport\DeliveryDate\DeliveryDateFacade;
-use App\Model\Transport\Transport;
-use DateTime;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Model\Customer\User\CurrentCustomerUser;
 use Shopsys\FrameworkBundle\Model\Localization\Localization;
@@ -24,11 +21,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @var \App\Model\Product\Parameter\ParameterRepository
      */
     protected $parameterRepository;
-
-    /**
-     * @var \App\Model\Transport\DeliveryDate\DeliveryDateFacade
-     */
-    private $deliveryDateFacade;
 
     /**
      * @var \App\Model\Product\Pricing\ProductPriceCalculation
@@ -59,7 +51,6 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
      * @param \App\Model\Product\Pricing\ProductPriceCalculationForCustomerUser $productPriceCalculationForUser
      * @param \App\Model\Product\Parameter\ParameterRepository $parameterRepository
      * @param \Shopsys\FrameworkBundle\Model\Localization\Localization $localization
-     * @param \App\Model\Transport\DeliveryDate\DeliveryDateFacade $deliveryDateFacade
      * @param \App\Model\Product\Pricing\ProductPriceCalculation $productPriceCalculation
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
@@ -69,28 +60,16 @@ class ProductCachedAttributesFacade extends BaseProductCachedAttributesFacade
         ProductPriceCalculationForCustomerUser $productPriceCalculationForUser,
         ParameterRepository $parameterRepository,
         Localization $localization,
-        DeliveryDateFacade $deliveryDateFacade,
         ProductPriceCalculation $productPriceCalculation,
         Domain $domain,
         PricingGroupFacade $pricingGroupFacade,
         CurrentCustomerUser $currentCustomerUser
     ) {
         parent::__construct($productPriceCalculationForUser, $parameterRepository, $localization);
-        $this->deliveryDateFacade = $deliveryDateFacade;
         $this->productPriceCalculation = $productPriceCalculation;
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
         $this->currentCustomerUser = $currentCustomerUser;
-    }
-
-    /**
-     * @param \App\Model\Product\Product $product
-     * @param \App\Model\Transport\Transport|null $transport
-     * @return \DateTime
-     */
-    public function getExpectedDeliveryDate(Product $product, ?Transport $transport = null): DateTime
-    {
-        return $this->deliveryDateFacade->getExpectedDeliveryDate($product, $transport);
     }
 
     /**

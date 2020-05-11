@@ -1,24 +1,28 @@
-@list-simple-line-height: 20px;
+@list-simple-gap: 30px;
 
 .list-simple {
     .reset-ul();
 
     &__item {
         position: relative;
-        line-height: @list-simple-line-height;
-        margin-bottom: 10px;
+        line-height: 24px;
+        margin-bottom: 6px;
+        margin-left: @list-simple-gap;
 
-        &__link {
-            line-height: 25px;
+        font-size: @font-size-small;
 
-            color: @color-base;
-            font-size: 15px;
-            font-weight: 700;
-            text-decoration: none;
+        &:before {
+            content: '•';
+            position: absolute;
+            left: -@list-simple-gap / 2;
+            top: 50%;
+            transform: translateY(-50%) translateX(-50%);
 
-            .list-simple__item--lighter & {
-                color: @color-base;
-            }
+            color: @color-primary;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 }

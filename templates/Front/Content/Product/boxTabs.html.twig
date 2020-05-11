@@ -28,7 +28,12 @@
                             </a>
                             <i class="svg svg-triangle"></i>
                         </div>
-                        <div class="in-tab__content__item js-tabs-content active" data-tab-id="description">
+                        <div class="in-tab__content__item in-tab__content__item--without-gap js-tabs-content active" data-tab-id="description">
+                            <p class="in-tab__content__item__text">{{ product.getShortDescription(domain.id)|raw }}</p>
+                            <p class="in-tab__content__item__subtitle">
+                                <span class="in-tab__content__item__subtitle__info">{{ 'Popis'|trans }}</span>
+                                {{ product.getSeoH1(domain.id)|default(product.name) }}
+                            </p>
                             <div class="in-user-text" itemprop="description">
                                 {% if product.getDescription(domain.id) %}
                                     <p>
@@ -81,14 +86,75 @@
                         </div>
 
                         <div class="in-tab__content__item js-tabs-content active" data-tab-id="parameters">
-                            <h3 class="in-user-text__title">
-                                {{ parametersHeadline }}
-                            </h3>
+                            <div class="in-tab__content__item__block">
+                                <div class="wrap-gradient">
+                                    <div class="wrap-gradient__in">
+                                        <div class="box-detail__tags">
+                                            <div class="box-detail__tags__title">{{ 'Produkt se nachází v kategoriích'|trans }}</div>
+                                            {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="in-tab__content__item__block">
+                                <ul class="list-params list-params--big">
+                                    <li class="list-params__item">
+                                        <span class="list-params__item__text">
+                                            <span class="list-params__item__text__name">
+                                                {{ 'Kód produktu'|trans }}
+                                            </span>
+                                            <span class="list-params__item__text__value">
+                                                {{ product.catnum }}
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li class="list-params__item">
+                                        <span class="list-params__item__text">
+                                            <span class="list-params__item__text__name">
+                                                {{ 'Výrobce'|trans }}
+                                            </span>
+                                            <span class="list-params__item__text__value">
+                                                <a href="{{ url('front_brand_detail', { id: product.brand.id }) }}">
+                                                    <span itemprop="brand">{{ product.brand.name }}</span>
+                                                </a>
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li class="list-params__item">
+                                        <span class="list-params__item__text">
+                                            <span class="list-params__item__text__name">
+                                                {{ 'Záruka'|trans }}
+                                            </span>
+                                            <span class="list-params__item__text__value js-not-implemented-yet">
+                                                2 roky
+                                            </span>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
 
                             {{ _self.parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) }}
 
+                            <div class="in-tab__content__item__block">
+                                <div class="box-detail__downloads"> 
+                                    <h3 class="in-tab__content__item__title">
+                                        {{ 'Ke stažení'|trans }}
+                                    </h3>
+                                    <ul class="list-simple js-not-implemented-yet">
+                                        <li class="list-simple__item">
+                                            <a class="list-simple__item__link" href="">návod.pdf</a>
+                                        </li>
+                                        <li class="list-simple__item">
+                                            <a class="list-simple__item__link" href="">návod.pdf</a>
+                                        </li>
+                                        <li class="list-simple__item">
+                                            <a class="list-simple__item__link" href="">návod.pdf</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-
                     {% endif %}
                 </div>
             </div>
@@ -99,9 +165,12 @@
 
 {% macro parameters(product, productParameterValues, parametersHeadline, productVisibleProductCategoryDomains) %}
     {% if productParameterValues|length > 0 %}
-            <div class="box-detail__params">
-                <div class="box-detail__params__row">
-                    {% if productParameterValues > 0 %}
+            <div class="in-tab__content__item__block">
+                <h3 class="in-tab__content__item__title">
+                    {{ parametersHeadline }}
+                </h3>
+
+                {% if productParameterValues > 0 %}
                     <ul class="list-params">
                         {% for productParameterValue in productParameterValues %}
                             <li class="list-params__item">
@@ -109,33 +178,26 @@
                                     <span class="list-params__item__text__name">
                                         {{ productParameterValue.parameter.name }}:
                                     </span>
-                                    <span class="list-params__item__text__value">
+                                    <strong class="list-params__item__text__value">
                                         {{ productParameterValue.value.text }}
-                                    </span>
+                                    </strong>
                                 </span>
                             </li>
                         {% endfor %}
                     </ul>
-                    {% endif %}
-                </div>
-                <div class="box-detail__tags__row">
-                    {{ _self.productCategoryDomains(productVisibleProductCategoryDomains) }}
-                </div>
+                {% endif %}
             </div>
     {% endif %}
 {% endmacro %}
 
 {% macro productCategoryDomains(productVisibleProductCategoryDomains) %}
-
-    <div class="box-detail__tags__title">{{ 'Najdete v kategoriích'|trans }}</div>
-    <div class="box-detail__tags__values">
-        <div class="list-tags">
-            {% for productCategoryDomain in productVisibleProductCategoryDomains %}
-                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags__tag">
+    <ul class="list-tags-secondary">
+        {% for productCategoryDomain in productVisibleProductCategoryDomains %}
+            <li class="list-tags-secondary__item">
+                <a href="{{ url('front_product_list', { id: productCategoryDomain.category.id }) }}" class="list-tags-secondary__item__tag">
                     {{ productCategoryDomain.category.name }}
                 </a>
-            {% endfor %}
-        </div>
-    </div>
-
+            </li>
+        {% endfor %}
+    </ul>
 {% endmacro %}

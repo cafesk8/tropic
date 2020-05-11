@@ -1,4 +1,5 @@
 @in-availability-stores-height: 18px;
+@in-availability-icon-size: 16px;
 
 .in-availability {
     margin-bottom: 10px;
@@ -15,7 +16,6 @@
         font-weight: bold;
         color: @color-base;
         font-size: @font-size;
-        background-color: @color-f;
     }
 
     .in-badge {
@@ -39,8 +39,6 @@
     }
 
     &__text-big {
-        padding: 4px 5px 0 0;
-
         font-size: @font-size-small;
         font-weight: 400;
         white-space: nowrap;
@@ -58,16 +56,16 @@
     }
 
     &__stores-big {
-        padding-top: 4px;
-
         font-size: @font-size-small;
-        font-weight: 700;
+        font-weight: 400;
         white-space: nowrap;
-        text-decoration: none;
     }
 
     &__status {
-        padding-right: 5px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        line-height: 17px;
 
         font-size: @font-size-big;
         white-space: nowrap;
@@ -75,6 +73,7 @@
 
     &__date {
         color: @color-green;
+        font-weight: 500;
 
         &--not-available {
             color: @color-gray;

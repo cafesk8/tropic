@@ -15,7 +15,6 @@ use Shopsys\FrameworkBundle\Form\GroupType;
 use Shopsys\FrameworkBundle\Form\ValidationGroup;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -95,14 +94,6 @@ class TransportFormTypeExtension extends AbstractTypeExtension
             ->add('mallType', TextType::class, [
                 'required' => false,
                 'label' => t('Mall id'),
-            ])
-            ->add('deliveryDays', IntegerType::class, [
-                'required' => true,
-                'label' => t('Počet prac. dní do dodání'),
-                'constraints' => [
-                    new Constraints\NotBlank(['message' => 'Vyplňte prosím počet dnů do dodání']),
-                    new Constraints\GreaterThanOrEqual(['value' => 0, 'message' => 'Počet dnů do dodání musí být větší nebo roven nule']),
-                ],
             ])
             ->add('externalId', TextType::class, [
                 'label' => 'ID z IS',

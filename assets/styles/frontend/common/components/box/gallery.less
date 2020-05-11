@@ -1,15 +1,15 @@
-@box-gallery-images-width: 270px;
-@box-gallery-item-size: 85px;
-@box-gallery-item-video-size: 70px;
-@box-gallery-item-gap: 5px;
+@box-gallery-images-width: (@box-gallery-item-size + @box-gallery-item-gap) * 3;
+@box-gallery-item-size: 76px;
+@box-gallery-item-video-size: 60px;
+@box-gallery-item-gap: 17px;
 @box-gallery-side-gap: 125px;
 @box-gallery-font-size: @font-size-small;
 @box-gallery-bottom-gap: 40px;
-@box-gallery-item-border-size: 1px;
-@box-gallery-item-border-size-hover: 2px;
+@box-gallery-item-border-size: 3px;
+@box-gallery-item-border-size-hover: 1px;
 
-@box-gallery-item-video-width: 85px;
-@box-gallery-item-more-width: 93px;
+@box-gallery-item-video-width: 76px;
+@box-gallery-item-more-width: 76px;
 @box-gallery-items-width: calc(~"100% - @{box-gallery-item-more-width} - @{box-gallery-item-video-width}");
 
 .box-gallery {
@@ -27,7 +27,7 @@
         justify-content: center;
         max-width: @box-gallery-images-width;
         min-height: @box-gallery-item-size;
-        margin-bottom: 20px;
+        margin-bottom: -@box-gallery-item-gap;
         margin-left: -@box-gallery-item-gap;
     }
 
@@ -47,11 +47,11 @@
         text-align: center;
 
         border: @box-gallery-item-border-size solid @color-border;
-        border-radius: @radius-small;
+        border-radius: @radius;
         font-size: 0;
 
         &:hover {
-            border: @box-gallery-item-border-size-hover solid @color-add;
+            border: @box-gallery-item-border-size-hover solid @color-border-dark;
 
             .box-gallery__item__link {
                 width: @box-gallery-item-size - @box-gallery-item-border-size-hover*2;

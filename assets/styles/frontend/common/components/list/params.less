@@ -10,30 +10,30 @@
     &__item {
         display: flex;
         line-height: 26px;
+        padding: 7px 0;
 
-        font-size: 18px;
+        border-bottom: 1px solid @color-border;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        .list-params--big & {
+            font-size: @font-size-big;
+        }
 
         &__text {
             display: flex;
             flex-direction: row;
             width: 100%;
 
-            font-family: @font-alt;
-
             &__name {
-                width: 100%;
-
-                @media @query-vl {
-                    width: @list-params-item-name-width;
-                }
+                width: @list-params-item-name-width;
             }
 
             &__value {
-                width: 100%;
-
-                @media @query-vl {
-                    width: calc(~"@{calc-base} - @{list-params-item-name-width}");
-                }
+                width: calc(~"@{calc-base} - @{list-params-item-name-width}");
+                text-align: right;
             }
         }
     }

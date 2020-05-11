@@ -1,0 +1,30 @@
+.box-products-slider {
+    text-align: center;
+
+    @media @query-lg {
+        margin-bottom: 40px;
+    }
+
+    &__title {
+        margin-bottom: 10px;
+        line-height: 36px;
+
+        font-size: 30px;
+        color: @color-primary;
+
+        @media @query-lg {
+            line-height: 54px;
+            margin-bottom: 0;
+
+            font-size: 36px;
+        }
+    }
+
+    &__subtitle {
+        line-height: 21px;
+
+        font-size: @font-size-small;
+        color: @color-primary;
+        text-decoration: underline;
+    }
+}
