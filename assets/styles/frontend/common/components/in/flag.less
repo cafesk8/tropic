@@ -24,12 +24,10 @@
         bottom: auto;
     }
 
-    &--slider {
+    &--product-list, &--slider {
         position: static;
-    }
-
-    &--product-list {
-        position: static;
+        overflow: hidden;
+        height: @in-flag-item-height + @in-flag-item-gap;
     }
 
     &__item {
