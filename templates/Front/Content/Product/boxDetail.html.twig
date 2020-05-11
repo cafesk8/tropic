@@ -74,7 +74,7 @@
                         <h2 class="box-detail__info__title" itemprop="name">
                             {{ product.getSeoH1(domain.id)|default(product.name) }}
                         </h2>
-
+                        
                         {% for gift in product.gifts(domain.id) %}
                             {% if gift.calculatedHidden is same as (false) and gift.hidden is same as (false)
                                 and gift.calculatedSellingDenied is same as (false) and gift.sellingDenied is same as (false) %}
