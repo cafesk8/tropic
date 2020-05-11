@@ -204,7 +204,7 @@
         </div>
 
         {% if typeSet %}
-            {% import 'Front/Content/Product/deliveryDateMacro.html.twig' as deliveryDate %}
+            {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
 
             <div>
                 {% for productGroup in product.productGroups %}
@@ -226,15 +226,13 @@
                             {% endif %}
                         </div>
                         <div class="item-availabilty">
-                            {% if productGroup.item.isMainVariant %}
-                                <div class="in-availability">
+                            <div class="in-availability">
+                                {% if productGroup.item.isMainVariant %}
                                     {{ 'Dostupnost dle varianty'|trans }}
-                                </div>
-                            {% else %}
-                                <div class="in-availability">
-                                    {{ deliveryDate.productAvailabilityWithDeliveryDate(productGroup.item) }}
-                                </div>
-                            {% endif %}
+                                {% else %}
+                                    {{ availability.productAvailability(productGroup.item) }}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

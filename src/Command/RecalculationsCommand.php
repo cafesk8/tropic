@@ -15,6 +15,9 @@ use Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @property \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+ */
 class RecalculationsCommand extends BaseRecalculationsCommand
 {
     /**
@@ -34,7 +37,7 @@ class RecalculationsCommand extends BaseRecalculationsCommand
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Category\CategoryVisibilityRepository $categoryVisibilityRepository
-     * @param \Shopsys\FrameworkBundle\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
+     * @param \App\Model\Product\ProductHiddenRecalculator $productHiddenRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPriceRecalculator $productPriceRecalculator
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductVisibilityFacade $productVisibilityFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Availability\ProductAvailabilityRecalculator $productAvailabilityRecalculator

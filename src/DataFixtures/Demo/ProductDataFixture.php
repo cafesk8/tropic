@@ -5639,6 +5639,46 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
 
         $this->createProduct($productData);
 
+        $productData = $this->productDataFactory->create();
+
+        $productData->catnum = 'SET656666';
+        $productData->partno = '70522013';
+        $productData->ean = '8845781246359';
+
+        $parameterTranslations = [];
+
+        foreach ($this->domain->getAllIncludingDomainConfigsWithoutDataCreated() as $domain) {
+            $locale = $domain->getLocale();
+            $productData->name[$locale] = t('Sada "Géniů"', [], 'dataFixtures', $locale);
+            $productData->descriptions[$domain->getId()] = t('Výhodná sada příslušenství k vašemu počítači', [], 'dataFixtures', $domain->getLocale());
+            $productData->shortDescriptions[$domain->getId()] = t('Sada příslušenství k PC', [], 'dataFixtures', $domain->getLocale());
+        }
+
+        $this->setPriceForAllPricingGroups($productData, '1479.66');
+
+        $this->setVat($productData, VatDataFixture::VAT_HIGH);
+        $this->setSellingFrom($productData, '10.05.2020');
+        $this->setSellingTo($productData, null);
+        $productData->usingStock = true;
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
+        $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
+        $productData->groupItems = [
+            ['item' => $this->getReference(self::PRODUCT_PREFIX . '16'), 'item_count' => 1],
+            ['item' => $this->getReference(self::PRODUCT_PREFIX . '17'), 'item_count' => 2],
+            ['item' => $this->getReference(self::PRODUCT_PREFIX . '18'), 'item_count' => 3],
+            ['item' => $this->getReference(self::PRODUCT_PREFIX . '19'), 'item_count' => 4],
+        ];
+
+        $this->setUnit($productData, UnitDataFixture::UNIT_PIECES);
+        $this->setAvailability($productData, AvailabilityDataFixture::AVAILABILITY_IN_STOCK);
+        $this->setCategoriesForAllDomains($productData, [CategoryDataFixture::CATEGORY_PC]);
+        $this->setFlags($productData, [FlagDataFixture::FLAG_NEW_PRODUCT, FlagDataFixture::FLAG_TOP_PRODUCT]);
+
+        $productData->sellingDenied = false;
+        $this->setBrand($productData, BrandDataFixture::BRAND_GENIUS);
+
+        $this->createProduct($productData);
+
         $this->createVariants();
     }
 
