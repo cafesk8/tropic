@@ -5619,7 +5619,6 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setSellingFrom($productData, '07.05.2020');
         $this->setSellingTo($productData, null);
         $productData->usingStock = true;
-        $productData->stockQuantity = 200;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_EXCLUDE_FROM_SALE;
         $productData->pohodaProductType = Product::POHODA_PRODUCT_TYPE_ID_PRODUCT_GROUP;
         $productData->groupItems = [

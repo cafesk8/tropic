@@ -9,11 +9,6 @@ use Shopsys\ReadModelBundle\Image\ImageView;
 class ListedGroupItem
 {
     /**
-     * @var int
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $name;
@@ -29,25 +24,15 @@ class ListedGroupItem
     private $image;
 
     /**
-     * @param int $id
      * @param string $name
      * @param int $amount
      * @param \Shopsys\ReadModelBundle\Image\ImageView|null $imageView
      */
-    public function __construct(int $id, string $name, int $amount, ?ImageView $imageView)
+    public function __construct(string $name, int $amount, ?ImageView $imageView)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->amount = $amount;
         $this->image = $imageView;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**
@@ -72,18 +57,5 @@ class ListedGroupItem
     public function getImage(): ?ImageView
     {
         return $this->image;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'amount' => $this->getAmount(),
-            'image' => $this->getImage(),
-        ];
     }
 }

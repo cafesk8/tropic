@@ -211,7 +211,7 @@
                     {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
                     <div>
                         <div class="item-image">
-                            {{ image(product) }}
+                            {{ image(productGroup.item) }}
                         </div>
                         <div class="item-name">
                             {{ productGroup.item.name }}

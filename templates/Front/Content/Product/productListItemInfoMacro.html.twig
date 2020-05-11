@@ -1,0 +1,70 @@
+{% macro itemInfo(productView, showTitle, hoverEffect, productHeadingTagName) %}
+    {% set productSellingPrice = productView.sellingPrice %}
+
+    <div class="list-products__item__info">
+        <a class="list-products__item__info__link" href="{{ productView.action.detailUrl }}">
+            {% if showTitle %}
+                <{{ productHeadingTagName|default('h2') }} class="list-products__item__info__title">
+                    {{ productView.name|striptags|raw }}
+                <{{ '/' ~ productHeadingTagName|default('h2') }}>
+            {% endif %}
+
+            {% if productSellingPrice is not null %}
+                <div class="list-products__item__info__price">
+                    {% if productSellingPrice.hasHigherStandardPrice %}
+                        <div class="list-products__item__info__price__old">
+                            {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                        </div>
+                    {% endif %}
+                    <div{% if productSellingPrice.hasHigherStandardPrice %} class="list-products__item__info__price__main"{% endif %}>
+                        {% if productSellingPrice.priceFrom %}
+                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                        {% else %}
+                            {{ productSellingPrice.priceWithVat|price }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="in-availability">
+                {% if productView.action.sellingDenied %}
+                    <div class="in-availability__text in-availability__text--out-of-stock">
+                        {{ 'Product no longer on sale'|trans }}
+                    </div>
+                {% else %}
+                    <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
+                        {% if productView.action.isMainVariant %}
+                            {{ 'Dostupnost dle varianty'|trans }}
+                        {% else %}
+                            {{ productView.availability }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if productView.getGiftsCount() > 0 %}
+                <div class="list-products__item__info__gift">
+                    {% set giftCount = productView.getGiftsCount() %}
+                    {% if giftCount is same as (1) %}
+                        <span class="list-products__item__info__gift__title">{{ 'Dárek'|trans }}</span>
+                        {{ productView.getFirstGiftLabel() }}
+                    {% else %}
+                        <span class="list-products__item__info__gift__count">
+                            {% transchoice giftCount with {'%count%': giftCount} %}
+                                [2,4] %count% dárky zdarma |[5,Inf] %count% dárků zdarma
+                            {% endtranschoice %}
+                        </span>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </a>
+
+        {% if hoverEffect %}
+            <div class="list-products__item__hover">
+                {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView } )) }}
+            </div>
+        {% else %}
+            {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView, showAmountInput: false } )) }}
+        {% endif %}
+    </div>
+{% endmacro %}
