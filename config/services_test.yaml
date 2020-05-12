@@ -12,9 +12,6 @@ services:
 
     CommerceGuys\Intl\NumberFormat\NumberFormatRepository: ~
 
-    Shopsys\FrameworkBundle\Component\Localization\DateTimeFormatter:
-        factory: ['@Shopsys\FrameworkBundle\Model\Localization\CustomDateTimeFormatterFactory', create]
-
     Shopsys\FrameworkBundle\Form\Admin\AdvancedSearch\AdvancedSearchProductFilterTranslation: '@App\Form\Admin\AdvancedSearchProductFilterTranslation'
 
     Shopsys\FrameworkBundle\Model\Localization\IntlCurrencyRepository: ~
