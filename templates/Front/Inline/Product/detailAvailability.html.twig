@@ -7,7 +7,7 @@
         </div>
 
         {% set stocksWithoutZeroQuantityOnPickupPlaceStore = product.stocksWithoutZeroQuantityOnPickupPlaceStore(getDomain()) %}
-        {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 %}
+        {% if stocksWithoutZeroQuantityOnPickupPlaceStore|length > 0 and product.isInAnySaleStock is same as (false) %}
             <span class="in-availability__text-big">
                 {{ 'nebo na'|trans }}&nbsp
             </span>
