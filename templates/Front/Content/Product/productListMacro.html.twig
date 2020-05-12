@@ -61,9 +61,11 @@
                                     {% if productSellingPrice is not null %}
                                         <div class="box-products-set__info__prices">
                                             <span class="box-products-set__info__prices__new">{{ productSellingPrice.priceWithVat|price }}</span>
-                                            <span class="box-products-set__info__prices__old js-not-implemented-yet">
-                                                {{ 'Samostatně'|trans }} <strong>25 500 Kč</strong>
-                                            </span>
+                                            {% if productSellingPrice.hasHigherStandardPrice %}
+                                                <span class="box-products-set__info__prices__old">
+                                                    {{ productSellingPrice.standardPrice.priceWithVat|price }}
+                                                </span>
+                                            {% endif %}
                                         </div>
                                     {% endif %}
 
