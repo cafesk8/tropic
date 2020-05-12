@@ -50,8 +50,8 @@ class DomainsConfigLoaderTest extends FunctionalTestCase
     {
         /** @var \Shopsys\FrameworkBundle\Component\Domain\Config\DomainsConfigLoader $domainsConfigLoader */
         $domainsConfigLoader = $this->getContainer()->get(DomainsConfigLoader::class);
-        $domainsConfigFilepath = __DIR__ . '/test_domains.yml';
-        $domainsUrlsConfigFilepath = __DIR__ . '/test_domains_urls.yml';
+        $domainsConfigFilepath = __DIR__ . '/test_domains.yaml';
+        $domainsUrlsConfigFilepath = __DIR__ . '/test_domains_urls.yaml';
 
         $this->expectException(\Shopsys\FrameworkBundle\Component\Domain\Config\Exception\DomainConfigsDoNotMatchException::class);
 

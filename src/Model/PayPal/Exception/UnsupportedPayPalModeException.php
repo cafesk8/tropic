@@ -13,7 +13,7 @@ class UnsupportedPayPalModeException extends Exception
     {
         parent::__construct(
             sprintf(
-                'Use only %s or %s mode for payPalMode in PayPal parameters in parameters.yml',
+                'Use only %s or %s mode for payPalMode in PayPal parameters in parameters.yaml',
                 PayPalClient::MODE_SANDBOX,
                 PayPalClient::MODE_LIVE
             )

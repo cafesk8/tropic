@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "235a05a2f9be02fc49a983be5abe5625",
+    "content-hash": "c2806446fbd8788b47217701cb1eee8f",
     "packages": [
         {
             "name": "arvenil/ninja-mutex",
