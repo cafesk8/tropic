@@ -1001,6 +1001,15 @@ class Product extends BaseProduct
      */
     public function isInAnySaleStock(): bool
     {
+        if ($this->isMainVariant()) {
+            foreach ($this->getVariants() as $variant) {
+                if ($variant->isInAnySaleStock()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         return $this->getRealSaleStocksQuantity() > 0;
     }
 

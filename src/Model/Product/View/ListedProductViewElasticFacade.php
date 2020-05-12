@@ -162,7 +162,7 @@ class ListedProductViewElasticFacade extends BaseListedProductViewElasticFacade
                 $productArray,
                 $imageViews[$productId],
                 $this->productActionViewFacade->getForArray($productArray),
-                $productArray['real_sale_stocks_quantity'] > 0 ? $salePricingGroup : $this->currentCustomerUser->getPricingGroup()
+                $productArray['is_in_any_sale_stock'] === true ? $salePricingGroup : $this->currentCustomerUser->getPricingGroup()
             );
         }
 
