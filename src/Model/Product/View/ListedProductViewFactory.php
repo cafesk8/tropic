@@ -94,7 +94,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $productArray['variants_count'],
             $productArray['group_items'],
             $productArray['delivery_days'],
-            $productArray['is_available_in_days']
+            $productArray['is_available_in_days'],
+            $productArray['real_sale_stocks_quantity']
         );
     }
 
@@ -123,7 +124,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
             $product->getVariantsCount(),
             $this->productGroupFacade->getAllForElasticByMainProduct($product, $this->domain->getLocale()),
             $product->getDeliveryDays(),
-            $product->isAvailableInDays()
+            $product->isAvailableInDays(),
+            $product->getRealSaleStocksQuantity()
         );
     }
 

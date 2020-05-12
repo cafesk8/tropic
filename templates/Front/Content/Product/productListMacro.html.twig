@@ -1,4 +1,5 @@
 {% macro list(productViews, listCssClass, productHeadingTagName) %}
+    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     <ul class="list-products js-list js-product-list {{ listCssClass|default('') }}">
         {% for productView in productViews %}
             {% set productSellingPrice = productView.sellingPrice %}
@@ -153,6 +154,8 @@
                                         <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                             {% if productView.action.isMainVariant %}
                                                 {{ 'Dostupnost dle varianty'|trans }}
+                                            {% elseif productView.realSaleStocksQuantity > 0 %}
+                                                {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity) }}
                                             {% elseif productView.isAvailableInDays %}
                                                 <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
                                             {% else %}
@@ -191,6 +194,7 @@
 {% endmacro %}
 
 {% macro horizontalList(productViews, productHeadingTagName, type, showButton = false, onlyRefresh = false) %}
+    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     <div class="list-products-slider {% if showButton %}list-products-slider--with-button{% endif %} js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-products-slider__arrow list-products-slider__arrow--prev js-horizontal-list-action-prev">
@@ -245,6 +249,8 @@
                                             <div class="in-availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                                 {% if productView.action.isMainVariant %}
                                                     {{ 'Dostupnost dle varianty'|trans }}
+                                                {% elseif productView.realSaleStocksQuantity > 0 %}
+                                                    {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity) }}
                                                 {% elseif productView.deliveryDays is not null %}
                                                     <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
                                                 {% else %}
@@ -275,6 +281,7 @@
 
 {% macro lastVisitedList(productViews, productHeadingTagName, type, onlyRefresh = false) %}
     {% import 'Front/Inline/Product/productFlagsMacro.html.twig' as productFlags %}
+    {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     <div class="list-last-visited js-horizontal-list" data-type="{{ type }}" data-count-of-product="{{ productViews|length }}">
 
         <span class="list-last-visited__arrow list-last-visited__arrow--prev js-horizontal-list-action-prev">
@@ -313,6 +320,8 @@
                                     <div class="list-last-visited__item__info__availability__text" style="color: {{ getAvailabilityColor(productView.availability) }};">
                                         {% if productView.action.isMainVariant %}
                                             {{ 'Dostupnost dle varianty'|trans }}
+                                        {% elseif productView.realSaleStocksQuantity > 0 %}
+                                            {{ saleStockQuantity.showInfo(productView.realSaleStocksQuantity) }}
                                         {% elseif productView.deliveryDays is not null %}
                                             <span class="in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': productView.deliveryDays }) }}</span>
                                         {% else %}
