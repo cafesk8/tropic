@@ -31,8 +31,10 @@
     }
 
     &--product-set {
-        height: 23px;
+        height: @in-flag-item-gap + @in-flag-item-height;
+        overflow: hidden;
         position: static;
+        justify-content: flex-start;
     }
 
     &__item {
@@ -48,5 +50,14 @@
         font-size: 10px;
         background-color: @color-light;
         text-transform: uppercase;
+
+        .in-flag--detail & {
+            line-height: 21px;
+            padding: 1px 10px;
+
+            font-size: @font-size-small;
+            font-weight: 700;
+            border-radius: @radius-medium;
+        }
     }
 }

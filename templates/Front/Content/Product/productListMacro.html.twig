@@ -7,19 +7,9 @@
                 <li class="list-products__item-set">
                     <div class="box-products-set">
                         <div class="box-products-set__row">
-                            <div class="box-products-set__left">
-                                <a class="box-products-set__title" href="{{ productView.action.detailUrl }}">
-                                    {{ productView.name|striptags|raw }}
-                                </a>
-                            </div>
-                            <div class="box-products-set__right">
-                                {% set productFlagIds = productView.flagIds %}
-                                {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
-                                {% if freeTransportAndPaymentFlagId is not null %}
-                                    {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
-                                {% endif %}
-                                {{ renderFlagsByIds(productFlagIds, 'in-flag--product-set', false, productSellingPrice, productView.variantsCount) }}
-                            </div>
+                            <a class="box-products-set__title" href="{{ productView.action.detailUrl }}">
+                                {{ productView.name|striptags|raw }}
+                            </a>
                         </div>
                         <div class="box-products-set__row box-products-set__row--without-gap">
                             <div class="box-products-set__left">                        
@@ -57,15 +47,25 @@
                             </div>
 
                             <div class="box-products-set__right">
-                                <div class="box-products-set__info">
+                                <a class="box-products-set__info" href="{{ productView.action.detailUrl }}">
+                                    {% set productFlagIds = productView.flagIds %}
+                                    {% set freeTransportAndPaymentFlagId = getFreeTransportAndPaymentFlagIdIfShouldBeDisplayed(productView) %}
+                                    {% if freeTransportAndPaymentFlagId is not null %}
+                                        {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
+                                    {% endif %}
+                                    
+                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--product-set', false, productSellingPrice, productView.variantsCount) }}
+                                    
                                     {% if productSellingPrice is not null %}
                                         <div class="box-products-set__info__prices">
-                                            <span class="box-products-set__info__prices__new">{{ productSellingPrice.priceWithVat|price }}</span>
                                             {% if productSellingPrice.hasHigherStandardPrice %}
                                                 <span class="box-products-set__info__prices__old">
                                                     {{ productSellingPrice.standardPrice.priceWithVat|price }}
                                                 </span>
                                             {% endif %}
+                                            <span class="box-products-set__info__prices__new{% if productSellingPrice.hasHigherStandardPrice %} box-products-set__info__prices__new--colored{% endif %}">
+                                                {{ productSellingPrice.priceWithVat|price }}
+                                            </span>
                                         </div>
                                     {% endif %}
 
@@ -104,7 +104,7 @@
                                     <div class="box-products-set__info__button">
                                         {{ render(controller('App\\Controller\\Front\\CartController:productActionAction', { listedProductView: productView, showAmountInput: false } )) }}
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>

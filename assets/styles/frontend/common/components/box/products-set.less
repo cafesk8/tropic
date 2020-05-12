@@ -5,6 +5,11 @@
         padding: 15px;
 
         border: 1px solid @color-border;
+
+        .box-list--search & {
+            border: 0;
+            border-bottom: 1px solid @color-border;
+        }
     }
 
     &:hover {
@@ -13,6 +18,11 @@
 
             .box-products-set__title {
                 color: @color-primary;
+            }
+
+            .box-list--search & {
+                box-shadow: none;
+                border-bottom: 1px solid @color-border-dark;
             }
         }
     }
@@ -59,9 +69,11 @@
         font-weight: 700;
         font-size: @font-size-big;
         color: @color-base;
+        text-align: center;
 
         @media @query-lg {
             margin-bottom: 0;
+            text-align: left;
         }
     }
 
@@ -72,6 +84,8 @@
         padding: 20px;
         width: 100%;
 
+        text-decoration: none;
+
         @media @query-lg {
             align-items: baseline;
 
@@ -79,20 +93,38 @@
         }
 
         &__prices {
-            margin-bottom: 5px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+
+            @media @query-lg {
+                flex-direction: column;
+                align-items: baseline;
+                margin-bottom: 4px;
+            }
 
             &__new {
-                line-height: 25px;
-
-                font-size: 36px;
+                font-size: @font-size-big;
                 font-weight: 700;
+                color: @color-base;
+
+                @media @query-lg {
+                    line-height: 36px;
+
+                    font-size: 36px;
+                }
+
+                &--colored {
+                    color: @color-price-main;
+                }
             }
 
             &__old {
                 display: block;
-                line-height: 18px;
+                padding-right: 10px;
 
-                font-size: @font-size-small;
+                font-size: @font-size-big;
                 font-family: @font-alt;
                 font-weight: 400;
                 color: @color-price-old;

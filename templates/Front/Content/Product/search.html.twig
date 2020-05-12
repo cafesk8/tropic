@@ -64,27 +64,29 @@
 
     <div class="web__line">
         <div class="web__container">
-            <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
-                {% if paginationResult.results|length > 0 or filterFormSubmitted %}
-                    <div class="box-list__panel js-product-list-panel">
-                        <div class="box-filter js-product-filter">
-                            {{ productFilterForm.filterForm(
-                                filterForm,
-                                url('front_product_search'),
-                                url('front_product_search', { (SEARCH_TEXT_PARAMETER) : searchText }),
-                                searchText,
-                                'search',
-                                productFilterCountData,
-                                priceRange,
-                                filterFormSubmitted
-                            ) }}
+            <div class="box-list box-list--search">
+                <div class="box-list__wrap js-product-list-with-filter js-tabs-content" data-tab-id="products">
+                    {% if paginationResult.results|length > 0 or filterFormSubmitted %}
+                        <div class="box-list__panel js-product-list-panel">
+                            <div class="box-filter js-product-filter">
+                                {{ productFilterForm.filterForm(
+                                    filterForm,
+                                    url('front_product_search'),
+                                    url('front_product_search', { (SEARCH_TEXT_PARAMETER) : searchText }),
+                                    searchText,
+                                    'search',
+                                    productFilterCountData,
+                                    priceRange,
+                                    filterFormSubmitted
+                                ) }}
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
 
-                <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
-                    <div class="box-list__products">
-                        {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                    <div class="box-list__content js-product-list-ajax-filter-products-with-controls">
+                        <div class="box-list__products">
+                            {% include 'Front/Content/Product/productsWithControls.html.twig' with {paginationResult: paginationResult, filterFormSubmitted: filterFormSubmitted, searchText: searchText} %}
+                        </div>
                     </div>
                 </div>
             </div>
