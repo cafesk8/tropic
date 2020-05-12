@@ -279,6 +279,10 @@ class ProductFacade extends BaseProductFacade
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
 
+        if ($product->isVariant()) {
+            $this->refreshMainVariant($product->getMainVariant());
+        }
+
         return $product;
     }
 
@@ -381,6 +385,10 @@ class ProductFacade extends BaseProductFacade
         $this->refreshMainProducts($product);
 
         $this->categoryFacade->refreshSaleCategoryVisibility();
+
+        if ($product->isVariant()) {
+            $this->refreshMainVariant($product->getMainVariant());
+        }
 
         return $product;
     }
@@ -918,10 +926,16 @@ class ProductFacade extends BaseProductFacade
     {
         $product = $this->getById($productId);
 
+        $mainVariant = null;
         if ($product->isMainVariant()) {
             $this->disconnectVariantsFromMainVariant($product);
+        } elseif ($product->isVariant()) {
+            $mainVariant = $product->getMainVariant();
         }
         parent::delete($productId);
+        if ($mainVariant !== null) {
+            $this->refreshMainVariant($mainVariant);
+        }
     }
 
     /**
@@ -1091,13 +1105,24 @@ class ProductFacade extends BaseProductFacade
      */
     private function processSaleFlagAssignment(ProductData $productData): void
     {
-        $quantityInSaleStocks = $this->getQuantityInSaleStocks($productData);
+        $isInAnySaleStock = false;
+        if ($this->productVariantTropicFacade->isMainVariant($productData->variantId)) {
+            $variants = $this->productVariantTropicFacade->getVariantsByMainVariantId($productData->variantId);
+            foreach ($variants as $variant) {
+                if ($variant->isInAnySaleStock()) {
+                    $isInAnySaleStock = true;
+                    break;
+                }
+            }
+        } else {
+            $isInAnySaleStock = $this->getQuantityInSaleStocks($productData) > 0;
+        }
 
         $flags = $productData->flags;
         foreach ($this->flagFacade->getSaleFlags() as $saleFlag) {
-            if ($quantityInSaleStocks > 0 && !in_array($saleFlag, $flags, true)) {
+            if ($isInAnySaleStock && !in_array($saleFlag, $flags, true)) {
                 $flags[] = $saleFlag;
-            } elseif ($quantityInSaleStocks <= 0) {
+            } elseif (!$isInAnySaleStock) {
                 $key = array_search($saleFlag, $flags, true);
                 if ($key !== false) {
                     unset($flags[$key]);
@@ -1123,5 +1148,14 @@ class ProductFacade extends BaseProductFacade
         }
 
         return $quantityInSaleStocks;
+    }
+
+    /**
+     * @param \App\Model\Product\Product $mainVariant
+     */
+    private function refreshMainVariant(Product $mainVariant): void
+    {
+        $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
+        $this->edit($mainVariant->getId(), $mainVariantData);
     }
 }

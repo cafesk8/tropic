@@ -89,4 +89,13 @@ class ProductVariantTropicFacade
     {
         return $productVariantId !== null && strpos($productVariantId, self::VARIANT_ID_SEPARATOR) === false;
     }
+
+    /**
+     * @param string $mainVariantId
+     * @return \App\Model\Product\Product[]
+     */
+    public function getVariantsByMainVariantId(string $mainVariantId): array
+    {
+        return $this->productRepository->getVariantsByMainVariantId($mainVariantId);
+    }
 }
