@@ -123,16 +123,20 @@
                                             </span>
                                         </li>
                                     {% endif %}
-                                    <li class="list-params__item">
-                                        <span class="list-params__item__text">
-                                            <span class="list-params__item__text__name">
-                                                {{ 'Záruka'|trans }}
+                                    {% if product.warranty %}
+                                        <li class="list-params__item">
+                                            <span class="list-params__item__text">
+                                                <span class="list-params__item__text__name">
+                                                    {{ 'Záruka'|trans }}
+                                                </span>
+                                                <span class="list-params__item__text__value">
+                                                    {% transchoice product.warranty with {'%count%': product.warranty} %}
+                                                        {1} %count% měsíc  | [2,4] %count% měsíce | [5,Inf] %count% měsíců
+                                                    {% endtranschoice %}
+                                                </span>
                                             </span>
-                                            <span class="list-params__item__text__value js-not-implemented-yet">
-                                                2 roky
-                                            </span>
-                                        </span>
-                                    </li>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </div>
 
