@@ -75,7 +75,12 @@ class PohodaProductExportRepository
             ->addScalarResult('SText1', PohodaProduct::COL_VARIANT_ALIAS_SK)
             ->addScalarResult('RelSkTyp', PohodaProduct::COL_POHODA_PRODUCT_TYPE)
             ->addScalarResult('VPrAutPrepEUR', PohodaProduct::COL_AUTO_EUR_PRICE)
-            ->addScalarResult('Dodani', PohodaProduct::COL_DELIVERY_DAYS);
+            ->addScalarResult('Dodani', PohodaProduct::COL_DELIVERY_DAYS)
+            ->addScalarResult('EAN', PohodaProduct::COL_POHODA_PRODUCT_EAN)
+            ->addScalarResult('MJ3', PohodaProduct::COL_POHODA_PRODUCT_UNIT)
+            ->addScalarResult('MJ3Koef', PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER)
+            ->addScalarResult('Zaruka', PohodaProduct::COL_POHODA_PRODUCT_WARRANTY)
+            ->addScalarResult('Vyrobce', PohodaProduct::COL_POHODA_PRODUCT_BRAND_NAME);
 
         $query = $this->pohodaEntityManager->createNativeQuery(
             'SELECT 
@@ -96,7 +101,12 @@ class PohodaProductExportRepository
                 Product.SText1,
                 Product.RelSkTyp,
                 Product.VPrAutPrepEUR,
-                Product.Dodani
+                Product.Dodani,
+                Product.EAN,
+                Product.MJ3,
+                Product.MJ3Koef,
+                Product.Zaruka,
+                Product.Vyrobce
              FROM Skz Product
              WHERE Product.ID IN (:pohodaProductIds)
                 AND Product.IObchod = 1
@@ -114,6 +124,7 @@ class PohodaProductExportRepository
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_CATEGORIES] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_GROUP_ITEMS] = [];
             $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_RELATED_PRODUCTS] = [];
+            $pohodaProductsResult[(int)$pohodaProduct[PohodaProduct::COL_POHODA_ID]][PohodaProduct::COL_PRODUCT_VIDEOS] = [];
         }
 
         return $pohodaProductsResult;
@@ -303,6 +314,29 @@ class PohodaProductExportRepository
                 'pohodaProductIds' => $pohodaProductIds,
                 'defaultStock' => self::DEFAULT_POHODA_STOCK_ID,
                 'productTypeGroup' => self::PRODUCT_TYPE_GROUP_ID,
+            ]);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param int[] $pohodaProductIds
+     * @return array
+     */
+    public function getProductsVideosByPohodaIds(array $pohodaProductIds): array
+    {
+        $resultSetMapping = new ResultSetMapping();
+        $resultSetMapping->addScalarResult('RefAg', PohodaProduct::COL_PRODUCT_REF_ID)
+            ->addScalarResult('URL', PohodaProduct::COL_POHODA_PRODUCT_VIDEO);
+
+        $query = $this->pohodaEntityManager->createNativeQuery(
+            'SELECT ProductVideos.RefAg, ProductVideos.URL
+            FROM SkRefOdkazy ProductVideos
+            WHERE ProductVideos.RefAg IN (:pohodaProductIds)',
+            $resultSetMapping
+        )
+            ->setParameters([
+                'pohodaProductIds' => $pohodaProductIds,
             ]);
 
         return $query->getResult();

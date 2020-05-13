@@ -41,6 +41,14 @@ class PohodaProduct
     public const COL_STOCKS_INFORMATION = 'stockInformation';
     public const COL_PRODUCT_GROUP_ITEMS = 'productGroupItems';
     public const COL_RELATED_PRODUCTS = 'relatedProducts';
+    public const COL_PRODUCT_VIDEOS = 'productVideos';
+
+    public const COL_POHODA_PRODUCT_EAN = 'productEan';
+    public const COL_POHODA_PRODUCT_UNIT = 'productUnit';
+    public const COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER = 'minimumAmountAndMultiplier';
+    public const COL_POHODA_PRODUCT_WARRANTY = 'productWarranty';
+    public const COL_POHODA_PRODUCT_BRAND_NAME = 'brandName';
+    public const COL_POHODA_PRODUCT_VIDEO = 'productVideo';
 
     /**
      * @var int
@@ -148,6 +156,36 @@ class PohodaProduct
     public $relatedProducts;
 
     /**
+     * @var string|null
+     */
+    public $ean;
+
+    /**
+     * @var string
+     */
+    public $unit;
+
+    /**
+     * @var int
+     */
+    public $minimumAmountAndMultiplier;
+
+    /**
+     * @var int|null
+     */
+    public $warranty;
+
+    /**
+     * @var string|null
+     */
+    public $brandName;
+
+    /**
+     * @var array
+     */
+    public $youtubeVideos;
+
+    /**
      * @var bool
      */
     public $automaticEurCalculation;
@@ -185,5 +223,11 @@ class PohodaProduct
         $this->automaticEurCalculation = (bool)$pohodaProductData[self::COL_AUTO_EUR_PRICE];
         $this->relatedProducts = $pohodaProductData[self::COL_RELATED_PRODUCTS];
         $this->deliveryDays = $pohodaProductData[self::COL_DELIVERY_DAYS];
+        $this->ean = $pohodaProductData[self::COL_POHODA_PRODUCT_EAN];
+        $this->unit = $pohodaProductData[self::COL_POHODA_PRODUCT_UNIT];
+        $this->minimumAmountAndMultiplier = (int)$pohodaProductData[self::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER];
+        $this->warranty = (int)$pohodaProductData[self::COL_POHODA_PRODUCT_WARRANTY];
+        $this->brandName = $pohodaProductData[self::COL_POHODA_PRODUCT_BRAND_NAME];
+        $this->youtubeVideos = $pohodaProductData[self::COL_PRODUCT_VIDEOS];
     }
 }

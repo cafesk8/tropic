@@ -86,6 +86,23 @@ class PohodaProductDataValidator
                 PohodaProduct::COL_AUTO_EUR_PRICE => [
                     new NotBlank(),
                 ],
+                PohodaProduct::COL_POHODA_PRODUCT_MINIMUM_AMOUNT_AND_MULTIPLIER => [
+                    new Type(['type' => 'numeric']),
+                    new NotBlank(),
+                ],
+                PohodaProduct::COL_POHODA_PRODUCT_BRAND_NAME => [
+                    new Type(['type' => 'string']),
+                ],
+                PohodaProduct::COL_POHODA_PRODUCT_WARRANTY => [
+                    new Type(['type' => 'numeric']),
+                ],
+                PohodaProduct::COL_POHODA_PRODUCT_UNIT => [
+                    new Type(['type' => 'string']),
+                    new NotBlank(),
+                ],
+                PohodaProduct::COL_POHODA_PRODUCT_EAN => [
+                    new Type(['type' => 'string']),
+                ],
             ],
         ]));
 
