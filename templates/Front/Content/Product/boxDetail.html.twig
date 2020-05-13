@@ -225,7 +225,7 @@
                         <h3 class="box-set__title">{{ 'Set obsahuje toto zboží'|trans }}</h3>
                         <div class="box-set__wrap">
                             <ul class="list-set list-set--{{ product.productGroups|length }} js-list-set-container">
-                                {% for productGroup in product.productGroups %}
+                                {% for productGroup in sortProductGroupsByPrice(product.productGroups) %}
                                     {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
                                     <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item">
                                         <div class="list-set__item__in">

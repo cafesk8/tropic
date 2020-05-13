@@ -8,6 +8,7 @@ use App\Model\Product\Availability\AvailabilityData;
 use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Flag\Flag;
 use App\Model\Product\Flag\FlagFacade;
+use App\Model\Product\Group\ProductGroup;
 use App\Model\Product\Parameter\ParameterFacade;
 use App\Model\Product\Parameter\ParameterValue;
 use App\Model\Product\Pricing\ProductPrice;
@@ -151,6 +152,10 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
                 'filterOnlyVisibleVariants',
                 [$this, 'filterOnlyVisibleVariants']
             ),
+            new TwigFunction(
+                'sortProductGroupsByPrice',
+                [$this, 'sortProductGroupsByPrice']
+            ),
         ];
     }
 
@@ -257,5 +262,20 @@ class ProductExtension extends \Shopsys\FrameworkBundle\Twig\ProductExtension
             );
             return $productVisibility->isVisible();
         });
+    }
+
+    /**
+     * @param \App\Model\Product\Group\ProductGroup[] $productGroups
+     * @return \App\Model\Product\Group\ProductGroup[]
+     */
+    public function sortProductGroupsByPrice(array $productGroups): array
+    {
+        usort($productGroups, function (ProductGroup $productGroup1, ProductGroup $productGroup2) {
+            return (int)$this->productCachedAttributesFacade->getProductSellingPrice($productGroup2->getItem())->getPriceWithVat()->subtract(
+                $this->productCachedAttributesFacade->getProductSellingPrice($productGroup1->getItem())->getPriceWithVat()
+            )->getAmount();
+        });
+
+        return $productGroups;
     }
 }
