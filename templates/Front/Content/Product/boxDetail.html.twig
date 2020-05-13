@@ -7,14 +7,14 @@
     {% set domain = getDomain() %}
     {% set showGalleryMaxCount = 3 %}
     {% set showFlagsMaxCount = 3 %}
+    {% set typeSet = product.pohodaProductType is same as(5) %}
 
     <div class="box-detail {% if visible == false %}display-none{% endif %}">
         <div class="web__line">
             <div class="web__container">
-                <div class="box-detail__product">
+                <div class="box-detail__product{% if typeSet %} box-detail__product--small-gap{% endif %}">
                     {# @var \App\Model\Product\Pricing\ProductPrice sellingPrice  #}
                     {% set sellingPrice = getProductSellingPrice(product) %}
-                    {% set typeSet = product.pohodaProductType is same as(5) %}
 
                     {% if not typeSet %}
                         <div class="box-detail__image">
@@ -73,14 +73,27 @@
                                 </div>
                             {% endif %}
                         </div>
+                    {% else %}
+                        <div class="box-detail__description">
+                            {% if typeSet %}
+                                <h2 class="box-detail__description__title" itemprop="name">
+                                    {{ product.getSeoH1(domain.id)|default(product.name) }}
+                                </h2>
+                                <p class="box-detail__description__code">
+                                    {{ product.catnum }}
+                                </p>
+                                <p class="box-detail__description__subtitle">{{ product.getShortDescription(domain.id) }}</p>
+                                {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail in-flag--right-side', false, sellingPrice, product.variantsCount) }}
+                            {% endif %}
+                        </div>
                     {% endif %}
 
                     <div class="box-detail__info">
-                        <h2 class="box-detail__info__title" itemprop="name">
-                            {{ product.getSeoH1(domain.id)|default(product.name) }}
-                        </h2>
+                        {% if not typeSet %}
+                            <h2 class="box-detail__info__title" itemprop="name">
+                                {{ product.getSeoH1(domain.id)|default(product.name) }}
+                            </h2>
 
-                        {% if typeSet %}
                             {{ product.getShortDescription(domain.id) }}
                         {% endif %}
 
@@ -204,39 +217,56 @@
         </div>
 
         {% if typeSet %}
-            {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
+            <div class="web__line">
+                <div class="web__container">
+                    {% import 'Front/Content/Product/productAvailabilityMacro.html.twig' as availability %}
 
-            <div>
-                {% for productGroup in product.productGroups %}
-                    {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
-                    <div>
-                        <div class="item-image">
-                            {{ image(productGroup.item) }}
-                        </div>
-                        <div class="item-name">
-                            {{ productGroup.item.name }}
-                        </div>
-                        <div class="item-price">
-                            {% if productSellingPrice is not null %}
-                                {% if productSellingPrice.priceFrom %}
-                                    {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
-                                {% else %}
-                                    {{ productSellingPrice.priceWithVat|price }}
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                        <div class="item-availabilty">
-                            <div class="in-availability">
-                                {% if productGroup.item.isMainVariant %}
-                                    {{ 'Dostupnost dle varianty'|trans }}
-                                {% else %}
-                                    {{ availability.productAvailability(productGroup.item) }}
-                                {% endif %}
-                            </div>
+                    <div class="box-set">
+                        <h3 class="box-set__title">{{ 'Set obsahuje toto zboží'|trans }}</h3>
+                        <div class="box-set__wrap">
+                            <ul class="list-set list-set--{{ product.productGroups|length }} js-list-set-container">
+                                {% for productGroup in product.productGroups %}
+                                    {% set productSellingPrice = getProductSellingPrice(productGroup.item) %}
+                                    <li class="list-set__item{% if loop.first %} active{% endif %} js-list-set-item">
+                                        <div class="list-set__item__in">
+                                            <div class="list-set__item__image">
+                                                {{ image(productGroup.item, { size: 'listSet' }) }}
+                                            </div>
+                                            <div class="list-set__item__content">
+                                                <div class="list-set__item__name">
+                                                    {{ productGroup.item.name }}
+                                                </div>
+                                                <div class="list-set__item__price">
+                                                    {% if productSellingPrice is not null %}
+                                                        {% if productSellingPrice.priceFrom %}
+                                                            {{ 'from %price%'|trans({'%price%': productSellingPrice.priceWithVat|price}) }}
+                                                        {% else %}
+                                                            {{ productSellingPrice.priceWithVat|price }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="in-availability in-availability--without-gap">
+                                                    {% if productGroup.item.isMainVariant %}
+                                                        {{ 'Dostupnost dle varianty'|trans }}
+                                                    {% else %}
+                                                        {{ availability.productAvailability(productGroup.item) }}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="list-set__item__info">
+                                                    {{ 'Níže je popis tohoto produktu'|trans }}
+                                                </div>
+                                                <div class="list-set__item__plus">
+                                                    <i class="svg svg-plus"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            </div
         {% endif %}
 
         {% if accessories|length > 0 %}

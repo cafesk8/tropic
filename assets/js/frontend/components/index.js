@@ -17,6 +17,7 @@ import './HoverIntentSetting';
 import './infoRow';
 import './lazyLoadInit';
 import './legalConditions';
+import './listSet';
 import './login';
 import './newsletterSubscriptionForm';
 import './notImplementedYet';

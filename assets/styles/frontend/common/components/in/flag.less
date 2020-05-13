@@ -24,6 +24,11 @@
         bottom: auto;
     }
 
+    &--right-side {
+        left: auto;
+        right: 0;
+    }
+
     &--product-list, &--slider {
         position: static;
         overflow: hidden;
@@ -58,6 +63,12 @@
             font-size: @font-size-small;
             font-weight: 700;
             border-radius: @radius-medium;
+            margin-right: auto;
+        }
+
+        .in-flag--right-side & {
+            margin-left: auto;
+            margin-right: 0;
         }
     }
 }
