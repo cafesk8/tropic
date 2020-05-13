@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Form\Admin;
 
+use App\Component\Domain\DomainHelper;
 use App\Component\FlashMessage\FlashMessageSender;
 use App\Component\Form\FormBuilderHelper;
 use App\Component\GoogleApi\GoogleClient;
 use App\Form\ProductGroupItemsListType;
 use App\Form\ProductsListType;
 use App\Model\Blog\Article\BlogArticleFacade;
+use App\Model\Pricing\Currency\Currency;
+use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Flag\FlagFacade;
 use App\Model\Product\Product;
@@ -48,11 +51,11 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'descriptions',
         'usingStock',
         'registrationDiscountDisabled',
-        'manualInputPricesByPricingGroupId',
         'vatsIndexedByDomainId',
         'variantId',
         'categoriesByDomainId',
         'storeStock',
+        'eurCalculatedAutomatically',
     ];
 
     /**
@@ -106,6 +109,16 @@ class ProductFormTypeExtension extends AbstractTypeExtension
     private $formBuilderHelper;
 
     /**
+     * @var \App\Model\Pricing\Currency\CurrencyFacade
+     */
+    private $currencyFacade;
+
+    /**
+     * @var string[]
+     */
+    private $dynamicallyDisabledFields;
+
+    /**
      * ProductFormTypeExtension constructor.
      *
      * @param \App\Model\Blog\Article\BlogArticleFacade $blogArticleFacade
@@ -118,6 +131,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
      * @param \App\Component\Form\FormBuilderHelper $formBuilderHelper
      * @param \App\Model\Product\ProductVariantTropicFacade $productVariantTropicFacade
      * @param \App\Component\FlashMessage\FlashMessageSender $flashMessageSender
+     * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      */
     public function __construct(
         BlogArticleFacade $blogArticleFacade,
@@ -129,7 +143,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         FlagFacade $flagFacade,
         FormBuilderHelper $formBuilderHelper,
         ProductVariantTropicFacade $productVariantTropicFacade,
-        FlashMessageSender $flashMessageSender
+        FlashMessageSender $flashMessageSender,
+        CurrencyFacade $currencyFacade
     ) {
         $this->blogArticleFacade = $blogArticleFacade;
         $this->adminDomainTabsFacade = $adminDomainTabsFacade;
@@ -141,6 +156,8 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->formBuilderHelper = $formBuilderHelper;
         $this->productVariantTropicFacade = $productVariantTropicFacade;
         $this->flashMessageSender = $flashMessageSender;
+        $this->currencyFacade = $currencyFacade;
+        $this->dynamicallyDisabledFields = [];
     }
 
     /**
@@ -264,7 +281,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         $this->addAmountGroup($builder, $product);
         $this->addProductGroupItemsGroup($builder, $product);
 
-        $this->formBuilderHelper->disableFieldsByConfigurations($builder, self::DISABLED_FIELDS);
+        $this->formBuilderHelper->disableFieldsByConfigurations($builder, $this->getDisabledFields());
     }
 
     /**
@@ -356,6 +373,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             'label' => t('Vyjmout ze slev za registraci'),
             'position' => 'first',
         ]);
+        $pricesGroupBuilder->add('eurCalculatedAutomatically', YesNoType::class, [
+            'label' => t('Ceny se automaticky přepočítávají na Euro'),
+            'position' => ['after' => 'registrationDiscountDisabled'],
+        ]);
 
         $productCalculatedPricesGroup = $pricesGroupBuilder->get('productCalculatedPricesGroup');
         $productCalculatedPricesGroup->remove('manualInputPricesByPricingGroupId');
@@ -371,13 +392,25 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             $manualInputPricesByPricingGroup->add($pricingGroup->getId(), MoneyType::class, [
                 'scale' => 6,
                 'required' => false,
-                'disabled' => $pricingGroup->getInternalId() !== null && $pricingGroup->isCalculatedFromDefault(),
+                'disabled' => $pricingGroup->getInternalId() !== null
+                    && (
+                        $pricingGroup->isCalculatedFromDefault()
+                        || (
+                            $product !== null
+                            && $product->isEurCalculatedAutomatically()
+                            && $this->currencyFacade->getDomainDefaultCurrencyByDomainId($pricingGroup->getDomainId())->getCode() === Currency::CODE_EUR
+                        )
+                    ),
                 'invalid_message' => 'Please enter price in correct format (positive number with decimal separator)',
                 'constraints' => [
                     new NotNegativeMoneyAmount(['message' => 'Price must be greater or equal to zero']),
                 ],
                 'label' => $pricingGroup->getName(),
             ]);
+
+            if ($pricingGroup->getDomainId() === DomainHelper::CZECH_DOMAIN) {
+                $this->dynamicallyDisabledFields[] = (string)$pricingGroup->getId();
+            }
         }
 
         $productCalculatedPricesGroup->add($manualInputPricesByPricingGroup);
@@ -610,5 +643,21 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         ) {
             $context->addViolation('Není možné vyvořit variantu, pro kterou neexistuje odpovídající hlavní varianta');
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getDisabledFields(): array
+    {
+        return array_merge(self::DISABLED_FIELDS, $this->dynamicallyDisabledFields);
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtendedType(): string
+    {
+        return ProductFormType::class;
     }
 }

@@ -122,6 +122,14 @@ class PricingGroup extends BasePricingGroup
     /**
      * @return bool
      */
+    public function isOrdinaryCustomerPricingGroup(): bool
+    {
+        return $this->internalId === self::PRICING_GROUP_ORDINARY_CUSTOMER;
+    }
+
+    /**
+     * @return bool
+     */
     public function isRegisteredCustomerPricingGroup(): bool
     {
         return $this->internalId === self::PRICING_GROUP_REGISTERED_CUSTOMER;

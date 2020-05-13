@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Pricing;
 
+use App\Component\Domain\DomainHelper;
 use App\Model\Pricing\Currency\Currency;
 use App\Model\Pricing\Vat\Vat;
 use Shopsys\FrameworkBundle\Component\Money\Money;
@@ -98,22 +99,29 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
     protected function calculateProductPriceForPricingGroup(Product $product, BasePricingGroup $pricingGroup)
     {
         $domainId = $pricingGroup->getDomainId();
+        $defaultCurrency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
+
         $defaultPricingGroup = $this->pricingGroupFacade->getById(
             $this->setting->getForDomain(Setting::DEFAULT_PRICING_GROUP, $domainId)
         );
-        $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
 
-        $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, [
-            $pricingGroup,
-            $defaultPricingGroup,
-            $standardPricingGroup,
-        ], $domainId);
+        $matchingPricingGroupOnFirstDomain = $pricingGroup->getInternalId() !== null ? $this->pricingGroupFacade->getByNameAndDomainId($pricingGroup->getInternalId(), DomainHelper::CZECH_DOMAIN) : null;
+        $standardPricingGroup = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
+        $pricingGroups = [$pricingGroup, $defaultPricingGroup, $standardPricingGroup];
+
+        if ($matchingPricingGroupOnFirstDomain !== null) {
+            $pricingGroups[] = $matchingPricingGroupOnFirstDomain;
+        }
+
+        $manualInputPrices = $this->productManualInputPriceRepository->findByProductAndPricingGroupsForDomain($product, $pricingGroups, $domainId);
 
         $inputPrice = Money::zero();
         $defaultPrice = Money::zero();
         $defaultMaxInputPrice = Money::zero();
         $maxInputPrice = Money::zero();
         $standardPriceInput = null;
+        $defaultCurrencyPriceInput = null;
+        $maxDefaultCurrencyPriceInput = null;
 
         foreach ($manualInputPrices as $manualInputPrice) {
             if ($manualInputPrice !== null && $manualInputPrice['pricingGroupId'] === $defaultPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
@@ -139,16 +147,25 @@ class ProductPriceCalculation extends BaseProductPriceCalculation
                     }
                 } elseif ($manualInputPrice['pricingGroupId'] === $standardPricingGroup->getId() && $manualInputPrice['inputPrice'] !== null) {
                     $standardPriceInput = Money::create($manualInputPrice['inputPrice']);
+                } elseif ($matchingPricingGroupOnFirstDomain !== null &&
+                    $manualInputPrice['pricingGroupId'] === $matchingPricingGroupOnFirstDomain->getId() &&
+                    $manualInputPrice['inputPrice'] !== null
+                ) {
+                    $defaultCurrencyPriceInput = Money::create($manualInputPrice['inputPrice']);
+                    $maxDefaultCurrencyPriceInput = Money::create($manualInputPrice['maxInputPrice']);
                 }
             }
+        }
+
+        if ($defaultCurrency->getCode() === Currency::CODE_EUR && $product->isEurCalculatedAutomatically() && $defaultCurrencyPriceInput !== null) {
+            $inputPrice = $defaultCurrencyPriceInput->divide($defaultCurrency->getExchangeRate(), 2);
+            $maxInputPrice = $maxDefaultCurrencyPriceInput->divide($defaultCurrency->getExchangeRate(), 2);
         }
 
         $isPriceFrom = false;
         if ($product->isMainVariant() && $maxInputPrice->isGreaterThan($inputPrice)) {
             $isPriceFrom = true;
         }
-
-        $defaultCurrency = $this->currencyFacade->getDomainDefaultCurrencyByDomainId($domainId);
 
         $defaultPrice = $this->calculateBasePriceRoundedByCurrency(
             $defaultPrice,

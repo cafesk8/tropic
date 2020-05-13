@@ -171,6 +171,13 @@ class Product extends BaseProduct
     private $pohodaProductType;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $eurCalculatedAutomatically;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -231,6 +238,7 @@ class Product extends BaseProduct
         $this->registrationDiscountDisabled = $productData->registrationDiscountDisabled;
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
+        $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
     }
 
     /**
@@ -844,5 +852,13 @@ class Product extends BaseProduct
                 $this->translation($locale)->setVariantAlias($variantAlias ?? self::getVariantNumber($this->getVariantId()));
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEurCalculatedAutomatically(): bool
+    {
+        return $this->eurCalculatedAutomatically;
     }
 }

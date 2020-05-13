@@ -137,6 +137,7 @@ class ProductDataFactory extends BaseProductDataFactory
         $productData->youtubeVideoIds = $product->getYoutubeVideoIds();
         $productData->variantId = $product->getVariantId();
         $productData->registrationDiscountDisabled = $product->isRegistrationDiscountDisabled();
+        $productData->eurCalculatedAutomatically = $product->isEurCalculatedAutomatically();
         $productData->groupItems = $this->getProductGroups($product);
 
         foreach ($this->domain->getAllIds() as $domainId) {

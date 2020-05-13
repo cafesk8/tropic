@@ -59,7 +59,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
     {
         foreach ($this->domain->getAllIds() as $domainId) {
             /** Default pricing groups are created in migration Version20180603135346 and DomainDataCreator */
-            $defaultPricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_ORDINARY_CUSTOMER, $domainId);
+            $defaultPricingGroup = $this->pricingGroupFacade->getOrdinaryCustomerPricingGroup($domainId);
             $this->addReferenceForDomain(self::PRICING_GROUP_BASIC_DOMAIN, $defaultPricingGroup, $domainId);
 
             try {
@@ -71,7 +71,7 @@ class PricingGroupDataFixture extends AbstractReferenceFixture
             $this->addReferenceForDomain(self::PRICING_GROUP_REGISTERED_DOMAIN, $registeredPricingGroup, $domainId);
 
             try {
-                $purchasePricingGroup = $this->pricingGroupFacade->getByNameAndDomainId(PricingGroup::PRICING_GROUP_PURCHASE_PRICE, $domainId);
+                $purchasePricingGroup = $this->pricingGroupFacade->getPurchasePricePricingGroup($domainId);
             } catch (PricingGroupNotFoundException $exception) {
                 $purchasePricingGroup = $this->createPurchasePricePricingGroup($domainId);
             }
