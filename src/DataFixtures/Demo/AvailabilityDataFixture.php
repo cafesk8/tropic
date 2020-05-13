@@ -74,7 +74,7 @@ class AvailabilityDataFixture extends AbstractReferenceFixture
         $this->createAvailability($availabilityData, self::AVAILABILITY_PREPARING);
 
         foreach ($this->domain->getAllLocales() as $locale) {
-            $availabilityData->name[$locale] = t('Skladem', [], 'dataFixtures', $locale);
+            $availabilityData->name[$locale] = t('Skladem v e-shopu', [], 'dataFixtures', $locale);
         }
 
         $availabilityData->dispatchTime = 0;

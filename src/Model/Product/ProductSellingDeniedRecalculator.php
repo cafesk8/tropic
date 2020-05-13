@@ -11,9 +11,9 @@ use Shopsys\FrameworkBundle\Model\Product\Product;
 use Shopsys\FrameworkBundle\Model\Product\ProductSellingDeniedRecalculator as BaseProductSellingDeniedRecalculator;
 
 /**
- * @method calculateSellingDeniedForProduct(Product $product)
- * @method propagateMainVariantSellingDeniedToVariants(Product[] $products)
- * @method propagateVariantsSellingDeniedToMainVariant(Product[] $products)
+ * @method calculateSellingDeniedForProduct(\App\Model\Product\Product $product)
+ * @method propagateMainVariantSellingDeniedToVariants(\App\Model\Product\Product[] $products)
+ * @method propagateVariantsSellingDeniedToMainVariant(\App\Model\Product\Product[] $products)
  */
 class ProductSellingDeniedRecalculator extends BaseProductSellingDeniedRecalculator
 {

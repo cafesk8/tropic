@@ -210,7 +210,6 @@ class ProductRepository extends BaseProductRepository
     {
         $queryBuilder = $this->getAllVisibleQueryBuilder($domainConfig->getId(), $pricingGroup)
             ->addSelect('b')->leftJoin('p.brand', 'b')
-            ->andWhere('p.calculatedSellingDenied = false')
             ->andWhere('pd.generateToMergadoXmlFeed = true')
             ->andWhere('p.variantType != :mainVariantType')
             ->orderBy('p.id', 'asc')

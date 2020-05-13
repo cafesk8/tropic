@@ -39,15 +39,13 @@ class ProductAvailabilityCalculation extends BaseProductAvailabilityCalculation
             return $this->calculateMainVariantAvailability($product);
         }
         if ($product->isUsingStock()) {
-            if ($product->getCalculatedSellingDenied() ||
-                ($product->getRealStockQuantity() <= 0 && $product->getOutOfStockAction() === BaseProduct::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY)
-            ) {
+            if ($product->isSellingDenied() || $product->getRealStockQuantity() <= 0) {
                 return $product->getOutOfStockAvailability();
-            } else {
-                return $defaultInStockAvailability;
             }
-        } else {
-            return $product->getAvailability();
+
+            return $defaultInStockAvailability;
         }
+
+        return $product->getAvailability();
     }
 }

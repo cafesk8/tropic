@@ -302,7 +302,7 @@ class ProductDataFixture extends AbstractReferenceFixture implements DependentFi
         $this->setVat($productData, VatDataFixture::VAT_HIGH);
         $this->setSellingFrom($productData, '9.1.2000');
         $this->setSellingTo($productData, null);
-        $productData->usingStock = false;
+        $productData->usingStock = true;
         $productData->stockQuantity = 0;
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
 

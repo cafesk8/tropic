@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product;
 
+use App\Model\Product\Availability\AvailabilityFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Image\ImageFacade;
@@ -29,6 +30,11 @@ class ProductDataFactory extends BaseProductDataFactory
     private $productGroupFacade;
 
     /**
+     * @var \App\Model\Product\Availability\AvailabilityFacade
+     */
+    private $availabilityFacade;
+
+    /**
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductInputPriceFacade $productInputPriceFacade
      * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
@@ -42,6 +48,7 @@ class ProductDataFactory extends BaseProductDataFactory
      * @param \Shopsys\FrameworkBundle\Model\Product\Parameter\ProductParameterValueDataFactoryInterface $productParameterValueDataFactory
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
      */
     public function __construct(
         VatFacade $vatFacade,
@@ -56,7 +63,8 @@ class ProductDataFactory extends BaseProductDataFactory
         PluginCrudExtensionFacade $pluginDataFormExtensionFacade,
         ProductParameterValueDataFactoryInterface $productParameterValueDataFactory,
         PricingGroupFacade $pricingGroupFacade,
-        ProductGroupFacade $productGroupFacade
+        ProductGroupFacade $productGroupFacade,
+        AvailabilityFacade $availabilityFacade
     ) {
         parent::__construct(
             $vatFacade,
@@ -73,6 +81,7 @@ class ProductDataFactory extends BaseProductDataFactory
             $pricingGroupFacade
         );
         $this->productGroupFacade = $productGroupFacade;
+        $this->availabilityFacade = $availabilityFacade;
     }
 
     /**
@@ -111,6 +120,9 @@ class ProductDataFactory extends BaseProductDataFactory
 
         $productData->stockQuantityByStoreId = [];
         $productData->youtubeVideoIds = [];
+        $productData->usingStock = true;
+        $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
+        $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
     }
 
     /**

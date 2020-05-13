@@ -1,9 +1,15 @@
 {% macro productAvailability(product) %}
     {% if product.isAvailableInDays %}
-        <span class="in-availability__date in-availability__date--available-in-days">{{ 'Dostupné do %days% dní'|trans({ '%days%': product.deliveryDays }) }}</span>
-    {% elseif product.isAvailable and not product.sellingDenied %}
-        <span class="in-availability__date in-availability__date--available">{{ 'Skladem v e-shopu'|trans }}</span>
-    {% elseif product.isCurrentlyOutOfStock or product.sellingDenied %}
-        <span class="in-availability__date in-availability__date--not-available">{{ 'Momentálně nedostupné'|trans }}</span>
+        <span class="in-availability__date in-availability__date--available-in-days">
+            {% if product.deliveryDays == 1 %}
+                {{ 'Dostupné do %days% dne'|trans({ '%days%': product.deliveryDays }) }}
+            {% else %}
+                {{ 'Dostupné do %days% dní'|trans({ '%days%': product.deliveryDays }) }}
+            {% endif %}
+        </span>
+    {% else %}
+        <span class="in-availability__date" style="color: {{ getAvailabilityColor(product.calculatedAvailability.name) }};">
+            {{ product.calculatedAvailability.name }}
+        </span>
     {% endif %}
 {% endmacro %}

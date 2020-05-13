@@ -200,13 +200,7 @@
 
                                 {% if not product.isMainVariant %}
                                     <div class="js-product-detail-main-add-to-cart-wrapper">
-                                        {% if not product.calculatedSellingDenied %}
-                                            {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, type: 'large' })) }}
-                                        {% else %}
-                                            <div>
-                                                {% include 'Front/Inline/Product/detailAvailability.html.twig' with { product: product } %}
-                                            </div>
-                                        {% endif %}
+                                        {{ render(controller('App\\Controller\\Front\\CartController:addProductFormAction', {product: product, type: 'large' })) }}
                                     </div>
                                 {% endif %}
                             </div>
