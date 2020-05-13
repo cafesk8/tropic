@@ -29,23 +29,6 @@ class OrderMail extends BaseOrderMail
     public const VARIABLE_TRACKING_URL = '{tracking_url}';
 
     /**
-     * @return array
-     */
-    public function getTemplateVariables(): array
-    {
-        $templateVariables = parent::getTemplateVariables();
-
-        array_push(
-            $templateVariables,
-            self::VARIABLE_PREPARED_PRODUCTS,
-            self::VARIABLE_TRACKING_NUMBER,
-            self::VARIABLE_TRACKING_URL
-        );
-
-        return $templateVariables;
-    }
-
-    /**
      * @param \App\Model\Order\Order $order
      * @return array
      */

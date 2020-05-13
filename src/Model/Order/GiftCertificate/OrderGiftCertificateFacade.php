@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Order\GiftCertificate;
 
-use App\Model\Mail\AllMailTemplatesData;
+use App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail;
 use App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMailFacade;
 use App\Model\Order\GiftCertificate\Pdf\OrderGiftCertificatePdfFacade;
 use App\Model\Order\Order;
@@ -72,7 +72,7 @@ class OrderGiftCertificateFacade
         $this->em->persist($orderGiftCertificate);
         $this->em->flush($orderGiftCertificate);
         $this->orderGiftCertificatePdfFacade->create($orderGiftCertificate);
-        $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, AllMailTemplatesData::GIFT_CERTIFICATE);
+        $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, OrderGiftCertificateMail::MAIL_TEMPLATE_DEFAULT_NAME);
 
         return $orderGiftCertificate;
     }
@@ -87,7 +87,7 @@ class OrderGiftCertificateFacade
             $promoCodeData->usageLimit = 1;
             $promoCodeData->validTo = new DateTime('+365 days');
             $orderGiftCertificate->getGiftCertificate()->edit($promoCodeData);
-            $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED);
+            $this->orderGiftCertificateMailFacade->sendGiftCertificateEmail($orderGiftCertificate, OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME);
         }
 
         $this->em->flush();

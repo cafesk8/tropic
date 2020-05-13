@@ -14,6 +14,9 @@ use Shopsys\FrameworkBundle\Model\Mail\Setting\MailSetting;
 
 class OrderGiftCertificateMail implements MessageFactoryInterface
 {
+    public const MAIL_TEMPLATE_DEFAULT_NAME = 'gift_certificate';
+    public const MAIL_TEMPLATE_ACTIVATED_NAME = 'gift_certificate_activated';
+
     public const VARIABLE_GIFT_CERTIFICATE_CODE = '{gift_certificate_code}';
     public const VARIABLE_GIFT_CERTIFICATE_CURRENCY = '{gift_certificate_currency}';
     public const VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL = '{gift_certificate_valid_until}';

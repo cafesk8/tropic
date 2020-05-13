@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Order\GiftCertificate\Mail;
 
-use App\Model\Mail\MailTemplateFacade;
 use App\Model\Order\GiftCertificate\OrderGiftCertificate;
 use Shopsys\FrameworkBundle\Model\Mail\Mailer;
+use Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade;
 
 class OrderGiftCertificateMailFacade
 {
@@ -16,7 +16,7 @@ class OrderGiftCertificateMailFacade
     private $mailer;
 
     /**
-     * @var \App\Model\Mail\MailTemplateFacade
+     * @var \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade
      */
     private $mailTemplateFacade;
 
@@ -27,7 +27,7 @@ class OrderGiftCertificateMailFacade
 
     /**
      * @param \Shopsys\FrameworkBundle\Model\Mail\Mailer $mailer
-     * @param \App\Model\Mail\MailTemplateFacade $mailTemplateFacade
+     * @param \Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade $mailTemplateFacade
      * @param \App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail $orderGiftCertificateMail
      */
     public function __construct(Mailer $mailer, MailTemplateFacade $mailTemplateFacade, OrderGiftCertificateMail $orderGiftCertificateMail)

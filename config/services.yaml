@@ -473,10 +473,6 @@ services:
 
     Shopsys\FrameworkBundle\Model\Order\Mail\OrderMail: '@App\Model\Order\Mail\OrderMail'
 
-    Shopsys\FrameworkBundle\Controller\Admin\MailController:
-        class: App\Controller\Admin\MailController
-        tags: ['controller.service_arguments']
-
     App\Model\Feed\FeedHelper: ~
 
     Shopsys\FrameworkBundle\Model\Product\Flag\FlagRepository: '@App\Model\Product\Flag\FlagRepository'
@@ -557,8 +553,6 @@ services:
     App\Model\Product\Pricing\QuantifiedProductPriceCalculation: ~
 
     Shopsys\FrameworkBundle\Model\Product\Pricing\QuantifiedProductPriceCalculation: '@App\Model\Product\Pricing\QuantifiedProductPriceCalculation'
-
-    Shopsys\FrameworkBundle\Model\Mail\MailTemplateFacade: '@App\Model\Mail\MailTemplateFacade'
 
     App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail: ~
 
@@ -655,3 +649,16 @@ services:
     Shopsys\FrameworkBundle\Model\Product\Availability\AvailabilityFacade: '@App\Model\Product\Availability\AvailabilityFacade'
 
     Shopsys\FrameworkBundle\Model\Product\ProductVisibilityRepository: '@App\Model\Product\ProductVisibilityRepository'
+
+    App\Model\Mail\MailTemplateConfiguration:
+        calls:
+            -   method: addMailTemplateVariables
+                arguments:
+                    - !php/const App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail::MAIL_TEMPLATE_DEFAULT_NAME
+                    - '@=service("App\\Model\\Order\\GiftCertificate\\Mail\\OrderGiftCertificateMailTemplateVariablesProvider").createDefault()'
+            -   method: addMailTemplateVariables
+                arguments:
+                    - !php/const App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME
+                    - '@=service("App\\Model\\Order\\GiftCertificate\\Mail\\OrderGiftCertificateMailTemplateVariablesProvider").createActivated()'
+
+    Shopsys\FrameworkBundle\Model\Mail\MailTemplateConfiguration: '@App\Model\Mail\MailTemplateConfiguration'

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-use App\Model\Mail\AllMailTemplatesData;
 use App\Model\Order\GiftCertificate\Mail\OrderGiftCertificateMail;
 use Doctrine\Common\Persistence\ObjectManager;
 use Shopsys\FrameworkBundle\Component\DataFixture\AbstractReferenceFixture;
@@ -147,7 +146,7 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             Tento poukaz však bude aktivován až po obdržení platby za objednávku ' . OrderGiftCertificateMail::VARIABLE_ORDER_NUMBER . ', 
             o čemž vás budeme informovat dalším emailem.', [], 'dataFixtures', $locale);
 
-            $this->createMailTemplate($manager, AllMailTemplatesData::GIFT_CERTIFICATE, $mailTemplateData, $domainId);
+            $this->createMailTemplate($manager, OrderGiftCertificateMail::MAIL_TEMPLATE_DEFAULT_NAME, $mailTemplateData, $domainId);
 
             $mailTemplateData->subject = t('Dárkový poukaz - aktivován', [], 'dataFixtures', $locale);
             $mailTemplateData->body = t('Dobrý den,<br /><br />
@@ -157,7 +156,7 @@ class MailTemplateDataFixture extends AbstractReferenceFixture
             Certifikát je platný do ' . OrderGiftCertificateMail::VARIABLE_GIFT_CERTIFICATE_VALID_UNTIL . '. 
             Děkujeme za váš nákup.', [], 'dataFixtures', $locale);
 
-            $this->createMailTemplate($manager, AllMailTemplatesData::GIFT_CERTIFICATE_ACTIVATED, $mailTemplateData, $domainId);
+            $this->createMailTemplate($manager, OrderGiftCertificateMail::MAIL_TEMPLATE_ACTIVATED_NAME, $mailTemplateData, $domainId);
         }
     }
 
