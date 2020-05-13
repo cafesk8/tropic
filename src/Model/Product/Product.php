@@ -45,6 +45,8 @@ use Shopsys\FrameworkBundle\Model\Product\ProductData as BaseProductData;
  * @property \App\Model\Product\ProductDomain[]|\Doctrine\Common\Collections\Collection $domains
  * @method \App\Model\Product\ProductDomain getProductDomain(int $domainId)
  * @method editFlags(\App\Model\Product\Flag\Flag[] $flags)
+ * @property \App\Model\Product\Unit\Unit $unit
+ * @method \App\Model\Product\Unit\Unit getUnit()
  */
 class Product extends BaseProduct
 {
@@ -214,6 +216,13 @@ class Product extends BaseProduct
     private $refresh;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $warranty;
+
+    /**
      * @param \App\Model\Product\ProductData $productData
      * @param \App\Model\Product\Product[]|null $variants
      */
@@ -275,6 +284,7 @@ class Product extends BaseProduct
         $this->promoDiscountDisabled = $productData->promoDiscountDisabled;
         $this->updatedByPohodaAt = $productData->updatedByPohodaAt;
         $this->pohodaProductType = $productData->pohodaProductType;
+        $this->warranty = $productData->warranty;
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
         $this->productGroups = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
@@ -899,6 +909,14 @@ class Product extends BaseProduct
     public function addProductGroup(ProductGroup $groupItem)
     {
         $this->productGroups[] = $groupItem;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getWarranty(): ?int
+    {
+        return $this->warranty;
     }
 
     /**

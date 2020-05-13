@@ -18,6 +18,5 @@ import './validation.form.transport';
 import './windowOpener';
 import './youtubeId.validation';
 import './youtubeUrlParser';
-import './youtubeVideos';
 
 registerAdmin();

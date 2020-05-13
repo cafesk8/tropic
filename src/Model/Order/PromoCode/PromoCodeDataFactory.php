@@ -31,7 +31,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     private $productFacade;
 
     /**
-     * @var \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade
+     * @var \App\Model\Product\Brand\BrandFacade
      */
     private $brandFacade;
 
@@ -43,7 +43,7 @@ class PromoCodeDataFactory extends BasePromoCodeDataFactory
     /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\AdminDomainTabsFacade $adminDomainTabsFacade
      * @param \App\Model\Order\PromoCode\PromoCodeLimitFacade $promoCodeLimitFacade
-     * @param \Shopsys\FrameworkBundle\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
      * @param \App\Model\Category\CategoryFacade $categoryFacade
      * @param \App\Model\Product\ProductFacade $productFacade
      */

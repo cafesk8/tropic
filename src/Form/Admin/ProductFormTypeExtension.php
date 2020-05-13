@@ -63,6 +63,13 @@ class ProductFormTypeExtension extends AbstractTypeExtension
         'deliveryDays',
         'outOfStockAction',
         'outOfStockAvailability',
+        'youtubeVideoIds',
+        'brand',
+        'unit',
+        'ean',
+        'warranty',
+        'minimumAmount',
+        'amountMultiplier',
     ];
 
     /**
@@ -192,6 +199,10 @@ class ProductFormTypeExtension extends AbstractTypeExtension
                 'constraints' => [
                     new Callback([$this, 'validateVariantId']),
                 ],
+            ])
+            ->add('warranty', IntegerType::class, [
+                'required' => false,
+                'label' => t('Záruční doba'),
             ])
             ->add('updatedByPohodaAt', DisplayOnlyType::class, [
                 'data' => $product !== null ? $this->dateTimeFormatterExtension->formatDateTime($product->getUpdatedByPohodaAt()) : '-',
@@ -575,15 +586,7 @@ class ProductFormTypeExtension extends AbstractTypeExtension
             ->add($builder->create('youtubeVideoIds', YoutubeVideosType::class, [
                 'entry_type' => TextType::class,
                 'label' => t('YouTube videa'),
-                'allow_add' => true,
-                'allow_delete' => true,
                 'entry_options' => [
-                    'attr' => [
-                        'class' => 'js-video-id',
-                    ],
-                    'constraints' => [
-                        new Callback([$this, 'validateYoutubeVideo']),
-                    ],
                     'required' => false,
                 ],
             ]));

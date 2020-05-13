@@ -13,6 +13,9 @@ use App\Model\Pricing\Currency\CurrencyFacade;
 use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Pricing\Vat\VatFacade;
 use App\Model\Product\Availability\AvailabilityFacade;
+use App\Model\Product\Brand\Brand;
+use App\Model\Product\Brand\BrandDataFactory;
+use App\Model\Product\Brand\BrandFacade;
 use App\Model\Product\Product;
 use App\Model\Product\ProductData;
 use App\Model\Product\ProductFacade;
@@ -22,7 +25,10 @@ use App\Model\Store\StoreFacade;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
 use Shopsys\FrameworkBundle\Component\Money\Money;
 use Shopsys\FrameworkBundle\Component\String\TransformString;
+use Shopsys\FrameworkBundle\Model\Product\Brand\Exception\BrandNotFoundException;
 use Shopsys\FrameworkBundle\Model\Product\Exception\ProductNotFoundException;
+use Shopsys\FrameworkBundle\Model\Product\Unit\Unit;
+use Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade;
 
 class PohodaProductMapper
 {
@@ -72,6 +78,26 @@ class PohodaProductMapper
     private $availabilityFacade;
 
     /**
+     * @var \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade
+     */
+    private $unitFacade;
+
+    /**
+     * @var \App\Model\Product\Brand\BrandFacade
+     */
+    private $brandFacade;
+
+    /**
+     * @var \App\Model\Product\Brand\BrandDataFactory
+     */
+    private $brandDataFactory;
+
+    /**
+     * @var \App\Component\Transfer\Logger\TransferLogger
+     */
+    private $logger;
+
+    /**
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Pricing\Vat\VatFacade $vatFacade
@@ -80,6 +106,9 @@ class PohodaProductMapper
      * @param \App\Model\Product\ProductFacade $productFacade
      * @param \App\Model\Pricing\Currency\CurrencyFacade $currencyFacade
      * @param \App\Model\Product\Availability\AvailabilityFacade $availabilityFacade
+     * @param \Shopsys\FrameworkBundle\Model\Product\Unit\UnitFacade $unitFacade
+     * @param \App\Model\Product\Brand\BrandFacade $brandFacade
+     * @param \App\Model\Product\Brand\BrandDataFactory $brandDataFactory
      */
     public function __construct(
         Domain $domain,
@@ -89,7 +118,10 @@ class PohodaProductMapper
         StoreFacade $storeFacade,
         ProductFacade $productFacade,
         CurrencyFacade $currencyFacade,
-        AvailabilityFacade $availabilityFacade
+        AvailabilityFacade $availabilityFacade,
+        UnitFacade $unitFacade,
+        BrandFacade $brandFacade,
+        BrandDataFactory $brandDataFactory
     ) {
         $this->domain = $domain;
         $this->pricingGroupFacade = $pricingGroupFacade;
@@ -99,6 +131,9 @@ class PohodaProductMapper
         $this->productFacade = $productFacade;
         $this->currencyFacade = $currencyFacade;
         $this->availabilityFacade = $availabilityFacade;
+        $this->unitFacade = $unitFacade;
+        $this->brandFacade = $brandFacade;
+        $this->brandDataFactory = $brandDataFactory;
     }
 
     /**
@@ -164,6 +199,13 @@ class PohodaProductMapper
         $productData->outOfStockAction = Product::OUT_OF_STOCK_ACTION_SET_ALTERNATE_AVAILABILITY;
         $productData->outOfStockAvailability = $this->availabilityFacade->getDefaultOutOfStockAvailability();
         $productData->usingStock = true;
+        $productData->ean = $pohodaProduct->ean;
+        $productData->minimumAmount = $pohodaProduct->minimumAmountAndMultiplier;
+        $productData->amountMultiplier = $pohodaProduct->minimumAmountAndMultiplier;
+        $productData->warranty = $pohodaProduct->warranty;
+        $productData->brand = $this->getMapperBrand($pohodaProduct->brandName);
+        $productData->unit = $this->getMappedUnit($pohodaProduct->unit);
+        $productData->youtubeVideoIds = $this->getMappedYoutubeVideoIds($pohodaProduct->youtubeVideos);
     }
 
     /**
@@ -303,5 +345,69 @@ class PohodaProductMapper
                 break;
             }
         }
+    }
+
+    /**
+     * @param string|null $pohodaBrandName
+     * @return \App\Model\Product\Brand\Brand
+     */
+    private function getMappedBrand(?string $pohodaBrandName): ?Brand
+    {
+        if ($pohodaBrandName === null) {
+            return null;
+        }
+
+        try {
+            $brand = $this->brandFacade->getByName($pohodaBrandName);
+        } catch (BrandNotFoundException $brandNotFoundException) {
+            $brandData = $this->brandDataFactory->create();
+            $brandData->name = $pohodaBrandName;
+            $brand = $this->brandFacade->create($brandData);
+        }
+
+        return $brand;
+    }
+
+    /**
+     * @param \App\Component\Transfer\Pohoda\Product\PohodaProduct $pohodaProduct
+     * @return \App\Model\Product\Unit\Unit
+     */
+    private function getMappedUnit(PohodaProduct $pohodaProduct): Unit
+    {
+        try {
+            $unit = $this->unitFacade->getByPohodaName($pohodaProduct->unit);
+        } catch (UnitNotFoundException $exception) {
+            $errorMessage = sprintf(
+                'U produktu catnum=%s nebyla nalezena v e-shopu jednotka %s, použije se výchozí.',
+                $pohodaProduct->catnum,
+                $pohodaProduct->unit
+            );
+            $this->logger->addError($errorMessage, [
+                'pohodaUnitName' => $pohodaProduct->unit,
+                'productId' => $pohodaProduct->pohodaId,
+                'productCatnum' => $pohodaProduct->catnum,
+            ]);
+            /** @var \App\Model\Product\Unit\Unit $unit */
+            $unit = $this->unitFacade->getDefaultUnit();
+        }
+
+        return $unit;
+    }
+
+    /**
+     * @param array $youtubeVideos
+     * @return array
+     */
+    private function getMappedYoutubeVideoIds(array $youtubeVideos): array
+    {
+        $youtubeVideoIds = [];
+        foreach ($youtubeVideos as $youtubeVideo) {
+            // https://gist.github.com/ghalusa/6c7f3a00fd2383e5ef33
+            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtubeVideo, $youtubeVideoMatch)) {
+                $youtubeVideoIds[] = $youtubeVideoMatch[1];
+            }
+        }
+
+        return $youtubeVideoIds;
     }
 }
