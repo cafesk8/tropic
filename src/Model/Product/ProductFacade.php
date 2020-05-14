@@ -1158,4 +1158,12 @@ class ProductFacade extends BaseProductFacade
         $mainVariantData = $this->productDataFactory->createFromProduct($mainVariant);
         $this->edit($mainVariant->getId(), $mainVariantData);
     }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getProductsForRefresh(): array
+    {
+        return $this->productRepository->getProductsForRefresh();
+    }
 }

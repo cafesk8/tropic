@@ -205,6 +205,12 @@ class Product extends BaseProduct
      * @ORM\Column(type="integer", nullable=true)
      */
     private $realStockQuantity;
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $refresh;
 
     /**
      * @param \App\Model\Product\ProductData $productData
@@ -271,6 +277,7 @@ class Product extends BaseProduct
         $this->eurCalculatedAutomatically = $productData->eurCalculatedAutomatically;
         $this->productGroups = new ArrayCollection();
         $this->deliveryDays = $productData->deliveryDays;
+        $this->refresh = false;
     }
 
     /**
@@ -946,8 +953,6 @@ class Product extends BaseProduct
     }
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
      * @return \App\Model\Product\Group\ProductGroup[]
      */
     public function getProductGroups(): array
@@ -1067,5 +1072,10 @@ class Product extends BaseProduct
     private function isInSaleStock(ProductStoreStock $productStoreStock): bool
     {
         return $productStoreStock->getStore()->isSaleStock() && $productStoreStock->getStockQuantity() > 0;
+    }
+
+    public function markForRefresh(): void
+    {
+        $this->refresh = true;
     }
 }

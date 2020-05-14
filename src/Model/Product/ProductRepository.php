@@ -573,4 +573,12 @@ class ProductRepository extends BaseProductRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * @return \App\Model\Product\Product[]
+     */
+    public function getProductsForRefresh(): array
+    {
+        return $this->getProductRepository()->findBy(['refresh' => true]);
+    }
 }
