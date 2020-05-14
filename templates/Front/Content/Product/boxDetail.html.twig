@@ -29,7 +29,7 @@
                             {% endif %}
                         </div>
 
-                        {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice) }}
+                        {{ productFlags.list(getProductFlagsWithFreeTransportAndPaymentFlag(sellingPrice, product, showFlagsMaxCount), 'in-flag--detail', false, sellingPrice, product.variantsCount) }}
 
                         {% if showGallery %}
                             <div class="box-gallery dont-print js-gallery">

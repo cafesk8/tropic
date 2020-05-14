@@ -15,7 +15,7 @@
                                     {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                 {% endif %}
                             </div>
-                            {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice) }}
+                            {{ renderFlagsByIds(productFlagIds, 'in-flag--product-list', false, productSellingPrice, productView.variantsCount) }}
                         </a>
                         <div class="list-products__item__info">
                             <a class="list-products__item__info__link" href="{{ productView.action.detailUrl }}">
@@ -94,6 +94,8 @@
         <div class="list-products-slider__in">
             <div class="list-products-slider__list js-horizontal-list-slides">
                 {% for productView in productViews %}
+                    {% set productSellingPrice = productView.sellingPrice %}
+
                     <div class="list-products-slider__item">
                         <div class="list-products-slider__item__in">
                             <div class="list-products-slider__item__block">
@@ -106,13 +108,11 @@
                                             {% set productFlagIds = { 0: freeTransportAndPaymentFlagId } %}
                                         {% endif %}
                                     </div>
-                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--slider', true) }}
+                                    {{ renderFlagsByIds(productFlagIds, 'in-flag--slider', true, productSellingPrice, productView.variantsCount) }}
                                 </a>
 
                                 <div class="list-products-slider__item__info">
                                     <a class="list-products-slider__item__info__link" href="{{ productView.action.detailUrl }}">
-                                        {% set productSellingPrice = productView.sellingPrice %}
-
                                         <{{ productHeadingTagName|default('h2') }} class="list-products-slider__item__info__title">
                                             {{ productView.name|striptags|raw }}
                                         <{{ '/' ~ productHeadingTagName|default('h2') }}>
