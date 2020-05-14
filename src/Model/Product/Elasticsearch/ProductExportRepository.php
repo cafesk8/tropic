@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Product\Elasticsearch;
 
+use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use Doctrine\ORM\EntityManagerInterface;
 use Shopsys\FrameworkBundle\Component\Domain\Domain;
@@ -34,6 +35,11 @@ class ProductExportRepository extends BaseProductExportRepository
     protected $productFacade;
 
     /**
+     * @var \App\Model\Pricing\Group\PricingGroupFacade
+     */
+    private $pricingGroupFacade;
+
+    /**
      * @var \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade
      */
     private $pricingGroupSettingFacade;
@@ -53,6 +59,7 @@ class ProductExportRepository extends BaseProductExportRepository
      * @param \App\Component\Router\FriendlyUrl\FriendlyUrlFacade $friendlyUrlFacade
      * @param \Shopsys\FrameworkBundle\Model\Pricing\Group\PricingGroupSettingFacade $pricingGroupSettingFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
+     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -63,11 +70,13 @@ class ProductExportRepository extends BaseProductExportRepository
         ProductVisibilityRepository $productVisibilityRepository,
         FriendlyUrlFacade $friendlyUrlFacade,
         PricingGroupSettingFacade $pricingGroupSettingFacade,
-        ProductGroupFacade $productGroupFacade
+        ProductGroupFacade $productGroupFacade,
+        PricingGroupFacade $pricingGroupFacade
     ) {
         parent::__construct($em, $parameterRepository, $productFacade, $friendlyUrlRepository, $domain, $productVisibilityRepository, $friendlyUrlFacade);
         $this->pricingGroupSettingFacade = $pricingGroupSettingFacade;
         $this->productGroupFacade = $productGroupFacade;
+        $this->pricingGroupFacade = $pricingGroupFacade;
     }
 
     /**
@@ -136,10 +145,14 @@ class ProductExportRepository extends BaseProductExportRepository
     protected function extractPrices(int $domainId, Product $product): array
     {
         $defaultPricingGroupOnDomain = $this->pricingGroupSettingFacade->getDefaultPricingGroupByDomainId($domainId);
+        $standardPricingGroupOnDomain = $this->pricingGroupFacade->getStandardPricePricingGroup($domainId);
         $pricesArray = parent::extractPrices($domainId, $product);
 
+        $defaultPricingGroupId = $defaultPricingGroupOnDomain->getId();
+        $standardPricingGroupId = $standardPricingGroupOnDomain->getId();
         foreach ($pricesArray as $key => $priceArray) {
-            $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupOnDomain->getId());
+            $priceArray['is_default'] = ($priceArray['pricing_group_id'] === $defaultPricingGroupId);
+            $priceArray['is_standard'] = ($priceArray['pricing_group_id'] === $standardPricingGroupId);
             $pricesArray[$key] = $priceArray;
         }
 

@@ -206,6 +206,9 @@
           },
           "is_default": {
             "type": "boolean"
+          },
+          "is_standard": {
+            "type": "boolean"
           }
         }
       },

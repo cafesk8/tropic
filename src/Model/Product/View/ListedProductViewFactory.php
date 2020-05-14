@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model\Product\View;
 
-use App\Model\Pricing\Group\PricingGroupFacade;
 use App\Model\Product\Group\ProductGroupFacade;
 use App\Model\Product\Pricing\ProductPrice;
 use App\Model\Product\ProductFacade;
@@ -31,11 +30,6 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     private $productFacade;
 
     /**
-     * @var \App\Model\Pricing\Group\PricingGroupFacade
-     */
-    private $pricingGroupFacade;
-
-    /**
      * @var \App\Model\Product\Group\ProductGroupFacade
      */
     private $productGroupFacade;
@@ -44,19 +38,16 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param \Shopsys\FrameworkBundle\Component\Domain\Domain $domain
      * @param \Shopsys\FrameworkBundle\Model\Product\ProductCachedAttributesFacade $productCachedAttributesFacade
      * @param \App\Model\Product\ProductFacade $productFacade
-     * @param \App\Model\Pricing\Group\PricingGroupFacade $pricingGroupFacade
      * @param \App\Model\Product\Group\ProductGroupFacade $productGroupFacade
      */
     public function __construct(
         Domain $domain,
         ProductCachedAttributesFacade $productCachedAttributesFacade,
         ProductFacade $productFacade,
-        PricingGroupFacade $pricingGroupFacade,
         ProductGroupFacade $productGroupFacade
     ) {
         parent::__construct($domain, $productCachedAttributesFacade);
         $this->productFacade = $productFacade;
-        $this->pricingGroupFacade = $pricingGroupFacade;
         $this->productGroupFacade = $productGroupFacade;
     }
 
@@ -143,6 +134,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
     ): ?BaseProductPrice {
         $pricingGroupId = $pricingGroup->getId();
         $defaultProductPrice = $this->getDefaultPrice($pricesArray);
+        $standardPrice = $this->getStandardPrice($pricesArray);
         foreach ($pricesArray as $priceArray) {
             if ($priceArray['pricing_group_id'] === $pricingGroupId) {
                 $price = $this->getPriceFromPriceArray($priceArray);
@@ -151,7 +143,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
                     $priceArray['price_from'],
                     $productId,
                     $defaultProductPrice,
-                    $this->getStandardPrice($pricesArray)
+                    $standardPrice
                 );
             }
         }
@@ -180,10 +172,8 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      */
     private function getStandardPrice(array $pricesArray): ?Price
     {
-        $standardPricePricingGroupId = $this->pricingGroupFacade->getStandardPricePricingGroup($this->domain->getId())->getId();
-
         foreach ($pricesArray as $priceArray) {
-            if ($priceArray['pricing_group_id'] === $standardPricePricingGroupId) {
+            if ($priceArray['is_standard']) {
                 return $this->getPriceFromPriceArray($priceArray);
             }
         }

@@ -29,6 +29,7 @@ class ProductElasticsearchConverter extends BaseProductElasticsearchConverter
         $result['real_sale_stocks_quantity'] = $result['real_sale_stocks_quantity'] ?? 0;
         $result['is_in_any_sale_stock'] = $result['is_in_any_sale_stock'] ?? false;
         $result['prices']['is_default'] = $product['prices']['is_default'] ?? false;
+        $result['prices']['is_standard'] = $product['prices']['is_standard'] ?? false;
 
         return $result;
     }
