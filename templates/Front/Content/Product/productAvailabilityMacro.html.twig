@@ -2,7 +2,7 @@
 {% import 'Front/Content/Product/saleStockQuantityMacro.html.twig' as saleStockQuantity %}
     {% if product.isInAnySaleStock() %}
         <span class="in-availability__date">
-            {{ saleStockQuantity.showInfo(product.getRealSaleStocksQuantity()) }}
+            {{ saleStockQuantity.showInfo(product.getRealSaleStocksQuantity(), product.unit.name) }}
         </span>
     {% elseif product.isAvailableInDays %}
         <span class="in-availability__date in-availability__date--available-in-days">
