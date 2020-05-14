@@ -76,8 +76,7 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
         $sellingPrice = $this->getSellingPrice(
             $productArray['prices'],
             $pricingGroup,
-            $productArray['id'],
-            $this->getPriceFromPriceArray($productArray['default_price'])
+            $productArray['id']
         );
 
         return new ListedProductView(
@@ -135,16 +134,15 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
      * @param array $pricesArray
      * @param \App\Model\Pricing\Group\PricingGroup $pricingGroup
      * @param int $productId
-     * @param \Shopsys\FrameworkBundle\Model\Pricing\Price|null $defaultProductPrice
      * @return \Shopsys\FrameworkBundle\Model\Product\Pricing\ProductPrice|null
      */
     private function getSellingPrice(
         array $pricesArray,
         BasePricingGroup $pricingGroup,
-        int $productId,
-        ?Price $defaultProductPrice
+        int $productId
     ): ?BaseProductPrice {
         $pricingGroupId = $pricingGroup->getId();
+        $defaultProductPrice = $this->getDefaultPrice($pricesArray);
         foreach ($pricesArray as $priceArray) {
             if ($priceArray['pricing_group_id'] === $pricingGroupId) {
                 $price = $this->getPriceFromPriceArray($priceArray);
@@ -155,6 +153,21 @@ class ListedProductViewFactory extends BaseListedProductViewFactory
                     $defaultProductPrice,
                     $this->getStandardPrice($pricesArray)
                 );
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $pricesArray
+     * @return \Shopsys\FrameworkBundle\Model\Pricing\Price|null
+     */
+    private function getDefaultPrice(array $pricesArray): ?Price
+    {
+        foreach ($pricesArray as $priceArray) {
+            if ($priceArray['is_default']) {
+                return $this->getPriceFromPriceArray($priceArray);
             }
         }
 

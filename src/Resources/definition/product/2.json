@@ -211,17 +211,9 @@
           },
           "price_from": {
             "type": "boolean"
-          }
-        }
-      },
-      "default_price": {
-        "type": "nested",
-        "properties": {
-          "price_with_vat": {
-            "type": "float"
           },
-          "price_without_vat": {
-            "type": "float"
+          "is_default": {
+            "type": "boolean"
           }
         }
       },
