@@ -16,7 +16,6 @@ use Shopsys\FrameworkBundle\Model\Cart\Item\CartItem as BaseCartItem;
  * @ORM\Table(name="cart_items")
  * @ORM\Entity
  * @property \App\Model\Product\Product|null $product
- * @method bool isSimilarItemAs(\App\Model\Cart\Item\CartItem $cartItem)
  */
 class CartItem extends BaseCartItem
 {
@@ -120,5 +119,18 @@ class CartItem extends BaseCartItem
         }
 
         return $name;
+    }
+
+    /**
+     * @param \App\Model\Cart\Item\CartItem $cartItem
+     * @return bool
+     */
+    public function isSimilarItemAs(BaseCartItem $cartItem): bool
+    {
+        $isSameProduct = $this->getProduct()->getId() === $cartItem->getProduct()->getId();
+        $bothAreSaleItems = $this->isSaleItem() && $cartItem->isSaleItem();
+        $bothAreRegularItems = !$this->isSaleItem() && !$cartItem->isSaleItem();
+
+        return $isSameProduct && ($bothAreSaleItems || $bothAreRegularItems);
     }
 }
