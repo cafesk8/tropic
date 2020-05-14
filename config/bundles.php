@@ -2,7 +2,6 @@
 
 return [
     Craue\FormFlowBundle\CraueFormFlowBundle::class => ['all' => true],
-    DevOps\KubernetesDeployment\DevOpsKubernetesDeploymentBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['all' => true],
@@ -37,4 +36,5 @@ return [
     Fp\JsFormValidatorBundle\FpJsFormValidatorBundle::class => ['all' => true],
     EmanueleMinotto\TwigCacheBundle\TwigCacheBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
+    DevOps\KubernetesDeployment\DevOpsKubernetesDeploymentBundle::class => ['all' => true],
 ];
